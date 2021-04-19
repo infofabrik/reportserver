@@ -93,7 +93,7 @@ public class FtpExportSnippetProvider implements
 		});
 		
 		xform.endRow();
-		xform.setFieldWidth(1);
+		xform.setFieldWidth(530);
 		
 		nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
 			@Override
@@ -177,7 +177,6 @@ public class FtpExportSnippetProvider implements
 		JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
 		
 		String jobTitle = metadataForm.getTitleValue();
-		
 		form.setValue(nameKey, "${now} - " + jobTitle);
 		if (null != definition) {
 			ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);

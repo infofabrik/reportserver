@@ -87,10 +87,13 @@ public class EntitySearchProvider implements SearchProvider {
 		    }
 		    sr.setResultObject(entity);
 
-		    /* links and only add those that can be linked */
-		    sr.setLinks(historyService.buildLinksFor(entity));
-		    if(null != sr.getLinks() && sr.getLinks().size() > 0)
-		    	entryList.add(sr);
+		    /* create links */
+            sr.setLinks(historyService.buildLinksFor(entity));
+            
+            /*  add only those that can be linked if not explicitly allowed */
+            if ((!filter.isShowEntriesWithUnaccessibleHistoryPath() && null != sr.getLinks()
+                  && sr.getLinks().size() > 0) || filter.isShowEntriesWithUnaccessibleHistoryPath())
+               entryList.add(sr);
 		    
 		    /* add tags */
 		    SearchResultTag tag = new SearchResultTag(

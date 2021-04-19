@@ -104,6 +104,9 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 	}
 
 	protected void mergePlainDto2Poso(SftpDatasinkDto dto, final SftpDatasink poso)  throws ExpectedException {
+		/*  set authenticationType */
+		poso.setAuthenticationType(dto.getAuthenticationType() );
+
 		/*  set description */
 		poso.setDescription(dto.getDescription() );
 
@@ -131,12 +134,20 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 		} catch(NullPointerException e){
 		}
 
+		/*  set privateKeyPassphrase */
+		poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
+
 		/*  set username */
 		poso.setUsername(dto.getUsername() );
 
 	}
 
 	protected void mergeProxy2Poso(SftpDatasinkDto dto, final SftpDatasink poso)  throws ExpectedException {
+		/*  set authenticationType */
+		if(dto.isAuthenticationTypeModified()){
+			poso.setAuthenticationType(dto.getAuthenticationType() );
+		}
+
 		/*  set description */
 		if(dto.isDescriptionModified()){
 			poso.setDescription(dto.getDescription() );
@@ -176,6 +187,11 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 				poso.setPort(dto.getPort() );
 			} catch(NullPointerException e){
 			}
+		}
+
+		/*  set privateKeyPassphrase */
+		if(dto.isPrivateKeyPassphraseModified()){
+			poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
 		}
 
 		/*  set username */
@@ -193,6 +209,9 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 	}
 
 	protected void mergePlainDto2UnmanagedPoso(SftpDatasinkDto dto, final SftpDatasink poso)  throws ExpectedException {
+		/*  set authenticationType */
+		poso.setAuthenticationType(dto.getAuthenticationType() );
+
 		/*  set description */
 		poso.setDescription(dto.getDescription() );
 
@@ -220,12 +239,20 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 		} catch(NullPointerException e){
 		}
 
+		/*  set privateKeyPassphrase */
+		poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
+
 		/*  set username */
 		poso.setUsername(dto.getUsername() );
 
 	}
 
 	protected void mergeProxy2UnmanagedPoso(SftpDatasinkDto dto, final SftpDatasink poso)  throws ExpectedException {
+		/*  set authenticationType */
+		if(dto.isAuthenticationTypeModified()){
+			poso.setAuthenticationType(dto.getAuthenticationType() );
+		}
+
 		/*  set description */
 		if(dto.isDescriptionModified()){
 			poso.setDescription(dto.getDescription() );
@@ -265,6 +292,11 @@ public class Dto2SftpDatasinkGenerator implements Dto2PosoGenerator<SftpDatasink
 				poso.setPort(dto.getPort() );
 			} catch(NullPointerException e){
 			}
+		}
+
+		/*  set privateKeyPassphrase */
+		if(dto.isPrivateKeyPassphraseModified()){
+			poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
 		}
 
 		/*  set username */

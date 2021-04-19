@@ -22,7 +22,7 @@ public class SearchFilter {
 	public static final String TAG_BASE_TYPE = "baseType";
 	
 	@ExposeToClient
-	private Set<SearchResultTag> tags = new HashSet<SearchResultTag>();
+	private Set<SearchResultTag> tags = new HashSet<>();
 	
 	private Class<?> baseType = Object.class;
 	
@@ -31,6 +31,17 @@ public class SearchFilter {
 	
 	@ExposeToClient
 	private int offset;
+	
+    @ExposeToClient
+    private boolean showEntriesWithUnaccessibleHistoryPath;
+    
+    public void setShowEntriesWithUnaccessibleHistoryPath(boolean showEntriesWithUnaccessibleHistoryPath) {
+        this.showEntriesWithUnaccessibleHistoryPath = showEntriesWithUnaccessibleHistoryPath;
+    }
+    
+    public boolean isShowEntriesWithUnaccessibleHistoryPath() {
+        return showEntriesWithUnaccessibleHistoryPath;
+    }
 	
 	public void setTags(Set<SearchResultTag> tags) {
 		this.tags = tags;

@@ -4,13 +4,13 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -24,7 +24,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.io.output.TeeOutputStream;
 import org.slf4j.Logger;
@@ -352,7 +351,7 @@ public class ReportExportServlet extends SecuredHttpServlet{
 			
 			sendHeaders(resp, req, baseFilename, mimetype, extension, isStringRprt, isDownload(req));
 
-			byte[] fileContents = FileUtils.readFileToByteArray(tempFile.getFile());
+			byte[] fileContents = Files.readAllBytes(tempFile.getPath());
 			resp.getOutputStream().write(fileContents);
 			resp.getOutputStream().flush();
 			
@@ -489,19 +488,16 @@ public class ReportExportServlet extends SecuredHttpServlet{
 		
 		/* set data */
 		if(executedReport instanceof byte[]){
-			IOUtils.write((byte[])executedReport, new FileOutputStream(tempFile.getFile()));
-			
+		   Files.write(tempFile.getPath(), (byte[])executedReport);
 		} else if (executedReport instanceof String) {
 			String charset = reportServerService.get().getCharset();
-			IOUtils.write(executedReport.toString().getBytes(charset),  new FileWriter(tempFile.getFile()), charset);
-
+			Files.write(tempFile.getPath(), executedReport.toString().getBytes(charset));
 		} else if (executedReport instanceof BufferedImage[]) {
 			ByteArrayOutputStream baos = new ByteArrayOutputStream();
 			ImageIO.write(((BufferedImage[])executedReport)[0], "png", baos);
-			IOUtils.write(baos.toByteArray(), new FileOutputStream(tempFile.getFile()));
-
+			Files.write(tempFile.getPath(), baos.toByteArray());
 		} else {
-			IOUtils.write((byte[])executedReport.toString().getBytes(), new FileOutputStream(tempFile.getFile()));
+		   Files.write(tempFile.getPath(), executedReport.toString().getBytes(StandardCharsets.UTF_8));
 		}		
 	}
 	

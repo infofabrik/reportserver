@@ -122,4 +122,10 @@ public interface BaseMessages extends Messages {
 	String username();
 	String password();
 	String clearPassword();
+   String mode();
+   String active();
+   String passive();
+   
+   String protectionLevel();
+   String folderAbsoluteExisting();
 }

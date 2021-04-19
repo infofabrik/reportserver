@@ -82,6 +82,9 @@ public class FtpDatasink2DtoGenerator implements Poso2DtoGenerator<FtpDatasink,F
 			/*  set folder */
 			dto.setFolder(StringEscapeUtils.escapeXml(StringUtils.left(poso.getFolder(),8192)));
 
+			/*  set ftpMode */
+			dto.setFtpMode(StringEscapeUtils.escapeXml(StringUtils.left(poso.getFtpMode(),8192)));
+
 			/*  set host */
 			dto.setHost(StringEscapeUtils.escapeXml(StringUtils.left(poso.getHost(),8192)));
 

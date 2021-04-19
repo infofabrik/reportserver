@@ -32,11 +32,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk15on-1.48.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.48.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.48.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-ext-jdk15on-1.48.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.48.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk15on-1.68.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.68.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.68.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-ext-jdk15on-1.68.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.8.0-20180626.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/c3p0-0.9.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cal10n-api-0.8.1.jar"/>
@@ -60,14 +60,14 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl-2.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl3-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang-2.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang3-3.11.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang3-3.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-math-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-math3-3.6.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-net-3.7.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-net-3.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs-1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/CrystalCommon2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/CrystalReportsRuntime.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cvom.jar"/>
@@ -132,12 +132,14 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1-sources.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.mail-1.6.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-api-2.2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-impl-2.2.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-xmldsig-core-1.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-xslfo-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.3.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/JDBInterface.jar"/>
@@ -162,8 +164,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jtidy-r938.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-api-2.2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-impl-2.2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.9.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.9.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.10.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/keycodeDecoder.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-3.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
@@ -174,10 +176,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-5.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-5.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-5.3.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mail-1.4.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.9.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mina-core-2.0.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-3.6.6-services.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-4.7.0.0-12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-4.7.0.0-12-extradialects.jar"/>
@@ -215,7 +215,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-ext-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqljdbc42.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-0.8.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.6.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stringtemplate-3.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/super-csv-2.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/UserAgentUtils-1.21.jar"/>

@@ -28,10 +28,12 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
+import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.rpc.FtpRpcService;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
+import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
@@ -161,6 +163,7 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
 
       enabledConfigs.putAll(ftpService.getFtpEnabledConfigs());
       enabledConfigs.putAll(ftpService.getSftpEnabledConfigs());
+      enabledConfigs.putAll(ftpService.getFtpsEnabledConfigs());
 
       return enabledConfigs;
    }
@@ -199,6 +202,60 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       }
       
       return true;
+   }
+   
+   @Override
+   public void exportIntoFtps(ReportDto reportDto, String executorToken, FtpsDatasinkDto ftpsDatasinkDto, String format,
+           List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
+       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
+
+       FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(ftpsDatasinkDto);
+
+       /* get a clean and unmanaged report from the database */
+       Report referenceReport = reportDtoService.getReferenceReport(reportDto);
+       Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
+
+       /* check rights */
+       securityService.assertRights(referenceReport, Execute.class);
+       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
+
+       /* create variant */
+       Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+       final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
+
+       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
+             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
+
+       CompiledReport cReport;
+       try {
+          cReport = reportExecutorService.execute(toExecute, format, configArray);
+
+          String filename = name + "." + cReport.getFileExtension();
+
+          ftpService.sendToFtpsServer(cReport.getReport(), ftpsDatasink, filename, folder);
+
+       } catch (Exception e) {
+          throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);
+       }
+       
+   }
+
+   @Override
+   public boolean testFtpsDataSink(FtpsDatasinkDto ftpsDatasinkDto) throws ServerCallFailedException {
+       FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(ftpsDatasinkDto);
+       
+       /* check rights */
+       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
+       
+       try {
+          ftpService.testFtpsDataSink(ftpsDatasink);
+       } catch(Exception e){
+          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
+          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
+          throw ex;
+       }
+       
+       return true;
    }
 
 }

@@ -1,5 +1,6 @@
 package net.datenwerke.rs.core.service.reportmanager;
 
+import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
@@ -79,5 +80,7 @@ public interface ReportService extends TreeDBManager<AbstractReportManagerNode> 
 	AbstractReportManagerNode getNodeByPath(String path, boolean checkRights);
 	
 	String extractQuery(Report report);
+	
+	InputStream createInputStream(Object report);
 
 }

@@ -1,26 +1,25 @@
 package net.datenwerke.gf.service.upload;
 
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
-import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
-import net.datenwerke.gf.client.upload.FileUploadUIModule;
-import net.datenwerke.gf.client.upload.dto.UploadProperties;
-import net.datenwerke.gf.client.upload.dto.UploadResponse;
-import net.datenwerke.gf.service.tempfile.TempFileService;
-import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import org.apache.commons.codec.binary.Base64;
-import org.apache.commons.io.IOUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
+import net.datenwerke.gf.client.upload.FileUploadUIModule;
+import net.datenwerke.gf.client.upload.dto.UploadResponse;
+import net.datenwerke.gf.service.tempfile.TempFileService;
+import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 @Singleton
 public class FileUploadServiceImpl implements FileUploadService {
@@ -43,23 +42,23 @@ public class FileUploadServiceImpl implements FileUploadService {
 
 
 	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		for(FileUploadHandlerHook h : hookHandlerService.getHookers(FileUploadHandlerHook.class)){
-			if(h.consumes(uploadedFile.getHandler())){
-				return h.uploadOccured(uploadedFile);
-			}
-		}
-		
-		throw new IllegalStateException("No handler forund for: " + uploadedFile.getHandler());
+	public String uploadOccured(final UploadedFile uploadedFile) {
+	   
+	   final Optional<FileUploadHandlerHook> filtered =  hookHandlerService.getHookers(FileUploadHandlerHook.class)
+	         .stream()
+	         .filter(h -> h.consumes(uploadedFile.getHandler()))
+	         .findAny();
+
+	   if (filtered.isPresent())
+	      return filtered.get().uploadOccured(uploadedFile);
+	   
+	   throw new IllegalStateException("No handler found for: " + uploadedFile.getHandler());
 	}
 
 	@Override
 	public UploadResponse uploadInterimFile(UploadedFile file) throws IOException {
-		File tmpFile = tempFileService.createTempFile();
-		
-		try(FileOutputStream output = new FileOutputStream(tmpFile);){
-			IOUtils.write(file.getFileBytes(), output);
-		}
+		Path tmpFile = tempFileService.createTempFile();
+		Files.write(tmpFile, file.getFileBytes());
 		
 		file.setTmpLocation(tmpFile);
 		file.clearData();

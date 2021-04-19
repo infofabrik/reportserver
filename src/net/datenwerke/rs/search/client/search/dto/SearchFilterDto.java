@@ -107,6 +107,42 @@ abstract public class SearchFilterDto extends RsDto {
 		}
 	};
 
+	private boolean showEntriesWithUnaccessibleHistoryPath;
+	private  boolean showEntriesWithUnaccessibleHistoryPath_m;
+	public static final String PROPERTY_SHOW_ENTRIES_WITH_UNACCESSIBLE_HISTORY_PATH = "dpi-searchfilter-showentrieswithunaccessiblehistorypath";
+
+	private transient static PropertyAccessor<SearchFilterDto, Boolean> showEntriesWithUnaccessibleHistoryPath_pa = new PropertyAccessor<SearchFilterDto, Boolean>() {
+		@Override
+		public void setValue(SearchFilterDto container, Boolean object) {
+			container.setShowEntriesWithUnaccessibleHistoryPath(object);
+		}
+
+		@Override
+		public Boolean getValue(SearchFilterDto container) {
+			return container.isShowEntriesWithUnaccessibleHistoryPath();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Boolean.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "showEntriesWithUnaccessibleHistoryPath";
+		}
+
+		@Override
+		public void setModified(SearchFilterDto container, boolean modified) {
+			container.showEntriesWithUnaccessibleHistoryPath_m = modified;
+		}
+
+		@Override
+		public boolean isModified(SearchFilterDto container) {
+			return container.isShowEntriesWithUnaccessibleHistoryPathModified();
+		}
+	};
+
 	private Set<SearchResultTagDto> tags;
 	private  boolean tags_m;
 	public static final String PROPERTY_TAGS = "dpi-searchfilter-tags";
@@ -282,6 +318,55 @@ abstract public class SearchFilterDto extends RsDto {
 	}
 
 
+	public boolean isShowEntriesWithUnaccessibleHistoryPath()  {
+		if(! isDtoProxy()){
+			return this.showEntriesWithUnaccessibleHistoryPath;
+		}
+
+		if(isShowEntriesWithUnaccessibleHistoryPathModified())
+			return this.showEntriesWithUnaccessibleHistoryPath;
+
+		if(! GWT.isClient())
+			return false;
+
+		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().showEntriesWithUnaccessibleHistoryPath());
+
+		return _value;
+	}
+
+
+	public void setShowEntriesWithUnaccessibleHistoryPath(boolean showEntriesWithUnaccessibleHistoryPath)  {
+		/* old value */
+		boolean oldValue = false;
+		if(GWT.isClient())
+			oldValue = isShowEntriesWithUnaccessibleHistoryPath();
+
+		/* set new value */
+		this.showEntriesWithUnaccessibleHistoryPath = showEntriesWithUnaccessibleHistoryPath;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(showEntriesWithUnaccessibleHistoryPath_pa, oldValue, showEntriesWithUnaccessibleHistoryPath, this.showEntriesWithUnaccessibleHistoryPath_m));
+
+		/* set indicator */
+		this.showEntriesWithUnaccessibleHistoryPath_m = true;
+
+		this.fireObjectChangedEvent(SearchFilterDtoPA.INSTANCE.showEntriesWithUnaccessibleHistoryPath(), oldValue);
+	}
+
+
+	public boolean isShowEntriesWithUnaccessibleHistoryPathModified()  {
+		return showEntriesWithUnaccessibleHistoryPath_m;
+	}
+
+
+	public static PropertyAccessor<SearchFilterDto, Boolean> getShowEntriesWithUnaccessibleHistoryPathPropertyAccessor()  {
+		return showEntriesWithUnaccessibleHistoryPath_pa;
+	}
+
+
 	public Set<SearchResultTagDto> getTags()  {
 		if(! isDtoProxy()){
 			Set<SearchResultTagDto> _currentValue = this.tags;
@@ -413,6 +498,8 @@ abstract public class SearchFilterDto extends RsDto {
 		this.limit_m = false;
 		this.offset = 0;
 		this.offset_m = false;
+		this.showEntriesWithUnaccessibleHistoryPath = false;
+		this.showEntriesWithUnaccessibleHistoryPath_m = false;
 		this.tags = null;
 		this.tags_m = false;
 		this.baseType = null;
@@ -427,6 +514,8 @@ abstract public class SearchFilterDto extends RsDto {
 			return true;
 		if(offset_m)
 			return true;
+		if(showEntriesWithUnaccessibleHistoryPath_m)
+			return true;
 		if(tags_m)
 			return true;
 		if(baseType_m)
@@ -439,6 +528,7 @@ abstract public class SearchFilterDto extends RsDto {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(limit_pa);
 		list.add(offset_pa);
+		list.add(showEntriesWithUnaccessibleHistoryPath_pa);
 		list.add(tags_pa);
 		list.add(baseType_pa);
 		return list;
@@ -451,6 +541,8 @@ abstract public class SearchFilterDto extends RsDto {
 			list.add(limit_pa);
 		if(offset_m)
 			list.add(offset_pa);
+		if(showEntriesWithUnaccessibleHistoryPath_m)
+			list.add(showEntriesWithUnaccessibleHistoryPath_pa);
 		if(tags_m)
 			list.add(tags_pa);
 		if(baseType_m)
@@ -467,6 +559,7 @@ abstract public class SearchFilterDto extends RsDto {
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(limit_pa);
 			list.add(offset_pa);
+			list.add(showEntriesWithUnaccessibleHistoryPath_pa);
 			list.add(tags_pa);
 		}
 		return list;

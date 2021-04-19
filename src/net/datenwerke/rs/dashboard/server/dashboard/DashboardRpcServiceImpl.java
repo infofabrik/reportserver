@@ -766,7 +766,7 @@ public class DashboardRpcServiceImpl extends SecuredRemoteServiceServlet impleme
 			if(dadget instanceof ReportDadget) {
 				report = ((ReportDadget) dadget).getReport();
 				if (null == report)
-                   report =  ((ReportDadget) dadget).getReportReference().getReport();
+				   report =  ((ReportDadget) dadget).getReportReference().getReport();
 			} else if(dadget instanceof LibraryDadget){
 				DadgetNode dadgetNode = ((LibraryDadget)dadget).getDadgetNode();
 				if(null == dadgetNode || ! (dadgetNode.getDadget() instanceof ReportDadget))
@@ -774,7 +774,7 @@ public class DashboardRpcServiceImpl extends SecuredRemoteServiceServlet impleme
 				
 				report = ((ReportDadget)dadgetNode.getDadget()).getReport();
 				if (null == report)
-                   report = ((ReportDadget)dadgetNode.getDadget()).getReportReference().getReport();
+				   report = ((ReportDadget)dadgetNode.getDadget()).getReportReference().getReport();
 			} 	
 			
 			if(null != report){
@@ -806,13 +806,13 @@ public class DashboardRpcServiceImpl extends SecuredRemoteServiceServlet impleme
 		if(dadget instanceof ReportDadget) {
 			report = ((ReportDadget) dadget).getReport();
 			if (null == report)
-               report = ((ReportDadget) dadget).getReportReference().getReport();
+			   report = ((ReportDadget) dadget).getReportReference().getReport();
 		} else if(dadget instanceof LibraryDadget){
 			DadgetNode dadgetNode = ((LibraryDadget)dadget).getDadgetNode();
 			if(null != dadgetNode && (dadgetNode.getDadget() instanceof ReportDadget)) {
 				report = ((ReportDadget)dadgetNode.getDadget()).getReport();
 				if (null == report)
-                   report = ((ReportDadget)dadgetNode.getDadget()).getReportReference().getReport();
+				   report = ((ReportDadget)dadgetNode.getDadget()).getReportReference().getReport();
 			}
 		}
 		

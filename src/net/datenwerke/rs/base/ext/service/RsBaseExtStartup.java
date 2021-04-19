@@ -11,6 +11,10 @@ import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.DashboardMan
 import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.HttpDashboardManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerImporter;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerImporter;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.HttpDatasinkManagerImportConfigurationHooker;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.ExportAllDatasinksHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.HttpDatasourceManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
@@ -60,6 +64,12 @@ public class RsBaseExtStartup {
 		Provider<ExportAllDatasourcesHooker> exportAllDatasources,
 		Provider<ImportAllDatasourcesHooker> importAllDatasources,
 		
+		Provider<DatasinkManagerExporter> datasinkManagerExporter,
+      Provider<DatasinkManagerImporter> datasinkImporterProvider,
+      Provider<HttpDatasinkManagerImportConfigurationHooker> datasinkHttpImportConfigHookerProvider,
+      
+      Provider<ExportAllDatasinksHooker> exportAllDatasinks,
+		
 		Provider<ExportAllReportsHooker> exportAllReports,
 		Provider<ImportAllReportsHooker> importAllReports,
 		
@@ -90,11 +100,17 @@ public class RsBaseExtStartup {
 		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(genericRightsExporterProvider));
 		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(genericRIghtsImporterProvider));
 		
+		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasinkManagerExporter));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasinkImporterProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasinkHttpImportConfigHookerProvider);
+		
 		hookHandler.attachHooker(ExportAllHook.class, exportAllReports);
 		hookHandler.attachHooker(ImportAllHook.class, importAllReports);
 		
 		hookHandler.attachHooker(ExportAllHook.class, exportAllDatasources);
 		hookHandler.attachHooker(ImportAllHook.class, importAllDatasources);
+		
+		hookHandler.attachHooker(ExportAllHook.class, exportAllDatasinks);
 		
 		hookHandler.attachHooker(ExportAllHook.class, exportAllGenericRights);
 		hookHandler.attachHooker(ImportAllHook.class, importAllGenericRights);

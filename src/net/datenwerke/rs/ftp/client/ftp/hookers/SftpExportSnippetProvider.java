@@ -93,7 +93,7 @@ public class SftpExportSnippetProvider implements
 		});
 		
 		xform.endRow();
-		xform.setFieldWidth(1);
+		xform.setFieldWidth(530);
 		
 		nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
 			@Override

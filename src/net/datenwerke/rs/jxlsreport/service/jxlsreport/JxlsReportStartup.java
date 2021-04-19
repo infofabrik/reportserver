@@ -1,8 +1,11 @@
 package net.datenwerke.rs.jxlsreport.service.jxlsreport;
 
+import org.jxls.builder.xls.XlsCommentAreaBuilder;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
@@ -35,6 +38,10 @@ public class JxlsReportStartup {
 		
 		/* base exporters */
 		hookHandlerService.attachHooker(JxlsOutputGeneratorProviderHook.class, baseOutputGenerators, HookHandlerService.PRIORITY_LOW);
+		
+		/* multi-line and comment support */
+		hookHandlerService.attachHooker(LateInitHook.class, () -> XlsCommentAreaBuilder.MULTI_LINE_SQL_FEATURE = true);
+
 	}
 	
 }

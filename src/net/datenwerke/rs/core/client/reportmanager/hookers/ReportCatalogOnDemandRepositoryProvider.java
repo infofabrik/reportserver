@@ -1,6 +1,9 @@
 package net.datenwerke.rs.core.client.reportmanager.hookers;
 
+import static java.util.Arrays.asList;
+
 import java.util.List;
+import java.util.Optional;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -29,11 +32,13 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
+import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportVariantDto;
+import net.datenwerke.rs.birt.client.reportengines.dto.BirtReportDto;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeLoaderDao;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIService;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportContainerDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportManagerNodeDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.decorator.ReportDtoDec;
 import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog;
@@ -41,10 +46,17 @@ import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportS
 import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog.RepositoryProviderConfig;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportSelectionRepositoryProviderHook;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
+import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto;
+import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
+import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto;
+import net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto;
 import net.datenwerke.rs.search.client.search.SearchDao;
 import net.datenwerke.rs.search.client.search.SearchUiService;
+import net.datenwerke.rs.search.client.search.dto.SearchFilterDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
+import net.datenwerke.rs.search.client.search.dto.decorator.SearchFilterDtoDec;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionRepositoryProviderHook {
@@ -53,6 +65,27 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
       public boolean includeVariants();
 
       boolean showCatalog();
+      
+      /**
+       * Schedulable reports are those type of reports that may be directly scheduled.
+       * E.g., dynamic list variants are schedulable, while dynamic list base reports
+       * are not. For pixel-exact reports, both base report and variants are
+       * schedulable.
+       * 
+       * @return true if it should be filtered on schedulable reports
+       */
+      boolean filterOnSchedulableReports();
+      
+      /**
+       * Entries with unaccessible history path are those that cannot be opened by the
+       * user by a history link because the user does not have sufficient rights for
+       * this. Normally, these are not shown in search results. Sometimes it is
+       * necessary, though, e.g. when the action clicking on the search result is
+       * *not* opening the history link.
+       * 
+       * @return true if entries without a history path should be shown
+       */
+      boolean showEntriesWithUnaccessibleHistoryPath();
    }
 
    private final ReportManagerUIService reportService;
@@ -61,6 +94,8 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
 
    private final SearchDao searcher;
    private final SearchUiService searchService;
+   
+   private Optional<SearchFilterDto> filter = Optional.empty();
 
    @Inject
    public ReportCatalogOnDemandRepositoryProvider(ReportManagerUIService reportService,
@@ -74,13 +109,32 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
    }
 
    @Override
-   public void addCards(final ReportSelectionDialog dialog, ReportDto selectedReport,
+   public void addCards(final ReportSelectionDialog dialog, Optional<ReportDto> selectedReport,
          RepositoryProviderConfig[] configs) {
       Config conf = getConfig(configs);
       if (null != conf && !conf.showCatalog())
          return;
+      
+      if (null != conf) {
+         if (conf.filterOnSchedulableReports())
+            installSchedulableReportsFilter();
+         
+         if (conf.showEntriesWithUnaccessibleHistoryPath())
+            installShowEntriesWithUnaccessibleHistoryPath();
+      } else
+         filter = Optional.empty();
 
       addBasicCard(dialog, selectedReport, null != conf && conf.includeVariants());
+   }
+
+   private void installShowEntriesWithUnaccessibleHistoryPath() {
+      if (!filter.isPresent()) {
+         SearchFilterDtoDec filter = new SearchFilterDtoDec();
+         filter.setLimit(25);
+         this.filter = Optional.of(filter);
+      }
+      
+      filter.get().setShowEntriesWithUnaccessibleHistoryPath(true);
    }
 
    protected <C extends ReportSelectionDialog.RepositoryProviderConfig> C getConfig(
@@ -94,12 +148,13 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
       return null;
    }
 
-   private void addBasicCard(final ReportSelectionDialog dialog, ReportDto selectedReport, final boolean showVariants) {
+   private void addBasicCard(final ReportSelectionDialog dialog, Optional<ReportDto> selectedReport,
+         final boolean showVariants) {
       /* create store */
       final ListStore<ReportDto> store = new ListStore<ReportDto>(new DtoIdModelKeyProvider());
 
-      if (null != selectedReport)
-         store.add(selectedReport);
+      if (selectedReport.isPresent())
+         store.add(selectedReport.get());
 
       /* create grid */
       List<ColumnConfig<ReportDto, ?>> columns = reportService.getColumnConfigForReportGrid(showVariants, true);
@@ -126,7 +181,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          }
       });
 
-      /* show context menue on doubleclick */
+      /* show context menu on doubleclick */
       grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
          @Override
          public void onCellClick(CellDoubleClickEvent event) {
@@ -189,6 +244,22 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          }
       });
    }
+   
+   private void installSchedulableReportsFilter() {
+      filter = Optional.of(searchService
+            .createFilterFor(asList(
+                  // variants
+                  TableReportVariantDto.class, 
+                  SaikuReportVariantDto.class,
+                  // base reports
+                  BirtReportDto.class,
+                  CrystalReportDto.class,
+                  GridEditorReportDto.class,
+                  JasperReportDto.class,
+                  JxlsReportDto.class,
+                  ScriptReportDto.class
+                  )));
+   }
 
    protected void addSearchBar(ToolBar toolbar, final SelectionHandler<SearchResultEntryDto> selectionHandler) {
       RpcProxy<SearchLoadConfig, SearchResultListDto> proxy = new RpcProxy<SearchLoadConfig, SearchResultListDto>() {
@@ -196,7 +267,10 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          public void load(SearchLoadConfig loadConfig, AsyncCallback<SearchResultListDto> callback) {
             String query = loadConfig.getQuery();
             if (null != query && query.length() > 1) 
-               searcher.find(ReportDto.newPosoMapper(), searchService.enhanceQuery(query), callback);
+               if (filter.isPresent())
+                  searcher.find(searchService.enhanceQuery(query), filter.get(), callback);
+               else
+                  searcher.find(ReportDto.newPosoMapper(), searchService.enhanceQuery(query), callback);
          }
       };
 

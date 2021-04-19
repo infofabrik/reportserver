@@ -64,6 +64,8 @@ import net.datenwerke.rs.authenticator.cr.service.ChallengeResponseModule;
 import net.datenwerke.rs.authenticator.server.LoginHandlerImpl;
 import net.datenwerke.rs.base.ext.server.dashboardmanager.DashboardManagerExportRpcServiceImpl;
 import net.datenwerke.rs.base.ext.server.dashboardmanager.DashboardManagerImportRpcServiceImpl;
+import net.datenwerke.rs.base.ext.server.datasinkmanager.DatasinkManagerExportRpcServiceImpl;
+import net.datenwerke.rs.base.ext.server.datasinkmanager.DatasinkManagerImportRpcServiceImpl;
 import net.datenwerke.rs.base.ext.server.datasourcemanager.DatasourceManagerExportRpcServiceImpl;
 import net.datenwerke.rs.base.ext.server.datasourcemanager.DatasourceManagerImportRpcServiceImpl;
 import net.datenwerke.rs.base.ext.server.reportmanager.ReportManagerExportRpcServiceImpl;
@@ -149,6 +151,8 @@ import net.datenwerke.rs.jxlsreport.server.JxlsReportFileDownloadServlet;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.JxlsReportModule;
 import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
+import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
+import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule;
 import net.datenwerke.rs.passwordpolicy.server.AccountInhibitionRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
@@ -159,12 +163,16 @@ import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
+import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
+import net.datenwerke.rs.samba.service.samba.SambaModule;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.ScheduleAsFileUiModule;
 import net.datenwerke.rs.scheduleasfile.server.scheduleasfile.ExportScheduledAsFileReportServlet;
 import net.datenwerke.rs.scheduleasfile.server.scheduleasfile.ScheduleAsFileRpcServiceImpl;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.ScheduleAsFileModule;
 import net.datenwerke.rs.scheduler.server.scheduler.SchedulerRpcServiceImpl;
 import net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule;
+import net.datenwerke.rs.scp.server.scp.ScpRpcServiceImpl;
+import net.datenwerke.rs.scp.service.scp.ScpModule;
 import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
 import net.datenwerke.rs.teamspace.server.teamspace.TeamSpaceRpcServiceImpl;
@@ -197,7 +205,6 @@ import net.datenwerke.usermanager.ext.server.eximport.UserManagerExportRpcServic
 import net.datenwerke.usermanager.ext.server.eximport.UserManagerImportRpcServiceImpl;
 import net.datenwerke.usermanager.ext.server.properties.UserPropertiesRpcServiceImpl;
 import net.datenwerke.usermanager.ext.service.UserManagerExtModule;
-
 
 /**
  * Registeres Guice and does the servlet configuration.
@@ -361,6 +368,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "datasources_import").with(DatasourceManagerImportRpcServiceImpl.class); //$NON-NLS-1$
 				serve(BASE_URL + "datasourcemanager_export").with(DatasourceManagerExportRpcServiceImpl.class); //$NON-NLS-1$
 				
+				serve(BASE_URL + "datasinks_import").with(DatasinkManagerImportRpcServiceImpl.class); //$NON-NLS-1$
+            serve(BASE_URL + "datasinkmanager_export").with(DatasinkManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+				
 				serve(BASE_URL + "reportdocumentation").with(ReportDocumentationServlet.class); //$NON-NLS-1$
 				serve(BASE_URL + "datenwerke/jaspertotable").with(JasperToTableRpcServiceImpl.class); //$NON-NLS-1$
 				serve(BASE_URL + "datenwerke/suuser").with(SuUserRpcServiceImpl.class); //$NON-NLS-1$
@@ -385,7 +395,12 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + ScheduleAsFileUiModule.EXPORT_SERVLET).with(ExportScheduledAsFileReportServlet.class);
 				serve(BASE_URL + "ts/scheduelasfile").with(ScheduleAsFileRpcServiceImpl.class);
 				
-				serve(BASE_URL + "ftp").with(FtpRpcServiceImpl.class);
+				serve(BASE_URL + "ftp").with(FtpRpcServiceImpl.class); 
+				
+				serve(BASE_URL + "samba").with(SambaRpcServiceImpl.class);
+				serve(BASE_URL + "scp").with(ScpRpcServiceImpl.class);
+				
+				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 
 				serve(BASE_URL + "history").with(HistoryRpcServiceImpl.class); //$NON-NLS-1$
 				serve(BASE_URL + "homepage").with(HomepageRpcServiceImpl.class); //$NON-NLS-1$
@@ -607,8 +622,11 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new OutputFormatAuthModule(),
 			new ScheduleAsFileModule(),
 			new FtpModule(),
+			new LocalFileSystemModule(),
 			new ReportPropertiesModule(),
 			
+			new SambaModule(),
+			new ScpModule(),
 			
 			new ReportServerPUModule(),
 			

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.scheduler.server.scheduler;
 
+import static java.util.Objects.requireNonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -159,6 +161,8 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
 	protected ReportExecuteJob doSchedule(ReportScheduleDefinition scheduleDTO, ReportExecuteJob previous) throws ServerCallFailedException{
 		/* load report */
 		ReportDto reportDTO = scheduleDTO.getReport();
+		requireNonNull(reportDTO);
+		
 		Report report = reportService.getReportById(reportDTO.getId());
 
 		/* security */

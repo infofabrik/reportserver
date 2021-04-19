@@ -1,13 +1,7 @@
 package net.datenwerke.rs.core.client.reportmanager.helper.reportselector;
 
 import java.text.ParseException;
-
-import net.datenwerke.gxtdto.client.baseex.widget.form.DwTriggerField;
-import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportContainerDto;
-import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog.ReportSelectionDialogEventHandler;
-import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog.RepositoryProviderConfig;
-import net.datenwerke.rs.core.client.reportmanager.hooks.ReportSelectionRepositoryProviderHook;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import java.util.Optional;
 
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
@@ -17,7 +11,13 @@ import com.sencha.gxt.widget.core.client.event.TriggerClickEvent;
 import com.sencha.gxt.widget.core.client.event.TriggerClickEvent.TriggerClickHandler;
 import com.sencha.gxt.widget.core.client.form.PropertyEditor;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+
+import net.datenwerke.gxtdto.client.baseex.widget.form.DwTriggerField;
+import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportContainerDto;
+import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog.ReportSelectionDialogEventHandler;
+import net.datenwerke.rs.core.client.reportmanager.helper.reportselector.ReportSelectionDialog.RepositoryProviderConfig;
+import net.datenwerke.rs.core.client.reportmanager.hooks.ReportSelectionRepositoryProviderHook;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ReportSelectionField extends DwTriggerField<ReportContainerDto> {
 
@@ -63,7 +63,7 @@ public class ReportSelectionField extends DwTriggerField<ReportContainerDto> {
 			dialog = dialogProvider.get();
 			dialog.initSubmitButton();
 			
-			dialog.initRepositories(null, repositoryConfigs);
+			dialog.initRepositories(Optional.empty(), repositoryConfigs);
 			
 			dialog.setEventHandler(new ReportSelectionDialogEventHandler() {
 				

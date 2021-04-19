@@ -1,8 +1,6 @@
 package net.datenwerke.rs.incubator.client.managerhelpersearch.hookers;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -21,7 +19,6 @@ import net.datenwerke.gf.base.client.dtogenerator.RsDto;
 import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
 import net.datenwerke.gf.client.managerhelper.hooks.ManagerHelperTreeToolbarEnhancerHook;
 import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.gxtdto.client.dtoinfo.DtoInformationService;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
 import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
@@ -29,16 +26,11 @@ import net.datenwerke.rs.search.client.search.SearchDao;
 import net.datenwerke.rs.search.client.search.SearchUiService;
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
-import net.datenwerke.rs.search.client.search.dto.SearchResultTagDto;
-import net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto;
-import net.datenwerke.rs.search.client.search.dto.decorator.SearchFilterDtoDec;
 import net.datenwerke.treedb.client.treedb.TreeDbManagerContainer;
 import net.datenwerke.treedb.client.treedb.TreeDbManagerDao;
 
 public class ManagerHelperSearchBar implements
 		ManagerHelperTreeToolbarEnhancerHook {
-	
-	private static final String TAG_BASE_TYPE = "baseType";
 	
 	@FormatterFactories(@FormatterFactory(factory=NullSafeFormatter.class,methods=@FormatterFactoryMethod(name="nullsafe")))
 	public interface SearchTemplates extends XTemplates {
@@ -61,9 +53,6 @@ public class ManagerHelperSearchBar implements
 	private final SearchDao searcher;
 	private final ToolbarService toolbarService;
 	private final SearchUiService searchService;
-	
-	@Inject
-	private DtoInformationService dtoInfoService;
 	
 	@Inject
 	public ManagerHelperSearchBar(
@@ -104,7 +93,6 @@ public class ManagerHelperSearchBar implements
 	@Override
 	public void treeNavigationToolbarEnhancerHook_addRight(ToolBar toolbar,
 			final UITree tree, final TreeDbManagerContainer treeManagerContainer) {
-		
 	}
 
 	protected void addSearchBar(ToolBar toolbar, final UITree tree, final TreeDbManagerContainer treeManagerContainer, final SelectionHandler<SearchResultEntryDto> selectionHandler) {
@@ -117,21 +105,8 @@ public class ManagerHelperSearchBar implements
 					List<Class<? extends RsDto>> types = tree.getTypes();
 					if (null == types || types.isEmpty()) 
 						searcher.find(treeManager.getBaseNodeMapper(), searchService.enhanceQuery(query), callback);
-					else {
-						SearchFilterDtoDec filter = new SearchFilterDtoDec();
-						filter.setLimit(25);
-						Set<SearchResultTagDto> tagSet = new HashSet<>();
-						for (final Class<? extends RsDto> type: types) {
-							SearchResultTagDto tag = new SearchResultTagDto();
-							SearchResultTagTypeDto tagType = new SearchResultTagTypeDto();
-							tagType.setType(TAG_BASE_TYPE);
-							tag.setType(tagType);
-							tag.setValue(dtoInfoService.lookupPosoMapper(type).getCanonicalName());
-							tagSet.add(tag);
-						}
-						filter.setTags(tagSet);
-						searcher.find(searchService.enhanceQuery(query),filter, callback);
-					}
+					else 
+                  searcher.find(searchService.enhanceQuery(query), searchService.createFilterFor(types), callback);
 					
 				}
 			}

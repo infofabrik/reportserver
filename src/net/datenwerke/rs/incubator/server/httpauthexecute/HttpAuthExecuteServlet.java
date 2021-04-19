@@ -6,6 +6,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gf.service.tempfile.TempFileService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.server.reportexport.ReportExportServlet;
@@ -17,7 +24,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFacto
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
-import net.datenwerke.rs.utils.filename.FileNameService;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -26,13 +32,6 @@ import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.entities.UserProperty;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @SecurityChecked(
 		bypassInheritedMethods = true,
@@ -60,7 +59,8 @@ public class HttpAuthExecuteServlet extends ReportExportServlet {
 			Provider<UserManagerService> userManagerProvider,
 			Provider<RsErrorHelper> errorHelperProvider,
 			ParameterSetFactory parameterSetFactory, 
-			Provider<TempFileService> tempFileService, Provider<ExceptionServices> exceptionServices,
+			Provider<TempFileService> tempFileService, 
+			Provider<ExceptionServices> exceptionServices,
 			Provider<ReportSessionCache> sessionCacheProvider,
 			Provider<HttpUtils> httpUtilsProvider
 			) {

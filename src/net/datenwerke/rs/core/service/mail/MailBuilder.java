@@ -108,7 +108,7 @@ public class MailBuilder {
 	}
 	
 	private SimpleMail buildMailWithAttachment() throws IOException {
-		final Path tmpFile = tempFileServiceProvider.get().createTempFile().toPath();
+		final Path tmpFile = tempFileServiceProvider.get().createTempFile();
 
 		try (final OutputStream out = Files.newOutputStream(tmpFile)) {
 			List<Path> files = attachments.get();

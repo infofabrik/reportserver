@@ -1,7 +1,7 @@
 package net.datenwerke.gf.service.upload;
 
-import java.io.File;
 import java.io.Serializable;
+import java.nio.file.Path;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +20,7 @@ public class UploadedFile implements Serializable {
 	private byte[] fileBytes;
 	private String handler;
 	private Map<String,String> metadata = new HashMap<String,String>();
-	private File tmpLocation;
+	private Path tmpLocation;
 	private Date uploadTime = new Date();
 	
 	public UploadedFile(){
@@ -97,11 +97,11 @@ public class UploadedFile implements Serializable {
 		this.metadata.put(key,value);
 	}
 
-	public void setTmpLocation(File file) {
+	public void setTmpLocation(Path file) {
 		this.tmpLocation = file;
 	}
 	
-	public File getTmpLocation() {
+	public Path getTmpLocation() {
 		return tmpLocation;
 	}
 

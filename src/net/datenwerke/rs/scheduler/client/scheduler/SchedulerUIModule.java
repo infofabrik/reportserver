@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.ExportConfigFormFactory;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.SchedulerMetadataConfigFormFactory;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.SchedulerReportConfigFormFactory;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.SchedulerUsersConfigFormFactory;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.SeriesConfigFormFactory;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.ScheduledReportListPanelFactory;
 
@@ -29,6 +30,7 @@ public class SchedulerUIModule extends AbstractGinModule {
 		bind(SchedulerUiService.class).to(SchedulerUiServiceImpl.class).in(Singleton.class);
 		
 		/* create factory */
+		install(new GinFactoryModuleBuilder().build(SchedulerUsersConfigFormFactory.class));
 		install(new GinFactoryModuleBuilder().build(SchedulerMetadataConfigFormFactory.class));
 		install(new GinFactoryModuleBuilder().build(SchedulerReportConfigFormFactory.class));
 		install(new GinFactoryModuleBuilder().build(ExportConfigFormFactory.class));

@@ -251,4 +251,24 @@ public interface SchedulerMessages extends Messages {
 	
 	String jobTitle();
 	String jobDescription();
+	String reportConfigDescription();
+    String users();
+    String usersConfigDescription();
+    String jobMetadata();
+    String jobMetadataConfigDescription();
+    String reportConfig();
+    String reportConfigError();
+    String newJob();
+   
+    String fileactionLocalFileSystemMsgSubject();
+    String fileactionLocalFileSystemMsgText();
+   
+    String fileactionSambaMsgSubject();
+    String fileactionSambaMsgText();
+    
+    String fileactionFtpsMsgSubject();
+    String fileactionFtpsMsgText();
+    
+    String fileactionScpMsgSubject();
+    String fileactionScpMsgText();
 }

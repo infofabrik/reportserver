@@ -1,6 +1,7 @@
 package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
@@ -61,12 +62,11 @@ public class ReportSelectionTeamspaceRepositoryProvider implements ReportSelecti
 	}
 
 	@Override
-	public void addCards(final ReportSelectionDialog dialog, ReportDto selectedReport, RepositoryProviderConfig[] configs) {
+	public void addCards(final ReportSelectionDialog dialog, Optional<ReportDto> selectedReport, RepositoryProviderConfig[] configs) {
 		diskDao.getTeamSpacesWithFavoriteApp(new RsAsyncCallback<List<TeamSpaceDto>>(){
 			@Override
 			public void onSuccess(List<TeamSpaceDto> result) {
-				for(TeamSpaceDto teamSpace : result)
-					addTeamSpace(dialog, teamSpace);
+			   result.forEach(teamspace -> addTeamSpace(dialog, teamspace));
 			}
 		});
 	}
