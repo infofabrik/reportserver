@@ -1,7 +1,10 @@
 package net.datenwerke.rs.scp.service.scp.definitions;
 
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Lob;
 import javax.persistence.Table;
 
 import org.apache.commons.codec.binary.Hex;
@@ -34,8 +37,8 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       dtoPackage = "net.datenwerke.rs.scp.client.scp.dto", 
       poso2DtoPostProcessors = ScpDatasink2DtoPostProcessor.class, 
       additionalFields = {
-            @AdditionalField(name = "hasPassword", 
-                  type = Boolean.class), 
+            @AdditionalField(name = "hasPassword", type = Boolean.class), 
+            @AdditionalField(name = "hasPrivateKeyPassphrase", type = Boolean.class), 
             }, 
             icon = "arrow-up")
    @InstanceDescription(
@@ -71,6 +74,13 @@ public class ScpDatasink extends DatasinkDefinition implements BasicDatasink {
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    private String password;
+   
+   @Basic(fetch = FetchType.LAZY)
+   @Lob
+   private byte[] privateKey;
+
+   @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   private String privateKeyPassphrase;
    
    @ExposeToClient
    @Field
@@ -150,6 +160,67 @@ public class ScpDatasink extends DatasinkDefinition implements BasicDatasink {
 
    public void setAuthenticationType(String authenticationType) {
       this.authenticationType = authenticationType;
+   }
+   
+   /**
+    * Gets the decrypted private key bytes.
+    * 
+    * @return decrypted private key bytes
+    */
+   public byte[] getPrivateKey() {
+      if (null == privateKey || 0 == privateKey.length)
+         return null;
+
+      return pbeServiceProvider.get().getEncryptionService().decrypt(privateKey);
+   }
+
+   /**
+    * Sets and encrypts the given private key.
+    * 
+    * @param privateKey private key bytes
+    */
+   public void setPrivateKey(byte[] privateKey) {
+      if (null == privateKey || 0 == privateKey.length) {
+         this.privateKey = null;
+         return;
+      }
+
+      this.privateKey = pbeServiceProvider.get().getEncryptionService().encrypt(privateKey);
+   }
+
+   /**
+    * Gets the decrypted private key passphrase. May be null if the private key
+    * does not contain a passphrase.
+    * 
+    * @return the decrypted private key passphrase or null if the private key does
+    *         not contain a passphrase.
+    */
+   public String getPrivateKeyPassphrase() {
+      if (null == privateKeyPassphrase)
+         return null;
+      if ("".equals(privateKeyPassphrase))
+         return "";
+
+      EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
+      return new String(encryptionService.decryptFromHex(privateKeyPassphrase));
+   }
+
+   /**
+    * Sets and encrypts the private key passphrase. Null is a valid value if the
+    * private key does not contain a passphrase.
+    * 
+    * @param privateKeyPassphrase the private key passphrase.
+    */
+   public void setPrivateKeyPassphrase(String privateKeyPassphrase) {
+      if (null == privateKeyPassphrase) {
+         this.privateKeyPassphrase = null;
+         return;
+      }
+
+      EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
+      byte[] encrypted = encryptionService.encrypt(privateKeyPassphrase);
+
+      this.privateKeyPassphrase = new String(Hex.encodeHex(encrypted));
    }
 
 }

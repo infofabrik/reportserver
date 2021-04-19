@@ -29,8 +29,10 @@ public interface ScpDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 	public ValueProvider<ScpDatasinkDto,String> host();
 	public ValueProvider<ScpDatasinkDto,String> password();
 	public ValueProvider<ScpDatasinkDto,Integer> port();
+	public ValueProvider<ScpDatasinkDto,String> privateKeyPassphrase();
 	public ValueProvider<ScpDatasinkDto,String> username();
 	public ValueProvider<ScpDatasinkDto,Boolean> hasPassword();
+	public ValueProvider<ScpDatasinkDto,Boolean> hasPrivateKeyPassphrase();
 
 
 }

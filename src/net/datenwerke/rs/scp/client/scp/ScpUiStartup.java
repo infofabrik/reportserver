@@ -19,6 +19,7 @@ import net.datenwerke.rs.scp.client.scp.hookers.ExportToScpHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpDataSinkTesterToolbarConfigurator;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpExportSnippetProvider;
+import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpUsernamePasswordAuthenticatorHooker;
 
 public class ScpUiStartup {
@@ -30,7 +31,8 @@ public class ScpUiStartup {
          final WaitOnEventUIService waitOnEventService,
          final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, final ScpDao dao,
          final ScpDataSinkTesterToolbarConfigurator scpTestToolbarConfigurator,
-         final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator
+         final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator,
+         final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
@@ -39,6 +41,8 @@ public class ScpUiStartup {
       /* Authenticators */
       hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpUsernamePasswordAuthenticator, 
             HookHandlerService.PRIORITY_MEDIUM);
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpPublicKeyAuthenticator, 
+            HookHandlerService.PRIORITY_MEDIUM + 10);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker,

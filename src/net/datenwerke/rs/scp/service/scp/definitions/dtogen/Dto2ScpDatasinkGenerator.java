@@ -134,6 +134,9 @@ public class Dto2ScpDatasinkGenerator implements Dto2PosoGenerator<ScpDatasinkDt
 		} catch(NullPointerException e){
 		}
 
+		/*  set privateKeyPassphrase */
+		poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
+
 		/*  set username */
 		poso.setUsername(dto.getUsername() );
 
@@ -186,6 +189,11 @@ public class Dto2ScpDatasinkGenerator implements Dto2PosoGenerator<ScpDatasinkDt
 			}
 		}
 
+		/*  set privateKeyPassphrase */
+		if(dto.isPrivateKeyPassphraseModified()){
+			poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
+		}
+
 		/*  set username */
 		if(dto.isUsernameModified()){
 			poso.setUsername(dto.getUsername() );
@@ -230,6 +238,9 @@ public class Dto2ScpDatasinkGenerator implements Dto2PosoGenerator<ScpDatasinkDt
 			poso.setPort(dto.getPort() );
 		} catch(NullPointerException e){
 		}
+
+		/*  set privateKeyPassphrase */
+		poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
 
 		/*  set username */
 		poso.setUsername(dto.getUsername() );
@@ -281,6 +292,11 @@ public class Dto2ScpDatasinkGenerator implements Dto2PosoGenerator<ScpDatasinkDt
 				poso.setPort(dto.getPort() );
 			} catch(NullPointerException e){
 			}
+		}
+
+		/*  set privateKeyPassphrase */
+		if(dto.isPrivateKeyPassphraseModified()){
+			poso.setPrivateKeyPassphrase(dto.getPrivateKeyPassphrase() );
 		}
 
 		/*  set username */

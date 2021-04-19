@@ -32,6 +32,7 @@ package net.datenwerke.rs.scp.service.scp;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,6 +55,7 @@ import com.jcraft.jsch.Session;
 
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.config.ConfigService;
 
@@ -91,7 +93,7 @@ public class ScpServiceImpl implements ScpService {
 
       if (null == host || host.trim().contentEquals("") || null == username || username.trim().contentEquals(""))
          throw new IllegalArgumentException("SCP server is not configured correctly");
-      
+
       Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
             .getString("knownHosts", System.getProperty("user.home") + "/.ssh/known_hosts"));
       if (!Files.exists(knownHostsFile))
@@ -106,11 +108,19 @@ public class ScpServiceImpl implements ScpService {
       try (InputStream bis = reportServiceProvider.get().createInputStream(report)) {
 
          byte[] data = IOUtils.toByteArray(bis);
-         
+
          JSch jsch = new JSch();
          jsch.setKnownHosts(knownHostsFile.toAbsolutePath().toString());
          session = jsch.getSession(username, host, port);
-         session.setPassword(scpDatasink.getPassword());
+         if (ScpPublicKeyAuthenticatorHooker.AUTHENTICATION_TYPE.equals(scpDatasink.getAuthenticationType())) {
+            jsch.addIdentity("scpIdentityKey", scpDatasink.getPrivateKey(), (byte[]) null,
+                  (null != scpDatasink.getPrivateKeyPassphrase()
+                        ? scpDatasink.getPrivateKeyPassphrase().getBytes(StandardCharsets.UTF_8)
+                        : null));
+         } else {
+            session.setPassword(scpDatasink.getPassword());
+         }
+
          session.setConfig("StrictHostKeyChecking", "yes");
 
          session.connect();
@@ -123,8 +133,7 @@ public class ScpServiceImpl implements ScpService {
          ((ChannelExec) channel).setCommand(command);
 
          // get I/O streams for remote scp
-         try (OutputStream out = channel.getOutputStream(); 
-               InputStream in = channel.getInputStream()) {
+         try (OutputStream out = channel.getOutputStream(); InputStream in = channel.getInputStream()) {
 
             channel.connect();
 
@@ -149,7 +158,7 @@ public class ScpServiceImpl implements ScpService {
 
          }
       } finally {
-         if (null!= channel)
+         if (null != channel)
             channel.disconnect();
          if (null != session)
             session.disconnect();

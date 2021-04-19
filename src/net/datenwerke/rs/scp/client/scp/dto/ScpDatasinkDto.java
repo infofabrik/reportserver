@@ -212,6 +212,42 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String privateKeyPassphrase;
+	private  boolean privateKeyPassphrase_m;
+	public static final String PROPERTY_PRIVATE_KEY_PASSPHRASE = "dpi-scpdatasink-privatekeypassphrase";
+
+	private transient static PropertyAccessor<ScpDatasinkDto, String> privateKeyPassphrase_pa = new PropertyAccessor<ScpDatasinkDto, String>() {
+		@Override
+		public void setValue(ScpDatasinkDto container, String object) {
+			container.setPrivateKeyPassphrase(object);
+		}
+
+		@Override
+		public String getValue(ScpDatasinkDto container) {
+			return container.getPrivateKeyPassphrase();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "privateKeyPassphrase";
+		}
+
+		@Override
+		public void setModified(ScpDatasinkDto container, boolean modified) {
+			container.privateKeyPassphrase_m = modified;
+		}
+
+		@Override
+		public boolean isModified(ScpDatasinkDto container) {
+			return container.isPrivateKeyPassphraseModified();
+		}
+	};
+
 	private String username;
 	private  boolean username_m;
 	public static final String PROPERTY_USERNAME = "dpi-scpdatasink-username";
@@ -281,6 +317,42 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 		@Override
 		public boolean isModified(ScpDatasinkDto container) {
 			return container.isHasPasswordModified();
+		}
+	};
+
+	private Boolean hasPrivateKeyPassphrase;
+	private  boolean hasPrivateKeyPassphrase_m;
+	public static final String PROPERTY_HAS_PRIVATE_KEY_PASSPHRASE = "dpi-scpdatasink-hasprivatekeypassphrase";
+
+	private transient static PropertyAccessor<ScpDatasinkDto, Boolean> hasPrivateKeyPassphrase_pa = new PropertyAccessor<ScpDatasinkDto, Boolean>() {
+		@Override
+		public void setValue(ScpDatasinkDto container, Boolean object) {
+			container.setHasPrivateKeyPassphrase(object);
+		}
+
+		@Override
+		public Boolean getValue(ScpDatasinkDto container) {
+			return container.isHasPrivateKeyPassphrase();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Boolean.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "hasPrivateKeyPassphrase";
+		}
+
+		@Override
+		public void setModified(ScpDatasinkDto container, boolean modified) {
+			container.hasPrivateKeyPassphrase_m = modified;
+		}
+
+		@Override
+		public boolean isModified(ScpDatasinkDto container) {
+			return container.isHasPrivateKeyPassphraseModified();
 		}
 	};
 
@@ -534,6 +606,55 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public String getPrivateKeyPassphrase()  {
+		if(! isDtoProxy()){
+			return this.privateKeyPassphrase;
+		}
+
+		if(isPrivateKeyPassphraseModified())
+			return this.privateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().privateKeyPassphrase());
+
+		return _value;
+	}
+
+
+	public void setPrivateKeyPassphrase(String privateKeyPassphrase)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getPrivateKeyPassphrase();
+
+		/* set new value */
+		this.privateKeyPassphrase = privateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(privateKeyPassphrase_pa, oldValue, privateKeyPassphrase, this.privateKeyPassphrase_m));
+
+		/* set indicator */
+		this.privateKeyPassphrase_m = true;
+
+		this.fireObjectChangedEvent(ScpDatasinkDtoPA.INSTANCE.privateKeyPassphrase(), oldValue);
+	}
+
+
+	public boolean isPrivateKeyPassphraseModified()  {
+		return privateKeyPassphrase_m;
+	}
+
+
+	public static PropertyAccessor<ScpDatasinkDto, String> getPrivateKeyPassphrasePropertyAccessor()  {
+		return privateKeyPassphrase_pa;
+	}
+
+
 	public String getUsername()  {
 		if(! isDtoProxy()){
 			return this.username;
@@ -632,6 +753,55 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public Boolean isHasPrivateKeyPassphrase()  {
+		if(! isDtoProxy()){
+			return this.hasPrivateKeyPassphrase;
+		}
+
+		if(isHasPrivateKeyPassphraseModified())
+			return this.hasPrivateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return null;
+
+		Boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().hasPrivateKeyPassphrase());
+
+		return _value;
+	}
+
+
+	public void setHasPrivateKeyPassphrase(Boolean hasPrivateKeyPassphrase)  {
+		/* old value */
+		Boolean oldValue = null;
+		if(GWT.isClient())
+			oldValue = isHasPrivateKeyPassphrase();
+
+		/* set new value */
+		this.hasPrivateKeyPassphrase = hasPrivateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(hasPrivateKeyPassphrase_pa, oldValue, hasPrivateKeyPassphrase, this.hasPrivateKeyPassphrase_m));
+
+		/* set indicator */
+		this.hasPrivateKeyPassphrase_m = true;
+
+		this.fireObjectChangedEvent(ScpDatasinkDtoPA.INSTANCE.hasPrivateKeyPassphrase(), oldValue);
+	}
+
+
+	public boolean isHasPrivateKeyPassphraseModified()  {
+		return hasPrivateKeyPassphrase_m;
+	}
+
+
+	public static PropertyAccessor<ScpDatasinkDto, Boolean> getHasPrivateKeyPassphrasePropertyAccessor()  {
+		return hasPrivateKeyPassphrase_pa;
+	}
+
+
 	@Override
 	public String toDisplayTitle()  {
 		try{
@@ -645,7 +815,7 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("upload");
+		return BaseIcon.from("arrow-up");
 	}
 
 	@Override
@@ -689,10 +859,14 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 		this.password_m = false;
 		this.port = 0;
 		this.port_m = false;
+		this.privateKeyPassphrase = null;
+		this.privateKeyPassphrase_m = false;
 		this.username = null;
 		this.username_m = false;
 		this.hasPassword = null;
 		this.hasPassword_m = false;
+		this.hasPrivateKeyPassphrase = null;
+		this.hasPrivateKeyPassphrase_m = false;
 	}
 
 
@@ -709,9 +883,13 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(port_m)
 			return true;
+		if(privateKeyPassphrase_m)
+			return true;
 		if(username_m)
 			return true;
 		if(hasPassword_m)
+			return true;
+		if(hasPrivateKeyPassphrase_m)
 			return true;
 		return false;
 	}
@@ -724,8 +902,10 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 		list.add(host_pa);
 		list.add(password_pa);
 		list.add(port_pa);
+		list.add(privateKeyPassphrase_pa);
 		list.add(username_pa);
 		list.add(hasPassword_pa);
+		list.add(hasPrivateKeyPassphrase_pa);
 		return list;
 	}
 
@@ -742,10 +922,14 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 			list.add(password_pa);
 		if(port_m)
 			list.add(port_pa);
+		if(privateKeyPassphrase_m)
+			list.add(privateKeyPassphrase_pa);
 		if(username_m)
 			list.add(username_pa);
 		if(hasPassword_m)
 			list.add(hasPassword_pa);
+		if(hasPrivateKeyPassphrase_m)
+			list.add(hasPrivateKeyPassphrase_pa);
 		return list;
 	}
 
@@ -754,6 +938,7 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.MINIMAL) >= 0){
 			list.add(hasPassword_pa);
+			list.add(hasPrivateKeyPassphrase_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(authenticationType_pa);
@@ -761,6 +946,7 @@ public class ScpDatasinkDto extends DatasinkDefinitionDto {
 			list.add(host_pa);
 			list.add(password_pa);
 			list.add(port_pa);
+			list.add(privateKeyPassphrase_pa);
 			list.add(username_pa);
 		}
 		return list;
