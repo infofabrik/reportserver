@@ -1,0 +1,14 @@
+.rs-dynamic-list-preview-label {
+	font-size: 9pt;
+	font-weight: bold;
+}
+
+.rs-dynamic-list-preview-value {
+	font-size: 9pt;
+}
+
+.rs-dynamic-list-preview-row td{
+	padding-bottom: 2px;
+	margin-bottom: 2px;
+	border-bottom: 1px solid #C1B1A3;
+}

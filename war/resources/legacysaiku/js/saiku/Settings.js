@@ -1,0 +1,154 @@
+/*  
+ *   Copyright 2012 OSBI Ltd
+ *
+ *   Licensed under the Apache License, Version 2.0 (the "License");
+ *   you may not use this file except in compliance with the License.
+ *   You may obtain a copy of the License at
+ *
+ *       http://www.apache.org/licenses/LICENSE-2.0
+ *
+ *   Unless required by applicable law or agreed to in writing, software
+ *   distributed under the License is distributed on an "AS IS" BASIS,
+ *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *   See the License for the specific language governing permissions and
+ *   limitations under the License.
+ */
+ 
+/**
+ * Change settings here
+ */
+var Settings = {
+    VERSION: "Saiku 2.5",
+    BIPLUGIN: false,
+    BASE_URL: "",
+    TOMCAT_WEBAPP: "",
+    REST_MOUNT_POINT: "../../reportserver/rest/legacysaiku/",
+    DIMENSION_PREFETCH: false,
+    ERROR_LOGGING: false,
+    // number of erroneous ajax calls in a row before UI cant recover
+    ERROR_TOLERANCE: 3,
+    QUERY_PROPERTIES: {
+        'saiku.olap.query.automatic_execution': 'true',
+        'saiku.olap.query.nonempty': 'true',
+        'saiku.olap.query.nonempty.rows': 'true',
+        'saiku.olap.query.nonempty.columns': 'true',
+        'saiku.ui.render.mode' : 'table'
+    },
+    /* Valid values for CELLSET_FORMATTER:
+     * 1) flattened
+     * 2) flat
+     */
+    CELLSET_FORMATTER: "flattened",
+    // limits the number of rows in the result
+    // 0 - no limit
+    RESULT_LIMIT: 0,
+    MEMBERS_FROM_RESULT: true,
+    PLUGINS: [
+        "Chart", "ReportServer"
+    ],
+    //TELEMETRY_SERVER: 'http://telemetry.analytical-labs.com:7000',
+    TELEMETRY_SERVER: '',
+    LOCALSTORAGE_EXPIRATION: 10 * 60 * 60 * 1000 /* 10 hours, in ms */
+};
+
+/**
+ * Extend settings with query parameters
+ */
+Settings.GET = function () {
+    var qs = document.location.search;
+    qs = qs.split("+").join(" ");
+    var params = {},
+        tokens,
+        re = /[?&]?([^=]+)=([^&]*)/g;
+
+    while (tokens = re.exec(qs)) {
+        var value = decodeURIComponent(tokens[2]);
+        if (! isNaN(value)) value = parseInt(value);
+        if (value === "true") value = true;
+        if (value === "false") value = false;
+        params[decodeURIComponent(tokens[1]).toUpperCase()]
+            = value;
+    }
+
+    return params;
+}();
+_.extend(Settings, Settings.GET);
+
+Settings.REST_URL = Settings.BASE_URL
+    + Settings.TOMCAT_WEBAPP 
+    + Settings.REST_MOUNT_POINT;
+
+// lets assume we dont need a min width/height for table mode
+if (Settings.MODE == "table") {
+    Settings.DIMENSION_PREFETCH = false;
+    $('body, html').css('min-height',0);
+    $('body, html').css('min-width',0);
+
+}
+
+
+/**
+ * < IE9 doesn't support Array.indexOf
+ */
+if (!Array.prototype.indexOf)
+{
+  Array.prototype.indexOf = function(elt /*, from*/)
+  {
+    var len = this.length >>> 0;
+
+    var from = Number(arguments[1]) || 0;
+    from = (from < 0)
+         ? Math.ceil(from)
+         : Math.floor(from);
+    if (from < 0)
+      from += len;
+
+    for (; from < len; from++)
+    {
+      if (from in this &&
+          this[from] === elt)
+        return from;
+    }
+    return -1;
+  };
+}
+
+var tagsToReplace = {
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;'
+};
+
+function replaceTag(tag) {
+    return tagsToReplace[tag] || tag;
+}
+
+function safe_tags_replace(str) {
+    return str.replace(/[&<>]/g, replaceTag);
+}
+
+if ($.blockUI) {
+    $.blockUI.defaults.css = {};
+    $.blockUI.defaults.overlayCSS = {};
+    $.blockUI.defaults.blockMsgClass = 'processing';
+    $.blockUI.defaults.fadeOut = 0;
+    $.blockUI.defaults.fadeIn = 0;
+    $.blockUI.defaults.ignoreIfBlocked = false;
+
+}
+
+if (window.location.hostname && (window.location.hostname == "dev.analytical-labs.com" || window.location.hostname == "demo.analytical-labs.com" )) {
+    Settings.USERNAME = "admin";
+    Settings.PASSWORD = "admin";
+}
+
+var isIE = (function(){
+    var undef, v = 3, div = document.createElement('div');
+
+    while (
+        div.innerHTML = '<!--[if gt IE '+(++v)+']><i></i><![endif]-->',
+        div.getElementsByTagName('i')[0]
+    );
+
+    return v> 4 ? v : false;
+}());

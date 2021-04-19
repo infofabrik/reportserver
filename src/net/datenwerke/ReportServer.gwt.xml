@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?><module rename-to="reportserver">
+	<!-- Inherit the core Web Toolkit stuff. -->
+	<inherits name="com.google.gwt.user.User"/>
+	
+	<!-- Inherit the default GWT style sheet. You can change -->
+	<!-- the theme of your GWT application by uncommenting -->
+	<!-- any one of the following lines. -->
+	<!-- <inherits name="com.google.gwt.user.theme.standard.StandardResources"/> -->
+	<!-- <inherits name="com.google.gwt.user.theme.standard.Standard"/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+	<!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/> -->
+
+
+	<!-- Other module inherits -->
+	<!-- EXT GWT -->
+    <inherits name="com.sencha.gxt.ui.GXT"/>
+    
+    <!-- Add this for using GXT charts -->
+    <inherits name="com.sencha.gxt.chart.Chart"/>
+    
+    <!-- GXT Stylesheet -->
+  	<stylesheet src="reset.css"/>
+    
+    <!-- theme -->
+    <inherits name="net.datenwerke.rs.theme.ReportServerTheme"/>
+        
+    <!-- GXT Theme -->
+    <!-- <inherits name='com.sencha.gxt.theme.blue.Blue' /> -->
+    <!-- <inherits name='com.sencha.gxt.theme.gray.Gray' /> -->
+    <!-- Be sure to include Neptunes gxt-theme-neptune.jar in the classpath -->
+    <!-- part of reportserver theme  
+    <stylesheet src="reset.css" />
+    <inherits name='com.sencha.gxt.theme.neptune.Theme' />
+    -->
+    
+    <!-- logging -->
+    <inherits name="de.benediktmeurer.gwt.slf4j.jul.JUL"/>
+    <set-property name="gwt.logging.consoleHandler" value="DISABLED"/>
+    
+    <!-- für 2.7 -->
+    <!-- <set-property name="gwt.logging.popupHandler" value="DISABLED" /> -->
+
+	<!-- Gin -->
+	<inherits name="com.google.gwt.inject.Inject"/>
+
+	
+	<!-- Internationalization -->
+	<!-- <inherits name="com.google.gwt.i18n.I18N" />-->
+    
+    <!--  better css naming policy -->
+    <set-configuration-property name="CssResource.style" value="obf"/>
+    
+    <collapse-property name="gxt.device" values="*"/>
+	
+	<!--  ONLY FOR DEVELOPEMENT -->
+	<!--<set-property name="user.agent" value="gecko1_8"></set-property>-->
+	<!-- <set-property name="locale" value="de"></set-property>-->
+
+	<!-- Default language -->
+	<!-- <set-property-fallback name="locale" value="de" /> -->
+
+	<!-- Specify the app entry point class. -->
+	<entry-point class="net.datenwerke.rs.client.ReportServer"/>
+
+	<source path="rs/client"/>
+	<source path="gf/base/client"/>
+	<source path="gf/base/shared"/>
+	<source path="gf/client"/>
+	<source path="gf/shared"/>
+	<source path="gxtdto/client"/>
+	<source path="gxtdto/shared"/>
+	<source path="hookhandler/client"/>
+	<source path="hookhandler/shared"/>
+	<source path="rs/adminutils/client"/>
+	<source path="rs/adminutils/shared"/>
+	<source path="rs/authenticator/client"/>
+	<source path="rs/authenticator/cr/client"/>
+	<source path="rs/authenticator/cr/shared"/>
+	<source path="rs/authenticator/shared"/>
+	<source path="rs/base/client"/>
+	<source path="rs/base/ext/client"/>
+	<source path="rs/base/ext/shared"/>
+	<source path="rs/base/shared"/>
+	<source path="rs/birt/client"/>
+	<source path="rs/birt/shared"/>
+	<source path="rs/computedcolumns/client"/>
+	<source path="rs/computedcolumns/shared"/>
+	<source path="rs/condition/client"/>
+	<source path="rs/condition/shared"/>
+	<source path="rs/configservice/client"/>
+	<source path="rs/configservice/shared"/>
+	<source path="rs/core/client"/>
+	<source path="rs/core/shared"/>
+	<source path="rs/crystal/client"/>
+	<source path="rs/crystal/shared"/>
+	<source path="rs/dashboard/client"/>
+	<source path="rs/dashboard/shared"/>
+	<source path="rs/dsbundle/client"/>
+	<source path="rs/dsbundle/shared"/>
+	<source path="rs/reportdoc/client"/>
+	<source path="rs/enterprise/client"/>
+	<source path="rs/eximport/client"/>
+	<source path="rs/eximport/shared"/>
+	<source path="rs/fileserver/client"/>
+	<source path="rs/fileserver/shared"/>
+	<source path="rs/globalconstants/client"/>
+	<source path="rs/globalconstants/shared"/>
+	<source path="rs/grideditor/client"/>
+	<source path="rs/grideditor/shared"/>
+	<source path="rs/incubator/client"/>
+	<source path="rs/incubator/shared"/>
+	<source path="rs/jxlsreport/client"/>
+	<source path="rs/jxlsreport/shared"/>
+	<source path="rs/license/client"/>
+	<source path="rs/passwordpolicy/client"/>
+	<source path="rs/passwordpolicy/shared"/>
+	<source path="rs/remoteaccess/client"/>
+	<source path="rs/remoteaccess/shared"/>
+	<source path="rs/saiku/client"/>
+	<source path="rs/saiku/shared"/>
+	<source path="rs/legacysaiku/client"/>
+	<source path="rs/legacysaiku/shared"/>
+	<source path="rs/saikupivot/client"/>
+	<source path="rs/scheduleasfile/client"/>
+	<source path="rs/scheduleasfile/shared"/>
+	<source path="rs/ftp/client"/>
+	<source path="rs/scheduler/client"/>
+	<source path="rs/scheduler/shared"/>
+	<source path="rs/scripting/client"/>
+	<source path="rs/scripting/shared"/>
+	<source path="rs/scriptreport/client"/>
+	<source path="rs/scriptreport/shared"/>
+	<source path="rs/search/client"/>
+	<source path="rs/search/shared"/>
+	<source path="rs/tabletemplate/client"/>
+	<source path="rs/tabletemplate/shared"/>
+	<source path="rs/teamspace/client"/>
+	<source path="rs/teamspace/shared"/>
+	<source path="rs/terminal/client"/>
+	<source path="rs/terminal/shared"/>
+	<source path="rs/theme/client"/>
+	<source path="rs/theme/shared"/>
+	<source path="rs/tsreportarea/client"/>
+	<source path="rs/tsreportarea/shared"/>
+	<source path="rs/userprofile/client"/>
+	<source path="rs/userprofile/shared"/>
+	<source path="rs/uservariables/client"/>
+	<source path="rs/uservariables/shared"/>
+	<source path="rs/utils/exception/shared"/>
+	<source path="rs/utils/stream/shared"/>
+	<source path="scheduler/client"/>
+	<source path="scheduler/shared"/>
+	<source path="security/client"/>
+	<source path="security/ext/client"/>
+	<source path="security/ext/shared"/>
+	<source path="security/shared"/>
+	<source path="treedb/client"/>
+	<source path="treedb/ext/client"/>
+	<source path="treedb/ext/shared"/>
+	<source path="treedb/shared"/>
+	<source path="usermanager/ext/client"/>
+	<source path="usermanager/ext/shared"/>
+	
+	
+	
+	<generate-with class="net.datenwerke.rs.core.service.i18ntools.DwMessageClassGenerator">
+		<when-type-assignable class="com.google.gwt.i18n.client.Messages"/>
+	</generate-with>
+	
+	<!-- generate-with class="net.datenwerke.rs.web.server.comet.CometSerializerGenerator">
+		<when-type-assignable class="net.datenwerke.rs.web.client.comet.CometSerializer" />
+	</generate-with-->	
+
+</module>

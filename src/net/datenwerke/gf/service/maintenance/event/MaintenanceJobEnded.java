@@ -1,0 +1,16 @@
+package net.datenwerke.gf.service.maintenance.event;
+
+import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
+
+public class MaintenanceJobEnded extends DwLoggedEvent {
+
+	public MaintenanceJobEnded(Object... properties){
+		super(properties);
+	}
+	
+	@Override
+	public String getLoggedAction() {
+		return "MAINTENANCE_JOB_ENDED";
+	}
+
+}

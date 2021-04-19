@@ -1,0 +1,26 @@
+.rs-terminal-window .x-window-mc {
+	background-color: #fff !important;	
+}
+
+.rs-terminal-input-pretext {
+	font-size: 8pt;
+	padding-top: 4px;
+}
+
+.rs-terminal-input-field {
+	border: none !important;
+}
+
+.rs-terminal-input-field input{
+	border: none !important;
+	padding-bottom: 4px !important;
+	font-size: 8pt;
+	margin-left: 5px;
+	background: none !important;
+}
+
+.rs-terminal-history-area textarea {
+	border: none;
+	background: #990000;
+	vertical-align: bottom;
+}

@@ -1,0 +1,27 @@
+<configuration>
+	<contextListener class="ch.qos.logback.classic.jul.LevelChangePropagator">
+		<resetJUL>true</resetJUL>
+	</contextListener>
+
+	<appender name="stdout" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{HH:mm:ss.SSS} %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+
+
+	<logger name="com.businessobjects" level="inherited" />
+	<logger name="com.crystaldecisions" level="inherited" />
+	<logger name="com.crystaldecisions12" level="inherited" />
+
+	<logger name="org.eclipse.birt" level="inherited" />
+
+	<logger name="org.hibernate" level="inherited" />
+	<logger name="org.hibernate.jpa.internal.metamodel.MetadataContext" level="off" />
+
+	<logger name="net.datenwerke" level="info" />
+	
+	<root level="error">
+		<appender-ref ref="stdout" />
+	</root>
+</configuration>

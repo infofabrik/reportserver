@@ -1,0 +1,5 @@
+Title: mondrian
+Version: 3.6.6
+VersionMajor: 3
+VersionMinor: 660
+Vendor: Pentaho

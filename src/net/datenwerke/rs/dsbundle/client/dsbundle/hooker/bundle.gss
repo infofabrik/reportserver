@@ -1,0 +1,24 @@
+@Sprite .rs-logindialog-dsbundle-field {
+	gwt-image: 'icon';
+    background-position: left center; 
+    height: 26px;
+    padding-left: 20px;
+}
+
+
+.rs-logindialog-dsbundle-field input{
+    width: 172px !important;    
+}
+
+.rs-logindialog-dsbundle-field-label {
+    width:auto !important;
+}
+
+.rs-logindialog-dsbundle-field-label label {
+    color:#C0C0C0; 
+    float:none; 
+    font-size:9px; 
+    position:absolute !important; 
+    right:10px; 
+    width:auto !important;
+}

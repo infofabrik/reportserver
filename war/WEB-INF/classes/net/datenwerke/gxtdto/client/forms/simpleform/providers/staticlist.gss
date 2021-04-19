@@ -1,0 +1,23 @@
+.staticlistItem {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border-bottom: 0px;  
+}
+
+.staticlistImage {
+    float: right;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 0px;
+}
+
+.staticlistTitle {
+    font-weight: bold;
+    font-size: 9pt;
+    padding: 5px;
+}
+
+.staticlistDescription {
+    font-size: 9pt;
+    font-style: italic;
+}

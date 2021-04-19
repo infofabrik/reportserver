@@ -1,0 +1,122 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    
+    <style>
+		#loading {
+		  position: absolute;
+		  top: 40%;
+		  padding: 2px;
+		  z-index: 20001;
+		  height: 77px;
+		  width: 100%;
+		}
+		
+		#loading a {
+		  color: #225588;
+		}
+		
+		#loading i {
+		  font-size: 35px;
+		  line-height: 55px;
+		}
+		
+		#loading .loading-indicator {
+		  background: none;
+		  color: #eee;
+		  font: 43px tahoma, arial, helvetica;
+		  padding: 10px;
+		  margin: 0;
+		  height: auto;
+		  width: 295px;
+		  margin-left: auto;
+    	  margin-right: auto; 
+		}
+	</style>
+    
+	<!-- jQuery -->
+	<script type="text/javascript" src="resources/js/jquery-3.4.1.min.js"></script>
+	<script type="text/javascript">
+		$(document).ready(function(){
+			$("#version").load("reportserver/version?style=banner")
+			$.getScript("reportserver/fileServerAccess?path=/resources/public/hostpage-extra.js&noredirect");
+			
+			//theme.css
+			$('head').append( $('<link id="rs-the-theme" rel="stylesheet" type="text/css" />').prop('href', 'reportserver/rstheme') );
+		});
+	</script>  
+
+	<!-- RS Logo -->
+	<link rel="stylesheet" href="resources/rs-logo-font/style.css">
+	
+	<!-- favicon -->
+	<link rel="icon" type="image/x-icon" href="favicon.ico">
+	
+ 	<!-- font awesome -->
+ 	<link rel="stylesheet" href="resources/font-awesome-4.4.0/css/font-awesome.min.css">
+	
+	<script type="text/javascript" src="resources/js/jstz-1.0.5.min.js"></script>
+
+	<!-- Dragster -->
+	<script type="text/javascript" src="resources/js/dragster.js"></script>
+ 
+	<!-- Crypto -->
+	<script type="text/javascript" src="resources/js/crypto/crypto-sha1-hmac-pbkdf2-ofb-aes/crypto-sha1-hmac-pbkdf2-ofb-aes.js"></script>
+	<script type="text/javascript" src="resources/js/crypto/cbc/cbc-min.js"></script>
+	<script type="text/javascript" src="resources/js/crypto/sha256/sha256-min.js"></script>
+	
+	<!-- CodeMirror -->
+	<script src="resources/js/codemirror-5.8/lib/codemirror.js"></script>
+	<script src="resources/js/codemirror-5.8/addon/edit/matchbrackets.js"></script>
+	<link rel="stylesheet" href="resources/js/codemirror-5.8/lib/codemirror.css" />
+	<link rel="stylesheet" href="resources/js/codemirror-5.8/theme/elegant.css" />
+	
+	<!-- modes -->
+	<script src="resources/js/codemirror-5.8/mode/sql/sql.js"></script>
+	<script src="resources/js/codemirror-5.8/mode/xml/xml.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/javascript/javascript.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/css/css.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/clike/clike.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/groovy/groovy.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/htmlmixed/htmlmixed.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/php/php.js"></script>
+    <script src="resources/js/codemirror-5.8/mode/properties/properties.js"></script>
+	
+    <title>ReportServer</title>
+    
+    <!--                                           -->
+    <!-- This script loads your compiled module.   -->
+    <!-- If you add any GWT meta tags, they must   -->
+    <!-- be added before this line.                -->
+    <!--                                           -->
+    <script type="text/javascript" language="javascript" src="reportserver/reportserver.nocache.js"></script>
+    
+    
+  </head>
+
+  <!--                                           -->
+  <!-- The body can have arbitrary html, or      -->
+  <!-- you can leave the body empty if you want  -->
+  <!-- to create a completely dynamic UI.        -->
+  <!--                                           -->
+  <body>
+
+
+<div id="loading">
+    <div class="loading-indicator">
+      <i class="fa fa-circle-o-notch fa-spin fa-2x fa-pull-left"></i>
+      <div style="height: 25px; vertical-align: middle; display:table-cell; width: 220px; text-align:center; ">ReportServer</div>
+    </div>
+</div>	
+
+
+    <!-- OPTIONAL: include this if you want history support -->
+    <!-- see http://blog.httpwatch.com/2009/09/17/even-more-problems-with-the-ie-8-mixed-content-warning/ for why // instead of javascript: -->
+    <iframe src="//:''" id="__gwt_historyFrame"  tabIndex='-1' style="position:absolute;width:0;height:0;border:0;"></iframe>
+    <iframe src="//:''" id="__gwt_downloadFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0;"></iframe>
+    
+
+    <p id="version" class="rs-login-version"></p>
+  </body>
+</html>

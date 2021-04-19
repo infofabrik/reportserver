@@ -1,0 +1,6 @@
+
+@external CodeMirror;
+
+.popup-codemirror .CodeMirror {
+	opacity: 1 !important;
+}

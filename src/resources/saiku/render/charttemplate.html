@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+    <head>
+		<style>
+		 /*##TIPSY.CSS##*/
+		</style>
+		
+		<script type="text/javascript">
+		 /*##JQUERY##*/
+		 
+		 /*##JQUERY-UI##*/
+		 
+		 /*##TIPSY.JS##*/
+		 
+		 /*##PURL##*/
+		 
+		 /*##UNDERSCORE##*/
+		 
+		 /*##JSON2##*/
+		 
+		 /*##BACKBONE##*/
+		 
+		 /*##PROTOVIS##*/
+		 
+		 /*##PROTOVIS-IE##*/
+		 
+		 /*##TIPSY.PLUGIN##*/
+		 
+		 /*##DEF##*/
+		 
+		 /*##PVC##*/
+		 
+		 /*##SETTINGS##*/
+		 
+		 /*##SAIKU-RENDERER##*/
+		 
+		 /*##SAIKU-CHART-RENDERER##*/
+		</script>
+		
+    </head>
+    <body>
+    	<script>
+    	 /*##PLUGIN##*/
+    	</script>
+
+		<script>
+		$(function(){
+			
+			var data = /*##DATA##*/;
+		
+			/* setup mock objects */
+			var Result = Backbone.Model.extend({hasRun: function(){return true}, lastresult: function(){ return data}});
+			var DummyQuery = Backbone.Model.extend({result: new Result(), setProperty: function(a,b){}});
+			var DummyQueryToolbar = Backbone.View.extend();
+			var DummyWorkspace = Backbone.View.extend({
+				query: new DummyQuery(), 
+				querytoolbar: new DummyQueryToolbar({el: $('.query_toolbar')}),
+				processing: $('<div />'), 
+				adjust: function(){}
+				});
+			
+			
+			var chartView = new Chart({workspace: new DummyWorkspace({el: $('.workspace')})});
+			
+			/*
+				stackedBar
+				bar
+				multiplebar
+				line
+				pie
+				heatgrid
+				stackedBar100
+				area
+				dot
+				waterfall
+			*/
+			var type = $.url().param("type");
+			if(typeof(chartView[type]) != "function") {
+				type = "/*##TYPE##*/";
+			}
+		//	chartView[type]();
+			
+			chartView.render_view();
+			chartView.renderer.switch_chart(type);
+			chartView.show();
+		});
+		</script>
+		
+		
+		<div class="workspace">
+            <div class="workspace_inner">
+                <div class="query_toolbar"><div class="render_chart on" ></div></div>
+                <div class="workspace_toolbar"></div>
+                <div class="workspace_editor">
+                    <div id='mdx_editor' class='mdx_input hide'>
+                    </div>
+                    <span class="editor_info hide"></span>
+                    
+                </div>
+                <div id="query_processing" class="query_processing" style="display:none;"><span class="processing_image">&nbsp;&nbsp;</span> <span class="i18n">Running query...</span>  [&nbsp;<a class="cancel i18n" href="#cancel">Cancel</a>&nbsp;]</div>
+
+                <div class="workspace_results_info" align="right" ></div>
+                <div class="workspace_results" style="position: absolute; top: 0; left: 0; height: 100%; width: 100%;">
+					
+                </div>
+            </div>
+        </div>
+		
+	</body>
+</html>

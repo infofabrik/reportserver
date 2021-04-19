@@ -1,0 +1,38 @@
+@font-face {
+	font-family: 'rs-logo';
+	src:url('fonts/rs-logo.eot?tmfpmu');
+	src:url('fonts/rs-logo.eot?tmfpmu#iefix') format('embedded-opentype'),
+		url('fonts/rs-logo.ttf?tmfpmu') format('truetype'),
+		url('fonts/rs-logo.woff?tmfpmu') format('woff'),
+		url('fonts/rs-logo.svg?tmfpmu#rs-logo') format('svg');
+	font-weight: normal;
+	font-style: normal;
+}
+
+[class^="icon-"], [class*=" icon-"] {
+	font-family: 'rs-logo';
+	speak: none;
+	font-style: normal;
+	font-weight: normal;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+
+	/* Better Font Rendering =========== */
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+.icon-rs-logo:before {
+	content: "\4c";
+}
+.icon-rs-logo-square:before {
+	content: "\6c";
+}
+.icon-rs-Report:before {
+	content: "\52";
+}
+.icon-rs-Server:before {
+	content: "\53";
+}
+

@@ -1,0 +1,63 @@
+<taglib>
+    <description>jXLS core library</description>
+    <display-name>jXLS core</display-name>
+    <tlib-version>1.0</tlib-version>
+    <short-name>jx</short-name>
+    <tag>
+        <description>The basic iteration tag</description>
+        <name>forEach</name>
+        <tag-class>net.sf.jxls.tag.ForEachTag</tag-class>
+        <attribute>
+            <description>Collection of items to iterate over</description>
+            <name>items</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>java.lang.Object</type>
+        </attribute>
+        <attribute>
+            <description>
+                Name of the exported scoped variable for the
+                current item of the iteration. This scoped
+                variable has nested visibility. Its type depends
+                on the object of the underlying collection.
+            </description>
+            <name>var</name>
+            <required>false</required>
+            <rtexprvalue>false</rtexprvalue>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+        Simple conditional tag, which evalutes its body if the
+        supplied condition is true. Otherwise it removes the body.
+        </description>
+        <name>if</name>
+        <tag-class>net.sf.jxls.tag.IfTag</tag-class>
+        <attribute>
+            <description>
+            The test condition that determines whether or
+            not the body content should be processed.
+            </description>
+            <name>test</name>
+            <required>true</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+    <tag>
+        <description>
+        Simple outline tag.
+        </description>
+        <name>outline</name>
+        <tag-class>net.sf.jxls.tag.OutlineTag</tag-class>
+        <attribute>
+            <description>
+            Indicates the initial state of grouped rows - should they be displayed expanded or collapsed.
+            </description>
+            <name>detail</name>
+            <required>false</required>
+            <rtexprvalue>true</rtexprvalue>
+            <type>boolean</type>
+        </attribute>
+    </tag>
+</taglib>

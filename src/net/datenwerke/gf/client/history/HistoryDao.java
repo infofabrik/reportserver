@@ -1,0 +1,26 @@
+package net.datenwerke.gf.client.history;
+
+import java.util.List;
+
+import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
+import net.datenwerke.gf.client.history.rpc.HistoryRpcServiceAsync;
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
+public class HistoryDao extends Dao {
+
+	private final HistoryRpcServiceAsync rpcService;
+
+	@Inject
+	public HistoryDao(HistoryRpcServiceAsync rpcService) {
+		this.rpcService = rpcService;
+	}
+	
+	public void getLinksFor(Dto dto, AsyncCallback<List<HistoryLinkDto>> callback){
+		rpcService.getLinksFor(dto, transformAndKeepCallback(callback));
+	}
+	
+}

@@ -1,0 +1,7 @@
+.rs-toolbar-item-plain {
+    cursor: default !important;
+}
+
+.rs-toolbar-item-plain button{
+    cursor: default !important;
+} 

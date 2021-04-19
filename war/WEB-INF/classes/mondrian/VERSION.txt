@@ -1,0 +1,11 @@
+Title: mondrian
+Version: 4.7.0.0-12
+VersionMajor: 4
+VersionMinor: 70012
+Vendor: Pentaho
+Git-Latest-Commit: fc3166b7dfc56c96be61f71f8ee2ccf20688659b
+Ant-Version: Apache Ant(TM) version 1.9.7 compiled on April 9 2016
+Created-By: 1.7.0_80 (Oracle Corporation)
+Built-On: 2017/05/16 21:12:22 UTC
+Built-By: buildguy
+Built-In: /build-shared/cerberusdmz/workspace/7.1/mondrian-4-jar

@@ -1,0 +1,27 @@
+package net.datenwerke.rs.legacysaiku.service.hooks.adapter;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
+import net.datenwerke.rs.legacysaiku.service.hooks.OlapCubeCacheHook;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
+import org.olap4j.OlapConnection;
+import org.olap4j.metadata.Cube;
+
+/**
+ * This file was automatically created by DtoAnnotationProcessor, version 0.1
+ */
+@GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
+public class OlapCubeCacheHookAdapter implements OlapCubeCacheHook {
+
+	@Override
+	public Cube getCubeFromCache(SaikuReport report)  {
+		return null;
+	}
+
+
+	@Override
+	public void putCubeInCache(SaikuReport report, Cube cube, OlapConnection olapConnection)  {
+	}
+
+
+
+}
