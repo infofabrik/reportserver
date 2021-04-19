@@ -12,6 +12,7 @@ public abstract class FtpDatasink_ extends net.datenwerke.rs.core.service.datasi
 	public static volatile SingularAttribute<FtpDatasink, String> folder;
 	public static volatile SingularAttribute<FtpDatasink, Integer> port;
 	public static volatile SingularAttribute<FtpDatasink, String> host;
+	public static volatile SingularAttribute<FtpDatasink, String> ftpMode;
 	public static volatile SingularAttribute<FtpDatasink, String> username;
 
 }

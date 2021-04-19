@@ -2,11 +2,12 @@
 <classpath>
 	<classpathentry kind="con" path="com.gwtplugins.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="jxls-src"/>
+	<classpathentry kind="src" path="commons-src"/>
+	<classpathentry kind="src" path="gxt-src"/>
 	<classpathentry kind="src" path="spudsoft-birt-emitter-src"/>
 	<classpathentry kind="src" path="saiku-src"/>
-	<classpathentry kind="src" path="gxt-source"/>
 	<classpathentry kind="src" path="src-entityservices"/>
-	<classpathentry kind="src" path="jxls-source"/>
 	<classpathentry kind="src" path="metamodel"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/activation-1.1.1.jar"/>

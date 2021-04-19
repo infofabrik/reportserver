@@ -1,0 +1,1251 @@
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/activation-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/antlr-2.7.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/aopalliance-1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/asm-3.3.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/atunit-1.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/avalon-framework-4.1.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/avro-1.6.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bcmail-jdk15on-1.48.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bcpg-jdk15on-1.48.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bcpkix-jdk15on-1.48.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bcprov-ext-jdk15on-1.48.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bcprov-jdk15on-1.48.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/bonecp-0.8.0-rc1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/c3p0-0.9.2.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/castor-1.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/cglib-2.2.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/cglib-nodep-2.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/classmate-0.8.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/com.ibm.icu-4.4.2.v20110823.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/com.lowagie.text-2.1.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-beanutils-1.8.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-cli-1.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-codec-1.6.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-collections-3.2.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-configuration-1.8.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-dbcp-1.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-digester-2.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-fileupload-1.2.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-httpclient-3.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-io-2.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-jexl-2.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-lang-2.6.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-logging-1.1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-logging-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-logging-api-1.0.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-modeler-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-pool-1.6.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/commons-validator-1.4.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/core-renderer-R8.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/derby-10.5.1000001.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/dom4j-1.6.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/easymock-2.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/entityservices.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/flute-1.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/fontbox-1.7.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gin-1.5.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gmbal-api-only-3.1.0-b001.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/groovy-all-2.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guava-13.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guava-testlib-10.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-assistedinject-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-grapher-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-jmx-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-jndi-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-multibindings-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-persist-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-servlet-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guice-throwingproviders-3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/guiceberry-3.1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gwt-servlet-2.5.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gwt-user-2.5.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gxt-3.0.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/gxt-chart-3.0.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/h2-1.3.168.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/ha-api-3.1.8.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hamcrest-core-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hamcrest-library-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-c3p0-4.2.2.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-commons-annotations-4.0.2.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-core-4.2.2.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-entitymanager-4.2.2.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-envers-4.2.2.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-jpa-2.0-api-1.0.1.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-search-4.2.0.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-search-analyzers-4.2.0.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-search-engine-4.2.0.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-search-orm-4.2.0.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hibernate-validator-5.0.1.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/hsqldb-1.7.3.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/istack-commons-runtime-2.6.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/itext-2.1.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jackson-core-asl-1.9.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jackson-mapper-asl-1.9.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jasperreports-5.0.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jasperreports-fonts-5.0.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/javassist-3.15.0-GA.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/javax.annotation-3.1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/javax.inject-1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/javax.wsdl-1.5.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/javax.xml.stream-1.0.1.v201004272200.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jaxb-api-2.2.6.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jaxb-impl-2.2.5.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jaxws-api-2.2.8.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jaxws-rt-2.2.7-promoted-b24.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jboss-logging-3.1.1.GA.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jboss-transaction-api_1.1_spec-1.0.1.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jcommon-1.0.15.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jdtcore-3.1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jempbox-1.7.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jfreechart-1.0.12.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jmock-2.5.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jmock-junit4-2.5.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jopt-simple-4.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/json-20090211.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jsr181-api-1.0-MR1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jsr305-1.3.9.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/juel-api-2.2.4.jar" {
+	
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/Test/lib/juel-api-2.2.7-20130801.163055-1.jar" {
+    permission java.util.PropertyPermission "*", "read";
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/Test/lib/juel-impl-2.2.7-20130801.163115-1.jar" {
+    permission java.util.PropertyPermission "*", "read";
+};
+
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/juel-impl-2.2.4.jar" {
+	
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/junit-4.8.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/junit-dep-4.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jxls-core-1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/jxls-reader-1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/kxml2-2.3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/log4j-1.2.13.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/logkit-1.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-analyzers-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-core-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-facet-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-grouping-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-highlighter-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-kuromoji-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-memory-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-misc-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-phonetic-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-smartcn-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-spatial-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-spellchecker-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/lucene-stempel-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mail-1.4.5.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/management-api-3.0.0-b012.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mchange-commons-java-0.2.3.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mimepull-1.8.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mina-core-2.0.5.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mockito-all-1.9.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mx4j-jmx-1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/mysql-connector-java-5.1.19.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/nux-for-saxon9-1.6.jar" {
+	
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/objenesis-1.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.bridge-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.css-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.dom-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.dom.svg-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.ext.awt-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.parser-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.pdf-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.svggen-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.transcoder-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.util-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.util.gui-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.batik.xml-1.6.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.commons.codec-1.3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.commons.logging-1.0.4.v201101211617.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.xerces-2.9.0.jar" {
+	permission java.util.PropertyPermission "*", "read";
+	permission java.io.FilePermission "${java.home}${/}lib${/}-", "read";
+	permission java.io.FilePermission "${java.home}${/}jre${/}-", "read";
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.xml.resolver-1.2.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.apache.xml.serializer-2.7.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.birt.runtime-4.2.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.contenttype-3.4.200.v20120523-2004.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.expressions-3.4.401.v20120627-124442.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.filesystem-1.3.200.v20120522-2012.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.jobs-3.5.300.v20120622-204750.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.resources-3.8.1.v20120802-154922.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.core.runtime-3.8.0.v20120521-2346.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity-1.2.6.v201208210832.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.apache.derby-1.0.102.v201107221459.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.apache.derby.dbdefinition-1.0.2.v201107221459.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.console.profile-1.0.10.v201109250955.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.db.generic-1.0.1.v201107221459.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.dbdefinition.genericJDBC-1.0.1.v201107221459.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.oda-3.3.3.v201110130935.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.oda.consumer-3.2.5.v201109151100.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.oda.design-3.3.5.v201204241156.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.oda.flatfile-3.1.3.v201209041005.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.oda.profile-3.2.8.v201209080429.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.connectivity.sqm.core-1.2.5.v201205240353.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.hsqldb-1.0.0.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.hsqldb.dbdefinition-1.0.0.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.ibm.db2.luw-1.0.2.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.ibm.db2.luw.dbdefinition-1.0.4.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.ibm.informix-1.0.1.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.ibm.informix.dbdefinition-1.0.4.v201107221502.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.msft.sqlserver-1.0.1.v201107221504.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.msft.sqlserver.dbdefinition-1.0.1.v201201240505.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.mysql-1.0.3.v201205252211.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.mysql.dbdefinition-1.0.4.v201109022331.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.oda.ws-1.2.4.v201203221631.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.oda.xml-1.2.3.v201112061438.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.oracle-1.0.0.v201107221506.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.oracle.dbdefinition-1.0.103.v201206010214.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.postgresql-1.1.1.v201205252207.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.enablement.postgresql.dbdefinition-1.0.2.v201110070445.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.modelbase.dbdefinition-1.0.2.v201107221519.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.modelbase.derby-1.0.0.v201107221519.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.modelbase.sql-1.0.6.v201208230744.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.datatools.modelbase.sql.query-1.1.3.v201208230742.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.emf-2.6.0.v20120917-0436.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.emf.common-2.8.0.v20120911-0500.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.emf.ecore-2.8.1.v20120911-0500.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.emf.ecore.change-2.8.0.v20120911-0500.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.emf.ecore.xmi-2.8.0.v20120911-0500.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.equinox.app-1.3.100.v20120522-1841.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.equinox.common-3.6.100.v20120522-1841.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.equinox.preferences-3.5.0.v20120522-1841.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.equinox.registry-3.5.200.v20120522-1841.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.osgi-3.8.1.v20120830-144521.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.osgi.services-3.3.100.v20120522-1822.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.eclipse.update.configurator-3.3.200.v20120523-1752.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.mozilla.javascript-1.7.2.jar" {
+	permission java.lang.RuntimePermission "createClassLoader";
+	permission java.lang.RuntimePermission "getProtectionDomain";
+	permission java.io.FilePermission "${jdk.home}${/}lib${/}-", "read";
+    permission java.io.FilePermission "${jdk.home}${/}jre${/}lib${/}-", "read";
+    permission java.io.FilePermission "${java.io.tmpdir}", "read,write,delete";
+    permission java.io.FilePermission "${java.io.tmpdir}${/}-", "read,write,delete"; 
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.w3c.css.sac-1.3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.w3c.dom.smil-1.0.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/org.w3c.dom.svg-1.1.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/owasp-java-html-sanitizer-r99.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/paranamer-2.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/pdfbox-1.7.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/poi-3.9.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/poi-ooxml-3.9.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/poi-ooxml-schemas-3.9.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/policy-2.3.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/postgresql-9.1-901.jdbc4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/relaxngDatatype-20020414.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/requestfactory-server-2.5.0-rc1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/saaj-api-1.3.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/saaj-impl-1.3.18.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/saxon-he-9.4.0.3.jar" {
+	
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/servlet-api-2.3.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/slf4j-api-1.7.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/slf4j-jdk14-1.6.6.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/snappy-java-1.0.4.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/solr-analysis-extras-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/solr-core-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/solr-solrj-3.6.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/spring-beans-2.0.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/spring-context-2.0.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/spring-core-2.0.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/sshd-core-0.8.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/stax-api-1.0-2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/stax-api-1.0.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/stax-ex-1.7.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/stax2-api-3.1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/streambuffer-1.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/symmetric-db-3.1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/symmetric-util-3.1.1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/Tidy-1.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/transloader-0.4.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/txw2-20110809.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/validation-api-1.1.0.Final.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/velocity-1.7.jar" {
+	permission java.util.PropertyPermission "*", "read";
+	permission java.io.FilePermission "/Users/arno/Datenwerke/Projekte/ReportServer/current/Test", "read";
+	permission java.io.FilePermission "/Users/arno/Datenwerke/Projekte/ReportServer/current/Test/-", "write";
+	permission java.lang.RuntimePermission "accessDeclaredMembers";
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/woodstox-core-asl-4.1.2.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/xercesImpl-2.8.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/xml-apis-1.4.01.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/xmlbeans-2.3.0.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/lib/xom-1.2.5.jar" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwAsync/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwExImport/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwDbPool/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwGwtFramework/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwGwtFrameworkBase/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwHookHandler/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwRsMStrategy/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwSandbox/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwScheduler/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwSecurity/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwSecurityExt/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwTreeDb/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwTreeDbExt/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwUsermanagerExt/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/GXT-DTO/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServer/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/ReportServerTheme/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsAdminUtils/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsAuthenticator/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsAuthenticatorChallengeResponse/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsBase/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsBaseExt/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsBirt/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsCompiledReportStore/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsComputedColumns/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsCondition/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsConfigService/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsCore/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsCrystal/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsDashboard/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsDatasourceBundle/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsExImport/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsFileServer/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsGlobalConstants/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsIncubator/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsInstallation/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsPasswordPolicy/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsRemoteAccess/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsScheduler/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsScheduleAsFile/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsServerUtils/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsSearch/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsScripting/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsScriptReport/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsTableTemplate/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsTeamSpace/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsTerminal/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsTsReportArea/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsUserProfile/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsUserVariables/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsXML/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/DwGwtBuilder/tmp/gwt-2.5.1/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/RsCore/war/WEB-INF/classes/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/Test/bin/-" {
+	permission java.security.AllPermission;
+};
+
+grant codeBase "file:/Users/arno/Datenwerke/Projekte/ReportServer/current/Test/lib/icu4j.jar" {
+	permission java.security.AllPermission;
+};
+
+
+grant {
+	
+};

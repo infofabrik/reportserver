@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- ACHTUNG ÄNDERUNGEN AB SOFORT ***UNTEN*** ANFÜGEN -->
+ 
+<dwPropertyUpdate>
+
+    <changeSet date="2011-11-10-08-44">
+        <internalConfigFile>
+            <add location="etc/main/templates.cf">
+                <![CDATA[
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <configuration>
+                       <errors>
+                          <html>
+                            <![CDATA[
+                                    <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+                            <html>
+                            <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+                            <head>
+                            <title>Fehler</title>
+                            <link type="text/css" rel="stylesheet" href="/ReportServer.css">
+                            <link rel="stylesheet" type="text/css" href="/resources/css/reportserver.css" />
+                            <link rel="stylesheet" type="text/css" href="/resources/css/modulespecific.css" />
+                            </head>
+                            <body class="errorpage">
+                            <div class="errorpage-header">Fehler: ${headline}</div>
+                            <div class="errorpage-msg">${msg}</div>
+                            <div class="errorpage-todo">Im Falle eines nicht nachvollziehbaren Fehlers kontaktieren Sie bitte einen Administrator.</div>
+                            <div class="errorpage-stacktrace-header">Details:</div>
+                            <div class="errorpage-stacktrace">${stacktrace}</div>
+                            </body>
+                            </html>
+                            ]]><![CDATA[
+                         </html>
+                       </errors>
+                    </configuration>
+                ]]>
+            </add>
+        </internalConfigFile>
+
+        <reportserverProperty>
+            <add>
+                rs.database.oracle.filter.convertclobs = true
+            </add>
+        </reportserverProperty>
+    </changeSet>
+
+    <changeSet date="2011-11-23-17-47">
+        <reportserverProperty>
+            rs.reportcache.allowedtypes = JasperReport,BirtReport
+        </reportserverProperty>
+    </changeSet>
+
+    <changeSet date="2011-11-24-12-00">
+        <internalConfigFile>
+            <add location="etc/ui/objectinfo.cf">
+                <![CDATA[
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <configuration>
+                       <objectinfo>
+                          <types>net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto</types>
+                          <name>Informationen</name>
+                          <url>/reportserver/lala/${reportId}</url>
+                       </objectinfo>
+                    </configuration>
+                ]]>
+            </add>
+        </internalConfigFile>
+        <internalConfigFile>
+            <add location="etc/ui/urlview.cf">
+                <![CDATA[
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <configuration>
+                       <adminviews>
+                          <view>
+                             <types>net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto</types>
+                             <name>Berichtsdokumentation</name>
+                             <url>/reportserver/lala</url>
+                          </view>
+                       </adminviews>
+                       <objectinfo>
+                          <view>
+                             <types>net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto</types>
+                             <name>Berichtsdokumentation</name>
+                             <url>/reportserver/lala</url>
+                          </view>
+                       </objectinfo>
+                    </configuration>
+                ]]>
+            </add>
+        </internalConfigFile>
+    </changeSet>
+
+    <changeSet date="2011-12-01-20-00">
+        <internalConfigFile>
+            <add location="etc/datasources/databasebundle.cf">
+               <![CDATA[
+                   <?xml version="1.0" encoding="UTF-8"?>
+                   <configuration>
+                      <bundletype>
+                         <name>BaseBundle</name>
+                         <keys>
+                            <key>Prod</key>
+                            <key>Test</key>
+                         </keys>
+                      </bundletype>
+                   </configuration>
+               ]]>
+            </add>
+        </internalConfigFile>
+    </changeSet>
+    <changeSet date="2011-12-06-13-00">
+        <internalConfigFile>
+            <add location="etc/datasources/pool.cf">
+                 <![CDATA[
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <configuration>
+                       <pool>
+                          <defaultconfig>
+                             <partitionCount>4</partitionCount>
+                             <maxConnectionsPerPartition>20</maxConnectionsPerPartition>
+                             <minConnectionsPerPartition>1</minConnectionsPerPartition>
+                             <connectionTimeoutInMs>10000</connectionTimeoutInMs>
+                             <maxConnectionAgeInMs>3600000</maxConnectionAgeInMs>
+                             <queryExecutionTimeLimitInMs>60000</queryExecutionTimeLimitInMs>
+                             <acquireRetryDelayInMs>1000</acquireRetryDelayInMs>
+                             <acquireRetryAttempts>2</acquireRetryAttempts>
+                             <idleMaxAgeInSeconds>3600</idleMaxAgeInSeconds>
+                             <idleConnectionTestPeriodInSeconds>14400</idleConnectionTestPeriodInSeconds>
+                          </defaultconfig>
+                       </pool>
+                    </configuration>     
+                 ]]>
+            </add>
+        </internalConfigFile>
+    </changeSet>
+
+    <changeSet date="2012-04-01-00-00">
+        <internalConfigFile>
+            <add location="etc/security/passwordpolicy.cd">
+                <![CDATA[
+                    <?xml version="1.0" encoding="UTF-8"?>
+                    <configuration>
+                       <rs>
+                          <security>
+                             <passwordpolicy>
+                                <bsipasswordpolicy>
+                                   <pswd>
+                                      <maxage>32000</maxage>
+                                      <minage>1</minage>
+                                      <minlength>8</minlength>
+                                   </pswd>
+                                   <historysize>6</historysize>
+                                   <lockouttreshold>3</lockouttreshold>
+                                   <lockoutresettimeout>60</lockoutresettimeout>
+                                   <characterset>0123456789</characterset>
+                                   <choosemin>1</choosemin>
+                                   <characterset>abcdefghijklmnopqrstuvwxyz</characterset>
+                                   <choosemin>1</choosemin>
+                                   <characterset>ABCDEFGHIJKLMNOPQRSTUVWXYZ</characterset>
+                                   <choosemin>1</choosemin>
+                                   <characterset>!§$%&amp;/=?*µ:.;\,-_+~\\\#@</characterset>
+                                   <choosemin>1</choosemin>
+                                </bsipasswordpolicy>
+                             </passwordpolicy>
+                          </security>
+                       </rs>
+                    </configuration>
+                ]]>
+            </add>
+        </internalConfigFile>
+        <manualOperation>
+            <text>
+                Changed permissions. Accessing admin modules is no longer controled by the execute-right, #
+                but by a combination of read and write. See RS-822
+            </text>
+        </manualOperation>
+    </changeSet>
+
+</dwPropertyUpdate>
