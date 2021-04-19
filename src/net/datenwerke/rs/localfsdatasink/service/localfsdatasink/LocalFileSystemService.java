@@ -3,12 +3,9 @@ package net.datenwerke.rs.localfsdatasink.service.localfsdatasink;
 import java.io.IOException;
 import java.util.Map;
 
-import com.google.inject.ImplementedBy;
-
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-@ImplementedBy(DummyLocalFileSystemServiceImpl.class)
 public interface LocalFileSystemService {
 
    /**
