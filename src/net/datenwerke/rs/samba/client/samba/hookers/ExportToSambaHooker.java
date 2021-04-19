@@ -32,7 +32,6 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.PrepareReportModelForStorageOrExecutionHook;
@@ -42,7 +41,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.samba.client.samba.SambaDao;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
@@ -59,48 +57,37 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
    private final Provider<UITree> treeProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    
-   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-
    @Inject
    public ExportToSambaHooker(SambaDao sambaDao, 
          HookHandlerService hookHandler,
          DatasinkTreeManagerDao datasinkTreeManager, 
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
          @DatasinkTreeSamba Provider<UITree> treeProvider) {
       this.sambaDao = sambaDao;
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
-      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
    public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
 
-      if (enterpriseServiceProvider.get().isEnterprise()) {
-         sambaDao.getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+      sambaDao.getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
-            @Override
-            public void onSuccess(Map<StorageType, Boolean> result) {
-               // item is only added if enabled in configuration
-               if (result.get(StorageType.SAMBA)) {
-                  MenuItem item = new DwMenuItem("Samba", BaseIcon.ANGLE_DOUBLE_UP);
-                  menu.add(item);
-                  item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
-               }
+         @Override
+         public void onSuccess(Map<StorageType, Boolean> result) {
+            // item is only added if enabled in configuration
+            if (result.get(StorageType.SAMBA)) {
+               MenuItem item = new DwMenuItem("Samba", BaseIcon.ANGLE_DOUBLE_UP);
+               menu.add(item);
+               item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
             }
+         }
 
-            @Override
-            public void onFailure(Throwable caught) {
-            }
-         });
-      } else {
-         // we add item but disable it
-         MenuItem item = new DwMenuItem("Samba", BaseIcon.ANGLE_DOUBLE_UP);
-         menu.add(item);
-         item.disable();
-      }
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      });
    }
 
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,

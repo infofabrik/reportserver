@@ -41,7 +41,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
@@ -58,46 +57,35 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 	private final Provider<UITree> treeProvider;
 	private final DatasinkTreeManagerDao datasinkTreeManager;
 
-	private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-
 	@Inject
 	public ExportToScpHooker(ScpDao scpDao, HookHandlerService hookHandler, DatasinkTreeManagerDao datasinkTreeManager,
-			Provider<EnterpriseUiService> enterpriseServiceProvider, @DatasinkTreeScp Provider<UITree> treeProvider) {
+			@DatasinkTreeScp Provider<UITree> treeProvider) {
 		this.scpDao = scpDao;
 		this.hookHandler = hookHandler;
 		this.treeProvider = treeProvider;
 		this.datasinkTreeManager = datasinkTreeManager;
-		this.enterpriseServiceProvider = enterpriseServiceProvider;
 	}
 
 	@Override
 	public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
 			ReportExecutorMainPanel mainPanel) {
-		if (enterpriseServiceProvider.get().isEnterprise()) {
-			scpDao.getScpEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+	   scpDao.getScpEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
-				@Override
-				public void onSuccess(Map<StorageType, Boolean> result) {
-					// item is only added if enabled in configuration
-					if (result.get(StorageType.SCP)) {
-						MenuItem item = new DwMenuItem("SCP", BaseIcon.ARROW_UP);
-						menu.add(item);
-						item.addSelectionHandler(
-								event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
-					}
-				}
+          @Override
+          public void onSuccess(Map<StorageType, Boolean> result) {
+              // item is only added if enabled in configuration
+              if (result.get(StorageType.SCP)) {
+                  MenuItem item = new DwMenuItem("SCP", BaseIcon.ARROW_UP);
+                  menu.add(item);
+                  item.addSelectionHandler(
+                          event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+              }
+          }
 
-				@Override
-				public void onFailure(Throwable caught) {
-				}
-			});
-		} else {
-			// we add item but disable it
-			MenuItem item = new DwMenuItem("SCP", BaseIcon.ARROW_UP);
-			menu.add(item);
-			item.disable();
-		}
-
+          @Override
+          public void onFailure(Throwable caught) {
+          }
+      });
 	}
 
 	protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,

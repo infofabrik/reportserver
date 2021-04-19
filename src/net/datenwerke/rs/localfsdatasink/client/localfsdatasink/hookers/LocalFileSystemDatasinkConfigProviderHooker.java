@@ -12,7 +12,6 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManager
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.ui.LocalFileSystemDatasinkForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -20,16 +19,13 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
    private final Provider<LocalFileSystemDatasinkForm> formProvider;
-   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
    public LocalFileSystemDatasinkConfigProviderHooker(
-         Provider<LocalFileSystemDatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider) {
+         Provider<LocalFileSystemDatasinkForm> formProvider) {
 
       /* store objects */
       this.formProvider = formProvider;
-      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
@@ -64,7 +60,7 @@ public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefi
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return true;
    }
 
 }

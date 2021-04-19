@@ -4,6 +4,7 @@ import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simplef
 
 import java.util.Collection;
 import java.util.Map;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -14,6 +15,7 @@ import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
@@ -40,7 +42,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemDao;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
@@ -57,46 +58,36 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 	private final Provider<UITree> treeProvider;
 	private final DatasinkTreeManagerDao datasinkTreeManager;
 	
-	private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-
 	@Inject
 	public ExportToLocalFileSystemHooker(LocalFileSystemDao localFileSystemDao, HookHandlerService hookHandler,
-			DatasinkTreeManagerDao datasinkTreeManager, Provider<EnterpriseUiService> enterpriseServiceProvider, 
+			DatasinkTreeManagerDao datasinkTreeManager,
 			@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider) {
 		this.localFileSystemDao = localFileSystemDao;
 		this.hookHandler = hookHandler;
 		this.treeProvider = treeProvider;
 		this.datasinkTreeManager = datasinkTreeManager;
-		this.enterpriseServiceProvider = enterpriseServiceProvider;
 	}
 
     @Override
     public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
           ReportExecutorMainPanel mainPanel) {
 
-       if (enterpriseServiceProvider.get().isEnterprise()) {
-          localFileSystemDao.getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+       localFileSystemDao.getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
-             @Override
-             public void onSuccess(Map<StorageType, Boolean> result) {
-                // item is only added if enabled in configuration
-                if (result.get(StorageType.LOCALFILESYSTEM)) {
-                   MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
-                   menu.add(item);
-                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
-                }
+          @Override
+          public void onSuccess(Map<StorageType, Boolean> result) {
+             // item is only added if enabled in configuration
+             if (result.get(StorageType.LOCALFILESYSTEM)) {
+                MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
+                menu.add(item);
+                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
              }
+          }
 
-             @Override
-             public void onFailure(Throwable caught) {
-             }
-          });
-       } else {
-          // we add item but disable it
-          MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
-          menu.add(item);
-          item.disable();
-       }
+          @Override
+          public void onFailure(Throwable caught) {
+          }
+       });
 
     }
 
