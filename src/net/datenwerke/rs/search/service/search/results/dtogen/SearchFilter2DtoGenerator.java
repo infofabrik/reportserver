@@ -49,6 +49,9 @@ public class SearchFilter2DtoGenerator implements Poso2DtoGenerator<SearchFilter
 			/*  set offset */
 			dto.setOffset(poso.getOffset() );
 
+			/*  set showEntriesWithUnaccessibleHistoryPath */
+			dto.setShowEntriesWithUnaccessibleHistoryPath(poso.isShowEntriesWithUnaccessibleHistoryPath() );
+
 			/*  set tags */
 			final Set<SearchResultTagDto> col_tags = new HashSet<SearchResultTagDto>();
 			if( null != poso.getTags()){

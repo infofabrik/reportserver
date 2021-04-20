@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.client.reportmanager.helper.reportselector;
 
+import java.util.Optional;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.menu.Menu;
@@ -57,7 +59,7 @@ public class ReportSelectionDialog extends WestPropertiesDialog {
 		addButton(closeBtn);
 	}
 
-	public void initRepositories(final ReportDto selectedReport, final RepositoryProviderConfig... configs) {
+	public void initRepositories(final Optional<ReportDto> selectedReport, final RepositoryProviderConfig... configs) {
 	   hookHandler.getHookers(ReportSelectionRepositoryProviderHook.class).forEach(hooker -> hooker.addCards(this, selectedReport, configs));
 	}
 

@@ -25,6 +25,7 @@ public interface FtpDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 
 	/* Properties */
 	public ValueProvider<FtpDatasinkDto,String> folder();
+	public ValueProvider<FtpDatasinkDto,String> ftpMode();
 	public ValueProvider<FtpDatasinkDto,String> host();
 	public ValueProvider<FtpDatasinkDto,String> password();
 	public ValueProvider<FtpDatasinkDto,Integer> port();

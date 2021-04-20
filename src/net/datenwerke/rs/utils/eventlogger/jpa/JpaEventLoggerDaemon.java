@@ -1,11 +1,14 @@
 package net.datenwerke.rs.utils.eventlogger.jpa;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.GregorianCalendar;
-import java.util.HashSet;
-import java.util.Map.Entry;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
 
 import net.datenwerke.rs.utils.daemon.DwDaemonImpl;
 import net.datenwerke.rs.utils.eventlogger.AuditLogEventHandler;
@@ -13,10 +16,6 @@ import net.datenwerke.rs.utils.eventlogger.annotations.EventLoggerCheckInterval;
 import net.datenwerke.rs.utils.eventlogger.entities.AuditLogEntry;
 import net.datenwerke.rs.utils.eventlogger.entities.LogProperty;
 import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.UnitOfWork;
 
 public class JpaEventLoggerDaemon extends DwDaemonImpl {
 	
@@ -83,13 +82,12 @@ public class JpaEventLoggerDaemon extends DwDaemonImpl {
 		entry.setAction(event.getLoggedAction());
 		entry.setDate(event.getDate() == null ? new GregorianCalendar().getTime() : event.getDate());
 		
-		Set<LogProperty> properties = new HashSet<LogProperty>();
-		for(Entry<String, String> e : event.getLoggedProperties().entrySet()){
-			LogProperty prop = new LogProperty(e.getKey(), e.getValue());
-			properties.add(prop);
-		}
-		entry.setLogProperties(properties);
-		
+		entry.setLogProperties(
+		      event.getLoggedProperties().entrySet()
+      		   .stream()
+      		   .map(e -> new LogProperty(e.getKey(), e.getValue()))
+      		   .collect(toSet()));
+		         
 		return entry;
 	}
 

@@ -10,6 +10,7 @@ public interface FtpMessages extends Messages{
 	
 	String ftpDatasinkTypeName();
 	String sftpDatasinkTypeName();
+	String ftpsDatasinkTypeName();
 	
 }
 

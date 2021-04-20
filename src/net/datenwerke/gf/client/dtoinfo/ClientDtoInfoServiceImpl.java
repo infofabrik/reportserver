@@ -136,6 +136,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.EditCommandResultExten
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
+import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.CustomValidatorDto;
@@ -180,6 +181,7 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceD
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto;
 import net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceConfigDto;
@@ -187,9 +189,11 @@ import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.RECSaikuChartDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto;
+import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto;
+import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto;
@@ -506,6 +510,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto)
 			return ((net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto)
+			return ((net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto)
 			return ((net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto)
@@ -526,6 +532,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto)
 			return ((net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto)
+			return ((net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto)
 			return ((net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceConfigDto)
@@ -534,8 +542,12 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto)
 			return ((net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto)
+			return ((net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto)
 			return ((net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto)
+			return ((net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return ((net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportVariantDto)
@@ -860,6 +872,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.fileserver.client.fileserver.dto.EditCommandResultExtensionDto();
 		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto();
+		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto();
 		if(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto();
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoClass))
@@ -948,6 +962,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto();
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec();
+		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto();
 		if(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class.equals(dtoClass))
@@ -962,12 +978,16 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.saiku.client.saiku.dto.decorator.SaikuReportVariantDtoDec();
 		if(net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec();
+		if(net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto();
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec();
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto();
 		if(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto();
+		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -1344,6 +1364,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.fileserver.client.fileserver.dto.EditCommandResultExtensionDto();
 		if("net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto();
+		if("net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto();
 		if("net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto();
 		if("net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto".equals(dtoClassName))
@@ -1432,6 +1454,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto();
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec();
+		if("net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if("net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto();
 		if("net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto".equals(dtoClassName))
@@ -1446,12 +1470,16 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.saiku.client.saiku.dto.decorator.SaikuReportVariantDtoDec();
 		if("net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec();
+		if("net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto();
 		if("net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec();
 		if("net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto();
 		if("net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto();
+		if("net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto".equals(dtoClassName))
@@ -1992,6 +2020,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.fileserver.client.fileserver.dto.posomap.EditCommandResultExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.ftp.client.ftp.dto.posomap.FtpDatasinkDto2PosoMap.class;
+		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.ftp.client.ftp.dto.posomap.FtpsDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.ftp.client.ftp.dto.posomap.SftpDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoClass))
@@ -2166,6 +2196,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.posomap.JxlsReportVariantDto2PosoMap.class;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoClass))
 			return net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.posomap.JxlsReportVariantDto2PosoMap.class;
+		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.posomap.LocalFileSystemDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.reportdoc.client.dto.posomap.DeployAnalyzeCommandResultExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class.equals(dtoClass))
@@ -2186,6 +2218,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.saiku.client.saiku.dto.posomap.RECSaikuChartDto2PosoMap.class;
 		if(net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec.class.equals(dtoClass))
 			return net.datenwerke.rs.saiku.client.saiku.dto.posomap.RECSaikuChartDto2PosoMap.class;
+		if(net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.samba.client.samba.dto.posomap.SambaDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.posomap.ExecutedReportFileReferenceDto2PosoMap.class;
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec.class.equals(dtoClass))
@@ -2194,6 +2228,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.posomap.TeamSpaceReportJobFilterDto2PosoMap.class;
 		if(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scheduler.client.scheduler.dto.posomap.ReportServerJobFilterDto2PosoMap.class;
+		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.scp.client.scp.dto.posomap.ScpDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scripting.client.scripting.dto.posomap.AddMenuEntryExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -2672,6 +2708,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto)
@@ -2692,6 +2730,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceConfigDto)
@@ -2700,7 +2740,11 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return true;
@@ -3188,6 +3232,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto.class.equals(dtoType))
 			return true;
+		if(net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto.class.equals(dtoType))
+			return true;
 		if(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoType))
@@ -3362,6 +3408,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class.equals(dtoType))
 			return true;
+		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoType))
+			return true;
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class.equals(dtoType))
@@ -3382,6 +3430,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec.class.equals(dtoType))
 			return true;
+		if(net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto.class.equals(dtoType))
+			return true;
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec.class.equals(dtoType))
@@ -3389,6 +3439,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoType))
 			return true;
@@ -4058,6 +4110,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if("net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto".equals(dtoClassName))
 			return true;
+		if("net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto".equals(dtoClassName))
+			return true;
 		if("net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto".equals(dtoClassName))
@@ -4232,6 +4286,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec".equals(dtoClassName))
 			return true;
+		if("net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto".equals(dtoClassName))
+			return true;
 		if("net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto".equals(dtoClassName))
@@ -4252,6 +4308,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if("net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec".equals(dtoClassName))
 			return true;
+		if("net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto".equals(dtoClassName))
+			return true;
 		if("net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec".equals(dtoClassName))
@@ -4259,6 +4317,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return true;

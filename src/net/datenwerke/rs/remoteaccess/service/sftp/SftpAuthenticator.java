@@ -5,6 +5,13 @@ import java.util.concurrent.Callable;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 
+import org.apache.sshd.server.auth.password.PasswordAuthenticator;
+import org.apache.sshd.server.session.ServerSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.remoteaccess.service.sftp.genrights.SftpSecurityTarget;
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -13,13 +20,6 @@ import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.sshd.server.PasswordAuthenticator;
-import org.apache.sshd.server.session.ServerSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Provider;
 
 public class SftpAuthenticator implements PasswordAuthenticator {
 

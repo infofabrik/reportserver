@@ -27,6 +27,7 @@ public interface SearchFilterDtoPA extends PropertyAccess<SearchFilterDto> {
 	/* Properties */
 	public ValueProvider<SearchFilterDto,Integer> limit();
 	public ValueProvider<SearchFilterDto,Integer> offset();
+	public ValueProvider<SearchFilterDto,Boolean> showEntriesWithUnaccessibleHistoryPath();
 	public ValueProvider<SearchFilterDto,Set<SearchResultTagDto>> tags();
 	public ValueProvider<SearchFilterDto,Dto> baseType();
 

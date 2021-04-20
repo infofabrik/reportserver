@@ -3,6 +3,7 @@ package net.datenwerke.rs.scheduler.client.scheduler.hookers;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -163,7 +164,7 @@ public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbar
 		if(null == multiDialog)
 			multiDialog = multiDialogProvider.get();
 		
-		multiDialog.displayDialog(report, viewConfigs, sendToConfigs, new DialogCallback() {
+		multiDialog.displayDialog(Optional.ofNullable(report), viewConfigs, sendToConfigs, new DialogCallback() {
 			@Override
 			public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
 				dialog.mask(BaseMessages.INSTANCE.storingMsg());

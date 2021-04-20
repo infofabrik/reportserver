@@ -1,6 +1,6 @@
 package net.datenwerke.gf.service.tempfile;
 
-import java.io.File;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -12,7 +12,7 @@ import net.datenwerke.security.service.usermanager.entities.User;
 public class TempFile {
 	
 	private String webId;
-	private File file;
+	private Path path;
 	private Collection<User> permittedUsers;
 	
 	private String mimeType;
@@ -22,24 +22,24 @@ public class TempFile {
 	private Date lastAccessed;
 	
 	
-	public TempFile(java.io.File file) {
-		this(file, UUID.randomUUID().toString());
+	public TempFile(Path path) {
+		this(path, UUID.randomUUID().toString());
 	}
 	
-	public TempFile(File file, String webId) {
-		this(file, webId, null);
+	public TempFile(Path path, String webId) {
+		this(path, webId, null);
 	}
 
-	public TempFile(File file, User permittedUser) {
-		this(file, UUID.randomUUID().toString(), Collections.singleton(permittedUser));
+	public TempFile(Path path, User permittedUser) {
+		this(path, UUID.randomUUID().toString(), Collections.singleton(permittedUser));
 	}
 	
-	public TempFile(File file, Collection<User> permittedUsers) {
-		this(file, UUID.randomUUID().toString(), permittedUsers);
+	public TempFile(Path path, Collection<User> permittedUsers) {
+		this(path, UUID.randomUUID().toString(), permittedUsers);
 	}
 
-	public TempFile(File file, String webId, Collection<User> permittedUsers) {
-		this.file = file;
+	public TempFile(Path path, String webId, Collection<User> permittedUsers) {
+		this.path = path;
 		this.webId = webId;
 		this.permittedUsers = permittedUsers;
 		
@@ -51,8 +51,8 @@ public class TempFile {
 		return webId;
 	}
 
-	public File getFile() {
-		return file;
+	public Path getPath() {
+		return path;
 	}
 
 	public Collection<User> getPermittedUsers() {

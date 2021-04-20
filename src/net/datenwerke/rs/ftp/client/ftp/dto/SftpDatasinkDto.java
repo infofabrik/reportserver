@@ -32,6 +32,42 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 
 
 	/* Fields */
+	private String authenticationType;
+	private  boolean authenticationType_m;
+	public static final String PROPERTY_AUTHENTICATION_TYPE = "dpi-sftpdatasink-authenticationtype";
+
+	private transient static PropertyAccessor<SftpDatasinkDto, String> authenticationType_pa = new PropertyAccessor<SftpDatasinkDto, String>() {
+		@Override
+		public void setValue(SftpDatasinkDto container, String object) {
+			container.setAuthenticationType(object);
+		}
+
+		@Override
+		public String getValue(SftpDatasinkDto container) {
+			return container.getAuthenticationType();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "authenticationType";
+		}
+
+		@Override
+		public void setModified(SftpDatasinkDto container, boolean modified) {
+			container.authenticationType_m = modified;
+		}
+
+		@Override
+		public boolean isModified(SftpDatasinkDto container) {
+			return container.isAuthenticationTypeModified();
+		}
+	};
+
 	private String folder;
 	private  boolean folder_m;
 	public static final String PROPERTY_FOLDER = "dpi-sftpdatasink-folder";
@@ -176,6 +212,42 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String privateKeyPassphrase;
+	private  boolean privateKeyPassphrase_m;
+	public static final String PROPERTY_PRIVATE_KEY_PASSPHRASE = "dpi-sftpdatasink-privatekeypassphrase";
+
+	private transient static PropertyAccessor<SftpDatasinkDto, String> privateKeyPassphrase_pa = new PropertyAccessor<SftpDatasinkDto, String>() {
+		@Override
+		public void setValue(SftpDatasinkDto container, String object) {
+			container.setPrivateKeyPassphrase(object);
+		}
+
+		@Override
+		public String getValue(SftpDatasinkDto container) {
+			return container.getPrivateKeyPassphrase();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "privateKeyPassphrase";
+		}
+
+		@Override
+		public void setModified(SftpDatasinkDto container, boolean modified) {
+			container.privateKeyPassphrase_m = modified;
+		}
+
+		@Override
+		public boolean isModified(SftpDatasinkDto container) {
+			return container.isPrivateKeyPassphraseModified();
+		}
+	};
+
 	private String username;
 	private  boolean username_m;
 	public static final String PROPERTY_USERNAME = "dpi-sftpdatasink-username";
@@ -248,10 +320,95 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private Boolean hasPrivateKeyPassphrase;
+	private  boolean hasPrivateKeyPassphrase_m;
+	public static final String PROPERTY_HAS_PRIVATE_KEY_PASSPHRASE = "dpi-sftpdatasink-hasprivatekeypassphrase";
+
+	private transient static PropertyAccessor<SftpDatasinkDto, Boolean> hasPrivateKeyPassphrase_pa = new PropertyAccessor<SftpDatasinkDto, Boolean>() {
+		@Override
+		public void setValue(SftpDatasinkDto container, Boolean object) {
+			container.setHasPrivateKeyPassphrase(object);
+		}
+
+		@Override
+		public Boolean getValue(SftpDatasinkDto container) {
+			return container.isHasPrivateKeyPassphrase();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Boolean.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "hasPrivateKeyPassphrase";
+		}
+
+		@Override
+		public void setModified(SftpDatasinkDto container, boolean modified) {
+			container.hasPrivateKeyPassphrase_m = modified;
+		}
+
+		@Override
+		public boolean isModified(SftpDatasinkDto container) {
+			return container.isHasPrivateKeyPassphraseModified();
+		}
+	};
+
 
 	public SftpDatasinkDto() {
 		super();
 	}
+
+	public String getAuthenticationType()  {
+		if(! isDtoProxy()){
+			return this.authenticationType;
+		}
+
+		if(isAuthenticationTypeModified())
+			return this.authenticationType;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().authenticationType());
+
+		return _value;
+	}
+
+
+	public void setAuthenticationType(String authenticationType)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getAuthenticationType();
+
+		/* set new value */
+		this.authenticationType = authenticationType;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(authenticationType_pa, oldValue, authenticationType, this.authenticationType_m));
+
+		/* set indicator */
+		this.authenticationType_m = true;
+
+		this.fireObjectChangedEvent(SftpDatasinkDtoPA.INSTANCE.authenticationType(), oldValue);
+	}
+
+
+	public boolean isAuthenticationTypeModified()  {
+		return authenticationType_m;
+	}
+
+
+	public static PropertyAccessor<SftpDatasinkDto, String> getAuthenticationTypePropertyAccessor()  {
+		return authenticationType_pa;
+	}
+
 
 	public String getFolder()  {
 		if(! isDtoProxy()){
@@ -449,6 +606,55 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public String getPrivateKeyPassphrase()  {
+		if(! isDtoProxy()){
+			return this.privateKeyPassphrase;
+		}
+
+		if(isPrivateKeyPassphraseModified())
+			return this.privateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().privateKeyPassphrase());
+
+		return _value;
+	}
+
+
+	public void setPrivateKeyPassphrase(String privateKeyPassphrase)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getPrivateKeyPassphrase();
+
+		/* set new value */
+		this.privateKeyPassphrase = privateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(privateKeyPassphrase_pa, oldValue, privateKeyPassphrase, this.privateKeyPassphrase_m));
+
+		/* set indicator */
+		this.privateKeyPassphrase_m = true;
+
+		this.fireObjectChangedEvent(SftpDatasinkDtoPA.INSTANCE.privateKeyPassphrase(), oldValue);
+	}
+
+
+	public boolean isPrivateKeyPassphraseModified()  {
+		return privateKeyPassphrase_m;
+	}
+
+
+	public static PropertyAccessor<SftpDatasinkDto, String> getPrivateKeyPassphrasePropertyAccessor()  {
+		return privateKeyPassphrase_pa;
+	}
+
+
 	public String getUsername()  {
 		if(! isDtoProxy()){
 			return this.username;
@@ -547,6 +753,55 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public Boolean isHasPrivateKeyPassphrase()  {
+		if(! isDtoProxy()){
+			return this.hasPrivateKeyPassphrase;
+		}
+
+		if(isHasPrivateKeyPassphraseModified())
+			return this.hasPrivateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return null;
+
+		Boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().hasPrivateKeyPassphrase());
+
+		return _value;
+	}
+
+
+	public void setHasPrivateKeyPassphrase(Boolean hasPrivateKeyPassphrase)  {
+		/* old value */
+		Boolean oldValue = null;
+		if(GWT.isClient())
+			oldValue = isHasPrivateKeyPassphrase();
+
+		/* set new value */
+		this.hasPrivateKeyPassphrase = hasPrivateKeyPassphrase;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(hasPrivateKeyPassphrase_pa, oldValue, hasPrivateKeyPassphrase, this.hasPrivateKeyPassphrase_m));
+
+		/* set indicator */
+		this.hasPrivateKeyPassphrase_m = true;
+
+		this.fireObjectChangedEvent(SftpDatasinkDtoPA.INSTANCE.hasPrivateKeyPassphrase(), oldValue);
+	}
+
+
+	public boolean isHasPrivateKeyPassphraseModified()  {
+		return hasPrivateKeyPassphrase_m;
+	}
+
+
+	public static PropertyAccessor<SftpDatasinkDto, Boolean> getHasPrivateKeyPassphrasePropertyAccessor()  {
+		return hasPrivateKeyPassphrase_pa;
+	}
+
+
 	@Override
 	public String toDisplayTitle()  {
 		try{
@@ -594,6 +849,8 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 	public void clearModified()  {
+		this.authenticationType = null;
+		this.authenticationType_m = false;
 		this.folder = null;
 		this.folder_m = false;
 		this.host = null;
@@ -602,15 +859,21 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 		this.password_m = false;
 		this.port = 0;
 		this.port_m = false;
+		this.privateKeyPassphrase = null;
+		this.privateKeyPassphrase_m = false;
 		this.username = null;
 		this.username_m = false;
 		this.hasPassword = null;
 		this.hasPassword_m = false;
+		this.hasPrivateKeyPassphrase = null;
+		this.hasPrivateKeyPassphrase_m = false;
 	}
 
 
 	public boolean isModified()  {
 		if(super.isModified())
+			return true;
+		if(authenticationType_m)
 			return true;
 		if(folder_m)
 			return true;
@@ -620,9 +883,13 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(port_m)
 			return true;
+		if(privateKeyPassphrase_m)
+			return true;
 		if(username_m)
 			return true;
 		if(hasPassword_m)
+			return true;
+		if(hasPrivateKeyPassphrase_m)
 			return true;
 		return false;
 	}
@@ -630,18 +897,23 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
+		list.add(authenticationType_pa);
 		list.add(folder_pa);
 		list.add(host_pa);
 		list.add(password_pa);
 		list.add(port_pa);
+		list.add(privateKeyPassphrase_pa);
 		list.add(username_pa);
 		list.add(hasPassword_pa);
+		list.add(hasPrivateKeyPassphrase_pa);
 		return list;
 	}
 
 
 	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
+		if(authenticationType_m)
+			list.add(authenticationType_pa);
 		if(folder_m)
 			list.add(folder_pa);
 		if(host_m)
@@ -650,10 +922,14 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 			list.add(password_pa);
 		if(port_m)
 			list.add(port_pa);
+		if(privateKeyPassphrase_m)
+			list.add(privateKeyPassphrase_pa);
 		if(username_m)
 			list.add(username_pa);
 		if(hasPassword_m)
 			list.add(hasPassword_pa);
+		if(hasPrivateKeyPassphrase_m)
+			list.add(hasPrivateKeyPassphrase_pa);
 		return list;
 	}
 
@@ -662,12 +938,15 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.MINIMAL) >= 0){
 			list.add(hasPassword_pa);
+			list.add(hasPrivateKeyPassphrase_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
+			list.add(authenticationType_pa);
 			list.add(folder_pa);
 			list.add(host_pa);
 			list.add(password_pa);
 			list.add(port_pa);
+			list.add(privateKeyPassphrase_pa);
 			list.add(username_pa);
 		}
 		return list;

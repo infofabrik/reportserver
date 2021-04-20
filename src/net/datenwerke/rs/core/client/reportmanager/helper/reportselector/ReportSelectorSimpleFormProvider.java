@@ -42,6 +42,16 @@ public class ReportSelectorSimpleFormProvider extends FormFieldProviderHookImpl 
             public boolean showCatalog() {
                return config.showCatalog();
             }
+
+            @Override
+            public boolean filterOnSchedulableReports() {
+               return false;
+            }
+
+            @Override
+            public boolean showEntriesWithUnaccessibleHistoryPath() {
+               return true;
+            }
          });
 			field.setRepositoryConfigs(configs.toArray(new RepositoryProviderConfig[]{}));
 		}

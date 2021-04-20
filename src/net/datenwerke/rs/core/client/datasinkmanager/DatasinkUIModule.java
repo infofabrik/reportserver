@@ -7,9 +7,11 @@ import com.google.inject.Singleton;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionFieldFactory;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.BasicTreeProvider;
+import net.datenwerke.rs.core.client.datasinkmanager.provider.FolderTreeProvider;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.FullTreeProvider;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkManagerAdminViewTree;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkTreeBasic;
+import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkTreeFolders;
 
 /**
  * 
@@ -28,6 +30,7 @@ public class DatasinkUIModule extends AbstractGinModule {
 		/* bind trees */
 		bind(UITree.class).annotatedWith(DatasinkTreeBasic.class).toProvider(BasicTreeProvider.class);
 		bind(UITree.class).annotatedWith(DatasinkManagerAdminViewTree.class).toProvider(FullTreeProvider.class).in(Singleton.class);
+		bind(UITree.class).annotatedWith(DatasinkTreeFolders.class).toProvider(FolderTreeProvider.class);
 		
 		/* bind service */
 		bind(DatasinkUIService.class).to(DatasinkUIServiceImpl.class).in(Singleton.class);

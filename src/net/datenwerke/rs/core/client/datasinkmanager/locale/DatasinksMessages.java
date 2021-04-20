@@ -30,5 +30,18 @@ public interface DatasinksMessages extends Messages {
    String testingProgressMessage();
 
    String success();
+   
+   String authenticationType();
+   String userPasswordAuthenticationType();
+   String publicKeyAuthenticationType();
+   String privateKey();
+   String privateKeyPassphrase();
+   String clearPassphrase();
+   String importConfigFailureNoParent();
+   String importWhereTo();
+   String importMainPropertiesDescription();
+   String importMainPropertiesHeadline();
+   
+   String localFileSystem();
 	
 }

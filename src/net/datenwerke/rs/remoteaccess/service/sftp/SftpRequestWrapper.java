@@ -1,6 +1,7 @@
 package net.datenwerke.rs.remoteaccess.service.sftp;
 
 import java.io.IOException;
+import java.nio.file.NoSuchFileException;
 import java.util.concurrent.Callable;
 
 import javax.servlet.FilterChain;
@@ -8,16 +9,15 @@ import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 
-import net.datenwerke.rs.remoteaccess.service.sftp.mockup.SftpServletRequest;
-import net.datenwerke.rs.utils.mockrequest.MockServletResponse;
-
-import org.apache.sshd.common.Session;
-import org.apache.sshd.common.Session.AttributeKey;
-import org.apache.sshd.server.session.ServerSession;
+import org.apache.sshd.common.AttributeRepository.AttributeKey;
+import org.apache.sshd.common.session.SessionContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.servlet.GuiceFilter;
+
+import net.datenwerke.rs.remoteaccess.service.sftp.mockup.SftpServletRequest;
+import net.datenwerke.rs.utils.mockrequest.MockServletResponse;
 
 public class SftpRequestWrapper {
 
@@ -28,7 +28,7 @@ public class SftpRequestWrapper {
 	
 	private static ThreadLocal<Object> resultHolder = new ThreadLocal<Object>();
 	
-	public static <T> Callable<T> wrapRequest(final Callable<T> callable, final ServerSession session){
+	public static <T> Callable<T> wrapRequest(final Callable<T> callable, final SessionContext session){
 		return new Callable<T>() {
 			@Override
 			public T call() throws Exception {
@@ -46,6 +46,9 @@ public class SftpRequestWrapper {
 							throws IOException, ServletException {
 						try {
 							resultHolder.set(callable.call());
+						} catch (NoSuchFileException e) {
+						   logger.warn( e.getMessage(), e);
+						   throw e;
 						} catch (Exception e) {
 							if(e instanceof IOException)
 								throw (IOException)e;
@@ -61,7 +64,7 @@ public class SftpRequestWrapper {
 		};
 	}
 
-	protected static void init(Session session) {
+	protected static void init(SessionContext session) {
 		SftpServletRequest req = new SftpServletRequest();
 		MockServletResponse resp = new MockServletResponse();
 		

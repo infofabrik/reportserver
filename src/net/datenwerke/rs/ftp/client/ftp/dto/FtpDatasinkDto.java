@@ -68,6 +68,42 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String ftpMode;
+	private  boolean ftpMode_m;
+	public static final String PROPERTY_FTP_MODE = "dpi-ftpdatasink-ftpmode";
+
+	private transient static PropertyAccessor<FtpDatasinkDto, String> ftpMode_pa = new PropertyAccessor<FtpDatasinkDto, String>() {
+		@Override
+		public void setValue(FtpDatasinkDto container, String object) {
+			container.setFtpMode(object);
+		}
+
+		@Override
+		public String getValue(FtpDatasinkDto container) {
+			return container.getFtpMode();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "ftpMode";
+		}
+
+		@Override
+		public void setModified(FtpDatasinkDto container, boolean modified) {
+			container.ftpMode_m = modified;
+		}
+
+		@Override
+		public boolean isModified(FtpDatasinkDto container) {
+			return container.isFtpModeModified();
+		}
+	};
+
 	private String host;
 	private  boolean host_m;
 	public static final String PROPERTY_HOST = "dpi-ftpdatasink-host";
@@ -299,6 +335,55 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 
 	public static PropertyAccessor<FtpDatasinkDto, String> getFolderPropertyAccessor()  {
 		return folder_pa;
+	}
+
+
+	public String getFtpMode()  {
+		if(! isDtoProxy()){
+			return this.ftpMode;
+		}
+
+		if(isFtpModeModified())
+			return this.ftpMode;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().ftpMode());
+
+		return _value;
+	}
+
+
+	public void setFtpMode(String ftpMode)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getFtpMode();
+
+		/* set new value */
+		this.ftpMode = ftpMode;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(ftpMode_pa, oldValue, ftpMode, this.ftpMode_m));
+
+		/* set indicator */
+		this.ftpMode_m = true;
+
+		this.fireObjectChangedEvent(FtpDatasinkDtoPA.INSTANCE.ftpMode(), oldValue);
+	}
+
+
+	public boolean isFtpModeModified()  {
+		return ftpMode_m;
+	}
+
+
+	public static PropertyAccessor<FtpDatasinkDto, String> getFtpModePropertyAccessor()  {
+		return ftpMode_pa;
 	}
 
 
@@ -596,6 +681,8 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 	public void clearModified()  {
 		this.folder = null;
 		this.folder_m = false;
+		this.ftpMode = null;
+		this.ftpMode_m = false;
 		this.host = null;
 		this.host_m = false;
 		this.password = null;
@@ -614,6 +701,8 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(folder_m)
 			return true;
+		if(ftpMode_m)
+			return true;
 		if(host_m)
 			return true;
 		if(password_m)
@@ -631,6 +720,7 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(folder_pa);
+		list.add(ftpMode_pa);
 		list.add(host_pa);
 		list.add(password_pa);
 		list.add(port_pa);
@@ -644,6 +734,8 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
 		if(folder_m)
 			list.add(folder_pa);
+		if(ftpMode_m)
+			list.add(ftpMode_pa);
 		if(host_m)
 			list.add(host_pa);
 		if(password_m)
@@ -665,6 +757,7 @@ public class FtpDatasinkDto extends DatasinkDefinitionDto {
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(folder_pa);
+			list.add(ftpMode_pa);
 			list.add(host_pa);
 			list.add(password_pa);
 			list.add(port_pa);

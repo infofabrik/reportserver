@@ -76,6 +76,9 @@ public class SftpDatasink2DtoGenerator implements Poso2DtoGenerator<SftpDatasink
 
 		}
 		if(here.compareTo(DtoView.NORMAL) >= 0){
+			/*  set authenticationType */
+			dto.setAuthenticationType(StringEscapeUtils.escapeXml(StringUtils.left(poso.getAuthenticationType(),8192)));
+
 			/*  set flags */
 			dto.setFlags(poso.getFlags() );
 

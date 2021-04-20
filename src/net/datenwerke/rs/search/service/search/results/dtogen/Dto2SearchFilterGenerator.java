@@ -97,6 +97,12 @@ public class Dto2SearchFilterGenerator implements Dto2PosoGenerator<SearchFilter
 		} catch(NullPointerException e){
 		}
 
+		/*  set showEntriesWithUnaccessibleHistoryPath */
+		try{
+			poso.setShowEntriesWithUnaccessibleHistoryPath(dto.isShowEntriesWithUnaccessibleHistoryPath() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set tags */
 		final Set<SearchResultTag> col_tags = new HashSet<SearchResultTag>();
 		/* load new data from dto */
@@ -123,6 +129,14 @@ public class Dto2SearchFilterGenerator implements Dto2PosoGenerator<SearchFilter
 		if(dto.isOffsetModified()){
 			try{
 				poso.setOffset(dto.getOffset() );
+			} catch(NullPointerException e){
+			}
+		}
+
+		/*  set showEntriesWithUnaccessibleHistoryPath */
+		if(dto.isShowEntriesWithUnaccessibleHistoryPathModified()){
+			try{
+				poso.setShowEntriesWithUnaccessibleHistoryPath(dto.isShowEntriesWithUnaccessibleHistoryPath() );
 			} catch(NullPointerException e){
 			}
 		}
@@ -163,6 +177,12 @@ public class Dto2SearchFilterGenerator implements Dto2PosoGenerator<SearchFilter
 		} catch(NullPointerException e){
 		}
 
+		/*  set showEntriesWithUnaccessibleHistoryPath */
+		try{
+			poso.setShowEntriesWithUnaccessibleHistoryPath(dto.isShowEntriesWithUnaccessibleHistoryPath() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set tags */
 		final Set<SearchResultTag> col_tags = new HashSet<SearchResultTag>();
 		/* load new data from dto */
@@ -189,6 +209,14 @@ public class Dto2SearchFilterGenerator implements Dto2PosoGenerator<SearchFilter
 		if(dto.isOffsetModified()){
 			try{
 				poso.setOffset(dto.getOffset() );
+			} catch(NullPointerException e){
+			}
+		}
+
+		/*  set showEntriesWithUnaccessibleHistoryPath */
+		if(dto.isShowEntriesWithUnaccessibleHistoryPathModified()){
+			try{
+				poso.setShowEntriesWithUnaccessibleHistoryPath(dto.isShowEntriesWithUnaccessibleHistoryPath() );
 			} catch(NullPointerException e){
 			}
 		}

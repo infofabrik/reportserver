@@ -20,6 +20,9 @@ public class FtpDatasinkConfigProviderHooker implements
 
 	private final Provider<FtpDatasinkForm> formProvider;
 	
+	public final static String ACTIVE_MODE = "active-ftp";
+	public final static String PASSIVE_MODE = "passive-ftp";
+	
 	@Inject
 	public FtpDatasinkConfigProviderHooker(
 		Provider<FtpDatasinkForm> formProvider

@@ -8,15 +8,15 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
 import javax.servlet.http.HttpSessionContext;
 
-import org.apache.sshd.server.session.ServerSession;
+import org.apache.sshd.common.session.SessionContext;
 
 public class MockHttpSessionWrapper implements HttpSession {
 
-	public static final Map<String, Map<String, Object>> valueMap = new HashMap<String, Map<String,Object>>();
+	public static final Map<String, Map<String, Object>> valueMap = new HashMap<>();
 	
-	private ServerSession session;
+	private SessionContext session;
 
-	public void setSession(ServerSession session){
+	public void setSession(SessionContext session){
 		this.session = session;
 	}
 	

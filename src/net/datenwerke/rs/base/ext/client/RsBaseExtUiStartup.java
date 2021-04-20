@@ -14,6 +14,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.ext.client.dashboard.ReportDadgetExporter;
 import net.datenwerke.rs.base.ext.client.dashboardmanager.eximport.im.hookers.DashboardManagerUIImporterHooker;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.hookers.DatasourceManagerUIImporterHooker;
+import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.hookers.DatasinkManagerUIImporterHooker;
 import net.datenwerke.rs.base.ext.client.parameters.fileselection.FileSelectionParameterConfigurator;
 import net.datenwerke.rs.base.ext.client.reportmanager.eximport.im.hookers.ReportManagerUIImporterHooker;
 import net.datenwerke.rs.core.client.parameters.config.ParameterConfigurator;
@@ -38,6 +39,7 @@ public class RsBaseExtUiStartup implements ParameterProviderHook {
 		final DashboardManagerUIImporterHooker dashboardImporterHooker,
 		final DatasourceManagerUIImporterHooker datasourceImporterHooker,
 		final ReportManagerUIImporterHooker reportmanagerImporterHooker,
+		final DatasinkManagerUIImporterHooker datasinkImporterHooker,
 
 		final Provider<ReportDadgetExporter> reportDadgetExporterProvider,
 		
@@ -53,6 +55,7 @@ public class RsBaseExtUiStartup implements ParameterProviderHook {
 		hookHandler.attachHooker(ImporterConfiguratorHook.class, dashboardImporterHooker);
 		hookHandler.attachHooker(ImporterConfiguratorHook.class, datasourceImporterHooker);
 		hookHandler.attachHooker(ImporterConfiguratorHook.class, reportmanagerImporterHooker);
+		hookHandler.attachHooker(ImporterConfiguratorHook.class, datasinkImporterHooker);
 
 		/* request callback after login and check for rights */
 		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {

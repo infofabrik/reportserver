@@ -24,12 +24,15 @@ public interface SftpDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 
 
 	/* Properties */
+	public ValueProvider<SftpDatasinkDto,String> authenticationType();
 	public ValueProvider<SftpDatasinkDto,String> folder();
 	public ValueProvider<SftpDatasinkDto,String> host();
 	public ValueProvider<SftpDatasinkDto,String> password();
 	public ValueProvider<SftpDatasinkDto,Integer> port();
+	public ValueProvider<SftpDatasinkDto,String> privateKeyPassphrase();
 	public ValueProvider<SftpDatasinkDto,String> username();
 	public ValueProvider<SftpDatasinkDto,Boolean> hasPassword();
+	public ValueProvider<SftpDatasinkDto,Boolean> hasPrivateKeyPassphrase();
 
 
 }

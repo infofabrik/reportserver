@@ -35,7 +35,7 @@ public class DatasinkManagerTreeConfigurationHooker implements
 	@Inject
 	public DatasinkManagerTreeConfigurationHooker(
 		HookHandlerService hookHandler,
-		DatasinkTreeManagerDao treeHandler	
+		DatasinkTreeManagerDao treeHandler
 		){
 		
 		/* store objects */

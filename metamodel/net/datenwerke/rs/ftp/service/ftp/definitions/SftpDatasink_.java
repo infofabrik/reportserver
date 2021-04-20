@@ -8,10 +8,13 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(SftpDatasink.class)
 public abstract class SftpDatasink_ extends net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition_ {
 
+	public static volatile SingularAttribute<SftpDatasink, byte[]> privateKey;
 	public static volatile SingularAttribute<SftpDatasink, String> password;
+	public static volatile SingularAttribute<SftpDatasink, String> privateKeyPassphrase;
 	public static volatile SingularAttribute<SftpDatasink, String> folder;
 	public static volatile SingularAttribute<SftpDatasink, Integer> port;
 	public static volatile SingularAttribute<SftpDatasink, String> host;
+	public static volatile SingularAttribute<SftpDatasink, String> authenticationType;
 	public static volatile SingularAttribute<SftpDatasink, String> username;
 
 }

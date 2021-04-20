@@ -1,5 +1,7 @@
 package net.datenwerke.rs.tsreportarea.client.tsreportarea.ui;
 
+import java.util.Optional;
+
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -37,7 +39,7 @@ public class ImportReportDialogCreator {
 	
 	public void displayDialog(final TsDiskMainComponent mainComponent){
 		final ReportSelectionDialog reportSelector = dialogProvider.get();
-		reportSelector.initRepositories(null, new ReportCatalogOnDemandRepositoryProvider.Config() {
+		reportSelector.initRepositories(Optional.empty(), new ReportCatalogOnDemandRepositoryProvider.Config() {
 			@Override
 			public boolean includeVariants() {
 				return false;
@@ -47,6 +49,16 @@ public class ImportReportDialogCreator {
 			public boolean showCatalog() {
 				return true;
 			}
+
+         @Override
+         public boolean filterOnSchedulableReports() {
+            return false;
+         }
+
+         @Override
+         public boolean showEntriesWithUnaccessibleHistoryPath() {
+            return true;
+         }
 		});
 		
 		reportSelector.setHeading(TsFavoriteMessages.INSTANCE.importReportText());

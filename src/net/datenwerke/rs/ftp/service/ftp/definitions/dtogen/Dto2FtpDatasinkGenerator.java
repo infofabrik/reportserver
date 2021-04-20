@@ -116,6 +116,9 @@ public class Dto2FtpDatasinkGenerator implements Dto2PosoGenerator<FtpDatasinkDt
 		/*  set folder */
 		poso.setFolder(dto.getFolder() );
 
+		/*  set ftpMode */
+		poso.setFtpMode(dto.getFtpMode() );
+
 		/*  set host */
 		poso.setHost(dto.getHost() );
 
@@ -153,6 +156,11 @@ public class Dto2FtpDatasinkGenerator implements Dto2PosoGenerator<FtpDatasinkDt
 		/*  set folder */
 		if(dto.isFolderModified()){
 			poso.setFolder(dto.getFolder() );
+		}
+
+		/*  set ftpMode */
+		if(dto.isFtpModeModified()){
+			poso.setFtpMode(dto.getFtpMode() );
 		}
 
 		/*  set host */
@@ -205,6 +213,9 @@ public class Dto2FtpDatasinkGenerator implements Dto2PosoGenerator<FtpDatasinkDt
 		/*  set folder */
 		poso.setFolder(dto.getFolder() );
 
+		/*  set ftpMode */
+		poso.setFtpMode(dto.getFtpMode() );
+
 		/*  set host */
 		poso.setHost(dto.getHost() );
 
@@ -242,6 +253,11 @@ public class Dto2FtpDatasinkGenerator implements Dto2PosoGenerator<FtpDatasinkDt
 		/*  set folder */
 		if(dto.isFolderModified()){
 			poso.setFolder(dto.getFolder() );
+		}
+
+		/*  set ftpMode */
+		if(dto.isFtpModeModified()){
+			poso.setFtpMode(dto.getFtpMode() );
 		}
 
 		/*  set host */

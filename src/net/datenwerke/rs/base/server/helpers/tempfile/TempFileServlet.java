@@ -2,6 +2,7 @@ package net.datenwerke.rs.base.server.helpers.tempfile;
 
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.file.Files;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -14,8 +15,6 @@ import net.datenwerke.gf.service.tempfile.TempFile;
 import net.datenwerke.gf.service.tempfile.TempFileService;
 import net.datenwerke.security.server.SecuredHttpServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
-
-import org.apache.commons.io.FileUtils;
 
 @Singleton
 public class TempFileServlet extends SecuredHttpServlet {
@@ -53,7 +52,7 @@ public class TempFileServlet extends SecuredHttpServlet {
 		}
 		
 		OutputStream os = resp.getOutputStream();
-		byte[] fileContents = FileUtils.readFileToByteArray(tempFile.getFile());
+		byte[] fileContents = Files.readAllBytes(tempFile.getPath());
 		os.write(fileContents);
 		os.close();
 	}

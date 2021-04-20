@@ -4,6 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -21,10 +25,6 @@ import net.datenwerke.rs.base.client.datasources.dto.pa.FormatBasedDatasourceDef
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 
 public abstract class FormatBasedDatasourceForm extends SimpleFormView {
 
@@ -61,10 +61,11 @@ public abstract class FormatBasedDatasourceForm extends SimpleFormView {
 					map = new HashMap<String, DatasourceConnectorDto>();
 					
 					FormatBasedDatasourceDefinitionDto datasource = (FormatBasedDatasourceDefinitionDto)getSelectedNode();
-					DatasourceConnectorDto connector = datasource.getConnector();
+					final DatasourceConnectorDto connector = datasource.getConnector();
 					
-					for(DatasourceConnectorConfiguratorHook config : configs)
-						map.put(config.getConnectorName(), null != connector &&  config.consumes(connector) ? connector : config.instantiateConnector());
+					configs
+                  .forEach(config -> map.put(config.getConnectorName(), 
+                        null != connector &&  config.consumes(connector) ? connector : config.instantiateConnector()));
 				}
 				
 				return map;

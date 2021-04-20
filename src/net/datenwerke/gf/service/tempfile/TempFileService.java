@@ -1,128 +1,80 @@
 package net.datenwerke.gf.service.tempfile;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
-import java.util.UUID;
+import java.nio.file.Path;
 
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
-import org.apache.commons.io.FileUtils;
-
-import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
+import net.datenwerke.rs.base.server.helpers.tempfile.TempFileServlet;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+public interface TempFileService {
 
-import com.google.inject.Inject;
+   /**
+    * Creates a temporary file in the temp directory configured.
+    * 
+    * @return the temporary file
+    * @throws IOException if an I/O error occurs
+    */
+   Path createTempFile() throws IOException;
 
-@Singleton
-public class TempFileService {
+   /**
+    * Creates a web-accessible temporary file which can be retrieved by the given
+    * id.
+    * 
+    * @param id             the web-id of the temporary file.
+    * @param permittedUsers users allowed to access the temporary file
+    * @return the web-accessible temp file
+    * @throws IOException if an I/O error occurs
+    */
+   TempFile createWebAccessibleTempFile(String id, User... permittedUsers) throws IOException;
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private Provider<String> tempDir;
-	private Map<String, TempFile> webAccessibleTempFiles = Collections.synchronizedMap(new HashMap<String, TempFile>());
-	
-	private Random random = new Random();
-	
-	@Inject
-	public TempFileService(
-		@TempDirLocation Provider<String> tempDir
-			){
-		this.tempDir = tempDir;
-		
-	}
-	
-	public synchronized File createTempFile() throws IOException{
-		File dir = new File(tempDir.get());
-		if(! dir.exists() && ! dir.isDirectory()){
-			logger.warn( "cannot access tempdir: " + tempDir);
-			throw new IllegalStateException("cannot access tempdir: " + tempDir);
-		}
-		
-		File file = null;
-		do {
-			String name = "rs-tmp-" + Calendar.getInstance().getTimeInMillis() + "-" + String.valueOf(random.nextInt(Integer.MAX_VALUE)) + ".tmp";
-			file = new File(tempDir.get() + File.separator + name);
-		} while (file.exists());
-		
-		file.createNewFile();
-		return file;
-	}
-	
-	public TempFile createWebAccessibleTempFile(String id, User... permittedUsers) throws IOException {
-		TempFile tmpFile =  new TempFile(createTempFile(), id, Arrays.asList(permittedUsers));
-		webAccessibleTempFiles.put(tmpFile.getWebId(), tmpFile);
-		
-		return tmpFile;
-	}
-	
-	/**
-	 * Creates a temporary file which can be retrieved by the returned 
-	 * identifier using the TempFileServlet
-	 * 
-	 * @param permittedUsers
-	 * @throws IOException 
-	 */
-	public TempFile createWebAccessibleTempFile(User... permittedUsers) throws IOException{
-		return createWebAccessibleTempFile(UUID.randomUUID().toString(), permittedUsers);
-	}
-	
-	public TempFile getTempFileById(String id){
-		TempFile tempFile = webAccessibleTempFiles.get(id);
-		
-		if(null == tempFile)
-			return null;
-		
-		tempFile.setLastAccessed();
-		
-		return tempFile;
-	}
+   /**
+    * Creates a temporary file which can be retrieved by the returned identifier
+    * ({@link TempFile#getWebId()}) using the {@link TempFileServlet}.
+    * 
+    * @param permittedUsers users allowed to access the temporary file
+    * @throws IOException if an I/O error occurs
+    */
+   TempFile createWebAccessibleTempFile(User... permittedUsers) throws IOException;
 
-	public byte[] readTmpFileIntoByteArray(File location) throws IOException {
-		return readTmpFileIntoByteArray(location, true);
-	}
+   /**
+    * Given an identifier (web-id), retrieves the corresponding temporary file.
+    * 
+    * @param id the web-id
+    * @return the temporary file corresponding to the given web-id
+    */
+   TempFile getTempFileById(String id);
 
-	public byte[] readTmpFileIntoByteArray(File location, boolean removeFile) throws IOException {
-		/* ensure file is in right location */
-		if(! isTmpFile(location))
-			throw new IllegalArgumentException("Tried to read file: " + location);
-			
-		byte[] fileContents = FileUtils.readFileToByteArray(location);
-		
-		/* remove? */
-		if(removeFile)
-			location.delete();
-		
-		return fileContents;
-	}
+   /**
+    * Reads all bytes of a given temporary file into a byte array. Note that this
+    * method is intended for simple cases where it is convenient to read all bytes
+    * into a byte array. It is not intended for reading in large files.
+    * 
+    * @param path the temporary file to read
+    * @return the content of the temporary file as a byte array
+    * @throws IOException if an I/O error occurs
+    */
+   byte[] readTmpFileIntoByteArray(Path path) throws IOException;
 
-	public boolean isTmpFile(File file) {
-		File dir = new File(tempDir.get());
-		if(! dir.exists() && ! dir.isDirectory()){
-			logger.warn("cannot access tempdir: " + tempDir);
-			throw new IllegalStateException("cannot access tempdir: " + tempDir);
-		}
-		
-		return isInDir(file, dir);
-	}
+   /**
+    * Reads all bytes of a given temporary file into a byte array. Note that this
+    * method is intended for simple cases where it is convenient to read all bytes
+    * into a byte array. It is not intended for reading in large files.
+    * 
+    * @param path       the temporary file to read
+    * @param removeFile true if the temporary file should be deleted after reading
+    *                   into a byte array
+    * @return the content of the temporary file as a byte array
+    * @throws IOException if an I/O error occurs
+    */
+   byte[] readTmpFileIntoByteArray(Path path, boolean removeFile) throws IOException;
 
-	protected boolean isInDir(File file, File dir) {
-		if(null == file)
-			return false;
-		
-		if(file.equals(dir))
-			return true;
-		
-		return isInDir(file.getParentFile(), dir);
-	}
-	
+   /**
+    * Checks if the given file is a temporary file, that is, if is located in a
+    * temporary file location.
+    * 
+    * @param path the file to check
+    * @return true if the given file is a temporary file
+    */
+   boolean isTmpFile(Path path);
+
 }

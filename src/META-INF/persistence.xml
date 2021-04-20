@@ -54,6 +54,10 @@
           <class>net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReport</class>
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsSftpFileAction</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
+          <class>net.datenwerke.rs.samba.service.samba.action.ScheduleAsSambaFileAction</class>
+          <class>net.datenwerke.rs.scp.service.scp.action.ScheduleAsScpFileAction</class>
+          <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterDefinition</class>
           <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableInstance</class>
           <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterDefinition</class>
           <class>net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition</class>
@@ -95,6 +99,9 @@
           <class>net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry</class>
           <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasource</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.BinaryColumnFilter</class>
+          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
+          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink</class>
+          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.action.ScheduleAsLocalFileSystemFileAction</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportServerSideStringProperty</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
           <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink</class>
@@ -180,6 +187,9 @@
           <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterData</class>
           <class>net.datenwerke.rs.scriptreport.service.scriptreport.parameter.ScriptParameterInstance</class>
           <class>net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink</class>
+          <class>net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink</class>
+          <class>net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink</class>
           <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile</class>

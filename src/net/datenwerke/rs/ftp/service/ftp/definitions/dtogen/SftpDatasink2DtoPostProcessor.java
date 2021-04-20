@@ -10,6 +10,9 @@ public class SftpDatasink2DtoPostProcessor implements Poso2DtoPostProcessor<Sftp
 	public void dtoCreated(SftpDatasink poso, SftpDatasinkDto dto) {
 		if(null != poso.getPassword() && ! "".equals(poso.getPassword().trim()))
 			dto.setHasPassword(true);
+		
+		if(null != poso.getPrivateKeyPassphrase() && ! "".equals(poso.getPrivateKeyPassphrase().trim()))
+         dto.setHasPrivateKeyPassphrase(true);
 	}
 
 	@Override

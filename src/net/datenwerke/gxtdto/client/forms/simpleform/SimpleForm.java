@@ -315,6 +315,11 @@ public class SimpleForm extends DwContentPanel {
 		fieldLayoutConfig.setMarginData(marginData);
 	}
 
+   /**
+    * Sets the width of all form fields added after this method has been called.
+    * 
+    * @param width the width of all fields added after this method call
+    */
 	public void setFieldWidth(double width) {
 		fieldLayoutConfig.setFieldWidth(width);
 	}

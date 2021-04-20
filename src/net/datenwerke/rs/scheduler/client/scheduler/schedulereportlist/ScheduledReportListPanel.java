@@ -2,9 +2,11 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
@@ -38,8 +40,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClickHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -66,8 +66,10 @@ import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.forms.wizard.WizardDialog;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.resources.BaseResources;
+import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.gxtdto.client.ui.helper.grid.keyvalue.KeyValueGridHelper;
 import net.datenwerke.gxtdto.client.ui.helper.grid.keyvalue.KeyValueProperty;
 import net.datenwerke.gxtdto.client.ui.helper.grid.keyvalue.KeyValuePropertyPA;
@@ -85,8 +87,11 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerDao;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerUIModule;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerUiService;
+import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.ScheduleDialog;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.ScheduleDialog.DialogCallback;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobInformation;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformationPA;
@@ -121,6 +126,8 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 	private final SchedulerUiService schedulerService;
 	private final Provider<DwHookableToolbar> toolbarProvider;
 	private final KeyValueGridHelper gridHelper;
+	
+	private final Provider<ScheduleDialog> scheduleDialogProvider;
 	
 	private final Collection<ScheduledReportToolbarListFilter> tbFilters;
 	private final Collection<ScheduledReportListFilter> filters;
@@ -183,6 +190,7 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 		ToolbarService toolbarService,
 		SecurityUIService securityService,
 		FormatUiHelper formatUiHelper,
+		Provider<ScheduleDialog> scheduleDialogProvider,
 		
 		@Assisted String name,
 		@Assisted("displayExecutorColumn") boolean displayExecutorColumn,
@@ -201,6 +209,7 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 		this.toolbarService = toolbarService;
 		this.securityService = securityService;
 		this.formatUiHelper = formatUiHelper;
+		this.scheduleDialogProvider = scheduleDialogProvider;
 		
 		this.displayJobColumn = true;
 		this.displayExecutorColumn = displayExecutorColumn;
@@ -263,42 +272,64 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 	}
 	
 	private void initToolbar() {
-		for(ScheduledReportListToolbarHook hooker : hookHandler.getHookers(ScheduledReportListToolbarHook.class))
-			hooker.statusBarToolbarHook_addLeft(mainToolbar, this);
+	   hookHandler.getHookers(ScheduledReportListToolbarHook.class)
+	      .forEach(hooker -> hooker.statusBarToolbarHook_addLeft(mainToolbar, this));
 		
 		mainToolbar.addBaseHookersLeft();
 		
 		/* filters */
 		if(! filters.isEmpty()){
 			final DwContentPanel filterPanel = DwContentPanel.newInlineInstance();
-			VerticalLayoutContainer container = new VerticalLayoutContainer();
+			final VerticalLayoutContainer container = new VerticalLayoutContainer();
 			filterPanel.setWidget(container);
 			
 			for (Iterator<ScheduledReportListFilter> iterator = filters.iterator(); iterator.hasNext();) {
 				Iterable<Widget> widgets = iterator.next().getFilter(this);
 				if(null != widgets)
-					for (Widget widget : widgets) 
-						container.add(widget);
+				   widgets.forEach(container::add);
 			}
 
 			
 			final DwTextButton filterBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.filter(), BaseIcon.FILTER);
 			mainToolbar.add(filterBtn, new BoxLayoutData(new Margins(0, 5, 0, 0)));
 			
-			filterBtn.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(SelectEvent event) {
-					FloatingWrapper wrapper = new FloatingWrapper(filterPanel);
-					wrapper.setBorders(true);
-					wrapper.show(filterBtn);
-				}
+			filterBtn.addSelectHandler(event -> {
+				FloatingWrapper wrapper = new FloatingWrapper(filterPanel);
+				wrapper.setBorders(true);
+				wrapper.show(filterBtn);
 			});
 		}
 		
+		final DwTextButton newBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.newJob(), BaseIcon.REPORT);
+      mainToolbar.add(newBtn, new BoxLayoutData(new Margins(0, 5, 0, 0)));
+      
+      newBtn.addSelectHandler( event -> {
+         ScheduleDialog dialog = scheduleDialogProvider.get();
+         
+         dialog.displayDialog(Optional.empty(), Collections.emptyList(), new ArrayList<>(), new DialogCallback() {
+            @Override
+            public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
+               dialog.mask(BaseMessages.INSTANCE.storingMsg());
+               schedulerDao.schedule(configDto, new NotamCallback<Void>(SchedulerMessages.INSTANCE.scheduled()){
+                  @Override
+                  public void doOnSuccess(Void result) {
+                     dialog.hide();
+                  }
+                  @Override
+                  public void doOnFailure(Throwable caught) {
+                     super.doOnFailure(caught);
+                     dialog.unmask();
+                  }
+               });                  
+            }
+         });
+      });
+
+		
 		mainToolbar.add(new FillToolItem());
 		
-		for(ScheduledReportListToolbarHook hooker : hookHandler.getHookers(ScheduledReportListToolbarHook.class))
-			hooker.statusBarToolbarHook_addRight(mainToolbar, this);
+		hookHandler.getHookers(ScheduledReportListToolbarHook.class)
+		   .forEach(hooker -> hooker.statusBarToolbarHook_addRight(mainToolbar, this));
 		
 		mainToolbar.addBaseHookersRight();
 		
@@ -316,18 +347,13 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 		archiveBtn.setToolTip(SchedulerMessages.INSTANCE.displayArchived());
 		mainToolbar.add(archiveBtn);
 		
-		archiveBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				reload();
-			}
-		});
+		archiveBtn.addSelectHandler(event -> reload());
 	}
 	
 	public String getName() {
 		return name;
 	}
-
+	
 	private void createStore() {
 		/* init filter */
 		jobFilterConfig.setActive(true);
@@ -817,14 +843,14 @@ public class ScheduledReportListPanel extends DwBorderContainer {
 		return container;
 	}
 
-	public void setDataInDetailStore(ReportScheduleJobInformation result) {
+	public void setDataInDetailStore(final ReportScheduleJobInformation result) {
 		detailScheduleInfoStore.clear();
 		
-		for(ExecutionLogEntryDto dto : result.getLastExecutedEntries())
-			detailScheduleInfoStore.add(dto);
+		result.getLastExecutedEntries()
+		   .forEach(detailScheduleInfoStore::add);
 		
-		for(Date date : result.getNextPlannedEntries())
-			detailScheduleInfoStore.add(new DatePropertyModel(date));
+		result.getNextPlannedEntries()
+		   .forEach(date -> detailScheduleInfoStore.add(new DatePropertyModel(date)));
 	}
 	
 	private Grid<KeyValueProperty> getDetailGrid( final ReportScheduleJobListInformation selected, final ReportScheduleJobInformation result) {

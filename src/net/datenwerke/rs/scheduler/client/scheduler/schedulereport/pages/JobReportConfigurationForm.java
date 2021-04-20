@@ -2,10 +2,14 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.user.client.ui.HasValue;
 import com.google.gwt.user.client.ui.HorizontalPanel;
@@ -19,9 +23,9 @@ import com.sencha.gxt.core.client.util.ToggleGroup;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.Store.StoreSortInfo;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import com.sencha.gxt.widget.core.client.form.Radio;
@@ -52,6 +56,7 @@ import net.datenwerke.gxtdto.client.forms.wizard.WizardResizer;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
@@ -70,6 +75,7 @@ import net.datenwerke.rs.core.client.reportmanager.hookers.ReportCatalogOnDemand
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportSelectionRepositoryProviderHook;
 import net.datenwerke.rs.reportdoc.client.ReportDocumentationUiService;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
+import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleConfigWizardPageProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.utils.misc.Nullable;
@@ -83,6 +89,8 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 	private ToggleGroup exportTypeGroup;
 	private Map<Radio, ReportExporter> exporterMap;
 	private List<ReportExecutionConfigDto> exporterConfig;
+	
+	private WizardDialog wizard;
 	
 	private final ReportScheduleDefinition jobDefinition;
 	
@@ -98,7 +106,11 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 	private VerticalLayoutContainer verticalContainer;
 	private VerticalLayoutContainer exportFormFieldWrapper = new VerticalLayoutContainer();
 	
-	private ReportDto report;
+	private Optional<ReportDto> report;
+	
+	private CheckBox advancedCheckbox;
+	
+	final List<ScheduleConfigWizardPageProviderHook> advancedPages;
 
 	@Inject
 	public JobReportConfigurationForm(
@@ -108,9 +120,11 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 			ReportManagerTreeLoaderDao reportLoaderDao,
 			ReportExecutorDao reportExecutorDao,
 			Provider<ReportSelectionDialog> reportDialogProvider,
-			@Assisted ReportDto report, 
+			HookHandlerService hookHandler,
+			@Assisted Optional<ReportDto> report, 
 			@Assisted Collection<ReportViewConfiguration> configs,
-			@Nullable @Assisted ReportScheduleDefinition definition
+			@Nullable @Assisted ReportScheduleDefinition definition,
+			@Assisted List<ScheduleConfigWizardPageProviderHook> advancedPages 
 			) {
 		
 		super();
@@ -121,33 +135,77 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 		this.reportExecutorDao = reportExecutorDao;
 		
 		this.jobDefinition = definition;
-		this.report = report;
 		
 		this.reportDialogProvider = reportDialogProvider;
 		
-		setBorders(false);
-		setBodyBorder(false);
-		setHeaderVisible(false);
-		enableScrollContainer();
-
-		verticalContainer = new VerticalLayoutContainer();
-
-		DwContentPanel wrapper = new DwContentPanel();
-		wrapper.setLightDarkStyle();
-		wrapper.setHeading(SchedulerMessages.INSTANCE.report());
-		wrapper.setHeight(440);
-		wrapper.setWidget(verticalContainer);
+		this.advancedPages = advancedPages;
 		
-		ToolBar toolbar = createToolbar();
-		verticalContainer.add(toolbar);
+		this.report = report;
 		
-		initGrid();
+		Collections.reverse(this.advancedPages);
 		
-		verticalContainer.add(exportFormFieldWrapper, new VerticalLayoutData(1, 270, new Margins(10, 0, 0, 0)));
-
-		add(wrapper, new MarginData(10));
-
+		configureForm(report);
 	}
+	
+	private void configureForm(Optional<ReportDto> report) {
+	   setBorders(false);
+      setBodyBorder(false);
+      setHeaderVisible(false);
+      enableScrollContainer();
+
+      verticalContainer = new VerticalLayoutContainer();
+
+      DwContentPanel wrapper = new DwContentPanel();
+      add(wrapper);
+      wrapper.setLightDarkStyle();
+      wrapper.setHeading(SchedulerMessages.INSTANCE.report());
+      wrapper.setInfoText(SchedulerMessages.INSTANCE.reportConfigDescription());
+      wrapper.setHeight(470);
+      wrapper.setWidget(verticalContainer);
+      
+      ToolBar toolbar = createToolbar();
+      verticalContainer.add(toolbar);
+      
+      initGrid(report);
+      
+      verticalContainer.add(exportFormFieldWrapper, new VerticalLayoutData(1, 1, new Margins(10, 0, 0, 0)));
+      
+      /* advanced options */
+      advancedCheckbox = new CheckBox();
+      advancedCheckbox.setToolTip(SchedulerMessages.INSTANCE.showAdvancedOptionsTooltip());
+      advancedCheckbox.setBoxLabel(SchedulerMessages.INSTANCE.showAdvancedOptionsTooltip());
+      FieldLabel advLabel = new FieldLabel(advancedCheckbox, SchedulerMessages.INSTANCE.showAdvancedOptions());
+      advLabel.setLabelAlign(LabelAlign.LEFT);
+      verticalContainer.add(advLabel);
+
+      advancedCheckbox.addValueChangeHandler(event -> showAdvanced(event.getValue()));
+      
+	}
+	
+   /**
+    * Shows or removes all advanced-options pages at the end of the
+    * {@link WizardDialog}.
+    * 
+    * @param show          if {@code true}, shows the advanced-options pages at the
+    *                      end of the {@link WizardDialog}. Else, removes them from
+    *                      the {@link WizardDialog}.
+    */
+	private void showAdvanced(final boolean show) {
+	   if (!report.isPresent())
+	      return;
+	   
+      if (show) {
+         advancedPages
+            .stream()
+            .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
+            .forEach(pageProvider -> wizard.addPage(wizard.getPageCount() - 1, pageProvider.getPage(report.get(), jobDefinition)));
+      } else {
+         advancedPages
+            .stream()
+            .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
+            .forEach(pageProvider -> wizard.removePage(pageProvider.getPage(report.get(), jobDefinition)));
+      }
+   }
 
 	private ToolBar createToolbar() {
 		ToolBar toolbar = new DwToolBar();
@@ -174,6 +232,16 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 			public boolean showCatalog() {
 				return true;
 			}
+
+         @Override
+         public boolean filterOnSchedulableReports() {
+            return true;
+         }
+
+         @Override
+         public boolean showEntriesWithUnaccessibleHistoryPath() {
+            return true;
+         }
 		});
 		
 		reportSelector.setHeading(SchedulerMessages.INSTANCE.report());
@@ -319,21 +387,19 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 		
 	}
 	
-	private void initGrid() {
+	private void initGrid(Optional<ReportDto> report) {
 		/* prepare store */
 		store = new ListStore<ReportDto>(new DtoIdModelKeyProvider());
 		store.setAutoCommit(true);
 		store.addSortInfo(new StoreSortInfo<ReportDto>(ReportDtoPA.INSTANCE.name(), SortDir.ASC));
 
 		createGrid();
-		if (null != report)
-			onReportSelected(report);
+		if (report.isPresent()) 
+			onReportSelected(report.get());
 		
 		grid.setContextMenu(new DwMenu());
 		grid.addBeforeShowContextMenuHandler( event -> grid.setContextMenu(createContextMenu()) );
 		
-		verticalContainer.add(exportFormFieldWrapper, new VerticalLayoutData(1, 270, new Margins(10, 0, 0, 0)));
-
 	}
 
 	private Menu createContextMenu() {
@@ -455,7 +521,8 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 		
 		grid.getSelectionModel().addSelectionChangedHandler( this::showExportForm );
 		grid.addCellDoubleClickHandler( event -> showReportSelector() );
-		grid.getSelectionModel().select(report, false);
+		if (report.isPresent())
+		   grid.getSelectionModel().select(report.get(), false);
 
 		verticalContainer.add(grid, new VerticalLayoutData(1, 270, new Margins(10, 0, 0, 0)));
 	}
@@ -469,6 +536,12 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 
 	@Override
 	public boolean isValid() {
+	   
+	   if (!report.isPresent()) {
+	      new DwAlertMessageBox(SchedulerMessages.INSTANCE.reportConfig(), SchedulerMessages.INSTANCE.reportConfigError()).show();
+         return false;
+	   }
+	      
 		Radio radio = null;
 		for(HasValue<Boolean> hv : exportTypeGroup){
 			if(Boolean.TRUE.equals(hv.getValue())){
@@ -495,11 +568,12 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 
 	@Override
 	public void setWizard(WizardDialog dialog) {
+	   this.wizard = dialog;
 	}
 
 	@Override
 	public int getPageHeight() {
-		return 550;
+		return 546;
 	}
 	
 	public ToggleGroup getExportTypeGroup() {
@@ -519,14 +593,51 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 	}
 
 	private void onReportSelected(ReportDto report) {
-		this.report = report;
+		if (null != wizard ) 
+		   wizard.setHeading(SchedulerMessages.INSTANCE.scheduleReportMulti(report.getName()));
+		
+		configureAdvancedOptions();
+		
+		this.report = Optional.of(report);
 		store.clear();
 		store.add(report);
 		grid.getSelectionModel().select(report, false);
 	}
 	
 	
-	public ReportDto getReport() {
-		return report;
+   /**
+    * Checks if the job definition contains any advanced options saved. If yes,
+    * selects the advanced pages checkbox and shows advanced-options pages.
+    */
+	private void configureAdvancedOptions() {
+      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+         @Override
+         public void execute() {
+            /* First remove */
+            advancedCheckbox.setValue(false, true);
+            showAdvanced(false);
+            
+            if (!report.isPresent())
+               return;
+            
+            /* Add if job definition is configured */
+            advancedPages
+               .stream()
+               .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
+               .filter(pageProvider -> pageProvider.isConfigured(report.get(), jobDefinition))
+               .findAny()
+               .ifPresent(pageProvider -> {
+                  advancedCheckbox.setValue(true, true);
+               });
+         }
+      });
+      
+   }
+
+   public ReportDto getReport() {
+      if (!report.isPresent())
+         throw new IllegalStateException("Report cannot be empty");
+		return report.get();
 	}
+
 }

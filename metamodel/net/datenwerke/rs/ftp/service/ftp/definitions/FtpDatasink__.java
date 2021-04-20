@@ -9,6 +9,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 public class FtpDatasink__ extends net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
 	public static final String folder = "folder";
+	public static final String ftpMode = "ftpMode";
 	public static final String host = "host";
 	public static final String password = "password";
 	public static final String pbeServiceProvider = "pbeServiceProvider";

@@ -1,5 +1,10 @@
 package net.datenwerke.rs.core.service.reportmanager;
 
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowConsumer;
+
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
@@ -60,13 +65,12 @@ import net.datenwerke.security.service.security.annotation.UpdateOwner;
 import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-
 /**
  * 
  *
  */
 @Singleton
-public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportManagerNode> implements ReportService  {
+public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportManagerNode> implements ReportService {
 
 	private final HookHandlerService hookHandler;
 	private final Provider<Set<Class<? extends Report>>> installedReportTypes;
@@ -75,18 +79,18 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 	private final Provider<AuthenticatorService> authenticatorServiceProvider;
 	private final ReportParameterService reportParameterService;
 	private final TerminalService terminalService;
-	
+
 	@Inject
 	public ReportServiceImpl(
-		Provider<EntityManager> entityManagerProvider,
-		HookHandlerService hookHandler,
-		@ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
-		SecurityService securityService,
-		EntityClonerService entityCloner,
-		ReportParameterService reportParameterService,
-		TerminalService terminalService,
-		Provider<AuthenticatorService> authenticatorServiceProvider
-	) {
+			Provider<EntityManager> entityManagerProvider, 
+			HookHandlerService hookHandler,
+			@ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
+			SecurityService securityService, 
+			EntityClonerService entityCloner,
+			ReportParameterService reportParameterService, 
+			TerminalService terminalService,
+			Provider<AuthenticatorService> authenticatorServiceProvider
+			) {
 		this.entityManagerProvider = entityManagerProvider;
 		this.hookHandler = hookHandler;
 		this.installedReportTypes = installedReportTypes;
@@ -96,41 +100,40 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 		this.terminalService = terminalService;
 		this.authenticatorServiceProvider = authenticatorServiceProvider;
 	}
-	
-	
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see net.datenwerke.rs.reportmanager.ReportManagerService#getAllReports()
 	 */
 	@Override
 	@SimpleQuery
-	public List<Report> getAllReports(){
-		return null; //finder magic;
+	public List<Report> getAllReports() {
+		return null; // finder magic;
 	}
-	
+
 	@Override
-	public AbstractReportManagerNode getNodeByPath(String path){
+	public AbstractReportManagerNode getNodeByPath(String path) {
 		return getNodeByPath(path, true);
 	}
-	
+
 	@Override
 	public AbstractReportManagerNode getNodeByPath(String path, boolean checkRights) {
-		if(path.startsWith("/"))
+		if (path.startsWith("/"))
 			path = "/" + ReportManagerVFS.FILESYSTEM_NAME + path;
 		else
 			path = "/" + ReportManagerVFS.FILESYSTEM_NAME + "/" + path;
-		
+
 		try {
 			Object object = terminalService.getObjectByLocation(path, checkRights);
-			if(object instanceof AbstractReportManagerNode)
+			if (object instanceof AbstractReportManagerNode)
 				return (AbstractReportManagerNode) object;
 			return null;
 		} catch (ObjectResolverException e) {
 			return null;
 		}
 	}
-	
+
 	@Override
 	public Set<Class<? extends Report>> getInstalledReportTypes() {
 		return installedReportTypes.get();
@@ -141,97 +144,93 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 	public Report getReportById(long id) {
 		return null; // by magic
 	}
-	
+
 	@Override
 	public Report getReportByKey(String key) {
-		try{
+		try {
 			return doGetReportByKey(key);
-		} catch(NonUniqueResultException e){
-			throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key,e);
-		} catch(IllegalStateException e){
-			if(null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
-				throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key,e);
+		} catch (NonUniqueResultException e) {
+			throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key, e);
+		} catch (IllegalStateException e) {
+			if (null != e.getCause() && e.getCause() instanceof NonUniqueResultException)
+				throw new IllegalArgumentException("There seem to be multiple reports with the same key: " + key, e);
 			throw e;
 		}
 	}
-	
-	
-	@QueryByAttribute(where=Report__.key)
+
+	@QueryByAttribute(where = Report__.key)
 	public Report doGetReportByKey(String key) {
 		return null; // by magic
 	}
-	
+
 	@Override
-	@QueryByAttribute(where=Report__.uuid)
+	@QueryByAttribute(where = Report__.uuid)
 	public Report getReportByUUID(String UUID) {
 		return null; // by magic
 	}
-	
+
 	@Override
-	@SimpleQuery(from=Report.class, join=@Join(joinAttribute=Report__.datasourceContainer, where=@Predicate(attribute=DatasourceContainer__.datasource,value="ds")))
+	@SimpleQuery(from = Report.class, join = @Join(joinAttribute = Report__.datasourceContainer, where = @Predicate(attribute = DatasourceContainer__.datasource, value = "ds")))
 	public List<Report> getReportsByDatasource(@Named("ds") DatasourceDefinition ds) {
 		return null; // by magic
 	}
-	
+
 	@Override
 	@UpdateOwner(name = "node")
 	@FirePersistEntityEvents
 	public void persist(@Named("node") AbstractReportManagerNode node) {
 		ensureKeyIsUnique(node);
-		
+
 		super.persist(node);
 	}
-	
+
 	@Override
 	@FireMergeEntityEvents
 	public AbstractReportManagerNode merge(AbstractReportManagerNode node) {
 		ensureKeyIsUnique(node);
-		
+
 		return super.merge(node);
 	}
 
 	protected void ensureKeyIsUnique(AbstractReportManagerNode node) {
-		if(node instanceof Report && ! StringUtils.isEmpty(((Report) node).getKey())){
+		if (node instanceof Report && !StringUtils.isEmpty(((Report) node).getKey())) {
 			Report report = getReportByKey(((Report) node).getKey());
-			if(null != report && ! report.equals(node))
-				throw new IllegalArgumentException("Report key must be unique: " + node.getId() + ", " + ((Report) node).getKey());
+			if (null != report && !report.equals(node))
+				throw new IllegalArgumentException(
+						"Report key must be unique: " + node.getId() + ", " + ((Report) node).getKey());
 		}
 	}
-
-
-
 
 	@Override
 	public void persist(ReportMetadata reportMetadata) {
 		entityManagerProvider.get().persist(reportMetadata);
 	}
-	
+
 	@Override
-	public void remove(Report report, ReportMetadata metadata){
-		if(! report.hasReportMetadata(metadata))
+	public void remove(Report report, ReportMetadata metadata) {
+		if (!report.hasReportMetadata(metadata))
 			throw new IllegalArgumentException("Report does not have metadata");
-		
+
 		report.removeReportMetadata(metadata);
-		
+
 		EntityManager em = entityManagerProvider.get();
 		metadata = em.find(metadata.getClass(), metadata.getId());
-		if(null != metadata)
+		if (null != metadata)
 			em.remove(metadata);
 	}
-	
+
 	@Override
 	public void persist(ReportProperty property) {
 		entityManagerProvider.get().persist(property);
 	}
-	
-	
+
 	@Override
-	public void remove(Report report, ReportProperty property){
-		if(! report.hasReportProperty(property))
+	public void remove(Report report, ReportProperty property) {
+		if (!report.hasReportProperty(property))
 			throw new IllegalArgumentException("Report does not have property");
-		
+
 		report.removeReportProperty(property);
-		
+
 		EntityManager em = entityManagerProvider.get();
 		em.remove(em.find(property.getClass(), property.getId()));
 	}
@@ -240,7 +239,7 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 	public Report getUnmanagedReportById(long id) {
 		Report managedReport = getReportById(id);
 		Report unmanagedReport = entityCloner.cloneEntity(managedReport);
-		
+
 		return unmanagedReport;
 	}
 
@@ -253,230 +252,243 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
 	@Override
 	public List<ReportVariant> getVariantsOf(AbstractReportManagerNode report, User user) {
 		List<ReportVariant> variants = new ArrayList<ReportVariant>();
-		for(AbstractReportManagerNode variant : report.getChildrenSorted()){
-			if(variant instanceof Report && variant instanceof ReportVariant){
-				variants.add((ReportVariant)variant);
+		for (AbstractReportManagerNode variant : report.getChildrenSorted()) {
+			if (variant instanceof Report && variant instanceof ReportVariant) {
+				variants.add((ReportVariant) variant);
 			}
 		}
-		
+
 		return variants;
-	}
-	
-	@Override
-	@QueryByAttribute(select=Report__.id,from=Report.class,where=Report__.key, throwNoResultException=true)
-	public long getReportIdFromKey(String key) {
-		return -1; //magic
 	}
 
 	@Override
-	@SimpleQuery(select=ReportMetadata__.name,from=ReportMetadata.class,distinct=true,orderBy=@OrderBy(attribute=ReportMetadata__.name))
+	@QueryByAttribute(select = Report__.id, from = Report.class, where = Report__.key, throwNoResultException = true)
+	public long getReportIdFromKey(String key) {
+		return -1; // magic
+	}
+
+	@Override
+	@SimpleQuery(select = ReportMetadata__.name, from = ReportMetadata.class, distinct = true, orderBy = @OrderBy(attribute = ReportMetadata__.name))
 	public List<String> getReportMetadataKeys() {
-		return null; //magic
+		return null; // magic
 	}
-	
+
 	@Override
-	@SimpleQuery(select=ReportProperty__.name,from=ReportStringProperty.class,distinct=true,orderBy=@OrderBy(attribute=ReportProperty__.name))
+	@SimpleQuery(select = ReportProperty__.name, from = ReportStringProperty.class, distinct = true, orderBy = @OrderBy(attribute = ReportProperty__.name))
 	public List<String> getReportStringPropertyKeys() {
-		return null; //magic
+		return null; // magic
 	}
-	
-	
-	
+
 	@Override
-	@QueryByAttribute(where=AbstractReportManagerNode__.parent,type=PredicateType.IS_NULL)
+	@QueryByAttribute(where = AbstractReportManagerNode__.parent, type = PredicateType.IS_NULL)
 	public List<AbstractReportManagerNode> getRoots() {
 		return null; // magic
 	}
-	
+
 	@Override
 	@SimpleQuery
-	public List<AbstractReportManagerNode> getAllNodes(){
+	public List<AbstractReportManagerNode> getAllNodes() {
 		return null;
 	}
-	
+
 	@Override
 	@QueryById
 	public AbstractReportManagerNode getNodeById(long id) {
 		return null; // magic
 	}
-	
+
 	@Override
-	public void updateParameterDefinitions(Report report, List<ParameterDefinition> newDefinitions, boolean allowParameterRemoval){
-		for(AbstractReportManagerNode variant : report.getChildren())
-			if(! allowParameterRemoval && report.getParameterDefinitions().size() < ((Report)variant).getParameterInstances().size())
-				throw new IllegalArgumentException("New parent's parameters are not a superset of the old parent (parentId=" + report.getId() + ", variantName=" + variant.getName() + ")");
+	public void updateParameterDefinitions(final Report report, final List<ParameterDefinition> newDefinitions,
+			final boolean allowParameterRemoval) {
+		for (AbstractReportManagerNode variant : report.getChildren())
+			if (!allowParameterRemoval
+					&& report.getParameterDefinitions().size() < ((Report) variant).getParameterInstances().size())
+				throw new IllegalArgumentException(
+						"New parent's parameters are not a superset of the old parent (parentId=" + report.getId()
+								+ ", variantName=" + variant.getName() + ")");
 
 		/* first step: save all new definitions */
-		for(ParameterDefinition def: newDefinitions)
-			if(null != def.getId())
+		for (ParameterDefinition def : newDefinitions)
+			if (null != def.getId())
 				throw new IllegalArgumentException("Expected a new definition");
 			else
 				reportParameterService.persist(def);
-		
+
 		/* make sure all variants have the same set of parameters */
-		if(report.hasChildren()){
-			IdentityHashMap<ParameterDefinition,Object> handledDefs = new IdentityHashMap<ParameterDefinition, Object>();
+		if (report.hasChildren()) {
+			IdentityHashMap<ParameterDefinition, Object> handledDefs = new IdentityHashMap<ParameterDefinition, Object>();
 			boolean isFirst = true;
-			for(AbstractReportManagerNode aVariant : report.getChildren()){
+			for (AbstractReportManagerNode aVariant : report.getChildren()) {
 				Report variant = (Report) aVariant;
-				
+
 				Set<ParameterInstance> forRemoval = new HashSet<ParameterInstance>();
-				for(ParameterInstance pi : variant.getParameterInstances()){
+				for (ParameterInstance pi : variant.getParameterInstances()) {
 					String oldKey = pi.getDefinition().getKey();
 					oldKey = null == oldKey ? "" : oldKey;
-					
+
 					boolean found = false;
-					for(ParameterDefinition newDef : newDefinitions){
-						if(oldKey.equals(newDef.getKey()) && pi.getClass().equals(newDef.getClass())){
+					for (ParameterDefinition newDef : newDefinitions) {
+						if (oldKey.equals(newDef.getKey()) && pi.getClass().equals(newDef.getClass())) {
 							pi.setDefinition(newDef);
 							found = true;
-							if(isFirst)
+							if (isFirst)
 								handledDefs.put(newDef, 1);
-							else if(! handledDefs.containsKey(newDef))
-								throw new IllegalArgumentException("Something is wrong with this report's (" + report.getId() + ") variants. Please redo parameters.");
+							else if (!handledDefs.containsKey(newDef))
+								throw new IllegalArgumentException("Something is wrong with this report's ("
+										+ report.getId() + ") variants. Please redo parameters.");
 							break;
 						}
 					}
-					if(! found && ! allowParameterRemoval)
+					if (!found && !allowParameterRemoval)
 						throw new IllegalArgumentException("I am not allowed to remove parameters.");
-					if(! found){
+					if (!found) {
 						pi.setDefinition(null);
 						forRemoval.add(pi);
 					}
 				}
-				
-				for(ParameterInstance instance : forRemoval)
+
+				for (ParameterInstance instance : forRemoval)
 					reportParameterService.remove(instance);
-				
+
 				isFirst = false;
 			}
-			
-			for(AbstractReportManagerNode aVariant : report.getChildren()){
+
+			for (AbstractReportManagerNode aVariant : report.getChildren()) {
 				Report variant = (Report) aVariant;
-				for(ParameterDefinition<?> def : newDefinitions){
-					if(handledDefs.containsKey(def))
+				for (ParameterDefinition<?> def : newDefinitions) {
+					if (handledDefs.containsKey(def))
 						continue;
-					
+
 					ParameterInstance<?> instance = def.createParameterInstance();
 					variant.addParameterInstance(instance);
 				}
 			}
 		}
-		
+
 		/* replace defs */
-		for(ParameterDefinition def : new ArrayList<ParameterDefinition>(report.getParameterDefinitions()))
+		for (ParameterDefinition def : new ArrayList<ParameterDefinition>(report.getParameterDefinitions()))
 			reportParameterService.remove(def);
-		
+
 		report.setParameterDefinitions(new ArrayList<ParameterDefinition>(newDefinitions));
-		
+
 		report.setParameterInstances(new HashSet<ParameterInstance>());
-		for(ParameterDefinition def : report.getParameterDefinitions())
-			report.addParameterInstance(def.createParameterInstance());
+		report.getParameterDefinitions().forEach(
+				def -> report.addParameterInstance(def.createParameterInstance()));
 	}
-	
+
 	@Override
 	protected void beforeNodeCopy(AbstractReportManagerNode source, AbstractReportManagerNode target) {
-		if(source instanceof ReportVariant){
-			if(! (target instanceof Report) || target instanceof ReportVariant)
+		if (source instanceof ReportVariant) {
+			if (!(target instanceof Report) || target instanceof ReportVariant)
 				throw new IllegalArgumentException("Could not copy variant to " + target.getClass());
 		}
 	}
-	
+
 	@Override
-	protected void beforeNodeMoveToParent(AbstractReportManagerNode node, AbstractReportManagerNode newParent, AbstractReportManagerNode oldParent) {
-		if(node instanceof ReportVariant){
-			if(! (newParent instanceof Report) || newParent instanceof ReportVariant)
+	protected void beforeNodeMoveToParent(AbstractReportManagerNode node, AbstractReportManagerNode newParent,
+			AbstractReportManagerNode oldParent) {
+		if (node instanceof ReportVariant) {
+			if (!(newParent instanceof Report) || newParent instanceof ReportVariant)
 				throw new IllegalArgumentException("Could not move variant to " + newParent.getClass());
 		}
 	}
 
 	@Override
-	protected void nodeMovedToParent(AbstractReportManagerNode node, AbstractReportManagerNode newParent, AbstractReportManagerNode oldParent) {
-		if(node instanceof ReportVariant){
-			
+	protected void nodeMovedToParent(AbstractReportManagerNode node, AbstractReportManagerNode newParent,
+			AbstractReportManagerNode oldParent) {
+		if (node instanceof ReportVariant) {
+
 			/* parameters */
-			Report oldParentReport = (Report)oldParent;
-			Report parentReport = (Report)newParent;
+			Report oldParentReport = (Report) oldParent;
+			Report parentReport = (Report) newParent;
 			Report variant = (Report) node;
-			
-			if(oldParentReport.getParameterDefinitions().size() != parentReport.getParameterDefinitions().size())
-				throw new IllegalArgumentException(ReportManagerMessages.INSTANCE.exceptionCannotMoveVariantSinceMismatchedParams());
-			
-			for(int i = 0; i < oldParentReport.getParameterDefinitions().size(); i++){
+
+			if (oldParentReport.getParameterDefinitions().size() != parentReport.getParameterDefinitions().size())
+				throw new IllegalArgumentException(
+						ReportManagerMessages.INSTANCE.exceptionCannotMoveVariantSinceMismatchedParams());
+
+			for (int i = 0; i < oldParentReport.getParameterDefinitions().size(); i++) {
 				ParameterDefinition oldDef = oldParentReport.getParameterDefinitions().get(i);
 				ParameterDefinition newDef = parentReport.getParameterDefinitions().get(i);
-				
-				if(! oldDef.getClass().equals(newDef.getClass()))
-					throw new IllegalArgumentException(ReportManagerMessages.INSTANCE.exceptionCannotMoveVariantSinceMismatchedParams());
-				
+
+				if (!oldDef.getClass().equals(newDef.getClass()))
+					throw new IllegalArgumentException(
+							ReportManagerMessages.INSTANCE.exceptionCannotMoveVariantSinceMismatchedParams());
+
 				ParameterInstance instance = variant.getParameterInstanceFor(oldDef);
-				if(null == instance)
+				if (null == instance)
 					throw new IllegalArgumentException("Could not find instance");
 				instance.setDefinition(newDef);
 			}
-				
+
 		}
 	}
-	
+
 	@Override
 	protected AbstractReportManagerNode cloneNode(AbstractReportManagerNode node) {
 		AbstractReportManagerNode clone = super.cloneNode(node);
-		
-		if(clone instanceof Report) {
-			((Report)clone).setUuid(UUID.randomUUID().toString());
-			((Report)clone).setKey(null);
+
+		if (clone instanceof Report) {
+			((Report) clone).setUuid(UUID.randomUUID().toString());
+			((Report) clone).setKey(null);
 		}
 		return clone;
 	}
-	
+
 	@Override
-	public ReportMetadata getOrCreateMetadata(Report report, String name){
-		  ReportMetadata md = report.getReportMetadataByName(name);
-		  if(null == md){
-			  md = new ReportMetadata();
-			  md.setName(name);
-		  	  report.addReportMetadata(md);
-		  	  persist(md);
-		  }
-		  return md;
-	}
-	
-	@Override
-	public ReportMetadata removeMetadataByName(Report report, String name){
-		  ReportMetadata md = report.getReportMetadataByName(name);
-		  if(null != md)
-			  remove(report, md);
-		  return md;
+	public ReportMetadata getOrCreateMetadata(Report report, String name) {
+		ReportMetadata md = report.getReportMetadataByName(name);
+		if (null == md) {
+			md = new ReportMetadata();
+			md.setName(name);
+			report.addReportMetadata(md);
+			persist(md);
+		}
+		return md;
 	}
 
-
 	@Override
-	public void prepareVariantForStorage(ReportVariant variant, String executeToken) throws ExpectedException {
-		for(VariantToBeStoredHook vtbs : hookHandler.getHookers(VariantToBeStoredHook.class))
-			vtbs.variantToBeStored((Report) variant, executeToken);
+	public ReportMetadata removeMetadataByName(Report report, String name) {
+		ReportMetadata md = report.getReportMetadataByName(name);
+		if (null != md)
+			remove(report, md);
+		return md;
 	}
 
-
-
+	@Override
+	public void prepareVariantForStorage(final ReportVariant variant, final String executeToken) throws ExpectedException {
+		hookHandler.getHookers(VariantToBeStoredHook.class).forEach(
+				vtbs -> vtbs.variantToBeStored((Report) variant, executeToken));
+	}
 
 	@Override
-	public void prepareVariantForEdit(ReportVariant referenceReport, ReportDto reportDto, String executeToken) 
+	public void prepareVariantForEdit(final ReportVariant referenceReport, final ReportDto reportDto, final String executeToken)
 			throws ServerCallFailedException {
-		for(VariantToBeEditedHook vtbe : hookHandler.getHookers(VariantToBeEditedHook.class))
-			vtbe.variantToBeEdited((Report) referenceReport, reportDto, executeToken);
+		hookHandler.getHookers(VariantToBeEditedHook.class).forEach(rethrowConsumer(
+				vtbe -> vtbe.variantToBeEdited((Report) referenceReport, reportDto, executeToken)));
 	}
-
-
-
 
 	@Override
 	public String extractQuery(Report report) {
-		
+
 		DatasourceDefinitionConfig datasourceConfig = report.getDatasourceContainer().getDatasourceConfig();
-		if(datasourceConfig instanceof DatabaseDatasourceConfig)
-			return ((DatabaseDatasourceConfig)report.getDatasourceContainer().getDatasourceConfig()).getQuery();
-		
+		if (datasourceConfig instanceof DatabaseDatasourceConfig)
+			return ((DatabaseDatasourceConfig) report.getDatasourceContainer().getDatasourceConfig()).getQuery();
+
 		throw new UnsupportedOperationException("Query can not be fetched for: " + report.getClass().getSimpleName());
+	}
+
+	@Override
+	public InputStream createInputStream(Object report) {
+		ByteArrayInputStream bis = null;
+		if (report instanceof String)
+			bis = new ByteArrayInputStream(((String) report).getBytes(StandardCharsets.UTF_8));
+		else if (report instanceof byte[])
+			bis = new ByteArrayInputStream(((byte[]) report));
+		else
+			throw new IllegalArgumentException("Report type not supported");
+
+		return bis;
 	}
 
 }

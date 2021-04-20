@@ -1,12 +1,17 @@
 package net.datenwerke.rs.eximport.service.eximport.im.http;
 
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.servlet.SessionScoped;
 
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.ExportDataProviderImpl;
@@ -24,10 +29,6 @@ import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfigDto;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportPostProcessProviderHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.servlet.SessionScoped;
 
 /**
  * 
@@ -89,14 +90,12 @@ public class HttpImportServiceImpl implements HttpImportService {
 		if(! hasCurrentConfig())
 			throw new IllegalArgumentException("Do not have config");
 		
-		final File xmlFile;
+		final Path xmlFile;
 		try {
 			xmlFile = tempFileService.createTempFile();
-			FileWriter writer = new FileWriter(xmlFile);
-			writer.write(xmldata);
-			writer.close();
+			Files.write(xmlFile, xmldata.getBytes(StandardCharsets.UTF_8));
 			
-			currentConfiguration.setImportData(new ExportDataProviderImpl(xmldata.getBytes()));
+			currentConfiguration.setImportData(new ExportDataProviderImpl(xmldata.getBytes(StandardCharsets.UTF_8)));
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

@@ -3,13 +3,13 @@ package net.datenwerke.gf.service.tempfile;
 import java.io.File;
 import java.util.UUID;
 
-import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
-import net.datenwerke.gf.service.tempfile.annotations.TempFileLifeTime;
-import net.datenwerke.rs.utils.config.ConfigService;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
+
+import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
+import net.datenwerke.gf.service.tempfile.annotations.TempFileLifeTime;
+import net.datenwerke.rs.utils.config.ConfigService;
 
 public class TempFileModule extends AbstractModule {
 
@@ -21,6 +21,8 @@ public class TempFileModule extends AbstractModule {
 	
 	@Override
 	protected void configure() {
+	   bind(TempFileService.class).to(TempFileServiceImpl.class).asEagerSingleton();
+	   
 		bind(TempFileStartup.class).asEagerSingleton();
 	}
 
