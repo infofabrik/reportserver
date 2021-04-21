@@ -4,7 +4,7 @@
 
 With ReportServer you are not limited to one provider's solutions. ReportServer integrates Jasper, Birt, Mondrian and Excel-based reporting: choose what best suits your needs!
 
-ReportServer: https://reportserver.net
+ReportServer Homepage: https://reportserver.net
 
 Documentation: https://reportserver.net/en/documentation
 
