@@ -47,7 +47,7 @@ public class SambaDatasinkConfigProviderHooker implements
 
     @Override
     public String getDatasinkName() {
-        return "Samba";
+        return "Samba - SMB/CIFS";
     }
 
     @Override

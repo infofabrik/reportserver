@@ -61,7 +61,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "Samba";
+            return "Samba - SMB/CIFS";
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -69,7 +69,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      sambaKey = xform.addField(DatasinkSelectionField.class, "Samba", new SFFCGenericTreeNode() {
+      sambaKey = xform.addField(DatasinkSelectionField.class, "Samba - SMB/CIFS", new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();

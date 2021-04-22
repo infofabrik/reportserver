@@ -78,7 +78,7 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
          public void onSuccess(Map<StorageType, Boolean> result) {
             // item is only added if enabled in configuration
             if (result.get(StorageType.SAMBA)) {
-               MenuItem item = new DwMenuItem("Samba", BaseIcon.ANGLE_DOUBLE_UP);
+               MenuItem item = new DwMenuItem("Samba - SMB/CIFS", BaseIcon.ANGLE_DOUBLE_UP);
                menu.add(item);
                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
             }
@@ -94,7 +94,7 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
       window.setHeaderIcon(BaseIcon.ANGLE_DOUBLE_UP);
-      window.setHeading("Samba");
+      window.setHeading("Samba - SMB/CIFS");
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -115,7 +115,7 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String sambaKey = form.addField(DatasinkSelectionField.class, "Samba", new SFFCGenericTreeNode() {
+      String sambaKey = form.addField(DatasinkSelectionField.class, "Samba - SMB/CIFS", new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
