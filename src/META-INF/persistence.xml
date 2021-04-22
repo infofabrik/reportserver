@@ -2,205 +2,203 @@
     <persistence-unit name="reportServerPU" transaction-type="RESOURCE_LOCAL">
     	<provider>org.hibernate.ejb.HibernatePersistence</provider>
     	
-        <class>net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig</class>
-          <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.ColumnFilter</class>
+        <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.ParameterDadget</class>
           <class>net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.ParameterDadget</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.StaticHtmlDadget</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.UrlDadget</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.PreFilter</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode</class>
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.blatext.BlatextParameterDefinition</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyAtDateConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber</class>
-          <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterInstance</class>
-          <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.MonthlyNthDayConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.ColumnReference</class>
-          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference</class>
           <class>net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig</class>
-          <class>net.datenwerke.rs.scheduleasfile.service.scheduleasfile.action.ScheduleAsFileAction</class>
           <class>net.datenwerke.rs.base.service.datasources.definitions.CsvDatasourceConfig</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.WeeklyTrigger</class>
           <class>net.datenwerke.rs.uservariables.service.variabletypes.list.ListUserVariableInstance</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.TableReport</class>
           <class>net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasourceConfig</class>
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport</class>
-          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.MonthlyNamedDayTrigger</class>
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
-          <class>net.datenwerke.rs.utils.eventlogger.entities.AuditLogEntry</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.FilterRange</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant</class>
-          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplateList</class>
-          <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.AppProperty</class>
+          <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
           <class>net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.ReportDadget</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterInstance</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.LibraryDadget</class>
-          <class>net.datenwerke.rs.crystal.service.crystal.entities.CrystalReport</class>
-          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskGeneralReference</class>
-          <class>net.datenwerke.security.service.security.entities.HierarchicalAce</class>
-          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportByteTemplate</class>
-          <class>net.datenwerke.rs.scriptreport.service.scriptreport.parameter.ScriptParameterDefinition</class>
-          <class>net.datenwerke.security.service.security.entities.HierarchicalAcl</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.ReportDadget</class>
           <class>net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundleEntry</class>
-          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkContainer</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.YearlyNamedDayTrigger</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReport</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry</class>
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsSftpFileAction</class>
-          <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
-          <class>net.datenwerke.rs.samba.service.samba.action.ScheduleAsSambaFileAction</class>
-          <class>net.datenwerke.rs.scp.service.scp.action.ScheduleAsScpFileAction</class>
-          <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterDefinition</class>
-          <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableInstance</class>
-          <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterDefinition</class>
-          <class>net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition</class>
           <class>net.datenwerke.rs.incubator.service.versioning.entities.Revision</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.Dashboard</class>
-          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode</class>
-          <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport</class>
-          <class>net.datenwerke.rs.base.service.datasources.definitions.CsvDatasource</class>
-          <class>net.datenwerke.security.service.usermanager.entities.UserProperty</class>
           <class>net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterInstance</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceMember</class>
-          <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnector</class>
           <class>net.datenwerke.rs.scheduler.service.scheduler.mail.MailReportAction</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DailyConfig</class>
-          <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableDefinition</class>
-          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.YearlyAtDateTrigger</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatText</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig</class>
-          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyNthdayTrigger</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTriggerConfig</class>
+          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyNthdayTrigger</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatTemplate</class>
           <class>net.datenwerke.rs.compiledreportstore.entities.PersistentCompiledReport</class>
-          <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction</class>
-          <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.history.HistoryEntryProperty</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardReference</class>
           <class>net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity</class>
-          <class>net.datenwerke.rs.base.service.parameters.string.TextParameterDefinition</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.MonthlyNthDayMthMonthTrigger</class>
-          <class>net.datenwerke.rs.utils.eventlogger.entities.LogProperty</class>
-          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyNthDayOfWeekConfig</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile</class>
           <class>net.datenwerke.rs.scripting.service.jobs.ScriptExecuteJob</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListEntry</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry</class>
-          <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasource</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.BinaryColumnFilter</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
-          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink</class>
-          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.action.ScheduleAsLocalFileSystemFileAction</class>
-          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportServerSideStringProperty</class>
-          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
-          <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder</class>
           <class>net.datenwerke.rs.base.service.parameters.headline.HeadlineParameterDefinition</class>
           <class>net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterBlock</class>
+          <class>net.datenwerke.rs.scp.service.scp.action.ScheduleAsScpFileAction</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode</class>
-          <class>net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.ExecutedReportFileReference</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.Dadget</class>
-          <class>net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.TextDatasourceConnector</class>
           <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition</class>
-          <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormat</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.Column</class>
-          <class>net.datenwerke.security.service.usermanager.entities.OrganisationalUnit</class>
-          <class>net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReport</class>
-          <class>net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardManagerNode</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter</class>
           <class>net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableInstance</class>
-          <class>net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant</class>
           <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterInstance</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition</class>
+          <class>net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListDadget</class>
-          <class>net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder</class>
-          <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.UploadedParameterFile</class>
-          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFileData</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractJob</class>
           <class>net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardContainer</class>
-          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyWorkdayTrigger</class>
-          <class>net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.BaseProperty</class>
           <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot</class>
-          <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterInstance</class>
           <class>net.datenwerke.rs.scheduler.service.scheduler.sendto.SendToReportActionValue</class>
-          <class>net.datenwerke.security.service.usermanager.entities.Group</class>
+          <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterInstance</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile</class>
+          <class>net.datenwerke.security.service.usermanager.entities.Group</class>
           <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterDefinition</class>
           <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportByteProperty</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport</class>
-          <class>net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition</class>
           <class>net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasource</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.UserDashboard</class>
-          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteList</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatCurrency</class>
           <class>net.datenwerke.security.service.security.entities.Ace</class>
-          <class>net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceConfig</class>
           <class>net.datenwerke.rs.core.service.parameters.entities.ParameterInstance</class>
-          <class>net.datenwerke.security.service.usermanager.entities.User</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.ArgumentDatasourceConnector</class>
           <class>net.datenwerke.rs.base.service.parameters.blatext.BlatextParameterInstance</class>
-          <class>net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportVariant</class>
-          <class>net.datenwerke.rs.uservariables.service.variabletypes.list.ListUserVariableDefinition</class>
-          <class>net.datenwerke.rs.base.service.datasources.connectors.UrlDatasourceConnector</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.MonthlyNthDayOfWeekConfig</class>
           <class>net.datenwerke.rs.scheduler.service.scheduler.sendto.SendToReportAction</class>
           <class>net.datenwerke.rs.base.service.parameters.string.TextParameterInstance</class>
           <class>net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportFile</class>
-          <class>net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceDefinition</class>
-          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode</class>
-          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder</class>
-          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReportVariant</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractAction</class>
-          <class>net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReportVariant</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.history.JobHistory</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DateTrigger</class>
-          <class>net.datenwerke.rs.base.service.parameters.headline.HeadlineParameterInstance</class>
-          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
-          <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.Report</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.PreviewImage</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardFolder</class>
           <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterData</class>
           <class>net.datenwerke.rs.scriptreport.service.scriptreport.parameter.ScriptParameterInstance</class>
           <class>net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink</class>
-          <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink</class>
-          <class>net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink</class>
-          <class>net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink</class>
-          <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile</class>
-          <class>net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile</class>
           <class>net.datenwerke.rs.condition.service.condition.entity.ReportCondition</class>
           <class>net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle</class>
-          <class>net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry</class>
           <class>net.datenwerke.security.service.security.entities.Acl</class>
-          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterSpec</class>
+          <class>net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig</class>
+          <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.ColumnFilter</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.UrlDadget</class>
+          <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterInstance</class>
+          <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition</class>
+          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference</class>
+          <class>net.datenwerke.rs.scheduleasfile.service.scheduleasfile.action.ScheduleAsFileAction</class>
+          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.MonthlyNamedDayTrigger</class>
+          <class>net.datenwerke.rs.utils.eventlogger.entities.AuditLogEntry</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.FilterRange</class>
+          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplateList</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.LibraryDadget</class>
+          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskGeneralReference</class>
+          <class>net.datenwerke.security.service.security.entities.HierarchicalAce</class>
+          <class>net.datenwerke.rs.crystal.service.crystal.entities.CrystalReport</class>
+          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportByteTemplate</class>
+          <class>net.datenwerke.rs.scriptreport.service.scriptreport.parameter.ScriptParameterDefinition</class>
+          <class>net.datenwerke.security.service.security.entities.HierarchicalAcl</class>
+          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkContainer</class>
+          <class>net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterDefinition</class>
+          <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableInstance</class>
+          <class>net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition</class>
+          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode</class>
+          <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport</class>
+          <class>net.datenwerke.rs.base.service.datasources.definitions.CsvDatasource</class>
+          <class>net.datenwerke.security.service.usermanager.entities.UserProperty</class>
+          <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnector</class>
+          <class>net.datenwerke.rs.samba.service.samba.action.ScheduleAsSambaFileAction</class>
+          <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableDefinition</class>
+          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction</class>
+          <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig</class>
+          <class>net.datenwerke.rs.base.service.parameters.string.TextParameterDefinition</class>
+          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyNthDayOfWeekConfig</class>
+          <class>net.datenwerke.rs.utils.eventlogger.entities.LogProperty</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry</class>
+          <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasource</class>
+          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportServerSideStringProperty</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterBlock</class>
+          <class>net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.ExecutedReportFileReference</class>
+          <class>net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink</class>
+          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.action.ScheduleAsLocalFileSystemFileAction</class>
+          <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormat</class>
+          <class>net.datenwerke.security.service.usermanager.entities.OrganisationalUnit</class>
+          <class>net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReport</class>
+          <class>net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardManagerNode</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter</class>
+          <class>net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant</class>
+          <class>net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder</class>
+          <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.UploadedParameterFile</class>
+          <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractJob</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardContainer</class>
+          <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyWorkdayTrigger</class>
+          <class>net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.BaseProperty</class>
+          <class>net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition</class>
+          <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteList</class>
+          <class>net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceConfig</class>
+          <class>net.datenwerke.security.service.usermanager.entities.User</class>
+          <class>net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportVariant</class>
+          <class>net.datenwerke.rs.uservariables.service.variabletypes.list.ListUserVariableDefinition</class>
+          <class>net.datenwerke.rs.base.service.datasources.connectors.UrlDatasourceConnector</class>
+          <class>net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink</class>
+          <class>net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceDefinition</class>
+          <class>net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink</class>
+          <class>net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode</class>
+          <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder</class>
+          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty</class>
+          <class>net.datenwerke.rs.scriptreport.service.scriptreport.entities.ScriptReportVariant</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.history.JobHistory</class>
+          <class>net.datenwerke.rs.base.service.parameters.headline.HeadlineParameterInstance</class>
+          <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
+          <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
+          <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
+          <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger</class>
+          <class>net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode</class>
+          <class>net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportStringProperty</class>
+          <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterSpec</class>
           <properties>
         
 			<!-- Connection properties -->
