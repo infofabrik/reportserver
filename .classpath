@@ -90,7 +90,19 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-3.0.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-all-2.4.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-console-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-3.0.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-3.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-30.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-4.2.3.jar"/>
@@ -199,16 +211,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20200713.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pfjgraphics.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.2.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/QueryBuilder.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.5.0-rc1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rhino-1.7.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-9.5.1-8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/servlet-api-2.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.12.jar"/>
@@ -236,6 +250,5 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlparserv2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-resolver-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xom-1.2.5.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.2.19.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
