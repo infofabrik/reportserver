@@ -844,10 +844,11 @@ public final class Util {
                     mergedRegion.getFirstColumn() + destCellNum - cellNum, mergedRegion.getLastColumn() + destCellNum - cellNum);
             if (Util.isNewMergedRegion(newMergedRegion, mergedRegions)) {
                 mergedRegions.add(newMergedRegion);
-                sheet.addMergedRegion(newMergedRegion);
+                //remove old merged region before adding the new region to avoid intersections
                 if (removeSourceMergedRegion) {
-                    removeMergedRegion(sheet, mergedRegion);
+                   removeMergedRegion(sheet, mergedRegion);
                 }
+                sheet.addMergedRegion(newMergedRegion);
             }
         }
     }
