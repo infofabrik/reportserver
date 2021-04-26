@@ -1,4 +1,4 @@
-package reports.revision
+package net.datenwerke.rs.reportdoc.service.reports
 
 import groovy.text.SimpleTemplateEngine
 

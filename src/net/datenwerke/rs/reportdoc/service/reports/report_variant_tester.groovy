@@ -1,3 +1,5 @@
+package net.datenwerke.rs.reportdoc.service.reports
+
 import java.text.SimpleDateFormat
 
 import org.apache.commons.lang.StringEscapeUtils

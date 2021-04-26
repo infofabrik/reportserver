@@ -1,3 +1,5 @@
+package net.datenwerke.rs.reportdoc.service.reports
+
 /**
  * Berichtsdokumentation - ReportServer
  *
