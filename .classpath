@@ -187,7 +187,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-3.6.6-services.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-4.7.0.0-12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-4.7.0.0-12-extradialects.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/olap4j-1.2.0-latest-trunk.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/olap4j-tck-1.2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/olap4j-xmla-1.2.0-latest-trunk.jar"/>
@@ -208,7 +207,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.2.19.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/QueryBuilder.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.5.0-rc1.jar"/>
@@ -250,5 +248,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.24.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
