@@ -88,19 +88,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-3.0.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-console-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-3.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-30.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-4.2.3.jar"/>
@@ -195,7 +182,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20200713.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pfjgraphics.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
@@ -250,5 +236,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-databind-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.16.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.16.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-all-2.4.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
