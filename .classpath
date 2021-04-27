@@ -183,7 +183,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/logging.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.6.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-3.6.6-services.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-4.7.0.0-12.jar"/>
@@ -245,10 +244,11 @@
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ojdbc7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
-	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/lucene-analyzers-common-8.8.2.jar"/>
-	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/lucene-core-8.8.2.jar"/>
-	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
-	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/lucene-queryparser-8.8.2.jar"/>
-	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/lucene-sandbox-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
