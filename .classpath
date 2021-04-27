@@ -36,7 +36,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.68.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-ext-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.8.0-20180626.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/c3p0-0.9.5.jar"/>
