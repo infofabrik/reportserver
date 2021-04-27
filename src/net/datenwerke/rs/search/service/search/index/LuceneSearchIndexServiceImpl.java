@@ -72,7 +72,7 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
 
 		try {
 			writer = new IndexWriter(indexDir, iwc);
-			reader = DirectoryReader.open(writer, false);
+			reader = DirectoryReader.open(writer);
 			searcher = new IndexSearcher(reader);
 		} catch (IOException e) {
 			logger.warn("error creating search index", e);
@@ -159,7 +159,7 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
 			
 			
 			Query query = parser.parse(querystr);
-			TopScoreDocCollector collector = TopScoreDocCollector.create(SearchServiceImpl.MAX_LIMIT_RESULTS);
+			TopScoreDocCollector collector = TopScoreDocCollector.create(SearchServiceImpl.MAX_LIMIT_RESULTS, SearchServiceImpl.MAX_LIMIT_RESULTS);
 			searcher.search(query, collector);
 			ScoreDoc[] hits = collector.topDocs().scoreDocs;
 

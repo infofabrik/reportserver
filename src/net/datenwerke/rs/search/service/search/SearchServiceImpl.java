@@ -33,7 +33,6 @@ import net.datenwerke.rs.search.service.search.results.SearchResultTag;
 import net.datenwerke.rs.search.service.search.results.SearchResultTagType;
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 import net.datenwerke.security.service.eventlogger.jpa.AfterMergeEntityEvent;
@@ -51,7 +50,7 @@ public class SearchServiceImpl implements SearchService {
    public static final String SEARCH_QUERY_TIMEOUT = "search.timeout";
 
    public static final int NO_LIMIT_RESULTS = 0;
-   public static final int MAX_LIMIT_RESULTS = 100000;
+   public static final int MAX_LIMIT_RESULTS = 50000;
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
@@ -86,13 +85,10 @@ public class SearchServiceImpl implements SearchService {
       this.dtoService = dtoService;
       this.searchIndexService = searchIndexService;
 
-      eventBus.attachEventHandler(JpaEvent.class, new EventHandler<JpaEvent>() {
-         @Override
-         public void handle(JpaEvent event) {
-            if (event instanceof AfterPersistEntityEvent || event instanceof AfterMergeEntityEvent) {
-               searchIndexService.addToIndex(event.getObject());
-               searchIndexService.commit();
-            }
+      eventBus.attachEventHandler(JpaEvent.class, event -> {
+         if (event instanceof AfterPersistEntityEvent || event instanceof AfterMergeEntityEvent) {
+            searchIndexService.addToIndex(event.getObject());
+            searchIndexService.commit();
          }
       });
    }
