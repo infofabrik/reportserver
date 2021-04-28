@@ -12,7 +12,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-2.7.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-4.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/avalon-framework-api-4.3.1.jar"/>
@@ -74,7 +73,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/DatabaseConnectors.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/db2jcc4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dejavu-fonts-2.34.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/docx4j-3.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-properties-1.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-resgen-1.3.1.jar"/>
@@ -125,8 +123,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-api-2.2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-impl-2.2.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-xmldsig-core-1.0.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-xslfo-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.3.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.12.jar"/>
@@ -203,14 +199,12 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting-jsf.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/wmf2svg-0.9.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdb6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-1.0.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/XMLConnector.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-1.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlparserv2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-resolver-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xom-1.2.5.jar"/>
@@ -237,5 +231,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-30.1.1-jre.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.5.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/docx4j-6.1.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/serializer-2.7.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/wmf2svg-0.9.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-2.7.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
