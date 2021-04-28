@@ -82,8 +82,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.5.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/failureaccess-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flute-1.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.20.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fontbox-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
@@ -237,5 +235,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.16.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.16.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-all-2.4.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.21.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
