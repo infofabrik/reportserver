@@ -86,7 +86,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-3.0.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-30.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-jndi-4.2.3.jar"/>
@@ -237,5 +236,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-all-2.4.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.21.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-30.1.1-jre.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
