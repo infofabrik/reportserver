@@ -152,7 +152,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/keycodeDecoder.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-3.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/logging.jar"/>
@@ -196,11 +195,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/super-csv-2.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/UserAgentUtils-1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting-jsf.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdb6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-1.0.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-3.1.0.jar"/>
@@ -237,5 +234,15 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/wmf2svg-0.9.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-2.7.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.3.jar"/>
+	<classpathentry kind="src" path="xdocreport-src"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.converter-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.core-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.document.docx-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.document-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template.velocity-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.3.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
