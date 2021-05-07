@@ -29,6 +29,7 @@ import net.datenwerke.rs.core.service.reportserver.ServerInfoContainer;
 import net.datenwerke.rs.reportdoc.client.ReportDocumentationUIModule;
 import net.datenwerke.rs.reportdoc.service.helper.ReportDocGroovyHelper;
 import net.datenwerke.rs.reportdoc.service.helper.ReportDocPdfRenderer;
+import net.datenwerke.rs.scripting.service.scripting.ScriptingModule;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -271,7 +272,7 @@ public class ReportDocumentationServiceImpl implements ReportDocumentationServic
 	}
 
 	protected CompiledScript compile(String location) throws IOException, ScriptException {
-		String report = IOUtils.toString(getClass().getResourceAsStream(location));
+		String report = IOUtils.toString(getClass().getResourceAsStream(ScriptingModule.RESOURCES_DIR + location));
 		ScriptEngineManager manager = new ScriptEngineManager();
 		ScriptEngine groovy = manager.getEngineByName(GROOVY);
 		Compilable compGroovy = (Compilable) groovy;
