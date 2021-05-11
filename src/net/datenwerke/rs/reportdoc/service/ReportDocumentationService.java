@@ -14,16 +14,18 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
  */
 public interface ReportDocumentationService {
 
-	CompiledReport executeDocumentation(Report report, Long tsId, String format) throws ScriptException;
-	
-	CompiledReport executeDocumentationDeployAnalyze(Report newReport, Report destinationReport, String format, boolean ignoreCase) throws ScriptException;
-	
-	CompiledReport executeDocumentationVariantTest(Report report, List<DatasourceDefinition> datasources, String format) throws ScriptException;
-	
-	CompiledReport executeDocumentationRev(Report report, Long revision, String format) throws ScriptException;
+   public static final String RESOURCES_DIR = "/../../resources/groovy/";
 
-	CompiledReport executeRevisions(Report report, String format) throws ScriptException;
+   CompiledReport executeDocumentation(Report report, Long tsId, String format) throws ScriptException;
 
-	
+   CompiledReport executeDocumentationDeployAnalyze(Report newReport, Report destinationReport, String format,
+         boolean ignoreCase) throws ScriptException;
+
+   CompiledReport executeDocumentationVariantTest(Report report, List<DatasourceDefinition> datasources, String format)
+         throws ScriptException;
+
+   CompiledReport executeDocumentationRev(Report report, Long revision, String format) throws ScriptException;
+
+   CompiledReport executeRevisions(Report report, String format) throws ScriptException;
 
 }
