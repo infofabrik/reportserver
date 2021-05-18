@@ -9,6 +9,7 @@ import com.sencha.gxt.data.shared.IconProvider;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.DatasinkManagerImportDao;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.dto.DatasinkManagerImportConfigDto;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
@@ -60,6 +61,8 @@ public class DatasinkImporterItemsPanel extends ImporterItemsPanel<DatasinkManag
                return BaseIcon.ANGLE_DOUBLE_UP.toImageResource();
             if (ScpDatasinkDto.class.getName().equals(model.getType()))
                return BaseIcon.ARROW_UP.toImageResource();
+            if (EmailDatasinkDto.class.getName().equals(model.getType()))
+               return BaseIcon.SEND.toImageResource();
             return BaseIcon.FOLDER_O.toImageResource();
          }
       });

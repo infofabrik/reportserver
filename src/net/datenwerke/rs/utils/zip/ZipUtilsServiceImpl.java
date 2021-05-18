@@ -11,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -23,6 +24,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
+import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
@@ -90,6 +92,33 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 
 		}
 	}
+	
+    @Override
+    public void createZipFromEmailAttachments(final List<SimpleAttachment> attachments, OutputStream os) throws IOException {
+       try (BufferedOutputStream bos = new BufferedOutputStream(os); 
+             ZipOutputStream zos = new ZipOutputStream(bos)) {
+          attachments
+             .forEach(rethrowConsumer(attachment -> {
+                String name = attachment.getFileName();
+                zos.putNextEntry(new ZipEntry(name));
+                Object attachmentData = attachment.getAttachment();
+                if (attachmentData instanceof Path) {
+                   Path attachmentPath = (Path)attachmentData;
+                   if (!Files.exists(attachmentPath) || Files.isDirectory(attachmentPath))
+                      throw new IllegalArgumentException(
+                            "Attachment not found or directory: " + attachmentPath);
+                   Files.copy((Path)attachmentData, zos);
+                } else if (attachmentData instanceof byte[]) 
+                   zos.write((byte[])attachmentData);
+                else if (attachmentData instanceof String) 
+                   zos.write(((String)attachmentData).getBytes(StandardCharsets.UTF_8));
+                else
+                   throw new IllegalArgumentException(
+                         "Attachment type not supported: " + attachment.getClass().getCanonicalName());
+                zos.closeEntry();
+             }));
+       }
+    }
 	
 	public void zipDirectory(File dir, OutputStream os) throws IOException{
 		ZipOutputStream out = new ZipOutputStream(os); 
@@ -178,14 +207,14 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 	
 	private void addFile(FileServerFile file, FileServerFolder baseFolder, Map<String, Object> zipObjects, FileFilter filter){
 		if(filter.addNode(file))
-			zipObjects.put(getRealtivePath(file, baseFolder), file.getData());
+			zipObjects.put(getRelativePath(file, baseFolder), file.getData());
 	}
 
 	private void addFolder(FileServerFolder folder, FileServerFolder baseFolder, Map<String, Object> zipObjects, FileFilter filter){
 		if(! filter.addNode(folder))
 			return;
 		
-		zipObjects.put(getRealtivePath(folder, baseFolder), ZipUtilsService.DIRECTORY_MARKER);
+		zipObjects.put(getRelativePath(folder, baseFolder), ZipUtilsService.DIRECTORY_MARKER);
 		for(AbstractFileServerNode f : folder.getChildren()){
 			if(f instanceof FileServerFolder){
 				addFolder((FileServerFolder) f, baseFolder, zipObjects, filter);
@@ -196,7 +225,7 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 
 	}
 
-	private String getRealtivePath(AbstractFileServerNode node, AbstractFileServerNode root){
+	private String getRelativePath(AbstractFileServerNode node, AbstractFileServerNode root){
 		if(node == root){
 			return "";
 		}else{
@@ -207,7 +236,7 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 				name = ((FileServerFolder) node).getName();
 
 			if(null != node.getParent()){
-				String rp = getRealtivePath(node.getParent(), root);
+				String rp = getRelativePath(node.getParent(), root);
 				return ("".equals(rp)?name: rp + "/" + name);
 			}else{
 				return name;

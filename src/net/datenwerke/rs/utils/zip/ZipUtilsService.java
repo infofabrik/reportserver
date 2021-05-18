@@ -7,6 +7,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 
+import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 
@@ -21,6 +22,8 @@ public interface ZipUtilsService {
 	public void createZip(Map<String, ? extends Object> content, OutputStream os) throws IOException;
 	
 	public void createZip(List<Path> files, OutputStream os) throws IOException;
+	
+	public void createZipFromEmailAttachments(List<SimpleAttachment> attachments, OutputStream os) throws IOException;
 	
 	public void extractZip(byte[] data, ZipExtractionConfig config) throws IOException;
 	

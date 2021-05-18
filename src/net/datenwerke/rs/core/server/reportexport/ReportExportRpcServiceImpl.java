@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.server.reportexport;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +25,7 @@ import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCache;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCacheEntry;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.mail.MailService;
-import net.datenwerke.rs.core.service.mail.SimpleAttachement;
+import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
@@ -50,235 +52,226 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Singleton
-public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements ReportExporterRpcService {
+public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet implements ReportExporterRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7487071865510613059L;
-	
-	private static final String configPath = "exportfilemd/";
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7487071865510613059L;
 
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final DtoService dtoService;
-	private final ReportExecutorService reportExecutorService;
-	private final MailService mailService;
-	private final UserManagerService userManagerService;
-	private final EventBus eventBus;
-	private final HookHandlerService hookHandlerService;
-	private final ReportDtoService reportDtoService;
-	private final SecurityService securityService;
-	private final ReportService reportService;
-	private final FileNameService fileNameService;
-	private final Provider<ReportSessionCache> sessionCacheProvider;
-	private final ConfigService configService;
-	private final ReportServerService reportServerService;
+   private static final String configPath = "exportfilemd/";
 
-	
-	@Inject
-	public ReportExportRpcServiceImpl(
-		Provider<AuthenticatorService> authenticatorServiceProvider,
-		ReportDtoService reportDtoService,
-		DtoService dtoService,
-		ReportExecutorService reportExecutorService,
-		SecurityService securityService,
-		MailService mailService,
-		UserManagerService userManagerService,
-		HookHandlerService hookHandlerService, 
-		ReportService reportService,
-		EventBus eventBus,
-		FileNameService fileNameService,
-		Provider<ReportSessionCache> sessionCacheProvider,
-		ConfigService configService,
-		ReportServerService reportServerService
-		){
-		
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.reportDtoService = reportDtoService;
-		this.dtoService = dtoService;
-		this.reportExecutorService = reportExecutorService;
-		this.securityService = securityService;
-		this.mailService = mailService;
-		this.userManagerService = userManagerService;
-		this.hookHandlerService = hookHandlerService;
-		this.reportService = reportService;
-		this.eventBus = eventBus;
-		this.fileNameService = fileNameService;
-		this.sessionCacheProvider = sessionCacheProvider;
-		this.configService = configService;
-		this.reportServerService = reportServerService;
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void storeInSessionForExport(@Named("report") ReportDto reportDto,
-			String executorToken, String format, List<ReportExecutionConfigDto> configs)
-			throws ServerCallFailedException {
-		ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
-		
-		storeInSession(reportDto, executorToken, format, configArray);
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final DtoService dtoService;
+   private final ReportExecutorService reportExecutorService;
+   private final MailService mailService;
+   private final UserManagerService userManagerService;
+   private final EventBus eventBus;
+   private final HookHandlerService hookHandlerService;
+   private final ReportDtoService reportDtoService;
+   private final SecurityService securityService;
+   private final ReportService reportService;
+   private final FileNameService fileNameService;
+   private final Provider<ReportSessionCache> sessionCacheProvider;
+   private final ConfigService configService;
+   private final ReportServerService reportServerService;
 
+   @Inject
+   public ReportExportRpcServiceImpl(
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         ReportDtoService reportDtoService, 
+         DtoService dtoService, 
+         ReportExecutorService reportExecutorService,
+         SecurityService securityService, 
+         MailService mailService, 
+         UserManagerService userManagerService,
+         HookHandlerService hookHandlerService, 
+         ReportService reportService, 
+         EventBus eventBus,
+         FileNameService fileNameService, 
+         Provider<ReportSessionCache> sessionCacheProvider,
+         ConfigService configService, 
+         ReportServerService reportServerService) {
 
-	/**
-	 * Prepares a report object and stores it in the session so it can be exported.
-	 * 
-	 * @param reportDto
-	 * @param outputFormat
-	 * @param outputFormat 
-	 * @param mode
-	 * @throws ExpectedException 
-	 */
-	protected void storeInSession(ReportDto reportDto, String executorToken, String outputFormat, ReportExecutionConfig... reportExecutorConfigs) throws ExpectedException {
-		/* get a clean and unmanaged report from the database */
-		Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-		
-		/* check rights */
-		securityService.assertRights(referenceReport, Execute.class);
-				
-		/* get original report */
-		Report orgReport = reportDtoService.getReport(reportDto);
-		
-		/* create variant */
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		adjustedReport = referenceReport.createTemporaryVariant(adjustedReport);
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.reportDtoService = reportDtoService;
+      this.dtoService = dtoService;
+      this.reportExecutorService = reportExecutorService;
+      this.securityService = securityService;
+      this.mailService = mailService;
+      this.userManagerService = userManagerService;
+      this.hookHandlerService = hookHandlerService;
+      this.reportService = reportService;
+      this.eventBus = eventBus;
+      this.fileNameService = fileNameService;
+      this.sessionCacheProvider = sessionCacheProvider;
+      this.configService = configService;
+      this.reportServerService = reportServerService;
+   }
 
-		for(ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)){
-			hooker.adjustReport(adjustedReport, reportExecutorConfigs);
-		}
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void storeInSessionForExport(@Named("report") ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs) throws ServerCallFailedException {
+      ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-		ReportSessionCacheEntry entry = new ReportSessionCacheEntry();
-		
-		entry.setId(orgReport.getId());
-		entry.setOutputFormat(outputFormat);
-		entry.setAdjustedReport(adjustedReport);
-		entry.setExecutorConfigs(reportExecutorConfigs);
-		
-		sessionCacheProvider.get().put(executorToken, entry);
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void exportViaMail(@Named("report") ReportDto reportDto, String executorToken,
-			final String format, List<ReportExecutionConfigDto> configs,
-			String subject, String message, List<StrippedDownUser> recipients)
-			throws ServerCallFailedException, ExpectedException {
-		final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
+      storeInSession(reportDto, executorToken, format, configArray);
+   }
 
-		/* get a clean and unmanaged report from the database */
-		Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-		Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-		
-		/* check rights */
-		securityService.assertRights(referenceReport, Execute.class);
-		
-		/* create variant */
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-		
-		for(ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)){
-			hooker.adjustReport(toExecute, configArray);
-		}
-	
-		CompiledReport cReport;
-		try {
-			cReport = reportExecutorService.execute(toExecute, format, configArray);
-			
-			SimpleMail mail = mailService.newSimpleMail();
-			mail.setSubject(subject);
-			
-			SimpleAttachement attachement =	new SimpleAttachement(
-					cReport.getReport(), 
-					cReport.getMimeType(),
-					makeExportFilename(referenceReport) + "." + cReport.getFileExtension() //$NON-NLS-1$
-				);
-			
-			List<String> emails = new ArrayList<String>();
-			for(StrippedDownUser sUser : recipients){
-				User user = (User) userManagerService.getNodeById(sUser.getId());
-				if(null != user.getEmail() && ! "".equals(user.getEmail()))
-					emails.add(user.getEmail());
-			}
-			mail.setToRecipients(emails);
-			
-			User currentUser = authenticatorServiceProvider.get().getCurrentUser();
-			if(null != currentUser.getEmail() && ! "".equals(currentUser.getEmail())){
-				InternetAddress mailFrom = new InternetAddress(currentUser.getEmail());
-				mail.setFrom(mailFrom, true);
-			}
-			
-			/* set content */		
-			mail.setContent(message, attachement);
-			
-			mailService.sendMail(mail);
-		} catch (Exception e) {
-			eventBus.fireEvent(
-				new ExportReportViaMailFailedEvent(reportDto, executorToken, format, configs, subject, message, recipients)
-			);
-			
-			throw new ExpectedException("Could not export report via mail: " + e.getMessage(), e);
-		}
-		
-	}
+   /**
+    * Prepares a report object and stores it in the session so it can be exported.
+    * 
+    * @param reportDto
+    * @param outputFormat
+    * @param outputFormat
+    * @param mode
+    * @throws ExpectedException
+    */
+   protected void storeInSession(ReportDto reportDto, String executorToken, String outputFormat,
+         ReportExecutionConfig... reportExecutorConfigs) throws ExpectedException {
+      /* get a clean and unmanaged report from the database */
+      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
 
-	private ReportExecutionConfig[] getConfigArray(String executorToken,
-			List<ReportExecutionConfigDto> configs) throws ExpectedException {
-		ReportExecutionConfig[] configArray = new ReportExecutionConfig[configs.size()+1];
-		for(int i = 0; i < configs.size(); i++)
-			configArray[i] = (ReportExecutionConfig) dtoService.createPoso(configs.get(i));
-		configArray[configs.size()] = new RECReportExecutorToken(executorToken);
-		
-		return configArray;
-	}
-	
-	private String makeExportFilename(Report report){
-		String reportName = report.getName();
-		if(report instanceof ReportVariant){
-			reportName = (((Report)report.getParent()).getName() + " - " + report.getName());
-		}
-		
-		return fileNameService.sanitizeFileName(reportName);
-	}
+      /* check rights */
+      securityService.assertRights(referenceReport, Execute.class);
 
-	@Override
-	public String getExportDefaultSettingsAsJSON(String identifier) {
-		return configService.getConfigAsJsonFailsafe(configPath + identifier);
-	}
+      /* get original report */
+      Report orgReport = reportDtoService.getReport(reportDto);
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void exportSkipDownload(@Named("report") ReportDto reportDto, String executorToken,
-			final String format) throws ServerCallFailedException {
-		final ReportExecutionConfig[] configArray = getConfigArray(executorToken, new ArrayList<ReportExecutionConfigDto>());
+      /* create variant */
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      adjustedReport = referenceReport.createTemporaryVariant(adjustedReport);
 
-		/* get a clean and unmanaged report from the database */
-		Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-		Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-		
-		/* check rights */
-		securityService.assertRights(referenceReport, Execute.class);
-		
-		/* create variant */
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-		
-		for(ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)){
-			hooker.adjustReport(toExecute, configArray);
-		}
-	
-		try {
-			CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
-			
-		} catch (Exception e) {
-			throw new ServerCallFailedException(e);
-		}
-	}
+      for (ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)) {
+         hooker.adjustReport(adjustedReport, reportExecutorConfigs);
+      }
 
-	@Override
-	public String getExportDefaultCharset() {
-		return reportServerService.getCharset();
-	}
+      ReportSessionCacheEntry entry = new ReportSessionCacheEntry();
 
+      entry.setId(orgReport.getId());
+      entry.setOutputFormat(outputFormat);
+      entry.setAdjustedReport(adjustedReport);
+      entry.setExecutorConfigs(reportExecutorConfigs);
+
+      sessionCacheProvider.get().put(executorToken, entry);
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void exportViaMail(@Named("report") ReportDto reportDto, String executorToken, final String format,
+         List<ReportExecutionConfigDto> configs, String subject, String message, List<StrippedDownUser> recipients)
+         throws ServerCallFailedException, ExpectedException {
+      final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
+
+      /* get a clean and unmanaged report from the database */
+      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
+      Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
+
+      /* check rights */
+      securityService.assertRights(referenceReport, Execute.class);
+
+      /* create variant */
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
+
+      for (ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)) {
+         hooker.adjustReport(toExecute, configArray);
+      }
+
+      CompiledReport cReport;
+      try {
+         cReport = reportExecutorService.execute(toExecute, format, configArray);
+
+         SimpleMail mail = mailService.newSimpleMail();
+         mail.setSubject(subject);
+
+         SimpleAttachment attachement = new SimpleAttachment(cReport.getReport(), cReport.getMimeType(),
+               makeExportFilename(referenceReport) + "." + cReport.getFileExtension() //$NON-NLS-1$
+         );
+
+         mail.setToRecipients(recipients
+               .stream()
+               .map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
+               .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
+               .map(User::getEmail)
+               .collect(toList()));
+
+         User currentUser = authenticatorServiceProvider.get().getCurrentUser();
+         if (null != currentUser.getEmail() && !"".equals(currentUser.getEmail())) {
+            InternetAddress mailFrom = new InternetAddress(currentUser.getEmail());
+            mail.setFrom(mailFrom, true);
+         }
+
+         /* set content */
+         mail.setContent(message, attachement);
+
+         mailService.sendMail(mail);
+      } catch (Exception e) {
+         eventBus.fireEvent(new ExportReportViaMailFailedEvent(reportDto, executorToken, format, configs, subject,
+               message, recipients));
+
+         throw new ExpectedException("Could not export report via mail: " + e.getMessage(), e);
+      }
+
+   }
+
+   private ReportExecutionConfig[] getConfigArray(String executorToken, List<ReportExecutionConfigDto> configs)
+         throws ExpectedException {
+      ReportExecutionConfig[] configArray = new ReportExecutionConfig[configs.size() + 1];
+      for (int i = 0; i < configs.size(); i++)
+         configArray[i] = (ReportExecutionConfig) dtoService.createPoso(configs.get(i));
+      configArray[configs.size()] = new RECReportExecutorToken(executorToken);
+
+      return configArray;
+   }
+
+   private String makeExportFilename(Report report) {
+      String reportName = report.getName();
+      if (report instanceof ReportVariant) {
+         reportName = (((Report) report.getParent()).getName() + " - " + report.getName());
+      }
+
+      return fileNameService.sanitizeFileName(reportName);
+   }
+
+   @Override
+   public String getExportDefaultSettingsAsJSON(String identifier) {
+      return configService.getConfigAsJsonFailsafe(configPath + identifier);
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void exportSkipDownload(@Named("report") ReportDto reportDto, String executorToken, final String format)
+         throws ServerCallFailedException {
+      final ReportExecutionConfig[] configArray = getConfigArray(executorToken,
+            new ArrayList<ReportExecutionConfigDto>());
+
+      /* get a clean and unmanaged report from the database */
+      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
+      Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
+
+      /* check rights */
+      securityService.assertRights(referenceReport, Execute.class);
+
+      /* create variant */
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
+
+      for (ReportExportViaSessionHook hooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)) {
+         hooker.adjustReport(toExecute, configArray);
+      }
+
+      try {
+         CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+
+      } catch (Exception e) {
+         throw new ServerCallFailedException(e);
+      }
+   }
+
+   @Override
+   public String getExportDefaultCharset() {
+      return reportServerService.getCharset();
+   }
 
 }

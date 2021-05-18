@@ -5,19 +5,19 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface DatasinksMessages extends Messages {
 
-	public final static DatasinksMessages INSTANCE = GWT.create(DatasinksMessages.class);
-	
-	String editFolder();
+   public final static DatasinksMessages INSTANCE = GWT.create(DatasinksMessages.class);
 
-	String datasink();
+   String editFolder();
 
-	String datasinks();
+   String datasink();
 
-	String editDatasink();
+   String datasinks();
 
-	String datasinkPermissionModuleDescription();
-	
-	String testFailed();
+   String editDatasink();
+
+   String datasinkPermissionModuleDescription();
+
+   String testFailed();
 
    String testDatasink();
 
@@ -30,18 +30,29 @@ public interface DatasinksMessages extends Messages {
    String testingProgressMessage();
 
    String success();
-   
+
    String authenticationType();
+
    String userPasswordAuthenticationType();
+
    String publicKeyAuthenticationType();
+
    String privateKey();
+
    String privateKeyPassphrase();
+
    String clearPassphrase();
+
    String importConfigFailureNoParent();
+
    String importWhereTo();
+
    String importMainPropertiesDescription();
+
    String importMainPropertiesHeadline();
-   
+
    String localFileSystem();
-	
+
+   String email();
+
 }

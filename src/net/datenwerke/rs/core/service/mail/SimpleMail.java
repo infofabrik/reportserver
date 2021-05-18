@@ -23,15 +23,18 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFrom;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFromName;
 import net.datenwerke.rs.core.service.mail.interfaces.SessionProvider;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.utils.misc.Nullable;
 
 /**
- * 
- *
+ * A simple email which can be sent either using the ReportServer internal email
+ * settings or a given {@link EmailDatasink}. For easy construction, you can use
+ * {@link MailBuilder}.
  */
 public class SimpleMail extends MimeMessage implements SessionProvider {
 	
@@ -43,7 +46,7 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 
 	@Inject
 	public SimpleMail(
-		Session session,
+		@Assisted Session session,
 		@Nullable @MailModuleDefaultFrom String from, @Nullable @MailModuleDefaultFromName String fromName) {
 		super(session);
 		
@@ -107,7 +110,7 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 		}
 	}
 	
-	public void setHtml(String html, SimpleAttachement... attachments){
+	public void setHtml(String html, SimpleAttachment... attachments){
 		/* create multipart */
 		MimeMultipart multipart = new MimeMultipart();
 		
@@ -118,9 +121,9 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 			multipart.addBodyPart(textMBP);
 			
 			/* create attachements */
-			for(SimpleAttachement att : attachments){
+			for(SimpleAttachment att : attachments){
 				MimeBodyPart mbp = new MimeBodyPart();
-				mbp.setContent(att.getAttachement(), att.getMimeType());
+				mbp.setContent(att.getAttachment(), att.getMimeType());
 				mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, null));
 				multipart.addBodyPart(mbp);
 			}
@@ -134,7 +137,7 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 	}
 	
 	
-	public void setContent(String text, SimpleAttachement... attachements){
+	public void setContent(String text, SimpleAttachment... attachements){
 		/* create multipart */
 		MimeMultipart multipart = new MimeMultipart();
 		
@@ -145,7 +148,7 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 			multipart.addBodyPart(textMBP);
 			
 			/* create attachements */
-			for(SimpleAttachement att : attachements){
+			for(SimpleAttachment att : attachements){
 				multipart.addBodyPart(createAttachmentPart(att));
 			}
 			
@@ -157,11 +160,11 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 		}
 	}
 	
-	protected MimeBodyPart createAttachmentPart(SimpleAttachement att) throws UnsupportedEncodingException, MessagingException{
+	protected MimeBodyPart createAttachmentPart(SimpleAttachment att) throws UnsupportedEncodingException, MessagingException{
 		MimeBodyPart mbp = new MimeBodyPart();
 		mbp.setFileName(MimeUtility.encodeText(att.getFileName(), CHARSET_UTF8, null));
 		
-		Object data = att.getAttachement();
+		Object data = att.getAttachment();
 		if(data instanceof String) {
 			ContentType ct = new ContentType(att.getMimeType());
 			mbp.setText((String)data, CHARSET_UTF8, ct.getSubType());

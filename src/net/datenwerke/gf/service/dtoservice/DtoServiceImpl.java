@@ -187,6 +187,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dashboard.service.dashboard.entities.LayoutType.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.LayoutType2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.DatabaseBundle2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundleEntry.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.DatabaseBundleEntry2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink.class, injector.getInstance(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.EmailDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.entities.dtogen.FileServerFile2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.entities.dtogen.FileServerFolder2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.EditCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.dtogen.EditCommandResultExtension2DtoGenerator.class));
@@ -458,6 +459,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.Dto2LayoutTypeGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.Dto2DatabaseBundleGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.Dto2DatabaseBundleEntryGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class, injector.getInstance(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.Dto2EmailDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.entities.dtogen.Dto2FileServerFileGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.entities.dtogen.Dto2FileServerFolderGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.fileserver.client.fileserver.dto.EditCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.dtogen.Dto2EditCommandResultExtensionGenerator.class));
@@ -772,6 +774,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec.class);
@@ -1160,6 +1163,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.dashboard.service.dashboard.entities.LayoutType.class);
 		posoClassLookup.add(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle.class);
 		posoClassLookup.add(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundleEntry.class);
+		posoClassLookup.add(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode.class);
 		posoClassLookup.add(net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile.class);
 		posoClassLookup.add(net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder.class);

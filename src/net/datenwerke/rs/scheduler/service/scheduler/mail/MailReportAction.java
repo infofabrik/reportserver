@@ -22,7 +22,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.MailServiceImpl.MailSupervisor;
-import net.datenwerke.rs.core.service.mail.SimpleAttachement;
+import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.core.service.mail.helper.SmtpLogAnalizer;
 import net.datenwerke.rs.core.service.mail.locale.MailMessages;
@@ -123,7 +123,7 @@ public class MailReportAction extends AbstractAction {
 		
 		/* prepare attachment */
 		String filenamePrefix = juel.parse(attachementNameTemplate);
-		SimpleAttachement attachement =	prepareAttachment(job, filenamePrefix);
+		SimpleAttachment attachement =	prepareAttachment(job, filenamePrefix);
 		
 		juel.addReplacement(PROPERTY_FILENAME, attachement.getFileName());
 		juel.addReplacement(PROPERTY_NAME, FilenameUtils.getBaseName(attachement.getFileName()));
@@ -149,7 +149,7 @@ public class MailReportAction extends AbstractAction {
 		});
 	}
 	
-	private SimpleAttachement prepareAttachment(ReportExecuteJob job, String filenamePrefix) throws ActionExecutionException {
+	private SimpleAttachment prepareAttachment(ReportExecuteJob job, String filenamePrefix) throws ActionExecutionException {
 		if (compressed) {
 			ByteArrayOutputStream os = new ByteArrayOutputStream();
 			Object reportObj = job.getExecutedReport().getReport();
@@ -162,13 +162,13 @@ public class MailReportAction extends AbstractAction {
 				throw new ActionExecutionException(e.getMessage());
 			}
 			
-			return new SimpleAttachement(
+			return new SimpleAttachment(
 					os.toByteArray(), 
 					"application/zip",
 					filenamePrefix + ".zip" //$NON-NLS-1$
 					);
 		} else {
-			return new SimpleAttachement(
+			return new SimpleAttachment(
 					job.getExecutedReport().getReport(), 
 					job.getExecutedReport().getMimeType(),
 					filenamePrefix + "." + job.getExecutedReport().getFileExtension() //$NON-NLS-1$

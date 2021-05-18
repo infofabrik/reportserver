@@ -120,6 +120,8 @@ import net.datenwerke.rs.dashboard.server.dashboard.DashboardRpcServiceImpl;
 import net.datenwerke.rs.dashboard.server.dashboard.DashboardTreeRpcServiceImpl;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardModule;
 import net.datenwerke.rs.demo.DemoDataModule;
+import net.datenwerke.rs.emaildatasink.server.emaildatasink.EmailDatasinkRpcServiceImpl;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule;
 import net.datenwerke.rs.enterprise.server.CommunityEnterpriseCheckRpcServiceImpl;
 import net.datenwerke.rs.eximport.server.eximport.ImportRpcServiceImpl;
 import net.datenwerke.rs.eximport.server.eximport.QuickExportDownloadServlet;
@@ -401,6 +403,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "scp").with(ScpRpcServiceImpl.class);
 				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
+				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
 
 				serve(BASE_URL + "history").with(HistoryRpcServiceImpl.class); //$NON-NLS-1$
 				serve(BASE_URL + "homepage").with(HomepageRpcServiceImpl.class); //$NON-NLS-1$
@@ -623,6 +626,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new ScheduleAsFileModule(),
 			new FtpModule(),
 			new LocalFileSystemModule(),
+			new EmailDatasinkModule(),
 			new ReportPropertiesModule(),
 			
 			new SambaModule(),

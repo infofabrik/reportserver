@@ -66,7 +66,7 @@ public class TeamSpaceUIStartup {
 		final TeamSpaceDao teamSpaceDao
 		){
 		
-		/* create module provideR */
+		/* create module provider */
 		final ClientMainModuleProviderHook mainModule = new ClientMainModuleProviderHook(mainModuleProvider);
 		
 		/* attach to load rights */

@@ -99,6 +99,8 @@ public class MailModule extends AbstractReportServerModule {
 		bind(MailService.class).to(MailServiceImpl.class).in(Scopes.SINGLETON);
 		
 		install(new FactoryModuleBuilder().build(MailBuilderFactory.class));
+		install(new FactoryModuleBuilder().build(SimpleCryptoMailFactory.class));
+		install(new FactoryModuleBuilder().build(SimpleMailFactory.class));
 	}
 
 	@Provides @Inject

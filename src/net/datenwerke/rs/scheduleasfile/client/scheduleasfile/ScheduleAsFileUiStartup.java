@@ -40,7 +40,7 @@ public class ScheduleAsFileUiStartup {
 		hookHandler.attachHooker(ScheduledReportListFilter.class, teamSpaceFilter);
 		
 		/* export */
-		hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToTeamSpaceHooker, HookHandlerService.PRIORITY_HIGH + 10);
+		hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToTeamSpaceHooker, HookHandlerService.PRIORITY_HIGH + 30);
 
 		hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, teamspaceExportSnippetProvider, HookHandlerService.PRIORITY_LOW);
 		

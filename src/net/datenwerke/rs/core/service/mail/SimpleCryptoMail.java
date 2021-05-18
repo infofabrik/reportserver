@@ -30,6 +30,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
 
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFrom;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFromName;
@@ -61,7 +62,7 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 
 	@Inject
 	public SimpleCryptoMail(
-			Session session,  
+			@Assisted Session session,  
 			CryptoService cryptoService,
 			@MailModuleDefaultFrom String from,
 			@Nullable @MailModuleDefaultFromName String fromName
@@ -90,7 +91,7 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 		}
 	}
 	
-	public void setHtml(String html, SimpleAttachement... attachements){
+	public void setHtml(String html, SimpleAttachment... attachements){
 		/* create multipart */
 		MimeMultipart multipart = new MimeMultipart();
 		
@@ -101,9 +102,9 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 			multipart.addBodyPart(textMBP);
 			
 			/* create attachements */
-			for(SimpleAttachement att : attachements){
+			for(SimpleAttachment att : attachements){
 				MimeBodyPart mbp = new MimeBodyPart();
-				mbp.setContent(att.getAttachement(), att.getMimeType());
+				mbp.setContent(att.getAttachment(), att.getMimeType());
 				mbp.setFileName(att.getFileName());
 				multipart.addBodyPart(mbp);
 			}
@@ -121,7 +122,7 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 	}
 	
 	@Override
-	public void setContent(String text, SimpleAttachement... attachements) {
+	public void setContent(String text, SimpleAttachment... attachements) {
 		/* create multipart */
 		MimeMultipart multipart = new MimeMultipart();
 		
@@ -132,7 +133,7 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 			multipart.addBodyPart(textMBP);
 			
 			/* create attachements */
-			for(SimpleAttachement att : attachements){
+			for(SimpleAttachment att : attachements){
 				multipart.addBodyPart(createAttachmentPart(att));
 			}
 			
@@ -261,4 +262,8 @@ public class SimpleCryptoMail extends SimpleMail implements NeedsPostprocessing 
 			throw new RuntimeException(e);
 		}
 	}
+	
+    public MimeBodyPart getRootBodyPart() {
+       return rootBodyPart;
+    }
 }

@@ -47,6 +47,7 @@ import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.crystal.client.crystal.CrystalUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
 import net.datenwerke.rs.dsbundle.client.dsbundle.DatasourceBundleUiModule;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkUiModule;
 import net.datenwerke.rs.enterprise.client.EnterpriseCheckUiModule;
 import net.datenwerke.rs.eximport.client.eximport.RsExImportUiModule;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
@@ -89,123 +90,119 @@ import net.datenwerke.security.ext.client.usermanager.UserManagerUIModule;
 import net.datenwerke.treedb.client.treedb.TreeDBUIModule;
 import net.datenwerke.usermanager.ext.client.UserManagerExtUiModule;
 
+public class DispatcherModule extends AbstractGinModule {
 
-public class DispatcherModule extends AbstractGinModule{
+   @Override
+   protected void configure() {
+      install(new EnterpriseCheckUiModule());
 
-	@Override
-	protected void configure() {
-		install(new EnterpriseCheckUiModule());
-		
-		install(new ThemeUiModule());
-		install(new RsCoreUiModule());
-		install(new RsBaseUiModule());
-		install(new RsBaseExtUiModule());
-		install(new DwGwtFrameworkUIModule());
-		
-		
-		
-		/* install modules (in alphabetical order) */
-		install(new EventBusUIModule());
-		install(new AdministrationUIModule());
-		install(new ReportDocumentationUIModule());
-		install(new CallbackHandlerUIModule());
-		install(new ClientDtoInfoModule());
-		install(new CryptoUIModule());
-		install(new CrystalUiModule());
-		install(new DashboardUiModule());
-		install(new DatasourceUIModule());
-		install(new SystemConsoleUiModule());
-		install(new DatasinkUIModule()); 
-		install(new FtpUiModule());
-		install(new SambaUIModule());
-		install(new ScpUIModule());
-		install(new LocalFileSystemUiModule());
-		install(new FileServerUiModule());
-		install(new LogFilesUiModule());
-		install(new RsExImportUiModule());
-		install(new ClientDtoManagerModule());
-		install(new FormSelectionToolsModule());
-		install(new GlobalConstantsUIModule());
-		install(new HistoryUIModule());
-		install(new ClientHookHandlerModule());
-		install(new DwMainViewportUiModule());
-		install(new JasperUIModule());
-		install(new JasperToTableUIModule());
-		install(new LoginModule());
-		install(new LicenseUiModule());
-		install(new ManagerHelperUIModule());
-		install(new ParameterUIModule());
-		install(new ReportExecutorUIModule());
-		install(new ReportExporterUIModule());
-		install(new ReportMetadataUIModule());
-		install(new ReportManagerUIModule());
-		install(new RSBasicParametersUIModule());
-		install(new RSUserVariabelsUIModule());
-		install(new BirtUiModule());
-		install(new ComputedColumnsUiModule());
-		
-		install(new TableTemplateEngineUiModule());
-		
-		install(new RsIncubatorUIModule());
-		
-		install(new SearchUiModule());
-		
-		install(new SecurityUIModule());
-		install(new PasswordPolicyUIModule());
-		install(new LostPasswordUIModule());
-		install(new ChallengeResponseUIModule());
-		
-		install(new JxlsReportUiModule());
-		
-		install(new SecurityDtoUiModule());
-		install(new SimpleFormModule());
-		install(new StatusBarUIModule());
-		install(new SuUserUIModule());
-		install(new TableTemplateUIModule());
-		install(new TeamSpaceUIModule());
-		install(new TsDiskUIModule());
-		install(new TerminalUIModule());
-		
-		install(new TreeDBUIModule());
-		install(new DwGwtTreeDbUiModule());
-		install(new RemoteAccessUiModule());
-		install(new UserManagerUIModule());
-		install(new UserManagerExtUiModule());
-		
-		install(new UserProfileUIModule());
-		install(new UserVariablesUIModule());
-		install(new UtilsUIModule());
-		install(new WaitOnEventUIModule());
-		install(new RemoteMessageUIModule());
-		
-		install(new ScriptingUiModule());
-		install(new SchedulerUIModule());
-		
-		install(new OutputFormatAuthUiModule());
-		install(new ScheduleAsFileUiModule());
-		
-		install(new ScriptReportUiModule());
+      install(new ThemeUiModule());
+      install(new RsCoreUiModule());
+      install(new RsBaseUiModule());
+      install(new RsBaseExtUiModule());
+      install(new DwGwtFrameworkUIModule());
 
-		install(new ConditionUiModule());
-		
-		install(new DatasourceBundleUiModule());
-		install(new ClientConfigModule());
-		install(new LocalizationUiModule());
-		
-		install(new DatasourceTesterUIModule());
+      /* install modules (in alphabetical order) */
+      install(new EventBusUIModule());
+      install(new AdministrationUIModule());
+      install(new ReportDocumentationUIModule());
+      install(new CallbackHandlerUIModule());
+      install(new ClientDtoInfoModule());
+      install(new CryptoUIModule());
+      install(new CrystalUiModule());
+      install(new DashboardUiModule());
+      install(new DatasourceUIModule());
+      install(new SystemConsoleUiModule());
+      install(new DatasinkUIModule());
+      install(new FtpUiModule());
+      install(new SambaUIModule());
+      install(new ScpUIModule());
+      install(new LocalFileSystemUiModule());
+      install(new EmailDatasinkUiModule());
+      install(new FileServerUiModule());
+      install(new LogFilesUiModule());
+      install(new RsExImportUiModule());
+      install(new ClientDtoManagerModule());
+      install(new FormSelectionToolsModule());
+      install(new GlobalConstantsUIModule());
+      install(new HistoryUIModule());
+      install(new ClientHookHandlerModule());
+      install(new DwMainViewportUiModule());
+      install(new JasperUIModule());
+      install(new JasperToTableUIModule());
+      install(new LoginModule());
+      install(new LicenseUiModule());
+      install(new ManagerHelperUIModule());
+      install(new ParameterUIModule());
+      install(new ReportExecutorUIModule());
+      install(new ReportExporterUIModule());
+      install(new ReportMetadataUIModule());
+      install(new ReportManagerUIModule());
+      install(new RSBasicParametersUIModule());
+      install(new RSUserVariabelsUIModule());
+      install(new BirtUiModule());
+      install(new ComputedColumnsUiModule());
 
-		install(new SaikuUiModule());
-		install(new net.datenwerke.rs.legacysaiku.client.saiku.SaikuUiModule());
-		
-		install(new SaikuPivotUiModule());
-		install(new GridEditorUiModule());
-		
-		install(new EasterEggModule());
-		
-		/* bind dispatcher module */
-		bind(DispatcherService.class).to(DispatcherServiceImpl.class);
-	}
-	
-	
+      install(new TableTemplateEngineUiModule());
+
+      install(new RsIncubatorUIModule());
+
+      install(new SearchUiModule());
+
+      install(new SecurityUIModule());
+      install(new PasswordPolicyUIModule());
+      install(new LostPasswordUIModule());
+      install(new ChallengeResponseUIModule());
+
+      install(new JxlsReportUiModule());
+
+      install(new SecurityDtoUiModule());
+      install(new SimpleFormModule());
+      install(new StatusBarUIModule());
+      install(new SuUserUIModule());
+      install(new TableTemplateUIModule());
+      install(new TeamSpaceUIModule());
+      install(new TsDiskUIModule());
+      install(new TerminalUIModule());
+
+      install(new TreeDBUIModule());
+      install(new DwGwtTreeDbUiModule());
+      install(new RemoteAccessUiModule());
+      install(new UserManagerUIModule());
+      install(new UserManagerExtUiModule());
+
+      install(new UserProfileUIModule());
+      install(new UserVariablesUIModule());
+      install(new UtilsUIModule());
+      install(new WaitOnEventUIModule());
+      install(new RemoteMessageUIModule());
+
+      install(new ScriptingUiModule());
+      install(new SchedulerUIModule());
+
+      install(new OutputFormatAuthUiModule());
+      install(new ScheduleAsFileUiModule());
+
+      install(new ScriptReportUiModule());
+
+      install(new ConditionUiModule());
+
+      install(new DatasourceBundleUiModule());
+      install(new ClientConfigModule());
+      install(new LocalizationUiModule());
+
+      install(new DatasourceTesterUIModule());
+
+      install(new SaikuUiModule());
+      install(new net.datenwerke.rs.legacysaiku.client.saiku.SaikuUiModule());
+
+      install(new SaikuPivotUiModule());
+      install(new GridEditorUiModule());
+
+      install(new EasterEggModule());
+
+      /* bind dispatcher module */
+      bind(DispatcherService.class).to(DispatcherServiceImpl.class);
+   }
 
 }

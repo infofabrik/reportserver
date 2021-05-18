@@ -61,7 +61,7 @@ public class MailTemplate {
 	
 
 	public void configureMail(SimpleMail mail, SimpleJuel juel,
-			SimpleAttachement ... attachments) {
+			SimpleAttachment ... attachments) {
 		
 		getDataMap().entrySet().stream()
 			.forEach(e -> juel.addReplacement(e.getKey(), e.getValue()));

@@ -127,6 +127,7 @@
 	<source path="rs/samba/client"/>
 	<source path="rs/scp/client"/>
 	<source path="rs/localfsdatasink/client"/>
+	<source path="rs/emaildatasink/client"/>
 	<source path="rs/scheduler/client"/>
 	<source path="rs/scheduler/shared"/>
 	<source path="rs/scripting/client"/>

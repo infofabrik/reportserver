@@ -115,7 +115,8 @@ public class LogFilesServiceImpl implements LogFilesService {
 		replacements.put("filter", filter);
 		
 		SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, Arrays.asList(currentUser))
-				.withZippedAttachments(filenameDesc + ".zip", files)
+				.withFileAttachments(files)
+				.withZippedAttachments(filenameDesc + ".zip")
 				.withTemplateReplacements(replacements)
 				.build();
 		

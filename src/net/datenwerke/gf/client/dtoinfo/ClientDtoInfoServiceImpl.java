@@ -131,6 +131,7 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.StaticHtmlDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.UrlDadgetDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.EditCommandResultExtensionDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
@@ -502,6 +503,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto)
 			return ((net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto)
+			return ((net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto)
 			return ((net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto)
@@ -864,6 +867,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto();
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto();
+		if(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto();
 		if(net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec();
 		if(net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto.class.equals(dtoClass))
@@ -1356,6 +1361,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto();
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto();
+		if("net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto();
 		if("net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec();
 		if("net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto".equals(dtoClassName))
@@ -2008,6 +2015,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.dsbundle.client.dsbundle.dto.posomap.DatabaseBundleDto2PosoMap.class;
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class.equals(dtoClass))
 			return net.datenwerke.rs.dsbundle.client.dsbundle.dto.posomap.DatabaseBundleEntryDto2PosoMap.class;
+		if(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.posomap.EmailDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto.class.equals(dtoClass))
 			return net.datenwerke.rs.fileserver.client.fileserver.dto.posomap.AbstractFileServerNodeDto2PosoMap.class;
 		if(net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto.class.equals(dtoClass))
@@ -2700,6 +2709,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto)
@@ -3219,6 +3230,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto.class.equals(dtoType))
 			return true;
@@ -4097,6 +4110,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto".equals(dtoClassName))
 			return true;

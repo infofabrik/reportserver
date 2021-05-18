@@ -14,6 +14,8 @@ public class ScpDatasink__ extends net.datenwerke.rs.core.service.datasinkmanage
 	public static final String password = "password";
 	public static final String pbeServiceProvider = "pbeServiceProvider";
 	public static final String port = "port";
+	public static final String privateKey = "privateKey";
+	public static final String privateKeyPassphrase = "privateKeyPassphrase";
 	public static final String serialVersionUID = "serialVersionUID";
 	public static final String username = "username";
 

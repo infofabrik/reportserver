@@ -271,4 +271,7 @@ public interface SchedulerMessages extends Messages {
     
     String fileactionScpMsgSubject();
     String fileactionScpMsgText();
+    
+    String fileactionEmailDatasinkMsgSubject();
+    String fileactionEmailDatasinkMsgText();
 }
