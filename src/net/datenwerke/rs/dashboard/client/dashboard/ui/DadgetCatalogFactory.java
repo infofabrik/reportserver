@@ -4,5 +4,5 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardDto;
 
 public interface DadgetCatalogFactory {
 
-	public DadgetCatalog create(DashboardDto dashboard, DashboardContainer container);
+   public DadgetCatalog create(DashboardDto dashboard, DashboardContainer container);
 }

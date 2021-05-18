@@ -38,283 +38,280 @@ import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 @Entity
-@Table(name="PARAMETER_DEFINITION")
+@Table(name = "PARAMETER_DEFINITION")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.parameters.dto",
-	abstractDto=true,
-	createDecorator=true
-)
-abstract public class ParameterDefinition<I extends ParameterInstance> implements Serializable{
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.parameters.dto", abstractDto = true, createDecorator = true)
+abstract public class ParameterDefinition<I extends ParameterInstance> implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2686485560923162445L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2686485560923162445L;
 
-	@Transient
-	private final Provider<ReportManagerMessages> messages = LocalizationServiceImpl.getMessagesProvider(ReportManagerMessages.class);
-	
-	@Inject
-	protected static EntityClonerService entityCloner;
-	
-	@Inject
-	protected static I18nToolsService i18nTools;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	private String name;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		validateDtoProperty=@PropertyValidator(string=@StringValidator(regex="^[a-zA-Z0-9_\\-]*$"))
-	)
-	@Column(length = 128)
-	private String key;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description = "";//messages.parameterDefinitionDefaultDescription();
-	
-	@JoinTable(name="PARAM_DEF_2_DEPENDANTS")
-	@ExposeToClient
-	@ManyToMany
-	@JoinColumn(name="PARAMETERDEFINITION_DEPENDSON")
-	private List<ParameterDefinition> dependsOn = new ArrayList<ParameterDefinition>();
-	
-	@ExposeToClient
-	private Boolean displayInline = false;
-	
-	@ExposeToClient
-	private boolean mandatory = false;
-	
-	@ExposeToClient
-	private Integer labelWidth = null;
-	
-	/**
-	 * The parameter's position;
-	 */
-	@ExposeToClient
-	private int n;
-	
-	@ExposeToClient
-	private Boolean hidden = false;
-	
-	@ExposeToClient
-	private Boolean editable = true;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Transient @TransientID
-	private Long oldTransientId;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @Transient
+   private final Provider<ReportManagerMessages> messages = LocalizationServiceImpl
+         .getMessagesProvider(ReportManagerMessages.class);
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-    
-    public String getKey() {
-        return key;
-    }
+   @Inject
+   protected static EntityClonerService entityCloner;
 
-    public void setKey(String key) {
-        this.key = key;
-    }
+   @Inject
+   protected static I18nToolsService i18nTools;
 
-    public int getN() {
-		return n;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   private String name;
 
-	public void setN(int n) {
-		this.n = n;
-	}
-	
-	public Boolean isHidden() {
-		return hidden;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL, validateDtoProperty = @PropertyValidator(string = @StringValidator(regex = "^[a-zA-Z0-9_\\-]*$")))
+   @Column(length = 128)
+   private String key;
 
-	public void setHidden(Boolean hidden) {
-		if(null == hidden)
-			hidden = false;
-		this.hidden = hidden;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description = "";// messages.parameterDefinitionDefaultDescription();
 
-	public Boolean isEditable() {
-		return editable;
-	}
+   @JoinTable(name = "PARAM_DEF_2_DEPENDANTS")
+   @ExposeToClient
+   @ManyToMany
+   @JoinColumn(name = "PARAMETERDEFINITION_DEPENDSON")
+   private List<ParameterDefinition> dependsOn = new ArrayList<ParameterDefinition>();
 
-	public void setEditable(Boolean editable) {
-		if(null == editable)
-			editable = true;
-		this.editable = editable;
-	}
+   @ExposeToClient
+   private Boolean displayInline = false;
 
-	/**
-	 * To be overriden
-	 */
-	@Transient
-	public void initWithDefaultValues(){
-		setKey("key"); //$NON-NLS-1$
-		setName(messages.get().parameterDefinitionDefaultName());
-	}
-	
-	@Transient
-	public final I createParameterInstance(){
-		I instance = doCreateParameterInstance();
-		instance.setDefinition(this);
-		return instance;
-	}
-	
-	@Transient
-	protected abstract I doCreateParameterInstance();
+   @ExposeToClient
+   private boolean mandatory = false;
 
-	/**
-	 * Tests on equality of id field.
-	 */
-	@Override
-    public boolean equals(Object obj) {
-    	/* returns true if objects have the same id */
-    	if(! (obj instanceof ParameterDefinition))
-    		return false;
-    	
-    	if(! obj.getClass().equals(getClass()))
-    		return false;
-    	
-    	/* cast object */
-    	ParameterDefinition pd = (ParameterDefinition) obj;
-    	
-    	/* test id */
-    	if(null == getId() && null != pd.getId())
-    		return false;
-    	if(null != getId() && ! getId().equals(pd.getId()))
-    		return false;
-    	
-    	return super.equals(obj);
-    }
-    
-    @Override
-    public int hashCode() {
-    	if(null != getId())
-    		return getId().hashCode();
-    	
-    	return super.hashCode();
-    }
+   @ExposeToClient
+   private Integer labelWidth = null;
 
-	public void setOldTransientId(Long oldTransientId) {
-		this.oldTransientId = oldTransientId;
-	}
+   /**
+    * The parameter's position;
+    */
+   @ExposeToClient
+   private int n;
 
-	public Long getOldTransientId() {
-		return oldTransientId;
-	}
+   @ExposeToClient
+   private Boolean hidden = false;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   @ExposeToClient
+   private Boolean editable = true;
 
-	public String getDescription() {
-		return description;
-	}
+   @Version
+   private Long version;
 
-	public void setDependsOn(List<ParameterDefinition> dependsOn) {
-		if(dependsOn.contains(this))
-			dependsOn.remove(this);
-		this.dependsOn = dependsOn;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public List<ParameterDefinition> getDependsOn() {
-		if(dependsOn.contains(this))
-			dependsOn.remove(this);
-		return new ArrayList<ParameterDefinition>(dependsOn);
-	}
-	
-	public List<ParameterDefinition> getAllDependents() {
-		List<ParameterDefinition> dependents = new ArrayList<ParameterDefinition>();
-		
-		_getAllDependents(dependents, this, this);
-		
-		return dependents;
-	}
+   @Transient
+   @TransientID
+   private Long oldTransientId;
 
-	private void _getAllDependents(List<ParameterDefinition> dependents, ParameterDefinition def, ParameterDefinition doNotAdd) {
-		if(dependents.contains(def))
-			return;
-		if(doNotAdd != def)
-			dependents.add(def);
-		
-		Iterator<ParameterDefinition> it =  def.getDependsOn().iterator();
-		while(it.hasNext())
-			_getAllDependents(dependents, it.next(), doNotAdd);
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public String getName() {
-		return name;
-	}
-	
-	public ParameterDefinitionForJuel createParameterDefinitionForJuel(){
-		return new ParameterDefinitionForJuel();
-	}
-	
-	public void configureParameterDefinitionForJuel(ParameterDefinitionForJuel definition){
-		definition.setId(id);
-		definition.setVersion(version);
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	/**
-	 * Removes references to other parameters, base report, or what have you.
-	 */
-	public void cleanDuplicated() {
-		setDependsOn(new ArrayList<ParameterDefinition>());
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setDisplayInline(Boolean displayInline) {
-		if(null == displayInline)
-			displayInline = false;
-		this.displayInline = displayInline;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public boolean isDisplayInline() {
-		return displayInline;
-	}
-	
-	public boolean isMandatory() {
-		return mandatory;
-	}
-	
-	public void setMandatory(boolean mandatory) {
-		this.mandatory = mandatory;
-	}
-	
-	public Integer getLabelWidth() {
-		return labelWidth;
-	}
-	
-	public void setLabelWidth(Integer labelWidth) {
-		this.labelWidth = labelWidth;
-	}
-	
-	public boolean isSeparator() {
-	    return false;
-	}
+   public void setKey(String key) {
+      this.key = key;
+   }
+
+   public int getN() {
+      return n;
+   }
+
+   public void setN(int n) {
+      this.n = n;
+   }
+
+   public Boolean isHidden() {
+      return hidden;
+   }
+
+   public void setHidden(Boolean hidden) {
+      if (null == hidden)
+         hidden = false;
+      this.hidden = hidden;
+   }
+
+   public Boolean isEditable() {
+      return editable;
+   }
+
+   public void setEditable(Boolean editable) {
+      if (null == editable)
+         editable = true;
+      this.editable = editable;
+   }
+
+   /**
+    * To be overriden
+    */
+   @Transient
+   public void initWithDefaultValues() {
+      setKey("key"); //$NON-NLS-1$
+      setName(messages.get().parameterDefinitionDefaultName());
+   }
+
+   @Transient
+   public final I createParameterInstance() {
+      I instance = doCreateParameterInstance();
+      instance.setDefinition(this);
+      return instance;
+   }
+
+   @Transient
+   protected abstract I doCreateParameterInstance();
+
+   /**
+    * Tests on equality of id field.
+    */
+   @Override
+   public boolean equals(Object obj) {
+      /* returns true if objects have the same id */
+      if (!(obj instanceof ParameterDefinition))
+         return false;
+
+      if (!obj.getClass().equals(getClass()))
+         return false;
+
+      /* cast object */
+      ParameterDefinition pd = (ParameterDefinition) obj;
+
+      /* test id */
+      if (null == getId() && null != pd.getId())
+         return false;
+      if (null != getId() && !getId().equals(pd.getId()))
+         return false;
+
+      return super.equals(obj);
+   }
+
+   @Override
+   public int hashCode() {
+      if (null != getId())
+         return getId().hashCode();
+
+      return super.hashCode();
+   }
+
+   public void setOldTransientId(Long oldTransientId) {
+      this.oldTransientId = oldTransientId;
+   }
+
+   public Long getOldTransientId() {
+      return oldTransientId;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDependsOn(List<ParameterDefinition> dependsOn) {
+      if (dependsOn.contains(this))
+         dependsOn.remove(this);
+      this.dependsOn = dependsOn;
+   }
+
+   public List<ParameterDefinition> getDependsOn() {
+      if (dependsOn.contains(this))
+         dependsOn.remove(this);
+      return new ArrayList<ParameterDefinition>(dependsOn);
+   }
+
+   public List<ParameterDefinition> getAllDependents() {
+      List<ParameterDefinition> dependents = new ArrayList<ParameterDefinition>();
+
+      _getAllDependents(dependents, this, this);
+
+      return dependents;
+   }
+
+   private void _getAllDependents(List<ParameterDefinition> dependents, ParameterDefinition def,
+         ParameterDefinition doNotAdd) {
+      if (dependents.contains(def))
+         return;
+      if (doNotAdd != def)
+         dependents.add(def);
+
+      Iterator<ParameterDefinition> it = def.getDependsOn().iterator();
+      while (it.hasNext())
+         _getAllDependents(dependents, it.next(), doNotAdd);
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public ParameterDefinitionForJuel createParameterDefinitionForJuel() {
+      return new ParameterDefinitionForJuel();
+   }
+
+   public void configureParameterDefinitionForJuel(ParameterDefinitionForJuel definition) {
+      definition.setId(id);
+      definition.setVersion(version);
+   }
+
+   /**
+    * Removes references to other parameters, base report, or what have you.
+    */
+   public void cleanDuplicated() {
+      setDependsOn(new ArrayList<ParameterDefinition>());
+   }
+
+   public void setDisplayInline(Boolean displayInline) {
+      if (null == displayInline)
+         displayInline = false;
+      this.displayInline = displayInline;
+   }
+
+   public boolean isDisplayInline() {
+      return displayInline;
+   }
+
+   public boolean isMandatory() {
+      return mandatory;
+   }
+
+   public void setMandatory(boolean mandatory) {
+      this.mandatory = mandatory;
+   }
+
+   public Integer getLabelWidth() {
+      return labelWidth;
+   }
+
+   public void setLabelWidth(Integer labelWidth) {
+      this.labelWidth = labelWidth;
+   }
+
+   public boolean isSeparator() {
+      return false;
+   }
 }

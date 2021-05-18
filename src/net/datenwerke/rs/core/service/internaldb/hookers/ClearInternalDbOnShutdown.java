@@ -9,21 +9,21 @@ import com.google.inject.Inject;
 
 public class ClearInternalDbOnShutdown implements ContextHook {
 
-	private TempTableService tempTableService;
-	
-	@Inject
-	public ClearInternalDbOnShutdown(TempTableService tempTableService) {
-		this.tempTableService = tempTableService;
-	}
+   private TempTableService tempTableService;
 
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
+   @Inject
+   public ClearInternalDbOnShutdown(TempTableService tempTableService) {
+      this.tempTableService = tempTableService;
+   }
 
-	}
+   @Override
+   public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		tempTableService.shutdown();
-	}
+   }
+
+   @Override
+   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+      tempTableService.shutdown();
+   }
 
 }

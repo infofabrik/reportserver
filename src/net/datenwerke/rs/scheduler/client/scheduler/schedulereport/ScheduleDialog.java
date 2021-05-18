@@ -96,7 +96,7 @@ public class ScheduleDialog {
          @Override
          public void onFinish() {
             DateTriggerConfigDto schedulerConfigDto = seriesConfigForm.createDto();
-            ReportScheduleDefinition configDto = new ReportScheduleDefinition();
+            final ReportScheduleDefinition configDto = new ReportScheduleDefinition();
             configDto.setSchedulerConfig(schedulerConfigDto);
             configDto.setReport(jobReportConfigForm.getReport());
 

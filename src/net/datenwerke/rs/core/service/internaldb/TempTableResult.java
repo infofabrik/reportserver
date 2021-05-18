@@ -5,113 +5,113 @@ import net.datenwerke.rs.resultcache.CacheableResult;
 import net.datenwerke.rs.resultcache.ResultCacheKey;
 
 public class TempTableResult implements CacheableResult {
-	
-	private TempTableHelper tableHelper;
-	private ConnectionPoolConfig poolConfig;
-	private String query;
-	
-	private boolean cleanedUp = false;
-	
-	private long created;
-	private Long timeout;
-	private Long grace = 60 * 60 * 1000L;
-	private int rev;
 
-	public TempTableResult(TempTableHelper tableHelper, ConnectionPoolConfig cpc, String query) {
-		this.setTableHelper(tableHelper);
-		this.setPoolConfig(cpc);
-		this.setQuery(query);
-		this.created = System.currentTimeMillis();
-		this.rev = tableHelper.getWriteRev();
-	}
+   private TempTableHelper tableHelper;
+   private ConnectionPoolConfig poolConfig;
+   private String query;
 
-	@Override
-	public boolean validate() {
-		if(0 == timeout || (timeout > -1 && created + timeout < System.currentTimeMillis())){
-			return false;
-		}else{
-			return true;
-		}
-	}
+   private boolean cleanedUp = false;
 
-	@Override
-	public boolean cleanup(boolean force) {
-		if(cleanedUp)
-			return true;
-		
-		if(force || created + timeout + grace < System.currentTimeMillis()){
-			getTableHelper().cleanup(rev);
-			cleanedUp = true;
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean cleanup() {
-		return cleanup(false);
-	}
+   private long created;
+   private Long timeout;
+   private Long grace = 60 * 60 * 1000L;
+   private int rev;
 
-	public String getRawQuery() {
-		return query;
-	}
-	
-	public String getFinalQuery(){
-		if(0 == timeout)
-			return tableHelper.processQuery(query, rev);
-		return tableHelper.processQuery(query);
-	}
+   public TempTableResult(TempTableHelper tableHelper, ConnectionPoolConfig cpc, String query) {
+      this.setTableHelper(tableHelper);
+      this.setPoolConfig(cpc);
+      this.setQuery(query);
+      this.created = System.currentTimeMillis();
+      this.rev = tableHelper.getWriteRev();
+   }
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
-	public TempTableHelper getTableHelper() {
-		return tableHelper;
-	}
+   @Override
+   public boolean validate() {
+      if (0 == timeout || (timeout > -1 && created + timeout < System.currentTimeMillis())) {
+         return false;
+      } else {
+         return true;
+      }
+   }
 
-	public void setTableHelper(TempTableHelper tableHelper) {
-		this.tableHelper = tableHelper;
-	}
+   @Override
+   public boolean cleanup(boolean force) {
+      if (cleanedUp)
+         return true;
 
-	public ConnectionPoolConfig getPoolConfig() {
-		return poolConfig;
-	}
+      if (force || created + timeout + grace < System.currentTimeMillis()) {
+         getTableHelper().cleanup(rev);
+         cleanedUp = true;
+         return true;
+      }
+      return false;
+   }
 
-	public void setPoolConfig(ConnectionPoolConfig poolConfig) {
-		this.poolConfig = poolConfig;
-	}
+   @Override
+   public boolean cleanup() {
+      return cleanup(false);
+   }
 
-	@Override
-	public Long getTimeout() {
-		return timeout;
-	}
+   public String getRawQuery() {
+      return query;
+   }
 
-	@Override
-	public void setTimeout(Long timeout) {
-		this.timeout = timeout;
-	}
+   public String getFinalQuery() {
+      if (0 == timeout)
+         return tableHelper.processQuery(query, rev);
+      return tableHelper.processQuery(query);
+   }
 
-	public long getCreated() {
-		return created;
-	}
+   public void setQuery(String query) {
+      this.query = query;
+   }
 
-	public void setCreated(long created) {
-		this.created = created;
-	}
+   public TempTableHelper getTableHelper() {
+      return tableHelper;
+   }
 
-	public Long getGracePeriod() {
-		return this.grace;
-	}
+   public void setTableHelper(TempTableHelper tableHelper) {
+      this.tableHelper = tableHelper;
+   }
 
-	@Override
-	public void setGracePeriod(Long grace) {
-		this.grace = grace;
-		
-	}
+   public ConnectionPoolConfig getPoolConfig() {
+      return poolConfig;
+   }
 
-	@Override
-	public boolean consumes(ResultCacheKey cacheKey) {
-		return true;
-	}
+   public void setPoolConfig(ConnectionPoolConfig poolConfig) {
+      this.poolConfig = poolConfig;
+   }
+
+   @Override
+   public Long getTimeout() {
+      return timeout;
+   }
+
+   @Override
+   public void setTimeout(Long timeout) {
+      this.timeout = timeout;
+   }
+
+   public long getCreated() {
+      return created;
+   }
+
+   public void setCreated(long created) {
+      this.created = created;
+   }
+
+   public Long getGracePeriod() {
+      return this.grace;
+   }
+
+   @Override
+   public void setGracePeriod(Long grace) {
+      this.grace = grace;
+
+   }
+
+   @Override
+   public boolean consumes(ResultCacheKey cacheKey) {
+      return true;
+   }
 }

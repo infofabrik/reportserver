@@ -4,8 +4,8 @@ import com.google.inject.AbstractModule;
 
 public class ReportPropertiesModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-	}
-	
+   @Override
+   protected void configure() {
+   }
+
 }

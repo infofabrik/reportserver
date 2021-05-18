@@ -8,15 +8,14 @@ import com.google.inject.Singleton;
 
 public class InternalDbModule extends AbstractModule {
 
-	static final String CONFIG_FILE = "datasources/internaldb.cf";
+   static final String CONFIG_FILE = "datasources/internaldb.cf";
 
-	
-	@Override
-	protected void configure() {
-		bind(TempTableService.class).to(TempTableServiceImpl.class).in(Singleton.class);
-		bind(ResultCacheService.class).to(ResultCacheServiceImpl.class).in(Singleton.class);
-		requestStaticInjection(TempTableHelper.class);
-		bind(InternalDbStartup.class).asEagerSingleton();
-	}
-	
+   @Override
+   protected void configure() {
+      bind(TempTableService.class).to(TempTableServiceImpl.class).in(Singleton.class);
+      bind(ResultCacheService.class).to(ResultCacheServiceImpl.class).in(Singleton.class);
+      requestStaticInjection(TempTableHelper.class);
+      bind(InternalDbStartup.class).asEagerSingleton();
+   }
+
 }

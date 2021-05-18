@@ -7,11 +7,9 @@ import com.google.inject.Inject;
 
 public class ReportServerServiceStartup {
 
-	@Inject
-	public ReportServerServiceStartup(
-		HookHandlerService hookHandler,
-		ServerInformationGathererHack serverInformationGathererHack
-		){
-		hookHandler.attachHooker(PostAuthenticateHook.class, serverInformationGathererHack);
-	}
+   @Inject
+   public ReportServerServiceStartup(HookHandlerService hookHandler,
+         ServerInformationGathererHack serverInformationGathererHack) {
+      hookHandler.attachHooker(PostAuthenticateHook.class, serverInformationGathererHack);
+   }
 }

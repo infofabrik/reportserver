@@ -1,6 +1,5 @@
 package net.datenwerke.rs.core.service.sendto.hooks.adapter;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
@@ -42,7 +41,7 @@ public class SendToTargetProviderHookAdapter implements SendToTargetProviderHook
 	}
 
 	@Override
-	public void scheduledSendTo(CompiledReport compiledReport, Report report, AbstractJob reportJob, String format, HashMap<String, String> values){
+	public void scheduledSendTo(CompiledReport compiledReport, Report report, AbstractJob reportJob, String format, Map<String, String> values){
 		sendTo(compiledReport, report, format, values);
 	}
 	

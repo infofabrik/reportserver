@@ -6,22 +6,20 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardView.EditSuccess
 
 public interface DashboardContainer {
 
-	enum ConfigType{
-		CONFIG,
-		MISC
-	}
-	
-	void reload(DashboardDto dashboard);
-	
-	void edited(DashboardDto dashboard);
+   enum ConfigType {
+      CONFIG, MISC
+   }
 
-	void remove(DashboardDto dashboard, DadgetDto dadget);
+   void reload(DashboardDto dashboard);
 
-	void resizeDadget(DashboardDto dashboard, DadgetDto dadget, int height);
+   void edited(DashboardDto dashboard);
 
-	void addDadget(DashboardDto dashboard, DadgetDto dadget);
+   void remove(DashboardDto dashboard, DadgetDto dadget);
 
-	void dadgetConfigured(DashboardDto dashboard, DadgetDto dadget, ConfigType type, EditSuccessCallback callback);
+   void resizeDadget(DashboardDto dashboard, DadgetDto dadget, int height);
 
+   void addDadget(DashboardDto dashboard, DadgetDto dadget);
+
+   void dadgetConfigured(DashboardDto dashboard, DadgetDto dadget, ConfigType type, EditSuccessCallback callback);
 
 }

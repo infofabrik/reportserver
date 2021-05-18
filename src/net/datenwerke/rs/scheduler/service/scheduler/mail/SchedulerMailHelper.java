@@ -117,7 +117,7 @@ public class SchedulerMailHelper {
 		   .stream()
 		   .filter(user -> null != user.getEmail() && !"".equals(user.getEmail().trim()))
 		   .map(User::getEmail)
-		   .collect(toSet()); /* email address should not be repeated */
+		   .collect(toSet()); /* email address should not contain duplicates */
 	}
 	
 	public SimpleJuel getConfiguredJuel(ReportExecuteJob job ) {

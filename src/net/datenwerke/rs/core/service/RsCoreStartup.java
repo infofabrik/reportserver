@@ -18,34 +18,30 @@ import net.datenwerke.security.service.usermanager.hooks.UserDtoPostProcessorHoo
 
 public class RsCoreStartup {
 
-	@Inject
-	public RsCoreStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<UserDtoSetStatusPostProcessor> userSetStatusDtoPostProcessor,
-		
-		Provider<CheckBlockedUserOnLoginHooker> checkBlockUserOnLogin,
-		Provider<BlockSuperUserOnLoginHooker> blockRootOnLogin,
-		
-		Provider<BlockUserMaintenanceTask> blockTask,
-		
-		RegisterPdfFontsOnConfigReload pdfFontOnReloadLoader,
-		RegisterPdfFontsOnStartup pdfFontOnStartupLoader,
-		Provider<EnvironmentAfterStartupInformation> afterStartupInfoProvider
-		){
-		
-		
-		hookHandler.attachHooker(UserDtoPostProcessorHook.class, userSetStatusDtoPostProcessor);
-		
-		hookHandler.attachHooker(PostAuthenticateHook.class, checkBlockUserOnLogin);
-		
-		hookHandler.attachHooker(PostAuthenticateHook.class, blockRootOnLogin);
-		
-		hookHandler.attachHooker(MaintenanceTask.class, blockTask);
-		
-		hookHandler.attachHooker(ReloadConfigNotificationHook.class, pdfFontOnReloadLoader);
-		hookHandler.attachHooker(LateInitHook.class, pdfFontOnStartupLoader);
-		
-		hookHandler.attachHooker(LateInitHook.class, afterStartupInfoProvider);
-	}
+   @Inject
+   public RsCoreStartup(HookHandlerService hookHandler,
+
+         Provider<UserDtoSetStatusPostProcessor> userSetStatusDtoPostProcessor,
+
+         Provider<CheckBlockedUserOnLoginHooker> checkBlockUserOnLogin,
+         Provider<BlockSuperUserOnLoginHooker> blockRootOnLogin,
+
+         Provider<BlockUserMaintenanceTask> blockTask,
+
+         RegisterPdfFontsOnConfigReload pdfFontOnReloadLoader, RegisterPdfFontsOnStartup pdfFontOnStartupLoader,
+         Provider<EnvironmentAfterStartupInformation> afterStartupInfoProvider) {
+
+      hookHandler.attachHooker(UserDtoPostProcessorHook.class, userSetStatusDtoPostProcessor);
+
+      hookHandler.attachHooker(PostAuthenticateHook.class, checkBlockUserOnLogin);
+
+      hookHandler.attachHooker(PostAuthenticateHook.class, blockRootOnLogin);
+
+      hookHandler.attachHooker(MaintenanceTask.class, blockTask);
+
+      hookHandler.attachHooker(ReloadConfigNotificationHook.class, pdfFontOnReloadLoader);
+      hookHandler.attachHooker(LateInitHook.class, pdfFontOnStartupLoader);
+
+      hookHandler.attachHooker(LateInitHook.class, afterStartupInfoProvider);
+   }
 }
