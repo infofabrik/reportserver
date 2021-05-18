@@ -17,46 +17,36 @@ import net.datenwerke.security.client.security.dto.RightDto;
 
 public interface SchedulerRpcServiceAsync {
 
-	void schedule(ReportScheduleDefinition scheduleDTO, AsyncCallback<Void> callback);
+   void schedule(ReportScheduleDefinition scheduleDTO, AsyncCallback<Void> callback);
 
+   void loadFullScheduleInformation(ReportScheduleJobListInformation selected,
+         AsyncCallback<ReportScheduleJobInformation> callback);
 
-	void loadFullScheduleInformation(ReportScheduleJobListInformation selected,
-			AsyncCallback<ReportScheduleJobInformation> callback);
+   void getReportJobList(JobFilterConfigurationDto jobFilterConfig, List<JobFilterCriteriaDto> addCriterions,
+         AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>> callback);
 
-	public void getReportJobList(
-			JobFilterConfigurationDto jobFilterConfig,
-			List<JobFilterCriteriaDto> addCriterions, AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>> callback);
+   void unschedule(Long jobId, AsyncCallback<Boolean> callback);
 
+   void remove(Long jobId, AsyncCallback<Boolean> callback);
 
-	void unschedule(Long jobId, AsyncCallback<Boolean> callback);
-	
-	void remove(Long jobId, AsyncCallback<Boolean> callback);
-	
-	void clearErrorStatus(Long jobId, AsyncCallback<Void> callback);
+   void clearErrorStatus(Long jobId, AsyncCallback<Void> callback);
 
-	void getReportFor(Long jobId, AsyncCallback<ReportDto> callback);
+   void getReportFor(Long jobId, AsyncCallback<ReportDto> callback);
 
+   void reschedule(Long jobId, ReportScheduleDefinition scheduleDTO, AsyncCallback<Void> transformAndKeepCallback);
 
-	void reschedule(Long jobId, ReportScheduleDefinition scheduleDTO,
-			AsyncCallback<Void> transformAndKeepCallback);
+   void loadDetailsFor(ReportScheduleJobListInformation selected, AsyncCallback<ReportScheduleJobInformation> callback);
 
+   void loadFullDetailsFor(Long jobId, ExecutionLogEntryDto entry, AsyncCallback<ExecutionLogEntryDto> callback);
 
-	void loadDetailsFor(ReportScheduleJobListInformation selected,
-			AsyncCallback<ReportScheduleJobInformation> callback);
+   void scheduleOnce(Long jobId, AsyncCallback<Void> callback);
 
+   void getReportJobList(ReportDto reportDto, AsyncCallback<List<ReportScheduleJobListInformation>> callback);
 
-	void loadFullDetailsFor(Long jobId, ExecutionLogEntryDto entry,
-			AsyncCallback<ExecutionLogEntryDto> callback);
+   void getReportJobListAsHtml(ReportDto reportDto, AsyncCallback<SafeHtml> callback);
 
+   void isDefaultEmailCompression(AsyncCallback<Boolean> callback);
 
-	void scheduleOnce(Long jobId, AsyncCallback<Void> callback);
-
-	void getReportJobList(ReportDto reportDto, AsyncCallback<List<ReportScheduleJobListInformation>> callback);
-	
-	void getReportJobListAsHtml(ReportDto reportDto, AsyncCallback<SafeHtml> callback);
-	
-	void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto reportDto, List<? extends RightDto> rightsDtos, 
-			AsyncCallback<Void> callback);
-	
-	void isDefaultEmailCompression(AsyncCallback<Boolean> callback);
+   void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto report, List<RightDto> rights,
+         AsyncCallback<Void> callback);
 }

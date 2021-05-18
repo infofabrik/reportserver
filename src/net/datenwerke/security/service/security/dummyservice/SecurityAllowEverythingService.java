@@ -228,4 +228,10 @@ public class SecurityAllowEverythingService implements SecurityService {
 		
 	}
 
+   @Override
+   public void assertRights(Collection<User> users, Object target, Class<? extends Right>... rights) {
+      // TODO Auto-generated method stub
+      
+   }
+
 }

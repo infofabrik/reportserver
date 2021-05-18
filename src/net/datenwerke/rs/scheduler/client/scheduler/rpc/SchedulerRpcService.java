@@ -47,10 +47,10 @@ public interface SchedulerRpcService extends RemoteService{
 	
 	SafeHtml getReportJobListAsHtml(ReportDto report) throws ServerCallFailedException;
 	
-	void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto reportDto, List<? extends RightDto> rightDtos) throws ServerCallFailedException;
-	
 	/**
 	 * @return true if email attachments should be compressed by default
 	 */
-	boolean isDefaultEmailCompression();
+	boolean isDefaultEmailCompression() throws ServerCallFailedException;
+	
+	void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto report, List<RightDto> rights) throws ServerCallFailedException;
 }

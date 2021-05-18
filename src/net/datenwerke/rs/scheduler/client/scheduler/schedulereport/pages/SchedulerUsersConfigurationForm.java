@@ -3,6 +3,7 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages;
 import static java.util.stream.Collectors.toList;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -157,9 +158,8 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
                   .map(AbstractNodeDto::getId)
                   .collect(toList());
 
-            final List<RightDto> rights = new ArrayList<>();
-            rights.add(new ExecuteDto());
-
+            final List<RightDto> rights = Arrays.asList(new ExecuteDto());
+            
             schedulerDao.assertOwnersHaveReportRights(ownerIds, report, rights, new RsAsyncCallback<Void>() {
                @Override
                public void onSuccess(Void result) {

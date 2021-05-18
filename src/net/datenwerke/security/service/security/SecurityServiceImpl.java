@@ -1,12 +1,16 @@
 package net.datenwerke.security.service.security;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.EntityManager;
 
@@ -47,8 +51,8 @@ public class SecurityServiceImpl implements SecurityService {
 	
 	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 	
-	private Map<Class<?>, List<SecurityTargetConfiguration>> genericTargetConfigurations = new HashMap<Class<?>, List<SecurityTargetConfiguration>>();
-	private Map<Class<? extends SecurityTarget>, List<SecurityTargetConfiguration>> targetConfigurations = new HashMap<Class<? extends SecurityTarget>, List<SecurityTargetConfiguration>>();
+	private Map<Class<?>, List<SecurityTargetConfiguration>> genericTargetConfigurations = new HashMap<>();
+	private Map<Class<? extends SecurityTarget>, List<SecurityTargetConfiguration>> targetConfigurations = new HashMap<>();
 	private Set<Securee> registeredSecurees = new HashSet<Securee>();
 	
 	private final Provider<EntityManager> entityManagerProvider;
@@ -780,5 +784,24 @@ public class SecurityServiceImpl implements SecurityService {
 		return targetConfigurations.keySet();
 	}
 
+   @Override
+   public void assertRights(Collection<User> users, Object target, Class<? extends Right>... rights) {
+      if (target instanceof Class<?>) {
+         /* get targetEntity */
+         target = loadGenericTarget((Class<?>) target);
+      }
+      
+      final SecurityTarget securityTarget = (SecurityTarget) target;
+      Set<User> usersMissingRights = users
+            .stream()
+            .filter(owner -> !checkRights(owner, (SecurityTarget)securityTarget, SecurityServiceSecuree.class, rights))
+            .collect(toSet());
+            
+      if (!usersMissingRights.isEmpty()) {
+         throw new ViolatedSecurityException("Users missing rights ("
+               + Arrays.stream(rights).collect(Collectors.toSet())
+               + "): " + usersMissingRights);
+      }
+   }
 
 }

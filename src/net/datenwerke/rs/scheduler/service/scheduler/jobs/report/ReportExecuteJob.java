@@ -1,7 +1,6 @@
 package net.datenwerke.rs.scheduler.service.scheduler.jobs.report;
 
 import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toSet;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -32,16 +31,13 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.ReportServerJob;
-import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry;
 import net.datenwerke.scheduler.service.scheduler.exceptions.JobExecutionException;
 import net.datenwerke.scheduler.service.scheduler.jobs.BaseJob__;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Execute;
-import net.datenwerke.security.service.security.rights.Right;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 /**
@@ -151,7 +147,7 @@ public class ReportExecuteJob extends ReportServerJob {
          try {
             authenticatorServiceProvider.get().setAuthenticatedInThread(getExecutor().getId());
 
-            assertOwnersHaveReportRights(getOwners(), report, Execute.class);
+            securityService.assertRights(getOwners(), report, Execute.class);
 
             executedReport = reportExecutor.execute(report, getExecutor(), outputFormat,
                   getExportConfiguration().toArray(new ReportExecutionConfig[] {}));
@@ -163,18 +159,6 @@ public class ReportExecuteJob extends ReportServerJob {
       } catch (ViolatedSecurityException e) {
          throw new JobExecutionException(e);
       }
-   }
-
-   private void assertOwnersHaveReportRights(Set<User> owners, Report report, Class<? extends Right>... rights) {
-      
-      Set<User> ownersMissingRights = owners
-         .stream()
-         .filter(owner -> !securityService.checkRights(owner, report, SecurityServiceSecuree.class, rights))
-         .collect(toSet());
-         
-      if (!ownersMissingRights.isEmpty())
-         throw new ViolatedSecurityException(
-               SchedulerMessages.INSTANCE.errorOwnersMissingRights() + " " + ownersMissingRights);
    }
 
    public Report getReport() {
