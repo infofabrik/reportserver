@@ -158,9 +158,7 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
                   .map(AbstractNodeDto::getId)
                   .collect(toList());
 
-            final List<RightDto> rights = Arrays.asList(new ExecuteDto());
-            
-            schedulerDao.assertOwnersHaveReportRights(ownerIds, report, rights, new RsAsyncCallback<Void>() {
+            schedulerDao.assertOwnersHaveReportRights(ownerIds, report, Arrays.asList(new ExecuteDto()), new RsAsyncCallback<Void>() {
                @Override
                public void onSuccess(Void result) {
                   itemsValidatedCallback.onSuccess(true);

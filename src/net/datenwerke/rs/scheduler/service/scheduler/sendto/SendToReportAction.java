@@ -109,12 +109,13 @@ public class SendToReportAction extends AbstractAction {
             Optional<SendToTargetProviderHook> sendToHooker = hookHandlerService.getHookers(SendToTargetProviderHook.class)
                .stream()
                .filter(hooker -> sendToId.equals(hooker.getId()))
-               .findFirst();
+               .findAny();
             
-            if (sendToHooker.isPresent())
+            if (sendToHooker.isPresent()) {
                sendToHooker.get().scheduledSendTo(reportJob.getExecutedReport(), reportJob.getReport(), reportJob,
                      reportJob.getOutputFormat(), getValueMap());
-            else
+               return;
+            } else
                throw new ActionExecutionException("Could not find target handler for id: " + sendToId);
             
          } finally {
