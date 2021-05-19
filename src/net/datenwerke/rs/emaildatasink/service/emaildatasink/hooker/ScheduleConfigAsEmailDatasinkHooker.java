@@ -41,9 +41,13 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
          throw new InvalidConfigurationException("No Email datasink specified");
       if (null == info.getName() || info.getName().trim().isEmpty())
          throw new InvalidConfigurationException("No name specified");
+      if (null == info.getSubject() || info.getSubject().trim().isEmpty())
+         throw new InvalidConfigurationException("No subject specified");
 
       ScheduleAsEmailFileAction action = actionProvider.get();
 
+      action.setSubject(info.getSubject());
+      action.setMessage(info.getMessage());
       action.setName(info.getName());
       action.setEmailDatasink((EmailDatasink) dtoServiceProvider.get().loadPoso(info.getEmailDatasinkDto()));
       try {
@@ -62,6 +66,8 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
 
       ScheduleAsEmailDatasinkFileInformation info = new ScheduleAsEmailDatasinkFileInformation();
 
+      info.setSubject(action.getSubject());
+      info.setMessage(action.getMessage());
       info.setName(action.getName());
       info.setEmailDatasinkDto((EmailDatasinkDto) dtoServiceProvider.get().createDto(action.getEmailDatasink()));
 
@@ -69,6 +75,8 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
          throw new IllegalArgumentException("No Email datasink specified");
       if (null == info.getName() || info.getName().trim().isEmpty())
          throw new IllegalArgumentException("No name specified");
+      if (null == info.getSubject() || info.getSubject().trim().isEmpty())
+         throw new IllegalArgumentException("No subject specified");
 
       rsd.addAdditionalInfo(info);
 

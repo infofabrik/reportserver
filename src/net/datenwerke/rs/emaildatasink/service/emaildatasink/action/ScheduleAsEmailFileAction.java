@@ -5,9 +5,13 @@ import java.util.Calendar;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+
+import org.hibernate.annotations.Type;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -26,84 +30,112 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionExce
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ScheduleAsEmailFileAction extends AbstractAction {
 
-    @Transient
-    @Inject
-    private Provider<SimpleJuel> simpleJuelProvider;
-    @Transient
-    @Inject
-    private EmailDatasinkService emailDatasinkService;
+   private static final String PROPERTY_SUBJECT = "subject";
+   private static final String PROPERTY_MESSAGE = "message";
 
-    @EnclosedEntity
-    @OneToOne
-    private EmailDatasink emailDatasink;
+   @Transient
+   @Inject
+   private Provider<SimpleJuel> simpleJuelProvider;
+   @Transient
+   @Inject
+   private EmailDatasinkService emailDatasinkService;
 
-    @Transient
-    private Report report;
+   @EnclosedEntity
+   @OneToOne
+   private EmailDatasink emailDatasink;
 
-    @Transient
-    private String filename;
+   @Transient
+   private Report report;
 
-    private String name;
+   @Transient
+   private String filename;
 
-    @Override
-    public void execute(AbstractJob job) throws ActionExecutionException {
-        if (!(job instanceof ReportExecuteJob))
-            throw new ActionExecutionException("No idea what job that is");
+   private String name;
 
-        ReportExecuteJob rJob = (ReportExecuteJob) job;
+   private String subject = "";
 
-        /* did everything go as planned ? */
-        if (null == rJob.getExecutedReport())
-            return;
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String message = "";
 
-        if (!emailDatasinkService.isEmailEnabled() || !emailDatasinkService.isEmailSchedulingEnabled())
-            throw new ActionExecutionException("email scheduling is disabled");
+   @Override
+   public void execute(AbstractJob job) throws ActionExecutionException {
+      if (!(job instanceof ReportExecuteJob))
+         throw new ActionExecutionException("No idea what job that is");
 
-        CompiledReport compiledReport = rJob.getExecutedReport();
-        report = rJob.getReport();
+      ReportExecuteJob rJob = (ReportExecuteJob) job;
 
-        SimpleJuel juel = simpleJuelProvider.get();
-        juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
-        filename = null == name ? "" : juel.parse(name);
+      /* did everything go as planned ? */
+      if (null == rJob.getExecutedReport())
+         return;
 
-        filename += "." + compiledReport.getFileExtension();
+      if (!emailDatasinkService.isEmailEnabled() || !emailDatasinkService.isEmailSchedulingEnabled())
+         throw new ActionExecutionException("email scheduling is disabled");
 
-        if (null == name || name.trim().isEmpty())
-            throw new ActionExecutionException("name is empty");
+      CompiledReport compiledReport = rJob.getExecutedReport();
+      report = rJob.getReport();
 
-        if (null == emailDatasink)
-            throw new ActionExecutionException("email datasink is empty");
+      SimpleJuel juel = simpleJuelProvider.get();
+      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      juel.addReplacement(PROPERTY_SUBJECT, getSubject());
+      juel.addReplacement(PROPERTY_MESSAGE, getMessage());
 
-        try {
-//            emailDatasinkService.sendToEmailDataSink(compiledReport.getReport(), emailDatasink, filename);
-        } catch (Exception e) {
-            throw new ActionExecutionException("report could not be sent to Email Datasink", e);
-        }
+      filename = null == name ? "" : juel.parse(name);
 
-    }
+      filename += "." + compiledReport.getFileExtension();
 
-    public String getName() {
-        return name;
-    }
+      if (null == name || name.trim().isEmpty())
+         throw new ActionExecutionException("name is empty");
 
-    public void setName(String name) {
-        this.name = name;
-    }
+      if (null == emailDatasink)
+         throw new ActionExecutionException("email datasink is empty");
 
-    public String getFilename() {
-        return filename;
-    }
+      try {
+         emailDatasinkService.sendToEmailDatasink(compiledReport.getReport(), emailDatasink, juel.parse(subject),
+               juel.parse(message), rJob.getRecipients(), filename, false);
+      } catch (Exception e) {
+         throw new ActionExecutionException("report could not be sent to Email Datasink", e);
+      }
+   }
 
-    public Report getReport() {
-        return report;
-    }
+   public String getMessage() {
+      return message;
+   }
 
-    public EmailDatasink getEmailDatasink() {
-        return emailDatasink;
-    }
+   public String getSubject() {
+      return subject;
+   }
 
-    public void setEmailDatasink(EmailDatasink emailDatasink) {
-        this.emailDatasink = emailDatasink;
-    }
+   public void setSubject(String subject) {
+      this.subject = subject;
+   }
+
+   public void setMessage(String message) {
+      this.message = message;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getFilename() {
+      return filename;
+   }
+
+   public Report getReport() {
+      return report;
+   }
+
+   public EmailDatasink getEmailDatasink() {
+      return emailDatasink;
+   }
+
+   public void setEmailDatasink(EmailDatasink emailDatasink) {
+      this.emailDatasink = emailDatasink;
+   }
 
 }

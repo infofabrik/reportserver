@@ -32,22 +32,19 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 
-public class LocalFileSystemExportSnippetProvider implements
-ScheduleExportSnippetProviderHook {
-   
-   private String isExportAsFileKey;
+public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnippetProviderHook {
+
+   private String isExportAsLocalFileSystemKey;
    private String folderKey;
    private String nameKey;
    private String localFileSystemKey;
-   
+
    private final Provider<UITree> treeProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
-   
+
    @Inject
-   public LocalFileSystemExportSnippetProvider(
-         @DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager
-         ) {
+   public LocalFileSystemExportSnippetProvider(@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
    }
@@ -55,50 +52,52 @@ ScheduleExportSnippetProviderHook {
    @Override
    public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
       xform.setLabelAlign(LabelAlign.LEFT);
-      isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+      isExportAsLocalFileSystemKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
             return DatasinksMessages.INSTANCE.localFileSystem();
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
-      
+
       xform.setFieldWidth(260);
       xform.beginFloatRow();
-      
-      localFileSystemKey = xform.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.localFileSystem(), new SFFCGenericTreeNode() {
-         @Override
-         public UITree getTreeForPopup() {
-            return treeProvider.get();
-         }
-      }, new SFFCAllowBlank() {
-         @Override
-         public boolean allowBlank() {
-            return false;
-         }
-      });
-      
+
+      localFileSystemKey = xform.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.localFileSystem(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            }, new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+            });
+
       folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
          @Override
          public boolean allowBlank() {
             return false;
          }
       });
-      
+
       xform.endRow();
       xform.setFieldWidth(530);
-      
+
       nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
          @Override
          public boolean allowBlank() {
             return false;
          }
       });
-      
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(localFileSystemKey));
-      
+
+      xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true),
+            new ShowHideFieldAction(localFileSystemKey));
+
    }
 
    @Override
@@ -109,77 +108,81 @@ ScheduleExportSnippetProviderHook {
 
    @Override
    public void configureConfig(ReportScheduleDefinition configDto, SimpleForm simpleForm) {
-      if(! isActive(simpleForm))
+      if (!isActive(simpleForm))
          return;
 
       ScheduleAsLocalFileSystemInformation info = new ScheduleAsLocalFileSystemInformation();
       info.setName((String) simpleForm.getValue(nameKey));
       info.setFolder((String) simpleForm.getValue(folderKey));
       info.setLocalFileSystemDatasinkDto((LocalFileSystemDatasinkDto) simpleForm.getValue(localFileSystemKey));
-      
+
       configDto.addAdditionalInfo(info);
-      
+
    }
 
    @Override
    public boolean isActive(SimpleForm simpleForm) {
-      return (Boolean) simpleForm.getValue(isExportAsFileKey); 
+      return (Boolean) simpleForm.getValue(isExportAsLocalFileSystemKey);
    }
 
    @Override
    public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
       form.loadFields();
-      
-      final SingleTreeSelectionField localFileSystemField = extractSingleTreeSelectionField(form.getField(localFileSystemKey));
-      
+
+      final SingleTreeSelectionField localFileSystemField = extractSingleTreeSelectionField(
+            form.getField(localFileSystemKey));
+
       if (null != definition) {
          form.setValue(nameKey, "${now} - " + definition.getTitle());
-         ScheduleAsLocalFileSystemInformation info = definition.getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);
-         if(null != info){
-            form.setValue(isExportAsFileKey, true);
+         ScheduleAsLocalFileSystemInformation info = definition
+               .getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);
+         if (null != info) {
+            form.setValue(isExportAsLocalFileSystemKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
             localFileSystemField.setValue(info.getLocalFileSystemDatasinkDto());
-         } 
+         }
       }
-      
+
       localFileSystemField.addValueChangeHandler(event -> {
-         if (null == event.getValue()) 
+         if (null == event.getValue())
             return;
-         
-         datasinkTreeManager.loadFullViewNode((LocalFileSystemDatasinkDto)event.getValue(), new RsAsyncCallback<LocalFileSystemDatasinkDto>() {
-            @Override
-            public void onSuccess(LocalFileSystemDatasinkDto result) {
-               form.setValue(folderKey, result.getFolder());
-            }
-            
-            @Override
-            public void onFailure(Throwable caught) {
-               super.onFailure(caught);
-            }
-         });
-         
+
+         datasinkTreeManager.loadFullViewNode((LocalFileSystemDatasinkDto) event.getValue(),
+               new RsAsyncCallback<LocalFileSystemDatasinkDto>() {
+                  @Override
+                  public void onSuccess(LocalFileSystemDatasinkDto result) {
+                     form.setValue(folderKey, result.getFolder());
+                  }
+
+                  @Override
+                  public void onFailure(Throwable caught) {
+                     super.onFailure(caught);
+                  }
+               });
+
       });
-      
+
    }
 
    @Override
    public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
          ReportDto report) {
-      if (! (page instanceof JobMetadataConfigurationForm))
+      if (!(page instanceof JobMetadataConfigurationForm))
          return;
-      
+
       JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-      
+
       String jobTitle = metadataForm.getTitleValue();
-      
+
       form.setValue(nameKey, "${now} - " + jobTitle);
       if (null != definition) {
-         ScheduleAsLocalFileSystemInformation info = definition.getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);
-         if(null != info)
+         ScheduleAsLocalFileSystemInformation info = definition
+               .getAdditionalInfo(ScheduleAsLocalFileSystemInformation.class);
+         if (null != info)
             form.setValue(nameKey, info.getName());
       }
-      
+
    }
 
    @Override

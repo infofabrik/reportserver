@@ -17,6 +17,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
@@ -27,13 +28,16 @@ import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.ScheduleAsEmailD
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations.DatasinkTreeEmail;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 
 public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
-   private String isExportAsFileKey;
+   private String isExportAsEmailKey;
    private String nameKey;
    private String emailKey;
+   private String subjectKey;
+   private String messageKey;
 
    private final Provider<UITree> treeProvider;
 
@@ -45,7 +49,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    @Override
    public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
       xform.setLabelAlign(LabelAlign.LEFT);
-      isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+      isExportAsEmailKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
             return DatasinksMessages.INSTANCE.email() + " - SMTP";
@@ -79,8 +83,22 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
          }
       });
 
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(emailKey));
+      xform.setLabelWidth(300);
+      xform.setLabelAlign(LabelAlign.TOP);
+      subjectKey = xform.addField(String.class, SchedulerMessages.INSTANCE.subject(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
+
+      xform.setLabelAlign(LabelAlign.TOP);
+      messageKey = xform.addField(String.class, SchedulerMessages.INSTANCE.message(), new SFFCTextAreaImpl());
+
+      xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(emailKey));
+      xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(subjectKey));
+      xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(messageKey));
 
    }
 
@@ -96,6 +114,8 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
          return;
 
       ScheduleAsEmailDatasinkFileInformation info = new ScheduleAsEmailDatasinkFileInformation();
+      info.setSubject((String) simpleForm.getValue(subjectKey));
+      info.setMessage((String) simpleForm.getValue(messageKey));
       info.setName((String) simpleForm.getValue(nameKey));
       info.setEmailDatasinkDto((EmailDatasinkDto) simpleForm.getValue(emailKey));
 
@@ -105,7 +125,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
    @Override
    public boolean isActive(SimpleForm simpleForm) {
-      return (Boolean) simpleForm.getValue(isExportAsFileKey);
+      return (Boolean) simpleForm.getValue(isExportAsEmailKey);
    }
 
    @Override
@@ -119,18 +139,13 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
          ScheduleAsEmailDatasinkFileInformation info = definition
                .getAdditionalInfo(ScheduleAsEmailDatasinkFileInformation.class);
          if (null != info) {
-            form.setValue(isExportAsFileKey, true);
+            form.setValue(isExportAsEmailKey, true);
+            form.setValue(subjectKey, info.getSubject());
+            form.setValue(messageKey, info.getMessage());
             form.setValue(nameKey, info.getName());
             emailField.setValue(info.getEmailDatasinkDto());
          }
       }
-
-      emailField.addValueChangeHandler(event -> {
-         if (null == event.getValue())
-            return;
-
-      });
-
    }
 
    @Override

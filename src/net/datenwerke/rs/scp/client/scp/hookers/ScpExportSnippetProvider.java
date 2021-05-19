@@ -30,155 +30,154 @@ import net.datenwerke.rs.scp.client.scp.provider.annotations.DatasinkTreeScp;
 
 public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
-	private String isExportAsFileKey;
-	private String folderKey;
-	private String nameKey;
-	private String scpKey;
+   private String isExportAsScpKey;
+   private String folderKey;
+   private String nameKey;
+   private String scpKey;
 
-	private final Provider<UITree> treeProvider;
-	private final DatasinkTreeManagerDao datasinkTreeManager;
+   private final Provider<UITree> treeProvider;
+   private final DatasinkTreeManagerDao datasinkTreeManager;
 
-	@Inject
-	public ScpExportSnippetProvider(@DatasinkTreeScp Provider<UITree> treeProvider,
-			DatasinkTreeManagerDao datasinkTreeManager) {
-		this.treeProvider = treeProvider;
-		this.datasinkTreeManager = datasinkTreeManager;
-	}
+   @Inject
+   public ScpExportSnippetProvider(@DatasinkTreeScp Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager) {
+      this.treeProvider = treeProvider;
+      this.datasinkTreeManager = datasinkTreeManager;
+   }
 
-	@Override
-	public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
-		xform.setLabelAlign(LabelAlign.LEFT);
-		isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
-			@Override
-			public String getBoxLabel() {
-				return "SCP";
-			}
-		});
-		xform.setLabelAlign(LabelAlign.TOP);
+   @Override
+   public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
+      xform.setLabelAlign(LabelAlign.LEFT);
+      isExportAsScpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return "SCP";
+         }
+      });
+      xform.setLabelAlign(LabelAlign.TOP);
 
-		xform.setFieldWidth(260);
-		xform.beginFloatRow();
+      xform.setFieldWidth(260);
+      xform.beginFloatRow();
 
-		scpKey = xform.addField(DatasinkSelectionField.class, "SCP", new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return treeProvider.get();
-			}
-		}, new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		});
+      scpKey = xform.addField(DatasinkSelectionField.class, "SCP", new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return treeProvider.get();
+         }
+      }, new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
 
-		folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		});
+      folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
 
-		xform.endRow();
-		xform.setFieldWidth(1);
+      xform.endRow();
+      xform.setFieldWidth(1);
 
-		nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		});
+      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
 
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(scpKey));
+      xform.addCondition(isExportAsScpKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsScpKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsScpKey, new FieldEquals(true), new ShowHideFieldAction(scpKey));
 
-	}
+   }
 
-	@Override
-	public boolean isValid(SimpleForm simpleForm) {
-		simpleForm.clearInvalid();
-		return simpleForm.isValid();
-	}
+   @Override
+   public boolean isValid(SimpleForm simpleForm) {
+      simpleForm.clearInvalid();
+      return simpleForm.isValid();
+   }
 
-	@Override
-	public void configureConfig(ReportScheduleDefinition configDto, SimpleForm simpleForm) {
-		if (!isActive(simpleForm))
-			return;
+   @Override
+   public void configureConfig(ReportScheduleDefinition configDto, SimpleForm simpleForm) {
+      if (!isActive(simpleForm))
+         return;
 
-		ScheduleAsScpFileInformation info = new ScheduleAsScpFileInformation();
-		info.setName((String) simpleForm.getValue(nameKey));
-		info.setFolder((String) simpleForm.getValue(folderKey));
-		info.setScpDatasinkDto((ScpDatasinkDto) simpleForm.getValue(scpKey));
+      ScheduleAsScpFileInformation info = new ScheduleAsScpFileInformation();
+      info.setName((String) simpleForm.getValue(nameKey));
+      info.setFolder((String) simpleForm.getValue(folderKey));
+      info.setScpDatasinkDto((ScpDatasinkDto) simpleForm.getValue(scpKey));
 
-		configDto.addAdditionalInfo(info);
+      configDto.addAdditionalInfo(info);
 
-	}
+   }
 
-	@Override
-	public boolean isActive(SimpleForm simpleForm) {
-		return (Boolean) simpleForm.getValue(isExportAsFileKey);
-	}
+   @Override
+   public boolean isActive(SimpleForm simpleForm) {
+      return (Boolean) simpleForm.getValue(isExportAsScpKey);
+   }
 
-	@Override
-	public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
-		form.loadFields();
+   @Override
+   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
+      form.loadFields();
 
-		final SingleTreeSelectionField scpField = extractSingleTreeSelectionField(form.getField(scpKey));
+      final SingleTreeSelectionField scpField = extractSingleTreeSelectionField(form.getField(scpKey));
 
-		if (null != definition) {
-			form.setValue(nameKey, "${now} - " + definition.getTitle());
-			ScheduleAsScpFileInformation info = definition.getAdditionalInfo(ScheduleAsScpFileInformation.class);
-			if (null != info) {
-				form.setValue(isExportAsFileKey, true);
-				form.setValue(nameKey, info.getName());
-				form.setValue(folderKey, info.getFolder());
-				scpField.setValue(info.getScpDatasinkDto());
-			}
-		}
+      if (null != definition) {
+         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         ScheduleAsScpFileInformation info = definition.getAdditionalInfo(ScheduleAsScpFileInformation.class);
+         if (null != info) {
+            form.setValue(isExportAsScpKey, true);
+            form.setValue(nameKey, info.getName());
+            form.setValue(folderKey, info.getFolder());
+            scpField.setValue(info.getScpDatasinkDto());
+         }
+      }
 
-		scpField.addValueChangeHandler(event -> {
-			if (null == event.getValue())
-				return;
+      scpField.addValueChangeHandler(event -> {
+         if (null == event.getValue())
+            return;
 
-			datasinkTreeManager.loadFullViewNode((ScpDatasinkDto) event.getValue(),
-					new RsAsyncCallback<ScpDatasinkDto>() {
-						@Override
-						public void onSuccess(ScpDatasinkDto result) {
-							form.setValue(folderKey, result.getFolder());
-						}
+         datasinkTreeManager.loadFullViewNode((ScpDatasinkDto) event.getValue(), new RsAsyncCallback<ScpDatasinkDto>() {
+            @Override
+            public void onSuccess(ScpDatasinkDto result) {
+               form.setValue(folderKey, result.getFolder());
+            }
 
-						@Override
-						public void onFailure(Throwable caught) {
-							super.onFailure(caught);
-						}
-					});
+            @Override
+            public void onFailure(Throwable caught) {
+               super.onFailure(caught);
+            }
+         });
 
-		});
+      });
 
-	}
+   }
 
-	@Override
-	public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
-			ReportDto report) {
-		if (!(page instanceof JobMetadataConfigurationForm))
-			return;
+   @Override
+   public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
+         ReportDto report) {
+      if (!(page instanceof JobMetadataConfigurationForm))
+         return;
 
-		JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
+      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
 
-		String jobTitle = metadataForm.getTitleValue();
+      String jobTitle = metadataForm.getTitleValue();
 
-		form.setValue(nameKey, "${now} - " + jobTitle);
-		if (null != definition) {
-			ScheduleAsScpFileInformation info = definition.getAdditionalInfo(ScheduleAsScpFileInformation.class);
-			if (null != info)
-				form.setValue(nameKey, info.getName());
-		}
+      form.setValue(nameKey, "${now} - " + jobTitle);
+      if (null != definition) {
+         ScheduleAsScpFileInformation info = definition.getAdditionalInfo(ScheduleAsScpFileInformation.class);
+         if (null != info)
+            form.setValue(nameKey, info.getName());
+      }
 
-	}
+   }
 
-	@Override
-	public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
-		return true;
-	}
+   @Override
+   public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
+      return true;
+   }
 
 }

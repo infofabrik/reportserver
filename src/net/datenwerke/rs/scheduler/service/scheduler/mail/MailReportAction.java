@@ -63,18 +63,23 @@ public class MailReportAction extends AbstractAction {
    @Transient
    @Inject
    private MailService mailService;
+
    @Transient
    @Inject
    private ReportExecutorService reportExecutorService;
+
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+
    @Transient
    @Inject
    private SchedulerMailHelper mailHelper;
+
    @Transient
    @Inject
    private RemoteMessageService remoteMessageService;
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -83,10 +88,12 @@ public class MailReportAction extends AbstractAction {
    @Transient
    @Inject
    private String subjectTemplate;
+
    @SchedulerModuleEmailText
    @Transient
    @Inject
    private String messageTemplate;
+
    @SchedulerModuleEmailAttachementName
    @Transient
    @Inject
@@ -151,9 +158,9 @@ public class MailReportAction extends AbstractAction {
       juel.addReplacement(PROPERTY_NAME, FilenameUtils.getBaseName(attachment.getFileName()));
 
       /* set content */
-      if (mailHelper.isHTML()) 
+      if (mailHelper.isHTML())
          mail.setHtml(juel.parse(messageTemplate), attachment);
-      else 
+      else
          mail.setContent(juel.parse(messageTemplate), attachment);
 
       mailService.sendMailSync(mail, new MailSupervisor() {

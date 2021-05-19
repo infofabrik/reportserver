@@ -107,6 +107,8 @@ public class ScheduleAsEmailDatasinkEmailNotificationHooker extends SchedulerExe
 
       datamap.put(PROPERTY_NAME, action.getFilename());
       datamap.put(PROPERTY_FILENAME, action.getFilename());
+      datamap.put("subject", action.getSubject());
+      datamap.put("message", action.getMessage());
 
       if (null != e) {
          datamap.put(PROPERTY_EXCEPTION, e);

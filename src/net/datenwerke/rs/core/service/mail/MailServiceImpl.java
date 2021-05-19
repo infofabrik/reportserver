@@ -2,6 +2,7 @@ package net.datenwerke.rs.core.service.mail;
 
 import static java.util.stream.Collectors.partitioningBy;
 import static java.util.stream.Collectors.toList;
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.client.RsCoreUiModule;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleProperties;
 import net.datenwerke.rs.core.service.mail.events.SendMailEvent;
 import net.datenwerke.rs.core.service.mail.exceptions.MailerRuntimeException;
@@ -41,11 +43,9 @@ import net.datenwerke.rs.core.service.mail.interfaces.SessionProvider;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkSessionFactory;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.security.service.crypto.CryptoService;
 import net.datenwerke.security.service.usermanager.entities.User;
-import net.datenwerke.rs.core.client.RsCoreUiModule;
 
 /**
  * 
@@ -379,7 +379,7 @@ public class MailServiceImpl implements MailService {
       return users
             .stream()
             .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-            .map(LambdaExceptionUtil.rethrowFunction(user -> new InternetAddress(user.getEmail()))).distinct()
+            .map(rethrowFunction(user -> new InternetAddress(user.getEmail()))).distinct()
             .collect(toList());
    }
 

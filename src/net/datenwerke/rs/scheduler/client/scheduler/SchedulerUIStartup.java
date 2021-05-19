@@ -88,7 +88,7 @@ public class SchedulerUIStartup {
 		hookHandler.attachHooker(ScheduledReportListFilter.class, statusFilter, 40);
 		hookHandler.attachHooker(ScheduledReportListFilter.class, failedLastFilter, 50);
 		
-		hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippet);
+		hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippet, HookHandlerService.PRIORITY_HIGH);
 		
 		/* schedule ui */
 		hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, removeScheduleEntryHooker);

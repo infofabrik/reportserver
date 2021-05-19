@@ -33,7 +33,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMeta
 
 public class SambaExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
-   private String isExportAsFileKey;
+   private String isExportAsSambaKey;
    private String folderKey;
    private String nameKey;
    private String sambaKey;
@@ -58,7 +58,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          Collection<ReportViewConfiguration> configs) {
 
       xform.setLabelAlign(LabelAlign.LEFT);
-      isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+      isExportAsSambaKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
             return "Samba - SMB/CIFS";
@@ -98,9 +98,9 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          }
       });
 
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(sambaKey));
+      xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(sambaKey));
 
    }
 
@@ -125,7 +125,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
 
    @Override
    public boolean isActive(SimpleForm simpleForm) {
-      return (Boolean) simpleForm.getValue(isExportAsFileKey);
+      return (Boolean) simpleForm.getValue(isExportAsSambaKey);
    }
 
    @Override
@@ -138,7 +138,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsSambaFileInformation info = definition.getAdditionalInfo(ScheduleAsSambaFileInformation.class);
          if (null != info) {
-            form.setValue(isExportAsFileKey, true);
+            form.setValue(isExportAsSambaKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
             sambaField.setValue(info.getSambaDatasinkDto());

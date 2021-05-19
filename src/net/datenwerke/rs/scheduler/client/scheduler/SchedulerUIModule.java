@@ -17,30 +17,27 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.Scheduled
  */
 public class SchedulerUIModule extends AbstractGinModule {
 
-	public static final String USER_PROPERTY_VIEW_VERTICAL_SPLIT = "reportScheduler:view:split";
-	
-	public static final String PROPERTY_CONTAINER = "SchedulerService_PropertyContainer"; //$NON-NLS-1$
-	public static final String PROPERTY_EMAIL_SUBJECT = "scheduler:email:subject";
-	public static final String PROPERTY_EMAIL_TEXT = "scheduler:email:text";
-	public static final String PROPERTY_EMAIL_ATTACHEMENT_NAME = "scheduler:email:attachment:name";
+   public static final String USER_PROPERTY_VIEW_VERTICAL_SPLIT = "reportScheduler:view:split";
 
-	
-	@Override
-	protected void configure() {
-		bind(SchedulerUiService.class).to(SchedulerUiServiceImpl.class).in(Singleton.class);
-		
-		/* create factory */
-		install(new GinFactoryModuleBuilder().build(SchedulerUsersConfigFormFactory.class));
-		install(new GinFactoryModuleBuilder().build(SchedulerMetadataConfigFormFactory.class));
-		install(new GinFactoryModuleBuilder().build(SchedulerReportConfigFormFactory.class));
-		install(new GinFactoryModuleBuilder().build(ExportConfigFormFactory.class));
-		install(new GinFactoryModuleBuilder().build(SeriesConfigFormFactory.class));
-		install(new GinFactoryModuleBuilder().build(ScheduledReportListPanelFactory.class));
-		
-		
-		/* startup */
-		bind(SchedulerUIStartup.class).asEagerSingleton();
-	}
+   public static final String PROPERTY_CONTAINER = "SchedulerService_PropertyContainer"; //$NON-NLS-1$
+   public static final String PROPERTY_EMAIL_SUBJECT = "scheduler:email:subject";
+   public static final String PROPERTY_EMAIL_TEXT = "scheduler:email:text";
+   public static final String PROPERTY_EMAIL_ATTACHEMENT_NAME = "scheduler:email:attachment:name";
 
+   @Override
+   protected void configure() {
+      bind(SchedulerUiService.class).to(SchedulerUiServiceImpl.class).in(Singleton.class);
+
+      /* create factory */
+      install(new GinFactoryModuleBuilder().build(SchedulerUsersConfigFormFactory.class));
+      install(new GinFactoryModuleBuilder().build(SchedulerMetadataConfigFormFactory.class));
+      install(new GinFactoryModuleBuilder().build(SchedulerReportConfigFormFactory.class));
+      install(new GinFactoryModuleBuilder().build(ExportConfigFormFactory.class));
+      install(new GinFactoryModuleBuilder().build(SeriesConfigFormFactory.class));
+      install(new GinFactoryModuleBuilder().build(ScheduledReportListPanelFactory.class));
+
+      /* startup */
+      bind(SchedulerUIStartup.class).asEagerSingleton();
+   }
 
 }

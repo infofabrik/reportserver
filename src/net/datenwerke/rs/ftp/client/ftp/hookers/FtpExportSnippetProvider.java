@@ -35,7 +35,7 @@ public class FtpExportSnippetProvider implements
 		ScheduleExportSnippetProviderHook {
 
 
-	private String isExportAsFileKey;
+	private String isExportAsFtpKey;
 	private String folderKey;
 	private String nameKey;
 	private String ftpKey;
@@ -62,7 +62,7 @@ public class FtpExportSnippetProvider implements
 	public void configureSimpleForm(final SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
 		
 		xform.setLabelAlign(LabelAlign.LEFT);
-		isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+		isExportAsFtpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
 			@Override
 			public String getBoxLabel() {
 				return "FTP";
@@ -102,9 +102,9 @@ public class FtpExportSnippetProvider implements
 			}
 		});
 		
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(ftpKey));
+		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(ftpKey));
 		
 	}
 
@@ -129,7 +129,7 @@ public class FtpExportSnippetProvider implements
 
 	@Override
 	public boolean isActive(SimpleForm simpleForm) {
-		return (Boolean) simpleForm.getValue(isExportAsFileKey);
+		return (Boolean) simpleForm.getValue(isExportAsFtpKey);
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class FtpExportSnippetProvider implements
 			form.setValue(nameKey, "${now} - " + definition.getTitle());
 			ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
 			if(null != info){
-				form.setValue(isExportAsFileKey, true);
+				form.setValue(isExportAsFtpKey, true);
 				form.setValue(nameKey, info.getName());
 				form.setValue(folderKey, info.getFolder());
 				ftpField.setValue(info.getFtpDatasinkDto());

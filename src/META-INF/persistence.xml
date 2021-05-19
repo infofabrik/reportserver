@@ -108,8 +108,7 @@
           <class>net.datenwerke.rs.scriptreport.service.scriptreport.parameter.ScriptParameterInstance</class>
           <class>net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink</class>
           <class>net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink</class>
-          <!-- Email datasink scheduler not yet supported
-          <class>net.datenwerke.rs.emaildatasink.service.emaildatasink.action.ScheduleAsEmailFileAction</class> -->
+          <class>net.datenwerke.rs.emaildatasink.service.emaildatasink.action.ScheduleAsEmailFileAction</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile</class>
           <class>net.datenwerke.rs.condition.service.condition.entity.ReportCondition</class>

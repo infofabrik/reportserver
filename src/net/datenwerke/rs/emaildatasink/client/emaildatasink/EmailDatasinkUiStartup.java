@@ -45,23 +45,21 @@ public class EmailDatasinkUiStartup {
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
 
-         //scheduler not yet supported
-         
-//         dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
-//            @Override
-//            public void onSuccess(final Map<StorageType, Boolean> result) {
-//               if (result.get(StorageType.EMAIL) && result.get(StorageType.EMAIL_SCHEDULING))
-//                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider,
-//                        HookHandlerService.PRIORITY_LOWER + 20);
-//               else
-//                  hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider);
-//            }
-//
-//            @Override
-//            public void onFailure(Throwable caught) {
-//               super.onFailure(caught);
-//            }
-//         });
+         dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
+            @Override
+            public void onSuccess(final Map<StorageType, Boolean> result) {
+               if (result.get(StorageType.EMAIL) && result.get(StorageType.EMAIL_SCHEDULING))
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider,
+                        HookHandlerService.PRIORITY_HIGH + 20);
+               else
+                  hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider);
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+               super.onFailure(caught);
+            }
+         });
 
       });
    }

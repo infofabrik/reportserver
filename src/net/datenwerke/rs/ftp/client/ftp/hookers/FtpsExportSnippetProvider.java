@@ -31,7 +31,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMeta
 public class FtpsExportSnippetProvider implements
 ScheduleExportSnippetProviderHook {
     
-    private String isExportAsFileKey;
+    private String isExportAsFtpsKey;
     private String folderKey;
     private String nameKey;
     private String ftpsKey;
@@ -51,7 +51,7 @@ ScheduleExportSnippetProviderHook {
     @Override
     public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
         xform.setLabelAlign(LabelAlign.LEFT);
-        isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+        isExportAsFtpsKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
             @Override
             public String getBoxLabel() {
                 return "FTPS";
@@ -91,9 +91,9 @@ ScheduleExportSnippetProviderHook {
             }
         });
         
-        xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-        xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-        xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(ftpsKey));
+        xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+        xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+        xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(ftpsKey));
         
     }
 
@@ -119,7 +119,7 @@ ScheduleExportSnippetProviderHook {
 
     @Override
     public boolean isActive(SimpleForm simpleForm) {
-        return (Boolean) simpleForm.getValue(isExportAsFileKey);
+        return (Boolean) simpleForm.getValue(isExportAsFtpsKey);
     }
 
     @Override
@@ -132,7 +132,7 @@ ScheduleExportSnippetProviderHook {
             form.setValue(nameKey, "${now} - " + definition.getTitle());
             ScheduleAsFtpsFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpsFileInformation.class);
             if(null != info){
-                form.setValue(isExportAsFileKey, true);
+                form.setValue(isExportAsFtpsKey, true);
                 form.setValue(nameKey, info.getName());
                 form.setValue(folderKey, info.getFolder());
                 ftpsField.setValue(info.getFtpsDatasinkDto());
