@@ -51,6 +51,9 @@ public class DropboxServiceImpl implements DropboxService {
    @Override
    public void exportIntoDropbox(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException {
+      if (!isDropboxEnabled())
+         throw new IllegalStateException("Dropbox is disabled");
+      
       Objects.requireNonNull(dropboxDatasink, "Datasink is null");
 
       final String refreshToken = dropboxDatasink.getRefreshToken();
