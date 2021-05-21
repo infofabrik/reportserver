@@ -218,4 +218,10 @@ public interface BaseMessages extends Messages {
    String secretKey();
 
    String datasinkOauth2AuthenticationSetup();
+   
+   String oauthNote1();
+   
+   String oauthNote2();
+   
+   String oauthStart();
 }
