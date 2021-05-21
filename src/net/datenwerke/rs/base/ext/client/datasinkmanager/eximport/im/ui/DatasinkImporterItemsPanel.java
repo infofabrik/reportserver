@@ -2,13 +2,12 @@ package net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.ui;
 
 import java.util.List;
 
-import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
-import com.sencha.gxt.data.shared.IconProvider;
 
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.DatasinkManagerImportDao;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.im.dto.DatasinkManagerImportConfigDto;
+import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
@@ -46,25 +45,24 @@ public class DatasinkImporterItemsPanel extends ImporterItemsPanel<DatasinkManag
 
    protected void configureTree() {
       super.configureTree();
-      tree.setIconProvider(new IconProvider<ImportTreeModel>() {
-         @Override
-         public ImageResource getIcon(ImportTreeModel model) {
-            if (FtpDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.UPLOAD.toImageResource();
-            if (SftpDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.ARROW_CIRCLE_UP.toImageResource();
-            if (FtpsDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.ARROW_CIRCLE_O_UP.toImageResource();
-            if (LocalFileSystemDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.SERVER.toImageResource();
-            if (SambaDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.ANGLE_DOUBLE_UP.toImageResource();
-            if (ScpDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.ARROW_UP.toImageResource();
-            if (EmailDatasinkDto.class.getName().equals(model.getType()))
-               return BaseIcon.SEND.toImageResource();
-            return BaseIcon.FOLDER_O.toImageResource();
-         }
+      tree.setIconProvider(model -> {
+         if (FtpDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.UPLOAD.toImageResource();
+         if (SftpDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.ARROW_CIRCLE_UP.toImageResource();
+         if (FtpsDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.ARROW_CIRCLE_O_UP.toImageResource();
+         if (LocalFileSystemDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.SERVER.toImageResource();
+         if (SambaDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.ANGLE_DOUBLE_UP.toImageResource();
+         if (ScpDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.ARROW_UP.toImageResource();
+         if (EmailDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.SEND.toImageResource();
+         if (DropboxDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.DROPBOX.toImageResource();
+         return BaseIcon.FOLDER_O.toImageResource();
       });
    }
 

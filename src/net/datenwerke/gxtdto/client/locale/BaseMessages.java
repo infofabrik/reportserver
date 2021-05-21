@@ -197,6 +197,8 @@ public interface BaseMessages extends Messages {
 
    String protectionLevel();
 
+   String accessToken();
+
    String folderAbsoluteExisting();
 
    String tlsEnable();
@@ -210,4 +212,10 @@ public interface BaseMessages extends Messages {
    String forceSender();
 
    String encryptionPolicy();
+
+   String appKey();
+
+   String secretKey();
+
+   String datasinkOauth2AuthenticationSetup();
 }

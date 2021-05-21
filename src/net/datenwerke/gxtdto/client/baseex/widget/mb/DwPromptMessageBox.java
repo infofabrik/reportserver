@@ -24,6 +24,11 @@ public class DwPromptMessageBox extends PromptMessageBox {
 		initCss();
 	}
 	
+    public DwPromptMessageBox(String titleHtml, String messageHtml, boolean trustedStrings) {
+       this(trustedStrings ? SafeHtmlUtils.fromTrustedString(titleHtml) : SafeHtmlUtils.fromString(titleHtml),
+             trustedStrings ? SafeHtmlUtils.fromTrustedString(messageHtml) : SafeHtmlUtils.fromString(messageHtml));
+    }
+	
 	protected void initCss() {
 		getElement().addClassName(DwWindow.CSS_NAME);
 		getAppearance().getHeaderElem(getElement()).addClassName(DwWindow.CSS_HEADER_NAME);

@@ -46,6 +46,7 @@ import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIModule;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.crystal.client.crystal.CrystalUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dsbundle.client.dsbundle.DatasourceBundleUiModule;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkUiModule;
 import net.datenwerke.rs.enterprise.client.EnterpriseCheckUiModule;
@@ -115,6 +116,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new SystemConsoleUiModule());
       install(new DatasinkUIModule());
       install(new FtpUiModule());
+      install(new DropboxUiModule());
       install(new SambaUIModule());
       install(new ScpUIModule());
       install(new LocalFileSystemUiModule());

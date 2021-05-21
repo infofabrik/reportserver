@@ -120,6 +120,8 @@ import net.datenwerke.rs.dashboard.server.dashboard.DashboardRpcServiceImpl;
 import net.datenwerke.rs.dashboard.server.dashboard.DashboardTreeRpcServiceImpl;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardModule;
 import net.datenwerke.rs.demo.DemoDataModule;
+import net.datenwerke.rs.dropbox.server.dropbox.DropboxRpcServiceImpl;
+import net.datenwerke.rs.dropbox.service.dropbox.DropboxModule;
 import net.datenwerke.rs.emaildatasink.server.emaildatasink.EmailDatasinkRpcServiceImpl;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule;
 import net.datenwerke.rs.enterprise.server.CommunityEnterpriseCheckRpcServiceImpl;
@@ -155,6 +157,8 @@ import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
 import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule;
+import net.datenwerke.rs.oauth.server.oauth.OAuthServlet;
+import net.datenwerke.rs.oauth.service.oauth.OAuthModule;
 import net.datenwerke.rs.passwordpolicy.server.AccountInhibitionRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
@@ -402,6 +406,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "samba").with(SambaRpcServiceImpl.class);
 				serve(BASE_URL + "scp").with(ScpRpcServiceImpl.class);
 				
+				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
+				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
 
@@ -512,6 +518,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				
 				serve(BASE_URL + "trace").with(TracerServlet.class);
 				serve(BASE_URL + "version").with(VersionInfoServlet.class);
+				serve(BASE_URL + "oauth").with(OAuthServlet.class);
 				
 				
 				Map<String, String> jerseyParams = new HashMap<String, String>();
@@ -630,7 +637,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new ReportPropertiesModule(),
 			
 			new SambaModule(),
+			new DropboxModule(),
 			new ScpModule(),
+			new OAuthModule(),
 			
 			new ReportServerPUModule(),
 			

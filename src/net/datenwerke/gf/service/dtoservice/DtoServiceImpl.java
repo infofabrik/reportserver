@@ -185,6 +185,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.DashboardNode2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardReference.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.DashboardReference2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dashboard.service.dashboard.entities.LayoutType.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.LayoutType2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink.class, injector.getInstance(net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.DropboxDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.DatabaseBundle2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundleEntry.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.DatabaseBundleEntry2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink.class, injector.getInstance(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.EmailDatasink2DtoGenerator.class));
@@ -457,6 +458,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardNodeDto.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.Dto2DashboardNodeGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.Dto2DashboardReferenceGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class, injector.getInstance(net.datenwerke.rs.dashboard.service.dashboard.entities.dtogen.Dto2LayoutTypeGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto.class, injector.getInstance(net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.Dto2DropboxDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.Dto2DatabaseBundleGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class, injector.getInstance(net.datenwerke.rs.dsbundle.service.dsbundle.entities.dtogen.Dto2DatabaseBundleEntryGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class, injector.getInstance(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.Dto2EmailDatasinkGenerator.class));
@@ -772,6 +774,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto.class);
@@ -1161,6 +1164,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardNode.class);
 		posoClassLookup.add(net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardReference.class);
 		posoClassLookup.add(net.datenwerke.rs.dashboard.service.dashboard.entities.LayoutType.class);
+		posoClassLookup.add(net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle.class);
 		posoClassLookup.add(net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundleEntry.class);
 		posoClassLookup.add(net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink.class);

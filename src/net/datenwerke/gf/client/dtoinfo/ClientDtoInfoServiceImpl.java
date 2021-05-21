@@ -129,6 +129,7 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.ParameterDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.ReportDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.StaticHtmlDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.UrlDadgetDto;
+import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
@@ -499,6 +500,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardNodeDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto)
 			return ((net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto)
+			return ((net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto)
 			return ((net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto)
@@ -863,6 +866,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardNodeDto();
 		if(net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec();
+		if(net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto();
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto();
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class.equals(dtoClass))
@@ -1357,6 +1362,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardNodeDto();
 		if("net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec();
+		if("net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto();
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto();
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto".equals(dtoClassName))
@@ -2011,6 +2018,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.DashboardReferenceDto2PosoMap.class;
 		if(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class.equals(dtoClass))
 			return net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.LayoutTypeDto2PosoMap.class;
+		if(net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.dropbox.client.dropbox.dto.posomap.DropboxDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class.equals(dtoClass))
 			return net.datenwerke.rs.dsbundle.client.dsbundle.dto.posomap.DatabaseBundleDto2PosoMap.class;
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto.class.equals(dtoClass))
@@ -2705,6 +2714,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleEntryDto)
@@ -3226,6 +3237,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto.class.equals(dtoType))
 			return true;
@@ -4106,6 +4119,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.DashboardReferenceDtoDec".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto".equals(dtoClassName))
 			return true;
