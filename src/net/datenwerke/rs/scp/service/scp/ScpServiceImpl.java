@@ -53,6 +53,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
@@ -61,7 +62,6 @@ import net.datenwerke.rs.utils.config.ConfigService;
 
 public class ScpServiceImpl implements ScpService {
 
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
    private static final String PROPERTY_SCP_DISABLED = "scp[@disabled]";
    private static final String PROPERTY_SCP_SCHEDULER_ENABLED = "scp[@supportsScheduling]";
 
@@ -204,12 +204,12 @@ public class ScpServiceImpl implements ScpService {
 
    @Override
    public boolean isScpEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SCP_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SCP_DISABLED, false);
    }
 
    @Override
    public boolean isScpSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SCP_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SCP_SCHEDULER_ENABLED,
             true);
    }
 

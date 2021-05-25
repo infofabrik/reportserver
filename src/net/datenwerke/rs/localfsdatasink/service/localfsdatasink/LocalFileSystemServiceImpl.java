@@ -15,6 +15,7 @@ import java.util.Objects;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -23,7 +24,6 @@ import net.datenwerke.rs.utils.config.ConfigService;
 public class LocalFileSystemServiceImpl implements LocalFileSystemService {
 
    public static final int DEFAULT_BUFFER_SIZE = 8192;
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
 
    private static final String PROPERTY_LOCAL_FILE_SYSTEM_DISABLED = "localfilesystem[@disabled]";
    private static final String PROPERTY_LOCAL_FILE_SYSTEM_SCHEDULER_ENABLED = "localfilesystem[@supportsScheduling]";
@@ -89,13 +89,13 @@ public class LocalFileSystemServiceImpl implements LocalFileSystemService {
 
    @Override
    public boolean isLocalFileSystemEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_LOCAL_FILE_SYSTEM_DISABLED,
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_LOCAL_FILE_SYSTEM_DISABLED,
             false);
    }
 
    @Override
    public boolean isLocalFileSystemSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE)
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE)
             .getBoolean(PROPERTY_LOCAL_FILE_SYSTEM_SCHEDULER_ENABLED, true);
    }
 

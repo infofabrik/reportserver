@@ -40,6 +40,7 @@ import net.datenwerke.rs.core.service.mail.events.SendMailEvent;
 import net.datenwerke.rs.core.service.mail.exceptions.MailerRuntimeException;
 import net.datenwerke.rs.core.service.mail.interfaces.NeedsPostprocessing;
 import net.datenwerke.rs.core.service.mail.interfaces.SessionProvider;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkSessionFactory;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.utils.eventbus.EventBus;
@@ -87,6 +88,8 @@ public class MailServiceImpl implements MailService {
    private final Provider<Session> defaultSessionProvider;
    // used when sending emails based on email datasinks
    private final Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory;
+   
+   private final Provider<EmailDatasinkService> emailDatasinkServiceProvider;
 
    /* thread pool used to send mails asynchronously */
    private final ExecutorService sendMailPool = Executors.newFixedThreadPool(1);
@@ -100,6 +103,7 @@ public class MailServiceImpl implements MailService {
          CryptoService cryptoService,
          Provider<SimpleJuel> simpleJuelProvider, 
          Provider<EventBus> eventBus,
+         Provider<EmailDatasinkService> emailDatasinkServiceProvider,
          @MailModuleProperties Provider<Configuration> config
          ) {
 
@@ -111,6 +115,7 @@ public class MailServiceImpl implements MailService {
       this.cryptoService = cryptoService;
       this.simpleJuelProvider = simpleJuelProvider;
       this.eventBus = eventBus;
+      this.emailDatasinkServiceProvider = emailDatasinkServiceProvider;
       this.config = config;
    }
 
@@ -121,9 +126,15 @@ public class MailServiceImpl implements MailService {
 
    @Override
    public SimpleMail newSimpleMail(Optional<EmailDatasink> emailDatasink) {
-      if (!emailDatasink.isPresent())
-         return simpleCryptoMailFactoryProvider.get().create(defaultSessionProvider.get());
-      else
+      if (!emailDatasink.isPresent()) {
+         //try to load default
+         Optional<EmailDatasink> defaultEmailDatasink = loadDefaultEmailDatasink();
+         if (defaultEmailDatasink.isPresent())
+            return simpleCryptoMailFactoryProvider.get()
+                  .create(emailDatasinkSessionFactory.get().create(defaultEmailDatasink.get()).get());
+         else
+            return simpleCryptoMailFactoryProvider.get().create(defaultSessionProvider.get());
+      } else
          return simpleCryptoMailFactoryProvider.get()
                .create(emailDatasinkSessionFactory.get().create(emailDatasink.get()).get());
    }
@@ -181,10 +192,23 @@ public class MailServiceImpl implements MailService {
       unsupported.addAll(partitioned.get(false));
    }
    
+   private Optional<EmailDatasink> loadDefaultEmailDatasink() {
+      // try to load default email datasink
+      Optional<EmailDatasink> defaultEmailDatasink = emailDatasinkServiceProvider.get().getDefaultEmailDatasinkId();
+      if (defaultEmailDatasink.isPresent())
+         return defaultEmailDatasink;
+
+      return Optional.empty();
+   }
+   
    @Override
    public synchronized void sendMailSync(Optional<EmailDatasink> emailDatasink, MimeMessage message,
          MailSupervisor supervisor) {
       eventBus.get().fireEvent(new SendMailEvent(message));
+      
+      Optional<EmailDatasink> toUse = emailDatasink;
+      if (!toUse.isPresent()) 
+         toUse = loadDefaultEmailDatasink();
 
       try {
          /* check crypto policy */
@@ -211,7 +235,7 @@ public class MailServiceImpl implements MailService {
          /* if there are recipients that do not support encrypted communication */
          if (!(rcptTOencNotSupported.isEmpty() && rcptCCencNotSupported.isEmpty()
                && rcptBCCencNotSupported.isEmpty())) {
-            if (forceEncryption(emailDatasink)) {
+            if (forceEncryption(toUse)) {
                /* remove and warn */
                logger.warn("Some recipients were removed from a message, because no public key was found. "
                      + rcptTOencNotSupported + ", " + rcptCCencNotSupported + ", " + rcptBCCencNotSupported);
@@ -225,11 +249,11 @@ public class MailServiceImpl implements MailService {
             } else {
                SimpleMail plaintextMail = null;
 
-               if (!emailDatasink.isPresent())
+               if (!toUse.isPresent())
                   plaintextMail = simpleMailFactoryProvider.get().create(defaultSessionProvider.get());
                else
                   plaintextMail = simpleMailFactoryProvider.get()
-                        .create(emailDatasinkSessionFactory.get().create(emailDatasink.get()).get());
+                        .create(emailDatasinkSessionFactory.get().create(toUse.get()).get());
 
                if (rcptTOencSupported.isEmpty()) {
                   /* only send plaintext */
@@ -293,12 +317,12 @@ public class MailServiceImpl implements MailService {
             ((SessionProvider) message).getSession().setDebug(true);
          }
 
-         if (forceDefaultSender(emailDatasink)) {
-            String senderName = getSenderName(emailDatasink);
+         if (forceDefaultSender(toUse)) {
+            String senderName = getSenderName(toUse);
             if (null == senderName)
-               message.setFrom(new InternetAddress(getSender(emailDatasink)));
+               message.setFrom(new InternetAddress(getSender(toUse)));
             else
-               message.setFrom(new InternetAddress(getSender(emailDatasink), senderName));
+               message.setFrom(new InternetAddress(getSender(toUse), senderName));
          }
 
          message.setSentDate(new Date());

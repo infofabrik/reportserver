@@ -13,10 +13,12 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations.DefaultEmailDatasink;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
@@ -30,7 +32,6 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<MimeUtils> mimeUtilsProvider;
 
    public static final int DEFAULT_BUFFER_SIZE = 8192;
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
 
    private static final String PROPERTY_EMAIL_DISABLED = "email[@disabled]";
    private static final String PROPERTY_EMAIL_SCHEDULER_ENABLED = "email[@supportsScheduling]";
@@ -38,6 +39,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<ConfigService> configServiceProvider;
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<MailService> mailServiceProvider;
+   private final Provider<Optional<EmailDatasink>> defaultEmailDatasinkProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -47,13 +49,15 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
          Provider<MailBuilderFactory> mailBuilderFactoryProvider, 
          Provider<MailService> mailServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<MimeUtils> mimeUtilsProvider
+         Provider<MimeUtils> mimeUtilsProvider,
+         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultEmailDatasinkProvider
          ) {
       this.configServiceProvider = configServiceProvider;
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.mimeUtilsProvider = mimeUtilsProvider;
+      this.defaultEmailDatasinkProvider = defaultEmailDatasinkProvider;
    }
 
    @Override
@@ -84,12 +88,12 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
    @Override
    public boolean isEmailEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_EMAIL_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_EMAIL_DISABLED, false);
    }
 
    @Override
    public boolean isEmailSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_EMAIL_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_EMAIL_SCHEDULER_ENABLED,
             true);
    }
 
@@ -103,7 +107,11 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
             emailText, emailText + " " + dateFormat.format(Calendar.getInstance().getTime()),
             Arrays.asList(authenticatorServiceProvider.get().getCurrentUser()), "reportserver-email-datasink-test.txt",
             true);
+   }
 
+   @Override
+   public Optional<EmailDatasink> getDefaultEmailDatasinkId() {
+      return defaultEmailDatasinkProvider.get();
    }
 
 }

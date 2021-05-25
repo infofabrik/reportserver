@@ -10,14 +10,14 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface DatasinkService extends TreeDBManager<AbstractDatasinkManagerNode> {
 
-	public Set<Class<? extends DatasinkDefinition>> getInstalledDatasinkDefinitions();
-	
-	public DatasinkDefinition getDatasinkByName(String name);
-	
-	public DatasinkDefinition getDatasinkById(Long id);
-	
-	public DatasinkFolder getDatasinkFolderByName(String name);
-	
-	public DatasinkContainer merge(DatasinkContainer container);
+   Set<Class<? extends DatasinkDefinition>> getInstalledDatasinkDefinitions();
 
+   DatasinkDefinition getDatasinkByName(String name);
+
+   DatasinkDefinition getDatasinkById(Long id);
+
+   DatasinkFolder getDatasinkFolderByName(String name);
+
+   DatasinkContainer merge(DatasinkContainer container);
+   
 }

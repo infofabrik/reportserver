@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.datasinkmanager.annotations;
+package net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -10,6 +10,6 @@ import com.google.inject.BindingAnnotation;
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.PARAMETER })
-public @interface ReportServerDatasinkDefinitions {
+public @interface DefaultEmailDatasink {
 
 }

@@ -32,6 +32,7 @@ import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
@@ -42,8 +43,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
 
 public class FtpServiceImpl implements FtpService {
-
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
 
    private static final String PROPERTY_FTP_DISABLED = "ftp[@disabled]";
    private static final String PROPERTY_FTP_SCHEDULER_ENABLED = "ftp[@supportsScheduling]";
@@ -81,12 +80,12 @@ public class FtpServiceImpl implements FtpService {
 
    @Override
    public boolean isFtpEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_FTP_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_FTP_DISABLED, false);
    }
 
    @Override
    public boolean isFtpSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_FTP_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_FTP_SCHEDULER_ENABLED,
             true);
    }
 
@@ -238,12 +237,12 @@ public class FtpServiceImpl implements FtpService {
 
    @Override
    public boolean isSftpEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SFTP_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SFTP_DISABLED, false);
    }
 
    @Override
    public boolean isSftpSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SFTP_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SFTP_SCHEDULER_ENABLED,
             true);
    }
 
@@ -294,7 +293,7 @@ public class FtpServiceImpl implements FtpService {
 
    @Override
    public boolean isFtpsEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_FTPS_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_FTPS_DISABLED, false);
    }
 
    @Override
@@ -307,7 +306,7 @@ public class FtpServiceImpl implements FtpService {
 
    @Override
    public boolean isFtpsSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_FTPS_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_FTPS_SCHEDULER_ENABLED,
             true);
    }
 

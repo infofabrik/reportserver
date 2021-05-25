@@ -1,8 +1,9 @@
 package net.datenwerke.rs.core.service.datasourcemanager;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.commons.configuration.Configuration;
 
@@ -21,57 +22,60 @@ import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DatasourceModule extends AbstractReportServerModule {
 
-	public static final String CONFIG_FILE = "datasources/datasources.cf";
-	public static final String PROPERTY_DEFAULT_DATASOURCE_ID = "datasource.defaultDatasource";
-	public static final String PROPERTY_DEFAULT_DATASOURCE_NAME = "datasource.defaultDatasourceName";
-		
-	@Override
-	protected void configure() {
-		bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
-		
-		/* startup */
-		bind(DatasourceStartup.class).asEagerSingleton();
-	}
+   public static final String CONFIG_FILE = "datasources/datasources.cf";
+   public static final String PROPERTY_DEFAULT_DATASOURCE_ID = "datasource.defaultDatasource";
+   public static final String PROPERTY_DEFAULT_DATASOURCE_NAME = "datasource.defaultDatasourceName";
 
+   @Override
+   protected void configure() {
+      bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
 
-	/**
-	 * Register DatasourceDefinitions
-	 * 
-	 */
-	@Provides @ReportServerDatasourceDefinitions @Inject
-	public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(
-		HookHandlerService hookHandler	
-		){
-		Set<Class<? extends DatasourceDefinition>> definitions = new HashSet<Class<? extends DatasourceDefinition>>();
-		
-		definitions.addAll(
-				hookHandler.getHookers(DatasourceProviderHook.class)
-					.stream()
-					.flatMap(dsProvider -> dsProvider.getDatasources().stream())
-					.collect(Collectors.toList()));
-		
-		return definitions;
-	}
-	
-	@Provides @Inject @DatasourceModuleProperties
-	public Configuration provideConfig(ConfigService configService){
-		return configService.getConfig(CONFIG_FILE);
-	}
-	
-	@Provides @Inject @DefaultDatasource
-	public String provideDefaultDatasourceId(@DatasourceModuleProperties Configuration config, DatasourceService dsService){
-		String id = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_ID);
-		if(null == id){
-			String name = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_NAME);
-			if(null != name){
-				try {
-					DatasourceDefinition ds = dsService.getDatasourceByName(name);
-					if(null != ds)
-						id = String.valueOf(ds.getId());
-				} catch(Exception e){
-				}
-			}
-		}
-		return id;
-	}
+      /* startup */
+      bind(DatasourceStartup.class).asEagerSingleton();
+   }
+
+   /**
+    * Register DatasourceDefinitions
+    * 
+    */
+   @Provides
+   @ReportServerDatasourceDefinitions
+   @Inject
+   public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(HookHandlerService hookHandler) {
+      Set<Class<? extends DatasourceDefinition>> definitions = new HashSet<Class<? extends DatasourceDefinition>>();
+
+      definitions.addAll(hookHandler.getHookers(DatasourceProviderHook.class)
+            .stream()
+            .flatMap(dsProvider -> dsProvider.getDatasources().stream())
+            .collect(toList()));
+
+      return definitions;
+   }
+
+   @Provides
+   @Inject
+   @DatasourceModuleProperties
+   public Configuration provideConfig(ConfigService configService) {
+      return configService.getConfig(CONFIG_FILE);
+   }
+
+   @Provides
+   @Inject
+   @DefaultDatasource
+   public String provideDefaultDatasourceId(@DatasourceModuleProperties Configuration config,
+         DatasourceService dsService) {
+      String id = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_ID);
+      if (null == id) {
+         String name = config.getString(DatasourceModule.PROPERTY_DEFAULT_DATASOURCE_NAME);
+         if (null != name) {
+            try {
+               DatasourceDefinition ds = dsService.getDatasourceByName(name);
+               if (null != ds)
+                  id = String.valueOf(ds.getId());
+            } catch (Exception e) {
+            }
+         }
+      }
+      return id;
+   }
 }

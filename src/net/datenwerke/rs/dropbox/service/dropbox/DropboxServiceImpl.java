@@ -22,14 +22,13 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DropboxServiceImpl implements DropboxService {
-
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
 
    private static final String PROPERTY_DROPBOX_DISABLED = "dropbox[@disabled]";
    private static final String PROPERTY_DROPBOX_SCHEDULER_ENABLED = "dropbox[@supportsScheduling]";
@@ -94,12 +93,12 @@ public class DropboxServiceImpl implements DropboxService {
 
    @Override
    public boolean isDropboxEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_DISABLED, false);
    }
 
    @Override
    public boolean isDropboxSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_SCHEDULER_ENABLED,
             true);
    }
 

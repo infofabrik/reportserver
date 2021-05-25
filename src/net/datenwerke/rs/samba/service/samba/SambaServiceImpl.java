@@ -19,6 +19,7 @@ import jcifs.CIFSContext;
 import jcifs.context.SingletonContext;
 import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -26,7 +27,6 @@ import net.datenwerke.rs.utils.config.ConfigService;
 
 public class SambaServiceImpl implements SambaService {
 
-   public static final String CONFIG_FILE = "datasinks/datasinks.cf";
    private static final String PROPERTY_SAMBA_DISABLED = "samba[@disabled]";
    private static final String PROPERTY_SAMBA_SCHEDULER_ENABLED = "samba[@supportsScheduling]";
 
@@ -80,12 +80,12 @@ public class SambaServiceImpl implements SambaService {
 
    @Override
    public boolean isSambaEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SAMBA_DISABLED, false);
+      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SAMBA_DISABLED, false);
    }
 
    @Override
    public boolean isSambaSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(CONFIG_FILE).getBoolean(PROPERTY_SAMBA_SCHEDULER_ENABLED,
+      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SAMBA_SCHEDULER_ENABLED,
             true);
    }
    

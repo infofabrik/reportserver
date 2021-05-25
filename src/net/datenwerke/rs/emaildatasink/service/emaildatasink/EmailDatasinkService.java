@@ -3,6 +3,7 @@ package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -62,4 +63,12 @@ public interface EmailDatasinkService {
     * @throws IOException if an I/O error occurs
     */
    void testEmailDatasink(EmailDatasink emailDatasink) throws IOException;
+
+   /**
+    * Returns the default email datasink, used for sending emails without using the
+    * old mail.cf configuration file but an existing email SMTP datasink instead.
+    * 
+    * @return the default email datasink
+    */
+   Optional<EmailDatasink> getDefaultEmailDatasinkId();
 }
