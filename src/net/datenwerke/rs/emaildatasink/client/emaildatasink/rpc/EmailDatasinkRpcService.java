@@ -15,13 +15,14 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 @RemoteServiceRelativePath("email")
 public interface EmailDatasinkRpcService extends RemoteService {
 
-    void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto, String format,
-            List<ReportExecutionConfigDto> configs, String name,
-            String subject, String message, List<StrippedDownUser> recipients) throws ServerCallFailedException;
+   void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto, String format,
+         List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         List<StrippedDownUser> recipients) throws ServerCallFailedException;
 
-    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
-    
-    boolean testEmailDataSink(EmailDatasinkDto emailDatasinkDto)
-             throws ServerCallFailedException;
+   Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
+
+   boolean testEmailDatasink(EmailDatasinkDto emailDatasinkDto) throws ServerCallFailedException;
+
+   EmailDatasinkDto getDefaultEmailDatasink() throws ServerCallFailedException;
 
 }

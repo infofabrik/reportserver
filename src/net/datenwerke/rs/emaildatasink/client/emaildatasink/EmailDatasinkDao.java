@@ -35,8 +35,12 @@ public class EmailDatasinkDao extends Dao {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
 
-   public Request testEmailDataSink(EmailDatasinkDto emailDatasinkDto, AsyncCallback<Boolean> callback) {
-      return rpcService.testEmailDataSink(emailDatasinkDto, transformAndKeepCallback(callback));
+   public Request testEmailDatasink(EmailDatasinkDto emailDatasinkDto, AsyncCallback<Boolean> callback) {
+      return rpcService.testEmailDatasink(emailDatasinkDto, transformAndKeepCallback(callback));
+   }
+   
+   public void getDefaultEmailDatasink(AsyncCallback<EmailDatasinkDto> callback) {
+      rpcService.getDefaultEmailDatasink(transformAndKeepCallback(callback));
    }
 
 }

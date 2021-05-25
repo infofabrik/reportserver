@@ -55,4 +55,10 @@ public interface DatasinksMessages extends Messages {
 
    String email();
 
+   String useDefaultFailureTitle();
+
+   String useDefaultFailureMessage();
+
+   String useDefaultSuccessMessage();
+
 }

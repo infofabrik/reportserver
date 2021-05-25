@@ -9,16 +9,15 @@ import com.google.inject.Inject;
 
 public class DatasourceDao extends Dao {
 
-	private final DatasourceRpcServiceAsync rpcService;
+   private final DatasourceRpcServiceAsync rpcService;
 
-	@Inject
-	public DatasourceDao(DatasourceRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public DatasourceDao(DatasourceRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-		
-	public void getDefaultDatasource(AsyncCallback<DatasourceDefinitionDto> callback){
-		rpcService.getDefaultDatasource(transformDtoCallback(callback));
-	}
-	
+   public void getDefaultDatasource(AsyncCallback<DatasourceDefinitionDto> callback) {
+      rpcService.getDefaultDatasource(transformDtoCallback(callback));
+   }
+
 }

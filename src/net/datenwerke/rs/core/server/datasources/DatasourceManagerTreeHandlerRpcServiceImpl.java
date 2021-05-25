@@ -23,60 +23,52 @@ import com.google.inject.persist.Transactional;
  *
  */
 @Singleton
-public class DatasourceManagerTreeHandlerRpcServiceImpl 
-	extends TreeDBManagerTreeHandler<AbstractDatasourceManagerNode>
-	implements DatasourceTreeLoader, DatasourceTreeManager, DatasourceRpcService {
+public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractDatasourceManagerNode>
+      implements DatasourceTreeLoader, DatasourceTreeManager, DatasourceRpcService {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -455777535667237770L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -455777535667237770L;
+   private final DatasourceService datasourceService;
 
-	private final DatasourceService datasourceService;
+   @Inject
+   public DatasourceManagerTreeHandlerRpcServiceImpl(DatasourceService datasourceService, DtoService dtoGenerator,
+         SecurityService securityService, EntityClonerService entityClonerService) {
 
-	
-	@Inject
-	public DatasourceManagerTreeHandlerRpcServiceImpl(
-			DatasourceService datasourceService,
-			DtoService dtoGenerator,
-			SecurityService securityService,
-			EntityClonerService entityClonerService
-		) {
-	
-		super(datasourceService, dtoGenerator, securityService, entityClonerService);
-		
-		/* store objects */
-		this.datasourceService = datasourceService;
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public DatasourceDefinitionDto getDefaultDatasource() throws ServerCallFailedException {
-		DatasourceDefinition ds = datasourceService.getDefaultDatasource();
-		
-		if(null == ds)
-			return null;
-		
-		if(! securityService.checkRights(ds, Read.class))
-			return null;
-		
-		return (DatasourceDefinitionDto)dtoService.createDto(ds);
-	}
+      super(datasourceService, dtoGenerator, securityService, entityClonerService);
 
-	@Override
-	protected boolean allowDuplicateNode(AbstractDatasourceManagerNode node) {
-		return node instanceof DatasourceDefinition;
-	}
+      /* store objects */
+      this.datasourceService = datasourceService;
+   }
 
-	@Override
-	protected void nodeCloned(AbstractDatasourceManagerNode clonedNode) {
-		if(! (clonedNode instanceof DatasourceDefinition))
-			throw new IllegalArgumentException();
-		DatasourceDefinition datasource = (DatasourceDefinition) clonedNode;
-		
-		datasource.setName(datasource.getName() == null ? "copy" : datasource.getName() + " (copy)");
-	}
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public DatasourceDefinitionDto getDefaultDatasource() throws ServerCallFailedException {
+      DatasourceDefinition ds = datasourceService.getDefaultDatasource();
 
-	
+      if (null == ds)
+         return null;
+
+      if (!securityService.checkRights(ds, Read.class))
+         return null;
+
+      return (DatasourceDefinitionDto) dtoService.createDto(ds);
+   }
+
+   @Override
+   protected boolean allowDuplicateNode(AbstractDatasourceManagerNode node) {
+      return node instanceof DatasourceDefinition;
+   }
+
+   @Override
+   protected void nodeCloned(AbstractDatasourceManagerNode clonedNode) {
+      if (!(clonedNode instanceof DatasourceDefinition))
+         throw new IllegalArgumentException();
+      DatasourceDefinition datasource = (DatasourceDefinition) clonedNode;
+
+      datasource.setName(datasource.getName() == null ? "copy" : datasource.getName() + " (copy)");
+   }
+
 }

@@ -46,7 +46,7 @@ public class EmailDatasinkTesterToolbarConfigurator implements MainPanelViewTool
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = emailDatasinkDao.testEmailDataSink((EmailDatasinkDto) selectedNode,
+         Request request = emailDatasinkDao.testEmailDatasink((EmailDatasinkDto) selectedNode,
                new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });

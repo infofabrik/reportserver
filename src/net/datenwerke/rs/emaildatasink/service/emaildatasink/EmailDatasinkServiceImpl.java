@@ -110,7 +110,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public Optional<EmailDatasink> getDefaultEmailDatasinkId() {
+   public Optional<EmailDatasink> getDefaultEmailDatasink() {
       return defaultEmailDatasinkProvider.get();
    }
 

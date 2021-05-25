@@ -17,6 +17,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
@@ -40,9 +41,11 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    private String messageKey;
 
    private final Provider<UITree> treeProvider;
-
+   
    @Inject
-   public EmailDatasinkExportSnippetProvider(@DatasinkTreeEmail Provider<UITree> treeProvider) {
+   public EmailDatasinkExportSnippetProvider(
+         @DatasinkTreeEmail Provider<UITree> treeProvider
+         ) {
       this.treeProvider = treeProvider;
    }
 
@@ -70,6 +73,11 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
                @Override
                public boolean allowBlank() {
                   return false;
+               }
+            }, new SFFCShowTwinButton() {
+               @Override
+               public boolean showTwinButton() {
+                  return true;
                }
             });
 

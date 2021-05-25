@@ -194,7 +194,7 @@ public class MailServiceImpl implements MailService {
    
    private Optional<EmailDatasink> loadDefaultEmailDatasink() {
       // try to load default email datasink
-      Optional<EmailDatasink> defaultEmailDatasink = emailDatasinkServiceProvider.get().getDefaultEmailDatasinkId();
+      Optional<EmailDatasink> defaultEmailDatasink = emailDatasinkServiceProvider.get().getDefaultEmailDatasink();
       if (defaultEmailDatasink.isPresent())
          return defaultEmailDatasink;
 

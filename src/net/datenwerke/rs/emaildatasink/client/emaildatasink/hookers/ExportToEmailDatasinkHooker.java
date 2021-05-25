@@ -29,6 +29,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
@@ -62,6 +63,8 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
    private final LoginService loginService;
 
    private final Provider<UITree> treeProvider;
+   
+   private String emailKey;
 
    @Inject
    public ExportToEmailDatasinkHooker(
@@ -122,7 +125,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String emailKey = form.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.email() + " - SMTP",
+      emailKey = form.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.email() + " - SMTP",
             new SFFCGenericTreeNode() {
                @Override
                public UITree getTreeForPopup() {
@@ -132,6 +135,11 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
                @Override
                public boolean allowBlank() {
                   return false;
+               }
+            }, new SFFCShowTwinButton() {
+               @Override
+               public boolean showTwinButton() {
+                  return true;
                }
             });
 

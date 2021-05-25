@@ -6,6 +6,7 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.inject.Singleton;
@@ -84,8 +85,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
    @Override
    public void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name,
-         String subject, String message, List<StrippedDownUser> recipients) throws ServerCallFailedException {
+         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         List<StrippedDownUser> recipients) throws ServerCallFailedException {
 
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -106,18 +107,16 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
 
-      List<User> recipientUsers = recipients
-         .stream()
-         .map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
-         .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-         .collect(toList());
-      
+      List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
+            .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
+
       CompiledReport cReport;
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
          String filename = name + "." + cReport.getFileExtension();
-         emailDatasinkService.sendToEmailDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers, filename, true);
+         emailDatasinkService.sendToEmailDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
+               filename, true);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to email: " + e.getMessage(), e);
       }
@@ -139,7 +138,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    }
 
    @Override
-   public boolean testEmailDataSink(EmailDatasinkDto emailDatasinkDto) throws ServerCallFailedException {
+   public boolean testEmailDatasink(EmailDatasinkDto emailDatasinkDto) throws ServerCallFailedException {
       EmailDatasink emailDatasink = (EmailDatasink) dtoService.loadPoso(emailDatasinkDto);
 
       /* check rights */
@@ -154,6 +153,19 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       }
 
       return true;
+   }
+
+   @Override
+   public EmailDatasinkDto getDefaultEmailDatasink() throws ServerCallFailedException {
+
+      Optional<EmailDatasink> emailDatasink = emailDatasinkService.getDefaultEmailDatasink();
+      if (!emailDatasink.isPresent())
+         return null;
+
+      /* check rights */
+      securityService.assertRights(emailDatasink.get(), Read.class);
+
+      return (EmailDatasinkDto) dtoService.createDto(emailDatasink.get());
    }
 
 }

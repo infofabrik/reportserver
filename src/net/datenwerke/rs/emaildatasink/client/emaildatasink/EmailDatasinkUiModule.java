@@ -8,12 +8,11 @@ import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations
 
 public class EmailDatasinkUiModule extends AbstractGinModule {
 
-    @Override
-    protected void configure() {
-        /* bind trees */
-        bind(UITree.class).annotatedWith(DatasinkTreeEmail.class).toProvider(EmailDatasinkTreeProvider.class);
-        bind(EmailDatasinkUiStartup.class).asEagerSingleton();
-
-    }
+   @Override
+   protected void configure() {
+      /* bind trees */
+      bind(UITree.class).annotatedWith(DatasinkTreeEmail.class).toProvider(EmailDatasinkTreeProvider.class);
+      bind(EmailDatasinkUiStartup.class).asEagerSingleton();
+   }
 
 }
