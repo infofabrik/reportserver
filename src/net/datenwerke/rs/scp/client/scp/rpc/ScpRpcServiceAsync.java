@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -17,5 +19,7 @@ public interface ScpRpcServiceAsync {
    void getScpEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testScpDatasink(ScpDatasinkDto scpDatasinkDto, AsyncCallback<Boolean> callback);
+
+   void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 
 }

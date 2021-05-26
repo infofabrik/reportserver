@@ -2,6 +2,7 @@ package net.datenwerke.rs.dropbox.service.dropbox;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
@@ -64,5 +65,7 @@ public interface DropboxService {
     */
    void testDropboxDataSink(DropboxDatasink dropboxDatasink)
          throws IOException, InterruptedException, ExecutionException;
+   
+   Optional<DropboxDatasink> getDefaultDatasink();
 
 }

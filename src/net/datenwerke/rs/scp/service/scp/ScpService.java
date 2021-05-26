@@ -2,6 +2,7 @@ package net.datenwerke.rs.scp.service.scp;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import com.jcraft.jsch.JSchException;
 
@@ -20,10 +21,12 @@ public interface ScpService {
     * @param filename    filename to use for the report
     * @param folder      extension path of the base path defined in the datasink.
     *                    Overrides the folder defined in the {@link ScpDatasink}
-    * @throws IOException if an I/O error occurs
-    * @throws JSchException if error occurs while connecting with the SCP SSH server
+    * @throws IOException   if an I/O error occurs
+    * @throws JSchException if error occurs while connecting with the SCP SSH
+    *                       server
     */
-   void sendToScpServer(Object report, ScpDatasink scpDatasink, String filename, String folder) throws IOException, JSchException;
+   void sendToScpServer(Object report, ScpDatasink scpDatasink, String filename, String folder)
+         throws IOException, JSchException;
 
    /**
     * Summarizes {@link #isScpEnabled()} and {@link #isScpSchedulingEnabled()} in a
@@ -55,9 +58,12 @@ public interface ScpService {
     * the specified directory in the Scp server of the datasink.
     * 
     * @param scpDatasink the {@link ScpDatasink} to test
-    * @throws IOException if an I/O error occurs
-    * @throws JSchException if error occurs while connecting with the SCP SSH server
+    * @throws IOException   if an I/O error occurs
+    * @throws JSchException if error occurs while connecting with the SCP SSH
+    *                       server
     */
    void testScpDatasink(ScpDatasink scpDatasink) throws IOException, JSchException;
+
+   Optional<ScpDatasink> getDefaultDatasink();
 
 }

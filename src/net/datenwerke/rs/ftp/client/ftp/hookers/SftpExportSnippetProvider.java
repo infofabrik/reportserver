@@ -18,11 +18,14 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.ftp.client.ftp.SftpDao;
 import net.datenwerke.rs.ftp.client.ftp.dto.ScheduleAsSftpFileInformation;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeSftp;
@@ -30,6 +33,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsF
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
@@ -39,13 +43,18 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
    private String sftpKey;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<SftpDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public SftpExportSnippetProvider(@DatasinkTreeSftp Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager) {
+   public SftpExportSnippetProvider(
+         @DatasinkTreeSftp Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager,
+         Provider<SftpDao> datasinkDaoProvider
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
@@ -78,6 +87,15 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
          @Override
          public boolean allowBlank() {
             return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+         @Override
+         public BaseIcon getIcon() {
+            return BaseIcon.ARROW_CIRCLE_UP;
          }
       });
 

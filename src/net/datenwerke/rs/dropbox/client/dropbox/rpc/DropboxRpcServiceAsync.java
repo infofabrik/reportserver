@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
@@ -20,5 +21,7 @@ public interface DropboxRpcServiceAsync {
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testDropboxDatasink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback);
+
+   void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 
 }

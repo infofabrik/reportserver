@@ -135,6 +135,8 @@ import net.datenwerke.rs.fileserver.server.fileserver.FileServerRpcServiceImpl;
 import net.datenwerke.rs.fileserver.server.fileserver.IndexRedirectServlet;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerModule;
 import net.datenwerke.rs.ftp.server.ftp.FtpRpcServiceImpl;
+import net.datenwerke.rs.ftp.server.ftp.FtpsRpcServiceImpl;
+import net.datenwerke.rs.ftp.server.ftp.SftpRpcServiceImpl;
 import net.datenwerke.rs.ftp.service.ftp.FtpModule;
 import net.datenwerke.rs.globalconstants.server.globalconstants.GlobalConstantsRpcServiceImpl;
 import net.datenwerke.rs.globalconstants.service.GlobalConstantsModule;
@@ -402,6 +404,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "ts/scheduelasfile").with(ScheduleAsFileRpcServiceImpl.class);
 				
 				serve(BASE_URL + "ftp").with(FtpRpcServiceImpl.class); 
+				serve(BASE_URL + "sftp").with(SftpRpcServiceImpl.class); 
+				serve(BASE_URL + "ftps").with(FtpsRpcServiceImpl.class); 
 				
 				serve(BASE_URL + "samba").with(SambaRpcServiceImpl.class);
 				serve(BASE_URL + "scp").with(ScpRpcServiceImpl.class);

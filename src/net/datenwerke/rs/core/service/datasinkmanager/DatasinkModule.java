@@ -18,6 +18,8 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 public class DatasinkModule extends AbstractReportServerModule {
 
    public static final String CONFIG_FILE = "datasinks/datasinks.cf";
+   public static final String PROPERTY_DEFAULT_DATASINK_ID = "defaultDatasinkId";
+   public static final String PROPERTY_DEFAULT_DATASINK_NAME = "defaultDatasinkName";
    
    @Override
    protected void configure() {

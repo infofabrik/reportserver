@@ -2,6 +2,7 @@ package net.datenwerke.rs.ftp.service.ftp;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
@@ -153,4 +154,11 @@ public interface FtpService {
     * @return true if FTPS's scheduling is enabled
     */
    boolean isFtpsSchedulingEnabled();
+   
+   Optional<FtpDatasink> getDefaultFtpDatasink();
+   
+   Optional<SftpDatasink> getDefaultSftpDatasink();
+   
+   Optional<FtpsDatasink> getDefaultFtpsDatasink();
+   
 }

@@ -39,7 +39,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<ConfigService> configServiceProvider;
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<MailService> mailServiceProvider;
-   private final Provider<Optional<EmailDatasink>> defaultEmailDatasinkProvider;
+   private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -50,14 +50,14 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
          Provider<MailService> mailServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
          Provider<MimeUtils> mimeUtilsProvider,
-         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultEmailDatasinkProvider
+         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
          ) {
       this.configServiceProvider = configServiceProvider;
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.mimeUtilsProvider = mimeUtilsProvider;
-      this.defaultEmailDatasinkProvider = defaultEmailDatasinkProvider;
+      this.defaultDatasinkProvider = defaultDatasinkProvider;
    }
 
    @Override
@@ -110,8 +110,8 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public Optional<EmailDatasink> getDefaultEmailDatasink() {
-      return defaultEmailDatasinkProvider.get();
+   public Optional<EmailDatasink> getDefaultDatasink() {
+      return defaultDatasinkProvider.get();
    }
 
 }

@@ -2,6 +2,7 @@ package net.datenwerke.rs.localfsdatasink.service.localfsdatasink;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -63,5 +64,7 @@ public interface LocalFileSystemService {
     * @throws IOException if an I/O error occurs
     */
    void testLocalFileSystemDataSink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
+   
+   Optional<LocalFileSystemDatasink> getDefaultDatasink();
 
 }

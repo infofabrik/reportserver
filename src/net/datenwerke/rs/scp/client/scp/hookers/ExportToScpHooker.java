@@ -27,9 +27,11 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -51,25 +53,29 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 
-	private final ScpDao scpDao;
 	private final HookHandlerService hookHandler;
 
 	private final Provider<UITree> treeProvider;
+	private final Provider<ScpDao> datasinkDaoProvider;
 	private final DatasinkTreeManagerDao datasinkTreeManager;
 
 	@Inject
-	public ExportToScpHooker(ScpDao scpDao, HookHandlerService hookHandler, DatasinkTreeManagerDao datasinkTreeManager,
-			@DatasinkTreeScp Provider<UITree> treeProvider) {
-		this.scpDao = scpDao;
+	public ExportToScpHooker(
+	      HookHandlerService hookHandler, 
+	      DatasinkTreeManagerDao datasinkTreeManager,
+	      @DatasinkTreeScp Provider<UITree> treeProvider,
+	      Provider<ScpDao> datasinkDaoProvider
+			) {
 		this.hookHandler = hookHandler;
 		this.treeProvider = treeProvider;
 		this.datasinkTreeManager = datasinkTreeManager;
+		this.datasinkDaoProvider = datasinkDaoProvider;
 	}
 
 	@Override
 	public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
 			ReportExecutorMainPanel mainPanel) {
-	   scpDao.getScpEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+	   datasinkDaoProvider.get().getScpEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
           @Override
           public void onSuccess(Map<StorageType, Boolean> result) {
@@ -123,7 +129,17 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 			public boolean allowBlank() {
 				return false;
 			}
-		});
+        }, new SFFCDatasinkDao() {
+           @Override
+           public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+              return datasinkDaoProvider;
+           }
+
+           @Override
+           public BaseIcon getIcon() {
+              return BaseIcon.ARROW_UP;
+           }
+        });
 
 		final String folderKey = form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(),
 				new SFFCAllowBlank() {
@@ -212,7 +228,7 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 			infoConfig.setDisplay(3500);
 			Info.display(infoConfig);
 
-			scpDao.exportIntoScp(report, info.getExecuteReportToken(), (ScpDatasinkDto) form.getValue(scpKey),
+			datasinkDaoProvider.get().exportIntoScp(report, info.getExecuteReportToken(), (ScpDatasinkDto) form.getValue(scpKey),
 					type.getOutputFormat(), type.getExportConfiguration(), name, folder,
 					new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
 			window.hide();

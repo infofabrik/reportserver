@@ -8,6 +8,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,7 @@ import jcifs.smb.NtlmPasswordAuthenticator;
 import jcifs.smb.SmbFile;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
+import net.datenwerke.rs.samba.service.samba.annotations.DefaultSambaDatasink;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
@@ -34,12 +36,18 @@ public class SambaServiceImpl implements SambaService {
    private final Provider<ReportService> reportServiceProvider;
    
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+   
+   private final Provider<Optional<SambaDatasink>> defaultDatasinkProvider;
 
    @Inject
-   public SambaServiceImpl(Provider<ConfigService> configServiceProvider,
-         Provider<ReportService> reportServiceProvider) {
+   public SambaServiceImpl(
+         Provider<ConfigService> configServiceProvider,
+         Provider<ReportService> reportServiceProvider,
+         @DefaultSambaDatasink Provider<Optional<SambaDatasink>> defaultDatasinkProvider
+         ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
+      this.defaultDatasinkProvider = defaultDatasinkProvider;
    }
 
    @Override
@@ -104,6 +112,11 @@ public class SambaServiceImpl implements SambaService {
       configs.put(StorageType.SAMBA, isSambaEnabled());
       configs.put(StorageType.SAMBA_SCHEDULING, isSambaSchedulingEnabled());
       return configs;
+   }
+   
+   @Override
+   public Optional<SambaDatasink> getDefaultDatasink() {
+      return defaultDatasinkProvider.get();
    }
 
 }

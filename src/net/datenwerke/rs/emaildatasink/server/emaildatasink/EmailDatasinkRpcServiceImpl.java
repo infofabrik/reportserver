@@ -18,6 +18,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -156,16 +157,16 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    }
 
    @Override
-   public EmailDatasinkDto getDefaultEmailDatasink() throws ServerCallFailedException {
+   public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
-      Optional<EmailDatasink> emailDatasink = emailDatasinkService.getDefaultEmailDatasink();
-      if (!emailDatasink.isPresent())
+      Optional<EmailDatasink> defaultDatasink = emailDatasinkService.getDefaultDatasink();
+      if (!defaultDatasink.isPresent())
          return null;
 
       /* check rights */
-      securityService.assertRights(emailDatasink.get(), Read.class);
+      securityService.assertRights(defaultDatasink.get(), Read.class);
 
-      return (EmailDatasinkDto) dtoService.createDto(emailDatasink.get());
+      return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
 }

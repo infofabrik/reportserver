@@ -6,13 +6,15 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.rpc.ScpRpcServiceAsync;
 
-public class ScpDao extends Dao {
+public class ScpDao extends Dao implements DatasinkDao {
 
    private final ScpRpcServiceAsync rpcService;
 
@@ -33,6 +35,11 @@ public class ScpDao extends Dao {
 
    public Request testScpDatasink(ScpDatasinkDto scpDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testScpDatasink(scpDatasinkDto, transformAndKeepCallback(callback));
+   }
+   
+   @Override
+   public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
+      rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
    }
 
 }

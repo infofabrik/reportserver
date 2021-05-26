@@ -20,6 +20,7 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.eventbus.EventBusHelper;
 import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.config.DatasinkDefinitionConfigConfigurator;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerDto;
@@ -27,9 +28,6 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerProvid
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.pa.DatasinkContainerDtoPA;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
-import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
-import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkDao;
-import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
@@ -45,12 +43,13 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
    private final DatasinkUIService datasinkService;
    private final Container container;
    private final UITree datasinkTree;
-   private final Provider<EmailDatasinkDao> emailDatasinkDaoProvider;
+   private final Provider<? extends DatasinkDao> datasinkDaoProvider;
 
    private DatasinkDefinitionDto oldDatasink = null;
    private SingleTreeSelectionField dsField;
 
    private DatasinkContainerDto datasinkContainer;
+   private final BaseIcon defaultDatasinkIcon;
 
    private FieldLabel dsFieldLabel;
    private LayoutData fieldLayoutData;
@@ -60,7 +59,8 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
    public DatasinkSelectionField(
          ClipboardUiService clipboardService, 
          DatasinkUIService datasinkService,
-         Provider<EmailDatasinkDao> emailDatasinkDaoProvider,
+         @Assisted Provider<? extends DatasinkDao> datasinkDaoProvider,
+         @Assisted BaseIcon defaultDatasinkIcon,
          @Assisted Container container,
          @Assisted UITree datasinkTree,
          @Assisted Class<? extends DatasinkDefinitionDto>... types
@@ -70,8 +70,9 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
       this.datasinkService = datasinkService;
       this.container = container;
       this.datasinkTree = datasinkTree;
-      this.emailDatasinkDaoProvider = emailDatasinkDaoProvider;
+      this.datasinkDaoProvider = datasinkDaoProvider;
       this.types = types;
+      this.defaultDatasinkIcon = defaultDatasinkIcon;
 
       if (null == this.types || this.types.length == 0) {
          this.types = new Class[] { DatasinkDefinitionDto.class };
@@ -115,11 +116,11 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
 
    public void addSelectionField() {
       dsField = new SingleTreeSelectionField(types);
-      dsField.setHideTwinTrigger(true);
       dsField.setTriggerIcon(BaseIcon.SEARCH);
       dsField.setWidth(210);
       dsField.setTreePanel(datasinkTree);
       dsField.setName(FIELDNAME);
+      addDisplayDefaultDatasinkButton();
 
       if (null == dsFieldLabel)
          dsFieldLabel = new FieldLabel(dsField, DatasinksMessages.INSTANCE.datasink());
@@ -139,15 +140,16 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
       msg.show();
    }
    
-   public void addDisplayDefaultButton() {
-      dsField.setTwinTriggerIcon(BaseIcon.SEND);
+   private void addDisplayDefaultDatasinkButton() {
+      dsField.setTwinTriggerIcon(defaultDatasinkIcon);
       dsField.setHideTwinTrigger(false);
+      dsField.redraw();
       dsField.addTwinTriggerClickHandler(event -> {
-         emailDatasinkDaoProvider.get().getDefaultEmailDatasink(
-               new NotamCallback<EmailDatasinkDto>(DatasinksMessages.INSTANCE.useDefaultSuccessMessage(),
+         datasinkDaoProvider.get().getDefaultDatasink(
+               new NotamCallback<DatasinkDefinitionDto>(DatasinksMessages.INSTANCE.useDefaultSuccessMessage(),
                      DatasinksMessages.INSTANCE.useDefaultFailureMessage()) {
                   @Override
-                  public void doOnSuccess(EmailDatasinkDto result) {
+                  public void doOnSuccess(DatasinkDefinitionDto result) {
                      if (result == null)
                         showFailureMessageBox();
                      else

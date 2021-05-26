@@ -29,11 +29,13 @@ import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -58,31 +60,31 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 
 public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderHook {
 
-   private final EmailDatasinkDao emailDao;
    private final HookHandlerService hookHandler;
    private final LoginService loginService;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<EmailDatasinkDao> datasinkDaoProvider;
    
    private String emailKey;
 
    @Inject
    public ExportToEmailDatasinkHooker(
-         EmailDatasinkDao emailDao, 
          HookHandlerService hookHandler,
          LoginService loginService,
-         @DatasinkTreeEmail Provider<UITree> treeProvider
+         @DatasinkTreeEmail Provider<UITree> treeProvider,
+         Provider<EmailDatasinkDao> datasinkDaoProvider
          ) {
-      this.emailDao = emailDao;
       this.hookHandler = hookHandler;
       this.loginService = loginService;
       this.treeProvider = treeProvider;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
    public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
          ReportExecutorMainPanel mainPanel) {
-      emailDao.getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+      datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
          @Override
          public void onSuccess(Map<StorageType, Boolean> result) {
@@ -140,6 +142,15 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
                @Override
                public boolean showTwinButton() {
                   return true;
+               }
+            }, new SFFCDatasinkDao() {
+               @Override
+               public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+                  return datasinkDaoProvider;
+               }
+               @Override
+               public BaseIcon getIcon() {
+                  return BaseIcon.SEND;
                }
             });
 
@@ -231,7 +242,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
          infoConfig.setDisplay(3500);
          Info.display(infoConfig);
 
-         emailDao.exportToEmail(report, info.getExecuteReportToken(), (EmailDatasinkDto) form.getValue(emailKey),
+         datasinkDaoProvider.get().exportToEmail(report, info.getExecuteReportToken(), (EmailDatasinkDto) form.getValue(emailKey),
                type.getOutputFormat(), type.getExportConfiguration(), name,
                subject, message, rcptList,
                new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));

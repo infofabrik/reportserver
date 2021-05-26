@@ -5,6 +5,7 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.inject.Singleton;
@@ -16,6 +17,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -31,6 +33,7 @@ import net.datenwerke.rs.dropbox.client.dropbox.rpc.DropboxRpcService;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -135,6 +138,19 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       }
 
       return true;
+   }
+   
+   @Override
+   public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
+
+      Optional<DropboxDatasink> defaultDatasink = dropboxService.getDefaultDatasink();
+      if (!defaultDatasink.isPresent())
+         return null;
+
+      /* check rights */
+      securityService.assertRights(defaultDatasink.get(), Read.class);
+
+      return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
 }

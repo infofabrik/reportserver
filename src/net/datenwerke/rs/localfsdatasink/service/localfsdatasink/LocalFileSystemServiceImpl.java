@@ -11,12 +11,14 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
+import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.annotations.DefaultLocalFileSystemDatasink;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
@@ -32,14 +34,18 @@ public class LocalFileSystemServiceImpl implements LocalFileSystemService {
    private final Provider<ReportService> reportServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+   
+   private final Provider<Optional<LocalFileSystemDatasink>> defaultDatasinkProvider;
 
    @Inject
    public LocalFileSystemServiceImpl(
 		   Provider<ConfigService> configServiceProvider,
-		   Provider<ReportService> reportServiceProvider
+		   Provider<ReportService> reportServiceProvider,
+		   @DefaultLocalFileSystemDatasink Provider<Optional<LocalFileSystemDatasink>> defaultDatasinkProvider
 		   ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
+      this.defaultDatasinkProvider = defaultDatasinkProvider;
    }
 
    @Override
@@ -109,6 +115,11 @@ public class LocalFileSystemServiceImpl implements LocalFileSystemService {
             localFileSystemDatasink, "reportserver-local-fs-test.txt",
             localFileSystemDatasink.getFolder());
 
+   }
+   
+   @Override
+   public Optional<LocalFileSystemDatasink> getDefaultDatasink() {
+      return defaultDatasinkProvider.get();
    }
 
 }

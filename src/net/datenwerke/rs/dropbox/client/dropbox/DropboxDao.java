@@ -7,13 +7,15 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.rpc.DropboxRpcServiceAsync;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-public class DropboxDao extends Dao {
+public class DropboxDao extends Dao implements DatasinkDao {
 
    private final DropboxRpcServiceAsync rpcService;
 
@@ -35,6 +37,11 @@ public class DropboxDao extends Dao {
 
    public Request testDropboxDataSink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testDropboxDatasink(dropboxDatasinkDto, transformAndKeepCallback(callback));
+   }
+   
+   @Override
+   public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
+      rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
    }
 
 }

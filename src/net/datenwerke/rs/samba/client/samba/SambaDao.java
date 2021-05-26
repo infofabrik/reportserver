@@ -8,13 +8,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.rpc.SambaRpcServiceAsync;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-public class SambaDao extends Dao {
+public class SambaDao extends Dao implements DatasinkDao {
 
    private final SambaRpcServiceAsync rpcService;
 
@@ -36,6 +38,11 @@ public class SambaDao extends Dao {
 
    public Request testSambaDataSink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testSambaDataSink(sambaDatasinkDto, transformAndKeepCallback(callback));
+   }
+   
+   @Override
+   public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
+      rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
    }
 
 }

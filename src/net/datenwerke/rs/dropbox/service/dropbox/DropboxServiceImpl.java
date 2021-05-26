@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
@@ -24,6 +25,7 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
+import net.datenwerke.rs.dropbox.service.dropbox.annotations.DefaultDropboxDatasink;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
@@ -39,12 +41,18 @@ public class DropboxServiceImpl implements DropboxService {
    private final Provider<ReportService> reportServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+   
+   private final Provider<Optional<DropboxDatasink>> defaultDatasinkProvider;
 
    @Inject
-   public DropboxServiceImpl(Provider<ConfigService> configServiceProvider,
-         Provider<ReportService> reportServiceProvider) {
+   public DropboxServiceImpl(
+         Provider<ConfigService> configServiceProvider,
+         Provider<ReportService> reportServiceProvider,
+         @DefaultDropboxDatasink Provider<Optional<DropboxDatasink>> defaultDatasinkProvider
+         ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
+      this.defaultDatasinkProvider = defaultDatasinkProvider;
    }
 
    @Override
@@ -110,6 +118,11 @@ public class DropboxServiceImpl implements DropboxService {
       exportIntoDropbox("ReportServer Dropbox Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
             dropboxDatasink, "reportserver-dropbox-test.txt", dropboxDatasink.getFolder());
 
+   }
+
+   @Override
+   public Optional<DropboxDatasink> getDefaultDatasink() {
+      return defaultDatasinkProvider.get();
    }
 
 }

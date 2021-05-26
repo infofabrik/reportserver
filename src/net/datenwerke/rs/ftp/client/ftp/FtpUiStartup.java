@@ -19,11 +19,11 @@ import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToSftpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDataSinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpExportSnippetProvider;
-import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDataSinkTesterToolbarConfigurator;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsExportSnippetProvider;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsUsernamePasswordAuthenticatorHooker;
-import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDataSinkTesterToolbarConfigurator;
+import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpExportSnippetProvider;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
@@ -46,8 +46,8 @@ public class FtpUiStartup {
          final Provider<FtpsDatasinkConfigProviderHooker> ftpsTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, final FtpDao dao,
          final FtpDataSinkTesterToolbarConfigurator ftpTestToolbarConfigurator,
-         final SftpDataSinkTesterToolbarConfigurator sftpTestToolbarConfigurator,
-         final FtpsDataSinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
+         final SftpDatasinkTesterToolbarConfigurator sftpTestToolbarConfigurator,
+         final FtpsDatasinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
          final SftpUsernamePasswordAuthenticatorHooker sftpUsernamePasswordAuthenticator,
          final SftpPublicKeyAuthenticatorHooker sftpPublicKeyAuthenticator,
          final FtpsUsernamePasswordAuthenticatorHooker ftpsUsernamePasswordAuthenticator

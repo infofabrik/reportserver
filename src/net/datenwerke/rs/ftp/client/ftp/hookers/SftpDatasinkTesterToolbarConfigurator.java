@@ -14,22 +14,25 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallb
 import net.datenwerke.gxtdto.client.servercommunication.callback.TimeoutCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
-import net.datenwerke.rs.ftp.client.ftp.FtpDao;
+import net.datenwerke.rs.ftp.client.ftp.SftpDao;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class SftpDataSinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
+public class SftpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
-   
+
    private final ToolbarService toolbarUtils;
-   private final FtpDao ftpDao;
+   private final SftpDao sftpDao;
 
    @Inject
-   public SftpDataSinkTesterToolbarConfigurator(ToolbarService toolbarUtils, FtpDao ftpDao) {
+   public SftpDatasinkTesterToolbarConfigurator(
+         ToolbarService toolbarUtils, 
+         SftpDao sftpDao
+         ) {
       this.toolbarUtils = toolbarUtils;
-      this.ftpDao = ftpDao;
+      this.sftpDao = sftpDao;
    }
 
    @Override
@@ -39,13 +42,17 @@ public class SftpDataSinkTesterToolbarConfigurator implements MainPanelViewToolb
          return;
       if (!(selectedNode instanceof SftpDatasinkDto))
          return;
-      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(), BaseIcon.LINK);
-      testBtn.addSelectHandler(
-            event -> {
-               ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(), messages.testFailed(), messages.success(), messages.testSuccess(),  messages.pleaseWait(), messages.testingTitle(),   messages.testingProgressMessage()){}; 
-               Request request = ftpDao.testSftpDataSink((SftpDatasinkDto) selectedNode, new TimeoutCallback<Boolean>(120000, callback));
-               callback.setRequest(request);
-            });
+      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(),
+            BaseIcon.LINK);
+      testBtn.addSelectHandler(event -> {
+         ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),
+               messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
+               messages.testingTitle(), messages.testingProgressMessage()) {
+         };
+         Request request = sftpDao.testSftpDataSink((SftpDatasinkDto) selectedNode,
+               new TimeoutCallback<Boolean>(120000, callback));
+         callback.setRequest(request);
+      });
       toolbar.add(testBtn);
    }
 

@@ -1,5 +1,6 @@
 package net.datenwerke.rs.core.service.datasinkmanager;
 
+import java.util.Optional;
 import java.util.Set;
 
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
@@ -19,5 +20,8 @@ public interface DatasinkService extends TreeDBManager<AbstractDatasinkManagerNo
    DatasinkFolder getDatasinkFolderByName(String name);
 
    DatasinkContainer merge(DatasinkContainer container);
-   
+
+   <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
+         String defaultDatasinkNameProperty);
+
 }

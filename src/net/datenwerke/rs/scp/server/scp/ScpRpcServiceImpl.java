@@ -1,18 +1,24 @@
 package net.datenwerke.rs.scp.server.scp;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
+
 import javax.inject.Singleton;
+
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -52,9 +58,16 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    private final ExceptionServices exceptionServices;
 
    @Inject
-   public ScpRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, ScpService scpService, ExceptionServices exceptionServices) {
+   public ScpRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         ScpService scpService, 
+         ExceptionServices exceptionServices
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -132,6 +145,19 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       }
 
       return true;
+   }
+   
+   @Override
+   public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
+
+      Optional<ScpDatasink> defaultDatasink = scpService.getDefaultDatasink();
+      if (!defaultDatasink.isPresent())
+         return null;
+
+      /* check rights */
+      securityService.assertRights(defaultDatasink.get(), Read.class);
+
+      return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
 }

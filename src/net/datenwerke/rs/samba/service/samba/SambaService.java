@@ -2,6 +2,7 @@ package net.datenwerke.rs.samba.service.samba;
 
 import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -57,4 +58,6 @@ public interface SambaService {
     * @throws IOException if an I/O error occurs
     */
    void testSambaDataSink(SambaDatasink sambaDatasink) throws IOException;
+   
+   Optional<SambaDatasink> getDefaultDatasink();
 }

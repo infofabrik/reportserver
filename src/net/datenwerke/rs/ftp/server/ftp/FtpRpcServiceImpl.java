@@ -5,18 +5,19 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
-import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -28,13 +29,9 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
-import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
-import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.rpc.FtpRpcService;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
-import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
-import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
@@ -74,7 +71,6 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       this.exceptionServices = exceptionServices;
    }
 
-   @Transactional(rollbackOn = { Exception.class })
    @Override
    public void exportIntoFtp(ReportDto reportDto, String executorToken, FtpDatasinkDto ftpDatasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
@@ -119,44 +115,6 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
             Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
    }
 
-   @Transactional(rollbackOn = { Exception.class })
-   @Override
-   public void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
-
-      final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
-
-      SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(sftpDatasinkDto);
-
-      /* get a clean and unmanaged report from the database */
-      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-      Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-
-      /* check rights */
-      securityService.assertRights(referenceReport, Execute.class);
-      securityService.assertRights(sftpDatasink, Read.class, Execute.class);
-
-      /* create variant */
-      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-      final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-
-      hookHandlerService.getHookers(ReportExportViaSessionHook.class)
-            .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
-
-      CompiledReport cReport;
-      try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
-
-         String filename = name + "." + cReport.getFileExtension();
-
-         ftpService.sendToSftpServer(cReport.getReport(), sftpDatasink, filename, folder);
-
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send report to SFTP server: " + e.getMessage(), e);
-      }
-
-   }
-
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
@@ -171,91 +129,31 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    @Override
    public boolean testFtpDataSink(FtpDatasinkDto ftpDatasinkDto) throws ServerCallFailedException {
       FtpDatasink ftpDatasink = (FtpDatasink) dtoService.loadPoso(ftpDatasinkDto);
-      
+
       /* check rights */
       securityService.assertRights(ftpDatasink, Read.class, Execute.class);
-      
+
       try {
          ftpService.testFtpDataSink(ftpDatasink);
-      } catch(Exception e){
-         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
+      } catch (Exception e) {
+         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }
-      
+
       return true;
    }
 
    @Override
-   public boolean testSftpDataSink(SftpDatasinkDto sftpDatasinkDto) throws ServerCallFailedException {
-      SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(sftpDatasinkDto);
-      
+   public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
+      Optional<FtpDatasink> defaultDatasink = ftpService.getDefaultFtpDatasink();
+      if (!defaultDatasink.isPresent())
+         return null;
+
       /* check rights */
-      securityService.assertRights(sftpDatasink, Read.class, Execute.class);
-      
-      try {
-         ftpService.testSftpDataSink(sftpDatasink);
-      } catch(Exception e){
-         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
-         ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
-         throw ex;
-      }
-      
-      return true;
-   }
-   
-   @Override
-   public void exportIntoFtps(ReportDto reportDto, String executorToken, FtpsDatasinkDto ftpsDatasinkDto, String format,
-           List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
-       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
+      securityService.assertRights(defaultDatasink.get(), Read.class);
 
-       FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(ftpsDatasinkDto);
-
-       /* get a clean and unmanaged report from the database */
-       Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-       Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-
-       /* check rights */
-       securityService.assertRights(referenceReport, Execute.class);
-       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
-
-       /* create variant */
-       Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-       final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-
-       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
-             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
-
-       CompiledReport cReport;
-       try {
-          cReport = reportExecutorService.execute(toExecute, format, configArray);
-
-          String filename = name + "." + cReport.getFileExtension();
-
-          ftpService.sendToFtpsServer(cReport.getReport(), ftpsDatasink, filename, folder);
-
-       } catch (Exception e) {
-          throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);
-       }
-       
-   }
-
-   @Override
-   public boolean testFtpsDataSink(FtpsDatasinkDto ftpsDatasinkDto) throws ServerCallFailedException {
-       FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(ftpsDatasinkDto);
-       
-       /* check rights */
-       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
-       
-       try {
-          ftpService.testFtpsDataSink(ftpsDatasink);
-       } catch(Exception e){
-          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
-          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
-          throw ex;
-       }
-       
-       return true;
+      return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
 }

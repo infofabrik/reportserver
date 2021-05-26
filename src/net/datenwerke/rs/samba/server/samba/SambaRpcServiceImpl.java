@@ -5,6 +5,7 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 import javax.inject.Singleton;
@@ -17,6 +18,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -147,6 +149,19 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       }
       
       return true;
+   }
+   
+   @Override
+   public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
+
+      Optional<SambaDatasink> defaultDatasink = sambaService.getDefaultDatasink();
+      if (!defaultDatasink.isPresent())
+         return null;
+
+      /* check rights */
+      securityService.assertRights(defaultDatasink.get(), Read.class);
+
+      return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
 }

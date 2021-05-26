@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -36,6 +37,9 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
+import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpDatasink;
+import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpsDatasink;
+import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultSftpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
@@ -55,6 +59,10 @@ public class FtpServiceImpl implements FtpService {
 
    private final Provider<ConfigService> configServiceProvider;
    private final Provider<ReportService> reportServiceProvider;
+   
+   private final Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider;
+   private final Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider;
+   private final Provider<Optional<FtpsDatasink>> defaultFtpsDatasinkProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
    
@@ -63,10 +71,16 @@ public class FtpServiceImpl implements FtpService {
    @Inject
    public FtpServiceImpl(
 		   Provider<ConfigService> configServiceProvider,
-		   Provider<ReportService> reportServiceProvider
+		   Provider<ReportService> reportServiceProvider,
+		   @DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
+		   @DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
+		   @DefaultFtpsDatasink Provider<Optional<FtpsDatasink>> defaultFtpsDatasinkProvider
 		   ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
+      this.defaultFtpDatasinkProvider = defaultFtpDatasinkProvider;
+      this.defaultSftpDatasinkProvider = defaultSftpDatasinkProvider;
+      this.defaultFtpsDatasinkProvider = defaultFtpsDatasinkProvider;
    }
 
    @Override
@@ -308,6 +322,21 @@ public class FtpServiceImpl implements FtpService {
    public boolean isFtpsSchedulingEnabled() {
       return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_FTPS_SCHEDULER_ENABLED,
             true);
+   }
+
+   @Override
+   public Optional<FtpDatasink> getDefaultFtpDatasink() {
+      return defaultFtpDatasinkProvider.get();
+   }
+
+   @Override
+   public Optional<SftpDatasink> getDefaultSftpDatasink() {
+      return defaultSftpDatasinkProvider.get();
+   }
+
+   @Override
+   public Optional<FtpsDatasink> getDefaultFtpsDatasink() {
+      return defaultFtpsDatasinkProvider.get();
    }
 
 }

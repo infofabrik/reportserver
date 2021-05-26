@@ -27,9 +27,11 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
@@ -52,27 +54,30 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToLocalFileSystemHooker implements ExportExternalEntryProviderHook {
 
-	private final LocalFileSystemDao localFileSystemDao;
 	private final HookHandlerService hookHandler;
 
 	private final Provider<UITree> treeProvider;
 	private final DatasinkTreeManagerDao datasinkTreeManager;
+	private final Provider<LocalFileSystemDao> datasinkDaoProvider;
 	
 	@Inject
-	public ExportToLocalFileSystemHooker(LocalFileSystemDao localFileSystemDao, HookHandlerService hookHandler,
+	public ExportToLocalFileSystemHooker(
+	      HookHandlerService hookHandler,
 			DatasinkTreeManagerDao datasinkTreeManager,
-			@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider) {
-		this.localFileSystemDao = localFileSystemDao;
+			@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
+			Provider<LocalFileSystemDao> datasinkDaoProvider
+			) {
 		this.hookHandler = hookHandler;
 		this.treeProvider = treeProvider;
 		this.datasinkTreeManager = datasinkTreeManager;
+		this.datasinkDaoProvider = datasinkDaoProvider;
 	}
 
     @Override
     public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
           ReportExecutorMainPanel mainPanel) {
 
-       localFileSystemDao.getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+       datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
           @Override
           public void onSuccess(Map<StorageType, Boolean> result) {
@@ -116,18 +121,27 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 		form.setFieldWidth(215);
 		form.beginFloatRow();
 
-		String localFileSystemKey = form.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.localFileSystem(),
-				new SFFCGenericTreeNode() {
-					@Override
-					public UITree getTreeForPopup() {
-						return treeProvider.get();
-					}
-				}, new SFFCAllowBlank() {
-					@Override
-					public boolean allowBlank() {
-						return false;
-					}
-				});
+        String localFileSystemKey = form.addField(DatasinkSelectionField.class,
+              DatasinksMessages.INSTANCE.localFileSystem(), new SFFCGenericTreeNode() {
+                 @Override
+                 public UITree getTreeForPopup() {
+                    return treeProvider.get();
+                 }
+              }, new SFFCAllowBlank() {
+                 @Override
+                 public boolean allowBlank() {
+                    return false;
+                 }
+              }, new SFFCDatasinkDao() {
+                 @Override
+                 public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+                    return datasinkDaoProvider;
+                 }
+                 @Override
+                 public BaseIcon getIcon() {
+                    return BaseIcon.SERVER;
+                 }
+              });
 
 		final String folderKey = form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(),
 				new SFFCAllowBlank() {
@@ -222,7 +236,7 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 			infoConfig.setDisplay(3500);
 			Info.display(infoConfig);
 
-			localFileSystemDao.exportIntoLocalFileSystem(report, info.getExecuteReportToken(),
+			datasinkDaoProvider.get().exportIntoLocalFileSystem(report, info.getExecuteReportToken(),
 					(LocalFileSystemDatasinkDto) form.getValue(localFileSystemKey), type.getOutputFormat(),
 					type.getExportConfiguration(), name, folder,
 					new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));

@@ -14,7 +14,7 @@ import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerProviderDto;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
@@ -44,12 +44,15 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
       return type.equals(DatasinkSelectionField.class);
    }
 
+   @Override
    public Widget createFormField() {
       SFFCGenericTreeNode config = (SFFCGenericTreeNode) configs[0];
 
       Container wrapper = new VerticalLayoutContainer();
 
-      datasinkFieldCreator = datasinkService.getSelectionField(wrapper, config.getTreeForPopup());
+      SFFCDatasinkDao datasinkDao = getDatasinkDaoProvider();
+      datasinkFieldCreator = datasinkService.getSelectionField(datasinkDao.getDatasinkDaoProvider(),
+            datasinkDao.getIcon(), wrapper, config.getTreeForPopup());
 
       FieldLabel label = new FieldLabel();
       if (null != form.getSField(name).getFieldLayoutConfig().getLabelText())
@@ -59,7 +62,6 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
       datasinkFieldCreator.setFieldLabel(label);
 
       datasinkFieldCreator.addSelectionField();
-      installDefaultDatasinkButton();
       datasinkFieldCreator.getSelectionField().setTreePanel(config.getTreeForPopup());
 
       datasinkFieldCreator
@@ -69,19 +71,13 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
 
       return wrapper;
    }
-
-   private SFFCShowTwinButton getShowTwinButtonConfig() {
-      return Arrays.stream(configs).filter(config -> config instanceof SFFCShowTwinButton)
-            .map(config -> (SFFCShowTwinButton) config).findAny().orElse(null);
-   }
-
-   public void installDefaultDatasinkButton() {
-      /* twin button */
-      SFFCShowTwinButton showTwinButton = getShowTwinButtonConfig();
-      if (null != showTwinButton && showTwinButton.showTwinButton()) {
-         datasinkFieldCreator.addDisplayDefaultButton();
-         datasinkFieldCreator.getSelectionField().redraw();
-      }
+   
+   private SFFCDatasinkDao getDatasinkDaoProvider() {
+      return Arrays.stream(configs)
+            .filter(config -> config instanceof SFFCDatasinkDao)
+            .map(config -> ((SFFCDatasinkDao) config))
+            .findAny()
+            .orElseThrow(() -> new IllegalStateException("No SFFCDatasinkDao!"));
    }
 
    public void addFieldBindings(Object model, ValueProvider vp, Widget field) {

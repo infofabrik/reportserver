@@ -18,11 +18,14 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.ScheduleAsDropboxFileInformation;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
@@ -30,6 +33,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsF
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DropboxExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
@@ -39,13 +43,18 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
    private String dropboxKey;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<DropboxDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public DropboxExportSnippetProvider(@DatasinkTreeDropbox Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager) {
+   public DropboxExportSnippetProvider(
+         @DatasinkTreeDropbox Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager,
+         Provider<DropboxDao> datasinkDaoProvider
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
@@ -71,6 +80,15 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
          @Override
          public boolean allowBlank() {
             return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+         @Override
+         public BaseIcon getIcon() {
+            return BaseIcon.DROPBOX;
          }
       });
 

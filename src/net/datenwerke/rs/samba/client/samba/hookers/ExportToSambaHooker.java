@@ -27,9 +27,11 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -51,28 +53,30 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
 
-   private final SambaDao sambaDao;
    private final HookHandlerService hookHandler;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<SambaDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    
    @Inject
-   public ExportToSambaHooker(SambaDao sambaDao, 
+   public ExportToSambaHooker(
          HookHandlerService hookHandler,
          DatasinkTreeManagerDao datasinkTreeManager, 
-         @DatasinkTreeSamba Provider<UITree> treeProvider) {
-      this.sambaDao = sambaDao;
+         @DatasinkTreeSamba Provider<UITree> treeProvider,
+         Provider<SambaDao> datasinkDaoProvider
+         ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
    public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
 
-      sambaDao.getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+      datasinkDaoProvider.get().getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
          @Override
          public void onSuccess(Map<StorageType, Boolean> result) {
@@ -124,6 +128,15 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
          @Override
          public boolean allowBlank() {
             return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+         @Override
+         public BaseIcon getIcon() {
+            return BaseIcon.ANGLE_DOUBLE_UP;
          }
       });
 
@@ -214,7 +227,7 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
          infoConfig.setDisplay(3500);
          Info.display(infoConfig);
 
-         sambaDao.exportIntoSamba(report, info.getExecuteReportToken(), (SambaDatasinkDto) form.getValue(sambaKey),
+         datasinkDaoProvider.get().exportIntoSamba(report, info.getExecuteReportToken(), (SambaDatasinkDto) form.getValue(sambaKey),
                type.getOutputFormat(), type.getExportConfiguration(), name, folder,
                new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
          window.hide();

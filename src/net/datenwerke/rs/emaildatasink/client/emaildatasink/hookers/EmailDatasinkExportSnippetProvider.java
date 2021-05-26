@@ -17,13 +17,16 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkDao;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.ScheduleAsEmailDatasinkFileInformation;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations.DatasinkTreeEmail;
@@ -31,6 +34,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
@@ -41,12 +45,15 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    private String messageKey;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<EmailDatasinkDao> datasinkDaoProvider;
    
    @Inject
    public EmailDatasinkExportSnippetProvider(
-         @DatasinkTreeEmail Provider<UITree> treeProvider
+         @DatasinkTreeEmail Provider<UITree> treeProvider,
+         Provider<EmailDatasinkDao> datasinkDaoProvider
          ) {
       this.treeProvider = treeProvider;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
@@ -78,6 +85,15 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
                @Override
                public boolean showTwinButton() {
                   return true;
+               }
+            }, new SFFCDatasinkDao() {
+               @Override
+               public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+                  return datasinkDaoProvider;
+               }
+               @Override
+               public BaseIcon getIcon() {
+                  return BaseIcon.SEND;
                }
             });
 

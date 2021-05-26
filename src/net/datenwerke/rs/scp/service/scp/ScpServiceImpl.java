@@ -41,6 +41,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 import javax.inject.Inject;
 
@@ -57,6 +58,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
+import net.datenwerke.rs.scp.service.scp.annotations.DefaultScpDatasink;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.config.ConfigService;
 
@@ -69,11 +71,18 @@ public class ScpServiceImpl implements ScpService {
    private final Provider<ReportService> reportServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+   
+   private final Provider<Optional<ScpDatasink>> defaultDatasinkProvider;
 
    @Inject
-   public ScpServiceImpl(Provider<ConfigService> configServiceProvider, Provider<ReportService> reportServiceProvider) {
+   public ScpServiceImpl(
+         Provider<ConfigService> configServiceProvider, 
+         Provider<ReportService> reportServiceProvider,
+         @DefaultScpDatasink Provider<Optional<ScpDatasink>> defaultDatasinkProvider
+         ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
+      this.defaultDatasinkProvider = defaultDatasinkProvider;
    }
 
    // adapted from ScpTo.java (jsch-0.1.55)
@@ -221,6 +230,11 @@ public class ScpServiceImpl implements ScpService {
       sendToScpServer("ReportServer SCP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
             scpDatasink, "reportserver-scp-test.txt", scpDatasink.getFolder());
 
+   }
+   
+   @Override
+   public Optional<ScpDatasink> getDefaultDatasink() {
+      return defaultDatasinkProvider.get();
    }
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
@@ -22,6 +23,6 @@ public interface EmailDatasinkRpcServiceAsync {
 
    Request testEmailDatasink(EmailDatasinkDto emailDatasinkDto, AsyncCallback<Boolean> callback);
 
-   void getDefaultEmailDatasink(AsyncCallback<EmailDatasinkDto> transformAndKeepCallback);
+   void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 
 }

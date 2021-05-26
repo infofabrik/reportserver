@@ -70,5 +70,5 @@ public interface EmailDatasinkService {
     * 
     * @return the default email datasink
     */
-   Optional<EmailDatasink> getDefaultEmailDatasink();
+   Optional<EmailDatasink> getDefaultDatasink();
 }

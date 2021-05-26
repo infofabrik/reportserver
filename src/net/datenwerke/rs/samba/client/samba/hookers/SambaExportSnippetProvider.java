@@ -18,11 +18,14 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.samba.client.samba.SambaDao;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.dto.ScheduleAsSambaFileInformation;
 import net.datenwerke.rs.samba.client.samba.provider.annotations.DatasinkTreeSamba;
@@ -30,6 +33,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsF
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SambaExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
@@ -39,13 +43,18 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
    private String sambaKey;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<SambaDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public SambaExportSnippetProvider(@DatasinkTreeSamba Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager) {
+   public SambaExportSnippetProvider(
+         @DatasinkTreeSamba Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager,
+         Provider<SambaDao> datasinkDaoProvider
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
@@ -78,6 +87,15 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          @Override
          public boolean allowBlank() {
             return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+         @Override
+         public BaseIcon getIcon() {
+            return BaseIcon.ANGLE_DOUBLE_UP;
          }
       });
 

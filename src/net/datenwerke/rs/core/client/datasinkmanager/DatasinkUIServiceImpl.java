@@ -13,6 +13,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.config.DatasinkDefinitionCo
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionFieldFactory;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 
@@ -20,49 +21,53 @@ import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelect
  */
 public class DatasinkUIServiceImpl implements DatasinkUIService {
 
-	private final HookHandlerService hookHandler;
+   private final HookHandlerService hookHandler;
 
-	private Map<Class<? extends DatasinkDefinitionDto>, Provider<? extends DatasinkDefinitionConfigConfigurator>> configuratorLookup;
-	private final DatasinkSelectionFieldFactory fieldFactory;
+   private Map<Class<? extends DatasinkDefinitionDto>, Provider<? extends DatasinkDefinitionConfigConfigurator>> configuratorLookup;
+   private final DatasinkSelectionFieldFactory fieldFactory;
 
-	@Inject
-	public DatasinkUIServiceImpl(
-		HookHandlerService hookHandler,
-		DatasinkSelectionFieldFactory fieldFactory
-		){
-	
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.fieldFactory = fieldFactory;
-	}
-	
-	public DatasinkDefinitionConfigConfigurator getConfigurator(
-			Class<? extends DatasinkDefinitionDto> configClazz) {
-		if(null== configuratorLookup)
-			initConfigurator();
-		
-		Provider<? extends DatasinkDefinitionConfigConfigurator> provider = configuratorLookup.get(configClazz);
-		if(null == provider)
-			throw new IllegalStateException("I should probably know the provider for " + configClazz.getName()); //$NON-NLS-1$
-		return provider.get();
-	}
-	
-	protected void initConfigurator(){
-		configuratorLookup =
-			new HashMap<Class<? extends DatasinkDefinitionDto>, Provider<? extends DatasinkDefinitionConfigConfigurator>>();
-		
-	}
+   @Inject
+   public DatasinkUIServiceImpl(
+         HookHandlerService hookHandler, 
+         DatasinkSelectionFieldFactory fieldFactory
+         ) {
 
-	public DatasinkSelectionField getSelectionField(Container container, Provider<UITree> datasinkTreeProvider, Class<? extends DatasinkDefinitionDto>... types){
-		return fieldFactory.create(container, datasinkTreeProvider.get(), types);
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.fieldFactory = fieldFactory;
+   }
 
-	public DatasinkSelectionField getSelectionField(Container container, Provider<UITree> datasinkTreeProvider){
-		return fieldFactory.create(container, datasinkTreeProvider.get(), new Class[]{});
-	}
-	
-	public DatasinkSelectionField getSelectionField(Container container, UITree datasinkTree){
-		return fieldFactory.create(container, datasinkTree, new Class[]{});
-	}
+   public DatasinkDefinitionConfigConfigurator getConfigurator(Class<? extends DatasinkDefinitionDto> configClazz) {
+      if (null == configuratorLookup)
+         initConfigurator();
+
+      Provider<? extends DatasinkDefinitionConfigConfigurator> provider = configuratorLookup.get(configClazz);
+      if (null == provider)
+         throw new IllegalStateException("I should probably know the provider for " + configClazz.getName()); //$NON-NLS-1$
+      return provider.get();
+   }
+
+   protected void initConfigurator() {
+      configuratorLookup = new HashMap<Class<? extends DatasinkDefinitionDto>, Provider<? extends DatasinkDefinitionConfigConfigurator>>();
+
+   }
+
+   @Override
+   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+         Container container, Provider<UITree> datasinkTreeProvider, Class<? extends DatasinkDefinitionDto>... types) {
+      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTreeProvider.get(), types);
+   }
+
+   @Override
+   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+         Container container, Provider<UITree> datasinkTreeProvider) {
+      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon,  container, datasinkTreeProvider.get(), new Class[] {});
+   }
+
+   @Override
+   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+         Container container, UITree datasinkTree) {
+      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTree, new Class[] {});
+   }
 
 }

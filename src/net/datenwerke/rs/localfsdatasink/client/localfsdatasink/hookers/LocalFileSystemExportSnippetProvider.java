@@ -18,12 +18,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemDao;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.ScheduleAsLocalFileSystemInformation;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.provider.annotations.DatasinkTreeLocalFileSystem;
@@ -31,6 +34,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsF
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
@@ -40,13 +44,18 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
    private String localFileSystemKey;
 
    private final Provider<UITree> treeProvider;
+   private final Provider<LocalFileSystemDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public LocalFileSystemExportSnippetProvider(@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager) {
+   public LocalFileSystemExportSnippetProvider(
+         @DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager,
+         Provider<LocalFileSystemDao> datasinkDaoProvider
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
    @Override
@@ -73,6 +82,15 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
                @Override
                public boolean allowBlank() {
                   return false;
+               }
+            }, new SFFCDatasinkDao() {
+               @Override
+               public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+                  return datasinkDaoProvider;
+               }
+               @Override
+               public BaseIcon getIcon() {
+                  return BaseIcon.SERVER;
                }
             });
 

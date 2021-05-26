@@ -8,6 +8,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
@@ -15,7 +17,7 @@ import net.datenwerke.rs.emaildatasink.client.emaildatasink.rpc.EmailDatasinkRpc
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
-public class EmailDatasinkDao extends Dao {
+public class EmailDatasinkDao extends Dao implements DatasinkDao {
 
    private final EmailDatasinkRpcServiceAsync rpcService;
 
@@ -39,8 +41,9 @@ public class EmailDatasinkDao extends Dao {
       return rpcService.testEmailDatasink(emailDatasinkDto, transformAndKeepCallback(callback));
    }
    
-   public void getDefaultEmailDatasink(AsyncCallback<EmailDatasinkDto> callback) {
-      rpcService.getDefaultEmailDatasink(transformAndKeepCallback(callback));
+   @Override
+   public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
+      rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
    }
 
 }
