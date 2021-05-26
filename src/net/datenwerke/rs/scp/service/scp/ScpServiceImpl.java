@@ -29,6 +29,9 @@ EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 package net.datenwerke.rs.scp.service.scp;
 
+import static net.datenwerke.rs.scp.service.scp.ScpModule.PROPERTY_SCP_DISABLED;
+import static net.datenwerke.rs.scp.service.scp.ScpModule.PROPERTY_SCP_SCHEDULING_ENABLED;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,7 +41,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -54,7 +56,7 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
@@ -64,11 +66,9 @@ import net.datenwerke.rs.utils.config.ConfigService;
 
 public class ScpServiceImpl implements ScpService {
 
-   private static final String PROPERTY_SCP_DISABLED = "scp[@disabled]";
-   private static final String PROPERTY_SCP_SCHEDULER_ENABLED = "scp[@supportsScheduling]";
-
    private final Provider<ConfigService> configServiceProvider;
    private final Provider<ReportService> reportServiceProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
    
@@ -78,11 +78,13 @@ public class ScpServiceImpl implements ScpService {
    public ScpServiceImpl(
          Provider<ConfigService> configServiceProvider, 
          Provider<ReportService> reportServiceProvider,
+         Provider<DatasinkService> datasinkServiceProvider,
          @DefaultScpDatasink Provider<Optional<ScpDatasink>> defaultDatasinkProvider
          ) {
       this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
       this.defaultDatasinkProvider = defaultDatasinkProvider;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    // adapted from ScpTo.java (jsch-0.1.55)
@@ -205,21 +207,18 @@ public class ScpServiceImpl implements ScpService {
 
    @Override
    public Map<StorageType, Boolean> getScpEnabledConfigs() {
-      Map<StorageType, Boolean> configs = new HashMap<>();
-      configs.put(StorageType.SCP, isScpEnabled());
-      configs.put(StorageType.SCP_SCHEDULING, isScpSchedulingEnabled());
-      return configs;
+      return datasinkServiceProvider.get().getEnabledConfigs(StorageType.SCP, PROPERTY_SCP_DISABLED,
+            StorageType.SCP_SCHEDULING, PROPERTY_SCP_SCHEDULING_ENABLED);
    }
 
    @Override
    public boolean isScpEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SCP_DISABLED, false);
+      return datasinkServiceProvider.get().isEnabled(PROPERTY_SCP_DISABLED);
    }
 
    @Override
    public boolean isScpSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_SCP_SCHEDULER_ENABLED,
-            true);
+      return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_SCP_SCHEDULING_ENABLED);
    }
 
    @Override

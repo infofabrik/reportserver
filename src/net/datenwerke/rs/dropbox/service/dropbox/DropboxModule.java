@@ -2,6 +2,8 @@ package net.datenwerke.rs.dropbox.service.dropbox;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
 import java.util.Optional;
 
@@ -15,8 +17,14 @@ import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 
 public class DropboxModule extends AbstractModule {
 
-   private static final String PROPERTY_DEFAULT_DROPBOX_DATASINK_ID = "dropbox." + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_DROPBOX_DATASINK_NAME = "dropbox." + PROPERTY_DEFAULT_DATASINK_NAME;
+   private static final String PROPERTY_DATASINK = "dropbox";
+   public static final String PROPERTY_DEFAULT_DROPBOX_DATASINK_ID = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_ID;
+   public static final String PROPERTY_DEFAULT_DROPBOX_DATASINK_NAME = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_DROPBOX_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_DROPBOX_SCHEDULING_ENABLED = PROPERTY_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
    @Override
    protected void configure() {

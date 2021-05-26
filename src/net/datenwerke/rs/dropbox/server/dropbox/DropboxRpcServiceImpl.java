@@ -130,7 +130,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
 
       try {
-         dropboxService.testDropboxDataSink(dropboxDatasink);
+         dropboxService.testDropboxDatasink(dropboxDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

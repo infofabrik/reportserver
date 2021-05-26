@@ -23,11 +23,6 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
 /**
  * Used to define datasinks that can be used in ReportServer.
- * 
- * <p>
- * 
- * </p> 
- *  
  *
  */
 @Entity

@@ -1,5 +1,8 @@
 package net.datenwerke.rs.localfsdatasink.service.localfsdatasink;
 
+import static net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule.PROPERTY_LOCAL_FILESYSTEM_DISABLED;
+import static net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule.PROPERTY_LOCAL_FILESYSTEM_SCHEDULING_ENABLED;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -8,7 +11,6 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -16,22 +18,18 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.annotations.DefaultLocalFileSystemDatasink;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class LocalFileSystemServiceImpl implements LocalFileSystemService {
 
    public static final int DEFAULT_BUFFER_SIZE = 8192;
 
-   private static final String PROPERTY_LOCAL_FILE_SYSTEM_DISABLED = "localfilesystem[@disabled]";
-   private static final String PROPERTY_LOCAL_FILE_SYSTEM_SCHEDULER_ENABLED = "localfilesystem[@supportsScheduling]";
-
-   private final Provider<ConfigService> configServiceProvider;
    private final Provider<ReportService> reportServiceProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
    
@@ -39,13 +37,13 @@ public class LocalFileSystemServiceImpl implements LocalFileSystemService {
 
    @Inject
    public LocalFileSystemServiceImpl(
-		   Provider<ConfigService> configServiceProvider,
 		   Provider<ReportService> reportServiceProvider,
+		   Provider<DatasinkService> datasinkServiceProvider,
 		   @DefaultLocalFileSystemDatasink Provider<Optional<LocalFileSystemDatasink>> defaultDatasinkProvider
 		   ) {
-      this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
       this.defaultDatasinkProvider = defaultDatasinkProvider;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -87,22 +85,18 @@ public class LocalFileSystemServiceImpl implements LocalFileSystemService {
 
    @Override
    public Map<StorageType, Boolean> getLocalFileSystemEnabledConfigs() {
-      Map<StorageType, Boolean> configs = new HashMap<>();
-      configs.put(StorageType.LOCALFILESYSTEM, isLocalFileSystemEnabled());
-      configs.put(StorageType.LOCALFILESYSTEM_SCHEDULING, isLocalFileSystemSchedulingEnabled());
-      return configs;
+      return datasinkServiceProvider.get().getEnabledConfigs(StorageType.LOCALFILESYSTEM, PROPERTY_LOCAL_FILESYSTEM_DISABLED,
+            StorageType.LOCALFILESYSTEM_SCHEDULING, PROPERTY_LOCAL_FILESYSTEM_SCHEDULING_ENABLED);
    }
 
    @Override
    public boolean isLocalFileSystemEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_LOCAL_FILE_SYSTEM_DISABLED,
-            false);
+      return datasinkServiceProvider.get().isEnabled(PROPERTY_LOCAL_FILESYSTEM_DISABLED);
    }
 
    @Override
    public boolean isLocalFileSystemSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE)
-            .getBoolean(PROPERTY_LOCAL_FILE_SYSTEM_SCHEDULER_ENABLED, true);
+      return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_LOCAL_FILESYSTEM_SCHEDULING_ENABLED);
    }
 
    @Override

@@ -1,10 +1,12 @@
 package net.datenwerke.rs.dropbox.service.dropbox;
 
+import static net.datenwerke.rs.dropbox.service.dropbox.DropboxModule.PROPERTY_DROPBOX_DISABLED;
+import static net.datenwerke.rs.dropbox.service.dropbox.DropboxModule.PROPERTY_DROPBOX_SCHEDULING_ENABLED;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -23,36 +25,32 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.dropbox.service.dropbox.annotations.DefaultDropboxDatasink;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DropboxServiceImpl implements DropboxService {
 
-   private static final String PROPERTY_DROPBOX_DISABLED = "dropbox[@disabled]";
-   private static final String PROPERTY_DROPBOX_SCHEDULER_ENABLED = "dropbox[@supportsScheduling]";
-
    private static final String UPLOAD_URL = "https://content.dropboxapi.com/2/files/upload";
 
-   private final Provider<ConfigService> configServiceProvider;
    private final Provider<ReportService> reportServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
    
    private final Provider<Optional<DropboxDatasink>> defaultDatasinkProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
    public DropboxServiceImpl(
-         Provider<ConfigService> configServiceProvider,
          Provider<ReportService> reportServiceProvider,
+         Provider<DatasinkService> datasinkServiceProvider,
          @DefaultDropboxDatasink Provider<Optional<DropboxDatasink>> defaultDatasinkProvider
          ) {
-      this.configServiceProvider = configServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
       this.defaultDatasinkProvider = defaultDatasinkProvider;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -93,25 +91,22 @@ public class DropboxServiceImpl implements DropboxService {
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() {
-      Map<StorageType, Boolean> configs = new HashMap<>();
-      configs.put(StorageType.DROPBOX, isDropboxEnabled());
-      configs.put(StorageType.DROPBOX_SCHEDULING, isDropboxSchedulingEnabled());
-      return configs;
+      return datasinkServiceProvider.get().getEnabledConfigs(StorageType.DROPBOX, PROPERTY_DROPBOX_DISABLED,
+            StorageType.DROPBOX_SCHEDULING, PROPERTY_DROPBOX_SCHEDULING_ENABLED);
    }
 
    @Override
    public boolean isDropboxEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_DISABLED, false);
+      return datasinkServiceProvider.get().isEnabled(PROPERTY_DROPBOX_DISABLED);
    }
 
    @Override
    public boolean isDropboxSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_DROPBOX_SCHEDULER_ENABLED,
-            true);
+      return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_DROPBOX_SCHEDULING_ENABLED);
    }
 
    @Override
-   public void testDropboxDataSink(DropboxDatasink dropboxDatasink)
+   public void testDropboxDatasink(DropboxDatasink dropboxDatasink)
          throws IOException, InterruptedException, ExecutionException {
       if (!isDropboxEnabled())
          throw new IllegalStateException("Dropbox datasink is disabled");

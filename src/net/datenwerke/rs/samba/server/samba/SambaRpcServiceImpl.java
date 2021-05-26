@@ -141,7 +141,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       securityService.assertRights(sambaDatasink, Read.class, Execute.class);
       
       try {
-         sambaService.testSambaDataSink(sambaDatasink);
+         sambaService.testSambaDatasink(sambaDatasink);
       } catch(Exception e){
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

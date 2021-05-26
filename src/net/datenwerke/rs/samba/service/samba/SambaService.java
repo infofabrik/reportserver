@@ -57,7 +57,7 @@ public interface SambaService {
     * @param sambaDatasink the {@link SambaDatasink} to test
     * @throws IOException if an I/O error occurs
     */
-   void testSambaDataSink(SambaDatasink sambaDatasink) throws IOException;
+   void testSambaDatasink(SambaDatasink sambaDatasink) throws IOException;
    
    Optional<SambaDatasink> getDefaultDatasink();
 }

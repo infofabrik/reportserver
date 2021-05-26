@@ -2,6 +2,8 @@ package net.datenwerke.rs.localfsdatasink.service.localfsdatasink;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
 import java.util.Optional;
 
@@ -15,10 +17,14 @@ import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.Loc
 
 public class LocalFileSystemModule extends AbstractModule {
 
-   private static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID = "localfilesystem."
+   private static final String PROPERTY_DATASINK = "localfilesystem";
+   public static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME = "localfilesystem."
+   public static final String PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME = PROPERTY_DATASINK + "."
          + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_LOCAL_FILESYSTEM_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_LOCAL_FILESYSTEM_SCHEDULING_ENABLED = PROPERTY_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
    @Override
    protected void configure() {

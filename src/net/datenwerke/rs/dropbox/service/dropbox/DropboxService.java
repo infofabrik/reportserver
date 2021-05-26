@@ -63,7 +63,7 @@ public interface DropboxService {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void testDropboxDataSink(DropboxDatasink dropboxDatasink)
+   void testDropboxDatasink(DropboxDatasink dropboxDatasink)
          throws IOException, InterruptedException, ExecutionException;
    
    Optional<DropboxDatasink> getDefaultDatasink();

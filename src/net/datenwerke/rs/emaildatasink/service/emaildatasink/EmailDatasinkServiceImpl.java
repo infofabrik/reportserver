@@ -1,10 +1,12 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
+import static net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule.PROPERTY_EMAIL_DISABLED;
+import static net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule.PROPERTY_EMAIL_SCHEDULING_ENABLED;
+
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -13,7 +15,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
@@ -21,7 +23,6 @@ import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations.DefaultEmailDatasink;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.misc.MimeUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
@@ -33,31 +34,28 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
    public static final int DEFAULT_BUFFER_SIZE = 8192;
 
-   private static final String PROPERTY_EMAIL_DISABLED = "email[@disabled]";
-   private static final String PROPERTY_EMAIL_SCHEDULER_ENABLED = "email[@supportsScheduling]";
-
-   private final Provider<ConfigService> configServiceProvider;
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<MailService> mailServiceProvider;
    private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
    @Inject
    public EmailDatasinkServiceImpl(
-         Provider<ConfigService> configServiceProvider,
          Provider<MailBuilderFactory> mailBuilderFactoryProvider, 
          Provider<MailService> mailServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
          Provider<MimeUtils> mimeUtilsProvider,
+         Provider<DatasinkService> datasinkServiceProvider,
          @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
          ) {
-      this.configServiceProvider = configServiceProvider;
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.mimeUtilsProvider = mimeUtilsProvider;
       this.defaultDatasinkProvider = defaultDatasinkProvider;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -80,21 +78,18 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
    @Override
    public Map<StorageType, Boolean> getEmailEnabledConfigs() {
-      Map<StorageType, Boolean> configs = new HashMap<>();
-      configs.put(StorageType.EMAIL, isEmailEnabled());
-      configs.put(StorageType.EMAIL_SCHEDULING, isEmailSchedulingEnabled());
-      return configs;
+      return datasinkServiceProvider.get().getEnabledConfigs(StorageType.EMAIL, PROPERTY_EMAIL_DISABLED,
+            StorageType.EMAIL_SCHEDULING, PROPERTY_EMAIL_SCHEDULING_ENABLED);
    }
 
    @Override
    public boolean isEmailEnabled() {
-      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_EMAIL_DISABLED, false);
+      return datasinkServiceProvider.get().isEnabled(PROPERTY_EMAIL_DISABLED);
    }
 
    @Override
    public boolean isEmailSchedulingEnabled() {
-      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(PROPERTY_EMAIL_SCHEDULER_ENABLED,
-            true);
+      return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_EMAIL_SCHEDULING_ENABLED);
    }
 
    @Override

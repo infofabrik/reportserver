@@ -2,6 +2,8 @@ package net.datenwerke.rs.ftp.service.ftp;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
 import java.util.Optional;
 
@@ -18,14 +20,38 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 
 public class FtpModule extends AbstractModule {
-
-   private static final String PROPERTY_DEFAULT_FTP_DATASINK_ID = "ftp." + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_FTP_DATASINK_NAME = "ftp." + PROPERTY_DEFAULT_DATASINK_NAME;
-   private static final String PROPERTY_DEFAULT_SFTP_DATASINK_ID = "sftp." + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_SFTP_DATASINK_NAME = "sftp." + PROPERTY_DEFAULT_DATASINK_NAME;
-   private static final String PROPERTY_DEFAULT_FTPS_DATASINK_ID = "ftps." + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_FTPS_DATASINK_NAME = "ftps." + PROPERTY_DEFAULT_DATASINK_NAME;
    
+   // ftp
+   private static final String PROPERTY_FTP_DATASINK = "ftp";
+   public static final String PROPERTY_DEFAULT_FTP_DATASINK_ID = PROPERTY_FTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_ID;
+   public static final String PROPERTY_DEFAULT_FTP_DATASINK_NAME = PROPERTY_FTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_FTP_DISABLED = PROPERTY_FTP_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_FTP_SCHEDULING_ENABLED = PROPERTY_FTP_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
+
+   // sftp
+   private static final String PROPERTY_SFTP_DATASINK = "sftp";
+   public static final String PROPERTY_DEFAULT_SFTP_DATASINK_ID = PROPERTY_SFTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_ID;
+   public static final String PROPERTY_DEFAULT_SFTP_DATASINK_NAME = PROPERTY_SFTP_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_SFTP_DISABLED = PROPERTY_SFTP_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_SFTP_SCHEDULING_ENABLED = PROPERTY_SFTP_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
+
+   // ftps
+   private static final String PROPERTY_FTPS_DATASINK = "ftps";
+   public static final String PROPERTY_DEFAULT_FTPS_DATASINK_ID = PROPERTY_FTPS_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_ID;
+   public static final String PROPERTY_DEFAULT_FTPS_DATASINK_NAME = PROPERTY_FTPS_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_FTPS_DISABLED = PROPERTY_FTPS_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_FTPS_SCHEDULING_ENABLED = PROPERTY_FTPS_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
+   
+
    @Override
    protected void configure() {
       bind(FtpService.class).to(FtpServiceImpl.class);

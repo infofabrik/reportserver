@@ -2,6 +2,8 @@ package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
+import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
 import java.util.Optional;
 
@@ -16,8 +18,14 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDa
 
 public class EmailDatasinkModule extends AbstractModule {
 
-   private static final String PROPERTY_DEFAULT_EMAIL_DATASINK_ID = "email." + PROPERTY_DEFAULT_DATASINK_ID;
-   private static final String PROPERTY_DEFAULT_EMAIL_DATASINK_NAME = "email." + PROPERTY_DEFAULT_DATASINK_NAME;
+   private static final String PROPERTY_DATASINK = "email";
+   public static final String PROPERTY_DEFAULT_EMAIL_DATASINK_ID = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_ID;
+   public static final String PROPERTY_DEFAULT_EMAIL_DATASINK_NAME = PROPERTY_DATASINK + "."
+         + PROPERTY_DEFAULT_DATASINK_NAME;
+   public static final String PROPERTY_EMAIL_DISABLED = PROPERTY_DATASINK + PROPERTY_DEFAULT_DISABLED;
+   public static final String PROPERTY_EMAIL_SCHEDULING_ENABLED = PROPERTY_DATASINK
+         + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
    @Override
    protected void configure() {
