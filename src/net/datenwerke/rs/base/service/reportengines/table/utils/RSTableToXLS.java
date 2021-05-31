@@ -129,7 +129,8 @@ public class RSTableToXLS {
 		AuthenticatorService authenticatorService = authenticatorServiceProvider.get();
 		User user = authenticatorService.getCurrentUser();
 		ParameterSet ps = parameterSetFactory.create(user, report);
-		ps.addAll(report.getParameterInstances());
+		if (null != report)
+		   ps.addAll(report.getParameterInstances());
 		
 		Row headerRow = sheet.createRow(rowOffset);
 		
@@ -314,9 +315,8 @@ public class RSTableToXLS {
 				sheet.setColumnWidth(column, 256*columnWidths[column]);
 		}
 		
-		if (licenseServiceProvider.get().isEnterprise())
+		if (null != report && licenseServiceProvider.get().isEnterprise())
 			addParameterOutput(report, ps, workbook);
-		
 	}
 	
 	private void addParameterOutput(Report report, ParameterSet parameters, Workbook workbook) {
