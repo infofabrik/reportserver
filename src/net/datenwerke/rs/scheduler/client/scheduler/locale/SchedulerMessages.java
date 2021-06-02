@@ -277,4 +277,7 @@ public interface SchedulerMessages extends Messages {
     
     String fileactionDropboxMsgSubject();
     String fileactionDropboxMsgText();
+    
+    String fileactionOneDriveMsgSubject();
+    String fileactionOneDriveMsgText();
 }

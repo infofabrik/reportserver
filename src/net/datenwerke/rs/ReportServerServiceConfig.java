@@ -161,6 +161,8 @@ import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemR
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule;
 import net.datenwerke.rs.oauth.server.oauth.OAuthServlet;
 import net.datenwerke.rs.oauth.service.oauth.OAuthModule;
+import net.datenwerke.rs.onedrive.server.onedrive.OneDriveRpcServiceImpl;
+import net.datenwerke.rs.onedrive.service.onedrive.OneDriveModule;
 import net.datenwerke.rs.passwordpolicy.server.AccountInhibitionRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
@@ -412,6 +414,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				
 				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
 				
+				serve(BASE_URL + "onedrive").with(OneDriveRpcServiceImpl.class);
+				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
 
@@ -642,6 +646,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			
 			new SambaModule(),
 			new DropboxModule(),
+			new OneDriveModule(),
 			new ScpModule(),
 			new OAuthModule(),
 			

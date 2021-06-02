@@ -22,12 +22,16 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 
 public class DropboxUiStartup {
    @Inject
-   public DropboxUiStartup(final Provider<ExportToDropboxHooker> exportToDropboxHooker,
-         final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService, final DropboxDao dao,
+   public DropboxUiStartup(
+         final Provider<ExportToDropboxHooker> exportToDropboxHooker,
+         final HookHandlerService hookHandler, 
+         final WaitOnEventUIService waitOnEventService, 
+         final DropboxDao dao,
          final Provider<DropboxDatasinkConfigProviderHooker> dropboxTreeConfiguratorProvider,
          final DropboxDatasinkTesterToolbarConfigurator dropboxTestToolbarConfigurator,
          final DropboxDatasinkOAuthToolbarConfigurator dropboxOauthToolbarConfigurator,
-         final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider) {
+         final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider
+         ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(),
             HookHandlerService.PRIORITY_MEDIUM);

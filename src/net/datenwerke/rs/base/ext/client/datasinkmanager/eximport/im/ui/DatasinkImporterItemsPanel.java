@@ -13,6 +13,7 @@ import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
+import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -62,6 +63,8 @@ public class DatasinkImporterItemsPanel extends ImporterItemsPanel<DatasinkManag
             return BaseIcon.SEND.toImageResource();
          if (DropboxDatasinkDto.class.getName().equals(model.getType()))
             return BaseIcon.DROPBOX.toImageResource();
+         if (OneDriveDatasinkDto.class.getName().equals(model.getType()))
+            return BaseIcon.CLOUD_UPLOAD.toImageResource();
          return BaseIcon.FOLDER_O.toImageResource();
       });
    }

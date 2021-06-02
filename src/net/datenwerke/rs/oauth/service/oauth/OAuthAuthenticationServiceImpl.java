@@ -6,7 +6,6 @@ import java.util.concurrent.ExecutionException;
 
 import javax.inject.Provider;
 
-import com.github.scribejava.apis.DropboxApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.oauth.OAuth20Service;
@@ -39,7 +38,7 @@ public class OAuthAuthenticationServiceImpl implements OAuthAuthenticationServic
          throw new IllegalArgumentException("Datasink is not configured correctly");
 
       final OAuth20Service oauthService = new ServiceBuilder(appKey).apiSecret(secretKey).callback(redirectUri)
-            .build(DropboxApi.instance());
+            .build(oAuthDatasink.getOAuthApi());
 
       // get access token and refresh token
       OAuth2AccessToken accessToken = oauthService.getAccessToken(authenticationCode);

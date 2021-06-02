@@ -6,6 +6,9 @@ import javax.persistence.Table;
 import org.apache.commons.codec.binary.Hex;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
+
+import com.github.scribejava.apis.DropboxApi;
+import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
@@ -147,5 +150,10 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
       byte[] encrypted = encryptionService.encrypt(secretKey);
 
       this.secretKey = new String(Hex.encodeHex(encrypted));
+   }
+
+   @Override
+   public DefaultApi20 getOAuthApi() {
+      return DropboxApi.instance();
    }
 }

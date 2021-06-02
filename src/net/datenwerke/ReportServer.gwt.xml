@@ -126,6 +126,7 @@
 	<source path="rs/ftp/client"/>
 	<source path="rs/samba/client"/>
 	<source path="rs/dropbox/client"/>
+	<source path="rs/onedrive/client"/>
 	<source path="rs/scp/client"/>
 	<source path="rs/localfsdatasink/client"/>
 	<source path="rs/emaildatasink/client"/>

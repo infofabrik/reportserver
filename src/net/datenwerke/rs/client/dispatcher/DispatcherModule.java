@@ -63,6 +63,7 @@ import net.datenwerke.rs.incubator.client.reportmetadata.ReportMetadataUIModule;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.JxlsReportUiModule;
 import net.datenwerke.rs.license.client.LicenseUiModule;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemUiModule;
+import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.passwordpolicy.client.PasswordPolicyUIModule;
 import net.datenwerke.rs.passwordpolicy.client.lostpassword.LostPasswordUIModule;
 import net.datenwerke.rs.remoteaccess.client.RemoteAccessUiModule;
@@ -117,6 +118,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new DatasinkUIModule());
       install(new FtpUiModule());
       install(new DropboxUiModule());
+      install(new OneDriveUiModule());
       install(new SambaUIModule());
       install(new ScpUIModule());
       install(new LocalFileSystemUiModule());
