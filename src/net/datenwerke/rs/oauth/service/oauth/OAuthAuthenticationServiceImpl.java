@@ -1,7 +1,6 @@
 package net.datenwerke.rs.oauth.service.oauth;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -13,7 +12,6 @@ import com.github.scribejava.core.oauth.OAuth20Service;
 import com.google.inject.Inject;
 import com.google.inject.persist.Transactional;
 
-import net.datenwerke.gf.service.history.HistoryLink;
 import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
@@ -22,7 +20,6 @@ import net.datenwerke.rs.core.service.reportserver.ServerInfoContainer;
 public class OAuthAuthenticationServiceImpl implements OAuthAuthenticationService {
 
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<HistoryService> historyServiceProvider;
    private final Provider<ServerInfoContainer> serverInfoProvider;
 
    @Inject
@@ -32,7 +29,6 @@ public class OAuthAuthenticationServiceImpl implements OAuthAuthenticationServic
          Provider<ServerInfoContainer> serverInfoProvider
          ) {
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.historyServiceProvider = historyServiceProvider;
       this.serverInfoProvider = serverInfoProvider;
    }
 
