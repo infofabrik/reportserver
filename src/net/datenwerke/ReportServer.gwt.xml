@@ -125,6 +125,7 @@
 	<source path="rs/scheduleasfile/shared"/>
 	<source path="rs/ftp/client"/>
 	<source path="rs/samba/client"/>
+	<source path="rs/oauth/client"/>
 	<source path="rs/dropbox/client"/>
 	<source path="rs/onedrive/client"/>
 	<source path="rs/scp/client"/>

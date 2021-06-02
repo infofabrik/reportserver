@@ -159,6 +159,7 @@ import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
 import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemModule;
+import net.datenwerke.rs.oauth.server.oauth.OAuthRpcServiceImpl;
 import net.datenwerke.rs.oauth.server.oauth.OAuthServlet;
 import net.datenwerke.rs.oauth.service.oauth.OAuthModule;
 import net.datenwerke.rs.onedrive.server.onedrive.OneDriveRpcServiceImpl;
@@ -412,8 +413,10 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "samba").with(SambaRpcServiceImpl.class);
 				serve(BASE_URL + "scp").with(ScpRpcServiceImpl.class);
 				
-				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
+				serve(BASE_URL + "oauth").with(OAuthServlet.class);
+				serve(BASE_URL + "oauthrpc").with(OAuthRpcServiceImpl.class);
 				
+				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
 				serve(BASE_URL + "onedrive").with(OneDriveRpcServiceImpl.class);
 				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
@@ -526,8 +529,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				
 				serve(BASE_URL + "trace").with(TracerServlet.class);
 				serve(BASE_URL + "version").with(VersionInfoServlet.class);
-				serve(BASE_URL + "oauth").with(OAuthServlet.class);
-				
 				
 				Map<String, String> jerseyParams = new HashMap<String, String>();
                 jerseyParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");

@@ -1,26 +1,28 @@
 package net.datenwerke.rs.onedrive.service.onedrive.definitions;
 
-import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
-import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
-import net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoPostProcessor;
-import net.datenwerke.rs.onedrive.service.onedrive.locale.OneDriveDatasinkMessages;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.apache.commons.codec.binary.Hex;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
 import com.github.scribejava.apis.LiveApi;
 import com.github.scribejava.core.builder.api.DefaultApi20;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
+import net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoPostProcessor;
+import net.datenwerke.rs.onedrive.service.onedrive.locale.OneDriveDatasinkMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
@@ -156,5 +158,12 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @Override
    public DefaultApi20 getOAuthApi() {
       return LiveApi.instance();
+   }
+
+   @Override
+   public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
+      return authorizationUrlBuilder
+            .scope("onedrive.readwrite offline_access")
+            .build();
    }
 }

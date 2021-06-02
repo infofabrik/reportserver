@@ -35,7 +35,7 @@ public class OneDriveDao extends Dao implements DatasinkDao {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
 
-   public Request testOneDriveDataSink(OneDriveDatasinkDto oneDriveDatasinkDto, AsyncCallback<Boolean> callback) {
+   public Request testOneDriveDatasink(OneDriveDatasinkDto oneDriveDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testOneDriveDatasink(oneDriveDatasinkDto, transformAndKeepCallback(callback));
    }
 

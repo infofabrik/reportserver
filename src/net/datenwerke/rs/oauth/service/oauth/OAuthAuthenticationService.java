@@ -20,4 +20,14 @@ public interface OAuthAuthenticationService {
     */
    void generateRefreshToken(String authenticationCode, OAuthAuthenticatable oAuthDatasink, String redirectUri)
          throws IOException, InterruptedException, ExecutionException;
+
+   /**
+    * Generates the URL necessary for OAuth2 authentication.
+    * 
+    * @param oAuthDatasink the OAuth2 datasink
+    * @return the authentication URL
+    */
+   String generateAuthenticationUrl(OAuthAuthenticatable oAuthDatasink);
+   
+   String getRedirectUri();
 }

@@ -1,6 +1,7 @@
 package net.datenwerke.rs.oauth.server.oauth;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.ExecutionException;
 
@@ -14,6 +15,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.google.inject.Provider;
+
+import net.datenwerke.gf.service.history.HistoryLink;
+import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
@@ -27,13 +32,17 @@ public class OAuthServlet extends HttpServlet {
     */
    private static final long serialVersionUID = 7216005763523739465L;
 
-   private DatasinkService datasinkService;
-   private OAuthAuthenticationService oAuthAuthenticationService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<OAuthAuthenticationService> oAuthAuthenticationServiceProvider;
+   private final Provider<HistoryService> historyServiceProvider;
 
    @Inject
-   public OAuthServlet(DatasinkService datasinkService, OAuthAuthenticationService oAuthAuthenticationService) {
-      this.datasinkService = datasinkService;
-      this.oAuthAuthenticationService = oAuthAuthenticationService;
+   public OAuthServlet(Provider<DatasinkService> datasinkServiceProvider,
+         Provider<OAuthAuthenticationService> oAuthAuthenticationServiceProvider,
+         Provider<HistoryService> historyServiceProvider) {
+      this.datasinkServiceProvider = datasinkServiceProvider;
+      this.oAuthAuthenticationServiceProvider = oAuthAuthenticationServiceProvider;
+      this.historyServiceProvider = historyServiceProvider;
    }
 
    @Override
@@ -44,7 +53,8 @@ public class OAuthServlet extends HttpServlet {
       String authenticationCode = null;
       String datasinkId = null;
       String path = null;
-      String redirectUri = null;
+      final String redirectUri = oAuthAuthenticationServiceProvider.get().getRedirectUri();
+      DatasinkDefinition datasinkDefinition = null;
 
       authenticationCode = req.getParameter("code");
 
@@ -52,9 +62,17 @@ public class OAuthServlet extends HttpServlet {
       try {
          JSONObject jsonObject = new JSONObject(state);
          datasinkId = jsonObject.getString("datasinkId");
-         path = jsonObject.getString("path");
-         redirectUri = jsonObject.getString("redirect_uri");
-         Objects.requireNonNull(datasinkId);
+         datasinkDefinition = datasinkServiceProvider.get().getDatasinkById(Long.parseLong(datasinkId));
+         Objects.requireNonNull(datasinkDefinition);
+         if (!(datasinkDefinition instanceof OAuthAuthenticatable))
+            throw new IllegalArgumentException("Datasink must be of type " + OAuthAuthenticatable.class);
+
+         List<HistoryLink> historyLinks = historyServiceProvider.get().buildLinksFor(datasinkDefinition);
+         if (historyLinks.isEmpty())
+            throw new IllegalArgumentException("Datasink does not contain history links");
+
+         path = historyLinks.get(0).getHistoryToken();
+
          Objects.requireNonNull(path);
          Objects.requireNonNull(redirectUri);
       } catch (JSONException e) {
@@ -62,18 +80,16 @@ public class OAuthServlet extends HttpServlet {
       }
 
       if (authenticationCode != null && datasinkId != null) {
-         DatasinkDefinition datasinkDefinition = datasinkService.getDatasinkById(Long.parseLong(datasinkId));
-         Objects.requireNonNull(datasinkDefinition);
-         if (!(datasinkDefinition instanceof OAuthAuthenticatable))
-            throw new IllegalArgumentException("Datasink must be of type " + OAuthAuthenticatable.class);
-
          OAuthAuthenticatable oauthDatasink = (OAuthAuthenticatable) datasinkDefinition;
          try {
-            oAuthAuthenticationService.generateRefreshToken(authenticationCode, oauthDatasink, redirectUri);
+            oAuthAuthenticationServiceProvider.get().generateRefreshToken(authenticationCode, oauthDatasink,
+                  redirectUri);
             resp.sendRedirect(req.getContextPath() + "#" + path);
          } catch (InterruptedException | ExecutionException e) {
             throw new ServletException("Error while generating refresh token");
          }
+      } else {
+         throw new IllegalStateException("No authentication code or datasinkId");
       }
 
    }

@@ -1,17 +1,12 @@
 package net.datenwerke.rs.dropbox.client.dropbox.hookers;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
-import net.datenwerke.gf.client.history.HistoryDao;
-import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
@@ -24,6 +19,8 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
+import net.datenwerke.rs.oauth.client.oauth.OAuthAuthenticationUriInfo;
+import net.datenwerke.rs.oauth.client.oauth.OAuthDao;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
@@ -32,20 +29,18 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
 
    private final ToolbarService toolbarUtils;
-   private final HistoryDao historyDao;
+   private final OAuthDao oAuthDao;
    private final UtilsUIService utilsUiService;
-
-   private static final String BASE_URL = "https://www.dropbox.com/oauth2/authorize?token_access_type=offline&response_type=code";
 
    @Inject
    public DropboxDatasinkOAuthToolbarConfigurator(
          ToolbarService toolbarUtils, 
          DropboxDao dropboxDao,
-         HistoryDao historyDao, 
+         OAuthDao oAuthDao,
          UtilsUIService utilsUiService
          ) {
       this.toolbarUtils = toolbarUtils;
-      this.historyDao = historyDao;
+      this.oAuthDao = oAuthDao;
       this.utilsUiService = utilsUiService;
    }
 
@@ -68,19 +63,10 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
 
    private void displayAuthorizationDialog(final DropboxDatasinkDto dropboxDatasinkDto) {
 
-      historyDao.getLinksFor(dropboxDatasinkDto, new RsAsyncCallback<List<HistoryLinkDto>>() {
+      oAuthDao.generateAuthenticationUrl(dropboxDatasinkDto, new RsAsyncCallback<OAuthAuthenticationUriInfo>() {
          @Override
-         public void onSuccess(List<HistoryLinkDto> result) {
-            if (null == result || result.isEmpty())
-               return;
-
-            final String path = result.get(0).getHistoryToken();
-
-            final String redirectUri = GWT.getModuleBaseURL() + "oauth";
-            final String url = BASE_URL + "&client_id=" + dropboxDatasinkDto.getAppKey() + "&redirect_uri="
-                  + redirectUri + "&state=" + URL.encodeQueryString("{\"datasinkId\":\"" + dropboxDatasinkDto.getId()
-                        + "\",\"path\":\"" + path + "\"," + "\"redirect_uri\":\"" + redirectUri + "\"" + "}");
-
+         public void onSuccess(OAuthAuthenticationUriInfo result) {
+            
             final DwWindow window = new DwWindow();
             window.setHeading(BaseMessages.INSTANCE.datasinkOauth2AuthenticationSetup());
             window.setSize(600, 190);
@@ -94,11 +80,12 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
             Label textRedirection = new Label(BaseMessages.INSTANCE.oauthNote2());
             hlc.add(textRedirection);
 
+            String redirectUri = result.getRedirectUri();
             Label textRedirectUri = new Label(redirectUri);
             hlc.add(textRedirectUri);
 
             DwTextButton authenticationBtn = new DwTextButton(BaseMessages.INSTANCE.oauthStart());
-            authenticationBtn.addSelectHandler(event -> utilsUiService.redirectWithoutAsking(url));
+            authenticationBtn.addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
 
             window.addButton(authenticationBtn);
 

@@ -1,16 +1,22 @@
 package net.datenwerke.rs.dropbox.service.dropbox.definitions;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.apache.commons.codec.binary.Hex;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
 import com.github.scribejava.apis.DropboxApi;
 import com.github.scribejava.core.builder.api.DefaultApi20;
+import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -156,4 +162,14 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
    public DefaultApi20 getOAuthApi() {
       return DropboxApi.instance();
    }
+
+   @Override
+   public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
+      Map<String,String> additionalParameters = new HashMap<>();
+      additionalParameters.put("token_access_type", "offline");
+      return authorizationUrlBuilder
+            .additionalParams(additionalParameters)
+            .build();
+   }
+
 }

@@ -46,7 +46,7 @@ public class OneDriveDatasinkTesterToolbarConfigurator implements MainPanelViewT
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = oneDriveDao.testOneDriveDataSink((OneDriveDatasinkDto) selectedNode,
+         Request request = oneDriveDao.testOneDriveDatasink((OneDriveDatasinkDto) selectedNode,
                new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });

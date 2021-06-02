@@ -46,7 +46,7 @@ public class DropboxDatasinkTesterToolbarConfigurator implements MainPanelViewTo
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = dropboxDao.testDropboxDataSink((DropboxDatasinkDto) selectedNode,
+         Request request = dropboxDao.testDropboxDatasink((DropboxDatasinkDto) selectedNode,
                new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });

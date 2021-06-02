@@ -35,7 +35,7 @@ public class DropboxDao extends Dao implements DatasinkDao {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
 
-   public Request testDropboxDataSink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback) {
+   public Request testDropboxDatasink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testDropboxDatasink(dropboxDatasinkDto, transformAndKeepCallback(callback));
    }
    
