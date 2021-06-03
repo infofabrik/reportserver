@@ -16,6 +16,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import org.apache.commons.io.IOUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
@@ -71,18 +73,75 @@ public class OneDriveServiceImpl implements OneDriveService {
       OAuth2AccessToken accessToken = oauthService.refreshAccessToken(refreshToken);
 
       try (InputStream is = reportServiceProvider.get().createInputStream(report)) {
-         final OAuthRequest request = new OAuthRequest(Verb.PUT,
-               UPLOAD_URL + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename)
-                     + ":/content");
-         request.setPayload(IOUtils.toByteArray(is));
-         oauthService.signRequest(accessToken, request);
+         byte[] reportAsBytes = IOUtils.toByteArray(is);
+         int length = reportAsBytes.length;
+         // max = 4MB
+         if (length >= 4 * 1024 * 1024) 
+            uploadLargeFile(folder, filename, reportAsBytes, accessToken, oauthService);
+         else 
+            uploadSmallFile(folder, filename, reportAsBytes, accessToken, oauthService);
+         
+      }
+   }
+   
+   private void uploadSmallFile(String folder, String filename, byte[] reportAsBytes, OAuth2AccessToken accessToken,
+         OAuth20Service oauthService) throws IOException, InterruptedException, ExecutionException {
+      final OAuthRequest request = new OAuthRequest(Verb.PUT,
+            UPLOAD_URL + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + ":/content");
+      request.setPayload(reportAsBytes);
+      oauthService.signRequest(accessToken, request);
 
-         try (Response response = oauthService.execute(request)) {
-            int responseCode = response.getCode();
-            if (200 != responseCode && 201 != responseCode)
-               throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
-                     + ", response body = ['" + response.getBody() + "']");
+      try (Response response = oauthService.execute(request)) {
+         int responseCode = response.getCode();
+         if (200 != responseCode && 201 != responseCode)
+            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+                  + ", response body = ['" + response.getBody() + "']");
+      }
+   }
+   
+   private void uploadLargeFile(String folder, String filename, byte[] reportAsBytes, OAuth2AccessToken accessToken,
+         OAuth20Service oauthService) throws IOException, InterruptedException, ExecutionException {
+      // we first create an upload session and get the uploadUrl
+      OAuthRequest request = new OAuthRequest(Verb.PUT, UPLOAD_URL
+            + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + ":/createUploadSession");
+      request.setPayload(
+            "\"item\": {\"@odata.type\": \"microsoft.graph.driveItemUploadableProperties\", " +
+            "\"@microsoft.graph.conflictBehavior\": \"replace\", " + 
+            "\"name\": \"testUpload.txt\"" +
+            "}");
+      oauthService.signRequest(accessToken, request);
+      
+      String uploadUrl = null;
+      
+      try (Response response = oauthService.execute(request)) {
+         int responseCode = response.getCode();
+         if (200 != responseCode && 201 != responseCode)
+            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+                  + ", response body = ['" + response.getBody() + "']");
+         String uploadUrlResponse = response.getBody();
+         try {
+            JSONObject jsonObject = new JSONObject(uploadUrlResponse);
+            uploadUrl = jsonObject.getString("uploadUrl");
+
+         } catch (JSONException e) {
+            throw new IOException("Error while reading json parameter uploadUrl", e);
          }
+      }
+      
+      Objects.requireNonNull(uploadUrl, "Upload url could not be read");
+
+      // we now upload the file
+      int uploadFileSize = reportAsBytes.length;
+      request = new OAuthRequest(Verb.PUT, uploadUrl);
+      request.addHeader("Content-Length", uploadFileSize + "");
+      request.addHeader("Content-Range", "bytes 0-" + (uploadFileSize - 1) + "/" + uploadFileSize);
+      request.setPayload(reportAsBytes);
+      oauthService.signRequest(accessToken, request);
+      try (Response response = oauthService.execute(request)) {
+         int responseCode = response.getCode();
+         if (200 != responseCode && 201 != responseCode)
+            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+                  + ", response body = ['" + response.getBody() + "']");
       }
    }
 
