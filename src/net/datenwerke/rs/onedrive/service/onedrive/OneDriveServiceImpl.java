@@ -17,7 +17,6 @@ import javax.inject.Provider;
 
 import org.apache.commons.io.IOUtils;
 
-import com.github.scribejava.apis.LiveApi;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.OAuth2AccessToken;
 import com.github.scribejava.core.model.OAuthRequest;
@@ -69,7 +68,6 @@ public class OneDriveServiceImpl implements OneDriveService {
       final OAuth20Service oauthService = new ServiceBuilder(oneDriveDatasink.getAppKey()).apiSecret(oneDriveDatasink.getSecretKey())
             .build(oneDriveDatasink.getOAuthApi());
 
-      System.out.println("Refresh token: " + refreshToken);
       OAuth2AccessToken accessToken = oauthService.refreshAccessToken(refreshToken);
 
       try (InputStream is = reportServiceProvider.get().createInputStream(report)) {
