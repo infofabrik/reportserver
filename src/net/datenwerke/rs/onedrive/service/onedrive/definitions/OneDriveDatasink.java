@@ -8,7 +8,7 @@ import org.apache.commons.codec.binary.Hex;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
-import com.github.scribejava.apis.LiveApi;
+import com.github.scribejava.apis.MicrosoftAzureActiveDirectory20Api;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 import com.google.inject.Inject;
@@ -157,13 +157,13 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
 
    @Override
    public DefaultApi20 getOAuthApi() {
-      return LiveApi.instance();
+      return MicrosoftAzureActiveDirectory20Api.instance();
    }
 
    @Override
    public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
       return authorizationUrlBuilder
-            .scope("onedrive.readwrite offline_access")
+            .scope("offline_access files.readwrite")
             .build();
    }
 }

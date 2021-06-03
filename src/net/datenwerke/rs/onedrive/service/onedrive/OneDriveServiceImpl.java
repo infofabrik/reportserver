@@ -33,7 +33,7 @@ import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class OneDriveServiceImpl implements OneDriveService {
-   private static final String UPLOAD_URL = "https://api.onedrive.com/v1.0/drive/items/root:";
+   private static final String UPLOAD_URL = "https://graph.microsoft.com/v1.0/me/drive/root:";
 
    private final Provider<ReportService> reportServiceProvider;
 
@@ -67,8 +67,9 @@ public class OneDriveServiceImpl implements OneDriveService {
             "OneDrive authentication not configured, please setup by using the \"Datasink OAuth2 Authentication Setup\" button.");
 
       final OAuth20Service oauthService = new ServiceBuilder(oneDriveDatasink.getAppKey()).apiSecret(oneDriveDatasink.getSecretKey())
-            .build(LiveApi.instance());
+            .build(oneDriveDatasink.getOAuthApi());
 
+      System.out.println("Refresh token: " + refreshToken);
       OAuth2AccessToken accessToken = oauthService.refreshAccessToken(refreshToken);
 
       try (InputStream is = reportServiceProvider.get().createInputStream(report)) {
