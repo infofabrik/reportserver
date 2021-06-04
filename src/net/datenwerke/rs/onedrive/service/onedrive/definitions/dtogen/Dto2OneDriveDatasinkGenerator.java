@@ -128,6 +128,9 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set secretKey */
 		poso.setSecretKey(dto.getSecretKey() );
 
+		/*  set tenantId */
+		poso.setTenantId(dto.getTenantId() );
+
 	}
 
 	protected void mergeProxy2Poso(OneDriveDatasinkDto dto, final OneDriveDatasink poso)  throws ExpectedException {
@@ -169,6 +172,11 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 			poso.setSecretKey(dto.getSecretKey() );
 		}
 
+		/*  set tenantId */
+		if(dto.isTenantIdModified()){
+			poso.setTenantId(dto.getTenantId() );
+		}
+
 	}
 
 	public void mergeUnmanagedPoso(OneDriveDatasinkDto dto, final OneDriveDatasink poso)  throws ExpectedException {
@@ -202,6 +210,9 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 
 		/*  set secretKey */
 		poso.setSecretKey(dto.getSecretKey() );
+
+		/*  set tenantId */
+		poso.setTenantId(dto.getTenantId() );
 
 	}
 
@@ -242,6 +253,11 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set secretKey */
 		if(dto.isSecretKeyModified()){
 			poso.setSecretKey(dto.getSecretKey() );
+		}
+
+		/*  set tenantId */
+		if(dto.isTenantIdModified()){
+			poso.setTenantId(dto.getTenantId() );
 		}
 
 	}

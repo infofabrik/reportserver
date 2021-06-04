@@ -224,4 +224,6 @@ public interface BaseMessages extends Messages {
    String oauthNote2();
    
    String oauthStart();
+
+   String tentantId();
 }

@@ -73,7 +73,7 @@ public class OAuthAuthenticationServiceImpl implements OAuthAuthenticationServic
       
       return new ServiceBuilder(appKey)
             .apiSecret(secretKey)
-//            .debug()
+            .debug()
             .callback(getRedirectUri())
             .build(oAuthDatasink.getOAuthApi());
    }

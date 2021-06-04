@@ -69,6 +69,10 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    private String refreshToken;
+   
+   @ExposeToClient
+   @Field
+   private String tenantId = "common";
 
    @ExposeToClient
    @Field
@@ -138,6 +142,14 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       return new String(encryptionService.decryptFromHex(secretKey));
    }
+   
+   public String getTenantId() {
+      return tenantId;
+   }
+
+   public void setTenantId(String tenantId) {
+      this.tenantId = tenantId;
+   }
 
    /**
     * Encrypts and sets the given secret key.
@@ -157,7 +169,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
 
    @Override
    public DefaultApi20 getOAuthApi() {
-      return MicrosoftAzureActiveDirectory20Api.instance();
+      return MicrosoftAzureActiveDirectory20Api.custom(tenantId);
    }
 
    @Override

@@ -85,6 +85,9 @@ public class OneDriveDatasink2DtoGenerator implements Poso2DtoGenerator<OneDrive
 			/*  set folder */
 			dto.setFolder(StringEscapeUtils.escapeXml(StringUtils.left(poso.getFolder(),8192)));
 
+			/*  set tenantId */
+			dto.setTenantId(StringEscapeUtils.escapeXml(StringUtils.left(poso.getTenantId(),8192)));
+
 		}
 
 		/* post processing */

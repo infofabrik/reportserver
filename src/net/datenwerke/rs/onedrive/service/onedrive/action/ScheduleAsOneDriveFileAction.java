@@ -81,7 +81,7 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
       try {
          oneDriveService.exportIntoOneDrive(compiledReport.getReport(), oneDriveDatasink, filename, folder);
       } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to OneDrive", e);
+         throw new ActionExecutionException("report could not be sent to OneDrive - SharePoint (O365)", e);
       }
 
    }

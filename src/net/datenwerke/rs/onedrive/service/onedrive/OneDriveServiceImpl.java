@@ -58,16 +58,18 @@ public class OneDriveServiceImpl implements OneDriveService {
    public void exportIntoOneDrive(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException {
       if (!isOneDriveEnabled())
-         throw new IllegalStateException("OneDrive is disabled");
+         throw new IllegalStateException("OneDrive/SharePoint is disabled");
 
       Objects.requireNonNull(oneDriveDatasink, "Datasink is null");
+      Objects.requireNonNull(oneDriveDatasink.getTenantId(), "Tenant id is null");
 
       final String refreshToken = oneDriveDatasink.getRefreshToken();
 
       Objects.requireNonNull(refreshToken,
-            "OneDrive authentication not configured, please setup by using the \"Datasink OAuth2 Authentication Setup\" button.");
+            "OneDrive - SharePoint (O365) authentication not configured, please setup by using the \"Datasink OAuth2 Authentication Setup\" button.");
 
-      final OAuth20Service oauthService = new ServiceBuilder(oneDriveDatasink.getAppKey()).apiSecret(oneDriveDatasink.getSecretKey())
+      final OAuth20Service oauthService = new ServiceBuilder(oneDriveDatasink.getAppKey())
+            .apiSecret(oneDriveDatasink.getSecretKey())
             .build(oneDriveDatasink.getOAuthApi());
 
       OAuth2AccessToken accessToken = oauthService.refreshAccessToken(refreshToken);
@@ -94,7 +96,7 @@ public class OneDriveServiceImpl implements OneDriveService {
       try (Response response = oauthService.execute(request)) {
          int responseCode = response.getCode();
          if (200 != responseCode && 201 != responseCode)
-            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+            throw new IOException("Could not upload to OneDrive/SharePoint. Response code = " + responseCode
                   + ", response body = ['" + response.getBody() + "']");
       }
    }
@@ -166,9 +168,9 @@ public class OneDriveServiceImpl implements OneDriveService {
    public void testOneDriveDatasink(OneDriveDatasink oneDriveDatasink)
          throws IOException, InterruptedException, ExecutionException {
       if (!isOneDriveEnabled())
-         throw new IllegalStateException("OneDrive datasink is disabled");
-      exportIntoOneDrive("ReportServer OneDrive Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
-            oneDriveDatasink, "reportserver-onedrive-test.txt", oneDriveDatasink.getFolder());
+         throw new IllegalStateException("OneDrive - SharePoint (O365) datasink is disabled");
+      exportIntoOneDrive("ReportServer OneDrive - SharePoint (O365) Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
+            oneDriveDatasink, "reportserver-onedrive-sharepoint-test.txt", oneDriveDatasink.getFolder());
 
    }
 

@@ -28,6 +28,7 @@ public interface OneDriveDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 	public ValueProvider<OneDriveDatasinkDto,String> folder();
 	public ValueProvider<OneDriveDatasinkDto,String> refreshToken();
 	public ValueProvider<OneDriveDatasinkDto,String> secretKey();
+	public ValueProvider<OneDriveDatasinkDto,String> tenantId();
 	public ValueProvider<OneDriveDatasinkDto,Boolean> hasRefreshToken();
 	public ValueProvider<OneDriveDatasinkDto,Boolean> hasSecretKey();
 

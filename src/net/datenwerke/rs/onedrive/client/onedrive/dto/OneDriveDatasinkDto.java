@@ -176,6 +176,42 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String tenantId;
+	private  boolean tenantId_m;
+	public static final String PROPERTY_TENANT_ID = "dpi-onedrivedatasink-tenantid";
+
+	private transient static PropertyAccessor<OneDriveDatasinkDto, String> tenantId_pa = new PropertyAccessor<OneDriveDatasinkDto, String>() {
+		@Override
+		public void setValue(OneDriveDatasinkDto container, String object) {
+			container.setTenantId(object);
+		}
+
+		@Override
+		public String getValue(OneDriveDatasinkDto container) {
+			return container.getTenantId();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "tenantId";
+		}
+
+		@Override
+		public void setModified(OneDriveDatasinkDto container, boolean modified) {
+			container.tenantId_m = modified;
+		}
+
+		@Override
+		public boolean isModified(OneDriveDatasinkDto container) {
+			return container.isTenantIdModified();
+		}
+	};
+
 	private Boolean hasRefreshToken;
 	private  boolean hasRefreshToken_m;
 	public static final String PROPERTY_HAS_REFRESH_TOKEN = "dpi-onedrivedatasink-hasrefreshtoken";
@@ -449,6 +485,55 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public String getTenantId()  {
+		if(! isDtoProxy()){
+			return this.tenantId;
+		}
+
+		if(isTenantIdModified())
+			return this.tenantId;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().tenantId());
+
+		return _value;
+	}
+
+
+	public void setTenantId(String tenantId)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getTenantId();
+
+		/* set new value */
+		this.tenantId = tenantId;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(tenantId_pa, oldValue, tenantId, this.tenantId_m));
+
+		/* set indicator */
+		this.tenantId_m = true;
+
+		this.fireObjectChangedEvent(OneDriveDatasinkDtoPA.INSTANCE.tenantId(), oldValue);
+	}
+
+
+	public boolean isTenantIdModified()  {
+		return tenantId_m;
+	}
+
+
+	public static PropertyAccessor<OneDriveDatasinkDto, String> getTenantIdPropertyAccessor()  {
+		return tenantId_pa;
+	}
+
+
 	public Boolean isHasRefreshToken()  {
 		if(! isDtoProxy()){
 			return this.hasRefreshToken;
@@ -602,6 +687,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		this.refreshToken_m = false;
 		this.secretKey = null;
 		this.secretKey_m = false;
+		this.tenantId = null;
+		this.tenantId_m = false;
 		this.hasRefreshToken = null;
 		this.hasRefreshToken_m = false;
 		this.hasSecretKey = null;
@@ -620,6 +707,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(secretKey_m)
 			return true;
+		if(tenantId_m)
+			return true;
 		if(hasRefreshToken_m)
 			return true;
 		if(hasSecretKey_m)
@@ -634,6 +723,7 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		list.add(folder_pa);
 		list.add(refreshToken_pa);
 		list.add(secretKey_pa);
+		list.add(tenantId_pa);
 		list.add(hasRefreshToken_pa);
 		list.add(hasSecretKey_pa);
 		return list;
@@ -650,6 +740,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 			list.add(refreshToken_pa);
 		if(secretKey_m)
 			list.add(secretKey_pa);
+		if(tenantId_m)
+			list.add(tenantId_pa);
 		if(hasRefreshToken_m)
 			list.add(hasRefreshToken_pa);
 		if(hasSecretKey_m)
@@ -669,6 +761,7 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 			list.add(folder_pa);
 			list.add(refreshToken_pa);
 			list.add(secretKey_pa);
+			list.add(tenantId_pa);
 		}
 		return list;
 	}
