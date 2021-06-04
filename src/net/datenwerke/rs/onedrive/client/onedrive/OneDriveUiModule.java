@@ -8,6 +8,7 @@ import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkT
 
 public class OneDriveUiModule extends AbstractGinModule {
 
+   public final static String ONE_DRIVE_NAME = "OneDrive - SharePoint (O365)";
    @Override
    protected void configure() {
       /* bind trees */

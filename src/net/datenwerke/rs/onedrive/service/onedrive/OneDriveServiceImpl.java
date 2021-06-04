@@ -34,7 +34,7 @@ import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class OneDriveServiceImpl implements OneDriveService {
-   private static final String UPLOAD_URL = "https://graph.microsoft.com/v1.0/me/drive/root:";
+   private static final String UPLOAD_URL = "https://graph.microsoft.com/v1.0/me/drive/items/root:";
 
    private final Provider<ReportService> reportServiceProvider;
 
@@ -99,15 +99,16 @@ public class OneDriveServiceImpl implements OneDriveService {
       }
    }
    
-   private void uploadLargeFile(String folder, String filename, byte[] reportAsBytes, OAuth2AccessToken accessToken,
-         OAuth20Service oauthService) throws IOException, InterruptedException, ExecutionException {
+   private void uploadLargeFile(final String folder, final String filename, final byte[] reportAsBytes,
+         final OAuth2AccessToken accessToken, OAuth20Service oauthService)
+         throws IOException, InterruptedException, ExecutionException {
       // we first create an upload session and get the uploadUrl
       OAuthRequest request = new OAuthRequest(Verb.PUT, UPLOAD_URL
             + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + ":/createUploadSession");
       request.setPayload(
             "\"item\": {\"@odata.type\": \"microsoft.graph.driveItemUploadableProperties\", " +
             "\"@microsoft.graph.conflictBehavior\": \"replace\", " + 
-            "\"name\": \"testUpload.txt\"" +
+            "\"name\": \"" + filename + "\"" +
             "}");
       oauthService.signRequest(accessToken, request);
       
@@ -116,7 +117,7 @@ public class OneDriveServiceImpl implements OneDriveService {
       try (Response response = oauthService.execute(request)) {
          int responseCode = response.getCode();
          if (200 != responseCode && 201 != responseCode)
-            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+            throw new IOException("Could not upload to OneDrive/SharePoint. Response code = " + responseCode
                   + ", response body = ['" + response.getBody() + "']");
          String uploadUrlResponse = response.getBody();
          try {
@@ -140,7 +141,7 @@ public class OneDriveServiceImpl implements OneDriveService {
       try (Response response = oauthService.execute(request)) {
          int responseCode = response.getCode();
          if (200 != responseCode && 201 != responseCode)
-            throw new IOException("Could not upload to OneDrive. Response code = " + responseCode
+            throw new IOException("Could not upload to OneDrive/SharePoint. Response code = " + responseCode
                   + ", response body = ['" + response.getBody() + "']");
       }
    }

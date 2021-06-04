@@ -11,6 +11,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.ui.OneDriveDatasinkForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -42,7 +43,7 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public String getDatasinkName() {
-      return "OneDrive";
+      return OneDriveUiModule.ONE_DRIVE_NAME;
    }
 
    @Override

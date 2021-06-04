@@ -27,6 +27,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelect
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveDao;
+import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.ScheduleAsOneDriveFileInformation;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
@@ -62,7 +63,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "OneDrive";
+            return OneDriveUiModule.ONE_DRIVE_NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -70,7 +71,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      oneDriveKey = xform.addField(DatasinkSelectionField.class, "OneDrive", new SFFCGenericTreeNode() {
+      oneDriveKey = xform.addField(DatasinkSelectionField.class, OneDriveUiModule.ONE_DRIVE_NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();

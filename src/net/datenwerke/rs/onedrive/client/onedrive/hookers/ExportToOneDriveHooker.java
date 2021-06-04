@@ -49,6 +49,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsF
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveDao;
+import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
 
@@ -79,7 +80,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
          @Override
          public void onSuccess(Map<StorageType, Boolean> result) {
             if (result.get(StorageType.ONEDRIVE)) {
-               MenuItem item = new DwMenuItem("OneDrive", BaseIcon.CLOUD_UPLOAD);
+               MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
                menu.add(item);
                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
             }
@@ -96,7 +97,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
       window.setHeaderIcon(BaseIcon.CLOUD_UPLOAD);
-      window.setHeading("OneDrive");
+      window.setHeading(OneDriveUiModule.ONE_DRIVE_NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -117,7 +118,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String oneDriveKey = form.addField(DatasinkSelectionField.class, "OneDrive", new SFFCGenericTreeNode() {
+      String oneDriveKey = form.addField(DatasinkSelectionField.class, OneDriveUiModule.ONE_DRIVE_NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
