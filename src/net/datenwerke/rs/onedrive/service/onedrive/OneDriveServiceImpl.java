@@ -34,7 +34,7 @@ import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class OneDriveServiceImpl implements OneDriveService {
-   private static final String UPLOAD_URL = "https://graph.microsoft.com/v1.0/me/drive/items/root:";
+   private static final String UPLOAD_URL = "https://graph.microsoft.com/v1.0";
 
    private final Provider<ReportService> reportServiceProvider;
 
@@ -62,6 +62,7 @@ public class OneDriveServiceImpl implements OneDriveService {
 
       Objects.requireNonNull(oneDriveDatasink, "Datasink is null");
       Objects.requireNonNull(oneDriveDatasink.getTenantId(), "Tenant id is null");
+      Objects.requireNonNull(oneDriveDatasink.getBaseRoot(), "Base root is null");
 
       final String refreshToken = oneDriveDatasink.getRefreshToken();
 
@@ -79,17 +80,22 @@ public class OneDriveServiceImpl implements OneDriveService {
          int length = reportAsBytes.length;
          // max = 4MB
          if (length >= 4 * 1024 * 1024) 
-            uploadLargeFile(folder, filename, reportAsBytes, accessToken, oauthService);
+            uploadLargeFile(oneDriveDatasink, folder, filename, reportAsBytes, accessToken, oauthService);
          else 
-            uploadSmallFile(folder, filename, reportAsBytes, accessToken, oauthService);
+            uploadSmallFile(oneDriveDatasink, folder, filename, reportAsBytes, accessToken, oauthService);
          
       }
    }
    
-   private void uploadSmallFile(String folder, String filename, byte[] reportAsBytes, OAuth2AccessToken accessToken,
+   private String getUploadUrl(OneDriveDatasink datasink, String folder, String filename, String type) {
+      return UPLOAD_URL + datasink.getBaseRoot()
+            + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + type;
+   }
+   
+   private void uploadSmallFile(
+         OneDriveDatasink datasink, String folder, String filename, byte[] reportAsBytes, OAuth2AccessToken accessToken,
          OAuth20Service oauthService) throws IOException, InterruptedException, ExecutionException {
-      final OAuthRequest request = new OAuthRequest(Verb.PUT,
-            UPLOAD_URL + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + ":/content");
+      final OAuthRequest request = new OAuthRequest(Verb.PUT, getUploadUrl(datasink, folder, filename, ":/content"));
       request.setPayload(reportAsBytes);
       oauthService.signRequest(accessToken, request);
 
@@ -101,12 +107,12 @@ public class OneDriveServiceImpl implements OneDriveService {
       }
    }
    
-   private void uploadLargeFile(final String folder, final String filename, final byte[] reportAsBytes,
+   private void uploadLargeFile(final OneDriveDatasink datasink, final String folder, final String filename,
+         final byte[] reportAsBytes,
          final OAuth2AccessToken accessToken, OAuth20Service oauthService)
          throws IOException, InterruptedException, ExecutionException {
       // we first create an upload session and get the uploadUrl
-      OAuthRequest request = new OAuthRequest(Verb.PUT, UPLOAD_URL
-            + UriUtils.encode((folder.endsWith("/") ? folder : folder + "/") + filename) + ":/createUploadSession");
+      OAuthRequest request = new OAuthRequest(Verb.PUT, getUploadUrl(datasink, folder, filename, ":/createUploadSession"));
       request.setPayload(
             "\"item\": {\"@odata.type\": \"microsoft.graph.driveItemUploadableProperties\", " +
             "\"@microsoft.graph.conflictBehavior\": \"replace\", " + 

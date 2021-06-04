@@ -3,6 +3,8 @@ package net.datenwerke.gxtdto.client.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
+
 public interface BaseMessages extends Messages {
 
    public final static BaseMessages INSTANCE = GWT.create(BaseMessages.class);
@@ -225,5 +227,7 @@ public interface BaseMessages extends Messages {
    
    String oauthStart();
 
-   String tentantId();
+   String tenantId();
+
+   String baseRoot();
 }

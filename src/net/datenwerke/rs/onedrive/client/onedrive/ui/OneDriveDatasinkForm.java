@@ -31,8 +31,11 @@ public class OneDriveDatasinkForm extends SimpleFormView {
       form.setFieldWidth(750);
       
       /* tenant id */
-      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.tenantId(), BaseMessages.INSTANCE.tentantId());
+      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.tenantId(), BaseMessages.INSTANCE.tenantId());
 
+      /* base root */
+      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.baseRoot(), BaseMessages.INSTANCE.baseRoot());
+      
       /* folder */
       form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
 

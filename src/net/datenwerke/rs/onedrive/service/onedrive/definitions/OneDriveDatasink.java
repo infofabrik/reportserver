@@ -73,6 +73,11 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @ExposeToClient
    @Field
    private String tenantId = "common";
+   
+   @ExposeToClient
+   @Field
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String baseRoot = "/me/drive/items/root:";
 
    @ExposeToClient
    @Field
@@ -150,6 +155,14 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    public void setTenantId(String tenantId) {
       this.tenantId = tenantId;
    }
+   
+   public String getBaseRoot() {
+      return baseRoot;
+   }
+
+   public void setBaseRoot(String baseRoot) {
+      this.baseRoot = baseRoot;
+   }
 
    /**
     * Encrypts and sets the given secret key.
@@ -175,7 +188,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @Override
    public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
       return authorizationUrlBuilder
-            .scope("offline_access files.readwrite")
+            .scope("offline_access files.readwrite.all")
             .build();
    }
 }

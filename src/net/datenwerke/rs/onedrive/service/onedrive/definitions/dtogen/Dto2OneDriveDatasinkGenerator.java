@@ -107,6 +107,9 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set appKey */
 		poso.setAppKey(dto.getAppKey() );
 
+		/*  set baseRoot */
+		poso.setBaseRoot(dto.getBaseRoot() );
+
 		/*  set description */
 		poso.setDescription(dto.getDescription() );
 
@@ -137,6 +140,11 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set appKey */
 		if(dto.isAppKeyModified()){
 			poso.setAppKey(dto.getAppKey() );
+		}
+
+		/*  set baseRoot */
+		if(dto.isBaseRootModified()){
+			poso.setBaseRoot(dto.getBaseRoot() );
 		}
 
 		/*  set description */
@@ -190,6 +198,9 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set appKey */
 		poso.setAppKey(dto.getAppKey() );
 
+		/*  set baseRoot */
+		poso.setBaseRoot(dto.getBaseRoot() );
+
 		/*  set description */
 		poso.setDescription(dto.getDescription() );
 
@@ -220,6 +231,11 @@ public class Dto2OneDriveDatasinkGenerator implements Dto2PosoGenerator<OneDrive
 		/*  set appKey */
 		if(dto.isAppKeyModified()){
 			poso.setAppKey(dto.getAppKey() );
+		}
+
+		/*  set baseRoot */
+		if(dto.isBaseRootModified()){
+			poso.setBaseRoot(dto.getBaseRoot() );
 		}
 
 		/*  set description */

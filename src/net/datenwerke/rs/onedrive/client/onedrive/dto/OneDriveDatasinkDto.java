@@ -68,6 +68,42 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String baseRoot;
+	private  boolean baseRoot_m;
+	public static final String PROPERTY_BASE_ROOT = "dpi-onedrivedatasink-baseroot";
+
+	private transient static PropertyAccessor<OneDriveDatasinkDto, String> baseRoot_pa = new PropertyAccessor<OneDriveDatasinkDto, String>() {
+		@Override
+		public void setValue(OneDriveDatasinkDto container, String object) {
+			container.setBaseRoot(object);
+		}
+
+		@Override
+		public String getValue(OneDriveDatasinkDto container) {
+			return container.getBaseRoot();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "baseRoot";
+		}
+
+		@Override
+		public void setModified(OneDriveDatasinkDto container, boolean modified) {
+			container.baseRoot_m = modified;
+		}
+
+		@Override
+		public boolean isModified(OneDriveDatasinkDto container) {
+			return container.isBaseRootModified();
+		}
+	};
+
 	private String folder;
 	private  boolean folder_m;
 	public static final String PROPERTY_FOLDER = "dpi-onedrivedatasink-folder";
@@ -335,6 +371,55 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 
 	public static PropertyAccessor<OneDriveDatasinkDto, String> getAppKeyPropertyAccessor()  {
 		return appKey_pa;
+	}
+
+
+	public String getBaseRoot()  {
+		if(! isDtoProxy()){
+			return this.baseRoot;
+		}
+
+		if(isBaseRootModified())
+			return this.baseRoot;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().baseRoot());
+
+		return _value;
+	}
+
+
+	public void setBaseRoot(String baseRoot)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getBaseRoot();
+
+		/* set new value */
+		this.baseRoot = baseRoot;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(baseRoot_pa, oldValue, baseRoot, this.baseRoot_m));
+
+		/* set indicator */
+		this.baseRoot_m = true;
+
+		this.fireObjectChangedEvent(OneDriveDatasinkDtoPA.INSTANCE.baseRoot(), oldValue);
+	}
+
+
+	public boolean isBaseRootModified()  {
+		return baseRoot_m;
+	}
+
+
+	public static PropertyAccessor<OneDriveDatasinkDto, String> getBaseRootPropertyAccessor()  {
+		return baseRoot_pa;
 	}
 
 
@@ -681,6 +766,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 	public void clearModified()  {
 		this.appKey = null;
 		this.appKey_m = false;
+		this.baseRoot = null;
+		this.baseRoot_m = false;
 		this.folder = null;
 		this.folder_m = false;
 		this.refreshToken = null;
@@ -701,6 +788,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(appKey_m)
 			return true;
+		if(baseRoot_m)
+			return true;
 		if(folder_m)
 			return true;
 		if(refreshToken_m)
@@ -720,6 +809,7 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(appKey_pa);
+		list.add(baseRoot_pa);
 		list.add(folder_pa);
 		list.add(refreshToken_pa);
 		list.add(secretKey_pa);
@@ -734,6 +824,8 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
 		if(appKey_m)
 			list.add(appKey_pa);
+		if(baseRoot_m)
+			list.add(baseRoot_pa);
 		if(folder_m)
 			list.add(folder_pa);
 		if(refreshToken_m)
@@ -758,6 +850,7 @@ public class OneDriveDatasinkDto extends DatasinkDefinitionDto {
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(appKey_pa);
+			list.add(baseRoot_pa);
 			list.add(folder_pa);
 			list.add(refreshToken_pa);
 			list.add(secretKey_pa);
