@@ -19,7 +19,7 @@ import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSys
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class LocalFileSystemDataSinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
+public class LocalFileSystemDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
 
@@ -27,7 +27,7 @@ public class LocalFileSystemDataSinkTesterToolbarConfigurator implements MainPan
    private final LocalFileSystemDao localFileSystemDao;
 
    @Inject
-   public LocalFileSystemDataSinkTesterToolbarConfigurator(ToolbarService toolbarUtils,
+   public LocalFileSystemDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils,
          LocalFileSystemDao localFileSystemDao) {
       this.toolbarUtils = toolbarUtils;
       this.localFileSystemDao = localFileSystemDao;
@@ -47,7 +47,7 @@ public class LocalFileSystemDataSinkTesterToolbarConfigurator implements MainPan
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = localFileSystemDao.testLocalFileSystemDataSink((LocalFileSystemDatasinkDto) selectedNode,
+         Request request = localFileSystemDao.testLocalFileSystemDatasink((LocalFileSystemDatasinkDto) selectedNode,
                new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });

@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.inject.ImplementedBy;
+
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
+@ImplementedBy(DummyLocalFileSystemServiceImpl.class)
 public interface LocalFileSystemService {
 
    /**
@@ -63,7 +66,7 @@ public interface LocalFileSystemService {
     * 
     * @throws IOException if an I/O error occurs
     */
-   void testLocalFileSystemDataSink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
+   void testLocalFileSystemDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
    
    Optional<LocalFileSystemDatasink> getDefaultDatasink();
 

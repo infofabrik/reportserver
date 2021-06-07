@@ -19,7 +19,7 @@ public interface LocalFileSystemRpcServiceAsync {
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
-   Request testLocalFileSystemDataSink(LocalFileSystemDatasinkDto ftpDatasinkDto, AsyncCallback<Boolean> callback);
+   Request testLocalFileSystemDatasink(LocalFileSystemDatasinkDto ftpDatasinkDto, AsyncCallback<Boolean> callback);
    
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 }

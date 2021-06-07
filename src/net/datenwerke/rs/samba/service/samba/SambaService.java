@@ -4,9 +4,12 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.inject.ImplementedBy;
+
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
+@ImplementedBy(DummySambaServiceImpl.class)
 public interface SambaService {
 
    /**

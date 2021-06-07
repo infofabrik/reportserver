@@ -1,13 +1,16 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
-import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import com.google.inject.ImplementedBy;
+
+import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
+import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+
+@ImplementedBy(DummyOneDriveServiceImpl.class)
 public interface OneDriveService {
    /**
     * Sends a report to OneDrive, defined in a given {@link OneDriveDatasink}

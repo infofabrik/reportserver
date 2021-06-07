@@ -13,7 +13,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.samba.client.samba.hookers.ExportToSambaHooker;
-import net.datenwerke.rs.samba.client.samba.hookers.SambaDataSinkTesterToolbarConfigurator;
+import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkConfigProviderHooker;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaExportSnippetProvider;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -29,7 +29,7 @@ public class SambaUiStartup {
          final Provider<SambaDatasinkConfigProviderHooker> sambaTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, 
          final SambaDao dao,
-         final SambaDataSinkTesterToolbarConfigurator sambaTestToolbarConfigurator
+         final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator
          ) {
 
       /* config tree */

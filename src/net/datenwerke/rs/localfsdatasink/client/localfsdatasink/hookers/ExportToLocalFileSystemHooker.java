@@ -44,6 +44,7 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemDao;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
@@ -60,40 +61,50 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 	private final DatasinkTreeManagerDao datasinkTreeManager;
 	private final Provider<LocalFileSystemDao> datasinkDaoProvider;
 	
+	private final Provider<EnterpriseUiService> enterpriseServiceProvider;
+	
 	@Inject
 	public ExportToLocalFileSystemHooker(
 	      HookHandlerService hookHandler,
 			DatasinkTreeManagerDao datasinkTreeManager,
 			@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
-			Provider<LocalFileSystemDao> datasinkDaoProvider
+			Provider<LocalFileSystemDao> datasinkDaoProvider,
+			Provider<EnterpriseUiService> enterpriseServiceProvider
 			) {
 		this.hookHandler = hookHandler;
 		this.treeProvider = treeProvider;
 		this.datasinkTreeManager = datasinkTreeManager;
 		this.datasinkDaoProvider = datasinkDaoProvider;
+		this.enterpriseServiceProvider = enterpriseServiceProvider;
 	}
 
     @Override
     public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
           ReportExecutorMainPanel mainPanel) {
 
-       datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-
-          @Override
-          public void onSuccess(Map<StorageType, Boolean> result) {
-             // item is only added if enabled in configuration
-             if (result.get(StorageType.LOCALFILESYSTEM)) {
-                MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
-                menu.add(item);
-                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+       if (enterpriseServiceProvider.get().isEnterprise()) {
+          datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+   
+             @Override
+             public void onSuccess(Map<StorageType, Boolean> result) {
+                // item is only added if enabled in configuration
+                if (result.get(StorageType.LOCALFILESYSTEM)) {
+                   MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
+                   menu.add(item);
+                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+                }
              }
-          }
-
-          @Override
-          public void onFailure(Throwable caught) {
-          }
-       });
-
+   
+             @Override
+             public void onFailure(Throwable caught) {
+             }
+          });
+       } else {
+          // we add item but disable it
+          MenuItem item = new DwMenuItem(DatasinksMessages.INSTANCE.localFileSystem(), BaseIcon.SERVER);
+          menu.add(item);
+          item.disable();
+       }
     }
 
 	protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,

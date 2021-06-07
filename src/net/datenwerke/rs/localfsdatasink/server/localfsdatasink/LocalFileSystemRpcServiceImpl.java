@@ -134,7 +134,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    }
    
    @Override
-   public boolean testLocalFileSystemDataSink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
+   public boolean testLocalFileSystemDatasink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
          throws ServerCallFailedException {
       LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService.loadPoso(localFileSystemDatasinkDto);
          
@@ -142,7 +142,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
          
          try {
-           localFileSystemService.testLocalFileSystemDataSink(localFileSystemDatasink);
+           localFileSystemService.testLocalFileSystemDatasink(localFileSystemDatasink);
          } catch(Exception e){
             DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
             ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

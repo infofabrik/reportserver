@@ -19,7 +19,7 @@ import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class SambaDataSinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
+public class SambaDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
 
@@ -27,7 +27,7 @@ public class SambaDataSinkTesterToolbarConfigurator implements MainPanelViewTool
    private final SambaDao sambaDao;
 
    @Inject
-   public SambaDataSinkTesterToolbarConfigurator(ToolbarService toolbarUtils, SambaDao SambaDao) {
+   public SambaDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, SambaDao SambaDao) {
       this.toolbarUtils = toolbarUtils;
       this.sambaDao = SambaDao;
    }
@@ -46,7 +46,7 @@ public class SambaDataSinkTesterToolbarConfigurator implements MainPanelViewTool
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = sambaDao.testSambaDataSink((SambaDatasinkDto) selectedNode,
+         Request request = sambaDao.testSambaDatasink((SambaDatasinkDto) selectedNode,
                new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });

@@ -28,7 +28,6 @@ public class SambaModule extends AbstractModule {
 
    @Override
    protected void configure() {
-      bind(SambaService.class).to(SambaServiceImpl.class);
       requestStaticInjection(SambaDatasink.class);
 
       bind(SambaStartup.class).asEagerSingleton();

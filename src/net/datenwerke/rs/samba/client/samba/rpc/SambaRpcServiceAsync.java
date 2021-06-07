@@ -19,7 +19,7 @@ public interface SambaRpcServiceAsync {
    
    void getSambaEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
    
-   Request testSambaDataSink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback);
+   Request testSambaDatasink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 }

@@ -13,17 +13,24 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.ui.DropboxDatasinkForm;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
    private final Provider<DropboxDatasinkForm> formProvider;
+   
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public DropboxDatasinkConfigProviderHooker(Provider<DropboxDatasinkForm> formProvider) {
+   public DropboxDatasinkConfigProviderHooker(
+         Provider<DropboxDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
+         ) {
 
       /* store objects */
       this.formProvider = formProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
@@ -58,7 +65,7 @@ public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionCo
 
    @Override
    public boolean isAvailable() {
-      return true;
+      return enterpriseServiceProvider.get().isEnterprise();
    }
 
 }

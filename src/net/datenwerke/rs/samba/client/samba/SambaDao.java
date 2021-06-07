@@ -36,8 +36,8 @@ public class SambaDao extends Dao implements DatasinkDao {
       rpcService.getSambaEnabledConfigs(transformAndKeepCallback(callback));
    }
 
-   public Request testSambaDataSink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback) {
-      return rpcService.testSambaDataSink(sambaDatasinkDto, transformAndKeepCallback(callback));
+   public Request testSambaDatasink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback) {
+      return rpcService.testSambaDatasink(sambaDatasinkDto, transformAndKeepCallback(callback));
    }
    
    @Override

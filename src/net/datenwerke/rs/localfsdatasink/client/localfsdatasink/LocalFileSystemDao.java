@@ -36,9 +36,9 @@ public class LocalFileSystemDao extends Dao implements DatasinkDao {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
 
-   public Request testLocalFileSystemDataSink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto,
+   public Request testLocalFileSystemDatasink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto,
          AsyncCallback<Boolean> callback) {
-      return rpcService.testLocalFileSystemDataSink(localFileSystemDatasinkDto, transformAndKeepCallback(callback));
+      return rpcService.testLocalFileSystemDatasink(localFileSystemDatasinkDto, transformAndKeepCallback(callback));
    }
 
    @Override

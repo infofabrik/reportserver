@@ -3,6 +3,9 @@ package net.datenwerke.rs.oauth.service.oauth;
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 
+import com.google.inject.ImplementedBy;
+
+@ImplementedBy(DummyOAuthenticationServiceImpl.class)
 public interface OAuthAuthenticationService {
 
    /**

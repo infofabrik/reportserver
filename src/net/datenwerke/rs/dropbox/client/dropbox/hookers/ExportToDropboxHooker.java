@@ -46,6 +46,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
@@ -57,38 +58,49 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
    private final Provider<UITree> treeProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    private final Provider<DropboxDao> datasinkDaoProvider;
+   
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
    public ExportToDropboxHooker(
          HookHandlerService hookHandler, 
          @DatasinkTreeDropbox Provider<UITree> treeProvider,
          DatasinkTreeManagerDao datasinkTreeManager, 
-         Provider<DropboxDao> datasinkDaoProvider
+         Provider<DropboxDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
          ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
    public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
          ReportExecutorMainPanel mainPanel) {
-      datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+      if (enterpriseServiceProvider.get().isEnterprise()) {
+         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
-         @Override
-         public void onSuccess(Map<StorageType, Boolean> result) {
-            if (result.get(StorageType.DROPBOX)) {
-               MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
-               menu.add(item);
-               item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+            @Override
+            public void onSuccess(Map<StorageType, Boolean> result) {
+               if (result.get(StorageType.DROPBOX)) {
+                  MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
+                  menu.add(item);
+                  item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+               }
             }
-         }
 
-         @Override
-         public void onFailure(Throwable caught) {
-         }
-      });
+            @Override
+            public void onFailure(Throwable caught) {
+            }
+         });
+      } else {
+         // we add item but disable it
+         MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
+         menu.add(item);
+         item.disable();
+      }
 
    }
 

@@ -28,8 +28,6 @@ public class DropboxModule extends AbstractModule {
 
    @Override
    protected void configure() {
-      bind(DropboxService.class).to(DropboxServiceImpl.class);
-
       requestStaticInjection(DropboxDatasink.class);
 
       bind(DropboxStartup.class).asEagerSingleton();

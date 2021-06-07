@@ -43,53 +43,64 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveDao;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
+import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
    private final HookHandlerService hookHandler;
    private final Provider<UITree> treeProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    private final Provider<OneDriveDao> datasinkDaoProvider;
+   
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
    public ExportToOneDriveHooker(
          HookHandlerService hookHandler, 
          @DatasinkTreeOneDrive Provider<UITree> treeProvider,
          DatasinkTreeManagerDao datasinkTreeManager, 
-         Provider<OneDriveDao> datasinkDaoProvider
+         Provider<OneDriveDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
          ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
    public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
          ReportExecutorMainPanel mainPanel) {
-      datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-
-         @Override
-         public void onSuccess(Map<StorageType, Boolean> result) {
-            if (result.get(StorageType.ONEDRIVE)) {
-               MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
-               menu.add(item);
-               item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+      if (enterpriseServiceProvider.get().isEnterprise()) {
+         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+   
+            @Override
+            public void onSuccess(Map<StorageType, Boolean> result) {
+               if (result.get(StorageType.ONEDRIVE)) {
+                  MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
+                  menu.add(item);
+                  item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+               }
             }
-         }
-
-         @Override
-         public void onFailure(Throwable caught) {
-         }
-      });
+   
+            @Override
+            public void onFailure(Throwable caught) {
+            }
+         });
+      } else {
+         // we add item but disable it
+         MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
+         menu.add(item);
+         item.disable();
+      }
 
    }
 

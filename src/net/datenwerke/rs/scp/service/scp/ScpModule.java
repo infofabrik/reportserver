@@ -28,7 +28,6 @@ public class ScpModule extends AbstractModule {
 
    @Override
    protected void configure() {
-      bind(ScpService.class).to(ScpServiceImpl.class);
       requestStaticInjection(ScpDatasink.class);
 
       bind(ScpStartup.class).asEagerSingleton();

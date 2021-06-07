@@ -5,9 +5,12 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import com.google.inject.ImplementedBy;
+
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
+@ImplementedBy(DummyDropboxServiceImpl.class)
 public interface DropboxService {
 
    /**

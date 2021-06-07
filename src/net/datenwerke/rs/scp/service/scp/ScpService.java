@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
 
+import com.google.inject.ImplementedBy;
 import com.jcraft.jsch.JSchException;
 
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 
+@ImplementedBy(DummyScpServiceImpl.class)
 public interface ScpService {
 
    /**

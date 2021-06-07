@@ -134,7 +134,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    }
 
    @Override
-   public boolean testSambaDataSink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException {
+   public boolean testSambaDatasink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException {
       SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(sambaDatasinkDto);
       
       /* check rights */

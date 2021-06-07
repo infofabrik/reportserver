@@ -22,7 +22,7 @@ public interface LocalFileSystemRpcService extends RemoteService {
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
 
-   boolean testLocalFileSystemDataSink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
+   boolean testLocalFileSystemDatasink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
          throws ServerCallFailedException;
    
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;

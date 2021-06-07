@@ -11,6 +11,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.ui.SambaDatasinkForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -20,13 +21,17 @@ public class SambaDatasinkConfigProviderHooker implements
 
     private final Provider<SambaDatasinkForm> formProvider;
     
+    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
+    
     @Inject
     public SambaDatasinkConfigProviderHooker(
-        Provider<SambaDatasinkForm> formProvider
+        Provider<SambaDatasinkForm> formProvider,
+        Provider<EnterpriseUiService> enterpriseServiceProvider
         ){
         
         /* store objects */
         this.formProvider = formProvider;
+        this.enterpriseServiceProvider = enterpriseServiceProvider;
     }
     
     @Override
@@ -62,6 +67,6 @@ public class SambaDatasinkConfigProviderHooker implements
     
     @Override
     public boolean isAvailable() {
-        return true;
+       return enterpriseServiceProvider.get().isEnterprise();
     }
 }

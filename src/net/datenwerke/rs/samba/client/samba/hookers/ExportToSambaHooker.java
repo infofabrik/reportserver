@@ -43,6 +43,7 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.samba.client.samba.SambaDao;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
@@ -59,39 +60,50 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
    private final Provider<SambaDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
+   
    @Inject
    public ExportToSambaHooker(
          HookHandlerService hookHandler,
          DatasinkTreeManagerDao datasinkTreeManager, 
          @DatasinkTreeSamba Provider<UITree> treeProvider,
-         Provider<SambaDao> datasinkDaoProvider
+         Provider<SambaDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
          ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
    public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
 
-      datasinkDaoProvider.get().getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-
-         @Override
-         public void onSuccess(Map<StorageType, Boolean> result) {
-            // item is only added if enabled in configuration
-            if (result.get(StorageType.SAMBA)) {
-               MenuItem item = new DwMenuItem("Samba - SMB/CIFS", BaseIcon.ANGLE_DOUBLE_UP);
-               menu.add(item);
-               item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+      if (enterpriseServiceProvider.get().isEnterprise()) {
+         datasinkDaoProvider.get().getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
+   
+            @Override
+            public void onSuccess(Map<StorageType, Boolean> result) {
+               // item is only added if enabled in configuration
+               if (result.get(StorageType.SAMBA)) {
+                  MenuItem item = new DwMenuItem("Samba - SMB/CIFS", BaseIcon.ANGLE_DOUBLE_UP);
+                  menu.add(item);
+                  item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
+               }
             }
-         }
-
-         @Override
-         public void onFailure(Throwable caught) {
-         }
-      });
+   
+            @Override
+            public void onFailure(Throwable caught) {
+            }
+         });
+      } else {
+         // we add item but disable it
+         MenuItem item = new DwMenuItem("Samba - SMB/CIFS", BaseIcon.ANGLE_DOUBLE_UP);
+         menu.add(item);
+         item.disable();
+      }
    }
 
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,

@@ -27,8 +27,6 @@ public class OneDriveModule extends AbstractModule {
 
    @Override
    protected void configure() {
-      bind(OneDriveService.class).to(OneDriveServiceImpl.class);
-
       requestStaticInjection(OneDriveDatasink.class);
 
       bind(OneDriveStartup.class).asEagerSingleton();

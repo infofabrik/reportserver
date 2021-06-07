@@ -13,7 +13,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.ExportToLocalFileSystemHooker;
-import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDataSinkTesterToolbarConfigurator;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkConfigProviderHooker;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemExportSnippetProvider;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -27,7 +27,7 @@ public class LocalFileSystemUiStartup {
          final Provider<LocalFileSystemDatasinkConfigProviderHooker> localFileSystemTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, final LocalFileSystemDao dao,
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
-         final LocalFileSystemDataSinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator) {
+         final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator) {
 
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_MEDIUM);

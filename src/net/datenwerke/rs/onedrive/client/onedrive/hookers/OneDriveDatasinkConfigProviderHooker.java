@@ -11,6 +11,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.ui.OneDriveDatasinkForm;
@@ -18,12 +19,17 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
    private final Provider<OneDriveDatasinkForm> formProvider;
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public OneDriveDatasinkConfigProviderHooker(Provider<OneDriveDatasinkForm> formProvider) {
+   public OneDriveDatasinkConfigProviderHooker(
+         Provider<OneDriveDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
+         ) {
 
       /* store objects */
       this.formProvider = formProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
    }
 
    @Override
@@ -58,7 +64,7 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public boolean isAvailable() {
-      return true;
+      return enterpriseServiceProvider.get().isEnterprise();
    }
 
 }

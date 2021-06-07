@@ -21,7 +21,7 @@ public interface SambaRpcService extends RemoteService {
 
    Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException;
 
-   boolean testSambaDataSink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException;
+   boolean testSambaDatasink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException;
    
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
 
