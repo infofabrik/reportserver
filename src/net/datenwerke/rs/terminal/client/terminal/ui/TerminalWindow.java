@@ -545,9 +545,9 @@ public class TerminalWindow extends DwWindow {
 			return;
 		
 		if("".equals(historyArea.getHTML()))
-			historyArea.setHTML(resultText.asString());
+			historyArea.setHTML(resultText.asString().replaceAll(" ", "&nbsp;"));
 		else
-			historyArea.setHTML(historyArea.getHTML() + "<br/>" + resultText.asString());
+			historyArea.setHTML(historyArea.getHTML() + "<br/>" + resultText.asString().replaceAll(" ", "&nbsp;"));
 		
 		inputPreTextPanel.clear();
 		inputPreTextPanel.add(new Label(getInputPrefix()));
