@@ -4,13 +4,13 @@ import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 
 public interface TerminalUIService {
 
-	public void initTerminal();
+   public void initTerminal();
 
-	void displayTerminalWindow();
+   void displayTerminalWindow();
 
-	boolean isInitialized();
+   boolean isInitialized();
 
-	public void processExternalResult(CommandResultDto result);
+   public void processExternalResult(CommandResultDto result);
 
-	public void displayResult(CommandResultDto result);
+   public void displayResult(CommandResultDto result);
 }

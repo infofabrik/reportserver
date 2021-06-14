@@ -37,6 +37,7 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
+import net.datenwerke.rs.terminal.client.terminal.TerminalUIModule;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
@@ -545,9 +546,10 @@ public class TerminalWindow extends DwWindow {
 			return;
 		
 		if("".equals(historyArea.getHTML()))
-			historyArea.setHTML(resultText.asString().replaceAll(" ", "&nbsp;"));
+			historyArea.setHTML(resultText.asString().replace(TerminalUIModule.BLANK_SPACE_TAG, "&nbsp;"));
 		else
-			historyArea.setHTML(historyArea.getHTML() + "<br/>" + resultText.asString().replaceAll(" ", "&nbsp;"));
+			historyArea.setHTML(historyArea.getHTML() + "<br/>" + 
+			      resultText.asString().replace(TerminalUIModule.BLANK_SPACE_TAG, "&nbsp;"));
 		
 		inputPreTextPanel.clear();
 		inputPreTextPanel.add(new Label(getInputPrefix()));
