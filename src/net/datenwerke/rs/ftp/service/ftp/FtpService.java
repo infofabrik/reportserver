@@ -154,11 +154,26 @@ public interface FtpService {
     * @return true if FTPS's scheduling is enabled
     */
    boolean isFtpsSchedulingEnabled();
-   
+
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<FtpDatasink> getDefaultFtpDatasink();
-   
+
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<SftpDatasink> getDefaultSftpDatasink();
-   
+
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<FtpsDatasink> getDefaultFtpsDatasink();
-   
+
 }

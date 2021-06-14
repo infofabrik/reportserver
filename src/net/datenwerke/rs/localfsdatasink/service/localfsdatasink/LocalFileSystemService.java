@@ -67,7 +67,12 @@ public interface LocalFileSystemService {
     * @throws IOException if an I/O error occurs
     */
    void testLocalFileSystemDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
-   
+
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<LocalFileSystemDatasink> getDefaultDatasink();
 
 }

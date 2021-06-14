@@ -8,5 +8,5 @@ import net.datenwerke.rs.search.service.search.results.SearchResultEntry;
 
 public interface SearchProvider extends Hook {
 
-	public List<SearchResultEntry> search(String query, SearchFilter filter);
+   public List<SearchResultEntry> search(String query, SearchFilter filter);
 }

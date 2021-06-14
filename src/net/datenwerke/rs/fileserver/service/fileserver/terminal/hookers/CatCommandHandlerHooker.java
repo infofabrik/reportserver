@@ -9,23 +9,23 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class CatCommandHandlerHooker implements CatCommandHandlerHook {
 
-	@Override
-	public boolean consumes(Object object,CommandParser parser) {
-		return object instanceof FileServerFile;
-	}
+   @Override
+   public boolean consumes(Object object, CommandParser parser) {
+      return object instanceof FileServerFile;
+   }
 
-	@Override
-	public CommandResult cat(Object object,CommandParser parser) {
-		CommandResult result = new CommandResult();
-		
-		String data = new String(((FileServerFile)object).getData());
-		
-		try(Scanner scanner = new Scanner(data)){
-			while (scanner.hasNextLine()) 
-				result.addResultLine(scanner.nextLine());
-		}
-		 
-		return result;
-	}
+   @Override
+   public CommandResult cat(Object object, CommandParser parser) {
+      CommandResult result = new CommandResult();
+
+      String data = new String(((FileServerFile) object).getData());
+
+      try (Scanner scanner = new Scanner(data)) {
+         while (scanner.hasNextLine())
+            result.addResultLine(scanner.nextLine());
+      }
+
+      return result;
+   }
 
 }

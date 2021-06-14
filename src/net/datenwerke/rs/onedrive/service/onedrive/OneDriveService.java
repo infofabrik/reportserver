@@ -69,5 +69,10 @@ public interface OneDriveService {
    void testOneDriveDatasink(OneDriveDatasink oneDriveDatasink)
          throws IOException, InterruptedException, ExecutionException;
 
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<OneDriveDatasink> getDefaultDatasink();
 }

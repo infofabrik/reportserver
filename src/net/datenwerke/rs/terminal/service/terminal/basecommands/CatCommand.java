@@ -16,50 +16,39 @@ import com.google.inject.Inject;
 
 public class CatCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "cat";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public CatCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "cat";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = TerminalMessages.class,
-		name = BASE_COMMAND,
-		description = "commandCat_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		String argument = parser.getArgumentString();
-		Object object = session.getObjectResolver().getObject(argument, Read.class);
-		
-		if(null != object)
-			for(CatCommandHandlerHook handler : hookHandler.getHookers(CatCommandHandlerHook.class))
-				if(handler.consumes(object, parser))
-					return handler.cat(object, parser);
-			
-		
-		
-		return new CommandResult(TerminalMessages.INSTANCE.cannotCatObject());
-	}
-	
-	
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Inject
+   public CatCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandCat_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      String argument = parser.getArgumentString();
+      Object object = session.getObjectResolver().getObject(argument, Read.class);
+
+      if (null != object)
+         for (CatCommandHandlerHook handler : hookHandler.getHookers(CatCommandHandlerHook.class))
+            if (handler.consumes(object, parser))
+               return handler.cat(object, parser);
+
+      return new CommandResult(TerminalMessages.INSTANCE.cannotCatObject());
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

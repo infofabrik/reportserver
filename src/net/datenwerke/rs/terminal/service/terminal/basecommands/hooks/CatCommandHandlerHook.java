@@ -6,8 +6,8 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public interface CatCommandHandlerHook extends Hook {
 
-	boolean consumes(Object object, CommandParser parser);
+   boolean consumes(Object object, CommandParser parser);
 
-	CommandResult cat(Object object, CommandParser parser);
+   CommandResult cat(Object object, CommandParser parser);
 
 }

@@ -21,56 +21,54 @@ import com.google.inject.Inject;
 
 public class ExportAllCommand implements ExportSubCommandHook {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	public static final String BASE_COMMAND = "all";
-	
-	private final ExportService exportService;
-	private final HookHandlerService hookHandler;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public ExportAllCommand(
-		ExportService exportService,
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.exportService = exportService;
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "all";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ExImportMessages.class,
-		name = BASE_COMMAND,
-		description = "commandExport_sub_all_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		ExportConfig config = new ExportConfig();
-		
-		for(ExportAllHook exporter : hookHandler.getHookers(ExportAllHook.class)){
-			logger.info("configure exporter: " + exporter.getClass());
-			exporter.configure(config);
-		}
-		
-		CommandResult result = new CommandResult(exportService.exportIndent(config));
-		result.setDisplayMode(DisplayMode.WINDOW);
-		
-		return result;
-	}
+   private final ExportService exportService;
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public ExportAllCommand(ExportService exportService, HookHandlerService hookHandler) {
+
+      /* store objects */
+      this.exportService = exportService;
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(
+         messageClass = ExImportMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandExport_sub_all_description"
+         )
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      final ExportConfig config = new ExportConfig();
+
+      hookHandler.getHookers(ExportAllHook.class)
+         .forEach(exporter -> {
+            logger.info("configure exporter: " + exporter.getClass());
+            exporter.configure(config);
+         });
+      
+      CommandResult result = new CommandResult(exportService.exportIndent(config));
+      result.setDisplayMode(DisplayMode.WINDOW);
+
+      return result;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

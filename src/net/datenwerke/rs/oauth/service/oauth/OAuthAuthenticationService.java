@@ -31,6 +31,12 @@ public interface OAuthAuthenticationService {
     * @return the authentication URL
     */
    String generateAuthenticationUrl(OAuthAuthenticatable oAuthDatasink);
-   
+
+   /**
+    * Get redirect URI needed for OAuth2-authenticated services. This redirect URI
+    * must be entered into the respective apps in the app-developer administration.
+    * 
+    * @return the redirect URI
+    */
    String getRedirectUri();
 }

@@ -66,6 +66,11 @@ public interface ScpService {
     */
    void testScpDatasink(ScpDatasink scpDatasink) throws IOException, JSchException;
 
+   /**
+    * Gets the default datasink configured in the datasinks.cf configuration file.
+    * 
+    * @return the default datasink
+    */
    Optional<ScpDatasink> getDefaultDatasink();
 
 }

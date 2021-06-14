@@ -7,23 +7,22 @@ import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHo
 
 import com.google.gwt.resources.client.ImageResource;
 
-public class TerminalSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.TERMINAL.toImageResource();
-	}
+public class TerminalSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return TerminalMessages.INSTANCE.adminLabel();
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return TerminalMessages.INSTANCE.permissionModuleDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.TERMINAL.toImageResource();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new TerminalGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getName() {
+      return TerminalMessages.INSTANCE.adminLabel();
+   }
+
+   public String genericSecurityViewDomainHook_getDescription() {
+      return TerminalMessages.INSTANCE.permissionModuleDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new TerminalGenericTargetIdentifier();
+   }
 
 }
