@@ -6,9 +6,8 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface AdjustReportForExecutionHook extends Hook {
 
-	public void adjust(Report realReport);
+   public void adjust(Report realReport);
 
-	public void adjust(ReportDto tmpReport);
-
+   public void adjust(ReportDto tmpReport);
 
 }

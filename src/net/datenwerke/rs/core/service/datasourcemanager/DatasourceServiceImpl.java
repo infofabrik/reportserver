@@ -31,102 +31,102 @@ import com.google.inject.name.Named;
  * 
  *
  */
-public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractDatasourceManagerNode> implements DatasourceService {
+public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractDatasourceManagerNode>
+      implements DatasourceService {
 
-	private final Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions;
-	private final Provider<String> defaultDatasourceProvider;
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public DatasourceServiceImpl(
-		Provider<EntityManager> entityManagerProvider,
-		@ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
-		@DefaultDatasource Provider<String> defaultDatasourceProvider
-		){
-		
-		/* store objects */
-		this.entityManagerProvider = entityManagerProvider;
-		this.installedDataSourceDefinitions = installedDataSourceDefinitions;
-		this.defaultDatasourceProvider = defaultDatasourceProvider;
-	}
+   private final Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions;
+   private final Provider<String> defaultDatasourceProvider;
+   private final Provider<EntityManager> entityManagerProvider;
 
-	public Set<Class<? extends DatasourceDefinition>> getInstalledDataSourceDefinitions() {
-		return installedDataSourceDefinitions.get();
-	}
-	
-	@QueryByAttribute(where=DatasourceDefinition__.name)
-	@Override
-	public DatasourceDefinition getDatasourceByName(String name) {
-		return null; // by magic
-	}
-	
-	@QueryByAttribute(where=DatasourceDefinition__.id)
-	@Override
-	public DatasourceDefinition getDatasourceById(Long id) {
-		return null; // by magic
-	}
+   @Inject
+   public DatasourceServiceImpl(
+         Provider<EntityManager> entityManagerProvider,
+         @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
+         @DefaultDatasource Provider<String> defaultDatasourceProvider
+         ) {
 
-	@QueryByAttribute(where=DatasourceFolder__.name)
-	@Override
-	public DatasourceFolder getDatasourceFolderByName(@Named("name") String name) {
-		return null; // by magic
-	} 
-	
-	@Override
-	public String getDefaultDatasourceId() {
-		return defaultDatasourceProvider.get();
-	}
-	
-	
-	@Override
-	public DatasourceDefinition getDefaultDatasource() {
-		String id = getDefaultDatasourceId();
-		if(null == id)
-			return null;
-		
-		try{
-			AbstractDatasourceManagerNode node = getNodeById(Long.valueOf(id));
-			if(node instanceof DatasourceDefinition)
-				return (DatasourceDefinition) node;
-		} catch(Exception e){
-		}
-		
-		return null;
-	}
-	
-	@Override
-	@QueryByAttribute(where=AbstractDatasourceManagerNode__.parent,type=PredicateType.IS_NULL)
-	public List<AbstractDatasourceManagerNode> getRoots() {
-		return null; // magic
-	}
-	
-	@Override
-	@SimpleQuery
-	public List<AbstractDatasourceManagerNode> getAllNodes(){
-		return null;
-	}
-	
-	@Override
-	@QueryById
-	public AbstractDatasourceManagerNode getNodeById(long id) {
-		return null; // magic
-	}
+      /* store objects */
+      this.entityManagerProvider = entityManagerProvider;
+      this.installedDataSourceDefinitions = installedDataSourceDefinitions;
+      this.defaultDatasourceProvider = defaultDatasourceProvider;
+   }
 
-	@Override
-	@FireMergeEntityEvents
-	public DatasourceContainer merge(DatasourceContainer container) {
-		return entityManagerProvider.get().merge(container);
-	}
+   public Set<Class<? extends DatasourceDefinition>> getInstalledDataSourceDefinitions() {
+      return installedDataSourceDefinitions.get();
+   }
 
-	@Override
-	@FireRemoveEntityEvents
-	public void remove(DatasourceDefinitionConfig datasourceConfig) {
-		if(null == datasourceConfig)
-			return;
-		EntityManager em = entityManagerProvider.get();
-		datasourceConfig = em.find(datasourceConfig.getClass(), datasourceConfig.getId());
-		if(null != datasourceConfig)
-			em.remove(datasourceConfig);
-	}
+   @QueryByAttribute(where = DatasourceDefinition__.name)
+   @Override
+   public DatasourceDefinition getDatasourceByName(String name) {
+      return null; // by magic
+   }
+
+   @QueryByAttribute(where = DatasourceDefinition__.id)
+   @Override
+   public DatasourceDefinition getDatasourceById(Long id) {
+      return null; // by magic
+   }
+
+   @QueryByAttribute(where = DatasourceFolder__.name)
+   @Override
+   public DatasourceFolder getDatasourceFolderByName(@Named("name") String name) {
+      return null; // by magic
+   }
+
+   @Override
+   public String getDefaultDatasourceId() {
+      return defaultDatasourceProvider.get();
+   }
+
+   @Override
+   public DatasourceDefinition getDefaultDatasource() {
+      String id = getDefaultDatasourceId();
+      if (null == id)
+         return null;
+
+      try {
+         AbstractDatasourceManagerNode node = getNodeById(Long.valueOf(id));
+         if (node instanceof DatasourceDefinition)
+            return (DatasourceDefinition) node;
+      } catch (Exception e) {
+      }
+
+      return null;
+   }
+
+   @Override
+   @QueryByAttribute(where = AbstractDatasourceManagerNode__.parent, type = PredicateType.IS_NULL)
+   public List<AbstractDatasourceManagerNode> getRoots() {
+      return null; // magic
+   }
+
+   @Override
+   @SimpleQuery
+   public List<AbstractDatasourceManagerNode> getAllNodes() {
+      return null;
+   }
+
+   @Override
+   @QueryById
+   public AbstractDatasourceManagerNode getNodeById(long id) {
+      return null; // magic
+   }
+
+   @Override
+   @FireMergeEntityEvents
+   public DatasourceContainer merge(DatasourceContainer container) {
+      return entityManagerProvider.get().merge(container);
+   }
+
+   @Override
+   @FireRemoveEntityEvents
+   public void remove(DatasourceDefinitionConfig datasourceConfig) {
+      if (null == datasourceConfig)
+         return;
+      EntityManager em = entityManagerProvider.get();
+      datasourceConfig = em.find(datasourceConfig.getClass(), datasourceConfig.getId());
+      if (null != datasourceConfig)
+         em.remove(datasourceConfig);
+   }
 
 }
