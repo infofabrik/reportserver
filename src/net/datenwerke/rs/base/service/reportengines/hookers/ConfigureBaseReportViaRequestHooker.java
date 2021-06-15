@@ -7,6 +7,12 @@ import java.util.Comparator;
 import java.util.Enumeration;
 import java.util.List;
 
+import javax.inject.Inject;
+
+import com.google.inject.Provider;
+
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalException;
+import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AggregateFunction;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -17,16 +23,25 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaRequestAndLocationImpl;
+import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 
 public class ConfigureBaseReportViaRequestHooker extends ConfigureReportViaRequestAndLocationImpl {
+   
+   private final Provider<TableReportUtils> tableReportUtils;
+   
+   @Inject
+   public ConfigureBaseReportViaRequestHooker(Provider<TableReportUtils> tableReportUtils) {
+      this.tableReportUtils = tableReportUtils;
+   }
 
 	@Override
 	public void adjustReport(Report report, ParameterProvider req) {
 		if(! (report instanceof TableReport))
 			return;
 		
-		List<Column> columns = new ArrayList<Column>();
+		List<Column> columns = new ArrayList<>();
 		
 		Enumeration<String> parameterNames = req.getParameterNames();
 		while(parameterNames.hasMoreElements()){
@@ -98,6 +113,19 @@ public class ConfigureBaseReportViaRequestHooker extends ConfigureReportViaReque
 				}
 				
 				if(name.toLowerCase().equals("allcolumns") && "true".equals(req.getParameter(name))){
+				   if (null != report.getTemporaryVariantType() && 
+				         ! ReportVariant.class.isAssignableFrom(report.getTemporaryVariantType())) {
+				       // fetch the columns
+                       try {
+                          for(Column column : tableReportUtils.get().getReturnedPlainColumns((TableReport) report, null)){
+                             columns.add(column);
+                          }
+                       } catch (NonFatalException | ReportExecutorException e) {
+                          throw new RuntimeException("Report cannot be run for fetching fields", e);
+                       }
+                
+				   }
+				   
 					((TableReport)report).setSelectAllColumns(true);
 				}
 			}

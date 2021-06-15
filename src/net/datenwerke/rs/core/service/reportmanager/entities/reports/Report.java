@@ -176,7 +176,15 @@ abstract public class Report extends AbstractReportManagerNode implements Parame
 	@EntityClonerIgnore
 	private String uuid = UUID.randomUUID().toString();
 	
-    /**
+	@Transient
+	/**
+	 * When creating a new temporary variant, the report's class is lost. We cannot identify if it belonged
+	 * to a variant or to a (base) report. This field allows us to fetch the original report's class.
+	 */
+	private Class<?> temporaryVariantType;
+	
+
+   /**
      * Returns the Report's type (the classes simple name).
      */
     public String getType(){
@@ -414,6 +422,9 @@ abstract public class Report extends AbstractReportManagerNode implements Parame
 		/* set parent to either this (base report) or to my parent */
 		variant.setParent(this instanceof ReportVariant ? getParent() : this);
 		
+		/* original type */
+		variant.setTemporaryVariantType(adjustedReport.getClass());
+		
 		if(null != adjustedReport.getId())
 			variant.setOldTransientId(adjustedReport.getId());
 		else if(null != adjustedReport.getOldTransientId())
@@ -624,6 +635,12 @@ abstract public class Report extends AbstractReportManagerNode implements Parame
 		return defaultValue;
 	}
 	
-	
+	public Class<?> getTemporaryVariantType() {
+	   return temporaryVariantType;
+	}
+
+	public void setTemporaryVariantType(Class<?> temporaryVariantType) {
+	   this.temporaryVariantType = temporaryVariantType;
+	}
 
 }
