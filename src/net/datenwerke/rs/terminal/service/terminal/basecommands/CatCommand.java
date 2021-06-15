@@ -1,5 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.hooks.CatCommandHandlerHook;
@@ -11,8 +13,6 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class CatCommand implements TerminalCommandHook {
 
@@ -34,15 +34,19 @@ public class CatCommand implements TerminalCommandHook {
 
    @Override
    @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandCat_description")
-   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+   public CommandResult execute(final CommandParser parser, final TerminalSession session) throws TerminalException {
       String argument = parser.getArgumentString();
-      Object object = session.getObjectResolver().getObject(argument, Read.class);
+      final Object object = session.getObjectResolver().getObject(argument, Read.class);
 
-      if (null != object)
-         for (CatCommandHandlerHook handler : hookHandler.getHookers(CatCommandHandlerHook.class))
-            if (handler.consumes(object, parser))
-               return handler.cat(object, parser);
-
+      if (null != object) {
+         return hookHandler.getHookers(CatCommandHandlerHook.class)
+            .stream()
+            .filter(hook -> hook.consumes(object, parser))
+            .map(hook -> hook.cat(object, parser))
+            .findAny()
+            .orElseGet(() -> new CommandResult(TerminalMessages.INSTANCE.cannotCatObject()));
+      }
+         
       return new CommandResult(TerminalMessages.INSTANCE.cannotCatObject());
    }
 
