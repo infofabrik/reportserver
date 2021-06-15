@@ -10,14 +10,14 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 import com.google.inject.Inject;
 
-public class LocateUpdateDBCommand implements TerminalCommandHook {
+public class UpdateDBCommand implements TerminalCommandHook {
 	
 	private final static String BASE_COMMAND = "updatedb";
 	
 	private final SearchService searchService;
 	
 	@Inject
-	public LocateUpdateDBCommand(SearchService searchService) {
+	public UpdateDBCommand(SearchService searchService) {
 		this.searchService = searchService;
 	}
 

@@ -6,7 +6,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
 import net.datenwerke.rs.search.service.search.provider.EntitySearchProvider;
 import net.datenwerke.rs.search.service.search.terminal.commands.LocateCommand;
-import net.datenwerke.rs.search.service.search.terminal.commands.LocateUpdateDBCommand;
+import net.datenwerke.rs.search.service.search.terminal.commands.UpdateDBCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 import com.google.inject.Inject;
@@ -20,7 +20,7 @@ public class SearchStartup {
 	public SearchStartup(
 			HookHandlerService hookHandlerService,
 			LocateCommand locateCommand,
-			LocateUpdateDBCommand locateUpdateDBCommand,
+			UpdateDBCommand locateUpdateDBCommand,
 			final SearchService searchService,
 			Provider<EntitySearchProvider> entitySearchProvider
 	) {
