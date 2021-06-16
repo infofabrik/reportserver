@@ -145,6 +145,7 @@ import net.datenwerke.rs.incubator.server.jaspertotable.JasperToTableRpcServiceI
 import net.datenwerke.rs.incubator.server.jasperutils.JasperUtilsRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.reportmetadata.ReportMetadataRpcServiceImpl;
 import net.datenwerke.rs.incubator.service.RsIncubatorModule;
+import net.datenwerke.rs.incubator.service.aliascmd.AliasCmdModule;
 import net.datenwerke.rs.incubator.service.exportmetadata.ExportMetadataModule;
 import net.datenwerke.rs.incubator.service.filterreplacements.FilterReplacementsModule;
 import net.datenwerke.rs.incubator.service.jaspertotable.JasperToTableModule;
@@ -649,6 +650,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new OneDriveModule(),
 			new ScpModule(),
 			
+			new AliasCmdModule(),
+			
 			new ReportServerPUModule(),
 			
 			new DwEventLoggerModule(),
@@ -666,6 +669,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 		
 			/* should be last module */
 			new LateInitModule(),
+			
 			
 			
 		});
