@@ -40,92 +40,79 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class RsSchedulerStartup {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	
-	@Inject
-	public RsSchedulerStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		
-		Provider<ScheduleViaEmailHooker> emailSchedulerProvider,
-		Provider<ScheduleSendToActionHooker> sendToSchedulerProvider,
-		
-		Provider<SchedulerCommand> schedulerCommand,
-		
-		Provider<SchedulerListSubCommand> listSubCommand,
-		Provider<SchedulerListFireTimesSubCommand> listFireTimesSubCommand,
-		Provider<SchedulerRemoveSubCommand> removeSubCommand,
-		Provider<SchedulerUnscheduleSubCommand> unscheduleSubCommand,
-		Provider<SchedulerDaemonSubCommand> daemonSubCommand,
-		
-		HandleReportRemoveEventHandler handleReportRemoveEventHandler,
-		HandleReportForceRemoveEventHandler handleReportForceRemoveEventHandler,
-		
-		HandleUserRemoveEventHandler handleUserRemoveEventHandler,
-		HandleUserForceRemoveEventHandler handleUserForceRemoveEventHandler,
-		
-		SchedulerShutdownHooker shutdownHooker,
-		
-		@SchedulerModuleStartupDelay final Long startupDelay,
-		
-		final Injector injector,
-		final SchedulerService schedulerService
-	){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, User.class, handleUserRemoveEventHandler);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, User.class, handleUserForceRemoveEventHandler);
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, handleReportRemoveEventHandler);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, Report.class, handleReportForceRemoveEventHandler);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, schedulerCommand);
-		
-		hookHandler.attachHooker(SchedulerSubCommandHook.class, listSubCommand);
-		hookHandler.attachHooker(SchedulerSubCommandHook.class, listFireTimesSubCommand);
-		hookHandler.attachHooker(SchedulerSubCommandHook.class, removeSubCommand);
-		hookHandler.attachHooker(SchedulerSubCommandHook.class, unscheduleSubCommand);
-		hookHandler.attachHooker(SchedulerSubCommandHook.class, daemonSubCommand);
-		
-		hookHandler.attachHooker(ContextHook.class, shutdownHooker);
-		
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, emailSchedulerProvider);
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, sendToSchedulerProvider);
-		
-		final Thread sStarter = new Thread(new Runnable() {
-			
-			@Override
-			public void run() {
-				while(true){
-					try{
-						injector.getInstance(EntityManager.class);
-						break;
-					} catch(Exception e){
-						
-					}
-				}
-				try {
-					/* wait for 5 minutes */
-					try {
-						Thread.sleep(startupDelay);
-					} catch (InterruptedException e) {
-						logger.warn("Scheduler was started prematurely", e);
-					}
-					
-					schedulerService.start();
-				} catch (SchedulerStartupException e) {
-					if(! (e instanceof SchedulerNotEnabledException))
-						logger.error("Could not start scheduler.", e);
-				}
-			}
-		});
-		sStarter.setDaemon(true);
-		
-		hookHandler.attachHooker(LateInitHook.class, new LateInitHook() {
-			@Override
-			public void initialize() {
-				sStarter.start();
-			}
-		}, HookHandlerService.PRIORITY_LOWER);
-	}
+   @Inject
+   public RsSchedulerStartup(HookHandlerService hookHandler, EventBus eventBus,
+
+         Provider<ScheduleViaEmailHooker> emailSchedulerProvider,
+         Provider<ScheduleSendToActionHooker> sendToSchedulerProvider,
+
+         Provider<SchedulerCommand> schedulerCommand,
+
+         Provider<SchedulerListSubCommand> listSubCommand,
+         Provider<SchedulerListFireTimesSubCommand> listFireTimesSubCommand,
+         Provider<SchedulerRemoveSubCommand> removeSubCommand,
+         Provider<SchedulerUnscheduleSubCommand> unscheduleSubCommand,
+         Provider<SchedulerDaemonSubCommand> daemonSubCommand,
+
+         HandleReportRemoveEventHandler handleReportRemoveEventHandler,
+         HandleReportForceRemoveEventHandler handleReportForceRemoveEventHandler,
+
+         HandleUserRemoveEventHandler handleUserRemoveEventHandler,
+         HandleUserForceRemoveEventHandler handleUserForceRemoveEventHandler,
+
+         SchedulerShutdownHooker shutdownHooker,
+
+         @SchedulerModuleStartupDelay final Long startupDelay,
+
+         final Injector injector, final SchedulerService schedulerService) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, User.class, handleUserRemoveEventHandler);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, User.class, handleUserForceRemoveEventHandler);
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, handleReportRemoveEventHandler);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, Report.class,
+            handleReportForceRemoveEventHandler);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, schedulerCommand);
+
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, listSubCommand);
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, listFireTimesSubCommand);
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, removeSubCommand);
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, unscheduleSubCommand);
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, daemonSubCommand);
+
+      hookHandler.attachHooker(ContextHook.class, shutdownHooker);
+
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, emailSchedulerProvider);
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, sendToSchedulerProvider);
+
+      final Thread sStarter = new Thread(() -> {
+         while (true) {
+            try {
+               injector.getInstance(EntityManager.class);
+               break;
+            } catch (Exception e) {
+
+            }
+         }
+         try {
+            /* wait for 5 minutes */
+            try {
+               Thread.sleep(startupDelay);
+            } catch (InterruptedException e) {
+               logger.warn("Scheduler was started prematurely", e);
+            }
+
+            schedulerService.start();
+         } catch (SchedulerStartupException e) {
+            if (!(e instanceof SchedulerNotEnabledException))
+               logger.error("Could not start scheduler.", e);
+         }
+      });
+      sStarter.setDaemon(true);
+
+      hookHandler.attachHooker(LateInitHook.class, () -> sStarter.start(), HookHandlerService.PRIORITY_LOWER);
+   }
 }

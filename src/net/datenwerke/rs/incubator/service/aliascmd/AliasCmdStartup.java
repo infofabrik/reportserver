@@ -10,16 +10,16 @@ import com.google.inject.Inject;
 
 public class AliasCmdStartup {
 
-	@Inject
-	public AliasCmdStartup(
-		HookHandlerService hookHandler,
-		
-		final AliasCommand aliasCommand
-		) {
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);
-		hookHandler.attachHooker(ReloadConfigNotificationHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);
-		
-		hookHandler.attachHooker(LateInitHook.class, () -> aliasCommand.reloadConfig(), HookHandlerService.PRIORITY_LOWER);
-	}
+   @Inject
+   public AliasCmdStartup(
+         HookHandlerService hookHandler,
+         final AliasCommand aliasCommand
+         ) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);
+      hookHandler.attachHooker(ReloadConfigNotificationHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);
+
+      hookHandler.attachHooker(LateInitHook.class, () -> aliasCommand.reloadConfig(),
+            HookHandlerService.PRIORITY_LOWER);
+   }
 }

@@ -17,25 +17,25 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemModule;
  */
 public class TerminalModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		bind(TerminalService.class).to(TerminalServiceImpl.class).in(Singleton.class);
-		bind(TerminalSessionMap.class).in(ServletScopes.SESSION);
-		
-		/* submodules */
-		install(new VirtualFileSystemModule());
-		install(new ObjectResolverModule());
-		
-		/* interceptors */
-		HelpMessageInterceptor helpMessageInterceptor = new HelpMessageInterceptor();
-		requestInjection(helpMessageInterceptor);
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(CliHelpMessage.class), helpMessageInterceptor);
-		
-		/* startup */
-		bind(TerminalStartup.class).asEagerSingleton();
-		
-		/* rights */
-		install(new GenRightsTerminalManagerModule());
-	}
+   @Override
+   protected void configure() {
+      bind(TerminalService.class).to(TerminalServiceImpl.class).in(Singleton.class);
+      bind(TerminalSessionMap.class).in(ServletScopes.SESSION);
+
+      /* submodules */
+      install(new VirtualFileSystemModule());
+      install(new ObjectResolverModule());
+
+      /* interceptors */
+      HelpMessageInterceptor helpMessageInterceptor = new HelpMessageInterceptor();
+      requestInjection(helpMessageInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(CliHelpMessage.class), helpMessageInterceptor);
+
+      /* startup */
+      bind(TerminalStartup.class).asEagerSingleton();
+
+      /* rights */
+      install(new GenRightsTerminalManagerModule());
+   }
 
 }

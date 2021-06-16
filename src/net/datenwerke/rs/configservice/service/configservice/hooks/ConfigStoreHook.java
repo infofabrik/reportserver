@@ -7,13 +7,12 @@ import com.google.inject.Provider;
 
 public class ConfigStoreHook extends ObjectHook<AbstractConfigStore> {
 
-	public ConfigStoreHook(AbstractConfigStore object) {
-		super(object);
-	}
+   public ConfigStoreHook(AbstractConfigStore object) {
+      super(object);
+   }
 
-	public ConfigStoreHook(Provider<? extends AbstractConfigStore> provider) {
-		super(provider);
-	}
-
+   public ConfigStoreHook(Provider<? extends AbstractConfigStore> provider) {
+      super(provider);
+   }
 
 }

@@ -9,14 +9,14 @@ import net.datenwerke.rs.incubator.service.xslt.XsltCommandModule;
 
 public class RsIncubatorModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(MiscCommandStartup.class).asEagerSingleton();
-		
-		install(new XsltCommandModule());
-		install(new SchedulerNotificationModule());
-		
-		requestStaticInjection(FileServerKeyStoreKryptoCredentialProvider.class);
-	}
+   @Override
+   protected void configure() {
+      bind(MiscCommandStartup.class).asEagerSingleton();
+
+      install(new XsltCommandModule());
+      install(new SchedulerNotificationModule());
+
+      requestStaticInjection(FileServerKeyStoreKryptoCredentialProvider.class);
+   }
 
 }
