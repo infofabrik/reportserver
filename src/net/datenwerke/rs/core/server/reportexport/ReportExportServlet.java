@@ -1,6 +1,7 @@
 package net.datenwerke.rs.core.server.reportexport;
 
 import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
@@ -431,7 +432,7 @@ public class ReportExportServlet extends SecuredHttpServlet{
 			TeeOutputStream tos = new TeeOutputStream(resp.getOutputStream(), bos);
 			executeReport(tos, req, referenceReport, backLinkSet, outputFormat, reportExecutorConfigs);
 			
-			storeInCache(rexToken, baseFilename, mimetype, extension, bos.toByteArray(), req, entry);
+			storeInCache(rexToken, baseFilename, mimetype, extension, bos, req, entry);
 		} else {
 			/* execute report */
 			CompiledReport executedReport = executeReport(null, req, referenceReport, backLinkSet, outputFormat, reportExecutorConfigs);
@@ -487,8 +488,14 @@ public class ReportExportServlet extends SecuredHttpServlet{
 		tempFile.setMimeType(mimetype);
 		
 		/* set data */
-		if(executedReport instanceof byte[]){
-		   Files.write(tempFile.getPath(), (byte[])executedReport);
+		if(executedReport instanceof ByteArrayOutputStream){
+		   try (OutputStream outputStream = Files.newOutputStream(tempFile.getPath());
+		         BufferedOutputStream bos = new BufferedOutputStream(outputStream)) {
+		      ((ByteArrayOutputStream) executedReport).writeTo(bos);
+		   }
+		} else if(executedReport instanceof byte[]){
+		   //reports not supporting streaming, e.g. dynamic list pdf export
+	       Files.write(tempFile.getPath(), (byte[])executedReport);
 		} else if (executedReport instanceof String) {
 			String charset = reportServerService.get().getCharset();
 			Files.write(tempFile.getPath(), executedReport.toString().getBytes(charset));

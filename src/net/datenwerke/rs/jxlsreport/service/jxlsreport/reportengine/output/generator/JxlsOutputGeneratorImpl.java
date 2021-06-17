@@ -171,25 +171,24 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 				AvailableReportProperties.PROPERTY_JXLS_STREAM_USE_SHARED_STRINGS_TABLE.getValue(), true,
 				ReportStringProperty::toBoolean);
 
-		try (ByteArrayInputStream is = new ByteArrayInputStream(template)) {
+		try (ByteArrayInputStream isTemplate = new ByteArrayInputStream(template)) {
 
 			if (!jxlsStream) {
 
 				try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-					JxlsHelper.getInstance().processTemplate(is, bos, context);
-
-					byte[] result = bos.toByteArray();
-					ByteArrayInputStream bis = new ByteArrayInputStream(result);
-					Workbook wb = WorkbookFactory.create(bis);
-					return wb;
+				   
+				   PoiTransformer transformer = PoiTransformer.createTransformer(isTemplate, bos);
+					JxlsHelper.getInstance().processTemplate(context, transformer);
+					
+					return transformer.getWorkbook();
 				}
 
 			} else {
-				Workbook workbook = WorkbookFactory.create(is);
+				Workbook workbookTemplate = WorkbookFactory.create(isTemplate);
 
 				if (outputFormat.contentEquals("HTML")) {
 					try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-						workbook.write(bos); // only template gets exported
+						workbookTemplate.write(bos); // only template gets exported
 
 						byte[] result = bos.toByteArray();
 						ByteArrayInputStream bis = new ByteArrayInputStream(result);
@@ -203,11 +202,11 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 					/* With SXSSF you cannot use normal formula processing */
 					context.getConfig().setIsFormulaProcessingRequired(false);
 					
-					workbook.setForceFormulaRecalculation(true);
-					workbook.setActiveSheet(0);
-					workbook.setSelectedTab(0);
+					workbookTemplate.setForceFormulaRecalculation(true);
+					workbookTemplate.setActiveSheet(0);
+					workbookTemplate.setSelectedTab(0);
 					
-					final JxlsStreamingTransformer transformer = new JxlsStreamingTransformer(workbook, rowAccessWindowSize,
+					final JxlsStreamingTransformer transformer = new JxlsStreamingTransformer(workbookTemplate, rowAccessWindowSize,
 							compressTmpFiles, useSharedStringsTable);
 					AreaBuilder areaBuilder = new XlsCommentAreaBuilder(transformer);
 					List<Area> xlsAreaList = areaBuilder.build();
