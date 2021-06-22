@@ -97,10 +97,16 @@ public class LostPasswordServiceImpl implements LostPasswordService{
 			String randomPassword = pwdGen.newPassword();
 			
 			/* use the user's salt */
-			String salt = cryptoRpcService.getUserSalt(user.getUsername());
+			String salt = null;
+			if (null != user.getPassword())
+			   salt = cryptoRpcService.getUserSalt(user.getUsername());
 
 			/* store the password in the users properties */
-			userPropertiesService.setPropertyValue(user, LostPasswordModule.USER_PROPERTY_TMP_PASSWORD, passwordHasher.hashPassword(randomPassword, salt));
+			if (null != salt)
+			   userPropertiesService.setPropertyValue(user, LostPasswordModule.USER_PROPERTY_TMP_PASSWORD, passwordHasher.hashPassword(randomPassword, salt));
+			else
+			   userPropertiesService.setPropertyValue(user, LostPasswordModule.USER_PROPERTY_TMP_PASSWORD, passwordHasher.hashPassword(randomPassword));
+			
 			userPropertiesService.setPropertyValue(user, LostPasswordModule.USER_PROPERTY_TMP_PASSWORD_DATE, Long.toString(System.currentTimeMillis()));
 			
 			userManagerService.merge(user);
