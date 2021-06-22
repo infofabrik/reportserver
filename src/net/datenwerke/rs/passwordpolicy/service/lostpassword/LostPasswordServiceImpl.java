@@ -1,6 +1,7 @@
 package net.datenwerke.rs.passwordpolicy.service.lostpassword;
 
 import java.util.HashMap;
+import java.util.Objects;
 
 import javax.persistence.NoResultException;
 
@@ -87,6 +88,8 @@ public class LostPasswordServiceImpl implements LostPasswordService{
 				if(indicateWrongUser)
 					return PasswordPolicyMessages.INSTANCE.exceptionUserNotExists(username);
 				else return PasswordPolicyMessages.INSTANCE.lostPasswordMessageConfirmation();
+			
+			Objects.requireNonNull(user.getEmail(), "Your email address is empty. An administrator should correct this for being able to send you a new password per email.");
 			
 			PasswordGenerator pwdGen = passwordGenerator.get();
 			
