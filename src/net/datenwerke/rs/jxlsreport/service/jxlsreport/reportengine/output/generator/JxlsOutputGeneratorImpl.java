@@ -141,10 +141,10 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
    }
 
    //no streaming
-   private Workbook processNormalWorkbook(final Context context, final InputStream isTemplate) throws IOException {
+   private Workbook processNormalWorkbook(final Context context, final InputStream templateInputStream) throws IOException {
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
 
-         PoiTransformer transformer = PoiTransformer.createTransformer(isTemplate, bos);
+         PoiTransformer transformer = PoiTransformer.createTransformer(templateInputStream, bos);
          JxlsHelper.getInstance().processTemplate(context, transformer);
 
          return transformer.getWorkbook();
@@ -174,12 +174,12 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       boolean jxlsStream = (Boolean) report.getEffectiveReportStringPropertyValue(
             AvailableReportProperties.PROPERTY_JXLS_STREAM.getValue(), false, ReportStringProperty::toBoolean);
 
-      try (ByteArrayInputStream isTemplate = new ByteArrayInputStream(template)) {
+      try (ByteArrayInputStream templateInputStream = new ByteArrayInputStream(template)) {
 
          if (!jxlsStream) 
-            return processNormalWorkbook(context, isTemplate);
+            return processNormalWorkbook(context, templateInputStream);
          else 
-            return processStreamingWorkbook(report, context, isTemplate, outputFormat);
+            return processStreamingWorkbook(report, context, templateInputStream, outputFormat);
 
       } catch (IOException e) {
          throw new ReportExecutorException(e);
@@ -188,21 +188,12 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       }
    }
 
-   private Workbook processStreamingWorkbook(final JxlsReport report, Context context, InputStream isTemplate,
+   private Workbook processStreamingWorkbook(final JxlsReport report, Context context, InputStream templateInputStream,
          String outputFormat) throws IOException {
-      Workbook workbookTemplate = WorkbookFactory.create(isTemplate);
-
-      if (outputFormat.contentEquals("HTML")) {
-         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
-            workbookTemplate.write(bos); // only template gets exported
-
-            byte[] result = bos.toByteArray();
-            ByteArrayInputStream bis = new ByteArrayInputStream(result);
-            Workbook wb = WorkbookFactory.create(bis);
-            return wb;
-         }
-
-      } else {
+      if (outputFormat.contentEquals("HTML")) 
+         return WorkbookFactory.create(templateInputStream);
+      else {
+         Workbook workbookTemplate = WorkbookFactory.create(templateInputStream);
          context.putVar("cellRefUpdater", new CellRefUpdater());
 
          /* With SXSSF you cannot use normal formula processing */
