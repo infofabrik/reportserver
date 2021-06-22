@@ -7,15 +7,16 @@ import net.datenwerke.rs.passwordpolicy.service.PasswordGenerator;
 
 public class DefaultPasswordGenerator implements PasswordGenerator {
 
-	@Override
-	public String newPassword() {
-		CharacterClassBasedPasswordComplexitySpecification specification = new CharacterClassBasedPasswordComplexitySpecification(8);
-		
-		CharacterClass cClass = new CharacterClass("abcdefghkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUFVXYZ123456789");
-		
-		specification.addSelectionSpecification(new CharacterSelectionSpecification(cClass, 8));
-		
-		return specification.getPasswordGenerator().newPassword();
-	}
+   @Override
+   public String newPassword() {
+      CharacterClassBasedPasswordComplexitySpecification specification = new CharacterClassBasedPasswordComplexitySpecification(
+            8);
+
+      CharacterClass cClass = new CharacterClass("abcdefghkmnopqrstuvwxyzABCDEFGHJKLMNPQRSTUFVXYZ123456789");
+
+      specification.addSelectionSpecification(new CharacterSelectionSpecification(cClass, 8));
+
+      return specification.getPasswordGenerator().newPassword();
+   }
 
 }

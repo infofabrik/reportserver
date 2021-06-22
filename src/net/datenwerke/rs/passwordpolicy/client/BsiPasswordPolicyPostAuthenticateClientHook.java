@@ -18,111 +18,118 @@ import net.datenwerke.security.client.security.passwordpolicy.locale.PasswordPol
 import net.datenwerke.security.ext.client.password.PasswordServiceDao;
 import net.datenwerke.security.ext.client.password.ui.ChangePasswordDialog;
 
-public class BsiPasswordPolicyPostAuthenticateClientHook implements PostAuthenticateClientHook{
+public class BsiPasswordPolicyPostAuthenticateClientHook implements PostAuthenticateClientHook {
 
-	private final PasswordServiceDao passwordServiceDao;
-	
-	@Inject
-	public BsiPasswordPolicyPostAuthenticateClientHook(
-		PasswordServiceDao passwordServiceDao	
-		){
-		
-		/* store objects */
-		this.passwordServiceDao = passwordServiceDao;
-	}
+   private final PasswordServiceDao passwordServiceDao;
 
+   @Inject
+   public BsiPasswordPolicyPostAuthenticateClientHook(PasswordServiceDao passwordServiceDao) {
 
-	@Override
-	public void authenticated(final AuthenticateResultDto authRes, final List<PostAuthenticateClientHook> chain) {
+      /* store objects */
+      this.passwordServiceDao = passwordServiceDao;
+   }
 
-		boolean autoProceed = true;
+   @Override
+   public void authenticated(final AuthenticateResultDto authRes, final List<PostAuthenticateClientHook> chain) {
 
-		if(null != authRes.getInfo()){
-			for(final AuthenticateResultInfo info : authRes.getInfo()){
+      boolean autoProceed = true;
 
-				if(info instanceof AccountLockedAuthenticateResultInfo){
-					autoProceed = false;
-					new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountLockedHeading(), PasswordPolicyMessages.INSTANCE.accountLockedMessage(((AccountLockedAuthenticateResultInfo)info).getLockedUntil())){
-						@Override
-						protected void onHide() {
-							skipToEnd(authRes, chain);
-						}
-					}.show();					
-				}
+      if (null != authRes.getInfo()) {
+         for (final AuthenticateResultInfo info : authRes.getInfo()) {
 
-				if(info instanceof PasswordExpiredAuthenticationResultInfo){
-					autoProceed = false;
-					int expiresIn = ((PasswordExpiredAuthenticationResultInfo) info).getExpiresIn();
-					if( expiresIn > 0){
-						new DwMessageBox(PasswordPolicyMessages.INSTANCE.passwordExpiration(), PasswordPolicyMessages.INSTANCE.passwordExpirationWarning(expiresIn)){
-							protected void onHide() {
-								final ChangePasswordDialog cpd = new ChangePasswordDialog(true);
+            if (info instanceof AccountLockedAuthenticateResultInfo) {
+               autoProceed = false;
+               new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountLockedHeading(),
+                     PasswordPolicyMessages.INSTANCE
+                           .accountLockedMessage(((AccountLockedAuthenticateResultInfo) info).getLockedUntil())) {
+                  @Override
+                  protected void onHide() {
+                     skipToEnd(authRes, chain);
+                  }
+               }.show();
+            }
 
-								cpd.addSubmitHandler(new SelectHandler() {
-									@Override
-									public void onSelect(SelectEvent event) {
-										passwordServiceDao.changePassword(((PasswordExpiredAuthenticationResultInfo) info).getUsername(), cpd.getOldPassword(), cpd.getNewPassword(), new NotamCallback<Void>("password changed"){
-											@Override
-											public void doOnSuccess(Void result) {
-												cpd.hide();
-												skipToEnd(authRes, chain);
-											}
-										});
-									}
-								});
+            if (info instanceof PasswordExpiredAuthenticationResultInfo) {
+               autoProceed = false;
+               int expiresIn = ((PasswordExpiredAuthenticationResultInfo) info).getExpiresIn();
+               if (expiresIn > 0) {
+                  new DwMessageBox(PasswordPolicyMessages.INSTANCE.passwordExpiration(),
+                        PasswordPolicyMessages.INSTANCE.passwordExpirationWarning(expiresIn)) {
+                     protected void onHide() {
+                        final ChangePasswordDialog cpd = new ChangePasswordDialog(true);
 
-								cpd.addCancelHandler(new SelectHandler() {
-									@Override
-									public void onSelect(SelectEvent event) {
-										cpd.hide();
-										skipToEnd(authRes, chain);
-									}
-								});
-								
-								cpd.show();								
-							};
-						}.show();
-					}else{
-						new DwAlertMessageBox(PasswordPolicyMessages.INSTANCE.passwordExpiration(), PasswordPolicyMessages.INSTANCE.passwordExpired()){
-							protected void onHide() {
-								final ChangePasswordDialog cpd = new ChangePasswordDialog(false);
+                        cpd.addSubmitHandler(new SelectHandler() {
+                           @Override
+                           public void onSelect(SelectEvent event) {
+                              passwordServiceDao.changePassword(
+                                    ((PasswordExpiredAuthenticationResultInfo) info).getUsername(),
+                                    cpd.getOldPassword(), cpd.getNewPassword(),
+                                    new NotamCallback<Void>("password changed") {
+                                       @Override
+                                       public void doOnSuccess(Void result) {
+                                          cpd.hide();
+                                          skipToEnd(authRes, chain);
+                                       }
+                                    });
+                           }
+                        });
 
-								cpd.addSubmitHandler(new SelectHandler() {
-									@Override
-									public void onSelect(SelectEvent event) {
-										passwordServiceDao.changePassword(((PasswordExpiredAuthenticationResultInfo) info).getUsername(), cpd.getOldPassword(), cpd.getNewPassword(), new NotamCallback<Void>("password changed"){
-											@Override
-											public void doOnSuccess(Void result) {
-												cpd.hide();
-												skipToEnd(authRes, chain);
-											}
-										});
-									}
-								});
-								
-								cpd.show();
-							};
-						}.show();
-					}
-				}
-			}
+                        cpd.addCancelHandler(new SelectHandler() {
+                           @Override
+                           public void onSelect(SelectEvent event) {
+                              cpd.hide();
+                              skipToEnd(authRes, chain);
+                           }
+                        });
 
-		}
+                        cpd.show();
+                     };
+                  }.show();
+               } else {
+                  new DwAlertMessageBox(PasswordPolicyMessages.INSTANCE.passwordExpiration(),
+                        PasswordPolicyMessages.INSTANCE.passwordExpired()) {
+                     protected void onHide() {
+                        final ChangePasswordDialog cpd = new ChangePasswordDialog(false);
 
-		if(autoProceed)
-			proceed(authRes, chain);
-	}
+                        cpd.addSubmitHandler(new SelectHandler() {
+                           @Override
+                           public void onSelect(SelectEvent event) {
+                              passwordServiceDao.changePassword(
+                                    ((PasswordExpiredAuthenticationResultInfo) info).getUsername(),
+                                    cpd.getOldPassword(), cpd.getNewPassword(),
+                                    new NotamCallback<Void>("password changed") {
+                                       @Override
+                                       public void doOnSuccess(Void result) {
+                                          cpd.hide();
+                                          skipToEnd(authRes, chain);
+                                       }
+                                    });
+                           }
+                        });
 
-	protected void proceed(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain){
-		if(chain.size() > 0)
-			chain.remove(0).authenticated(authRes, chain);
-	}
-	
-	protected void skipToEnd(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain){
-		if(chain.size() > 0){
-			PostAuthenticateClientHook last = chain.get(chain.size()-1);
-			chain.clear();
-			last.authenticated(authRes, chain);
-		}
-	}
+                        cpd.show();
+                     };
+                  }.show();
+               }
+            }
+         }
+
+      }
+
+      if (autoProceed)
+         proceed(authRes, chain);
+   }
+
+   protected void proceed(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain) {
+      if (chain.size() > 0)
+         chain.remove(0).authenticated(authRes, chain);
+   }
+
+   protected void skipToEnd(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain) {
+      if (chain.size() > 0) {
+         PostAuthenticateClientHook last = chain.get(chain.size() - 1);
+         chain.clear();
+         last.authenticated(authRes, chain);
+      }
+   }
 }

@@ -7,12 +7,12 @@ import com.google.inject.Inject;
 
 public class LostPasswordModuleStartup {
 
-	@Inject
-	public LostPasswordModuleStartup(
-			HookHandlerService hookHandler, 
-			LostPasswordPreAuthenticateHook lostPasswordPreAuthenticateHook
-	) {
-		hookHandler.attachHooker(PreAuthenticateHook.class, lostPasswordPreAuthenticateHook);
-	}
+   @Inject
+   public LostPasswordModuleStartup(
+         HookHandlerService hookHandler,
+         LostPasswordPreAuthenticateHook lostPasswordPreAuthenticateHook
+         ) {
+      hookHandler.attachHooker(PreAuthenticateHook.class, lostPasswordPreAuthenticateHook);
+   }
 
 }

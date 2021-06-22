@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 
 public interface LostPasswordService {
 
-	public String requestNewPassword(String username) throws ExpectedException;
+   public String requestNewPassword(String username) throws ExpectedException;
 }

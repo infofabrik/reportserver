@@ -17,26 +17,24 @@ import com.google.inject.persist.Transactional;
 @Singleton
 public class LostPasswordRpcServiceImpl extends SecuredRemoteServiceServlet implements LostPasswordRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5238457329967237907L;
-	
-	private final LostPasswordService lostPasswordService;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5238457329967237907L;
 
-	@Inject
-	public LostPasswordRpcServiceImpl(
-		LostPasswordService lostPasswordService
-		) {
-		
-		/* storeo objects */
-		this.lostPasswordService = lostPasswordService;
-	}
-	
-	@Override
-	@SecurityChecked(bypass=true)
-	@Transactional(rollbackOn={Exception.class})
-	public String requestNewPassword(String username) throws ServerCallFailedException {
-		return lostPasswordService.requestNewPassword(username);
-	}
+   private final LostPasswordService lostPasswordService;
+
+   @Inject
+   public LostPasswordRpcServiceImpl(LostPasswordService lostPasswordService) {
+
+      /* storeo objects */
+      this.lostPasswordService = lostPasswordService;
+   }
+
+   @Override
+   @SecurityChecked(bypass = true)
+   @Transactional(rollbackOn = { Exception.class })
+   public String requestNewPassword(String username) throws ServerCallFailedException {
+      return lostPasswordService.requestNewPassword(username);
+   }
 }

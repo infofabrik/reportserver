@@ -5,14 +5,14 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class UserLostPasswordEvent extends DwLoggedEvent {
 
-	public UserLostPasswordEvent(User user) {
-		super();
-		userId = user.getId();
-	}
+   public UserLostPasswordEvent(User user) {
+      super();
+      userId = user.getId();
+   }
 
-	@Override
-	public String getLoggedAction() {
-		return "USER_LOST_PASSWORD";
-	}
+   @Override
+   public String getLoggedAction() {
+      return "USER_LOST_PASSWORD";
+   }
 
 }

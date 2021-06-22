@@ -22,36 +22,33 @@ import com.google.inject.persist.Transactional;
  *
  */
 @Singleton
-public class ActivateUserRpcServiceImpl extends SecuredRemoteServiceServlet  implements ActivateUserRpcService {
+public class ActivateUserRpcServiceImpl extends SecuredRemoteServiceServlet implements ActivateUserRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -136267079623263062L;
-	
-	
-	private UserManagerService userManagerService;
-	private ActivateUserService activateUserService;
-	
-	@Inject
-	public ActivateUserRpcServiceImpl(
-				UserManagerService userManagerService, 
-				ActivateUserService activateUserService) {
-		
-		this.userManagerService = userManagerService;
-		this.activateUserService = activateUserService;
-	}
-	
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		argumentVerification = {
-		@ArgumentVerification(name = "user",isDto = true,verify = @RightsVerification(rights=Write.class))}
-	)
-	public void activateAccount(@Named("user")UserDto user, boolean force) throws ExpectedException {
-		User u = (User) userManagerService.getNodeById(user.getId());
-		activateUserService.activateAccount(u, force);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -136267079623263062L;
+
+   private UserManagerService userManagerService;
+   private ActivateUserService activateUserService;
+
+   @Inject
+   public ActivateUserRpcServiceImpl(
+         UserManagerService userManagerService, 
+         ActivateUserService activateUserService
+         ) {
+
+      this.userManagerService = userManagerService;
+      this.activateUserService = activateUserService;
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "user", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   public void activateAccount(@Named("user") UserDto user, boolean force) throws ExpectedException {
+      User u = (User) userManagerService.getNodeById(user.getId());
+      activateUserService.activateAccount(u, force);
+   }
 
 }

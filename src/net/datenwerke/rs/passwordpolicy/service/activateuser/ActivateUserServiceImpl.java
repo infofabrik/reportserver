@@ -27,109 +27,105 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 public class ActivateUserServiceImpl implements ActivateUserService {
-	
-	private final static String PROPERTY_USER = "user";
-	private final static String PROPERTY_URL = "url";
-	private final static String PROPERTY_TMP_PASSWORD = "password";
 
-	private final UserManagerService userManagerService;
-	private final EventBus eventBus;
-	private final Provider<PasswordGenerator> passwordGenerator;
-	private final MailService mailService;
-	private final Provider<HttpServletRequest> requestProvider;
-	private final ConfigService configService;
-	private final BsiPasswordPolicyService bsiPasswordPolicyService;
-	private final RemoteMessageService remoteMessageService;
-	
-	@Inject
-	public ActivateUserServiceImpl(
-		UserManagerService userManagerService, 
-		EventBus eventBus,
-		Provider<PasswordGenerator> passwordGenerator, 
-		MailService mailService,
-		Provider<HttpServletRequest> requestProvider,
-		ConfigService configService, 
-		BsiPasswordPolicyService bsiPasswordPolicyService, 
-		RemoteMessageService remoteMessageService
-	) {
-		this.userManagerService = userManagerService;
-		this.eventBus = eventBus;
-		this.passwordGenerator = passwordGenerator;
-		this.mailService = mailService;
-		this.requestProvider = requestProvider;
-		this.configService = configService;
-		this.bsiPasswordPolicyService = bsiPasswordPolicyService;
-		this.remoteMessageService = remoteMessageService;
-	}
+   private final static String PROPERTY_USER = "user";
+   private final static String PROPERTY_URL = "url";
+   private final static String PROPERTY_TMP_PASSWORD = "password";
 
-	private String getModuleBaseURL(){
-		String url = requestProvider.get().getRequestURL().toString();
-		int idx = url.lastIndexOf(DwGwtFrameworkBase.BASE_URL);
-		url = url.substring(0,idx) + "/";
-		return url;
-	}
-	
-	
-	@Override
-	public void activateAccount(User user, boolean force) throws ExpectedException {
-		if((null != user.getPassword() && !user.getPassword().isEmpty()) && (!force))
-			throw new ExpectedException("This users account is already active (non-empty password)");
-		
-		if(null == user.getEmail() || "".equals(user.getEmail()))
-			throw new ExpectedException("The user does not yet have an email address.");
-		
-		PasswordGenerator pwdGen = passwordGenerator.get();
-		
-		if(null == pwdGen)
-			throw new ExpectedException("No known password generator");
-		
-			
-		/* generate temporary password */
-		String randomPassword = pwdGen.newPassword();
-		userManagerService.setPassword(user, randomPassword);
-		
-		/* mark user as requiring password change on next login*/
-		BsiPasswordPolicyUserMetadata userMetadata = bsiPasswordPolicyService.getUserMetadata(user);
-		
-		userMetadata.setFailedLoginCount(0);
-		userMetadata.setLastChangedPassword(null);
-		userMetadata.enforcePasswordChangeOnNextLogin();
-		
-		bsiPasswordPolicyService.updateUserMetadata(user, userMetadata);
+   private final UserManagerService userManagerService;
+   private final EventBus eventBus;
+   private final Provider<PasswordGenerator> passwordGenerator;
+   private final MailService mailService;
+   private final Provider<HttpServletRequest> requestProvider;
+   private final ConfigService configService;
+   private final BsiPasswordPolicyService bsiPasswordPolicyService;
+   private final RemoteMessageService remoteMessageService;
 
-		userManagerService.merge(user);
-		
-		
-		/* prepare value map for template */
-		HashMap<String, Object> replacements = new HashMap<String, Object>();
-		replacements.put(PROPERTY_TMP_PASSWORD, randomPassword);
-		replacements.put(PROPERTY_URL, getModuleBaseURL());
-		replacements.put(PROPERTY_USER, UserForJuel.createInstance(user));
-		
-		String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
-		replacements.put("msgs", remoteMessageService.getMessages(currentLanguage));
-		
-		/* fill email temlate*/
-		MailTemplate template = new MailTemplate();
-		
-		Configuration config = configService.getConfig(ActivateUserModule.CONFIG_FILE);
-		template.setMessageTemplate(config.getString(ActivateUserModule.PROPERTY_EMAIL_TEXT));
-		template.setSubjectTemplate(config.getString(ActivateUserModule.PROPERTY_EMAIL_SUBJECT));
-		template.setDataMap(replacements);
-		
-		/* create and send message */
-		SimpleMail mailMessage = mailService.newTemplateMail(template);
-		mailMessage.setToRecipients(user.getEmail());
-		mailService.sendMail(mailMessage);
-		
-		/* activated the user -> fire event */
-		eventBus.fireEvent(new ActivatedUserEvent());
-	}
-	
-	@Override
-	public void activateAccount(User user) throws ExpectedException {
-		activateAccount(user, false);
-	}
+   @Inject
+   public ActivateUserServiceImpl(
+         UserManagerService userManagerService, 
+         EventBus eventBus,
+         Provider<PasswordGenerator> passwordGenerator, 
+         MailService mailService,
+         Provider<HttpServletRequest> requestProvider, 
+         ConfigService configService,
+         BsiPasswordPolicyService bsiPasswordPolicyService, 
+         RemoteMessageService remoteMessageService
+         ) {
+      this.userManagerService = userManagerService;
+      this.eventBus = eventBus;
+      this.passwordGenerator = passwordGenerator;
+      this.mailService = mailService;
+      this.requestProvider = requestProvider;
+      this.configService = configService;
+      this.bsiPasswordPolicyService = bsiPasswordPolicyService;
+      this.remoteMessageService = remoteMessageService;
+   }
 
+   private String getModuleBaseURL() {
+      String url = requestProvider.get().getRequestURL().toString();
+      int idx = url.lastIndexOf(DwGwtFrameworkBase.BASE_URL);
+      url = url.substring(0, idx) + "/";
+      return url;
+   }
+
+   @Override
+   public void activateAccount(User user, boolean force) throws ExpectedException {
+      if ((null != user.getPassword() && !user.getPassword().isEmpty()) && (!force))
+         throw new ExpectedException("This users account is already active (non-empty password)");
+
+      if (null == user.getEmail() || "".equals(user.getEmail()))
+         throw new ExpectedException("The user does not yet have an email address.");
+
+      PasswordGenerator pwdGen = passwordGenerator.get();
+
+      if (null == pwdGen)
+         throw new ExpectedException("No known password generator");
+
+      /* generate temporary password */
+      String randomPassword = pwdGen.newPassword();
+      userManagerService.setPassword(user, randomPassword);
+
+      /* mark user as requiring password change on next login */
+      BsiPasswordPolicyUserMetadata userMetadata = bsiPasswordPolicyService.getUserMetadata(user);
+
+      userMetadata.setFailedLoginCount(0);
+      userMetadata.setLastChangedPassword(null);
+      userMetadata.enforcePasswordChangeOnNextLogin();
+
+      bsiPasswordPolicyService.updateUserMetadata(user, userMetadata);
+
+      userManagerService.merge(user);
+
+      /* prepare value map for template */
+      HashMap<String, Object> replacements = new HashMap<String, Object>();
+      replacements.put(PROPERTY_TMP_PASSWORD, randomPassword);
+      replacements.put(PROPERTY_URL, getModuleBaseURL());
+      replacements.put(PROPERTY_USER, UserForJuel.createInstance(user));
+
+      String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
+      replacements.put("msgs", remoteMessageService.getMessages(currentLanguage));
+
+      /* fill email temlate */
+      MailTemplate template = new MailTemplate();
+
+      Configuration config = configService.getConfig(ActivateUserModule.CONFIG_FILE);
+      template.setMessageTemplate(config.getString(ActivateUserModule.PROPERTY_EMAIL_TEXT));
+      template.setSubjectTemplate(config.getString(ActivateUserModule.PROPERTY_EMAIL_SUBJECT));
+      template.setDataMap(replacements);
+
+      /* create and send message */
+      SimpleMail mailMessage = mailService.newTemplateMail(template);
+      mailMessage.setToRecipients(user.getEmail());
+      mailService.sendMail(mailMessage);
+
+      /* activated the user -> fire event */
+      eventBus.fireEvent(new ActivatedUserEvent());
+   }
+
+   @Override
+   public void activateAccount(User user) throws ExpectedException {
+      activateAccount(user, false);
+   }
 
 }
