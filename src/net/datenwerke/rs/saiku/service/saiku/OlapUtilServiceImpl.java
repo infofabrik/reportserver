@@ -278,7 +278,7 @@ public class OlapUtilServiceImpl implements OlapUtilService {
     		throw new IllegalStateException("not authenticated");
 		
 		Properties props = new Properties();
-		props.load(new StringReader(mondrianDatasource.getProperties()));
+		props.load(new StringReader(mondrianDatasource.getProperties().replace("\\","\\u005c")));
 		
 		String driver = props.getProperty(ISaikuConnection.DRIVER_KEY);
 		
