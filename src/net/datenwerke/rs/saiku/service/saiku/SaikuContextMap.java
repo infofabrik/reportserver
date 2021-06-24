@@ -13,32 +13,28 @@ import com.google.inject.servlet.SessionScoped;
 @SessionScoped
 public class SaikuContextMap implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private Cache<String, QueryContext> cache;
-	
-	@Inject
-	public SaikuContextMap(
-		SaikuService saikuService	
-		){
-		cache = CacheBuilder.newBuilder()
-	       .maximumSize(saikuService.getContextMaxSize())
-	       .expireAfterWrite(saikuService.getContextExpiresAfter(), TimeUnit.MINUTES)
-	       .build();
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	public boolean containsKey(String name) {
-		return null != cache.getIfPresent(name);
-	}
+   private Cache<String, QueryContext> cache;
 
-	public void put(String name, QueryContext qt) {
-		cache.put(name, qt);
-	}
+   @Inject
+   public SaikuContextMap(SaikuService saikuService) {
+      cache = CacheBuilder.newBuilder().maximumSize(saikuService.getContextMaxSize())
+            .expireAfterWrite(saikuService.getContextExpiresAfter(), TimeUnit.MINUTES).build();
+   }
 
-	public QueryContext get(String name) {
-		return cache.getIfPresent(name);
-	}
+   public boolean containsKey(String name) {
+      return null != cache.getIfPresent(name);
+   }
+
+   public void put(String name, QueryContext qt) {
+      cache.put(name, qt);
+   }
+
+   public QueryContext get(String name) {
+      return cache.getIfPresent(name);
+   }
 }

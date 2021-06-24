@@ -21,57 +21,58 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface ThinQueryService extends Serializable {
 
-	boolean isOldQuery(String filecontent);
+   boolean isOldQuery(String filecontent);
 
-	ThinQuery convertQuery(String xml, Cube cube, SaikuReport report);
+   ThinQuery convertQuery(String xml, Cube cube, SaikuReport report);
 
-	ThinQuery createQuery(ThinQuery tq, Cube cube);
+   ThinQuery createQuery(ThinQuery tq, Cube cube);
 
-	boolean isMdxDrillthrough(ThinQuery query, SaikuReport report);
+   boolean isMdxDrillthrough(ThinQuery query, SaikuReport report);
 
-	ResultSet drillthrough(ThinQuery tq, SaikuReport report);
+   ResultSet drillthrough(ThinQuery tq, SaikuReport report);
 
-	CellDataSet execute(String username, ThinQuery tq, SaikuReport report, Cube cube);
+   CellDataSet execute(String username, ThinQuery tq, SaikuReport report, Cube cube);
 
-	QueryContext getContext(String name);
+   QueryContext getContext(String name);
 
-	void cancel(String queryName) throws SQLException;
+   void cancel(String queryName) throws SQLException;
 
-	ThinQuery updateQuery(ThinQuery old, Cube cube, SaikuReport report);
+   ThinQuery updateQuery(ThinQuery old, Cube cube, SaikuReport report);
 
-	List<SimpleCubeElement> getResultMetadataMembers(String queryName, Cube cube, boolean preferResult,
-			String hierarchyName, String levelName, String searchString, int searchLimit);
+   List<SimpleCubeElement> getResultMetadataMembers(String queryName, Cube cube, boolean preferResult,
+         String hierarchyName, String levelName, String searchString, int searchLimit);
 
-	byte[] getExport(String queryName, Cube cube, String type);
+   byte[] getExport(String queryName, Cube cube, String type);
 
-	byte[] getExport(String queryName, Cube cube, String type, String formatter);
+   byte[] getExport(String queryName, Cube cube, String type, String formatter);
 
-	ThinQuery zoomIn(String queryName, Cube cub, SaikuReport report, List<List<Integer>> realPositions);
+   ThinQuery zoomIn(String queryName, Cube cub, SaikuReport report, List<List<Integer>> realPositions);
 
-	ResultSet drillthrough(String queryName, SaikuReport report, int maxrows, String returns);
+   ResultSet drillthrough(String queryName, SaikuReport report, int maxrows, String returns);
 
-	ResultSet drillthrough(String queryName, SaikuReport report, List<Integer> cellPosition, Integer maxrows,
-			String returns);
+   ResultSet drillthrough(String queryName, SaikuReport report, List<Integer> cellPosition, Integer maxrows,
+         String returns);
 
-	byte[] exportResultSetCsv(ResultSet rs);
+   byte[] exportResultSetCsv(ResultSet rs);
 
-	byte[] exportResultSetCsv(ResultSet rs, String delimiter, String enclosing, boolean printHeader,
-			List<KeyValue<String, String>> additionalColumns);
+   byte[] exportResultSetCsv(ResultSet rs, String delimiter, String enclosing, boolean printHeader,
+         List<KeyValue<String, String>> additionalColumns);
 
-	CellDataSet getFormattedResult(String query, Cube cube, String format) throws Exception;
+   CellDataSet getFormattedResult(String query, Cube cube, String format) throws Exception;
 
-	CellDataSet execute(String username, ThinQuery tq, SaikuReport report, Cube cube, String formatter);
+   CellDataSet execute(String username, ThinQuery tq, SaikuReport report, Cube cube, String formatter);
 
-	ThinQuery drillacross(String queryName, Cube cub, SaikuReport report, List<Integer> cellPosition, Map<String, List<String>> levels);
+   ThinQuery drillacross(String queryName, Cube cub, SaikuReport report, List<Integer> cellPosition,
+         Map<String, List<String>> levels);
 
-	
-	String toJSONString(ThinQuery query);
+   String toJSONString(ThinQuery query);
 
-	CellSet executeInternalQuery(String username, ThinQuery query, SaikuReport report, Cube cube) throws Exception;
-	
-	CellSet executeInternalQuery(User user, ParameterSet parameterSet, ThinQuery query, SaikuReport report, Cube cube) throws Exception;
+   CellSet executeInternalQuery(String username, ThinQuery query, SaikuReport report, Cube cube) throws Exception;
 
-	void calculateTotals(ThinQuery tq, Cube cub, CellDataSet result, CellSet cellSet, ICellSetFormatter formatter)
-			throws Exception;
+   CellSet executeInternalQuery(User user, ParameterSet parameterSet, ThinQuery query, SaikuReport report, Cube cube)
+         throws Exception;
+
+   void calculateTotals(ThinQuery tq, Cube cub, CellDataSet result, CellSet cellSet, ICellSetFormatter formatter)
+         throws Exception;
 
 }
