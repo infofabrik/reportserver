@@ -13,6 +13,8 @@ public interface ReportExporterMessages extends Messages {
 	String Export2Excel();
 
 	String export2HTML();
+	
+	String export2JSON();
 
 	String Export2PDF();
 	

@@ -14,12 +14,12 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class Table2JXLS extends Export2JXLS {
 
-	@Inject
-	public Table2JXLS(ReportExporterDao exporterDao,ClientConfigJSONService jsonService) {
-		super(exporterDao, jsonService);
-	}
+   @Inject
+   public Table2JXLS(ReportExporterDao exporterDao, ClientConfigJSONService jsonService) {
+      super(exporterDao, jsonService);
+   }
 
-	public boolean consumes(ReportDto report) {
-		return report instanceof TableReportDto && !((TableReportDto)report).isCubeFlag();
-	}
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && !((TableReportDto) report).isCubeFlag();
+   }
 }

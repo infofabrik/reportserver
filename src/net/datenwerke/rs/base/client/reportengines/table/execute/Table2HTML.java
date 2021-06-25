@@ -10,8 +10,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class Table2HTML extends Export2HTML {
 
-	
-	public boolean consumes(ReportDto report) {
-		return report instanceof TableReportDto && !((TableReportDto)report).isCubeFlag();
-	}
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && !((TableReportDto) report).isCubeFlag();
+   }
 }

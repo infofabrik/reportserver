@@ -7,7 +7,7 @@ import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessage
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public abstract class Export2HTML extends ReportExporterImpl {
+public abstract class Export2JSON extends ReportExporterImpl {
 
    @Override
    public boolean consumesConfiguration(ReportDto report) {
@@ -16,22 +16,22 @@ public abstract class Export2HTML extends ReportExporterImpl {
 
    @Override
    public String getExportDescription() {
-      return ReportExporterMessages.INSTANCE.export2HTML();
+      return ReportExporterMessages.INSTANCE.export2JSON();
    }
 
    @Override
    public String getExportTitle() {
-      return "HTML"; //$NON-NLS-1$
+      return "JSON"; //$NON-NLS-1$
    }
 
    @Override
    public String getOutputFormat() {
-      return "HTML"; //$NON-NLS-1$
+      return "JSON"; //$NON-NLS-1$
    }
 
    @Override
    public ImageResource getIcon() {
-      return BaseIcon.fromFileExtension("html").toImageResource();
+      return BaseIcon.fromFileExtension("json").toImageResource();
    }
 
    @Override
