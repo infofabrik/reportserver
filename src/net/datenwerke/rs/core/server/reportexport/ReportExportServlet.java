@@ -13,7 +13,6 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -60,6 +59,7 @@ import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.misc.HttpUtils;
+import net.datenwerke.rs.utils.stream.shared.StreamUtil;
 import net.datenwerke.security.server.SecuredHttpServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -545,15 +545,11 @@ public class ReportExportServlet extends SecuredHttpServlet {
    }
 
    private String getReportExecutorToken(final ReportExecutionConfig[] reportExecutorConfigs) {
-      if (null == reportExecutorConfigs)
-         return null;
-      
-      return Arrays.stream(reportExecutorConfigs)
+      return StreamUtil.streamOfNullable(reportExecutorConfigs)
             .filter(cfg -> cfg instanceof RECReportExecutorToken)
             .map(cfg -> ((RECReportExecutorToken) cfg).getToken())
             .findAny()
             .orElse(null);
-         
    }
 
    protected boolean supportsStreaming(Report report, ParameterSet backLinkSet, String outputFormat,

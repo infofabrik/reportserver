@@ -16,15 +16,13 @@ import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 @RemoteServiceRelativePath("base_datasource")
 public interface BaseDatasourceRpcService extends RemoteService {
 
-	public ArrayList<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException;
-	
-	public DatabaseHelperDto dummy(DatabaseHelperDto dto);
+   public ArrayList<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException;
 
-	List<String> loadColumnDefinition(DatasourceContainerDto container,
-			String query) throws ServerCallFailedException;
+   public DatabaseHelperDto dummy(DatabaseHelperDto dto);
 
-	PagingLoadResult<ListStringBaseModel> loadData(
-			DatasourceContainerDto container, PagingLoadConfig loadConfig,
-			String query) throws ServerCallFailedException;
-	
+   List<String> loadColumnDefinition(DatasourceContainerDto container, String query) throws ServerCallFailedException;
+
+   PagingLoadResult<ListStringBaseModel> loadData(DatasourceContainerDto container, PagingLoadConfig loadConfig,
+         String query) throws ServerCallFailedException;
+
 }

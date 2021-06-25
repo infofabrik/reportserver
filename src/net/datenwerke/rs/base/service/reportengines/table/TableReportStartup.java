@@ -29,46 +29,44 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class TableReportStartup {
 
-	@Inject
-	public TableReportStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		CSVExecutionConfigFromPropertyMapHooker csvFromProperty,
-		PagingExecutionConfigFromPropertyMapHooker pagingFromProperty,
-		
-		Provider<ExecuteAsTableReportPreviewHooker> executeTablePreview,
-		Provider<BinaryColumnFilterExecutorHooker> binaryColumnFilterExecutor,
-		
-		Provider<BaseTableOutputGeneratorProvider> baseExporters,
-		
-		HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler,
-		HandleTableReportStoredEventHandler handleTableReportStoredEventHandler,
-		
-		RemoveAdditionalColumnSpecEventHandler handleAdditionalColumnSepcRemoveHandler,
-		
-		TableReportIntegrityValidator tableReportIntegrity,
-		TableFilterAdjustVariantHooker adjustVariantHooker
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class, handleDatasourceRemoveEventHandler);
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AdditionalColumnSpec.class, handleAdditionalColumnSepcRemoveHandler);
-		
-		eventBus.attachObjectEventHandler(JpaEvent.class, TableReport.class, handleTableReportStoredEventHandler);
-		
-		/* maintenance */
-		hookHandler.attachHooker(MaintenanceTask.class, tableReportIntegrity);
-		
-		hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, csvFromProperty);
-		hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, pagingFromProperty);
-		
-		hookHandler.attachHooker(ReportExecutorExecuteAsHooker.class, executeTablePreview);
-		
-		hookHandler.attachHooker(DbFilterExecutorHook.class, binaryColumnFilterExecutor);
-		
-		/* base exporters */
-		hookHandler.attachHooker(TableOutputGeneratorProviderHook.class, baseExporters, HookHandlerService.PRIORITY_LOW);
-		
-		hookHandler.attachHooker(VariantToBeEditedHook.class, adjustVariantHooker);
-	}
+   @Inject
+   public TableReportStartup(HookHandlerService hookHandler, EventBus eventBus,
+         CSVExecutionConfigFromPropertyMapHooker csvFromProperty,
+         PagingExecutionConfigFromPropertyMapHooker pagingFromProperty,
+
+         Provider<ExecuteAsTableReportPreviewHooker> executeTablePreview,
+         Provider<BinaryColumnFilterExecutorHooker> binaryColumnFilterExecutor,
+
+         Provider<BaseTableOutputGeneratorProvider> baseExporters,
+
+         HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler,
+         HandleTableReportStoredEventHandler handleTableReportStoredEventHandler,
+
+         RemoveAdditionalColumnSpecEventHandler handleAdditionalColumnSepcRemoveHandler,
+
+         TableReportIntegrityValidator tableReportIntegrity, TableFilterAdjustVariantHooker adjustVariantHooker) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class,
+            handleDatasourceRemoveEventHandler);
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AdditionalColumnSpec.class,
+            handleAdditionalColumnSepcRemoveHandler);
+
+      eventBus.attachObjectEventHandler(JpaEvent.class, TableReport.class, handleTableReportStoredEventHandler);
+
+      /* maintenance */
+      hookHandler.attachHooker(MaintenanceTask.class, tableReportIntegrity);
+
+      hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, csvFromProperty);
+      hookHandler.attachHooker(ReportExecutionConfigFromPropertyMapHook.class, pagingFromProperty);
+
+      hookHandler.attachHooker(ReportExecutorExecuteAsHooker.class, executeTablePreview);
+
+      hookHandler.attachHooker(DbFilterExecutorHook.class, binaryColumnFilterExecutor);
+
+      /* base exporters */
+      hookHandler.attachHooker(TableOutputGeneratorProviderHook.class, baseExporters, HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(VariantToBeEditedHook.class, adjustVariantHooker);
+   }
 }

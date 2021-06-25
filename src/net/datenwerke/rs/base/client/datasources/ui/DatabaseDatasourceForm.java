@@ -2,7 +2,7 @@ package net.datenwerke.rs.base.client.datasources.ui;
 
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -33,91 +33,91 @@ import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessage
  * 
  *
  */
-public class DatabaseDatasourceForm extends SimpleFormView{
+public class DatabaseDatasourceForm extends SimpleFormView {
 
-	private final BaseDatasourceUiService baseDatasourceService;
-	
-	@Inject
-	public DatabaseDatasourceForm(
-			BaseDatasourceUiService baseDatasourceService	
-		){
-		super();
-		
-		/* store objects */
-		this.baseDatasourceService = baseDatasourceService;
-	}
-	
-	public void configureSimpleForm(SimpleForm form) {
-		/* configure form */
-		form.setHeading(DatasourcesMessages.INSTANCE.editDataSource() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")")); 
-		
-		/* name name */
-		form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name()); 
-		
-		form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());
-		
-		/* database */
-		form.setFieldWidth(250);
-		form.addField(
-			List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(), DatasourcesMessages.INSTANCE.database(), 
-			new SFFCStaticDropdownList<String>() {
-				public Map<String, String> getValues() {
-					Map<String, String> map = new TreeMap<String, String>();
-					
-					for(DatabaseHelperDto dbh : baseDatasourceService.getDatabaseHelpers()){
-						String name = dbh.getName();
-						if(! dbh.isJdbcDriverAvailable())
-							name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();
-						map.put(name, dbh.getDescriptor());
-					}
-					
-					return map;
-				}
-		});
-		
-		form.setFieldWidth(250);
-		form.beginFloatRow();
-		
-		/* username */
-		form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.username(), DatasourcesMessages.INSTANCE.username()); 
-		
-		/* password */
-		String passwordKey = form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.password(), DatasourcesMessages.INSTANCE.password(), new SFFCPasswordField() {
-			@Override
-			public Boolean isPasswordSet() {
-				return ((DatabaseDatasourceDto)getSelectedNode()).isHasPassword();
-			}
-		}); //$NON-NLS-1$
-		Menu clearPwMenu = new DwMenu();
-		MenuItem clearPwItem = new DwMenuItem(DatasourcesMessages.INSTANCE.clearPassword());
-		clearPwMenu.add(clearPwItem);
-		clearPwItem.addSelectionHandler(event -> ((DatabaseDatasourceDto)getSelectedNode()).setPassword(null));
-		form.addFieldMenu(passwordKey, clearPwMenu);
-		
-		form.endRow();
-		
-		/* url */
-		form.setFieldWidth(1);
-		final String urlField = form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.url(), DatasourcesMessages.INSTANCE.url()); 
+   private final BaseDatasourceUiService baseDatasourceService;
 
-		String warningField = form.addField(StaticLabel.class,  new SFFCStaticLabel() {
-			@Override
-			public String getLabel() {
-				return DatasourcesMessages.INSTANCE.urlContainsWhitespaceWarning();
-			}
-		});
+   @Inject
+   public DatabaseDatasourceForm(BaseDatasourceUiService baseDatasourceService) {
+      super();
 
-		form.addCondition(urlField, new SimpleFormCondition() {
-			@Override
-			public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
-				Object value = form.getValue(urlField);
-				return value instanceof String && ((String)value).contains(" ");
-			}
-		}, new ShowHideFieldAction(warningField));
-		
-		/* properties */
-		form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.jdbcProperties(), BaseMessages.INSTANCE.properties(), new SFFCTextAreaImpl());
+      /* store objects */
+      this.baseDatasourceService = baseDatasourceService;
+   }
 
-	}
-	
+   public void configureSimpleForm(SimpleForm form) {
+      /* configure form */
+      form.setHeading(DatasourcesMessages.INSTANCE.editDataSource()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
+
+      /* name name */
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
+            new SFFCTextAreaImpl());
+
+      /* database */
+      form.setFieldWidth(250);
+      form.addField(List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(),
+            DatasourcesMessages.INSTANCE.database(), new SFFCStaticDropdownList<String>() {
+         public Map<String, String> getValues() {
+            return baseDatasourceService.getDatabaseHelpers()
+               .stream()
+               .collect(Collectors.toMap(databaseHelper -> {
+                  String name = databaseHelper.getName();
+                  if (!databaseHelper.isJdbcDriverAvailable())
+                     name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();
+                  return name;
+               }, DatabaseHelperDto::getDescriptor));
+         }
+      });
+
+      form.setFieldWidth(250);
+      form.beginFloatRow();
+
+      /* username */
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.username(), DatasourcesMessages.INSTANCE.username());
+
+      /* password */
+      String passwordKey = form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.password(),
+            DatasourcesMessages.INSTANCE.password(), new SFFCPasswordField() {
+               @Override
+               public Boolean isPasswordSet() {
+                  return ((DatabaseDatasourceDto) getSelectedNode()).isHasPassword();
+               }
+            }); // $NON-NLS-1$
+      Menu clearPwMenu = new DwMenu();
+      MenuItem clearPwItem = new DwMenuItem(DatasourcesMessages.INSTANCE.clearPassword());
+      clearPwMenu.add(clearPwItem);
+      clearPwItem.addSelectionHandler(event -> ((DatabaseDatasourceDto) getSelectedNode()).setPassword(null));
+      form.addFieldMenu(passwordKey, clearPwMenu);
+
+      form.endRow();
+
+      /* url */
+      form.setFieldWidth(1);
+      final String urlField = form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.url(),
+            DatasourcesMessages.INSTANCE.url());
+
+      String warningField = form.addField(StaticLabel.class, new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return DatasourcesMessages.INSTANCE.urlContainsWhitespaceWarning();
+         }
+      });
+
+      form.addCondition(urlField, new SimpleFormCondition() {
+         @Override
+         public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+            Object value = form.getValue(urlField);
+            return value instanceof String && ((String) value).contains(" ");
+         }
+      }, new ShowHideFieldAction(warningField));
+
+      /* properties */
+      form.addField(String.class, DatabaseDatasourceDtoPA.INSTANCE.jdbcProperties(), BaseMessages.INSTANCE.properties(),
+            new SFFCTextAreaImpl());
+
+   }
+
 }

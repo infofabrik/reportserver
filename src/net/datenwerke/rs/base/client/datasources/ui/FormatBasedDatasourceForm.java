@@ -28,90 +28,95 @@ import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessage
 
 public abstract class FormatBasedDatasourceForm extends SimpleFormView {
 
-	@Inject
-	protected HookHandlerService hookHandler;
-	
-	private Widget connectorForm;
-	
-	public void configureSimpleForm(SimpleForm form) {
-		form.setHeading(DatasourcesMessages.INSTANCE.editDataSource() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-		
-		/* name name */
-		form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name()); 
-		
-		form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());		
-		
-		addSpecificFields(form);
-		
-		addConnector(form);
-	}
+   @Inject
+   protected HookHandlerService hookHandler;
 
-	private void addConnector(SimpleForm form) {
-		final List<DatasourceConnectorConfiguratorHook> configs = hookHandler.getHookers(DatasourceConnectorConfiguratorHook.class);
-		
-		form.setFieldWidth(0.3);
-		
-		final String listKey = form.addField(List.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.connector(), BaseDatasourceMessages.INSTANCE.datasourceConnectorLabel(), new SFFCStaticDropdownList<DatasourceConnectorDto>() {
+   private Widget connectorForm;
 
-			private Map<String, DatasourceConnectorDto> map;
-			
-			@Override
-			public Map<String, DatasourceConnectorDto> getValues() {
-				if(null == map){
-					map = new HashMap<String, DatasourceConnectorDto>();
-					
-					FormatBasedDatasourceDefinitionDto datasource = (FormatBasedDatasourceDefinitionDto)getSelectedNode();
-					final DatasourceConnectorDto connector = datasource.getConnector();
-					
-					configs
-                  .forEach(config -> map.put(config.getConnectorName(), 
-                        null != connector &&  config.consumes(connector) ? connector : config.instantiateConnector()));
-				}
-				
-				return map;
-			}
-		});
-		
-		form.setFieldWidth(1);
-		
-		final DwContentPanel specificsWrapper = DwContentPanel.newInlineInstance();
-		
-		form.addField(CustomComponent.class, new SFFCCustomComponent() {
-			@Override
-			public Widget getComponent() {
-				return specificsWrapper;
-			}
-		});
-		
-		form.addCondition(listKey, new FieldChanged(), new SimpleFormAction() {
-			public void onSuccess(SimpleForm form) {
-				FormatBasedDatasourceDefinitionDto datasource = (FormatBasedDatasourceDefinitionDto)getSelectedNode();
-				DatasourceConnectorDto connector = (DatasourceConnectorDto) form.getValue(listKey);
-				datasource.setConnector(connector);
-				
-				if(null != connector){
-					if(null != connectorForm)
-						connectorForm.removeFromParent();
-					
-					for(DatasourceConnectorConfiguratorHook config : configs){
-						if(config.consumes(connector)){
-							connectorForm = config.configureForm(datasource);
-							if(null != connectorForm){
-								specificsWrapper.add(connectorForm, new MarginData(10));
-							}
-							break;
-						}
-					}
-				}
-			}
-			
-			public void onFailure(SimpleForm form) {
-			}
-		});
-	}
+   public void configureSimpleForm(SimpleForm form) {
+      form.setHeading(DatasourcesMessages.INSTANCE.editDataSource()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
-	protected void addSpecificFields(SimpleForm form) {
-		
-	}
+      /* name name */
+      form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+
+      form.addField(String.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.description(),
+            BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());
+
+      addSpecificFields(form);
+
+      addConnector(form);
+   }
+
+   private void addConnector(SimpleForm form) {
+      final List<DatasourceConnectorConfiguratorHook> configs = hookHandler
+            .getHookers(DatasourceConnectorConfiguratorHook.class);
+
+      form.setFieldWidth(0.3);
+
+      final String listKey = form.addField(List.class, FormatBasedDatasourceDefinitionDtoPA.INSTANCE.connector(),
+            BaseDatasourceMessages.INSTANCE.datasourceConnectorLabel(),
+            new SFFCStaticDropdownList<DatasourceConnectorDto>() {
+
+               private Map<String, DatasourceConnectorDto> map;
+
+               @Override
+               public Map<String, DatasourceConnectorDto> getValues() {
+                  if (null == map) {
+                     map = new HashMap<String, DatasourceConnectorDto>();
+
+                     FormatBasedDatasourceDefinitionDto datasource = (FormatBasedDatasourceDefinitionDto) getSelectedNode();
+                     final DatasourceConnectorDto connector = datasource.getConnector();
+
+                     configs.forEach(config -> map.put(config.getConnectorName(),
+                           null != connector && config.consumes(connector) ? connector
+                                 : config.instantiateConnector()));
+                  }
+
+                  return map;
+               }
+            });
+
+      form.setFieldWidth(1);
+
+      final DwContentPanel specificsWrapper = DwContentPanel.newInlineInstance();
+
+      form.addField(CustomComponent.class, new SFFCCustomComponent() {
+         @Override
+         public Widget getComponent() {
+            return specificsWrapper;
+         }
+      });
+
+      form.addCondition(listKey, new FieldChanged(), new SimpleFormAction() {
+         public void onSuccess(SimpleForm form) {
+            FormatBasedDatasourceDefinitionDto datasource = (FormatBasedDatasourceDefinitionDto) getSelectedNode();
+            DatasourceConnectorDto connector = (DatasourceConnectorDto) form.getValue(listKey);
+            datasource.setConnector(connector);
+
+            if (null != connector) {
+               if (null != connectorForm)
+                  connectorForm.removeFromParent();
+
+               for (DatasourceConnectorConfiguratorHook config : configs) {
+                  if (config.consumes(connector)) {
+                     connectorForm = config.configureForm(datasource);
+                     if (null != connectorForm) {
+                        specificsWrapper.add(connectorForm, new MarginData(10));
+                     }
+                     break;
+                  }
+               }
+            }
+         }
+
+         public void onFailure(SimpleForm form) {
+         }
+      });
+   }
+
+   protected void addSpecificFields(SimpleForm form) {
+
+   }
 
 }

@@ -20,47 +20,45 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface TableReportUtils {
 
-	List<Column> getReturnedColumns(TableReport report, String executeToken)
-			throws ReportExecutorException, NonFatalException;
+   List<Column> getReturnedColumns(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException;
 
-	List<Column> getReturnedPlainColumns(TableReport report, String executeToken)
-		throws ReportExecutorException, NonFatalException;
-	
-	TableDefinition getReturnedPlainTableDefinition(TableReport report, String executeToken)
-			throws ReportExecutorException, NonFatalException;
+   List<Column> getReturnedPlainColumns(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException;
 
-	List<Column> getReturnedColumns(TableReport report, User user, String executeToken)
-			throws ReportExecutorException, NonFatalException;
+   TableDefinition getReturnedPlainTableDefinition(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException;
 
-	List<Column> getReturnedPlainColumns(TableReport report, User user, String executeToken)
-		throws ReportExecutorException, NonFatalException;
-	
-	TableReportInformation getReportInformation(TableReport report, String executeToken)
-			throws ReportExecutorException;
-	
-	FilterBlock getParentFilterBlock(FilterBlock filterBlock);
-	
-	public List<TableReport> getReportsWithMetadataDatasource(DatasourceDefinition ds);
+   List<Column> getReturnedColumns(TableReport report, User user, String executeToken)
+         throws ReportExecutorException, NonFatalException;
 
-	void remove(Column column);
-	
-	Column merge(Column column);
+   List<Column> getReturnedPlainColumns(TableReport report, User user, String executeToken)
+         throws ReportExecutorException, NonFatalException;
 
-	void persist(AdditionalColumnSpec column);
-	
-	void persist(Column column);
-	
-	void remove(AdditionalColumnSpec column);
+   TableReportInformation getReportInformation(TableReport report, String executeToken) throws ReportExecutorException;
 
-	void remove(PreFilter filter);
+   FilterBlock getParentFilterBlock(FilterBlock filterBlock);
 
-	void remove(FilterBlock filterBlock);
-	
-	List<ColumnFilter> getColumnFiltersWithColumn(Column column);
+   List<TableReport> getReportsWithMetadataDatasource(DatasourceDefinition ds);
 
-	Collection<BinaryColumnFilter> getBinaryColumnFiltersWithColumn(
-			Column column);
+   void remove(Column column);
 
-	List<ColumnReference> getColumnReferencesFor(AdditionalColumnSpec reference);
+   Column merge(Column column);
+
+   void persist(AdditionalColumnSpec column);
+
+   void persist(Column column);
+
+   void remove(AdditionalColumnSpec column);
+
+   void remove(PreFilter filter);
+
+   void remove(FilterBlock filterBlock);
+
+   List<ColumnFilter> getColumnFiltersWithColumn(Column column);
+
+   Collection<BinaryColumnFilter> getBinaryColumnFiltersWithColumn(Column column);
+
+   List<ColumnReference> getColumnReferencesFor(AdditionalColumnSpec reference);
 
 }

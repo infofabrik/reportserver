@@ -18,28 +18,29 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class TableReportModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* bind metadata exporter */
-		Multibinder<TableMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(), TableMetadataExporter.class);
-		metadataExporterBinder.addBinding().to(TablePlainExporter.class);
-		
-		/* bind utilities */
-		bind(TableReportUtils.class).to(TableReportUtilsImpl.class).in(Singleton.class);
-		bind(TableReportColumnMetadataService.class).to(TableReportColumnMetadataServiceImpl.class).in(Singleton.class);
-		
-		/* bind startup */
-		bind(TableReportStartup.class).asEagerSingleton();
-		
-		requestStaticInjection(
-			ColumnFormatTemplate.class,
-			ColumnFormatDate.class,
-			TableOutputGeneratorImpl.class,
-			RSTableToXLS.class,
-			Filter.class,
-			Column.class,
-			CurrencyType.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* bind metadata exporter */
+      Multibinder<TableMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(),
+            TableMetadataExporter.class);
+      metadataExporterBinder.addBinding().to(TablePlainExporter.class);
+
+      /* bind utilities */
+      bind(TableReportUtils.class).to(TableReportUtilsImpl.class).in(Singleton.class);
+      bind(TableReportColumnMetadataService.class).to(TableReportColumnMetadataServiceImpl.class).in(Singleton.class);
+
+      /* bind startup */
+      bind(TableReportStartup.class).asEagerSingleton();
+
+      requestStaticInjection(
+            ColumnFormatTemplate.class, 
+            ColumnFormatDate.class, 
+            TableOutputGeneratorImpl.class,
+            RSTableToXLS.class, 
+            Filter.class, 
+            Column.class, 
+            CurrencyType.class
+            );
+   }
 
 }

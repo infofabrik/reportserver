@@ -53,252 +53,263 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class TableReportUtilsImpl implements TableReportUtils {
 
-	private final TableReportColumnMetadataService tableReportMetadataService;
-	private final ReportExecutorService reportExecutor;
-	private final Provider<EntityManager> entityManagerProvider;
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final ProxyUtils proxyUtils;
-	
-	@Inject
-	public TableReportUtilsImpl(
-		TableReportColumnMetadataService tableReportMetadataService,
-		ReportExecutorService reportExecutor,
-		Provider<EntityManager> entityManagerProvider,
-		Provider<AuthenticatorService> authenticatorServiceProvider,
-		ProxyUtils proxyUtils
-		) {
-		
-		/* store objects */
-		this.tableReportMetadataService = tableReportMetadataService;
-		this.reportExecutor = reportExecutor;
-		this.entityManagerProvider = entityManagerProvider;
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.proxyUtils = proxyUtils;
-	}
-	
-	@Override
-	public TableReportInformation getReportInformation(TableReport report, String executeToken) throws ReportExecutorException {
-		TableReportInformation information = new TableReportInformation();
-		
-		/* visible count */
-		int visCols = 0;
-		for(Column col : report.getColumns())
-			if(null == col.isHidden() || !col.isHidden())
-				visCols++;
-		information.setVisibleCount(visCols);
-		
-		/* column count */
-		RSTableModel res = (RSTableModel)  reportExecutor.execute(report, ReportExecutorService.OUTPUT_FORMAT_METADATA, new RECMetadata(), new RECReportExecutorToken(executeToken));
-		TableDefinition tableDefinition = res.getTableDefinition();
-		information.setColumnCount(tableDefinition.getColumnNames().size());
-		
-		/* row count */
-		CompiledDataCountTableReport dataCount = (CompiledDataCountTableReport)  reportExecutor.execute(report, ReportExecutorService.OUTPUT_FORMAT_DATACOUNT, new RECCountData(), new RECReportExecutorToken(executeToken));
-		information.setDataCount(dataCount.getDataCount());
-		information.setExecuteDuration(dataCount.getExecuteDuration());
-	
-		return information;
-	}
-	
-	@Override
-	@SimpleQuery(from=TableReport.class, join=@Join(joinAttribute=TableReport__.metadataDatasourceContainer, where=@Predicate(attribute=DatasourceContainer__.datasource,value="ds")))
-	public List<TableReport> getReportsWithMetadataDatasource(@Named("ds") DatasourceDefinition ds) {
-		return null; // by magic
-	}
+   private final TableReportColumnMetadataService tableReportMetadataService;
+   private final ReportExecutorService reportExecutor;
+   private final Provider<EntityManager> entityManagerProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final ProxyUtils proxyUtils;
 
-	@Override
-	@QueryByAttribute(where=ColumnFilter__.column)
-	public List<ColumnFilter> getColumnFiltersWithColumn(@Named("column") Column column) {
-		return null; // by magic
-	}
+   @Inject
+   public TableReportUtilsImpl(
+         TableReportColumnMetadataService tableReportMetadataService,
+         ReportExecutorService reportExecutor, 
+         Provider<EntityManager> entityManagerProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, 
+         ProxyUtils proxyUtils
+         ) {
 
-	@Override
-	public Collection<BinaryColumnFilter> getBinaryColumnFiltersWithColumn(@Named("column") Column column) {
-		Set<BinaryColumnFilter> filters = new HashSet<BinaryColumnFilter>();
-		filters.addAll(getBinaryColumnFiltersWithColumnA(column));
-		filters.addAll(getBinaryColumnFiltersWithColumnB(column));
-		
-		return filters;
-	}
-	
-	@QueryByAttribute(where=BinaryColumnFilter__.columnA)
-	protected List<BinaryColumnFilter> getBinaryColumnFiltersWithColumnA(@Named("column") Column column) {
-		return null; // by magic
-	}
-	
-	@QueryByAttribute(where=BinaryColumnFilter__.columnB)
-	protected List<BinaryColumnFilter> getBinaryColumnFiltersWithColumnB(@Named("column") Column column) {
-		return null; // by magic
-	}
-	
-	@Override
-	@QueryByAttribute(where=ColumnReference__.reference)
-	public List<ColumnReference> getColumnReferencesFor(@Named("column") AdditionalColumnSpec reference) {
-		return null; // by magic
-	}
-	
-	@Override
-	@SimpleQuery(join=@Join(joinAttribute=FilterBlock__.childBlocks, where=@Predicate(attribute="",value="childBlock")))
-	public FilterBlock getParentFilterBlock(@Named("childBlock") FilterBlock filterBlock) {
-		return null; // by magic
-	}
-	
-	@Override
-	public List<Column> getReturnedPlainColumns(TableReport report, String executeToken) throws ReportExecutorException, NonFatalException {
-		User user = authenticatorServiceProvider.get().getCurrentUser();
-		return getReturnedColumns(report, user, executeToken, true);
-	}
-	
-	@Override
-	public TableDefinition getReturnedPlainTableDefinition(TableReport report, String executeToken) throws ReportExecutorException, NonFatalException {
-		User user = authenticatorServiceProvider.get().getCurrentUser();
-		return getReturnedTableDefinition(report, user, executeToken, true);
-	}
+      /* store objects */
+      this.tableReportMetadataService = tableReportMetadataService;
+      this.reportExecutor = reportExecutor;
+      this.entityManagerProvider = entityManagerProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.proxyUtils = proxyUtils;
+   }
 
-	@Override
-	public List<Column> getReturnedColumns(TableReport report, String executeToken) throws ReportExecutorException, NonFatalException {
-		User user = authenticatorServiceProvider.get().getCurrentUser();
-		return getReturnedColumns(report, user, executeToken, false);
-	}
-	
-	@Override
-	public List<Column> getReturnedPlainColumns(TableReport report, User user, String executeToken) throws ReportExecutorException, NonFatalException {
-		return getReturnedColumns(report, user, executeToken, true);
-	}
+   @Override
+   public TableReportInformation getReportInformation(final TableReport report, final String executeToken)
+         throws ReportExecutorException {
+      TableReportInformation information = new TableReportInformation();
 
-	@Override
-	public List<Column> getReturnedColumns(TableReport report, User user, String executeToken) throws ReportExecutorException, NonFatalException {
-		return getReturnedColumns(report, user, executeToken, false);
-	}
-	
-	
-	protected List<Column> getReturnedColumns(TableReport report, User user, String executeToken, boolean ignoreAnyColumnConfiguration) throws ReportExecutorException, NonFatalException {
+      /* visible count */
+      long visCols = report.getColumns()
+            .stream()
+            .filter(col -> null == col.isHidden() || !col.isHidden())
+            .count();
+      
+      information.setVisibleCount((int)visCols);
 
-		ArrayList<Column> columns = new ArrayList<>();
-		
-		/* all columns please */
-		report.setColumns(null);
-		report.setSelectAllColumns(true);
-		if(ignoreAnyColumnConfiguration)
-			report.setIgnoreAnyColumnConfiguration(true);
+      /* column count */
+      RSTableModel res = (RSTableModel) reportExecutor.execute(report, ReportExecutorService.OUTPUT_FORMAT_METADATA,
+            new RECMetadata(), new RECReportExecutorToken(executeToken));
+      TableDefinition tableDefinition = res.getTableDefinition();
+      information.setColumnCount(tableDefinition.getColumnNames().size());
 
-		Map<String, ColumnMetadata> columnMetadataMap = tableReportMetadataService.createColumnMetadataMap(report, user);
-		
-		/* disable subtotal */
-		report.setEnableSubtotals(false);
-		
-		/* execute report */
-		RSTableModel res = (RSTableModel)  reportExecutor.execute(report, user, ReportExecutorService.OUTPUT_FORMAT_METADATA, new RECMetadata(), new RECReportExecutorToken(executeToken));
-		
-		TableDefinition tableDefinition = res.getTableDefinition();
-		
-		for(Object[] column : tableDefinition.getColumns()){
-			Column col = new Column();
-			col.setName((String)column[0]);
-			col.setType(((Integer)column[3]));
-			
-			if(columnMetadataMap.containsKey(col.getName())){
-				ColumnMetadata metadata = columnMetadataMap.get(col.getName());
-				col.setDefaultAlias(metadata.getDefaultAlias());
-				col.setDefaultPreviewWidth(metadata.getDefaultPreviewWidth());
-				col.setDescription(metadata.getDescription());
-				col.setSemanticType(metadata.getSemanticType());
-				col.setIndexColumn(metadata.isIndexColumn());
-			}
+      /* row count */
+      CompiledDataCountTableReport dataCount = (CompiledDataCountTableReport) reportExecutor.execute(report,
+            ReportExecutorService.OUTPUT_FORMAT_DATACOUNT, new RECCountData(),
+            new RECReportExecutorToken(executeToken));
+      information.setDataCount(dataCount.getDataCount());
+      information.setExecuteDuration(dataCount.getExecuteDuration());
 
-			columns.add(col);
-		}
-		
+      return information;
+   }
 
-		return columns;
-	}
-	
-	protected TableDefinition getReturnedTableDefinition(TableReport report, User user, String executeToken, boolean ignoreAnyColumnConfiguration) throws ReportExecutorException, NonFatalException {
+   @Override
+   @SimpleQuery(from = TableReport.class, join = @Join(joinAttribute = TableReport__.metadataDatasourceContainer, where = @Predicate(attribute = DatasourceContainer__.datasource, value = "ds")))
+   public List<TableReport> getReportsWithMetadataDatasource(@Named("ds") DatasourceDefinition ds) {
+      return null; // by magic
+   }
 
-		/* all columns please */
-		report.setColumns(null);
-		report.setSelectAllColumns(true);
-		if(ignoreAnyColumnConfiguration)
-			report.setIgnoreAnyColumnConfiguration(true);
+   @Override
+   @QueryByAttribute(where = ColumnFilter__.column)
+   public List<ColumnFilter> getColumnFiltersWithColumn(@Named("column") Column column) {
+      return null; // by magic
+   }
 
-		/* disable subtotal */
-		report.setEnableSubtotals(false);
-		
-		/* execute report */
-		RSTableModel res = (RSTableModel)  reportExecutor.execute(report, user, ReportExecutorService.OUTPUT_FORMAT_METADATA, new RECMetadata(), new RECReportExecutorToken(executeToken));
-		
-		TableDefinition tableDefinition = res.getTableDefinition();
-		
-		return tableDefinition;
-	}
-	
-	@FireRemoveEntityEvents
-	@Override
-	public void remove(Column column){
-		EntityManager em = entityManagerProvider.get();
-		column = em.find(column.getClass(), column.getId());
-		if(null != column)
-			em.remove(column);
-	}
-	
-	@FireRemoveEntityEvents
-	@Override
-	public void remove(FilterBlock filterBlock) {
-		EntityManager em = entityManagerProvider.get();
-		filterBlock = em.find(filterBlock.getClass(), filterBlock.getId());
-		if(null != filterBlock) {
-			filterBlock.getFilters().clear();
-			filterBlock.getChildBlocks().clear();
-			
-			/* get parent filter block*/
-			FilterBlock parent = getParentFilterBlock(filterBlock);
-			if (null != parent)
-				parent.getChildBlocks().remove(filterBlock);
-			em.remove(filterBlock);
-		}
-	}
+   @Override
+   public Collection<BinaryColumnFilter> getBinaryColumnFiltersWithColumn(@Named("column") Column column) {
+      Set<BinaryColumnFilter> filters = new HashSet<BinaryColumnFilter>();
+      filters.addAll(getBinaryColumnFiltersWithColumnA(column));
+      filters.addAll(getBinaryColumnFiltersWithColumnB(column));
 
-	@FirePersistEntityEvents
-	@Override
-	public void persist(AdditionalColumnSpec column){
-		EntityManager em = entityManagerProvider.get();
-		em.persist(column);
-	}
-	
-	@FirePersistEntityEvents
-	@Override
-	public void persist(Column column){
-		EntityManager em = entityManagerProvider.get();
-		em.persist(column);
-	}
-	
-	@FireMergeEntityEvents
-	@Override
-	public Column merge(Column column){
-		if(null == column)
-			return null;
-		EntityManager em = entityManagerProvider.get();
-		column = (Column) em.find(proxyUtils.getUnproxiedClass(column.getClass()), column.getId());
-		return em.merge(column);
-	}
-	
-	
-	@FireRemoveEntityEvents
-	@Override
-	public void remove(AdditionalColumnSpec column){
-		EntityManager em = entityManagerProvider.get();
-		column = em.find(column.getClass(), column.getId());
-		if(null != column)
-			em.remove(column);
-	}
-	
-	@FireRemoveEntityEvents
-	@Override
-	public void remove(PreFilter filter){
-		EntityManager em = entityManagerProvider.get();
-		filter = em.find(filter.getClass(), filter.getId());
-		if(null != filter)
-			em.remove(filter);
-	}
+      return filters;
+   }
+
+   @QueryByAttribute(where = BinaryColumnFilter__.columnA)
+   protected List<BinaryColumnFilter> getBinaryColumnFiltersWithColumnA(@Named("column") Column column) {
+      return null; // by magic
+   }
+
+   @QueryByAttribute(where = BinaryColumnFilter__.columnB)
+   protected List<BinaryColumnFilter> getBinaryColumnFiltersWithColumnB(@Named("column") Column column) {
+      return null; // by magic
+   }
+
+   @Override
+   @QueryByAttribute(where = ColumnReference__.reference)
+   public List<ColumnReference> getColumnReferencesFor(@Named("column") AdditionalColumnSpec reference) {
+      return null; // by magic
+   }
+
+   @Override
+   @SimpleQuery(join = @Join(joinAttribute = FilterBlock__.childBlocks, where = @Predicate(attribute = "", value = "childBlock")))
+   public FilterBlock getParentFilterBlock(@Named("childBlock") FilterBlock filterBlock) {
+      return null; // by magic
+   }
+
+   @Override
+   public List<Column> getReturnedPlainColumns(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException {
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+      return getReturnedColumns(report, user, executeToken, true);
+   }
+
+   @Override
+   public TableDefinition getReturnedPlainTableDefinition(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException {
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+      return getReturnedTableDefinition(report, user, executeToken, true);
+   }
+
+   @Override
+   public List<Column> getReturnedColumns(TableReport report, String executeToken)
+         throws ReportExecutorException, NonFatalException {
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+      return getReturnedColumns(report, user, executeToken, false);
+   }
+
+   @Override
+   public List<Column> getReturnedPlainColumns(TableReport report, User user, String executeToken)
+         throws ReportExecutorException, NonFatalException {
+      return getReturnedColumns(report, user, executeToken, true);
+   }
+
+   @Override
+   public List<Column> getReturnedColumns(TableReport report, User user, String executeToken)
+         throws ReportExecutorException, NonFatalException {
+      return getReturnedColumns(report, user, executeToken, false);
+   }
+
+   protected List<Column> getReturnedColumns(TableReport report, User user, String executeToken,
+         boolean ignoreAnyColumnConfiguration) throws ReportExecutorException, NonFatalException {
+
+      ArrayList<Column> columns = new ArrayList<>();
+
+      /* all columns please */
+      report.setColumns(null);
+      report.setSelectAllColumns(true);
+      if (ignoreAnyColumnConfiguration)
+         report.setIgnoreAnyColumnConfiguration(true);
+
+      Map<String, ColumnMetadata> columnMetadataMap = tableReportMetadataService.createColumnMetadataMap(report, user);
+
+      /* disable subtotal */
+      report.setEnableSubtotals(false);
+
+      /* execute report */
+      RSTableModel res = (RSTableModel) reportExecutor.execute(report, user,
+            ReportExecutorService.OUTPUT_FORMAT_METADATA, new RECMetadata(), new RECReportExecutorToken(executeToken));
+
+      TableDefinition tableDefinition = res.getTableDefinition();
+
+      for (Object[] column : tableDefinition.getColumns()) {
+         Column col = new Column();
+         col.setName((String) column[0]);
+         col.setType(((Integer) column[3]));
+
+         if (columnMetadataMap.containsKey(col.getName())) {
+            ColumnMetadata metadata = columnMetadataMap.get(col.getName());
+            col.setDefaultAlias(metadata.getDefaultAlias());
+            col.setDefaultPreviewWidth(metadata.getDefaultPreviewWidth());
+            col.setDescription(metadata.getDescription());
+            col.setSemanticType(metadata.getSemanticType());
+            col.setIndexColumn(metadata.isIndexColumn());
+         }
+
+         columns.add(col);
+      }
+
+      return columns;
+   }
+
+   protected TableDefinition getReturnedTableDefinition(TableReport report, User user, String executeToken,
+         boolean ignoreAnyColumnConfiguration) throws ReportExecutorException, NonFatalException {
+
+      /* all columns please */
+      report.setColumns(null);
+      report.setSelectAllColumns(true);
+      if (ignoreAnyColumnConfiguration)
+         report.setIgnoreAnyColumnConfiguration(true);
+
+      /* disable subtotal */
+      report.setEnableSubtotals(false);
+
+      /* execute report */
+      RSTableModel res = (RSTableModel) reportExecutor.execute(report, user,
+            ReportExecutorService.OUTPUT_FORMAT_METADATA, new RECMetadata(), new RECReportExecutorToken(executeToken));
+
+      TableDefinition tableDefinition = res.getTableDefinition();
+
+      return tableDefinition;
+   }
+
+   @FireRemoveEntityEvents
+   @Override
+   public void remove(Column column) {
+      EntityManager em = entityManagerProvider.get();
+      column = em.find(column.getClass(), column.getId());
+      if (null != column)
+         em.remove(column);
+   }
+
+   @FireRemoveEntityEvents
+   @Override
+   public void remove(FilterBlock filterBlock) {
+      EntityManager em = entityManagerProvider.get();
+      filterBlock = em.find(filterBlock.getClass(), filterBlock.getId());
+      if (null != filterBlock) {
+         filterBlock.getFilters().clear();
+         filterBlock.getChildBlocks().clear();
+
+         /* get parent filter block */
+         FilterBlock parent = getParentFilterBlock(filterBlock);
+         if (null != parent)
+            parent.getChildBlocks().remove(filterBlock);
+         em.remove(filterBlock);
+      }
+   }
+
+   @FirePersistEntityEvents
+   @Override
+   public void persist(AdditionalColumnSpec column) {
+      EntityManager em = entityManagerProvider.get();
+      em.persist(column);
+   }
+
+   @FirePersistEntityEvents
+   @Override
+   public void persist(Column column) {
+      EntityManager em = entityManagerProvider.get();
+      em.persist(column);
+   }
+
+   @FireMergeEntityEvents
+   @Override
+   public Column merge(Column column) {
+      if (null == column)
+         return null;
+      EntityManager em = entityManagerProvider.get();
+      column = (Column) em.find(proxyUtils.getUnproxiedClass(column.getClass()), column.getId());
+      return em.merge(column);
+   }
+
+   @FireRemoveEntityEvents
+   @Override
+   public void remove(AdditionalColumnSpec column) {
+      EntityManager em = entityManagerProvider.get();
+      column = em.find(column.getClass(), column.getId());
+      if (null != column)
+         em.remove(column);
+   }
+
+   @FireRemoveEntityEvents
+   @Override
+   public void remove(PreFilter filter) {
+      EntityManager em = entityManagerProvider.get();
+      filter = em.find(filter.getClass(), filter.getId());
+      if (null != filter)
+         em.remove(filter);
+   }
 
 }

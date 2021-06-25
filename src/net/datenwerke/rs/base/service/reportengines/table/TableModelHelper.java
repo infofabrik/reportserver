@@ -17,29 +17,27 @@ import net.datenwerke.rs.utils.jpa.EntityUtils;
  */
 public class TableModelHelper {
 
-	protected final EntityUtils entityUtils;
-	
-	@Inject
-	public TableModelHelper(EntityUtils entityUtils) {
-		this.entityUtils = entityUtils;
-	}
+   protected final EntityUtils entityUtils;
 
+   @Inject
+   public TableModelHelper(EntityUtils entityUtils) {
+      this.entityUtils = entityUtils;
+   }
 
-	public TableDefinition tableDefinitionFromEntityType(Object entity) {
-		return tableDefinitionFromEntityType(entity.getClass());
-	}
+   public TableDefinition tableDefinitionFromEntityType(Object entity) {
+      return tableDefinitionFromEntityType(entity.getClass());
+   }
 
-	public TableDefinition tableDefinitionFromEntityType(Class<?> type) {
-		ArrayList<String> columnNames = new ArrayList<String>();
-		List<Class<?>> columnTypes = new ArrayList<Class<?>>();
-		
-		for(Field f : entityUtils.getPersistantFields(type)){
-			columnTypes.add(f.getType());
-			columnNames.add(f.getName());
-		}
-		
-		return new TableDefinition(columnNames, columnTypes);
-	}
-	
-	
+   public TableDefinition tableDefinitionFromEntityType(Class<?> type) {
+      ArrayList<String> columnNames = new ArrayList<String>();
+      List<Class<?>> columnTypes = new ArrayList<Class<?>>();
+
+      for (Field f : entityUtils.getPersistantFields(type)) {
+         columnTypes.add(f.getType());
+         columnNames.add(f.getName());
+      }
+
+      return new TableDefinition(columnNames, columnTypes);
+   }
+
 }

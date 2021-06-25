@@ -7,10 +7,10 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.AggregateFunctionDt
 
 public interface BaseDatasourceUiService {
 
-	public void setDatabaseHelpers(Collection<DatabaseHelperDto> databaseHelper);
-	
-	public Collection<DatabaseHelperDto> getDatabaseHelpers();
-	
-	public boolean isNumericalAggregation(AggregateFunctionDto aggregate);
-	
+   public void setDatabaseHelpers(Collection<DatabaseHelperDto> databaseHelper);
+
+   public Collection<DatabaseHelperDto> getDatabaseHelpers();
+
+   public boolean isNumericalAggregation(AggregateFunctionDto aggregate);
+
 }

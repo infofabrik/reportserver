@@ -8,20 +8,20 @@ import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
  * 
  *
  */
-public class CsvDatasourceForm extends FormatBasedDatasourceForm{
+public class CsvDatasourceForm extends FormatBasedDatasourceForm {
 
-	protected void addSpecificFields(SimpleForm form) {
-		form.beginRow();
-		form.addField(String.class, CsvDatasourceDtoPA.INSTANCE.quote(), BaseDatasourceMessages.INSTANCE.csvQuoteLabel()); 
+   protected void addSpecificFields(SimpleForm form) {
+      form.beginRow();
+      form.addField(String.class, CsvDatasourceDtoPA.INSTANCE.quote(), BaseDatasourceMessages.INSTANCE.csvQuoteLabel());
 
-		form.addField(String.class, CsvDatasourceDtoPA.INSTANCE.separator(), BaseDatasourceMessages.INSTANCE.csvSeparatorLabel());
-		form.endRow();
-		
-		form.setFieldWidth(0.3);
-		form.addField(Integer.class, CsvDatasourceDtoPA.INSTANCE.databaseCache(), BaseDatasourceMessages.INSTANCE.csvDatabaseCacheLabel());
-		form.setFieldWidth(1);
-	}
+      form.addField(String.class, CsvDatasourceDtoPA.INSTANCE.separator(),
+            BaseDatasourceMessages.INSTANCE.csvSeparatorLabel());
+      form.endRow();
 
+      form.setFieldWidth(0.3);
+      form.addField(Integer.class, CsvDatasourceDtoPA.INSTANCE.databaseCache(),
+            BaseDatasourceMessages.INSTANCE.csvDatabaseCacheLabel());
+      form.setFieldWidth(1);
+   }
 
-	
 }
