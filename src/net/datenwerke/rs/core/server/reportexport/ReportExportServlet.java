@@ -293,7 +293,7 @@ public class ReportExportServlet extends SecuredHttpServlet {
       Report report = getReportFromRequest(req);
       String suggestedFileName = req.getParameter(PARAMETER_SUGGESTED_FILENAME);
       ReportExecutionConfig[] configs = getConfigsFromRequest(report, req);
-
+      
       exportReport(reportId, report, outputFormat, suggestedFileName, null, req, resp, null, configs);
    }
 
@@ -549,10 +549,10 @@ public class ReportExportServlet extends SecuredHttpServlet {
          return null;
       
       return Arrays.stream(reportExecutorConfigs)
-         .filter(cfg -> cfg instanceof RECReportExecutorToken)
-         .map(cfg -> ((RECReportExecutorToken) cfg).getToken())
-         .findAny()
-         .orElseGet(null);
+            .filter(cfg -> cfg instanceof RECReportExecutorToken)
+            .map(cfg -> ((RECReportExecutorToken) cfg).getToken())
+            .findAny()
+            .orElse(null);
          
    }
 
