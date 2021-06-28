@@ -160,7 +160,7 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
       wrapper.setLightDarkStyle();
       wrapper.setHeading(SchedulerMessages.INSTANCE.report());
       wrapper.setInfoText(SchedulerMessages.INSTANCE.reportConfigDescription());
-      wrapper.setHeight(470);
+      wrapper.setHeight(480);
       wrapper.setWidget(verticalContainer);
       
       ToolBar toolbar = createToolbar();
@@ -573,7 +573,7 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
 
 	@Override
 	public int getPageHeight() {
-		return 546;
+		return 556;
 	}
 	
 	public ToggleGroup getExportTypeGroup() {

@@ -15,6 +15,9 @@ public interface ReportExporterMessages extends Messages {
 	String export2HTML();
 	
 	String export2JSON();
+	String export2JSONC();
+	
+	String jsonc();
 
 	String Export2PDF();
 	

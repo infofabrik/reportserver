@@ -134,7 +134,7 @@ public class ScheduleDialog {
       wizard.addPage(exportForm);
       wizard.addPage(seriesConfigForm);
       
-      wizard.setSize(640, 546);
+      wizard.setSize(640, 556);
       wizard.setHeading(
             SchedulerMessages.INSTANCE.scheduleReportMulti(report.isPresent() ? report.get().getName() : BaseMessages.INSTANCE.name()));
       wizard.show();

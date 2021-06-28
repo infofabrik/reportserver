@@ -19,6 +19,7 @@ import net.datenwerke.rs.base.client.reportengines.table.execute.Table2CSV;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2Excel;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2HTML;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSON;
+import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSONC;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JXLS;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2PDF;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.CubifyHooker;
@@ -68,6 +69,7 @@ public class BaseReportEngineUiStartup {
 		
 		final Provider<Table2HTML> table2HTML,
 		final Provider<Table2JSON> table2JSON,
+		final Provider<Table2JSONC> table2JSONC,
 		final Provider<Table2CSV> table2CSV,
 		final Provider<Table2PDF> table2PDF,
 		final Provider<Table2Excel> table2Excel,
@@ -131,7 +133,8 @@ public class BaseReportEngineUiStartup {
 		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2CSV), HookHandlerService.PRIORITY_LOW);
 		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2HTML), HookHandlerService.PRIORITY_LOWER + 10);
 		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2PDF), HookHandlerService.PRIORITY_LOWER + 20);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSON), HookHandlerService.PRIORITY_LOWER + 30);
+		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSON), HookHandlerService.PRIORITY_LOWER + 40);
+		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSONC), HookHandlerService.PRIORITY_LOWER + 50);
 		
 		waitOnEventServiceProvider.get().callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN, ticket -> {
 			if (enterpriseServiceProvider.get().isEnterprise())
