@@ -8,10 +8,6 @@ import net.datenwerke.rs.core.client.reportexporter.ReportExporterDao;
 import net.datenwerke.rs.core.client.reportexporter.exporter.generic.Export2JXLS;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
-/**
- * 
- *
- */
 public class Table2JXLS extends Export2JXLS {
 
    @Inject

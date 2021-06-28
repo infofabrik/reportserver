@@ -140,8 +140,9 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       }
    }
 
-   //no streaming
-   private Workbook processNormalWorkbook(final Context context, final InputStream templateInputStream) throws IOException {
+   // no streaming
+   private Workbook processNormalWorkbook(final Context context, final InputStream templateInputStream)
+         throws IOException {
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
 
          PoiTransformer transformer = PoiTransformer.createTransformer(templateInputStream, bos);
@@ -150,7 +151,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
          return transformer.getWorkbook();
       }
    }
-   
+
    protected Workbook processWorkbook(ParameterSet parameters, byte[] template, Connection connection,
          JxlsReport report, String outputFormat) throws ReportExecutorException {
       /* prepare parameters */
@@ -167,7 +168,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       context.putVar("jdbc", rm);
       context.putVar("StringUtils", new StringUtils());
       context.putVar("StringEscapeUtils", new StringEscapeUtils());
-      
+
       hookHandler.getHookers(JxlsContextVariableProvider.class).forEach(provider -> provider.adaptContext(context));
 
       // read properties
@@ -176,9 +177,9 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 
       try (ByteArrayInputStream templateInputStream = new ByteArrayInputStream(template)) {
 
-         if (!jxlsStream) 
+         if (!jxlsStream)
             return processNormalWorkbook(context, templateInputStream);
-         else 
+         else
             return processStreamingWorkbook(report, context, templateInputStream, outputFormat);
 
       } catch (IOException e) {
@@ -190,7 +191,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 
    private Workbook processStreamingWorkbook(final JxlsReport report, Context context, InputStream templateInputStream,
          String outputFormat) throws IOException {
-      if (outputFormat.contentEquals("HTML")) 
+      if (outputFormat.contentEquals("HTML"))
          return WorkbookFactory.create(templateInputStream);
       else {
          Workbook workbookTemplate = WorkbookFactory.create(templateInputStream);
@@ -202,7 +203,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
          workbookTemplate.setForceFormulaRecalculation(true);
          workbookTemplate.setActiveSheet(0);
          workbookTemplate.setSelectedTab(0);
-         
+
          int rowAccessWindowSize = (Integer) report.getEffectiveReportStringPropertyValue(
                AvailableReportProperties.PROPERTY_JXLS_STREAM_ROW_ACCESS_WINDOW_SIZE.getValue(),
                SXSSFWorkbook.DEFAULT_WINDOW_SIZE, ReportStringProperty::toInteger);
@@ -218,7 +219,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
          final JxlsStreamingTransformer transformer = new JxlsStreamingTransformer(workbookTemplate,
                rowAccessWindowSize, compressTmpFiles, useSharedStringsTable);
          AreaBuilder areaBuilder = new XlsCommentAreaBuilder(transformer);
-         
+
          areaBuilder.build().forEach(xlsArea -> xlsArea.applyAt(xlsArea.getStartCellRef(), context));
 
          try (PipedInputStream in = new PipedInputStream()) {
@@ -273,7 +274,6 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       beans.put("StringUtils", new StringUtils());
       beans.put("StringEscapeUtils", new StringEscapeUtils());
 
-      
       hookHandler.getHookers(JxlsContextVariableProvider.class).forEach(provider -> provider.adaptLegacyContext(beans));
 
       try {
