@@ -101,20 +101,20 @@ public class ReportExporterUIServiceImpl implements ReportExporterUIService {
 	}
 	
 	@Override
-	public List<ReportExporter> getAvailableExporters(ReportDto report) {
-		List<ReportExporter> exporters = new ArrayList<ReportExporter>();
-		
-		List<ReportExporterExportReportHook> hookers = hookHandler.getHookers(ReportExporterExportReportHook.class);
-		for(ReportExporterExportReportHook hooker : hookers) {
-			if(hooker.getObject().consumes(report))
-				exporters.add(hooker.getObject());
-		}
-		
-		for(ReportExporterProviderHook hooker : hookHandler.getHookers(ReportExporterProviderHook.class))
-			exporters.addAll(hooker.getExporters(report));
-		
-		return exporters;
-	}
+    public List<ReportExporter> getAvailableExporters(ReportDto report) {
+        List<ReportExporter> exporters = new ArrayList<ReportExporter>();
+        
+        List<ReportExporterExportReportHook> hookers = hookHandler.getHookers(ReportExporterExportReportHook.class);
+        for(ReportExporterExportReportHook hooker : hookers) {
+            if(hooker.getObject().consumes(report))
+                exporters.add(hooker.getObject());
+        }
+        
+        for(ReportExporterProviderHook hooker : hookHandler.getHookers(ReportExporterProviderHook.class))
+            exporters.addAll(hooker.getExporters(report));
+        
+        return exporters;
+    }
 	
 	@Override
 	public List<ReportExporter> getUsableExporters(ReportDto report) {

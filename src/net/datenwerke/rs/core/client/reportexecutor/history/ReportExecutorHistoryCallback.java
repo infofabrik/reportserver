@@ -6,15 +6,11 @@ import com.google.inject.Inject;
 import net.datenwerke.gf.client.history.HistoryCallback;
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
-import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
-import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.rs.core.client.reportexecutor.ExecuteReportConfiguration;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerConfig;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.scripting.client.scripting.ScriptingUiService;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceDao;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.decorator.TeamSpaceDtoDec;
@@ -28,22 +24,19 @@ public class ReportExecutorHistoryCallback implements HistoryCallback {
 	private final ReportExecutorUIService executorService;
 	private final TeamSpaceDao teamSpaceDao;
 	private final TsDiskTreeLoaderDao diskDao;
-	private final WaitOnEventUIService waitOnEventService;
 
 	@Inject
 	public ReportExecutorHistoryCallback(
 		ReportExecutorDao reportExecutorDao,
 		ReportExecutorUIService executorService,
 		TeamSpaceDao teamSpaceDao,
-		TsDiskTreeLoaderDao diskDao,
-		WaitOnEventUIService waitOnEventService
+		TsDiskTreeLoaderDao diskDao
 		){
 		
 		this.reportExecutorDao = reportExecutorDao;
 		this.executorService = executorService;
 		this.teamSpaceDao = teamSpaceDao;
 		this.diskDao = diskDao;
-		this.waitOnEventService = waitOnEventService;
 	}
 	
 	@Override
@@ -80,10 +73,6 @@ public class ReportExecutorHistoryCallback implements HistoryCallback {
 	
 	private void loadReport(final HistoryLocation location, final TeamSpaceDto tsDto, final TsDiskFolderDto folder){
 		
-		waitOnEventService.callbackOnEvent(ScriptingUiService.REPORTSERVER_EVENT_AFTER_EXECUTE_LOGIN_SCRIPT, new SynchronousCallbackOnEventTrigger() {
-			
-			@Override
-			public void execute(final WaitOnEventTicket ticket) {
 				reportExecutorDao.loadReportForExecutionFrom(location, new RsAsyncCallback<ReportDto>(){
 					@Override
 					public void onSuccess(ReportDto result) {
@@ -166,17 +155,8 @@ public class ReportExecutorHistoryCallback implements HistoryCallback {
 								return true;
 							}
 						});
-						waitOnEventService.signalProcessingDone(ticket);
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						waitOnEventService.signalProcessingDone(ticket);
 					}
 				});
-			}
-			
-		});
 		
 	}
 

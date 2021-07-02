@@ -11,7 +11,7 @@ import com.google.inject.Inject;
 public class AliasCmdStartup {
 
    @Inject
-   public AliasCmdStartup(
+   public AliasCmdStartup( 
          HookHandlerService hookHandler,
          final AliasCommand aliasCommand
          ) {

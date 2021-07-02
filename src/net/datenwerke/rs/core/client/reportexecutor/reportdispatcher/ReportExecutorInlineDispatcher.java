@@ -18,9 +18,6 @@ import net.datenwerke.gf.client.dispatcher.Dispatchable;
 import net.datenwerke.gf.client.dispatcher.hooks.DispatcherTakeOverHookImpl;
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
-import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
-import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.propertywidgets.FilterView;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.propertywidgets.ComputedColumnsView;
@@ -38,7 +35,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactor
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.NoVariantStorerConfig;
 import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerConfig;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.scripting.client.scripting.ScriptingUiService;
 
 public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
 
@@ -62,17 +58,13 @@ public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
    private final ReportExecutorDao reportExecutorDao;
    private final ReportExecutorUIService reportExecutorService;
 
-   private final WaitOnEventUIService waitOnEventService;
-
    @Inject
    public ReportExecutorInlineDispatcher(
          ReportExecutorDao reportExecutorDao,
-         ReportExecutorUIService reportExecutorService, 
-         WaitOnEventUIService waitOnEventService
+         ReportExecutorUIService reportExecutorService
          ) {
       this.reportExecutorDao = reportExecutorDao;
       this.reportExecutorService = reportExecutorService;
-      this.waitOnEventService = waitOnEventService;
    }
 
    @Override
@@ -87,38 +79,24 @@ public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
 
       final Viewport vp = new Viewport();
 
-      waitOnEventService.callbackOnEvent(ScriptingUiService.REPORTSERVER_EVENT_AFTER_EXECUTE_LOGIN_SCRIPT,
-            new SynchronousCallbackOnEventTrigger() {
+      reportExecutorDao.loadReportForExecutionFrom(hLocation, new RsAsyncCallback<ReportDto>() {
+         public void onSuccess(ReportDto result) {
+            String type = hLocation.getParameterValue("type");
+            if (TYPE_PREVIEW.equals(type))
+               displayPreview(result, vp);
+            else if (TYPE_PARAMETER.equals(type))
+               displayView(ParameterView.VIEW_ID, hLocation, result, vp);
+            else if (TYPE_COMPUTED_COLUMS.equals(type))
+               displayView(ComputedColumnsView.VIEW_ID, hLocation, result, vp);
+            else if (TYPE_PREFILTER.equals(type))
+               displayView(PreFilterView.VIEW_ID, hLocation, result, vp);
+            else if (TYPE_LIST_CONFIG.equals(type))
+               displayView(FilterView.VIEW_ID, hLocation, result, vp);
+            else
+               displayFull(hLocation, result, vp);
 
-               @Override
-               public void execute(final WaitOnEventTicket ticket) {
-                  reportExecutorDao.loadReportForExecutionFrom(hLocation, new RsAsyncCallback<ReportDto>() {
-                     public void onSuccess(ReportDto result) {
-                        String type = hLocation.getParameterValue("type");
-                        if (TYPE_PREVIEW.equals(type))
-                           displayPreview(result, vp);
-                        else if (TYPE_PARAMETER.equals(type))
-                           displayView(ParameterView.VIEW_ID, hLocation, result, vp);
-                        else if (TYPE_COMPUTED_COLUMS.equals(type))
-                           displayView(ComputedColumnsView.VIEW_ID, hLocation, result, vp);
-                        else if (TYPE_PREFILTER.equals(type))
-                           displayView(PreFilterView.VIEW_ID, hLocation, result, vp);
-                        else if (TYPE_LIST_CONFIG.equals(type))
-                           displayView(FilterView.VIEW_ID, hLocation, result, vp);
-                        else
-                           displayFull(hLocation, result, vp);
-
-                        waitOnEventService.signalProcessingDone(ticket);
-                     }
-
-                     @Override
-                     public void onFailure(Throwable caught) {
-                        waitOnEventService.signalProcessingDone(ticket);
-                     }
-                  });
-
-               }
-            });
+         }
+      });
 
       return () -> vp;
    }

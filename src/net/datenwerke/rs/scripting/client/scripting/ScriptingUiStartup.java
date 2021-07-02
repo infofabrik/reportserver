@@ -9,7 +9,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.codemirror.hooks.CodeMirrorKeyboardHook;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.waitonevent.CallbackOnEventDone;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
@@ -53,22 +52,13 @@ public class ScriptingUiStartup {
 							Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 								@Override
 								public void execute() {
-									try {
 									if(null != result)
 										for(CommandResultDto res : result)
 											terminalService.processExternalResult(res);
 									
-									} finally {
-										waitOnEventService.triggerEvent(ScriptingUiService.REPORTSERVER_EVENT_AFTER_EXECUTE_LOGIN_SCRIPT, new CallbackOnEventDone() {
-											@Override
-											public void execute() {
-												waitOnEventService.signalProcessingDone(ticket);
-											}
-										});
-									}
-										
 								}
 							});
+							waitOnEventService.signalProcessingDone(ticket);
 						};
 						@Override
 						public void onFailure(Throwable caught) {

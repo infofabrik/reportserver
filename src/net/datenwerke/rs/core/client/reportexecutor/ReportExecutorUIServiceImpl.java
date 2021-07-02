@@ -64,8 +64,6 @@ public class ReportExecutorUIServiceImpl implements ReportExecutorUIService {
 	
 	private Integer maxColumnWidth;
 	
-	private final WaitOnEventUIService waitOnEventService;
-	
 	@Inject
 	public ReportExecutorUIServiceImpl(
 		HookHandlerService hookHandler,
@@ -94,9 +92,7 @@ public class ReportExecutorUIServiceImpl implements ReportExecutorUIService {
 		this.nativePreviewProvider = nativePreviewProvider;
 		this.tsDiskDao = tsDiskDao;
 		
-		this.waitOnEventService = waitOnEventService;
-		
-		this.waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_USER_LOGGED_IN_APPLICATION_LOADED, new AsynchronousCallbackOnEventTrigger() {
+		waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_USER_LOGGED_IN_APPLICATION_LOADED, new AsynchronousCallbackOnEventTrigger() {
 			public void doExecute() {
 				reportExecutorDao.getPreviewMode(new AsyncCallback<String>() {
 					@Override
