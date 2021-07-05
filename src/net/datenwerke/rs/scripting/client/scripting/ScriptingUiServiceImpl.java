@@ -10,27 +10,27 @@ import com.google.inject.Inject;
 
 public class ScriptingUiServiceImpl implements ScriptingUiService {
 
-	private final ScriptingDao scriptingDao;
-	private final TerminalUIService terminalService;
-		
-	@Inject
-	public ScriptingUiServiceImpl(
-		ScriptingDao scriptingDao,
-		TerminalUIService terminalService	
-		){
-		
-		/* store objects */
-		this.terminalService = terminalService;
-		this.scriptingDao = scriptingDao;
-	}
+   private final ScriptingDao scriptingDao;
+   private final TerminalUIService terminalService;
 
-	@Override
-	public void executeScript(String scriptLocation, String args, HashMap<String, String> config) {
-		scriptingDao.executeScript(scriptLocation, args, config, new RsAsyncCallback<CommandResultDto>(){
-			@Override
-			public void onSuccess(CommandResultDto result) {
-				terminalService.processExternalResult(result);
-			}
-		});
-	}
+   @Inject
+   public ScriptingUiServiceImpl(
+         ScriptingDao scriptingDao, 
+         TerminalUIService terminalService
+         ) {
+
+      /* store objects */
+      this.terminalService = terminalService;
+      this.scriptingDao = scriptingDao;
+   }
+
+   @Override
+   public void executeScript(String scriptLocation, String args, HashMap<String, String> config) {
+      scriptingDao.executeScript(scriptLocation, args, config, new RsAsyncCallback<CommandResultDto>() {
+         @Override
+         public void onSuccess(CommandResultDto result) {
+            terminalService.processExternalResult(result);
+         }
+      });
+   }
 }

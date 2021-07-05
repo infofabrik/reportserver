@@ -12,24 +12,24 @@ import com.google.inject.Inject;
 
 public class ScriptingDao extends Dao {
 
-	private final ScriptingRpcServiceAsync rpcService;
+   private final ScriptingRpcServiceAsync rpcService;
 
-	@Inject
-	public ScriptingDao(ScriptingRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	public void executeScript(String scriptLocation, String args, HashMap<String, String> context,
-			AsyncCallback<CommandResultDto> callback){
-		rpcService.executeScript(scriptLocation, args, context, transformAndKeepCallback(callback));
-	}
-	
-	public void executeLoginScript(AsyncCallback<List<CommandResultDto>> callback){
-		rpcService.executeLoginScript(transformAndKeepCallback(callback));
-	}
-	
-	public void getImportPathFor(String token, AsyncCallback<List<String>> callback){
-		rpcService.getImportPathFor(token, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public ScriptingDao(ScriptingRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
+
+   public void executeScript(String scriptLocation, String args, HashMap<String, String> context,
+         AsyncCallback<CommandResultDto> callback) {
+      rpcService.executeScript(scriptLocation, args, context, transformAndKeepCallback(callback));
+   }
+
+   public void executeLoginScript(AsyncCallback<List<CommandResultDto>> callback) {
+      rpcService.executeLoginScript(transformAndKeepCallback(callback));
+   }
+
+   public void getImportPathFor(String token, AsyncCallback<List<String>> callback) {
+      rpcService.getImportPathFor(token, transformAndKeepCallback(callback));
+   }
 }
