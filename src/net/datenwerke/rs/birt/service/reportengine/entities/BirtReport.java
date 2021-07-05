@@ -23,70 +23,65 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import com.google.inject.Injector;
 
 @Entity
-@Table(name="BIRT_REPORT")
+@Table(name = "BIRT_REPORT")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	BirtReportVariant.class
-})
+@TreeDBAllowedChildren({ BirtReportVariant.class })
 @GenerateDto(
-	dtoPackage="net.datenwerke.rs.birt.client.reportengines.dto",
-	createDecorator=true,
-	typeDescriptionMsg=BirtMessages.class,
-	typeDescriptionKey="reportTypeName",
-	icon="file-image-o"
-)
+      dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = BirtMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "file-image-o"
+      )
 @InstanceDescription(
-	msgLocation=BirtEngineMessages.class,
-	objNameKey="birtReportTypeName",
-	icon = "file-image-o"
-)
-public class BirtReport extends Report{
+      msgLocation = BirtEngineMessages.class, 
+      objNameKey = "birtReportTypeName", 
+      icon = "file-image-o"
+      )
+public class BirtReport extends Report {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 131396070918781142L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 131396070918781142L;
 
-	@EnclosedEntity
-	@ExposeToClient
-	@OneToOne(cascade={CascadeType.ALL})
-	private BirtReportFile reportFile;
+   @EnclosedEntity
+   @ExposeToClient
+   @OneToOne(cascade = { CascadeType.ALL })
+   private BirtReportFile reportFile;
 
-	
-	public void setReportFile(BirtReportFile reportFile) {
-		this.reportFile = reportFile;
-	}
-	
-	
-	public BirtReportFile getReportFile() {
-		return reportFile;
-	}
+   public void setReportFile(BirtReportFile reportFile) {
+      this.reportFile = reportFile;
+   }
 
+   public BirtReportFile getReportFile() {
+      return reportFile;
+   }
 
-	@Override
-	protected Report createVariant(Report report) {
-		if(! (report instanceof BirtReport))
-			throw new IllegalArgumentException("Expected BirtReport"); //$NON-NLS-1$
-		
-		BirtReportVariant variant = new BirtReportVariant();
-		
-		/* copy parameter instances */
-		initVariant(variant, report);
-		
-		return variant;
-	}
+   @Override
+   protected Report createVariant(Report report) {
+      if (!(report instanceof BirtReport))
+         throw new IllegalArgumentException("Expected BirtReport"); //$NON-NLS-1$
 
-	@Override
-	public void replaceWith(Report aReport, Injector injector){
-		if(! (aReport instanceof BirtReport))
-			throw new IllegalArgumentException("Expected BirtReport"); //$NON-NLS-1$
-		super.replaceWith(aReport, injector);
-		
-		BirtReport report = (BirtReport) aReport;
-		
-		if(null != reportFile)
-			injector.getInstance(BirtReportService.class).remove(reportFile);
-		setReportFile(report.getReportFile());
-	}
+      BirtReportVariant variant = new BirtReportVariant();
+
+      /* copy parameter instances */
+      initVariant(variant, report);
+
+      return variant;
+   }
+
+   @Override
+   public void replaceWith(Report aReport, Injector injector) {
+      if (!(aReport instanceof BirtReport))
+         throw new IllegalArgumentException("Expected BirtReport"); //$NON-NLS-1$
+      super.replaceWith(aReport, injector);
+
+      BirtReport report = (BirtReport) aReport;
+
+      if (null != reportFile)
+         injector.getInstance(BirtReportService.class).remove(reportFile);
+      setReportFile(report.getReportFile());
+   }
 }
