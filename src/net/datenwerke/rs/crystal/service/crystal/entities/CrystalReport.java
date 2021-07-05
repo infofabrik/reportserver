@@ -32,12 +32,12 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 	createDecorator=true,
 	typeDescriptionMsg=CrystalMessages.class,
 	typeDescriptionKey="reportTypeName",
-	icon="jpg"
+	icon="diamond"
 )
 @InstanceDescription(
 	msgLocation=CrystalEngineMessages.class,
 	objNameKey="birtReportTypeName",
-	icon = "file"
+	icon = "diamond"
 )
 public class CrystalReport extends Report {
 

@@ -34,12 +34,12 @@ import com.google.inject.Injector;
 	createDecorator=true,
 	typeDescriptionMsg=BirtMessages.class,
 	typeDescriptionKey="reportTypeName",
-	icon="jpg"
+	icon="file-image-o"
 )
 @InstanceDescription(
 	msgLocation=BirtEngineMessages.class,
 	objNameKey="birtReportTypeName",
-	icon = "file"
+	icon = "file-image-o"
 )
 public class BirtReport extends Report{
 

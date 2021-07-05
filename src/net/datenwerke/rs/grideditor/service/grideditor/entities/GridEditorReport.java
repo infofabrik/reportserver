@@ -33,7 +33,7 @@ import com.google.inject.Injector;
 @InstanceDescription(
 	msgLocation=GridEditorMessages.class,
 	objNameKey="reportTypeName",
-	icon = "file"
+	icon = "edit"
 )
 public class GridEditorReport extends Report {
 

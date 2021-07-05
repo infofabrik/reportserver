@@ -43,12 +43,12 @@ import com.google.inject.Injector;
 	createDecorator=true,
 	typeDescriptionMsg=JasperMessages.class,
 	typeDescriptionKey="reportTypeName",
-	icon="jpg"
+	icon="newspaper-o"
 )
 @InstanceDescription(
 	msgLocation=ReportEnginesMessages.class,
 	objNameKey="jasperReportTypeName",	
-	icon = "file"
+	icon = "newspaper-o"
 )
 public class JasperReport extends Report {
     
