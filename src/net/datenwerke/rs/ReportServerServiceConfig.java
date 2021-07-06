@@ -57,6 +57,7 @@ import net.datenwerke.rs.adminutils.server.suuser.SuUserRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.generalinfo.GeneralInfoRpcDummyServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.memory.MemoryConsoleDummyRpcServiceImpl;
 import net.datenwerke.rs.adminutils.service.SystemConsoleModule;
+import net.datenwerke.rs.adminutils.service.datasourcetester.DatasourceTesterModule;
 import net.datenwerke.rs.adminutils.service.logs.LogFilesModule;
 import net.datenwerke.rs.adminutils.service.su.SuModule;
 import net.datenwerke.rs.authenticator.cr.server.ChallengeResponseRpcServiceImpl;
@@ -644,6 +645,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new LocalFileSystemModule(),
 			new EmailDatasinkModule(),
 			new ReportPropertiesModule(),
+			
+			new DatasourceTesterModule(),
 			
 			new SambaModule(),
 			new DropboxModule(),
