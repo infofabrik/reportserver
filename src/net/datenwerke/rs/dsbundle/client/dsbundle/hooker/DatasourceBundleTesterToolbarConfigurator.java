@@ -1,4 +1,4 @@
-package net.datenwerke.rs.adminutils.client.datasourcetester;
+package net.datenwerke.rs.dsbundle.client.dsbundle.hooker;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
@@ -14,26 +14,26 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallb
 import net.datenwerke.gxtdto.client.servercommunication.callback.TimeoutCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.locale.DatasourceTesterMessages;
-import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
+import net.datenwerke.rs.dsbundle.client.dsbundle.DatasourceBundleDao;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class DatasourceTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
+public class DatasourceBundleTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasourceTesterMessages messages = GWT.create(DatasourceTesterMessages.class);
 
-   private final DatasourceTesterDao datasourceTesterDao;
+   private final DatasourceBundleDao datasourceBundleDao;
    private final ToolbarService toolbarUtils;
 
    @Inject
-   public DatasourceTesterToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         DatasourceTesterDao datasourceTesterDao
+   public DatasourceBundleTesterToolbarConfigurator(
+         ToolbarService toolbarUtils,
+         DatasourceBundleDao datasourceBundleDao
          ) {
 
       this.toolbarUtils = toolbarUtils;
-      this.datasourceTesterDao = datasourceTesterDao;
+      this.datasourceBundleDao = datasourceBundleDao;
    }
 
    @Override
@@ -41,13 +41,10 @@ public class DatasourceTesterToolbarConfigurator implements MainPanelViewToolbar
          AbstractNodeDto selectedNode) {
       if (!(view instanceof SimpleFormView))
          return;
-      if (!(selectedNode instanceof DatabaseDatasourceDto))
+      if (!(selectedNode instanceof DatabaseBundleDto))
          return;
 
-      if (selectedNode instanceof DatabaseBundleDto)
-         return;
-
-      final DatabaseDatasourceDto databaseDto = (DatabaseDatasourceDto) selectedNode;
+      final DatabaseBundleDto bundleDto = (DatabaseBundleDto) selectedNode;
 
       DwTextButton datasourceTestBtn = toolbarUtils.createSmallButtonLeft(messages.testConnection(), BaseIcon.LINK);
       datasourceTestBtn.addSelectHandler(event -> {
@@ -55,8 +52,7 @@ public class DatasourceTesterToolbarConfigurator implements MainPanelViewToolbar
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = datasourceTesterDao.testConnection(databaseDto,
-               new TimeoutCallback<Boolean>(120000, callback));
+         Request request = datasourceBundleDao.testConnection(bundleDto, new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });
 

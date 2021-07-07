@@ -14,7 +14,7 @@ public class DatasourceTesterUIStartup {
 		DatasourceTesterToolbarConfigurator toolbarConfigurator
 		){
 		
-		/* attach configurato */
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, toolbarConfigurator);
+		/* attach configurator */
+        hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, toolbarConfigurator);
 	}
 }

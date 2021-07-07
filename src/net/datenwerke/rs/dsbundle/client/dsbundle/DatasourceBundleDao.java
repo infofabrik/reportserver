@@ -3,11 +3,13 @@ package net.datenwerke.rs.dsbundle.client.dsbundle;
 import java.util.List;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.rs.dsbundle.client.dsbundle.rpc.DatasourceBundleRpcServiceAsync;
-
+import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
+import net.datenwerke.rs.dsbundle.client.dsbundle.rpc.DatasourceBundleRpcServiceAsync;
 
 public class DatasourceBundleDao extends Dao {
 
@@ -29,4 +31,8 @@ public class DatasourceBundleDao extends Dao {
 	public void setSelectedBundle(String bundleKey, AsyncCallback<Void> callback){
 		rpcService.setSelectedBundle(bundleKey, callback);
 	}
+	
+	public Request testConnection(DatabaseBundleDto databaseBundleDto, AsyncCallback<Boolean> callback){
+       return rpcService.testConnection(databaseBundleDto, transformAndKeepCallback(callback));
+   }
 }

@@ -21,7 +21,6 @@ import net.datenwerke.rs.utils.instancedescription.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.InstanceDescriptionService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityTarget;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 

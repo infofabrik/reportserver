@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
@@ -13,6 +14,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.dsbundle.client.dsbundle.hooker.AuthenticatorWindowExtraOptionHooker;
 import net.datenwerke.rs.dsbundle.client.dsbundle.hooker.DatabaseBundleConfigProviderHooker;
+import net.datenwerke.rs.dsbundle.client.dsbundle.hooker.DatasourceBundleTesterToolbarConfigurator;
 import net.datenwerke.rs.enterprise.client.EnterpriseCheckUiModule;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.security.client.login.hooks.AuthenticatorWindowExtraOptionHook;
@@ -29,10 +31,15 @@ public class DatasourceBundleUiStartup {
 		final DatasourceBundleDao dsBundleDao,
 		final DatasourceBundleUiService dsBundleService,
 		
-		final EnterpriseUiService enterpriseService
+		final EnterpriseUiService enterpriseService,
+		
+		final DatasourceBundleTesterToolbarConfigurator bundleTesterConfigurator
+		
 		){
 		
 		hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, configProvider, 60);
+		
+		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, bundleTesterConfigurator);
 		
 		waitOnEventService.callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_BEFORE_LOGIN, new SynchronousCallbackOnEventTrigger() {
 			@Override
