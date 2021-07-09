@@ -358,10 +358,12 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       OlapConnection connection = (OlapConnection) DriverManager.getConnection(url, props);
 
       /* allow hook to adapt connection */
-      for (OlapConnectionHook och : hookHandlerService.getHookers(OlapConnectionHook.class)) {
-         connection = och.postprocessConnection(mondrianDatasource, connection);
-      }
-
+      Optional<OlapConnectionHook> olapConnHook = hookHandlerService.getHookers(OlapConnectionHook.class)
+         .stream()
+         .findAny();
+      if (olapConnHook.isPresent())
+         connection = olapConnHook.get().postprocessConnection(mondrianDatasource, connection);
+         
       return connection.unwrap(OlapConnection.class);
    }
 
