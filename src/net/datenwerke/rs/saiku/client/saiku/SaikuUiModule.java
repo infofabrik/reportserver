@@ -6,12 +6,11 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class SaikuUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(SaikuUiService.class).to(SaikuUiServiceImpl.class).in(Singleton.class);
-		
-		bind(SaikuUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(SaikuUiService.class).to(SaikuUiServiceImpl.class).in(Singleton.class);
 
+      bind(SaikuUiStartup.class).asEagerSingleton();
+   }
 
 }

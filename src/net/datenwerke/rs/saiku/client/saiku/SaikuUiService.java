@@ -6,6 +6,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface SaikuUiService {
 
-	void getSettings(AsyncCallback<HashMap<String,String>> callback);
+   void getSettings(AsyncCallback<HashMap<String, String>> callback);
 
 }
