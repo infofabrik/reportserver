@@ -64,6 +64,7 @@ import mondrian.rolap.RolapSchema;
 import mondrian.rolap.RolapSchema.MondrianSchemaException;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
 import net.datenwerke.rs.base.service.datasources.table.impl.utils.JasperStyleParameterParser;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -77,7 +78,6 @@ import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionHook;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionPropertiesHook;
-import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 public class OlapUtilServiceImpl implements OlapUtilService {
@@ -634,6 +634,21 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
+   }
+
+   @Override
+   public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
+      
+      try {
+         final OlapConnection con = getOlapConnection(datasource, null, true);
+         con.unwrap(mondrian.rolap.RolapConnection.class).getSchema();
+         
+      } catch (Exception e) {
+         throw new ConnectionTestFailedException(
+               "Connection test failed in datasource \"" + datasource.getName() + "\": " + e.getMessage(), e);
+      }
+      
+      return true;
    }
 
 }

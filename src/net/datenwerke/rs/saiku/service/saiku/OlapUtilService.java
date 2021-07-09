@@ -16,6 +16,7 @@ import org.saiku.olap.dto.SaikuHierarchy;
 import org.saiku.olap.dto.SaikuMember;
 import org.saiku.olap.dto.SimpleCubeElement;
 
+import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
@@ -68,5 +69,7 @@ public interface OlapUtilService {
    void flushCache(Report report);
 
    void flushCache(MondrianDatasource datasource);
+
+   boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException;
 
 }

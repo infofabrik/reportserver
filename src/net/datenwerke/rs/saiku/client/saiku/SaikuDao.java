@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.gxtdto.client.servercommunication.callback.TimeoutCallback;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
@@ -30,6 +31,10 @@ public class SaikuDao extends Dao {
 
    public void clearCache(MondrianDatasourceDto datasourceDefinitionDto, AsyncCallback<Void> callback) {
       rpcService.clearCache(datasourceDefinitionDto, callback);
+   }
+
+   public Request testConnection(MondrianDatasourceDto datasourceDto, TimeoutCallback<Boolean> callback) {
+      return rpcService.testConnection(datasourceDto, transformAndKeepCallback(callback));
    }
 
 }

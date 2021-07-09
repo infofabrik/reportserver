@@ -9,11 +9,13 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public interface SaikuRpcServiceAsync {
 
-   public Request stashReport(String token, SaikuReportDto report, AsyncCallback<Void> callback);
+   Request stashReport(String token, SaikuReportDto report, AsyncCallback<Void> callback);
 
-   public void loadCubesFor(MondrianDatasourceDto datasourceDefinitionDto, SaikuReportDto saikuReportDto,
+   void loadCubesFor(MondrianDatasourceDto datasourceDefinitionDto, SaikuReportDto saikuReportDto,
          AsyncCallback<ListLoadResult<String>> transformAndKeepCallback);
 
-   public void clearCache(MondrianDatasourceDto datasourceDefinitionDto, AsyncCallback<Void> callback);
+   void clearCache(MondrianDatasourceDto datasourceDefinitionDto, AsyncCallback<Void> callback);
+
+   Request testConnection(MondrianDatasourceDto datasourceDto, AsyncCallback<Boolean> callback);
 
 }

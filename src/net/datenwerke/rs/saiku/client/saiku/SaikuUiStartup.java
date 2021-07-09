@@ -3,6 +3,7 @@ package net.datenwerke.rs.saiku.client.saiku;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
@@ -13,6 +14,7 @@ import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.ReportDadgetExportHook;
 import net.datenwerke.rs.dashboard.client.dashboard.security.DashboardViewGenericTargetIdentifier;
 import net.datenwerke.rs.saiku.client.datasource.hooker.MondrianDatasourceConfigProviderHooker;
+import net.datenwerke.rs.saiku.client.datasource.hooker.MondrianDatasourceTesterToolbarConfigurator;
 import net.datenwerke.rs.saiku.client.saiku.hookers.ReportDadgetSaikuExportHooker;
 import net.datenwerke.rs.saiku.client.saiku.hookers.SaikuModelStorerHooker;
 import net.datenwerke.rs.saiku.client.saiku.hookers.SaikuReportConfigHooker;
@@ -45,10 +47,13 @@ public class SaikuUiStartup {
 
          final Provider<ReportDadgetSaikuExportHooker> reportDadgetSaikuExporterProvider,
 
-         SaikuModelStorerHooker storerHooker
-
+         SaikuModelStorerHooker storerHooker,
+         
+         MondrianDatasourceTesterToolbarConfigurator datasourceTesterConfigurator
    ) {
 
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, datasourceTesterConfigurator);
+      
       hookHandler.attachHooker(ReportTypeConfigHook.class, saikuReportConfigHooker, 60);
       hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(saikuReportPreviewViewFactory),
             HookHandlerService.PRIORITY_LOW);
