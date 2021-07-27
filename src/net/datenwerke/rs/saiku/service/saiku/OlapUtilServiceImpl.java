@@ -641,6 +641,9 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    @Override
    public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
       
+      if (datasource.isMondrian3()) 
+         return oldOlapUtilService.get().testConnection(datasource);
+      
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
          con.unwrap(mondrian.rolap.RolapConnection.class).getSchema();

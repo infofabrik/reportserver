@@ -47,6 +47,7 @@ import org.legacysaiku.datasources.connection.ISaikuConnection;
 import mondrian3.olap4j.MondrianOlap4jDriver;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
 import net.datenwerke.rs.base.service.datasources.table.impl.utils.JasperStyleParameterParser;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -384,5 +385,17 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 		}
 	}
 	
-	
+	@Override
+	   public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
+	      try {
+	         final OlapConnection con = getOlapConnection(datasource, null, true);
+	         con.unwrap(mondrian3.rolap.RolapConnection.class).getSchema();
+	         
+	      } catch (Exception e) {
+	         throw new ConnectionTestFailedException(
+	               "Connection test failed in datasource \"" + datasource.getName() + "\": " + e.getMessage(), e);
+	      }
+	      
+	      return true;
+	   }
 }

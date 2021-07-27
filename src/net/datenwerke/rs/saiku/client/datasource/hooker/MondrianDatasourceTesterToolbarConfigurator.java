@@ -46,9 +46,6 @@ public class MondrianDatasourceTesterToolbarConfigurator implements MainPanelVie
 
       final MondrianDatasourceDto datasourceDto = (MondrianDatasourceDto) selectedNode;
       
-      if (datasourceDto.isMondrian3())
-         return;
-
       DwTextButton datasourceTestBtn = toolbarUtils.createSmallButtonLeft(messages.testConnection(), BaseIcon.LINK);
       datasourceTestBtn.addSelectHandler(event -> {
          ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),

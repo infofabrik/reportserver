@@ -12,6 +12,7 @@ import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
 
+import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
@@ -50,5 +51,7 @@ public interface OlapUtilService {
 	void flushCache(Report report);
 	
 	void flushCache(MondrianDatasource datasource);
+	
+	boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException;
 
 }
