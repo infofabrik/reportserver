@@ -592,18 +592,17 @@ public class OlapUtilServiceImpl implements OlapUtilService {
          }
 
          try {
-            OlapConnection con = getOlapConnection((SaikuReport) report);
-            RolapConnection rolapConnection = con.unwrap(mondrian.rolap.RolapConnection.class);
-            RolapSchema rolapSchema = rolapConnection.getSchema();
-            CacheControl cacheControl = rolapConnection.getCacheControl(null);
+            final OlapConnection con = getOlapConnection((SaikuReport) report);
+            final RolapConnection rolapConnection = con.unwrap(mondrian.rolap.RolapConnection.class);
+            final RolapSchema rolapSchema = rolapConnection.getSchema();
+            final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
-            for (mondrian.olap.Cube cube : rolapSchema.getCubes()) {
-               Cube reportCube = getCube((SaikuReport) report);
-               if (!reportCube.getName().equals(cube.getName()))
-                  continue;
-
-               cacheControl.flushSchema(cube.getSchema());
-            }
+            final Cube reportCube = getCube((SaikuReport) report);
+            Arrays.stream(rolapSchema.getCubes())
+               .filter(cube -> reportCube.getName().equals(cube.getName()))
+               .map(mondrian.olap.Cube::getSchema)
+               .findAny()
+               .ifPresent(cacheControl::flushSchema);
 
          } catch (Exception e) {
             throw new RuntimeException(e);
