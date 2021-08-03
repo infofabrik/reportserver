@@ -203,11 +203,12 @@ public class SearchServiceImpl implements SearchService {
                   try {
                      Class<?> filterDto2PosoMapperType = Class.forName(filterTagsNext.getValue());
                      Object filterObject = filterDto2PosoMapperType.newInstance();
-                     if (!(filterObject instanceof Dto2PosoMapper)) {
-                        throw new IllegalArgumentException("Expected Dto2PosoMapper: " + filterObject.getClass());
-                     }
-                     Class<?> filterBaseType = dtoService.getPosoFromDtoMapper((Dto2PosoMapper) filterObject);
-
+                     Class<?> filterBaseType = null;
+                     if (filterObject instanceof Dto2PosoMapper) 
+                        filterBaseType = dtoService.getPosoFromDtoMapper((Dto2PosoMapper) filterObject);
+                     else 
+                        filterBaseType = filterObject.getClass();
+                     
                      Iterator<SearchResultTag> tagsIt = tags.iterator();
                      while (tagsIt.hasNext()) {
                         SearchResultTag tagsNext = tagsIt.next();
@@ -215,7 +216,7 @@ public class SearchServiceImpl implements SearchService {
                         if (tagsNext.getType() instanceof SearchResultTagType) {
                            Class<?> tagsBaseType = Class.forName(tagsNext.getValue());
 
-                           if (filterBaseType.isAssignableFrom(tagsBaseType))
+                           if (null != filterBaseType && filterBaseType.isAssignableFrom(tagsBaseType))
                               filterIsAssignable = true;
                         }
                      }
