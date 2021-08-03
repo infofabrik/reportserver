@@ -36,7 +36,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 )
 @InstanceDescription(
 		msgLocation = SaikuMessages.class,
-		objNameKey = "databaseDatasourceTypeName",
+		objNameKey = "mondrianDatasourceTypeName",
 		icon = "cubes"
 	)
 @Indexed

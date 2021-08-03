@@ -36,7 +36,7 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 )
 @InstanceDescription(
 	msgLocation=CrystalEngineMessages.class,
-	objNameKey="birtReportTypeName",
+	objNameKey="reportTypeName",
 	icon = "diamond"
 )
 public class CrystalReport extends Report {

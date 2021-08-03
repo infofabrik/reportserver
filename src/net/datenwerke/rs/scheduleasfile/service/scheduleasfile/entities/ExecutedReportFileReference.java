@@ -8,18 +8,20 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.compiledreportstore.entities.PersistentCompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.post.ExecuteReportFileReference2DtoPost;
+import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskGeneralReference;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.hibernate.envers.Audited;
-import org.hibernate.envers.RelationTargetAuditMode;
-import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name="EXEC_REPORT_AS_FILE_REF")
@@ -34,6 +36,10 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 		@AdditionalField(name="typeStr", type=String.class),
 	}
 )
+@InstanceDescription(
+      msgLocation=ScheduleAsFileMessages.class,
+      objNameKey="reportTypeName"
+  )
 public class ExecutedReportFileReference extends TsDiskGeneralReference {
 
 	/**

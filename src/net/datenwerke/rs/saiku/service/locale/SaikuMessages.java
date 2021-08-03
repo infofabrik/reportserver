@@ -10,5 +10,7 @@ public interface SaikuMessages extends Messages {
 	String reportTypeName();
 	String undefinedMeasureGroup();
 	String errorClearCacheXMLA();
+	
+	String mondrianDatasourceTypeName();
 
 }

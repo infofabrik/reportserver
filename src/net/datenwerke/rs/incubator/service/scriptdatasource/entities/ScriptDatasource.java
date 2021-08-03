@@ -14,6 +14,8 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.CacheableDataso
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.incubator.service.scriptdatasource.locale.ScriptDatasourceMessages;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name="SCRIPT_DATASOURCE")
@@ -22,6 +24,11 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 	dtoPackage="net.datenwerke.rs.incubator.client.scriptdatasource.dto"
 )
 @Indexed
+@InstanceDescription(
+      msgLocation=ScriptDatasourceMessages.class,
+      objNameKey="scriptDatasourceTypeName",
+      icon = "file-code-o"
+  )
 public class ScriptDatasource extends DatasourceDefinition implements CacheableDatasource{
 
 	/**
