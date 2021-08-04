@@ -17,6 +17,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.core.client.Style.SelectionMode;
+import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.data.shared.ListStore;
@@ -378,8 +379,8 @@ public class SearchAreaComponent extends DwContentPanel {
 
       DwAccordionLayout wrapper = new DwAccordionLayout();
       wrapper.setExpandMode(ExpandMode.MULTI);
+      filterPanelContainer.setScrollMode(ScrollMode.AUTOY);
       filterPanelContainer.add(wrapper, new VerticalLayoutData(1, 1));
-      filterPanelContainer.add(new DwToolBar(), new VerticalLayoutData(1, 40));
 
       for (SearchResultTagTypeDto type : ((SearchResultListDtoDec) result).getTagTypes()) {
          DwContentPanel panel = new DwContentPanel();
