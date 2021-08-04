@@ -8,10 +8,7 @@ import java.util.Set;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
-import com.google.gwt.event.dom.client.KeyDownEvent;
-import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -35,16 +32,10 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
-import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClickHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
@@ -297,21 +288,15 @@ public class SearchAreaComponent extends DwContentPanel {
       grid.getView().setAutoExpandColumn(entryColumn);
       grid.getView().setEmptyText(SearchMessages.INSTANCE.noResultsFound());
       grid.getView().setAutoExpandMax(Integer.MAX_VALUE);
-      grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-         @Override
-         public void onRowDoubleClick(RowDoubleClickEvent event) {
-            SearchResultEntryDto item = grid.getStore().get(event.getRowIndex());
-            if (null != item)
-               opened(item);
-         }
+      grid.addRowDoubleClickHandler(event -> {
+         final SearchResultEntryDto item = grid.getStore().get(event.getRowIndex());
+         if (null != item)
+            opened(item);
       });
       grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-      grid.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<SearchResultEntryDto>() {
-         @Override
-         public void onSelectionChanged(SelectionChangedEvent<SearchResultEntryDto> event) {
-            if (null != event.getSelection() && !event.getSelection().isEmpty())
-               selected(event.getSelection().get(0));
-         }
+      grid.getSelectionModel().addSelectionChangedHandler(event -> {
+         if (null != event.getSelection() && !event.getSelection().isEmpty())
+            selected(event.getSelection().get(0));
       });
 
       /* toolbar */
@@ -335,22 +320,14 @@ public class SearchAreaComponent extends DwContentPanel {
 
       searchField = new TextField();
       searchField.setWidth(400);
-      searchField.addKeyDownHandler(new KeyDownHandler() {
-         @Override
-         public void onKeyDown(KeyDownEvent event) {
-            if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
-               runSearch(searchField.getCurrentValue());
-         }
+      searchField.addKeyDownHandler(event -> {
+         if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER)
+            runSearch(searchField.getCurrentValue());
       });
       topToolbar.add(searchField);
 
       DwTextButton searchBtn = new DwTextButton(SearchMessages.INSTANCE.searchBtnLabel());
-      searchBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            runSearch(searchField.getValue());
-         }
-      });
+      searchBtn.addSelectHandler(event -> runSearch(searchField.getValue()));
       topToolbar.add(searchBtn);
    }
 
@@ -408,30 +385,28 @@ public class SearchAreaComponent extends DwContentPanel {
          DwContentPanel panel = new DwContentPanel();
          panel.setHeading(type.getDisplay());
 
-         DwFlowContainer typeContainer = new DwFlowContainer();
+         final DwFlowContainer typeContainer = new DwFlowContainer();
          panel.setWidget(typeContainer);
-
-         for (final SearchResultTagDto tag : result.getTags()) {
-            if (tag.getType().getType().equals(type.getType())) {
+         
+         result.getTags()
+            .stream()
+            .filter(tag -> tag.getType().getType().equals(type.getType()))
+            .forEach(tag -> {
                final Label tagComp = new Label(tag.getDisplay());
                tagComp.addStyleName(CSS_NAME_TAG);
                typeContainer.add(tagComp);
 
-               tagComp.addDomHandler(new ClickHandler() {
-                  @Override
-                  public void onClick(ClickEvent event) {
-                     if (!selectedTags.contains(tag)) {
-                        selectedTags.add(tag);
-                        tagComp.addStyleName(CSS_NAME_TAG_SELECTED);
-                     } else {
-                        selectedTags.remove(tag);
-                        tagComp.removeStyleName(CSS_NAME_TAG_SELECTED);
-                     }
-                     doRunSearch();
+               tagComp.addDomHandler(event -> {
+                  if (!selectedTags.contains(tag)) {
+                     selectedTags.add(tag);
+                     tagComp.addStyleName(CSS_NAME_TAG_SELECTED);
+                  } else {
+                     selectedTags.remove(tag);
+                     tagComp.removeStyleName(CSS_NAME_TAG_SELECTED);
                   }
+                  doRunSearch();
                }, ClickEvent.getType());
-            }
-         }
+            });
 
          wrapper.add(panel);
          panel.expand();
@@ -443,10 +418,10 @@ public class SearchAreaComponent extends DwContentPanel {
    }
 
    protected void opened(SearchResultEntryDto item) {
-      for (HistoryLinkDto link : item.getLinks()) {
-         fire(link);
-         break;
-      }
+      item.getLinks()
+         .stream()
+         .findAny()
+         .ifPresent(this::fire);
    }
 
    protected void fire(HistoryLinkDto link) {
@@ -491,7 +466,7 @@ public class SearchAreaComponent extends DwContentPanel {
    }
 
    protected ListStore<SearchResultEntryDto> renewStore() {
-      ListStore<SearchResultEntryDto> store = new ListStore<SearchResultEntryDto>(
+      ListStore<SearchResultEntryDto> store = new ListStore<>(
             SearchResultEntryDtoPA.INSTANCE.dtoId());
       return store;
    }
