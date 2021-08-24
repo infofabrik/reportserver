@@ -52,6 +52,11 @@ public class ReportSelectorSimpleFormProvider extends FormFieldProviderHookImpl 
             public boolean showEntriesWithUnaccessibleHistoryPath() {
                return true;
             }
+
+            @Override
+            public boolean filterOnTeamSpaceImportableReports() {
+               return false;
+            }
          });
 			field.setRepositoryConfigs(configs.toArray(new RepositoryProviderConfig[]{}));
 		}

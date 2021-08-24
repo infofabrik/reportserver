@@ -20,6 +20,7 @@ import net.datenwerke.rs.search.service.search.results.post.Dto2SearchFilterPost
 public class SearchFilter {
 
 	public static final String TAG_BASE_TYPE = "baseType";
+	public static final String TAB_EXACT_TYPE = "exactType";
 	
 	@ExposeToClient
 	private Set<SearchResultTag> tags = new HashSet<>();

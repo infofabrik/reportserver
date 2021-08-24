@@ -106,7 +106,7 @@ public class ManagerHelperSearchBar implements
 					if (null == types || types.isEmpty()) 
 						searcher.find(treeManager.getBaseNodeMapper(), searchService.enhanceQuery(query), callback);
 					else 
-                  searcher.find(searchService.enhanceQuery(query), searchService.createFilterFor(types), callback);
+                  searcher.find(searchService.enhanceQuery(query), searchService.createFilterFor(types, false), callback);
 					
 				}
 			}

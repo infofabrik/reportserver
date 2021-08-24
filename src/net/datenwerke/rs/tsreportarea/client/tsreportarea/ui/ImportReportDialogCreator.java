@@ -59,6 +59,11 @@ public class ImportReportDialogCreator {
          public boolean showEntriesWithUnaccessibleHistoryPath() {
             return true;
          }
+
+         @Override
+         public boolean filterOnTeamSpaceImportableReports() {
+            return true;
+         }
 		});
 		
 		reportSelector.setHeading(TsFavoriteMessages.INSTANCE.importReportText());

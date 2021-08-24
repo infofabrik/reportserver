@@ -22,7 +22,8 @@ import net.datenwerke.rs.search.client.search.module.SearchAreaModule;
 
 public class SearchUiServiceImpl implements SearchUiService {
    
-   private static final String TAG_BASE_TYPE = "baseType";
+   public static final String TAG_BASE_TYPE = "baseType";
+   public static final String TAG_EXACT_TYPE = "exactType";
 
 	private final DwMainViewportUiService viewportService;
 	private final Provider<SearchAreaComponent> searchAreaProvider;
@@ -86,7 +87,7 @@ public class SearchUiServiceImpl implements SearchUiService {
 	}
 	
 	@Override
-	public SearchFilterDto createFilterFor(List<Class<? extends RsDto>> allowedTypes) {
+	public SearchFilterDto createFilterFor(List<Class<? extends RsDto>> allowedTypes, boolean exactTypes) {
 	   SearchFilterDtoDec filter = new SearchFilterDtoDec();
       filter.setLimit(25);
       final DtoInformationService dtoInfoService = dtoInfoServiceProvider.get();
@@ -94,7 +95,10 @@ public class SearchUiServiceImpl implements SearchUiService {
       for (final Class<? extends RsDto> type: allowedTypes) {
          SearchResultTagDto tag = new SearchResultTagDto();
          SearchResultTagTypeDto tagType = new SearchResultTagTypeDto();
-         tagType.setType(TAG_BASE_TYPE);
+         if (exactTypes)
+            tagType.setType(TAG_EXACT_TYPE);
+         else
+            tagType.setType(TAG_BASE_TYPE);
          tag.setType(tagType);
          tag.setValue(dtoInfoService.lookupPosoMapper(type).getCanonicalName());
          tagSet.add(tag);

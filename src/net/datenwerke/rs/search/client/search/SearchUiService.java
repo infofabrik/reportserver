@@ -18,8 +18,10 @@ public interface SearchUiService {
     * variants, or specific report types.
     * 
     * @param allowedTypes the allowed types to filter
+    * @param exactTypes   if true, the exact types of "allowedTypes" are matched.
+    *                     If false, also their subclasses are matched.
     * @return a filter containing default values and only allowing the given types
     */
-   SearchFilterDto createFilterFor(List<Class<? extends RsDto>> allowedTypes);
+   SearchFilterDto createFilterFor(List<Class<? extends RsDto>> allowedTypes, boolean exactTypes);
 
 }

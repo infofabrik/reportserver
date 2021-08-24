@@ -33,6 +33,7 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
 import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportVariantDto;
 import net.datenwerke.rs.birt.client.reportengines.dto.BirtReportDto;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeLoaderDao;
@@ -49,6 +50,7 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
+import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto;
 import net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto;
 import net.datenwerke.rs.search.client.search.SearchDao;
@@ -86,6 +88,12 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
        * @return true if entries without a history path should be shown
        */
       boolean showEntriesWithUnaccessibleHistoryPath();
+
+      /**
+       * Reports that may be imported into a TeamSpace. These are base reports.
+       * @return true if it should be filtered on teamspace-importable reports.
+       */
+      boolean filterOnTeamSpaceImportableReports();
    }
 
    private final ReportManagerUIService reportService;
@@ -116,8 +124,14 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          return;
       
       if (null != conf) {
+         if (conf.filterOnSchedulableReports() && conf.filterOnTeamSpaceImportableReports())
+            throw new IllegalStateException("Only one filter permitted");
+         
          if (conf.filterOnSchedulableReports())
             installSchedulableReportsFilter();
+         
+         if (conf.filterOnTeamSpaceImportableReports())
+            installTeamSpaceImportableReportsFilter();
          
          if (conf.showEntriesWithUnaccessibleHistoryPath())
             installShowEntriesWithUnaccessibleHistoryPath();
@@ -258,7 +272,22 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
                   JasperReportDto.class,
                   JxlsReportDto.class,
                   ScriptReportDto.class
-                  )));
+                  ), false));
+   }
+   
+   private void installTeamSpaceImportableReportsFilter() {
+      filter = Optional.of(searchService
+            .createFilterFor(asList(
+                  // base reports
+                  TableReportDto.class, 
+                  SaikuReportDto.class,
+                  BirtReportDto.class,
+                  CrystalReportDto.class,
+                  GridEditorReportDto.class,
+                  JasperReportDto.class,
+                  JxlsReportDto.class,
+                  ScriptReportDto.class
+                  ), true));
    }
 
    protected void addSearchBar(ToolBar toolbar, final SelectionHandler<SearchResultEntryDto> selectionHandler) {

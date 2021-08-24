@@ -24,6 +24,7 @@ import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.search.client.search.SearchUiServiceImpl;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
 import net.datenwerke.rs.search.service.search.index.SearchIndexService;
 import net.datenwerke.rs.search.service.search.results.SearchFilter;
@@ -194,7 +195,7 @@ public class SearchServiceImpl implements SearchService {
             Set<SearchResultTag> filterTags = filter.getTags();
 
             Iterator<SearchResultTag> filterTagsIt = filterTags.iterator();
-            boolean filterIsAssignable = false;
+            boolean passTest = false;
 
             while (filterTagsIt.hasNext()) {
                SearchResultTag filterTagsNext = filterTagsIt.next();
@@ -215,9 +216,13 @@ public class SearchServiceImpl implements SearchService {
 
                         if (tagsNext.getType() instanceof SearchResultTagType) {
                            Class<?> tagsBaseType = Class.forName(tagsNext.getValue());
-
-                           if (null != filterBaseType && filterBaseType.isAssignableFrom(tagsBaseType))
-                              filterIsAssignable = true;
+                           if (filterTagsNext.getType().getType().equals(SearchUiServiceImpl.TAG_EXACT_TYPE)) {
+                              if (null != filterBaseType && filterBaseType.equals(tagsBaseType))
+                                 passTest = true;
+                           } else {
+                              if (null != filterBaseType && filterBaseType.isAssignableFrom(tagsBaseType))
+                                 passTest = true;
+                           }
                         }
                      }
 
@@ -228,7 +233,7 @@ public class SearchServiceImpl implements SearchService {
 
             }
 
-            if (!filterIsAssignable)
+            if (!passTest)
                it.remove();
          }
       }

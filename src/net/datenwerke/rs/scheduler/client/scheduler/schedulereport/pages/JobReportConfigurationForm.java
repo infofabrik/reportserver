@@ -242,6 +242,11 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
          public boolean showEntriesWithUnaccessibleHistoryPath() {
             return true;
          }
+
+         @Override
+         public boolean filterOnTeamSpaceImportableReports() {
+            return false;
+         }
 		});
 		
 		reportSelector.setHeading(SchedulerMessages.INSTANCE.report());
