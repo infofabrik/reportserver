@@ -262,7 +262,7 @@ public class ToolbarServiceImpl implements ToolbarService {
          }
       });
        combo.setWidth(150);  
-       combo.setMinListWidth(400);
+       combo.setMinListWidth(560);
        combo.setLoader(listLoader);
        combo.setHideTrigger(true);  
        
