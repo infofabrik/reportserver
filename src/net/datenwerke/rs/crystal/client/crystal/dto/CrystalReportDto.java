@@ -154,7 +154,7 @@ abstract public class CrystalReportDto extends ReportDtoDec {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("jpg");
+		return BaseIcon.from("diamond");
 	}
 
 	@Override

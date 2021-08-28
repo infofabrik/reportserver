@@ -256,7 +256,7 @@ abstract public class JasperReportDto extends ReportDtoDec {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("jpg");
+		return BaseIcon.from("newspaper-o");
 	}
 
 	@Override

@@ -239,7 +239,7 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("xls");
+		return BaseIcon.from("file-excel-o");
 	}
 
 	@Override

@@ -154,7 +154,7 @@ abstract public class BirtReportDto extends ReportDtoDec {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("jpg");
+		return BaseIcon.from("file-image-o");
 	}
 
 	@Override
