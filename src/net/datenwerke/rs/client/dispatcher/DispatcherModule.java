@@ -54,6 +54,7 @@ import net.datenwerke.rs.eximport.client.eximport.RsExImportUiModule;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
 import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.globalconstants.client.globalconstants.GlobalConstantsUIModule;
+import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiModule;
 import net.datenwerke.rs.grideditor.client.grideditor.GridEditorUiModule;
 import net.datenwerke.rs.incubator.client.RsIncubatorUIModule;
 import net.datenwerke.rs.incubator.client.jaspertotable.JasperToTableUIModule;
@@ -119,6 +120,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new FtpUiModule());
       install(new DropboxUiModule());
       install(new OneDriveUiModule());
+      install(new GoogleDriveUiModule());
       install(new SambaUIModule());
       install(new ScpUIModule());
       install(new LocalFileSystemUiModule());

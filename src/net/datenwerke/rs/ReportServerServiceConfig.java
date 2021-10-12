@@ -141,6 +141,8 @@ import net.datenwerke.rs.ftp.server.ftp.SftpRpcServiceImpl;
 import net.datenwerke.rs.ftp.service.ftp.FtpModule;
 import net.datenwerke.rs.globalconstants.server.globalconstants.GlobalConstantsRpcServiceImpl;
 import net.datenwerke.rs.globalconstants.service.GlobalConstantsModule;
+import net.datenwerke.rs.googledrive.server.googledrive.GoogleDriveRpcServiceImpl;
+import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveModule;
 import net.datenwerke.rs.incubator.server.httpauthexecute.HttpAuthExecuteServlet;
 import net.datenwerke.rs.incubator.server.jaspertotable.JasperToTableRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.jasperutils.JasperUtilsRpcServiceImpl;
@@ -419,6 +421,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				
 				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
 				serve(BASE_URL + "onedrive").with(OneDriveRpcServiceImpl.class);
+				serve(BASE_URL + "googledrive").with(GoogleDriveRpcServiceImpl.class);
 				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
@@ -651,6 +654,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new SambaModule(),
 			new DropboxModule(),
 			new OneDriveModule(),
+			new GoogleDriveModule(),
 			new ScpModule(),
 			
 			new AliasCmdModule(),

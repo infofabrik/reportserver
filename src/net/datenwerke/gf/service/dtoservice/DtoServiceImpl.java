@@ -196,6 +196,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink.class, injector.getInstance(net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.FtpsDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink.class, injector.getInstance(net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.SftpDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant.class, injector.getInstance(net.datenwerke.rs.globalconstants.service.globalconstants.entities.dtogen.GlobalConstant2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink.class, injector.getInstance(net.datenwerke.rs.googledrive.service.googledrive.definitions.dtogen.GoogleDriveDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorColumnConfig.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.definition.dtogen.GridEditorColumnConfig2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorConfig.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.definition.dtogen.GridEditorConfig2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorData.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.definition.dtogen.GridEditorData2DtoGenerator.class));
@@ -470,6 +471,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto.class, injector.getInstance(net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.Dto2FtpsDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class, injector.getInstance(net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.Dto2SftpDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class, injector.getInstance(net.datenwerke.rs.globalconstants.service.globalconstants.entities.dtogen.Dto2GlobalConstantGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto.class, injector.getInstance(net.datenwerke.rs.googledrive.service.googledrive.definitions.dtogen.Dto2GoogleDriveDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.Dto2GridEditorReportGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVariantDto.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.Dto2GridEditorReportVariantGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto.class, injector.getInstance(net.datenwerke.rs.incubator.service.jaspertotable.entities.dtogen.Dto2JasperToTableConfigGenerator.class));
@@ -789,6 +791,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorColumnConfigDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorConfigDto.class);
@@ -1179,6 +1182,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant.class);
+		posoClassLookup.add(net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorColumnConfig.class);
 		posoClassLookup.add(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorConfig.class);
 		posoClassLookup.add(net.datenwerke.rs.grideditor.service.grideditor.definition.GridEditorData.class);

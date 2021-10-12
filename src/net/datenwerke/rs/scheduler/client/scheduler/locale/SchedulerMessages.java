@@ -280,4 +280,7 @@ public interface SchedulerMessages extends Messages {
     
     String fileactionOneDriveMsgSubject();
     String fileactionOneDriveMsgText();
+    
+    String fileactionGoogleDriveMsgSubject();
+    String fileactionGoogleDriveMsgText();
 }

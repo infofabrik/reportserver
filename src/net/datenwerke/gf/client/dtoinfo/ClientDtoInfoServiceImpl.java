@@ -141,6 +141,7 @@ import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
+import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.CustomValidatorDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.DateSelectionListEditorDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.DecimalSelectionListEditorDto;
@@ -523,6 +524,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto)
 			return ((net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto)
+			return ((net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto)
 			return ((net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVariantDto)
@@ -891,6 +894,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto();
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto();
+		if(net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto();
 		if(net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec();
 		if(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorConfigDto.class.equals(dtoClass))
@@ -1389,6 +1394,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto();
 		if("net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto();
+		if("net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto();
 		if("net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec();
 		if("net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorConfigDto".equals(dtoClassName))
@@ -2051,6 +2058,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.ftp.client.ftp.dto.posomap.SftpDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoClass))
 			return net.datenwerke.rs.globalconstants.client.globalconstants.dto.posomap.GlobalConstantDto2PosoMap.class;
+		if(net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.googledrive.client.googledrive.dto.posomap.GoogleDriveDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorColumnConfigDto.class.equals(dtoClass))
 			return net.datenwerke.rs.grideditor.client.grideditor.dto.posomap.GridEditorColumnConfigDto2PosoMap.class;
 		if(net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorColumnConfigDtoDec.class.equals(dtoClass))
@@ -2745,6 +2754,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVariantDto)
@@ -3274,6 +3285,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorColumnConfigDto.class.equals(dtoType))
 			return true;
@@ -4158,6 +4171,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorColumnConfigDto".equals(dtoClassName))
 			return true;

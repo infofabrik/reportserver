@@ -23,6 +23,7 @@
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport</class>
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.action.ScheduleAsOneDriveFileAction</class>
+          <class>net.datenwerke.rs.googledrive.service.googledrive.action.ScheduleAsGoogleDriveFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
