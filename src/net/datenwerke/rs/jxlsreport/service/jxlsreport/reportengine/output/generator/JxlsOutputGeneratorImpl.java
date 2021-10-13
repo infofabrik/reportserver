@@ -277,7 +277,9 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
       hookHandler.getHookers(JxlsContextVariableProvider.class).forEach(provider -> provider.adaptLegacyContext(beans));
 
       try {
-         return transformer.transformXLS(is, beans);
+         Workbook wb = transformer.transformXLS(is, beans);
+         wb.setForceFormulaRecalculation(true);
+         return wb;
       } catch (Exception e) {
          throw new ReportExecutorException(e);
       } finally {
