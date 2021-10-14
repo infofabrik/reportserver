@@ -16,6 +16,8 @@ import com.google.inject.Provider;
 import com.google.inject.Singleton;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.service.reportserver.ReportServerService;
+import net.datenwerke.rs.core.service.reportserver.ReportServerServiceImpl;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.client.login.AuthToken;
@@ -44,6 +46,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
 	private final Provider<HttpServletRequest> servletRequestProvider;
 	private final EventBus eventBus;
 	private final Provider<ApplicationPropertiesService> propertiesServiceProvider;
+	private final Provider<ReportServerService> reportServerServiceProvider;
 	
 	private final Map<Long,Long> lastRequests = new HashMap<Long, Long>();
 	
@@ -56,7 +59,8 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
 			Provider<CurrentUser> currentUserProvider,
 			Provider<HttpServletRequest> servletRequestProvider,
 			EventBus eventBus,
-			Provider<ApplicationPropertiesService> propertiesServiceProvider
+			Provider<ApplicationPropertiesService> propertiesServiceProvider,
+			Provider<ReportServerService> reportServerServiceProvider
 	) {
 		/* store objects */
 		this.pams = pams;
@@ -68,6 +72,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
 		this.eventBus = eventBus;
 		this.currentUserInThread = new ThreadLocal<Long>();
 		this.propertiesServiceProvider = propertiesServiceProvider;
+		this.reportServerServiceProvider = reportServerServiceProvider;
 	}
 
 	public Set<String> getRequiredClientModules() {
@@ -80,35 +85,45 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
 		return modules;
 	}
 
-	public AuthenticationResult authenticate(AuthToken[] tokens) {
-		for(PreAuthenticateHook hook : hookHandlerService.getHookers(PreAuthenticateHook.class))
-			hook.authenticating(tokens);
+    public AuthenticationResult authenticate(AuthToken[] tokens) {
+       for (PreAuthenticateHook hook : hookHandlerService.getHookers(PreAuthenticateHook.class))
+          hook.authenticating(tokens);
 
-		AuthenticationResult authRes = evaluateTokens(tokens);
+       AuthenticationResult authRes = evaluateTokens(tokens);
 
-		if(authRes.isAllowed()  && null != authRes.getUser()){
-			
-			// https://wiki.owasp.org/index.php/Testing_for_Session_Fixation_(OTG-SESS-003)
-			if (isSessionRenewalEnabled()) 
-				servletRequestProvider.get().getSession(false).invalidate();
-			
-			// call this after for collecting updated session data 
-			for(PostAuthenticateHook hook : hookHandlerService.getHookers(PostAuthenticateHook.class))
-				hook.authenticated(authRes);
-			
-			setCurrentUserId(authRes.getUser().getId());
-			
-			eventBus.fireEvent(new LoginEvent("user", getCurrentUserId()));
-		} else {
-			for(PostAuthenticateHook hook : hookHandlerService.getHookers(PostAuthenticateHook.class))
-				hook.authenticated(authRes);
-			
-			String suser = (null != authRes.getUser())?authRes.getUser().getUsername():"NULL";
-			eventBus.fireEvent(new FailedLoginEvent("user", suser));
-		}
+       // call this after for collecting updated session data
+       for (PostAuthenticateHook hook : hookHandlerService.getHookers(PostAuthenticateHook.class))
+          hook.authenticated(authRes);
 
-		return authRes;
-	}
+       if (authRes.isAllowed() && null != authRes.getUser()) {
+
+          // https://wiki.owasp.org/index.php/Testing_for_Session_Fixation_(OTG-SESS-003)
+          if (isSessionRenewalEnabled())
+             servletRequestProvider.get().getSession(false).invalidate();
+
+          setCurrentUserId(authRes.getUser().getId());
+
+          eventBus.fireEvent(new LoginEvent("user", getCurrentUserId()));
+       } else {
+          String suser = (null != authRes.getUser()) ? authRes.getUser().getUsername() : "NULL";
+          eventBus.fireEvent(new FailedLoginEvent("user", suser));
+       }
+
+       // call this after for collecting updated session data
+       collectServerInformation(authRes);
+
+       return authRes;
+    }
+    
+    private void collectServerInformation(AuthenticationResult authRes) {
+       if (authRes.isAllowed()) {
+          HttpServletRequest httpServletRequest = servletRequestProvider.get();
+          if (null == httpServletRequest)
+             return;
+
+          ((ReportServerServiceImpl) reportServerServiceProvider.get()).init(httpServletRequest);
+       }
+    }
 	
 	private boolean isSessionRenewalEnabled(){
 		boolean disable = propertiesServiceProvider.get().getBoolean(AuthenticatorService.PROPERTY_KEY_SESSION_RENEWAL_OVERRIDE_DISABLE, false);

@@ -27,7 +27,7 @@ public class ReportServerServiceImpl implements ReportServerService {
       return configService.getConfigFailsafe(CONFIG_FILE).getString("default.charset", DEFAULT_CHARSET);
    }
 
-   void init(HttpServletRequest httpServletRequest) {
+   public void init(HttpServletRequest httpServletRequest) {
       ServerInfoContainer serverInfoContainer = serverInfoContainerProvider.get();
       if (null != serverInfoContainer)
          serverInfoContainer.init(httpServletRequest);
