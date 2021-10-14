@@ -1,8 +1,8 @@
 package net.datenwerke.rs.core.service.reportserver;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.inject.Inject;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class ReportServerServiceStartup {
 

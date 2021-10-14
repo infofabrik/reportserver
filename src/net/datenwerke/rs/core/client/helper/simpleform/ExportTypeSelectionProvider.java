@@ -5,6 +5,21 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.VerticalPanel;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.core.client.util.ToggleGroup;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.Radio;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -13,20 +28,6 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporter;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporter.ConfigurationFinishedCallback;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.core.client.util.ToggleGroup;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.form.Radio;
 
 public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 
@@ -69,8 +70,10 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 		exporterMap = new HashMap<Radio, ReportExporter>();
 		boolean first = true;
 		
-		final HorizontalLayoutContainer radioContainer = new HorizontalLayoutContainer();
-		
+		int horizontalRadioCounter = 0;
+		HorizontalPanel horizontalRadioPanel = null;
+        VerticalPanel verticalRadioPanel = new VerticalPanel();
+        
 		for(final ReportExporter exporter : exporters){
 			if(! exporter.canBeScheduled())
 				continue;
@@ -93,14 +96,21 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 				}
 			});
 			
+			if (0 == horizontalRadioCounter % 6 ) {
+               horizontalRadioPanel = new HorizontalPanel();
+               horizontalRadioPanel.addStyleName("rs-export-type-radio-group");
+               verticalRadioPanel.add(horizontalRadioPanel);
+            }
+			
 			exportTypeGroup.add(radio);
-			radioContainer.add(radio);
+			horizontalRadioPanel.add(radio);
 			exporterMap.put(radio, exporter);
 			
 			if(first){
 				first = false;
 				radio.setValue(true, true);
 			}
+			horizontalRadioCounter++;
 		}
 		
 		/* selection listener for extra config */
@@ -125,7 +135,7 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 		});
 		
 		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		wrapper.add(radioContainer, new VerticalLayoutData(1,30));
+		wrapper.add(verticalRadioPanel, new VerticalLayoutData(1,30));
 		wrapper.add(formatConfigBtn);
 		
 		return wrapper;
