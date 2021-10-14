@@ -3,7 +3,6 @@ package net.datenwerke.rs.oauth.server.oauth;
 import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -85,7 +84,7 @@ public class OAuthServlet extends HttpServlet {
             oAuthAuthenticationServiceProvider.get().generateRefreshToken(authenticationCode, oauthDatasink,
                   redirectUri);
             resp.sendRedirect(req.getContextPath() + "#" + path);
-         } catch (InterruptedException | ExecutionException e) {
+         } catch (Exception e) {
             throw new ServletException("Error while generating refresh token");
          }
       } else {

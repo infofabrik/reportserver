@@ -147,6 +147,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.birt.service.reportengine.output.object.CompiledHTMLBirtReport.class, injector.getInstance(net.datenwerke.rs.birt.service.reportengine.output.object.dtogen.CompiledHTMLBirtReport2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.birt.service.reportengine.output.object.CompiledPNGBirtReport.class, injector.getInstance(net.datenwerke.rs.birt.service.reportengine.output.object.dtogen.CompiledPNGBirtReport2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.birt.service.utils.BirtParameterProposal.class, injector.getInstance(net.datenwerke.rs.birt.service.utils.dtogen.BirtParameterProposal2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.box.service.box.definitions.BoxDatasink.class, injector.getInstance(net.datenwerke.rs.box.service.box.definitions.dtogen.BoxDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn.class, injector.getInstance(net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.dtogen.ComputedColumn2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.condition.service.condition.entity.ReportCondition.class, injector.getInstance(net.datenwerke.rs.condition.service.condition.entity.dtogen.ReportCondition2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkContainer.class, injector.getInstance(net.datenwerke.rs.core.service.datasinkmanager.entities.dtogen.DatasinkContainer2DtoGenerator.class));
@@ -423,6 +424,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.birt.client.reportengines.dto.CompiledHTMLBirtReportDto.class, injector.getInstance(net.datenwerke.rs.birt.service.reportengine.output.object.dtogen.Dto2CompiledHTMLBirtReportGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto.class, injector.getInstance(net.datenwerke.rs.birt.service.reportengine.output.object.dtogen.Dto2CompiledPNGBirtReportGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto.class, injector.getInstance(net.datenwerke.rs.birt.service.utils.dtogen.Dto2BirtParameterProposalGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto.class, injector.getInstance(net.datenwerke.rs.box.service.box.definitions.dtogen.Dto2BoxDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto.class, injector.getInstance(net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.dtogen.Dto2ComputedColumnGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto.class, injector.getInstance(net.datenwerke.rs.condition.service.condition.entity.dtogen.Dto2ReportConditionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerDto.class, injector.getInstance(net.datenwerke.rs.core.service.datasinkmanager.entities.dtogen.Dto2DatasinkContainerGenerator.class));
@@ -707,6 +709,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.birt.client.reportengines.dto.CompiledHTMLBirtReportDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.condition.client.condition.dto.decorator.ReportConditionDtoDec.class);
@@ -1118,6 +1121,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.birt.service.reportengine.output.object.CompiledHTMLBirtReport.class);
 		posoClassLookup.add(net.datenwerke.rs.birt.service.reportengine.output.object.CompiledPNGBirtReport.class);
 		posoClassLookup.add(net.datenwerke.rs.birt.service.utils.BirtParameterProposal.class);
+		posoClassLookup.add(net.datenwerke.rs.box.service.box.definitions.BoxDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn.class);
 		posoClassLookup.add(net.datenwerke.rs.condition.service.condition.entity.ReportCondition.class);
 		posoClassLookup.add(net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode.class);

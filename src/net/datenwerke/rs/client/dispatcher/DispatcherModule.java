@@ -34,6 +34,7 @@ import net.datenwerke.rs.base.client.RsBaseUiModule;
 import net.datenwerke.rs.base.client.parameters.RSBasicParametersUIModule;
 import net.datenwerke.rs.base.ext.client.RsBaseExtUiModule;
 import net.datenwerke.rs.birt.client.reportengines.BirtUiModule;
+import net.datenwerke.rs.box.client.box.BoxUiModule;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.ComputedColumnsUiModule;
 import net.datenwerke.rs.condition.client.condition.ConditionUiModule;
 import net.datenwerke.rs.core.client.RsCoreUiModule;
@@ -121,6 +122,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new DropboxUiModule());
       install(new OneDriveUiModule());
       install(new GoogleDriveUiModule());
+      install(new BoxUiModule());
       install(new SambaUIModule());
       install(new ScpUIModule());
       install(new LocalFileSystemUiModule());

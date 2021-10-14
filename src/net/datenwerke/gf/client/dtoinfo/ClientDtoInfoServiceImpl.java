@@ -85,6 +85,7 @@ import net.datenwerke.rs.birt.client.reportengines.dto.BirtReportVariantDto;
 import net.datenwerke.rs.birt.client.reportengines.dto.CompiledHTMLBirtReportDto;
 import net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto;
 import net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto;
+import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto;
 import net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
@@ -420,6 +421,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.birt.client.reportengines.dto.BirtReportVariantDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto)
 			return ((net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto) dto).getKey();
+		if(dto instanceof net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto)
+			return ((net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto)
 			return ((net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto)
@@ -802,6 +805,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto();
 		if(net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto();
+		if(net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto();
 		if(net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto();
 		if(net.datenwerke.rs.condition.client.condition.dto.decorator.ReportConditionDtoDec.class.equals(dtoClass))
@@ -1302,6 +1307,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto();
 		if("net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto();
+		if("net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto();
 		if("net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto();
 		if("net.datenwerke.rs.condition.client.condition.dto.decorator.ReportConditionDtoDec".equals(dtoClassName))
@@ -1890,6 +1897,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.birt.client.reportengines.dto.posomap.CompiledPNGBirtReportDto2PosoMap.class;
 		if(net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto.class.equals(dtoClass))
 			return net.datenwerke.rs.birt.client.utils.dto.posomap.BirtParameterProposalDto2PosoMap.class;
+		if(net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.box.client.box.dto.posomap.BoxDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto.class.equals(dtoClass))
 			return net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.posomap.ComputedColumnDto2PosoMap.class;
 		if(net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto.class.equals(dtoClass))
@@ -2652,6 +2661,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.birt.client.reportengines.dto.BirtReportVariantDto)
 			return true;
+		if(dto instanceof net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto)
@@ -3117,6 +3128,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto.class.equals(dtoType))
 			return true;
@@ -4003,6 +4016,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.birt.client.reportengines.dto.CompiledPNGBirtReportDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto".equals(dtoClassName))
 			return true;

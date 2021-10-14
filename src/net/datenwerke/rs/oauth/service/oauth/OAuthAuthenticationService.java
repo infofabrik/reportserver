@@ -1,8 +1,5 @@
 package net.datenwerke.rs.oauth.service.oauth;
 
-import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-
 import com.google.inject.ImplementedBy;
 
 @ImplementedBy(DummyOAuthenticationServiceImpl.class)
@@ -17,12 +14,9 @@ public interface OAuthAuthenticationService {
     *                           service
     * @param oAuthDatasink      the datasink to save the refresh token to
     * @param redirectUri        the redirect uri
-    * @throws IOException          if an I/O error occurs
-    * @throws InterruptedException if the oauth client throws InterruptedException
-    * @throws ExecutionException   if the oauth client throws ExecutionException
     */
    void generateRefreshToken(String authenticationCode, OAuthAuthenticatable oAuthDatasink, String redirectUri)
-         throws IOException, InterruptedException, ExecutionException;
+         throws Exception;
 
    /**
     * Generates the URL necessary for OAuth2 authentication.

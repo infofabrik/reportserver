@@ -84,6 +84,8 @@ import net.datenwerke.rs.base.service.dbhelper.DBHelperModule;
 import net.datenwerke.rs.birt.server.BirtReportFileDownloadServlet;
 import net.datenwerke.rs.birt.server.BirtUtilsRpcServiceImpl;
 import net.datenwerke.rs.birt.service.BirtModule;
+import net.datenwerke.rs.box.server.box.BoxRpcServiceImpl;
+import net.datenwerke.rs.box.service.box.BoxModule;
 import net.datenwerke.rs.compiledreportstore.CompiledReportStoreModule;
 import net.datenwerke.rs.computedcolumns.server.computedcolumns.ComputedColumnsRpcServiceImpl;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.ComputedColumnsModule;
@@ -422,6 +424,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "dropbox").with(DropboxRpcServiceImpl.class);
 				serve(BASE_URL + "onedrive").with(OneDriveRpcServiceImpl.class);
 				serve(BASE_URL + "googledrive").with(GoogleDriveRpcServiceImpl.class);
+				serve(BASE_URL + "box").with(BoxRpcServiceImpl.class);
 				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
@@ -655,6 +658,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new DropboxModule(),
 			new OneDriveModule(),
 			new GoogleDriveModule(),
+			new BoxModule(),
 			new ScpModule(),
 			
 			new AliasCmdModule(),

@@ -24,6 +24,7 @@
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.action.ScheduleAsOneDriveFileAction</class>
           <class>net.datenwerke.rs.googledrive.service.googledrive.action.ScheduleAsGoogleDriveFileAction</class>
+          <class>net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
@@ -103,6 +104,8 @@
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DateTrigger</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink</class>
+          <class>net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink</class>
+          <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.Report</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer</class>

@@ -129,6 +129,7 @@
 	<source path="rs/dropbox/client"/>
 	<source path="rs/onedrive/client"/>
 	<source path="rs/googledrive/client"/>
+	<source path="rs/box/client"/>
 	<source path="rs/scp/client"/>
 	<source path="rs/localfsdatasink/client"/>
 	<source path="rs/emaildatasink/client"/>
