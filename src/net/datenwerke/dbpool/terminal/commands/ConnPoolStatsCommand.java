@@ -53,8 +53,10 @@ public class ConnPoolStatsCommand implements TerminalCommandHook {
                   Arrays.asList(String.class, String.class));
             table.setTableDefinition(td);
             
-            
-            table.addDataRow(new RSStringTableRow("JDBC URL:", connPoolConfig.getJdbcUrl()));
+            String datasource = connPoolConfig.getDatasourceName()
+                  + (null == connPoolConfig.getDatasourceId() ? "" : " (" + connPoolConfig.getDatasourceId() + ")");
+
+            table.addDataRow(new RSStringTableRow("Datasource:", datasource));
             ComboPooledDataSource ds = poolMap.get(connPoolConfig);
             table.addDataRow(
                   new RSStringTableRow("Max Pool Size:", NumberFormat.getIntegerInstance().format(ds.getMaxPoolSize())));

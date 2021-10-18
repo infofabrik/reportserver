@@ -88,7 +88,7 @@ public class DemoDataJdbcUrlAdapter extends JdbcUrlAdapterHookAdapter {
 	}
 	
 	protected Future<Connection> getDemoConnection() throws SQLException{
-		return dbPoolService.getConnection(new DemoDbConnectionPool(getDemoJdbcConnectionUrl()), new StandardConnectionConfig());
+		return dbPoolService.getConnection(new DemoDbConnectionPool(getDemoJdbcConnectionUrl(), null, getDemoJdbcConnectionUrl()), new StandardConnectionConfig());
 	}
 
 	private String getDemoJdbcConnectionUrl() {

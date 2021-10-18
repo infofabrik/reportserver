@@ -13,6 +13,10 @@ public interface ConnectionPoolConfig {
 	
 	String getJdbcUrl();
 	
+	Long getDatasourceId();
+	
+	String getDatasourceName();
+	
 	boolean isPoolable();
 	
 	boolean isMightChange();

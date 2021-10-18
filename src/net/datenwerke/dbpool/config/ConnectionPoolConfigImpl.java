@@ -17,6 +17,9 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
 
 	protected final Long id;
 	
+	private Long datasourceId;
+	private String datasourceName;
+	
 	protected String driver;
 
 	protected Properties properties;
@@ -175,5 +178,24 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
 	public Properties getJdbcProperties() {
 		return jdbcProperties;
 	}
+
+
+   @Override
+   public Long getDatasourceId() {
+      return datasourceId;
+   }
+   
+   public void setDatasourceId(Long datasourceId) {
+      this.datasourceId = datasourceId;
+   }
+
+   @Override
+   public String getDatasourceName() {
+      return datasourceName;
+   }
+   
+   public void setDatasourceName(String datasourceName) {
+      this.datasourceName = datasourceName;
+   }
 
 }

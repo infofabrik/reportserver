@@ -178,6 +178,8 @@ public class DatabaseDatasource extends DatasourceDefinition implements Paramete
 		config.setUsername(getUsername());
 		config.setPassword(getPassword());
 		config.setJdbcUrl(getUrl());
+		config.setDatasourceId(getId());
+		config.setDatasourceName(getName());
 		config.setDriver(dbHelperServiceProvider.get().getDatabaseHelper(getDatabaseDescriptor()).getDriver());
 		config.setLastUpdated(getLastUpdated());
 		config.setJdbcProperties(parseJdbcProperties());
