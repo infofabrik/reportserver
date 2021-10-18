@@ -20,40 +20,45 @@ import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DbPoolModule extends AbstractModule {
 
-	public static final String CONFIG_FILE = "datasources/pool.cf";
-	
-	
-	@Override
-	protected void configure() {
-		bind(DbPoolService.class).annotatedWith(PoolC3P0.class).to(DbC3p0PoolServiceImpl.class).in(Singleton.class);
-		
-		bind(DbPoolService.class).to(MetaPoolService.class).in(Singleton.class);
-		
-		install(new FactoryModuleBuilder()
-			.implement(ConnectionPoolConfig.class, ConnectionPoolConfigImpl.class)
-			.build(ConnectionPoolConfigFactory.class));
-		
-		requestStaticInjection(C3p0ConnectionHook.class);
-	}
+   public static final String CONFIG_FILE = "datasources/pool.cf";
 
-	@Inject @Provides @ConnectionPoolConfigFile
-	public HierarchicalConfiguration provideConfig(ConfigService service){
-		try{
-			return (HierarchicalConfiguration) service.getConfig(CONFIG_FILE);
-		}catch(ConfigFileNotFoundException e){
-			return null;
-		}
-	}
-	
-	@Provides @Inject @UseConnectionPool
-	public Boolean provideUseConnectionPool(@ConnectionPoolConfigFile HierarchicalConfiguration config){
-		try{
-			if(null != config){
-				String disablePool = config.getString("pool[@disable]", "false");
-				return ! "true".equals(disablePool);
-			}
-		} catch(Exception ignore){}
-		return true; 
-	}
-	
+   @Override
+   protected void configure() {
+      bind(DbPoolStartup.class).asEagerSingleton();
+
+      bind(DbPoolService.class).annotatedWith(PoolC3P0.class).to(DbC3p0PoolServiceImpl.class).in(Singleton.class);
+
+      bind(DbPoolService.class).to(MetaPoolService.class).in(Singleton.class);
+
+      install(new FactoryModuleBuilder().implement(ConnectionPoolConfig.class, ConnectionPoolConfigImpl.class)
+            .build(ConnectionPoolConfigFactory.class));
+
+      requestStaticInjection(C3p0ConnectionHook.class);
+   }
+
+   @Inject
+   @Provides
+   @ConnectionPoolConfigFile
+   public HierarchicalConfiguration provideConfig(ConfigService service) {
+      try {
+         return (HierarchicalConfiguration) service.getConfig(CONFIG_FILE);
+      } catch (ConfigFileNotFoundException e) {
+         return null;
+      }
+   }
+
+   @Provides
+   @Inject
+   @UseConnectionPool
+   public Boolean provideUseConnectionPool(@ConnectionPoolConfigFile HierarchicalConfiguration config) {
+      try {
+         if (null != config) {
+            String disablePool = config.getString("pool[@disable]", "false");
+            return !"true".equals(disablePool);
+         }
+      } catch (Exception ignore) {
+      }
+      return true;
+   }
+
 }

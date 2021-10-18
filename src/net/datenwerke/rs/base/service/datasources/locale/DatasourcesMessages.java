@@ -16,5 +16,7 @@ public interface DatasourcesMessages extends Messages{
 	String exceptionCouldNotExecuteStmt(String message);
 	String exceptionCouldNotOpenDatasource(String message);
 	String exceptionCouldNotPrepareStmt(String message);
+	
+	String commandConnPoolStats_description();
 }
 
