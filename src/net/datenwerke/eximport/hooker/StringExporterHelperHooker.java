@@ -14,20 +14,19 @@ import org.apache.commons.lang.StringEscapeUtils;
  */
 public class StringExporterHelperHooker extends BasicObjectExImporterHelperHookImpl<ComplexItemProperty> {
 
-	
-	@Override
-	public boolean consumes(Class<?> type) {
-		return (null != type && String.class.isAssignableFrom(type));
-	}
+   @Override
+   public boolean consumes(Class<?> type) {
+      return (null != type && String.class.isAssignableFrom(type));
+   }
 
-	@Override
-	public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
-		exportSupervisor.createCDataElement(StringEscapeUtils.escapeXml(value.toString()));
-	}
+   @Override
+   public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
+      exportSupervisor.createCDataElement(StringEscapeUtils.escapeXml(value.toString()));
+   }
 
-	@Override
-	public Object doImport(ComplexItemProperty property) {
-		String text = StringEscapeUtils.unescapeXml(property.getElement().getValue());
-		return text;
-	}
+   @Override
+   public Object doImport(ComplexItemProperty property) {
+      String text = StringEscapeUtils.unescapeXml(property.getElement().getValue());
+      return text;
+   }
 }

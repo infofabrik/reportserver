@@ -9,38 +9,35 @@ import com.mchange.v2.c3p0.ConnectionCustomizer;
 
 public class C3p0ConnectionHook implements ConnectionCustomizer {
 
-	@Inject static protected HookHandlerService hookHandler;
+   @Inject
+   static protected HookHandlerService hookHandler;
 
-	public C3p0ConnectionHook(){
-		// dummy
-	}
-	
-	@Override
-	public void onAcquire(Connection c, String parentDataSourceIdentityToken)
-			throws Exception {
-		for(DbPoolConnectionHook hooker : hookHandler.getHookers(DbPoolConnectionHook.class))
-			hooker.onAcquire(c);
-	}
+   public C3p0ConnectionHook() {
+      // dummy
+   }
 
-	@Override
-	public void onDestroy(Connection c, String parentDataSourceIdentityToken)
-			throws Exception {
-		for(DbPoolConnectionHook hooker : hookHandler.getHookers(DbPoolConnectionHook.class))
-			hooker.onDestroy(c);
-	}
+   @Override
+   public void onAcquire(final Connection c, String parentDataSourceIdentityToken) throws Exception {
+      hookHandler.getHookers(DbPoolConnectionHook.class)
+         .forEach(hooker -> hooker.onAcquire(c));
+   }
 
-	@Override
-	public void onCheckOut(Connection c, String parentDataSourceIdentityToken)
-			throws Exception {
-		for(DbPoolConnectionHook hooker : hookHandler.getHookers(DbPoolConnectionHook.class))
-			hooker.onCheckOut(c);
-	}
+   @Override
+   public void onDestroy(final Connection c, String parentDataSourceIdentityToken) throws Exception {
+      hookHandler.getHookers(DbPoolConnectionHook.class)
+         .forEach(hooker -> hooker.onDestroy(c));
+   }
 
-	@Override
-	public void onCheckIn(Connection c, String parentDataSourceIdentityToken)
-			throws Exception {
-		for(DbPoolConnectionHook hooker : hookHandler.getHookers(DbPoolConnectionHook.class))
-			hooker.onCheckIn(c);
-	} 
-	
+   @Override
+   public void onCheckOut(final Connection c, String parentDataSourceIdentityToken) throws Exception {
+      hookHandler.getHookers(DbPoolConnectionHook.class)
+         .forEach(hooker -> hooker.onCheckOut(c));
+   }
+
+   @Override
+   public void onCheckIn(final Connection c, String parentDataSourceIdentityToken) throws Exception {
+      hookHandler.getHookers(DbPoolConnectionHook.class)
+         .forEach(hooker -> hooker.onCheckIn(c));
+   }
+   
 }

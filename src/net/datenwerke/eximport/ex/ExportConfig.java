@@ -11,72 +11,71 @@ import java.util.Set;
 
 public class ExportConfig {
 
-	private List<ExporterSpecificExportConfig> specificExporterConfigs = new ArrayList<ExporterSpecificExportConfig>();
-	
-	private Set<ExportItemConfig<?>> itemConfigs = new HashSet<ExportItemConfig<?>>();
-	private Date date;
-	private String name = "";
-	private String description = "";
-	
-	public ExportConfig(){
-		date = Calendar.getInstance().getTime();
-	}
-	
-	public void setItemConfigs(Set<ExportItemConfig<?>> itemConfigs) {
-		this.itemConfigs = itemConfigs;
-	}
-	
-	public boolean addItemConfig(ExportItemConfig<?>... configs){
-		return itemConfigs.addAll(Arrays.asList(configs));
-	}
-	
-	public boolean addItemConfig(Collection<ExportItemConfig<?>> configs){
-		return itemConfigs.addAll(configs);
-	}
+   private List<ExporterSpecificExportConfig> specificExporterConfigs = new ArrayList<ExporterSpecificExportConfig>();
 
-	public boolean containsItemConfig(ExportItemConfig<?> config){
-		return itemConfigs.contains(config);
-	}
-	
-	public Set<ExportItemConfig<?>> getItemConfigs() {
-		return itemConfigs;
-	}
+   private Set<ExportItemConfig<?>> itemConfigs = new HashSet<ExportItemConfig<?>>();
+   private Date date;
+   private String name = "";
+   private String description = "";
 
-	public List<ExporterSpecificExportConfig> getSpecificExporterConfigs() {
-		return specificExporterConfigs;
-	}
+   public ExportConfig() {
+      date = Calendar.getInstance().getTime();
+   }
 
-	public void setSpecificExporterConfigs(
-			List<ExporterSpecificExportConfig> specificExporterConfigs) {
-		this.specificExporterConfigs = specificExporterConfigs;
-	}
-	
-	public void addSpecificExporterConfigs(ExporterSpecificExportConfig... specificConfig){
-		this.specificExporterConfigs.addAll(Arrays.asList(specificConfig));
-	}
+   public void setItemConfigs(Set<ExportItemConfig<?>> itemConfigs) {
+      this.itemConfigs = itemConfigs;
+   }
 
-	public Date getDate() {
-		return date;
-	}
+   public boolean addItemConfig(ExportItemConfig<?>... configs) {
+      return itemConfigs.addAll(Arrays.asList(configs));
+   }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+   public boolean addItemConfig(Collection<ExportItemConfig<?>> configs) {
+      return itemConfigs.addAll(configs);
+   }
 
-	public String getName() {
-		return name;
-	}
+   public boolean containsItemConfig(ExportItemConfig<?> config) {
+      return itemConfigs.contains(config);
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public Set<ExportItemConfig<?>> getItemConfigs() {
+      return itemConfigs;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public List<ExporterSpecificExportConfig> getSpecificExporterConfigs() {
+      return specificExporterConfigs;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
+   public void setSpecificExporterConfigs(List<ExporterSpecificExportConfig> specificExporterConfigs) {
+      this.specificExporterConfigs = specificExporterConfigs;
+   }
+
+   public void addSpecificExporterConfigs(ExporterSpecificExportConfig... specificConfig) {
+      this.specificExporterConfigs.addAll(Arrays.asList(specificConfig));
+   }
+
+   public Date getDate() {
+      return date;
+   }
+
+   public void setDate(Date date) {
+      this.date = date;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
 }

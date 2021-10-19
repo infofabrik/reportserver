@@ -14,33 +14,31 @@ import com.google.inject.Inject;
  */
 public class ExImportIdService {
 
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ExImportIdService(
-		HookHandlerService hookHandler	
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	/**
-	 * Loops over all registered {@link ExImportIdProviderHook} Hookees to
-	 * provide an id for the given object.
-	 * 
-	 * @param object
-	 * @return the id
-	 */
-	public String provideId(Object object){
-		for(ExImportIdProviderHook provider : hookHandler.getHookers(ExImportIdProviderHook.class)){
-			if(object instanceof HibernateProxy)
-				object = ((HibernateProxy)object).getHibernateLazyInitializer().getImplementation();
-			
-			String id = provider.provideIdFor(object);
-			if(null != id)
-				return id;
-		}
-		return null;
-	}
+   private final HookHandlerService hookHandler;
+
+   @Inject
+   public ExImportIdService(HookHandlerService hookHandler) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
+
+   /**
+    * Loops over all registered {@link ExImportIdProviderHook} Hookees to provide
+    * an id for the given object.
+    * 
+    * @param object
+    * @return the id
+    */
+   public String provideId(Object object) {
+      for (ExImportIdProviderHook provider : hookHandler.getHookers(ExImportIdProviderHook.class)) {
+         if (object instanceof HibernateProxy)
+            object = ((HibernateProxy) object).getHibernateLazyInitializer().getImplementation();
+
+         String id = provider.provideIdFor(object);
+         if (null != id)
+            return id;
+      }
+      return null;
+   }
 }

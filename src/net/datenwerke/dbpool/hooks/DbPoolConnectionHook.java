@@ -8,12 +8,12 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface DbPoolConnectionHook extends Hook {
 
-	void onAcquire(Connection connection);
+   void onAcquire(Connection connection);
 
-	void onCheckIn(Connection connection);
+   void onCheckIn(Connection connection);
 
-	void onCheckOut(Connection connection);
+   void onCheckOut(Connection connection);
 
-	void onDestroy(Connection connection);
+   void onDestroy(Connection connection);
 
 }

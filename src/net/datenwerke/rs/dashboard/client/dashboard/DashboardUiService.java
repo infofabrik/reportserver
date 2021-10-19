@@ -15,16 +15,16 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DadgetPanel;
 @ImplementedBy(DashboardUiServiceImpl.class)
 public interface DashboardUiService {
 
-	IconButton addParameterToolButtonTo(DadgetPanel dadgetPanel, DadgetProcessorHook dadgetProcessor);
+   IconButton addParameterToolButtonTo(DadgetPanel dadgetPanel, DadgetProcessorHook dadgetProcessor);
 
-	void showHideParameterToolButton(DadgetPanel panel, ReportDto report);
+   void showHideParameterToolButton(DadgetPanel panel, ReportDto report);
 
-	ListStore<DashboardDto> getAllDashboardsStore();
+   ListStore<DashboardDto> getAllDashboardsStore();
 
-	ListLoader<ListLoadConfig, ListLoadResult<DashboardDto>> getAllDashboardsLoader();
+   ListLoader<ListLoadConfig, ListLoadResult<DashboardDto>> getAllDashboardsLoader();
 
-	ListStore<DashboardDto> getDashboardStore();
+   ListStore<DashboardDto> getDashboardStore();
 
-	ListLoader<ListLoadConfig, ListLoadResult<DashboardDto>> getDashboardsLoader();
+   ListLoader<ListLoadConfig, ListLoadResult<DashboardDto>> getDashboardsLoader();
 
 }

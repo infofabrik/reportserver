@@ -9,18 +9,14 @@ import com.google.inject.Inject;
 
 public class ContextHelpDao extends Dao {
 
-	private final ContextHelpRpcServiceAsync asyncService;
+   private final ContextHelpRpcServiceAsync asyncService;
 
-	@Inject
-	public ContextHelpDao(
-		ContextHelpRpcServiceAsync asyncService
-		) {
-		this.asyncService = asyncService;
-	}
-	
-	public void getContextHelp(
-			ContextHelpInfo info, 
-			RsAsyncCallback<String> callback){
-		asyncService.getContextHelp(info, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public ContextHelpDao(ContextHelpRpcServiceAsync asyncService) {
+      this.asyncService = asyncService;
+   }
+
+   public void getContextHelp(ContextHelpInfo info, RsAsyncCallback<String> callback) {
+      asyncService.getContextHelp(info, transformAndKeepCallback(callback));
+   }
 }

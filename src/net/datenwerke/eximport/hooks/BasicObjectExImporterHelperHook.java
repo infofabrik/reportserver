@@ -8,14 +8,17 @@ import net.datenwerke.eximport.obj.ItemProperty;
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 /**
- * Allows to help the {@link BasicObjectExporter} by providing custom exporters for simple objects.
+ * Allows to help the {@link BasicObjectExporter} by providing custom exporters
+ * for simple objects.
  * 
  *
  */
 public interface BasicObjectExImporterHelperHook extends Hook {
-	
-	public boolean consumes(Class<?> type);
-	public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException;
-	public Object importData(ItemProperty property);
-	
+
+   public boolean consumes(Class<?> type);
+
+   public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException;
+
+   public Object importData(ItemProperty property);
+
 }

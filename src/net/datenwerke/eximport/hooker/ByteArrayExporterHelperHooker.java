@@ -10,21 +10,21 @@ import org.apache.commons.codec.binary.Base64;
 
 public class ByteArrayExporterHelperHooker extends BasicObjectExImporterHelperHookImpl<ComplexItemProperty> {
 
-	@Override
-	public boolean consumes(Class<?> type) {
-		return Byte[].class.equals(type) || byte[].class.equals(type);
-	}
+   @Override
+   public boolean consumes(Class<?> type) {
+      return Byte[].class.equals(type) || byte[].class.equals(type);
+   }
 
-	@Override
-	public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
-		byte[] bValue = (byte[]) value;
-		exportSupervisor.createCDataElement(new String(Base64.encodeBase64(bValue)));
-	}
+   @Override
+   public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
+      byte[] bValue = (byte[]) value;
+      exportSupervisor.createCDataElement(new String(Base64.encodeBase64(bValue)));
+   }
 
-	@Override
-	protected Object doImport(ComplexItemProperty property) {
-		String text = property.getElement().getValue();
-		return Base64.decodeBase64(text.getBytes());
-	}
+   @Override
+   protected Object doImport(ComplexItemProperty property) {
+      String text = property.getElement().getValue();
+      return Base64.decodeBase64(text.getBytes());
+   }
 
 }

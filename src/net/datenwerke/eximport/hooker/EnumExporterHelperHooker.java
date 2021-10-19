@@ -16,32 +16,29 @@ import com.google.inject.Inject;
  */
 public class EnumExporterHelperHooker extends BasicObjectExImporterHelperHookImpl<SimpleItemProperty> {
 
-	private final ReflectionService reflectionService;
-	private final ExImportHelperService eiHelper;
-	
-	@Inject
-	public EnumExporterHelperHooker(
-		ExImportHelperService eiHelper,
-		ReflectionService reflectionService
-		){
-		
-		this.eiHelper = eiHelper;
-		this.reflectionService = reflectionService;
-	}
-	
-	@Override
-	public boolean consumes(Class<?> type) {
-		return (null != type && type.isEnum());
-	}
+   private final ReflectionService reflectionService;
+   private final ExImportHelperService eiHelper;
 
-	@Override
-	public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
-		eiHelper.setValueAttribute(exportSupervisor.getXmlStream(), value.toString());
-	}
+   @Inject
+   public EnumExporterHelperHooker(ExImportHelperService eiHelper, ReflectionService reflectionService) {
 
-	@Override
-	public Object doImport(SimpleItemProperty property) {
-		Object enumObject = reflectionService.getEnumByString(property.getType(), property.getValue());
-		return enumObject;
-	}
+      this.eiHelper = eiHelper;
+      this.reflectionService = reflectionService;
+   }
+
+   @Override
+   public boolean consumes(Class<?> type) {
+      return (null != type && type.isEnum());
+   }
+
+   @Override
+   public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
+      eiHelper.setValueAttribute(exportSupervisor.getXmlStream(), value.toString());
+   }
+
+   @Override
+   public Object doImport(SimpleItemProperty property) {
+      Object enumObject = reflectionService.getEnumByString(property.getType(), property.getValue());
+      return enumObject;
+   }
 }

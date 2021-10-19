@@ -9,14 +9,14 @@ import com.google.inject.Inject;
 
 public class DashboardTreeManagerDao extends TreeDbManagerDao {
 
-	@Inject
-	public DashboardTreeManagerDao(DashboardTreeManagerAsync treeManager) {
-		super(treeManager);
-	}
+   @Inject
+   public DashboardTreeManagerDao(DashboardTreeManagerAsync treeManager) {
+      super(treeManager);
+   }
 
-	@Override
-	public Dto2PosoMapper getBaseNodeMapper() {
-		return AbstractDashboardManagerNodeDto.newPosoMapper();
-	}
+   @Override
+   public Dto2PosoMapper getBaseNodeMapper() {
+      return AbstractDashboardManagerNodeDto.newPosoMapper();
+   }
 
 }

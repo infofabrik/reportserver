@@ -6,5 +6,5 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface JdbcUrlAdapterHook extends Hook {
 
-	public String adaptJdbcUrl(String url);
+   public String adaptJdbcUrl(String url);
 }

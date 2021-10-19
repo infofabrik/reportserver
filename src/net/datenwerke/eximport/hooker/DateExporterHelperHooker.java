@@ -20,36 +20,35 @@ import com.google.inject.Inject;
  */
 public class DateExporterHelperHooker extends BasicObjectExImporterHelperHookImpl<SimpleItemProperty> {
 
-	private final ExImportHelperService eiHelper;
-	
-	@Inject
-	public DateExporterHelperHooker(
-		ExImportHelperService eiHelper
-		){
-		
-		this.eiHelper = eiHelper;
-	}
-	
-	@Override
-	public boolean consumes(Class<?> type) {
-		return (null != type && Date.class.isAssignableFrom(type));
-	}
+   private final ExImportHelperService eiHelper;
 
-	@Override
-	public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
-		eiHelper.setValueAttribute(exportSupervisor.getXmlStream(), (new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss Z").format(value)));
-	}
+   @Inject
+   public DateExporterHelperHooker(ExImportHelperService eiHelper) {
 
-	@Override
-	public Object doImport(SimpleItemProperty property) {
-		if("".equals(property.getValue()))
-			return null;
-		
-		try {
-			return (new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss Z")).parseObject(property.getValue());
-		} catch (ParseException e) {
-			throw new ImportException("old value: " + property.getValue(),e);
-		}
-	}
+      this.eiHelper = eiHelper;
+   }
+
+   @Override
+   public boolean consumes(Class<?> type) {
+      return (null != type && Date.class.isAssignableFrom(type));
+   }
+
+   @Override
+   public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
+      eiHelper.setValueAttribute(exportSupervisor.getXmlStream(),
+            (new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss Z").format(value)));
+   }
+
+   @Override
+   public Object doImport(SimpleItemProperty property) {
+      if ("".equals(property.getValue()))
+         return null;
+
+      try {
+         return (new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss Z")).parseObject(property.getValue());
+      } catch (ParseException e) {
+         throw new ImportException("old value: " + property.getValue(), e);
+      }
+   }
 
 }

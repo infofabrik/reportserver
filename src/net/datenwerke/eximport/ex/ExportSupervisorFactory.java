@@ -6,8 +6,5 @@ import javax.xml.stream.XMLStreamWriter;
 
 public interface ExportSupervisorFactory {
 
-	public ExportSupervisor create( 
-			ExportConfig config, 
-			List<Exporter> exporters,
-			XMLStreamWriter xsw	);
+   public ExportSupervisor create(ExportConfig config, List<Exporter> exporters, XMLStreamWriter xsw);
 }

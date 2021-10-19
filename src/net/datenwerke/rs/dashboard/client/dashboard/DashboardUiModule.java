@@ -20,24 +20,24 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DadgetCatalogFactory;
 
 public class DashboardUiModule extends AbstractGinModule {
 
-	public static final String ADMIN_TREE_MENU_NAME = "dashboard:admin:tree:menu";
-	
-	public static final String DASHBOARD_HISTORY_TOKEN = "dashboardmgr";
+   public static final String ADMIN_TREE_MENU_NAME = "dashboard:admin:tree:menu";
 
-	
-	@Override
-	protected void configure() {
-		/* bind trees */
-		bind(UITree.class).annotatedWith(DashboardTreeBasic.class).toProvider(BasicTreeProvider.class);
-		bind(UITree.class).annotatedWith(DashboardTreeFull.class).toProvider(FullTreeProvider.class);
-		bind(UITree.class).annotatedWith(DashboardTreeFolders.class).toProvider(FolderTreeProvider.class);
-		bind(UITree.class).annotatedWith(DashboardTreeDashboards.class).toProvider(DashboardsTreeProvider.class);
-		bind(UITree.class).annotatedWith(DashboardTreeDadgets.class).toProvider(DadgetsTreeProvider.class);
-		bind(UITree.class).annotatedWith(DashboardManagerAdminViewTree.class).toProvider(FullTreeProvider.class).in(Singleton.class);
+   public static final String DASHBOARD_HISTORY_TOKEN = "dashboardmgr";
 
-		install(new GinFactoryModuleBuilder().build(DadgetCatalogFactory.class));
-		
-		bind(DashboardUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      /* bind trees */
+      bind(UITree.class).annotatedWith(DashboardTreeBasic.class).toProvider(BasicTreeProvider.class);
+      bind(UITree.class).annotatedWith(DashboardTreeFull.class).toProvider(FullTreeProvider.class);
+      bind(UITree.class).annotatedWith(DashboardTreeFolders.class).toProvider(FolderTreeProvider.class);
+      bind(UITree.class).annotatedWith(DashboardTreeDashboards.class).toProvider(DashboardsTreeProvider.class);
+      bind(UITree.class).annotatedWith(DashboardTreeDadgets.class).toProvider(DadgetsTreeProvider.class);
+      bind(UITree.class).annotatedWith(DashboardManagerAdminViewTree.class).toProvider(FullTreeProvider.class)
+            .in(Singleton.class);
+
+      install(new GinFactoryModuleBuilder().build(DadgetCatalogFactory.class));
+
+      bind(DashboardUiStartup.class).asEagerSingleton();
+   }
 
 }

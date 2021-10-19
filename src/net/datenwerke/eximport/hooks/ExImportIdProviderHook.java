@@ -4,5 +4,5 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ExImportIdProviderHook extends Hook {
 
-	public String provideIdFor(Object object);
+   public String provideIdFor(Object object);
 }

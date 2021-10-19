@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 
 public class DashboardTreeLoaderDao extends TreeDbLoaderDao {
 
-	@Inject
-	public DashboardTreeLoaderDao(DashboardTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter){
-		super(treeLoader, treeDbFtoConverter);
-	}
+   @Inject
+   public DashboardTreeLoaderDao(DashboardTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeLoader, treeDbFtoConverter);
+   }
 }

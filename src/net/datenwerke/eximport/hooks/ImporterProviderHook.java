@@ -11,12 +11,12 @@ import com.google.inject.Provider;
  */
 public class ImporterProviderHook extends ObjectHook<Importer> {
 
-	public ImporterProviderHook(Importer object) {
-		super(object);
-	}
-	
-	public ImporterProviderHook(Provider<? extends Importer> provider) {
-		super(provider);
-	}
+   public ImporterProviderHook(Importer object) {
+      super(object);
+   }
+
+   public ImporterProviderHook(Provider<? extends Importer> provider) {
+      super(provider);
+   }
 
 }

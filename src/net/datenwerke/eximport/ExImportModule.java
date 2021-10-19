@@ -22,28 +22,30 @@ import com.google.inject.assistedinject.FactoryProvider;
  */
 public class ExImportModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* services */
-		bind(ImportService.class).to(ImportServiceImpl.class).in(Singleton.class);
-		bind(ExportService.class).to(ExportServiceImpl.class).in(Singleton.class);
-		
-		/* assisted injection factories */
-		bind(ExportSupervisorFactory.class).toProvider(FactoryProvider.newFactory(ExportSupervisorFactory.class, ExportSupervisor.class));
-		bind(BasicObjectExporterFactory.class).toProvider(FactoryProvider.newFactory(BasicObjectExporterFactory.class, BasicObjectExporter.class));
-		bind(EntityObjectExporterFactory.class).toProvider(FactoryProvider.newFactory(EntityObjectExporterFactory.class, EntityObjectExporter.class));
-		
-		bind(ImportSupervisorFactory.class).toProvider(FactoryProvider.newFactory(ImportSupervisorFactory.class, ImportSupervisor.class));
-		bind(BasicObjectImporterFactory.class).toProvider(FactoryProvider.newFactory(BasicObjectImporterFactory.class, BasicObjectImporter.class));
-		
-		/* static injection */
-		requestStaticInjection(
-			ExportItemConfig.class,
-			EnclosedObjectConfig.class
-		);
-		
-		/* startup */
-		bind(ExImportStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      /* services */
+      bind(ImportService.class).to(ImportServiceImpl.class).in(Singleton.class);
+      bind(ExportService.class).to(ExportServiceImpl.class).in(Singleton.class);
+
+      /* assisted injection factories */
+      bind(ExportSupervisorFactory.class)
+            .toProvider(FactoryProvider.newFactory(ExportSupervisorFactory.class, ExportSupervisor.class));
+      bind(BasicObjectExporterFactory.class)
+            .toProvider(FactoryProvider.newFactory(BasicObjectExporterFactory.class, BasicObjectExporter.class));
+      bind(EntityObjectExporterFactory.class)
+            .toProvider(FactoryProvider.newFactory(EntityObjectExporterFactory.class, EntityObjectExporter.class));
+
+      bind(ImportSupervisorFactory.class)
+            .toProvider(FactoryProvider.newFactory(ImportSupervisorFactory.class, ImportSupervisor.class));
+      bind(BasicObjectImporterFactory.class)
+            .toProvider(FactoryProvider.newFactory(BasicObjectImporterFactory.class, BasicObjectImporter.class));
+
+      /* static injection */
+      requestStaticInjection(ExportItemConfig.class, EnclosedObjectConfig.class);
+
+      /* startup */
+      bind(ExImportStartup.class).asEagerSingleton();
+   }
 
 }

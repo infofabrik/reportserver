@@ -11,8 +11,8 @@ import com.google.inject.Provider;
  */
 public class ExporterProviderHook extends ObjectHook<Exporter> {
 
-	public ExporterProviderHook(Provider<? extends Exporter> provider) {
-		super(provider);
-	}
+   public ExporterProviderHook(Provider<? extends Exporter> provider) {
+      super(provider);
+   }
 
 }
