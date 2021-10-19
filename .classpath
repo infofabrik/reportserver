@@ -241,20 +241,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.2.jar"/>
 	<classpathentry kind="src" path="jasper-src"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-console-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-3.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sandbox-1.26-jaspersoft-1-SNAPSHOT.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-3.0.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-3.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.1.jar"/>
@@ -264,5 +251,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.17.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/c3p0-0.9.5.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.20.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-console-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-3.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-3.0.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
