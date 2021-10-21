@@ -84,21 +84,20 @@ public class ViewLogFileCommand implements TerminalCommandHook {
 
 	@Override
 	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		Path logPath = Paths.get(System.getProperty("catalina.home") + "/logs");
-		if ( ! Files.exists(logPath) ) {
-			autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-			return;
-		}
-
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-		try ( Stream<Path> stream = Files.list(logPath) ) {
-			stream
-			.filter(f -> ! Files.isDirectory(f))
-			.forEach(f -> autocompleteHelper.addAutocompleteNamesForToken(2, f.getFileName().toString()));
-		} catch (IOException e) {
-			logger.warn( e.getMessage(), e);
-		}
-		
+	   autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+	   if(consumes(autocompleteHelper.getParser(), session)){
+      		Path logPath = Paths.get(System.getProperty("catalina.home") + "/logs");
+      		if ( ! Files.exists(logPath) ) 
+      			return;
+      
+      		try ( Stream<Path> stream = Files.list(logPath) ) {
+      			stream
+      			.filter(f -> ! Files.isDirectory(f))
+      			.forEach(f -> autocompleteHelper.addAutocompleteNamesForToken(2, f.getFileName().toString()));
+      		} catch (IOException e) {
+      			logger.warn( e.getMessage(), e);
+      		}
+	   }
 	}
 	
 }
