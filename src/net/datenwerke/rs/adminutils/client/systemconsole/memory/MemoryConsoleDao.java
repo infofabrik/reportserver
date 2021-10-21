@@ -9,20 +9,19 @@ import net.datenwerke.rs.adminutils.client.systemconsole.memory.rpc.MemoryConsol
 
 public class MemoryConsoleDao extends Dao {
 
-	private final MemoryConsoleRpcServiceAsync rpcService;
+   private final MemoryConsoleRpcServiceAsync rpcService;
 
-	@Inject
-	public MemoryConsoleDao(
-			MemoryConsoleRpcServiceAsync rpcService) {
-			this.rpcService = rpcService;
-	}
-	
-	public void loadMemoryInfo(RsAsyncCallback<MemoryInfoDto> callback){
-		rpcService.loadMemoryInfo(transformAndKeepCallback(callback));
-	}
-	
-	public void callGarbageCollector(RsAsyncCallback<Void> callback) {
-		rpcService.callGarbageCollector(transformAndKeepCallback(callback));
-	}
+   @Inject
+   public MemoryConsoleDao(MemoryConsoleRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void loadMemoryInfo(RsAsyncCallback<MemoryInfoDto> callback) {
+      rpcService.loadMemoryInfo(transformAndKeepCallback(callback));
+   }
+
+   public void callGarbageCollector(RsAsyncCallback<Void> callback) {
+      rpcService.callGarbageCollector(transformAndKeepCallback(callback));
+   }
 
 }

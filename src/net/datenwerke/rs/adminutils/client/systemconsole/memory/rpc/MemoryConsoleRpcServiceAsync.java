@@ -6,8 +6,8 @@ import net.datenwerke.rs.adminutils.client.systemconsole.memory.dto.MemoryInfoDt
 
 public interface MemoryConsoleRpcServiceAsync {
 
-	void loadMemoryInfo(AsyncCallback<MemoryInfoDto> callback);
-	
-	void callGarbageCollector(AsyncCallback<Void> callback);
+   void loadMemoryInfo(AsyncCallback<MemoryInfoDto> callback);
+
+   void callGarbageCollector(AsyncCallback<Void> callback);
 
 }

@@ -9,8 +9,8 @@ import net.datenwerke.rs.adminutils.client.systemconsole.memory.dto.MemoryInfoDt
 @RemoteServiceRelativePath("memoryconsole")
 public interface MemoryConsoleRpcService extends RemoteService {
 
-	MemoryInfoDto loadMemoryInfo() throws ServerCallFailedException;
-	
-	void callGarbageCollector() throws ServerCallFailedException;
+   MemoryInfoDto loadMemoryInfo() throws ServerCallFailedException;
+
+   void callGarbageCollector() throws ServerCallFailedException;
 
 }

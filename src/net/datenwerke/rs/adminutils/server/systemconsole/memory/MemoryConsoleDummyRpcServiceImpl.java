@@ -9,15 +9,15 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class MemoryConsoleDummyRpcServiceImpl extends SecuredRemoteServiceServlet implements MemoryConsoleRpcService {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	@Override
-	public MemoryInfoDto loadMemoryInfo() {
-		return null;
-	}
-	
-	@Override
-	public void callGarbageCollector() {
-	}
+   @Override
+   public MemoryInfoDto loadMemoryInfo() {
+      return null;
+   }
+
+   @Override
+   public void callGarbageCollector() {
+   }
 
 }

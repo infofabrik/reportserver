@@ -10,30 +10,28 @@ import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMes
 import net.datenwerke.rs.adminutils.client.systemconsole.memory.ui.MemoryInfoPanel;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class MemoryInfoSystemConsoleHooker implements
-		SystemConsoleViewDomainHook {
-	
-	private final Provider<MemoryInfoPanel> mainWidgetProvider;
-	
-	@Inject
-	public MemoryInfoSystemConsoleHooker(
-			Provider<MemoryInfoPanel> mainWidgetProvider) {
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return SystemConsoleMessages.INSTANCE.jvmLiveMemory();
-	}
+public class MemoryInfoSystemConsoleHooker implements SystemConsoleViewDomainHook {
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.AGGREGATION.toImageResource();
-	}
+   private final Provider<MemoryInfoPanel> mainWidgetProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return mainWidgetProvider.get();
-	}
+   @Inject
+   public MemoryInfoSystemConsoleHooker(Provider<MemoryInfoPanel> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
+
+   @Override
+   public String getNavigationText() {
+      return SystemConsoleMessages.INSTANCE.jvmLiveMemory();
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.AGGREGATION.toImageResource();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return mainWidgetProvider.get();
+   }
 
 }

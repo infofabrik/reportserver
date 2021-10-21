@@ -10,37 +10,34 @@ import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMes
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SystemConsoleAdminModule implements AdminModule {
-	
-	private final Provider<SystemConsoleView> systemConsoleViewProvider;
-	
-	private SystemConsoleView systemConsoleViewInstance;
-	
-	
-	@Inject
-	public SystemConsoleAdminModule(
-			Provider<SystemConsoleView> systemConsoleViewProvider	
-		){
-		this.systemConsoleViewProvider = systemConsoleViewProvider;
-	}
-	
-	@Override
-	public Widget getMainWidget() {
-		if(null == systemConsoleViewInstance)
-			systemConsoleViewInstance = systemConsoleViewProvider.get();
-		return systemConsoleViewInstance;
-	}
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.AREA_CHART.toImageResource(); 
-	}
+   private final Provider<SystemConsoleView> systemConsoleViewProvider;
 
-	@Override
-	public String getNavigationText() {
-		return SystemConsoleMessages.INSTANCE.systemConsole();
-	}
+   private SystemConsoleView systemConsoleViewInstance;
 
-	@Override
-	public void notifyOfSelection() {
-	}
+   @Inject
+   public SystemConsoleAdminModule(Provider<SystemConsoleView> systemConsoleViewProvider) {
+      this.systemConsoleViewProvider = systemConsoleViewProvider;
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      if (null == systemConsoleViewInstance)
+         systemConsoleViewInstance = systemConsoleViewProvider.get();
+      return systemConsoleViewInstance;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.AREA_CHART.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return SystemConsoleMessages.INSTANCE.systemConsole();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+   }
 }
