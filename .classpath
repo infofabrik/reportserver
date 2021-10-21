@@ -232,7 +232,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.3.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.2.jar"/>
-	<classpathentry kind="src" path="jasper-src"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sandbox-1.26-jaspersoft-1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.1.jar"/>
