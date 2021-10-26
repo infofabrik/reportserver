@@ -212,7 +212,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.2.20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.21.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/itext-2.1.7.js8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.5.2.jar"/>
@@ -256,12 +255,13 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-databind-2.12.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.17.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.17.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.17.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.7.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.0.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.21.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/itext-2.1.7.js9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.18.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
