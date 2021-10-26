@@ -13,8 +13,6 @@ import net.datenwerke.security.service.usermanager.entities.User;
  */
 public interface AuthenticatorService {
 
-	public final String PROPERTY_KEY_SESSION_RENEWAL_OVERRIDE_DISABLE = "rs.sessionrenewal.disable";
-
 	public AuthenticationResult authenticate(AuthToken[] tokens);
 	
 	/**

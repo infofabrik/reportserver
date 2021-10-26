@@ -20,7 +20,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.core.service.reportserver.ReportServerServiceImpl;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.service.authenticator.events.FailedLoginEvent;
 import net.datenwerke.security.service.authenticator.events.LoginEvent;
@@ -46,7 +45,6 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    private final ThreadLocal<Long> currentUserInThread;
    private final Provider<HttpServletRequest> servletRequestProvider;
    private final EventBus eventBus;
-   private final Provider<ApplicationPropertiesService> propertiesServiceProvider;
    private final Provider<ReportServerService> reportServerServiceProvider;
 
    private final Map<Long, Long> lastRequests = new HashMap<Long, Long>();
@@ -60,7 +58,6 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
          Provider<CurrentUser> currentUserProvider,
          Provider<HttpServletRequest> servletRequestProvider, 
          EventBus eventBus,
-         Provider<ApplicationPropertiesService> propertiesServiceProvider,
          Provider<ReportServerService> reportServerServiceProvider
          ) {
       /* store objects */
@@ -72,7 +69,6 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
       this.servletRequestProvider = servletRequestProvider;
       this.eventBus = eventBus;
       this.currentUserInThread = new ThreadLocal<Long>();
-      this.propertiesServiceProvider = propertiesServiceProvider;
       this.reportServerServiceProvider = reportServerServiceProvider;
    }
 
@@ -97,8 +93,7 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
       if (authRes.isAllowed() && null != authRes.getUser()) {
 
          // https://wiki.owasp.org/index.php/Testing_for_Session_Fixation_(OTG-SESS-003)
-         if (isSessionRenewalEnabled())
-            servletRequestProvider.get().getSession(false).invalidate();
+         servletRequestProvider.get().changeSessionId();
 
          setCurrentUserId(authRes.getUser().getId());
 
@@ -122,12 +117,6 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
 
          ((ReportServerServiceImpl) reportServerServiceProvider.get()).init(httpServletRequest);
       }
-   }
-
-   private boolean isSessionRenewalEnabled() {
-      boolean disable = propertiesServiceProvider.get()
-            .getBoolean(AuthenticatorService.PROPERTY_KEY_SESSION_RENEWAL_OVERRIDE_DISABLE, false);
-      return !disable;
    }
 
    @Override
