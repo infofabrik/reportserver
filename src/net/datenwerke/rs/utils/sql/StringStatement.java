@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 
 public class StringStatement implements PreparedStatement {
 

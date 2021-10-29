@@ -3,7 +3,7 @@ package net.datenwerke.rs.incubator.service.outputformatauth.hookers;
 import java.util.Arrays;
 import java.util.List;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import net.datenwerke.rs.base.client.AvailableReportProperties;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;

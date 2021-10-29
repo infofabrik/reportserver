@@ -10,7 +10,7 @@ import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.security.service.crypto.credentialproviders.CryptoCredentialProvider;
 import net.datenwerke.security.service.crypto.hooks.UserCryptoCredentialHook;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

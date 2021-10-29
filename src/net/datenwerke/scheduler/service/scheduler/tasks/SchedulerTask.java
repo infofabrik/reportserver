@@ -30,8 +30,8 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 import net.datenwerke.scheduler.service.scheduler.stores.JobExecutionCompanion;
 import net.datenwerke.scheduler.service.scheduler.stores.JobStore;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.HibernateException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

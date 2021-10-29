@@ -12,7 +12,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * 
@@ -105,11 +105,11 @@ public class RSTableModel extends CompiledTableReport implements Iterable<RSTabl
 	}
 
 	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 
 	public void removeTableModelListener(TableModelListener l) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 
 	public void setValueAt(Object value, int rowIndex, int columnIndex) {

@@ -5,11 +5,12 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Provider;
 
-import org.apache.commons.configuration.BaseConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration2.BaseConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.commons.io.output.ByteArrayOutputStream;
 import org.json.JSONException;
 import org.json.XML;
@@ -150,7 +151,6 @@ public class ConfigServiceImpl implements ConfigService {
    @Override
    public Configuration newConfig() {
       XMLConfiguration config = new XMLConfiguration();
-      config.setDelimiterParsingDisabled(true);
 
       return config;
    }
@@ -174,7 +174,8 @@ public class ConfigServiceImpl implements ConfigService {
          file.setContentType("application/xml");
 
          ByteArrayOutputStream out = new ByteArrayOutputStream();
-         ((XMLConfiguration) config).save(out);
+         FileHandler handler = new FileHandler((XMLConfiguration)config);
+         handler.save(out);
          file.setData(out.toByteArray());
          fileService.merge(file);
 

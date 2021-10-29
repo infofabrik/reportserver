@@ -12,7 +12,7 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTr
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.DailyPattern;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Days;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 
 /**

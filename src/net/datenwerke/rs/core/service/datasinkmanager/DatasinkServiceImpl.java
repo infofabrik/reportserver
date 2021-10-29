@@ -8,7 +8,7 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

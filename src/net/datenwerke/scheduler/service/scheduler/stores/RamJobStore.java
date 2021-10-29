@@ -13,7 +13,7 @@ import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterConfiguration;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 public class RamJobStore extends JobStoreImpl {
 
@@ -109,7 +109,7 @@ public class RamJobStore extends JobStoreImpl {
 
 	@Override
 	public List<AbstractJob> getJobsBy(JobFilterConfiguration filterConfig, JobFilterCriteria... addConfigs) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 
 

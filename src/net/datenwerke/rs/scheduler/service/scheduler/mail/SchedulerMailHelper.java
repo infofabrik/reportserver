@@ -11,7 +11,7 @@ import javax.inject.Provider;
 import javax.mail.internet.InternetAddress;
 import javax.persistence.Transient;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

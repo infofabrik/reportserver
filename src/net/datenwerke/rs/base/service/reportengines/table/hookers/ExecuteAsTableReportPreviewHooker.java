@@ -24,7 +24,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutorExecuteAsHooker;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 

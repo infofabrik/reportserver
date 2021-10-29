@@ -11,7 +11,7 @@ import java.security.cert.X509Certificate;
 
 import net.datenwerke.security.service.crypto.CryptoCredentials;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
 
 public abstract class KeyStoreCredentialProvider implements	CryptoCredentialProvider {
 	

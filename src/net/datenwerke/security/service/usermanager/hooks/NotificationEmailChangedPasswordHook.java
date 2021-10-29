@@ -2,7 +2,7 @@ package net.datenwerke.security.service.usermanager.hooks;
 
 import java.util.HashMap;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import com.google.inject.Inject;
 

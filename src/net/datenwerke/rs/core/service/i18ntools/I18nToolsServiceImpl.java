@@ -15,7 +15,7 @@ import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRun
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 public class I18nToolsServiceImpl implements I18nToolsService {
 	

@@ -2,7 +2,7 @@ package net.datenwerke.rs.base.service.reportengines.jasper;
 
 import java.sql.Connection;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 import net.sf.jasperreports.engine.JRDataSource;
 import net.sf.jasperreports.engine.JRException;

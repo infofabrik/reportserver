@@ -21,7 +21,7 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultList;
 import net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

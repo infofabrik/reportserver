@@ -9,7 +9,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.security.service.crypto.credentialproviders.KeyStoreCredentialProvider;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

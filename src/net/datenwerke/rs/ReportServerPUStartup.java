@@ -8,12 +8,15 @@ import java.util.Properties;
 
 import javax.inject.Inject;
 
+import org.apache.commons.configuration2.ConfigurationConverter;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+
 import net.datenwerke.gf.service.jpa.annotations.JpaUnit;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
-
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.PropertiesConfiguration;
 
 public class ReportServerPUStartup {
 
@@ -38,14 +41,17 @@ public class ReportServerPUStartup {
 	public static void loadPersistenceProperties(ConfigDirService configDirService, Properties jpaProperties){
 		/* webapp config */
 		try {
-			PropertiesConfiguration peProps = new PropertiesConfiguration(PERSISTENCE_PROP_NAME);
-			Properties props = new Properties();
-			props.load(peProps.getURL().openStream());
-
+		   FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+                 new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+                 .configure(new Parameters().properties()
+                     .setFileName(PERSISTENCE_PROP_NAME));
+            
+			PropertiesConfiguration peProps = builder.getConfiguration();
+			Properties props = ConfigurationConverter.getProperties(peProps);
+			
 			jpaProperties.putAll(props);
 		} catch (ConfigurationException e) {
-		} catch (IOException e) {
-		}
+		} 
 		
 		
 		/* query config dir */

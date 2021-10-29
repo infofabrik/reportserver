@@ -4,9 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.tree.ImmutableNode;
 
 import com.google.inject.Inject;
 
@@ -35,7 +36,7 @@ public class SaikuClientConfigExposerHooker implements ClientConfigExposerHook {
 		Configuration c = configService.getConfigFailsafe(SaikuModule.CONFIG_FILE);
 		if(c instanceof XMLConfiguration){
 			XMLConfiguration config = (XMLConfiguration) c;
-			List<HierarchicalConfiguration> subconfigs = config.configurationsAt("saiku.settings.property");
+			List<HierarchicalConfiguration<ImmutableNode>> subconfigs = config.configurationsAt("saiku.settings.property");
 			if(null != subconfigs){
 				for(HierarchicalConfiguration property : subconfigs){
 					String key = property.getString("[@key]");

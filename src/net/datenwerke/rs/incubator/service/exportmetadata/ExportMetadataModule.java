@@ -7,7 +7,7 @@ import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMeta
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleTitle;
 import net.datenwerke.rs.utils.config.ConfigService;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;

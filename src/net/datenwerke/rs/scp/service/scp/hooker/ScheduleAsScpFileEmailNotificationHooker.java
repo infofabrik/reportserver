@@ -10,7 +10,7 @@ import java.util.Map;
 import javax.inject.Inject;
 import javax.mail.Address;
 import javax.mail.MessagingException;
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportJobForJuel;

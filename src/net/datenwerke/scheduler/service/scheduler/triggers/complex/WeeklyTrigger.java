@@ -11,7 +11,7 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTr
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Days;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 @Entity
 @Table(name="SCHED_TRIG_WEEKLY")

@@ -14,7 +14,7 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRun
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;

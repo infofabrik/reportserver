@@ -16,7 +16,7 @@ import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.apache.commons.io.input.ReversedLinesFileReader;
 
 import com.google.inject.Inject;

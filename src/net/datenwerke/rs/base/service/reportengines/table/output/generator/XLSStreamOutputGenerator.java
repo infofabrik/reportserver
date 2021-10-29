@@ -19,8 +19,8 @@ import java.util.TreeMap;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.CellType;
@@ -826,7 +826,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl{
 	}
 	
 	private String htmlspecialchars(String str){
-		return org.apache.commons.lang.StringEscapeUtils.escapeHtml(str).replace("\r\n", "\n").replace("\n", "<br />");
+		return org.apache.commons.text.StringEscapeUtils.escapeHtml4(str).replace("\r\n", "\n").replace("\n", "<br />");
 	}
 
 	@Override

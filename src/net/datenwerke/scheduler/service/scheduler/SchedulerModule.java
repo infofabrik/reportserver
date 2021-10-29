@@ -1,7 +1,7 @@
 package net.datenwerke.scheduler.service.scheduler;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.XMLConfiguration;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;

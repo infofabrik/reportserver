@@ -1,6 +1,6 @@
 package net.datenwerke.rs.core.service.reportmanager.exceptions;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class DatabaseConnectionException extends ReportManagerRuntimeException {
 

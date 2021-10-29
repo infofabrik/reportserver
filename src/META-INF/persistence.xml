@@ -23,8 +23,6 @@
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport</class>
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.action.ScheduleAsOneDriveFileAction</class>
-          <class>net.datenwerke.rs.googledrive.service.googledrive.action.ScheduleAsGoogleDriveFileAction</class>
-          <class>net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
@@ -57,10 +55,12 @@
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardReference</class>
           <class>net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity</class>
+          <class>net.datenwerke.rs.googledrive.service.googledrive.action.ScheduleAsGoogleDriveFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.MonthlyNthDayMthMonthTrigger</class>
           <class>net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile</class>
           <class>net.datenwerke.rs.scripting.service.jobs.ScriptExecuteJob</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.FavoriteListEntry</class>
+          <class>net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.BinaryColumnFilter</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder</class>
@@ -84,6 +84,7 @@
           <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterInstance</class>
           <class>net.datenwerke.rs.scheduler.service.scheduler.sendto.SendToReportActionValue</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile</class>
+          <class>net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction</class>
           <class>net.datenwerke.security.service.usermanager.entities.Group</class>
           <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterDefinition</class>
           <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile</class>
@@ -104,8 +105,6 @@
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DateTrigger</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink</class>
-          <class>net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink</class>
-          <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.Report</class>
           <class>net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer</class>
@@ -203,6 +202,7 @@
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
+          <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>
           <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode</class>

@@ -8,7 +8,7 @@ import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

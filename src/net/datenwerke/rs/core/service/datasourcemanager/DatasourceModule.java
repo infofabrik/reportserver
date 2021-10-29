@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;

@@ -14,7 +14,7 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.envers.Audited;
 import org.hibernate.proxy.HibernateProxy;
 import net.datenwerke.gf.base.service.annotations.Indexed;
@@ -51,7 +51,7 @@ public class SaikuReportVariant extends SaikuReport implements ReportVariant {
 	@IgnoreMergeBackDto
 	@Override
 	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@Override
@@ -62,7 +62,7 @@ public class SaikuReportVariant extends SaikuReport implements ReportVariant {
 	@IgnoreMergeBackDto
 	@Override
 	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@ClonePostProcessor

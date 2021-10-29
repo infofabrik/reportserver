@@ -2,7 +2,9 @@ package net.datenwerke.rs.installation;
 
 import java.io.File;
 
-import org.apache.commons.configuration.PropertiesConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,12 +100,21 @@ public class InstallBaseDataTask implements DbInstallationTask{
 		try {
 			PropertiesConfiguration peProps = null;
 			try{
-				peProps = new PropertiesConfiguration(ReportServerPUStartup.PERSISTENCE_PROP_NAME);
+			   FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+	                 new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+	                 .configure(new Parameters().properties()
+	                     .setFileName(ReportServerPUStartup.PERSISTENCE_PROP_NAME));
+				peProps = builder.getConfiguration();
 			} catch(Exception e){}
 			if(configDirService.isEnabled()){
 				try {
 					File configDir = configDirService.getConfigDir();
-					peProps = new PropertiesConfiguration(new File(configDir, ReportServerPUStartup.PERSISTENCE_PROP_NAME));
+					FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+		                     new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+		                     .configure(new Parameters().properties()
+		                         .setFile(new File(configDir, ReportServerPUStartup.PERSISTENCE_PROP_NAME)));
+					
+					peProps = builder.getConfiguration();
 				} catch (Exception e) {
 				}
 			}

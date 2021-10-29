@@ -15,7 +15,7 @@ import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 import org.hibernate.envers.Audited;
 import org.hibernate.proxy.HibernateProxy;
 import net.datenwerke.gf.base.service.annotations.Indexed;
@@ -50,7 +50,7 @@ public class GridEditorReportVariant extends GridEditorReport implements ReportV
 	@IgnoreMergeBackDto
 	@Override
 	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@Override
@@ -61,7 +61,7 @@ public class GridEditorReportVariant extends GridEditorReport implements ReportV
 	@IgnoreMergeBackDto
 	@Override
 	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 
@@ -72,12 +72,12 @@ public class GridEditorReportVariant extends GridEditorReport implements ReportV
 	
 	@Override
 	public void setScript(FileServerFile script) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@Override
 	public void setArguments(String arguments) {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@Override

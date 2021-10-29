@@ -11,7 +11,7 @@ import javax.inject.Inject;
 import net.datenwerke.rs.birt.service.reportengine.BirtHelper;
 import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.report.engine.api.EngineException;
 import org.eclipse.birt.report.engine.api.IParameterDefn;

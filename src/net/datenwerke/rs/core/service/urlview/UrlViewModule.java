@@ -8,6 +8,14 @@ import java.util.Map;
 
 import javax.inject.Provider;
 
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.urlview.annotations.UrlViewConfig;
@@ -17,15 +25,6 @@ import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.SubnodeConfiguration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
 
 public class UrlViewModule extends AbstractModule {
 
@@ -75,12 +74,14 @@ public class UrlViewModule extends AbstractModule {
 				
 				List views = config.configurationsAt(viewType + ".view");
 				for(Iterator it = views.iterator(); it.hasNext();){
-				    HierarchicalConfiguration sub = (HierarchicalConfiguration) ((HierarchicalConfiguration) it.next()).clone();
+				    HierarchicalConfiguration sub = (HierarchicalConfiguration) ((HierarchicalConfiguration) it.next());
 				    
 				    try{
-				    	SubnodeConfiguration restrictionConfig = sub.configurationAt("restrictTo");
-				    	if(restrictor.restrictionApplies(restrictionConfig))
-				    		continue;
+				        if (! sub.configurationsAt("restrictTo").isEmpty()) {
+				           HierarchicalConfiguration restrictionConfig = sub.configurationAt("restrictTo");
+	                        if(restrictor.restrictionApplies(restrictionConfig))
+	                            continue;
+				        }
 				    } catch(IllegalArgumentException e){} // swallow
 				    
 				    try{
@@ -108,11 +109,13 @@ public class UrlViewModule extends AbstractModule {
 			map.put("module", innerMap);
 			int module = 1;
 			for(Iterator it = views.iterator(); it.hasNext();){
-				HierarchicalConfiguration sub = (HierarchicalConfiguration) ((HierarchicalConfiguration) it.next()).clone();
+				HierarchicalConfiguration sub = (HierarchicalConfiguration) ((HierarchicalConfiguration) it.next());
 			    try{
-			    	SubnodeConfiguration restrictionConfig = sub.configurationAt("restrictTo");
-			    	if(restrictor.restrictionApplies(restrictionConfig))
-			    		continue;
+			       if (! sub.configurationsAt("restrictTo").isEmpty()) {
+      			       HierarchicalConfiguration restrictionConfig = sub.configurationAt("restrictTo");
+      			    	if(restrictor.restrictionApplies(restrictionConfig))
+      			    		continue;
+			       }
 			    } catch(IllegalArgumentException e){} // swallow
 			    
 			    try{

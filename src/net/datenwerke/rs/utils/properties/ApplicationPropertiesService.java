@@ -2,7 +2,7 @@ package net.datenwerke.rs.utils.properties;
 
 import java.util.List;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 public interface ApplicationPropertiesService {
 

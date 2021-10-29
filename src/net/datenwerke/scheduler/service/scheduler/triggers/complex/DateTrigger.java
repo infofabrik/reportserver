@@ -20,7 +20,7 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.EndTypes;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 @Entity
 @Table(name="SCHED_TRIG_DATE")

@@ -48,7 +48,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-codec-1.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections-3.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections4-4.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration-1.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-dbcp-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-digester-2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.4.jar"/>
@@ -263,5 +262,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.11.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-text-1.9.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

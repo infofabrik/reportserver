@@ -1,5 +1,9 @@
 package net.datenwerke.rs.core.service.urlview;
 
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.events.InvalidConfigEvent;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -7,10 +11,6 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.security.service.usermanager.entities.Group;
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.configuration.SubnodeConfiguration;
-
-import com.google.inject.Inject;
 
 public class UrlViewRestrictor {
 
@@ -32,7 +32,7 @@ public class UrlViewRestrictor {
 		this.user = user;
 	}
 	
-	public boolean restrictionApplies(SubnodeConfiguration conf){
+	public boolean restrictionApplies(HierarchicalConfiguration conf){
 		if(null == conf)
 			return false;
 		

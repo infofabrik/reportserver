@@ -4,16 +4,14 @@ import java.io.File;
 
 import javax.inject.Inject;
 
-import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
-import net.datenwerke.rs.configservice.service.configservice.LocaleAwareExpressionEngine;
-import net.datenwerke.rs.utils.properties.ApplicationPropertiesProviderHook;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.commons.configuration.tree.ExpressionEngine;
+import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
+import net.datenwerke.rs.utils.properties.ApplicationPropertiesProviderHook;
 
 public class ConfigDirApplicationPropertiesProvider implements ApplicationPropertiesProviderHook {
 
@@ -33,7 +31,11 @@ public class ConfigDirApplicationPropertiesProvider implements ApplicationProper
 		
 		File cfg = new File(configDirService.getConfigDir(), REPORTSERVER_PROPERTIES);
 		if(cfg.exists()){
-			PropertiesConfiguration config = new PropertiesConfiguration(cfg);
+		   FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
+		         new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
+		         .configure(new Parameters().properties()
+		             .setFile(cfg));
+			PropertiesConfiguration config = builder.getConfiguration();
 			
 			return config;
 		} 
@@ -41,19 +43,5 @@ public class ConfigDirApplicationPropertiesProvider implements ApplicationProper
 		return null;
 	}
 	
-	protected HierarchicalConfiguration createBaseConfig(){
-		XMLConfiguration config = new XMLConfiguration();
-
-		/* initialize and use localeawareexpressionengine */
-		ExpressionEngine originalExpressionEngine = config.getExpressionEngine();
-		ExpressionEngine localeAwareExpressionEngine = new LocaleAwareExpressionEngine(originalExpressionEngine);
-		config.setExpressionEngine(localeAwareExpressionEngine);
-		
-		/* don't interpret values as lists */
-		config.setDelimiterParsingDisabled(true);
-		
-		return config;
-	}
-
 
 }

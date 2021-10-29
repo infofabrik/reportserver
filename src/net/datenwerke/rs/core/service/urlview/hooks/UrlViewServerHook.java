@@ -5,7 +5,7 @@ import java.util.Map;
 
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
 
 public interface UrlViewServerHook extends Hook {
 

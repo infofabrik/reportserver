@@ -2,7 +2,7 @@ package net.datenwerke.rs.base.service.reportengines.table.output.object;
 
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 
-import org.apache.commons.lang.NotImplementedException;
+import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * 
@@ -40,11 +40,11 @@ public class CompiledDataCountTableReport extends CompiledTableReport implements
 	}
 
 	public String getFileExtension() {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 
 	public String getMimeType() {
-		throw new NotImplementedException();
+		throw new NotImplementedException("not implemented");
 	}
 	
 	@Override

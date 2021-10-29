@@ -1,14 +1,14 @@
 package net.datenwerke.rs.configservice.service.configservice;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 
 import javax.inject.Inject;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.FileConfiguration;
-import org.apache.commons.configuration.HierarchicalConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
 
 public class ConfigDirConfigStore extends AbstractConfigStore {
 	
@@ -28,12 +28,10 @@ public class ConfigDirConfigStore extends AbstractConfigStore {
 		
 		File cfg = new File(configDirService.getConfigDir(), CONFIG_FOLDER + "/" + identifier);
 		if(cfg.exists()){
-			HierarchicalConfiguration config = createBaseConfig();
-			try {
-				((FileConfiguration)config).load(new FileInputStream(cfg));
-			} catch (FileNotFoundException e) {
-				return null;
-			}
+		    BasicConfigurationBuilder<XMLConfiguration> builder = createBaseConfig();
+		    XMLConfiguration config = builder.getConfiguration();
+            FileHandler fileHandler = new FileHandler(config);
+            fileHandler.load(cfg);
 			return config;
 		}
 		

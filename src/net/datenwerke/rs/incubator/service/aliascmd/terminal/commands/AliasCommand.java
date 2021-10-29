@@ -5,7 +5,7 @@ import static java.util.stream.Collectors.toMap;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -39,7 +39,7 @@ import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
 import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.VFS;

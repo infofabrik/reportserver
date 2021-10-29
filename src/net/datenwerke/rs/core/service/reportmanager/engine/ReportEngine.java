@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.UUID;
 
-import org.apache.commons.lang.ArrayUtils;
+import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.inject.Inject;
 

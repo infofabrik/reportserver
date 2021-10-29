@@ -25,10 +25,10 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.EndTypes;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrMatcher;
+import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

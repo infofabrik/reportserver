@@ -28,7 +28,7 @@ import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.codehaus.jackson.map.util.ISO8601DateFormat;
 import org.hibernate.envers.Audited;
 

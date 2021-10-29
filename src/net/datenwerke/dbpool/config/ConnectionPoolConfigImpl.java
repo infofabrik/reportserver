@@ -7,8 +7,8 @@ import java.util.Properties;
 import net.datenwerke.dbpool.annotations.ConnectionPoolConfigFile;
 import net.datenwerke.rs.utils.misc.Nullable;
 
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.SubnodeConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.SubnodeConfiguration;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
@@ -49,12 +49,14 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
       /* try to set default values */
       if (null != config) {
          try {
-            SubnodeConfiguration defaultCon = config.configurationAt("pool.defaultconfig");
-            if (null != defaultCon) {
-               Iterator<String> keys = defaultCon.getKeys();
-               while (keys.hasNext()) {
-                  String key = keys.next();
-                  properties.setProperty(key, defaultCon.getString(key));
+            if (! config.configurationsAt("pool.defaultconfig").isEmpty()) {
+               HierarchicalConfiguration defaultCon = config.configurationAt("pool.defaultconfig");
+               if (null != defaultCon) {
+                  Iterator<String> keys = defaultCon.getKeys();
+                  while (keys.hasNext()) {
+                     String key = keys.next();
+                     properties.setProperty(key, defaultCon.getString(key));
+                  }
                }
             }
          } catch (Exception ignore) {
@@ -63,12 +65,14 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
             properties = new Properties();
 
          try {
-            SubnodeConfiguration specCon = config.configurationAt("pool.pool" + id);
-            if (null != specCon) {
-               Iterator<String> keys = specCon.getKeys();
-               while (keys.hasNext()) {
-                  String key = keys.next();
-                  properties.setProperty(key, specCon.getString(key));
+            if (! config.configurationsAt("pool.pool").isEmpty()) {
+               HierarchicalConfiguration specCon = config.configurationAt("pool.pool" + id);
+               if (null != specCon) {
+                  Iterator<String> keys = specCon.getKeys();
+                  while (keys.hasNext()) {
+                     String key = keys.next();
+                     properties.setProperty(key, specCon.getString(key));
+                  }
                }
             }
          } catch (Exception ignore) {

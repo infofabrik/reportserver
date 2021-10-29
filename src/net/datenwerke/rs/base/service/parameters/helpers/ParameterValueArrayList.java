@@ -3,7 +3,7 @@ package net.datenwerke.rs.base.service.parameters.helpers;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 
 public class ParameterValueArrayList<E> extends ArrayList<E> {
 

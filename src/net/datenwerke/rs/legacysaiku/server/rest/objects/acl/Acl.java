@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import net.datenwerke.rs.legacysaiku.server.rest.objects.acl.enumeration.AclMethod;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemException;

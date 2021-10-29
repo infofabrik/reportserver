@@ -19,8 +19,8 @@ import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
 import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
 import net.datenwerke.rs.utils.misc.DateUtils;
 
-import org.apache.commons.lang.StringEscapeUtils;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

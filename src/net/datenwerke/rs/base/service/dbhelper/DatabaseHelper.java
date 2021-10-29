@@ -18,7 +18,7 @@ import java.util.Map;
 
 import javax.inject.Provider;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;

@@ -23,11 +23,15 @@ import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 import javax.servlet.ServletContext;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.commons.configuration.tree.ConfigurationNode;
-import org.apache.commons.lang.text.StrMatcher;
-import org.apache.commons.lang.text.StrTokenizer;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.builder.fluent.XMLBuilderParameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.apache.commons.configuration2.io.FileHandler;
+import org.apache.commons.lang3.text.StrMatcher;
+import org.apache.commons.lang3.text.StrTokenizer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -141,19 +145,26 @@ public class PackagedScriptHelper {
 		
 		StringBuilder resultBuilder = new StringBuilder();
 
-		XMLConfiguration config = new XMLConfiguration();
-		config.setDelimiterParsingDisabled(true);
+		Parameters params = new Parameters();
+	    XMLBuilderParameters xmlParams = params.xml()
+	        .setEncoding("UTF-8");
+	    BasicConfigurationBuilder<XMLConfiguration> builder =
+	          new BasicConfigurationBuilder<XMLConfiguration>(
+	                  XMLConfiguration.class)
+	                  .configure(xmlParams);
 		try {
-			config.load(new ByteArrayInputStream(configFile.getData()));
-			for (ConfigurationNode cfgNode : config.getRoot().getChildren()) {
-				String name = cfgNode.getName();
+		    XMLConfiguration config = builder.getConfiguration();
+		    FileHandler handler = new FileHandler(config);
+		    handler.load(new ByteArrayInputStream(configFile.getData()));
+			for (ImmutableHierarchicalConfiguration cfgNode : config.immutableChildConfigurationsAt(".")) {
+				String name = cfgNode.getRootElementName();
 				if ("runScript".equals(name)) {
 					TerminalSession unscopedTerminalSession = terminalService.getUnscopedTerminalSession();
 					unscopedTerminalSession.setCheckRights(false);
 					VirtualFileSystemDeamon fs = unscopedTerminalSession.getFileSystem();
 					VFSLocation targetLocation = fs.getLocationFor(targetDir);
-					try {
-						String scriptPath = cfgNode.getAttributes("src").get(0).getValue().toString();
+					try { 
+						String scriptPath = cfgNode.getString("[@src]");
 						fs.setLocation(targetLocation);
 						VFSLocation scriptLocation = fs.getLocation(scriptPath);
 						FileServerFile scriptFile = (FileServerFile) scriptLocation.getObject();
@@ -199,11 +210,11 @@ public class PackagedScriptHelper {
 					VFSLocation targetLocation = fs.getLocationFor(targetDir);
 
 					try {
-						String srcPath = cfgNode.getAttributes("src").get(0).getValue().toString();
+						String srcPath = cfgNode.getString("[@src]");
 						fs.setLocation(targetLocation);
 						VFSLocation srcLocation = fs.getLocation(srcPath);
 
-						String dstPath = cfgNode.getAttributes("dst").get(0).getValue().toString();
+						String dstPath = cfgNode.getString("[@dst]");
 						AbstractFileServerNode dstNode = fileServerService.getNodeByPath(dstPath);
 						VFSLocation dstLocation = fs.getLocationFor(dstNode);
 
@@ -243,16 +254,21 @@ public class PackagedScriptHelper {
 
 				@Override
 				public void processContent(ZipEntry entry, byte[] content) {
-					XMLConfiguration config = new XMLConfiguration();
-					config.setDelimiterParsingDisabled(true);
+				    Parameters params = new Parameters();
+			        XMLBuilderParameters xmlParams = params.xml()
+			            .setEncoding("UTF-8");
+			        BasicConfigurationBuilder<XMLConfiguration> builder =
+			              new BasicConfigurationBuilder<XMLConfiguration>(
+			                      XMLConfiguration.class)
+			                      .configure(xmlParams);
 					try {
-						config.load(new ByteArrayInputStream(content));
+					    XMLConfiguration config = builder.getConfiguration();
+					    FileHandler handler = new FileHandler(config);
+			            handler.load(new ByteArrayInputStream(content));
 
-						if(config.getRootNode().getName().equals("packagedscript")){
-							boolean autorun = false;
-							for(ConfigurationNode att : config.getRoot().getAttributes("autorun")){
-								autorun = "true".equals(att.getValue());
-							}
+						if(config.getRootElementName().equals("packagedscript")){
+							boolean autorun = "true".equals(config.getString("[@autorun]"));
+							
 							if(autorun || !requireAutorun){
 								entries.add(entry);
 							}

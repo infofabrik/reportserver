@@ -28,8 +28,8 @@ import net.datenwerke.rs.base.service.reportengines.table.utils.RSTableToXLS;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ExcelExportException;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.olap4j.AllocationPolicy;

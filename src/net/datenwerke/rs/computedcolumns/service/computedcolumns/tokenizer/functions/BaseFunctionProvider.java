@@ -6,7 +6,7 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.annotations.All
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.hooks.FunctionProviderHook;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionTokenizer;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

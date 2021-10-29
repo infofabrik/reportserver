@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import net.datenwerke.gxtdto.client.i18n.remotemessages.DwRemoteMessage;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.core.ext.Generator;
 import com.google.gwt.core.ext.GeneratorContext;

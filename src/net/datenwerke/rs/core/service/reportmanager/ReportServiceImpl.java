@@ -15,7 +15,7 @@ import java.util.UUID;
 import javax.persistence.EntityManager;
 import javax.persistence.NonUniqueResultException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;

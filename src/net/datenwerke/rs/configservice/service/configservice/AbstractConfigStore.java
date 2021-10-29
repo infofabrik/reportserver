@@ -1,24 +1,26 @@
 package net.datenwerke.rs.configservice.service.configservice;
 
-import org.apache.commons.configuration.ConfigurationException;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
-import org.apache.commons.configuration.tree.ExpressionEngine;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.builder.fluent.XMLBuilderParameters;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 public abstract class AbstractConfigStore {
 	
-	protected HierarchicalConfiguration createBaseConfig(){
-		XMLConfiguration config = new XMLConfiguration();
-
-		/* initialize and use localeawareexpressionengine */
-		ExpressionEngine originalExpressionEngine = config.getExpressionEngine();
-		ExpressionEngine localeAwareExpressionEngine = new LocaleAwareExpressionEngine(originalExpressionEngine);
-		config.setExpressionEngine(localeAwareExpressionEngine);
-		
-		/* don't interpret values as lists */
-		config.setDelimiterParsingDisabled(true);
-		
-		return config;
+	protected BasicConfigurationBuilder<XMLConfiguration> createBaseConfig() throws ConfigurationException {
+	   
+	   
+	   Parameters params = new Parameters();
+	   XMLBuilderParameters xmlParams = params.xml()
+	       .setEncoding("UTF-8");
+	   BasicConfigurationBuilder<XMLConfiguration> builder =
+	         new BasicConfigurationBuilder<XMLConfiguration>(
+	                 XMLConfiguration.class)
+	                 .configure(xmlParams);
+	   
+		return builder;
 	}
 
 	public abstract HierarchicalConfiguration loadConfig(String identifier) throws ConfigurationException;

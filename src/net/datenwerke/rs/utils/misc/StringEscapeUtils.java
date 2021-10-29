@@ -1,5 +1,7 @@
 package net.datenwerke.rs.utils.misc;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class StringEscapeUtils {
 
     public static String escapeXml(String text) {
@@ -19,4 +21,12 @@ public class StringEscapeUtils {
 	               .replace( "&amp;", "&" )
 	               ;      
 	};
+	
+	// adapted from commons-lang2
+	public static String escapeSql(String str) {
+       if (str == null) {
+           return null;
+       }
+       return StringUtils.replace(str, "'", "''");
+   }
 }

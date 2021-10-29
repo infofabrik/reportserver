@@ -63,7 +63,7 @@ public class PdfTableOutputGenerator extends HTMLOutputGenerator {
 			writer.append(html);
 		} else {
 			writer.append("@page {size: A4 landscape;margin-top:1.5cm;");
-			writer.append("@top-left { content: \"" + org.apache.commons.lang.StringEscapeUtils.unescapeHtml(report.getName()) + "\"; font-family: DejaVu Sans, Sans-Serif; font-size: 8pt; }");
+			writer.append("@top-left { content: \"" + org.apache.commons.text.StringEscapeUtils.unescapeHtml4(report.getName()) + "\"; font-family: DejaVu Sans, Sans-Serif; font-size: 8pt; }");
 			writer.append("@top-right {content: \"" + getNowString() + "\"; font-family: DejaVu Sans, Sans-Serif; font-size: 8pt; }");
 			writer.append("@bottom-right { content: \"" + ReportEnginesMessages.INSTANCE.page()+ " \" counter(page) \" " + ReportEnginesMessages.INSTANCE.of() + " \" counter(pages); font-family: DejaVu Sans, Sans-Serif; font-size: 8pt; }");
 			writer.append("}");

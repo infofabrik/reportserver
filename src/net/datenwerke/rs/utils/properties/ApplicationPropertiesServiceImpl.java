@@ -3,9 +3,9 @@ package net.datenwerke.rs.utils.properties;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import org.apache.commons.configuration.CompositeConfiguration;
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.ConfigurationException;
+import org.apache.commons.configuration2.CompositeConfiguration;
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.ex.ConfigurationException;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;

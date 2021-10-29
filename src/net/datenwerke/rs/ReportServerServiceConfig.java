@@ -11,10 +11,11 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
-import org.apache.commons.configuration.Configuration;
-import org.apache.commons.configuration.HierarchicalConfiguration;
-import org.apache.commons.configuration.PropertiesConfiguration;
-import org.apache.commons.configuration.XMLConfiguration;
+import org.apache.commons.configuration2.HierarchicalConfiguration;
+import org.apache.commons.configuration2.XMLConfiguration;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.io.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -691,15 +692,26 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 
 	private void preStartCheck() {
 		try {
-			XMLConfiguration config = new XMLConfiguration("META-INF/persistence.xml");
+		   FileBasedConfigurationBuilder<XMLConfiguration> builder =
+                 new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+                 .configure(new Parameters().xml()
+                     .setFileName("META-INF/persistence.xml"));
+            
+			XMLConfiguration config = builder.getConfiguration();
 			List fields = config.configurationsAt("persistence-unit.properties.property");
 			for(Iterator it = fields.iterator(); it.hasNext();)	{
 			    HierarchicalConfiguration sub = (HierarchicalConfiguration) it.next();
 			    if("hibernate.hbm2ddl.auto".equals(sub.getString("[@name]"))){
 			    	if("create".equals(sub.getString("[@value]"))){
-			    		Configuration createConf = null;
+			    		XMLConfiguration createConf = null;
 			    		try{
-			    			createConf = new PropertiesConfiguration("forcecreate.txt");
+			    		   FileBasedConfigurationBuilder<XMLConfiguration> builderForceCreate =
+			                     new FileBasedConfigurationBuilder<XMLConfiguration>(XMLConfiguration.class)
+			                     .configure(new Parameters().xml()
+			                         .setFileName("forcecreate.txt"));
+			    		   createConf = builderForceCreate.getConfiguration();
+			    		   FileHandler handler = new FileHandler(createConf);
+			    		   handler.save();
 			    		} catch(Exception e){
 			    			throw new RuntimeException("Schema creation is activated in one of the persistence configurations but the forcecreate property is not set. As this might compromise the database ReportServer will not start until the issue is resolved.");
 			    		}

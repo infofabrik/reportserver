@@ -15,7 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.InternetAddress;
 import javax.persistence.EntityManager;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

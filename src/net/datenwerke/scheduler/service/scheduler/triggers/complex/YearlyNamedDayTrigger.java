@@ -10,7 +10,7 @@ import javax.persistence.Table;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTriggerConfig;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyNthDayOfWeekConfig;
 
-import org.apache.commons.lang.time.DateUtils;
+import org.apache.commons.lang3.time.DateUtils;
 
 @Entity
 @Table(name="SCHED_TRIG_YEAR_NAMED_DAY")

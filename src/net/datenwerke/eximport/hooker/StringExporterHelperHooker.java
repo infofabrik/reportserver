@@ -6,7 +6,7 @@ import net.datenwerke.eximport.ex.ExportSupervisor;
 import net.datenwerke.eximport.hooks.BasicObjectExImporterHelperHookImpl;
 import net.datenwerke.eximport.obj.ComplexItemProperty;
 
-import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Handles Dates.
@@ -21,7 +21,7 @@ public class StringExporterHelperHooker extends BasicObjectExImporterHelperHookI
 
    @Override
    public void export(ExportSupervisor exportSupervisor, Object value) throws XMLStreamException {
-      exportSupervisor.createCDataElement(StringEscapeUtils.escapeXml(value.toString()));
+      exportSupervisor.createCDataElement(StringEscapeUtils.escapeXml10(value.toString()));
    }
 
    @Override

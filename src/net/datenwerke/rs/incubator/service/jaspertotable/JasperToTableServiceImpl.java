@@ -10,7 +10,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import com.google.inject.Inject;
 

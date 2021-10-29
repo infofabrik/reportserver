@@ -1,6 +1,6 @@
 package net.datenwerke.rs.utils.config;
 
-import org.apache.commons.configuration.Configuration;
+import org.apache.commons.configuration2.Configuration;
 
 public interface ConfigService {
 
