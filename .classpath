@@ -172,7 +172,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/QueryBuilder.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/relaxngDatatype-20020414.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.5.0-rc1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rhino-1.7.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-9.5.1-8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/servlet-api-2.4.jar"/>
@@ -264,5 +263,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-text-1.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.8.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
