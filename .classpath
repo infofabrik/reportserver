@@ -32,10 +32,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk15on-1.68.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.68.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.68.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.68.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.8.0-20180626.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cal10n-api-0.8.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-core-1.4.1.jar"/>
@@ -264,5 +260,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-text-1.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/requestfactory-server-2.8.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk15on-1.69.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.69.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.69.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.69.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
