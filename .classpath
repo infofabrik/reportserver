@@ -264,5 +264,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk15on-1.69.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.69.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.69.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk15on-1.69.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
