@@ -1,8 +1,10 @@
 package net.datenwerke.rs.base.client.reportengines.table.ui;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
@@ -115,6 +117,8 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 	private DwContentPanel wrapper;
 
 	private int currentPageNumber = 1;
+	
+	private Map<DwWindow, Integer> currentRowNumber = new HashMap<>();
 
 	private Menu menu;
 
@@ -441,12 +445,15 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 	}
 
 	protected void previewRow(int rowIndex, final PreviewModel model) {
+	    
 		final String[] values = model.getRows().get(rowIndex);
 
 		final DwWindow window = new DwWindow();
 		window.setSize(800, 640);
 		window.setHeading(TableMessages.INSTANCE.rowPreviewHeader());
 		window.setCollapsible(true);
+		
+		currentRowNumber.put(window, rowIndex);
 
 		FlexTable table = new FlexTable();
 		table.getColumnFormatter().setWidth(0, "33%");
@@ -466,6 +473,56 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 		wrapper.add(table, new VerticalLayoutData(1,-1, new Margins(10)));
 		window.add(wrapper);
 
+		DwTextButton nextBtn = new DwTextButton(BaseIcon.CHEVRON_RIGHT);
+        DwTextButton prevBtn = new DwTextButton(BaseIcon.CHEVRON_LEFT);
+
+        prevBtn.addSelectHandler(new SelectHandler() {
+           @Override
+           public void onSelect(SelectEvent event) {
+              currentRowNumber.put(window, currentRowNumber.get(window) - 1);
+              final String[] values = model.getRows().get(currentRowNumber.get(window));
+
+              for (int i = 0; i < model.getColumnNames().size(); i++) {
+                 table.setText(i, 0, model.getColumnName(i) + ":");
+                 table.setText(i, 1, values[i]);
+                 table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
+                 table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
+
+                 table.getRowFormatter().addStyleName(i, resources.css().previewRow());
+              }
+
+              if (0 == currentRowNumber.get(window)) {
+                 prevBtn.disable();
+              } else {
+                 nextBtn.enable();
+              }
+           }
+        });
+        window.addButton(prevBtn);
+
+        nextBtn.addSelectHandler(new SelectHandler() {
+           public void onSelect(SelectEvent event) {
+              currentRowNumber.put(window, currentRowNumber.get(window) + 1);
+              final String[] values = model.getRows().get(currentRowNumber.get(window));
+              int i;
+              for (i = 0; i < model.getColumnNames().size(); i++) {
+                 table.setText(i, 0, model.getColumnName(i) + ":");
+                 table.setText(i, 1, values[i]);
+                 table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
+                 table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
+
+                 table.getRowFormatter().addStyleName(i, resources.css().previewRow());
+
+              }
+
+              if (currentRowNumber.get(window) == model.getRows().size() - 1) {
+                 nextBtn.disable();
+              } else {
+                 prevBtn.enable();
+              }
+           }
+        });
+        window.addButton(nextBtn);
 
 		DwTextButton btn = new DwTextButton(BaseMessages.INSTANCE.close());
 		btn.addSelectHandler(new SelectHandler() {
@@ -475,6 +532,10 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 			}
 		});
 		window.addButton(btn);
+		
+        window.addHideHandler(event -> {
+           currentRowNumber.remove(window);
+        });
 
 		window.show();
 	}
