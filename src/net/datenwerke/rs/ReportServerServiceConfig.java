@@ -61,6 +61,8 @@ import net.datenwerke.rs.adminutils.service.SystemConsoleModule;
 import net.datenwerke.rs.adminutils.service.datasourcetester.DatasourceTesterModule;
 import net.datenwerke.rs.adminutils.service.logs.LogFilesModule;
 import net.datenwerke.rs.adminutils.service.su.SuModule;
+import net.datenwerke.rs.amazons3.server.amazons3.AmazonS3RpcServiceImpl;
+import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Module;
 import net.datenwerke.rs.authenticator.cr.server.ChallengeResponseRpcServiceImpl;
 import net.datenwerke.rs.authenticator.cr.service.ChallengeResponseModule;
 import net.datenwerke.rs.authenticator.server.LoginHandlerImpl;
@@ -426,6 +428,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "onedrive").with(OneDriveRpcServiceImpl.class);
 				serve(BASE_URL + "googledrive").with(GoogleDriveRpcServiceImpl.class);
 				serve(BASE_URL + "box").with(BoxRpcServiceImpl.class);
+				serve(BASE_URL + "amazons3").with(AmazonS3RpcServiceImpl.class);
 				
 				serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
 				serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
@@ -660,6 +663,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new OneDriveModule(),
 			new GoogleDriveModule(),
 			new BoxModule(),
+			new AmazonS3Module(),
 			new ScpModule(),
 			
 			new AliasCmdModule(),

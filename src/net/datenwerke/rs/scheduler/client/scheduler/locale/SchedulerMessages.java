@@ -286,4 +286,7 @@ public interface SchedulerMessages extends Messages {
     
     String fileactionBoxMsgSubject();
     String fileactionBoxMsgText();
+    
+    String fileactionAmazonS3MsgSubject();
+    String fileactionAmazonS3MsgText();
 }

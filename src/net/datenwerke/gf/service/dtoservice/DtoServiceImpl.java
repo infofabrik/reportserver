@@ -70,6 +70,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.gf.service.juel.JuelResult.class, injector.getInstance(net.datenwerke.gf.service.juel.dtogen.JuelResult2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.gf.service.juel.JuelResultType.class, injector.getInstance(net.datenwerke.gf.service.juel.dtogen.JuelResultType2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.adminutils.service.logs.terminal.commands.ViewLogFileCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.adminutils.service.logs.terminal.commands.dtogen.ViewLogFileCommandResultExtension2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink.class, injector.getInstance(net.datenwerke.rs.amazons3.service.amazons3.definitions.dtogen.AmazonS3Datasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.FileSelectionParameterDefinition2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterInstance.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.FileSelectionParameterInstance2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.SelectedParameterFile2DtoGenerator.class));
@@ -354,6 +355,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 
 		dto2PosoGeneratorLookup.put(net.datenwerke.gf.client.history.dto.HistoryLinkDto.class, injector.getInstance(net.datenwerke.gf.service.history.dtogen.Dto2HistoryLinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.adminutils.service.logs.terminal.commands.dtogen.Dto2ViewLogFileCommandResultExtensionGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto.class, injector.getInstance(net.datenwerke.rs.amazons3.service.amazons3.definitions.dtogen.Dto2AmazonS3DatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.Dto2FileSelectionParameterDefinitionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterInstanceDto.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.Dto2FileSelectionParameterInstanceGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.SelectedParameterFileDto.class, injector.getInstance(net.datenwerke.rs.base.ext.service.parameters.fileselection.dtogen.Dto2SelectedParameterFileGenerator.class));
@@ -600,6 +602,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.gf.client.juel.dto.decorator.JuelResultDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.gf.client.juel.dto.JuelResultTypeDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterInstanceDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.decorator.FileSelectionParameterInstanceDtoDec.class);
@@ -1040,6 +1043,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.gf.service.juel.JuelResult.class);
 		posoClassLookup.add(net.datenwerke.gf.service.juel.JuelResultType.class);
 		posoClassLookup.add(net.datenwerke.rs.adminutils.service.logs.terminal.commands.ViewLogFileCommandResultExtension.class);
+		posoClassLookup.add(net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink.class);
 		posoClassLookup.add(net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition.class);
 		posoClassLookup.add(net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterInstance.class);
 		posoClassLookup.add(net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile.class);

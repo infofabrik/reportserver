@@ -18,6 +18,7 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.base.client.datasources.dto.ArgumentDatasourceConnectorDto;
 import net.datenwerke.rs.base.client.datasources.dto.CsvDatasourceConfigDto;
 import net.datenwerke.rs.base.client.datasources.dto.CsvDatasourceDto;
@@ -309,6 +310,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			throw new IllegalArgumentException("Unrecognized Dto: " + dto.getClass().getName());
 		}
 
+		if(dto instanceof net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto)
+			return ((net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto)
 			return ((net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterInstanceDto)
@@ -679,6 +682,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.gf.client.juel.dto.decorator.JuelResultDtoDec();
 		if(net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto();
+		if(net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto();
 		if(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto();
 		if(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.decorator.FileSelectionParameterInstanceDtoDec.class.equals(dtoClass))
@@ -1181,6 +1186,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.gf.client.juel.dto.decorator.JuelResultDtoDec();
 		if("net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto();
+		if("net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto();
 		if("net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto();
 		if("net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.decorator.FileSelectionParameterInstanceDtoDec".equals(dtoClassName))
@@ -1679,6 +1686,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.gf.client.juel.dto.posomap.JuelResultTypeDto2PosoMap.class;
 		if(net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.adminutils.client.logs.dto.posomap.ViewLogFileCommandResultExtensionDto2PosoMap.class;
+		if(net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.amazons3.client.amazons3.dto.posomap.AmazonS3DatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.posomap.FileSelectionParameterDefinitionDto2PosoMap.class;
 		if(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterInstanceDto.class.equals(dtoClass))
@@ -2555,6 +2564,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return false;
 		}
 
+		if(dto instanceof net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto)
+			return true;
 		if(dto instanceof net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterInstanceDto)
@@ -2910,6 +2921,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.gf.client.juel.dto.JuelResultTypeDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto.class.equals(dtoType))
 			return true;
@@ -3798,6 +3811,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.gf.client.juel.dto.JuelResultTypeDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.adminutils.client.logs.dto.ViewLogFileCommandResultExtensionDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto".equals(dtoClassName))
 			return true;

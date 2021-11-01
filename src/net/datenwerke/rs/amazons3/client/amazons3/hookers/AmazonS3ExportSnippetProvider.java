@@ -1,0 +1,202 @@
+package net.datenwerke.rs.amazons3.client.amazons3.hookers;
+
+import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider.extractSingleTreeSelectionField;
+
+import java.util.Collection;
+
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+
+import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
+import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction;
+import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.ScheduleAsAmazonS3FileInformation;
+import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
+import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
+import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+
+public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProviderHook {
+
+   private String isExportAsFileKey;
+   private String folderKey;
+   private String nameKey;
+   private String amazonS3Key;
+
+   private final Provider<UITree> treeProvider;
+   private final Provider<AmazonS3Dao> datasinkDaoProvider;
+   private final DatasinkTreeManagerDao datasinkTreeManager;
+
+   @Inject
+   public AmazonS3ExportSnippetProvider(@DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<AmazonS3Dao> datasinkDaoProvider) {
+      this.treeProvider = treeProvider;
+      this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
+   }
+
+   @Override
+   public void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
+      xform.setLabelAlign(LabelAlign.LEFT);
+      isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return AmazonS3UiModule.AMAZON_S3_NAME;
+         }
+      });
+      xform.setLabelAlign(LabelAlign.TOP);
+
+      xform.setFieldWidth(260);
+      xform.beginFloatRow();
+
+      amazonS3Key = xform.addField(DatasinkSelectionField.class, AmazonS3UiModule.AMAZON_S3_NAME, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return treeProvider.get();
+         }
+      }, new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+
+         @Override
+         public BaseIcon getIcon() {
+            return BaseIcon.AMAZON;
+         }
+      });
+
+      folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
+
+      xform.endRow();
+      xform.setFieldWidth(530);
+
+      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
+
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(amazonS3Key));
+
+   }
+
+   @Override
+   public boolean isValid(SimpleForm simpleForm) {
+      simpleForm.clearInvalid();
+      return simpleForm.isValid();
+   }
+
+   @Override
+   public void configureConfig(ReportScheduleDefinition configDto, SimpleForm simpleForm) {
+      if (!isActive(simpleForm))
+         return;
+
+      ScheduleAsAmazonS3FileInformation info = new ScheduleAsAmazonS3FileInformation();
+      info.setName((String) simpleForm.getValue(nameKey));
+      info.setFolder((String) simpleForm.getValue(folderKey));
+      info.setAmazonS3DatasinkDto((AmazonS3DatasinkDto) simpleForm.getValue(amazonS3Key));
+
+      configDto.addAdditionalInfo(info);
+   }
+
+   @Override
+   public boolean isActive(SimpleForm simpleForm) {
+      return (Boolean) simpleForm.getValue(isExportAsFileKey);
+   }
+
+   @Override
+   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
+      form.loadFields();
+
+      final SingleTreeSelectionField amazonS3Field = extractSingleTreeSelectionField(form.getField(amazonS3Key));
+
+      if (null != definition) {
+         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         ScheduleAsAmazonS3FileInformation info = definition.getAdditionalInfo(ScheduleAsAmazonS3FileInformation.class);
+         if (null != info) {
+            form.setValue(isExportAsFileKey, true);
+            form.setValue(nameKey, info.getName());
+            form.setValue(folderKey, info.getFolder());
+            amazonS3Field.setValue(info.getAmazonS3DatasinkDto());
+         }
+      }
+
+      amazonS3Field.addValueChangeHandler(event -> {
+         if (null == event.getValue())
+            return;
+
+         datasinkTreeManager.loadFullViewNode((AmazonS3DatasinkDto) event.getValue(),
+               new RsAsyncCallback<AmazonS3DatasinkDto>() {
+                  @Override
+                  public void onSuccess(AmazonS3DatasinkDto result) {
+                     form.setValue(folderKey, result.getFolder());
+                  }
+
+                  @Override
+                  public void onFailure(Throwable caught) {
+                     super.onFailure(caught);
+                  }
+               });
+
+      });
+
+   }
+
+   @Override
+   public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
+         ReportDto report) {
+      if (!(page instanceof JobMetadataConfigurationForm))
+         return;
+
+      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
+
+      String jobTitle = metadataForm.getTitleValue();
+      form.setValue(nameKey, "${now} - " + jobTitle);
+      if (null != definition) {
+         ScheduleAsAmazonS3FileInformation info = definition.getAdditionalInfo(ScheduleAsAmazonS3FileInformation.class);
+         if (null != info)
+            form.setValue(nameKey, info.getName());
+      }
+
+   }
+
+   @Override
+   public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
+      return true;
+   }
+
+}

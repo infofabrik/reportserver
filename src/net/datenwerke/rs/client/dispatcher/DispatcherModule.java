@@ -28,6 +28,7 @@ import net.datenwerke.rs.adminutils.client.datasourcetester.DatasourceTesterUIMo
 import net.datenwerke.rs.adminutils.client.logs.LogFilesUiModule;
 import net.datenwerke.rs.adminutils.client.suuser.SuUserUIModule;
 import net.datenwerke.rs.adminutils.client.systemconsole.SystemConsoleUiModule;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
 import net.datenwerke.rs.authenticator.client.login.LoginModule;
 import net.datenwerke.rs.authenticator.cr.client.ChallengeResponseUIModule;
 import net.datenwerke.rs.base.client.RsBaseUiModule;
@@ -123,6 +124,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new OneDriveUiModule());
       install(new GoogleDriveUiModule());
       install(new BoxUiModule());
+      install(new AmazonS3UiModule());
       install(new SambaUIModule());
       install(new ScpUIModule());
       install(new LocalFileSystemUiModule());
