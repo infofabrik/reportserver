@@ -31,8 +31,6 @@ import com.sencha.gxt.widget.core.client.event.CellMouseDownEvent;
 import com.sencha.gxt.widget.core.client.event.ColumnWidthChangeEvent;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -402,11 +400,38 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
       int cwidth = (int) Math.floor(width / (double) report.getVisibleColumnCount());
       return cwidth;
    }
+   
+   private void showPreviewData(DwWindow window, DwTextButton prevBtn, DwTextButton nextBtn, 
+         DwTextButton firstBtn, DwTextButton lastBtn, 
+         String[] values, final PreviewModel model, FlexTable table) {
+      for (int i = 0; i < model.getColumnNames().size(); i++) {
+         table.setText(i, 0, model.getColumnName(i) + ":");
+         table.setText(i, 1, values[i]);
+
+         table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
+         table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
+
+         table.getRowFormatter().addStyleName(i, resources.css().previewRow());
+      }
+      
+      if (0 == currentRowNumber.get(window)) {
+         prevBtn.disable();
+         firstBtn.disable();
+      } else {
+         prevBtn.enable();
+         firstBtn.enable();
+      }
+      
+      if (currentRowNumber.get(window) == model.getRows().size() - 1) {
+         nextBtn.disable();
+         lastBtn.disable();
+      } else {
+         nextBtn.enable();
+         lastBtn.enable();
+      }
+   }
 
    protected void previewRow(int rowIndex, final PreviewModel model) {
-
-      final String[] values = model.getRows().get(rowIndex);
-
       final DwWindow window = new DwWindow();
       window.setSize(800, 640);
       window.setHeading(TableMessages.INSTANCE.rowPreviewHeader());
@@ -417,84 +442,51 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
       FlexTable table = new FlexTable();
       table.getColumnFormatter().setWidth(0, "33%");
 
-      for (int i = 0; i < model.getColumnNames().size(); i++) {
-         table.setText(i, 0, model.getColumnName(i) + ":");
-         table.setText(i, 1, values[i]);
-
-         table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
-         table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
-
-         table.getRowFormatter().addStyleName(i, resources.css().previewRow());
-      }
-
+      final DwTextButton firstBtn = new DwTextButton(BaseIcon.FAST_BACKWARD);
+      final DwTextButton nextBtn = new DwTextButton(BaseIcon.CHEVRON_RIGHT);
+      final DwTextButton prevBtn = new DwTextButton(BaseIcon.CHEVRON_LEFT);
+      final DwTextButton lastBtn = new DwTextButton(BaseIcon.FAST_FORWARD);
+      
+      showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(rowIndex), model, table);
+      
       VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
       wrapper.setScrollMode(ScrollMode.AUTOY);
       wrapper.add(table, new VerticalLayoutData(1, -1, new Margins(10)));
       window.add(wrapper);
 
-      DwTextButton nextBtn = new DwTextButton(BaseIcon.CHEVRON_RIGHT);
-      DwTextButton prevBtn = new DwTextButton(BaseIcon.CHEVRON_LEFT);
-
-      prevBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            currentRowNumber.put(window, currentRowNumber.get(window) - 1);
-            final String[] values = model.getRows().get(currentRowNumber.get(window));
-
-            for (int i = 0; i < model.getColumnNames().size(); i++) {
-               table.setText(i, 0, model.getColumnName(i) + ":");
-               table.setText(i, 1, values[i]);
-               table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
-               table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
-
-               table.getRowFormatter().addStyleName(i, resources.css().previewRow());
-            }
-
-            if (0 == currentRowNumber.get(window)) {
-               prevBtn.disable();
-            } else {
-               nextBtn.enable();
-            }
-         }
+      firstBtn.addSelectHandler(event -> {
+         currentRowNumber.put(window, 0);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
+               model.getRows().get(currentRowNumber.get(window)), model, table);
+      });
+      window.addButton(firstBtn);
+      
+      prevBtn.addSelectHandler(event -> {
+         currentRowNumber.put(window, currentRowNumber.get(window) - 1);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
+               model.getRows().get(currentRowNumber.get(window)), model, table);
       });
       window.addButton(prevBtn);
 
-      nextBtn.addSelectHandler(new SelectHandler() {
-         public void onSelect(SelectEvent event) {
-            currentRowNumber.put(window, currentRowNumber.get(window) + 1);
-            final String[] values = model.getRows().get(currentRowNumber.get(window));
-            int i;
-            for (i = 0; i < model.getColumnNames().size(); i++) {
-               table.setText(i, 0, model.getColumnName(i) + ":");
-               table.setText(i, 1, values[i]);
-               table.getCellFormatter().addStyleName(i, 0, resources.css().previewLabel());
-               table.getCellFormatter().addStyleName(i, 1, resources.css().previewValue());
-
-               table.getRowFormatter().addStyleName(i, resources.css().previewRow());
-
-            }
-
-            if (currentRowNumber.get(window) == model.getRows().size() - 1) {
-               nextBtn.disable();
-            } else {
-               prevBtn.enable();
-            }
-         }
+      nextBtn.addSelectHandler(event -> {
+         currentRowNumber.put(window, currentRowNumber.get(window) + 1);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
+               model.getRows().get(currentRowNumber.get(window)), model, table);
       });
       window.addButton(nextBtn);
-
-      DwTextButton btn = new DwTextButton(BaseMessages.INSTANCE.close());
-      btn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            window.hide();
-         }
+      
+      lastBtn.addSelectHandler(event -> {
+         currentRowNumber.put(window, model.getRows().size() - 1);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
+               model.getRows().get(currentRowNumber.get(window)), model, table);
       });
-      window.addButton(btn);
+      window.addButton(lastBtn);
 
-      window.addHideHandler(event -> {
-         currentRowNumber.remove(window);
-      });
+      DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
+      closeBtn.addSelectHandler(event -> window.hide());
+      window.addButton(closeBtn);
+
+      window.addHideHandler(event -> currentRowNumber.remove(window));
 
       window.show();
    }
