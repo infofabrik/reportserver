@@ -14,39 +14,36 @@ import com.google.inject.Provider;
 /**
  *
  */
-public class TableReportPreviewViewFactory extends PreviewViewFactory{
+public class TableReportPreviewViewFactory extends PreviewViewFactory {
 
-	/**
-	 * The provider used to supply the actual instances
-	 */
-	private final Provider<TableReportPreviewView> jroProvider;
+   /**
+    * The provider used to supply the actual instances
+    */
+   private final Provider<TableReportPreviewView> jroProvider;
 
-	@Inject
-	public TableReportPreviewViewFactory(Provider<TableReportPreviewView> jroProvider) {
-		this.jroProvider = jroProvider;
-	}
+   @Inject
+   public TableReportPreviewViewFactory(
+         Provider<TableReportPreviewView> jroProvider
+         ) {
+      this.jroProvider = jroProvider;
+   }
 
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public ReportExecutorMainPanelView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		TableReportPreviewView view = jroProvider.get();
-		view.setReport(report);
-		
-		return view;
-	}
-	
+   /**
+    * {@inheritDoc}
+    */
+   public ReportExecutorMainPanelView newInstance(ReportDto report,
+         Collection<? extends ReportViewConfiguration> configs) {
+      TableReportPreviewView view = jroProvider.get();
+      view.setReport(report);
 
-	
-	/**
-	 * {@inheritDoc}
-	 */
-	public boolean consumes(ReportDto report) {
-		return (report instanceof TableReportDto) && ! ((TableReportDto)report).isCubeFlag();
-	}
+      return view;
+   }
 
-
-
+   /**
+    * {@inheritDoc}
+    */
+   public boolean consumes(ReportDto report) {
+      return (report instanceof TableReportDto) && !((TableReportDto) report).isCubeFlag();
+   }
 
 }
