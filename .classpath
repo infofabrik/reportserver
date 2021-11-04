@@ -10,7 +10,6 @@
 	<classpathentry kind="src" path="src-entityservices"/>
 	<classpathentry kind="src" path="metamodel"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/activation-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-2.7.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/aopalliance-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-4.2.jar"/>
@@ -37,7 +36,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-core-1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-xml-1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cglib-3.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/classmate-1.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/com.azalea.ufl.barcode.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-beanutils-1.9.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-cli-1.4.jar"/>
@@ -64,7 +62,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/DatabaseConnectors.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/db2jcc4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/dejavu-fonts-2.34.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-properties-1.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-resgen-1.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-xom-1.3.1.jar"/>
@@ -88,13 +85,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-chart-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-1.4.200.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.0.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-commons-annotations-5.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.0.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.0.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.0.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.0.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-5.2.2.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/icu4j-54.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-1.3.jar"/>
@@ -103,17 +93,13 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta-regexp-1.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jandex-2.0.0.CR1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacc-5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javassist-3.19.0-GA.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.mail-1.6.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-api-2.2.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-impl-2.2.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.3.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcommon-1.0.23.jar"/>
@@ -181,7 +167,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stringtemplate-3.2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/super-csv-2.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/UserAgentUtils-1.21.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/validation-api-1.1.0.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting-jsf.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdb6.jar"/>
@@ -265,5 +250,27 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk15on-1.69.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk15on-1.69.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk15on-1.69.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.11.20.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/classmate-1.5.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/dom4j-2.1.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/FastInfoset-1.2.15.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-commons-annotations-5.1.2.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-jpa-2.1-api-1.0.2.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.0.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/istack-commons-runtime-3.0.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.activation-1.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.persistence-api-2.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.validation-api-2.0.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jandex-2.2.3.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-api-2.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-runtime-2.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.4.2.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-ex-1.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/txw2-2.3.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

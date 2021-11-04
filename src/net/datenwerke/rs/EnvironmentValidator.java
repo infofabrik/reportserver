@@ -191,10 +191,10 @@ public class EnvironmentValidator extends HttpServlet {
 			method.setAccessible(true);
 			MetadataImplementor metadata = (MetadataImplementor) method.invoke(emfb);
 
-			SchemaValidator schemaValidator = new SchemaValidator(serviceRegistry, metadata);
+			SchemaValidator schemaValidator = new SchemaValidator();
 
 			try {
-				schemaValidator.validate();
+				schemaValidator.validate(metadata, serviceRegistry);
 			} catch (SchemaManagementException sme) {
 				logger.error(sme.getMessage());
 				sb.append(sme.getMessage());
