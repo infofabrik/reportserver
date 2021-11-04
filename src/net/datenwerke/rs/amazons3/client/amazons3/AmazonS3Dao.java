@@ -26,9 +26,9 @@ public class AmazonS3Dao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoAmazonS3(ReportDto reportDto, String executorToken, AmazonS3DatasinkDto amazonS3DatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoAmazonS3(reportDto, executorToken, amazonS3DatasinkDto, format, configs, name, folder,
+      rpcService.exportIntoAmazonS3(reportDto, executorToken, amazonS3DatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

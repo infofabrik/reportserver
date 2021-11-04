@@ -27,9 +27,9 @@ public class LocalFileSystemDao extends Dao implements DatasinkDao {
 
    public void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
          LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, AsyncCallback<Void> callback) {
+         String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
       rpcService.exportIntoLocalFileSystem(reportDto, executorToken, localFileSystemDatasinkDto, format, configs, name,
-            folder, transformAndKeepCallback(callback));
+            folder, compressed, transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {

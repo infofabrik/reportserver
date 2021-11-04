@@ -18,7 +18,7 @@ public interface LocalFileSystemRpcService extends RemoteService {
 
    void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
          LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder) throws ServerCallFailedException;
+         String name, String folder, boolean compressed) throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
 

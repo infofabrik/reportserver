@@ -15,7 +15,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface SftpRpcServiceAsync {
 
    void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback);
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 

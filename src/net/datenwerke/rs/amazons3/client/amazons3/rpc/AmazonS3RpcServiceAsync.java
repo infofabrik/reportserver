@@ -15,7 +15,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface AmazonS3RpcServiceAsync {
 
    void exportIntoAmazonS3(ReportDto reportDto, String executorToken, AmazonS3DatasinkDto amazonS3DatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);

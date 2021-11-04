@@ -25,9 +25,9 @@ public class OneDriveDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoOneDrive(ReportDto reportDto, String executorToken, OneDriveDatasinkDto oneDriveDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoOneDrive(reportDto, executorToken, oneDriveDatasinkDto, format, configs, name, folder,
+      rpcService.exportIntoOneDrive(reportDto, executorToken, oneDriveDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

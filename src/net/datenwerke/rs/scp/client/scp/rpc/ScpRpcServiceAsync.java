@@ -14,7 +14,7 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 public interface ScpRpcServiceAsync {
 
    void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback);
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
 
    void getScpEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 

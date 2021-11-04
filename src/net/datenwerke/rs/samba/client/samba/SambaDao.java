@@ -26,9 +26,9 @@ public class SambaDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoSamba(reportDto, executorToken, sambaDatasinkDto, format, configs, name, folder,
+      rpcService.exportIntoSamba(reportDto, executorToken, sambaDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
    

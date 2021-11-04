@@ -3,6 +3,9 @@ package net.datenwerke.rs.emaildatasink.server.emaildatasink;
 import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,7 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkServic
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -50,6 +54,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
     * 
     */
    private static final long serialVersionUID = 4953913261676032725L;
+   
 
    private final ReportService reportService;
    private final EmailDatasinkService emailDatasinkService;
@@ -60,6 +65,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final HookHandlerService hookHandlerService;
    private final ExceptionServices exceptionServices;
    private final UserManagerService userManagerService;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public EmailDatasinkRpcServiceImpl(
@@ -71,7 +77,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          SecurityService securityService, 
          HookHandlerService hookHandlerService, 
          ExceptionServices exceptionServices,
-         UserManagerService userManagerService
+         UserManagerService userManagerService,
+         ZipUtilsService zipUtilsService
          ) {
       this.reportService = reportService;
       this.emailDatasinkService = emailDatasinkService;
@@ -82,11 +89,12 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       this.hookHandlerService = hookHandlerService;
       this.exceptionServices = exceptionServices;
       this.userManagerService = userManagerService;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    public void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message, boolean compressed,
          List<StrippedDownUser> recipients) throws ServerCallFailedException {
 
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
@@ -115,9 +123,25 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-         emailDatasinkService.sendToEmailDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
-               filename, true);
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               emailDatasinkService.sendToEmailDatasink(os.toByteArray(), emailDatasink, subject, message, recipientUsers, filename, true);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            emailDatasinkService.sendToEmailDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
+                  filename, true);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to email: " + e.getMessage(), e);
       }

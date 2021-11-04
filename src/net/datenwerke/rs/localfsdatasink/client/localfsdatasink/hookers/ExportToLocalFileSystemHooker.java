@@ -27,6 +27,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
@@ -51,6 +52,7 @@ import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSys
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.provider.annotations.DatasinkTreeLocalFileSystem;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToLocalFileSystemHooker implements ExportExternalEntryProviderHook {
@@ -185,6 +187,13 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 						return false;
 					}
 				});
+		
+	    final String compressedKey = form.addField(Boolean.class, "", new SFFCBoolean() {
+	       @Override
+	       public String getBoxLabel() {
+	          return SchedulerMessages.INSTANCE.reportCompress();
+	       }
+	    });
 
 		wrapper.setWidget(formWrapper);
 		window.add(wrapper, new MarginData(10));
@@ -228,7 +237,7 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 
 			String name = ((String) form.getValue(nameKey)).trim();
 			String folder = ((String) form.getValue(folderKey)).trim();
-
+	        boolean compressed = (boolean) form.getValue(compressedKey);
 			ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey);
 
 			if (!type.isConfigured()) {
@@ -249,7 +258,7 @@ public class ExportToLocalFileSystemHooker implements ExportExternalEntryProvide
 
 			datasinkDaoProvider.get().exportIntoLocalFileSystem(report, info.getExecuteReportToken(),
 					(LocalFileSystemDatasinkDto) form.getValue(localFileSystemKey), type.getOutputFormat(),
-					type.getExportConfiguration(), name, folder,
+					type.getExportConfiguration(), name, folder, compressed,
 					new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
 			window.hide();
 		});

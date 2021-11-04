@@ -25,9 +25,9 @@ public class DropboxDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoDropbox(ReportDto reportDto, String executorToken, DropboxDatasinkDto dropboxDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoDropbox(reportDto, executorToken, dropboxDatasinkDto, format, configs, name, folder,
+      rpcService.exportIntoDropbox(reportDto, executorToken, dropboxDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

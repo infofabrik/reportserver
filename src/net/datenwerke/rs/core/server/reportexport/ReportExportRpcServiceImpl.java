@@ -2,7 +2,10 @@ package net.datenwerke.rs.core.server.reportexport;
 
 import static java.util.stream.Collectors.toList;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.mail.internet.InternetAddress;
@@ -39,6 +42,7 @@ import net.datenwerke.rs.core.service.reportserver.ReportServerService;
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.filename.FileNameService;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -46,6 +50,7 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
+
 
 /**
  * 
@@ -75,6 +80,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    private final Provider<ReportSessionCache> sessionCacheProvider;
    private final ConfigService configService;
    private final ReportServerService reportServerService;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public ReportExportRpcServiceImpl(
@@ -91,7 +97,9 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
          FileNameService fileNameService, 
          Provider<ReportSessionCache> sessionCacheProvider,
          ConfigService configService, 
-         ReportServerService reportServerService) {
+         Provider<ConfigService> configServiceProvider,
+         ReportServerService reportServerService,
+         ZipUtilsService zipUtilsService) {
 
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.reportDtoService = reportDtoService;
@@ -107,6 +115,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
       this.sessionCacheProvider = sessionCacheProvider;
       this.configService = configService;
       this.reportServerService = reportServerService;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
@@ -159,7 +168,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public void exportViaMail(@Named("report") ReportDto reportDto, String executorToken, final String format,
-         List<ReportExecutionConfigDto> configs, String subject, String message, List<StrippedDownUser> recipients)
+         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed, List<StrippedDownUser> recipients)
          throws ServerCallFailedException, ExpectedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -184,11 +193,35 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
 
          SimpleMail mail = mailService.newSimpleMail();
          mail.setSubject(subject);
-
-         SimpleAttachment attachement = new SimpleAttachment(cReport.getReport(), cReport.getMimeType(),
-               makeExportFilename(referenceReport) + "." + cReport.getFileExtension() //$NON-NLS-1$
-         );
-
+         
+         String reportFileExtension = cReport.getFileExtension();
+         
+         if (compressed) {
+            try(ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + reportFileExtension, reportObj),
+                        os);
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+   
+               SimpleAttachment attachement = new SimpleAttachment(os.toByteArray(), 
+                     "application/zip", makeExportFilename(referenceReport) + ".zip"); 
+               /* set content */
+               mail.setContent(message, attachement);
+            }
+         } else {
+            SimpleAttachment attachement = new SimpleAttachment(cReport.getReport(), cReport.getMimeType(),
+                  makeExportFilename(referenceReport) + "." + cReport.getFileExtension() //$NON-NLS-1$
+            );
+            /* set content */
+            mail.setContent(message, attachement);
+         }
+         
          mail.setToRecipients(recipients
                .stream()
                .map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
@@ -201,9 +234,6 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
             InternetAddress mailFrom = new InternetAddress(currentUser.getEmail());
             mail.setFrom(mailFrom, true);
          }
-
-         /* set content */
-         mail.setContent(message, attachement);
 
          mailService.sendMail(mail);
       } catch (Exception e) {

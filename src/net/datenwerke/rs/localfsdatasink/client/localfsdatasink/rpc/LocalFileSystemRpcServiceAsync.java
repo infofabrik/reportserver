@@ -15,7 +15,7 @@ public interface LocalFileSystemRpcServiceAsync {
 
    void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
          LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, AsyncCallback<Void> callback);
+         String name, String folder, boolean compressed, AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 

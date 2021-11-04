@@ -17,7 +17,7 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 public interface ScpRpcService extends RemoteService {
 
    void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException;
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getScpEnabledConfigs() throws ServerCallFailedException;
 

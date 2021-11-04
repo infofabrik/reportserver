@@ -17,7 +17,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface FtpsRpcService extends RemoteService {
 
    void exportIntoFtps(ReportDto reportDto, String executorToken, FtpsDatasinkDto ftpsDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException;
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
 

@@ -28,8 +28,8 @@ public class EmailDatasinkDao extends Dao implements DatasinkDao {
 
    public void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
-         List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
-      rpcService.exportToEmail(reportDto, executorToken, emailDatasinkDto, format, configs, name, subject, message,
+         List<StrippedDownUser> recipients, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportToEmail(reportDto, executorToken, emailDatasinkDto, format, configs, name, subject, message, compressed,
             recipients, transformAndKeepCallback(callback));
    }
 

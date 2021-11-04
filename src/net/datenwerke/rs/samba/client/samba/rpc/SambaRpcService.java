@@ -17,7 +17,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface SambaRpcService extends RemoteService {
 
    void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException;
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException;
 

@@ -15,7 +15,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface BoxRpcServiceAsync {
 
    void exportIntoBox(ReportDto reportDto, String executorToken, BoxDatasinkDto boxDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback);
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 

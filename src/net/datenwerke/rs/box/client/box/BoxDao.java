@@ -25,8 +25,8 @@ public class BoxDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoBox(ReportDto reportDto, String executorToken, BoxDatasinkDto boxDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback) {
-      rpcService.exportIntoBox(reportDto, executorToken, boxDatasinkDto, format, configs, name, folder,
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportIntoBox(reportDto, executorToken, boxDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

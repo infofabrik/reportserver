@@ -2,6 +2,9 @@ package net.datenwerke.rs.googledrive.server.googledrive;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,8 @@ import net.datenwerke.rs.googledrive.client.googledrive.rpc.GoogleDriveRpcServic
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -56,12 +59,13 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    private final GoogleDriveService googleDriveService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public GoogleDriveRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService,
          DtoService dtoService, ReportExecutorService reportExecutorService, SecurityService securityService,
          HookHandlerService hookHandlerService, GoogleDriveService googleDriveService,
-         ExceptionServices exceptionServices) {
+         ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -71,12 +75,13 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       this.hookHandlerService = hookHandlerService;
       this.googleDriveService = googleDriveService;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    public void exportIntoGoogleDrive(ReportDto reportDto, String executorToken,
          GoogleDriveDatasinkDto googleDriveDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder) throws ServerCallFailedException {
+         String name, String folder, boolean compressed) throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       GoogleDriveDatasink googleDriveDatasink = (GoogleDriveDatasink) dtoService.loadPoso(googleDriveDatasinkDto);
@@ -100,9 +105,24 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         googleDriveService.exportIntoGoogleDrive(cReport.getReport(), googleDriveDatasink, filename, folder);
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               googleDriveService.exportIntoGoogleDrive(os.toByteArray(), googleDriveDatasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            googleDriveService.exportIntoGoogleDrive(cReport.getReport(), googleDriveDatasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to GoogleDrive: " + e.getMessage(), e);
       }

@@ -24,8 +24,8 @@ public class ScpDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback) {
-      rpcService.exportIntoScp(reportDto, executorToken, scpDatasinkDto, format, configs, name, folder,
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportIntoScp(reportDto, executorToken, scpDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

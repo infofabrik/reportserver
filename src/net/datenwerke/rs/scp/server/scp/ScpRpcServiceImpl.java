@@ -2,6 +2,9 @@ package net.datenwerke.rs.scp.server.scp;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,7 @@ import net.datenwerke.rs.scp.client.scp.rpc.ScpRpcService;
 import net.datenwerke.rs.scp.service.scp.ScpService;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -56,6 +60,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    private final ScpService scpService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public ScpRpcServiceImpl(
@@ -66,7 +71,8 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          ScpService scpService, 
-         ExceptionServices exceptionServices
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService
          ) {
 
       this.reportService = reportService;
@@ -77,12 +83,13 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       this.hookHandlerService = hookHandlerService;
       this.scpService = scpService;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       ScpDatasink scpDatasink = (ScpDatasink) dtoService.loadPoso(scpDatasinkDto);
@@ -105,10 +112,24 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         scpService.sendToScpServer(cReport.getReport(), scpDatasink, filename, folder);
-
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               scpService.sendToScpServer(os.toByteArray(), scpDatasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            scpService.sendToScpServer(cReport.getReport(), scpDatasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Scp server: " + e.getMessage(), e);
       }

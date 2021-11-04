@@ -2,6 +2,9 @@ package net.datenwerke.rs.ftp.server.ftp;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +37,7 @@ import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -55,11 +59,12 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    private final FtpService ftpService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public SftpRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
          ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, FtpService ftpService, ExceptionServices exceptionServices) {
+         HookHandlerService hookHandlerService, FtpService ftpService, ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -69,6 +74,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       this.hookHandlerService = hookHandlerService;
       this.ftpService = ftpService;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
@@ -83,7 +89,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
 
    @Override
    public void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder) throws ServerCallFailedException {
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
 
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -108,10 +114,24 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         ftpService.sendToSftpServer(cReport.getReport(), sftpDatasink, filename, folder);
-
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               ftpService.sendToSftpServer(os.toByteArray(), sftpDatasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            ftpService.sendToSftpServer(cReport.getReport(), sftpDatasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to SFTP server: " + e.getMessage(), e);
       }

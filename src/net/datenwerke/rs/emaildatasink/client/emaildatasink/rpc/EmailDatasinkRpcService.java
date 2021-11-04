@@ -18,7 +18,7 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 public interface EmailDatasinkRpcService extends RemoteService {
 
    void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         List<ReportExecutionConfigDto> configs, String name, String subject, String message, boolean compressed,
          List<StrippedDownUser> recipients) throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;

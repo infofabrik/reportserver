@@ -29,6 +29,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowTwinButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
@@ -53,6 +54,7 @@ import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
@@ -108,7 +110,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
       window.setHeaderIcon(BaseIcon.SEND);
       window.setHeading(DatasinksMessages.INSTANCE.email() + " - SMTP");
       window.setWidth(600);
-      window.setHeight(700);
+      window.setHeight(725);
       window.setCenterOnShow(true);
 
       DwContentPanel wrapper = new DwContentPanel();
@@ -184,6 +186,13 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
       final String msgKey = form.addField(String.class, ReportExporterMessages.INSTANCE.messageLabel(),
             new SFFCTextAreaImpl());
       
+      final String compressedKey = form.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
+      
       UserDto user = loginService.getCurrentUser();
       StrippedDownUser sUser = StrippedDownUser.fromUser(user);
 
@@ -223,7 +232,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
          List<StrippedDownUser> rcptList = (List<StrippedDownUser>) form.getValue(rcptKey);
          String subject = (String) form.getValue(subjKey);
          String message = (String) form.getValue(msgKey);
-
+         boolean compressed = (boolean) form.getValue(compressedKey);
          ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey);
 
          if (!type.isConfigured()) {
@@ -244,7 +253,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
 
          datasinkDaoProvider.get().exportToEmail(report, info.getExecuteReportToken(), (EmailDatasinkDto) form.getValue(emailKey),
                type.getOutputFormat(), type.getExportConfiguration(), name,
-               subject, message, rcptList,
+               subject, message, rcptList, compressed,
                new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
          window.hide();
       });

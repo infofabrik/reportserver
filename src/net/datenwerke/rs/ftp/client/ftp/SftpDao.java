@@ -26,8 +26,8 @@ public class SftpDao extends Dao implements DatasinkDao {
    }
 
    public void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, AsyncCallback<Void> callback) {
-      rpcService.exportIntoSftp(reportDto, executorToken, sftpDatasinkDto, format, configs, name, folder,
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportIntoSftp(reportDto, executorToken, sftpDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

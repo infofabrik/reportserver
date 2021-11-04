@@ -27,6 +27,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
@@ -49,6 +50,7 @@ import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtps;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToFtpsHooker implements ExportExternalEntryProviderHook {
@@ -170,6 +172,13 @@ public class ExportToFtpsHooker implements ExportExternalEntryProviderHook {
                   return false;
                }
             });
+      
+      final String compressedKey = form.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       wrapper.setWidget(formWrapper);
       window.add(wrapper, new MarginData(10));
@@ -212,7 +221,7 @@ public class ExportToFtpsHooker implements ExportExternalEntryProviderHook {
 
          String name = ((String) form.getValue(nameKey)).trim();
          String folder = ((String) form.getValue(folderKey)).trim();
-
+         boolean compressed = (boolean) form.getValue(compressedKey);
          ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey);
 
          if (!type.isConfigured()) {
@@ -233,7 +242,7 @@ public class ExportToFtpsHooker implements ExportExternalEntryProviderHook {
          Info.display(infoConfig);
 
          datasinkDaoProvider.get().exportIntoFtps(report, info.getExecuteReportToken(), (FtpsDatasinkDto) form.getValue(ftpsKey),
-               type.getOutputFormat(), type.getExportConfiguration(), name, folder,
+               type.getOutputFormat(), type.getExportConfiguration(), name, folder, compressed,
                new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
          window.hide();
       });

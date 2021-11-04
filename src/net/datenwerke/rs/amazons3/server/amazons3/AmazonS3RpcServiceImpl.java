@@ -2,6 +2,9 @@ package net.datenwerke.rs.amazons3.server.amazons3;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,6 +37,7 @@ import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -55,11 +59,12 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final AmazonS3Service amazonS3Service;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public AmazonS3RpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
          ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, AmazonS3Service amazonS3Service, ExceptionServices exceptionServices) {
+         HookHandlerService hookHandlerService, AmazonS3Service amazonS3Service, ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -69,11 +74,12 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       this.hookHandlerService = hookHandlerService;
       this.amazonS3Service = amazonS3Service;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    public void exportIntoAmazonS3(ReportDto reportDto, String executorToken, AmazonS3DatasinkDto amazonS3DatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder)
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -98,9 +104,24 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         amazonS3Service.exportIntoAmazonS3(cReport.getReport(), amazonS3Datasink, filename, folder);
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               amazonS3Service.exportIntoAmazonS3(os.toByteArray(), amazonS3Datasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            amazonS3Service.exportIntoAmazonS3(cReport.getReport(), amazonS3Datasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to AmazonS3: " + e.getMessage(), e);
       }

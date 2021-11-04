@@ -27,7 +27,7 @@ public interface ReportExporterMessages extends Messages {
 	String exportReport();
 	
 	String exportReportTo(String exportTitle);
-	
+
 	String exportTypeLabel();
 	
 	String exportViaMailLabel();
@@ -38,7 +38,7 @@ public interface ReportExporterMessages extends Messages {
 	String selectUserLabel();
 	String sendToLabel();
 	String subjectLabel();
-
+	
 	String messageLabel();
 
 	String exportTypeNotConfigured();

@@ -27,8 +27,8 @@ public class GoogleDriveDao extends Dao implements DatasinkDao {
 
    public void exportIntoGoogleDrive(ReportDto reportDto, String executorToken,
          GoogleDriveDatasinkDto googleDriveDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, AsyncCallback<Void> callback) {
-      rpcService.exportIntoGoogleDrive(reportDto, executorToken, googleDriveDatasinkDto, format, configs, name, folder,
+         String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportIntoGoogleDrive(reportDto, executorToken, googleDriveDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
 

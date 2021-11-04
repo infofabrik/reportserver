@@ -17,7 +17,7 @@ public interface ReportExporterRpcServiceAsync {
 
 	void exportViaMail(ReportDto reportDto, String executorToke, String format,
 			List<ReportExecutionConfigDto> configs, String subject,
-			String message, List<StrippedDownUser> recipients,
+			String message, boolean compressed, List<StrippedDownUser> recipients,
 			AsyncCallback<Void> callback);
 	
 	void getExportDefaultSettingsAsJSON(String identifier, AsyncCallback<String> callback);

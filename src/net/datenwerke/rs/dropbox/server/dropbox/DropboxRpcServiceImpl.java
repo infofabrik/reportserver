@@ -2,6 +2,9 @@ package net.datenwerke.rs.dropbox.server.dropbox;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,8 +36,8 @@ import net.datenwerke.rs.dropbox.client.dropbox.rpc.DropboxRpcService;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -56,11 +59,12 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    private final DropboxService dropboxService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public DropboxRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
          ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, DropboxService dropboxService, ExceptionServices exceptionServices) {
+         HookHandlerService hookHandlerService, DropboxService dropboxService, ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -70,11 +74,12 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       this.hookHandlerService = hookHandlerService;
       this.dropboxService = dropboxService;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    public void exportIntoDropbox(ReportDto reportDto, String executorToken, DropboxDatasinkDto dropboxDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder)
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -99,9 +104,24 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         dropboxService.exportIntoDropbox(cReport.getReport(), dropboxDatasink, filename, folder);
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               dropboxService.exportIntoDropbox(os.toByteArray(), dropboxDatasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            dropboxService.exportIntoDropbox(cReport.getReport(), dropboxDatasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Dropbox: " + e.getMessage(), e);
       }

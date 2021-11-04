@@ -27,6 +27,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
@@ -51,6 +52,7 @@ import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
@@ -182,6 +184,13 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
                   return false;
                }
             });
+      
+      final String compressedKey = form.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       wrapper.setWidget(formWrapper);
       window.add(wrapper, new MarginData(10));
@@ -223,7 +232,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
 
          String name = ((String) form.getValue(nameKey)).trim();
          String folder = ((String) form.getValue(folderKey)).trim();
-
+         boolean compressed = (boolean) form.getValue(compressedKey);
          ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey);
 
          if (!type.isConfigured()) {
@@ -244,7 +253,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
 
          datasinkDaoProvider.get().exportIntoOneDrive(report, info.getExecuteReportToken(),
                (OneDriveDatasinkDto) form.getValue(oneDriveKey), type.getOutputFormat(), type.getExportConfiguration(),
-               name, folder, new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
+               name, folder, compressed, new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
          window.hide();
       });
       window.addButton(submitBtn);

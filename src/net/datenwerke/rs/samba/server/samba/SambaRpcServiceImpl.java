@@ -2,6 +2,9 @@ package net.datenwerke.rs.samba.server.samba;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,6 +38,7 @@ import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -56,6 +60,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final SambaService sambaService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
+   private final ZipUtilsService zipUtilsService;
 
    @Inject
    public SambaRpcServiceImpl(
@@ -66,7 +71,8 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          SambaService sambaService,
-         ExceptionServices exceptionServices
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService
          ) {
 
       this.reportService = reportService;
@@ -77,12 +83,13 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       this.hookHandlerService = hookHandlerService;
       this.sambaService = sambaService;
       this.exceptionServices = exceptionServices;
+      this.zipUtilsService = zipUtilsService;
    }
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder)
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
 
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
@@ -107,10 +114,24 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-
-         sambaService.sendToSambaServer(cReport.getReport(), sambaDatasink, filename, folder);
-
+         if (compressed) {
+            String filename = name + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+   
+               try {
+                  zipUtilsService.createZip(Collections
+                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + cReport.getFileExtension(), reportObj), os);               
+               } catch (IOException e) {
+                  throw new ServerCallFailedException(e);
+               }
+               sambaService.sendToSambaServer(os.toByteArray(), sambaDatasink, filename, folder);
+            }
+         } else {
+            String filename = name + "." + cReport.getFileExtension();
+            sambaService.sendToSambaServer(cReport.getReport(), sambaDatasink, filename, folder);
+         }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Samba server: " + e.getMessage(), e);
       }
