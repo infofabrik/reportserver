@@ -184,7 +184,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.8.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.24.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.2.20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.21.0.jar"/>
@@ -271,5 +270,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.mail-1.6.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.27.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
