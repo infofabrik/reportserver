@@ -238,9 +238,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.0.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/itext-2.1.7.js9.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.18.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-configuration2-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-text-1.9.jar"/>
@@ -272,5 +269,8 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-transaction-api_1.2_spec-1.1.1.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-ex-1.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/txw2-2.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
