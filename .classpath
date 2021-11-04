@@ -94,11 +94,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta-regexp-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacc-5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/javassist-3.19.0-GA.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1-sources.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.mail-1.6.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.12.jar"/>
@@ -205,7 +203,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.document-2.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template.velocity-2.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template-2.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.3.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sandbox-1.26-jaspersoft-1-SNAPSHOT.jar"/>
@@ -272,5 +269,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.mail-1.6.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
