@@ -5,10 +5,11 @@ import com.google.inject.Inject;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.core.service.datasinkmanager.locale.DatasinkManagerMessages;
-import net.datenwerke.rs.core.service.genrights.datasources.DatasourceManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.genrights.datasinks.DatasinkManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class DatasinkManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
@@ -26,13 +27,20 @@ public class DatasinkManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlB
 		this.securityService = securityService;
 	}
 	
-	@Override
-	public boolean consumes(Object o) {
-		if(! ( o instanceof AbstractDatasinkManagerNode))
-			return false;
-		
-		return securityService.checkRights(DatasourceManagerAdminViewSecurityTarget.class, Read.class);
-	}
+    @Override
+    public boolean consumes(Object o) {
+       if (!(o instanceof AbstractDatasinkManagerNode))
+          return false;
+
+       if (securityService.checkRights(DatasinkManagerAdminViewSecurityTarget.class, Read.class))
+          return true;
+       else {
+          if (!(o instanceof SecurityTarget))
+             return false;
+          else
+             return securityService.checkRights((SecurityTarget) o, Read.class);
+       }
+    }
 
 	@Override
 	protected String getTokenName() {

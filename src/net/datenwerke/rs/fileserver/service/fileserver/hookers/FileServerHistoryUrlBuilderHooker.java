@@ -1,5 +1,7 @@
 package net.datenwerke.rs.fileserver.service.fileserver.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
@@ -7,9 +9,8 @@ import net.datenwerke.rs.fileserver.service.fileserver.genrights.FileServerManag
 import net.datenwerke.rs.fileserver.service.fileserver.locale.FileserverMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class FileServerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
@@ -30,7 +31,14 @@ public class FileServerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilde
 		if(! (o instanceof AbstractFileServerNode))
 			return false;
 		
-		return securityService.checkRights(FileServerManagerAdminViewSecurityTarget.class, Read.class);
+         if (securityService.checkRights(FileServerManagerAdminViewSecurityTarget.class, Read.class))
+            return true;
+         else {
+            if (!(o instanceof SecurityTarget))
+               return false;
+            else
+               return securityService.checkRights((SecurityTarget) o, Read.class);
+         }
 	}
 
 	@Override

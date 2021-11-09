@@ -7,6 +7,7 @@ import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.ext.client.usermanager.UserManagerUIModule;
 import net.datenwerke.security.service.genrights.usermanager.UserManagerAdminViewSecurityTarget;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.usermanager.ext.service.locale.UserManagerMessages;
@@ -30,7 +31,14 @@ public class UserManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuild
 		if(!( o instanceof AbstractUserManagerNode))
 			return false;
 		
-		return securityService.checkRights(UserManagerAdminViewSecurityTarget.class, Read.class);
+         if (securityService.checkRights(UserManagerAdminViewSecurityTarget.class, Read.class))
+            return true;
+         else {
+            if (!(o instanceof SecurityTarget))
+               return false;
+            else
+               return securityService.checkRights((SecurityTarget) o, Read.class);
+         }
 	}
 
 	@Override

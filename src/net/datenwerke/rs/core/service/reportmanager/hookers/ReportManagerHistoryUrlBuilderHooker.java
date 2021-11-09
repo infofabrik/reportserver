@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.service.reportmanager.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.history.helper.TreePanelHistoryUrlBuilderHooker;
@@ -7,9 +9,8 @@ import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManag
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class ReportManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
@@ -30,7 +31,14 @@ public class ReportManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBui
 		if(! (o instanceof AbstractReportManagerNode))
 			return false;
 		
-		return securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class);
+         if (securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class))
+            return true;
+         else {
+            if (!(o instanceof SecurityTarget))
+               return false;
+            else
+               return securityService.checkRights((SecurityTarget) o, Read.class);
+         }
 	}
 
 	@Override
