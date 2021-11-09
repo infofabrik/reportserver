@@ -178,7 +178,6 @@
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ojdbc7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
@@ -271,5 +270,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.27.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
