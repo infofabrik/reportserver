@@ -55,7 +55,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-net-3.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-pool-1.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs-1.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/CrystalCommon2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/CrystalReportsRuntime.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cvom.jar"/>
@@ -271,5 +270,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.27.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.9.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
