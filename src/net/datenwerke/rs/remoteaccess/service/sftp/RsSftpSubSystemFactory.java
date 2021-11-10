@@ -27,10 +27,7 @@ public class RsSftpSubSystemFactory extends SftpSubsystemFactory{
    
    @Override
    public Command createSubsystem(ChannelSession channel) throws IOException {
-       RsSftpSubsystem subsystem = new RsSftpSubsystem(
-               resolveExecutorService(),
-               getUnsupportedAttributePolicy(), getFileSystemAccessor(),
-               getErrorStatusDataHandler(), unitOfWorkProvider, entityManagerProvider);
+       RsSftpSubsystem subsystem = new RsSftpSubsystem(unitOfWorkProvider, entityManagerProvider, this, channel);
        GenericUtils.forEach(getRegisteredListeners(), subsystem::addSftpEventListener);
        return subsystem;
    }

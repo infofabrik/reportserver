@@ -5,14 +5,12 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 
 import org.apache.sshd.common.util.buffer.Buffer;
-import org.apache.sshd.common.util.threads.CloseableExecutorService;
+import org.apache.sshd.server.channel.ChannelSession;
 import org.apache.sshd.server.session.ServerSession;
 import org.apache.sshd.sftp.common.SftpConstants;
-import org.apache.sshd.sftp.server.SftpErrorStatusDataHandler;
 import org.apache.sshd.sftp.server.SftpEventListener;
-import org.apache.sshd.sftp.server.SftpFileSystemAccessor;
 import org.apache.sshd.sftp.server.SftpSubsystem;
-import org.apache.sshd.sftp.server.UnsupportedAttributePolicy;
+import org.apache.sshd.sftp.server.SftpSubsystemConfigurator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -26,10 +24,9 @@ public class RsSftpSubsystem extends SftpSubsystem {
    private final Provider<UnitOfWork> unitOfWorkProvider;
    private final Provider<EntityManager> entityManagerProvider;
 
-   public RsSftpSubsystem(CloseableExecutorService executorService, UnsupportedAttributePolicy policy,
-         SftpFileSystemAccessor accessor, SftpErrorStatusDataHandler errorStatusDataHandler,
-         Provider<UnitOfWork> unitOfWorkProvider, Provider<EntityManager> entityManagerProvider) {
-      super(executorService, policy, accessor, errorStatusDataHandler);
+   public RsSftpSubsystem(Provider<UnitOfWork> unitOfWorkProvider, Provider<EntityManager> entityManagerProvider, 
+         SftpSubsystemConfigurator conf, ChannelSession channel) {
+      super(channel, conf);
       this.unitOfWorkProvider = unitOfWorkProvider;
       this.entityManagerProvider = entityManagerProvider;
    }

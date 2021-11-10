@@ -42,7 +42,7 @@ public class LogSetupHelper {
 		
 		if(null != tomcatRsHandler){
 			try {
-				cphelper.addUrl(cphelper.getClassloader(), LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14.jar"));
+				cphelper.addUrl(cphelper.getClassloader(), LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14-1.7.32.jar"));
 
 				LogManager lm = LogManager.getLogManager();
 				
@@ -82,7 +82,7 @@ public class LogSetupHelper {
 						/* only use classloaders that have slf4j (devmode hack) */
 						classloader.loadClass(LoggerFactory.class.getCanonicalName());
 
-						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-1.7.32.jar"));
 						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-classic.jar"));
 						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-core.jar"));
 					}catch(Exception e){}
@@ -117,7 +117,7 @@ public class LogSetupHelper {
 			try{
 				for(ClassLoader classloader : classloaders){
 					try{
-						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+						cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-1.7.32.jar"));
 					}catch(Exception e){}
 				}
 			}catch(Exception e){
