@@ -8,6 +8,8 @@ public interface FileserverMessages extends Messages {
 	String folderTypeName();
 	
 	String commandZip_description();
+	String commandZip_outputfile();
+	String commandZip_inputlist();
 	String commandUnzip_description();
 	
 	String historyUrlBuilderName();

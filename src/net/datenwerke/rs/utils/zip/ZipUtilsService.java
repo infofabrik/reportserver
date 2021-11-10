@@ -13,25 +13,25 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 
 public interface ZipUtilsService {
 
-	public interface FileFilter{
-		public boolean addNode(AbstractFileServerNode node);
-	}
-	
-	public static Object DIRECTORY_MARKER = new Object();
-	
-	public void createZip(Map<String, ? extends Object> content, OutputStream os) throws IOException;
-	
-	public void createZip(List<Path> files, OutputStream os) throws IOException;
-	
-	public void createZipFromEmailAttachments(List<SimpleAttachment> attachments, OutputStream os) throws IOException;
-	
-	public void extractZip(byte[] data, ZipExtractionConfig config) throws IOException;
-	
-	public void extractZip(InputStream is, ZipExtractionConfig config) throws IOException;
+   public interface FileFilter {
+      public boolean addNode(AbstractFileServerNode node);
+   }
 
-	void createZip(byte[] content, OutputStream os) throws IOException;
+   public static Object DIRECTORY_MARKER = new Object();
 
-	void createZip(FileServerFolder folder, OutputStream os) throws IOException;
+   public void createZip(Map<String, ? extends Object> content, OutputStream os) throws IOException;
 
-	void createZip(FileServerFolder folder, OutputStream os, FileFilter filter) throws IOException;
+   public void createZip(List<Path> files, OutputStream os) throws IOException;
+
+   public void createZipFromEmailAttachments(List<SimpleAttachment> attachments, OutputStream os) throws IOException;
+
+   public void extractZip(byte[] data, ZipExtractionConfig config) throws IOException;
+
+   public void extractZip(InputStream is, ZipExtractionConfig config) throws IOException;
+
+   void createZip(byte[] content, OutputStream os) throws IOException;
+
+   void createZip(FileServerFolder folder, OutputStream os) throws IOException;
+
+   void createZip(FileServerFolder folder, OutputStream os, FileFilter filter) throws IOException;
 }
