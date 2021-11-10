@@ -173,8 +173,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.21.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.5.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/docx4j-6.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/serializer-2.7.2.jar"/>
@@ -271,5 +269,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.7.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.22.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-pdf-9.1.22.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
