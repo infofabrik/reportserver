@@ -177,11 +177,6 @@
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ojdbc7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.8.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.8.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.8.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.8.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.21.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flying-saucer-core-9.1.21.jar"/>
@@ -271,5 +266,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.9.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.10.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.10.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.10.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.10.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.10.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
