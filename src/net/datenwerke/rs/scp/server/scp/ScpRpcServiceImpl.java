@@ -4,7 +4,6 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,9 +117,9 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
                Object reportObj = cReport.getReport();
    
                try {
-                  zipUtilsService.createZip(Collections
-                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                              + "." + cReport.getFileExtension(), reportObj), os);               
+                  zipUtilsService.createZip(
+                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
+                        reportObj, os);
                } catch (IOException e) {
                   throw new ServerCallFailedException(e);
                }

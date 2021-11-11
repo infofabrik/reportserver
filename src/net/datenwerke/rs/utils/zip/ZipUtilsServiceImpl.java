@@ -15,6 +15,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,49 +32,51 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 
 public class ZipUtilsServiceImpl implements ZipUtilsService{
 
-	final int BUFFER = 2048;
+	private static final int BUFFER = 2048;
 	
 	@Override
 	public void createZip(byte[] content, OutputStream os) throws IOException {
-		ZipOutputStream out = new ZipOutputStream(os); 
-		
-		out.putNextEntry(new ZipEntry("data"));
-		
-		ByteArrayInputStream in = new ByteArrayInputStream(content);
-		if(null != in)
-			IOUtils.copy(in, out);
-		
-		out.closeEntry(); 
-		
-		out.close();
+		try (ZipOutputStream out = new ZipOutputStream(os)) {
+      		out.putNextEntry(new ZipEntry("data"));
+      		
+      		ByteArrayInputStream in = new ByteArrayInputStream(content);
+      		if(null != in)
+      			IOUtils.copy(in, out);
+      		
+      		out.closeEntry(); 
+		}
 	}
 	
 	@Override
 	public void createZip(Map<String, ? extends Object> content, OutputStream os) throws IOException {
-		ZipOutputStream out = new ZipOutputStream(os); 
-		for (String name : content.keySet()) {
-			if(DIRECTORY_MARKER == (content.get(name))){
-				out.putNextEntry(new ZipEntry(name.endsWith("/") ? name : name + "/"));
-			}else{
-				out.putNextEntry(new ZipEntry(name));
-			}
-			
-			ByteArrayInputStream in = null;
-			if(content.get(name) instanceof String){
-				String text = (String) content.get(name);
-				in = new ByteArrayInputStream(text.getBytes());
-			}else if(content.get(name) instanceof byte[]){
-				in = new ByteArrayInputStream((byte[]) content.get(name));
-			}
-			
-			if(null != in){
-				IOUtils.copy(in, out);
-			}
-			
-			out.closeEntry(); 
+		try (ZipOutputStream out = new ZipOutputStream(os)) {
+      		for (String name : content.keySet()) {
+      			if(DIRECTORY_MARKER == (content.get(name))){
+      				out.putNextEntry(new ZipEntry(name.endsWith("/") ? name : name + "/"));
+      			}else{
+      				out.putNextEntry(new ZipEntry(name));
+      			}
+      			
+      			ByteArrayInputStream in = null;
+      			if(content.get(name) instanceof String){
+      				String text = (String) content.get(name);
+      				in = new ByteArrayInputStream(text.getBytes());
+      			}else if(content.get(name) instanceof byte[]){
+      				in = new ByteArrayInputStream((byte[]) content.get(name));
+      			}
+      			
+      			if(null != in){
+      				IOUtils.copy(in, out);
+      			}
+      			
+      			out.closeEntry(); 
+      		}
 		}
-		
-		out.close();
+	}
+	
+	@Override
+	public void createZip(String contentFilename, Object content, OutputStream os) throws IOException {
+	   createZip(Collections.singletonMap(contentFilename, content), os);
 	}
 	
 	@Override
@@ -244,5 +247,29 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 			}
 		}
 	}
+
+   private String cleanFilename(String filename, boolean directory) {
+      String clean = null;
+      if (filename.endsWith("/")) 
+         clean = replaceInvalidCharacters(filename.substring(0, filename.length()-1)) + "/";
+      else
+         clean = replaceInvalidCharacters(filename);
+      
+      return clean;
+   }
+   
+   private String replaceInvalidCharacters(String filename) {
+      return filename.replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_");
+   }
+
+   @Override
+   public String cleanFilename(String filename) {
+      return cleanFilename(filename, false);
+   }
+
+   @Override
+   public String cleanDirectoryName(String dirname) {
+      return cleanFilename(dirname, true);
+   }
 
 }

@@ -4,7 +4,6 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +18,10 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
+import net.datenwerke.rs.amazons3.client.amazons3.rpc.AmazonS3RpcService;
+import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
+import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
@@ -31,10 +34,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
-import net.datenwerke.rs.amazons3.client.amazons3.rpc.AmazonS3RpcService;
-import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
-import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
@@ -110,9 +109,9 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
                Object reportObj = cReport.getReport();
    
                try {
-                  zipUtilsService.createZip(Collections
-                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                              + "." + cReport.getFileExtension(), reportObj), os);               
+                  zipUtilsService.createZip(
+                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
+                        reportObj, os);
                } catch (IOException e) {
                   throw new ServerCallFailedException(e);
                }
