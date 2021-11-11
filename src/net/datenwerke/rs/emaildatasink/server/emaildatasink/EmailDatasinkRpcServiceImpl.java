@@ -4,7 +4,6 @@ import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,19 +125,14 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               emailDatasinkService.sendToEmailDatasink(os.toByteArray(), emailDatasink, subject, message, recipientUsers, filename, true);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, subject, message, recipientUsers, filename, true);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            emailDatasinkService.sendToEmailDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
+            emailDatasinkService.exportIntoDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
                   filename, true);
          }
       } catch (Exception e) {
@@ -157,7 +151,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(emailDatasinkService.getEmailEnabledConfigs());
+      enabledConfigs.putAll(emailDatasinkService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -169,7 +163,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       securityService.assertRights(emailDatasink, Read.class, Execute.class);
 
       try {
-         emailDatasinkService.testEmailDatasink(emailDatasink);
+         emailDatasinkService.testDatasink(emailDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

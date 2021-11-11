@@ -28,17 +28,17 @@ public interface DropboxService {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void exportIntoDropbox(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
 
    /**
-    * Summarizes {@link #isDropboxEnabled()} and
-    * {@link #isDropboxSchedulingEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and
+    * {@link #isSchedulingEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isDropboxEnabled()} and {@link #isDropboxSchedulingEnabled()}
+    *         {@link #isEnabled()} and {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getStorageEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of Dropbox enabling. Has to be true
@@ -46,7 +46,7 @@ public interface DropboxService {
     * 
     * @return true if Dropbox is enabled
     */
-   boolean isDropboxEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of Dropbox scheduling enabling.
@@ -55,7 +55,7 @@ public interface DropboxService {
     * 
     * @return true if Dropbox's scheduling is enabled
     */
-   boolean isDropboxSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a Dropbox test request by creating a simple text file and sending it
@@ -66,7 +66,7 @@ public interface DropboxService {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void testDropboxDatasink(DropboxDatasink dropboxDatasink)
+   void testDatasink(DropboxDatasink dropboxDatasink)
          throws IOException, InterruptedException, ExecutionException;
    
    /**

@@ -33,6 +33,7 @@ import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.provider.annotat
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -42,6 +43,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
    private String folderKey;
    private String nameKey;
    private String localFileSystemKey;
+   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<LocalFileSystemDao> datasinkDaoProvider;
@@ -110,11 +112,20 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
             return false;
          }
       });
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true),
             new ShowHideFieldAction(localFileSystemKey));
+      xform.addCondition(isExportAsLocalFileSystemKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -132,6 +143,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
       ScheduleAsLocalFileSystemInformation info = new ScheduleAsLocalFileSystemInformation();
       info.setName((String) simpleForm.getValue(nameKey));
       info.setFolder((String) simpleForm.getValue(folderKey));
+      info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
       info.setLocalFileSystemDatasinkDto((LocalFileSystemDatasinkDto) simpleForm.getValue(localFileSystemKey));
 
       configDto.addAdditionalInfo(info);

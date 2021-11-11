@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyBoxServiceImpl implements BoxService {
 
    @Override
-   public void exportIntoBox(Object report, BoxDatasink boxDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, BoxDatasink boxDatasink, String filename, String folder)
          throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getStorageEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isBoxEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isBoxSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testBoxDatasink(BoxDatasink boxDatasink) throws IOException {
+   public void testDatasink(BoxDatasink boxDatasink) throws IOException {
    }
 
    @Override

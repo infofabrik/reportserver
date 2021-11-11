@@ -49,6 +49,7 @@ public class ScheduleConfigAsLocalFileSystemHooker implements ScheduleConfigProv
       
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setLocalFileSystemDatasink((LocalFileSystemDatasink)dtoServiceProvider.get().loadPoso(info.getLocalFileSystemDatasinkDto()));      
       try {
          job.addAction(action);
@@ -68,6 +69,7 @@ public class ScheduleConfigAsLocalFileSystemHooker implements ScheduleConfigProv
       
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setLocalFileSystemDatasinkDto((LocalFileSystemDatasinkDto)dtoServiceProvider.get().createDto(action.getLocalFileSystemDatasink()));
       
       if (null == info.getLocalFileSystemDatasinkDto())

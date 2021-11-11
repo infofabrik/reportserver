@@ -182,12 +182,10 @@ public class MailReportAction extends AbstractAction {
       if (compressed) {
          ByteArrayOutputStream os = new ByteArrayOutputStream();
          Object reportObj = job.getExecutedReport().getReport();
-         String reportFileExtension = job.getExecutedReport().getFileExtension();
          try {
-            zipUtilsService.createZip(Collections
-                  .singletonMap(filenamePrefix.replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                        + "." + reportFileExtension, reportObj),
-                  os);
+            zipUtilsService.createZip(
+                  zipUtilsService.cleanFilename(filenamePrefix + "." + job.getExecutedReport().getFileExtension()),
+                  reportObj, os);
          } catch (IOException e) {
             throw new ActionExecutionException(e.getMessage());
          }

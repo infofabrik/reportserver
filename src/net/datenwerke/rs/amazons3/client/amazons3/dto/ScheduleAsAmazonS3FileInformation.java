@@ -13,6 +13,7 @@ public class ScheduleAsAmazonS3FileInformation implements AdditionalScheduleInfo
    private AmazonS3DatasinkDto amazonS3DatasinkDto;
    private String name;
    private String folder;
+   private boolean compressed;
 
    public String getName() {
       return name;
@@ -37,5 +38,13 @@ public class ScheduleAsAmazonS3FileInformation implements AdditionalScheduleInfo
    public void setFolder(String folder) {
       this.folder = folder;
    }
+   
+   public boolean isCompressed() {
+      return compressed;
+  }
+  
+  public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
+  }
 
 }

@@ -31,18 +31,18 @@ public interface GoogleDriveService {
     * @throws ExecutionException   if the oauth client throws ExecutionException
     * @throws JSONException 
     */
-   void exportIntoGoogleDrive(Object report, GoogleDriveDatasink googleDriveDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename, String folder)
          throws Exception;
 
    /**
-    * Summarizes {@link #isGoogleDriveEnabled()} and
-    * {@link #isGoogleDriveSchedulingEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and
+    * {@link #isSchedulingEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isGoogleDriveEnabled()} and
-    *         {@link #isGoogleDriveSchedulingEnabled()}
+    *         {@link #isEnabled()} and
+    *         {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getStorageEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of GoogleDrive enabling. Has to be
@@ -50,7 +50,7 @@ public interface GoogleDriveService {
     * 
     * @return true if GoogleDrive is enabled
     */
-   boolean isGoogleDriveEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of GoogleDrive scheduling enabling.
@@ -59,7 +59,7 @@ public interface GoogleDriveService {
     * 
     * @return true if GoogleDrive's scheduling is enabled
     */
-   boolean isGoogleDriveSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a GoogleDrive test request by creating a simple text file and sending
@@ -71,7 +71,7 @@ public interface GoogleDriveService {
     * @throws ExecutionException   if the oauth client throws ExecutionException
     * @throws JSONException 
     */
-   void testGoogleDriveDatasink(GoogleDriveDatasink googleDriveDatasink)
+   void testDatasink(GoogleDriveDatasink googleDriveDatasink)
          throws Exception;
 
    /**

@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyDropboxServiceImpl implements DropboxService {
 
    @Override
-   public void exportIntoDropbox(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
          throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getStorageEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isDropboxEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isDropboxSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testDropboxDatasink(DropboxDatasink dropboxDatasink) throws IOException {
+   public void testDatasink(DropboxDatasink dropboxDatasink) throws IOException {
    }
 
    @Override

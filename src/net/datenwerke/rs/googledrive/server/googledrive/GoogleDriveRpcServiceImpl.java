@@ -3,7 +3,6 @@ package net.datenwerke.rs.googledrive.server.googledrive;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,19 +107,14 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               googleDriveService.exportIntoGoogleDrive(os.toByteArray(), googleDriveDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            googleDriveService.exportIntoGoogleDrive(cReport.getReport(), googleDriveDatasink, filename, folder);
+            googleDriveService.exportIntoDatasink(cReport.getReport(), googleDriveDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to GoogleDrive: " + e.getMessage(), e);
@@ -138,7 +132,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(googleDriveService.getStorageEnabledConfigs());
+      enabledConfigs.putAll(googleDriveService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -151,7 +145,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
 
       try {
-         googleDriveService.testGoogleDriveDatasink(googleDriveDatasink);
+         googleDriveService.testDatasink(googleDriveDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

@@ -3,7 +3,6 @@ package net.datenwerke.rs.scp.server.scp;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -115,19 +114,14 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               scpService.sendToScpServer(os.toByteArray(), scpDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            scpService.sendToScpServer(cReport.getReport(), scpDatasink, filename, folder);
+            scpService.exportIntoDatasink(cReport.getReport(), scpDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Scp server: " + e.getMessage(), e);
@@ -145,7 +139,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    @Override
    public Map<StorageType, Boolean> getScpEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(scpService.getScpEnabledConfigs());
+      enabledConfigs.putAll(scpService.getEnabledConfigs());
       return enabledConfigs;
    }
 

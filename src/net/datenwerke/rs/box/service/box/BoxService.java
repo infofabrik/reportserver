@@ -1,11 +1,7 @@
 package net.datenwerke.rs.box.service.box;
 
-import java.io.IOException;
 import java.util.Map;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
 
 import com.google.inject.ImplementedBy;
 
@@ -26,16 +22,16 @@ public interface BoxService {
     * @param folder      where to save the report in the Box account. Overrides the
     *                    folder defined in the {@link BoxDatasink}
     */
-   void exportIntoBox(Object report, BoxDatasink boxDatasink, String filename, String folder) throws Exception;
+   void exportIntoDatasink(Object report, BoxDatasink boxDatasink, String filename, String folder) throws Exception;
 
    /**
-    * Summarizes {@link #isBoxEnabled()} and {@link #isBoxSchedulingEnabled()} in a
+    * Summarizes {@link #isEnabled()} and {@link #isSchedulingEnabled()} in a
     * map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isBoxEnabled()} and {@link #isBoxSchedulingEnabled()}
+    *         {@link #isEnabled()} and {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getStorageEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of Box enabling. Has to be true in
@@ -43,7 +39,7 @@ public interface BoxService {
     * 
     * @return true if Box is enabled
     */
-   boolean isBoxEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of Box scheduling enabling. Reports
@@ -51,7 +47,7 @@ public interface BoxService {
     * 
     * @return true if Box's scheduling is enabled
     */
-   boolean isBoxSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a Box test request by creating a simple text file and sending it to
@@ -59,7 +55,7 @@ public interface BoxService {
     * 
     * @param boxDatasink the {@link BoxDatasink} to test
     */
-   void testBoxDatasink(BoxDatasink boxDatasink) throws Exception;
+   void testDatasink(BoxDatasink boxDatasink) throws Exception;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.

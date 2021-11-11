@@ -12,6 +12,7 @@ public class ScheduleAsSftpFileInformation implements AdditionalScheduleInformat
 	private SftpDatasinkDto sftpDatasinkDto;
 	private String name;
 	private String folder;
+	private boolean compressed;
 	
 	public String getName() {
 		return name;
@@ -31,6 +32,14 @@ public class ScheduleAsSftpFileInformation implements AdditionalScheduleInformat
 	}
 	public void setSftpDatasinkDto(SftpDatasinkDto sftpDatasinkDto) {
 		this.sftpDatasinkDto = sftpDatasinkDto;
+	}
+	
+	public boolean isCompressed() {
+	    return compressed;
+	}
+	  
+	public void setCompressed(boolean compressed) {
+	    this.compressed = compressed;
 	}
 	
 }

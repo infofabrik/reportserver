@@ -3,7 +3,6 @@ package net.datenwerke.rs.ftp.server.ftp;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -135,19 +134,14 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               ftpService.sendToFtpsServer(os.toByteArray(), ftpsDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               ftpService.exportIntoFtps(os.toByteArray(), ftpsDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            ftpService.sendToFtpsServer(cReport.getReport(), ftpsDatasink, filename, folder);
+            ftpService.exportIntoFtps(cReport.getReport(), ftpsDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);

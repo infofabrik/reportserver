@@ -3,7 +3,6 @@ package net.datenwerke.rs.onedrive.server.onedrive;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -114,19 +113,14 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               oneDriveService.exportIntoOneDrive(os.toByteArray(), oneDriveDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            oneDriveService.exportIntoOneDrive(cReport.getReport(), oneDriveDatasink, filename, folder);
+            oneDriveService.exportIntoDatasink(cReport.getReport(), oneDriveDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to OneDrive: " + e.getMessage(), e);
@@ -144,7 +138,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(oneDriveService.getStorageEnabledConfigs());
+      enabledConfigs.putAll(oneDriveService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -156,7 +150,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(oneDriveDatasink, Read.class, Execute.class);
 
       try {
-         oneDriveService.testOneDriveDatasink(oneDriveDatasink);
+         oneDriveService.testDatasink(oneDriveDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

@@ -3,7 +3,6 @@ package net.datenwerke.rs.dropbox.server.dropbox;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,19 +106,14 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               dropboxService.exportIntoDropbox(os.toByteArray(), dropboxDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               dropboxService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            dropboxService.exportIntoDropbox(cReport.getReport(), dropboxDatasink, filename, folder);
+            dropboxService.exportIntoDatasink(cReport.getReport(), dropboxDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Dropbox: " + e.getMessage(), e);
@@ -137,7 +131,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(dropboxService.getStorageEnabledConfigs());
+      enabledConfigs.putAll(dropboxService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -149,7 +143,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
 
       try {
-         dropboxService.testDropboxDatasink(dropboxDatasink);
+         dropboxService.testDatasink(dropboxDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

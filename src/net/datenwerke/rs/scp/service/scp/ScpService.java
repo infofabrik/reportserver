@@ -27,7 +27,7 @@ public interface ScpService {
     * @throws JSchException if error occurs while connecting with the SCP SSH
     *                       server
     */
-   void sendToScpServer(Object report, ScpDatasink scpDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, ScpDatasink scpDatasink, String filename, String folder)
          throws IOException, JSchException;
 
    /**
@@ -37,7 +37,7 @@ public interface ScpService {
     * @return a map containing the enabling configuration for
     *         {@link #isScpEnabled()} and {@link #isScpSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getScpEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of Scp enabling. Has to be true in

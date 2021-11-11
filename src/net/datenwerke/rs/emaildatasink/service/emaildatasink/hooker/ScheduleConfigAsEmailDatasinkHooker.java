@@ -49,6 +49,8 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
       action.setSubject(info.getSubject());
       action.setMessage(info.getMessage());
       action.setName(info.getName());
+      action.setCompressed(info.isCompressed());
+      
       action.setEmailDatasink((EmailDatasink) dtoServiceProvider.get().loadPoso(info.getEmailDatasinkDto()));
       try {
          job.addAction(action);
@@ -69,6 +71,7 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
       info.setSubject(action.getSubject());
       info.setMessage(action.getMessage());
       info.setName(action.getName());
+      info.setCompressed(action.isCompressed());
       info.setEmailDatasinkDto((EmailDatasinkDto) dtoServiceProvider.get().createDto(action.getEmailDatasink()));
 
       if (null == info.getEmailDatasinkDto())

@@ -3,7 +3,6 @@ package net.datenwerke.rs.amazons3.server.amazons3;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -107,19 +106,14 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               amazonS3Service.exportIntoAmazonS3(os.toByteArray(), amazonS3Datasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            amazonS3Service.exportIntoAmazonS3(cReport.getReport(), amazonS3Datasink, filename, folder);
+            amazonS3Service.exportIntoDatasink(cReport.getReport(), amazonS3Datasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to AmazonS3: " + e.getMessage(), e);
@@ -137,7 +131,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(amazonS3Service.getStorageEnabledConfigs());
+      enabledConfigs.putAll(amazonS3Service.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -149,7 +143,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(amazonS3Datasink, Read.class, Execute.class);
 
       try {
-         amazonS3Service.testAmazonS3Datasink(amazonS3Datasink);
+         amazonS3Service.testDatasink(amazonS3Datasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

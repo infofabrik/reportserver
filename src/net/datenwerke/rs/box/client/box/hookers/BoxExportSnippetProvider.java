@@ -33,6 +33,7 @@ import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -41,6 +42,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
    private String folderKey;
    private String nameKey;
    private String boxKey;
+   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<BoxDao> datasinkDaoProvider;
@@ -106,10 +108,19 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
             return false;
          }
       });
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(boxKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -128,6 +139,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
       info.setName((String) simpleForm.getValue(nameKey));
       info.setFolder((String) simpleForm.getValue(folderKey));
       info.setBoxDatasinkDto((BoxDatasinkDto) simpleForm.getValue(boxKey));
+      info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
 
       configDto.addAdditionalInfo(info);
    }

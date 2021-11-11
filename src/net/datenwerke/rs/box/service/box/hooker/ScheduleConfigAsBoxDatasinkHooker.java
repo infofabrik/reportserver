@@ -46,6 +46,7 @@ public class ScheduleConfigAsBoxDatasinkHooker implements ScheduleConfigProvider
 
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setBoxDatasink((BoxDatasink) dtoServiceProvider.get().loadPoso(info.getBoxDatasinkDto()));
       try {
          job.addAction(action);
@@ -65,6 +66,7 @@ public class ScheduleConfigAsBoxDatasinkHooker implements ScheduleConfigProvider
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setBoxDatasinkDto((BoxDatasinkDto) dtoServiceProvider.get().createDto(action.getBoxDatasink()));
 
       if (null == info.getBoxDatasinkDto())

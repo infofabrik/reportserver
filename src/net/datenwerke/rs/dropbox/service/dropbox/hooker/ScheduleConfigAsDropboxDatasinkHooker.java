@@ -46,6 +46,7 @@ public class ScheduleConfigAsDropboxDatasinkHooker implements ScheduleConfigProv
 
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setDropboxDatasink((DropboxDatasink) dtoServiceProvider.get().loadPoso(info.getDropboxDatasinkDto()));
       try {
          job.addAction(action);
@@ -65,6 +66,7 @@ public class ScheduleConfigAsDropboxDatasinkHooker implements ScheduleConfigProv
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setDropboxDatasinkDto((DropboxDatasinkDto) dtoServiceProvider.get().createDto(action.getDropboxDatasink()));
 
       if (null == info.getDropboxDatasinkDto())

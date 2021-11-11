@@ -32,6 +32,7 @@ import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtps;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -42,6 +43,7 @@ ScheduleExportSnippetProviderHook {
     private String folderKey;
     private String nameKey;
     private String ftpsKey;
+    private String compressedKey;
     
     private final Provider<UITree> treeProvider;
     private final Provider<FtpsDao> datasinkDaoProvider;
@@ -111,9 +113,18 @@ ScheduleExportSnippetProviderHook {
             }
         });
         
+        xform.setLabelAlign(LabelAlign.LEFT);
+        compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+           @Override
+           public String getBoxLabel() {
+              return SchedulerMessages.INSTANCE.reportCompress();
+           }
+        });
+        
         xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
         xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
         xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(ftpsKey));
+        xform.addCondition(isExportAsFtpsKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
         
     }
 
@@ -132,6 +143,7 @@ ScheduleExportSnippetProviderHook {
         info.setName((String) simpleForm.getValue(nameKey));
         info.setFolder((String) simpleForm.getValue(folderKey));
         info.setFtpsDatasinkDto((FtpsDatasinkDto) simpleForm.getValue(ftpsKey));
+        info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
         
         configDto.addAdditionalInfo(info);
         

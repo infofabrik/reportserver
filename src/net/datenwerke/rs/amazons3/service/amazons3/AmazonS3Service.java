@@ -28,18 +28,18 @@ public interface AmazonS3Service {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void exportIntoAmazonS3(Object report, AmazonS3Datasink amazonS3Datasink, String filename, String folder)
+   void exportIntoDatasink(Object report, AmazonS3Datasink amazonS3Datasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
 
    /**
-    * Summarizes {@link #isAmazonS3Enabled()} and
-    * {@link #isAmazonS3SchedulingEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and
+    * {@link #isSchedulingEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isAmazonS3Enabled()} and
-    *         {@link #isAmazonS3SchedulingEnabled()}
+    *         {@link #isEnabled()} and
+    *         {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getStorageEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of AmazonS3 enabling. Has to be true
@@ -47,7 +47,7 @@ public interface AmazonS3Service {
     * 
     * @return true if AmazonS3 is enabled
     */
-   boolean isAmazonS3Enabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of AmazonS3 scheduling enabling.
@@ -56,7 +56,7 @@ public interface AmazonS3Service {
     * 
     * @return true if AmazonS3's scheduling is enabled
     */
-   boolean isAmazonS3SchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a AmazonS3 test request by creating a simple text file and sending it
@@ -67,7 +67,7 @@ public interface AmazonS3Service {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void testAmazonS3Datasink(AmazonS3Datasink amazonS3Datasink)
+   void testDatasink(AmazonS3Datasink amazonS3Datasink)
          throws IOException, InterruptedException, ExecutionException;
 
    /**

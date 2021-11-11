@@ -11,27 +11,27 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyOneDriveServiceImpl implements OneDriveService {
 
    @Override
-   public void exportIntoOneDrive(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
          throws IOException {
    }
 
    @Override
-   public Map<StorageType, Boolean> getStorageEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isOneDriveEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isOneDriveSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testOneDriveDatasink(OneDriveDatasink OneDriveDatasink) throws IOException {
+   public void testDatasink(OneDriveDatasink OneDriveDatasink) throws IOException {
    }
 
    @Override

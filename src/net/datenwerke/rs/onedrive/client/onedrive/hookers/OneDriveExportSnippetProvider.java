@@ -1,6 +1,8 @@
 package net.datenwerke.rs.onedrive.client.onedrive.hookers;
 
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
+
 import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider.extractSingleTreeSelectionField;
 
 import java.util.Collection;
@@ -41,6 +43,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
    private String folderKey;
    private String nameKey;
    private String oneDriveKey;
+   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<OneDriveDao> datasinkDaoProvider;
@@ -109,10 +112,19 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
             return false;
          }
       });
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(oneDriveKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -130,6 +142,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       ScheduleAsOneDriveFileInformation info = new ScheduleAsOneDriveFileInformation();
       info.setName((String) simpleForm.getValue(nameKey));
       info.setFolder((String) simpleForm.getValue(folderKey));
+      info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
       info.setOneDriveDatasinkDto((OneDriveDatasinkDto) simpleForm.getValue(oneDriveKey));
 
       configDto.addAdditionalInfo(info);

@@ -46,6 +46,7 @@ public class ScheduleConfigAsScpFileHooker implements ScheduleConfigProviderHook
 
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setScpDatasink((ScpDatasink) dtoServiceProvider.get().loadPoso(info.getScpDatasinkDto()));
 
       try {
@@ -66,6 +67,7 @@ public class ScheduleConfigAsScpFileHooker implements ScheduleConfigProviderHook
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setScpDatasinkDto((ScpDatasinkDto) dtoServiceProvider.get().createDto(action.getScpDatasink()));
 
       if (null == info.getScpDatasinkDto())

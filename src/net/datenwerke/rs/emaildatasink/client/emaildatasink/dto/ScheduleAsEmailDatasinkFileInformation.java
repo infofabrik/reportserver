@@ -13,6 +13,7 @@ public class ScheduleAsEmailDatasinkFileInformation implements AdditionalSchedul
    private String name;
    private String subject;
    private String message;
+   private boolean compressed;
 
    public String getSubject() {
       return subject;
@@ -45,5 +46,13 @@ public class ScheduleAsEmailDatasinkFileInformation implements AdditionalSchedul
    public void setName(String name) {
       this.name = name;
    }
+
+   public boolean isCompressed() {
+      return compressed;
+  }
+  
+  public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
+  }
 
 }

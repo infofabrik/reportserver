@@ -51,6 +51,7 @@ public class ScheduleConfigAsSambaFileHooker implements ScheduleConfigProviderHo
         
         action.setName(info.getName());
         action.setFolder(info.getFolder());
+        action.setCompressed(info.isCompressed());
         action.setSambaDatasink((SambaDatasink)dtoServiceProvider.get().loadPoso(info.getSambaDatasinkDto()));
         
         try {
@@ -71,6 +72,7 @@ public class ScheduleConfigAsSambaFileHooker implements ScheduleConfigProviderHo
         
         info.setName(action.getName());
         info.setFolder(action.getFolder());
+        info.setCompressed(action.isCompressed());
         info.setSambaDatasinkDto((SambaDatasinkDto)dtoServiceProvider.get().createDto(action.getSambaDatasink()));
         
         if (null == info.getSambaDatasinkDto())

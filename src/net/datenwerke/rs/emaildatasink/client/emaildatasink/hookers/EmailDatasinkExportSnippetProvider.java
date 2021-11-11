@@ -12,6 +12,7 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
@@ -43,6 +44,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    private String emailKey;
    private String subjectKey;
    private String messageKey;
+   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<EmailDatasinkDao> datasinkDaoProvider;
@@ -118,11 +120,20 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
       xform.setLabelAlign(LabelAlign.TOP);
       messageKey = xform.addField(String.class, SchedulerMessages.INSTANCE.message(), new SFFCTextAreaImpl());
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(emailKey));
       xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(subjectKey));
       xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(messageKey));
+      xform.addCondition(isExportAsEmailKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -141,6 +152,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       info.setSubject((String) simpleForm.getValue(subjectKey));
       info.setMessage((String) simpleForm.getValue(messageKey));
       info.setName((String) simpleForm.getValue(nameKey));
+      info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
       info.setEmailDatasinkDto((EmailDatasinkDto) simpleForm.getValue(emailKey));
 
       configDto.addAdditionalInfo(info);
@@ -153,11 +165,11 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    }
 
    @Override
-   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
+   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {      
       form.loadFields();
-
+      
       final SingleTreeSelectionField emailField = extractSingleTreeSelectionField(form.getField(emailKey));
-
+      
       if (null != definition) {
          form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsEmailDatasinkFileInformation info = definition

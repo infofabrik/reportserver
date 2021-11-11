@@ -51,6 +51,7 @@ public class ScheduleConfigAsFtpsFileHooker implements ScheduleConfigProviderHoo
         
         action.setName(info.getName());
         action.setFolder(info.getFolder());
+        action.setCompressed(info.isCompressed());
         action.setFtpsDatasink((FtpsDatasink)dtoServiceProvider.get().loadPoso(info.getFtpsDatasinkDto()));
         
         try {
@@ -71,6 +72,7 @@ public class ScheduleConfigAsFtpsFileHooker implements ScheduleConfigProviderHoo
         
         info.setName(action.getName());
         info.setFolder(action.getFolder());
+        info.setCompressed(action.isCompressed());
         info.setFtpsDatasinkDto((FtpsDatasinkDto)dtoServiceProvider.get().createDto(action.getFtpsDatasink()));
         
         if (null == info.getFtpsDatasinkDto())

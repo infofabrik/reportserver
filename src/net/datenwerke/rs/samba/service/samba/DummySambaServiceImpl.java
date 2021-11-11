@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummySambaServiceImpl implements SambaService {
 
    @Override
-   public void sendToSambaServer(Object report, SambaDatasink sambaDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, SambaDatasink sambaDatasink, String filename, String folder)
          throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getSambaEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isSambaEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isSambaSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testSambaDatasink(SambaDatasink sambaDatasink) throws IOException {
+   public void testDatasink(SambaDatasink sambaDatasink) throws IOException {
 
    }
 

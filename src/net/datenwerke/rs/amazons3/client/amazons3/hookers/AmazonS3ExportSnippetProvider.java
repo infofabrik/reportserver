@@ -33,6 +33,7 @@ import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkT
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -42,6 +43,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
    private String folderKey;
    private String nameKey;
    private String amazonS3Key;
+   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<AmazonS3Dao> datasinkDaoProvider;
@@ -107,10 +109,19 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
             return false;
          }
       });
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(amazonS3Key));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -129,6 +140,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
       info.setName((String) simpleForm.getValue(nameKey));
       info.setFolder((String) simpleForm.getValue(folderKey));
       info.setAmazonS3DatasinkDto((AmazonS3DatasinkDto) simpleForm.getValue(amazonS3Key));
+      info.setCompressed((Boolean) simpleForm.getValue(compressedKey));
 
       configDto.addAdditionalInfo(info);
    }

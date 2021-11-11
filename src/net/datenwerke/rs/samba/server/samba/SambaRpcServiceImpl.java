@@ -3,7 +3,6 @@ package net.datenwerke.rs.samba.server.samba;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,19 +116,14 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               sambaService.sendToSambaServer(os.toByteArray(), sambaDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               sambaService.exportIntoDatasink(os.toByteArray(), sambaDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            sambaService.sendToSambaServer(cReport.getReport(), sambaDatasink, filename, folder);
+            sambaService.exportIntoDatasink(cReport.getReport(), sambaDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Samba server: " + e.getMessage(), e);
@@ -149,7 +143,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    @Override
    public Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(sambaService.getSambaEnabledConfigs());
+      enabledConfigs.putAll(sambaService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -161,7 +155,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       securityService.assertRights(sambaDatasink, Read.class, Execute.class);
       
       try {
-         sambaService.testSambaDatasink(sambaDatasink);
+         sambaService.testDatasink(sambaDatasink);
       } catch(Exception e){
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

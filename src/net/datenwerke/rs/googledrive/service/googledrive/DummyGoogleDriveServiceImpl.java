@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
 
    @Override
-   public void exportIntoGoogleDrive(Object report, GoogleDriveDatasink googleDriveDatasink, String filename,
+   public void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename,
          String folder) throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getStorageEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isGoogleDriveEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isGoogleDriveSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testGoogleDriveDatasink(GoogleDriveDatasink googleDriveDatasink) throws IOException {
+   public void testDatasink(GoogleDriveDatasink googleDriveDatasink) throws IOException {
    }
 
    @Override

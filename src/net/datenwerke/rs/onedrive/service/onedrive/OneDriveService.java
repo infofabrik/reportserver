@@ -27,18 +27,18 @@ public interface OneDriveService {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void exportIntoOneDrive(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
 
    /**
-    * Summarizes {@link #isOneDriveEnabled()} and
-    * {@link #isOneDriveSchedulingEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and
+    * {@link #isSchedulingEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isOneDriveEnabled()} and
-    *         {@link #isOneDriveSchedulingEnabled()}
+    *         {@link #isEnabled()} and
+    *         {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getStorageEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of OneDrive enabling. Has to be true
@@ -46,7 +46,7 @@ public interface OneDriveService {
     * 
     * @return true if OneDrive is enabled
     */
-   boolean isOneDriveEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of OneDrive scheduling enabling.
@@ -55,7 +55,7 @@ public interface OneDriveService {
     * 
     * @return true if OneDrive's scheduling is enabled
     */
-   boolean isOneDriveSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a OneDrive test request by creating a simple text file and sending it
@@ -66,7 +66,7 @@ public interface OneDriveService {
     * @throws InterruptedException if the oauth client throws InterruptedException
     * @throws ExecutionException   if the oauth client throws ExecutionException
     */
-   void testOneDriveDatasink(OneDriveDatasink oneDriveDatasink)
+   void testDatasink(OneDriveDatasink oneDriveDatasink)
          throws IOException, InterruptedException, ExecutionException;
 
    /**

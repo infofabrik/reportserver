@@ -48,6 +48,7 @@ public class ScheduleConfigAsGoogleDriveDatasinkHooker implements ScheduleConfig
 
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setGoogleDriveDatasink(
             (GoogleDriveDatasink) dtoServiceProvider.get().loadPoso(info.getGoogleDriveDatasinkDto()));
       try {
@@ -68,6 +69,7 @@ public class ScheduleConfigAsGoogleDriveDatasinkHooker implements ScheduleConfig
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setGoogleDriveDatasinkDto(
             (GoogleDriveDatasinkDto) dtoServiceProvider.get().createDto(action.getGoogleDriveDatasink()));
 

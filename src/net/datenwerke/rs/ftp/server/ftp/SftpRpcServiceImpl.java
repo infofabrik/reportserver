@@ -3,7 +3,6 @@ package net.datenwerke.rs.ftp.server.ftp;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -117,19 +116,14 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               ftpService.sendToSftpServer(os.toByteArray(), sftpDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               ftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            ftpService.sendToSftpServer(cReport.getReport(), sftpDatasink, filename, folder);
+            ftpService.exportIntoSftp(cReport.getReport(), sftpDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to SFTP server: " + e.getMessage(), e);

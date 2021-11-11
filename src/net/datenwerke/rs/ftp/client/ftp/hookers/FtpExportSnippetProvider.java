@@ -32,6 +32,7 @@ import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtp;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -42,6 +43,7 @@ public class FtpExportSnippetProvider implements
 	private String folderKey;
 	private String nameKey;
 	private String ftpKey;
+	private String compressedKey;
 	
 	private final Provider<UITree> treeProvider;
 	private final Provider<FtpDao> datasinkDaoProvider;
@@ -118,9 +120,18 @@ public class FtpExportSnippetProvider implements
 			}
 		});
 		
+	    xform.setLabelAlign(LabelAlign.LEFT);
+	    compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+	       @Override
+	       public String getBoxLabel() {
+	          return SchedulerMessages.INSTANCE.reportCompress();
+	       }
+	    });
+		
 		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
 		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
 		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(ftpKey));
+	    xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 		
 	}
 
@@ -138,8 +149,9 @@ public class FtpExportSnippetProvider implements
 		ScheduleAsFtpFileInformation info = new ScheduleAsFtpFileInformation();
 		info.setName((String) form.getValue(nameKey));
 		info.setFolder((String) form.getValue(folderKey));
-		info.setFtpDatasinkDto((FtpDatasinkDto) form.getValue(ftpKey));
-		
+		info.setCompressed((Boolean) form.getValue(compressedKey));
+        info.setFtpDatasinkDto((FtpDatasinkDto) form.getValue(ftpKey));
+	    
 		configDto.addAdditionalInfo(info);
 	}
 

@@ -51,6 +51,7 @@ public class ScheduleConfigAsSftpFileHooker implements ScheduleConfigProviderHoo
 		
 		action.setName(info.getName());
 		action.setFolder(info.getFolder());
+	    action.setCompressed(info.isCompressed());
 		action.setSftpDatasink((SftpDatasink)dtoServiceProvider.get().loadPoso(info.getSftpDatasinkDto()));
 		
 		try {
@@ -71,6 +72,7 @@ public class ScheduleConfigAsSftpFileHooker implements ScheduleConfigProviderHoo
 		
 		info.setName(action.getName());
 		info.setFolder(action.getFolder());
+	    info.setCompressed(action.isCompressed());
 		info.setSftpDatasinkDto((SftpDatasinkDto)dtoServiceProvider.get().createDto(action.getSftpDatasink()));
 		
 		if (null == info.getSftpDatasinkDto())

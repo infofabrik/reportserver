@@ -27,18 +27,18 @@ public interface LocalFileSystemService {
     *                                {@link LocalFileSystemDatasink}
     * @throws IOException if an I/O error occurs
     */
-   void sendToLocalFileSystem(Object report, LocalFileSystemDatasink localFileSystemDatasink, String filename,
+   void exportIntoDatasink(Object report, LocalFileSystemDatasink localFileSystemDatasink, String filename,
          String folder) throws IOException;
 
    /**
-    * Summarizes {@link #isLocalFileSystemEnabled()} and
-    * {@link #isLocalFileSystemSchedulingEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and
+    * {@link #isSchedulingEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isLocalFileSystemEnabled()} and
-    *         {@link #isLocalFileSystemSchedulingEnabled()}
+    *         {@link #isEnabled()} and
+    *         {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getLocalFileSystemEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of local filesystem datasink
@@ -47,7 +47,7 @@ public interface LocalFileSystemService {
     * 
     * @return true if local filesystem is enabled
     */
-   boolean isLocalFileSystemEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of {@link LocalFileSystemDatasink}
@@ -56,7 +56,7 @@ public interface LocalFileSystemService {
     * 
     * @return true if local filesystem's scheduling is enabled
     */
-   boolean isLocalFileSystemSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a {@link LocalFileSystemDatasink} test request by creating a simple
@@ -66,7 +66,7 @@ public interface LocalFileSystemService {
     * 
     * @throws IOException if an I/O error occurs
     */
-   void testLocalFileSystemDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
+   void testDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.

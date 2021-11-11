@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyLocalFileSystemServiceImpl implements LocalFileSystemService {
 
    @Override
-   public void sendToLocalFileSystem(Object report, LocalFileSystemDatasink localFileSystemDatasink, String filename,
+   public void exportIntoDatasink(Object report, LocalFileSystemDatasink localFileSystemDatasink, String filename,
          String folder) throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getLocalFileSystemEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isLocalFileSystemEnabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isLocalFileSystemSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testLocalFileSystemDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException {
+   public void testDatasink(LocalFileSystemDatasink localFileSystemDatasink) throws IOException {
 
    }
 

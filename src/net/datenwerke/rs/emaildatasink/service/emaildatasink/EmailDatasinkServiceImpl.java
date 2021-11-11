@@ -59,7 +59,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public void sendToEmailDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
+   public void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
          List<User> recipients, String filename, boolean sendSyncEmail) throws IOException {
       Objects.requireNonNull(emailDatasink, "datasink is null!");
       Objects.requireNonNull(filename);
@@ -77,28 +77,28 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public Map<StorageType, Boolean> getEmailEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return datasinkServiceProvider.get().getEnabledConfigs(StorageType.EMAIL, PROPERTY_EMAIL_DISABLED,
             StorageType.EMAIL_SCHEDULING, PROPERTY_EMAIL_SCHEDULING_ENABLED);
    }
 
    @Override
-   public boolean isEmailEnabled() {
+   public boolean isEnabled() {
       return datasinkServiceProvider.get().isEnabled(PROPERTY_EMAIL_DISABLED);
    }
 
    @Override
-   public boolean isEmailSchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_EMAIL_SCHEDULING_ENABLED);
    }
 
    @Override
-   public void testEmailDatasink(EmailDatasink emailDatasink) throws IOException {
-      if (!isEmailEnabled())
+   public void testDatasink(EmailDatasink emailDatasink) throws IOException {
+      if (!isEnabled())
          throw new IllegalStateException("Email datasink is disabled");
 
       String emailText = "ReportServer Email Datasink Test";
-      sendToEmailDatasink(emailText + " " + dateFormat.format(Calendar.getInstance().getTime()), emailDatasink,
+      exportIntoDatasink(emailText + " " + dateFormat.format(Calendar.getInstance().getTime()), emailDatasink,
             emailText, emailText + " " + dateFormat.format(Calendar.getInstance().getTime()),
             Arrays.asList(authenticatorServiceProvider.get().getCurrentUser()), "reportserver-email-datasink-test.txt",
             true);

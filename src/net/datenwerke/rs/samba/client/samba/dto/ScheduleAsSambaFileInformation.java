@@ -12,6 +12,7 @@ public class ScheduleAsSambaFileInformation implements AdditionalScheduleInforma
     private SambaDatasinkDto sambaDatasinkDto;
     private String name;
     private String folder;
+    private boolean compressed;
     
     public String getName() {
         return name;
@@ -30,6 +31,14 @@ public class ScheduleAsSambaFileInformation implements AdditionalScheduleInforma
     }
     public void setSambaDatasinkDto(SambaDatasinkDto sambaDatasinkDto) {
         this.sambaDatasinkDto = sambaDatasinkDto;
+    }
+    
+    public boolean isCompressed() {
+       return compressed;
+    }
+
+    public void setCompressed(boolean compressed) {
+       this.compressed = compressed;
     }
     
 }

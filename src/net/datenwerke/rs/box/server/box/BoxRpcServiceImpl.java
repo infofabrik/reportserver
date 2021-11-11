@@ -3,7 +3,6 @@ package net.datenwerke.rs.box.server.box;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -105,19 +104,14 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               boxService.exportIntoBox(os.toByteArray(), boxDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               boxService.exportIntoDatasink(os.toByteArray(), boxDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            boxService.exportIntoBox(cReport.getReport(), boxDatasink, filename, folder);
+            boxService.exportIntoDatasink(cReport.getReport(), boxDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Box: " + e.getMessage(), e);
@@ -135,7 +129,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(boxService.getStorageEnabledConfigs());
+      enabledConfigs.putAll(boxService.getEnabledConfigs());
       return enabledConfigs;
    }
 
@@ -147,7 +141,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       securityService.assertRights(boxDatasink, Read.class, Execute.class);
 
       try {
-         boxService.testBoxDatasink(boxDatasink);
+         boxService.testDatasink(boxDatasink);
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

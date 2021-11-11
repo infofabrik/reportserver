@@ -47,6 +47,7 @@ public class ScheduleConfigAsAmazonS3DatasinkHooker implements ScheduleConfigPro
       action.setName(info.getName());
       action.setFolder(info.getFolder());
       action.setAmazonS3Datasink((AmazonS3Datasink) dtoServiceProvider.get().loadPoso(info.getAmazonS3DatasinkDto()));
+      action.setCompressed(info.isCompressed());
       try {
          job.addAction(action);
       } catch (ActionNotSupportedException e) {
@@ -65,6 +66,7 @@ public class ScheduleConfigAsAmazonS3DatasinkHooker implements ScheduleConfigPro
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setAmazonS3DatasinkDto(
             (AmazonS3DatasinkDto) dtoServiceProvider.get().createDto(action.getAmazonS3Datasink()));
 

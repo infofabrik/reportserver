@@ -11,28 +11,28 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyAmazonS3ServiceImpl implements AmazonS3Service {
 
    @Override
-   public void exportIntoAmazonS3(Object report, AmazonS3Datasink amazonS3Datasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, AmazonS3Datasink amazonS3Datasink, String filename, String folder)
          throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getStorageEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 
    @Override
-   public boolean isAmazonS3Enabled() {
+   public boolean isEnabled() {
       return false;
    }
 
    @Override
-   public boolean isAmazonS3SchedulingEnabled() {
+   public boolean isSchedulingEnabled() {
       return false;
    }
 
    @Override
-   public void testAmazonS3Datasink(AmazonS3Datasink amazonS3Datasink) throws IOException {
+   public void testDatasink(AmazonS3Datasink amazonS3Datasink) throws IOException {
    }
 
    @Override

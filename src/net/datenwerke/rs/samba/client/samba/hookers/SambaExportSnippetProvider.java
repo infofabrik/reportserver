@@ -32,6 +32,7 @@ import net.datenwerke.rs.samba.client.samba.provider.annotations.DatasinkTreeSam
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -41,7 +42,8 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
    private String folderKey;
    private String nameKey;
    private String sambaKey;
-
+   private String compressedKey;
+   
    private final Provider<UITree> treeProvider;
    private final Provider<SambaDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
@@ -115,10 +117,19 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
             return false;
          }
       });
+      
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
 
       xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(sambaKey));
+      xform.addCondition(isExportAsSambaKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -136,6 +147,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
       ScheduleAsSambaFileInformation info = new ScheduleAsSambaFileInformation();
       info.setName((String) form.getValue(nameKey));
       info.setFolder((String) form.getValue(folderKey));
+      info.setCompressed((Boolean) form.getValue(compressedKey));
       info.setSambaDatasinkDto((SambaDatasinkDto) form.getValue(sambaKey));
 
       configDto.addAdditionalInfo(info);

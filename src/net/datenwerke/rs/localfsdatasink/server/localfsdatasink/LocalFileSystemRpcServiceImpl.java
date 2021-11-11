@@ -3,7 +3,6 @@ package net.datenwerke.rs.localfsdatasink.server.localfsdatasink;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -118,19 +117,14 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
             String filename = name + ".zip";
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
-               try {
-                  zipUtilsService.createZip(
-                        zipUtilsService.cleanFilename(toExecute.getName()) + "." + cReport.getFileExtension(),
-                        reportObj, os);
-               } catch (IOException e) {
-                  throw new ServerCallFailedException(e);
-               }
-               localFileSystemService.sendToLocalFileSystem(os.toByteArray(), localFileSystemDatasink, filename, folder);
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               localFileSystemService.exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, filename, folder);
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            localFileSystemService.sendToLocalFileSystem(cReport.getReport(), localFileSystemDatasink, filename, folder);
+            localFileSystemService.exportIntoDatasink(cReport.getReport(), localFileSystemDatasink, filename, folder);
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to local file system: " + e.getMessage(), e);
@@ -150,7 +144,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(localFileSystemService.getLocalFileSystemEnabledConfigs());
+      enabledConfigs.putAll(localFileSystemService.getEnabledConfigs());
       return enabledConfigs;
    }
    
@@ -163,7 +157,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
          
          try {
-           localFileSystemService.testLocalFileSystemDatasink(localFileSystemDatasink);
+           localFileSystemService.testDatasink(localFileSystemDatasink);
          } catch(Exception e){
             DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
             ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

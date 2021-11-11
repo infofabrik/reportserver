@@ -25,17 +25,17 @@ public interface SambaService {
     *                      {@link SambaDatasink}
     * @throws IOException     if an I/O error occurs
     */
-   void sendToSambaServer(Object report, SambaDatasink sambaDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, SambaDatasink sambaDatasink, String filename, String folder)
          throws IOException;
 
    /**
-    * Summarizes {@link #isSambaEnabled()} and {@link #isSambaSchedulingEnabled()}
+    * Summarizes {@link #isEnabled()} and {@link #isSchedulingEnabled()}
     * in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isSambaEnabled()} and {@link #isSambaSchedulingEnabled()}
+    *         {@link #isEnabled()} and {@link #isSchedulingEnabled()}
     */
-   Map<StorageType, Boolean> getSambaEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of Samba enabling. Has to be true in
@@ -43,7 +43,7 @@ public interface SambaService {
     * 
     * @return true if Samba is enabled
     */
-   boolean isSambaEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of Samba scheduling enabling. Reports
@@ -51,7 +51,7 @@ public interface SambaService {
     * 
     * @return true if Samba's scheduling is enabled
     */
-   boolean isSambaSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues a Samba test request by creating a simple text file and sending it to
@@ -60,7 +60,7 @@ public interface SambaService {
     * @param sambaDatasink the {@link SambaDatasink} to test
     * @throws IOException if an I/O error occurs
     */
-   void testSambaDatasink(SambaDatasink sambaDatasink) throws IOException;
+   void testDatasink(SambaDatasink sambaDatasink) throws IOException;
    
    Optional<SambaDatasink> getDefaultDatasink();
 }

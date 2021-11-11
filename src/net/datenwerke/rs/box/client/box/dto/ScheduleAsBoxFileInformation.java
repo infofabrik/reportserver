@@ -11,6 +11,7 @@ public class ScheduleAsBoxFileInformation implements AdditionalScheduleInformati
    private BoxDatasinkDto boxDatasinkDto;
    private String name;
    private String folder;
+   private boolean compressed;
 
    public String getName() {
       return name;
@@ -35,4 +36,13 @@ public class ScheduleAsBoxFileInformation implements AdditionalScheduleInformati
    public void setFolder(String folder) {
       this.folder = folder;
    }
+   
+   public boolean isCompressed() {
+      return compressed;
+  }
+  
+  public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
+  }
+  
 }

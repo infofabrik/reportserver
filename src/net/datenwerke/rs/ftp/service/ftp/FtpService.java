@@ -23,7 +23,7 @@ public interface FtpService {
     *                    folder defined in the {@link FtpDatasink}
     * @throws IOException if an I/O error occurs
     */
-   void sendToFtpServer(Object report, FtpDatasink ftpDatasink, String filename, String folder) throws IOException;
+   void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder) throws IOException;
 
    /**
     * Returns the current configuration value of FTP enabling. Has to be true in
@@ -80,7 +80,7 @@ public interface FtpService {
     *                     the folder defined in the {@link SftpDatasink}
     * @throws IOException if an I/O error occurs
     */
-   void sendToSftpServer(Object report, SftpDatasink sftpDatasink, String filename, String folder) throws IOException;
+   void exportIntoSftp(Object report, SftpDatasink sftpDatasink, String filename, String folder) throws IOException;
 
    /**
     * Returns the current configuration value of SFTP enabling. Has to be true in
@@ -128,7 +128,7 @@ public interface FtpService {
     *                     the folder defined in the {@link FtpsDatasink}
     * @throws IOException if an I/O error occurs
     */
-   void sendToFtpsServer(Object report, FtpsDatasink ftpsDatasink, String filename, String folder) throws IOException;
+   void exportIntoFtps(Object report, FtpsDatasink ftpsDatasink, String filename, String folder) throws IOException;
 
    /**
     * Returns the current configuration value of FTPS enabling. Has to be true in

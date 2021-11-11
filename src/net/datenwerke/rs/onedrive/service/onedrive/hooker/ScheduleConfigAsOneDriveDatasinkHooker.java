@@ -48,6 +48,7 @@ public class ScheduleConfigAsOneDriveDatasinkHooker implements ScheduleConfigPro
 
       action.setName(info.getName());
       action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
       action.setOneDriveDatasink((OneDriveDatasink) dtoServiceProvider.get().loadPoso(info.getOneDriveDatasinkDto()));
       try {
          job.addAction(action);
@@ -67,6 +68,7 @@ public class ScheduleConfigAsOneDriveDatasinkHooker implements ScheduleConfigPro
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
       info.setOneDriveDatasinkDto(
             (OneDriveDatasinkDto) dtoServiceProvider.get().createDto(action.getOneDriveDatasink()));
 

@@ -12,6 +12,7 @@ public class ScheduleAsOneDriveFileInformation implements AdditionalScheduleInfo
    private OneDriveDatasinkDto oneDriveDatasinkDto;
    private String name;
    private String folder;
+   private boolean compressed;
 
    public String getName() {
       return name;
@@ -35,6 +36,14 @@ public class ScheduleAsOneDriveFileInformation implements AdditionalScheduleInfo
 
    public void setFolder(String folder) {
       this.folder = folder;
+   }
+   
+   public boolean isCompressed() {
+      return compressed;
+   }
+
+   public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
    }
 
 }

@@ -84,7 +84,7 @@ public class FtpServiceImpl implements FtpService {
    }
 
    @Override
-   public void sendToFtpServer(Object report, FtpDatasink ftpDatasink, String filename, String folder)
+   public void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder)
          throws IOException {
       if (!isFtpEnabled())
          throw new IllegalStateException("ftp is disabled");
@@ -109,7 +109,7 @@ public class FtpServiceImpl implements FtpService {
    }
 
    @Override
-   public void sendToSftpServer(Object report, SftpDatasink sftpDatasink, String filename, String folder)
+   public void exportIntoSftp(Object report, SftpDatasink sftpDatasink, String filename, String folder)
          throws IOException {
       if (!isSftpEnabled())
          throw new IllegalStateException("sftp is disabled");
@@ -267,7 +267,7 @@ public class FtpServiceImpl implements FtpService {
       if (!isFtpEnabled())
          throw new IllegalStateException("ftp is disabled");
 
-      sendToFtpServer("ReportServer FTP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
+      exportIntoFtp("ReportServer FTP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
             ftpDatasink, "reportserver-ftp-test.txt", ftpDatasink.getFolder());
    }
 
@@ -276,7 +276,7 @@ public class FtpServiceImpl implements FtpService {
       if (!isSftpEnabled())
          throw new IllegalStateException("sftp is disabled");
 
-      sendToSftpServer("ReportServer SFTP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
+      exportIntoSftp("ReportServer SFTP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
             sftpDatasink, "reportserver-sftp-test.txt", sftpDatasink.getFolder());
    }
    
@@ -285,13 +285,13 @@ public class FtpServiceImpl implements FtpService {
        if (!isFtpsEnabled())
            throw new IllegalStateException("ftps is disabled");
 
-       sendToFtpsServer("ReportServer FTPS Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
+       exportIntoFtps("ReportServer FTPS Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
                ftpsDatasink, "reportserver-ftps-test.txt", ftpsDatasink.getFolder());
 
    }
 
    @Override
-   public void sendToFtpsServer(Object report, FtpsDatasink ftpsDatasink, String filename, String folder)
+   public void exportIntoFtps(Object report, FtpsDatasink ftpsDatasink, String filename, String folder)
            throws IOException {
       if (!isFtpsEnabled())
          throw new IllegalStateException("ftps is disabled");

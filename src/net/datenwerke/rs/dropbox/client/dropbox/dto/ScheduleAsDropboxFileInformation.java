@@ -12,6 +12,7 @@ public class ScheduleAsDropboxFileInformation implements AdditionalScheduleInfor
 	private DropboxDatasinkDto dropboxDatasinkDto;
 	private String name;
 	private String folder;
+	private boolean compressed;
 
 	public String getName() {
 		return name;
@@ -35,6 +36,14 @@ public class ScheduleAsDropboxFileInformation implements AdditionalScheduleInfor
 
 	public void setFolder(String folder) {
 		this.folder = folder;
+	}
+	
+	public boolean isCompressed() {
+	    return compressed;
+	}
+	  
+	public void setCompressed(boolean compressed) {
+	    this.compressed = compressed;
 	}
 
 }

@@ -12,6 +12,7 @@ public class ScheduleAsGoogleDriveFileInformation implements AdditionalScheduleI
    private GoogleDriveDatasinkDto googleDriveDatasinkDto;
    private String name;
    private String folder;
+   private boolean compressed;
 
    public GoogleDriveDatasinkDto getGoogleDriveDatasinkDto() {
       return googleDriveDatasinkDto;
@@ -35,6 +36,14 @@ public class ScheduleAsGoogleDriveFileInformation implements AdditionalScheduleI
 
    public void setFolder(String folder) {
       this.folder = folder;
+   }
+   
+   public boolean isCompressed() {
+      return compressed;
+   }
+    
+   public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
    }
 
 }

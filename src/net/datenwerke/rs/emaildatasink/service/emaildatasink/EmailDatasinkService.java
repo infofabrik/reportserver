@@ -27,16 +27,16 @@ public interface EmailDatasinkService {
     *                      asynchronously.
     * @throws IOException if an I/O error occurs
     */
-   void sendToEmailDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
+   void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
          List<User> recipients, String filename, boolean sendSyncEmail) throws IOException;
 
    /**
-    * Summarizes {@link #isEmailEnabled()} and {@link #isEmailEnabled()} in a map.
+    * Summarizes {@link #isEnabled()} and {@link #isEnabled()} in a map.
     * 
     * @return a map containing the enabling configuration for
-    *         {@link #isEmailEnabled()} and {@link #isEmailEnabled()}
+    *         {@link #isEnabled()} and {@link #isEnabled()}
     */
-   Map<StorageType, Boolean> getEmailEnabledConfigs();
+   Map<StorageType, Boolean> getEnabledConfigs();
 
    /**
     * Returns the current configuration value of email SMTP enabling. Has to be
@@ -44,7 +44,7 @@ public interface EmailDatasinkService {
     * 
     * @return true if email SMTP is enabled
     */
-   boolean isEmailEnabled();
+   boolean isEnabled();
 
    /**
     * Returns the current configuration value of email SMTP scheduling enabling.
@@ -53,7 +53,7 @@ public interface EmailDatasinkService {
     * 
     * @return true if email SMTP's scheduling is enabled
     */
-   boolean isEmailSchedulingEnabled();
+   boolean isSchedulingEnabled();
 
    /**
     * Issues an email SMTP test request by creating a simple text file and sending
@@ -62,7 +62,7 @@ public interface EmailDatasinkService {
     * @param emailDatasink the {@link EmailDatasink} to test
     * @throws IOException if an I/O error occurs
     */
-   void testEmailDatasink(EmailDatasink emailDatasink) throws IOException;
+   void testDatasink(EmailDatasink emailDatasink) throws IOException;
 
    /**
     * Returns the default email datasink, used for sending emails without using the

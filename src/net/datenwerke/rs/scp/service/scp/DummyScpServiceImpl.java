@@ -11,13 +11,13 @@ import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 public class DummyScpServiceImpl implements ScpService {
 
    @Override
-   public void sendToScpServer(Object report, ScpDatasink scpDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, ScpDatasink scpDatasink, String filename, String folder)
          throws IOException {
 
    }
 
    @Override
-   public Map<StorageType, Boolean> getScpEnabledConfigs() {
+   public Map<StorageType, Boolean> getEnabledConfigs() {
       return Collections.emptyMap();
    }
 

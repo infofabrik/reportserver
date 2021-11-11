@@ -12,6 +12,7 @@ public class ScheduleAsScpFileInformation implements AdditionalScheduleInformati
 	private ScpDatasinkDto scpDatasinkDto;
 	private String name;
 	private String folder;
+    private boolean compressed;
 
 	public ScpDatasinkDto getScpDatasinkDto() {
 		return scpDatasinkDto;
@@ -36,5 +37,13 @@ public class ScheduleAsScpFileInformation implements AdditionalScheduleInformati
 	public void setFolder(String folder) {
 		this.folder = folder;
 	}
+	
+    public boolean isCompressed() {
+       return compressed;
+    }
+
+    public void setCompressed(boolean compressed) {
+       this.compressed = compressed;
+    }
 
 }
