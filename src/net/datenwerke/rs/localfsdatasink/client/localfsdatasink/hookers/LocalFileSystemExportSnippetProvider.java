@@ -170,6 +170,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
             form.setValue(isExportAsLocalFileSystemKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             localFileSystemField.setValue(info.getLocalFileSystemDatasinkDto());
          }
       }

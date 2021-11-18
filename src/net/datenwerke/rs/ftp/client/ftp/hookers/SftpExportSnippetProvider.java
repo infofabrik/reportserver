@@ -171,6 +171,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
             form.setValue(isExportAsSftpKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             sftpField.setValue(info.getSftpDatasinkDto());
          }
       }

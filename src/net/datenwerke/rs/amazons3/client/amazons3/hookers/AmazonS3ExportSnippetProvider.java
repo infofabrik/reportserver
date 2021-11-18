@@ -163,6 +163,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
             form.setValue(isExportAsFileKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             amazonS3Field.setValue(info.getAmazonS3DatasinkDto());
          }
       }

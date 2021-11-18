@@ -164,6 +164,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
             form.setValue(isExportAsFileKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             dropboxField.setValue(info.getDropboxDatasinkDto());
          }
       }

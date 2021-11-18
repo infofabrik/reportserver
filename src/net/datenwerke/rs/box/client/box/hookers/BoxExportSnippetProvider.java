@@ -162,6 +162,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
             form.setValue(isExportAsFileKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             boxField.setValue(info.getBoxDatasinkDto());
          }
       }

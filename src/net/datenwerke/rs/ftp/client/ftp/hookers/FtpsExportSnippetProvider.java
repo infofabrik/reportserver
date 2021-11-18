@@ -167,6 +167,7 @@ ScheduleExportSnippetProviderHook {
                 form.setValue(isExportAsFtpsKey, true);
                 form.setValue(nameKey, info.getName());
                 form.setValue(folderKey, info.getFolder());
+                form.setValue(compressedKey, info.isCompressed());
                 ftpsField.setValue(info.getFtpsDatasinkDto());
             } 
         }

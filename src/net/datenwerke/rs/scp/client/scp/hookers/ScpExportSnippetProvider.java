@@ -165,6 +165,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
             form.setValue(isExportAsScpKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             scpField.setValue(info.getScpDatasinkDto());
          }
       }

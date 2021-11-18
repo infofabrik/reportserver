@@ -12,7 +12,6 @@ import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.ShowHideFieldAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
@@ -179,6 +178,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
             form.setValue(subjectKey, info.getSubject());
             form.setValue(messageKey, info.getMessage());
             form.setValue(nameKey, info.getName());
+            form.setValue(compressedKey, info.isCompressed());
             emailField.setValue(info.getEmailDatasinkDto());
          }
       }

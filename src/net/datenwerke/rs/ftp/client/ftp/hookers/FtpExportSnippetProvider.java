@@ -173,6 +173,7 @@ public class FtpExportSnippetProvider implements
 				form.setValue(isExportAsFtpKey, true);
 				form.setValue(nameKey, info.getName());
 				form.setValue(folderKey, info.getFolder());
+				form.setValue(compressedKey, info.isCompressed());
 				ftpField.setValue(info.getFtpDatasinkDto());
 			} 
 		}

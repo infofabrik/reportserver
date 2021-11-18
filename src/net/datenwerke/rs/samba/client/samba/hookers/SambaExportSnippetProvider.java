@@ -171,6 +171,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
             form.setValue(isExportAsSambaKey, true);
             form.setValue(nameKey, info.getName());
             form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
             sambaField.setValue(info.getSambaDatasinkDto());
          }
       }
