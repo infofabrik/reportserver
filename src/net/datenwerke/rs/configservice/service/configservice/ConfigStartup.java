@@ -19,6 +19,9 @@ import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigComm
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigEchoCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigReloadCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigSubCommandHook;
+import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCommand;
+import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesShowmissingCommand;
+import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.config.ConfigService;
@@ -26,77 +29,80 @@ import net.datenwerke.rs.utils.properties.ApplicationPropertiesProviderHook;
 
 public class ConfigStartup {
 
+   public static final String FSIMPORT_DIR = "fsimport";
+   public static final String LIB_DIR = "lib";
 
-	public static final String FSIMPORT_DIR = "fsimport";
-	public static final String LIB_DIR = "lib";
+   @Inject
+   public ConfigStartup(
+         HookHandlerService hookHandlerService,
 
-	@Inject
-	public ConfigStartup(
-		HookHandlerService hookHandlerService,
-		
-		Provider<FileServerConfigStore> fileServerConfigStore,
-		Provider<ConfigDirConfigStore> configDirConfigStore,
-		
-		Provider<ConfigCommand> configCommand,
-		Provider<ConfigReloadCommand> configReloadCommand,
-		Provider<ConfigEchoCommand> configEchoCommand,
+         Provider<FileServerConfigStore> fileServerConfigStore,
+         Provider<ConfigDirConfigStore> configDirConfigStore,
 
-		final Provider<ConfigService> configService,
-		final Provider<ConfigDirService> configDirService,
-		final FileserverImportHelper importHelper,
-		
-		ConfigDirApplicationPropertiesProvider configDirApplicationPropertiesProvider
-		) {
-		
-		hookHandlerService.attachHooker(ConfigStoreHook.class, new ConfigStoreHook(configDirConfigStore));
-		hookHandlerService.attachHooker(ConfigStoreHook.class, new ConfigStoreHook(fileServerConfigStore), HookHandlerService.PRIORITY_HIGH);
-		
-		hookHandlerService.attachHooker(TerminalCommandHook.class, configCommand);
-		hookHandlerService.attachHooker(ConfigSubCommandHook.class, configReloadCommand);
-		hookHandlerService.attachHooker(ConfigSubCommandHook.class, configEchoCommand);
-		
-		hookHandlerService.attachHooker(ApplicationPropertiesProviderHook.class, configDirApplicationPropertiesProvider);
-		
-		/* Add libs from LIB_DIR to webapp classloader */
-		new LibDirClasspathHelper(configDirService.get()).loadLibs();
-		
-		
-		/* Import fileserver configdir */
-		hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
-			@Override
-			public void initialize() {
-				if(configDirService.get().isEnabled()){
-					File importDir = new File(configDirService.get().getConfigDir(), FSIMPORT_DIR);
-					if(importDir.exists() && importDir.isDirectory()){
+         Provider<ConfigCommand> configCommand,
+         Provider<ConfigReloadCommand> configReloadCommand,
+         Provider<ConfigEchoCommand> configEchoCommand,
 
-						try { /* import files*/
-							FileObject fileObject = VFS.getManager().resolveFile(importDir.getCanonicalPath());
-							FileObject[] files = fileObject.findFiles(Selectors.EXCLUDE_SELF);
+         Provider<DiffconfigfilesCommand> diffconfigfilesCommand,
+         Provider<DiffconfigfilesShowmissingCommand> diffconfigfilesShowmissingCommand,
 
-							for(FileObject f : files){
-								try {
-									importHelper.importFile(new File(f.getName().getPath()));
-									
-								} catch (IOException e) {
-									e.printStackTrace();
-								} catch (ObjectResolverException e) {
-									e.printStackTrace();
-								}
-							}
+         final Provider<ConfigService> configService,
+         final Provider<ConfigDirService> configDirService,
+         final FileserverImportHelper importHelper,
 
-						} catch (FileSystemException e1) {
-							e1.printStackTrace();
-						} catch (IOException e1) {
-							e1.printStackTrace();
-						}
-							
-						configService.get().clearCache();
-					}
-					
-				}
-			}
-		}, HookHandlerService.PRIORITY_HIGH);
-	}
-	
-	
+         ConfigDirApplicationPropertiesProvider configDirApplicationPropertiesProvider) {
+
+      hookHandlerService.attachHooker(ConfigStoreHook.class, new ConfigStoreHook(configDirConfigStore));
+      hookHandlerService.attachHooker(ConfigStoreHook.class, new ConfigStoreHook(fileServerConfigStore),
+            HookHandlerService.PRIORITY_HIGH);
+
+      hookHandlerService.attachHooker(TerminalCommandHook.class, configCommand);
+      hookHandlerService.attachHooker(ConfigSubCommandHook.class, configReloadCommand);
+      hookHandlerService.attachHooker(ConfigSubCommandHook.class, configEchoCommand);
+
+      hookHandlerService.attachHooker(TerminalCommandHook.class, diffconfigfilesCommand);
+      hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesShowmissingCommand);
+
+      hookHandlerService.attachHooker(ApplicationPropertiesProviderHook.class, configDirApplicationPropertiesProvider);
+
+      /* Add libs from LIB_DIR to webapp classloader */
+      new LibDirClasspathHelper(configDirService.get()).loadLibs();
+
+      /* Import fileserver configdir */
+      hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
+         @Override
+         public void initialize() {
+            if (configDirService.get().isEnabled()) {
+               File importDir = new File(configDirService.get().getConfigDir(), FSIMPORT_DIR);
+               if (importDir.exists() && importDir.isDirectory()) {
+
+                  try { /* import files */
+                     FileObject fileObject = VFS.getManager().resolveFile(importDir.getCanonicalPath());
+                     FileObject[] files = fileObject.findFiles(Selectors.EXCLUDE_SELF);
+
+                     for (FileObject f : files) {
+                        try {
+                           importHelper.importFile(new File(f.getName().getPath()));
+
+                        } catch (IOException e) {
+                           e.printStackTrace();
+                        } catch (ObjectResolverException e) {
+                           e.printStackTrace();
+                        }
+                     }
+
+                  } catch (FileSystemException e1) {
+                     e1.printStackTrace();
+                  } catch (IOException e1) {
+                     e1.printStackTrace();
+                  }
+
+                  configService.get().clearCache();
+               }
+
+            }
+         }
+      }, HookHandlerService.PRIORITY_HIGH);
+   }
+
 }
