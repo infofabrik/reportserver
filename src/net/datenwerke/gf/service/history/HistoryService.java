@@ -8,13 +8,15 @@ import java.util.List;
  *
  */
 public interface HistoryService {
-	
-	/**
-	 * Returns a list of links to the given object.
-	 * 
-	 * @param o the object 
-	 * @return A list of links
-	 */
-	public List<HistoryLink> buildLinksFor(Object o);
-	
+
+   /**
+    * Returns a list of links to the given object.
+    * 
+    * @param o the object
+    * @return A list of links
+    */
+   List<HistoryLink> buildLinksFor(Object o);
+   
+   List<HistoryLink> buildLinksForList(List<? extends Object> objects); 
+
 }

@@ -1,37 +1,38 @@
 package net.datenwerke.gf.service.history;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
+
+import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
-import com.google.inject.Inject;
+public class HistoryServiceImpl implements HistoryService {
 
-public class HistoryServiceImpl implements HistoryService{
+   private final HookHandlerService hookHandler;
 
-	private final HookHandlerService  hookHandler;
-	
-	@Inject
-	public HistoryServiceImpl(
-			HookHandlerService hookHandler
-	) {
-		
-		this.hookHandler = hookHandler;
-		
-	}
-	
-	@Override
-	public List<HistoryLink> buildLinksFor(Object o) {
-		ArrayList<HistoryLink> links = new ArrayList<HistoryLink>();
-		
-		for(HistoryUrlBuilderHook hooker : hookHandler.getHookers(HistoryUrlBuilderHook.class)){
-			if(hooker.consumes(o)){
-				links.addAll(hooker.buildLinksFor(o));
-			}
-		}
-		
-		return links;
-	}
+   @Inject
+   public HistoryServiceImpl(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public List<HistoryLink> buildLinksFor(final Object o) {
+      return hookHandler.getHookers(HistoryUrlBuilderHook.class)
+         .stream()
+         .filter(hooker -> hooker.consumes(o))
+         .flatMap(hooker -> hooker.buildLinksFor(o).stream())
+         .collect(toList());
+   }
+
+   @Override
+   public List<HistoryLink> buildLinksForList(List<? extends Object> objects) {
+      return objects
+         .stream()
+         .flatMap((Object object) -> buildLinksFor(object).stream())
+         .collect(toList());
+   }
 
 }

@@ -1,6 +1,11 @@
 package net.datenwerke.rs.configservice.service.configservice;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Map;
+import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 
 import javax.inject.Provider;
@@ -25,6 +30,8 @@ import net.datenwerke.rs.configservice.service.configservice.hooks.ConfigStoreHo
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.installation.PackagedScriptHelper;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
@@ -40,18 +47,24 @@ public class ConfigServiceImpl implements ConfigService {
    private final FileServerService fileService;
    private final TerminalService terminalService;
    private final HookHandlerService hookHandler;
+   private final Provider<PackagedScriptHelper> packagedScriptHelperProvider;
+   private final Provider<FileServerService> fileServerServiceProvider;
 
    @Inject
    public ConfigServiceImpl(
          FileServerService fileService, 
          TerminalService terminalService,
-         HookHandlerService hookHandler
+         HookHandlerService hookHandler,
+         Provider<PackagedScriptHelper> packagedScriptHelperProvider,
+         Provider<FileServerService> fileServerServiceProvider
          ) {
 
       /* store objects */
       this.fileService = fileService;
       this.terminalService = terminalService;
       this.hookHandler = hookHandler;
+      this.packagedScriptHelperProvider = packagedScriptHelperProvider;
+      this.fileServerServiceProvider = fileServerServiceProvider;
    }
 
    public Provider<Configuration> getConfigProvider(final String identifier) {
@@ -200,5 +213,32 @@ public class ConfigServiceImpl implements ConfigService {
    public void clearCache() {
       cache.clear();
       hookHandler.getHookers(ReloadConfigNotificationHook.class).forEach(ReloadConfigNotificationHook::reloadConfig);
+   }
+
+   @Override
+   public FileServerFolder extractBasicConfigFilesTo(String path) throws FileNotFoundException, IOException {
+      FileServerFolder targetDir = null;
+      
+      PackagedScriptHelper helper = packagedScriptHelperProvider.get();
+      File pkgDir = helper.getPackageDirectory();
+
+      if (pkgDir.exists() && pkgDir.isDirectory()) {
+         Optional<File> baseConfigPackageScriptFile = helper
+               .listPackages()
+               .stream()
+               .filter(f -> f.getName().matches("^baseconfig-RS.*[.]zip$"))
+               .findAny();
+
+         if (baseConfigPackageScriptFile.isPresent() && helper.validateZip(baseConfigPackageScriptFile.get(), true)) {
+            try {
+               targetDir = helper.extractPackageTemporarily(new FileInputStream(baseConfigPackageScriptFile.get()));
+               helper.executePackage(targetDir, "", false, true, Optional.of(path));
+            } finally {
+               if (null != targetDir)
+                  fileServerServiceProvider.get().forceRemove(targetDir);
+            }
+         }
+      }
+      return targetDir;
    }
 }

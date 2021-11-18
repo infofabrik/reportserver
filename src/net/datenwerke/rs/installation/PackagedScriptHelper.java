@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.zip.ZipEntry;
 
@@ -136,11 +137,11 @@ public class PackagedScriptHelper {
    }
 
    public String executePackage(FileServerFolder targetDir, String scriptOptions) {
-      return executePackage(targetDir, scriptOptions, true, true, null);
+      return executePackage(targetDir, scriptOptions, true, true, Optional.empty());
    }
 
    public String executePackage(FileServerFolder targetDir, String scriptOptions, boolean executeRunScriptCommands,
-         boolean executeCopyFilesCommands, String copyFilesCustomDstPathPrefix) {
+         boolean executeCopyFilesCommands, Optional<String> copyFilesCustomDstPathPrefix) {
       final FileServerFile configFile = targetDir.getChildrenOfType(FileServerFile.class)
             .stream()
             .filter(f -> f.getName().equals("package.xml"))
@@ -161,10 +162,12 @@ public class PackagedScriptHelper {
          handler.load(new ByteArrayInputStream(configFile.getData()));
          for (ImmutableHierarchicalConfiguration cfgNode : config.immutableChildConfigurationsAt(".")) {
             String name = cfgNode.getRootElementName();
-            if ("runScript".equals(name) && executeRunScriptCommands) {
-               executePackageCommandRunSkript(targetDir, scriptOptions, resultBuilder, cfgNode);
-            } else if ("copyFile".equals(name) && executeCopyFilesCommands) {
-               executePackageCommandCopyFiles(targetDir, cfgNode, copyFilesCustomDstPathPrefix);
+            if ("runScript".equals(name)) {
+               if (executeRunScriptCommands)
+                  executePackageCommandRunSkript(targetDir, scriptOptions, resultBuilder, cfgNode);
+            } else if ("copyFile".equals(name)) {
+               if (executeCopyFilesCommands)
+                  executePackageCommandCopyFiles(targetDir, cfgNode, copyFilesCustomDstPathPrefix);
             } else {
                logger.error("Error during initialisation. Unknown package operation :" + name);
             }
@@ -179,7 +182,7 @@ public class PackagedScriptHelper {
    }
 
    private void executePackageCommandCopyFiles(FileServerFolder targetDir, ImmutableHierarchicalConfiguration cfgNode,
-         String customDstPathPrefix) {
+         Optional<String> customDstPathPrefix) {
       TerminalSession unscopedTerminalSession = terminalService.getUnscopedTerminalSession();
       unscopedTerminalSession.setCheckRights(false);
       VirtualFileSystemDeamon fs = unscopedTerminalSession.getFileSystem();
@@ -190,7 +193,7 @@ public class PackagedScriptHelper {
          fs.setLocation(targetLocation);
          VFSLocation srcLocation = fs.getLocation(srcPath);
 
-         String dstPath = cfgNode.getString("[@dst]");
+         String dstPath = customDstPathPrefix.isPresent()? customDstPathPrefix.get(): cfgNode.getString("[@dst]");
          AbstractFileServerNode dstNode = fileServerService.getNodeByPath(dstPath);
          VFSLocation dstLocation = fs.getLocationFor(dstNode);
 

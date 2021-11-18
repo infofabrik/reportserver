@@ -1,5 +1,7 @@
 package net.datenwerke.treedb.service.treedb;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -219,12 +221,32 @@ public abstract class AbstractNode<N extends AbstractNode<N>> implements Seriali
     	return children;
     }
     
+    /**
+     * Retrieves all children nodes of this node, also transitively. I.e. if there are
+     * any child folders, also all their children nodes are retrieved.
+     * 
+     * @return all (transitive) children nodes
+     */
     public List<N> getDescendants(){
-    	ArrayList desc = new ArrayList<N>(children);
-    	for(N child : children)
-    		desc.addAll(child.getDescendants());
-    	
+    	final List<N> desc = new ArrayList<>(children);
+    	children.forEach(child -> desc.addAll(child.getDescendants()));
     	return desc;
+    }
+    
+    /**
+     * Retrieves all children nodes of this node having this type, also transitively.
+     * I.e. if there are any child folders, also all their children nodes are
+     * retrieved.
+     * 
+     * @param type the type of the (transitive) children nodes we are filtering for
+     * @return all (transitive) children nodes
+     */
+    public <T extends AbstractNode<N>> List<T> getDescendants(Class<T> type) {
+       return getDescendants()
+             .stream()
+             .filter(descendant -> type.isInstance(descendant))
+             .map(descendant -> type.cast(descendant))
+             .collect(toList());
     }
     
     /**
