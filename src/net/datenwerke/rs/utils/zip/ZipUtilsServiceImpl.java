@@ -25,6 +25,7 @@ import java.util.zip.ZipOutputStream;
 
 import org.apache.commons.io.IOUtils;
 
+import net.datenwerke.rs.core.service.RsCoreModule;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
@@ -233,11 +234,12 @@ public class ZipUtilsServiceImpl implements ZipUtilsService{
 			return "";
 		}else{
 			String name = "";
-			if(node instanceof FileServerFile)
-				name = ((FileServerFile) node).getName();
-			if(node instanceof FileServerFolder)
-				name = ((FileServerFolder) node).getName();
-
+			if(node instanceof FileServerFile) 
+			   name = ((FileServerFile) node).getName();
+			if(node instanceof FileServerFolder) 
+			   name = ((FileServerFolder) node).getName();
+			
+			name = null != name ? name: RsCoreModule.UNNAMED_FIELD;
 			if(null != node.getParent()){
 				String rp = getRelativePath(node.getParent(), root);
 				return ("".equals(rp)?name: rp + "/" + name);

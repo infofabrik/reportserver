@@ -5,6 +5,7 @@ import javax.inject.Provider;
 
 import com.google.gwt.safehtml.shared.UriUtils;
 
+import net.datenwerke.rs.core.service.RsCoreModule;
 import net.datenwerke.rs.utils.filename.FileNameService;
 
 public class HttpUtils {
@@ -21,8 +22,9 @@ public class HttpUtils {
 	public String makeContentDispositionHeader(boolean download, String filename) {
 		String cd = download ? "attachment" : "inline";
 
-		String sanitizedfilename = fileNameServiceProvider.get().sanitizeFileName(filename);
-		String strictfileName = fileNameServiceProvider.get().sanitizeFileNameStrict(filename);
+		String filenameToUse = null == filename ? RsCoreModule.UNNAMED_FIELD: filename;
+		String sanitizedfilename = fileNameServiceProvider.get().sanitizeFileName(filenameToUse);
+		String strictfileName = fileNameServiceProvider.get().sanitizeFileNameStrict(filenameToUse);
 		
 		return cd + "; filename=\"" + strictfileName  +"\"; filename*=UTF-8''" + replaceChars(UriUtils.encode(sanitizedfilename)) + "";
 	}

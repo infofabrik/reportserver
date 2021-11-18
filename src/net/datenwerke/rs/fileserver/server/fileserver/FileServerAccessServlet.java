@@ -201,12 +201,9 @@ public class FileServerAccessServlet extends SecuredHttpServlet {
 			outputImage(file, request, response);
 		else {
 			response.setContentType(file.getContentType()); //$NON-NLS-1$
-			OutputStream os;
-			try {
-				os = response.getOutputStream();
-				os.write(file.getData());
-	
-				os.close();
+			try (OutputStream os = response.getOutputStream()) {
+			   if (null != file.getData())
+                  os.write(file.getData());
 			} catch (IOException e) {
 				logger.warn( "fileserver error", e);
 			}
