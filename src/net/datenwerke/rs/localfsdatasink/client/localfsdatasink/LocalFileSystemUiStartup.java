@@ -12,9 +12,11 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.ExportToLocalFileSystemHooker;
-import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkTesterToolbarConfigurator;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.FileExportToLocalFileSystemHooker;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkConfigProviderHooker;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemExportSnippetProvider;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -22,18 +24,24 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 public class LocalFileSystemUiStartup {
 
    @Inject
-   public LocalFileSystemUiStartup(final Provider<ExportToLocalFileSystemHooker> exportToLocalFileSystemHooker,
+   public LocalFileSystemUiStartup(
+         final Provider<ExportToLocalFileSystemHooker> exportToLocalFileSystemHooker,
+         final Provider<FileExportToLocalFileSystemHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler,
          final Provider<LocalFileSystemDatasinkConfigProviderHooker> localFileSystemTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, final LocalFileSystemDao dao,
+         final WaitOnEventUIService waitOnEventService, 
+         final LocalFileSystemDao dao,
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
-         final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator) {
+         final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator
+         ) {
 
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_MEDIUM);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToLocalFileSystemHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
       
       /* test datasinks */

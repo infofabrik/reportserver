@@ -10,30 +10,39 @@ import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfigur
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkConfigProviderHooker;
 import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkTesterToolbarConfigurator;
+import net.datenwerke.rs.box.client.box.hookers.BoxExportSnippetProvider;
 import net.datenwerke.rs.box.client.box.hookers.ExportToBoxHooker;
+import net.datenwerke.rs.box.client.box.hookers.FileExportToBoxHooker;
+import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
-import net.datenwerke.rs.box.client.box.hookers.BoxExportSnippetProvider;
 
 public class BoxUiStartup {
    @Inject
-   public BoxUiStartup(final Provider<ExportToBoxHooker> exportToBoxHooker, final HookHandlerService hookHandler,
-         final WaitOnEventUIService waitOnEventService, final BoxDao dao,
+   public BoxUiStartup(
+         final Provider<ExportToBoxHooker> exportToBoxHooker,
+         final Provider<FileExportToBoxHooker> fileExportToDatasinkHooker,
+         final HookHandlerService hookHandler,
+         final WaitOnEventUIService waitOnEventService, 
+         final BoxDao dao,
          final Provider<BoxDatasinkConfigProviderHooker> boxTreeConfiguratorProvider,
          final BoxDatasinkTesterToolbarConfigurator boxTestToolbarConfigurator,
          final BoxDatasinkOAuthToolbarConfigurator boxOauthToolbarConfigurator,
-         final Provider<BoxExportSnippetProvider> boxExportSnippetProvider) {
+         final Provider<BoxExportSnippetProvider> boxExportSnippetProvider
+         ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, boxTreeConfiguratorProvider.get(),
             HookHandlerService.PRIORITY_MEDIUM);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToBoxHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */

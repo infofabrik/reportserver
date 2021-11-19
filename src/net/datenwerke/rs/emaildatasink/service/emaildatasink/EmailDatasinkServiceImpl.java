@@ -15,7 +15,7 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
@@ -37,7 +37,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<MailService> mailServiceProvider;
    private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
-   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<DatasinkTreeService> datasinkServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -47,7 +47,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
          Provider<MailService> mailServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
          Provider<MimeUtils> mimeUtilsProvider,
-         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<DatasinkTreeService> datasinkServiceProvider,
          @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
          ) {
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;

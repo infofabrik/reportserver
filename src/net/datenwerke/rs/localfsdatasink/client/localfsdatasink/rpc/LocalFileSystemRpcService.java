@@ -10,6 +10,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
@@ -26,4 +27,7 @@ public interface LocalFileSystemRpcService extends RemoteService {
          throws ServerCallFailedException;
    
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
+   
+   void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException;
 }

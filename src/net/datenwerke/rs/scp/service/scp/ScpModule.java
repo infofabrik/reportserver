@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.scp.service.scp.annotations.DefaultScpDatasink;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 
@@ -36,7 +36,7 @@ public class ScpModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultScpDatasink
-   public Optional<ScpDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<ScpDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(ScpDatasink.class, PROPERTY_DEFAULT_SCP_DATASINK_ID,
             PROPERTY_DEFAULT_SCP_DATASINK_NAME);
    }

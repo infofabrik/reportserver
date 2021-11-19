@@ -18,7 +18,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.history.HistoryLink;
 import net.datenwerke.gf.service.history.HistoryService;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticationService;
@@ -31,12 +31,12 @@ public class OAuthServlet extends HttpServlet {
     */
    private static final long serialVersionUID = 7216005763523739465L;
 
-   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<DatasinkTreeService> datasinkServiceProvider;
    private final Provider<OAuthAuthenticationService> oAuthAuthenticationServiceProvider;
    private final Provider<HistoryService> historyServiceProvider;
 
    @Inject
-   public OAuthServlet(Provider<DatasinkService> datasinkServiceProvider,
+   public OAuthServlet(Provider<DatasinkTreeService> datasinkServiceProvider,
          Provider<OAuthAuthenticationService> oAuthAuthenticationServiceProvider,
          Provider<HistoryService> historyServiceProvider) {
       this.datasinkServiceProvider = datasinkServiceProvider;

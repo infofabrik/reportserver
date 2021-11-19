@@ -53,19 +53,19 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, Provider<UITree> datasinkTreeProvider, Class<? extends DatasinkDefinitionDto>... types) {
       return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTreeProvider.get(), types);
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, Provider<UITree> datasinkTreeProvider) {
       return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon,  container, datasinkTreeProvider.get(), new Class[] {});
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, UITree datasinkTree) {
       return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTree, new Class[] {});
    }

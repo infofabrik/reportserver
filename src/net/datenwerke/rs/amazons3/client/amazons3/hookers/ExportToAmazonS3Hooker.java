@@ -32,7 +32,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -64,9 +64,13 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public ExportToAmazonS3Hooker(HookHandlerService hookHandler, @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager, Provider<AmazonS3Dao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider) {
+   public ExportToAmazonS3Hooker(
+         HookHandlerService hookHandler, 
+         @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, 
+         Provider<AmazonS3Dao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider
+         ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
@@ -139,7 +143,7 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
          }
       }, new SFFCDatasinkDao() {
          @Override
-         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+         public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
 

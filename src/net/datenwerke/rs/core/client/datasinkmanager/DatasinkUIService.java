@@ -17,13 +17,13 @@ public interface DatasinkUIService {
 
    public DatasinkDefinitionConfigConfigurator getConfigurator(Class<? extends DatasinkDefinitionDto> configClazz);
 
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, Provider<UITree> datasinkTreeProvider, Class<? extends DatasinkDefinitionDto>... types);
 
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, Provider<UITree> datasinkTreeProvider);
 
-   public DatasinkSelectionField getSelectionField(Provider<? extends DatasinkDao> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
          Container container, UITree datasinkTreeProvider);
 
 }

@@ -25,8 +25,9 @@ public class DatasinkModule extends AbstractReportServerModule {
    
    @Override
    protected void configure() {
-      bind(DatasinkService.class).to(DatasinkServiceImpl.class).in(Scopes.SINGLETON);
-
+      bind(DatasinkTreeService.class).to(DatasinkTreeServiceImpl.class).in(Scopes.SINGLETON);
+      bind(DatasinkService.class).to(DatasinkServiceImpl.class);
+      
       /* startup */
       bind(DatasinkStartup.class).asEagerSingleton();
    }

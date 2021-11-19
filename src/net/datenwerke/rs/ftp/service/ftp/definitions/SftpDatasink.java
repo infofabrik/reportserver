@@ -19,6 +19,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.SftpDatasink2DtoPostProcessor;
 import net.datenwerke.rs.ftp.service.ftp.locale.FtpMessages;
@@ -46,7 +47,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       objNameKey = "sftpDatasinkTypeName",
       icon = "arrow-circle-up")
 @Indexed
-public class SftpDatasink extends DatasinkDefinition implements BasicDatasink {
+public class SftpDatasink extends DatasinkDefinition implements BasicDatasink, FolderedDatasink {
 
    /**
     * 

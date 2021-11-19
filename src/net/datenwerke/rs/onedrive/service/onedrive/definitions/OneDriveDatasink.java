@@ -19,6 +19,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoPostProcessor;
@@ -48,7 +49,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       icon = "cloud-upload"
       )
 @Indexed
-public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable {
+public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
    /**
     * 
     */
@@ -84,6 +85,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @Column(length = 1024)
    private String folder = "/";
 
+   @Override
    public String getFolder() {
       return folder;
    }

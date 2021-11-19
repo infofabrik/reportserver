@@ -13,9 +13,11 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scp.client.scp.hookers.ExportToScpHooker;
+import net.datenwerke.rs.scp.client.scp.hookers.FileExportToScpHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpDataSinkTesterToolbarConfigurator;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpExportSnippetProvider;
@@ -26,10 +28,13 @@ public class ScpUiStartup {
 
    @Inject
    public ScpUiStartup(
-         final HookHandlerService hookHandler, final Provider<ExportToScpHooker> exportToScpHooker,
+         final HookHandlerService hookHandler, 
+         final Provider<ExportToScpHooker> exportToScpHooker,
+         final Provider<FileExportToScpHooker> fileExportToDatasinkHooker,
          final Provider<ScpDatasinkConfigProviderHooker> scpTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService,
-         final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, final ScpDao dao,
+         final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, 
+         final ScpDao dao,
          final ScpDataSinkTesterToolbarConfigurator scpTestToolbarConfigurator,
          final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator,
          final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator
@@ -43,9 +48,12 @@ public class ScpUiStartup {
             HookHandlerService.PRIORITY_MEDIUM);
       hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpPublicKeyAuthenticator, 
             HookHandlerService.PRIORITY_MEDIUM + 10);
+      
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker,
+            HookHandlerService.PRIORITY_MEDIUM + 20);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_MEDIUM + 20);
 
       /* test datasinks */

@@ -3,7 +3,7 @@ package net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.ex.ExportConfig;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeExImportOptions;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
@@ -11,10 +11,10 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeExporterConfig;
 
 public class ExportAllDatasinksHooker implements ExportAllHook {
 
-   private final DatasinkService dsService;
+   private final DatasinkTreeService dsService;
 
    @Inject
-   public ExportAllDatasinksHooker(DatasinkService dsService) {
+   public ExportAllDatasinksHooker(DatasinkTreeService dsService) {
       this.dsService = dsService;
    }
 

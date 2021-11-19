@@ -81,4 +81,5 @@ abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode {
 	public boolean hasChildren() {
 		return false;
 	}
+    
 }

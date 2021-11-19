@@ -13,18 +13,22 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToFtpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToFtpsHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToSftpHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToFtpHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToFtpsHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToSftpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDataSinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpExportSnippetProvider;
-import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkConfigProviderHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsExportSnippetProvider;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsUsernamePasswordAuthenticatorHooker;
-import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkConfigProviderHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpExportSnippetProvider;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpUsernamePasswordAuthenticatorHooker;
@@ -35,16 +39,21 @@ public class FtpUiStartup {
 
    @Inject
    public FtpUiStartup(
-         final HookHandlerService hookHandler, final Provider<ExportToFtpHooker> exportToFtpHooker,
+         final HookHandlerService hookHandler, 
+         final Provider<ExportToFtpHooker> exportToFtpHooker,
+         final Provider<FileExportToFtpHooker> fileExportToFtpDatasinkHooker,
          final Provider<FtpExportSnippetProvider> ftpExportSnippetProvider,
          final Provider<SftpExportSnippetProvider> sftpExportSnippetProvider,
          final Provider<FtpsExportSnippetProvider> ftpsExportSnippetProvider,
          final Provider<ExportToSftpHooker> exportToSftpHooker,
+         final Provider<FileExportToSftpHooker> fileExportToSftpDatasinkHooker,
          final Provider<ExportToFtpsHooker> exportToFtpsHooker,
+         final Provider<FileExportToFtpsHooker> fileExportToFtpsDatasinkHooker,
          final Provider<FtpDatasinkConfigProviderHooker> ftpTreeConfiguratorProvider,
          final Provider<SftpDatasinkConfigProviderHooker> sftpTreeConfiguratorProvider,
          final Provider<FtpsDatasinkConfigProviderHooker> ftpsTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, final FtpDao dao,
+         final WaitOnEventUIService waitOnEventService, 
+         final FtpDao dao,
          final FtpDataSinkTesterToolbarConfigurator ftpTestToolbarConfigurator,
          final SftpDatasinkTesterToolbarConfigurator sftpTestToolbarConfigurator,
          final FtpsDatasinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
@@ -75,6 +84,12 @@ public class FtpUiStartup {
             HookHandlerService.PRIORITY_MEDIUM + 10);
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpHooker,
             HookHandlerService.PRIORITY_MEDIUM + 20);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToSftpDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpsDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW + 20);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, ftpTestToolbarConfigurator);

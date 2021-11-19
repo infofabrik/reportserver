@@ -12,7 +12,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations.DefaultEmailDatasink;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 
@@ -41,7 +41,7 @@ public class EmailDatasinkModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultEmailDatasink
-   public Optional<EmailDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<EmailDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(EmailDatasink.class, PROPERTY_DEFAULT_EMAIL_DATASINK_ID,
             PROPERTY_DEFAULT_EMAIL_DATASINK_NAME);
    }

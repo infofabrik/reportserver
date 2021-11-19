@@ -14,12 +14,15 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem.DownloadMenuUrlGenerator;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
 import net.datenwerke.gf.client.treedb.icon.TreeDBUIIconProvider;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
@@ -27,6 +30,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.helper.FileIconMapping;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
@@ -34,6 +38,7 @@ public class FileServerManagerTreeConfigurationHooker implements
 		TreeConfiguratorHook {
 
 	private final FileServerTreeManagerDao treeHandler;
+	private final HookHandlerService hookHandler;
 	
 	class DownloadHelper implements DownloadMenuUrlGenerator{
 
@@ -50,11 +55,13 @@ public class FileServerManagerTreeConfigurationHooker implements
 	
 	@Inject
 	public FileServerManagerTreeConfigurationHooker(
-		FileServerTreeManagerDao treeHandler	
+		FileServerTreeManagerDao treeHandler,
+		HookHandlerService hookHandler
 		){
 		
 		/* store objects */
 		this.treeHandler = treeHandler;
+		this.hookHandler = hookHandler;
 	}
 	
 	@Override
@@ -90,7 +97,27 @@ public class FileServerManagerTreeConfigurationHooker implements
 		fileMenu.add(new DeleteMenuItem(treeHandler));
 		fileMenu.add(new SeparatorMenuItem());
 		fileMenu.add(new DownloadMenuItem(new DownloadHelper()));
+		MenuItem fileSendToItem = generateSendToMenu();
+        fileMenu.add(fileSendToItem);
+		
+		
 	}
+	
+	private MenuItem generateSendToMenu(){
+       final Menu sendToMenu = new DwMenu();
+       
+       /* Specific datasinks */
+       hookHandler.getHookers(FileExportExternalEntryProviderHook.class).forEach( config -> {
+          FileSendToMenuItem item = config.getMenuEntry(sendToMenu, treeHandler);
+           sendToMenu.add(item);
+           item.setAvailableCallback(() -> config.isAvailable());
+       });
+       
+       MenuItem sendToItem = new DwMenuItem(ReportExporterMessages.INSTANCE.sendToLabel(), BaseIcon.SERVER);
+       sendToItem.setSubMenu(sendToMenu);
+       
+       return sendToItem;
+   }
 
 
 	private MenuItem generateInsertMenu(){

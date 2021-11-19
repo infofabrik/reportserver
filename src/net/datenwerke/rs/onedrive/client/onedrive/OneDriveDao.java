@@ -8,15 +8,16 @@ import com.google.inject.Inject;
 import com.google.gwt.http.client.Request;
 
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.rpc.OneDriveRpcServiceAsync;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-public class OneDriveDao extends Dao implements DatasinkDao {
+public class OneDriveDao extends Dao implements HasDefaultDatasink {
    private final OneDriveRpcServiceAsync rpcService;
 
    @Inject
@@ -29,6 +30,11 @@ public class OneDriveDao extends Dao implements DatasinkDao {
          AsyncCallback<Void> callback) {
       rpcService.exportIntoOneDrive(reportDto, executorToken, oneDriveDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
+   }
+   
+   public void exportFileIntoDatasink(FileServerFileDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, callback);
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {

@@ -32,7 +32,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -64,9 +64,13 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public ExportToGoogleDriveHooker(HookHandlerService hookHandler,
-         @DatasinkTreeGoogleDrive Provider<UITree> treeProvider, DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<GoogleDriveDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider) {
+   public ExportToGoogleDriveHooker(
+         HookHandlerService hookHandler,
+         @DatasinkTreeGoogleDrive Provider<UITree> treeProvider, 
+         DatasinkTreeManagerDao datasinkTreeManager,
+         Provider<GoogleDriveDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider
+         ) {
       this.hookHandler = hookHandler;
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
@@ -95,7 +99,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem("GoogleDrive", BaseIcon.GOOGLE);
+         MenuItem item = new DwMenuItem("Google Drive", BaseIcon.GOOGLE);
          menu.add(item);
          item.disable();
       }
@@ -106,7 +110,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
       window.setHeaderIcon(BaseIcon.GOOGLE);
-      window.setHeading("GoogleDrive");
+      window.setHeading("Google Drive");
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -139,7 +143,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
          }
       }, new SFFCDatasinkDao() {
          @Override
-         public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+         public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
 

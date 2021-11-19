@@ -8,7 +8,7 @@ import javax.persistence.Query;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkContainer;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkContainer__;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
@@ -19,7 +19,7 @@ public class HandleDatasinkForceRemoveEventHandler implements
 		EventHandler<ForceRemoveEntityEvent> {
 
 	@Inject private Provider<EntityManager> entityManagerProvider;
-	@Inject private DatasinkService datasinkService;
+	@Inject private DatasinkTreeService datasinkService;
 	
 	@Override
 	public void handle(ForceRemoveEntityEvent event) {

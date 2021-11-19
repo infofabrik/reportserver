@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.annotations.DefaultLocalFileSystemDatasink;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 
@@ -36,7 +36,7 @@ public class LocalFileSystemModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultLocalFileSystemDatasink
-   public Optional<LocalFileSystemDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<LocalFileSystemDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(LocalFileSystemDatasink.class,
             PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_ID, PROPERTY_DEFAULT_LOCAL_FILESYSTEM_DATASINK_NAME);
    }

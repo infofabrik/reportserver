@@ -22,6 +22,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.dtogen.GoogleDriveDatasink2DtoPostProcessor;
 import net.datenwerke.rs.googledrive.service.googledrive.locale.GoogleDriveDatasinkMessages;
@@ -42,7 +43,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "google")
 @InstanceDescription(msgLocation = GoogleDriveDatasinkMessages.class, objNameKey = "googleDriveDatasinkTypeName", icon = "google")
 @Indexed
-public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable {
+public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 
    /**
     * 
@@ -70,6 +71,7 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
    @Column(length = 1024)
    private String folder = "/";
 
+   @Override
    public String getFolder() {
       return folder;
    }

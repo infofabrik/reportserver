@@ -12,7 +12,9 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.ExportToGoogleDriveHooker;
+import net.datenwerke.rs.googledrive.client.googledrive.hookers.FileExportToGoogleDriveHooker;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatasinkConfigProviderHooker;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatasinkTesterToolbarConfigurator;
@@ -22,18 +24,25 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 
 public class GoogleDriveUiStartup {
    @Inject
-   public GoogleDriveUiStartup(final Provider<ExportToGoogleDriveHooker> exportToGoogleDriveHooker,
-         final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService, final GoogleDriveDao dao,
+   public GoogleDriveUiStartup(
+         final Provider<ExportToGoogleDriveHooker> exportToGoogleDriveHooker,
+         final Provider<FileExportToGoogleDriveHooker> fileExportToDatasinkHooker,
+         final HookHandlerService hookHandler, 
+         final WaitOnEventUIService waitOnEventService, 
+         final GoogleDriveDao dao,
          final Provider<GoogleDriveDatasinkConfigProviderHooker> googleDriveTreeConfiguratorProvider,
          final GoogleDriveDatasinkTesterToolbarConfigurator googleDriveTestToolbarConfigurator,
          final GoogleDriveDatasinkOAuthToolbarConfigurator googleDriveOauthToolbarConfigurator,
-         final Provider<GoogleDriveExportSnippetProvider> googleDriveExportSnippetProvider) {
+         final Provider<GoogleDriveExportSnippetProvider> googleDriveExportSnippetProvider
+         ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, googleDriveTreeConfiguratorProvider.get(),
             HookHandlerService.PRIORITY_MEDIUM);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToGoogleDriveHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */

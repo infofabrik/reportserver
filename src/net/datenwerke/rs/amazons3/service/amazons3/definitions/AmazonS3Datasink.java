@@ -3,10 +3,10 @@ package net.datenwerke.rs.amazons3.service.amazons3.definitions;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import org.hibernate.envers.Audited;
 
 import org.apache.commons.codec.binary.Hex;
 import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -18,6 +18,7 @@ import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.dtogen.AmazonS3Datasink2DtoPostProcessor;
 import net.datenwerke.rs.amazons3.service.amazons3.locale.AmazonS3DatasinkMessages;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -43,7 +44,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       objNameKey = "amazonS3DatasinkTypeName", 
       icon = "amazon")
 @Indexed
-public class AmazonS3Datasink extends DatasinkDefinition {
+public class AmazonS3Datasink extends DatasinkDefinition implements FolderedDatasink {
 
    /**
     * 
@@ -93,6 +94,7 @@ public class AmazonS3Datasink extends DatasinkDefinition {
       this.regionName = regionName;
    }
 
+   @Override
    public String getFolder() {
       return folder;
    }

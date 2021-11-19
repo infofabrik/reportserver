@@ -22,6 +22,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.DropboxDatasink2DtoPostProcessor;
 import net.datenwerke.rs.dropbox.service.dropbox.locale.DropboxDatasinkMessages;
@@ -50,7 +51,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       objNameKey = "dropboxDatasinkTypeName", 
       icon = "dropbox")
 @Indexed
-public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenticatable {
+public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 
    /**
     * 
@@ -78,6 +79,7 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
    @Column(length = 1024)
    private String folder = "/";
 
+   @Override
    public String getFolder() {
       return folder;
    }

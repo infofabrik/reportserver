@@ -33,7 +33,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowT
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
@@ -138,7 +138,7 @@ public class ExportToFtpHooker implements ExportExternalEntryProviderHook {
            }
         }, new SFFCDatasinkDao() {
            @Override
-           public Provider<? extends DatasinkDao> getDatasinkDaoProvider() {
+           public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
               return datasinkDaoProvider;
            }
 

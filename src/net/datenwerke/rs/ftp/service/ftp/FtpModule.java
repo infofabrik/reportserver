@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultSftpDatasink;
@@ -66,7 +66,7 @@ public class FtpModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultFtpDatasink
-   public Optional<FtpDatasink> provideDefaultFtpDatasink(DatasinkService datasinkService) {
+   public Optional<FtpDatasink> provideDefaultFtpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpDatasink.class, PROPERTY_DEFAULT_FTP_DATASINK_ID,
             PROPERTY_DEFAULT_FTP_DATASINK_NAME);
    }
@@ -74,7 +74,7 @@ public class FtpModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultSftpDatasink
-   public Optional<SftpDatasink> provideDefaultSftpDatasink(DatasinkService datasinkService) {
+   public Optional<SftpDatasink> provideDefaultSftpDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(SftpDatasink.class, PROPERTY_DEFAULT_SFTP_DATASINK_ID,
             PROPERTY_DEFAULT_SFTP_DATASINK_NAME);
    }
@@ -82,7 +82,7 @@ public class FtpModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultFtpsDatasink
-   public Optional<FtpsDatasink> provideDefaultFtpsDatasink(DatasinkService datasinkService) {
+   public Optional<FtpsDatasink> provideDefaultFtpsDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(FtpsDatasink.class, PROPERTY_DEFAULT_FTPS_DATASINK_ID,
             PROPERTY_DEFAULT_FTPS_DATASINK_NAME);
    }

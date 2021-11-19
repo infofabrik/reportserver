@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.samba.service.samba.annotations.DefaultSambaDatasink;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 
@@ -36,7 +36,7 @@ public class SambaModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultSambaDatasink
-   public Optional<SambaDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<SambaDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(SambaDatasink.class, PROPERTY_DEFAULT_SAMBA_DATASINK_ID,
             PROPERTY_DEFAULT_SAMBA_DATASINK_NAME);
    }

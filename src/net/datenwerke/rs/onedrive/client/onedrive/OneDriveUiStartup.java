@@ -5,25 +5,28 @@ import java.util.Map;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.ExportToOneDriveHooker;
+import net.datenwerke.rs.onedrive.client.onedrive.hookers.FileExportToOneDriveHooker;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkConfigProviderHooker;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveExportSnippetProvider;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
-import net.datenwerke.gf.client.login.LoginService;
 
 public class OneDriveUiStartup {
    @Inject
    public OneDriveUiStartup(
          final Provider<ExportToOneDriveHooker> exportToOneDriveHooker,
+         final Provider<FileExportToOneDriveHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler, 
          final WaitOnEventUIService waitOnEventService, 
          final OneDriveDao dao,
@@ -38,6 +41,8 @@ public class OneDriveUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToOneDriveHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */

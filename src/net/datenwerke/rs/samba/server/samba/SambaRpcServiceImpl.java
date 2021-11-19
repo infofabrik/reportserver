@@ -30,6 +30,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.rpc.SambaRpcService;
 import net.datenwerke.rs.samba.service.samba.SambaService;
@@ -176,6 +178,24 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       securityService.assertRights(defaultDatasink.get(), Read.class);
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
+   }
+   
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(sambaDatasink, Read.class, Execute.class);
+      
+      try {
+         sambaService.exportIntoDatasink(file.getData(), sambaDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to Samba: " + e.getMessage(), e);
+      }
    }
 
 }

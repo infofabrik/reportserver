@@ -10,28 +10,37 @@ import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfigur
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3DatasinkConfigProviderHooker;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3DatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3ExportSnippetProvider;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.ExportToAmazonS3Hooker;
+import net.datenwerke.rs.amazons3.client.amazons3.hookers.FileExportToAmazonS3Hooker;
+import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class AmazonS3UiStartup {
    @Inject
-   public AmazonS3UiStartup(final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
-         final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService, final AmazonS3Dao dao,
+   public AmazonS3UiStartup(
+         final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
+         final Provider<FileExportToAmazonS3Hooker> fileExportToDatasinkHooker,
+         final HookHandlerService hookHandler, 
+         final WaitOnEventUIService waitOnEventService, 
+         final AmazonS3Dao dao,
          final Provider<AmazonS3DatasinkConfigProviderHooker> amazonS3TreeConfiguratorProvider,
          final AmazonS3DatasinkTesterToolbarConfigurator amazonS3TestToolbarConfigurator,
-         final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider) {
+         final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider
+         ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, amazonS3TreeConfiguratorProvider.get(),
             HookHandlerService.PRIORITY_MEDIUM);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToAmazonS3Hooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */

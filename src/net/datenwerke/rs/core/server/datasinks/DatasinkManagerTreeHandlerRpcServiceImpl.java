@@ -6,7 +6,7 @@ import com.google.inject.Singleton;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.client.datasinkmanager.rpc.DatasinkTreeLoader;
 import net.datenwerke.rs.core.client.datasinkmanager.rpc.DatasinkTreeManager;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
@@ -28,12 +28,12 @@ public class DatasinkManagerTreeHandlerRpcServiceImpl
 	 */
 	private static final long serialVersionUID = -455777535667237770L;
 
-	private final DatasinkService datasinkService;
+	private final DatasinkTreeService datasinkService;
 
 	
 	@Inject
 	public DatasinkManagerTreeHandlerRpcServiceImpl(
-			DatasinkService datasinkService,
+			DatasinkTreeService datasinkService,
 			DtoService dtoGenerator,
 			SecurityService securityService,
 			EntityClonerService entityClonerService

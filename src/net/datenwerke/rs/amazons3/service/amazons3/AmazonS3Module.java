@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.amazons3.service.amazons3.annotations.DefaultAmazonS3Datasink;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 
@@ -36,7 +36,7 @@ public class AmazonS3Module extends AbstractModule {
    @Provides
    @Inject
    @DefaultAmazonS3Datasink
-   public Optional<AmazonS3Datasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<AmazonS3Datasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(AmazonS3Datasink.class, PROPERTY_DEFAULT_AMAZONS3_DATASINK_ID,
             PROPERTY_DEFAULT_AMAZONS3_DATASINK_NAME);
    }

@@ -25,6 +25,10 @@ public class DatasinkUIModule extends AbstractGinModule {
 
 	public static final String ADMIN_TREE_MENU_NAME = "datasink:admin:tree:menu";
 	
+	public static final String DATASINK_KEY = "datasink_key";
+	public static final String DATASINK_FILENAME = "datasink_filename";
+	public static final String DATASINK_FOLDER = "datasink_folder";
+	
 	@Override
 	protected void configure() {
 		/* bind trees */

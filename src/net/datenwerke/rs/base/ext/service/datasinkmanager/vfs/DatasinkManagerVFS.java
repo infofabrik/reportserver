@@ -3,7 +3,7 @@ package net.datenwerke.rs.base.ext.service.datasinkmanager.vfs;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
@@ -20,7 +20,7 @@ public class DatasinkManagerVFS extends TreeBasedVirtualFileSystem<AbstractDatas
 
    @Inject
    public DatasinkManagerVFS(
-         Provider<DatasinkService> datasinkServiceProvider
+         Provider<DatasinkTreeService> datasinkServiceProvider
          ) {
       super(datasinkServiceProvider);
    }

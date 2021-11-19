@@ -10,6 +10,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.locale.LocalFileSystemMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -32,7 +33,7 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
       icon = "server"
       )
 @Indexed
-public class LocalFileSystemDatasink extends DatasinkDefinition {
+public class LocalFileSystemDatasink extends DatasinkDefinition implements FolderedDatasink {
    /**
     * 
     */
@@ -56,6 +57,7 @@ public class LocalFileSystemDatasink extends DatasinkDefinition {
       this.path = path;
    }
 
+   @Override
    public String getFolder() {
       return folder;
    }

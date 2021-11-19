@@ -5,7 +5,7 @@ import com.google.inject.Inject;
 import net.datenwerke.gf.service.genrights.AdministrationViewSecurityTarget;
 import net.datenwerke.rs.adminutils.service.su.genrights.SuSecurityTarget;
 import net.datenwerke.rs.adminutils.service.systemconsole.genrights.SystemConsoleSecurityTarget;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
@@ -58,7 +58,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
 	private final UserManagerService userService;
 	private final ReportService reportService;
 	private final DatasourceService datasourceService;
-	private final DatasinkService datasinkService;
+	private final DatasinkTreeService datasinkService;
 	private final FileServerService fileServerService;
 
 	private final UserPropertiesService userPropertiesService;
@@ -72,7 +72,7 @@ public class PrepareDbForReportServer implements DbInstallationTask {
 		UserManagerService userService,
 		ReportService reportService,
 		DatasourceService datasourceService,
-		DatasinkService datasinkService,
+		DatasinkTreeService datasinkService,
 		FileServerService fileServerService,
 		UserPropertiesService userPropertiesService,
 		DashboardManagerService dashboardService

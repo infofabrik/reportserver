@@ -29,6 +29,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
 import net.datenwerke.rs.googledrive.client.googledrive.rpc.GoogleDriveRpcService;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
@@ -168,4 +170,21 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      GoogleDriveDatasink googleDriveDatasink = (GoogleDriveDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
+      
+      try {
+         googleDriveService.exportIntoDatasink(file.getData(), googleDriveDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to Google Drive: " + e.getMessage(), e);
+      }
+   }
 }

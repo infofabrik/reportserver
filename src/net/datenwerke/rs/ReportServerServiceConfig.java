@@ -98,6 +98,7 @@ import net.datenwerke.rs.configservice.service.configservice.ConfigModule;
 import net.datenwerke.rs.configservice.service.manservice.ManPageModule;
 import net.datenwerke.rs.core.server.contexthelp.ContextHelpRpcServiceImpl;
 import net.datenwerke.rs.core.server.datasinks.DatasinkManagerTreeHandlerRpcServiceImpl;
+import net.datenwerke.rs.core.server.datasinks.DatasinkRpcServiceImpl;
 import net.datenwerke.rs.core.server.datasources.DatasourceManagerTreeHandlerRpcServiceImpl;
 import net.datenwerke.rs.core.server.i18ntools.I18nToolsRpcServiceImpl;
 import net.datenwerke.rs.core.server.imageservice.ImageServlet;
@@ -388,7 +389,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 				serve(BASE_URL + "datasourcemanager_export").with(DatasourceManagerExportRpcServiceImpl.class); //$NON-NLS-1$
 				
 				serve(BASE_URL + "datasinks_import").with(DatasinkManagerImportRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "datasinkmanager_export").with(DatasinkManagerExportRpcServiceImpl.class); //$NON-NLS-1$
+				serve(BASE_URL + "datasinks_service").with(DatasinkRpcServiceImpl.class); //$NON-NLS-1$
+                serve(BASE_URL + "datasinkmanager_export").with(DatasinkManagerExportRpcServiceImpl.class); //$NON-NLS-1$
 				
 				serve(BASE_URL + "reportdocumentation").with(ReportDocumentationServlet.class); //$NON-NLS-1$
 				serve(BASE_URL + "datenwerke/jaspertotable").with(JasperToTableRpcServiceImpl.class); //$NON-NLS-1$

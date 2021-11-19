@@ -7,7 +7,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.upload.UploadedFile;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
@@ -18,12 +18,12 @@ import net.datenwerke.security.service.treedb.actions.UpdateAction;
 public class SftpPrivateKeyUploadHooker implements FileUploadHandlerHook {
 	
 	private final Provider<SecurityService> securityServiceProvider;
-	private final Provider<DatasinkService> datasinkServiceProvider;
+	private final Provider<DatasinkTreeService> datasinkServiceProvider;
 
 	@Inject
 	public SftpPrivateKeyUploadHooker(
 			Provider<SecurityService> securityServiceProvider, 
-			Provider<DatasinkService> datasinkServiceProvider
+			Provider<DatasinkTreeService> datasinkServiceProvider
 	) {
 		this.securityServiceProvider = securityServiceProvider;
 		this.datasinkServiceProvider = datasinkServiceProvider;
@@ -47,7 +47,7 @@ public class SftpPrivateKeyUploadHooker implements FileUploadHandlerHook {
 		SecurityService securityService = securityServiceProvider.get();
 		securityService.assertUserLoggedIn();
 
-		DatasinkService datasinkService = datasinkServiceProvider.get();
+		DatasinkTreeService datasinkService = datasinkServiceProvider.get();
 		AbstractDatasinkManagerNode rmn = datasinkService.getNodeById(datasinkId);
 
 		securityService.assertActions(rmn, UpdateAction.class);

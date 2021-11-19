@@ -12,9 +12,11 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.samba.client.samba.hookers.ExportToSambaHooker;
-import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkTesterToolbarConfigurator;
+import net.datenwerke.rs.samba.client.samba.hookers.FileExportToSambaHooker;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkConfigProviderHooker;
+import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaExportSnippetProvider;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -25,6 +27,7 @@ public class SambaUiStartup {
    public SambaUiStartup(
          final HookHandlerService hookHandler, 
          final Provider<ExportToSambaHooker> exportToSambaHooker,
+         final Provider<FileExportToSambaHooker> fileExportToDatasinkHooker,
          final Provider<SambaExportSnippetProvider> sambaExportSnippetProvider,
          final Provider<SambaDatasinkConfigProviderHooker> sambaTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, 
@@ -39,6 +42,8 @@ public class SambaUiStartup {
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSambaHooker,
             HookHandlerService.PRIORITY_MEDIUM + 20);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sambaTestToolbarConfigurator);

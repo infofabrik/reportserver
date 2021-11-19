@@ -30,6 +30,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.rpc.LocalFileSystemRpcService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
@@ -178,6 +180,24 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
       securityService.assertRights(defaultDatasink.get(), Read.class);
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
+   }
+   
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
+      
+      try {
+         localFileSystemService.exportIntoDatasink(file.getData(), localFileSystemDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to Local Filesystem Datasink: " + e.getMessage(), e);
+      }
    }
 
 }

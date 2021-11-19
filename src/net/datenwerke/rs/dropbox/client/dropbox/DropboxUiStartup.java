@@ -17,6 +17,8 @@ import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxDatasinkOAuthTool
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxExportSnippetProvider;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.ExportToDropboxHooker;
+import net.datenwerke.rs.dropbox.client.dropbox.hookers.FileExportToDropboxHooker;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -24,6 +26,7 @@ public class DropboxUiStartup {
    @Inject
    public DropboxUiStartup(
          final Provider<ExportToDropboxHooker> exportToDropboxHooker,
+         final Provider<FileExportToDropboxHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler, 
          final WaitOnEventUIService waitOnEventService, 
          final DropboxDao dao,
@@ -38,6 +41,8 @@ public class DropboxUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToDropboxHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */

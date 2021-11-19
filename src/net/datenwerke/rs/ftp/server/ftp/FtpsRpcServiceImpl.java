@@ -29,6 +29,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.rpc.FtpsRpcService;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
@@ -177,6 +179,24 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       securityService.assertRights(defaultDatasink.get(), Read.class);
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
+   }
+   
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
+      
+      try {
+         ftpService.exportIntoFtps(file.getData(), ftpsDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to FTPS: " + e.getMessage(), e);
+      }
    }
 
 }

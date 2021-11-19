@@ -20,7 +20,7 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.eventbus.EventBusHelper;
 import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.config.DatasinkDefinitionConfigConfigurator;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerDto;
@@ -43,7 +43,7 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
    private final DatasinkUIService datasinkService;
    private final Container container;
    private final UITree datasinkTree;
-   private final Provider<? extends DatasinkDao> datasinkDaoProvider;
+   private final Provider<? extends HasDefaultDatasink> datasinkDaoProvider;
 
    private DatasinkDefinitionDto oldDatasink = null;
    private SingleTreeSelectionField dsField;
@@ -59,7 +59,7 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
    public DatasinkSelectionField(
          ClipboardUiService clipboardService, 
          DatasinkUIService datasinkService,
-         @Assisted Provider<? extends DatasinkDao> datasinkDaoProvider,
+         @Assisted Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
          @Assisted BaseIcon defaultDatasinkIcon,
          @Assisted Container container,
          @Assisted UITree datasinkTree,

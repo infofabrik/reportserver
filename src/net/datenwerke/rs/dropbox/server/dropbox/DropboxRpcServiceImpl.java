@@ -33,6 +33,8 @@ import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.rpc.DropboxRpcService;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
@@ -164,6 +166,24 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(defaultDatasink.get(), Read.class);
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
+   }
+   
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      DropboxDatasink dropboxDatasink = (DropboxDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
+      
+      try {
+         dropboxService.exportIntoDatasink(file.getData(), dropboxDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to Dropbox: " + e.getMessage(), e);
+      }
    }
 
 }

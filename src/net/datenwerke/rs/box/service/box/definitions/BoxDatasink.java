@@ -24,6 +24,7 @@ import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.box.service.box.definitions.dtogen.BoxDatasink2DtoPostProcessor;
 import net.datenwerke.rs.box.service.box.locale.BoxDatasinkMessages;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -42,7 +43,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
       @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "cube")
 @InstanceDescription(msgLocation = BoxDatasinkMessages.class, objNameKey = "boxDatasinkTypeName", icon = "cube")
 @Indexed
-public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticatable {
+public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 
    /**
     * 
@@ -70,6 +71,7 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
    @Column(length = 1024)
    private String folder = "/";
 
+   @Override
    public String getFolder() {
       return folder;
    }

@@ -8,7 +8,7 @@ import javax.persistence.Query;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction;
@@ -16,11 +16,11 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 
 public class InstallMissingEntitiesTask implements DbInstallationTask {
 
-   private final DatasinkService datasinkService;
+   private final DatasinkTreeService datasinkService;
    private final Provider<EntityManager> emp;
 
    @Inject
-   public InstallMissingEntitiesTask(DatasinkService datasinkService, Provider<EntityManager> emp) {
+   public InstallMissingEntitiesTask(DatasinkTreeService datasinkService, Provider<EntityManager> emp) {
 
       /* store objects */
       this.datasinkService = datasinkService;

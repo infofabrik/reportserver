@@ -4,7 +4,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
@@ -35,7 +35,7 @@ public class OneDriveModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultOneDriveDatasink
-   public Optional<OneDriveDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<OneDriveDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(OneDriveDatasink.class, PROPERTY_DEFAULT_ONEDRIVE_DATASINK_ID,
             PROPERTY_DEFAULT_ONEDRIVE_DATASINK_NAME);
    }

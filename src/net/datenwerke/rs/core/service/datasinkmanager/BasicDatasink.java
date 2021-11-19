@@ -4,5 +4,4 @@ public interface BasicDatasink {
 	String getHost();
 	int getPort();
 	String getUsername();
-	String getFolder();
 }

@@ -7,15 +7,16 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.rpc.DropboxRpcServiceAsync;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-public class DropboxDao extends Dao implements DatasinkDao {
+public class DropboxDao extends Dao implements HasDefaultDatasink {
 
    private final DropboxRpcServiceAsync rpcService;
 
@@ -29,6 +30,11 @@ public class DropboxDao extends Dao implements DatasinkDao {
          AsyncCallback<Void> callback) {
       rpcService.exportIntoDropbox(reportDto, executorToken, dropboxDatasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
+   }
+   
+   public void exportFileIntoDatasink(FileServerFileDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, callback);
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {

@@ -29,6 +29,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.rpc.OneDriveRpcService;
 import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
@@ -171,5 +173,23 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(defaultDatasink.get(), Read.class);
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
+   }
+   
+   @Override
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder) throws ServerCallFailedException {
+      
+      OneDriveDatasink oneDriveDatasink = (OneDriveDatasink) dtoService.loadPoso(datasinkDto);
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      
+      /* check rights */
+      securityService.assertRights(file, Read.class);
+      securityService.assertRights(oneDriveDatasink, Read.class, Execute.class);
+      
+      try {
+         oneDriveService.exportIntoDatasink(file.getData(), oneDriveDatasink, filename, folder);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not send to OneDrive: " + e.getMessage(), e);
+      }
    }
 }

@@ -16,6 +16,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.samba.service.samba.definitions.dtogen.SambaDatasink2DtoPostProcessor;
 import net.datenwerke.rs.samba.service.samba.locale.SambaMessages;
@@ -45,7 +46,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
         icon = "angle-double-up"
         )
 @Indexed
-public class SambaDatasink extends DatasinkDefinition implements BasicDatasink {
+public class SambaDatasink extends DatasinkDefinition implements BasicDatasink, FolderedDatasink {
 
     /**
      * 

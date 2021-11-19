@@ -39,7 +39,7 @@ import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasink;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
@@ -56,7 +56,7 @@ public class FtpServiceImpl implements FtpService {
 
    private final Provider<ConfigService> configServiceProvider;
    private final Provider<ReportService> reportServiceProvider;
-   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<DatasinkTreeService> datasinkServiceProvider;
    
    private final Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider;
    private final Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider;
@@ -70,7 +70,7 @@ public class FtpServiceImpl implements FtpService {
    public FtpServiceImpl(
 		   Provider<ConfigService> configServiceProvider,
 		   Provider<ReportService> reportServiceProvider,
-		   Provider<DatasinkService> datasinkServiceProvider,
+		   Provider<DatasinkTreeService> datasinkServiceProvider,
 		   @DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
 		   @DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
 		   @DefaultFtpsDatasink Provider<Optional<FtpsDatasink>> defaultFtpsDatasinkProvider

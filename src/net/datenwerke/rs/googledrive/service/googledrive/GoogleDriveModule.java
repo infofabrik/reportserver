@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.googledrive.service.googledrive.annotations.DefaultGoogleDriveDatasink;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 
@@ -36,7 +36,7 @@ public class GoogleDriveModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultGoogleDriveDatasink
-   public Optional<GoogleDriveDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<GoogleDriveDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(GoogleDriveDatasink.class, PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_ID,
             PROPERTY_DEFAULT_GOOGLEDRIVE_DATASINK_NAME);
    }

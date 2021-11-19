@@ -11,7 +11,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkFolderDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportManagerNodeDto;
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
 
@@ -26,7 +26,7 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
 @Inheritance(strategy=InheritanceType.JOINED)
 @TreeDBTree(
 	rootTypes=DatasinkFolder.class,
-	manager=DatasinkService.class
+	manager=DatasinkTreeService.class
 )
 @GenerateDto(
 	dtoPackage="net.datenwerke.rs.core.client.datasinkmanager.dto",

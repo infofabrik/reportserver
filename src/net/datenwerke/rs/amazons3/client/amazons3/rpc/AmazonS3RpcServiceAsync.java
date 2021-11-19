@@ -9,6 +9,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
@@ -23,5 +24,8 @@ public interface AmazonS3RpcServiceAsync {
    Request testAmazonS3Datasink(AmazonS3DatasinkDto amazonS3DatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
+   
+   void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder, AsyncCallback<Void> callback);
 
 }

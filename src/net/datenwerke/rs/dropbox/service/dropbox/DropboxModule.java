@@ -11,7 +11,7 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.dropbox.service.dropbox.annotations.DefaultDropboxDatasink;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 
@@ -36,7 +36,7 @@ public class DropboxModule extends AbstractModule {
    @Provides
    @Inject
    @DefaultDropboxDatasink
-   public Optional<DropboxDatasink> provideDefaultDatasink(DatasinkService datasinkService) {
+   public Optional<DropboxDatasink> provideDefaultDatasink(DatasinkTreeService datasinkService) {
       return datasinkService.getDefaultDatasink(DropboxDatasink.class, PROPERTY_DEFAULT_DROPBOX_DATASINK_ID,
             PROPERTY_DEFAULT_DROPBOX_DATASINK_NAME);
    }
