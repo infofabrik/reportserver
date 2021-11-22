@@ -6,9 +6,11 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.box.client.box.BoxDao;
 import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
@@ -19,6 +21,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
+import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
@@ -44,11 +47,30 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
    }
 
    @Override
-   public FileSendToMenuItem getMenuEntry(Menu menu, FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("Box", treeHandler, BaseIcon.CUBE.toImageResource());
-      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-      return item;
+   public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
+      if (enterpriseServiceProvider.get().isEnterprise()) {
+         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
+            @Override
+            public void onSuccess(Map<StorageType, Boolean> result) {
+               if (result.get(StorageType.BOX)) {
+                  FileSendToMenuItem item = new FileSendToMenuItem("Box", treeHandler, BaseIcon.CUBE.toImageResource());
+                  item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+                  menu.add(item);
+                  item.setAvailableCallback(() -> isAvailable());
+               }
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+            }
+         });
+      } else {
+         // we add item but disable it
+         MenuItem item = new DwMenuItem("Box", BaseIcon.CUBE);
+         menu.add(item);
+         item.disable();
+      }
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {

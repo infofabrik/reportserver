@@ -82,7 +82,6 @@ public class ExportToSambaHooker implements ExportExternalEntryProviderHook {
    @Override
    public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
-
       if (enterpriseServiceProvider.get().isEnterprise()) {
          datasinkDaoProvider.get().getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
    

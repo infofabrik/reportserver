@@ -79,8 +79,8 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
    }
 
    @Override
-   public void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info,
-         ReportExecutorMainPanel mainPanel) {
+   public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
+         final ReportExecutorMainPanel mainPanel) {
       if (enterpriseServiceProvider.get().isEnterprise()) {
          datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 

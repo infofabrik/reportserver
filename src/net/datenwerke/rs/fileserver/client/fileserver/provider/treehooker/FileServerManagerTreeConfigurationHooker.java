@@ -14,7 +14,6 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem.DownloadMenuUrlGenerator;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
-import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -107,11 +106,8 @@ public class FileServerManagerTreeConfigurationHooker implements
        final Menu sendToMenu = new DwMenu();
        
        /* Specific datasinks */
-       hookHandler.getHookers(FileExportExternalEntryProviderHook.class).forEach( config -> {
-          FileSendToMenuItem item = config.getMenuEntry(sendToMenu, treeHandler);
-           sendToMenu.add(item);
-           item.setAvailableCallback(() -> config.isAvailable());
-       });
+       hookHandler.getHookers(FileExportExternalEntryProviderHook.class)
+          .forEach( config -> config.createMenuEntry(sendToMenu, treeHandler));
        
        MenuItem sendToItem = new DwMenuItem(ReportExporterMessages.INSTANCE.sendToLabel(), BaseIcon.SERVER);
        sendToItem.setSubMenu(sendToMenu);
