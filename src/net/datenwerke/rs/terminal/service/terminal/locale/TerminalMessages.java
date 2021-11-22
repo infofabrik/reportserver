@@ -31,5 +31,7 @@ public interface TerminalMessages extends Messages{
 
 	String commandCat_description();
 	String cannotCatObject();
+	
+	String commandEnv_description();
 }
 
