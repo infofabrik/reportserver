@@ -32,7 +32,7 @@ public class ScpDao extends Dao implements HasDefaultDatasink {
    
    public void exportFileIntoDatasink(FileServerFileDto file, DatasinkDefinitionDto datasinkDto, String name,
          String folder, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, callback);
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, transformAndKeepCallback(callback));
    }
 
    public void getScpEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
