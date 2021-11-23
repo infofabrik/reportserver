@@ -36,6 +36,10 @@ public interface SystemConsoleMessages extends Messages{
 	public String threadsAwaitingCheckout();
 	public String unclosedOrphanedConnections();
 	public String refreshDatasources();
+	
+    public String used();
+    public String total();
+    public String maximum();
 
 	
 }
