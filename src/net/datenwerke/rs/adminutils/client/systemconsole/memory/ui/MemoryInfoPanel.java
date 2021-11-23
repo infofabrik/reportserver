@@ -286,7 +286,7 @@ public class MemoryInfoPanel extends DwContentPanel {
 
       int numberOfUnitsToDelete = store.size() - maxNumberOfUnits;
       if (numberOfUnitsToDelete > 0) {
-         IntStream.range(0, numberOfUnitsToDelete).forEach(i -> store.remove(i));
+         IntStream.range(0, numberOfUnitsToDelete).forEach(store::remove);
       }
 
       chart.redrawChart();

@@ -55,6 +55,7 @@ import net.datenwerke.hookhandler.service.hookhandler.HookHandlerModule;
 import net.datenwerke.rs.adminutils.server.datasourcetester.DatasourceTesterRPCServiceImpl;
 import net.datenwerke.rs.adminutils.server.logs.LogFilesRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.suuser.SuUserRpcServiceImpl;
+import net.datenwerke.rs.adminutils.server.systemconsole.connpool.ConnectionPoolConsoleDummyRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.generalinfo.GeneralInfoRpcDummyServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.memory.MemoryConsoleDummyRpcServiceImpl;
 import net.datenwerke.rs.adminutils.service.SystemConsoleModule;
@@ -366,6 +367,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 					serve(BASE_URL + "crystalutils").with(CrystalUtilsRpcDummyServiceImpl.class); //$NON-NLS-1$
 					serve(BASE_URL + "generalinfoconsole").with(GeneralInfoRpcDummyServiceImpl.class); //$NON-NLS-1$
 					serve(BASE_URL + "memoryconsole").with(MemoryConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
+					serve(BASE_URL + "connectionpoolconsole").with(ConnectionPoolConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
 				}
 				
 				

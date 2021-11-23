@@ -27,6 +27,15 @@ public interface SystemConsoleMessages extends Messages{
 	public String unitInterval();
 	public String jvmGCCalled();
 	public String showMax();
+	
+	public String maximumPoolSize();
+	public String numberOfConnections();
+	public String busyConnections();
+	public String connectionPool();
+	public String connections();
+	public String threadsAwaitingCheckout();
+	public String unclosedOrphanedConnections();
+	public String refreshDatasources();
 
 	
 }
