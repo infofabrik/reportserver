@@ -119,7 +119,7 @@ public class MemoryInfoPanel extends DwContentPanel {
 
       final LineSeries<MemoryInfoDto> seriesUsed = new LineSeries<>();
       seriesUsed.setYAxisPosition(Position.LEFT);
-      seriesUsed.setLegendTitle(SystemConsoleMessages.INSTANCE.used() + "(MB)");
+      seriesUsed.setLegendTitle(SystemConsoleMessages.INSTANCE.used() + " (MB)");
       seriesUsed.setYField(props.usedMb());
       seriesUsed.setStroke(new RGB(0, 23, 165));
       seriesUsed.setShowMarkers(true);
@@ -130,7 +130,7 @@ public class MemoryInfoPanel extends DwContentPanel {
 
       final LineSeries<MemoryInfoDto> seriesTotal = new LineSeries<>();
       seriesTotal.setYAxisPosition(Position.LEFT);
-      seriesTotal.setLegendTitle(SystemConsoleMessages.INSTANCE.total() + "(MB)");
+      seriesTotal.setLegendTitle(SystemConsoleMessages.INSTANCE.total() + " (MB)");
       seriesTotal.setYField(props.totalMb());
       seriesTotal.setStroke(new RGB(23, 168, 35));
       seriesTotal.setShowMarkers(true);
@@ -141,7 +141,7 @@ public class MemoryInfoPanel extends DwContentPanel {
 
       seriesMax.setYAxisPosition(Position.LEFT);
       seriesMax.setYField(props.maxMb());
-      seriesMax.setLegendTitle(SystemConsoleMessages.INSTANCE.maximum() + "(MB)");
+      seriesMax.setLegendTitle(SystemConsoleMessages.INSTANCE.maximum() + " (MB)");
       seriesMax.setStroke(new RGB(194, 0, 36));
       seriesMax.setShowMarkers(true);
       seriesMax.setSmooth(false);
