@@ -33,11 +33,11 @@ public class EmailDatasinkUiStartup {
 
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, emailTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToEmailHooker,
-            HookHandlerService.PRIORITY_HIGH);
+            HookHandlerService.PRIORITY_LOW);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, emailTestToolbarConfigurator);
@@ -50,7 +50,7 @@ public class EmailDatasinkUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.EMAIL) && result.get(StorageType.EMAIL_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider,
-                        HookHandlerService.PRIORITY_HIGH + 20);
+                        HookHandlerService.PRIORITY_LOW);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider);
             }

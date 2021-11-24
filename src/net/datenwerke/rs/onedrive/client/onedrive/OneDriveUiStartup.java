@@ -37,13 +37,13 @@ public class OneDriveUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, oneDriveTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW + 45);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToOneDriveHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 45);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 45);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, oneDriveTestToolbarConfigurator,
@@ -60,7 +60,7 @@ public class OneDriveUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.ONEDRIVE) && result.get(StorageType.ONEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, oneDriveExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 50);
+                        HookHandlerService.PRIORITY_LOW + 45);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, oneDriveExportSnippetProvider);
             }

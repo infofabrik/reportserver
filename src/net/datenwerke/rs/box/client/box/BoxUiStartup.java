@@ -37,13 +37,13 @@ public class BoxUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, boxTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW + 60);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToBoxHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 60);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 60);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, boxTestToolbarConfigurator,
@@ -60,7 +60,7 @@ public class BoxUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.BOX) && result.get(StorageType.BOX_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, boxExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 20);
+                        HookHandlerService.PRIORITY_LOW + 60);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, boxExportSnippetProvider);
             }

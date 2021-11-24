@@ -34,15 +34,14 @@ public class LocalFileSystemUiStartup {
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
          final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator
          ) {
-
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_MEDIUM);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 35);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToLocalFileSystemHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 35);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 35);
       
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, localFileSystemTestToolbarConfigurator);
@@ -55,7 +54,7 @@ public class LocalFileSystemUiStartup {
             public void onSuccess(final Map<StorageType,Boolean> result) {
                if (result.get(StorageType.LOCALFILESYSTEM) && result.get(StorageType.LOCALFILESYSTEM_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 20);
+                        HookHandlerService.PRIORITY_LOW + 35);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider);
             }

@@ -41,7 +41,7 @@ public class ScpUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_HIGH + 20);
+            HookHandlerService.PRIORITY_LOW + 30);
       
       /* Authenticators */
       hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpUsernamePasswordAuthenticator, 
@@ -52,9 +52,9 @@ public class ScpUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker,
-            HookHandlerService.PRIORITY_MEDIUM + 20);
+            HookHandlerService.PRIORITY_LOW + 30);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_MEDIUM + 20);
+            HookHandlerService.PRIORITY_LOW + 30);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, scpTestToolbarConfigurator);
@@ -68,7 +68,7 @@ public class ScpUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.SCP) && result.get(StorageType.SCP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 30);
+                        HookHandlerService.PRIORITY_LOW + 30);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider);
             }

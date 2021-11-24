@@ -34,16 +34,15 @@ public class SambaUiStartup {
          final SambaDao dao,
          final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator
          ) {
-
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sambaTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_HIGH + 20);
+            HookHandlerService.PRIORITY_LOW + 25);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSambaHooker,
-            HookHandlerService.PRIORITY_MEDIUM + 20);
+            HookHandlerService.PRIORITY_LOW + 25);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 25);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sambaTestToolbarConfigurator);
@@ -56,7 +55,7 @@ public class SambaUiStartup {
             public void onSuccess(final Map<StorageType,Boolean> result) {
                if (result.get(StorageType.SAMBA) && result.get(StorageType.SAMBA_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 30);
+                        HookHandlerService.PRIORITY_LOW + 25);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider);
             }

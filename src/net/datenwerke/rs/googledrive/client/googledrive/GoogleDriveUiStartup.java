@@ -37,14 +37,14 @@ public class GoogleDriveUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, googleDriveTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW + 50);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToGoogleDriveHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 50);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
-
+            HookHandlerService.PRIORITY_LOW + 50);
+      
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, googleDriveTestToolbarConfigurator,
             HookHandlerService.PRIORITY_HIGH);
@@ -60,7 +60,7 @@ public class GoogleDriveUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.GOOGLEDRIVE) && result.get(StorageType.GOOGLEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, googleDriveExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 60);
+                        HookHandlerService.PRIORITY_LOW + 50);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, googleDriveExportSnippetProvider);
             }

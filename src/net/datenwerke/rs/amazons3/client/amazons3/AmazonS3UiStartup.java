@@ -35,13 +35,13 @@ public class AmazonS3UiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, amazonS3TreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW + 55);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToAmazonS3Hooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 55);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 55);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, amazonS3TestToolbarConfigurator,
@@ -55,7 +55,7 @@ public class AmazonS3UiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.AMAZONS3) && result.get(StorageType.AMAZONS3_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, amazonS3ExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 20);
+                        HookHandlerService.PRIORITY_LOW + 55);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, amazonS3ExportSnippetProvider);
             }

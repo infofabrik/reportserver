@@ -37,13 +37,13 @@ public class DropboxUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_MEDIUM);
+            HookHandlerService.PRIORITY_LOW + 40);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToDropboxHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 40);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
+            HookHandlerService.PRIORITY_LOW + 40);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, dropboxTestToolbarConfigurator,
@@ -60,7 +60,7 @@ public class DropboxUiStartup {
             public void onSuccess(final Map<StorageType, Boolean> result) {
                if (result.get(StorageType.DROPBOX) && result.get(StorageType.DROPBOX_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 20);
+                        HookHandlerService.PRIORITY_LOW + 40);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider);
             }

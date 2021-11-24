@@ -63,9 +63,9 @@ public class FtpUiStartup {
          ) {
 
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sftpTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_HIGH);
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpsTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_HIGH + 10);
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_HIGH + 20);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sftpTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpsTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 15);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 20);
 
       /* SFTP authenticators */
       hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, sftpUsernamePasswordAuthenticator, 
@@ -79,15 +79,15 @@ public class FtpUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSftpHooker,
-            HookHandlerService.PRIORITY_MEDIUM);
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpsHooker,
-            HookHandlerService.PRIORITY_MEDIUM + 10);
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpHooker,
-            HookHandlerService.PRIORITY_MEDIUM + 20);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToSftpDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpsDatasinkHooker,
             HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpsHooker,
+            HookHandlerService.PRIORITY_LOW + 15);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpHooker,
+            HookHandlerService.PRIORITY_LOW + 20);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToSftpDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW + 10);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpsDatasinkHooker,
+            HookHandlerService.PRIORITY_LOW + 15);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpDatasinkHooker,
             HookHandlerService.PRIORITY_LOW + 20);
 
@@ -105,19 +105,19 @@ public class FtpUiStartup {
 
                if (result.get(StorageType.SFTP) && result.get(StorageType.SFTP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sftpExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER);
+                        HookHandlerService.PRIORITY_LOW + 10);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, sftpExportSnippetProvider);
                
                if (result.get(StorageType.FTPS) && result.get(StorageType.FTPS_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, ftpsExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 10);
+                        HookHandlerService.PRIORITY_LOW + 15);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, ftpsExportSnippetProvider);
 
                if (result.get(StorageType.FTP) && result.get(StorageType.FTP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, ftpExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOWER + 20);
+                        HookHandlerService.PRIORITY_LOW + 20);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, ftpExportSnippetProvider);
             }
