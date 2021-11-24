@@ -131,6 +131,9 @@ public class Dto2AmazonS3DatasinkGenerator implements Dto2PosoGenerator<AmazonS3
 		/*  set secretKey */
 		poso.setSecretKey(dto.getSecretKey() );
 
+		/*  set storageType */
+		poso.setStorageType(dto.getStorageType() );
+
 	}
 
 	protected void mergeProxy2Poso(AmazonS3DatasinkDto dto, final AmazonS3Datasink poso)  throws ExpectedException {
@@ -177,6 +180,11 @@ public class Dto2AmazonS3DatasinkGenerator implements Dto2PosoGenerator<AmazonS3
 			poso.setSecretKey(dto.getSecretKey() );
 		}
 
+		/*  set storageType */
+		if(dto.isStorageTypeModified()){
+			poso.setStorageType(dto.getStorageType() );
+		}
+
 	}
 
 	public void mergeUnmanagedPoso(AmazonS3DatasinkDto dto, final AmazonS3Datasink poso)  throws ExpectedException {
@@ -213,6 +221,9 @@ public class Dto2AmazonS3DatasinkGenerator implements Dto2PosoGenerator<AmazonS3
 
 		/*  set secretKey */
 		poso.setSecretKey(dto.getSecretKey() );
+
+		/*  set storageType */
+		poso.setStorageType(dto.getStorageType() );
 
 	}
 
@@ -258,6 +269,11 @@ public class Dto2AmazonS3DatasinkGenerator implements Dto2PosoGenerator<AmazonS3
 		/*  set secretKey */
 		if(dto.isSecretKeyModified()){
 			poso.setSecretKey(dto.getSecretKey() );
+		}
+
+		/*  set storageType */
+		if(dto.isStorageTypeModified()){
+			poso.setStorageType(dto.getStorageType() );
 		}
 
 	}

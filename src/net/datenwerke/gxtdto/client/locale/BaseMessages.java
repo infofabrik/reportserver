@@ -232,4 +232,6 @@ public interface BaseMessages extends Messages {
    String amazonS3BucketName();
    
    String amazonS3Region();
+
+   String amazonS3StorageType();
 }

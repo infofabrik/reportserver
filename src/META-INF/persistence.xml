@@ -63,6 +63,7 @@
           <class>net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.BinaryColumnFilter</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportTemplate</class>
+          <class>net.datenwerke.rs.amazons3.service.amazons3.action.ScheduleAsAmazonS3FileAction</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode</class>
           <class>net.datenwerke.rs.base.service.parameters.headline.HeadlineParameterDefinition</class>
@@ -85,7 +86,6 @@
           <class>net.datenwerke.rs.scheduler.service.scheduler.sendto.SendToReportActionValue</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile</class>
           <class>net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction</class>
-          <class>net.datenwerke.rs.amazons3.service.amazons3.action.ScheduleAsAmazonS3FileAction</class>
           <class>net.datenwerke.security.service.usermanager.entities.Group</class>
           <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterDefinition</class>
           <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile</class>
@@ -172,7 +172,6 @@
           <class>net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardManagerNode</class>
           <class>net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink</class>
-          <class>net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter</class>
           <class>net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder</class>
@@ -200,6 +199,7 @@
           <class>net.datenwerke.scheduler.service.scheduler.entities.history.JobHistory</class>
           <class>net.datenwerke.rs.base.service.parameters.headline.HeadlineParameterInstance</class>
           <class>net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink</class>
+          <class>net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink</class>
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>

@@ -212,6 +212,42 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 		}
 	};
 
+	private String storageType;
+	private  boolean storageType_m;
+	public static final String PROPERTY_STORAGE_TYPE = "dpi-amazons3datasink-storagetype";
+
+	private transient static PropertyAccessor<AmazonS3DatasinkDto, String> storageType_pa = new PropertyAccessor<AmazonS3DatasinkDto, String>() {
+		@Override
+		public void setValue(AmazonS3DatasinkDto container, String object) {
+			container.setStorageType(object);
+		}
+
+		@Override
+		public String getValue(AmazonS3DatasinkDto container) {
+			return container.getStorageType();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return String.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "storageType";
+		}
+
+		@Override
+		public void setModified(AmazonS3DatasinkDto container, boolean modified) {
+			container.storageType_m = modified;
+		}
+
+		@Override
+		public boolean isModified(AmazonS3DatasinkDto container) {
+			return container.isStorageTypeModified();
+		}
+	};
+
 	private Boolean hasSecretKey;
 	private  boolean hasSecretKey_m;
 	public static final String PROPERTY_HAS_SECRET_KEY = "dpi-amazons3datasink-hassecretkey";
@@ -498,6 +534,55 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 	}
 
 
+	public String getStorageType()  {
+		if(! isDtoProxy()){
+			return this.storageType;
+		}
+
+		if(isStorageTypeModified())
+			return this.storageType;
+
+		if(! GWT.isClient())
+			return null;
+
+		String _value = dtoManager.getProperty(this, instantiatePropertyAccess().storageType());
+
+		return _value;
+	}
+
+
+	public void setStorageType(String storageType)  {
+		/* old value */
+		String oldValue = null;
+		if(GWT.isClient())
+			oldValue = getStorageType();
+
+		/* set new value */
+		this.storageType = storageType;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(storageType_pa, oldValue, storageType, this.storageType_m));
+
+		/* set indicator */
+		this.storageType_m = true;
+
+		this.fireObjectChangedEvent(AmazonS3DatasinkDtoPA.INSTANCE.storageType(), oldValue);
+	}
+
+
+	public boolean isStorageTypeModified()  {
+		return storageType_m;
+	}
+
+
+	public static PropertyAccessor<AmazonS3DatasinkDto, String> getStorageTypePropertyAccessor()  {
+		return storageType_pa;
+	}
+
+
 	public Boolean isHasSecretKey()  {
 		if(! isDtoProxy()){
 			return this.hasSecretKey;
@@ -604,6 +689,8 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 		this.regionName_m = false;
 		this.secretKey = null;
 		this.secretKey_m = false;
+		this.storageType = null;
+		this.storageType_m = false;
 		this.hasSecretKey = null;
 		this.hasSecretKey_m = false;
 	}
@@ -622,6 +709,8 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 			return true;
 		if(secretKey_m)
 			return true;
+		if(storageType_m)
+			return true;
 		if(hasSecretKey_m)
 			return true;
 		return false;
@@ -635,6 +724,7 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 		list.add(folder_pa);
 		list.add(regionName_pa);
 		list.add(secretKey_pa);
+		list.add(storageType_pa);
 		list.add(hasSecretKey_pa);
 		return list;
 	}
@@ -652,6 +742,8 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 			list.add(regionName_pa);
 		if(secretKey_m)
 			list.add(secretKey_pa);
+		if(storageType_m)
+			list.add(storageType_pa);
 		if(hasSecretKey_m)
 			list.add(hasSecretKey_pa);
 		return list;
@@ -669,6 +761,7 @@ public class AmazonS3DatasinkDto extends DatasinkDefinitionDto {
 			list.add(folder_pa);
 			list.add(regionName_pa);
 			list.add(secretKey_pa);
+			list.add(storageType_pa);
 		}
 		return list;
 	}
