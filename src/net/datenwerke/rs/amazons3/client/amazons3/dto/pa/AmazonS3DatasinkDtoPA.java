@@ -29,7 +29,7 @@ public interface AmazonS3DatasinkDtoPA extends DatasinkDefinitionDtoPA {
 	public ValueProvider<AmazonS3DatasinkDto,String> folder();
 	public ValueProvider<AmazonS3DatasinkDto,String> regionName();
 	public ValueProvider<AmazonS3DatasinkDto,String> secretKey();
-	public ValueProvider<AmazonS3DatasinkDto,String> storageType();
+	public ValueProvider<AmazonS3DatasinkDto,String> storageClass();
 	public ValueProvider<AmazonS3DatasinkDto,Boolean> hasSecretKey();
 
 

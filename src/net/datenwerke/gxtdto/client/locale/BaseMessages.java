@@ -233,5 +233,5 @@ public interface BaseMessages extends Messages {
    
    String amazonS3Region();
 
-   String amazonS3StorageType();
+   String amazonS3StorageClass();
 }

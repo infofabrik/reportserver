@@ -91,8 +91,8 @@ public class AmazonS3Datasink2DtoGenerator implements Poso2DtoGenerator<AmazonS3
 			/*  set regionName */
 			dto.setRegionName(StringEscapeUtils.escapeXml(StringUtils.left(poso.getRegionName(),8192)));
 
-			/*  set storageType */
-			dto.setStorageType(StringEscapeUtils.escapeXml(StringUtils.left(poso.getStorageType(),8192)));
+			/*  set storageClass */
+			dto.setStorageClass(StringEscapeUtils.escapeXml(StringUtils.left(poso.getStorageClass(),8192)));
 
 		}
 

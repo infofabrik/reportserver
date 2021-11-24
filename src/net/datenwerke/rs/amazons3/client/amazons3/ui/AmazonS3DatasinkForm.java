@@ -63,7 +63,7 @@ public class AmazonS3DatasinkForm extends SimpleFormView {
       form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.regionName(), BaseMessages.INSTANCE.amazonS3Region());
 
       /* storage type */
-      form.addField(List.class, AmazonS3DatasinkDtoPA.INSTANCE.storageType(), BaseMessages.INSTANCE.amazonS3StorageType(),
+      form.addField(List.class, AmazonS3DatasinkDtoPA.INSTANCE.storageClass(), BaseMessages.INSTANCE.amazonS3StorageClass(),
             new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;

@@ -80,14 +80,14 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
    
    @ExposeToClient
    @Field
-   private String storageType;
+   private String storageClass;
 
-   public String getStorageType() {
-      return storageType;
+   public String getStorageClass() {
+      return storageClass;
    }
 
-   public void setStorageType(String storageType) {
-      this.storageType = storageType;
+   public void setStorageClass(String storageClass) {
+      this.storageClass = storageClass;
    }
 
    public String getBucketName() {
