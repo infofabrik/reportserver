@@ -20,6 +20,7 @@ import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigEcho
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigReloadCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigSubCommandHook;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCommand;
+import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCreatallCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesShowmissingCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
@@ -45,6 +46,7 @@ public class ConfigStartup {
 
          Provider<DiffconfigfilesCommand> diffconfigfilesCommand,
          Provider<DiffconfigfilesShowmissingCommand> diffconfigfilesShowmissingCommand,
+         Provider<DiffconfigfilesCreatallCommand> diffconfigfilesCreatellCommand,
 
          final Provider<ConfigService> configService,
          final Provider<ConfigDirService> configDirService,
@@ -62,6 +64,7 @@ public class ConfigStartup {
 
       hookHandlerService.attachHooker(TerminalCommandHook.class, diffconfigfilesCommand);
       hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesShowmissingCommand);
+      hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesCreatellCommand);
 
       hookHandlerService.attachHooker(ApplicationPropertiesProviderHook.class, configDirApplicationPropertiesProvider);
 

@@ -28,9 +28,9 @@ public interface ConfigService {
    String getConfigAsJsonFailsafe(String identifier);
    
    /**
-    * Extracts a copy of the basic configuration files to a given directory.
-    * @param path path where the configuration files should be copied to
+    * Extracts a copy of the basic configuration files to a given sub-directory of root.
+    * @param folderName name of the folder in which files should be copied
     * @return the folder where the configuration files were copied to
     */
-   FileServerFolder extractBasicConfigFilesTo(String path) throws FileNotFoundException, IOException;
+   FileServerFolder extractBasicConfigFilesTo(String folderName) throws FileNotFoundException, IOException;
 }

@@ -29,6 +29,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ConfigStoreHook;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.installation.PackagedScriptHelper;
@@ -48,23 +49,19 @@ public class ConfigServiceImpl implements ConfigService {
    private final TerminalService terminalService;
    private final HookHandlerService hookHandler;
    private final Provider<PackagedScriptHelper> packagedScriptHelperProvider;
-   private final Provider<FileServerService> fileServerServiceProvider;
 
    @Inject
    public ConfigServiceImpl(
-         FileServerService fileService, 
+         FileServerService fileService,
          TerminalService terminalService,
          HookHandlerService hookHandler,
-         Provider<PackagedScriptHelper> packagedScriptHelperProvider,
-         Provider<FileServerService> fileServerServiceProvider
-         ) {
+         Provider<PackagedScriptHelper> packagedScriptHelperProvider) {
 
       /* store objects */
       this.fileService = fileService;
       this.terminalService = terminalService;
       this.hookHandler = hookHandler;
       this.packagedScriptHelperProvider = packagedScriptHelperProvider;
-      this.fileServerServiceProvider = fileServerServiceProvider;
    }
 
    public Provider<Configuration> getConfigProvider(final String identifier) {
@@ -187,7 +184,7 @@ public class ConfigServiceImpl implements ConfigService {
          file.setContentType("application/xml");
 
          ByteArrayOutputStream out = new ByteArrayOutputStream();
-         FileHandler handler = new FileHandler((XMLConfiguration)config);
+         FileHandler handler = new FileHandler((XMLConfiguration) config);
          handler.save(out);
          file.setData(out.toByteArray());
          fileService.merge(file);
@@ -205,7 +202,7 @@ public class ConfigServiceImpl implements ConfigService {
    @Override
    public void clearCache(final String identifier) {
       cache.remove(identifier);
-      
+
       hookHandler.getHookers(ReloadConfigNotificationHook.class).forEach(hooker -> hooker.reloadConfig(identifier));
    }
 
@@ -216,11 +213,20 @@ public class ConfigServiceImpl implements ConfigService {
    }
 
    @Override
-   public FileServerFolder extractBasicConfigFilesTo(String path) throws FileNotFoundException, IOException {
-      FileServerFolder targetDir = null;
-      
+   public FileServerFolder extractBasicConfigFilesTo(String folderName) throws FileNotFoundException, IOException {
+      FileServerFolder zipDir = null;
+      String pathToFolder = "/" + folderName;
       PackagedScriptHelper helper = packagedScriptHelperProvider.get();
       File pkgDir = helper.getPackageDirectory();
+      FileServerFolder targetDir = (FileServerFolder) fileService.getNodeByPath(pathToFolder, false);
+
+      if (null == targetDir) {
+         targetDir = new FileServerFolder(folderName);
+         AbstractFileServerNode root = fileService.getRoots().get(0);
+         root.addChild(targetDir);
+         fileService.persist(targetDir);
+         fileService.merge(root);
+      }
 
       if (pkgDir.exists() && pkgDir.isDirectory()) {
          Optional<File> baseConfigPackageScriptFile = helper
@@ -231,11 +237,13 @@ public class ConfigServiceImpl implements ConfigService {
 
          if (baseConfigPackageScriptFile.isPresent() && helper.validateZip(baseConfigPackageScriptFile.get(), true)) {
             try {
-               targetDir = helper.extractPackageTemporarily(new FileInputStream(baseConfigPackageScriptFile.get()));
-               helper.executePackage(targetDir, "", false, true, Optional.of(path));
+               zipDir = helper.extractPackageTemporarily(new FileInputStream(baseConfigPackageScriptFile.get()));
+               helper.executePackage(zipDir, "", false, true, Optional.of(pathToFolder));
             } finally {
-               if (null != targetDir)
-                  fileServerServiceProvider.get().forceRemove(targetDir);
+               if (null != zipDir)
+                  fileService.forceRemove(zipDir);
+               if (!folderName.equals("tmp") & null != fileService.getNodeByPath("/tmp", false))
+                  fileService.forceRemove(fileService.getNodeByPath("/tmp", false));
             }
          }
       }

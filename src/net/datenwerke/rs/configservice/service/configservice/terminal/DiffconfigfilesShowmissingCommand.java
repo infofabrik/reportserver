@@ -30,7 +30,8 @@ import net.datenwerke.rs.utils.config.ConfigService;
 public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubCommandHook {
 
    private static final String BASE_COMMAND = "showmissing";
-   private static final String TMP_DIR = "/tmp";
+   private static final String TMP_DIR_NAME = "tmp";
+   private static final String TMP_DIR_PATH = "/" + TMP_DIR_NAME;
    private final HistoryService historyService;
    private final FileServerService fileServerService;
    private final ConfigService configService;
@@ -39,8 +40,7 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
    public DiffconfigfilesShowmissingCommand(
          HistoryService historyService,
          FileServerService fileServerService,
-         ConfigService configService
-         ) {
+         ConfigService configService) {
       this.historyService = historyService;
       this.fileServerService = fileServerService;
       this.configService = configService;
@@ -65,12 +65,12 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
       List<HistoryLink> missingConfigFiles = null;
       FileServerFolder tmpConfigFolder = null;
       try {
-         configService.extractBasicConfigFilesTo(TMP_DIR);
-      
-         tmpConfigFolder = (FileServerFolder) fileServerService.getNodeByPath("/tmp");
+         configService.extractBasicConfigFilesTo(TMP_DIR_NAME);
+
+         tmpConfigFolder = (FileServerFolder) fileServerService.getNodeByPath(TMP_DIR_PATH);
          if (null == tmpConfigFolder)
             throw new TerminalException("tmp folder was not created correctly");
-         
+
          missingConfigFiles = findMissingConfigFiles(tmpConfigFolder);
       } catch (Exception e) {
          throw new TerminalException("the config files could not be calculated: " + e);
@@ -85,26 +85,17 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
    }
 
-   /**
-    * Compares two configuration folders asserting if files are missing. Actual
-    * configuration := Root/* without Root/_tmpFolderName_ .Expected configuration
-    * := Root/_tmpFolderName_/*
-    * 
-    * @return a list of files which is missing in actual configuration
-    */
    private List<HistoryLink> findMissingConfigFiles(FileServerFolder tmpConfigFolder) {
-      List<FileServerFile> expectedConfigFiles = tmpConfigFolder
-            .getSubfolderByName("etc")
-            .getDescendants(FileServerFile.class);
-      
       FileServerFolder currentConfigFolder = (FileServerFolder) fileServerService.getNodeByPath("/etc");
       if (null == currentConfigFolder)
          throw new IllegalStateException("Config files were not found!");
-      
+
+      List<FileServerFile> expectedConfigFiles = tmpConfigFolder
+            .getSubfolderByName("etc")
+            .getDescendants(FileServerFile.class);
       List<FileServerFile> actualConfigFiles = currentConfigFolder.getDescendants(FileServerFile.class);
       List<HistoryLink> fileLinksExpectedConfig = historyService.buildLinksForList(expectedConfigFiles);
       List<HistoryLink> fileLinksActualConfig = historyService.buildLinksForList(actualConfigFiles);
-      fileLinksExpectedConfig = removeBinFolderFiles(fileLinksExpectedConfig);
 
       return fileLinksExpectedConfig
             .stream()
@@ -116,23 +107,9 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
       Optional<HistoryLink> matchingLink = fileLinksActualConfig
             .stream()
             .filter(link -> link.getObjectCaption()
-                  .equals(fileLinkExpectedConfig.getObjectCaption().replace(TMP_DIR, "")))
+                  .equals(fileLinkExpectedConfig.getObjectCaption().replace(TMP_DIR_PATH, "")))
             .findAny();
       return matchingLink.isPresent();
-   }
-
-   /**
-    * Removes fileLinks containing the /bin sequence in their path
-    * 
-    * @param fileLinksExpectedConfig List which should be filtered
-    * @return a filtered list
-    */
-   private List<HistoryLink> removeBinFolderFiles(List<HistoryLink> fileLinksExpectedConfig) {
-      final String filterBinFolder = "^((?!/bin).)*$";
-      return fileLinksExpectedConfig
-            .stream()
-            .filter(link -> link.getObjectCaption().matches(filterBinFolder))
-            .collect(toList());
    }
 
    private CommandResult generateCommandResult(List<HistoryLink> missingConfigFiles) {
@@ -153,7 +130,7 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
       missingLinksAsString.forEach(
             linkString -> rsTableModel.addDataRow(
                   new RSStringTableRow(
-                        linkString.replace(TMP_DIR, ""),
+                        linkString.replace(TMP_DIR_PATH, ""),
                         "missing")));
 
       return new CommandResult(rsTableModel);

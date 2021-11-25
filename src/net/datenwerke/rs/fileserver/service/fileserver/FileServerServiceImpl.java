@@ -61,7 +61,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
 		if(path.startsWith("/"))
 			path = "/" + FileServerVfs.FILESYSTEM_NAME + path;
 		else
-			path = "/" + FileServerVfs.FILESYSTEM_NAME + path + "/";
+			path = "/" + FileServerVfs.FILESYSTEM_NAME  + "/" + path;
 		
 		try {
 			Object object = terminalService.getObjectByLocation(path, checkRights);

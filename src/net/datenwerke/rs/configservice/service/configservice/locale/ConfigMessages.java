@@ -15,6 +15,9 @@ public interface ConfigMessages extends Messages {
 
    String commandDiffConfigFiles_description();
    String commandDiffConfigFiles_sub_showmissing_description();
+   String commandDiffConfigFiles_sub_createall_description();
+   String commandDiffConfigFiles_sub_createall_folderArgument();
+   
 
    String configReloaded();
 }

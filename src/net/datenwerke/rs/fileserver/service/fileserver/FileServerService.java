@@ -25,7 +25,7 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
 	
 	FileServerFile createFileAtLocation(VFSLocation location, boolean checkRights);
 	
-	AbstractFileServerNode getNodeByPath(String parameter);
+	AbstractFileServerNode getNodeByPath(String path);
 
 	AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
 
