@@ -47,13 +47,13 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @OneToOne
    private EmailDatasink emailDatasink;
    
-   private boolean compressed;
+   private Boolean compressed = false;
    
-   public boolean isCompressed() {
+   public Boolean isCompressed() {
       return compressed;
    }
    
-   public void setCompressed(boolean compressed) {
+   public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
    

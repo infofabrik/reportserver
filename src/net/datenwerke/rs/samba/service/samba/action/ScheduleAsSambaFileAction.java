@@ -44,13 +44,13 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
     private String name;
     private String folder;
     
-    private boolean compressed;
+    private Boolean compressed = false;
     
-    public boolean isCompressed() {
+    public Boolean isCompressed() {
        return compressed;
     }
        
-    public void setCompressed(boolean compressed) {
+    public void setCompressed(Boolean compressed) {
        this.compressed = compressed;
     }
        
