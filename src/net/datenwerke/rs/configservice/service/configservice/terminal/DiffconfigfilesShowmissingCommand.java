@@ -73,7 +73,7 @@ public class DiffconfigfilesShowmissingCommand implements DiffconfigfilesSubComm
 
          missingConfigFiles = findMissingConfigFiles(tmpConfigFolder);
       } catch (Exception e) {
-         throw new TerminalException("the config files could not be calculated: " + e);
+         throw new TerminalException("the config files could not be calculated.", e);
       } finally {
          if (null != tmpConfigFolder)
             fileServerService.remove(tmpConfigFolder);
