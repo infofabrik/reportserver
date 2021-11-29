@@ -1,6 +1,5 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -12,6 +11,7 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
@@ -56,24 +56,28 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
    @Override
    public void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
-         List<User> recipients, String filename, boolean sendSyncEmail) throws IOException {
+         List<User> recipients, String filename, boolean sendSyncEmail) throws DatasinkExportException {
       Objects.requireNonNull(emailDatasink, "datasink is null!");
       Objects.requireNonNull(filename);
 
-      SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, recipients)
-            .withEmailDatasink(emailDatasink)
-            .withAttachments(Arrays.asList(new SimpleAttachment(report, 
-                  mimeUtilsProvider.get().getMimeTypeByExtension(filename), filename)))
-            .build();
-
-      if (sendSyncEmail)
-         mailServiceProvider.get().sendMailSync(Optional.of(emailDatasink), mail);
-      else
-         mailServiceProvider.get().sendMail(Optional.of(emailDatasink), mail);
+      try {
+         SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, recipients)
+               .withEmailDatasink(emailDatasink)
+               .withAttachments(Arrays.asList(new SimpleAttachment(report, 
+                     mimeUtilsProvider.get().getMimeTypeByExtension(filename), filename)))
+               .build();
+   
+         if (sendSyncEmail)
+            mailServiceProvider.get().sendMailSync(Optional.of(emailDatasink), mail);
+         else
+            mailServiceProvider.get().sendMail(Optional.of(emailDatasink), mail);
+      } catch (Exception e) {
+         throw new DatasinkExportException("An error occurred during datasink export", e);
+      }
    }
 
    @Override
-   public void testDatasink(EmailDatasink emailDatasink) throws IOException {
+   public void testDatasink(EmailDatasink emailDatasink) throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("Email datasink is disabled");
 

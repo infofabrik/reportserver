@@ -1,21 +1,21 @@
 package net.datenwerke.rs.box.service.box;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class DummyBoxServiceImpl implements BoxService {
 
    @Override
    public void exportIntoDatasink(Object report, BoxDatasink boxDatasink, String filename, String folder)
-         throws IOException {
+         throws DatasinkExportException {
 
    }
 
    @Override
-   public void testDatasink(BoxDatasink boxDatasink) throws IOException {
+   public void testDatasink(BoxDatasink boxDatasink) throws DatasinkExportException {
    }
 
    @Override

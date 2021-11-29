@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultSftpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -35,15 +36,19 @@ public class SftpServiceImpl implements SftpService {
 
    @Override
    public void exportIntoSftp(Object report, SftpDatasink sftpDatasink, String filename, String folder)
-         throws IOException {
+         throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("sftp is disabled");
       
-      ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, filename, folder);
+      try {
+         ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, filename, folder);
+      } catch (IOException e) {
+         throw new DatasinkExportException("An error occurred during datasink export", e);
+      }
    }
 
    @Override
-   public void testSftpDatasink(SftpDatasink sftpDatasink) throws IOException {
+   public void testSftpDatasink(SftpDatasink sftpDatasink) throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("sftp is disabled");
 

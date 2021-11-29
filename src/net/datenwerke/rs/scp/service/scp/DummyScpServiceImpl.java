@@ -1,8 +1,8 @@
 package net.datenwerke.rs.scp.service.scp;
 
-import java.io.IOException;
 import java.util.Optional;
 
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 
@@ -10,12 +10,12 @@ public class DummyScpServiceImpl implements ScpService {
 
    @Override
    public void exportIntoDatasink(Object report, ScpDatasink scpDatasink, String filename, String folder)
-         throws IOException {
+         throws DatasinkExportException {
 
    }
 
    @Override
-   public void testScpDatasink(ScpDatasink scpDatasink) throws IOException {
+   public void testScpDatasink(ScpDatasink scpDatasink) throws DatasinkExportException {
 
    }
 

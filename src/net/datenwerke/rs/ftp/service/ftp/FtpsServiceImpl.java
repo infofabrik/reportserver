@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -34,7 +35,7 @@ public class FtpsServiceImpl implements FtpsService {
    }
 
    @Override
-   public void testFtpsDatasink(FtpsDatasink ftpsDatasink) throws IOException {
+   public void testFtpsDatasink(FtpsDatasink ftpsDatasink) throws DatasinkExportException {
        if (!datasinkServiceProvider.get().isEnabled(this))
            throw new IllegalStateException("ftps is disabled");
 
@@ -45,11 +46,15 @@ public class FtpsServiceImpl implements FtpsService {
 
    @Override
    public void exportIntoFtps(Object report, FtpsDatasink ftpsDatasink, String filename, String folder)
-           throws IOException {
+         throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftps is disabled");
       
-      ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, filename, folder);
+      try {
+         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, filename, folder);
+      } catch (IOException e) {
+         throw new DatasinkExportException("An error occurred during datasink export", e);
+      }
    }
 
    @Override

@@ -9,6 +9,7 @@ import org.json.JSONException;
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 
 @ImplementedBy(DummyGoogleDriveServiceImpl.class)
@@ -25,26 +26,19 @@ public interface GoogleDriveService extends BasicDatasinkService {
     * @param folder              where to save the report in the GoogleDrive
     *                            account. Overrides the folder defined in the
     *                            {@link GoogleDriveDatasink}
-    * @throws IOException          if an I/O error occurs
-    * @throws InterruptedException if the oauth client throws InterruptedException
-    * @throws ExecutionException   if the oauth client throws ExecutionException
-    * @throws JSONException 
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
    void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename, String folder)
-         throws Exception;
+         throws DatasinkExportException;
 
    /**
     * Issues a GoogleDrive test request by creating a simple text file and sending
     * it to the specified directory in the GoogleDrive of the datasink.
     * 
     * @param googleDriveDatasink the {@link GoogleDriveDatasink} to test
-    * @throws IOException          if an I/O error occurs
-    * @throws InterruptedException if the oauth client throws InterruptedException
-    * @throws ExecutionException   if the oauth client throws ExecutionException
-    * @throws JSONException 
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testDatasink(GoogleDriveDatasink googleDriveDatasink)
-         throws Exception;
+   void testDatasink(GoogleDriveDatasink googleDriveDatasink) throws DatasinkExportException;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.

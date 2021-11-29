@@ -1,11 +1,11 @@
 package net.datenwerke.rs.samba.service.samba;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 
 @ImplementedBy(DummySambaServiceImpl.class)
@@ -22,19 +22,19 @@ public interface SambaService extends BasicDatasinkService {
     * @param folder        extension path of the base path defined in the datasink.
     *                      Overrides the folder defined in the
     *                      {@link SambaDatasink}
-    * @throws IOException     if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
    void exportIntoDatasink(Object report, SambaDatasink sambaDatasink, String filename, String folder)
-         throws IOException;
+         throws DatasinkExportException;
 
    /**
     * Issues a Samba test request by creating a simple text file and sending it to
     * the specified directory in the Samba server of the datasink.
     * 
     * @param sambaDatasink the {@link SambaDatasink} to test
-    * @throws IOException if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testDatasink(SambaDatasink sambaDatasink) throws IOException;
-   
+   void testDatasink(SambaDatasink sambaDatasink) throws DatasinkExportException;
+
    Optional<SambaDatasink> getDefaultDatasink();
 }

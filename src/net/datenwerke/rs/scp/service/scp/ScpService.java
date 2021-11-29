@@ -1,12 +1,11 @@
 package net.datenwerke.rs.scp.service.scp;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import com.google.inject.ImplementedBy;
-import com.jcraft.jsch.JSchException;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 
 @ImplementedBy(DummyScpServiceImpl.class)
@@ -22,23 +21,19 @@ public interface ScpService extends BasicDatasinkService {
     * @param filename    filename to use for the report
     * @param folder      extension path of the base path defined in the datasink.
     *                    Overrides the folder defined in the {@link ScpDatasink}
-    * @throws IOException   if an I/O error occurs
-    * @throws JSchException if error occurs while connecting with the SCP SSH
-    *                       server
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
    void exportIntoDatasink(Object report, ScpDatasink scpDatasink, String filename, String folder)
-         throws IOException, JSchException;
+         throws DatasinkExportException;
 
    /**
     * Issues a Scp test request by creating a simple text file and sending it to
     * the specified directory in the Scp server of the datasink.
     * 
     * @param scpDatasink the {@link ScpDatasink} to test
-    * @throws IOException   if an I/O error occurs
-    * @throws JSchException if error occurs while connecting with the SCP SSH
-    *                       server
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testScpDatasink(ScpDatasink scpDatasink) throws IOException, JSchException;
+   void testScpDatasink(ScpDatasink scpDatasink) throws DatasinkExportException;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.

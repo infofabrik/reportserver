@@ -1,8 +1,8 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
-import java.io.IOException;
 import java.util.Optional;
 
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
@@ -10,11 +10,11 @@ public class DummyOneDriveServiceImpl implements OneDriveService {
 
    @Override
    public void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
-         throws IOException {
+         throws DatasinkExportException {
    }
 
    @Override
-   public void testDatasink(OneDriveDatasink OneDriveDatasink) throws IOException {
+   public void testDatasink(OneDriveDatasink OneDriveDatasink) throws DatasinkExportException {
    }
 
    @Override

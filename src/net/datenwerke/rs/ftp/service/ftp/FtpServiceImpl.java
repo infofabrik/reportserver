@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -37,15 +38,19 @@ public class FtpServiceImpl implements FtpService {
 
    @Override
    public void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder)
-         throws IOException {
+         throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftp is disabled");
       
-      ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTP, report, ftpDatasink, filename, folder);
+      try  {
+         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTP, report, ftpDatasink, filename, folder);
+      } catch(IOException e) {
+         throw new DatasinkExportException("An error occurred during datasink export", e);
+      }
    }
 
    @Override
-   public void testFtpDatasink(FtpDatasink ftpDatasink) throws IOException {
+   public void testFtpDatasink(FtpDatasink ftpDatasink) throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftp is disabled");
 

@@ -1,12 +1,11 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
-import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
 
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 
 @ImplementedBy(DummyOneDriveServiceImpl.class)
@@ -22,24 +21,19 @@ public interface OneDriveService extends BasicDatasinkService {
     * @param folder           where to save the report in the OneDrive account.
     *                         Overrides the folder defined in the
     *                         {@link OneDriveDatasink}
-    * @throws IOException          if an I/O error occurs
-    * @throws InterruptedException if the oauth client throws InterruptedException
-    * @throws ExecutionException   if the oauth client throws ExecutionException
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
    void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
-         throws IOException, InterruptedException, ExecutionException;
+         throws DatasinkExportException;
 
    /**
     * Issues a OneDrive test request by creating a simple text file and sending it
     * to the specified directory in the OneDrive of the datasink.
     * 
     * @param oneDriveDatasink the {@link OneDriveDatasink} to test
-    * @throws IOException          if an I/O error occurs
-    * @throws InterruptedException if the oauth client throws InterruptedException
-    * @throws ExecutionException   if the oauth client throws ExecutionException
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testDatasink(OneDriveDatasink oneDriveDatasink)
-         throws IOException, InterruptedException, ExecutionException;
+   void testDatasink(OneDriveDatasink oneDriveDatasink) throws DatasinkExportException;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.

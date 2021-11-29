@@ -1,9 +1,9 @@
 package net.datenwerke.rs.ftp.service.ftp;
 
-import java.io.IOException;
 import java.util.Optional;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 
 public interface FtpService extends BasicDatasinkService {
@@ -18,18 +18,19 @@ public interface FtpService extends BasicDatasinkService {
     * @param filename    filename to use for the report
     * @param folder      where to save the report in the FTP server. Overrides the
     *                    folder defined in the {@link FtpDatasink}
-    * @throws IOException if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder) throws IOException;
+   void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder)
+         throws DatasinkExportException;
 
    /**
     * Issues a FTP test request by creating a simple text file and sending it to
     * the specified directory in the FTP server of the datasink.
     * 
     * @param ftpDatasink the {@link FtpDatasink} to test
-    * @throws IOException if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testFtpDatasink(FtpDatasink ftpDatasink) throws IOException;
+   void testFtpDatasink(FtpDatasink ftpDatasink) throws DatasinkExportException;
 
    /**
     * Gets the default datasink configured in the datasinks.cf configuration file.
@@ -37,5 +38,5 @@ public interface FtpService extends BasicDatasinkService {
     * @return the default datasink
     */
    Optional<FtpDatasink> getDefaultFtpDatasink();
-   
+
 }

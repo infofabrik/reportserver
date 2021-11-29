@@ -1,10 +1,10 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -24,19 +24,19 @@ public interface EmailDatasinkService extends BasicDatasinkService {
     * @param sendSyncEmail {@code true} if the email should be sent synchronously.
     *                      {@code false} if the email should be sent
     *                      asynchronously.
-    * @throws IOException if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
    void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
-         List<User> recipients, String filename, boolean sendSyncEmail) throws IOException;
+         List<User> recipients, String filename, boolean sendSyncEmail) throws DatasinkExportException;
 
    /**
     * Issues an email SMTP test request by creating a simple text file and sending
     * it to the specified SMTP server of the datasink.
     * 
     * @param emailDatasink the {@link EmailDatasink} to test
-    * @throws IOException if an I/O error occurs
+    * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testDatasink(EmailDatasink emailDatasink) throws IOException;
+   void testDatasink(EmailDatasink emailDatasink) throws DatasinkExportException;
 
    /**
     * Returns the default email datasink, used for sending emails without using the
