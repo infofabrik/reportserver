@@ -1,8 +1,6 @@
 package net.datenwerke.rs.scp.service.scp;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -17,27 +15,27 @@ public class DummyScpServiceImpl implements ScpService {
    }
 
    @Override
-   public Map<StorageType, Boolean> getEnabledConfigs() {
-      return Collections.emptyMap();
-   }
-
-   @Override
-   public boolean isScpEnabled() {
-      return false;
-   }
-
-   @Override
-   public boolean isScpSchedulingEnabled() {
-      return false;
-   }
-
-   @Override
    public void testScpDatasink(ScpDatasink scpDatasink) throws IOException {
 
    }
 
    @Override
    public Optional<ScpDatasink> getDefaultDatasink() {
+      return null;
+   }
+
+   @Override
+   public String getDatasinkPropertyName() {
+      return null;
+   }
+
+   @Override
+   public StorageType getStorageType() {
+      return null;
+   }
+
+   @Override
+   public StorageType getSchedulingStorageType() {
       return null;
    }
 

@@ -2,14 +2,13 @@ package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
 import java.io.IOException;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public interface EmailDatasinkService {
+public interface EmailDatasinkService extends BasicDatasinkService {
 
    /**
     * Sends a report to an email SMTP server defined in a given
@@ -29,31 +28,6 @@ public interface EmailDatasinkService {
     */
    void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
          List<User> recipients, String filename, boolean sendSyncEmail) throws IOException;
-
-   /**
-    * Summarizes {@link #isEnabled()} and {@link #isEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and {@link #isEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of email SMTP enabling. Has to be
-    * true in order for reports to be sent to an email SMTP datasink.
-    * 
-    * @return true if email SMTP is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of email SMTP scheduling enabling.
-    * Reports can only be sent to an email SMTP datasink inside a scheduling job if
-    * this is true.
-    * 
-    * @return true if email SMTP's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues an email SMTP test request by creating a simple text file and sending

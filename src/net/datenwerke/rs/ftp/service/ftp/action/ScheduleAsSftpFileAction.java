@@ -16,8 +16,9 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.ftp.service.ftp.FtpService;
+import net.datenwerke.rs.ftp.service.ftp.SftpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -33,7 +34,8 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionExce
 public class ScheduleAsSftpFileAction extends AbstractAction {
 
 	@Transient @Inject private Provider<SimpleJuel> simpleJuelProvider;
-	@Transient @Inject private FtpService ftpService;
+	@Transient @Inject private SftpService sftpService;
+	@Transient @Inject private DatasinkService datasinkService;
 	
 	@EnclosedEntity
 	@OneToOne
@@ -71,7 +73,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
 		if(null == rJob.getExecutedReport())
 			return;
 		
-		if (! ftpService.isSftpEnabled() || ! ftpService.isSftpSchedulingEnabled())
+		if (! datasinkService.isEnabled(sftpService) || ! datasinkService.isSchedulingEnabled(sftpService))
 			throw new ActionExecutionException("sftp scheduling is disabled");
 		
 		report = rJob.getReport();
@@ -108,14 +110,14 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
              throw new ActionExecutionException(e);
           }
           try {
-             ftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, filenameScheduling, folder);
+             sftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, filenameScheduling, folder);
           } catch (Exception e) {
              throw new ActionExecutionException("report could not be sent to SFTP", e);
           }
        } else {
           String filenameScheduling = filename += "." + rJob.getExecutedReport().getFileExtension();
           try {
-             ftpService.exportIntoSftp(rJob.getExecutedReport().getReport(), sftpDatasink, filenameScheduling, folder);
+             sftpService.exportIntoSftp(rJob.getExecutedReport().getReport(), sftpDatasink, filenameScheduling, folder);
          } catch (Exception e) {
              throw new ActionExecutionException("report could not be sent to SFTP", e);
          }

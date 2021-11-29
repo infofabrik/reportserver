@@ -16,6 +16,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -33,9 +34,14 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private AmazonS3Service amazonS3Service;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!amazonS3Service.isEnabled() || !amazonS3Service.isSchedulingEnabled())
+      if (!datasinkService.isEnabled(amazonS3Service) || !datasinkService.isSchedulingEnabled(amazonS3Service))
          throw new ActionExecutionException("AmazonS3 scheduling is disabled");
 
       report = rJob.getReport();

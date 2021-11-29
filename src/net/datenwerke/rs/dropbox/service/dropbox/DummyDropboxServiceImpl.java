@@ -1,8 +1,6 @@
 package net.datenwerke.rs.dropbox.service.dropbox;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
@@ -17,26 +15,26 @@ public class DummyDropboxServiceImpl implements DropboxService {
    }
 
    @Override
-   public Map<StorageType, Boolean> getEnabledConfigs() {
-      return Collections.emptyMap();
-   }
-
-   @Override
-   public boolean isEnabled() {
-      return false;
-   }
-
-   @Override
-   public boolean isSchedulingEnabled() {
-      return false;
-   }
-
-   @Override
    public void testDatasink(DropboxDatasink dropboxDatasink) throws IOException {
    }
 
    @Override
    public Optional<DropboxDatasink> getDefaultDatasink() {
+      return null;
+   }
+
+   @Override
+   public String getDatasinkPropertyName() {
+      return null;
+   }
+
+   @Override
+   public StorageType getStorageType() {
+      return null;
+   }
+
+   @Override
+   public StorageType getSchedulingStorageType() {
       return null;
    }
 

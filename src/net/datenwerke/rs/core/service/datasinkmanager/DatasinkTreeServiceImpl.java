@@ -1,8 +1,6 @@
 package net.datenwerke.rs.core.service.datasinkmanager;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
@@ -22,7 +20,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition__;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder__;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.simplequery.PredicateType;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
@@ -123,27 +120,6 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
          return Optional.of((T) datasink);
 
       return Optional.empty();
-   }
-
-   @Override
-   public boolean isEnabled(String propertyDisabled) {
-      return !configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE).getBoolean(propertyDisabled,
-            false);
-   }
-
-   @Override
-   public boolean isSchedulingEnabled(String propertySchedulingEnabled) {
-      return configServiceProvider.get().getConfigFailsafe(DatasinkModule.CONFIG_FILE)
-            .getBoolean(propertySchedulingEnabled, true);
-   }
-
-   @Override
-   public Map<StorageType, Boolean> getEnabledConfigs(StorageType storageType, String propertyDisabled,
-         StorageType schedulingType, String propertySchedulingEnabled) {
-      Map<StorageType, Boolean> configs = new HashMap<>();
-      configs.put(storageType, isEnabled(propertyDisabled));
-      configs.put(schedulingType, isSchedulingEnabled(propertySchedulingEnabled));
-      return configs;
    }
 
 }

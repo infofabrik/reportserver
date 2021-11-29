@@ -6,11 +6,12 @@ import java.util.Optional;
 
 import com.google.inject.ImplementedBy;
 
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @ImplementedBy(DummyLocalFileSystemServiceImpl.class)
-public interface LocalFileSystemService {
+public interface LocalFileSystemService extends BasicDatasinkService {
 
    /**
     * Sends a report to a local directory defined in a given
@@ -29,34 +30,6 @@ public interface LocalFileSystemService {
     */
    void exportIntoDatasink(Object report, LocalFileSystemDatasink localFileSystemDatasink, String filename,
          String folder) throws IOException;
-
-   /**
-    * Summarizes {@link #isEnabled()} and
-    * {@link #isSchedulingEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and
-    *         {@link #isSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of local filesystem datasink
-    * enabling. Has to be true in order for reports to be sent to local filesystem
-    * datasinks.
-    * 
-    * @return true if local filesystem is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of {@link LocalFileSystemDatasink}
-    * scheduling enabling. Reports can only be sent to a
-    * {@link LocalFileSystemDatasink} inside a scheduling job if this is true.
-    * 
-    * @return true if local filesystem's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues a {@link LocalFileSystemDatasink} test request by creating a simple

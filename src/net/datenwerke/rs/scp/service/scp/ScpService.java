@@ -1,17 +1,16 @@
 package net.datenwerke.rs.scp.service.scp;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 
 import com.google.inject.ImplementedBy;
 import com.jcraft.jsch.JSchException;
 
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 
 @ImplementedBy(DummyScpServiceImpl.class)
-public interface ScpService {
+public interface ScpService extends BasicDatasinkService {
 
    /**
     * Sends a report to a Scp server defined in a given {@link ScpDatasink}
@@ -29,31 +28,6 @@ public interface ScpService {
     */
    void exportIntoDatasink(Object report, ScpDatasink scpDatasink, String filename, String folder)
          throws IOException, JSchException;
-
-   /**
-    * Summarizes {@link #isScpEnabled()} and {@link #isScpSchedulingEnabled()} in a
-    * map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isScpEnabled()} and {@link #isScpSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of Scp enabling. Has to be true in
-    * order for reports to be sent to Scp datasinks.
-    * 
-    * @return true if Scp is enabled
-    */
-   boolean isScpEnabled();
-
-   /**
-    * Returns the current configuration value of Scp scheduling enabling. Reports
-    * can only be sent to a Scp datasink inside a scheduling job if this is true.
-    * 
-    * @return true if Scp's scheduling is enabled
-    */
-   boolean isScpSchedulingEnabled();
 
    /**
     * Issues a Scp test request by creating a simple text file and sending it to

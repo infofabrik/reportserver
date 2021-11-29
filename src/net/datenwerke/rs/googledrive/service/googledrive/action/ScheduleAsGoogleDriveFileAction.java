@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
@@ -33,9 +34,14 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private GoogleDriveService googleDriveService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!googleDriveService.isEnabled() || !googleDriveService.isSchedulingEnabled())
+      if (!datasinkService.isEnabled(googleDriveService) || !datasinkService.isSchedulingEnabled(googleDriveService))
          throw new ActionExecutionException("Google Drive scheduling is disabled");
 
       report = rJob.getReport();

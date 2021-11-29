@@ -3,7 +3,6 @@ package net.datenwerke.rs.localfsdatasink.server.localfsdatasink;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import java.util.stream.Stream;
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -61,6 +62,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
    public LocalFileSystemRpcServiceImpl(
@@ -72,7 +74,9 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          HookHandlerService hookHandlerService, 
          LocalFileSystemService localFileSystemService,
          ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService) {
+         ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -83,6 +87,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
       this.localFileSystemService = localFileSystemService;
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Transactional(rollbackOn = { Exception.class })
@@ -145,9 +150,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
-      Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(localFileSystemService.getEnabledConfigs());
-      return enabledConfigs;
+      return datasinkServiceProvider.get().getEnabledConfigs(localFileSystemService);
    }
    
    @Override

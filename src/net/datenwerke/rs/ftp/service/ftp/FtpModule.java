@@ -55,6 +55,9 @@ public class FtpModule extends AbstractModule {
    @Override
    protected void configure() {
       bind(FtpService.class).to(FtpServiceImpl.class);
+      bind(SftpService.class).to(SftpServiceImpl.class);
+      bind(FtpsService.class).to(FtpsServiceImpl.class);
+      bind(FtpSenderService.class).to(FtpSenderServiceImpl.class);
 
       requestStaticInjection(FtpDatasink.class);
       requestStaticInjection(SftpDatasink.class);

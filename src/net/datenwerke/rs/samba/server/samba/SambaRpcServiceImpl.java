@@ -3,7 +3,6 @@ package net.datenwerke.rs.samba.server.samba;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import java.util.stream.Stream;
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -61,6 +62,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
    public SambaRpcServiceImpl(
@@ -72,7 +74,8 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
          HookHandlerService hookHandlerService, 
          SambaService sambaService,
          ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService
+         ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -84,6 +87,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       this.sambaService = sambaService;
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -144,9 +148,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    
    @Override
    public Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException {
-      Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(sambaService.getEnabledConfigs());
-      return enabledConfigs;
+      return datasinkServiceProvider.get().getEnabledConfigs(sambaService);
    }
 
    @Override

@@ -1,17 +1,16 @@
 package net.datenwerke.rs.amazons3.service.amazons3;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 
 @ImplementedBy(DummyAmazonS3ServiceImpl.class)
-public interface AmazonS3Service {
+public interface AmazonS3Service extends BasicDatasinkService {
 
    /**
     * Sends a report to AmazonS3, defined in a given {@link AmazonS3Datasink}
@@ -31,32 +30,6 @@ public interface AmazonS3Service {
    void exportIntoDatasink(Object report, AmazonS3Datasink amazonS3Datasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
 
-   /**
-    * Summarizes {@link #isEnabled()} and
-    * {@link #isSchedulingEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and
-    *         {@link #isSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of AmazonS3 enabling. Has to be true
-    * in order for reports to be sent to AmazonS3 datasinks.
-    * 
-    * @return true if AmazonS3 is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of AmazonS3 scheduling enabling.
-    * Reports can only be sent to a AmazonS3 datasink inside a scheduling job if
-    * this is true.
-    * 
-    * @return true if AmazonS3's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues a AmazonS3 test request by creating a simple text file and sending it

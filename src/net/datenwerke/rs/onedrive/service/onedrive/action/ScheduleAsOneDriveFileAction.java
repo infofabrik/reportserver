@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
@@ -33,9 +34,14 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private OneDriveService oneDriveService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!oneDriveService.isEnabled() || !oneDriveService.isSchedulingEnabled())
+      if (! datasinkService.isEnabled(oneDriveService) || ! datasinkService.isSchedulingEnabled(oneDriveService))
          throw new ActionExecutionException("OneDrive scheduling is disabled");
 
       report = rJob.getReport();

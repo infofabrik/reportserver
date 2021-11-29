@@ -3,7 +3,6 @@ package net.datenwerke.rs.amazons3.server.amazons3;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import java.util.stream.Stream;
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
@@ -26,6 +26,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -60,11 +61,21 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public AmazonS3RpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, AmazonS3Service amazonS3Service, ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
+   public AmazonS3RpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         AmazonS3Service amazonS3Service, 
+         ExceptionServices exceptionServices, 
+         ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -75,6 +86,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       this.amazonS3Service = amazonS3Service;
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -132,9 +144,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
-      Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(amazonS3Service.getEnabledConfigs());
-      return enabledConfigs;
+      return datasinkServiceProvider.get().getEnabledConfigs(amazonS3Service);
    }
 
    @Override

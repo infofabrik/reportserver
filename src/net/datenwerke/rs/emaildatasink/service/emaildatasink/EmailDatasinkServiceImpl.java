@@ -1,21 +1,17 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
-import static net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule.PROPERTY_EMAIL_DISABLED;
-import static net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkModule.PROPERTY_EMAIL_SCHEDULING_ENABLED;
-
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
@@ -37,7 +33,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<MailService> mailServiceProvider;
    private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
-   private final Provider<DatasinkTreeService> datasinkServiceProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
@@ -47,8 +43,8 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
          Provider<MailService> mailServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
          Provider<MimeUtils> mimeUtilsProvider,
-         Provider<DatasinkTreeService> datasinkServiceProvider,
-         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
+         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
@@ -77,24 +73,8 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public Map<StorageType, Boolean> getEnabledConfigs() {
-      return datasinkServiceProvider.get().getEnabledConfigs(StorageType.EMAIL, PROPERTY_EMAIL_DISABLED,
-            StorageType.EMAIL_SCHEDULING, PROPERTY_EMAIL_SCHEDULING_ENABLED);
-   }
-
-   @Override
-   public boolean isEnabled() {
-      return datasinkServiceProvider.get().isEnabled(PROPERTY_EMAIL_DISABLED);
-   }
-
-   @Override
-   public boolean isSchedulingEnabled() {
-      return datasinkServiceProvider.get().isSchedulingEnabled(PROPERTY_EMAIL_SCHEDULING_ENABLED);
-   }
-
-   @Override
    public void testDatasink(EmailDatasink emailDatasink) throws IOException {
-      if (!isEnabled())
+      if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("Email datasink is disabled");
 
       String emailText = "ReportServer Email Datasink Test";
@@ -107,6 +87,21 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    @Override
    public Optional<EmailDatasink> getDefaultDatasink() {
       return defaultDatasinkProvider.get();
+   }
+
+   @Override
+   public String getDatasinkPropertyName() {
+      return "email";
+   }
+
+   @Override
+   public StorageType getStorageType() {
+      return StorageType.EMAIL;
+   }
+
+   @Override
+   public StorageType getSchedulingStorageType() {
+      return StorageType.EMAIL_SCHEDULING;
    }
 
 }

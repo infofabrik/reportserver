@@ -193,4 +193,5 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
             .scope("offline_access files.readwrite.all")
             .build();
    }
+
 }

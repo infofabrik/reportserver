@@ -1,7 +1,6 @@
 package net.datenwerke.rs.googledrive.service.googledrive;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
@@ -9,11 +8,11 @@ import org.json.JSONException;
 
 import com.google.inject.ImplementedBy;
 
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @ImplementedBy(DummyGoogleDriveServiceImpl.class)
-public interface GoogleDriveService {
+public interface GoogleDriveService extends BasicDatasinkService {
    /**
     * Sends a report to GoogleDrive, defined in a given {@link GoogleDriveDatasink}
     * datasink. The folder defined in the {@link GoogleDriveDatasink} is overridden
@@ -33,33 +32,6 @@ public interface GoogleDriveService {
     */
    void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename, String folder)
          throws Exception;
-
-   /**
-    * Summarizes {@link #isEnabled()} and
-    * {@link #isSchedulingEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and
-    *         {@link #isSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of GoogleDrive enabling. Has to be
-    * true in order for reports to be sent to GoogleDrive datasinks.
-    * 
-    * @return true if GoogleDrive is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of GoogleDrive scheduling enabling.
-    * Reports can only be sent to a GoogleDrive datasink inside a scheduling job if
-    * this is true.
-    * 
-    * @return true if GoogleDrive's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues a GoogleDrive test request by creating a simple text file and sending

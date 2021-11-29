@@ -1,17 +1,16 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import com.google.inject.ImplementedBy;
 
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @ImplementedBy(DummyOneDriveServiceImpl.class)
-public interface OneDriveService {
+public interface OneDriveService extends BasicDatasinkService {
    /**
     * Sends a report to OneDrive, defined in a given {@link OneDriveDatasink}
     * datasink. The folder defined in the {@link OneDriveDatasink} is overridden by
@@ -29,33 +28,6 @@ public interface OneDriveService {
     */
    void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
-
-   /**
-    * Summarizes {@link #isEnabled()} and
-    * {@link #isSchedulingEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and
-    *         {@link #isSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of OneDrive enabling. Has to be true
-    * in order for reports to be sent to OneDrive datasinks.
-    * 
-    * @return true if OneDrive is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of OneDrive scheduling enabling.
-    * Reports can only be sent to a OneDrive datasink inside a scheduling job if
-    * this is true.
-    * 
-    * @return true if OneDrive's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues a OneDrive test request by creating a simple text file and sending it

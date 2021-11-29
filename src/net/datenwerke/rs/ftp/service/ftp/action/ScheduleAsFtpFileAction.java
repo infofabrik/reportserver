@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
@@ -32,6 +33,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
 
 	@Transient @Inject private Provider<SimpleJuel> simpleJuelProvider;
 	@Transient @Inject private FtpService ftpService;
+	@Transient @Inject private DatasinkService datasinkService;
 	
 	@EnclosedEntity
 	@OneToOne
@@ -69,7 +71,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
 		if(null == rJob.getExecutedReport())
 			return;
 		
-		if (! ftpService.isFtpEnabled() || ! ftpService.isFtpSchedulingEnabled())
+		if (! datasinkService.isEnabled(ftpService) || ! datasinkService.isSchedulingEnabled(ftpService))
 			throw new ActionExecutionException("ftp scheduling is disabled");
 		
 		report = rJob.getReport();

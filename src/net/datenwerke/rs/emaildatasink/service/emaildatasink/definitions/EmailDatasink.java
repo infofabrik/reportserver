@@ -3,10 +3,13 @@ package net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+
 import org.apache.commons.codec.binary.Hex;
 import org.hibernate.envers.Audited;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;

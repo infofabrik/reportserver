@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
@@ -33,9 +34,14 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private DropboxService dropboxService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!dropboxService.isEnabled() || !dropboxService.isSchedulingEnabled())
+      if (!datasinkService.isEnabled(dropboxService) || !datasinkService.isSchedulingEnabled(dropboxService))
          throw new ActionExecutionException("Dropbox scheduling is disabled");
 
       report = rJob.getReport();

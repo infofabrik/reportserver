@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
@@ -32,6 +33,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
 
     @Transient @Inject private Provider<SimpleJuel> simpleJuelProvider;
     @Transient @Inject private SambaService sambaService;
+    @Transient @Inject private DatasinkService datasinkService;
     
     @EnclosedEntity
     @OneToOne
@@ -69,7 +71,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
         if(null == rJob.getExecutedReport())
             return;
         
-        if (! sambaService.isEnabled() || ! sambaService.isSchedulingEnabled())
+        if (! datasinkService.isEnabled(sambaService) || ! datasinkService.isSchedulingEnabled(sambaService))
             throw new ActionExecutionException("samba scheduling is disabled");
         
         report = rJob.getReport();

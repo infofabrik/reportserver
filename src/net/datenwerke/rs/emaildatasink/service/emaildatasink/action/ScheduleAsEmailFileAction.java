@@ -17,6 +17,7 @@ import org.hibernate.annotations.Type;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
@@ -39,9 +40,14 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private EmailDatasinkService emailDatasinkService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -86,7 +92,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!emailDatasinkService.isEnabled() || !emailDatasinkService.isSchedulingEnabled())
+      if (!datasinkService.isEnabled(emailDatasinkService) || !datasinkService.isSchedulingEnabled(emailDatasinkService))
          throw new ActionExecutionException("email scheduling is disabled");
       
       report = rJob.getReport();

@@ -3,7 +3,6 @@ package net.datenwerke.rs.box.server.box;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -12,6 +11,7 @@ import java.util.stream.Stream;
 import javax.inject.Singleton;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
@@ -26,6 +26,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -59,11 +60,20 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public BoxRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, BoxService boxService, ExceptionServices exceptionServices, ZipUtilsService zipUtilsService) {
+   public BoxRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         BoxService boxService, ExceptionServices exceptionServices, 
+         ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -74,6 +84,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       this.boxService = boxService;
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -130,9 +141,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
-      Map<StorageType, Boolean> enabledConfigs = new HashMap<>();
-      enabledConfigs.putAll(boxService.getEnabledConfigs());
-      return enabledConfigs;
+      return datasinkServiceProvider.get().getEnabledConfigs(boxService);
    }
 
    @Override

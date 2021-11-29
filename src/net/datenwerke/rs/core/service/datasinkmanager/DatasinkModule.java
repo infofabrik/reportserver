@@ -1,8 +1,7 @@
 package net.datenwerke.rs.core.service.datasinkmanager;
 
-import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import com.google.inject.Inject;
@@ -40,14 +39,10 @@ public class DatasinkModule extends AbstractReportServerModule {
    @ReportServerDatasinkDefinitions
    @Inject
    public Set<Class<? extends DatasinkDefinition>> provideDatasinkDefinitions(HookHandlerService hookHandler) {
-      Set<Class<? extends DatasinkDefinition>> definitions = new HashSet<Class<? extends DatasinkDefinition>>();
-
-      definitions.addAll(hookHandler.getHookers(DatasinkProviderHook.class)
+      return hookHandler.getHookers(DatasinkProviderHook.class)
             .stream()
             .flatMap(dsProvider -> dsProvider.getDatasinks().stream())
-            .collect(toList()));
-
-      return definitions;
+            .collect(toSet());
    }
 
 }

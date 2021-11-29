@@ -1,9 +1,7 @@
 package net.datenwerke.rs.core.service.datasourcemanager;
 
-import static java.util.stream.Collectors.toList;
-
-import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import org.apache.commons.configuration2.Configuration;
 
@@ -42,14 +40,10 @@ public class DatasourceModule extends AbstractReportServerModule {
    @ReportServerDatasourceDefinitions
    @Inject
    public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(HookHandlerService hookHandler) {
-      Set<Class<? extends DatasourceDefinition>> definitions = new HashSet<Class<? extends DatasourceDefinition>>();
-
-      definitions.addAll(hookHandler.getHookers(DatasourceProviderHook.class)
+      return hookHandler.getHookers(DatasourceProviderHook.class)
             .stream()
             .flatMap(dsProvider -> dsProvider.getDatasources().stream())
-            .collect(toList()));
-
-      return definitions;
+            .collect(Collectors.toSet());
    }
 
    @Provides

@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
@@ -33,6 +34,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
    
    @Transient @Inject private Provider<SimpleJuel> simpleJuelProvider;
    @Transient @Inject private LocalFileSystemService localFileSystemService;
+   @Transient @Inject private DatasinkService datasinkService;
    
    @EnclosedEntity
    @OneToOne
@@ -70,7 +72,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
       if(null == rJob.getExecutedReport())
          return;
       
-      if (! localFileSystemService.isEnabled() || ! localFileSystemService.isSchedulingEnabled())
+      if (! datasinkService.isEnabled(localFileSystemService) || ! datasinkService.isSchedulingEnabled(localFileSystemService))
          throw new ActionExecutionException("Local File System scheduling is disabled");
       
       report = rJob.getReport();

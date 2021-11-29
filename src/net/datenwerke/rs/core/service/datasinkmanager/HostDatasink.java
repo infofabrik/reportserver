@@ -1,6 +1,6 @@
 package net.datenwerke.rs.core.service.datasinkmanager;
 
-public interface BasicDatasink {
+public interface HostDatasink {
 	String getHost();
 	int getPort();
 	String getUsername();

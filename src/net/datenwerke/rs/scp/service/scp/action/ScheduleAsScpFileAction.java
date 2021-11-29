@@ -14,6 +14,7 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.scp.service.scp.ScpService;
@@ -33,9 +34,14 @@ public class ScheduleAsScpFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private ScpService scpService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsScpFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!scpService.isScpEnabled() || !scpService.isScpSchedulingEnabled())
+      if (!datasinkService.isEnabled(scpService) || !datasinkService.isSchedulingEnabled(scpService))
          throw new ActionExecutionException("scp scheduling is disabled");
 
       report = rJob.getReport();

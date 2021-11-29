@@ -14,8 +14,9 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.ftp.service.ftp.FtpService;
+import net.datenwerke.rs.ftp.service.ftp.FtpsService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -33,9 +34,14 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
     @Transient
     @Inject
     private Provider<SimpleJuel> simpleJuelProvider;
+    
     @Transient
     @Inject
-    private FtpService ftpService;
+    private FtpsService ftpsService;
+    
+    @Transient
+    @Inject
+    private DatasinkService datasinkService;
 
     @EnclosedEntity
     @OneToOne
@@ -75,7 +81,7 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
         if (null == rJob.getExecutedReport())
             return;
 
-        if (!ftpService.isFtpsEnabled() || !ftpService.isFtpsSchedulingEnabled())
+        if (!datasinkService.isEnabled(ftpsService) || !datasinkService.isSchedulingEnabled(ftpsService))
             throw new ActionExecutionException("ftps scheduling is disabled");
 
         report = rJob.getReport();
@@ -107,11 +113,11 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                ftpService.exportIntoFtps(os.toByteArray(), ftpsDatasink, filenameScheduling, folder);
+                ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, filenameScheduling, folder);
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             ftpService.exportIntoFtps(rJob.getExecutedReport().getReport(), ftpsDatasink, filenameScheduling,
+             ftpsService.exportIntoFtps(rJob.getExecutedReport().getReport(), ftpsDatasink, filenameScheduling,
                    folder);
           }
        } catch (Exception e) {

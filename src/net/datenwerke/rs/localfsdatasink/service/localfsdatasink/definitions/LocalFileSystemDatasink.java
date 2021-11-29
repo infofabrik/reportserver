@@ -65,4 +65,5 @@ public class LocalFileSystemDatasink extends DatasinkDefinition implements Folde
    public void setFolder(String folder) {
       this.folder = folder;
    }
+
 }

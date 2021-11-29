@@ -1,17 +1,16 @@
 package net.datenwerke.rs.dropbox.service.dropbox;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
 import com.google.inject.ImplementedBy;
 
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @ImplementedBy(DummyDropboxServiceImpl.class)
-public interface DropboxService {
+public interface DropboxService extends BasicDatasinkService {
 
    /**
     * Sends a report to Dropbox, defined in a given {@link DropboxDatasink}
@@ -30,32 +29,6 @@ public interface DropboxService {
     */
    void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
          throws IOException, InterruptedException, ExecutionException;
-
-   /**
-    * Summarizes {@link #isEnabled()} and
-    * {@link #isSchedulingEnabled()} in a map.
-    * 
-    * @return a map containing the enabling configuration for
-    *         {@link #isEnabled()} and {@link #isSchedulingEnabled()}
-    */
-   Map<StorageType, Boolean> getEnabledConfigs();
-
-   /**
-    * Returns the current configuration value of Dropbox enabling. Has to be true
-    * in order for reports to be sent to Dropbox datasinks.
-    * 
-    * @return true if Dropbox is enabled
-    */
-   boolean isEnabled();
-
-   /**
-    * Returns the current configuration value of Dropbox scheduling enabling.
-    * Reports can only be sent to a Dropbox datasink inside a scheduling job if
-    * this is true.
-    * 
-    * @return true if Dropbox's scheduling is enabled
-    */
-   boolean isSchedulingEnabled();
 
    /**
     * Issues a Dropbox test request by creating a simple text file and sending it

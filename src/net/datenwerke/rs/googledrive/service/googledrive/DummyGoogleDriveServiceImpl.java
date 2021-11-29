@@ -1,8 +1,6 @@
 package net.datenwerke.rs.googledrive.service.googledrive;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Map;
 import java.util.Optional;
 
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
@@ -17,26 +15,26 @@ public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
    }
 
    @Override
-   public Map<StorageType, Boolean> getEnabledConfigs() {
-      return Collections.emptyMap();
-   }
-
-   @Override
-   public boolean isEnabled() {
-      return false;
-   }
-
-   @Override
-   public boolean isSchedulingEnabled() {
-      return false;
-   }
-
-   @Override
    public void testDatasink(GoogleDriveDatasink googleDriveDatasink) throws IOException {
    }
 
    @Override
    public Optional<GoogleDriveDatasink> getDefaultDatasink() {
+      return null;
+   }
+
+   @Override
+   public String getDatasinkPropertyName() {
+      return null;
+   }
+
+   @Override
+   public StorageType getStorageType() {
+      return null;
+   }
+
+   @Override
+   public StorageType getSchedulingStorageType() {
       return null;
    }
 

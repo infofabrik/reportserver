@@ -15,8 +15,8 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
-import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.HostDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.FtpDatasink2DtoPostProcessor;
 import net.datenwerke.rs.ftp.service.ftp.locale.FtpMessages;
@@ -45,7 +45,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 		icon = "upload"
 		)
 @Indexed
-public class FtpDatasink extends DatasinkDefinition implements BasicDatasink, FolderedDatasink {
+public class FtpDatasink extends DatasinkDefinition implements HostDatasink, FolderedDatasink {
 
    /**
     * 

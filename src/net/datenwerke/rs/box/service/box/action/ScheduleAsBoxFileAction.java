@@ -16,6 +16,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.box.service.box.BoxService;
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -32,9 +33,14 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
+   
    @Transient
    @Inject
    private BoxService boxService;
+   
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
    @EnclosedEntity
    @OneToOne
@@ -74,7 +80,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!boxService.isEnabled() || !boxService.isSchedulingEnabled())
+      if (!datasinkService.isEnabled(boxService) || !datasinkService.isSchedulingEnabled(boxService))
          throw new ActionExecutionException("Box scheduling is disabled");
 
       report = rJob.getReport();
