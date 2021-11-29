@@ -4,6 +4,9 @@ import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -41,6 +44,7 @@ import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -66,7 +70,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final ExceptionServices exceptionServices;
    private final UserManagerService userManagerService;
    private final ZipUtilsService zipUtilsService;
-   private final Provider<DatasinkService> datasinkService;
+   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public EmailDatasinkRpcServiceImpl(
@@ -80,7 +85,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          ExceptionServices exceptionServices,
          UserManagerService userManagerService,
          ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkService
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider
          ) {
       this.reportService = reportService;
       this.emailDatasinkService = emailDatasinkService;
@@ -92,7 +98,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       this.exceptionServices = exceptionServices;
       this.userManagerService = userManagerService;
       this.zipUtilsService = zipUtilsService;
-      this.datasinkService = datasinkService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -133,7 +140,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, 
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), emailDatasink, emailDatasinkService, 
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -164,7 +171,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            emailDatasinkService.exportIntoDatasink(cReport.getReport(), emailDatasink, new DatasinkEmailConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), emailDatasink, emailDatasinkService,
+                  new DatasinkEmailConfig() {
 
                @Override
                public String getFilename() {
@@ -207,7 +215,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
-      return datasinkService.get().getEnabledConfigs(emailDatasinkService);
+      return datasinkServiceProvider.get().getEnabledConfigs(emailDatasinkService);
    }
 
    @Override
@@ -218,7 +226,35 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       securityService.assertRights(emailDatasink, Read.class, Execute.class);
 
       try {
-         emailDatasinkService.testDatasink(emailDatasink);
+         String emailText = "ReportServer Email Datasink Test";
+         datasinkServiceProvider.get().testDatasink(emailDatasink, emailDatasinkService, new DatasinkEmailConfig() {
+            
+            @Override
+            public String getFilename() {
+               return "reportserver-email-datasink-test.txt";
+            }
+            
+            @Override
+            public boolean isSendSyncEmail() {
+               return true;
+            }
+            
+            @Override
+            public String getSubject() {
+               return emailText;
+            }
+            
+            @Override
+            public List<User> getRecipients() {
+               return Arrays.asList(authenticatorServiceProvider.get().getCurrentUser());
+            }
+            
+            @Override
+            public String getBody() {
+               SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+               return emailText + " " + dateFormat.format(Calendar.getInstance().getTime());
+            }
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));

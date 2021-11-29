@@ -104,35 +104,37 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                sambaService.exportIntoDatasink(os.toByteArray(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+                datasinkService.exportIntoDatasink(os.toByteArray(), sambaDatasink, sambaService,
+                      new DatasinkFilenameFolderConfig() {
 
-                   @Override
-                   public String getFilename() {
-                      return filenameScheduling;
-                   }
+                         @Override
+                         public String getFilename() {
+                            return filenameScheduling;
+                         }
 
-                   @Override
-                   public String getFolder() {
-                      return folder;
-                   }
+                         @Override
+                         public String getFolder() {
+                            return folder;
+                         }
 
-                });
+                      });
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             sambaService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sambaDatasink, sambaService,
+                   new DatasinkFilenameFolderConfig() {
 
-                @Override
-                public String getFilename() {
-                   return filenameScheduling;
-                }
+                      @Override
+                      public String getFilename() {
+                         return filenameScheduling;
+                      }
 
-                @Override
-                public String getFolder() {
-                   return folder;
-                }
+                      @Override
+                      public String getFolder() {
+                         return folder;
+                      }
 
-             });
+                   });
           }
        } catch (Exception e) {
           throw new ActionExecutionException("report could not be sent to Samba", e);

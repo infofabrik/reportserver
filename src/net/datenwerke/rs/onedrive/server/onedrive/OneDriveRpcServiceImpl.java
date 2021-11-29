@@ -123,7 +123,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), oneDriveDatasink, oneDriveService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -140,7 +140,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            oneDriveService.exportIntoDatasink(cReport.getReport(), oneDriveDatasink,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), oneDriveDatasink, oneDriveService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -181,7 +181,20 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(oneDriveDatasink, Read.class, Execute.class);
 
       try {
-         oneDriveService.testDatasink(oneDriveDatasink);
+         datasinkServiceProvider.get().testDatasink(oneDriveDatasink, oneDriveService,
+               new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return "reportserver-onedrive-sharepoint-test.txt";
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return oneDriveDatasink.getFolder();
+                  }
+
+               });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -216,7 +229,8 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(oneDriveDatasink, Read.class, Execute.class);
       
       try {
-         oneDriveService.exportIntoDatasink(file.getData(), oneDriveDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), oneDriveDatasink, oneDriveService,
+               new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {

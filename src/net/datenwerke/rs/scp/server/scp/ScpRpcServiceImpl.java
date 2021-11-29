@@ -124,35 +124,37 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), scpDatasink, scpService,
+                     new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-               });
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            scpService.exportIntoDatasink(cReport.getReport(), scpDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), scpDatasink, scpService,
+                  new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-            });
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Scp server: " + e.getMessage(), e);
@@ -180,7 +182,19 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       securityService.assertRights(scpDatasink, Read.class, Execute.class);
 
       try {
-         scpService.testScpDatasink(scpDatasink);
+         datasinkServiceProvider.get().testDatasink(scpDatasink, scpService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-scp-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return scpDatasink.getFolder();
+            }
+
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -215,19 +229,20 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       securityService.assertRights(scpDatasink, Read.class, Execute.class);
       
       try {
-         scpService.exportIntoDatasink(file.getData(), scpDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), scpDatasink, scpService,
+               new DatasinkFilenameFolderConfig() {
 
-            @Override
-            public String getFilename() {
-               return filename;
-            }
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
 
-            @Override
-            public String getFolder() {
-               return folder;
-            }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
 
-         });
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to SCP: " + e.getMessage(), e);
       }

@@ -111,7 +111,8 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
              throw new ActionExecutionException(e);
           }
           try {
-             sftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, new DatasinkFilenameFolderConfig() {
+             datasinkService.exportIntoDatasink(os.toByteArray(), sftpDatasink, sftpService, 
+                   new DatasinkFilenameFolderConfig() {
 
                 @Override
                 public String getFolder() {
@@ -129,7 +130,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
        } else {
           String filenameScheduling = filename += "." + rJob.getExecutedReport().getFileExtension();
           try {
-             sftpService.exportIntoSftp(rJob.getExecutedReport().getReport(), sftpDatasink,
+             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sftpDatasink, sftpService,
                    new DatasinkFilenameFolderConfig() {
 
                       @Override

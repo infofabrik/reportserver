@@ -126,7 +126,8 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               sambaService.exportIntoDatasink(os.toByteArray(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), sambaDatasink, sambaService,
+                     new DatasinkFilenameFolderConfig() {
 
                   @Override
                   public String getFilename() {
@@ -142,7 +143,8 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            sambaService.exportIntoDatasink(cReport.getReport(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), sambaDatasink, sambaService,
+                  new DatasinkFilenameFolderConfig() {
 
                @Override
                public String getFilename() {
@@ -184,7 +186,19 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       securityService.assertRights(sambaDatasink, Read.class, Execute.class);
       
       try {
-         sambaService.testDatasink(sambaDatasink);
+         datasinkServiceProvider.get().testDatasink(sambaDatasink, sambaService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-samba-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return sambaDatasink.getFolder();
+            }
+
+         });
       } catch(Exception e){
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -219,7 +233,8 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       securityService.assertRights(sambaDatasink, Read.class, Execute.class);
       
       try {
-         sambaService.exportIntoDatasink(file.getData(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), sambaDatasink, sambaService,
+               new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {

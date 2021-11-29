@@ -113,22 +113,24 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               boxService.exportIntoDatasink(os.toByteArray(), boxDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkService.exportIntoDatasink(os.toByteArray(), boxDatasink, boxService, 
+                     new DatasinkFilenameFolderConfig() {
                   
                   @Override
                   public String getFolder() {
-                     return filenameScheduling;
+                     return folder;
                   }
                   
                   @Override
                   public String getFilename() {
-                     return folder;
+                     return filenameScheduling;
                   }
                });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            boxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, boxService,
+                  new DatasinkFilenameFolderConfig() {
                
                @Override
                public String getFolder() {

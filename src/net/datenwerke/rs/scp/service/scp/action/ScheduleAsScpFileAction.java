@@ -114,23 +114,24 @@ public class ScheduleAsScpFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkService.exportIntoDatasink(os.toByteArray(), scpDatasink, scpService,
+                     new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filenameScheduling;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-               });
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            scpService.exportIntoDatasink(rJob.getExecutedReport().getReport(), scpDatasink,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), scpDatasink, scpService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

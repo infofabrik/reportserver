@@ -124,7 +124,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), googleDriveDatasink, googleDriveService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -141,7 +141,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            googleDriveService.exportIntoDatasink(cReport.getReport(), googleDriveDatasink,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), googleDriveDatasink, googleDriveService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -183,7 +183,20 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
 
       try {
-         googleDriveService.testDatasink(googleDriveDatasink);
+         datasinkServiceProvider.get().testDatasink(googleDriveDatasink, googleDriveService,
+               new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return "reportserver-googledrive-test.txt";
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return googleDriveDatasink.getFolder();
+                  }
+
+               });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -218,7 +231,8 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
       
       try {
-         googleDriveService.exportIntoDatasink(file.getData(), googleDriveDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), googleDriveDatasink, googleDriveService,
+               new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {

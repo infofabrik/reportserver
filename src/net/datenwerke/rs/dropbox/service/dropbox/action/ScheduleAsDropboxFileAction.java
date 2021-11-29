@@ -114,7 +114,8 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               dropboxService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, dropboxService,
+                     new DatasinkFilenameFolderConfig() {
 
                   @Override
                   public String getFilename() {
@@ -130,7 +131,8 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            dropboxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, dropboxService,
+                  new DatasinkFilenameFolderConfig() {
 
                @Override
                public String getFilename() {
@@ -145,7 +147,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
             });
          }
       } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to dropbox", e);
+         throw new ActionExecutionException("report could not be sent to Dropbox", e);
       }
    }
 

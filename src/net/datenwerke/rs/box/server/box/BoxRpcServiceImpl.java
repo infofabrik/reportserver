@@ -121,22 +121,24 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               boxService.exportIntoDatasink(os.toByteArray(), boxDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), boxDatasink, boxService, 
+                     new DatasinkFilenameFolderConfig() {
                   
                   @Override
                   public String getFolder() {
-                     return filename;
+                     return folder;
                   }
                   
                   @Override
                   public String getFilename() {
-                     return folder;
+                     return filename;
                   }
                });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            boxService.exportIntoDatasink(cReport.getReport(), boxDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), boxDatasink, boxService,
+                  new DatasinkFilenameFolderConfig() {
                
                @Override
                public String getFolder() {
@@ -175,7 +177,18 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       securityService.assertRights(boxDatasink, Read.class, Execute.class);
 
       try {
-         boxService.testDatasink(boxDatasink);
+         datasinkServiceProvider.get().testDatasink(boxDatasink, boxService, new DatasinkFilenameFolderConfig() {
+            
+            @Override
+            public String getFolder() {
+               return boxDatasink.getFolder();
+            }
+            
+            @Override
+            public String getFilename() {
+               return "reportserver-box-test.txt";
+            }
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -210,18 +223,19 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       securityService.assertRights(boxDatasink, Read.class, Execute.class);
       
       try {
-         boxService.exportIntoDatasink(file.getData(), boxDatasink, new DatasinkFilenameFolderConfig() {
-            
-            @Override
-            public String getFolder() {
-               return filename;
-            }
-            
-            @Override
-            public String getFilename() {
-               return folder;
-            }
-         });
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), boxDatasink, boxService,
+               new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Box: " + e.getMessage(), e);
       }

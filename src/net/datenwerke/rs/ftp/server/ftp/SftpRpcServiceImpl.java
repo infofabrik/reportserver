@@ -134,33 +134,35 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               sftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), sftpDatasink, sftpService,
+                     new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            sftpService.exportIntoSftp(cReport.getReport(), sftpDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), sftpDatasink, sftpService,
+                  new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
-            });
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to SFTP server: " + e.getMessage(), e);
@@ -181,7 +183,19 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       securityService.assertRights(sftpDatasink, Read.class, Execute.class);
       
       try {
-         sftpService.testSftpDatasink(sftpDatasink);
+         datasinkServiceProvider.get().testDatasink(sftpDatasink, sftpService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-sftp-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return sftpDatasink.getFolder();
+            }
+
+         });
       } catch(Exception e){
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -215,18 +229,19 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       securityService.assertRights(sftpDatasink, Read.class, Execute.class);
       
       try {
-         sftpService.exportIntoSftp(file.getData(), sftpDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), sftpDatasink, sftpService,
+               new DatasinkFilenameFolderConfig() {
 
-            @Override
-            public String getFolder() {
-               return folder;
-            }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
 
-            @Override
-            public String getFilename() {
-               return filename;
-            }
-         });
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to SFTP: " + e.getMessage(), e);
       }

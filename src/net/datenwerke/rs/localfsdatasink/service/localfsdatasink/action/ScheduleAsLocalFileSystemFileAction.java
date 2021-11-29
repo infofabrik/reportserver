@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
@@ -104,13 +105,35 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               localFileSystemService.exportIntoDatasink(os.toByteArray(), localFileSystemDatasink,
-                     filenameScheduling, folder);
+               datasinkService.exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, localFileSystemService,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            localFileSystemService.exportIntoDatasink(rJob.getExecutedReport().getReport(), localFileSystemDatasink,
-                  filenameScheduling, folder);
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), localFileSystemDatasink,
+                  localFileSystemService, new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Local File System", e);

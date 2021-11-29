@@ -114,22 +114,23 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+                datasinkService.exportIntoDatasink(os.toByteArray(), ftpsDatasink, ftpsService,
+                      new DatasinkFilenameFolderConfig() {
 
-                   @Override
-                   public String getFolder() {
-                      return folder;
-                   }
+                         @Override
+                         public String getFolder() {
+                            return folder;
+                         }
 
-                   @Override
-                   public String getFilename() {
-                      return filenameScheduling;
-                   }
-                });
+                         @Override
+                         public String getFilename() {
+                            return filenameScheduling;
+                         }
+                      });
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             ftpsService.exportIntoFtps(rJob.getExecutedReport().getReport(), ftpsDatasink,
+             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), ftpsDatasink, ftpsService,
                    new DatasinkFilenameFolderConfig() {
 
                       @Override

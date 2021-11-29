@@ -124,7 +124,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               ftpService.exportIntoFtp(os.toByteArray(), ftpDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), ftpDatasink, ftpService,
+                     new DatasinkFilenameFolderConfig() {
 
                   @Override
                   public String getFolder() {
@@ -139,7 +140,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            ftpService.exportIntoFtp(cReport.getReport(), ftpDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), ftpDatasink, ftpService,
+                  new DatasinkFilenameFolderConfig() {
 
                @Override
                public String getFolder() {
@@ -178,7 +180,19 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       securityService.assertRights(ftpDatasink, Read.class, Execute.class);
 
       try {
-         ftpService.testFtpDatasink(ftpDatasink);
+         datasinkServiceProvider.get().testDatasink(ftpDatasink, ftpService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-ftp-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return ftpDatasink.getFolder();
+            }
+
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -212,18 +226,19 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       securityService.assertRights(ftpDatasink, Read.class, Execute.class);
       
       try {
-         ftpService.exportIntoFtp(file.getData(), ftpDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), ftpDatasink, ftpService,
+               new DatasinkFilenameFolderConfig() {
 
-            @Override
-            public String getFolder() {
-               return folder;
-            }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
 
-            @Override
-            public String getFilename() {
-               return filename;
-            }
-         });
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to FTP: " + e.getMessage(), e);
       }

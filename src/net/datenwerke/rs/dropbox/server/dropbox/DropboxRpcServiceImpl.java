@@ -124,7 +124,8 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               dropboxService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), dropboxDatasink, dropboxService,
+                     new DatasinkFilenameFolderConfig() {
 
                   @Override
                   public String getFilename() {
@@ -140,7 +141,8 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            dropboxService.exportIntoDatasink(cReport.getReport(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), dropboxDatasink, dropboxService,
+                  new DatasinkFilenameFolderConfig() {
 
                @Override
                public String getFilename() {
@@ -180,7 +182,19 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
 
       try {
-         dropboxService.testDatasink(dropboxDatasink);
+         datasinkServiceProvider.get().testDatasink(dropboxDatasink, dropboxService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-dropbox-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return dropboxDatasink.getFolder();
+            }
+
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -215,7 +229,8 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
       
       try {
-         dropboxService.exportIntoDatasink(file.getData(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), dropboxDatasink, dropboxService,
+               new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {

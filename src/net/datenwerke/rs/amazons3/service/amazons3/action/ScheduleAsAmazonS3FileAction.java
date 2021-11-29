@@ -114,23 +114,24 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, new DatasinkFilenameFolderConfig() {
+               datasinkService.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, amazonS3Service,
+                     new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filenameScheduling;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-                  
-               });
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            amazonS3Service.exportIntoDatasink(rJob.getExecutedReport().getReport(), amazonS3Datasink,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), amazonS3Datasink, amazonS3Service,
                   new DatasinkFilenameFolderConfig() {
 
                @Override

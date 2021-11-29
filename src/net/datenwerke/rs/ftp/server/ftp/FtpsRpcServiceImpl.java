@@ -138,33 +138,35 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), ftpsDatasink, ftpsService,
+                     new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            ftpsService.exportIntoFtps(cReport.getReport(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), ftpsDatasink, ftpsService,
+                  new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
-            });
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);
@@ -180,7 +182,19 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
 
       try {
-         ftpsService.testFtpsDatasink(ftpsDatasink);
+         datasinkServiceProvider.get().testDatasink(ftpsDatasink, ftpsService, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return "reportserver-ftps-test.txt";
+            }
+
+            @Override
+            public String getFolder() {
+               return ftpsDatasink.getFolder();
+            }
+
+         });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -214,18 +228,19 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
       
       try {
-         ftpsService.exportIntoFtps(file.getData(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), ftpsDatasink, ftpsService,
+               new DatasinkFilenameFolderConfig() {
 
-            @Override
-            public String getFolder() {
-               return folder;
-            }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
 
-            @Override
-            public String getFilename() {
-               return filename;
-            }
-         });
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to FTPS: " + e.getMessage(), e);
       }

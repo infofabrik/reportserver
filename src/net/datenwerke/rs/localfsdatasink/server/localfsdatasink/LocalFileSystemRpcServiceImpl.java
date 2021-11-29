@@ -24,6 +24,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -127,11 +128,35 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               localFileSystemService.exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, filename, folder);
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, localFileSystemService,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            localFileSystemService.exportIntoDatasink(cReport.getReport(), localFileSystemDatasink, filename, folder);
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), localFileSystemDatasink, localFileSystemService,
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to local file system: " + e.getMessage(), e);
@@ -162,7 +187,19 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
          
          try {
-           localFileSystemService.testDatasink(localFileSystemDatasink);
+            datasinkServiceProvider.get().testDatasink(localFileSystemDatasink, localFileSystemService,
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFolder() {
+                        return localFileSystemDatasink.getFolder();
+                     }
+
+                     @Override
+                     public String getFilename() {
+                        return "reportserver-local-fs-test.txt";
+                     }
+                  });
          } catch(Exception e){
             DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
             ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -197,7 +234,19 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
       securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
       
       try {
-         localFileSystemService.exportIntoDatasink(file.getData(), localFileSystemDatasink, filename, folder);
+         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), localFileSystemDatasink,
+               localFileSystemService, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Local Filesystem Datasink: " + e.getMessage(), e);
       }
