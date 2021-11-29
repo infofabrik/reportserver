@@ -24,6 +24,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -209,7 +210,8 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
-      Optional<GoogleDriveDatasink> defaultDatasink = googleDriveService.getDefaultDatasink();
+      Optional<? extends DatasinkDefinition> defaultDatasink = datasinkServiceProvider.get()
+            .getDefaultDatasink(googleDriveService);
       if (!defaultDatasink.isPresent())
          return null;
 

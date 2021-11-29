@@ -50,11 +50,6 @@ public class SftpServiceImpl implements SftpService {
    }
 
    @Override
-   public Optional<SftpDatasink> getDefaultSftpDatasink() {
-      return defaultSftpDatasinkProvider.get();
-   }
-
-   @Override
    public String getDatasinkPropertyName() {
       return "sftp";
    }
@@ -67,6 +62,11 @@ public class SftpServiceImpl implements SftpService {
    @Override
    public StorageType getSchedulingStorageType() {
       return StorageType.SFTP_SCHEDULING;
+   }
+
+   @Override
+   public Optional<SftpDatasink> getDefaultDatasink() {
+      return defaultSftpDatasinkProvider.get();
    }
 
 }

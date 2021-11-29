@@ -1,6 +1,7 @@
 package net.datenwerke.rs.core.service.datasinkmanager;
 
 import java.util.Map;
+import java.util.Optional;
 
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
@@ -66,5 +67,7 @@ public interface DatasinkService {
     */
    void exportIntoDatasink(Object report, DatasinkDefinition datasink, BasicDatasinkService basicDatasinkService,
          DatasinkConfiguration config) throws DatasinkExportException;
+   
+   Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);
 
 }

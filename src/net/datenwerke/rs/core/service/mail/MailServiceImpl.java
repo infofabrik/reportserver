@@ -35,6 +35,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.client.RsCoreUiModule;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleProperties;
 import net.datenwerke.rs.core.service.mail.events.SendMailEvent;
 import net.datenwerke.rs.core.service.mail.exceptions.MailerRuntimeException;
@@ -90,6 +91,7 @@ public class MailServiceImpl implements MailService {
    private final Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory;
    
    private final Provider<EmailDatasinkService> emailDatasinkServiceProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    /* thread pool used to send mails asynchronously */
    private final ExecutorService sendMailPool = Executors.newFixedThreadPool(1);
@@ -104,7 +106,8 @@ public class MailServiceImpl implements MailService {
          Provider<SimpleJuel> simpleJuelProvider, 
          Provider<EventBus> eventBus,
          Provider<EmailDatasinkService> emailDatasinkServiceProvider,
-         @MailModuleProperties Provider<Configuration> config
+         @MailModuleProperties Provider<Configuration> config,
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       /* store objects */
@@ -117,6 +120,7 @@ public class MailServiceImpl implements MailService {
       this.eventBus = eventBus;
       this.emailDatasinkServiceProvider = emailDatasinkServiceProvider;
       this.config = config;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
@@ -194,7 +198,8 @@ public class MailServiceImpl implements MailService {
    
    private Optional<EmailDatasink> loadDefaultEmailDatasink() {
       // try to load default email datasink
-      Optional<EmailDatasink> defaultEmailDatasink = emailDatasinkServiceProvider.get().getDefaultDatasink();
+      Optional<EmailDatasink> defaultEmailDatasink = (Optional<EmailDatasink>) datasinkServiceProvider.get()
+            .getDefaultDatasink(emailDatasinkServiceProvider.get());
       if (defaultEmailDatasink.isPresent())
          return defaultEmailDatasink;
 

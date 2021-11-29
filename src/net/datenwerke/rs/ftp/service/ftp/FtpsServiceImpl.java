@@ -50,7 +50,7 @@ public class FtpsServiceImpl implements FtpsService {
    }
 
    @Override
-   public Optional<FtpsDatasink> getDefaultFtpsDatasink() {
+   public Optional<FtpsDatasink> getDefaultDatasink() {
       return defaultFtpsDatasinkProvider.get();
    }
 

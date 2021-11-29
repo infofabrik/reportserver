@@ -52,7 +52,7 @@ public class FtpServiceImpl implements FtpService {
    }
 
    @Override
-   public Optional<FtpDatasink> getDefaultFtpDatasink() {
+   public Optional<FtpDatasink> getDefaultDatasink() {
       return defaultFtpDatasinkProvider.get();
    }
 

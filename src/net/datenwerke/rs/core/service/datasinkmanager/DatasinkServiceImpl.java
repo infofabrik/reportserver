@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -68,6 +69,11 @@ public class DatasinkServiceImpl implements DatasinkService {
    public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition,
          BasicDatasinkService basicDatasinkService, DatasinkConfiguration config) throws DatasinkExportException {
       basicDatasinkService.doExportIntoDatasink(report, datasinkDefinition, config);
+   }
+
+   @Override
+   public Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService) {
+      return basicDatasinkService.getDefaultDatasink();
    }
 
 }

@@ -25,6 +25,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -207,7 +208,8 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
-      Optional<ScpDatasink> defaultDatasink = scpService.getDefaultDatasink();
+      Optional<? extends DatasinkDefinition> defaultDatasink = datasinkServiceProvider.get()
+            .getDefaultDatasink(scpService);
       if (!defaultDatasink.isPresent())
          return null;
 
