@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.service.ftp.FtpsService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
@@ -113,12 +114,34 @@ public class ScheduleAsFtpsFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, filenameScheduling, folder);
+                ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+
+                   @Override
+                   public String getFolder() {
+                      return folder;
+                   }
+
+                   @Override
+                   public String getFilename() {
+                      return filenameScheduling;
+                   }
+                });
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             ftpsService.exportIntoFtps(rJob.getExecutedReport().getReport(), ftpsDatasink, filenameScheduling,
-                   folder);
+             ftpsService.exportIntoFtps(rJob.getExecutedReport().getReport(), ftpsDatasink,
+                   new DatasinkFilenameFolderConfig() {
+
+                      @Override
+                      public String getFolder() {
+                         return folder;
+                      }
+
+                      @Override
+                      public String getFilename() {
+                         return filenameScheduling;
+                      }
+                   });
           }
        } catch (Exception e) {
           throw new ActionExecutionException("report could not be sent to FTPS", e);

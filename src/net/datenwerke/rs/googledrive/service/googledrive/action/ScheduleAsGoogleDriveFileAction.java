@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
@@ -113,13 +114,37 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink, filenameScheduling,
-                     folder);
+               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             googleDriveService.exportIntoDatasink(rJob.getExecutedReport().getReport(), googleDriveDatasink,
-                  filenameScheduling, folder);
+                  new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filenameScheduling;
+               }
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+
+            });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Google Drive", e);

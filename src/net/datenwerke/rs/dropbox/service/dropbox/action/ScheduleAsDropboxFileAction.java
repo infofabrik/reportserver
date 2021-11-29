@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
@@ -113,12 +114,35 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               dropboxService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, filenameScheduling, folder);
+               dropboxService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return filenameScheduling;
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+               });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            dropboxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, filenameScheduling,
-                  folder);
+            dropboxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filenameScheduling;
+               }
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+
+            });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to dropbox", e);

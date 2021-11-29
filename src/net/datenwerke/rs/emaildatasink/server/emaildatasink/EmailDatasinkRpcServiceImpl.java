@@ -34,6 +34,7 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.rpc.EmailDatasinkRpcService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
@@ -132,12 +133,64 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, subject, message, recipientUsers, filename, true);
+               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, 
+                     new DatasinkEmailConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+
+                        @Override
+                        public boolean isSendSyncEmail() {
+                           return true;
+                        }
+
+                        @Override
+                        public String getSubject() {
+                           return subject;
+                        }
+
+                        @Override
+                        public List<User> getRecipients() {
+                           return recipientUsers;
+                        }
+
+                        @Override
+                        public String getBody() {
+                           return message;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            emailDatasinkService.exportIntoDatasink(cReport.getReport(), emailDatasink, subject, message, recipientUsers,
-                  filename, true);
+            emailDatasinkService.exportIntoDatasink(cReport.getReport(), emailDatasink, new DatasinkEmailConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filename;
+               }
+
+               @Override
+               public boolean isSendSyncEmail() {
+                  return true;
+               }
+
+               @Override
+               public String getSubject() {
+                  return subject;
+               }
+
+               @Override
+               public List<User> getRecipients() {
+                  return recipientUsers;
+               }
+
+               @Override
+               public String getBody() {
+                  return message;
+               }
+            });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to email: " + e.getMessage(), e);

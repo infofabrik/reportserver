@@ -11,12 +11,14 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.SimpleAttachment;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.annotations.DefaultEmailDatasink;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.misc.MimeUtils;
@@ -55,19 +57,23 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
-         List<User> recipients, String filename, boolean sendSyncEmail) throws DatasinkExportException {
+   public void exportIntoDatasink(Object report, EmailDatasink emailDatasink, DatasinkConfiguration config) 
+         throws DatasinkExportException {
       Objects.requireNonNull(emailDatasink, "datasink is null!");
-      Objects.requireNonNull(filename);
+      if (!(config instanceof DatasinkEmailConfig))
+         throw new IllegalStateException("Not a DatasinkEmailConfig config");
+      
+      DatasinkEmailConfig emailConfig = (DatasinkEmailConfig) config;
 
       try {
-         SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, recipients)
+         SimpleMail mail = mailBuilderFactoryProvider.get().create(emailConfig.getSubject(), emailConfig.getBody(), 
+               emailConfig.getRecipients())
                .withEmailDatasink(emailDatasink)
                .withAttachments(Arrays.asList(new SimpleAttachment(report, 
-                     mimeUtilsProvider.get().getMimeTypeByExtension(filename), filename)))
+                     mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()), emailConfig.getFilename())))
                .build();
    
-         if (sendSyncEmail)
+         if (emailConfig.isSendSyncEmail())
             mailServiceProvider.get().sendMailSync(Optional.of(emailDatasink), mail);
          else
             mailServiceProvider.get().sendMail(Optional.of(emailDatasink), mail);
@@ -83,9 +89,33 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
       String emailText = "ReportServer Email Datasink Test";
       exportIntoDatasink(emailText + " " + dateFormat.format(Calendar.getInstance().getTime()), emailDatasink,
-            emailText, emailText + " " + dateFormat.format(Calendar.getInstance().getTime()),
-            Arrays.asList(authenticatorServiceProvider.get().getCurrentUser()), "reportserver-email-datasink-test.txt",
-            true);
+            new DatasinkEmailConfig() {
+               
+               @Override
+               public String getFilename() {
+                  return "reportserver-email-datasink-test.txt";
+               }
+               
+               @Override
+               public boolean isSendSyncEmail() {
+                  return true;
+               }
+               
+               @Override
+               public String getSubject() {
+                  return emailText;
+               }
+               
+               @Override
+               public List<User> getRecipients() {
+                  return Arrays.asList(authenticatorServiceProvider.get().getCurrentUser());
+               }
+               
+               @Override
+               public String getBody() {
+                  return emailText + " " + dateFormat.format(Calendar.getInstance().getTime());
+               }
+            });
    }
 
    @Override

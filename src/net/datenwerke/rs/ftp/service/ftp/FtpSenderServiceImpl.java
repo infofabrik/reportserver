@@ -28,6 +28,8 @@ import org.apache.commons.vfs2.provider.sftp.SftpFileSystemConfigBuilder;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.HostDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
@@ -40,31 +42,30 @@ import net.datenwerke.rs.utils.config.ConfigService;
 public class FtpSenderServiceImpl implements FtpSenderService {
 
    private final static String TLS_PROPERTY = "jdk.tls.client.protocols";
-   
+
    private final Provider<ReportService> reportServiceProvider;
    private final Provider<ConfigService> configServiceProvider;
-   
+
    @Inject
-   public FtpSenderServiceImpl(
-         Provider<ReportService> reportServiceProvider,
-         Provider<ConfigService> configServiceProvider
-         ) {
+   public FtpSenderServiceImpl(Provider<ReportService> reportServiceProvider,
+         Provider<ConfigService> configServiceProvider) {
       this.reportServiceProvider = reportServiceProvider;
       this.configServiceProvider = configServiceProvider;
    }
-   
-   
-   @Override
-   public void sendToFtpServer(StorageType storageType, Object report, HostDatasink basicDatasink, String filename,
-         String folder) throws IOException {
 
+   @Override
+   public void sendToFtpServer(StorageType storageType, Object report, HostDatasink basicDatasink,
+         DatasinkConfiguration config) throws IOException {
       Objects.requireNonNull(basicDatasink, "datasink is null!");
-      Objects.requireNonNull(folder);
-      Objects.requireNonNull(filename);
+      if (!(config instanceof DatasinkFilenameFolderConfig))
+         throw new IllegalStateException("Not a FilenameFolder config");
+
+      String folder = ((DatasinkFilenameFolderConfig)config).getFolder();
+      String filename = ((DatasinkFilenameFolderConfig)config).getFilename();
       
       if (storageType != StorageType.FTP && storageType != StorageType.SFTP && storageType != StorageType.FTPS)
          throw new IllegalArgumentException("storage type not allowed");
-      
+
       String currentTlsProperty = System.getProperty(TLS_PROPERTY);
 
       final String host = Objects.requireNonNull(basicDatasink.getHost());
@@ -116,27 +117,26 @@ public class FtpSenderServiceImpl implements FtpSenderService {
    private void configureFtp(FtpDatasink ftpDatasink, FileSystemOptions opts, String host, int port, String username)
          throws FileSystemException {
       Objects.requireNonNull(ftpDatasink.getFtpMode());
-      
+
       FtpFileSystemConfigBuilder.getInstance().setUserDirIsRoot(opts, true);
 
-      StaticUserAuthenticator auth = new StaticUserAuthenticator(host, username,
-            ftpDatasink.getPassword());
+      StaticUserAuthenticator auth = new StaticUserAuthenticator(host, username, ftpDatasink.getPassword());
       DefaultFileSystemConfigBuilder.getInstance().setUserAuthenticator(opts, auth);
-      
+
       if (FtpDatasinkConfigProviderHooker.ACTIVE_MODE.equals(ftpDatasink.getFtpMode()))
          FtpFileSystemConfigBuilder.getInstance().setPassiveMode(opts, false);
       else if (FtpDatasinkConfigProviderHooker.PASSIVE_MODE.equals(ftpDatasink.getFtpMode()))
          FtpFileSystemConfigBuilder.getInstance().setPassiveMode(opts, true);
-      
+
    }
-   
+
    private void configureSftp(SftpDatasink sftpDatasink, FileSystemOptions opts, String host, int port, String username)
          throws FileSystemException {
       Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
             .getString("knownHosts", System.getProperty("user.home") + "/.ssh/known_hosts"));
       if (!Files.exists(knownHostsFile))
          throw new IllegalArgumentException("known_hosts file does not exist");
-      
+
       Objects.requireNonNull(sftpDatasink.getAuthenticationType());
 
       SftpFileSystemConfigBuilder.getInstance().setKnownHosts(opts, knownHostsFile.toFile());
@@ -158,7 +158,7 @@ public class FtpSenderServiceImpl implements FtpSenderService {
       }
 
    }
-   
+
    private void configureFtps(FtpsDatasink ftpsDatasink, FileSystemOptions opts, String host, int port, String username)
          throws FileSystemException {
       Objects.requireNonNull(ftpsDatasink.getDataChannelProtectionLevel());
@@ -183,5 +183,5 @@ public class FtpSenderServiceImpl implements FtpSenderService {
          FtpFileSystemConfigBuilder.getInstance().setPassiveMode(opts, true);
 
    }
-   
+
 }

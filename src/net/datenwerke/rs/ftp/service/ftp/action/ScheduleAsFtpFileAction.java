@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
@@ -103,11 +104,35 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                ftpService.exportIntoFtp(os.toByteArray(), ftpDatasink, filenameScheduling, folder);
+                ftpService.exportIntoFtp(os.toByteArray(), ftpDatasink, 
+                      new DatasinkFilenameFolderConfig() {
+
+                         @Override
+                         public String getFolder() {
+                            return folder;
+                         }
+
+                         @Override
+                         public String getFilename() {
+                            return filenameScheduling;
+                         }
+                      });
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             ftpService.exportIntoFtp(rJob.getExecutedReport().getReport(), ftpDatasink, filenameScheduling, folder);
+             ftpService.exportIntoFtp(rJob.getExecutedReport().getReport(), ftpDatasink,
+                   new DatasinkFilenameFolderConfig() {
+
+                      @Override
+                      public String getFolder() {
+                         return folder;
+                      }
+
+                      @Override
+                      public String getFilename() {
+                         return filenameScheduling;
+                      }
+                   });
           }
        } catch (Exception e) {
           throw new ActionExecutionException("report could not be sent to FTP", e);

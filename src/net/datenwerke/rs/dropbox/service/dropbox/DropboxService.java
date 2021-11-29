@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 
@@ -18,13 +19,10 @@ public interface DropboxService extends BasicDatasinkService {
     * 
     * @param report          the report to send. May be a String or a byte array
     * @param dropboxDatasink defines the Dropbox datasink to use
-    * @param filename        filename to use for the report
-    * @param folder          where to save the report in the Dropbox account.
-    *                        Overrides the folder defined in the
-    *                        {@link DropboxDatasink}
+    * @param config configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

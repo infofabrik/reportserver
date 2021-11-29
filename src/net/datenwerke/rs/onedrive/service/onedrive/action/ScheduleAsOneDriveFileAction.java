@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
@@ -113,12 +114,37 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink, filenameScheduling, folder);
+               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             oneDriveService.exportIntoDatasink(rJob.getExecutedReport().getReport(), oneDriveDatasink,
-                  filenameScheduling, folder);
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to OneDrive - SharePoint (O365)", e);

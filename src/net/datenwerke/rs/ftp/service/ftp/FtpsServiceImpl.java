@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
@@ -40,18 +42,30 @@ public class FtpsServiceImpl implements FtpsService {
            throw new IllegalStateException("ftps is disabled");
 
        exportIntoFtps("ReportServer FTPS Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
-               ftpsDatasink, "reportserver-ftps-test.txt", ftpsDatasink.getFolder());
+             ftpsDatasink, new DatasinkFilenameFolderConfig() {
+
+                @Override
+                public String getFilename() {
+                   return "reportserver-ftps-test.txt";
+                }
+
+                @Override
+                public String getFolder() {
+                   return ftpsDatasink.getFolder();
+                }
+
+             });
 
    }
 
    @Override
-   public void exportIntoFtps(Object report, FtpsDatasink ftpsDatasink, String filename, String folder)
+   public void exportIntoFtps(Object report, FtpsDatasink ftpsDatasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftps is disabled");
       
       try {
-         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, filename, folder);
+         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, config);
       } catch (IOException e) {
          throw new DatasinkExportException("An error occurred during datasink export", e);
       }

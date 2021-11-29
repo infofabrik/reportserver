@@ -1,12 +1,11 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink;
 
-import java.util.List;
 import java.util.Optional;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
-import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface EmailDatasinkService extends BasicDatasinkService {
 
@@ -16,18 +15,11 @@ public interface EmailDatasinkService extends BasicDatasinkService {
     * 
     * @param report        the report to send. May be a String or a byte array
     * @param emailDatasink defines the email SMTP server
-    * @param subject       the subject of the email
-    * @param body          the content of the email
-    * @param recipients    the recipients of the email. Only recipients containing
-    *                      an email address are used
-    * @param filename      filename to use for the report email attachment
-    * @param sendSyncEmail {@code true} if the email should be sent synchronously.
-    *                      {@code false} if the email should be sent
-    *                      asynchronously.
+    * @param config        configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, EmailDatasink emailDatasink, String subject, String body,
-         List<User> recipients, String filename, boolean sendSyncEmail) throws DatasinkExportException;
+   void exportIntoDatasink(Object report, EmailDatasink emailDatasink, DatasinkConfiguration config)
+         throws DatasinkExportException;
 
    /**
     * Issues an email SMTP test request by creating a simple text file and sending

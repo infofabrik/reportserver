@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
@@ -103,12 +104,35 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
                 zipUtilsService.createZip(
                       zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                       os);
-                sambaService.exportIntoDatasink(os.toByteArray(), sambaDatasink, filenameScheduling, folder);
+                sambaService.exportIntoDatasink(os.toByteArray(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+
+                   @Override
+                   public String getFilename() {
+                      return filenameScheduling;
+                   }
+
+                   @Override
+                   public String getFolder() {
+                      return folder;
+                   }
+
+                });
              }
           } else {
              String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             sambaService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sambaDatasink, filenameScheduling,
-                   folder);
+             sambaService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sambaDatasink, new DatasinkFilenameFolderConfig() {
+
+                @Override
+                public String getFilename() {
+                   return filenameScheduling;
+                }
+
+                @Override
+                public String getFolder() {
+                   return folder;
+                }
+
+             });
           }
        } catch (Exception e) {
           throw new ActionExecutionException("report could not be sent to Samba", e);

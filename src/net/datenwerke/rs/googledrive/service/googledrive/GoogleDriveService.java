@@ -1,14 +1,11 @@
 package net.datenwerke.rs.googledrive.service.googledrive;
 
-import java.io.IOException;
 import java.util.Optional;
-import java.util.concurrent.ExecutionException;
-
-import org.json.JSONException;
 
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 
@@ -22,13 +19,10 @@ public interface GoogleDriveService extends BasicDatasinkService {
     * @param report              the report to send. May be a String or a byte
     *                            array
     * @param googleDriveDatasink defines the GoogleDrive datasink to use
-    * @param filename            filename to use for the report
-    * @param folder              where to save the report in the GoogleDrive
-    *                            account. Overrides the folder defined in the
-    *                            {@link GoogleDriveDatasink}
+    * @param config              configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

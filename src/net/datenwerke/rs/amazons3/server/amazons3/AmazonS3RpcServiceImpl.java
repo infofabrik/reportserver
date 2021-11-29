@@ -27,6 +27,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -91,7 +92,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
 
    @Override
    public void exportIntoAmazonS3(ReportDto reportDto, String executorToken, AmazonS3DatasinkDto amazonS3DatasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         String format, List<ReportExecutionConfigDto> configs, String name, final String folder, boolean compressed)
          throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -123,11 +124,35 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, filename, folder);
+               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+                  
+               });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            amazonS3Service.exportIntoDatasink(cReport.getReport(), amazonS3Datasink, filename, folder);
+            amazonS3Service.exportIntoDatasink(cReport.getReport(), amazonS3Datasink, new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filename;
+               }
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+               
+            });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to AmazonS3: " + e.getMessage(), e);
@@ -179,8 +204,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    }
 
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, final String filename,
+         final String folder) throws ServerCallFailedException {
       
       AmazonS3Datasink amazonS3Datasink = (AmazonS3Datasink) dtoService.loadPoso(datasinkDto);
       FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
@@ -190,7 +215,19 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(amazonS3Datasink, Read.class, Execute.class);
       
       try {
-         amazonS3Service.exportIntoDatasink(file.getData(), amazonS3Datasink, filename, folder);
+         amazonS3Service.exportIntoDatasink(file.getData(), amazonS3Datasink, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+
+            @Override
+            public String getFolder() {
+               return folder;
+            }
+            
+         });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to AmazonS3: " + e.getMessage(), e);
       }

@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -137,11 +138,33 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, filename, folder);
+               ftpsService.exportIntoFtps(os.toByteArray(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+               });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            ftpsService.exportIntoFtps(cReport.getReport(), ftpsDatasink, filename, folder);
+            ftpsService.exportIntoFtps(cReport.getReport(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+
+               @Override
+               public String getFilename() {
+                  return filename;
+               }
+            });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);
@@ -191,7 +214,18 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
       
       try {
-         ftpsService.exportIntoFtps(file.getData(), ftpsDatasink, filename, folder);
+         ftpsService.exportIntoFtps(file.getData(), ftpsDatasink, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFolder() {
+               return folder;
+            }
+
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+         });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to FTPS: " + e.getMessage(), e);
       }

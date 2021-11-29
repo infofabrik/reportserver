@@ -3,6 +3,7 @@ package net.datenwerke.rs.ftp.service.ftp;
 import java.util.Optional;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 
@@ -15,12 +16,10 @@ public interface FtpService extends BasicDatasinkService {
     * 
     * @param report      the report to send. May be a String or a byte array
     * @param ftpDatasink defines the FTP server
-    * @param filename    filename to use for the report
-    * @param folder      where to save the report in the FTP server. Overrides the
-    *                    folder defined in the {@link FtpDatasink}
+    * @param config      configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoFtp(Object report, FtpDatasink ftpDatasink, String filename, String folder)
+   void exportIntoFtp(Object report, FtpDatasink ftpDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

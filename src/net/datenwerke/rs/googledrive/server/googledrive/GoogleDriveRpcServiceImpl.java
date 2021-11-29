@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -123,11 +124,37 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink, filename, folder);
+               googleDriveService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            googleDriveService.exportIntoDatasink(cReport.getReport(), googleDriveDatasink, filename, folder);
+            googleDriveService.exportIntoDatasink(cReport.getReport(), googleDriveDatasink,
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to GoogleDrive: " + e.getMessage(), e);
@@ -191,7 +218,19 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
       
       try {
-         googleDriveService.exportIntoDatasink(file.getData(), googleDriveDatasink, filename, folder);
+         googleDriveService.exportIntoDatasink(file.getData(), googleDriveDatasink, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+
+            @Override
+            public String getFolder() {
+               return folder;
+            }
+
+         });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Google Drive: " + e.getMessage(), e);
       }

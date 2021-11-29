@@ -2,6 +2,7 @@ package net.datenwerke.rs.dropbox.service.dropbox;
 
 import java.util.Optional;
 
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -9,7 +10,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyDropboxServiceImpl implements DropboxService {
 
    @Override
-   public void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, String filename, String folder)
+   public void exportIntoDatasink(Object report, DropboxDatasink dropboxDatasink, DatasinkConfiguration config)
          throws DatasinkExportException {
 
    }

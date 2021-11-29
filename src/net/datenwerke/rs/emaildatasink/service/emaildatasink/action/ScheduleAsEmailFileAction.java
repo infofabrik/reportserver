@@ -3,6 +3,7 @@ package net.datenwerke.rs.emaildatasink.service.emaildatasink.action;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -20,6 +21,7 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -28,6 +30,7 @@ import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 @Entity
 @Table(name = "SCHED_ACTION_AS_EMAIL_FILE")
@@ -125,13 +128,65 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, juel.parse(subject),
-                     juel.parse(message), rJob.getRecipients(), filenameScheduling, true);
+               emailDatasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, 
+                     new DatasinkEmailConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+
+                        @Override
+                        public boolean isSendSyncEmail() {
+                           return true;
+                        }
+
+                        @Override
+                        public String getSubject() {
+                           return juel.parse(subject);
+                        }
+
+                        @Override
+                        public List<User> getRecipients() {
+                           return rJob.getRecipients();
+                        }
+
+                        @Override
+                        public String getBody() {
+                           return juel.parse(message);
+                        }
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             emailDatasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), emailDatasink,
-                  juel.parse(subject), juel.parse(message), rJob.getRecipients(), filenameScheduling, false);
+                  new DatasinkEmailConfig() {
+
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
+
+                     @Override
+                     public boolean isSendSyncEmail() {
+                        return true;
+                     }
+
+                     @Override
+                     public String getSubject() {
+                        return juel.parse(subject);
+                     }
+
+                     @Override
+                     public List<User> getRecipients() {
+                        return rJob.getRecipients();
+                     }
+
+                     @Override
+                     public String getBody() {
+                        return juel.parse(message);
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Email Datasink", e);

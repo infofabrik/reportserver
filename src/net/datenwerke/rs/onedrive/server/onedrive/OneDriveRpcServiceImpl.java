@@ -23,6 +23,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -122,11 +123,37 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink, filename, folder);
+               oneDriveService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink,
+                     new DatasinkFilenameFolderConfig() {
+
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            oneDriveService.exportIntoDatasink(cReport.getReport(), oneDriveDatasink, filename, folder);
+            oneDriveService.exportIntoDatasink(cReport.getReport(), oneDriveDatasink,
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to OneDrive: " + e.getMessage(), e);
@@ -189,7 +216,19 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(oneDriveDatasink, Read.class, Execute.class);
       
       try {
-         oneDriveService.exportIntoDatasink(file.getData(), oneDriveDatasink, filename, folder);
+         oneDriveService.exportIntoDatasink(file.getData(), oneDriveDatasink, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+
+            @Override
+            public String getFolder() {
+               return folder;
+            }
+
+         });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to OneDrive: " + e.getMessage(), e);
       }

@@ -17,6 +17,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.ftp.service.ftp.SftpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
@@ -110,14 +111,37 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
              throw new ActionExecutionException(e);
           }
           try {
-             sftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, filenameScheduling, folder);
+             sftpService.exportIntoSftp(os.toByteArray(), sftpDatasink, new DatasinkFilenameFolderConfig() {
+
+                @Override
+                public String getFolder() {
+                   return folder;
+                }
+
+                @Override
+                public String getFilename() {
+                   return filenameScheduling;
+                }
+             });
           } catch (Exception e) {
              throw new ActionExecutionException("report could not be sent to SFTP", e);
           }
        } else {
           String filenameScheduling = filename += "." + rJob.getExecutedReport().getFileExtension();
           try {
-             sftpService.exportIntoSftp(rJob.getExecutedReport().getReport(), sftpDatasink, filenameScheduling, folder);
+             sftpService.exportIntoSftp(rJob.getExecutedReport().getReport(), sftpDatasink,
+                   new DatasinkFilenameFolderConfig() {
+
+                      @Override
+                      public String getFolder() {
+                         return folder;
+                      }
+
+                      @Override
+                      public String getFilename() {
+                         return filenameScheduling;
+                      }
+                   });
          } catch (Exception e) {
              throw new ActionExecutionException("report could not be sent to SFTP", e);
          }

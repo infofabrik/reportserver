@@ -6,6 +6,7 @@ import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 
 @ImplementedBy(DummyBoxServiceImpl.class)
@@ -18,12 +19,10 @@ public interface BoxService extends BasicDatasinkService {
     * 
     * @param report      the report to send. May be a String or a byte array
     * @param boxDatasink defines the Box datasink to use
-    * @param filename    filename to use for the report
-    * @param folder      where to save the report in the Box account. Overrides the
-    *                    folder defined in the {@link BoxDatasink}
+    * @param config configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, BoxDatasink boxDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, BoxDatasink boxDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

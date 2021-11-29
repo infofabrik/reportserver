@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 
@@ -18,13 +19,10 @@ public interface SambaService extends BasicDatasinkService {
     * 
     * @param report        the report to send. May be a String or a byte array
     * @param sambaDatasink defines the datasink to use
-    * @param filename      filename to use for the report
-    * @param folder        extension path of the base path defined in the datasink.
-    *                      Overrides the folder defined in the
-    *                      {@link SambaDatasink}
+    * @param config        configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, SambaDatasink sambaDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, SambaDatasink sambaDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

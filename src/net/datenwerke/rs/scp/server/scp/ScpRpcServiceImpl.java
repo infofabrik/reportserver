@@ -24,6 +24,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -123,11 +124,35 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
                      reportObj, os);
-               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, filename, folder);
+               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+               });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            scpService.exportIntoDatasink(cReport.getReport(), scpDatasink, filename, folder);
+            scpService.exportIntoDatasink(cReport.getReport(), scpDatasink, new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filename;
+               }
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+
+            });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Scp server: " + e.getMessage(), e);
@@ -190,7 +215,19 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       securityService.assertRights(scpDatasink, Read.class, Execute.class);
       
       try {
-         scpService.exportIntoDatasink(file.getData(), scpDatasink, filename, folder);
+         scpService.exportIntoDatasink(file.getData(), scpDatasink, new DatasinkFilenameFolderConfig() {
+
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+
+            @Override
+            public String getFolder() {
+               return folder;
+            }
+
+         });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to SCP: " + e.getMessage(), e);
       }

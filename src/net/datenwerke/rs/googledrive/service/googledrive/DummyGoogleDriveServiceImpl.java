@@ -2,6 +2,7 @@ package net.datenwerke.rs.googledrive.service.googledrive;
 
 import java.util.Optional;
 
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -9,8 +10,8 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
 
    @Override
-   public void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, String filename,
-         String folder) throws DatasinkExportException {
+   public void exportIntoDatasink(Object report, GoogleDriveDatasink googleDriveDatasink, DatasinkConfiguration config)
+         throws DatasinkExportException {
 
    }
 

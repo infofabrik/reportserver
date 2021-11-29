@@ -15,6 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.scp.service.scp.ScpService;
@@ -113,11 +114,36 @@ public class ScheduleAsScpFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, filenameScheduling, folder);
+               scpService.exportIntoDatasink(os.toByteArray(), scpDatasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return filenameScheduling;
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+
+               });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            scpService.exportIntoDatasink(rJob.getExecutedReport().getReport(), scpDatasink, filenameScheduling, folder);
+            scpService.exportIntoDatasink(rJob.getExecutedReport().getReport(), scpDatasink,
+                  new DatasinkFilenameFolderConfig() {
+
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
+
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Scp", e);

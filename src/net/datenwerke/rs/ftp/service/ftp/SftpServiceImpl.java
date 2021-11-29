@@ -10,6 +10,8 @@ import javax.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultSftpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
@@ -35,13 +37,13 @@ public class SftpServiceImpl implements SftpService {
    }
 
    @Override
-   public void exportIntoSftp(Object report, SftpDatasink sftpDatasink, String filename, String folder)
+   public void exportIntoSftp(Object report, SftpDatasink sftpDatasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("sftp is disabled");
       
       try {
-         ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, filename, folder);
+         ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, config);
       } catch (IOException e) {
          throw new DatasinkExportException("An error occurred during datasink export", e);
       }
@@ -53,7 +55,19 @@ public class SftpServiceImpl implements SftpService {
          throw new IllegalStateException("sftp is disabled");
 
       exportIntoSftp("ReportServer SFTP Datasink Test " + dateFormat.format(Calendar.getInstance().getTime()),
-            sftpDatasink, "reportserver-sftp-test.txt", sftpDatasink.getFolder());
+            sftpDatasink, new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFilename() {
+            return "reportserver-sftp-test.txt";
+         }
+
+         @Override
+         public String getFolder() {
+            return sftpDatasink.getFolder();
+         }
+
+      });
    }
    
    @Override

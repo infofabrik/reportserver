@@ -5,6 +5,7 @@ import java.util.Optional;
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 
@@ -17,13 +18,10 @@ public interface OneDriveService extends BasicDatasinkService {
     * 
     * @param report           the report to send. May be a String or a byte array
     * @param oneDriveDatasink defines the OneDrive datasink to use
-    * @param filename         filename to use for the report
-    * @param folder           where to save the report in the OneDrive account.
-    *                         Overrides the folder defined in the
-    *                         {@link OneDriveDatasink}
+    * @param config           configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, String filename, String folder)
+   void exportIntoDatasink(Object report, OneDriveDatasink oneDriveDatasink, DatasinkConfiguration config)
          throws DatasinkExportException;
 
    /**

@@ -17,6 +17,7 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -113,12 +114,36 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, filenameScheduling, folder);
+               amazonS3Service.exportIntoDatasink(os.toByteArray(), amazonS3Datasink, new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFilename() {
+                     return filenameScheduling;
+                  }
+
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+                  
+               });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             amazonS3Service.exportIntoDatasink(rJob.getExecutedReport().getReport(), amazonS3Datasink,
-                  filenameScheduling, folder);
+                  new DatasinkFilenameFolderConfig() {
+
+               @Override
+               public String getFilename() {
+                  return filenameScheduling;
+               }
+
+               @Override
+               public String getFolder() {
+                  return folder;
+               }
+               
+            });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Amazon S3", e);

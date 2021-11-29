@@ -17,6 +17,7 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.box.service.box.BoxService;
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -112,11 +113,33 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               boxService.exportIntoDatasink(os.toByteArray(), boxDatasink, filenameScheduling, folder);
+               boxService.exportIntoDatasink(os.toByteArray(), boxDatasink, new DatasinkFilenameFolderConfig() {
+                  
+                  @Override
+                  public String getFolder() {
+                     return filenameScheduling;
+                  }
+                  
+                  @Override
+                  public String getFilename() {
+                     return folder;
+                  }
+               });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            boxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, filenameScheduling, folder);
+            boxService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, new DatasinkFilenameFolderConfig() {
+               
+               @Override
+               public String getFolder() {
+                  return filenameScheduling;
+               }
+               
+               @Override
+               public String getFilename() {
+                  return folder;
+               }
+            });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to box", e);
