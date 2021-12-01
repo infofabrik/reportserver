@@ -37,4 +37,10 @@ public class LostPasswordRpcServiceImpl extends SecuredRemoteServiceServlet impl
    public String requestNewPassword(String username) throws ServerCallFailedException {
       return lostPasswordService.requestNewPassword(username);
    }
+   
+   @Override
+   @SecurityChecked(bypass = true)
+   public boolean isLostPasswordDisabled() throws ServerCallFailedException {
+      return lostPasswordService.isLostPasswordDisabled();
+   }
 }

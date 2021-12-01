@@ -8,15 +8,19 @@ import com.google.inject.Inject;
 
 public class LostPasswordDao extends Dao {
 
-	private final LostPasswordRpcServiceAsync rpcService;
+   private final LostPasswordRpcServiceAsync rpcService;
 
-	@Inject
-	public LostPasswordDao(LostPasswordRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void requestNewPassword(String username, AsyncCallback<String> callback){
-		rpcService.requestNewPassword(username, transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public LostPasswordDao(LostPasswordRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void requestNewPassword(String username, AsyncCallback<String> callback) {
+      rpcService.requestNewPassword(username, transformAndKeepCallback(callback));
+   }
+   
+   public void isLostPasswordDisabled(AsyncCallback<Boolean> callback) {
+      rpcService.isLostPasswordDisabled(transformAndKeepCallback(callback));
+   }
+
 }

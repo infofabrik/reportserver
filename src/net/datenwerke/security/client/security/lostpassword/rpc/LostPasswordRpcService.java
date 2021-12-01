@@ -7,5 +7,8 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("security_lostpassword")
 public interface LostPasswordRpcService extends RemoteService {
-	public String requestNewPassword(String username) throws ServerCallFailedException;
+   
+   public String requestNewPassword(String username) throws ServerCallFailedException;
+   
+   public boolean isLostPasswordDisabled() throws ServerCallFailedException;
 }

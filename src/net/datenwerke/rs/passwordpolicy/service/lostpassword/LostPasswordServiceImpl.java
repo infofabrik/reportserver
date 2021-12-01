@@ -30,6 +30,7 @@ import net.datenwerke.security.service.security.locale.SecurityMessages;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
+import net.datenwerke.security.service.security.SecurityModule;
 
 public class LostPasswordServiceImpl implements LostPasswordService {
 
@@ -60,7 +61,8 @@ public class LostPasswordServiceImpl implements LostPasswordService {
          ConfigService configService,
          RemoteMessageService remoteMessageService, 
          MailService mailService, 
-         CryptoRpcService cryptoRpcService
+         CryptoRpcService cryptoRpcService,
+         Provider<ConfigService> configServiceProvider
          ) {
       this.eventBus = eventBus;
       this.passwordHasher = passwordHasher;
@@ -75,6 +77,9 @@ public class LostPasswordServiceImpl implements LostPasswordService {
 
    @Override
    public String requestNewPassword(String username) throws ExpectedException {
+      if (isLostPasswordDisabled())
+         throw new IllegalStateException("\"Lost Password\" is disabled");
+      
       Configuration config = configService.getConfigFailsafe(LostPasswordModule.CONFIG_FILE);
 
       String mailTemplate = config.getString("lostpassword.email.text", messages.lostPasswordMessageTemplate());
@@ -153,5 +158,11 @@ public class LostPasswordServiceImpl implements LostPasswordService {
 
       return PasswordPolicyMessages.INSTANCE.lostPasswordMessageConfirmation();
    }
+   
+   @Override
+   public boolean isLostPasswordDisabled() {
+      return configService.getConfigFailsafe(SecurityModule.CONFIG_FILE).getBoolean("disableLostPassword", false);
+   }
+
 
 }

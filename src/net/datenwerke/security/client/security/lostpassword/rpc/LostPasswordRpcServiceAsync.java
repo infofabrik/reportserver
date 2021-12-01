@@ -4,6 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface LostPasswordRpcServiceAsync {
 
-	void requestNewPassword(String username, AsyncCallback<String> callback);
+   void requestNewPassword(String username, AsyncCallback<String> callback);
 
+   void isLostPasswordDisabled(AsyncCallback<Boolean> callback);
 }
