@@ -40,6 +40,10 @@ public class FtpDao extends Dao implements HasDefaultDatasink {
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
+   
+   public void getAllStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
+      rpcService.getAllStorageEnabledConfigs(transformAndKeepCallback(callback));
+   }
 
    public Request testFtpDataSink(FtpDatasinkDto ftpDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testFtpDataSink(ftpDatasinkDto, transformAndKeepCallback(callback));

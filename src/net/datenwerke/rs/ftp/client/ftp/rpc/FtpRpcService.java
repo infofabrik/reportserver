@@ -18,14 +18,31 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface FtpRpcService extends RemoteService {
 
    void exportIntoFtp(ReportDto reportDto, String executorToken, FtpDatasinkDto ftpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException;
 
+   /**
+    * Gets the FTP storage enabled configs. If all storage configs are needed (FTP,
+    * SFTP, FTPS), refer to {@link #getAllStorageEnabledConfigs()}.
+    * 
+    * @return
+    * @throws ServerCallFailedException
+    */
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
+
+   /**
+    * Gets all storage enabled configs, including FTP, FTPS, and SFTP. If only FTP
+    * storage configs are needed, refer to {@link #getStorageEnabledConfigs()}.
+    * 
+    * @return all storage enabled configs
+    * @throws ServerCallFailedException
+    */
+   Map<StorageType, Boolean> getAllStorageEnabledConfigs() throws ServerCallFailedException;
 
    boolean testFtpDataSink(FtpDatasinkDto ftpDatasinkDto) throws ServerCallFailedException;
 
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
+
    void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
          String folder) throws ServerCallFailedException;
 

@@ -3,6 +3,7 @@ package net.datenwerke.rs.ftp.server.ftp;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
 import java.io.ByteArrayOutputStream;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -37,6 +38,8 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.rpc.FtpRpcService;
 import net.datenwerke.rs.ftp.service.ftp.FtpService;
+import net.datenwerke.rs.ftp.service.ftp.FtpsService;
+import net.datenwerke.rs.ftp.service.ftp.SftpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
@@ -60,6 +63,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    private final ReportDtoService reportDtoService;
    private final HookHandlerService hookHandlerService;
    private final FtpService ftpService;
+   private final Provider<SftpService> sftpServiceProvider;
+   private final Provider<FtpsService> ftpsServiceProvider;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
@@ -76,7 +81,9 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
          FtpService ftpService, 
          ExceptionServices exceptionServices, 
          ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<SftpService> sftpServiceProvider,
+         Provider<FtpsService> ftpsServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -89,6 +96,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.sftpServiceProvider = sftpServiceProvider;
+      this.ftpsServiceProvider = ftpsServiceProvider;
    }
 
    @Override
@@ -244,6 +253,16 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to FTP: " + e.getMessage(), e);
       }
+   }
+
+   @Override
+   public Map<StorageType, Boolean> getAllStorageEnabledConfigs() throws ServerCallFailedException {
+      Map<StorageType, Boolean> configs = new HashMap<>();
+      configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(ftpService));
+      configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(sftpServiceProvider.get()));
+      configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(ftpsServiceProvider.get()));
+      
+      return configs;
    }
 
 }

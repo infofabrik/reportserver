@@ -59,7 +59,8 @@ public class FtpUiStartup {
          final FtpsDatasinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
          final SftpUsernamePasswordAuthenticatorHooker sftpUsernamePasswordAuthenticator,
          final SftpPublicKeyAuthenticatorHooker sftpPublicKeyAuthenticator,
-         final FtpsUsernamePasswordAuthenticatorHooker ftpsUsernamePasswordAuthenticator
+         final FtpsUsernamePasswordAuthenticatorHooker ftpsUsernamePasswordAuthenticator,
+         final FtpUiService ftpUiService
          ) {
 
       /* config tree */
@@ -99,10 +100,10 @@ public class FtpUiStartup {
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
 
-         dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
+         dao.getAllStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-
+               ((FtpUiServiceImpl)ftpUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SFTP) && result.get(StorageType.SFTP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sftpExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 10);

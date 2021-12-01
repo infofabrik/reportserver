@@ -19,6 +19,8 @@ public interface FtpRpcServiceAsync {
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
+   
+   void getAllStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testFtpDataSink(FtpDatasinkDto ftpDatasinkDto, AsyncCallback<Boolean> callback);
 
