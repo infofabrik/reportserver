@@ -52,7 +52,7 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
          VFSLocation source = vfs.getLocation(dstString);
          dstAbsolutPath = source.prettyPrint();
       } catch (VFSException e1) {
-         throw new IllegalArgumentException("The following location does not exist: ", e1);
+         throw new IllegalArgumentException("The following location does not exist: " + dstString, e1);
       }
 
       if (dstAbsolutPath.startsWith("/fileserver/")) {
@@ -66,7 +66,7 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
          throw new IllegalArgumentException(
                "No folder with path: "
                      + dstAbsolutPath
-                     + " exists. Please ensure your folder is already present in the file server system. An absolut path is needed");
+                     + " exists. Please ensure your folder is already present in the file server system.");
       try {
          createTmpConfigFolderAndSetFolderNameAndPath();
          configService.extractBasicConfigFilesTo(tmpDirName);
