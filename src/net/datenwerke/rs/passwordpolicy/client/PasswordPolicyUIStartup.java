@@ -6,14 +6,12 @@ import net.datenwerke.rs.authenticator.client.login.PostAuthenticateClientHook;
 import com.google.inject.Inject;
 
 public class PasswordPolicyUIStartup {
-	
-	@Inject
-	public PasswordPolicyUIStartup(
-			HookHandlerService hookHandlerService,
-			BsiPasswordPolicyPostAuthenticateClientHook bsiPolicyAuthenticateHook
-			) {
 
-		hookHandlerService.attachHooker(PostAuthenticateClientHook.class, bsiPolicyAuthenticateHook);
-	}
+   @Inject
+   public PasswordPolicyUIStartup(HookHandlerService hookHandlerService,
+         BsiPasswordPolicyPostAuthenticateClientHook bsiPolicyAuthenticateHook) {
+
+      hookHandlerService.attachHooker(PostAuthenticateClientHook.class, bsiPolicyAuthenticateHook);
+   }
 
 }

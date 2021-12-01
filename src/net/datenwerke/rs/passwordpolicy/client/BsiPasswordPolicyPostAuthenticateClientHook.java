@@ -3,8 +3,6 @@ package net.datenwerke.rs.passwordpolicy.client;
 import java.util.List;
 
 import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwMessageBox;
@@ -58,28 +56,21 @@ public class BsiPasswordPolicyPostAuthenticateClientHook implements PostAuthenti
                      protected void onHide() {
                         final ChangePasswordDialog cpd = new ChangePasswordDialog(true);
 
-                        cpd.addSubmitHandler(new SelectHandler() {
-                           @Override
-                           public void onSelect(SelectEvent event) {
-                              passwordServiceDao.changePassword(
-                                    ((PasswordExpiredAuthenticationResultInfo) info).getUsername(),
-                                    cpd.getOldPassword(), cpd.getNewPassword(),
-                                    new NotamCallback<Void>("password changed") {
-                                       @Override
-                                       public void doOnSuccess(Void result) {
-                                          cpd.hide();
-                                          skipToEnd(authRes, chain);
-                                       }
-                                    });
-                           }
+                        cpd.addSubmitHandler(event -> {
+                           passwordServiceDao.changePassword(
+                                 ((PasswordExpiredAuthenticationResultInfo) info).getUsername(), cpd.getOldPassword(),
+                                 cpd.getNewPassword(), new NotamCallback<Void>("password changed") {
+                                    @Override
+                                    public void doOnSuccess(Void result) {
+                                       cpd.hide();
+                                       skipToEnd(authRes, chain);
+                                    }
+                                 });
                         });
 
-                        cpd.addCancelHandler(new SelectHandler() {
-                           @Override
-                           public void onSelect(SelectEvent event) {
-                              cpd.hide();
-                              skipToEnd(authRes, chain);
-                           }
+                        cpd.addCancelHandler(event -> {
+                           cpd.hide();
+                           skipToEnd(authRes, chain);
                         });
 
                         cpd.show();
@@ -91,20 +82,16 @@ public class BsiPasswordPolicyPostAuthenticateClientHook implements PostAuthenti
                      protected void onHide() {
                         final ChangePasswordDialog cpd = new ChangePasswordDialog(false);
 
-                        cpd.addSubmitHandler(new SelectHandler() {
-                           @Override
-                           public void onSelect(SelectEvent event) {
-                              passwordServiceDao.changePassword(
-                                    ((PasswordExpiredAuthenticationResultInfo) info).getUsername(),
-                                    cpd.getOldPassword(), cpd.getNewPassword(),
-                                    new NotamCallback<Void>("password changed") {
-                                       @Override
-                                       public void doOnSuccess(Void result) {
-                                          cpd.hide();
-                                          skipToEnd(authRes, chain);
-                                       }
-                                    });
-                           }
+                        cpd.addSubmitHandler(event -> {
+                           passwordServiceDao.changePassword(
+                                 ((PasswordExpiredAuthenticationResultInfo) info).getUsername(), cpd.getOldPassword(),
+                                 cpd.getNewPassword(), new NotamCallback<Void>("password changed") {
+                                    @Override
+                                    public void doOnSuccess(Void result) {
+                                       cpd.hide();
+                                       skipToEnd(authRes, chain);
+                                    }
+                                 });
                         });
 
                         cpd.show();

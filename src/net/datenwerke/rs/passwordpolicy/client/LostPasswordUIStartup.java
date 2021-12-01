@@ -10,8 +10,6 @@ import com.sencha.gxt.widget.core.client.box.MessageBox;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.TextField;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
@@ -44,7 +42,7 @@ public class LostPasswordUIStartup {
 
             menuItem.addSelectionHandler(new SelectionHandler<Item>() {
                @Override
-               public void onSelection(SelectionEvent<Item> event) {
+               public void onSelection(SelectionEvent<Item> selectionEvent) {
                   final DwWindow window = new DwWindow();
                   window.setHeading(SecurityMessages.INSTANCE.lostPassword());
                   window.setWidth(350);
@@ -58,39 +56,29 @@ public class LostPasswordUIStartup {
                   container.add(field, new VerticalLayoutData(1, 30, new Margins(10)));
 
                   DwTextButton cancel = new DwTextButton(BaseMessages.INSTANCE.cancel());
-                  cancel.addSelectHandler(new SelectHandler() {
-
-                     @Override
-                     public void onSelect(SelectEvent event) {
-                        window.hide();
-                     }
-                  });
+                  cancel.addSelectHandler(event -> window.hide());
                   window.addButton(cancel);
 
                   DwTextButton ok = new DwTextButton(BaseMessages.INSTANCE.submit());
-                  ok.addSelectHandler(new SelectHandler() {
+                  ok.addSelectHandler(event -> {
+                     window.hide();
+                     lostPasswordDao.requestNewPassword(field.getCurrentValue(), new RsAsyncCallback<String>() {
+                        @Override
+                        public void onSuccess(String message) {
+                           DwAlertMessageBox amb = new DwAlertMessageBox(BaseMessages.INSTANCE.infoLabel(), message);
+                           amb.setIcon(MessageBox.ICONS.info());
+                           amb.setWidth(400);
+                           amb.show();
 
-                     @Override
-                     public void onSelect(SelectEvent event) {
-                        window.hide();
-                        lostPasswordDao.requestNewPassword(field.getCurrentValue(), new RsAsyncCallback<String>() {
-                           @Override
-                           public void onSuccess(String message) {
-                              DwAlertMessageBox amb = new DwAlertMessageBox(BaseMessages.INSTANCE.infoLabel(), message);
-                              amb.setIcon(MessageBox.ICONS.info());
-                              amb.setWidth(400);
-                              amb.show();
+                           window.hide();
+                        }
 
-                              window.hide();
-                           }
-
-                           @Override
-                           public void onFailure(Throwable caught) {
-                              window.hide();
-                              new DetailErrorDialog(caught).show();
-                           }
-                        });
-                     }
+                        @Override
+                        public void onFailure(Throwable caught) {
+                           window.hide();
+                           new DetailErrorDialog(caught).show();
+                        }
+                     });
                   });
                   window.addButton(ok);
 
