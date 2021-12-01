@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 import net.datenwerke.rs.incubator.service.aliascmd.AliasCmdModule;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -20,7 +21,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 @Singleton
 public class AliasCommand implements TerminalCommandHook, ReloadConfigNotificationHook {

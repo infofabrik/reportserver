@@ -1,5 +1,6 @@
 package net.datenwerke.rs.configservice.service.configservice.terminal;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.configservice.service.configservice.locale.ConfigMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -7,7 +8,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 import java.util.List;
 

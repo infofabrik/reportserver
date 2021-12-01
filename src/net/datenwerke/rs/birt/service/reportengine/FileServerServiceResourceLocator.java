@@ -15,9 +15,9 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.birt.service.BirtModule;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class FileServerServiceResourceLocator implements IResourceLocator {
 	

@@ -6,11 +6,11 @@ import javax.inject.Singleton;
 import com.google.inject.AbstractModule;
 import com.google.inject.Provides;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessStartup;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpEnabled;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpPort;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class SftpModule extends AbstractModule {
 	

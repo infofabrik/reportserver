@@ -6,7 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class SaikuServiceImpl implements SaikuService {
 

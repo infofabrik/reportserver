@@ -26,6 +26,7 @@ import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJu
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.ColumnFormatCellFormatter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -35,7 +36,6 @@ import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
 import net.datenwerke.rs.saiku.server.rest.util.RestUtil;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledHTMLSaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 

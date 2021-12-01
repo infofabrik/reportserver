@@ -12,13 +12,13 @@ import com.google.inject.Injector;
 import com.google.inject.Provider;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
 import net.datenwerke.rs.scheduler.service.scheduler.genrights.SchedulingAdminSecurityTarget;
 import net.datenwerke.rs.scheduler.service.scheduler.genrights.SchedulingBasicSecurityTarget;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.scheduler.service.scheduler.annotations.DwSchedulerConfig;

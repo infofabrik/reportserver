@@ -32,7 +32,8 @@ public class SambaUiStartup {
          final Provider<SambaDatasinkConfigProviderHooker> sambaTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, 
          final SambaDao dao,
-         final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator
+         final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator,
+         final SambaUiService sambaUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sambaTreeConfiguratorProvider.get(),
@@ -53,6 +54,7 @@ public class SambaUiStartup {
          dao.getSambaEnabledConfigs(new RsAsyncCallback<Map<StorageType,Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType,Boolean> result) {
+               ((SambaUiServiceImpl)sambaUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SAMBA) && result.get(StorageType.SAMBA_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 25);

@@ -9,7 +9,7 @@ import net.datenwerke.gf.service.maintenance.event.MaintenanceJobFailed;
 import net.datenwerke.gf.service.maintenance.event.MaintenanceJobStarted;
 import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.daemon.DwDaemonImpl;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 

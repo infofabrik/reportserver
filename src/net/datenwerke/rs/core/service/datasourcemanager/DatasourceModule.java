@@ -10,13 +10,13 @@ import com.google.inject.Provides;
 import com.google.inject.Scopes;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.DatasourceModuleProperties;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.DefaultDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DatasourceModule extends AbstractReportServerModule {
 

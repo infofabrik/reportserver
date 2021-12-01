@@ -18,9 +18,9 @@ import com.google.inject.Provides;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.urlview.annotations.UrlViewConfig;
 import net.datenwerke.rs.core.service.urlview.hooks.UrlViewServerHook;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;

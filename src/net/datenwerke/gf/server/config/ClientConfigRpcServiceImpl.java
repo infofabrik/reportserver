@@ -12,7 +12,7 @@ import net.datenwerke.gf.client.config.rpc.ClientConfigRpcService;
 import net.datenwerke.gf.service.config.ClientConfigExposerHook;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 
 @Singleton

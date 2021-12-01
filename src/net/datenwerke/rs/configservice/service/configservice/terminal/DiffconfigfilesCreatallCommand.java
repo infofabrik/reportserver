@@ -7,43 +7,26 @@ import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.history.HistoryLink;
 import net.datenwerke.gf.service.history.HistoryService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.configservice.service.configservice.locale.ConfigMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
-import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.utils.config.ConfigService;
 
-public class DiffconfigfilesCreatallCommand implements DiffconfigfilesSubCommandHook {
+public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
    private static final String BASE_COMMAND = "createall";
-   private static final String TMP_DIR = "tmp";
-   private final HistoryService historyService;
-   private final FileServerService fileServerService;
-   private final ConfigService configService;
 
    @Inject
    public DiffconfigfilesCreatallCommand(
          HistoryService historyService,
          FileServerService fileServerService,
          ConfigService configService) {
-      this.historyService = historyService;
-      this.fileServerService = fileServerService;
-      this.configService = configService;
-   }
-
-   @Override
-   public String getBaseCommand() {
-      return BASE_COMMAND;
-   }
-
-   @Override
-   public boolean consumes(CommandParser parser, TerminalSession session) {
-      return parser.getBaseCommand().equals(BASE_COMMAND);
+      super(historyService, fileServerService, configService, BASE_COMMAND);
    }
 
    @CliHelpMessage(
@@ -51,18 +34,19 @@ public class DiffconfigfilesCreatallCommand implements DiffconfigfilesSubCommand
          name = BASE_COMMAND, 
          description = "commandDiffConfigFiles_sub_createall_description",
          nonOptArgs = {
-               @NonOptArgument(name="folder", description="commandDiffConfigFiles_sub_createall_folderArgument", mandatory = false)
+               @NonOptArgument(name="folder", description="commandDiffConfigFiles_sub_createall_folderArgument", mandatory = true)
            })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
 
       HistoryLink link = null;
-      FileServerFolder tmpConfigFolder = null;
-      String folderName = (null != parser.getArgumentNr(1)) ? parser.getArgumentNr(1) : TMP_DIR;
+      if (parser.getNonOptionArguments().size() != 1)
+         throw new IllegalArgumentException("Please enter a folder");
+      String folderName = parser.getNonOptionArguments().get(0);
 
       try {
          tmpConfigFolder = configService.extractBasicConfigFilesTo(folderName);
-         removeFolders(folderName);
+         removeNonConfigFolders(folderName);
          link = historyService.buildLinksFor(tmpConfigFolder).get(0);
       } catch (Exception e) {
          throw new TerminalException("the config files could not be copied to " + folderName + ".", e);
@@ -70,14 +54,10 @@ public class DiffconfigfilesCreatallCommand implements DiffconfigfilesSubCommand
       return new CommandResult().addResultHyperLink(link.getObjectCaption() + " (" + link.getHistoryLinkBuilderId() + ")", link.getLink());
    }
 
-   @Override
-   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-   }
-   
-   private void removeFolders(String folderName) {
+   private void removeNonConfigFolders(String cfgFolderName) {
       List<FileServerFolder> foldersToRemove = new ArrayList<>();
-      foldersToRemove.add((FileServerFolder)fileServerService.getNodeByPath("/"+ folderName + "/bin", false));
-      foldersToRemove.add((FileServerFolder)fileServerService.getNodeByPath("/"+ folderName + "/resources", false));
+      foldersToRemove.add((FileServerFolder) fileServerService.getNodeByPath("/" + cfgFolderName + "/bin", false));
+      foldersToRemove.add((FileServerFolder) fileServerService.getNodeByPath("/" + cfgFolderName + "/resources", false));
       foldersToRemove.forEach(folder -> fileServerService.forceRemove(folder));
    }
 }

@@ -17,8 +17,8 @@ import org.slf4j.LoggerFactory;
 import net.datenwerke.dbpool.DbPoolService;
 import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 @Singleton
 public class TempTableServiceImpl implements TempTableService {

@@ -18,7 +18,7 @@ import net.datenwerke.rs.base.service.dbhelper.queries.Query;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.ColumnNamingService;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.oracle.StupidOracleService;
 import oracle.xdb.XMLType;
 

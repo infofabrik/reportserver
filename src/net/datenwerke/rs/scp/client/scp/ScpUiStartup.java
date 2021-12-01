@@ -37,7 +37,8 @@ public class ScpUiStartup {
          final ScpDao dao,
          final ScpDataSinkTesterToolbarConfigurator scpTestToolbarConfigurator,
          final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator,
-         final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator
+         final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator,
+         final ScpUiService scpUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
@@ -66,6 +67,7 @@ public class ScpUiStartup {
 
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((ScpUiServiceImpl)scpUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SCP) && result.get(StorageType.SCP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 30);

@@ -1,6 +1,6 @@
 package net.datenwerke.rs.xml;
 
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.xml.XMLUtilsService;
 import net.datenwerke.rs.utils.xml.XMLUtilsServiceImpl;
 import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;

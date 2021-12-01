@@ -4,7 +4,7 @@ import javax.inject.Inject;
 
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.scheduler.service.scheduler.SchedulerModule;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerInfoHook;

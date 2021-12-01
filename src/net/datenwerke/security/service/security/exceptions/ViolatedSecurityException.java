@@ -5,7 +5,7 @@ import javax.inject.Inject;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.instancedescription.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.InstanceDescriptionService;
 import net.datenwerke.security.service.security.SecurityModule;

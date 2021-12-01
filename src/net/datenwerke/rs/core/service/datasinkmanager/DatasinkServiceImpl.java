@@ -12,11 +12,11 @@ import java.util.Optional;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DatasinkServiceImpl implements DatasinkService {
 

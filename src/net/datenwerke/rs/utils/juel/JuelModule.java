@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.juel.annotations.JuelExpressionBlacklist;
 import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
 

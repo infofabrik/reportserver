@@ -15,6 +15,7 @@ import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gf.service.tempfile.TempFileService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.server.reportexport.ReportExportServlet;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCache;
 import net.datenwerke.rs.core.service.error.RsErrorHelper;
@@ -22,7 +23,6 @@ import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;

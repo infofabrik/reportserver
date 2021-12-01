@@ -6,13 +6,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiService;
 import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -32,45 +31,30 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
    private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<AmazonS3UiService> amazonS3UiService;
 
    @Inject
    public FileExportToAmazonS3Hooker(
          @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
          Provider<AmazonS3Dao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider
+         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<AmazonS3UiService> amazonS3UiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.amazonS3UiService = amazonS3UiService;
    }
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      if (enterpriseServiceProvider.get().isEnterprise()) {
-         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-
-            @Override
-            public void onSuccess(Map<StorageType, Boolean> result) {
-               if (result.get(StorageType.AMAZONS3)) {
-                  FileSendToMenuItem item = new FileSendToMenuItem("Amazon S3", treeHandler, BaseIcon.AMAZON.toImageResource());
-                  item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-                  menu.add(item);
-                  item.setAvailableCallback(() -> isAvailable());
-               }
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-            }
-         });
-      } else {
-         // we add item but disable it
-         MenuItem item = new DwMenuItem("Amazon S3", BaseIcon.AMAZON);
-         menu.add(item);
-         item.disable();
-      }
+      final FileSendToMenuItem item = new FileSendToMenuItem("Amazon S3", treeHandler, BaseIcon.AMAZON.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      menu.add(item);
+      item.setAvailableCallback(() -> isAvailable());
+      item.disable();
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {
@@ -94,7 +78,8 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return enterpriseServiceProvider.get().isEnterprise()
+            && amazonS3UiService.get().getStorageEnabledConfigs().containsKey(StorageType.AMAZONS3);
    }
 
 }

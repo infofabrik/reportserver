@@ -1,11 +1,11 @@
 package net.datenwerke.rs.incubator.service.exportmetadata;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleAuthor;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleCreator;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleProperties;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleTitle;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 import org.apache.commons.configuration2.Configuration;
 

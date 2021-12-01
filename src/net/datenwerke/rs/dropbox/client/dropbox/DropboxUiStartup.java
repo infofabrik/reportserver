@@ -33,7 +33,8 @@ public class DropboxUiStartup {
          final Provider<DropboxDatasinkConfigProviderHooker> dropboxTreeConfiguratorProvider,
          final DropboxDatasinkTesterToolbarConfigurator dropboxTestToolbarConfigurator,
          final DropboxDatasinkOAuthToolbarConfigurator dropboxOauthToolbarConfigurator,
-         final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider
+         final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider,
+         final DropboxUiService dropboxUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(),
@@ -58,6 +59,7 @@ public class DropboxUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((DropboxUiServiceImpl)dropboxUiService).setEnabledConfigs(result);
                if (result.get(StorageType.DROPBOX) && result.get(StorageType.DROPBOX_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 40);

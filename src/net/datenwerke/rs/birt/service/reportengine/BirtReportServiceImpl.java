@@ -7,7 +7,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 
 import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 
 import org.eclipse.birt.core.exception.BirtException;

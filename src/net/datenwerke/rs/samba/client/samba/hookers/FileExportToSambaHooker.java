@@ -6,11 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -20,6 +18,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.samba.client.samba.SambaDao;
+import net.datenwerke.rs.samba.client.samba.SambaUiService;
 import net.datenwerke.rs.samba.client.samba.provider.annotations.DatasinkTreeSamba;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
@@ -32,46 +31,30 @@ public class FileExportToSambaHooker implements FileExportExternalEntryProviderH
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
    private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<SambaUiService> sambaUiService;
 
    @Inject
    public FileExportToSambaHooker(
          @DatasinkTreeSamba Provider<UITree> treeProvider,
          Provider<SambaDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider
+         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<SambaUiService> sambaUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.sambaUiService = sambaUiService;
    }
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      if (enterpriseServiceProvider.get().isEnterprise()) {
-         datasinkDaoProvider.get().getSambaEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-   
-            @Override
-            public void onSuccess(Map<StorageType, Boolean> result) {
-               // item is only added if enabled in configuration
-               if (result.get(StorageType.SAMBA)) {
-                  FileSendToMenuItem item = new FileSendToMenuItem("Samba - SMB/CIFS", treeHandler, BaseIcon.ANGLE_DOUBLE_UP.toImageResource());
-                  item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-                  menu.add(item);
-                  item.setAvailableCallback(() -> isAvailable());
-               }
-            }
-   
-            @Override
-            public void onFailure(Throwable caught) {
-            }
-         });
-      } else {
-         // we add item but disable it
-         MenuItem item = new DwMenuItem("Samba - SMB/CIFS", BaseIcon.ANGLE_DOUBLE_UP);
-         menu.add(item);
-         item.disable();
-      }
+      FileSendToMenuItem item = new FileSendToMenuItem("Samba - SMB/CIFS", treeHandler, BaseIcon.ANGLE_DOUBLE_UP.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      menu.add(item);
+      item.setAvailableCallback(() -> isAvailable());
+      item.disable();
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {
@@ -95,7 +78,8 @@ public class FileExportToSambaHooker implements FileExportExternalEntryProviderH
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return enterpriseServiceProvider.get().isEnterprise()
+            && sambaUiService.get().getStorageEnabledConfigs().containsKey(StorageType.SAMBA);
    }
 
 }

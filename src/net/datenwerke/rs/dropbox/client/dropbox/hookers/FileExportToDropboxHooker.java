@@ -6,15 +6,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiService;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
@@ -32,45 +31,30 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
    private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private Provider<DropboxUiService> dropboxUiService;
 
    @Inject
    public FileExportToDropboxHooker(
          @DatasinkTreeDropbox Provider<UITree> treeProvider,
          Provider<DropboxDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider
+         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<DropboxUiService> dropboxUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.dropboxUiService = dropboxUiService;
    }
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      if (enterpriseServiceProvider.get().isEnterprise()) {
-         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-
-            @Override
-            public void onSuccess(Map<StorageType, Boolean> result) {
-               if (result.get(StorageType.DROPBOX)) {
-                  FileSendToMenuItem item = new FileSendToMenuItem("Dropbox", treeHandler, BaseIcon.DROPBOX.toImageResource());
-                  item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-                  menu.add(item);
-                  item.setAvailableCallback(() -> isAvailable());
-               }
-            }
-
-            @Override
-            public void onFailure(Throwable caught) {
-            }
-         });
-      } else {
-         // we add item but disable it
-         MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
-         menu.add(item);
-         item.disable();
-      }
+      FileSendToMenuItem item = new FileSendToMenuItem("Dropbox", treeHandler, BaseIcon.DROPBOX.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      menu.add(item);
+      item.setAvailableCallback(() -> isAvailable());
+      item.disable();
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {
@@ -94,7 +78,8 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return enterpriseServiceProvider.get().isEnterprise()
+            && dropboxUiService.get().getStorageEnabledConfigs().containsKey(StorageType.DROPBOX);
    }
 
 }

@@ -12,11 +12,11 @@ import com.google.inject.Inject;
 import net.datenwerke.rs.birt.service.reportengine.output.object.CompiledRSBirtReport;
 import net.datenwerke.rs.birt.service.reportengine.output.object.CompiledXLSBirtReport;
 import net.datenwerke.rs.birt.service.reportengine.output.object.CompiledXLSXBirtReport;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class BirtXLSOutputGenerator extends BirtOutputGeneratorImpl {
 

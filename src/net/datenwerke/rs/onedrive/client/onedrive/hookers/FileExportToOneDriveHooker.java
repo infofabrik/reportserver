@@ -6,11 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -21,6 +19,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveDao;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
+import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiService;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
@@ -33,46 +32,31 @@ public class FileExportToOneDriveHooker implements FileExportExternalEntryProvid
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
    private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<OneDriveUiService> oneDriveUiService;
 
    @Inject
    public FileExportToOneDriveHooker(
          @DatasinkTreeOneDrive Provider<UITree> treeProvider,
          Provider<OneDriveDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider
+         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<OneDriveUiService> oneDriveUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.oneDriveUiService = oneDriveUiService;
    }
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      if (enterpriseServiceProvider.get().isEnterprise()) {
-         datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
-   
-            @Override
-            public void onSuccess(Map<StorageType, Boolean> result) {
-               if (result.get(StorageType.ONEDRIVE)) {
-                  FileSendToMenuItem item = new FileSendToMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, 
-                        treeHandler, BaseIcon.CLOUD_UPLOAD.toImageResource());
-                  item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-                  menu.add(item);
-                  item.setAvailableCallback(() -> isAvailable());
-               }
-            }
-   
-            @Override
-            public void onFailure(Throwable caught) {
-            }
-         });
-      } else {
-         // we add item but disable it
-         MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
-         menu.add(item);
-         item.disable();
-      }
+      FileSendToMenuItem item = new FileSendToMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, 
+            treeHandler, BaseIcon.CLOUD_UPLOAD.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      menu.add(item);
+      item.setAvailableCallback(() -> isAvailable());
+      item.disable();
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {
@@ -96,7 +80,8 @@ public class FileExportToOneDriveHooker implements FileExportExternalEntryProvid
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return enterpriseServiceProvider.get().isEnterprise()
+            && oneDriveUiService.get().getStorageEnabledConfigs().containsKey(StorageType.ONEDRIVE);
    }
 
 }

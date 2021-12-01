@@ -37,6 +37,7 @@ import com.google.inject.persist.Transactional;
 import net.datenwerke.gf.service.tempfile.TempFile;
 import net.datenwerke.gf.service.tempfile.TempFileService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCache;
 import net.datenwerke.rs.core.server.reportexport.helper.ReportSessionCacheEntry;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportAdjustHttpHeaderHook;
@@ -56,7 +57,6 @@ import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.rs.utils.stream.shared.StreamUtil;

@@ -26,6 +26,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ViolatedSecurityExceptionDto;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.client.reportexecutor.rpc.ReportExecutorRpcService;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -49,7 +50,6 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHist
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutorExecuteAsHooker;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;

@@ -5,7 +5,7 @@ import java.util.Set;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandler;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.client.login.AuthenticateResultDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;

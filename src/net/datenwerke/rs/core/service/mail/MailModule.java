@@ -14,6 +14,7 @@ import com.google.inject.Scopes;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFrom;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleDefaultFromName;
@@ -24,7 +25,6 @@ import net.datenwerke.rs.core.service.mail.annotations.MailModuleSMTPPort;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleSMTPUsername;
 import net.datenwerke.rs.core.service.mail.annotations.MailModuleUseAuthentication;
 import net.datenwerke.rs.core.service.mail.security.DummySSLSocketFactory;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.misc.Nullable;
 import net.datenwerke.security.service.crypto.CryptoService;
 

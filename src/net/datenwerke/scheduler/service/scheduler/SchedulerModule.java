@@ -8,8 +8,8 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.scheduler.service.scheduler.annotations.DwSchedulerConfig;
 import net.datenwerke.scheduler.service.scheduler.annotations.SchedulerAsyncPoolName;
 import net.datenwerke.scheduler.service.scheduler.annotations.SchedulerCheckInterval;

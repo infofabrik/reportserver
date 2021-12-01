@@ -9,7 +9,7 @@ import com.google.inject.Provides;
 
 import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
 import net.datenwerke.gf.service.tempfile.annotations.TempFileLifeTime;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class TempFileModule extends AbstractModule {
 

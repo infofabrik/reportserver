@@ -8,10 +8,10 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.Compiled
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledXLSXTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.utils.RSTableToXLS;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 import org.apache.commons.configuration2.Configuration;

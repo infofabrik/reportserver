@@ -14,6 +14,7 @@ import net.datenwerke.rs.base.service.datasources.table.impl.config.TableDatasou
 import net.datenwerke.rs.base.service.parameters.locale.BaseParameterMessages;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier.DataConsumer;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer__;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
@@ -23,7 +24,6 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRun
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.license.service.LicenseService;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.scripting.GroovyScript;
 import net.datenwerke.rs.utils.scripting.GroovyScriptingService;
 import net.datenwerke.rs.utils.simplequery.annotations.Join;

@@ -21,7 +21,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.generator.Simpl
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.XLSOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.XLSStreamOutputGenerator;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorProviderHook {
 

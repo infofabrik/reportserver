@@ -9,9 +9,9 @@ import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.internaldb.hookers.ClearInternalDbOnShutdown;
 import net.datenwerke.rs.core.service.internaldb.hookers.TempTableMaintenanceTask;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class InternalDbStartup {
 

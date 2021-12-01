@@ -22,6 +22,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class AmazonS3UiStartup {
+   
    @Inject
    public AmazonS3UiStartup(
          final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
@@ -31,7 +32,8 @@ public class AmazonS3UiStartup {
          final AmazonS3Dao dao,
          final Provider<AmazonS3DatasinkConfigProviderHooker> amazonS3TreeConfiguratorProvider,
          final AmazonS3DatasinkTesterToolbarConfigurator amazonS3TestToolbarConfigurator,
-         final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider
+         final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider,
+         final AmazonS3UiService amazonS3UiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, amazonS3TreeConfiguratorProvider.get(),
@@ -53,6 +55,7 @@ public class AmazonS3UiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((AmazonS3UiServiceImpl)amazonS3UiService).setEnabledConfigs(result);
                if (result.get(StorageType.AMAZONS3) && result.get(StorageType.AMAZONS3_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, amazonS3ExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 55);

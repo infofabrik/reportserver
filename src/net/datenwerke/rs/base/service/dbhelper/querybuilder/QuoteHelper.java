@@ -5,7 +5,7 @@ import javax.inject.Provider;
 
 import net.datenwerke.rs.base.service.dbhelper.DBHelperModule;
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class QuoteHelper {
 

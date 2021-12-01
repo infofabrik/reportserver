@@ -32,7 +32,8 @@ public class LocalFileSystemUiStartup {
          final WaitOnEventUIService waitOnEventService, 
          final LocalFileSystemDao dao,
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
-         final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator
+         final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator,
+         final LocalFileSystemUiService localFileSystemUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 35);
@@ -52,6 +53,7 @@ public class LocalFileSystemUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType,Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType,Boolean> result) {
+               ((LocalFileSystemUiServiceImpl)localFileSystemUiService).setEnabledConfigs(result);
                if (result.get(StorageType.LOCALFILESYSTEM) && result.get(StorageType.LOCALFILESYSTEM_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 35);

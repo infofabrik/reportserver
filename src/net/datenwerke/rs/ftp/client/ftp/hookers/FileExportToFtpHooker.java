@@ -6,11 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -20,6 +18,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.ftp.client.ftp.FtpDao;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiService;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtp;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
@@ -32,38 +31,30 @@ public class FileExportToFtpHooker implements FileExportExternalEntryProviderHoo
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
    private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<FtpUiService> ftpUiService;
 
    @Inject
    public FileExportToFtpHooker(
          @DatasinkTreeFtp Provider<UITree> treeProvider,
          Provider<FtpDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider
+         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<FtpUiService> ftpUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.ftpUiService = ftpUiService;
    }
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType,Boolean>>() {
-
-         @Override
-         public void onSuccess(Map<StorageType, Boolean> result) {
-             if (result.get(StorageType.FTP)) {
-                FileSendToMenuItem item = new FileSendToMenuItem("FTP", treeHandler, BaseIcon.UPLOAD.toImageResource());
-                item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
-                menu.add(item);
-                item.setAvailableCallback(() -> isAvailable());
-             }
-         }
-         
-         @Override
-         public void onFailure(Throwable caught) {
-         }
-     });
+      FileSendToMenuItem item = new FileSendToMenuItem("FTP", treeHandler, BaseIcon.UPLOAD.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      menu.add(item);
+      item.setAvailableCallback(() -> isAvailable());
+      item.disable();
    }
 
    protected void displayExportDialog(final FileServerFileDto toExport) {
@@ -87,7 +78,8 @@ public class FileExportToFtpHooker implements FileExportExternalEntryProviderHoo
 
    @Override
    public boolean isAvailable() {
-      return enterpriseServiceProvider.get().isEnterprise();
+      return enterpriseServiceProvider.get().isEnterprise()
+            && ftpUiService.get().getStorageEnabledConfigs().containsKey(StorageType.FTP);
    }
 
 }

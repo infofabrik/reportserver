@@ -3,9 +3,9 @@ package net.datenwerke.rs.core.service.error;
 import javax.inject.Provider;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.RsCoreModule;
 import net.datenwerke.rs.core.service.reportserver.ServerInfoContainer;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;

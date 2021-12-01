@@ -9,8 +9,8 @@ import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.ManagedQuery;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QuoteHelper;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 import com.google.inject.Inject;
 import com.google.inject.Provides;

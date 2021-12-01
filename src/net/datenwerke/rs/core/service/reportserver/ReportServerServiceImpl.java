@@ -2,10 +2,10 @@ package net.datenwerke.rs.core.service.reportserver;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.datenwerke.rs.utils.config.ConfigService;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class ReportServerServiceImpl implements ReportServerService {
 

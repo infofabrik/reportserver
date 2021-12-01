@@ -16,7 +16,7 @@ import com.google.inject.Provider;
 import net.datenwerke.gf.client.homepage.rpc.HomepageRpcService;
 import net.datenwerke.gf.service.DwGwtFrameworkModule;
 import net.datenwerke.gf.service.lateinit.LateInitStartup;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 

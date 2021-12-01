@@ -17,12 +17,12 @@ import net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterS
 import net.datenwerke.rs.base.service.parameters.datetime.dtogen.DateTimeParameterInstance2DtoPostProcessor;
 import net.datenwerke.rs.base.service.parameters.datetime.dtogen.DateTimeParameterInstance2PosoPostProcessor;
 import net.datenwerke.rs.base.service.parameters.locale.BaseParameterMessages;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstanceForJuel;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImpl;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
 import net.datenwerke.rs.utils.misc.DateUtils;

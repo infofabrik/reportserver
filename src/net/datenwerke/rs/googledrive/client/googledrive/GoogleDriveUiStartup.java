@@ -33,7 +33,8 @@ public class GoogleDriveUiStartup {
          final Provider<GoogleDriveDatasinkConfigProviderHooker> googleDriveTreeConfiguratorProvider,
          final GoogleDriveDatasinkTesterToolbarConfigurator googleDriveTestToolbarConfigurator,
          final GoogleDriveDatasinkOAuthToolbarConfigurator googleDriveOauthToolbarConfigurator,
-         final Provider<GoogleDriveExportSnippetProvider> googleDriveExportSnippetProvider
+         final Provider<GoogleDriveExportSnippetProvider> googleDriveExportSnippetProvider,
+         final GoogleDriveUiService googleDriveUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, googleDriveTreeConfiguratorProvider.get(),
@@ -58,6 +59,7 @@ public class GoogleDriveUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((GoogleDriveUiServiceImpl)googleDriveUiService).setEnabledConfigs(result);
                if (result.get(StorageType.GOOGLEDRIVE) && result.get(StorageType.GOOGLEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, googleDriveExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 50);

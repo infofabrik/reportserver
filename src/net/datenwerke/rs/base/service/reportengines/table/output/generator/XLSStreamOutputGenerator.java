@@ -60,6 +60,7 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.format.Column
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatText;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledXLSXTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -69,7 +70,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportStrin
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ExcelExportException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.license.service.LicenseService;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.oracle.StupidOracleService;
 import net.datenwerke.security.service.usermanager.entities.User;

@@ -21,11 +21,11 @@ import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigRelo
 import net.datenwerke.rs.configservice.service.configservice.terminal.ConfigSubCommandHook;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCreatallCommand;
+import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesCreatemissingCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesShowmissingCommand;
 import net.datenwerke.rs.configservice.service.configservice.terminal.DiffconfigfilesSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesProviderHook;
 
 public class ConfigStartup {
@@ -46,7 +46,8 @@ public class ConfigStartup {
 
          Provider<DiffconfigfilesCommand> diffconfigfilesCommand,
          Provider<DiffconfigfilesShowmissingCommand> diffconfigfilesShowmissingCommand,
-         Provider<DiffconfigfilesCreatallCommand> diffconfigfilesCreatellCommand,
+         Provider<DiffconfigfilesCreatallCommand> diffconfigfilesCreateallCommand,
+         Provider<DiffconfigfilesCreatemissingCommand> diffconfigfilesCreatemissingCommand,
 
          final Provider<ConfigService> configService,
          final Provider<ConfigDirService> configDirService,
@@ -64,7 +65,8 @@ public class ConfigStartup {
 
       hookHandlerService.attachHooker(TerminalCommandHook.class, diffconfigfilesCommand);
       hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesShowmissingCommand);
-      hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesCreatellCommand);
+      hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesCreateallCommand);
+      hookHandlerService.attachHooker(DiffconfigfilesSubCommandHook.class, diffconfigfilesCreatemissingCommand);
 
       hookHandlerService.attachHooker(ApplicationPropertiesProviderHook.class, configDirApplicationPropertiesProvider);
 

@@ -1,9 +1,9 @@
 package net.datenwerke.rs.passwordpolicy.service;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyChangePasswordHook;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyPasswordSetHook;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyPostAuthenticateHook;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;

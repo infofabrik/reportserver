@@ -15,8 +15,8 @@ import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 import net.datenwerke.dbpool.config.ConnectionPoolConfigFactory;
 import net.datenwerke.dbpool.config.ConnectionPoolConfigImpl;
 import net.datenwerke.dbpool.hooks.C3p0ConnectionHook;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class DbPoolModule extends AbstractModule {
 

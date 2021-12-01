@@ -8,11 +8,11 @@ import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.MailTemplate;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.passwordpolicy.service.locale.PasswordPolicyMessages;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.usermanager.entities.User;
 

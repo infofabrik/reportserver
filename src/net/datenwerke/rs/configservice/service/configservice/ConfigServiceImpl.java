@@ -36,7 +36,6 @@ import net.datenwerke.rs.installation.PackagedScriptHelper;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 @Singleton
 public class ConfigServiceImpl implements ConfigService {
@@ -216,9 +215,14 @@ public class ConfigServiceImpl implements ConfigService {
    public FileServerFolder extractBasicConfigFilesTo(String folderName) throws FileNotFoundException, IOException {
       FileServerFolder zipDir = null;
       String pathToFolder = "/" + folderName;
+      FileServerFolder targetDir = (FileServerFolder) fileService.getNodeByPath(pathToFolder, false);
+      /*
+       * config files are extracted temporarily to /tmp. We check if this folder
+       * exists and if does not exist previously, we delete it
+       */
+      boolean tmpFolderDidExist = (null == fileService.getNodeByPath("/tmp", false))? false : true;
       PackagedScriptHelper helper = packagedScriptHelperProvider.get();
       File pkgDir = helper.getPackageDirectory();
-      FileServerFolder targetDir = (FileServerFolder) fileService.getNodeByPath(pathToFolder, false);
 
       if (null == targetDir) {
          targetDir = new FileServerFolder(folderName);
@@ -242,8 +246,8 @@ public class ConfigServiceImpl implements ConfigService {
             } finally {
                if (null != zipDir)
                   fileService.forceRemove(zipDir);
-               if (!folderName.equals("tmp") & null != fileService.getNodeByPath("/tmp", false))
-                  fileService.forceRemove(fileService.getNodeByPath("/tmp", false));
+               if (!tmpFolderDidExist)
+                  fileService.forceRemove(helper.getFileServerTempDir());
             }
          }
       }

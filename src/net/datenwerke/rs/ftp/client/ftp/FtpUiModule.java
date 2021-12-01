@@ -1,6 +1,7 @@
 package net.datenwerke.rs.ftp.client.ftp;
 
 import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.inject.Singleton;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
@@ -34,6 +35,8 @@ public class FtpUiModule extends AbstractGinModule {
 
    @Override
    protected void configure() {
+      bind(FtpUiService.class).to(FtpUiServiceImpl.class).in(Singleton.class);
+      
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeFtp.class).toProvider(FtpTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasinkTreeSftp.class).toProvider(SftpTreeProvider.class);

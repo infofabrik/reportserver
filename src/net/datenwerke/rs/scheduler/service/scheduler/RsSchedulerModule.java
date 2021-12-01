@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleEmailAttachementName;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleEmailSubject;
@@ -15,7 +16,6 @@ import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModule
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleStartupDelay;
 import net.datenwerke.rs.scheduler.service.scheduler.genrights.GenRightsSchedulingModule;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.scheduler.service.scheduler.SchedulerModule;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.JpaJobStore;
 

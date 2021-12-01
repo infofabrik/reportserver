@@ -33,7 +33,8 @@ public class OneDriveUiStartup {
          final Provider<OneDriveDatasinkConfigProviderHooker> oneDriveTreeConfiguratorProvider,
          final OneDriveDatasinkTesterToolbarConfigurator oneDriveTestToolbarConfigurator,
          final OneDriveDatasinkOAuthToolbarConfigurator oneDriveOauthToolbarConfigurator,
-         final Provider<OneDriveExportSnippetProvider> oneDriveExportSnippetProvider
+         final Provider<OneDriveExportSnippetProvider> oneDriveExportSnippetProvider,
+         final OneDriveUiService oneDriveUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, oneDriveTreeConfiguratorProvider.get(),
@@ -58,6 +59,7 @@ public class OneDriveUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((OneDriveUiServiceImpl)oneDriveUiService).setEnabledConfigs(result);
                if (result.get(StorageType.ONEDRIVE) && result.get(StorageType.ONEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, oneDriveExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 45);

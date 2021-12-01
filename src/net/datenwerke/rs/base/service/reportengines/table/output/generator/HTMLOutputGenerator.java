@@ -43,6 +43,7 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.filters.PreFi
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledHTMLTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -50,7 +51,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportPrope
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportStringProperty;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.license.service.LicenseService;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.misc.StringEscapeUtils;

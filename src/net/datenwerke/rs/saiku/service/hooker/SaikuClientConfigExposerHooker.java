@@ -12,8 +12,8 @@ import org.apache.commons.configuration2.tree.ImmutableNode;
 import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.config.ClientConfigExposerHook;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
-import net.datenwerke.rs.utils.config.ConfigService;
 
 public class SaikuClientConfigExposerHooker implements ClientConfigExposerHook {
 

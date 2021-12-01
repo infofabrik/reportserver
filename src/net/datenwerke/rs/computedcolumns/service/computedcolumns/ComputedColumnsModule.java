@@ -14,7 +14,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provides;
 
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.annotations.AllowedFunctions;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 public class ComputedColumnsModule extends AbstractModule {
 	

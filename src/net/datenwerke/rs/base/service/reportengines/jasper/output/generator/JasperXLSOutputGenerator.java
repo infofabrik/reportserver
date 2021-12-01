@@ -12,10 +12,10 @@ import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledRSJasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledXLSJasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledXLSXJasperReport;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.sf.jasperreports.engine.JRAbstractExporter;
 import net.sf.jasperreports.engine.JRException;

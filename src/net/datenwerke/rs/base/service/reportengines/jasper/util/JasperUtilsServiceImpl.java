@@ -8,7 +8,7 @@ import javax.persistence.EntityManager;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport__;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.simplequery.annotations.Join;
 import net.datenwerke.rs.utils.simplequery.annotations.Predicate;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;

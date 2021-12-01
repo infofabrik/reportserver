@@ -33,7 +33,8 @@ public class BoxUiStartup {
          final Provider<BoxDatasinkConfigProviderHooker> boxTreeConfiguratorProvider,
          final BoxDatasinkTesterToolbarConfigurator boxTestToolbarConfigurator,
          final BoxDatasinkOAuthToolbarConfigurator boxOauthToolbarConfigurator,
-         final Provider<BoxExportSnippetProvider> boxExportSnippetProvider
+         final Provider<BoxExportSnippetProvider> boxExportSnippetProvider,
+         final BoxUiService boxUiService
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, boxTreeConfiguratorProvider.get(),
@@ -58,6 +59,7 @@ public class BoxUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((BoxUiServiceImpl)boxUiService).setEnabledConfigs(result);
                if (result.get(StorageType.BOX) && result.get(StorageType.BOX_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, boxExportSnippetProvider,
                         HookHandlerService.PRIORITY_LOW + 60);

@@ -28,6 +28,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ViolatedSecurityExceptionDto;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.service.i18ntools.FormatHelper;
@@ -50,7 +51,6 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.ReportServerJob;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
-import net.datenwerke.rs.utils.config.ConfigService;
 import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.scheduler.client.scheduler.dto.JobExecutionStatusDto;
 import net.datenwerke.scheduler.client.scheduler.dto.config.complex.DateTriggerConfigDto;

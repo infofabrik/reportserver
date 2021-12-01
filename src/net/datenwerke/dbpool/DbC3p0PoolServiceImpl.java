@@ -38,7 +38,7 @@ import net.datenwerke.dbpool.exceptions.DriverNotFoundException;
 import net.datenwerke.dbpool.hooks.C3p0ConnectionHook;
 import net.datenwerke.dbpool.proxy.ConnectionPoolAware;
 import net.datenwerke.dbpool.proxy.ProxiedConnectionHandler;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.entitydiff.EntityDiffService;
 
 /**

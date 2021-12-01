@@ -16,7 +16,7 @@ import com.google.inject.Provider;
 import net.datenwerke.dtoservices.dtogenerator.annotations.EnumLabel;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.client.reportengines.table.locale.EnumMessages;
-import net.datenwerke.rs.utils.config.ConfigService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 
 @GenerateDto(
 	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto"
