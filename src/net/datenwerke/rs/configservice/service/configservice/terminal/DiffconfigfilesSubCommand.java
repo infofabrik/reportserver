@@ -17,6 +17,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.security.service.security.SecurityService;
 
 public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCommandHook {
 
@@ -24,6 +25,7 @@ public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCom
    protected final HistoryService historyService;
    protected final FileServerService fileServerService;
    protected final ConfigService configService;
+   protected final SecurityService securityService;
    protected FileServerFolder tmpConfigFolder;
    protected String tmpDirName;
    protected String tmpDirPath;
@@ -32,10 +34,12 @@ public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCom
          HistoryService historyService,
          FileServerService fileServerService,
          ConfigService configService,
+         SecurityService securityService,
          String BASE_COMMAND) {
       this.historyService = historyService;
       this.fileServerService = fileServerService;
       this.configService = configService;
+      this.securityService = securityService;
       this.BASE_COMMAND = BASE_COMMAND;
    }
 

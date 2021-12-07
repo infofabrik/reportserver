@@ -15,11 +15,15 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDef
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.configservice.service.configservice.locale.ConfigMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
+import net.datenwerke.security.service.security.rights.Read;
 
 public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand {
 
@@ -28,8 +32,9 @@ public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand
    public DiffconfigfilesShowmissingCommand(
          HistoryService historyService,
          FileServerService fileServerService,
-         ConfigService configService) {
-      super(historyService, fileServerService, configService, BASE_COMMAND);
+         ConfigService configService,
+         SecurityService securityService) {
+      super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
    @CliHelpMessage(
@@ -38,12 +43,13 @@ public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand
          description = "commandDiffConfigFiles_sub_showmissing_description")
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-      List<HistoryLink> missingConfigFiles = null;
+      FileServerFolder root = (FileServerFolder) fileServerService.getRoots().get(0);
+      securityService.assertRights((SecurityTarget)root, Read.class);
 
+      List<HistoryLink> missingConfigFiles = null;
       try {
          createTmpConfigFolderAndSetFolderNameAndPath();
          configService.extractBasicConfigFilesTo(tmpDirName);
-
          missingConfigFiles = findMissingConfigFiles(tmpConfigFolder);
       } catch (Exception e) {
          throw new TerminalException("the config files could not be calculated.", e);

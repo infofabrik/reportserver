@@ -25,6 +25,10 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultHyperlink;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultLine;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityTarget;
+import net.datenwerke.security.service.security.rights.Read;
+import net.datenwerke.security.service.security.rights.Write;
 
 public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubCommand {
    private static final String BASE_COMMAND = "createmissing";
@@ -34,8 +38,9 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
    public DiffconfigfilesCreatemissingCommand(
          HistoryService historyService,
          FileServerService fileServerService,
-         ConfigService configService) {
-      super(historyService, fileServerService, configService, BASE_COMMAND);
+         ConfigService configService,
+         SecurityService securityService) {
+      super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
    @CliHelpMessage(
@@ -44,15 +49,16 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
          description = "commandDiffConfigFiles_sub_createmissing_description")
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      FileServerFolder root = (FileServerFolder) fileServerService.getRoots().get(0);
+      FileServerFolder etc = root.getSubfolderByName("etc");
+      securityService.assertRights((SecurityTarget)root, Read.class);
+      securityService.assertRights((SecurityTarget)etc, Read.class, Write.class);
+      
       List<HistoryLink> missingConfigFileLinks = null;
       List<FileServerFile> newFilesInActualConfig = null;
       try {
          createTmpConfigFolderAndSetFolderNameAndPath();
          configService.extractBasicConfigFilesTo(super.tmpDirName);
-         fileServerService.getRoots().get(0).addChild(super.tmpConfigFolder);
-         fileServerService.persist(super.tmpConfigFolder);
-         fileServerService.merge(fileServerService.getRoots().get(0));
-
          missingConfigFileLinks = findMissingConfigFiles(super.tmpConfigFolder);
          moveMissingConfigFiles(missingConfigFileLinks);
          newFilesInActualConfig = missingConfigFileLinks
@@ -60,7 +66,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
                .map(fileLink -> findFileInActualConfig(fileLink))
                .collect(toList());
       } catch (Exception e) {
-         throw new TerminalException("the config files could not be calculated: ", e);
+         throw new TerminalException("the config files could not be calculated: " + e.getMessage(), e);
       } finally {
          removeTmpConfigFolder();
       }
@@ -71,7 +77,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
       missingConfigFileLinks.forEach(link -> {
          AbstractFileServerNode fileToMove = fileServerService.getNodeByPath(getFilePathFromHistoryLink(link), false);
          AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(getDstFolderPathFromHistoryLink(link), false);
-         fileServerService.move(fileToMove, dstFolder);
+         fileServerService.copy(fileToMove, dstFolder, true);
       });
    }
 
