@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+ ReportServer Configuration File
+ filename: sso/ldap.cf
+ 
+ Configures LDAP
+-->
+<configuration>
+  <provider>
+     <url>ldap://192.168.34.105</url>
+     <port>10389</port>
+  </provider>
+  <security>
+    <principal>uid=admin,ou=system</principal>
+    <credentials>secret</credentials>
+  </security>
+  <base>dc=Test1,dc=com</base>
+  <filter>(|(objectClass=organizationalUnit)(objectClass=person)(objectClass=group)(objectClass=domain)(objectClass=groupOfNames))</filter>
+  <externalDir>/usermanager/external</externalDir>
+  <writeProtection>false</writeProtection>
+  <includeNamespace>false</includeNamespace>
+  <logResultingTree>true</logResultingTree>
+  <attributes>
+    <objectClass>objectClass</objectClass>
+    <guid>entryUUID</guid>
+    <organizationalUnit>
+      <objectClass>organizationalUnit</objectClass>
+      <name>ou</name>
+    </organizationalUnit>
+    <group>
+      <objectClass>groupOfNames</objectClass>
+      <name>cn</name>
+      <member>member</member>
+    </group>
+    <user>
+      <objectClass>inetOrgPerson</objectClass>
+      <firstname>givenName</firstname>
+      <lastname>sn</lastname>
+      <username>uid</username>
+      <mail>mail</mail>
+    </user>
+  </attributes>
+</configuration>

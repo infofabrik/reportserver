@@ -166,6 +166,7 @@ import net.datenwerke.rs.installation.ReportServerInstallationModule;
 import net.datenwerke.rs.installation.RsInstallModule;
 import net.datenwerke.rs.jxlsreport.server.JxlsReportFileDownloadServlet;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.JxlsReportModule;
+import net.datenwerke.rs.ldap.service.ldap.LdapModule;
 import net.datenwerke.rs.license.server.LicenseRpcServiceImpl;
 import net.datenwerke.rs.license.service.LicenseModule;
 import net.datenwerke.rs.localfsdatasink.server.localfsdatasink.LocalFileSystemRpcServiceImpl;
@@ -669,6 +670,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase{
 			new BoxModule(),
 			new AmazonS3Module(),
 			new ScpModule(),
+			
+			new LdapModule(),
 			
 			new AliasCmdModule(),
 			
