@@ -83,8 +83,8 @@ public class LostPasswordPreAuthenticateHook implements PreAuthenticateHook {
 
             long createDate = Long.valueOf(tmpPasswdDateProp.getValue());
 
-            /* abort if tmp password has expired */
-            if (System.currentTimeMillis() - createDate < 60 * 60 * 1000) {
+            /* abort if tmp password has expired. Password expires after 10 mins */
+            if (System.currentTimeMillis() - createDate < 10 * 60 * 1000) {
 
                /*
                 * set the temporary password as the real password and enforce password change

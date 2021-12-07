@@ -1,6 +1,7 @@
 package net.datenwerke.rs.passwordpolicy.service.lostpassword;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 
 import javax.persistence.NoResultException;
@@ -26,11 +27,11 @@ import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.ext.client.crypto.rpc.CryptoRpcService;
+import net.datenwerke.security.service.security.SecurityModule;
 import net.datenwerke.security.service.security.locale.SecurityMessages;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
-import net.datenwerke.security.service.security.SecurityModule;
 
 public class LostPasswordServiceImpl implements LostPasswordService {
 
@@ -125,7 +126,7 @@ public class LostPasswordServiceImpl implements LostPasswordService {
          userManagerService.merge(user);
 
          /* prepare value map for template */
-         HashMap<String, Object> replacements = new HashMap<>();
+         Map<String, Object> replacements = new HashMap<>();
          replacements.put(PROPERTY_TMP_PASSWORD, randomPassword);
          replacements.put(PROPERTY_USER, UserForJuel.createInstance(user));
 
