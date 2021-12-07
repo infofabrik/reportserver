@@ -1,5 +1,8 @@
 package net.datenwerke.usermanager.ext.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
@@ -20,11 +23,9 @@ import net.datenwerke.usermanager.ext.service.hookers.UpdateUserLocalHooker;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
 import net.datenwerke.usermanager.ext.service.terminal.commands.AddMembersSubCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.GroupModCommand;
+import net.datenwerke.usermanager.ext.service.terminal.commands.IdCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.SetUserPropertySubCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.UserModCommand;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 
 public class UserManagerExtStartup {
@@ -45,7 +46,8 @@ public class UserManagerExtStartup {
 		Provider<UserModCommand> userModCommandProvider,
 		Provider<SetUserPropertySubCommand> setUserPropertyCommandProvider,
 		Provider<GroupModCommand> groupModProvider,
-		Provider<AddMembersSubCommand> addMembersToGroupProvider
+		Provider<AddMembersSubCommand> addMembersToGroupProvider,
+		Provider<IdCommand> idCommandProvider
 		){
 		
 		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -60,6 +62,7 @@ public class UserManagerExtStartup {
 		hookHandler.attachHooker(UserModSubCommandHook.class, setUserPropertyCommandProvider);
 		hookHandler.attachHooker(TerminalCommandHook.class, groupModProvider);
 		hookHandler.attachHooker(GroupModSubCommandHook.class, addMembersToGroupProvider);
+		hookHandler.attachHooker(TerminalCommandHook.class, idCommandProvider);
 		
 		hookHandler.attachHooker(HistoryUrlBuilderHook.class, userManagerUrlBuilder);
 	}
