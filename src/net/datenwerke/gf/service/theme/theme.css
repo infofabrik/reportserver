@@ -1308,6 +1308,14 @@ div.rs-lview-item.x-view-highlightrow {
   color: #00B000 /*col:terminal.text*/ !important;
   font-family:Consolas,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New, monospace !important;
   font-size: 9pt;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  -ms-word-break: break-all;
+  word-break: break-word;
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
 }
 
 .rs-terminal-input-pretext {
