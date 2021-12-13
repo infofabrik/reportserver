@@ -2,7 +2,7 @@ package net.datenwerke.rs.reportdoc.service.reports
 
 import java.text.SimpleDateFormat
 
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
 
 import groovy.text.*
 import net.datenwerke.gf.service.genrights.AdministrationViewSecurityTarget
@@ -166,7 +166,7 @@ def htmlTemplate = ''' <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
 	</html>'''
 	
 	def htmlspecialchars(String str){
-		return StringEscapeUtils.escapeHtml(str).replace("\r\n", "\n").replace("\n", "<br />")
+		return StringEscapeUtils.escapeHtml4(str).replace("\r\n", "\n").replace("\n", "<br />")
 	}
 	
 		def sanitizeBinding(binding){

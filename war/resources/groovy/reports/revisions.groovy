@@ -20,7 +20,7 @@ import net.datenwerke.rs.utils.entitydiff.result.FieldDiffResult
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.usermanager.entities.User
 
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
 
 return new RevisionsRpt(GLOBALS, baseurl, parameterMap).start();
 
@@ -257,7 +257,7 @@ class RevisionsRpt {
 	
 	def htmlspecialchars(String str){
 		//return str.replace("<", "&lt;").replace(">", "&gt;");
-		return StringEscapeUtils.escapeHtml(str)
+		return StringEscapeUtils.escapeHtml4(str)
 	}
 	
 	def sanitizeBinding(binding){

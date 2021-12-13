@@ -59,7 +59,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto
 import net.datenwerke.rs.utils.misc.PdfUtils
 import com.google.gwt.safehtml.shared.SafeHtml
 
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
 
 
 	def LocalizationServiceImpl localizationService = GLOBALS.getInstance(LocalizationServiceImpl.class)
@@ -716,7 +716,7 @@ import org.apache.commons.lang.StringEscapeUtils
 						
 	def htmlspecialchars(String str){
 		//return str.replace("<", "&lt;").replace(">", "&gt;");
-		return StringEscapeUtils.escapeHtml(str).replace("\r\n", "\n").replace("\n", "<br />")
+		return StringEscapeUtils.escapeHtml4(str).replace("\r\n", "\n").replace("\n", "<br />")
 	}
 	
 	def sanitizeBinding(binding){

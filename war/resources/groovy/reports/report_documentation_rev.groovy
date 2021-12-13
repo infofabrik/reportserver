@@ -38,7 +38,7 @@ import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl
 import net.datenwerke.rs.utils.misc.PdfUtils;
 
-import org.apache.commons.lang.StringEscapeUtils
+import org.apache.commons.lang3.StringEscapeUtils
 
   
 def LocalizationServiceImpl localizationService = GLOBALS.getInstance(LocalizationServiceImpl.class);
@@ -626,7 +626,7 @@ def htmlTemplate = '''<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "
 					
 def htmlspecialchars(String str){
 	//return str.replace("<", "&lt;").replace(">", "&gt;");
-	return StringEscapeUtils.escapeHtml(str)
+	return StringEscapeUtils.escapeHtml4(str)
 }
 
 def sanitizeBinding(binding){
