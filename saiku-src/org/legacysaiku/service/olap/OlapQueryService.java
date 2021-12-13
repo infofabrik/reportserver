@@ -36,8 +36,8 @@ import java.util.concurrent.atomic.AtomicLong;
 
 import mondrian3.rolap.RolapConnection;
 
-import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.exception.ExceptionUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.olap4j.AllocationPolicy;
 import org.olap4j.Axis;
 import org.olap4j.CellSet;

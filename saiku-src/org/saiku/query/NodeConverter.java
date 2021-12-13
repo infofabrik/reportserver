@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.mdx.CallNode;
 import org.olap4j.mdx.IdentifierNode;
 import org.olap4j.mdx.LiteralNode;

@@ -20,7 +20,7 @@ import org.saiku.query.metadata.CalculatedMeasure;
 import org.saiku.query.metadata.CalculatedMember;
 import org.saiku.query.util.QueryUtil;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.*;
 import org.olap4j.impl.NamedListImpl;
 import org.olap4j.mdx.ParseTreeWriter;

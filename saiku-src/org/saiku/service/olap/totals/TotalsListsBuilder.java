@@ -3,7 +3,7 @@ package org.saiku.service.olap.totals;
 import org.saiku.olap.util.SaikuProperties;
 import org.saiku.service.olap.totals.aggregators.TotalAggregator;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.*;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Measure;

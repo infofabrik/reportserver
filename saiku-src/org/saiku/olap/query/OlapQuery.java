@@ -27,7 +27,7 @@ import org.saiku.olap.util.exception.SaikuOlapException;
 import org.saiku.olap.util.formatter.ICellSetFormatter;
 import org.saiku.service.util.exception.SaikuServiceException;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.*;
 import org.olap4j.Axis.Standard;
 import org.olap4j.impl.IdentifierParser;

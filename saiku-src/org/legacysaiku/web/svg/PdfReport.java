@@ -15,7 +15,7 @@ import net.datenwerke.rs.utils.misc.PdfUtils;
 
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.print.PrintTranscoder;
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.legacysaiku.olap.dto.resultset.CellDataSet;
 import org.legacysaiku.olap.dto.resultset.DataCell;
 

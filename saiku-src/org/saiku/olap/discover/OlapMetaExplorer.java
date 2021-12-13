@@ -23,7 +23,7 @@ import org.saiku.olap.util.SaikuDimensionCaptionComparator;
 import org.saiku.olap.util.exception.SaikuOlapException;
 import org.saiku.service.util.MondrianDictionary;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapDatabaseMetaData;
 import org.olap4j.OlapException;

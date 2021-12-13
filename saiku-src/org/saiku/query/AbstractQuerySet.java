@@ -14,7 +14,7 @@
  *   limitations under the License.
  */package org.saiku.query;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.saiku.query.mdx.IFilterFunction;
 

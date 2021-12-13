@@ -1,6 +1,6 @@
 package org.saiku.olap.query2.util;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import org.olap4j.mdx.ParseTreeNode;
 import org.olap4j.metadata.*;

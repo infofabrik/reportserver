@@ -18,7 +18,7 @@ package org.saiku.query.util;
 import org.saiku.query.IQuerySet;
 import org.saiku.query.ISortableQuerySet;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.List;

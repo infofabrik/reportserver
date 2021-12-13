@@ -24,7 +24,7 @@ import java.util.Properties;
 
 import mondrian3.rolap.RolapConnection;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.Axis;
 import org.olap4j.Axis.Standard;
 import org.olap4j.CellSet;

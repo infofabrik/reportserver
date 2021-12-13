@@ -23,7 +23,7 @@ import java.util.Map;
 
 import mondrian3.olap4j.SaikuMondrianHelper;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
 import org.legacysaiku.datasources.connection.AbstractConnectionManager;
