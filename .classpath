@@ -271,5 +271,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.8.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.32.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
