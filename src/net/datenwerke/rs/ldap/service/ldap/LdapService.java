@@ -1,7 +1,10 @@
 package net.datenwerke.rs.ldap.service.ldap;
 
+import com.google.inject.ImplementedBy;
+
 import net.datenwerke.rs.ldap.service.ldap.exceptions.LdapException;
 
+@ImplementedBy(DummyLdapServiceImpl.class)
 public interface LdapService {
 
    /**

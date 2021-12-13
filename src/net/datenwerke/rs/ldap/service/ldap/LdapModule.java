@@ -6,10 +6,6 @@ public class LdapModule extends AbstractModule {
 
    @Override
    protected void configure() {
-      bind(LdapService.class).to(LdapServiceImpl.class);
-      
-      /* startup */
-      bind(LdapStartup.class).asEagerSingleton();
    }
 
 }
