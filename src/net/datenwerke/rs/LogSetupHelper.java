@@ -7,7 +7,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.logging.Handler;
@@ -15,12 +14,12 @@ import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
+import org.apache.commons.io.IOUtils;
+import org.slf4j.LoggerFactory;
+
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirServiceImpl;
 import net.datenwerke.rs.configservice.service.configservice.LibDirClasspathHelper;
-
-import org.apache.commons.io.IOUtils;
-import org.slf4j.LoggerFactory;
 
 public class LogSetupHelper {
 
@@ -43,8 +42,9 @@ public class LogSetupHelper {
 
       if (null != tomcatRsHandler) {
          try {
+            /* filename without version, refer to commend below. */
             cphelper.addUrl(cphelper.getClassloader(),
-                  LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14-1.7.32.jar"));
+                  LogSetupHelper.class.getResource("/resources/optlib/slf4j-jdk14.jar"));
 
             LogManager lm = LogManager.getLogManager();
 
@@ -55,7 +55,7 @@ public class LogSetupHelper {
             }
 
             if (null != tomcatRsHandler) {
-               Logger rsRootLogger = lm.getLogger("");
+               final Logger rsRootLogger = lm.getLogger("");
 
                try {
                   String slevel = lm.getProperty(".level");
@@ -64,12 +64,9 @@ public class LogSetupHelper {
                   }
                } catch (Exception e) {
                }
-
-               ArrayList<Handler> remove = new ArrayList<Handler>();
-               remove.addAll(Arrays.asList(rsRootLogger.getHandlers()));
-               for (Handler h : remove) {
-                  rsRootLogger.removeHandler(h);
-               }
+               
+               Arrays.stream(rsRootLogger.getHandlers())
+                  .forEach(rsRootLogger::removeHandler);
 
                rsRootLogger.addHandler(tomcatRsHandler);
             }
@@ -90,7 +87,7 @@ public class LogSetupHelper {
                    * filename. The version can be found in the MANIFEST.MF file.
                    */
                   cphelper.addUrl(classloader,
-                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-1.7.32.jar"));
+                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
                   cphelper.addUrl(classloader,
                         LogSetupHelper.class.getResource("/resources/optlib/logback-classic.jar"));
                   cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-core.jar"));
@@ -133,8 +130,9 @@ public class LogSetupHelper {
          try {
             for (ClassLoader classloader : classloaders) {
                try {
+                  /* filename without version, refer to commend above. */
                   cphelper.addUrl(classloader,
-                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j-1.7.32.jar"));
+                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
                } catch (Exception e) {
                }
             }
