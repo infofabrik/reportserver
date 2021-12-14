@@ -38,7 +38,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cglib-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/com.azalea.ufl.barcode.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-beanutils-1.9.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-cli-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-codec-1.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections-3.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-collections4-4.4.jar"/>
@@ -97,7 +96,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1-sources.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.25.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcommon-1.0.23.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/JDBInterface.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jdom-1.0.jar"/>
@@ -121,8 +119,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jtidy-r938.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-api-2.2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-impl-2.2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.10.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/keycodeDecoder.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/logging.jar"/>
@@ -272,5 +268,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.32.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-cli-1.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.28.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.11.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.11.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
