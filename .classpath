@@ -84,13 +84,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-1.4.200.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/icu4j-54.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-1.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-xc-1.9.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta-regexp-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacc-5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
