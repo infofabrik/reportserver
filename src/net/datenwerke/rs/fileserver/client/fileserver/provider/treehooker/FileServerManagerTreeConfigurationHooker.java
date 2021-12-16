@@ -86,6 +86,8 @@ public class FileServerManagerTreeConfigurationHooker implements
 		folderMenu.add(new ReloadMenuItem());
 		folderMenu.add(new SeparatorMenuItem());
 		folderMenu.add(new DownloadMenuItem(new DownloadHelper()));
+		MenuItem folderSendToItem = generateSendToMenu();
+        folderMenu.add(folderSendToItem);
 		
 		/* File */
 		Menu fileMenu = menuProvider.createOrGetMenuFor(FileServerFileDto.class);

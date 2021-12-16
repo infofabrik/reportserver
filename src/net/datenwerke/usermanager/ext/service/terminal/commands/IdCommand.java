@@ -15,6 +15,8 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -44,6 +46,14 @@ public class IdCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
+   @CliHelpMessage(
+         messageClass = UserManagerMessages.class,
+         name = BASE_COMMAND,
+         description = "commandId_description",
+            nonOptArgs = {
+                  @NonOptArgument(name="username", description="commandId_arg_username", mandatory=true)
+            }
+         )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       CommandResult result = new CommandResult();
@@ -64,13 +74,13 @@ public class IdCommand implements TerminalCommandHook {
       table.setTableDefinition(td);
 
       table.addDataRow(
-            new RSStringTableRow("Title", user.getSex().equals(Sex.Male) ? UserManagerMessages.INSTANCE.genderMale()
-                  : UserManagerMessages.INSTANCE.genderFemale()));
-      table.addDataRow(new RSStringTableRow("ID", user.getId()+""));
+            new RSStringTableRow("Title", Sex.Male.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderMale()
+                  : Sex.Female.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderFemale() : ""));
+      table.addDataRow(new RSStringTableRow("ID", user.getId() + ""));
       table.addDataRow(new RSStringTableRow("Username", user.getUsername()));
-      table.addDataRow(new RSStringTableRow("First name", user.getFirstname()));
-      table.addDataRow(new RSStringTableRow("Last name", user.getLastname()));
-      table.addDataRow(new RSStringTableRow("E-mail", user.getEmail()));
+      table.addDataRow(new RSStringTableRow("First name", null != user.getFirstname() ? user.getFirstname() : ""));
+      table.addDataRow(new RSStringTableRow("Last name", null != user.getLastname() ? user.getLastname() : ""));
+      table.addDataRow(new RSStringTableRow("E-mail", null != user.getEmail() ? user.getEmail() : ""));
 
       BsiPasswordPolicyUserMetadata metadata = bsiPasswordPolicyService.getUserMetadata(user);
 

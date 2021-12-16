@@ -30,20 +30,23 @@ import net.datenwerke.gxtdto.client.codemirror.CodeMirrorTextArea;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.logs.LogFilesDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.rs.core.client.helper.ObjectHolder;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
@@ -53,21 +56,18 @@ public class FileServerUiServiceImpl implements FileServerUiService {
 	private final FileServerDao fileDao;
 	private final HookHandlerService hookHandlerService;
 	private final LogFilesDao logFilesDao;
-	private final Provider<DatasinkTreeManagerDao> datasinkTreeManagerProvider;
 	private final Provider<DatasinkDao> datasinkDaoProvider;
-
+	
 	@Inject
 	public FileServerUiServiceImpl(
 		FileServerDao fileDao,
 		HookHandlerService hookHandlerService,
 		LogFilesDao logFilesDao,
-		Provider<DatasinkTreeManagerDao> datasinkTreeManagerProvider,
 		Provider<DatasinkDao> datasinkDaoProvider
 		){
 		this.fileDao = fileDao;
 		this.hookHandlerService = hookHandlerService;
 		this.logFilesDao = logFilesDao;
-		this.datasinkTreeManagerProvider = datasinkTreeManagerProvider;
 		this.datasinkDaoProvider = datasinkDaoProvider;
 	}
 	
@@ -200,6 +200,7 @@ public class FileServerUiServiceImpl implements FileServerUiService {
          final BaseIcon icon, final String title, final String filename, 
          final Provider<UITree> treeProvider,
          final Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
+         final AbstractFileServerNodeDto toExport,
          final AsyncCallback<Map<String,Object>> onSelectHandler) {
       final DwWindow window = new DwWindow();
       window.setHeaderIcon(icon);
@@ -265,11 +266,25 @@ public class FileServerUiServiceImpl implements FileServerUiService {
             }
             });
       
+      final ObjectHolder<String> compressedKey = new ObjectHolder<>();
+      
+      if (toExport instanceof FileServerFileDto) {
+         compressedKey.set(form.addField(Boolean.class, "", new SFFCBoolean() {
+            @Override
+            public String getBoxLabel() {
+               return FileServerMessages.INSTANCE.fileCompress();
+            }
+         }));
+      }
+      
       wrapper.setWidget(formWrapper);
       window.add(wrapper, new MarginData(10));
 
       /* set properties */
-      form.setValue(nameKey, filename);
+      if(filename.contains("."))
+         form.setValue(nameKey, filename.substring(0, filename.lastIndexOf(".")));
+      else
+         form.setValue(nameKey, filename);
 
       /* load fields */
       form.loadFields();
@@ -313,6 +328,10 @@ public class FileServerUiServiceImpl implements FileServerUiService {
          values.put(DatasinkUIModule.DATASINK_KEY, form.getValue(datasinkKey));
          values.put(DatasinkUIModule.DATASINK_FILENAME, ((String) form.getValue(nameKey)).trim());
          values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey)).trim());
+         if(toExport instanceof FileServerFileDto)
+            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) form.getValue(compressedKey.get()));
+         else
+            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) true);   
          
          onSelectHandler.onSuccess(values);
          window.hide();

@@ -15,7 +15,9 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveDao;
 import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiService;
@@ -51,15 +53,20 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
       FileSendToMenuItem item = new FileSendToMenuItem("Google Drive", treeHandler, BaseIcon.GOOGLE.toImageResource());
-      item.addMenuSelectionListener((tree, node) -> displayExportDialog((FileServerFileDto)node));
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
       item.disable();
    }
 
-   protected void displayExportDialog(final FileServerFileDto toExport) {
+   protected void displayExportDialog(final AbstractFileServerNodeDto toExport) {
+      String name="";
+      if(toExport instanceof FileServerFolderDto)
+         name = ((FileServerFolderDto)toExport).getName();
+      else if(toExport instanceof FileServerFileDto)
+          name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.GOOGLE, "Google Drive", toExport.getName(), treeProvider, datasinkDaoProvider, 
+            BaseIcon.GOOGLE, "Google Drive", name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override
@@ -68,6 +75,7 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
                         (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
                         (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
                         (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
+                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
                @Override

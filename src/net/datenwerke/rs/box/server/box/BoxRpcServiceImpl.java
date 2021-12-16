@@ -36,8 +36,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
@@ -72,8 +71,9 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
          ReportExecutorService reportExecutorService, 
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
-         BoxService boxService, ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
+         BoxService boxService, 
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
 
@@ -91,7 +91,8 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
 
    @Override
    public void exportIntoBox(ReportDto reportDto, String executorToken, BoxDatasinkDto boxDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
+         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       BoxDatasink boxDatasink = (BoxDatasink) dtoService.loadPoso(boxDatasinkDto);
@@ -120,37 +121,37 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), boxDatasink, boxService, 
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), boxDatasink, boxService,
                      new DatasinkFilenameFolderConfig() {
-                  
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-                  
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), boxDatasink, boxService,
                   new DatasinkFilenameFolderConfig() {
-               
-               @Override
-               public String getFolder() {
-                  return filename;
-               }
-               
-               @Override
-               public String getFilename() {
-                  return folder;
-               }
-            });
+
+                     @Override
+                     public String getFolder() {
+                        return filename;
+                     }
+
+                     @Override
+                     public String getFilename() {
+                        return folder;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Box: " + e.getMessage(), e);
@@ -179,12 +180,12 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
 
       try {
          datasinkServiceProvider.get().testDatasink(boxDatasink, boxService, new DatasinkFilenameFolderConfig() {
-            
+
             @Override
             public String getFolder() {
                return boxDatasink.getFolder();
             }
-            
+
             @Override
             public String getFilename() {
                return "reportserver-box-test.txt";
@@ -212,35 +213,14 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
-      
-      BoxDatasink boxDatasink = (BoxDatasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder,boolean compressed) throws ServerCallFailedException {
       /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(boxDatasink, Read.class, Execute.class);
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, boxService, filename, folder, compressed);
       
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), boxDatasink, boxService,
-               new DatasinkFilenameFolderConfig() {
-
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to Box: " + e.getMessage(), e);
-      }
    }
-
 }

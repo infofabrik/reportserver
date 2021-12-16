@@ -3,9 +3,12 @@ package net.datenwerke.rs.core.service.datasinkmanager;
 import java.util.Map;
 import java.util.Optional;
 
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public interface DatasinkService {
@@ -69,5 +72,7 @@ public interface DatasinkService {
          DatasinkConfiguration config) throws DatasinkExportException;
    
    Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);
+   
+   void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto, BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed) throws ServerCallFailedException;
 
 }

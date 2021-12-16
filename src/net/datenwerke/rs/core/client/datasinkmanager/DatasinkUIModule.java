@@ -28,6 +28,7 @@ public class DatasinkUIModule extends AbstractGinModule {
 	public static final String DATASINK_KEY = "datasink_key";
 	public static final String DATASINK_FILENAME = "datasink_filename";
 	public static final String DATASINK_FOLDER = "datasink_folder";
+	public static final String DATASINK_COMPRESSED_KEY = "compressed_key";
 	
 	@Override
 	protected void configure() {

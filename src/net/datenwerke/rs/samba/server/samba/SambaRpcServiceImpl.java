@@ -33,8 +33,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.rpc.SambaRpcService;
 import net.datenwerke.rs.samba.service.samba.SambaService;
@@ -224,34 +223,13 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    }
    
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
-      
-      SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder,boolean compressed) throws ServerCallFailedException {
       /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(sambaDatasink, Read.class, Execute.class);
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sambaService, filename,
+             folder, compressed);
       
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), sambaDatasink, sambaService,
-               new DatasinkFilenameFolderConfig() {
-
-            @Override
-            public String getFilename() {
-               return filename;
-            }
-
-            @Override
-            public String getFolder() {
-               return folder;
-            }
-
-         });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to Samba: " + e.getMessage(), e);
-      }
    }
-
 }

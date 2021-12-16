@@ -32,6 +32,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
@@ -219,33 +220,13 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
    }
    
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
-      
-      FtpsDatasink ftpsDatasink = (FtpsDatasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
-      /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(ftpsDatasink, Read.class, Execute.class);
-      
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), ftpsDatasink, ftpsService,
-               new DatasinkFilenameFolderConfig() {
-
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to FTPS: " + e.getMessage(), e);
-      }
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto  abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder, boolean compressed) throws ServerCallFailedException {
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, ftpsService, filename,
+      folder, compressed);
+   
    }
 
 }

@@ -32,6 +32,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
@@ -220,32 +221,12 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    }
    
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
-      
-      SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder,boolean compressed) throws ServerCallFailedException {
       /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(sftpDatasink, Read.class, Execute.class);
-      
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), sftpDatasink, sftpService,
-               new DatasinkFilenameFolderConfig() {
-
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to SFTP: " + e.getMessage(), e);
-      }
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sftpService, filename,
+       folder, compressed);
    }
 }

@@ -36,11 +36,16 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
+import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -74,8 +79,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          AmazonS3Service amazonS3Service, 
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
 
@@ -123,8 +128,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), amazonS3Datasink, amazonS3Service,
                      new DatasinkFilenameFolderConfig() {
 
@@ -183,18 +188,19 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(amazonS3Datasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(amazonS3Datasink, amazonS3Service, new DatasinkFilenameFolderConfig() {
-            
-            @Override
-            public String getFolder() {
-               return amazonS3Datasink.getFolder();
-            }
-            
-            @Override
-            public String getFilename() {
-               return "reportserver-amazonS3-test.txt";
-            }
-         });
+         datasinkServiceProvider.get().testDatasink(amazonS3Datasink, amazonS3Service,
+               new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFolder() {
+                     return amazonS3Datasink.getFolder();
+                  }
+
+                  @Override
+                  public String getFilename() {
+                     return "reportserver-amazonS3-test.txt";
+                  }
+               });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -219,34 +225,13 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    }
 
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, final String filename,
-         final String folder) throws ServerCallFailedException {
-      
-      AmazonS3Datasink amazonS3Datasink = (AmazonS3Datasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         final String filename, final String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(amazonS3Datasink, Read.class, Execute.class);
-      
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), amazonS3Datasink, amazonS3Service,
-               new DatasinkFilenameFolderConfig() {
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, amazonS3Service, filename, folder, compressed);
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-
-               });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to AmazonS3: " + e.getMessage(), e);
-      }
    }
 
 }

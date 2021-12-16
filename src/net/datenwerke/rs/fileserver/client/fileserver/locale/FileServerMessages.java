@@ -52,6 +52,8 @@ public interface FileServerMessages extends Messages {
 
 	String zipUploadedTitle();
 	String zipUploadedMsg();
+	
+	String fileCompress();
 
 
 

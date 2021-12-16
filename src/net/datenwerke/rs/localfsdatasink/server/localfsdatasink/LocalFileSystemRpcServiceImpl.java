@@ -33,8 +33,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecutorToken;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.rpc.LocalFileSystemRpcService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
@@ -75,7 +74,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          LocalFileSystemService localFileSystemService,
-         ExceptionServices exceptionServices,
+         ExceptionServices exceptionServices, 
          ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider
          ) {
@@ -127,10 +126,10 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, localFileSystemService,
-                     new DatasinkFilenameFolderConfig() {
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), localFileSystemDatasink,
+                     localFileSystemService, new DatasinkFilenameFolderConfig() {
 
                         @Override
                         public String getFolder() {
@@ -145,8 +144,8 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), localFileSystemDatasink, localFileSystemService,
-                  new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), localFileSystemDatasink,
+                  localFileSystemService, new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFolder() {
@@ -168,9 +167,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
          final List<ReportExecutionConfigDto> configs) throws ExpectedException {
       return Stream.concat(
-            configs
-               .stream()
-               .map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
+            configs.stream().map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
             Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
    }
 
@@ -178,38 +175,39 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
       return datasinkServiceProvider.get().getEnabledConfigs(localFileSystemService);
    }
-   
+
    @Override
    public boolean testLocalFileSystemDatasink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
          throws ServerCallFailedException {
-      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService.loadPoso(localFileSystemDatasinkDto);
-         
-         /* check rights */
-         securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
-         
-         try {
-            datasinkServiceProvider.get().testDatasink(localFileSystemDatasink, localFileSystemService,
-                  new DatasinkFilenameFolderConfig() {
+      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService
+            .loadPoso(localFileSystemDatasinkDto);
 
-                     @Override
-                     public String getFolder() {
-                        return localFileSystemDatasink.getFolder();
-                     }
+      /* check rights */
+      securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
 
-                     @Override
-                     public String getFilename() {
-                        return "reportserver-local-fs-test.txt";
-                     }
-                  });
-         } catch(Exception e){
-            DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
-            ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
-            throw ex;
-         }
-         
-         return true;
+      try {
+         datasinkServiceProvider.get().testDatasink(localFileSystemDatasink, localFileSystemService,
+               new DatasinkFilenameFolderConfig() {
+
+                  @Override
+                  public String getFolder() {
+                     return localFileSystemDatasink.getFolder();
+                  }
+
+                  @Override
+                  public String getFilename() {
+                     return "reportserver-local-fs-test.txt";
+                  }
+               });
+      } catch (Exception e) {
+         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
+         ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
+         throw ex;
+      }
+
+      return true;
    }
-   
+
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
@@ -223,35 +221,15 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(FileServerFileDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder) throws ServerCallFailedException {
-      
-      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService.loadPoso(datasinkDto);
-      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-      
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
-      securityService.assertRights(file, Read.class);
-      securityService.assertRights(localFileSystemDatasink, Read.class, Execute.class);
-      
-      try {
-         datasinkServiceProvider.get().exportIntoDatasink(file.getData(), localFileSystemDatasink,
-               localFileSystemService, new DatasinkFilenameFolderConfig() {
-
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
-      } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send to Local Filesystem Datasink: " + e.getMessage(), e);
-      }
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, localFileSystemService, filename,
+            folder, compressed);
    }
 
 }
