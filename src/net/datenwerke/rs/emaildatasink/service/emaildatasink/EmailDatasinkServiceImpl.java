@@ -55,6 +55,8 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
       
       DatasinkEmailConfig emailConfig = (DatasinkEmailConfig) config;
       EmailDatasink emailDatasink = (EmailDatasink) datasink;
+      
+      Objects.requireNonNull(emailConfig.getFilename());
 
       try {
          SimpleMail mail = mailBuilderFactoryProvider.get().create(emailConfig.getSubject(), emailConfig.getBody(), 
