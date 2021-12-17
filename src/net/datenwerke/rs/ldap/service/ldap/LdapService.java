@@ -9,10 +9,12 @@ public interface LdapService {
 
    public static final String CONFIG_FILE = "sso/ldap.cf";
 
-   public static final String PROPERTY_URL = "provider.url";
+   public static final String PROPERTY_HOST = "provider.host";
    public static final String PROPERTY_PORT = "provider.port";
+   
    public static final String PROPERTY_PRINCIPAL = "security.principal";
    public static final String PROPERTY_CREDENTIALS = "security.credentials";
+   
    public static final String PROPERTY_BASE = "base";
    public static final String PROPERTY_FILTER = "filter";
    public static final String PROPERTY_EXTERNAL_DIR = "externalDir";
