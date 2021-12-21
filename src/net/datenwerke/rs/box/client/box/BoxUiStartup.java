@@ -23,6 +23,9 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class BoxUiStartup {
+   
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 60;
+   
    @Inject
    public BoxUiStartup(
          final Provider<ExportToBoxHooker> exportToBoxHooker,
@@ -38,17 +41,17 @@ public class BoxUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, boxTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_LOW + 60);
+            PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToBoxHooker,
-            HookHandlerService.PRIORITY_LOW + 60);
+            PRIO);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW + 60);
+            PRIO);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, boxTestToolbarConfigurator,
-            HookHandlerService.PRIORITY_HIGH);
+            PRIO);
 
       /* Oauth */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, boxOauthToolbarConfigurator);
@@ -62,7 +65,7 @@ public class BoxUiStartup {
                ((BoxUiServiceImpl)boxUiService).setEnabledConfigs(result);
                if (result.get(StorageType.BOX) && result.get(StorageType.BOX_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, boxExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW + 60);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, boxExportSnippetProvider);
             }

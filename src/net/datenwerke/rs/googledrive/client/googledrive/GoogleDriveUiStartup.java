@@ -23,6 +23,9 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class GoogleDriveUiStartup {
+   
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 50;
+   
    @Inject
    public GoogleDriveUiStartup(
          final Provider<ExportToGoogleDriveHooker> exportToGoogleDriveHooker,
@@ -38,17 +41,17 @@ public class GoogleDriveUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, googleDriveTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_LOW + 50);
+            PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToGoogleDriveHooker,
-            HookHandlerService.PRIORITY_LOW + 50);
+            PRIO);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW + 50);
+            PRIO);
       
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, googleDriveTestToolbarConfigurator,
-            HookHandlerService.PRIORITY_HIGH);
+            PRIO);
 
       /* Oauth */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, googleDriveOauthToolbarConfigurator);
@@ -62,7 +65,7 @@ public class GoogleDriveUiStartup {
                ((GoogleDriveUiServiceImpl)googleDriveUiService).setEnabledConfigs(result);
                if (result.get(StorageType.GOOGLEDRIVE) && result.get(StorageType.GOOGLEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, googleDriveExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW + 50);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, googleDriveExportSnippetProvider);
             }

@@ -26,6 +26,8 @@ import net.datenwerke.rs.scp.client.scp.hookers.ScpUsernamePasswordAuthenticator
 
 public class ScpUiStartup {
 
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 30;
+   
    @Inject
    public ScpUiStartup(
          final HookHandlerService hookHandler, 
@@ -42,7 +44,7 @@ public class ScpUiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_LOW + 30);
+            PRIO);
       
       /* Authenticators */
       hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpUsernamePasswordAuthenticator, 
@@ -53,12 +55,13 @@ public class ScpUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker,
-            HookHandlerService.PRIORITY_LOW + 30);
+            PRIO);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW + 30);
+            PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, scpTestToolbarConfigurator);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, scpTestToolbarConfigurator,
+            PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -70,7 +73,7 @@ public class ScpUiStartup {
                ((ScpUiServiceImpl)scpUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SCP) && result.get(StorageType.SCP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW + 30);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider);
             }

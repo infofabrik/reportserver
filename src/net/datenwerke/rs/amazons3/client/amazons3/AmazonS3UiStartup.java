@@ -23,6 +23,8 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 
 public class AmazonS3UiStartup {
    
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 55;
+   
    @Inject
    public AmazonS3UiStartup(
          final Provider<ExportToAmazonS3Hooker> exportToAmazonS3Hooker,
@@ -37,17 +39,17 @@ public class AmazonS3UiStartup {
          ) {
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, amazonS3TreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_LOW + 55);
+            PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToAmazonS3Hooker,
-            HookHandlerService.PRIORITY_LOW + 55);
+            PRIO);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW + 55);
+            PRIO);
 
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, amazonS3TestToolbarConfigurator,
-            HookHandlerService.PRIORITY_HIGH);
+            PRIO);
       
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -58,7 +60,7 @@ public class AmazonS3UiStartup {
                ((AmazonS3UiServiceImpl)amazonS3UiService).setEnabledConfigs(result);
                if (result.get(StorageType.AMAZONS3) && result.get(StorageType.AMAZONS3_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, amazonS3ExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW + 55);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, amazonS3ExportSnippetProvider);
             }

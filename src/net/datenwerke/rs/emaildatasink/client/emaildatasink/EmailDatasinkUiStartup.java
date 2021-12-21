@@ -20,6 +20,8 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class EmailDatasinkUiStartup {
+   
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW;
 
    @Inject
    public EmailDatasinkUiStartup(
@@ -34,14 +36,15 @@ public class EmailDatasinkUiStartup {
 
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, emailTreeConfiguratorProvider.get(),
-            HookHandlerService.PRIORITY_LOW);
+            PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToEmailHooker,
-            HookHandlerService.PRIORITY_LOW);
+            PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, emailTestToolbarConfigurator);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, emailTestToolbarConfigurator,
+            PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -52,7 +55,7 @@ public class EmailDatasinkUiStartup {
                ((EmailDatasinkUiServiceImpl)emailUiService).setEnabledConfigs(result);
                if (result.get(StorageType.EMAIL) && result.get(StorageType.EMAIL_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider);
             }

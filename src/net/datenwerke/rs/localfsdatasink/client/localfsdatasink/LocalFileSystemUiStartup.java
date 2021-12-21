@@ -23,6 +23,8 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 
 public class LocalFileSystemUiStartup {
 
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 35;
+   
    @Inject
    public LocalFileSystemUiStartup(
          final Provider<ExportToLocalFileSystemHooker> exportToLocalFileSystemHooker,
@@ -36,13 +38,14 @@ public class LocalFileSystemUiStartup {
          final LocalFileSystemUiService localFileSystemUiService
          ) {
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), HookHandlerService.PRIORITY_LOW + 35);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), 
+            PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToLocalFileSystemHooker,
-            HookHandlerService.PRIORITY_LOW + 35);
+            PRIO);
       hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            HookHandlerService.PRIORITY_LOW + 35);
+            PRIO);
       
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, localFileSystemTestToolbarConfigurator);
@@ -56,7 +59,7 @@ public class LocalFileSystemUiStartup {
                ((LocalFileSystemUiServiceImpl)localFileSystemUiService).setEnabledConfigs(result);
                if (result.get(StorageType.LOCALFILESYSTEM) && result.get(StorageType.LOCALFILESYSTEM_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider,
-                        HookHandlerService.PRIORITY_LOW + 35);
+                        PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider);
             }
