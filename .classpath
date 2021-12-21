@@ -71,7 +71,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-3.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-4.2.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-jndi-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-multibindings-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-persist-4.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-servlet-4.2.3.jar"/>
@@ -83,7 +82,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-chart-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-1.4.200.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-1.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-1.9.13.jar"/>
@@ -142,9 +140,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/QueryBuilder.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/relaxngDatatype-20020414.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rhino-1.7.6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-9.5.1-8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/servlet-api-2.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/SparseBitSet-1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stringtemplate-3.2.1.jar"/>
@@ -153,13 +149,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/webreporting-jsf.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdb6.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/XMLConnector.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlparserv2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-resolver-1.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xom-1.2.5.jar"/>
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ojdbc7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
@@ -270,5 +263,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.28.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.11.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.6.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-10.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.12.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xom-1.3.7.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
