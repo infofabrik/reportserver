@@ -40,7 +40,10 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
          name = BASE_COMMAND, 
          description = "commandDiffConfigFiles_sub_createall_description",
          nonOptArgs = {
-               @NonOptArgument(name="folder", description="commandDiffConfigFiles_sub_createall_folderArgument", mandatory = true)
+               @NonOptArgument(
+                     name="folder", 
+                     description="commandDiffConfigFiles_sub_createall_folderArgument", 
+                     mandatory = true)
            })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {

@@ -85,7 +85,7 @@ public class OAuthServlet extends HttpServlet {
                   redirectUri);
             resp.sendRedirect(req.getContextPath() + "#" + path);
          } catch (Exception e) {
-            throw new ServletException("Error while generating refresh token");
+            throw new ServletException("Error while generating refresh token", e);
          }
       } else {
          throw new IllegalStateException("No authentication code or datasinkId");

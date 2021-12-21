@@ -11,6 +11,8 @@ import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
@@ -28,111 +30,118 @@ import net.datenwerke.security.service.security.exceptions.ViolatedSecurityExcep
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.sf.saxon.lib.FeatureKeys;
+import net.sf.saxon.lib.Logger;
 import net.sf.saxon.lib.StandardErrorListener;
-
-import com.google.inject.Inject;
+import net.sf.saxon.lib.StandardLogger;
 
 public class XsltCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "xslt";
-	
-	private final FileServerService fileService;
-	private final SecurityService securityService;
+   public static final String BASE_COMMAND = "xslt";
 
-	@Inject
-	public XsltCommand(FileServerService fileService,
-			SecurityService securityService) {
-		this.fileService = fileService;
-		this.securityService = securityService;
-	}
+   private final FileServerService fileService;
+   private final SecurityService securityService;
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Inject
+   public XsltCommand(FileServerService fileService, SecurityService securityService) {
+      this.fileService = fileService;
+      this.securityService = securityService;
+   }
 
-	@CliHelpMessage(
-		messageClass = XsltCommandMessages.class,
-		name = BASE_COMMAND,
-		description = "commandXslt_description",
-		nonOptArgs = {
-			@NonOptArgument(name="stylesheet", description="commandXslt_stylesheet"),
-			@NonOptArgument(name="intput", description="commandXslt_input"),
-			@NonOptArgument(name="output", description="commandXslt_output")
-		}
-	)
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		List<String> args = parser.getNonOptionArguments();
-		if(args.size() < 2)
-			throw new IllegalArgumentException("Expected at least 2 arguments");
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-		try{
-			FileServerFile stylesheet = (FileServerFile) session.getObjectResolver().getObject(args.get(0), Read.class);
-			FileServerFile input = (FileServerFile) session.getObjectResolver().getObject(args.get(1), Read.class);
-			
-			boolean outputFile = args.size() >= 3;
-			FileServerFile output = null;
+   @CliHelpMessage(
+         messageClass = XsltCommandMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandXslt_description", 
+         nonOptArgs = {
+               @NonOptArgument(
+                     name = "stylesheet", 
+                     description = "commandXslt_stylesheet",
+                     mandatory = true
+                     ),
+               @NonOptArgument(
+                     name = "intput", 
+                     description = "commandXslt_input",
+                     mandatory = true
+                     ),
+               @NonOptArgument(
+                     name = "output", 
+                     description = "commandXslt_output",
+                     mandatory = true) })
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      List<String> args = parser.getNonOptionArguments();
+      if (args.size() < 3)
+         throw new IllegalArgumentException("Expected at least 3 arguments");
 
-			if(outputFile){
-				try{
-					output = (FileServerFile) session.getObjectResolver().getObject(args.get(2));
-				}catch(Exception e){}
-				if(null != output && ! securityService.checkRights(output, Write.class))
-					throw new ViolatedSecurityException(output, Write.class);
-				
-				if(null == output){
-					AbstractFileServerNode parent = null;
-					try {
-						parent = (AbstractFileServerNode) session.getFileSystem().getCurrentLocation().getObject();
-						if(! securityService.checkRights(parent, Write.class))
-							throw new ViolatedSecurityException(parent, Write.class);
-					} catch (VFSException e) {
-						return new CommandResult(e.getMessage());
-					}
-				
-					output = new FileServerFile();
-					output.setName(args.get(2));
-					if(null != parent)
-						parent.addChild(output);
-					fileService.persist(output);
-				}
-			}
-			
-			ByteArrayOutputStream errorOut = new ByteArrayOutputStream();
-			TransformerFactory transformerFactory = TransformerFactory.newInstance();
-			
-			transformerFactory.setAttribute(FeatureKeys.ALLOW_EXTERNAL_FUNCTIONS, "false");
-			((StandardErrorListener)transformerFactory.getErrorListener()).setErrorOutput(new PrintStream(errorOut));
-			
-			Transformer trans = transformerFactory.newTransformer(new StreamSource(new StringReader(new String(stylesheet.getData()))));
+      try {
+         FileServerFile stylesheet = (FileServerFile) session.getObjectResolver().getObject(args.get(0), Read.class);
+         FileServerFile input = (FileServerFile) session.getObjectResolver().getObject(args.get(1), Read.class);
 
-			StringWriter out = new StringWriter();
-			trans.transform(new StreamSource(new StringReader(new String(input.getData()))), new StreamResult(out));
-			
-			final String result = out.toString();
-			
-			String error = errorOut.toString();
-			
-			if(outputFile){
-				output.setData(result.getBytes());
-				fileService.merge(output);
-				
-				return new CommandResult("Transformation succeded: " + error);
-			} else {
-				return new CommandResult(result);
-			}
-			
-		} catch(RuntimeException e){
-			throw e;
-		} catch(Exception e){
-			throw new RuntimeException(e);
-		}
-	}
+         FileServerFile output = null;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+         try {
+            output = (FileServerFile) session.getObjectResolver().getObject(args.get(2));
+         } catch (Exception e) {
+         }
+         if (null != output && !securityService.checkRights(output, Write.class))
+            throw new ViolatedSecurityException(output, Write.class);
+
+         if (null == output) {
+            AbstractFileServerNode parent = null;
+            try {
+               parent = (AbstractFileServerNode) session.getFileSystem().getCurrentLocation().getObject();
+               if (!securityService.checkRights(parent, Write.class))
+                  throw new ViolatedSecurityException(parent, Write.class);
+            } catch (VFSException e) {
+               return new CommandResult(e.getMessage());
+            }
+
+            output = new FileServerFile();
+            output.setName(args.get(2));
+            output.setContentType("text/xml");
+            if (null != parent)
+               parent.addChild(output);
+            fileService.persist(output);
+         }
+
+         ByteArrayOutputStream errorOut = new ByteArrayOutputStream();
+         TransformerFactory transformerFactory = TransformerFactory.newInstance();
+
+         transformerFactory.setAttribute(FeatureKeys.ALLOW_EXTERNAL_FUNCTIONS, "false");
+
+         Logger log = new StandardLogger(new PrintStream(errorOut));
+
+         ((StandardErrorListener) transformerFactory.getErrorListener()).setLogger(log);
+
+         Transformer trans = transformerFactory
+               .newTransformer(new StreamSource(new StringReader(new String(stylesheet.getData()))));
+
+         StringWriter out = new StringWriter();
+         trans.transform(new StreamSource(new StringReader(new String(input.getData()))), new StreamResult(out));
+
+         final String result = out.toString();
+
+         String error = errorOut.toString();
+
+         output.setData(result.getBytes());
+         fileService.merge(output);
+
+         return new CommandResult("Transformation succeded: " + error);
+
+      } catch (RuntimeException e) {
+         throw e;
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }
