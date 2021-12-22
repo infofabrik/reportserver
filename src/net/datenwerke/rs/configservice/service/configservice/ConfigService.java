@@ -23,9 +23,9 @@ public interface ConfigService {
 
    Configuration getConfigFailsafe(String identifier);
 
-   String getConfigAsJson(String identifier);
+   String getConfigAsXml(String identifier);
 
-   String getConfigAsJsonFailsafe(String identifier);
+   String getConfigAsXmlFailsafe(String identifier);
    
    /**
     * Extracts a copy of the basic configuration files to a given sub-directory of root. If the specified folder

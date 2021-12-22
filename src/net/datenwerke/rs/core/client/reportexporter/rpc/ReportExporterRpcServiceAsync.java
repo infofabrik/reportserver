@@ -20,7 +20,7 @@ public interface ReportExporterRpcServiceAsync {
 			String message, boolean compressed, List<StrippedDownUser> recipients,
 			AsyncCallback<Void> callback);
 	
-	void getExportDefaultSettingsAsJSON(String identifier, AsyncCallback<String> callback);
+	void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback);
 	
 	void getExportDefaultCharset(AsyncCallback<String> callback);
 

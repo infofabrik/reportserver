@@ -265,8 +265,8 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    }
 
    @Override
-   public String getExportDefaultSettingsAsJSON(String identifier) {
-      return configService.getConfigAsJsonFailsafe(configPath + identifier);
+   public String getExportDefaultSettingsAsXml(String identifier) {
+      return configService.getConfigAsXmlFailsafe(configPath + identifier);
    }
 
    @Override

@@ -14,7 +14,7 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 
-import net.datenwerke.gf.client.config.ClientConfigJSONService;
+import net.datenwerke.gf.client.config.ClientConfigXmlService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -39,13 +39,13 @@ public abstract class Export2JXLS extends ReportExporterImpl {
 
    protected RECJxlsDto config;
    private final ReportExporterDao exporterDao;
-   private final ClientConfigJSONService jsonService;
+   private final ClientConfigXmlService jsonService;
    private static final String CONFIGURATION_FILE = "jxlsexport.cf";
 
    @Inject
    public Export2JXLS(
          ReportExporterDao exporterDao, 
-         ClientConfigJSONService jsonService
+         ClientConfigXmlService jsonService
          ) {
       this.exporterDao = exporterDao;
       this.jsonService = jsonService;
@@ -111,11 +111,11 @@ public abstract class Export2JXLS extends ReportExporterImpl {
 
       if (null == config) {
          config = new RECJxlsDtoDec();
-         exporterDao.getExportDefaultSettingsAsJSON(CONFIGURATION_FILE, new RsAsyncCallback<String>() {
+         exporterDao.getExportDefaultSettingsAsXml(CONFIGURATION_FILE, new RsAsyncCallback<String>() {
             @Override
             public void onSuccess(String result) {
                if (!"".equals(result.trim())) {
-                  jsonService.setJSONConfig(result);
+                  jsonService.setXmlConfig(result);
                   int numberColumnWidth = Integer.parseInt(jsonService.getString("jxls.numberColumnWidth", "8"));
                   int textColumnWidth = Integer.parseInt(jsonService.getString("jxls.textColumnWidth", "8"));
                   int dateColumnWidth = Integer.parseInt(jsonService.getString("jxls.dateColumnWidth", "8"));

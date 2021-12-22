@@ -52,8 +52,8 @@ public class ReportExporterDao extends Dao {
 		rpcService.exportViaMail(reportDto, executorToke, format, configs, subject, message, compressedExpKey, recipients, transformAndKeepCallback(callback));
 	}
 	
-	public void getExportDefaultSettingsAsJSON(String identifier, AsyncCallback<String> callback) {
-		rpcService.getExportDefaultSettingsAsJSON(identifier, transformAndKeepCallback(callback));
+	public void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback) {
+		rpcService.getExportDefaultSettingsAsXml(identifier, transformAndKeepCallback(callback));
 	}
 	
 	public void getExportDefaultCharset(AsyncCallback<String> callback) {

@@ -17,8 +17,6 @@ import org.apache.commons.configuration2.XMLConfiguration;
 import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.FileHandler;
 import org.apache.commons.io.output.ByteArrayOutputStream;
-import org.json.JSONException;
-import org.json.XML;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -93,7 +91,7 @@ public class ConfigServiceImpl implements ConfigService {
    }
 
    @Override
-   public String getConfigAsJson(String identifier) {
+   public String getConfigAsXml(String identifier) {
       try {
          Object object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
          if (null == object || !(object instanceof FileServerFile))
@@ -105,16 +103,14 @@ public class ConfigServiceImpl implements ConfigService {
          if (null == data)
             throw new ConfigFileNotFoundException("config file is empty " + identifier);
 
-         return XML.toJSONObject(new String(data)).toString();
+         return new String(data);
       } catch (ObjectResolverException e) {
          throw new ConfigFileNotFoundException("Could not find config for " + identifier, e);
-      } catch (JSONException e) {
-         throw new ConfigFileNotFoundException("Could not parse config for " + identifier + " to json", e);
-      }
+      } 
    }
 
    @Override
-   public String getConfigAsJsonFailsafe(String identifier) {
+   public String getConfigAsXmlFailsafe(String identifier) {
       try {
          Object object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
          if (null == object || !(object instanceof FileServerFile))
@@ -126,7 +122,7 @@ public class ConfigServiceImpl implements ConfigService {
          if (null == data)
             throw new ConfigFileNotFoundException("config file is empty " + identifier);
 
-         return XML.toJSONObject(new String(data)).toString();
+         return new String(data);
       } catch (Exception e) {
          logger.warn("Configfile " + identifier + " could not be loaded. Default values are in effect.");
          return "";

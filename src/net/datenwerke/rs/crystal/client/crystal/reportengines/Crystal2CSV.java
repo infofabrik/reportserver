@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 
-import net.datenwerke.gf.client.config.ClientConfigJSONService;
+import net.datenwerke.gf.client.config.ClientConfigXmlService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -25,11 +25,11 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 public class Crystal2CSV extends Export2CSV {
 	
 	private final ReportExporterDao exporterDao;
-	private final ClientConfigJSONService jsonService;
+	private final ClientConfigXmlService jsonService;
 	private static final String configurationFile = "csvexport.cf";
 
 	@Inject
-	public Crystal2CSV(ReportExporterDao exporterDao, ClientConfigJSONService jsonService) {
+	public Crystal2CSV(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
 		super(exporterDao, jsonService);
 		this.exporterDao = exporterDao;
 		this.jsonService = jsonService;
@@ -65,11 +65,11 @@ public class Crystal2CSV extends Export2CSV {
 		
 		if(null == config) {
 			config = new RECCsvDtoDec();
-			exporterDao.getExportDefaultSettingsAsJSON(configurationFile, new RsAsyncCallback<String>() {
+			exporterDao.getExportDefaultSettingsAsXml(configurationFile, new RsAsyncCallback<String>() {
 				@Override
 				public void onSuccess(String result) {
 					if (!"".equals(result.trim())) {
-						jsonService.setJSONConfig(result);
+						jsonService.setXmlConfig(result);
 						boolean printHeader = jsonService.getBoolean("csv.printHeader", true);
 						String separator = jsonService.getString("csv.separator", ";");
 						String quote = jsonService.getString("csv.quote", "\"");

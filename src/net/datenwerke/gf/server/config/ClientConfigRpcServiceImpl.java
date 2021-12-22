@@ -39,10 +39,10 @@ public class ClientConfigRpcServiceImpl extends SecuredRemoteServiceServlet impl
 	public String getConfigFile(String identifier) throws ServerCallFailedException {
 		/* currently only allowed for ui */
 		if(! ClientConfigModule.MAIN_CLIENT_CONFIG.equals(identifier))
-			throw new IllegalArgumentException("Currently not available for just any config!");
+			throw new IllegalArgumentException("Currently not available for any config!");
 		
 		try{
-			return configService.getConfigAsJson(identifier);
+			return configService.getConfigAsXml(identifier);
 		} catch(Exception e) {
 			throw new ServerCallFailedException(e);
 		}

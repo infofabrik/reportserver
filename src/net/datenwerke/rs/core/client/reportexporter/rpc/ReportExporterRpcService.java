@@ -20,7 +20,7 @@ public interface ReportExporterRpcService extends RemoteService {
 	void exportViaMail(ReportDto reportDto, String executorToke, String format,
 			List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed, List<StrippedDownUser> recipients) throws ServerCallFailedException, ExpectedException;
 	
-	public String getExportDefaultSettingsAsJSON(String identifier);
+	public String getExportDefaultSettingsAsXml(String identifier);
 	
 	public String getExportDefaultCharset();
 	

@@ -7,15 +7,15 @@ import com.google.inject.Singleton;
 @Singleton
 public class ClientConfigServiceImpl implements ClientConfigService {
 
-	private final ClientConfigJSONService jsonService;
+	private final ClientConfigXmlService jsonService;
 
 	@Inject
-	public ClientConfigServiceImpl(ClientConfigJSONService jsonService) {
+	public ClientConfigServiceImpl(ClientConfigXmlService jsonService) {
 		this.jsonService = jsonService;
 	}
 	@Override
 	public void setMainConfig(String json) {
-		jsonService.setJSONConfig(json);
+		jsonService.setXmlConfig(json);
 	}
 	
 	@Override

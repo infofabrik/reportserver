@@ -1,6 +1,6 @@
 package net.datenwerke.rs.legacysaiku.client.saiku.reportengines;
 
-import net.datenwerke.gf.client.config.ClientConfigJSONService;
+import net.datenwerke.gf.client.config.ClientConfigXmlService;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterDao;
 import net.datenwerke.rs.core.client.reportexporter.exporter.generic.Export2CSV;
@@ -13,7 +13,7 @@ import com.google.inject.Inject;
 public class Saiku2CSV extends Export2CSV {
 
 	@Inject
-	public Saiku2CSV(ReportExporterDao exporterDao,ClientConfigJSONService jsonService) {
+	public Saiku2CSV(ReportExporterDao exporterDao,ClientConfigXmlService jsonService) {
 		super(exporterDao, jsonService);
 	}
 
