@@ -42,6 +42,7 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutionNotific
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
+import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.dsbundle.service.dsbundle.SimpleDatasourceBundleService;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskServiceImpl;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
@@ -75,6 +76,8 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 	
 	private Map<UUID, ReportExecutorJob> jobMap = new HashMap<UUID, ReportExecutorJob>();
 	
+	private final ParameterSetFactory parameterSetFactory;
+	
 	@Inject
 	public ReportExecutorServiceImpl(
 		@ReportEngines Provider<Set<Class<? extends ReportEngine>>> reportEnginesProvider,
@@ -86,7 +89,8 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 		Provider<SimpleDatasourceBundleService> bundleServiceProvider,
 		Provider<TsDiskServiceImpl> tsDiskServiceProvider,
 		Provider<JasperUtilsService> jasperUtilsServiceProvider,
-		Provider<UserManagerService> userManagerServiceProvider
+		Provider<UserManagerService> userManagerServiceProvider,
+		ParameterSetFactory parameterSetFactory
 		){
 		
 		/* store objects */
@@ -100,6 +104,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 		this.tsDiskServiceProvider = tsDiskServiceProvider;
 		this.jasperUtilsServiceProvider = jasperUtilsServiceProvider;
 		this.userManagerServiceProvider = userManagerServiceProvider;
+		this.parameterSetFactory = parameterSetFactory;
 	}
 	
 	@Override
@@ -172,13 +177,25 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 		}
 //		System.out.println("token: " + token);
 		
+		ParameterSet ps = parameterSetFactory.create(user, report);
+        ps.addAll(report.getParameterInstances());
+        ps.addVariable("_RS_REX_TOKEN", token);
+
+        if (null != parameterSet) 
+           ps.add(parameterSet);
+        
+        Map<String, Object> reportConfiguration = new HashMap<>();
+		Map<String, Object> configParameters = ps.getCompleteConfiguration(true, true);
+		reportConfiguration.put("configuration_parameter", configParameters);
+		
 		if(! dry){
 			eventBus.fireEvent(new ReportExecutedEvent(
 				"report_id", null == report.getId() ? report.getOldTransientId() : report.getId(),
 				"executing_user", user.getId(),
 				"output_format", outputFormat,
 				"uuid", uuid,
-				"token", token
+				"token", token,
+				"report_configuration", reportConfiguration
 			));
 		}
 		

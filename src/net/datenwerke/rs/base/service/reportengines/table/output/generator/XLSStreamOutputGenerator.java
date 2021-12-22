@@ -398,11 +398,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl{
 			cellParameter = headerRow.createCell(0);
 			cellParameter.setCellValue(
 					outputCompleteConfiguration ? messages.configurationParameter() : messages.parameter());
-			//configSheet.setColumnWidth(0, CONFIG_SHEET_COL_WIDTH);
 
 			Cell cellParameterValue = headerRow.createCell(1);
 			cellParameterValue.setCellValue(messages.value());
-			//configSheet.setColumnWidth(1, CONFIG_SHEET_COL_WIDTH);
 
 			configRowOffset++;
 
