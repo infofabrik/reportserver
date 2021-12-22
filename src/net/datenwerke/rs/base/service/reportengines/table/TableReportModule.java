@@ -3,6 +3,8 @@ package net.datenwerke.rs.base.service.reportengines.table;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
 
+import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
+import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterServiceImpl;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate;
@@ -28,6 +30,8 @@ public class TableReportModule extends AbstractReportServerModule {
       /* bind utilities */
       bind(TableReportUtils.class).to(TableReportUtilsImpl.class).in(Singleton.class);
       bind(TableReportColumnMetadataService.class).to(TableReportColumnMetadataServiceImpl.class).in(Singleton.class);
+      
+      bind(FilterService.class).to(FilterServiceImpl.class);
 
       /* bind startup */
       bind(TableReportStartup.class).asEagerSingleton();

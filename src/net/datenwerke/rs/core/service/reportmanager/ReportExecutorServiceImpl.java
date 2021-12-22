@@ -13,6 +13,7 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -24,6 +25,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsService;
+import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
+import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -71,6 +74,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 	private final Provider<TsDiskServiceImpl> tsDiskServiceProvider;
 	private final Provider<JasperUtilsService> jasperUtilsServiceProvider;
 	private final Provider<UserManagerService> userManagerServiceProvider;
+	private final Provider<FilterService> filterServiceProvider;
 	
 	private final static String NOW_FORMAT = "yyyy-MM-dd-HH-mm-ss";
 	
@@ -90,7 +94,8 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 		Provider<TsDiskServiceImpl> tsDiskServiceProvider,
 		Provider<JasperUtilsService> jasperUtilsServiceProvider,
 		Provider<UserManagerService> userManagerServiceProvider,
-		ParameterSetFactory parameterSetFactory
+		ParameterSetFactory parameterSetFactory,
+		Provider<FilterService> filterServiceProvider
 		){
 		
 		/* store objects */
@@ -105,6 +110,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 		this.jasperUtilsServiceProvider = jasperUtilsServiceProvider;
 		this.userManagerServiceProvider = userManagerServiceProvider;
 		this.parameterSetFactory = parameterSetFactory;
+		this.filterServiceProvider = filterServiceProvider;
 	}
 	
 	@Override
@@ -185,8 +191,12 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
            ps.add(parameterSet);
         
         Map<String, Object> reportConfiguration = new HashMap<>();
+        
 		Map<String, Object> configParameters = ps.getCompleteConfiguration(true, true);
-		reportConfiguration.put("configuration_parameter", configParameters);
+		reportConfiguration.put("configuration_parameters", configParameters);
+		
+        if (report instanceof TableReport)
+           reportConfiguration.put("filters", filterServiceProvider.get().getFilterMap((TableReport) report));
 		
 		if(! dry){
 			eventBus.fireEvent(new ReportExecutedEvent(
@@ -195,7 +205,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 				"output_format", outputFormat,
 				"uuid", uuid,
 				"token", token,
-				"report_configuration", reportConfiguration
+				"report_configuration", new JSONObject(reportConfiguration).toString()
 			));
 		}
 		
