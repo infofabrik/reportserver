@@ -13,12 +13,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 @Singleton
 public class VersionInfoServlet extends HttpServlet {
 
@@ -59,7 +60,7 @@ public class VersionInfoServlet extends HttpServlet {
 				pw.print(p.getProperty("version") + "<br/>" + date.substring(date.indexOf("-") + 1));
 				
 			}else if("ext".equals(style)){
-				HashMap<String, Object> res = new HashMap<String, Object>();
+				HashMap<String, Object> res = new HashMap<>();
 				res.put("version.num", p.get("version"));
 				String date = p.getProperty("buildDate");
 				res.put("version.banner", p.getProperty("version") + "<br/>" + date.substring(date.indexOf("-") + 1));
@@ -67,7 +68,9 @@ public class VersionInfoServlet extends HttpServlet {
 				for(VersionInfoExtensionHook vie : hookHandler.getHookers(VersionInfoExtensionHook.class)){
 					res.put(vie.getKey(), vie.getValue(req.getParameterMap()));
 				}
-				String json = new JSONObject(res).toString();
+				
+				String json = new ObjectMapper().writeValueAsString(res);
+				
 				if(req.getParameterMap().containsKey("callback")){
 					json = req.getParameter("callback") + "(" + json + ");";
 				}

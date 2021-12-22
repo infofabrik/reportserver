@@ -13,10 +13,10 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
@@ -26,7 +26,6 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsService;
 import net.datenwerke.rs.base.service.reportengines.table.columnfilter.FilterService;
-import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -192,34 +191,35 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
         
         Map<String, Object> reportConfiguration = new HashMap<>();
         
-		Map<String, Object> configParameters = ps.getCompleteConfiguration(true, true);
-		reportConfiguration.put("configuration_parameters", configParameters);
+        List<ReportExecutionNotificationHook> notificees = hookHandler.getHookers(ReportExecutionNotificationHook.class);
+        
+        try{
+      		Map<String, Object> configParameters = ps.getCompleteConfiguration(true, true);
+      		reportConfiguration.put("configuration_parameters", configParameters);
+      		
+              if (report instanceof TableReport)
+                 reportConfiguration.put("filters", filterServiceProvider.get().getFilterMap((TableReport) report));
+      		
+      		if(! dry){
+      			eventBus.fireEvent(new ReportExecutedEvent(
+      				"report_id", null == report.getId() ? report.getOldTransientId() : report.getId(),
+      				"executing_user", user.getId(),
+      				"output_format", outputFormat,
+      				"uuid", uuid,
+      				"token", token,
+      				"report_configuration", new ObjectMapper().writeValueAsString(reportConfiguration)
+      			));
+      		}
+      		
+      		/* sanitize configs */
+      		if(null == configs)
+      			configs = new ReportExecutionConfig[]{};
+      		
+      		if(! dry){
+      			for(ReportExecutionNotificationHook notificee : notificees)
+      				notificee.notifyOfReportExecution(report, parameterSet, user, outputFormat, configs);
+      		}
 		
-        if (report instanceof TableReport)
-           reportConfiguration.put("filters", filterServiceProvider.get().getFilterMap((TableReport) report));
-		
-		if(! dry){
-			eventBus.fireEvent(new ReportExecutedEvent(
-				"report_id", null == report.getId() ? report.getOldTransientId() : report.getId(),
-				"executing_user", user.getId(),
-				"output_format", outputFormat,
-				"uuid", uuid,
-				"token", token,
-				"report_configuration", new JSONObject(reportConfiguration).toString()
-			));
-		}
-		
-		/* sanitize configs */
-		if(null == configs)
-			configs = new ReportExecutionConfig[]{};
-		
-		List<ReportExecutionNotificationHook> notificees = hookHandler.getHookers(ReportExecutionNotificationHook.class);
-		if(! dry){
-			for(ReportExecutionNotificationHook notificee : notificees)
-				notificee.notifyOfReportExecution(report, parameterSet, user, outputFormat, configs);
-		}
-		
-		try{
 			if(! dry){
 				for(ReportExecutionNotificationHook notificee : notificees)
 					notificee.doVetoReportExecution(report, parameterSet, user, outputFormat, configs);

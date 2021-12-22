@@ -15,9 +15,11 @@ import javax.persistence.Transient;
 
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -87,16 +89,19 @@ public class ScriptParameterInstance extends ParameterInstance<ScriptParameterDe
 		parameterMap.put(getKey(), new ParameterValueImpl(getKey(), value, getType()));
 		
 		try{
-			JSONObject json = new JSONObject((String)value);
-			Iterator keys = json.keys();
-			while(keys.hasNext()){
-				String key = (String) keys.next();
-				Object object = json.get(key);
-				
-				if(object instanceof JSONArray) {
-					object = toList((JSONArray)object);
-					value = object;
-				}
+		   final ObjectNode jsonObject = new ObjectMapper().readValue((String)value, ObjectNode.class);
+		   Iterator<Map.Entry<String, JsonNode>> it =  jsonObject.fields();
+		   while (it.hasNext()) {
+		      Map.Entry<String, JsonNode> nextEntry = it.next();
+		      String key = nextEntry.getKey();
+		      JsonNode next = nextEntry.getValue();
+		      Object object = null;
+		      if (next.isArray()) {
+		         object = toList((ArrayNode)next);
+		         value = object;
+		      } else {
+		         object = next.asText();
+		      }
 				
 				if(null != object)
 					parameterMap.put(getKey() + "_" + key, new ParameterValueImpl(getKey() + "_" + key, value, object.getClass()));
@@ -133,14 +138,18 @@ public class ScriptParameterInstance extends ParameterInstance<ScriptParameterDe
 			vm.setVariable(getKey(), factory.createValueExpression(null, Object.class));
 		
 		try{
-			JSONObject json = new JSONObject(value);
-			Iterator keys = json.keys();
-			while(keys.hasNext()){
-				String key = (String) keys.next();
-				Object object = json.get(key);
-				
-				if(object instanceof JSONArray)
-					object = toList((JSONArray)object);
+		   final ObjectNode jsonObject = new ObjectMapper().readValue((String)value, ObjectNode.class);
+           Iterator<Map.Entry<String, JsonNode>> it =  jsonObject.fields();
+           while (it.hasNext()) {
+              Map.Entry<String, JsonNode> nextEntry = it.next();
+              String key = nextEntry.getKey();
+              JsonNode next = nextEntry.getValue();
+              Object object = null;
+              if (next.isArray()) {
+                 object = toList((ArrayNode)next);
+              } else {
+                 object = next.asText();
+              }
 				
 				if(null != value)
 					vm.setVariable(getKey() + "_" + key, factory.createValueExpression(object, object.getClass()));
@@ -151,17 +160,14 @@ public class ScriptParameterInstance extends ParameterInstance<ScriptParameterDe
 		}
 	}
 	
-	private List toList(JSONArray jsonArray) {
-		List list = new ArrayList();
-		int len = jsonArray.length();
-		for (int i=0;i<len;i++) {
-			try {
-				list.add(jsonArray.get(i));
-			} catch (JSONException e) {
-				throw new IllegalStateException("Could not parse script parameter result.", e);
-			}
-		}
-		return list;
+	private List<String> toList(ArrayNode jsonArray) {
+	   List<String> list = new ArrayList<>();
+	   Iterator<JsonNode> it = jsonArray.elements();
+	   while (it.hasNext()) {
+	      JsonNode next = it.next();
+	      list.add(next.asText());
+	   }
+	   return list;
 	}
 
 }

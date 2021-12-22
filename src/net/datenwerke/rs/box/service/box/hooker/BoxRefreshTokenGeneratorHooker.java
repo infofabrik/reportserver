@@ -1,7 +1,7 @@
 package net.datenwerke.rs.box.service.box.hooker;
 
-import org.json.JSONObject;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
@@ -30,8 +30,12 @@ public class BoxRefreshTokenGeneratorHooker implements OAuthRefreshTokenGenerato
       request.addBodyParameter("code", authenticationCode);
       request.addBodyParameter("grant_type", "authorization_code");
       try (Response response = oauthService.execute(request)) {
-         JSONObject jsonObject = new JSONObject(response.getBody());
-         refreshToken = jsonObject.getString("refresh_token");
+         final ObjectNode jsonObject = new ObjectMapper().readValue(response.getBody(), ObjectNode.class);
+         final String refreshTokenField =  "refresh_token";
+         if (jsonObject.has(refreshTokenField))
+            refreshToken = jsonObject.get(refreshTokenField).asText();
+         else
+            throw new IllegalArgumentException("No refresh token found");
       }
       return refreshToken;
    }

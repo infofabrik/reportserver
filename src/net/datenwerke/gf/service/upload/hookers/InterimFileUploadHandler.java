@@ -1,16 +1,14 @@
 package net.datenwerke.gf.service.upload.hookers;
 
-import java.io.IOException;
-
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.google.inject.Inject;
 
 import net.datenwerke.gf.client.upload.FileUploadUIModule;
 import net.datenwerke.gf.client.upload.dto.UploadResponse;
 import net.datenwerke.gf.service.upload.FileUploadService;
 import net.datenwerke.gf.service.upload.UploadedFile;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
-
-import com.google.inject.Inject;
 
 public class InterimFileUploadHandler implements FileUploadHandlerHook {
 
@@ -33,7 +31,12 @@ public class InterimFileUploadHandler implements FileUploadHandlerHook {
 		try {
 			UploadResponse uploadInterimFile = fileUploadService.uploadInterimFile(uploadedFile);
 			
-			String json = new JSONObject().put("id", uploadInterimFile.getId()).put("name", uploadInterimFile.getName()).toString();
+			ObjectMapper mapper = new ObjectMapper();
+			ObjectNode node = mapper.createObjectNode();
+			node.put("id", uploadInterimFile.getId());
+			node.put("name", uploadInterimFile.getName());
+			
+			String json = mapper.writeValueAsString(node);
 			
 			return json;
 		} catch (Exception e) {

@@ -11,9 +11,8 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.history.HistoryLink;
@@ -58,25 +57,26 @@ public class OAuthServlet extends HttpServlet {
       authenticationCode = req.getParameter("code");
 
       String state = req.getParameter("state");
-      try {
-         JSONObject jsonObject = new JSONObject(state);
-         datasinkId = jsonObject.getString("datasinkId");
-         datasinkDefinition = datasinkServiceProvider.get().getDatasinkById(Long.parseLong(datasinkId));
-         Objects.requireNonNull(datasinkDefinition);
-         if (!(datasinkDefinition instanceof OAuthAuthenticatable))
-            throw new IllegalArgumentException("Datasink must be of type " + OAuthAuthenticatable.class);
+      final ObjectNode jsonObject = new ObjectMapper().readValue(state, ObjectNode.class);
+      final String datasinkIdField = "datasinkId";
+      if (jsonObject.has(datasinkIdField))
+         datasinkId = jsonObject.get(datasinkIdField).asText();
+      else
+         throw new IllegalArgumentException("No datasink id sent");
 
-         List<HistoryLink> historyLinks = historyServiceProvider.get().buildLinksFor(datasinkDefinition);
-         if (historyLinks.isEmpty())
-            throw new IllegalArgumentException("Datasink does not contain history links");
+      datasinkDefinition = datasinkServiceProvider.get().getDatasinkById(Long.parseLong(datasinkId));
+      Objects.requireNonNull(datasinkDefinition);
+      if (!(datasinkDefinition instanceof OAuthAuthenticatable))
+         throw new IllegalArgumentException("Datasink must be of type " + OAuthAuthenticatable.class);
 
-         path = historyLinks.get(0).getHistoryToken();
+      List<HistoryLink> historyLinks = historyServiceProvider.get().buildLinksFor(datasinkDefinition);
+      if (historyLinks.isEmpty())
+         throw new IllegalArgumentException("Datasink does not contain history links");
 
-         Objects.requireNonNull(path);
-         Objects.requireNonNull(redirectUri);
-      } catch (JSONException e) {
-         throw new ServletException("Error while reading json parameter state", e);
-      }
+      path = historyLinks.get(0).getHistoryToken();
+
+      Objects.requireNonNull(path);
+      Objects.requireNonNull(redirectUri);
 
       if (authenticationCode != null && datasinkId != null) {
          OAuthAuthenticatable oauthDatasink = (OAuthAuthenticatable) datasinkDefinition;
