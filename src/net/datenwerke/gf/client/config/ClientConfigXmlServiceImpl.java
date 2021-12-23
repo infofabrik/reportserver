@@ -44,6 +44,13 @@ public class ClientConfigXmlServiceImpl implements ClientConfigXmlService {
       }
    }
 
+   /**
+    * For a given dot-separated property, returns the base {@link Element} where
+    * the property is contained.
+    * 
+    * @param property dot-separated property
+    * @return the base {@link Element} where the property is contained
+    */
    private Element getBaseObject(String property) {
       Element obj = (Element) config.getDocumentElement();
       while (property.contains(".")) {

@@ -12,37 +12,36 @@ import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 
 public class InterimFileUploadHandler implements FileUploadHandlerHook {
 
-	private final FileUploadService fileUploadService;
-	
-	@Inject
-	public InterimFileUploadHandler(
-		FileUploadService fileUploadService
-		) {
-		this.fileUploadService = fileUploadService;
-	}
+   private final FileUploadService fileUploadService;
 
-	@Override
-	public boolean consumes(String handler) {
-		return FileUploadUIModule.INTERIM_FILE_UPLOAD_HANDLER.equals(handler);
-	}
-	
-	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		try {
-			UploadResponse uploadInterimFile = fileUploadService.uploadInterimFile(uploadedFile);
-			
-			ObjectMapper mapper = new ObjectMapper();
-			ObjectNode node = mapper.createObjectNode();
-			node.put("id", uploadInterimFile.getId());
-			node.put("name", uploadInterimFile.getName());
-			
-			String json = mapper.writeValueAsString(node);
-			
-			return json;
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-	}
+   @Inject
+   public InterimFileUploadHandler(
+         FileUploadService fileUploadService
+         ) {
+      this.fileUploadService = fileUploadService;
+   }
 
+   @Override
+   public boolean consumes(String handler) {
+      return FileUploadUIModule.INTERIM_FILE_UPLOAD_HANDLER.equals(handler);
+   }
+
+   @Override
+   public String uploadOccured(UploadedFile uploadedFile) {
+      try {
+         UploadResponse uploadInterimFile = fileUploadService.uploadInterimFile(uploadedFile);
+
+         ObjectMapper mapper = new ObjectMapper();
+         ObjectNode node = mapper.createObjectNode();
+         node.put("id", uploadInterimFile.getId());
+         node.put("name", uploadInterimFile.getName());
+
+         String json = mapper.writeValueAsString(node);
+
+         return json;
+      } catch (Exception e) {
+         throw new IllegalStateException(e);
+      }
+   }
 
 }

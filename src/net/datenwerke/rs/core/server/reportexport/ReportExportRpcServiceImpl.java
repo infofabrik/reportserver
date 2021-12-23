@@ -51,7 +51,6 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-
 /**
  * 
  *
@@ -78,7 +77,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    private final ReportService reportService;
    private final FileNameService fileNameService;
    private final Provider<ReportSessionCache> sessionCacheProvider;
-   private final ConfigService configService;
+   private final Provider<ConfigService> configServiceProvider;
    private final ReportServerService reportServerService;
    private final ZipUtilsService zipUtilsService;
 
@@ -92,14 +91,13 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
          MailService mailService, 
          UserManagerService userManagerService,
          HookHandlerService hookHandlerService, 
-         ReportService reportService, 
-         EventBus eventBus,
+         ReportService reportService, EventBus eventBus,
          FileNameService fileNameService, 
          Provider<ReportSessionCache> sessionCacheProvider,
-         ConfigService configService, 
          Provider<ConfigService> configServiceProvider,
-         ReportServerService reportServerService,
-         ZipUtilsService zipUtilsService) {
+         ReportServerService reportServerService, 
+         ZipUtilsService zipUtilsService
+         ) {
 
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.reportDtoService = reportDtoService;
@@ -113,7 +111,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
       this.eventBus = eventBus;
       this.fileNameService = fileNameService;
       this.sessionCacheProvider = sessionCacheProvider;
-      this.configService = configService;
+      this.configServiceProvider = configServiceProvider;
       this.reportServerService = reportServerService;
       this.zipUtilsService = zipUtilsService;
    }
@@ -168,8 +166,8 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public void exportViaMail(@Named("report") ReportDto reportDto, String executorToken, final String format,
-         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed, List<StrippedDownUser> recipients)
-         throws ServerCallFailedException, ExpectedException {
+         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed,
+         List<StrippedDownUser> recipients) throws ServerCallFailedException, ExpectedException {
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       /* get a clean and unmanaged report from the database */
@@ -193,24 +191,24 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
 
          SimpleMail mail = mailService.newSimpleMail();
          mail.setSubject(subject);
-         
+
          String reportFileExtension = cReport.getFileExtension();
-         
+
          if (compressed) {
-            try(ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
-   
+
                try {
-                  zipUtilsService.createZip(Collections
-                        .singletonMap(toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                              + "." + reportFileExtension, reportObj),
-                        os);
+                  zipUtilsService.createZip(Collections.singletonMap(
+                        toExecute.getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
+                              + "." + reportFileExtension,
+                        reportObj), os);
                } catch (IOException e) {
                   throw new ServerCallFailedException(e);
                }
-   
-               SimpleAttachment attachement = new SimpleAttachment(os.toByteArray(), 
-                     "application/zip", makeExportFilename(referenceReport) + ".zip"); 
+
+               SimpleAttachment attachement = new SimpleAttachment(os.toByteArray(), "application/zip",
+                     makeExportFilename(referenceReport) + ".zip");
                /* set content */
                mail.setContent(message, attachement);
             }
@@ -221,12 +219,9 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
             /* set content */
             mail.setContent(message, attachement);
          }
-         
-         mail.setToRecipients(recipients
-               .stream()
-               .map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
-               .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-               .map(User::getEmail)
+
+         mail.setToRecipients(recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
+               .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).map(User::getEmail)
                .collect(toList()));
 
          User currentUser = authenticatorServiceProvider.get().getCurrentUser();
@@ -266,7 +261,7 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
 
    @Override
    public String getExportDefaultSettingsAsXml(String identifier) {
-      return configService.getConfigAsXmlFailsafe(configPath + identifier);
+      return configServiceProvider.get().getConfigAsXmlFailsafe(configPath + identifier);
    }
 
    @Override
