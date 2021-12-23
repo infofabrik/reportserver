@@ -26,8 +26,10 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -40,9 +42,16 @@ import net.datenwerke.rs.emaildatasink.client.emaildatasink.rpc.EmailDatasinkRpc
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
+import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -279,4 +288,100 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
+
+   @Override
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, String subject, String message,
+         List<StrippedDownUser> recipients) throws ServerCallFailedException {
+   
+      /* check rights */
+      securityService.assertRights(abstractNodeDto, Read.class);
+      securityService.assertRights(datasinkDto, Read.class, Execute.class);
+      DatasinkDefinition datasink = (DatasinkDefinition) dtoService.loadPoso(datasinkDto);
+      if (abstractNodeDto instanceof FileServerFileDto) { // when a given object is of type file
+         FileServerFile fileObj = (FileServerFile) dtoService.loadPoso(abstractNodeDto);
+         String originalCompleteFilename = fileObj.getName();
+         String originalFileExtension = "";
+         String filenameWithoutExtension = originalCompleteFilename;
+         if (originalCompleteFilename.contains(".")) {
+            originalFileExtension = originalCompleteFilename.substring(originalCompleteFilename.lastIndexOf("."));
+            filenameWithoutExtension = originalCompleteFilename.substring(0, originalCompleteFilename.lastIndexOf("."));
+         }
+         try {
+            if (compressed) {
+               String zipFilename = filename + ".zip";
+               try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                  Object reportObj = fileObj.getData();
+                  zipUtilsService.createZip(
+                        zipUtilsService.cleanFilename(filenameWithoutExtension + originalFileExtension), reportObj, os);
+
+                  exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject, message, recipients);
+               }
+            } else {
+               exportIntoDatasink(emailDatasinkService, folder, datasink, filename + originalFileExtension,
+                     fileObj.getData(), subject, message, recipients);
+            }
+         } catch (Exception e) {
+            throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
+         }
+      } 
+      else if (abstractNodeDto instanceof FileServerFolderDto) {
+         FileServerFolder folderObj = (FileServerFolder) dtoService.loadPoso(abstractNodeDto);
+         try {
+            String zipFilename = filename + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               zipUtilsService.createZip(folderObj, os, new FileFilter() {
+                  @Override
+                  public boolean addNode(AbstractFileServerNode node) {
+                     try {
+                        return true;
+                     } catch (Exception e) {
+                     }
+                     return false;
+                  }
+               });
+               exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject, message, recipients);
+            }
+
+         } catch (Exception e) {
+            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
+         }
+      }
+      
+   }
+
+   private void exportIntoDatasink(BasicDatasinkService basicDatasinkService, String folder,
+         DatasinkDefinition datasink, String filename, byte[] os, String subject, String message,
+         List<StrippedDownUser> recipients) throws DatasinkExportException {
+      
+      List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
+            .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
+      datasinkServiceProvider.get().exportIntoDatasink(os, datasink, basicDatasinkService, new DatasinkEmailConfig() {
+
+         @Override
+         public String getFilename() {
+            return filename;
+         }
+
+         @Override
+         public boolean isSendSyncEmail() {
+            return true;
+         }
+
+         @Override
+         public String getSubject() {
+            return subject;
+         }
+
+         @Override
+         public List<User> getRecipients() {
+            return recipientUsers;
+         }
+
+         @Override
+         public String getBody() {
+            return message;
+         }
+      });
+   }
 }

@@ -20,13 +20,13 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemDao;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemUiModule;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.ScheduleAsLocalFileSystemInformation;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.provider.annotations.DatasinkTreeLocalFileSystem;
@@ -66,7 +66,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
       isExportAsLocalFileSystemKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return DatasinksMessages.INSTANCE.localFileSystem();
+            return LocalFileSystemUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -74,7 +74,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      localFileSystemKey = xform.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.localFileSystem(),
+      localFileSystemKey = xform.addField(DatasinkSelectionField.class, LocalFileSystemUiModule.NAME,
             new SFFCGenericTreeNode() {
                @Override
                public UITree getTreeForPopup() {
@@ -92,7 +92,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
                }
                @Override
                public BaseIcon getIcon() {
-                  return BaseIcon.SERVER;
+                  return LocalFileSystemUiModule.ICON;
                }
             });
 

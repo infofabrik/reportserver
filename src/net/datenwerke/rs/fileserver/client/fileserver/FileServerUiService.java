@@ -8,11 +8,13 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface FileServerUiService {
+
+   public final static int DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT = 360;
 
    void editFileDirectly(FileServerFileDto file, boolean editable, boolean refreshable, boolean emailable,
          boolean scrollToEnd);
@@ -23,7 +25,8 @@ public interface FileServerUiService {
    void editFileDirectly(String filename, String data, boolean editable, boolean refreshable, boolean emailable,
          boolean scrollToEnd, Optional<FileServerFileDto> file);
 
-   void displayFileSendToDatasinkDialog(BaseIcon icon, String title, String filename, Provider<UITree> treeProvider,
-         Provider<? extends HasDefaultDatasink> datasinkDaoProvider, final AbstractFileServerNodeDto toExport, AsyncCallback<Map<String,Object>> onSelectHandler);
+   void displayFileSendToDatasinkDialog(final Class<? extends DatasinkDefinitionDto> datasinkType, String filename,
+         Provider<UITree> treeProvider, Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
+         final AbstractFileServerNodeDto toExport, AsyncCallback<Map<String, Object>> onSelectHandler);
 
 }

@@ -20,16 +20,16 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
-import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.ScheduleAsAmazonS3FileInformation;
 import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
+import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -63,7 +63,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return AmazonS3UiModule.AMAZON_S3_NAME;
+            return AmazonS3UiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -71,7 +71,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      amazonS3Key = xform.addField(DatasinkSelectionField.class, AmazonS3UiModule.AMAZON_S3_NAME, new SFFCGenericTreeNode() {
+      amazonS3Key = xform.addField(DatasinkSelectionField.class, AmazonS3UiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -89,7 +89,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.AMAZON;
+            return AmazonS3UiModule.ICON;
          }
       });
 

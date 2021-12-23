@@ -66,7 +66,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return OneDriveUiModule.ONE_DRIVE_NAME;
+            return OneDriveUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -74,7 +74,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      oneDriveKey = xform.addField(DatasinkSelectionField.class, OneDriveUiModule.ONE_DRIVE_NAME, new SFFCGenericTreeNode() {
+      oneDriveKey = xform.addField(DatasinkSelectionField.class, OneDriveUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -92,7 +92,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.CLOUD_UPLOAD;
+            return OneDriveUiModule.ICON;
          }
       });
 

@@ -13,10 +13,12 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3DatasinkConfigProviderHooker;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3DatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3ExportSnippetProvider;
+import net.datenwerke.rs.amazons3.client.amazons3.hookers.AmazonS3SendToFormConfiguratorHooker;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.ExportToAmazonS3Hooker;
 import net.datenwerke.rs.amazons3.client.amazons3.hookers.FileExportToAmazonS3Hooker;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -35,8 +37,12 @@ public class AmazonS3UiStartup {
          final Provider<AmazonS3DatasinkConfigProviderHooker> amazonS3TreeConfiguratorProvider,
          final AmazonS3DatasinkTesterToolbarConfigurator amazonS3TestToolbarConfigurator,
          final Provider<AmazonS3ExportSnippetProvider> amazonS3ExportSnippetProvider,
-         final AmazonS3UiService amazonS3UiService
+         final AmazonS3UiService amazonS3UiService,
+         final Provider<AmazonS3SendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, amazonS3TreeConfiguratorProvider.get(),
             PRIO);

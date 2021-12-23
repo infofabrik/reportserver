@@ -19,12 +19,13 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.FtpUiService;
 import net.datenwerke.rs.ftp.client.ftp.FtpsDao;
+import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtps;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToFtpsHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToFtpsHooker implements FileExportExternalEntryProviderHo
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("FTPS", treeHandler, BaseIcon.ARROW_CIRCLE_O_UP.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(FtpUiModule.FTPS_NAME, treeHandler, FtpUiModule.FTPS_ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToFtpsHooker implements FileExportExternalEntryProviderHo
             else if(toExport instanceof FileServerFileDto)
               name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.ARROW_CIRCLE_O_UP, "FTPS", name, treeProvider, datasinkDaoProvider, toExport, 
+            FtpsDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

@@ -32,8 +32,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -50,6 +50,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scp.client.scp.ScpDao;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.provider.annotations.DatasinkTreeScp;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -89,7 +90,7 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
              public void onSuccess(Map<StorageType, Boolean> result) {
                 // item is only added if enabled in configuration
                 if (result.get(StorageType.SCP)) {
-                   MenuItem item = new DwMenuItem("SCP", BaseIcon.ARROW_UP);
+                   MenuItem item = new DwMenuItem(ScpUiModule.NAME, ScpUiModule.ICON);
                    menu.add(item);
                    item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                 }
@@ -101,7 +102,7 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
           });
 	   } else {
           // we add item but disable it
-          MenuItem item = new DwMenuItem("SCP", BaseIcon.ARROW_UP);
+          MenuItem item = new DwMenuItem(ScpUiModule.NAME, ScpUiModule.ICON);
           menu.add(item);
           item.disable();
        }
@@ -110,8 +111,8 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 	protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
 			Collection<ReportViewConfiguration> configs) {
 		final DwWindow window = new DwWindow();
-		window.setHeaderIcon(BaseIcon.ARROW_UP);
-		window.setHeading("SCP");
+		window.setHeaderIcon(ScpUiModule.ICON);
+		window.setHeading(ScpUiModule.NAME);
 		window.setWidth(500);
 		window.setHeight(360);
 		window.setCenterOnShow(true);
@@ -132,7 +133,7 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 		form.setFieldWidth(215);
 		form.beginFloatRow();
 
-		String scpKey = form.addField(DatasinkSelectionField.class, "SCP", new SFFCGenericTreeNode() {
+		String scpKey = form.addField(DatasinkSelectionField.class, ScpUiModule.NAME, new SFFCGenericTreeNode() {
 			@Override
 			public UITree getTreeForPopup() {
 				return treeProvider.get();
@@ -150,7 +151,7 @@ public class ExportToScpHooker implements ExportExternalEntryProviderHook {
 
            @Override
            public BaseIcon getIcon() {
-              return BaseIcon.ARROW_UP;
+              return ScpUiModule.ICON;
            }
         });
 

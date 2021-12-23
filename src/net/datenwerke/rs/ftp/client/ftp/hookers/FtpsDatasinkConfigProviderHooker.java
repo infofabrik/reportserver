@@ -11,9 +11,9 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.ui.FtpsDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FtpsDatasinkConfigProviderHooker implements
 DatasinkDefinitionConfigProviderHook {
@@ -34,7 +34,7 @@ DatasinkDefinitionConfigProviderHook {
 
     @Override
     public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-        return FtpsDatasinkDto.class.equals(datasinkDefinition.getClass());
+        return getDatasinkClass().equals(datasinkDefinition.getClass());
     }
 
     @Override
@@ -44,12 +44,12 @@ DatasinkDefinitionConfigProviderHook {
 
     @Override
     public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-        return FtpsDatasinkDto.class;
+        return FtpUiModule.FTPS_TYPE;
     }
 
     @Override
     public String getDatasinkName() {
-        return "FTPS";
+        return FtpUiModule.FTPS_NAME;
     }
 
     @Override
@@ -59,7 +59,7 @@ DatasinkDefinitionConfigProviderHook {
 
     @Override
     public ImageResource getDatasinkIcon() {
-        return BaseIcon.ARROW_CIRCLE_O_UP.toImageResource();
+        return FtpUiModule.FTPS_ICON.toImageResource();
     }
 
     @Override

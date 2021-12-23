@@ -32,8 +32,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -45,6 +45,7 @@ import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryPro
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
@@ -87,7 +88,7 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
             @Override
             public void onSuccess(Map<StorageType, Boolean> result) {
                if (result.get(StorageType.DROPBOX)) {
-                  MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
+                  MenuItem item = new DwMenuItem(DropboxUiModule.NAME, DropboxUiModule.ICON);
                   menu.add(item);
                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                }
@@ -99,7 +100,7 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem("Dropbox", BaseIcon.DROPBOX);
+         MenuItem item = new DwMenuItem(DropboxUiModule.NAME, DropboxUiModule.ICON);
          menu.add(item);
          item.disable();
       }
@@ -109,8 +110,8 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.DROPBOX);
-      window.setHeading("Dropbox");
+      window.setHeaderIcon(DropboxUiModule.ICON);
+      window.setHeading(DropboxUiModule.NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -131,7 +132,7 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String dropboxKey = form.addField(DatasinkSelectionField.class, "Dropbox", new SFFCGenericTreeNode() {
+      String dropboxKey = form.addField(DatasinkSelectionField.class, DropboxUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -148,7 +149,7 @@ public class ExportToDropboxHooker implements ExportExternalEntryProviderHook {
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.DROPBOX;
+            return DropboxUiModule.ICON;
          }
       });
 

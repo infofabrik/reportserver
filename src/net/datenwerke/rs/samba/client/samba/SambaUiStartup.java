@@ -12,12 +12,14 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.samba.client.samba.hookers.ExportToSambaHooker;
 import net.datenwerke.rs.samba.client.samba.hookers.FileExportToSambaHooker;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkConfigProviderHooker;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.samba.client.samba.hookers.SambaExportSnippetProvider;
+import net.datenwerke.rs.samba.client.samba.hookers.SambaSendToFormConfiguratorHooker;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -35,8 +37,12 @@ public class SambaUiStartup {
          final WaitOnEventUIService waitOnEventService, 
          final SambaDao dao,
          final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator,
-         final SambaUiService sambaUiService
+         final SambaUiService sambaUiService,
+         final Provider<SambaSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sambaTreeConfiguratorProvider.get(),
             PRIO);

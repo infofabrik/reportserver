@@ -20,12 +20,13 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.ScheduleAsDropboxFileInformation;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
@@ -65,7 +66,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "Dropbox";
+            return DropboxUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -73,7 +74,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      dropboxKey = xform.addField(DatasinkSelectionField.class, "Dropbox", new SFFCGenericTreeNode() {
+      dropboxKey = xform.addField(DatasinkSelectionField.class, DropboxUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -90,7 +91,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.DROPBOX;
+            return DropboxUiModule.ICON;
          }
       });
 

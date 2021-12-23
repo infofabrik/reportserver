@@ -11,7 +11,9 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.box.client.box.BoxDao;
+import net.datenwerke.rs.box.client.box.BoxUiModule;
 import net.datenwerke.rs.box.client.box.BoxUiService;
+import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -24,7 +26,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToBoxHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("Box", treeHandler, BaseIcon.CUBE.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(BoxUiModule.NAME, treeHandler, BoxUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
       else if(toExport instanceof FileServerFileDto)
         name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.CUBE, "Box", name, treeProvider, datasinkDaoProvider, toExport, 
+            BoxDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

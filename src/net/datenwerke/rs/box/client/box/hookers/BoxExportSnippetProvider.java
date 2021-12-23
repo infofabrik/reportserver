@@ -20,16 +20,16 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
-import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.box.client.box.BoxDao;
 import net.datenwerke.rs.box.client.box.BoxUiModule;
 import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.box.client.box.dto.ScheduleAsBoxFileInformation;
 import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
+import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -62,7 +62,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return BoxUiModule.BOX_NAME;
+            return BoxUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -70,7 +70,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      boxKey = xform.addField(DatasinkSelectionField.class, BoxUiModule.BOX_NAME, new SFFCGenericTreeNode() {
+      boxKey = xform.addField(DatasinkSelectionField.class, BoxUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -88,7 +88,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.CUBE;
+            return BoxUiModule.ICON;
          }
       });
 

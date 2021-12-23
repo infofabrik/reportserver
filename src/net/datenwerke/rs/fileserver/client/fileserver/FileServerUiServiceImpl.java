@@ -36,6 +36,7 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.logs.LogFilesDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkDao;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -46,6 +47,7 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -57,13 +59,14 @@ public class FileServerUiServiceImpl implements FileServerUiService {
 	private final HookHandlerService hookHandlerService;
 	private final LogFilesDao logFilesDao;
 	private final Provider<DatasinkDao> datasinkDaoProvider;
-	
+
 	@Inject
 	public FileServerUiServiceImpl(
 		FileServerDao fileDao,
 		HookHandlerService hookHandlerService,
 		LogFilesDao logFilesDao,
-		Provider<DatasinkDao> datasinkDaoProvider
+		Provider<DatasinkDao> datasinkDaoProvider,
+		Provider<DatasinkTreeManagerDao> datasinkTreeManagerProvider
 		){
 		this.fileDao = fileDao;
 		this.hookHandlerService = hookHandlerService;
@@ -197,16 +200,27 @@ public class FileServerUiServiceImpl implements FileServerUiService {
 
    @Override
    public void displayFileSendToDatasinkDialog(
-         final BaseIcon icon, final String title, final String filename, 
+         final Class<? extends DatasinkDefinitionDto> datasinkType,
+         final String filename, 
          final Provider<UITree> treeProvider,
          final Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
          final AbstractFileServerNodeDto toExport,
          final AsyncCallback<Map<String,Object>> onSelectHandler) {
+      
+      final Optional<DatasinkSendToFormConfiguratorHook> formConfiguratorOpt = 
+            hookHandlerService.getHookers(DatasinkSendToFormConfiguratorHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(datasinkType))
+            .findAny();
+      if (!formConfiguratorOpt.isPresent())
+         throw new IllegalStateException("no form configurator found for datasink " + datasinkType);
+      final DatasinkSendToFormConfiguratorHook formConfigurator = formConfiguratorOpt.get();
+      
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(icon);
-      window.setHeading(title);
+      window.setHeaderIcon(formConfigurator.getIcon());
+      window.setHeading(formConfigurator.getWindowTitle());
       window.setWidth(500);
-      window.setHeight(360);
+      window.setHeight(formConfigurator.getWindowHeight());
       window.setCenterOnShow(true);
 
       DwContentPanel wrapper = new DwContentPanel();
@@ -225,7 +239,7 @@ public class FileServerUiServiceImpl implements FileServerUiService {
       form.setFieldWidth(215);
       form.beginFloatRow();
       
-      final String datasinkKey = form.addField(DatasinkSelectionField.class, title, new SFFCGenericTreeNode() {
+      final String datasinkKey = form.addField(DatasinkSelectionField.class, formConfigurator.getWindowTitle(), new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -243,17 +257,20 @@ public class FileServerUiServiceImpl implements FileServerUiService {
 
          @Override
          public BaseIcon getIcon() {
-            return icon;
+            return formConfigurator.getIcon();
          }
       });
       
-      final String folderKey = form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(),
-         new SFFCAllowBlank() {
-            @Override
-            public boolean allowBlank() {
-               return false;
-            }
-      });
+      final ObjectHolder<String> folderKey = new ObjectHolder<>();
+      if (formConfigurator.isFolderedDatasink()) {
+         folderKey.set(form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(),
+            new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+         }));
+      }
       
       form.endRow();
       form.setFieldWidth(1);
@@ -265,6 +282,10 @@ public class FileServerUiServiceImpl implements FileServerUiService {
                return false;
             }
             });
+      
+      
+      /* add additional fields */
+      formConfigurator.installAdditionalFields(form);
       
       final ObjectHolder<String> compressedKey = new ObjectHolder<>();
       
@@ -291,23 +312,25 @@ public class FileServerUiServiceImpl implements FileServerUiService {
       
       final SingleTreeSelectionField datasinkField = extractSingleTreeSelectionField(form.getField(datasinkKey));
 
-      datasinkField.addValueChangeHandler(event -> {
-         if (null == event.getValue())
-            return;
+      if (formConfigurator.isFolderedDatasink()) {
+         datasinkField.addValueChangeHandler(event -> {
+            if (null == event.getValue())
+               return;
 
-      this.datasinkDaoProvider.get().getDefaultFolder((DatasinkDefinitionDto) event.getValue(),
-            new RsAsyncCallback<String>() {
-               @Override
-               public void onSuccess(String result) {
-                  form.setValue(folderKey, result);
-               }
+            this.datasinkDaoProvider.get().getDefaultFolder((DatasinkDefinitionDto) event.getValue(),
+                  new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        form.setValue(folderKey.get(), result);
+                     }
 
-               @Override
-               public void onFailure(Throwable caught) {
-                  super.onFailure(caught);
-               }
-            });
-      });
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        super.onFailure(caught);
+                     }
+                  });
+         });
+      }
       
       window.addCancelButton();
 
@@ -327,11 +350,17 @@ public class FileServerUiServiceImpl implements FileServerUiService {
          Map<String,Object> values = new HashMap<>();
          values.put(DatasinkUIModule.DATASINK_KEY, form.getValue(datasinkKey));
          values.put(DatasinkUIModule.DATASINK_FILENAME, ((String) form.getValue(nameKey)).trim());
-         values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey)).trim());
+         if (formConfigurator.isFolderedDatasink())
+            values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey.get())).trim());
          if(toExport instanceof FileServerFileDto)
             values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) form.getValue(compressedKey.get()));
          else
-            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) true);   
+            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) true);
+         
+         /* add additional values */
+         Optional<Map<String, Object>> additionalValues = formConfigurator.getAdditionalFieldsValues(form);
+         if (additionalValues.isPresent())
+            values.putAll(additionalValues.get());
          
          onSelectHandler.onSuccess(values);
          window.hide();
@@ -339,7 +368,6 @@ public class FileServerUiServiceImpl implements FileServerUiService {
       window.addButton(submitBtn);
 
       window.show();
-      
    }
 
 }

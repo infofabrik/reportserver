@@ -23,6 +23,8 @@ public class MimeUtils {
 				return "text/xml";
 			}else if(filename.endsWith(".cf.disabled")){
 				return "text/xml";
+			}else {
+			   return "text/plain";
 			}
 		}
 		

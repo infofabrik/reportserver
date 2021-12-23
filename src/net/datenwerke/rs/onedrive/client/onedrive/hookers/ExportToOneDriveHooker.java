@@ -87,7 +87,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
             @Override
             public void onSuccess(Map<StorageType, Boolean> result) {
                if (result.get(StorageType.ONEDRIVE)) {
-                  MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
+                  MenuItem item = new DwMenuItem(OneDriveUiModule.NAME, OneDriveUiModule.ICON);
                   menu.add(item);
                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                }
@@ -99,7 +99,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, BaseIcon.CLOUD_UPLOAD);
+         MenuItem item = new DwMenuItem(OneDriveUiModule.NAME, OneDriveUiModule.ICON);
          menu.add(item);
          item.disable();
       }
@@ -109,8 +109,8 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.CLOUD_UPLOAD);
-      window.setHeading(OneDriveUiModule.ONE_DRIVE_NAME);
+      window.setHeaderIcon(OneDriveUiModule.ICON);
+      window.setHeading(OneDriveUiModule.NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -131,7 +131,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String oneDriveKey = form.addField(DatasinkSelectionField.class, OneDriveUiModule.ONE_DRIVE_NAME, new SFFCGenericTreeNode() {
+      String oneDriveKey = form.addField(DatasinkSelectionField.class, OneDriveUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -149,7 +149,7 @@ public class ExportToOneDriveHooker implements ExportExternalEntryProviderHook {
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.CLOUD_UPLOAD;
+            return OneDriveUiModule.ICON;
          }
       });
 

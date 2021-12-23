@@ -15,7 +15,6 @@ import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.ui.OneDriveDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
    private final Provider<OneDriveDatasinkForm> formProvider;
@@ -34,7 +33,7 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return OneDriveDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -44,12 +43,12 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return OneDriveDatasinkDto.class;
+      return OneDriveUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return OneDriveUiModule.ONE_DRIVE_NAME;
+      return OneDriveUiModule.NAME;
    }
 
    @Override
@@ -59,7 +58,7 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.CLOUD_UPLOAD.toImageResource();
+      return OneDriveUiModule.ICON.toImageResource();
    }
 
    @Override

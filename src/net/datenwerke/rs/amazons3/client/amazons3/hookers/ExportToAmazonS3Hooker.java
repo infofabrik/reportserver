@@ -32,8 +32,12 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
+import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -44,9 +48,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
-import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
-import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -87,7 +88,7 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
             @Override
             public void onSuccess(Map<StorageType, Boolean> result) {
                if (result.get(StorageType.AMAZONS3)) {
-                  MenuItem item = new DwMenuItem("Amazon S3", BaseIcon.AMAZON);
+                  MenuItem item = new DwMenuItem(AmazonS3UiModule.NAME, AmazonS3UiModule.ICON);
                   menu.add(item);
                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                }
@@ -99,7 +100,7 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem("Amazon S3", BaseIcon.AMAZON);
+         MenuItem item = new DwMenuItem(AmazonS3UiModule.NAME, AmazonS3UiModule.ICON);
          menu.add(item);
          item.disable();
       }
@@ -109,8 +110,8 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.AMAZON);
-      window.setHeading("Amazon S3");
+      window.setHeaderIcon(AmazonS3UiModule.ICON);
+      window.setHeading(AmazonS3UiModule.NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -131,7 +132,7 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String amazonS3Key = form.addField(DatasinkSelectionField.class, "Amazon S3", new SFFCGenericTreeNode() {
+      String amazonS3Key = form.addField(DatasinkSelectionField.class, AmazonS3UiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -149,7 +150,7 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.AMAZON;
+            return AmazonS3UiModule.ICON;
          }
       });
 

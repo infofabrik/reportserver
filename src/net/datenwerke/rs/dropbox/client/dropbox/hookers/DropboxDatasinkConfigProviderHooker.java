@@ -11,10 +11,10 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.ui.DropboxDatasinkForm;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
@@ -35,7 +35,7 @@ public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionCo
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return DropboxDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -45,12 +45,12 @@ public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionCo
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return DropboxDatasinkDto.class;
+      return DropboxUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return "Dropbox";
+      return DropboxUiModule.NAME;
    }
 
    @Override
@@ -60,7 +60,7 @@ public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionCo
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.DROPBOX.toImageResource();
+      return DropboxUiModule.ICON.toImageResource();
    }
 
    @Override

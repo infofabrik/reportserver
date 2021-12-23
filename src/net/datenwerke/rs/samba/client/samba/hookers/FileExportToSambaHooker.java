@@ -20,11 +20,12 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.samba.client.samba.SambaDao;
+import net.datenwerke.rs.samba.client.samba.SambaUiModule;
 import net.datenwerke.rs.samba.client.samba.SambaUiService;
+import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.provider.annotations.DatasinkTreeSamba;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToSambaHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToSambaHooker implements FileExportExternalEntryProviderH
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("Samba - SMB/CIFS", treeHandler, BaseIcon.ANGLE_DOUBLE_UP.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(SambaUiModule.NAME, treeHandler, SambaUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToSambaHooker implements FileExportExternalEntryProviderH
        else if(toExport instanceof FileServerFileDto)
         name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.ANGLE_DOUBLE_UP, "Samba - SMB/CIFS", name, treeProvider, datasinkDaoProvider, toExport, 
+            SambaDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

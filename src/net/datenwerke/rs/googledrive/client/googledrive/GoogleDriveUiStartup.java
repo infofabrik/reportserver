@@ -12,6 +12,7 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.ExportToGoogleDriveHooker;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.FileExportToGoogleDriveHooker;
@@ -19,6 +20,7 @@ import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatas
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveExportSnippetProvider;
+import net.datenwerke.rs.googledrive.client.googledrive.hookers.GoogleDriveSendToFormConfiguratorHooker;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -37,8 +39,12 @@ public class GoogleDriveUiStartup {
          final GoogleDriveDatasinkTesterToolbarConfigurator googleDriveTestToolbarConfigurator,
          final GoogleDriveDatasinkOAuthToolbarConfigurator googleDriveOauthToolbarConfigurator,
          final Provider<GoogleDriveExportSnippetProvider> googleDriveExportSnippetProvider,
-         final GoogleDriveUiService googleDriveUiService
+         final GoogleDriveUiService googleDriveUiService,
+         final Provider<GoogleDriveSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, googleDriveTreeConfiguratorProvider.get(),
             PRIO);

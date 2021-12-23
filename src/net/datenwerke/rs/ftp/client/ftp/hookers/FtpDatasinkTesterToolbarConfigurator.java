@@ -19,7 +19,7 @@ import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class FtpDataSinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
+public class FtpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
    
@@ -27,7 +27,7 @@ public class FtpDataSinkTesterToolbarConfigurator implements MainPanelViewToolba
    private final FtpDao ftpDao;
 
    @Inject
-   public FtpDataSinkTesterToolbarConfigurator(ToolbarService toolbarUtils, FtpDao ftpDao) {
+   public FtpDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, FtpDao ftpDao) {
       this.toolbarUtils = toolbarUtils;
       this.ftpDao = ftpDao;
    }

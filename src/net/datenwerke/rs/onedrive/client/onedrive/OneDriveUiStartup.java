@@ -12,6 +12,7 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.ExportToOneDriveHooker;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.FileExportToOneDriveHooker;
@@ -19,6 +20,7 @@ import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkConfig
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveExportSnippetProvider;
+import net.datenwerke.rs.onedrive.client.onedrive.hookers.OneDriveSendToFormConfiguratorHooker;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -37,8 +39,12 @@ public class OneDriveUiStartup {
          final OneDriveDatasinkTesterToolbarConfigurator oneDriveTestToolbarConfigurator,
          final OneDriveDatasinkOAuthToolbarConfigurator oneDriveOauthToolbarConfigurator,
          final Provider<OneDriveExportSnippetProvider> oneDriveExportSnippetProvider,
-         final OneDriveUiService oneDriveUiService
+         final OneDriveUiService oneDriveUiService,
+         final Provider<OneDriveSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, oneDriveTreeConfiguratorProvider.get(),
             PRIO);

@@ -11,7 +11,9 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiService;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -24,7 +26,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      final FileSendToMenuItem item = new FileSendToMenuItem("Amazon S3", treeHandler, BaseIcon.AMAZON.toImageResource());
+      final FileSendToMenuItem item = new FileSendToMenuItem(AmazonS3UiModule.NAME, treeHandler, AmazonS3UiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
       else if(toExport instanceof FileServerFileDto)
          name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.AMAZON, "Amazon S3", name, treeProvider, datasinkDaoProvider, toExport, 
+            AmazonS3DatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

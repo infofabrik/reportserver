@@ -32,8 +32,12 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
+import net.datenwerke.rs.box.client.box.BoxDao;
+import net.datenwerke.rs.box.client.box.BoxUiModule;
+import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
+import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -44,9 +48,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.box.client.box.BoxDao;
-import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
-import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
@@ -87,7 +88,7 @@ public class ExportToBoxHooker implements ExportExternalEntryProviderHook {
             @Override
             public void onSuccess(Map<StorageType, Boolean> result) {
                if (result.get(StorageType.BOX)) {
-                  MenuItem item = new DwMenuItem("Box", BaseIcon.CUBE);
+                  MenuItem item = new DwMenuItem(BoxUiModule.NAME, BoxUiModule.ICON);
                   menu.add(item);
                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                }
@@ -99,7 +100,7 @@ public class ExportToBoxHooker implements ExportExternalEntryProviderHook {
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem("Box", BaseIcon.CUBE);
+         MenuItem item = new DwMenuItem(BoxUiModule.NAME, BoxUiModule.ICON);
          menu.add(item);
          item.disable();
       }
@@ -109,8 +110,8 @@ public class ExportToBoxHooker implements ExportExternalEntryProviderHook {
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.CUBE);
-      window.setHeading("Box");
+      window.setHeaderIcon(BoxUiModule.ICON);
+      window.setHeading(BoxUiModule.NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -131,7 +132,7 @@ public class ExportToBoxHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String boxKey = form.addField(DatasinkSelectionField.class, "Box", new SFFCGenericTreeNode() {
+      String boxKey = form.addField(DatasinkSelectionField.class, BoxUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -148,7 +149,7 @@ public class ExportToBoxHooker implements ExportExternalEntryProviderHook {
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.CUBE;
+            return BoxUiModule.ICON;
          }
       });
 

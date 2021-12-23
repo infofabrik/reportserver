@@ -16,8 +16,10 @@ import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxDatasinkConfigPro
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxExportSnippetProvider;
+import net.datenwerke.rs.dropbox.client.dropbox.hookers.DropboxSendToFormConfiguratorHooker;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.ExportToDropboxHooker;
 import net.datenwerke.rs.dropbox.client.dropbox.hookers.FileExportToDropboxHooker;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -37,8 +39,12 @@ public class DropboxUiStartup {
          final DropboxDatasinkTesterToolbarConfigurator dropboxTestToolbarConfigurator,
          final DropboxDatasinkOAuthToolbarConfigurator dropboxOauthToolbarConfigurator,
          final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider,
-         final DropboxUiService dropboxUiService
+         final DropboxUiService dropboxUiService,
+         final Provider<DropboxSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(),
             PRIO);

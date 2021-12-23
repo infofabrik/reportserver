@@ -12,12 +12,14 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.ExportToLocalFileSystemHooker;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.FileExportToLocalFileSystemHooker;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkConfigProviderHooker;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemExportSnippetProvider;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.hookers.LocalFileSystemSendToFormConfiguratorHooker;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -35,8 +37,12 @@ public class LocalFileSystemUiStartup {
          final LocalFileSystemDao dao,
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
          final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator,
-         final LocalFileSystemUiService localFileSystemUiService
+         final LocalFileSystemUiService localFileSystemUiService,
+         final Provider<LocalFileSystemSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), 
             PRIO);

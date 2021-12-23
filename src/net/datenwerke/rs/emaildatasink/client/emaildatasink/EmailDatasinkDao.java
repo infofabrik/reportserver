@@ -14,6 +14,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.rpc.EmailDatasinkRpcServiceAsync;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
@@ -44,6 +45,11 @@ public class EmailDatasinkDao extends Dao implements HasDefaultDatasink {
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
+   }
+   
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, boolean compressed, String subject, String message, List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(abstractNodeDto, datasinkDto, name, folder, compressed, subject, message, recipients, transformAndKeepCallback(callback));
    }
 
 }

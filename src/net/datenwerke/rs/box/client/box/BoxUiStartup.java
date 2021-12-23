@@ -14,10 +14,12 @@ import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkConfigProviderHooker;
 import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkOAuthToolbarConfigurator;
 import net.datenwerke.rs.box.client.box.hookers.BoxDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.box.client.box.hookers.BoxExportSnippetProvider;
+import net.datenwerke.rs.box.client.box.hookers.BoxSendToFormConfiguratorHooker;
 import net.datenwerke.rs.box.client.box.hookers.ExportToBoxHooker;
 import net.datenwerke.rs.box.client.box.hookers.FileExportToBoxHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -37,8 +39,12 @@ public class BoxUiStartup {
          final BoxDatasinkTesterToolbarConfigurator boxTestToolbarConfigurator,
          final BoxDatasinkOAuthToolbarConfigurator boxOauthToolbarConfigurator,
          final Provider<BoxExportSnippetProvider> boxExportSnippetProvider,
-         final BoxUiService boxUiService
+         final BoxUiService boxUiService,
+         final Provider<BoxSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, boxTreeConfiguratorProvider.get(),
             PRIO);

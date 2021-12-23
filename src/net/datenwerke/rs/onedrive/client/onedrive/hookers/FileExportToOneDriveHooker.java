@@ -22,10 +22,10 @@ import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExp
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveDao;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiService;
+import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.provider.annotations.DatasinkTreeOneDrive;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToOneDriveHooker implements FileExportExternalEntryProviderHook {
 
@@ -53,8 +53,8 @@ public class FileExportToOneDriveHooker implements FileExportExternalEntryProvid
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem(OneDriveUiModule.ONE_DRIVE_NAME, 
-            treeHandler, BaseIcon.CLOUD_UPLOAD.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(OneDriveUiModule.NAME, 
+            treeHandler, OneDriveUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -68,7 +68,8 @@ public class FileExportToOneDriveHooker implements FileExportExternalEntryProvid
        else if(toExport instanceof FileServerFileDto)
           name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.CLOUD_UPLOAD, OneDriveUiModule.ONE_DRIVE_NAME, name, treeProvider, datasinkDaoProvider, toExport, 
+            OneDriveDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport,
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

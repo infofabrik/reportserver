@@ -2,7 +2,7 @@ package net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers;
 
 import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider.extractSingleTreeSelectionField;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -38,7 +38,6 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.PrepareReportModelForStorageOrExecutionHook;
@@ -49,6 +48,7 @@ import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryPro
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkDao;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkUiModule;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations.DatasinkTreeEmail;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
@@ -58,7 +58,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
-import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
 
 public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderHook {
 
@@ -91,7 +90,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
          @Override
          public void onSuccess(Map<StorageType, Boolean> result) {
             if (result.get(StorageType.EMAIL)) {
-               MenuItem item = new DwMenuItem(UsermanagerMessages.INSTANCE.email() + " - SMTP", BaseIcon.SEND);
+               MenuItem item = new DwMenuItem(EmailDatasinkUiModule.NAME, EmailDatasinkUiModule.ICON);
                menu.add(item);
                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
             }
@@ -107,8 +106,8 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.SEND);
-      window.setHeading(DatasinksMessages.INSTANCE.email() + " - SMTP");
+      window.setHeaderIcon(EmailDatasinkUiModule.ICON);
+      window.setHeading(EmailDatasinkUiModule.NAME);
       window.setWidth(600);
       window.setHeight(725);
       window.setCenterOnShow(true);
@@ -129,7 +128,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      emailKey = form.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.email() + " - SMTP",
+      emailKey = form.addField(DatasinkSelectionField.class, EmailDatasinkUiModule.NAME,
             new SFFCGenericTreeNode() {
                @Override
                public UITree getTreeForPopup() {
@@ -152,7 +151,7 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
                }
                @Override
                public BaseIcon getIcon() {
-                  return BaseIcon.SEND;
+                  return EmailDatasinkUiModule.ICON;
                }
             });
 
@@ -193,15 +192,11 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
          }
       });
       
-      UserDto user = loginService.getCurrentUser();
-      StrippedDownUser sUser = StrippedDownUser.fromUser(user);
-
-      List<StrippedDownUser> users = new ArrayList<>();
-      users.add(sUser);
-      
       form.setValue(subjKey, "");
       form.setValue(msgKey, "");
-      form.setValue(rcptKey, users);
+      
+      UserDto user = loginService.getCurrentUser();
+      form.setValue(rcptKey, Arrays.asList(StrippedDownUser.fromUser(user)));
 
       wrapper.setWidget(formWrapper);
       window.add(wrapper, new MarginData(10));

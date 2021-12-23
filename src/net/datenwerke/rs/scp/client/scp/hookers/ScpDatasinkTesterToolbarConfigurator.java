@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
@@ -18,7 +19,7 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class ScpDataSinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook{
+public class ScpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook{
 	
 	   final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
 
@@ -26,7 +27,7 @@ public class ScpDataSinkTesterToolbarConfigurator implements MainPanelViewToolba
 	   private final ScpDao scpDao;
 
 	   @Inject
-	   public ScpDataSinkTesterToolbarConfigurator(ToolbarService toolbarUtils, ScpDao scpDao) {
+	   public ScpDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, ScpDao scpDao) {
 	      this.toolbarUtils = toolbarUtils;
 	      this.scpDao = scpDao;
 	   }

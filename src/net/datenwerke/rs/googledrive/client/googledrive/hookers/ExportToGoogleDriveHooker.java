@@ -32,8 +32,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatas
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -44,11 +44,12 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveDao;
-import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
-import net.datenwerke.rs.googledrive.client.googledrive.provider.annotations.DatasinkTreeGoogleDrive;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
+import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveDao;
+import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiModule;
+import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
+import net.datenwerke.rs.googledrive.client.googledrive.provider.annotations.DatasinkTreeGoogleDrive;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
@@ -87,7 +88,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
             @Override
             public void onSuccess(Map<StorageType, Boolean> result) {
                if (result.get(StorageType.GOOGLEDRIVE)) {
-                  MenuItem item = new DwMenuItem("Google Drive", BaseIcon.GOOGLE);
+                  MenuItem item = new DwMenuItem(GoogleDriveUiModule.NAME, GoogleDriveUiModule.ICON);
                   menu.add(item);
                   item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
                }
@@ -99,7 +100,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
          });
       } else {
          // we add item but disable it
-         MenuItem item = new DwMenuItem("Google Drive", BaseIcon.GOOGLE);
+         MenuItem item = new DwMenuItem(GoogleDriveUiModule.NAME, GoogleDriveUiModule.ICON);
          menu.add(item);
          item.disable();
       }
@@ -109,8 +110,8 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.GOOGLE);
-      window.setHeading("Google Drive");
+      window.setHeaderIcon(GoogleDriveUiModule.ICON);
+      window.setHeading(GoogleDriveUiModule.NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -149,7 +150,7 @@ public class ExportToGoogleDriveHooker implements ExportExternalEntryProviderHoo
 
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.GOOGLE;
+            return GoogleDriveUiModule.ICON;
          }
       });
 

@@ -12,9 +12,9 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManager
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
+import net.datenwerke.rs.samba.client.samba.SambaUiModule;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.ui.SambaDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SambaDatasinkConfigProviderHooker implements
         DatasinkDefinitionConfigProviderHook {
@@ -36,7 +36,7 @@ public class SambaDatasinkConfigProviderHooker implements
     
     @Override
     public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-        return SambaDatasinkDto.class.equals(datasinkDefinition.getClass());
+        return getDatasinkClass().equals(datasinkDefinition.getClass());
     }
 
     @Override
@@ -47,12 +47,12 @@ public class SambaDatasinkConfigProviderHooker implements
 
     @Override
     public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-        return SambaDatasinkDto.class;
+        return SambaUiModule.TYPE;
     }
 
     @Override
     public String getDatasinkName() {
-        return "Samba - SMB/CIFS";
+        return SambaUiModule.NAME;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class SambaDatasinkConfigProviderHooker implements
     
     @Override
     public ImageResource getDatasinkIcon() {
-        return BaseIcon.ANGLE_DOUBLE_UP.toImageResource();
+        return SambaUiModule.ICON.toImageResource();
     }
     
     @Override

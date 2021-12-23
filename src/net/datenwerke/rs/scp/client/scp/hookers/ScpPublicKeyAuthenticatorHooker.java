@@ -23,7 +23,7 @@ import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfig
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
-import net.datenwerke.rs.scp.client.scp.ScpUIModule;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.dto.pa.ScpDatasinkDtoPA;
 
@@ -58,8 +58,8 @@ public class ScpPublicKeyAuthenticatorHooker implements DatasinkAuthenticatorCon
                @Override
                public UploadProperties getProperties() {
                   UploadProperties uploadProperties = new UploadProperties("file",
-                        ScpUIModule.SCP_PRIVATE_KEY_UPLOAD_HANDLER_ID);
-                  uploadProperties.addMetadata(ScpUIModule.SCP_UPLOAD_DATASINK_ID_FIELD,
+                        ScpUiModule.SCP_PRIVATE_KEY_UPLOAD_HANDLER_ID);
+                  uploadProperties.addMetadata(ScpUiModule.SCP_UPLOAD_DATASINK_ID_FIELD,
                         String.valueOf(mainForm.getSelectedNode().getId()));
 
                   return uploadProperties;

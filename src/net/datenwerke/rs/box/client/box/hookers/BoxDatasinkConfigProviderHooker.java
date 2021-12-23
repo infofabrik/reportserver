@@ -8,13 +8,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
+import net.datenwerke.rs.box.client.box.BoxUiModule;
+import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
+import net.datenwerke.rs.box.client.box.ui.BoxDatasinkForm;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
-import net.datenwerke.rs.box.client.box.ui.BoxDatasinkForm;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class BoxDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
@@ -33,7 +33,7 @@ public class BoxDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return BoxDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -43,12 +43,12 @@ public class BoxDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return BoxDatasinkDto.class;
+      return BoxUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return "Box";
+      return BoxUiModule.NAME;
    }
 
    @Override
@@ -58,7 +58,7 @@ public class BoxDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.CUBE.toImageResource();
+      return BoxUiModule.ICON.toImageResource();
    }
 
    @Override

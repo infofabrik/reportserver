@@ -11,10 +11,10 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
+import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
+import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiModule;
 import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
 import net.datenwerke.rs.googledrive.client.googledrive.ui.GoogleDriveDatasinkForm;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class GoogleDriveDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
@@ -33,7 +33,7 @@ public class GoogleDriveDatasinkConfigProviderHooker implements DatasinkDefiniti
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return GoogleDriveDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -43,12 +43,12 @@ public class GoogleDriveDatasinkConfigProviderHooker implements DatasinkDefiniti
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return GoogleDriveDatasinkDto.class;
+      return GoogleDriveUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return "Google Drive";
+      return GoogleDriveUiModule.NAME;
    }
 
    @Override
@@ -58,7 +58,7 @@ public class GoogleDriveDatasinkConfigProviderHooker implements DatasinkDefiniti
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.GOOGLE.toImageResource();
+      return GoogleDriveUiModule.ICON.toImageResource();
    }
 
    @Override

@@ -20,11 +20,12 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.ftp.client.ftp.FtpDao;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.FtpUiService;
+import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtp;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToFtpHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToFtpHooker implements FileExportExternalEntryProviderHoo
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("FTP", treeHandler, BaseIcon.UPLOAD.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(FtpUiModule.FTP_NAME, treeHandler, FtpUiModule.FTP_ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToFtpHooker implements FileExportExternalEntryProviderHoo
       else if(toExport instanceof FileServerFileDto)
        name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.UPLOAD, "FTP", name, treeProvider, datasinkDaoProvider, toExport,
+            FtpDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport,
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

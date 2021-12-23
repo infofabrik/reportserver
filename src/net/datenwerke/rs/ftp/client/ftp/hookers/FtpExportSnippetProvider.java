@@ -20,12 +20,13 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.ftp.client.ftp.FtpDao;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.ScheduleAsFtpFileInformation;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeFtp;
@@ -73,7 +74,7 @@ public class FtpExportSnippetProvider implements
 		isExportAsFtpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
 			@Override
 			public String getBoxLabel() {
-				return "FTP";
+				return FtpUiModule.FTP_NAME;
 			}
 		});
 		xform.setLabelAlign(LabelAlign.TOP);
@@ -81,7 +82,7 @@ public class FtpExportSnippetProvider implements
 		xform.setFieldWidth(260);
 		xform.beginFloatRow();
 		
-		ftpKey = xform.addField(DatasinkSelectionField.class, "FTP", new SFFCGenericTreeNode() {
+		ftpKey = xform.addField(DatasinkSelectionField.class, FtpUiModule.FTP_NAME, new SFFCGenericTreeNode() {
 			@Override
 			public UITree getTreeForPopup() {
 				return treeProvider.get();
@@ -99,7 +100,7 @@ public class FtpExportSnippetProvider implements
 
            @Override
            public BaseIcon getIcon() {
-              return BaseIcon.UPLOAD;
+              return FtpUiModule.FTP_ICON;
            }
         });
 		

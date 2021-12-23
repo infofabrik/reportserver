@@ -8,13 +8,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
+import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiModule;
+import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
+import net.datenwerke.rs.amazons3.client.amazons3.ui.AmazonS3DatasinkForm;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
-import net.datenwerke.rs.amazons3.client.amazons3.ui.AmazonS3DatasinkForm;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 
 public class AmazonS3DatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
@@ -36,7 +36,7 @@ public class AmazonS3DatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return AmazonS3DatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -46,12 +46,12 @@ public class AmazonS3DatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return AmazonS3DatasinkDto.class;
+      return AmazonS3UiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return "Amazon S3";
+      return AmazonS3UiModule.NAME;
    }
 
    @Override
@@ -61,7 +61,7 @@ public class AmazonS3DatasinkConfigProviderHooker implements DatasinkDefinitionC
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.AMAZON.toImageResource();
+      return AmazonS3UiModule.ICON.toImageResource();
    }
 
    @Override

@@ -13,15 +13,17 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scp.client.scp.hookers.ExportToScpHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.FileExportToScpHooker;
-import net.datenwerke.rs.scp.client.scp.hookers.ScpDataSinkTesterToolbarConfigurator;
+import net.datenwerke.rs.scp.client.scp.hookers.ScpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpExportSnippetProvider;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpPublicKeyAuthenticatorHooker;
+import net.datenwerke.rs.scp.client.scp.hookers.ScpSendToFormConfiguratorHooker;
 import net.datenwerke.rs.scp.client.scp.hookers.ScpUsernamePasswordAuthenticatorHooker;
 
 public class ScpUiStartup {
@@ -37,11 +39,15 @@ public class ScpUiStartup {
          final WaitOnEventUIService waitOnEventService,
          final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, 
          final ScpDao dao,
-         final ScpDataSinkTesterToolbarConfigurator scpTestToolbarConfigurator,
+         final ScpDatasinkTesterToolbarConfigurator scpTestToolbarConfigurator,
          final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator,
          final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator,
-         final ScpUiService scpUiService
+         final ScpUiService scpUiService,
+         final Provider<ScpSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
             PRIO);

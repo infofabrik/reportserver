@@ -13,7 +13,9 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
+import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiService;
+import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
@@ -24,7 +26,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToDropboxHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("Dropbox", treeHandler, BaseIcon.DROPBOX.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(DropboxUiModule.NAME, treeHandler, DropboxUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
       else if(toExport instanceof FileServerFileDto)
         name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.DROPBOX, "Dropbox", name, treeProvider, datasinkDaoProvider, toExport, 
+            DropboxDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

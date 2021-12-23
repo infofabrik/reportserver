@@ -20,11 +20,12 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.FtpsDao;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.ScheduleAsFtpsFileInformation;
@@ -66,7 +67,7 @@ ScheduleExportSnippetProviderHook {
         isExportAsFtpsKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
             @Override
             public String getBoxLabel() {
-                return "FTPS";
+                return FtpUiModule.FTPS_NAME;
             }
         });
         xform.setLabelAlign(LabelAlign.TOP);
@@ -74,7 +75,7 @@ ScheduleExportSnippetProviderHook {
         xform.setFieldWidth(260);
         xform.beginFloatRow();
         
-        ftpsKey = xform.addField(DatasinkSelectionField.class, "FTPS", new SFFCGenericTreeNode() {
+        ftpsKey = xform.addField(DatasinkSelectionField.class, FtpUiModule.FTPS_NAME, new SFFCGenericTreeNode() {
             @Override
             public UITree getTreeForPopup() {
                 return treeProvider.get();
@@ -92,7 +93,7 @@ ScheduleExportSnippetProviderHook {
 
            @Override
            public BaseIcon getIcon() {
-              return BaseIcon.ARROW_CIRCLE_O_UP;
+              return FtpUiModule.FTPS_ICON;
            }
         });
         

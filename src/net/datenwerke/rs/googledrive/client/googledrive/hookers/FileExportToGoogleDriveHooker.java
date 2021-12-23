@@ -20,11 +20,12 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveDao;
+import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiModule;
 import net.datenwerke.rs.googledrive.client.googledrive.GoogleDriveUiService;
+import net.datenwerke.rs.googledrive.client.googledrive.dto.GoogleDriveDatasinkDto;
 import net.datenwerke.rs.googledrive.client.googledrive.provider.annotations.DatasinkTreeGoogleDrive;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToGoogleDriveHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("Google Drive", treeHandler, BaseIcon.GOOGLE.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(GoogleDriveUiModule.NAME, treeHandler, GoogleDriveUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
       else if(toExport instanceof FileServerFileDto)
           name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.GOOGLE, "Google Drive", name, treeProvider, datasinkDaoProvider, toExport, 
+            GoogleDriveDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

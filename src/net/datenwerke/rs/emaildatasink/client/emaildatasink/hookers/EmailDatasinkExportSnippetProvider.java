@@ -23,10 +23,10 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFC
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkDao;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkUiModule;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.ScheduleAsEmailDatasinkFileInformation;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.provider.annotations.DatasinkTreeEmail;
@@ -63,7 +63,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       isExportAsEmailKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return DatasinksMessages.INSTANCE.email() + " - SMTP";
+            return EmailDatasinkUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -71,7 +71,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      emailKey = xform.addField(DatasinkSelectionField.class, DatasinksMessages.INSTANCE.email() + " - SMTP",
+      emailKey = xform.addField(DatasinkSelectionField.class, EmailDatasinkUiModule.NAME,
             new SFFCGenericTreeNode() {
                @Override
                public UITree getTreeForPopup() {
@@ -94,7 +94,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
                }
                @Override
                public BaseIcon getIcon() {
-                  return BaseIcon.SEND;
+                  return EmailDatasinkUiModule.ICON;
                }
             });
 

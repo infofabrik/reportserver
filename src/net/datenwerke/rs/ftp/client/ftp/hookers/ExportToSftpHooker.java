@@ -33,8 +33,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCShowT
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
@@ -46,6 +46,7 @@ import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryPro
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.SftpDao;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.provider.annotations.DatasinkTreeSftp;
@@ -83,7 +84,7 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
          @Override
          public void onSuccess(Map<StorageType, Boolean> result) {
             if (result.get(StorageType.SFTP)) {
-               MenuItem item = new DwMenuItem("SFTP", BaseIcon.ARROW_CIRCLE_UP);
+               MenuItem item = new DwMenuItem(FtpUiModule.SFTP_NAME, FtpUiModule.SFTP_ICON);
                menu.add(item);
                item.addSelectionHandler(event -> displayExportDialog(report, info, mainPanel.getViewConfigs()));
             }
@@ -98,8 +99,8 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
       final DwWindow window = new DwWindow();
-      window.setHeaderIcon(BaseIcon.ARROW_CIRCLE_UP);
-      window.setHeading("SFTP");
+      window.setHeaderIcon(FtpUiModule.SFTP_ICON);
+      window.setHeading(FtpUiModule.SFTP_NAME);
       window.setWidth(500);
       window.setHeight(360);
       window.setCenterOnShow(true);
@@ -120,7 +121,7 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
       form.setFieldWidth(215);
       form.beginFloatRow();
 
-      String sftpKey = form.addField(DatasinkSelectionField.class, "SFTP", new SFFCGenericTreeNode() {
+      String sftpKey = form.addField(DatasinkSelectionField.class, FtpUiModule.SFTP_NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -142,7 +143,7 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.ARROW_CIRCLE_UP;
+            return FtpUiModule.SFTP_ICON;
          }
       });
 

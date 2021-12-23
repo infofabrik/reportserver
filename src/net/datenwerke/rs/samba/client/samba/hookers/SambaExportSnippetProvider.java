@@ -20,12 +20,13 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.samba.client.samba.SambaDao;
+import net.datenwerke.rs.samba.client.samba.SambaUiModule;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.dto.ScheduleAsSambaFileInformation;
 import net.datenwerke.rs.samba.client.samba.provider.annotations.DatasinkTreeSamba;
@@ -72,7 +73,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
       isExportAsSambaKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "Samba - SMB/CIFS";
+            return SambaUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -80,7 +81,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      sambaKey = xform.addField(DatasinkSelectionField.class, "Samba - SMB/CIFS", new SFFCGenericTreeNode() {
+      sambaKey = xform.addField(DatasinkSelectionField.class, SambaUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -97,7 +98,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.ANGLE_DOUBLE_UP;
+            return SambaUiModule.ICON;
          }
       });
 

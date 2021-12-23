@@ -20,8 +20,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -62,7 +62,7 @@ public class GoogleDriveExportSnippetProvider implements ScheduleExportSnippetPr
       isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return GoogleDriveUiModule.GOOGLE_DRIVE_NAME;
+            return GoogleDriveUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -70,7 +70,7 @@ public class GoogleDriveExportSnippetProvider implements ScheduleExportSnippetPr
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      googleDriveKey = xform.addField(DatasinkSelectionField.class, GoogleDriveUiModule.GOOGLE_DRIVE_NAME,
+      googleDriveKey = xform.addField(DatasinkSelectionField.class, GoogleDriveUiModule.NAME,
             new SFFCGenericTreeNode() {
                @Override
                public UITree getTreeForPopup() {
@@ -89,7 +89,7 @@ public class GoogleDriveExportSnippetProvider implements ScheduleExportSnippetPr
 
                @Override
                public BaseIcon getIcon() {
-                  return BaseIcon.GOOGLE;
+                  return GoogleDriveUiModule.ICON;
                }
             });
 

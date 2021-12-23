@@ -12,10 +12,14 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.EmailDatasinkSendToFormConfiguratorHooker;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.EmailDatasinkConfigProviderHooker;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.EmailDatasinkExportSnippetProvider;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.EmailDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.ExportToEmailDatasinkHooker;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.hookers.FileExportToEmailHooker;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
+import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
@@ -26,20 +30,27 @@ public class EmailDatasinkUiStartup {
    @Inject
    public EmailDatasinkUiStartup(
          final Provider<ExportToEmailDatasinkHooker> exportToEmailHooker,
+         final Provider<FileExportToEmailHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler,
          final Provider<EmailDatasinkConfigProviderHooker> emailTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, final EmailDatasinkDao dao,
+         final WaitOnEventUIService waitOnEventService, 
+         final EmailDatasinkDao dao,
          final EmailDatasinkTesterToolbarConfigurator emailTestToolbarConfigurator,
          final Provider<EmailDatasinkExportSnippetProvider> emailExportSnippetProvider,
-         final EmailDatasinkUiService emailUiService
+         final EmailDatasinkUiService emailUiService,
+         final Provider<EmailDatasinkSendToFormConfiguratorHooker> sendToConfigHookProvider
          ) {
-
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, emailTreeConfiguratorProvider.get(),
             PRIO);
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToEmailHooker,
+            PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
             PRIO);
 
       /* test datasinks */

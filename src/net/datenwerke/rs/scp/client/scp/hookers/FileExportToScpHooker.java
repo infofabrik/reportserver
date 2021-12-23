@@ -22,9 +22,10 @@ import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExp
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scp.client.scp.ScpDao;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.client.scp.ScpUiService;
+import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.provider.annotations.DatasinkTreeScp;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FileExportToScpHooker implements FileExportExternalEntryProviderHook {
 
@@ -52,7 +53,7 @@ public class FileExportToScpHooker implements FileExportExternalEntryProviderHoo
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem("SCP", treeHandler, BaseIcon.ARROW_UP.toImageResource());
+      FileSendToMenuItem item = new FileSendToMenuItem(ScpUiModule.NAME, treeHandler, ScpUiModule.ICON.toImageResource());
       item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
@@ -66,7 +67,8 @@ public class FileExportToScpHooker implements FileExportExternalEntryProviderHoo
         else if(toExport instanceof FileServerFileDto)
           name = ((FileServerFileDto)toExport).getName();
       fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
-            BaseIcon.ARROW_UP, "SCP", name, treeProvider, datasinkDaoProvider, toExport, 
+            ScpDatasinkDto.class,
+            name, treeProvider, datasinkDaoProvider, toExport, 
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

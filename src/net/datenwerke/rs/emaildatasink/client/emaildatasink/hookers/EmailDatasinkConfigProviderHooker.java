@@ -11,10 +11,9 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.emaildatasink.client.emaildatasink.EmailDatasinkUiModule;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.dto.EmailDatasinkDto;
 import net.datenwerke.rs.emaildatasink.client.emaildatasink.ui.EmailDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class EmailDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
    private final Provider<EmailDatasinkForm> formProvider;
@@ -28,7 +27,7 @@ public class EmailDatasinkConfigProviderHooker implements DatasinkDefinitionConf
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return EmailDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -38,12 +37,12 @@ public class EmailDatasinkConfigProviderHooker implements DatasinkDefinitionConf
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return EmailDatasinkDto.class;
+      return EmailDatasinkUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return DatasinksMessages.INSTANCE.email() + " - SMTP";
+      return EmailDatasinkUiModule.NAME;
    }
 
    @Override
@@ -53,7 +52,7 @@ public class EmailDatasinkConfigProviderHooker implements DatasinkDefinitionConf
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.SEND.toImageResource();
+      return EmailDatasinkUiModule.ICON.toImageResource();
    }
 
    @Override

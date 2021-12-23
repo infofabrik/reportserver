@@ -11,11 +11,10 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
+import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemUiModule;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.ui.LocalFileSystemDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
@@ -35,7 +34,7 @@ public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefi
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return LocalFileSystemDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -45,12 +44,12 @@ public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefi
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return LocalFileSystemDatasinkDto.class;
+      return LocalFileSystemUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return DatasinksMessages.INSTANCE.localFileSystem();
+      return LocalFileSystemUiModule.NAME;
    }
 
    @Override
@@ -60,7 +59,7 @@ public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefi
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.SERVER.toImageResource();
+      return LocalFileSystemUiModule.ICON.toImageResource();
    }
 
    @Override

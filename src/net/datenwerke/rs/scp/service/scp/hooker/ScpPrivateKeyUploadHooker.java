@@ -9,7 +9,7 @@ import net.datenwerke.gf.service.upload.UploadedFile;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
-import net.datenwerke.rs.scp.client.scp.ScpUIModule;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Write;
@@ -31,14 +31,14 @@ public class ScpPrivateKeyUploadHooker implements FileUploadHandlerHook {
 
    @Override
    public boolean consumes(String handler) {
-      return ScpUIModule.SCP_PRIVATE_KEY_UPLOAD_HANDLER_ID.equals(handler);
+      return ScpUiModule.SCP_PRIVATE_KEY_UPLOAD_HANDLER_ID.equals(handler);
    }
 
    @Override
    public String uploadOccured(UploadedFile uploadedFile) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
-      long datasinkId = Long.valueOf(metadataMap.get(ScpUIModule.SCP_UPLOAD_DATASINK_ID_FIELD));
+      long datasinkId = Long.valueOf(metadataMap.get(ScpUiModule.SCP_UPLOAD_DATASINK_ID_FIELD));
       byte[] privateKey = uploadedFile.getFileBytes();
 
       if (null == privateKey || 0 == privateKey.length)

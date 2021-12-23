@@ -20,8 +20,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -31,6 +31,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.scp.client.scp.ScpDao;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.client.scp.dto.ScheduleAsScpFileInformation;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.provider.annotations.DatasinkTreeScp;
@@ -65,7 +66,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
       isExportAsScpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "SCP";
+            return ScpUiModule.NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -73,7 +74,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      scpKey = xform.addField(DatasinkSelectionField.class, "SCP", new SFFCGenericTreeNode() {
+      scpKey = xform.addField(DatasinkSelectionField.class, ScpUiModule.NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -90,7 +91,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.ARROW_UP;
+            return ScpUiModule.ICON;
          }
       });
 

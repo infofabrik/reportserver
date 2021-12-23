@@ -12,9 +12,9 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManager
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
+import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.ui.ScpDatasinkForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ScpDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
@@ -35,7 +35,7 @@ public class ScpDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-      return ScpDatasinkDto.class.equals(datasinkDefinition.getClass());
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
    }
 
    @Override
@@ -45,12 +45,12 @@ public class ScpDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-      return ScpDatasinkDto.class;
+      return ScpUiModule.TYPE;
    }
 
    @Override
    public String getDatasinkName() {
-      return "SCP";
+      return ScpUiModule.NAME;
    }
 
    @Override
@@ -60,7 +60,7 @@ public class ScpDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
 
    @Override
    public ImageResource getDatasinkIcon() {
-      return BaseIcon.ARROW_UP.toImageResource();
+      return ScpUiModule.ICON.toImageResource();
    }
 
    @Override

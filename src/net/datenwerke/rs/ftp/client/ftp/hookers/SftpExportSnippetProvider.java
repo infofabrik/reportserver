@@ -20,11 +20,12 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
+import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.SftpDao;
 import net.datenwerke.rs.ftp.client.ftp.dto.ScheduleAsSftpFileInformation;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
@@ -72,7 +73,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
       isExportAsSftpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
-            return "SFTP";
+            return FtpUiModule.SFTP_NAME;
          }
       });
       xform.setLabelAlign(LabelAlign.TOP);
@@ -80,7 +81,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      sftpKey = xform.addField(DatasinkSelectionField.class, "SFTP", new SFFCGenericTreeNode() {
+      sftpKey = xform.addField(DatasinkSelectionField.class, FtpUiModule.SFTP_NAME, new SFFCGenericTreeNode() {
          @Override
          public UITree getTreeForPopup() {
             return treeProvider.get();
@@ -97,7 +98,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
          }
          @Override
          public BaseIcon getIcon() {
-            return BaseIcon.ARROW_CIRCLE_UP;
+            return FtpUiModule.SFTP_ICON;
          }
       });
 

@@ -13,6 +13,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasinks.hooks.DatasinkAuthenticatorConfiguratorHook;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
+import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToFtpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToFtpsHooker;
@@ -20,17 +21,20 @@ import net.datenwerke.rs.ftp.client.ftp.hookers.ExportToSftpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToFtpHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToFtpsHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FileExportToSftpHooker;
-import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDataSinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkConfigProviderHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FtpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpExportSnippetProvider;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FtpSendToFormConfiguratorHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsExportSnippetProvider;
+import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsSendToFormConfiguratorHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.FtpsUsernamePasswordAuthenticatorHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkConfigProviderHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpDatasinkTesterToolbarConfigurator;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpExportSnippetProvider;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpPublicKeyAuthenticatorHooker;
+import net.datenwerke.rs.ftp.client.ftp.hookers.SftpSendToFormConfiguratorHooker;
 import net.datenwerke.rs.ftp.client.ftp.hookers.SftpUsernamePasswordAuthenticatorHooker;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -58,15 +62,24 @@ public class FtpUiStartup {
          final Provider<FtpsDatasinkConfigProviderHooker> ftpsTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService, 
          final FtpDao dao,
-         final FtpDataSinkTesterToolbarConfigurator ftpTestToolbarConfigurator,
+         final FtpDatasinkTesterToolbarConfigurator ftpTestToolbarConfigurator,
          final SftpDatasinkTesterToolbarConfigurator sftpTestToolbarConfigurator,
          final FtpsDatasinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
          final SftpUsernamePasswordAuthenticatorHooker sftpUsernamePasswordAuthenticator,
          final SftpPublicKeyAuthenticatorHooker sftpPublicKeyAuthenticator,
          final FtpsUsernamePasswordAuthenticatorHooker ftpsUsernamePasswordAuthenticator,
-         final FtpUiService ftpUiService
+         final FtpUiService ftpUiService,
+         
+         final Provider<FtpSendToFormConfiguratorHooker> ftpSendToConfigHookProvider,
+         final Provider<SftpSendToFormConfiguratorHooker> sftpSendToConfigHookProvider,
+         final Provider<FtpsSendToFormConfiguratorHooker> ftpsSendToConfigHookProvider
          ) {
 
+      /* send to form configurator */
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, ftpSendToConfigHookProvider.get());
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sftpSendToConfigHookProvider.get());
+      hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, ftpsSendToConfigHookProvider.get());
+      
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sftpTreeConfiguratorProvider.get(), 
             SFTP_PRIO);
