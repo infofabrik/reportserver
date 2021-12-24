@@ -1,20 +1,25 @@
 package net.datenwerke.rs.base.service.reportengines.table.entities.filters;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="BINARY_COLUMN_FILTER")
@@ -76,5 +81,12 @@ public class BinaryColumnFilter extends FilterSpec {
 			l.add(columnB);
 		return l;
 	}
+
+   @Override
+   public Map<String, Object> asMap() {
+      Map<String, Object> asMap = new HashMap<>();
+      asMap.put(operator.getStrOp(), getColumns().stream().map(Column::getName).collect(toList()));
+      return asMap;
+   }
 	
 }

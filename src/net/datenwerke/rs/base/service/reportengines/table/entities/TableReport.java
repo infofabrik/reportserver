@@ -529,4 +529,11 @@ public class TableReport extends Report {
    public void setAllowMdx(boolean allowMdx) {
       this.allowMdx = allowMdx;
    }
+   
+   public boolean hasPrefilters() {
+      FilterBlock rootBlock = getPreFilter().getRootBlock();
+
+      return null != rootBlock && ((null != rootBlock.getChildBlocks() && !rootBlock.getChildBlocks().isEmpty())
+            || (null != rootBlock.getFilters() && !rootBlock.getFilters().isEmpty()));
+   }
 }

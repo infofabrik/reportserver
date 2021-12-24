@@ -207,8 +207,10 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
          Map<String, Object> configParameters = ps.getCompleteConfiguration(true, true);
          reportConfiguration.put("configuration_parameters", configParameters);
 
-         if (report instanceof TableReport)
+         if (report instanceof TableReport) {
             reportConfiguration.put("filters", filterServiceProvider.get().getFilterMap((TableReport) report));
+            reportConfiguration.put("prefilters", filterServiceProvider.get().getPrefilterMap((TableReport) report));
+         }
 
          if (!dry) {
             eventBus.fireEvent(new ReportExecutedEvent("report_id",
@@ -216,7 +218,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
                   "output_format", outputFormat, "uuid", uuid, "token", token, "report_configuration",
                   new ObjectMapper().writeValueAsString(reportConfiguration)));
          }
-
+         
          /* sanitize configs */
          if (null == configs)
             configs = new ReportExecutionConfig[] {};

@@ -2,6 +2,7 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.filters;
 
 import java.io.Serializable;
 import java.util.Collection;
+import java.util.Map;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,13 +14,13 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 @Audited
 @Entity
@@ -77,6 +78,8 @@ public abstract class FilterSpec implements Serializable {
 	}
 
 	public abstract Collection<Column> getColumns();
+	
+	public abstract Map<String, Object> asMap();
 	
 	
 }
