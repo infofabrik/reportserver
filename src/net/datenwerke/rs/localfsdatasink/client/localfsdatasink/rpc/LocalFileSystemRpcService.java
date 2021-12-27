@@ -17,17 +17,17 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 @RemoteServiceRelativePath("localfilesystem")
 public interface LocalFileSystemRpcService extends RemoteService {
 
-   void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
-         LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, boolean compressed) throws ServerCallFailedException;
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
 
    boolean testLocalFileSystemDatasink(LocalFileSystemDatasinkDto localFileSystemDatasinkDto)
          throws ServerCallFailedException;
-   
+
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder, boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 }

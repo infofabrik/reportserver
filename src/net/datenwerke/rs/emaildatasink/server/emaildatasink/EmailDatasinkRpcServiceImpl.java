@@ -113,13 +113,15 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    }
 
    @Override
-   public void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message, boolean compressed,
          List<StrippedDownUser> recipients) throws ServerCallFailedException {
-
+      if (! (datasinkDto instanceof EmailDatasinkDto))
+         throw new IllegalArgumentException("Not an email datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      EmailDatasink emailDatasink = (EmailDatasink) dtoService.loadPoso(emailDatasinkDto);
+      EmailDatasink emailDatasink = (EmailDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

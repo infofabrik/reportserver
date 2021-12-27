@@ -53,5 +53,5 @@ public class SftpSendToFormConfiguratorHooker implements DatasinkSendToFormConfi
    public boolean isFolderedDatasink() {
       return true;
    }
-
+   
 }

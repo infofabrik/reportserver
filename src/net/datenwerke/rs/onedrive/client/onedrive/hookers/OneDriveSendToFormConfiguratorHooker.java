@@ -53,5 +53,5 @@ public class OneDriveSendToFormConfiguratorHooker implements DatasinkSendToFormC
    public boolean isFolderedDatasink() {
       return true;
    }
-
+   
 }

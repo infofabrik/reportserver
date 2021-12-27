@@ -53,4 +53,5 @@ public class SambaSendToFormConfiguratorHooker implements DatasinkSendToFormConf
    public boolean isFolderedDatasink() {
       return true;
    }
+   
 }

@@ -25,10 +25,10 @@ public class DropboxDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoDropbox(ReportDto reportDto, String executorToken, DropboxDatasinkDto dropboxDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoDropbox(reportDto, executorToken, dropboxDatasinkDto, format, configs, name, folder, compressed,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
    

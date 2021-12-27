@@ -17,16 +17,17 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 @RemoteServiceRelativePath("scp")
 public interface ScpRpcService extends RemoteService {
 
-   void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getScpEnabledConfigs() throws ServerCallFailedException;
 
    boolean testScpDatasink(ScpDatasinkDto scpDatasinkDto) throws ServerCallFailedException;
 
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 
 }

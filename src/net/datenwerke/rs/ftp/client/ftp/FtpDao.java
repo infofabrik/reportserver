@@ -26,9 +26,9 @@ public class FtpDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoFtp(ReportDto reportDto, String executorToken, FtpDatasinkDto ftpDatasinkDto, String format,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportIntoFtp(reportDto, executorToken, ftpDatasinkDto, format, configs, name, folder, compressed,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
    

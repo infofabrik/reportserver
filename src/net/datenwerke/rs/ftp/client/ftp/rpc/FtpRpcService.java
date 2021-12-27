@@ -17,7 +17,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 @RemoteServiceRelativePath("ftp")
 public interface FtpRpcService extends RemoteService {
 
-   void exportIntoFtp(ReportDto reportDto, String executorToken, FtpDatasinkDto ftpDatasinkDto, String format,
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException;
 

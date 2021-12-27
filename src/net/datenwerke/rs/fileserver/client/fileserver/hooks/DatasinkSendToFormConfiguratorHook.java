@@ -15,9 +15,9 @@ public interface DatasinkSendToFormConfiguratorHook extends Hook {
    void installAdditionalFields(SimpleForm form);
 
    Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form);
-   
+
    String getWindowTitle();
-   
+
    BaseIcon getIcon();
 
    int getWindowHeight();

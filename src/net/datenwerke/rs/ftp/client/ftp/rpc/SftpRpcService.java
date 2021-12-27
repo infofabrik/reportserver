@@ -11,22 +11,22 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @RemoteServiceRelativePath("sftp")
 public interface SftpRpcService extends RemoteService {
 
-	void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto,
-			String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
-	
-	Map<StorageType,Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
-	
-	boolean testSftpDatasink(SftpDatasinkDto sftpDatasinkDto) throws ServerCallFailedException;
-	
-	DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-	
-	void exportFileIntoDatasink(AbstractFileServerNodeDto  abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-	         String folder, boolean compressed) throws ServerCallFailedException;
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException;
+
+   Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
+
+   boolean testSftpDatasink(SftpDatasinkDto sftpDatasinkDto) throws ServerCallFailedException;
+
+   DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 }

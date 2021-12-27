@@ -26,26 +26,27 @@ public class SambaDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoSamba(reportDto, executorToken, sambaDatasinkDto, format, configs, name, folder, compressed,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto   file, DatasinkDefinitionDto datasinkDto, String name,
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
          String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder,compressed, transformAndKeepCallback(callback));
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
-   
-   public void getSambaEnabledConfigs(AsyncCallback<Map<StorageType,Boolean>> callback) {
+
+   public void getSambaEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
       rpcService.getSambaEnabledConfigs(transformAndKeepCallback(callback));
    }
 
    public Request testSambaDatasink(SambaDatasinkDto sambaDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testSambaDatasink(sambaDatasinkDto, transformAndKeepCallback(callback));
    }
-   
+
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));

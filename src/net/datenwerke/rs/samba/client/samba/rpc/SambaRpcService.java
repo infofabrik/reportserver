@@ -17,16 +17,17 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 @RemoteServiceRelativePath("samba")
 public interface SambaRpcService extends RemoteService {
 
-   void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException;
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException;
 
    boolean testSambaDatasink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException;
-   
+
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 
 }

@@ -17,7 +17,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 @RemoteServiceRelativePath("googledrive")
 public interface GoogleDriveRpcService extends RemoteService {
 
-   void exportIntoGoogleDrive(ReportDto reportDto, String executorToken, GoogleDriveDatasinkDto googleDriveDatasinkDto,
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException;
 

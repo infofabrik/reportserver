@@ -53,4 +53,5 @@ public class FtpsSendToFormConfiguratorHooker implements DatasinkSendToFormConfi
    public boolean isFolderedDatasink() {
       return true;
    }
+   
 }

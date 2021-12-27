@@ -15,15 +15,16 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public interface BoxRpcServiceAsync {
 
-   void exportIntoBox(ReportDto reportDto, String executorToken, BoxDatasinkDto boxDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testBoxDatasink(BoxDatasinkDto boxDatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto  abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder, boolean compressed,AsyncCallback<Void> callback);
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 }

@@ -26,10 +26,10 @@ public class GoogleDriveDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoGoogleDrive(ReportDto reportDto, String executorToken,
-         GoogleDriveDatasinkDto googleDriveDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
+         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
          String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportIntoGoogleDrive(reportDto, executorToken, googleDriveDatasinkDto, format, configs, name, folder, compressed,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
    

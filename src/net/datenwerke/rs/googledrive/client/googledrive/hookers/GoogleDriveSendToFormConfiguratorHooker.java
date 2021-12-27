@@ -53,5 +53,5 @@ public class GoogleDriveSendToFormConfiguratorHooker implements DatasinkSendToFo
    public boolean isFolderedDatasink() {
       return true;
    }
-
+   
 }

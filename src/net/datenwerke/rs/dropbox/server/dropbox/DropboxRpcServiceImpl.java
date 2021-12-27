@@ -91,12 +91,15 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    }
 
    @Override
-   public void exportIntoDropbox(ReportDto reportDto, String executorToken, DropboxDatasinkDto dropboxDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
+      if (! (datasinkDto instanceof DropboxDatasinkDto))
+         throw new IllegalArgumentException("Not a dropbox datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      DropboxDatasink dropboxDatasink = (DropboxDatasink) dtoService.loadPoso(dropboxDatasinkDto);
+      DropboxDatasink dropboxDatasink = (DropboxDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

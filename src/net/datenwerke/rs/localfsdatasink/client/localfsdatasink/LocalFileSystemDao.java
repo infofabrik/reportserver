@@ -26,10 +26,10 @@ public class LocalFileSystemDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
-         LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
+         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
          String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportIntoLocalFileSystem(reportDto, executorToken, localFileSystemDatasinkDto, format, configs, name,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name,
             folder, compressed, transformAndKeepCallback(callback));
    }
    

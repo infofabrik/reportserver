@@ -27,10 +27,10 @@ public class EmailDatasinkDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
          List<StrippedDownUser> recipients, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportToEmail(reportDto, executorToken, emailDatasinkDto, format, configs, name, subject, message, compressed,
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, subject, message, compressed,
             recipients, transformAndKeepCallback(callback));
    }
 

@@ -74,12 +74,12 @@ public class EmailDatasinkSendToFormConfiguratorHooker implements DatasinkSendTo
    
    @Override
    public int getWindowHeight() {
-      return 625;
+      return 715;
    }
 
    @Override
    public boolean isFolderedDatasink() {
       return false;
    }
-
+   
 }

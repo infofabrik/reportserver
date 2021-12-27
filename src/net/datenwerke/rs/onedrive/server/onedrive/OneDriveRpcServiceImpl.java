@@ -90,12 +90,14 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    }
 
    @Override
-   public void exportIntoOneDrive(ReportDto reportDto, String executorToken, OneDriveDatasinkDto oneDriveDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
+      if (! (datasinkDto instanceof OneDriveDatasinkDto))
+         throw new IllegalArgumentException("Not a OneDrive datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      OneDriveDatasink oneDriveDatasink = (OneDriveDatasink) dtoService.loadPoso(oneDriveDatasinkDto);
+      OneDriveDatasink oneDriveDatasink = (OneDriveDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

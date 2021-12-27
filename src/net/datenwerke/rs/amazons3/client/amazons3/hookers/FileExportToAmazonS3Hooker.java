@@ -1,6 +1,7 @@
 package net.datenwerke.rs.amazons3.client.amazons3.hookers;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -16,10 +17,10 @@ import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3UiService;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
 import net.datenwerke.rs.amazons3.client.amazons3.provider.annotations.DatasinkTreeAmazonS3;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
-import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
@@ -33,7 +34,7 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
    private final Provider<AmazonS3Dao> datasinkDaoProvider;
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-   private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<DatasinkUIService> datasinkUiServiceProvider;
    private final Provider<AmazonS3UiService> amazonS3UiService;
 
    @Inject
@@ -41,13 +42,13 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
          @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
          Provider<AmazonS3Dao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider,
          Provider<AmazonS3UiService> amazonS3UiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
-      this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.datasinkUiServiceProvider = datasinkUiServiceProvider;
       this.amazonS3UiService = amazonS3UiService;
    }
 
@@ -61,14 +62,19 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
    }
 
    protected void displayExportDialog(final AbstractFileServerNodeDto toExport) {
+      if (!(toExport instanceof AbstractFileServerNodeDto))
+         throw new IllegalArgumentException(toExport.getClass() + " not supported");
+      
       String name="";
-      if(toExport instanceof FileServerFolderDto)
+      if (toExport instanceof FileServerFolderDto)
          name = ((FileServerFolderDto)toExport).getName();
-      else if(toExport instanceof FileServerFileDto)
+      else if (toExport instanceof FileServerFileDto)
          name = ((FileServerFileDto)toExport).getName();
-      fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
+      
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
             AmazonS3DatasinkDto.class,
             name, treeProvider, datasinkDaoProvider, toExport, 
+            Optional.empty(),
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

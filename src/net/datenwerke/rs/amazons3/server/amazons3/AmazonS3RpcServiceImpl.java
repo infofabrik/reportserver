@@ -37,15 +37,9 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
-import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -97,12 +91,15 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    }
 
    @Override
-   public void exportIntoAmazonS3(ReportDto reportDto, String executorToken, AmazonS3DatasinkDto amazonS3DatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, final String folder, boolean compressed)
          throws ServerCallFailedException {
+      if (! (datasinkDto instanceof AmazonS3DatasinkDto))
+         throw new IllegalArgumentException("Not an amazon s3 datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      AmazonS3Datasink amazonS3Datasink = (AmazonS3Datasink) dtoService.loadPoso(amazonS3DatasinkDto);
+      AmazonS3Datasink amazonS3Datasink = (AmazonS3Datasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

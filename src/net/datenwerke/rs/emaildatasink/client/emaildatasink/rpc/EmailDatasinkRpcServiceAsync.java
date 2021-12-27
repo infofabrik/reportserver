@@ -16,9 +16,9 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public interface EmailDatasinkRpcServiceAsync {
 
-   void exportToEmail(ReportDto reportDto, String executorToken, EmailDatasinkDto emailDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String subject, String message, boolean compressed,
-         List<StrippedDownUser> recipients, AsyncCallback<Void> callback);
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDefinitionDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         boolean compressed, List<StrippedDownUser> recipients, AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
@@ -26,8 +26,8 @@ public interface EmailDatasinkRpcServiceAsync {
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String name,
-         String folder, boolean compressed, String subject, String message,
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String name, String folder, boolean compressed, String subject, String message,
          List<StrippedDownUser> recipients, AsyncCallback<Void> transformAndKeepCallback);
 
 }

@@ -99,12 +99,14 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    }
 
    @Override
-   public void exportIntoFtp(ReportDto reportDto, String executorToken, FtpDatasinkDto ftpDatasinkDto, String format,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
-
+      if (! (datasinkDto instanceof FtpDatasinkDto))
+         throw new IllegalArgumentException("Not a FTP datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      FtpDatasink ftpDatasink = (FtpDatasink) dtoService.loadPoso(ftpDatasinkDto);
+      FtpDatasink ftpDatasink = (FtpDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

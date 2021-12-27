@@ -93,13 +93,15 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
-   public void exportIntoSamba(ReportDto reportDto, String executorToken, SambaDatasinkDto sambaDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
-
+      if (! (datasinkDto instanceof SambaDatasinkDto))
+         throw new IllegalArgumentException("Not a samba datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(sambaDatasinkDto);
+      SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

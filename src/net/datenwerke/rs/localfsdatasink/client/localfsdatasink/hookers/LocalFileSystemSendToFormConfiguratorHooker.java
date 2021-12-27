@@ -53,4 +53,5 @@ public class LocalFileSystemSendToFormConfiguratorHooker implements DatasinkSend
    public boolean isFolderedDatasink() {
       return true;
    }
+   
 }

@@ -1,6 +1,7 @@
 package net.datenwerke.rs.box.client.box.hookers;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -16,10 +17,10 @@ import net.datenwerke.rs.box.client.box.BoxUiService;
 import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.box.client.box.provider.annotations.DatasinkTreeBox;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
-import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
@@ -33,7 +34,7 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
    private final Provider<BoxDao> datasinkDaoProvider;
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-   private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<DatasinkUIService> datasinkUiServiceProvider;
    private final Provider<BoxUiService> boxUiService;
 
    @Inject
@@ -41,13 +42,13 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
          @DatasinkTreeBox Provider<UITree> treeProvider,
          Provider<BoxDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider,
          Provider<BoxUiService> boxUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
-      this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.datasinkUiServiceProvider = datasinkUiServiceProvider;
       this.boxUiService = boxUiService;
    }
 
@@ -66,9 +67,10 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
         name = ((FileServerFolderDto)toExport).getName();
       else if(toExport instanceof FileServerFileDto)
         name = ((FileServerFileDto)toExport).getName();
-      fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
             BoxDatasinkDto.class,
-            name, treeProvider, datasinkDaoProvider, toExport, 
+            name, treeProvider, datasinkDaoProvider, toExport,
+            Optional.empty(),
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

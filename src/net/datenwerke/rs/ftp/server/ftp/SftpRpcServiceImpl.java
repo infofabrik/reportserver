@@ -33,8 +33,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.rpc.SftpRpcService;
 import net.datenwerke.rs.ftp.service.ftp.SftpService;
@@ -103,12 +101,13 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    }
 
    @Override
-   public void exportIntoSftp(ReportDto reportDto, String executorToken, SftpDatasinkDto sftpDatasinkDto, String format,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
-
+      if (! (datasinkDto instanceof SftpDatasinkDto))
+         throw new IllegalArgumentException("Not an SFTP datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(sftpDatasinkDto);
+      SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

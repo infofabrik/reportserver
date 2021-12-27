@@ -14,16 +14,17 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 
 public interface ScpRpcServiceAsync {
 
-   void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         AsyncCallback<Void> callback);
 
    void getScpEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testScpDatasink(ScpDatasinkDto scpDatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed, AsyncCallback<Void> callback);
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 
 }

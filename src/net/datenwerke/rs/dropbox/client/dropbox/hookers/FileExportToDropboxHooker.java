@@ -1,6 +1,7 @@
 package net.datenwerke.rs.dropbox.client.dropbox.hookers;
 
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
@@ -11,6 +12,7 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.helper.menu.FileSendToMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxDao;
 import net.datenwerke.rs.dropbox.client.dropbox.DropboxUiModule;
@@ -19,7 +21,6 @@ import net.datenwerke.rs.dropbox.client.dropbox.dto.DropboxDatasinkDto;
 import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTreeDropbox;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
-import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
@@ -33,7 +34,7 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
    private final Provider<DropboxDao> datasinkDaoProvider;
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-   private final Provider<FileServerUiService> fileServerUiServiceProvider;
+   private final Provider<DatasinkUIService> datasinkUiServiceProvider;
    private Provider<DropboxUiService> dropboxUiService;
 
    @Inject
@@ -41,13 +42,13 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
          @DatasinkTreeDropbox Provider<UITree> treeProvider,
          Provider<DropboxDao> datasinkDaoProvider,
          Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<FileServerUiService> fileServerUiServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider,
          Provider<DropboxUiService> dropboxUiService
          ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
-      this.fileServerUiServiceProvider = fileServerUiServiceProvider;
+      this.datasinkUiServiceProvider = datasinkUiServiceProvider;
       this.dropboxUiService = dropboxUiService;
    }
 
@@ -66,9 +67,10 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
          name = ((FileServerFolderDto)toExport).getName();
       else if(toExport instanceof FileServerFileDto)
         name = ((FileServerFileDto)toExport).getName();
-      fileServerUiServiceProvider.get().displayFileSendToDatasinkDialog(
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
             DropboxDatasinkDto.class,
             name, treeProvider, datasinkDaoProvider, toExport, 
+            Optional.empty(),
             new AsyncCallback<Map<String,Object>>() {
                
                @Override

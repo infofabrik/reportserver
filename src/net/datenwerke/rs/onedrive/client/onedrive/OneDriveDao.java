@@ -25,16 +25,17 @@ public class OneDriveDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoOneDrive(ReportDto reportDto, String executorToken, OneDriveDatasinkDto oneDriveDatasinkDto,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportIntoOneDrive(reportDto, executorToken, oneDriveDatasinkDto, format, configs, name, folder, compressed,
-            transformAndKeepCallback(callback));
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder,
+            compressed, transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto   file, DatasinkDefinitionDto datasinkDto, String name,
-         String folder,boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed, transformAndKeepCallback(callback));
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {

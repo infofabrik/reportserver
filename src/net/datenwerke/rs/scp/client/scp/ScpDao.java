@@ -24,15 +24,17 @@ public class ScpDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportIntoScp(reportDto, executorToken, scpDatasinkDto, format, configs, name, folder, compressed,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         AsyncCallback<Void> callback) {
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
             transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto   file, DatasinkDefinitionDto datasinkDto, String name,
-         String folder,boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder,compressed ,transformAndKeepCallback(callback));
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
 
    public void getScpEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
@@ -42,7 +44,7 @@ public class ScpDao extends Dao implements HasDefaultDatasink {
    public Request testScpDatasink(ScpDatasinkDto scpDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testScpDatasink(scpDatasinkDto, transformAndKeepCallback(callback));
    }
-   
+
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));

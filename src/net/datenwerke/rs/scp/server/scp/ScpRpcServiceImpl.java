@@ -93,11 +93,13 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
-   public void exportIntoScp(ReportDto reportDto, String executorToken, ScpDatasinkDto scpDatasinkDto, String format,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
          List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
+      if (! (datasinkDto instanceof ScpDatasinkDto))
+         throw new IllegalArgumentException("Not a SCP datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      ScpDatasink scpDatasink = (ScpDatasink) dtoService.loadPoso(scpDatasinkDto);
+      ScpDatasink scpDatasink = (ScpDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

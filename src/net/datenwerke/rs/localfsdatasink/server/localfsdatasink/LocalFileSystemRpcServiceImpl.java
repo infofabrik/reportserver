@@ -93,14 +93,16 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
 
    @Transactional(rollbackOn = { Exception.class })
    @Override
-   public void exportIntoLocalFileSystem(ReportDto reportDto, String executorToken,
-         LocalFileSystemDatasinkDto localFileSystemDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
+         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
          String name, String folder, boolean compressed) throws ServerCallFailedException {
-
+      if (! (datasinkDto instanceof LocalFileSystemDatasinkDto))
+         throw new IllegalArgumentException("Not a local filesystem datasink");
+      
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService
-            .loadPoso(localFileSystemDatasinkDto);
+            .loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);

@@ -91,12 +91,14 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    }
 
    @Override
-   public void exportIntoGoogleDrive(ReportDto reportDto, String executorToken,
-         GoogleDriveDatasinkDto googleDriveDatasinkDto, String format, List<ReportExecutionConfigDto> configs,
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
+         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
          String name, String folder, boolean compressed) throws ServerCallFailedException {
+      if (! (datasinkDto instanceof GoogleDriveDatasinkDto))
+         throw new IllegalArgumentException("Not a google drive datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      GoogleDriveDatasink googleDriveDatasink = (GoogleDriveDatasink) dtoService.loadPoso(googleDriveDatasinkDto);
+      GoogleDriveDatasink googleDriveDatasink = (GoogleDriveDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);
