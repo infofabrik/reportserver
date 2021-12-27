@@ -1,7 +1,5 @@
 package net.datenwerke.rs.base.service.reportengines.table.maintenance;
 
-import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -67,27 +65,10 @@ public class TableReportIntegrityValidator implements MaintenanceTask {
 
    private List<FilterSpec> getOrphanedFilterSpecs() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<Object> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_FILTER_SPEC A "
+      NativeQuery<FilterSpec> query = session.createNativeQuery("SELECT A.* FROM RS_FILTER_SPEC A "
             + "LEFT OUTER JOIN ( " + "SELECT FILTERS_ID FROM RS_FILTER_BLOCK_2_FILTERS) B "
-            + "ON B.FILTERS_ID = A.ENTITY_ID WHERE B.FILTERS_ID IS NULL", Object.class);
-      List<Object> list = query.list();
-
-      List<FilterSpec> specList = new ArrayList<>();
-      for (Object id : list) {
-         if (null != id) {
-            FilterSpec spec = null;
-            if (id instanceof BigInteger)
-               spec = session.find(FilterSpec.class, ((BigInteger) id).longValue());
-            else if (id instanceof Long)
-               spec = session.find(FilterSpec.class, id);
-            else
-               spec = session.find(FilterSpec.class, Long.valueOf(id.toString()));
-
-            if (null != spec)
-               specList.add(spec);
-         }
-      }
-
+            + "ON B.FILTERS_ID = A.ENTITY_ID WHERE B.FILTERS_ID IS NULL", FilterSpec.class);
+      List<FilterSpec> specList = query.list();
       return specList;
    }
 
@@ -103,30 +84,14 @@ public class TableReportIntegrityValidator implements MaintenanceTask {
 
    public List<Column> getOrphanedColumns() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<Object> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_COLUMN A "
-            + "LEFT OUTER JOIN ( " + "SELECT COLUMNS_ID AS CID FROM RS_TABLE_REPORT_2_COLUMN UNION "
+      NativeQuery<Column> query = session.createNativeQuery("SELECT A.* FROM RS_COLUMN A " + "LEFT OUTER JOIN ( "
+            + "SELECT COLUMNS_ID AS CID FROM RS_TABLE_REPORT_2_COLUMN UNION "
             + "SELECT ADDITIONAL_COLUMNS_ID AS CID FROM RS_TABLE_REPORT_2_ADD_COLUMN UNION "
             + "SELECT COLUMN_ID  AS CID FROM RS_COLUMN_FILTER UNION "
             + "SELECT COLUMNA_ID AS CID FROM RS_BINARY_COLUMN_FILTER UNION "
             + "SELECT COLUMNB_ID AS CID FROM RS_BINARY_COLUMN_FILTER ) B "
-            + "ON B.CID = A.ENTITY_ID WHERE B.CID IS NULL", Object.class);
-      List<Object> list = query.list();
-
-      List<Column> colList = new ArrayList<>();
-      for (Object id : list) {
-         if (null != id) {
-            Column column = null;
-            if (id instanceof BigInteger)
-               column = session.find(Column.class, ((BigInteger) id).longValue());
-            else if (id instanceof Long)
-               column = session.find(Column.class, id);
-            else
-               column = session.find(Column.class, Long.valueOf(id.toString()));
-
-            if (null != column)
-               colList.add(column);
-         }
-      }
+            + "ON B.CID = A.ENTITY_ID WHERE B.CID IS NULL", Column.class);
+      List<Column> colList = query.list();
       return colList;
    }
 
