@@ -24,7 +24,6 @@ public interface JxlsReportDtoPA extends ReportDtoPA {
 
 
 	/* Properties */
-	public ValueProvider<JxlsReportDto,Boolean> jxlsOne();
 	public ValueProvider<JxlsReportDto,JxlsReportFileDto> reportFile();
 
 

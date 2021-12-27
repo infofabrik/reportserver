@@ -24,7 +24,6 @@ public interface RECJxlsDtoPA extends PropertyAccess<RECJxlsDto> {
 	/* Properties */
 	public ValueProvider<RECJxlsDto,Integer> currencyColumnWidth();
 	public ValueProvider<RECJxlsDto,Integer> dateColumnWidth();
-	public ValueProvider<RECJxlsDto,Boolean> jxls1();
 	public ValueProvider<RECJxlsDto,Boolean> jxlsReport();
 	public ValueProvider<RECJxlsDto,Integer> numberColumnWidth();
 	public ValueProvider<RECJxlsDto,Integer> textColumnWidth();

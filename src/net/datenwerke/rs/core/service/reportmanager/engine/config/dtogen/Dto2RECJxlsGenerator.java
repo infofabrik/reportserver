@@ -89,12 +89,6 @@ public class Dto2RECJxlsGenerator implements Dto2PosoGenerator<RECJxlsDto,RECJxl
 		} catch(NullPointerException e){
 		}
 
-		/*  set jxls1 */
-		try{
-			poso.setJxls1(dto.isJxls1() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set jxlsReport */
 		try{
 			poso.setJxlsReport(dto.isJxlsReport() );
@@ -128,14 +122,6 @@ public class Dto2RECJxlsGenerator implements Dto2PosoGenerator<RECJxlsDto,RECJxl
 		if(dto.isDateColumnWidthModified()){
 			try{
 				poso.setDateColumnWidth(dto.getDateColumnWidth() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set jxls1 */
-		if(dto.isJxls1Modified()){
-			try{
-				poso.setJxls1(dto.isJxls1() );
 			} catch(NullPointerException e){
 			}
 		}
@@ -186,12 +172,6 @@ public class Dto2RECJxlsGenerator implements Dto2PosoGenerator<RECJxlsDto,RECJxl
 		} catch(NullPointerException e){
 		}
 
-		/*  set jxls1 */
-		try{
-			poso.setJxls1(dto.isJxls1() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set jxlsReport */
 		try{
 			poso.setJxlsReport(dto.isJxlsReport() );
@@ -225,14 +205,6 @@ public class Dto2RECJxlsGenerator implements Dto2PosoGenerator<RECJxlsDto,RECJxl
 		if(dto.isDateColumnWidthModified()){
 			try{
 				poso.setDateColumnWidth(dto.getDateColumnWidth() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set jxls1 */
-		if(dto.isJxls1Modified()){
-			try{
-				poso.setJxls1(dto.isJxls1() );
 			} catch(NullPointerException e){
 			}
 		}

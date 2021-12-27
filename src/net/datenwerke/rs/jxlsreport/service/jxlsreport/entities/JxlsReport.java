@@ -51,9 +51,6 @@ public class JxlsReport extends Report {
 	@OneToOne(cascade={CascadeType.ALL})
 	private JxlsReportFile reportFile;
 	
-	@ExposeToClient
-	private boolean jxlsOne;
-
 	public void setReportFile(JxlsReportFile reportFile) {
 		this.reportFile = reportFile;
 	}
@@ -62,13 +59,6 @@ public class JxlsReport extends Report {
 		return reportFile;
 	}
 
-	public void setJxlsOne(boolean jxlsOne) {
-		this.jxlsOne = jxlsOne;
-	}
-	public boolean isJxlsOne() {
-		return jxlsOne;
-	}
-	
 	@Override
 	protected Report createVariant(Report adjustedReport) {
 		if(! (adjustedReport instanceof JxlsReport))
@@ -78,8 +68,6 @@ public class JxlsReport extends Report {
 		
 		/* copy parameter instances */
 		initVariant(variant, adjustedReport);
-		
-		variant.setJxlsOne(((JxlsReport)adjustedReport).isJxlsOne());
 		
 		return variant;
 		

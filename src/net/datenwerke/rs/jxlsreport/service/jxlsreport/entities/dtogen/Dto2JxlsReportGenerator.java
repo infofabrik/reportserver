@@ -146,12 +146,6 @@ public class Dto2JxlsReportGenerator implements Dto2PosoGenerator<JxlsReportDto,
 		} catch(NullPointerException e){
 		}
 
-		/*  set jxlsOne */
-		try{
-			poso.setJxlsOne(dto.isJxlsOne() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set key */
 		if(validateKeyProperty(dto, poso)){
 			poso.setKey(dto.getKey() );
@@ -292,14 +286,6 @@ public class Dto2JxlsReportGenerator implements Dto2PosoGenerator<JxlsReportDto,
 		if(dto.isFlagsModified()){
 			try{
 				poso.setFlags(dto.getFlags() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set jxlsOne */
-		if(dto.isJxlsOneModified()){
-			try{
-				poso.setJxlsOne(dto.isJxlsOne() );
 			} catch(NullPointerException e){
 			}
 		}
@@ -450,12 +436,6 @@ public class Dto2JxlsReportGenerator implements Dto2PosoGenerator<JxlsReportDto,
 		} catch(NullPointerException e){
 		}
 
-		/*  set jxlsOne */
-		try{
-			poso.setJxlsOne(dto.isJxlsOne() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set key */
 		if(validateKeyProperty(dto, poso)){
 			poso.setKey(dto.getKey() );
@@ -508,14 +488,6 @@ public class Dto2JxlsReportGenerator implements Dto2PosoGenerator<JxlsReportDto,
 		if(dto.isFlagsModified()){
 			try{
 				poso.setFlags(dto.getFlags() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set jxlsOne */
-		if(dto.isJxlsOneModified()){
-			try{
-				poso.setJxlsOne(dto.isJxlsOne() );
 			} catch(NullPointerException e){
 			}
 		}

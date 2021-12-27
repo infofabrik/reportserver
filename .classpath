@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="con" path="com.gwtplugins.gwt.eclipse.core.GWT_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="jxls-src"/>
 	<classpathentry kind="src" path="commons-src"/>
 	<classpathentry kind="src" path="gxt-src"/>
 	<classpathentry kind="src" path="spudsoft-birt-emitter-src"/>

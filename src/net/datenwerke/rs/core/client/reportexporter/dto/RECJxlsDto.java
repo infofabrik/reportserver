@@ -100,42 +100,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 		}
 	};
 
-	private boolean jxls1;
-	private  boolean jxls1_m;
-	public static final String PROPERTY_JXLS1 = "dpi-recjxls-jxls1";
-
-	private transient static PropertyAccessor<RECJxlsDto, Boolean> jxls1_pa = new PropertyAccessor<RECJxlsDto, Boolean>() {
-		@Override
-		public void setValue(RECJxlsDto container, Boolean object) {
-			container.setJxls1(object);
-		}
-
-		@Override
-		public Boolean getValue(RECJxlsDto container) {
-			return container.isJxls1();
-		}
-
-		@Override
-		public Class<?> getType() {
-			return Boolean.class;
-		}
-
-		@Override
-		public String getPath() {
-			return "jxls1";
-		}
-
-		@Override
-		public void setModified(RECJxlsDto container, boolean modified) {
-			container.jxls1_m = modified;
-		}
-
-		@Override
-		public boolean isModified(RECJxlsDto container) {
-			return container.isJxls1Modified();
-		}
-	};
-
 	private boolean jxlsReport;
 	private  boolean jxlsReport_m;
 	public static final String PROPERTY_JXLS_REPORT = "dpi-recjxls-jxlsreport";
@@ -347,55 +311,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 	}
 
 
-	public boolean isJxls1()  {
-		if(! isDtoProxy()){
-			return this.jxls1;
-		}
-
-		if(isJxls1Modified())
-			return this.jxls1;
-
-		if(! GWT.isClient())
-			return false;
-
-		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().jxls1());
-
-		return _value;
-	}
-
-
-	public void setJxls1(boolean jxls1)  {
-		/* old value */
-		boolean oldValue = false;
-		if(GWT.isClient())
-			oldValue = isJxls1();
-
-		/* set new value */
-		this.jxls1 = jxls1;
-
-		if(! GWT.isClient())
-			return;
-
-		if(isTrackChanges())
-			addChange(new ChangeTracker(jxls1_pa, oldValue, jxls1, this.jxls1_m));
-
-		/* set indicator */
-		this.jxls1_m = true;
-
-		this.fireObjectChangedEvent(RECJxlsDtoPA.INSTANCE.jxls1(), oldValue);
-	}
-
-
-	public boolean isJxls1Modified()  {
-		return jxls1_m;
-	}
-
-
-	public static PropertyAccessor<RECJxlsDto, Boolean> getJxls1PropertyAccessor()  {
-		return jxls1_pa;
-	}
-
-
 	public boolean isJxlsReport()  {
 		if(! isDtoProxy()){
 			return this.jxlsReport;
@@ -561,8 +476,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 		this.currencyColumnWidth_m = false;
 		this.dateColumnWidth = 0;
 		this.dateColumnWidth_m = false;
-		this.jxls1 = false;
-		this.jxls1_m = false;
 		this.jxlsReport = false;
 		this.jxlsReport_m = false;
 		this.numberColumnWidth = 0;
@@ -579,8 +492,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 			return true;
 		if(dateColumnWidth_m)
 			return true;
-		if(jxls1_m)
-			return true;
 		if(jxlsReport_m)
 			return true;
 		if(numberColumnWidth_m)
@@ -595,7 +506,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 		List<PropertyAccessor> list = super.getPropertyAccessors();
 		list.add(currencyColumnWidth_pa);
 		list.add(dateColumnWidth_pa);
-		list.add(jxls1_pa);
 		list.add(jxlsReport_pa);
 		list.add(numberColumnWidth_pa);
 		list.add(textColumnWidth_pa);
@@ -609,8 +519,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 			list.add(currencyColumnWidth_pa);
 		if(dateColumnWidth_m)
 			list.add(dateColumnWidth_pa);
-		if(jxls1_m)
-			list.add(jxls1_pa);
 		if(jxlsReport_m)
 			list.add(jxlsReport_pa);
 		if(numberColumnWidth_m)
@@ -626,7 +534,6 @@ abstract public class RECJxlsDto extends RsDto implements ReportExecutionConfigD
 		if(view.compareTo(DtoView.NORMAL) >= 0){
 			list.add(currencyColumnWidth_pa);
 			list.add(dateColumnWidth_pa);
-			list.add(jxls1_pa);
 			list.add(jxlsReport_pa);
 			list.add(numberColumnWidth_pa);
 			list.add(textColumnWidth_pa);

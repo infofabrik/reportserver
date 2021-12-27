@@ -8,11 +8,10 @@ import java.io.OutputStream;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.sql.Connection;
-import java.util.HashMap;
 import java.util.Map;
 
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.streaming.SXSSFWorkbook;
@@ -40,7 +39,6 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsCo
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.object.CompiledJxlsXlsReport;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.object.CompiledJxlsXlsmReport;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.object.CompiledJxlsXlsxReport;
-import net.sf.jxls.transformer.XLSTransformer;
 
 public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
 
@@ -75,44 +73,11 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
    public CompiledReport exportReport(OutputStream os, byte[] template, Connection connection, JxlsReport jxlsReport,
          ParameterSet parameters, String outputFormat, ReportExecutionConfig... configs)
          throws ReportExecutorException {
-      if (jxlsReport.isJxlsOne()) {
-         Workbook workbook = processWorkbookLegacy(parameters, template, connection);
-         return exportReportLegacy(os, workbook);
-      } else {
-         Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
-         return exportReport(os, workbook);
-      }
+      Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
+      return exportReport(os, workbook);
    }
 
    private CompiledReport exportReport(OutputStream os, Workbook workbook) throws ReportExecutorException {
-      /* write out file */
-      try {
-         byte[] content = null;
-         if (null == os) {
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            workbook.write(bos);
-            content = bos.toByteArray();
-         } else {
-            workbook.write(os);
-            os.close();
-         }
-
-         /* new excel */
-         if (workbook instanceof XSSFWorkbook) {
-            if (((XSSFWorkbook) workbook).isMacroEnabled())
-               return new CompiledJxlsXlsmReport(content);
-            else
-               return new CompiledJxlsXlsxReport(content);
-         }
-
-         /* old excel */
-         return new CompiledJxlsXlsReport(content);
-      } catch (Exception e) {
-         throw new ReportExecutorException(e);
-      }
-   }
-
-   private CompiledReport exportReportLegacy(OutputStream os, Workbook workbook) throws ReportExecutorException {
       /* write out file */
       try {
          byte[] content = null;
@@ -251,39 +216,6 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
             Workbook wb = WorkbookFactory.create(in);
             return wb;
          }
-      }
-   }
-
-   protected Workbook processWorkbookLegacy(ParameterSet parameters, byte[] template, Connection connection)
-         throws ReportExecutorException {
-      /* prepare parameters */
-      Map<String, ParameterValue> parameterMap = parameters.getParameterMap();
-      Map<String, Object> simpleParams = parameters.getParameterMapSimple();
-
-      final Map<String, Object> beans = new HashMap<>();
-      beans.put("_parameters", parameterMap);
-      beans.put("parameters", simpleParams);
-
-      XLSTransformer transformer = new XLSTransformer();
-
-      ByteArrayInputStream is = new ByteArrayInputStream(template);
-
-      JxlsSqlExecutor rm = new JxlsSqlExecutor(connection, parameters);
-      beans.put("sql", rm);
-      beans.put("rm", rm);
-      beans.put("StringUtils", new StringUtils());
-      beans.put("StringEscapeUtils", new StringEscapeUtils());
-
-      hookHandler.getHookers(JxlsContextVariableProvider.class).forEach(provider -> provider.adaptLegacyContext(beans));
-
-      try {
-         Workbook wb = transformer.transformXLS(is, beans);
-         wb.setForceFormulaRecalculation(true);
-         return wb;
-      } catch (Exception e) {
-         throw new ReportExecutorException(e);
-      } finally {
-         hookHandler.getHookers(JxlsContextVariableProvider.class).forEach(JxlsContextVariableProvider::finishedExport);
       }
    }
 

@@ -19,7 +19,6 @@ public class RECJxlsDtoDec extends RECJxlsDto implements ReportExecutionConfigDt
 		setDateColumnWidth(8);
 		setCurrencyColumnWidth(8);
 		setJxlsReport(false);
-		setJxls1(false);
 	}
 
 }

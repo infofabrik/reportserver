@@ -9,7 +9,6 @@ public class TableTemplateUIModule extends AbstractGinModule {
 	public static final String FORM_ACTION = "TableTemplateUpload";
 	public static final String UPLOAD_FIELD_NAME = "xlsTemplate";
 	public static final String EXECUTE_REPORT_TOKEN = "executeReportToken";
-	public static final String JXLS_TEMPLATE_PROPERTY_NAME = "jxls:template";
 	
 	public static final String EXPORT_OUTPUT_FORMAT = "TABLE_TEMPLATE";
 	public static final String REPORT_ID = "reportId";

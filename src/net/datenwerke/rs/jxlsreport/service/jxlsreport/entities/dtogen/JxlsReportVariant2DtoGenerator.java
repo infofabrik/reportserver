@@ -112,9 +112,6 @@ public class JxlsReportVariant2DtoGenerator implements Poso2DtoGenerator<JxlsRep
 			/*  set flags */
 			dto.setFlags(poso.getFlags() );
 
-			/*  set jxlsOne */
-			dto.setJxlsOne(poso.isJxlsOne() );
-
 			/*  set parameterDefinitions */
 			final List<ParameterDefinitionDto> col_parameterDefinitions = new ArrayList<ParameterDefinitionDto>();
 			if( null != poso.getParameterDefinitions()){

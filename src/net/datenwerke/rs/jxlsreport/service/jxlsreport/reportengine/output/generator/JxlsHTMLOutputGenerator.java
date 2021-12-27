@@ -52,70 +52,10 @@ public class JxlsHTMLOutputGenerator extends JxlsOutputGeneratorImpl {
 			Connection connection, JxlsReport jxlsReport, ParameterSet parameters,
 			String outputFormat, ReportExecutionConfig... configs)
 			throws ReportExecutorException {
-	    if(jxlsReport.isJxlsOne()) {
-            Workbook workbook = processWorkbookLegacy(parameters, template, connection);
-            return exportReportLegacy(os, workbook);
-        } else {
-            Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
-            return exportReport(os, workbook);
-        }
+	   Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
+       return exportReport(os, workbook);
 	}
 	
-	private CompiledReport exportReportLegacy(OutputStream os, Workbook workbook) throws ReportExecutorException {
-        try{
-            Document xmlDocument = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().newDocument();
-            
-            Transformer transformer = TransformerFactory.newInstance()
-                    .newTransformer();
-            transformer.setOutputProperty( OutputKeys.INDENT, "no" );
-            transformer.setOutputProperty( OutputKeys.ENCODING, "utf-8" );
-            transformer.setOutputProperty( OutputKeys.METHOD, "html" );
-
-            String html = null;
-            
-            if(workbook instanceof HSSFWorkbook){
-                ExcelToHtmlConverter xlsToHtmlConverter = new ExcelToHtmlConverter(xmlDocument);
-                xlsToHtmlConverter.processWorkbook(  (HSSFWorkbook) workbook );
-                
-                if(null == os){
-                    StringWriter stringWriter = new StringWriter();
-                    transformer.transform(
-                            new DOMSource( xlsToHtmlConverter.getDocument() ),
-                            new StreamResult( stringWriter ) );
-            
-                    html = stringWriter.toString();
-                } else {
-                     transformer.transform(
-                                new DOMSource( xlsToHtmlConverter.getDocument() ),
-                                new StreamResult(os) );
-                }
-            } else if(workbook instanceof XSSFWorkbook) {
-                XlsxToHtmlConverter xlsToHtmlConverter = new XlsxToHtmlConverter(xmlDocument);
-                xlsToHtmlConverter.processWorkbook(  (XSSFWorkbook) workbook );
-                
-                if(null == os){
-                    StringWriter stringWriter = new StringWriter();
-                    transformer.transform(
-                            new DOMSource( xlsToHtmlConverter.getDocument() ),
-                            new StreamResult( stringWriter ) );
-            
-                    html = stringWriter.toString();
-                } else {
-                     transformer.transform(
-                                new DOMSource( xlsToHtmlConverter.getDocument() ),
-                                new StreamResult(os) );
-                }
-            } else {
-                html = "Could not convert file";
-            }
-            
-            return new CompiledHtmlReportImpl(html);
-        } catch(Exception e){
-            throw new ReportExecutorException(e);
-        }
-    }
-    
     private CompiledReport exportReport(OutputStream os, Workbook workbook) throws ReportExecutorException {
         try{
             Document xmlDocument = DocumentBuilderFactory.newInstance()

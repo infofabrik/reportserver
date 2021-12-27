@@ -45,9 +45,6 @@ public class RECJxls2DtoGenerator implements Poso2DtoGenerator<RECJxls,RECJxlsDt
 			/*  set dateColumnWidth */
 			dto.setDateColumnWidth(poso.getDateColumnWidth() );
 
-			/*  set jxls1 */
-			dto.setJxls1(poso.isJxls1() );
-
 			/*  set jxlsReport */
 			dto.setJxlsReport(poso.isJxlsReport() );
 

@@ -5,7 +5,6 @@ import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 
@@ -21,7 +20,6 @@ import net.datenwerke.rs.core.client.reportmanager.ui.forms.AbstractReportForm;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.JxlsReportUiModule;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto;
-import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.pa.JxlsReportDtoPA;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.locale.JxlsReportMessages;
 
 public class JxlsReportForm extends AbstractReportForm {
@@ -31,7 +29,6 @@ public class JxlsReportForm extends AbstractReportForm {
 	private final Provider<UITree> datasourceTreeProvider;
 	
 	private FieldLabel uploadLabel;
-	private CheckBox jxlsLegacy;
 
 	private static FileUploadFilter uploadFilter = new FileUploadFilter() {
 		@Override
@@ -70,11 +67,6 @@ public class JxlsReportForm extends AbstractReportForm {
 		uploadLabel = new FieldLabel(uploadComponent, JxlsReportMessages.INSTANCE.templateUpload() + (null != reportTemplate ? " (" + reportTemplate.getName() + ")" : ""));
 		fieldWrapper.add(uploadLabel);
 				
-		jxlsLegacy = new CheckBox();
-		jxlsLegacy.setName(JxlsReportDtoPA.INSTANCE.jxlsOne().getPath());
-		jxlsLegacy.setBoxLabel(JxlsReportMessages.INSTANCE.useLegacyJxls());
-		fieldWrapper.add(jxlsLegacy);
-		
 		configureUnboundFields();
 	}
 	

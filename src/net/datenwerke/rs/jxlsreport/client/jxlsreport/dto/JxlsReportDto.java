@@ -36,42 +36,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 
 
 	/* Fields */
-	private boolean jxlsOne;
-	private  boolean jxlsOne_m;
-	public static final String PROPERTY_JXLS_ONE = "dpi-jxlsreport-jxlsone";
-
-	private transient static PropertyAccessor<JxlsReportDto, Boolean> jxlsOne_pa = new PropertyAccessor<JxlsReportDto, Boolean>() {
-		@Override
-		public void setValue(JxlsReportDto container, Boolean object) {
-			container.setJxlsOne(object);
-		}
-
-		@Override
-		public Boolean getValue(JxlsReportDto container) {
-			return container.isJxlsOne();
-		}
-
-		@Override
-		public Class<?> getType() {
-			return Boolean.class;
-		}
-
-		@Override
-		public String getPath() {
-			return "jxlsOne";
-		}
-
-		@Override
-		public void setModified(JxlsReportDto container, boolean modified) {
-			container.jxlsOne_m = modified;
-		}
-
-		@Override
-		public boolean isModified(JxlsReportDto container) {
-			return container.isJxlsOneModified();
-		}
-	};
-
 	private JxlsReportFileDto reportFile;
 	private  boolean reportFile_m;
 	public static final String PROPERTY_REPORT_FILE = "dpi-jxlsreport-reportfile";
@@ -112,55 +76,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 	public JxlsReportDto() {
 		super();
 	}
-
-	public boolean isJxlsOne()  {
-		if(! isDtoProxy()){
-			return this.jxlsOne;
-		}
-
-		if(isJxlsOneModified())
-			return this.jxlsOne;
-
-		if(! GWT.isClient())
-			return false;
-
-		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().jxlsOne());
-
-		return _value;
-	}
-
-
-	public void setJxlsOne(boolean jxlsOne)  {
-		/* old value */
-		boolean oldValue = false;
-		if(GWT.isClient())
-			oldValue = isJxlsOne();
-
-		/* set new value */
-		this.jxlsOne = jxlsOne;
-
-		if(! GWT.isClient())
-			return;
-
-		if(isTrackChanges())
-			addChange(new ChangeTracker(jxlsOne_pa, oldValue, jxlsOne, this.jxlsOne_m));
-
-		/* set indicator */
-		this.jxlsOne_m = true;
-
-		this.fireObjectChangedEvent(JxlsReportDtoPA.INSTANCE.jxlsOne(), oldValue);
-	}
-
-
-	public boolean isJxlsOneModified()  {
-		return jxlsOne_m;
-	}
-
-
-	public static PropertyAccessor<JxlsReportDto, Boolean> getJxlsOnePropertyAccessor()  {
-		return jxlsOne_pa;
-	}
-
 
 	public JxlsReportFileDto getReportFile()  {
 		if(! isDtoProxy()){
@@ -273,8 +188,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 	}
 
 	public void clearModified()  {
-		this.jxlsOne = false;
-		this.jxlsOne_m = false;
 		this.reportFile = null;
 		this.reportFile_m = false;
 	}
@@ -282,8 +195,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 
 	public boolean isModified()  {
 		if(super.isModified())
-			return true;
-		if(jxlsOne_m)
 			return true;
 		if(reportFile_m)
 			return true;
@@ -293,7 +204,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
-		list.add(jxlsOne_pa);
 		list.add(reportFile_pa);
 		return list;
 	}
@@ -301,8 +211,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 
 	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
-		if(jxlsOne_m)
-			list.add(jxlsOne_pa);
 		if(reportFile_m)
 			list.add(reportFile_pa);
 		return list;
@@ -312,7 +220,6 @@ abstract public class JxlsReportDto extends ReportDtoDec {
 	public List<PropertyAccessor> getPropertyAccessorsByView(net.datenwerke.gxtdto.client.dtomanager.DtoView view)  {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.NORMAL) >= 0){
-			list.add(jxlsOne_pa);
 			list.add(reportFile_pa);
 		}
 		return list;

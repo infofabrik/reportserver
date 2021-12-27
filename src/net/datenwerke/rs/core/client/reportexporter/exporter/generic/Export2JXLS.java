@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import com.google.gwt.resources.client.ImageResource;
@@ -16,7 +15,6 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 
 import net.datenwerke.gf.client.config.ClientConfigXmlService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -31,9 +29,7 @@ import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.locale.JxlsReportMessages;
-import net.datenwerke.rs.license.client.locale.LicenseMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.utils.stream.shared.StreamUtil;
 
 public abstract class Export2JXLS extends ReportExporterImpl {
 
@@ -77,17 +73,6 @@ public abstract class Export2JXLS extends ReportExporterImpl {
 
       final SimpleForm form = SimpleForm.getInlineInstance();
       window.add(form, new MarginData(10));
-
-      form.addField(List.class, RECJxlsDtoPA.INSTANCE.jxls1(), LicenseMessages.INSTANCE.versionLabel(),
-            new RECJxlsDtoDec(), new SFFCStaticRadioList<Boolean>() {
-               @Override
-               public Map<String, Boolean> getValues() {
-                  Map<String, Boolean> map = new HashMap<String, Boolean>();
-                  map.put("JXLS", false);
-                  map.put(JxlsReportMessages.INSTANCE.useLegacyJxls(), true);
-                  return map;
-               }
-            });
 
       form.addField(List.class, RECJxlsDtoPA.INSTANCE.jxlsReport(), ReportExporterMessages.INSTANCE.exportTypeLabel(),
             new RECJxlsDtoDec(), new SFFCStaticRadioList<Boolean>() {
