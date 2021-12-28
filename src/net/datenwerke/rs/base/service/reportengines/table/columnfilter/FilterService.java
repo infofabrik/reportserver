@@ -10,5 +10,7 @@ public interface FilterService {
    Map<String, Map<String, Object>> getFilterMap(TableReport report);
 
    Map<BlockType, Object> getPrefilterMap(TableReport report);
+   
+   int calculatePrefilterDepth(TableReport report);
 
 }

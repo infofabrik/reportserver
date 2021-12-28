@@ -1788,20 +1788,20 @@ border-left: 1px solid;
 .rs-reportexport-dl-html .filtertype,
 .rs-reportexport-dl-pdf .filtertype {
 	float: left; 
-	width: 30px; 
+	width: 110px; 
 	margin-left: 0px !important;
 }
 
 .rs-reportexport-dl-html .filtervalue {
 	float: left; 
-	width: 700px; 
+	width: 620px; 
 	margin: 0px auto; margin-bottom: 10px;  
 	margin-left: 0px !important;
 }
 
 .rs-reportexport-dl-pdf .filtervalue {
 	float: left; 
-	width: 800px; 
+	width: 620px; 
 	margin: 0px auto; margin-bottom: 10px;  
 	margin-left: 0px !important;
 }
