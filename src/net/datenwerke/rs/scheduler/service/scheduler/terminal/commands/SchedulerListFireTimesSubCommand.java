@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.hooks.SchedulerSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -17,8 +19,6 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultList;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
-
-import com.google.inject.Inject;
 
 
 public class SchedulerListFireTimesSubCommand implements SchedulerSubCommandHook{

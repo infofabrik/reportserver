@@ -6,6 +6,14 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.ui.FlexTable;
+import com.google.gwt.user.client.ui.HTML;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.objectinformation.ObjectPreviewTabPanel;
@@ -14,14 +22,6 @@ import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProv
 import net.datenwerke.rs.core.client.i18tools.FormatUiHelper;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.dto.decorator.AbstractNodeDtoDec;
-
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.user.client.ui.FlexTable;
-import com.google.gwt.user.client.ui.HTML;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.Component;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 
 public class BasicObjectInfo implements
 		ObjectPreviewTabKeyInfoProvider {

@@ -2,14 +2,14 @@ package net.datenwerke.rs.incubator.service.schedulernotification;
 
 import javax.inject.Inject;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.scheduler.service.scheduler.SchedulerModule;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerInfoHook;
-
-import com.google.inject.Provider;
 
 public class SchedulerNotificationStartup {
 

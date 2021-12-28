@@ -7,6 +7,8 @@ import java.util.Locale;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.apache.commons.configuration2.Configuration;
+
 import net.datenwerke.gf.service.localization.LocalizationModule;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
@@ -14,8 +16,6 @@ import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRuntimeException;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.configuration2.Configuration;
 
 public class I18nToolsServiceImpl implements I18nToolsService {
 	

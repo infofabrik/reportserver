@@ -1,14 +1,14 @@
 package net.datenwerke.rs.xml;
 
-import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.rs.utils.xml.XMLUtilsService;
-import net.datenwerke.rs.utils.xml.XMLUtilsServiceImpl;
-import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Scopes;
+
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.utils.xml.XMLUtilsService;
+import net.datenwerke.rs.utils.xml.XMLUtilsServiceImpl;
+import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;
 
 public class XmlRsUtilsModule extends AbstractModule {
 

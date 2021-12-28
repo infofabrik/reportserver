@@ -18,8 +18,6 @@ import java.util.Map;
 
 import javax.inject.Provider;
 
-import net.datenwerke.rs.utils.misc.StringEscapeUtils;
-
 import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 
@@ -75,6 +73,7 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.ColumnReference;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
+import net.datenwerke.rs.utils.misc.StringEscapeUtils;
 
 /**
  * 

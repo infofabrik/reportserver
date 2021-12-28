@@ -3,6 +3,7 @@ package net.datenwerke.rs.localfsdatasink.client.localfsdatasink;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 
@@ -15,7 +16,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.rpc.LocalFileSystemRpcServiceAsync;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import com.google.gwt.http.client.Request;
 
 public class LocalFileSystemDao extends Dao implements HasDefaultDatasink {
 

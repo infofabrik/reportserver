@@ -13,11 +13,11 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
-
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.envers.Audited;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 
 @Entity
 @Table(name="FILE_SERVER_FILE_DATA")

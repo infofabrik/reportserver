@@ -1,5 +1,8 @@
 package net.datenwerke.rs.incubator.service.exportmetadata;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -8,9 +11,6 @@ import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMeta
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleTitle;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ExportMetadataServiceImpl implements ExportMetadataService {
 

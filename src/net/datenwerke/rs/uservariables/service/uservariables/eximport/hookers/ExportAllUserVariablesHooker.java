@@ -1,13 +1,13 @@
 package net.datenwerke.rs.uservariables.service.uservariables.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.eximport.ex.entity.EntityExportItemConfig;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.uservariables.service.uservariables.UserVariableService;
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition;
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableInstance;
-
-import com.google.inject.Inject;
 
 public class ExportAllUserVariablesHooker implements ExportAllHook {
 

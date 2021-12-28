@@ -2,12 +2,12 @@ package net.datenwerke.rs.core.client.i18tools;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
 import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 import net.datenwerke.rs.core.client.i18tools.rpc.I18nToolsRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class I18nToolsDao extends Dao {
 

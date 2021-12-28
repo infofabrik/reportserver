@@ -2,6 +2,8 @@ package net.datenwerke.rs.core.service.login;
 
 import java.util.Date;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.service.genrights.access.AccessRsSecurityTarget;
 import net.datenwerke.rs.core.service.reportserver.ReportServerModule;
 import net.datenwerke.security.client.login.resultinfos.AccountExpiredAuthenticateResultInfo;
@@ -14,8 +16,6 @@ import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.entities.UserProperty;
-
-import com.google.inject.Inject;
 
 public class CheckBlockedUserOnLoginHooker implements PostAuthenticateHook {
 

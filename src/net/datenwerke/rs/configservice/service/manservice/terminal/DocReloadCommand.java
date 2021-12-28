@@ -1,5 +1,7 @@
 package net.datenwerke.rs.configservice.service.manservice.terminal;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.configservice.service.configservice.locale.ConfigMessages;
 import net.datenwerke.rs.configservice.service.manservice.locale.ManMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.utils.man.ManPageService;
-
-import com.google.inject.Inject;
 
 public class DocReloadCommand implements DocSubCommandHook {
 

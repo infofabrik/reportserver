@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.actions;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-
 import com.google.gwt.user.client.ui.Widget;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public class ShowFieldsAction implements SimpleFormAction {
 

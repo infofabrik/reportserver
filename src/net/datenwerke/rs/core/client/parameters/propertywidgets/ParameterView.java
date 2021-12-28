@@ -30,7 +30,6 @@ import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessage
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.aware.DeselectionAwareView;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.decorator.ReportDtoDec;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ParameterView extends ReportExecutorMainPanelView implements DeselectionAwareView {

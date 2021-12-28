@@ -1,6 +1,5 @@
 package net.datenwerke.dbpool.hooks.adapter;
 
-import java.lang.String;
 import net.datenwerke.dbpool.hooks.JdbcUrlAdapterHook;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 

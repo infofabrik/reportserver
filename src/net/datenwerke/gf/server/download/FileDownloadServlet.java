@@ -9,13 +9,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.gf.client.download.FileDownloadUiModule;
-import net.datenwerke.gf.service.download.FileDownloadService;
-import net.datenwerke.security.server.SecuredHttpServlet;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.download.FileDownloadUiModule;
+import net.datenwerke.gf.service.download.FileDownloadService;
+import net.datenwerke.security.server.SecuredHttpServlet;
 
 @Singleton
 public class FileDownloadServlet extends SecuredHttpServlet {

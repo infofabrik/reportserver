@@ -1,9 +1,9 @@
 package net.datenwerke.rs.core.client.easteregg;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
-
-import com.google.gwt.user.client.ui.Widget;
 
 public class RsPacmanView implements UrlViewSpecialViewHandler {
 

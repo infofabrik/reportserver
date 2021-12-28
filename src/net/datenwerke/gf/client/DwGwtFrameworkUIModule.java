@@ -1,11 +1,11 @@
 package net.datenwerke.gf.client;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+
 import net.datenwerke.gf.client.download.FileDownloadUiModule;
 import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
 import net.datenwerke.gf.client.uiutils.date.DateFormulaPicker;
 import net.datenwerke.gf.client.upload.FileUploadUIModule;
-
-import com.google.gwt.inject.client.AbstractGinModule;
 
 public class DwGwtFrameworkUIModule extends AbstractGinModule {
 

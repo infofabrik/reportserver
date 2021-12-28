@@ -1,12 +1,12 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.dependency;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 
 public class SimpleDependencyRegistrar implements DependencyRegistrar {
 

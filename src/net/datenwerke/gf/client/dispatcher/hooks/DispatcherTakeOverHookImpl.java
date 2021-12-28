@@ -1,8 +1,8 @@
 package net.datenwerke.gf.client.dispatcher.hooks;
 
-import net.datenwerke.gf.client.history.HistoryLocation;
-
 import com.google.gwt.user.client.Window;
+
+import net.datenwerke.gf.client.history.HistoryLocation;
 
 public abstract class DispatcherTakeOverHookImpl implements
 		DispatcherTakeOverHook {

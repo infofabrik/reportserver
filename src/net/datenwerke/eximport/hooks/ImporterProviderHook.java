@@ -1,9 +1,9 @@
 package net.datenwerke.eximport.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.im.Importer;
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
-
-import com.google.inject.Provider;
 
 /**
  * 

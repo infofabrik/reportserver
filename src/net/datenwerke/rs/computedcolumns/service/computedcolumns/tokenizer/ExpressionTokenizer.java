@@ -5,15 +5,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.hooks.FunctionProviderHook;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handlers.FunctionHandler;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handlers.VariableHandler;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handlers.tokens.WhiteSpaceToken;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks.ExpressionTokenHandlerHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ExpressionTokenizer {
 

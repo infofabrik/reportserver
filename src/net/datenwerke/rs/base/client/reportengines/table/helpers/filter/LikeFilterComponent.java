@@ -3,6 +3,12 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.TabItemConfig;
+import com.sencha.gxt.widget.core.client.container.HasLayout;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
@@ -10,12 +16,6 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.FilterDtoDec;
-
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.TabItemConfig;
-import com.sencha.gxt.widget.core.client.container.HasLayout;
 
 /**
  * 

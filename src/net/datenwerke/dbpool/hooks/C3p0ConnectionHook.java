@@ -2,10 +2,10 @@ package net.datenwerke.dbpool.hooks;
 
 import java.sql.Connection;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.inject.Inject;
 import com.mchange.v2.c3p0.ConnectionCustomizer;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class C3p0ConnectionHook implements ConnectionCustomizer {
 

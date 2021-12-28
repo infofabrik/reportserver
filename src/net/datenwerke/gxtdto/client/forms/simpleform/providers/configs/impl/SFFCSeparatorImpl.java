@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSeparator;
-
 import com.sencha.gxt.widget.core.client.container.MarginData;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSeparator;
 
 public class SFFCSeparatorImpl implements SFFCSeparator {
 

@@ -3,6 +3,13 @@ package net.datenwerke.gf.client.managerhelper.helper;
 import java.util.Collection;
 import java.util.List;
 
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.TreeSelectionPopup;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
@@ -14,13 +21,6 @@ import net.datenwerke.gxtdto.client.ui.helper.grid.DeletableRowsGrid;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.grid.ColumnModel;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 /**
  * 

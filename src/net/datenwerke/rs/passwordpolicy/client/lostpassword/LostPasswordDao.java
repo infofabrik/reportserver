@@ -1,10 +1,10 @@
 package net.datenwerke.rs.passwordpolicy.client.lostpassword;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.security.client.security.lostpassword.rpc.LostPasswordRpcServiceAsync;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.security.client.security.lostpassword.rpc.LostPasswordRpcServiceAsync;
 
 public class LostPasswordDao extends Dao {
 

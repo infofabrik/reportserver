@@ -3,10 +3,10 @@ package net.datenwerke.gf.client.treedb.icon;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.data.shared.IconProvider;
+
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 
 /**

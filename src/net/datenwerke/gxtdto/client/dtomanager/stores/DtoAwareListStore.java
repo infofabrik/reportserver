@@ -1,13 +1,5 @@
 package net.datenwerke.gxtdto.client.dtomanager.stores;
 
-import net.datenwerke.gxtdto.client.dtomanager.ClientDtoManagerService;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.dtomanager.events.BeforeDtoDetachedEvent;
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoChangedEvent;
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoTypeAwareIdProvider;
-import net.datenwerke.gxtdto.client.utils.sort.AlphabeticStoreSortInfo;
-
 import com.google.inject.Inject;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
@@ -20,6 +12,14 @@ import com.sencha.gxt.data.shared.event.StoreRecordChangeEvent;
 import com.sencha.gxt.data.shared.event.StoreRemoveEvent;
 import com.sencha.gxt.data.shared.event.StoreSortEvent;
 import com.sencha.gxt.data.shared.event.StoreUpdateEvent;
+
+import net.datenwerke.gxtdto.client.dtomanager.ClientDtoManagerService;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.dtomanager.events.BeforeDtoDetachedEvent;
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoChangedEvent;
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoTypeAwareIdProvider;
+import net.datenwerke.gxtdto.client.utils.sort.AlphabeticStoreSortInfo;
 
 public class DtoAwareListStore<X extends Dto> extends ListStore<X> {
 

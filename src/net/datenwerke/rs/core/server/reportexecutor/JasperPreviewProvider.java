@@ -10,10 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import net.datenwerke.security.server.SecuredHttpServlet;
-
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+
+import net.datenwerke.security.server.SecuredHttpServlet;
 
 @Singleton
 public class JasperPreviewProvider extends SecuredHttpServlet{

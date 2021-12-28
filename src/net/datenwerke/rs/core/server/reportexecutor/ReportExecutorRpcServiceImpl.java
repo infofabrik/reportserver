@@ -58,7 +58,6 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.annotation.ArgumentVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Delete;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.UserManagerService;

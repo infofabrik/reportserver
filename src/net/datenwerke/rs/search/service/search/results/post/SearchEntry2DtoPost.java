@@ -1,13 +1,13 @@
 package net.datenwerke.rs.search.service.search.results.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.decorator.SearchResultEntryDtoDec;
 import net.datenwerke.rs.search.service.search.results.SearchResultEntry;
-
-import com.google.inject.Inject;
 
 public class SearchEntry2DtoPost implements Poso2DtoPostProcessor<SearchResultEntry, SearchResultEntryDto> {
 

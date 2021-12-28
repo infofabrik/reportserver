@@ -3,6 +3,9 @@ package net.datenwerke.security.ext.client.usermanager.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHookImpl;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -14,9 +17,6 @@ import net.datenwerke.security.ext.client.usermanager.ui.forms.GroupForm;
 import net.datenwerke.security.ext.client.usermanager.ui.forms.OrganisationalUnitForm;
 import net.datenwerke.security.ext.client.usermanager.ui.forms.UserForm;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class MainPanelViewProviderHooker extends MainPanelViewProviderHookImpl {
 

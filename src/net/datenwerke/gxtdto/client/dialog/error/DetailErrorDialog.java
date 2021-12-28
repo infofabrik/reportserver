@@ -1,11 +1,5 @@
 package net.datenwerke.gxtdto.client.dialog.error;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
-
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
@@ -21,6 +15,12 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.TextArea;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 
 public class DetailErrorDialog extends DwWindow {
 

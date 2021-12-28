@@ -1,5 +1,10 @@
 package net.datenwerke.rs.base.service.reportengines.jasper.output.generator;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledRSJasperReport;
@@ -13,11 +18,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRRtfExporter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Exports a jasper report to RTF.

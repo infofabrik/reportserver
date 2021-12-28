@@ -1,15 +1,15 @@
 package net.datenwerke.treedb.ext.client.eximport.im.ui;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
-import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
-
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
+import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 
 /**
  * 

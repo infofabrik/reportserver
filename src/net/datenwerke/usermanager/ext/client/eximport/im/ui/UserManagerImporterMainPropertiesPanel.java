@@ -1,5 +1,8 @@
 package net.datenwerke.usermanager.ext.client.eximport.im.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
@@ -8,9 +11,6 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserManagerTreeFolders;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
 import net.datenwerke.usermanager.ext.client.eximport.im.dto.UserManagerImportConfigDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 
 public class UserManagerImporterMainPropertiesPanel extends

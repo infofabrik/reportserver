@@ -2,14 +2,14 @@ package net.datenwerke.rs.dashboard.service.dashboard.eventhandler;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.dashboard.service.dashboard.DadgetService;
 import net.datenwerke.rs.dashboard.service.dashboard.dagets.ReportDadget;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleReportReferenceRemoveEventHandler implements
 		EventHandler<RemoveEntityEvent> {

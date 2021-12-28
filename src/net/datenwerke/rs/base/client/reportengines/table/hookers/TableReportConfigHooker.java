@@ -3,8 +3,11 @@ package net.datenwerke.rs.base.client.reportengines.table.hookers;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportVariantDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.TableReportDtoDec;
@@ -14,10 +17,6 @@ import net.datenwerke.rs.base.client.reportengines.table.ui.TableReportForm;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class TableReportConfigHooker implements ReportTypeConfigHook {
 

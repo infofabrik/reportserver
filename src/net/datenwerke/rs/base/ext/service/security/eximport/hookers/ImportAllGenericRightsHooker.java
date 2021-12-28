@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.ext.service.security.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.im.ImportMode;
@@ -11,8 +13,6 @@ import net.datenwerke.rs.base.ext.service.security.eximport.GenericRightsExporte
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity;
-
-import com.google.inject.Inject;
 
 public class ImportAllGenericRightsHooker implements ImportAllHook {
 

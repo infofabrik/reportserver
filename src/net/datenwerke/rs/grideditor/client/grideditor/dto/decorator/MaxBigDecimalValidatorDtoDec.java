@@ -2,11 +2,11 @@ package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
 import java.math.BigDecimal;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxBigDecimalValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator.MaxNumberMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxBigDecimalValidatorDto;
 
 /**
  * Dto Decorator for {@link MaxBigDecimalValidatorDto}

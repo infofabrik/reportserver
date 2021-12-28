@@ -1,8 +1,5 @@
 package net.datenwerke.gxtdto.client.servercommunication.callback;
 
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwProgressMessageBox;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.http.client.Request;
 import com.sencha.gxt.core.client.util.DelayedTask;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
@@ -10,6 +7,9 @@ import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwProgressMessageBox;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public abstract class ModalAsyncCallback<T> extends NotamCallback<T> {
 

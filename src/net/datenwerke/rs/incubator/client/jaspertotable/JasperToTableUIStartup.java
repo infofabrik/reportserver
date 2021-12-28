@@ -1,13 +1,13 @@
 package net.datenwerke.rs.incubator.client.jaspertotable;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ReportExporterExportReportHook;
 import net.datenwerke.rs.incubator.client.jaspertotable.hooker.EditJasperToTablePropertiesHooker;
 import net.datenwerke.rs.incubator.client.jaspertotable.hooker.Jasper2TableExcel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class JasperToTableUIStartup {
 

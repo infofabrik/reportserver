@@ -1,11 +1,11 @@
 package net.datenwerke.gf.client.juel;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.juel.dto.JuelResultDto;
 import net.datenwerke.gf.client.juel.rpc.JuelRpcServiceAsync;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class JuelDao extends Dao {
 

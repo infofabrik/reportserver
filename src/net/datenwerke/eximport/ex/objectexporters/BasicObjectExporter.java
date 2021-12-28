@@ -13,6 +13,11 @@ import java.util.Set;
 import javax.persistence.Transient;
 import javax.xml.stream.XMLStreamException;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.ExportItemConfig;
@@ -25,11 +30,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.interfaces.Callback;
 import net.datenwerke.rs.utils.interfaces.Callback2;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  *

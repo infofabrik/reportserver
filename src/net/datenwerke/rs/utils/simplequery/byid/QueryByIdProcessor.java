@@ -11,13 +11,13 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import net.datenwerke.rs.utils.jpa.EntityUtils;
-import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
-
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.utils.jpa.EntityUtils;
+import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 
 /**
  * 

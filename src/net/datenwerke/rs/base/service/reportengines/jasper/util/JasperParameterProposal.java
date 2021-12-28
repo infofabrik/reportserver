@@ -2,14 +2,14 @@ package net.datenwerke.rs.base.service.reportengines.jasper.util;
 
 import java.io.Serializable;
 
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterProposalDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
 
 /**
  * Represents a parameter in a jrxml:

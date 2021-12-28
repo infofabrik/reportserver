@@ -1,5 +1,8 @@
 package net.datenwerke.rs.terminal.client.terminal;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
@@ -16,9 +19,6 @@ import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class TerminalUIStartup {
 

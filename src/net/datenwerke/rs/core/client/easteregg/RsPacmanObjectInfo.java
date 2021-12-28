@@ -3,12 +3,12 @@ package net.datenwerke.rs.core.client.easteregg;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sencha.gxt.widget.core.client.Component;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProviderHook;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.sencha.gxt.widget.core.client.Component;
 
 public class RsPacmanObjectInfo implements ObjectPreviewTabProviderHook {
 

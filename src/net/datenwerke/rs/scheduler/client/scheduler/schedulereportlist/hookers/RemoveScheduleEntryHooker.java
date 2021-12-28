@@ -1,11 +1,23 @@
 package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hookers;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.box.MessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerDao;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
@@ -19,19 +31,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.box.MessageBox;
-import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.menu.Item;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class RemoveScheduleEntryHooker implements ScheduledReportListDetailToolbarHook {
 	

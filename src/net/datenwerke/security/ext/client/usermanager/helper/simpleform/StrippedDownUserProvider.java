@@ -5,6 +5,14 @@ import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.data.shared.ListStore;
+
 import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
 import net.datenwerke.gxtdto.client.forms.selection.SimpleGridSelectionPopup;
 import net.datenwerke.gxtdto.client.forms.selection.SingleSelectionField;
@@ -15,14 +23,6 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUserPA;
 import net.datenwerke.security.ext.client.usermanager.UserManagerUIService;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.data.shared.ListStore;
 
 /**
  * 

@@ -3,12 +3,12 @@ package net.datenwerke.rs.scriptreport.client.scriptreport.dto.decorator;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sencha.gxt.core.client.ValueProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
 import net.datenwerke.gxtdto.client.dtomanager.fto.FtoSupervisor;
 import net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto;
-
-import com.sencha.gxt.core.client.ValueProvider;
 
 /**
  * Dto Decorator for {@link ScriptReportDto}

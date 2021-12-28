@@ -2,13 +2,13 @@ package net.datenwerke.rs.grideditor.client.grideditor;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 import net.datenwerke.rs.grideditor.client.grideditor.rpc.GridEditorRpcServiceAsync;
-
-import com.google.inject.Inject;
 
 public class GridEditorDao extends Dao {
 

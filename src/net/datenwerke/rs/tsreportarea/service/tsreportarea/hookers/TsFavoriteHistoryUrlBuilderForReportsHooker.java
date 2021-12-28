@@ -3,6 +3,8 @@ package net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.service.history.HistoryLink;
@@ -17,8 +19,6 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.locale.TsDiskMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import com.google.inject.Inject;
 
 public class TsFavoriteHistoryUrlBuilderForReportsHooker extends TreePanelHistoryUrlBuilderHooker {
 

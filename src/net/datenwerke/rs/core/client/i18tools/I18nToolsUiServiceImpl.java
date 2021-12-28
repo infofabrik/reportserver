@@ -1,8 +1,8 @@
 package net.datenwerke.rs.core.client.i18tools;
 
-import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
-
 import com.google.inject.Singleton;
+
+import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
 
 @Singleton
 public class I18nToolsUiServiceImpl implements I18nToolsUIService {

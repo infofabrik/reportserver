@@ -5,6 +5,13 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.inject.persist.Transactional;
+import com.sencha.gxt.data.shared.loader.ListLoadResult;
+import com.sencha.gxt.data.shared.loader.ListLoadResultBean;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
@@ -24,13 +31,6 @@ import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-import com.google.inject.persist.Transactional;
-import com.sencha.gxt.data.shared.loader.ListLoadResult;
-import com.sencha.gxt.data.shared.loader.ListLoadResultBean;
 
 /**
  * 

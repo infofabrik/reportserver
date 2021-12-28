@@ -1,5 +1,9 @@
 package net.datenwerke.eximport;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
+import com.google.inject.assistedinject.FactoryProvider;
+
 import net.datenwerke.eximport.ex.ExportItemConfig;
 import net.datenwerke.eximport.ex.ExportSupervisor;
 import net.datenwerke.eximport.ex.ExportSupervisorFactory;
@@ -11,10 +15,6 @@ import net.datenwerke.eximport.im.ImportSupervisor;
 import net.datenwerke.eximport.im.ImportSupervisorFactory;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporter;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporterFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
-import com.google.inject.assistedinject.FactoryProvider;
 
 /**
  * 

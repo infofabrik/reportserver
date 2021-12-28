@@ -1,11 +1,11 @@
 package net.datenwerke.rs.scriptreport.client.scriptreport.parameters;
 
+import com.sencha.gxt.widget.core.client.Component;
+
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 import net.datenwerke.rs.core.client.parameters.helper.DefaultValueSetter;
 import net.datenwerke.rs.core.client.parameters.helper.ParameterFieldWrapperForFrontend;
-
-import com.sencha.gxt.widget.core.client.Component;
 
 public class ScriptParameterParameterWrapper extends ParameterFieldWrapperForFrontend {
 

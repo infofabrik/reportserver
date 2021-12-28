@@ -2,11 +2,11 @@ package net.datenwerke.rs.core.client.reportmanager.hooks;
 
 import java.util.Collection;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public interface ReportTypeConfigHook extends Hook {
 

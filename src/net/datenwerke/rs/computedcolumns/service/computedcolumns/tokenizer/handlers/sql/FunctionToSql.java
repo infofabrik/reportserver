@@ -2,13 +2,13 @@ package net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hand
 
 import java.util.Iterator;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.hookers.ExpressionTokenToSqlHook;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.hooks.FunctionToSqlProviderHook;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionToken;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handlers.tokens.FunctionExpressionToken;
-
-import com.google.inject.Inject;
 
 public class FunctionToSql implements ExpressionTokenToSqlHook {
 

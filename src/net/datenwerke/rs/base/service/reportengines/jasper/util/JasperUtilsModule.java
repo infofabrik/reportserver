@@ -1,9 +1,9 @@
 package net.datenwerke.rs.base.service.reportengines.jasper.util;
 
+import com.google.inject.Scopes;
+
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.utils.xml.XMLUtilsService;
-
-import com.google.inject.Scopes;
 
 /**
  * The jasper utils module provides some jasper related utility methods (e.g. for converting).

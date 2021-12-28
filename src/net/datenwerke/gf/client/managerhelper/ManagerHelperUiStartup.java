@@ -1,11 +1,11 @@
 package net.datenwerke.gf.client.managerhelper;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hookers.BaseTreeComponentsForTreeNavToolbarHooker;
 import net.datenwerke.gf.client.managerhelper.hooks.ManagerHelperTreeToolbarEnhancerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ManagerHelperUiStartup {
 

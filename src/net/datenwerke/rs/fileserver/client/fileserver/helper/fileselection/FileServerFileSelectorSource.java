@@ -2,6 +2,15 @@ package net.datenwerke.rs.fileserver.client.fileserver.helper.fileselection;
 
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.download.dto.DownloadProperties;
 import net.datenwerke.gf.client.fileselection.FileSelectionWidget;
 import net.datenwerke.gf.client.fileselection.FileSelectorSourceImpl;
@@ -18,15 +27,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeBasic;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class FileServerFileSelectorSource extends FileSelectorSourceImpl {
 

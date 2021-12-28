@@ -1,5 +1,9 @@
 package net.datenwerke.rs.core.server.datasources;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
@@ -13,10 +17,6 @@ import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

@@ -3,14 +3,14 @@ package net.datenwerke.rs.core.client.parameters.rpc;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("reportmanager_parameter")
 public interface ParameterRpcService extends RemoteService {

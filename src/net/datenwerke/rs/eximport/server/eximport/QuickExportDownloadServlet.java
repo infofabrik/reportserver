@@ -19,9 +19,7 @@ import net.datenwerke.rs.eximport.service.genrights.ExportSecurityTarget;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredHttpServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Execute;
 
 /**

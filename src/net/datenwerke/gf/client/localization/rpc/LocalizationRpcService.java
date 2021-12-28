@@ -2,10 +2,10 @@ package net.datenwerke.gf.client.localization.rpc;
 
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 
 @RemoteServiceRelativePath("localization")
 public interface LocalizationRpcService extends RemoteService {

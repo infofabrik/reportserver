@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceService;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceMember;
@@ -23,8 +25,6 @@ import net.datenwerke.security.service.security.exceptions.ViolatedSecurityExcep
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class SetRoleSubCommand implements TeamspaceModSubCommandHook {
 

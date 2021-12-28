@@ -1,12 +1,12 @@
 package net.datenwerke.rs.core.client.reportexecutor.hooks;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public interface ReportPreviewViewStatusbarHook extends Hook {
 

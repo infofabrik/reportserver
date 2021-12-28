@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-import net.datenwerke.rs.legacysaiku.server.rest.objects.acl.enumeration.AclMethod;
-import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs.FileName;
 import org.apache.commons.vfs.FileObject;
@@ -25,6 +22,9 @@ import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.legacysaiku.server.rest.objects.acl.enumeration.AclMethod;
+import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
 
 /**
  * main object to which one can query resources access

@@ -1,13 +1,13 @@
 package net.datenwerke.rs.core.server.contexthelp;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
 import net.datenwerke.rs.core.client.contexthelp.rpc.ContextHelpRpcService;
 import net.datenwerke.rs.core.service.contexthelp.ContextHelpService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class ContextHelpRpcServiceImpl extends SecuredRemoteServiceServlet implements ContextHelpRpcService {

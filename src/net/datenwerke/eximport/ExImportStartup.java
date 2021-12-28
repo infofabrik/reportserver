@@ -1,5 +1,8 @@
 package net.datenwerke.eximport;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.ex.enclosed.EnclosedEntityExporter;
 import net.datenwerke.eximport.ex.enclosed.EnclosedObjectExporter;
 import net.datenwerke.eximport.hooker.ByteArrayExporterHelperHooker;
@@ -14,9 +17,6 @@ import net.datenwerke.eximport.ids.EntityIdProviderHooker;
 import net.datenwerke.eximport.im.enclosed.EnclosedEntityImporter;
 import net.datenwerke.eximport.im.enclosed.EnclosedObjectImporter;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ExImportStartup {
 

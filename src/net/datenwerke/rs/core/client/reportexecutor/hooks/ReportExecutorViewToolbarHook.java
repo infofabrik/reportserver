@@ -1,12 +1,12 @@
 package net.datenwerke.rs.core.client.reportexecutor.hooks;
 
 
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public interface ReportExecutorViewToolbarHook extends Hook {
 

@@ -3,6 +3,8 @@ package net.datenwerke.rs.legacysaiku.service.hooker;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.legacysaiku.olap.query.IQuery;
+
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
@@ -12,8 +14,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
-
-import org.legacysaiku.olap.query.IQuery;
 
 public class ReportExportViaSessionHooker implements ReportExportViaSessionHook {
 

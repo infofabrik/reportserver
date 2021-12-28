@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
@@ -14,9 +17,6 @@ import net.datenwerke.rs.core.client.i18tools.I18nToolsDao;
 import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessages;
 import net.datenwerke.rs.core.client.userprofile.UserProfileViewContentHook;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
 
 public class LocalDecimalFormatUserProfileViewContentHooker implements UserProfileViewContentHook {
 

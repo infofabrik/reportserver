@@ -1,5 +1,15 @@
 package net.datenwerke.usermanager.ext.client.hookers;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
@@ -27,16 +37,6 @@ import net.datenwerke.security.ext.client.password.PasswordServiceDao;
 import net.datenwerke.security.ext.client.password.ui.ChangePasswordDialog;
 import net.datenwerke.security.ext.client.usermanager.UserManagerDao;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class UserProfileUserDataHooker extends UserProfileCardProviderHookImpl {
 

@@ -2,6 +2,9 @@ package net.datenwerke.scheduler.service.scheduler.stores;
 
 import java.util.Date;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
@@ -10,9 +13,6 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.ActionEntry;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry;
 import net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry;
 import net.datenwerke.scheduler.service.scheduler.tasks.SchedulerTask;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public class JobExecutionCompanionImpl implements JobExecutionCompanion {
 

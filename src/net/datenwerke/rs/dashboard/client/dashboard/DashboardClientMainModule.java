@@ -1,15 +1,15 @@
 package net.datenwerke.rs.dashboard.client.dashboard;
 
-import net.datenwerke.gf.client.homepage.modules.ClientMainModuleImpl;
-import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
-import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardMainComponent;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.homepage.modules.ClientMainModuleImpl;
+import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
+import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardMainComponent;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

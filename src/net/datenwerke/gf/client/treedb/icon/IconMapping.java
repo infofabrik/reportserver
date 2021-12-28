@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.treedb.icon;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.resources.client.ImageResource;
 
 
 public class IconMapping{

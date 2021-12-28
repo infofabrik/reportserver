@@ -1,8 +1,8 @@
 package net.datenwerke.rs.base.service.parameters.datasource;
 
-import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class DatasourceParameterModule extends AbstractReportServerModule {
 

@@ -14,15 +14,6 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 
-import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
-import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-
-import org.olap4j.mdx.IdentifierNode;
-import org.olap4j.mdx.IdentifierSegment;
-import org.olap4j.metadata.Cube;
-import org.olap4j.metadata.Hierarchy;
-import org.olap4j.metadata.Member;
 import org.legacysaiku.olap.dto.SaikuCatalog;
 import org.legacysaiku.olap.dto.SaikuConnection;
 import org.legacysaiku.olap.dto.SaikuCube;
@@ -33,8 +24,17 @@ import org.legacysaiku.olap.dto.SaikuLevel;
 import org.legacysaiku.olap.dto.SaikuMember;
 import org.legacysaiku.olap.dto.SaikuSchema;
 import org.legacysaiku.olap.util.ObjectUtil;
+import org.olap4j.mdx.IdentifierNode;
+import org.olap4j.mdx.IdentifierSegment;
+import org.olap4j.metadata.Cube;
+import org.olap4j.metadata.Hierarchy;
+import org.olap4j.metadata.Member;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
+import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 @Path("/legacysaiku/{username}/discover")
 public class OlapDiscoverResource implements Serializable {

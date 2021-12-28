@@ -1,8 +1,8 @@
 package net.datenwerke.rs.core.service.genrights.datasinks;
 
-import net.datenwerke.security.service.security.SecurityService;
-
 import com.google.inject.Inject;
+
+import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsDatasinkManagerStartup {
 

@@ -3,6 +3,11 @@ package net.datenwerke.rs.fileserver.client.fileserver.eximport.im.hookers;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
@@ -10,11 +15,6 @@ import net.datenwerke.rs.eximport.client.eximport.im.ui.ImportMainPanel;
 import net.datenwerke.rs.fileserver.client.fileserver.eximport.im.ui.FileServerImporterConfigPanel;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 
 /**

@@ -3,11 +3,11 @@ package net.datenwerke.rs.core.client.parameters.rpc;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ParameterRpcServiceAsync {
 

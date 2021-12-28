@@ -1,13 +1,13 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-import net.datenwerke.rs.grideditor.client.grideditor.dto.TextBooleanEditorDto;
-
 import com.sencha.gxt.data.shared.Converter;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.TextBooleanEditorDto;
 
 /**
  * Dto Decorator for {@link TextBooleanEditorDto}

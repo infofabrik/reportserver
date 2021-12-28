@@ -3,18 +3,18 @@ package net.datenwerke.rs.incubator.service.exportmetadata.hookers;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.inject.Inject;
+import com.lowagie.text.Document;
+
 import net.datenwerke.rs.base.service.reportengines.table.hooks.TableExportHook;
-import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.LegacyTablePDFOutputGenerator;
+import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.incubator.service.exportmetadata.ExportMetadataService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.lowagie.text.Document;
 
 public class MetadataTablePdfExportHooker implements TableExportHook {
 

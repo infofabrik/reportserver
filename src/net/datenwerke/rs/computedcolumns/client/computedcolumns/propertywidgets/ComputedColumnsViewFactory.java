@@ -2,13 +2,13 @@ package net.datenwerke.rs.computedcolumns.client.computedcolumns.propertywidgets
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ComputedColumnsViewFactory implements ReportViewFactory {
 

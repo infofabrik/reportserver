@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.dtomanager.IdedDto;
@@ -11,11 +16,6 @@ import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProv
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewObjectInfoPostProcessorHook;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.Component;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 
 
 public class ObjectInfoProvider implements ObjectPreviewTabProviderHook {

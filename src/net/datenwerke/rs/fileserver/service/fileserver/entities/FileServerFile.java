@@ -9,9 +9,16 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.post.File2DtoPostProcessor;
@@ -20,14 +27,6 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
-
-import org.hibernate.annotations.Cache;
-import org.hibernate.annotations.CacheConcurrencyStrategy;
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Field;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 @Entity
 @Table(name="FILE_SERVER_FILE")

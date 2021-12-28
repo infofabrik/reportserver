@@ -4,6 +4,14 @@ package net.datenwerke.rs.authenticator.client.login;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.container.Viewport;
+
 import net.datenwerke.gf.client.dispatcher.DispatcherService;
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.dialog.error.SimpleErrorDialog;
@@ -24,14 +32,6 @@ import net.datenwerke.security.client.login.AuthenticateResultDto;
 import net.datenwerke.security.client.login.AuthenticateResultInfo;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.decorator.UserDtoDec;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.container.Viewport;
 
 public class LoginServiceImpl implements LoginService{
 

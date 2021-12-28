@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.decorators.field;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-
 import com.google.gwt.user.client.ui.Widget;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public class OnLoadFieldDecorator implements SimpleFormFieldDecorator{
 

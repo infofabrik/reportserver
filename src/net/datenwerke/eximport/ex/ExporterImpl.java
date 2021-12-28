@@ -7,12 +7,12 @@ import java.util.Iterator;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.obj.ComplexItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import com.google.inject.Inject;
 
 /**
  * Provides a base implementation for simple exporters.

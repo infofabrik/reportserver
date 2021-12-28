@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.clipboard;
 
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
-
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.user.client.ui.Widget;
+
+import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
 
 public class ClipboardProviderHandler extends ClipboardHandler {
 

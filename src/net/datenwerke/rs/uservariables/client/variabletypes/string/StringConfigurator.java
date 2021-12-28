@@ -1,9 +1,12 @@
 package net.datenwerke.rs.uservariables.client.variabletypes.string;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.Window;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTextArea;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.uservariables.client.uservariables.UserVariableConfiguratorImpl;
 import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableDefinitionDto;
@@ -12,10 +15,6 @@ import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.StringUse
 import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.StringUserVariableInstanceDto;
 import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.pa.StringUserVariableDefinitionDtoPA;
 import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.pa.StringUserVariableInstanceDtoPA;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.Window;
 
 public class StringConfigurator extends UserVariableConfiguratorImpl<StringUserVariableDefinitionDto, StringUserVariableInstanceDto> {
 

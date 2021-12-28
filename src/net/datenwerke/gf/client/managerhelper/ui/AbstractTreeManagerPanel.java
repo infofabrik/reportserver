@@ -1,11 +1,11 @@
 package net.datenwerke.gf.client.managerhelper.ui;
 
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 import net.datenwerke.treedb.client.treedb.TreeDbManagerDao;
-
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 
 
 /**

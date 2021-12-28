@@ -3,6 +3,9 @@ package net.datenwerke.rs.computedcolumns.service.computedcolumns.hookers;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.hooks.ColumnReferenceSqlProvider;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
@@ -11,9 +14,6 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.Comput
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.hooks.FunctionProviderHook;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionToken;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionTokenizer;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ComputedColumnSqlProvider implements ColumnReferenceSqlProvider {
 

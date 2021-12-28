@@ -2,12 +2,12 @@ package net.datenwerke.rs.remoteaccess.client.sftp.genrights;
 
 import javax.inject.Inject;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.remoteaccess.client.locale.RemoteAccessMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class SftpSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 	

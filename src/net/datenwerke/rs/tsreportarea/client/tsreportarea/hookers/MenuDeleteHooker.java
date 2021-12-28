@@ -3,6 +3,18 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
@@ -18,19 +30,6 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessa
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.menu.Item;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 public class MenuDeleteHooker implements TsFavoriteMenuHook {
 

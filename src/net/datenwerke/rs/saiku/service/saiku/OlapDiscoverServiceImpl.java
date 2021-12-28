@@ -15,15 +15,6 @@
  */
 package net.datenwerke.rs.saiku.service.saiku;
 
-import org.saiku.olap.discover.OlapMetaExplorer;
-import org.saiku.olap.dto.*;
-import org.saiku.olap.util.exception.SaikuOlapException;
-import org.saiku.service.datasource.DatasourceService;
-import org.saiku.service.util.exception.SaikuServiceException;
-
-import org.olap4j.OlapConnection;
-import org.olap4j.metadata.Cube;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
@@ -31,6 +22,20 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import org.olap4j.OlapConnection;
+import org.olap4j.metadata.Cube;
+import org.saiku.olap.discover.OlapMetaExplorer;
+import org.saiku.olap.dto.SaikuConnection;
+import org.saiku.olap.dto.SaikuCube;
+import org.saiku.olap.dto.SaikuDimension;
+import org.saiku.olap.dto.SaikuHierarchy;
+import org.saiku.olap.dto.SaikuLevel;
+import org.saiku.olap.dto.SaikuMember;
+import org.saiku.olap.dto.SimpleCubeElement;
+import org.saiku.olap.util.exception.SaikuOlapException;
+import org.saiku.service.datasource.DatasourceService;
+import org.saiku.service.util.exception.SaikuServiceException;
 
 import mondrian.rolap.RolapConnection;
 

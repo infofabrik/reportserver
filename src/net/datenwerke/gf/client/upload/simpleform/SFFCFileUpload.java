@@ -2,8 +2,8 @@ package net.datenwerke.gf.client.upload.simpleform;
 
 import java.util.List;
 
-import net.datenwerke.gf.client.upload.dto.UploadProperties;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
+import net.datenwerke.gf.client.upload.dto.UploadProperties;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 
 

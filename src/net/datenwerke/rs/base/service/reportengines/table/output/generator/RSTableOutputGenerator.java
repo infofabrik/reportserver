@@ -5,6 +5,9 @@ import java.io.OutputStream;
 import java.io.Reader;
 import java.sql.Clob;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
@@ -14,9 +17,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Generates an RSTableModel from a given report.

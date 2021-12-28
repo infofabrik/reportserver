@@ -1,16 +1,5 @@
 package net.datenwerke.rs.legacysaiku.client.saiku.ui;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.model.DwModel;
-import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
-import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.legacysaiku.client.saiku.SaikuDao;
-import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
-
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.Request;
@@ -21,6 +10,17 @@ import com.google.inject.Inject;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.model.DwModel;
+import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
+import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.legacysaiku.client.saiku.SaikuDao;
+import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class SaikuReportPreviewView extends AbstractReportPreviewView {
 

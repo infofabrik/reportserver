@@ -2,13 +2,13 @@ package net.datenwerke.gf.service.tempfile;
 
 import javax.inject.Provider;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
 import net.datenwerke.gf.service.tempfile.maintenance.TempFileMaintenance;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
 
 public class TempFileStartup {
 

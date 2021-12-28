@@ -1,8 +1,8 @@
 package net.datenwerke.rs.core.client.i18tools.rpc;
 
-import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 
 public interface I18nToolsRpcServiceAsync {
 

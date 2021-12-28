@@ -6,14 +6,14 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
-import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-import net.datenwerke.rs.utils.juel.SimpleJuel;
-
 import org.hibernate.envers.Audited;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
+import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.rs.utils.juel.SimpleJuel;
 
 @Entity
 @Table(name="COLUMN_FORMAT_TEMPLATE")

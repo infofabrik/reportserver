@@ -1,15 +1,15 @@
 package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
+
 import net.datenwerke.gxtdto.client.utils.SqlTypes;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutData;
 
 /**
  * 

@@ -7,19 +7,17 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.rs.core.service.reportmanager.ReportService;
-import net.datenwerke.rs.core.service.reportmanager.entities.reports.PreviewImage;
-import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.security.server.SecuredHttpServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
-import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
-import net.datenwerke.security.service.treedb.actions.UpdateAction;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+
+import net.datenwerke.rs.core.service.reportmanager.ReportService;
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.PreviewImage;
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.security.server.SecuredHttpServlet;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.treedb.actions.UpdateAction;
 
 /**
  * 

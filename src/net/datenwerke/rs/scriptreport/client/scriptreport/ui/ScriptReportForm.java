@@ -2,6 +2,9 @@ package net.datenwerke.rs.scriptreport.client.scriptreport.ui;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -12,9 +15,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeBasic;
 import net.datenwerke.rs.scriptreport.client.scriptreport.dto.pa.ScriptReportDtoPA;
 import net.datenwerke.rs.scriptreport.client.scriptreport.locale.ScriptReportMessages;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ScriptReportForm extends AbstractReportSimpleForm {
 

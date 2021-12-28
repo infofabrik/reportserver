@@ -2,14 +2,14 @@ package net.datenwerke.rs.search.client.search.module;
 
 import javax.inject.Provider;
 
-import net.datenwerke.gf.client.homepage.modules.ClientTempModuleImpl;
-import net.datenwerke.rs.search.client.search.locale.SearchMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.dom.client.MouseEvent;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.Component;
+
+import net.datenwerke.gf.client.homepage.modules.ClientTempModuleImpl;
+import net.datenwerke.rs.search.client.search.locale.SearchMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SearchAreaModule extends ClientTempModuleImpl {
 

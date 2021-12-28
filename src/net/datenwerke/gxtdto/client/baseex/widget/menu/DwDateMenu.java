@@ -2,14 +2,14 @@ package net.datenwerke.gxtdto.client.baseex.widget.menu;
 
 import java.util.Date;
 
-import net.datenwerke.gxtdto.client.baseex.widget.date.DwDatePicker;
-
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.sencha.gxt.widget.core.client.DatePicker;
 import com.sencha.gxt.widget.core.client.menu.Menu;
+
+import net.datenwerke.gxtdto.client.baseex.widget.date.DwDatePicker;
 
 public class DwDateMenu extends Menu implements HasValueChangeHandlers<Date>{
 

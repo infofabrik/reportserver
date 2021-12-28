@@ -2,6 +2,9 @@ package net.datenwerke.rs.search.client.search;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.rs.search.client.search.dto.SearchFilterDto;
@@ -9,9 +12,6 @@ import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.decorator.SearchResultListDtoDec;
 import net.datenwerke.rs.search.client.search.rpc.SearchRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class SearchDao extends Dao {
 

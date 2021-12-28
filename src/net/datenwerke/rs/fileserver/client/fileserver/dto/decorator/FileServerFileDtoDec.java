@@ -1,10 +1,10 @@
 package net.datenwerke.rs.fileserver.client.fileserver.dto.decorator;
 
-import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
-import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Random;
+
+import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 
 /**
  * Dto Decorator for {@link FileServerFileDto}

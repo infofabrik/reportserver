@@ -1,13 +1,13 @@
 package net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.eximport.ex.entity.EntityExportItemConfig;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceService;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
-
-import com.google.inject.Inject;
 
 public class ExportAllTeamspacesHooker implements ExportAllHook {
 

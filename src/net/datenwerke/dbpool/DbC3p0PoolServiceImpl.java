@@ -2,7 +2,6 @@ package net.datenwerke.dbpool;
 
 import java.beans.IntrospectionException;
 import java.beans.PropertyVetoException;
-import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
@@ -24,7 +23,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.reflect.AbstractInvocationHandler;
 import com.google.inject.Inject;
 import com.mchange.v2.beans.BeansUtils;
 import com.mchange.v2.c3p0.ComboPooledDataSource;

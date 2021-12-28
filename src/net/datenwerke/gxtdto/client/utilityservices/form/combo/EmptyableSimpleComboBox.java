@@ -2,14 +2,14 @@ package net.datenwerke.gxtdto.client.utilityservices.form.combo;
 
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
-
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.LabelProvider;
 import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+
+import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
 
 public class EmptyableSimpleComboBox<T> extends SimpleComboBox<Object> {
 

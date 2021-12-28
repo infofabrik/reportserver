@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.data.shared.loader.ListLoadResult;
+import com.sencha.gxt.data.shared.loader.ListLoadResultBean;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoContainer;
 import net.datenwerke.gxtdto.client.servercommunication.callback.HandledAsyncCallback;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.data.shared.loader.ListLoadResult;
-import com.sencha.gxt.data.shared.loader.ListLoadResultBean;
 
 public class DaoAsyncCallback<D> extends HandledAsyncCallback<D> {
 

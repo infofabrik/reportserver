@@ -3,13 +3,13 @@ package net.datenwerke.rs.core.client.parameters.config;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterProposalDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * Used to configure parameters in front end.

@@ -11,11 +11,11 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
-import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
+import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 /**
  * 

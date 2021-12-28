@@ -1,6 +1,5 @@
 package net.datenwerke.rs.configservice.service.configservice.hooks.adapter;
 
-import java.lang.String;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 

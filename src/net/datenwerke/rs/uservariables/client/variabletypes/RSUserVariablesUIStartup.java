@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.uservariables.client.uservariables.UserVariableConfigurator;
 import net.datenwerke.rs.uservariables.client.uservariables.hooks.UserVariableProviderHook;
 import net.datenwerke.rs.uservariables.client.variabletypes.list.ListConfigurator;
 import net.datenwerke.rs.uservariables.client.variabletypes.string.StringConfigurator;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class RSUserVariablesUIStartup implements UserVariableProviderHook {
 

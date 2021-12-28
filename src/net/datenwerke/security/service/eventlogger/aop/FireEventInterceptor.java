@@ -7,18 +7,18 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import net.datenwerke.rs.utils.eventbus.Event;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
 import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
 import net.datenwerke.security.service.eventlogger.annotations.EventProperty;
 import net.datenwerke.security.service.eventlogger.annotations.FireEvent;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public class FireEventInterceptor implements MethodInterceptor {
 

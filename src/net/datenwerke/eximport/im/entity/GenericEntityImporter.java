@@ -2,14 +2,14 @@ package net.datenwerke.eximport.im.entity;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.im.ImporterImpl;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporter;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporterFactory;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public abstract class GenericEntityImporter extends ImporterImpl<EntityImportItemConfig> {
 

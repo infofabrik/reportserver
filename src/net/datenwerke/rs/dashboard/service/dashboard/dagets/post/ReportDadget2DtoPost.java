@@ -12,7 +12,6 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.ReportDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.decorator.ReportDadgetDtoDec;
 import net.datenwerke.rs.dashboard.service.dashboard.dagets.ReportDadget;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class ReportDadget2DtoPost

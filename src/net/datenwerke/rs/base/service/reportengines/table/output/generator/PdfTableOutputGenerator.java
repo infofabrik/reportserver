@@ -4,6 +4,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.xhtmlrenderer.pdf.ITextRenderer;
+
+import com.google.inject.Inject;
+import com.lowagie.text.DocumentException;
+
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.ColumnFormatCellFormatter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber;
@@ -12,11 +17,6 @@ import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 import net.datenwerke.rs.utils.misc.PdfUtils;
-
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import com.google.inject.Inject;
-import com.lowagie.text.DocumentException;
 
 public class PdfTableOutputGenerator extends HTMLOutputGenerator {
 

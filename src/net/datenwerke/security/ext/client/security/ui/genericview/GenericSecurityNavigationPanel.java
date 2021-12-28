@@ -2,6 +2,12 @@ package net.datenwerke.security.ext.client.security.ui.genericview;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.data.shared.SortDir;
+import com.sencha.gxt.data.shared.Store.StoreSortInfo;
+import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.widget.core.client.tree.Tree;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.ui.helper.nav.NavItemSelectionCallback;
 import net.datenwerke.gxtdto.client.ui.helper.nav.NavigationModelData;
@@ -10,12 +16,6 @@ import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyPr
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.data.shared.SortDir;
-import com.sencha.gxt.data.shared.Store.StoreSortInfo;
-import com.sencha.gxt.data.shared.TreeStore;
-import com.sencha.gxt.widget.core.client.tree.Tree;
 
 /**
  * 

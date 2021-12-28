@@ -1,5 +1,10 @@
 package net.datenwerke.rs.fileserver.service.fileserver.vfs;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
@@ -9,11 +14,6 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.LocationDoesNo
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.TreeBasedVirtualFileSystem;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FileServerVfs extends TreeBasedVirtualFileSystem<AbstractFileServerNode> {
 

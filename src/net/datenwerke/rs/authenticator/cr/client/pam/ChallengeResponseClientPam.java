@@ -2,6 +2,8 @@ package net.datenwerke.rs.authenticator.cr.client.pam;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseAuthToken;
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
@@ -11,8 +13,6 @@ import net.datenwerke.rs.authenticator.cr.client.ChallengeResponseRpcServiceAsyn
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.ext.client.crypto.CryptoDao;
 import net.datenwerke.security.ext.client.crypto.CryptoJsWrapper;
-
-import com.google.inject.Inject;
 
 public class ChallengeResponseClientPam extends UserPasswordClientPAM {
 

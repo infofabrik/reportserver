@@ -2,10 +2,10 @@ package net.datenwerke.gxtdto.client.utils.modelkeyprovider;
 
 import java.util.HashMap;
 
+import com.sencha.gxt.data.shared.ModelKeyProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.IdedDto;
-
-import com.sencha.gxt.data.shared.ModelKeyProvider;
 
 public class DtoIdModelKeyProvider implements ModelKeyProvider<Dto> {
 

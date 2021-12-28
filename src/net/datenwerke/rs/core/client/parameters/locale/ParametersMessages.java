@@ -3,8 +3,6 @@ package net.datenwerke.rs.core.client.parameters.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
-
 public interface ParametersMessages extends Messages {
 
 	public final ParametersMessages INSTANCE = GWT.create(ParametersMessages.class);

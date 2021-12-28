@@ -2,11 +2,6 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
-
 import com.google.gwt.event.logical.shared.BeforeSelectionEvent;
 import com.google.gwt.event.logical.shared.BeforeSelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -15,8 +10,13 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.widget.core.client.TabPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import com.sencha.gxt.widget.core.client.form.TextArea;
+
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
+import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 
 /**
  * 

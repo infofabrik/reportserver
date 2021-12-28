@@ -7,6 +7,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -16,8 +18,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceConta
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainerProvider;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="JASPER_TO_TABLE_CONFIG")

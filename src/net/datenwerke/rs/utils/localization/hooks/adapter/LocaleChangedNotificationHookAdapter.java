@@ -1,6 +1,7 @@
 package net.datenwerke.rs.utils.localization.hooks.adapter;
 
 import java.util.Locale;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
 

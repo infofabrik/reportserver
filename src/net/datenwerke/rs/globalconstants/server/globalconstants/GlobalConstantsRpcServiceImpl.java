@@ -6,6 +6,10 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
@@ -19,10 +23,6 @@ import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

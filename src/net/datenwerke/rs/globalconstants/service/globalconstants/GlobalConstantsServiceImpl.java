@@ -5,11 +5,11 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant;
-import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant;
+import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
 
 /**
  * 

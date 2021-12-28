@@ -1,13 +1,13 @@
 package net.datenwerke.rs.core.service.reportmanager.entities.reports.dtogen;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoGenerator;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportMetadataDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata;
-
-import com.google.inject.Inject;
 
 /**
  * Poso2DtoGenerator for ReportProperty

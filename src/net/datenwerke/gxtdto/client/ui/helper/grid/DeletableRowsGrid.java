@@ -2,11 +2,6 @@ package net.datenwerke.gxtdto.client.ui.helper.grid;
 
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -21,6 +16,11 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class DeletableRowsGrid<M> extends Grid<M> {
 

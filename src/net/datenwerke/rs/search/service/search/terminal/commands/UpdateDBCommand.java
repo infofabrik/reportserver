@@ -1,5 +1,7 @@
 package net.datenwerke.rs.search.service.search.terminal.commands;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.search.service.search.SearchService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -7,8 +9,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 public class UpdateDBCommand implements TerminalCommandHook {
 	

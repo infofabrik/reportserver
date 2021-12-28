@@ -25,8 +25,6 @@ import javax.xml.xpath.XPathException;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
@@ -34,6 +32,8 @@ import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;
 
 public class XMLUtilsServiceImpl implements XMLUtilsService {
 	

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.vfs.commands;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -7,8 +9,6 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
-
-import com.google.inject.Inject;
 
 public class VfsCommandCd implements TerminalCommandHook {
 

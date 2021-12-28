@@ -2,9 +2,9 @@ package net.datenwerke.gxtdto.client.objectinformation.hooks;
 
 import java.util.Date;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
-
 import com.google.gwt.resources.client.ImageResource;
+
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ObjectInfoKeyInfoProvider extends Hook {
 

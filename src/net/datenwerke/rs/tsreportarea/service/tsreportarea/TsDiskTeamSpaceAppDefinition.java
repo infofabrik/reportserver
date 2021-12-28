@@ -1,10 +1,10 @@
 package net.datenwerke.rs.tsreportarea.service.tsreportarea;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceAppDefinition;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp;
-
-import com.google.inject.Inject;
 
 /**
  * 

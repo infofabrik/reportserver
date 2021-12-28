@@ -1,19 +1,5 @@
 package net.datenwerke.rs.base.client.reportengines.table.columnfilter.hookers;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwToggleButton;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.hooks.FilterViewEnhanceToolbarHook;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.propertywidgets.FilterView;
-import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
-import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.TableReportDtoDec;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.inject.Inject;
@@ -24,6 +10,19 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwToggleButton;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
+import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.hooks.FilterViewEnhanceToolbarHook;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.propertywidgets.FilterView;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.TableReportDtoDec;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ToolbarEnhancerEditFilter implements FilterViewEnhanceToolbarHook {
 

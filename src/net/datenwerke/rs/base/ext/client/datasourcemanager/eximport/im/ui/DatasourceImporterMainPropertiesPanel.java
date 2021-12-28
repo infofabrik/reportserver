@@ -1,5 +1,8 @@
 package net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.dto.DatasourceManagerImportConfigDto;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessage
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFolders;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class DatasourceImporterMainPropertiesPanel extends
 		ImporterMainPropertiesPanel<DatasourceManagerImportConfigDto> {

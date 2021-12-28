@@ -7,8 +7,6 @@ import java.util.function.IntConsumer;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
-import org.docx4j.wml.R;
-
 /* https://stackoverflow.com/questions/27644361/how-can-i-throw-checked-exceptions-from-inside-java-8-streams */
 public final class LambdaExceptionUtil {
 

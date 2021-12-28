@@ -2,9 +2,9 @@ package net.datenwerke.gxtdto.client.dtomanager;
 
 import java.util.Collection;
 
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
-
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
 
 
 /**

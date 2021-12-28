@@ -4,16 +4,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.pa.ReportDtoPA;
-import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
-import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
@@ -25,6 +15,16 @@ import com.google.gwt.user.client.ui.AbstractImagePrototype;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.IdentityValueProvider;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.pa.ReportDtoPA;
+import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
+import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 /**
  * 

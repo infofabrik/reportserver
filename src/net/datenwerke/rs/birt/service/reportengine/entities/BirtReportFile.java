@@ -13,12 +13,12 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="BIRT_REPORT_FILE")

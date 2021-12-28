@@ -2,11 +2,11 @@ package net.datenwerke.gf.service.lifecycle.hookers;
 
 import javax.servlet.ServletContextEvent;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.async.DwAsyncService;
 import net.datenwerke.dbpool.DbPoolService;
 import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
-
-import com.google.inject.Inject;
 
 public class CloseTaskAndConnectionsHooker implements ContextHook {
 

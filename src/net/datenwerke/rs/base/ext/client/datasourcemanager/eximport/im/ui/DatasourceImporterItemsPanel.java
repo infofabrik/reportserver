@@ -2,8 +2,11 @@ package net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.ui;
 
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.sencha.gxt.data.shared.IconProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.base.client.datasources.dto.CsvDatasourceDto;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.DatasourceManagerImportDao;
@@ -15,10 +18,6 @@ import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.sencha.gxt.data.shared.IconProvider;
 
 public class DatasourceImporterItemsPanel extends ImporterItemsPanel<DatasourceManagerImportConfigDto> {
 

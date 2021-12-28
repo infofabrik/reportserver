@@ -5,9 +5,14 @@ import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.NotImplementedException;
+import org.hibernate.envers.Audited;
+import org.hibernate.proxy.HibernateProxy;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.dtoservices.dtogenerator.annotations.IgnoreMergeBackDto;
 import net.datenwerke.eximport.ex.annotations.ExImportConfig;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
@@ -16,11 +21,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
-
-import org.apache.commons.lang3.NotImplementedException;
-import org.hibernate.envers.Audited;
-import org.hibernate.proxy.HibernateProxy;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 /**
  * 

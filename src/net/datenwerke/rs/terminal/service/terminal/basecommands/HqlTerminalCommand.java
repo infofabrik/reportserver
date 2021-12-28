@@ -6,6 +6,11 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -20,11 +25,6 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultList;
 import net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class HqlTerminalCommand implements TerminalCommandHook {
 

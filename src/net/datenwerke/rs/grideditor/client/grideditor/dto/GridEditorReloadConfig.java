@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.datenwerke.gxtdto.client.model.DwModel;
-
 import com.sencha.gxt.data.shared.SortInfo;
+
+import net.datenwerke.gxtdto.client.model.DwModel;
 
 public class GridEditorReloadConfig implements DwModel{
 

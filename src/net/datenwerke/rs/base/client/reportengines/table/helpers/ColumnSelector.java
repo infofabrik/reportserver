@@ -9,8 +9,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.sencha.gxt.core.client.IdentityValueProvider;
@@ -26,9 +24,6 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
 import net.datenwerke.gxtdto.client.forms.selection.SelectionPopup;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
@@ -42,7 +37,6 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.ColumnDtoDec;
 import net.datenwerke.rs.base.client.reportengines.table.dto.pa.ColumnDtoPA;
-import net.datenwerke.rs.base.client.reportengines.table.dto.pa.TableReportDtoPA;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ColumnSelector extends SelectionPopup<ColumnDto> {

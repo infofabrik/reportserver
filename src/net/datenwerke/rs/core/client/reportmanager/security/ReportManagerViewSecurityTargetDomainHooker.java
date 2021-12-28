@@ -1,12 +1,11 @@
 package net.datenwerke.rs.core.client.reportmanager.security;
 
-import net.datenwerke.gxtdto.client.resources.BaseResources;
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class ReportManagerViewSecurityTargetDomainHooker implements
 		GenericSecurityViewDomainHook {

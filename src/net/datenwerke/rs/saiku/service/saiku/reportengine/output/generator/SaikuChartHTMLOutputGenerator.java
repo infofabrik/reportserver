@@ -1,10 +1,6 @@
 package net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,22 +11,16 @@ import org.olap4j.CellSet;
 import org.saiku.olap.dto.resultset.CellDataSet;
 import org.saiku.olap.query2.ThinHierarchy;
 import org.saiku.olap.util.formatter.ICellSetFormatter;
-import org.saiku.web.export.JSConverter;
-import org.xhtmlrenderer.pdf.ITextRenderer;
-
-import com.lowagie.text.DocumentException;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
-import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
 import net.datenwerke.rs.saiku.server.rest.util.RestUtil;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledHTMLSaikuReport;
-import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledPDFSaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
 import net.datenwerke.rs.utils.misc.PdfUtils;
 

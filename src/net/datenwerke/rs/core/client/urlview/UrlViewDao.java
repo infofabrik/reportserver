@@ -3,11 +3,11 @@ package net.datenwerke.rs.core.client.urlview;
 import java.util.List;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.rs.core.client.urlview.rpc.UrlViewRpcServiceAsync;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.rs.core.client.urlview.rpc.UrlViewRpcServiceAsync;
 
 public class UrlViewDao extends Dao {
 

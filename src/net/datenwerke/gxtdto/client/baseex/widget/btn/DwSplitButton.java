@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.baseex.widget.btn;
 
+import com.sencha.gxt.widget.core.client.button.SplitButton;
+
 import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.sencha.gxt.widget.core.client.button.SplitButton;
 
 public class DwSplitButton extends SplitButton {
 

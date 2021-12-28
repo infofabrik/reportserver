@@ -2,9 +2,9 @@ package net.datenwerke.rs.utils.eventlogger;
 
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
-
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
 
 @Singleton
 public class AuditLogEventHandler implements EventLoggerEventHandler {

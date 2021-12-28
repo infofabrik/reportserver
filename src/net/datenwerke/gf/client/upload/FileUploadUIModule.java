@@ -1,8 +1,8 @@
 package net.datenwerke.gf.client.upload;
 
-import net.datenwerke.gf.client.upload.fileselectionsource.FileUploadSource;
-
 import com.google.gwt.inject.client.AbstractGinModule;
+
+import net.datenwerke.gf.client.upload.fileselectionsource.FileUploadSource;
 
 public class FileUploadUIModule extends AbstractGinModule {
 

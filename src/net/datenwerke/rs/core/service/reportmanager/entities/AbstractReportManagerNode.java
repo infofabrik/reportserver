@@ -5,6 +5,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
-
-import org.hibernate.envers.Audited;
 
 
 /**

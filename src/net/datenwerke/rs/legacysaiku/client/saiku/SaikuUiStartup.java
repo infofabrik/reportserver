@@ -10,7 +10,6 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ReportExporterExportReportHook;
-import net.datenwerke.rs.dashboard.client.dashboard.security.DashboardViewGenericTargetIdentifier;
 import net.datenwerke.rs.legacysaiku.client.saiku.reportengines.Saiku2CSV;
 import net.datenwerke.rs.legacysaiku.client.saiku.reportengines.Saiku2ChartHTML;
 import net.datenwerke.rs.legacysaiku.client.saiku.reportengines.Saiku2Excel;
@@ -18,7 +17,6 @@ import net.datenwerke.rs.legacysaiku.client.saiku.reportengines.Saiku2HTML;
 import net.datenwerke.rs.legacysaiku.client.saiku.reportengines.Saiku2PDF;
 import net.datenwerke.rs.legacysaiku.client.saiku.ui.SaikuReportPreviewViewFactory;
 import net.datenwerke.security.client.security.SecurityUIService;
-import net.datenwerke.security.client.security.dto.ReadDto;
 
 public class SaikuUiStartup {
 	

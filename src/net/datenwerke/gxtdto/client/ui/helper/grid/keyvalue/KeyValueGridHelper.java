@@ -3,8 +3,6 @@ package net.datenwerke.gxtdto.client.ui.helper.grid.keyvalue;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.core.client.GWT;
 import com.google.inject.Singleton;
 import com.sencha.gxt.data.shared.ListStore;
@@ -13,6 +11,8 @@ import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClic
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
+
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 @Singleton
 public class KeyValueGridHelper {

@@ -1,9 +1,9 @@
 package net.datenwerke.rs.teamspace.client.teamspace.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceApp;
-
-import com.google.inject.Provider;
 
 /**
  * 

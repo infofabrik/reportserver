@@ -4,6 +4,8 @@ import java.lang.reflect.Field;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.ExportSupervisor;
@@ -12,8 +14,6 @@ import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporter;
 import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporter.ObjectExporterAdjuster;
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporterFactory;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
-
-import com.google.inject.Inject;
 
 public class ParameterInstanceExporter extends EnclosedEntityExporter {
 

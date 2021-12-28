@@ -2,6 +2,11 @@ package net.datenwerke.gf.server.fileselection;
 
 import java.util.ArrayList;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gf.client.fileselection.FileSelectionConfig;
 import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 import net.datenwerke.gf.client.fileselection.rpc.FileSelectionRpcService;
@@ -9,11 +14,6 @@ import net.datenwerke.gf.service.fileselection.hooks.FileSelectionHandlerHook;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class FileSelectionRpcServiceImpl  extends SecuredRemoteServiceServlet implements FileSelectionRpcService {

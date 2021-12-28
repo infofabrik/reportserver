@@ -15,9 +15,9 @@ import javax.persistence.OrderBy;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
 import org.hibernate.envers.Audited;
+
+import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 /**
  * 

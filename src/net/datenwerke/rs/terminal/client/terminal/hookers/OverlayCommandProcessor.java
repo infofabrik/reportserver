@@ -1,13 +1,13 @@
 package net.datenwerke.rs.terminal.client.terminal.hookers;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.dom.XElement;
+
 import net.datenwerke.gxtdto.client.overlay.OverlayService;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultExtensionDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CreOverlayDto;
 import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHook;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.dom.XElement;
 
 public class OverlayCommandProcessor implements CommandResultProcessorHook {
 

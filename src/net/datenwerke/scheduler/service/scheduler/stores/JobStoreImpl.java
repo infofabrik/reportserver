@@ -2,12 +2,12 @@ package net.datenwerke.scheduler.service.scheduler.stores;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public abstract class JobStoreImpl implements JobStore {
 

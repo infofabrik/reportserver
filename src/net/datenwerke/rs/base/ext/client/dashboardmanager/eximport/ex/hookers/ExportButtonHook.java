@@ -7,7 +7,6 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.base.ext.client.dashboardmanager.eximport.ex.DashboardManagerExportDao;
-import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManagerNodeDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.ext.client.eximport.ex.QuickExportHookerBase;

@@ -3,17 +3,12 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sencha.gxt.data.shared.ListStore;
+
 import net.datenwerke.gxtdto.client.model.StringBaseModel;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
-
-import com.google.gwt.core.client.Scheduler;
-import com.google.gwt.core.client.Scheduler.ScheduledCommand;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.widget.core.client.Component;
 
 /**
  * 

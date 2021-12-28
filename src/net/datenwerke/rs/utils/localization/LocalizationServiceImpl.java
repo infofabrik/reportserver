@@ -13,6 +13,12 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Properties;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.localization.annotations.AvailableLocales;
 import net.datenwerke.rs.utils.localization.annotations.CurrentLocale;
@@ -21,12 +27,6 @@ import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.MethodInterceptor;
 import net.sf.cglib.proxy.MethodProxy;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * Offers localization similar to the default GWT i18n implementation, 

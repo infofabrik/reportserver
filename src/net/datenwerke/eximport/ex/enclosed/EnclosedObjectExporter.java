@@ -5,6 +5,8 @@ import java.util.Collections;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.ExportItemConfig;
@@ -15,8 +17,6 @@ import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporter;
 import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporterFactory;
 import net.datenwerke.eximport.obj.ComplexItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
-
-import com.google.inject.Inject;
 
 /**
  * 

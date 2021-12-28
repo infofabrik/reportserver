@@ -1,7 +1,6 @@
 package net.datenwerke.rs.search.service.search;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 

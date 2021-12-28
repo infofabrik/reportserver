@@ -2,6 +2,10 @@ package net.datenwerke.rs.passwordpolicy.service.hooker;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.rs.passwordpolicy.service.BsiPasswordPolicy;
 import net.datenwerke.rs.passwordpolicy.service.BsiPasswordPolicyService;
@@ -12,10 +16,6 @@ import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.security.locale.SecurityMessages;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.inject.Inject;
 
 public class BsiPasswordPolicyChangePasswordHook implements ChangePasswordHook{
 

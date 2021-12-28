@@ -1,7 +1,15 @@
 package net.datenwerke.security.ext.client.security.ui;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.dto.GrantAccessDto;
 import net.datenwerke.security.client.treedb.dto.SecuredAbstractNodeDto;
@@ -9,16 +17,6 @@ import net.datenwerke.security.client.treedb.dto.decorator.SecuredAbstractNodeDt
 import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
 import net.datenwerke.security.ext.client.security.ui.aclview.NodeACLView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 
 public class SecurityView extends MainPanelView {
 	

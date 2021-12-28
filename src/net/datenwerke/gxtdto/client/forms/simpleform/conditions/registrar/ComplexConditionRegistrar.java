@@ -1,13 +1,13 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.conditions.registrar;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.actions.SimpleFormAction;
 import net.datenwerke.gxtdto.client.forms.simpleform.conditions.ComplexCondition;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * 

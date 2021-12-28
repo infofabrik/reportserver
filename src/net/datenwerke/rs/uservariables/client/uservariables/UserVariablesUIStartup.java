@@ -1,5 +1,7 @@
 package net.datenwerke.rs.uservariables.client.uservariables;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.parameters.hooks.ParameterProviderHook;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.uservariables.client.uservariables.hookers.ParameterPro
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.inject.Inject;
 
 public class UserVariablesUIStartup {
 

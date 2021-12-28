@@ -3,6 +3,8 @@ package net.datenwerke.eximport.im.enclosed;
 import java.util.Collection;
 import java.util.Queue;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.enclosed.EnclosedObjectExporter;
 import net.datenwerke.eximport.im.ImportItemConfig;
 import net.datenwerke.eximport.im.ImportSupervisor;
@@ -12,8 +14,6 @@ import net.datenwerke.eximport.im.objectimporters.BasicObjectImporter;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporterFactory;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
-
-import com.google.inject.Inject;
 
 /**
  * 

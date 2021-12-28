@@ -4,9 +4,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
 
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-
-import org.olap4j.metadata.Cube;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.SaikuMember;
 import org.legacysaiku.olap.dto.SaikuTag;
@@ -15,6 +12,9 @@ import org.legacysaiku.olap.query.IQuery;
 import org.legacysaiku.olap.util.formatter.ICellSetFormatter;
 import org.legacysaiku.service.util.KeyValue;
 import org.legacysaiku.service.util.exception.SaikuServiceException;
+import org.olap4j.metadata.Cube;
+
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public interface OlapQueryService {
 

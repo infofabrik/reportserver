@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.properties.entities.Property;
 import net.datenwerke.gf.service.properties.entities.Property__;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
@@ -12,9 +15,6 @@ import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class PropertiesServiceImpl implements PropertiesService {
 

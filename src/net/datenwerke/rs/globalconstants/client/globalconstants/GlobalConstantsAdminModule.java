@@ -1,15 +1,14 @@
 package net.datenwerke.rs.globalconstants.client.globalconstants;
 
-import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.globalconstants.client.globalconstants.locale.GlobalConstantsMessages;
-import net.datenwerke.rs.globalconstants.client.globalconstants.ui.GlobalConstantsAdminPanel;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.gf.client.administration.interfaces.AdminModule;
+import net.datenwerke.rs.globalconstants.client.globalconstants.locale.GlobalConstantsMessages;
+import net.datenwerke.rs.globalconstants.client.globalconstants.ui.GlobalConstantsAdminPanel;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

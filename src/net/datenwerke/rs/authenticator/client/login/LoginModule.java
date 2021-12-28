@@ -1,11 +1,11 @@
 package net.datenwerke.rs.authenticator.client.login;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.rs.authenticator.client.login.sessiontimeout.SessionTimeoutWarningDialog;
 import net.datenwerke.rs.authenticator.client.login.sessiontimeout.SessionTimeoutWatchdog;
-
-import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 public class LoginModule extends AbstractGinModule{
 

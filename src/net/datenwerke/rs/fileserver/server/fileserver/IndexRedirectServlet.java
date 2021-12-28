@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
-
-import com.google.inject.Provider;
 
 @Singleton
 public class IndexRedirectServlet extends HttpServlet{

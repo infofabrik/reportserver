@@ -3,10 +3,10 @@ package net.datenwerke.rs.eximport.client.eximport.im.rpc;
 import java.util.Collection;
 import java.util.Map;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfigDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ImportRpcServiceAsync {
 

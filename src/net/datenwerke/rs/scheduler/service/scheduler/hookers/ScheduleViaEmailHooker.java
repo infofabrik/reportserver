@@ -1,5 +1,8 @@
 package net.datenwerke.rs.scheduler.service.scheduler.hookers;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.scheduler.client.scheduler.dto.EmailInformation;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.service.scheduler.exceptions.InvalidConfigurationException;
@@ -8,9 +11,6 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 import net.datenwerke.rs.scheduler.service.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.service.scheduler.mail.MailReportAction;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedException;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ScheduleViaEmailHooker implements ScheduleConfigProviderHook {
 

@@ -3,12 +3,6 @@ package net.datenwerke.gxtdto.client.baseex.widget;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -22,6 +16,12 @@ import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
+
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwTabPanel extends TabPanel {
 

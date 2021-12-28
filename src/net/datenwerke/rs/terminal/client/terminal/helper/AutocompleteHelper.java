@@ -1,11 +1,11 @@
 package net.datenwerke.rs.terminal.client.terminal.helper;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.decorator.AutocompleteResultDtoDec;
-
-import com.google.inject.Inject;
 
 public class AutocompleteHelper {
 

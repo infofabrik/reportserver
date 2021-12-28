@@ -9,6 +9,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.w3c.dom.NodeList;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.nuxlets.StreamingPathFilter;
 import net.datenwerke.eximport.nuxlets.StreamingTransform;
@@ -26,11 +30,6 @@ import nu.xom.Element;
 import nu.xom.Elements;
 import nu.xom.Node;
 import nu.xom.Nodes;
-import nu.xom.XPathContext;
-
-import org.w3c.dom.NodeList;
-
-import com.google.inject.Inject;
 
 /**
  * Helper Service that allows to analize an export file.

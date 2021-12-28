@@ -1,10 +1,10 @@
 package net.datenwerke.rs.utils.scripting;
 
-import groovy.lang.GroovyObject;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import groovy.lang.GroovyObject;
 
 
 public class GroovyScript {

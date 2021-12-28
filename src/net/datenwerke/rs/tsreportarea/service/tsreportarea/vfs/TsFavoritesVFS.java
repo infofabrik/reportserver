@@ -1,5 +1,8 @@
 package net.datenwerke.rs.tsreportarea.service.tsreportarea.vfs;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceService;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskGeneralReference;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot;
 import net.datenwerke.security.service.security.rights.Right;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class TsFavoritesVFS extends TreeBasedVirtualFileSystem<AbstractTsDiskNode> {
 

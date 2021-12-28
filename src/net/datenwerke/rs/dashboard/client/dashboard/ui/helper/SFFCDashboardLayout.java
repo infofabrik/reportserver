@@ -3,12 +3,12 @@ package net.datenwerke.rs.dashboard.client.dashboard.ui.helper;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.lists.SFFCFancyStaticList;
 import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class SFFCDashboardLayout extends SFFCFancyStaticList<LayoutTypeDto> {
 

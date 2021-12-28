@@ -1,11 +1,11 @@
 package net.datenwerke.rs.teamspace.client.teamspace.security;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.teamspace.client.teamspace.locale.TeamSpaceMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class TeamSpaceSecurityTargetDomainHooker implements
 		GenericSecurityViewDomainHook {

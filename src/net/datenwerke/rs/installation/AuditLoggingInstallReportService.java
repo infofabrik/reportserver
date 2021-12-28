@@ -1,5 +1,7 @@
 package net.datenwerke.rs.installation;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
@@ -7,8 +9,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder;
-
-import com.google.inject.Inject;
 
 public class AuditLoggingInstallReportService {
 	

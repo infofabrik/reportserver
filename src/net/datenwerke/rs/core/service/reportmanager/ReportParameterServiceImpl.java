@@ -11,6 +11,10 @@ import java.util.Set;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
+
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition__;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
@@ -29,10 +33,6 @@ import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
 
 /**
  * 

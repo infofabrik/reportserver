@@ -1,12 +1,12 @@
 package net.datenwerke.usermanager.ext.client;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorHook;
 import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardProviderHook;
 import net.datenwerke.usermanager.ext.client.eximport.im.hookers.UserManagerUIImporterHooker;
 import net.datenwerke.usermanager.ext.client.hookers.UserProfileUserDataHooker;
-
-import com.google.inject.Inject;
 
 
 public class UserManagerExtUiStartup {

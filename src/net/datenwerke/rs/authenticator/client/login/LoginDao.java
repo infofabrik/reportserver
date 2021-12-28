@@ -2,14 +2,14 @@ package net.datenwerke.rs.authenticator.client.login;
 
 import java.util.Set;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandlerAsync;
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.client.login.AuthenticateResultDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class LoginDao extends Dao {
 

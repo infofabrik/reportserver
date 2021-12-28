@@ -1,9 +1,9 @@
 package net.datenwerke.rs.teamspace.client.teamspace;
 
-import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.widget.core.client.Component;
+
+import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 
 /**
  * 

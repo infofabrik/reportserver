@@ -2,6 +2,9 @@ package net.datenwerke.rs.core.client.reportexecutor.objectinfo;
 
 import java.util.Collections;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
@@ -12,9 +15,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.aware.SelectionAwareView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 /**
  * 

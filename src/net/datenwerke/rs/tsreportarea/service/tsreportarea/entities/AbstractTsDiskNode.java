@@ -5,6 +5,8 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.client.dtogenerator.RsDto;
@@ -12,8 +14,6 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskService;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.post.AbstractTsDiskNode2DtoPost;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
-
-import org.hibernate.envers.Audited;
 
 /**
  * 

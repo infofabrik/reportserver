@@ -4,22 +4,20 @@ import java.util.List;
 
 import javax.inject.Singleton;
 
-import net.datenwerke.rs.authenticator.client.login.dto.UserPasswordAuthToken;
-import net.datenwerke.rs.authenticator.client.login.locale.LoginMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.security.client.login.AuthToken;
-
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyDownEvent;
 import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.user.client.ui.HTML;
-import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.TextField;
+
+import net.datenwerke.rs.authenticator.client.login.dto.UserPasswordAuthToken;
+import net.datenwerke.rs.authenticator.client.login.locale.LoginMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.login.AuthToken;
 
 @Singleton
 public class UserPasswordClientPAM implements ClientPAM {

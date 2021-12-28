@@ -3,11 +3,11 @@ package net.datenwerke.gxtdto.client.forms.simpleform.decorators.field;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.menu.Menu;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 /**
  * 

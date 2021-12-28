@@ -1,12 +1,12 @@
 package net.datenwerke.rs.base.client.reportengines.table.prefilter.hooks;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterSpecDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.EditPreFilterCallback;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.InstantiatePreFilterCallback;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public interface PreFilterConfiguratorHook extends Hook {
 

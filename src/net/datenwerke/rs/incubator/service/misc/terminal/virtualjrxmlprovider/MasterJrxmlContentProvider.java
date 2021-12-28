@@ -1,5 +1,7 @@
 package net.datenwerke.rs.incubator.service.misc.terminal.virtualjrxmlprovider;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile;
 import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsService;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualContentProviderImpl;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Write;
-
-import com.google.inject.Inject;
 
 public class MasterJrxmlContentProvider extends
 		VirtualContentProviderImpl {

@@ -1,14 +1,14 @@
 package net.datenwerke.rs.core.client;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.genrights.AccessRsSecurityTargetDomainHooker;
 import net.datenwerke.rs.core.client.objectinfo.BasicObjectInfo;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class RsCoreUiStartup {
 

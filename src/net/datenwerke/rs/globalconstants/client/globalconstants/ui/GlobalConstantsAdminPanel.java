@@ -3,20 +3,6 @@ package net.datenwerke.rs.globalconstants.client.globalconstants.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
-import net.datenwerke.gxtdto.client.ui.helper.wrapper.ToolbarWrapperPanel;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
-import net.datenwerke.rs.globalconstants.client.globalconstants.GlobalConstantsDao;
-import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
-import net.datenwerke.rs.globalconstants.client.globalconstants.dto.pa.GlobalConstantDtoPA;
-import net.datenwerke.rs.globalconstants.client.globalconstants.locale.GlobalConstantsMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.inject.Inject;
@@ -44,6 +30,20 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 import com.sencha.gxt.widget.core.client.menu.Item;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
+import net.datenwerke.gxtdto.client.ui.helper.wrapper.ToolbarWrapperPanel;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
+import net.datenwerke.rs.globalconstants.client.globalconstants.GlobalConstantsDao;
+import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
+import net.datenwerke.rs.globalconstants.client.globalconstants.dto.pa.GlobalConstantDtoPA;
+import net.datenwerke.rs.globalconstants.client.globalconstants.locale.GlobalConstantsMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

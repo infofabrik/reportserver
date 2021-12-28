@@ -5,27 +5,21 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.servlet.ServletContext;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
+import org.codehaus.jackson.JsonParseException;
+
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.saiku.client.saiku.locale.SaikuNativeMessages;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
-
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-
-import com.google.common.collect.ImmutableList;
 
 @Path("/saiku/i18n")
 @XmlAccessorType(XmlAccessType.NONE)

@@ -2,6 +2,8 @@ package net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.ext.service.reportmanager.hooks.ReportModSubCommandHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.locale.ReportManagerExtMessages;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -14,8 +16,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class SetUuidCommand implements ReportModSubCommandHook {
 

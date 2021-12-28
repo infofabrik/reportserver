@@ -11,9 +11,9 @@ import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.box.service.box.annotations.DefaultBoxDatasink;
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 
 public class BoxModule extends AbstractModule {
 

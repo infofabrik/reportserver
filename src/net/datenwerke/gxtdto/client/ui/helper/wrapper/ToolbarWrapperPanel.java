@@ -1,14 +1,5 @@
 package net.datenwerke.gxtdto.client.ui.helper.wrapper;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -19,6 +10,15 @@ import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ToolbarWrapperPanel extends DwContentPanel {
 

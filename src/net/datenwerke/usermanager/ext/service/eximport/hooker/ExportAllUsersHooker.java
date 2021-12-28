@@ -1,5 +1,7 @@
 package net.datenwerke.usermanager.ext.service.eximport.hooker;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -7,8 +9,6 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeExImportOptions;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeExporterConfig;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import com.google.inject.Inject;
 
 public class ExportAllUsersHooker implements ExportAllHook {
 

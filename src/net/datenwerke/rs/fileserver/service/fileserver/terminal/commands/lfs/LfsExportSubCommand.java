@@ -13,7 +13,6 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
-import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser.CurrentArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class LfsExportSubCommand implements LfsSubCommandHook {

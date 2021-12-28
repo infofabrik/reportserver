@@ -2,13 +2,13 @@ package net.datenwerke.eximport.im.enclosed;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.ex.enclosed.EnclosedEntityExporter;
 import net.datenwerke.eximport.hooks.ImporterPersistEnclosedEntityHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

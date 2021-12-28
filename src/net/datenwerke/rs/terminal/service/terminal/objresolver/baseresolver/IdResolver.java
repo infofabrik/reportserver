@@ -6,15 +6,15 @@ import java.util.Collections;
 
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
-import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-import net.datenwerke.rs.terminal.service.terminal.objresolver.hooks.ObjectResolverHook;
-import net.datenwerke.rs.utils.jpa.EntityUtils;
-
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
+import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
+import net.datenwerke.rs.terminal.service.terminal.objresolver.hooks.ObjectResolverHook;
+import net.datenwerke.rs.utils.jpa.EntityUtils;
 
 public class IdResolver implements ObjectResolverHook {
 

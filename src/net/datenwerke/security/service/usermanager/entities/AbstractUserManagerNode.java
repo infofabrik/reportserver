@@ -6,8 +6,11 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.security.client.usermanager.dto.GroupDto;
 import net.datenwerke.security.client.usermanager.dto.OrganisationalUnitDto;
@@ -16,10 +19,6 @@ import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserManagerServiceImpl;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
-
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Field;
 
 /**
  * Provides the base class for all user nodes.

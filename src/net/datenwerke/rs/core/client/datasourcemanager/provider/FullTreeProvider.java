@@ -1,14 +1,14 @@
 package net.datenwerke.rs.core.client.datasourcemanager.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceTreeManagerDao;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceFolderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.ui.DatasourceManagerMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FullTreeProvider implements Provider<ManagerHelperTree>{
 

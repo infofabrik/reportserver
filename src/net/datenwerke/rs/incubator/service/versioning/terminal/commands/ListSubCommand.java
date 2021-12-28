@@ -9,6 +9,11 @@ import java.util.List;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -31,11 +36,6 @@ import net.datenwerke.rs.utils.entitydiff.result.FieldDiffResult;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 public class ListSubCommand implements RevSubCommandHook{
 	

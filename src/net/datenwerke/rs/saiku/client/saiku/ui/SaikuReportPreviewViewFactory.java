@@ -2,6 +2,9 @@ package net.datenwerke.rs.saiku.client.saiku.ui;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactor
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class SaikuReportPreviewViewFactory extends PreviewViewFactory {
 	

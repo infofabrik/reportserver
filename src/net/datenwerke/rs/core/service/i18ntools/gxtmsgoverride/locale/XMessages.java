@@ -7,9 +7,9 @@
  */
 package net.datenwerke.rs.core.service.i18ntools.gxtmsgoverride.locale;
 
-import net.datenwerke.gxtdto.client.i18n.remotemessages.DwRemoteMessageOverride;
-
 import com.google.gwt.i18n.client.Messages;
+
+import net.datenwerke.gxtdto.client.i18n.remotemessages.DwRemoteMessageOverride;
 
 /**
  * Default locale-sensitive messages. See {@link Messages} for more information.

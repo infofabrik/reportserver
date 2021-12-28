@@ -1,10 +1,10 @@
 package net.datenwerke.rs.passwordpolicy.client.accountinhibition.rpc;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.passwordpolicy.client.accountinhibition.AccountInhibitionConfiguration;
 import net.datenwerke.rs.passwordpolicy.client.accountinhibition.dto.InhibitionState;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface AccountInhibitionRpcServiceAsync {
 

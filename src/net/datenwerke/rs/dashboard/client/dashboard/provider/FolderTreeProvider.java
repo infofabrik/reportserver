@@ -3,6 +3,9 @@ package net.datenwerke.rs.dashboard.client.dashboard.provider;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManagerNodeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.DashboardFolderDto2PosoMap;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FolderTreeProvider implements Provider<ManagerHelperTree>{
 

@@ -8,19 +8,18 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Injector;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Field;
-
-import com.google.inject.Injector;
 
 /**
  * Used to define data sources that can be used in ReportServer.

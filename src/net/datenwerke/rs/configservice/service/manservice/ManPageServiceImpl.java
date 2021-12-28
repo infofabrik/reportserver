@@ -3,6 +3,13 @@ package net.datenwerke.rs.configservice.service.manservice;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
@@ -10,13 +17,6 @@ import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.annotations.DefaultLocale;
 import net.datenwerke.rs.utils.man.ManPageNotFoundException;
 import net.datenwerke.rs.utils.man.ManPageService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 @Singleton
 public class ManPageServiceImpl implements ManPageService{

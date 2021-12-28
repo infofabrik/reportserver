@@ -10,14 +10,14 @@ import java.net.URLStreamHandler;
 
 import javax.inject.Provider;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class RsfsUrlStreamHandler extends URLStreamHandler {
 	

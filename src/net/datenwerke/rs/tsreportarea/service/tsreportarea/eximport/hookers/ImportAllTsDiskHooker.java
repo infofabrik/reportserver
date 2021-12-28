@@ -1,5 +1,7 @@
 package net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.obj.ExportedItem;
@@ -7,8 +9,6 @@ import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskService;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.TsDiskExporter;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
-
-import com.google.inject.Inject;
 
 public class ImportAllTsDiskHooker implements ImportAllHook {
 

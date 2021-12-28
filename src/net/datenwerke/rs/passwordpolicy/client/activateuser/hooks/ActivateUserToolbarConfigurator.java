@@ -1,5 +1,10 @@
 package net.datenwerke.rs.passwordpolicy.client.activateuser.hooks;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
@@ -11,11 +16,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.passwordpolicy.locale.PasswordPolicyMessages;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class ActivateUserToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook{
 

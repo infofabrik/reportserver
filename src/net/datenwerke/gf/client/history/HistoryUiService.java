@@ -1,10 +1,10 @@
 package net.datenwerke.gf.client.history;
 
-import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public interface HistoryUiService extends ValueChangeHandler<String>{
 	

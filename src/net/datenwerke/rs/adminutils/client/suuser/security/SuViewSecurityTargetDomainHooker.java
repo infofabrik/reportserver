@@ -1,11 +1,11 @@
 package net.datenwerke.rs.adminutils.client.suuser.security;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.adminutils.client.suuser.locale.SuMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class SuViewSecurityTargetDomainHooker implements
 		GenericSecurityViewDomainHook {

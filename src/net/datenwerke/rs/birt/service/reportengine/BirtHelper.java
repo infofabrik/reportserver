@@ -28,7 +28,6 @@ import org.eclipse.birt.report.model.api.ReportDesignHandle;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.rs.base.service.datasources.table.impl.TableDataSource;
 import net.datenwerke.rs.base.service.datasources.transformers.DatasourceTransformationService;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.LocaleInfoParameterReplacement;
 import net.datenwerke.rs.birt.service.reportengine.entities.BirtReport;

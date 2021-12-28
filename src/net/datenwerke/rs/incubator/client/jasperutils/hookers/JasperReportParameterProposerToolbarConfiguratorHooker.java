@@ -3,10 +3,31 @@ package net.datenwerke.rs.incubator.client.jasperutils.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.inject.Inject;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
+import com.sencha.gxt.core.client.Style.SelectionMode;
+import com.sencha.gxt.data.shared.Converter;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.data.shared.StringLabelProvider;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+import com.sencha.gxt.widget.core.client.form.TextField;
+import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+import com.sencha.gxt.widget.core.client.grid.GridSelectionModel;
+import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
+import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.baseex.widget.window.SimpleDialogWindow;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.ui.helper.grid.DeletableRowsGrid;
@@ -24,27 +45,6 @@ import net.datenwerke.rs.incubator.client.jasperutils.JasperUtilsDao;
 import net.datenwerke.rs.incubator.client.jasperutils.locale.JasperMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.cell.client.AbstractCell;
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.inject.Inject;
-import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
-import com.sencha.gxt.core.client.Style.SelectionMode;
-import com.sencha.gxt.data.shared.Converter;
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.data.shared.StringLabelProvider;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
-import com.sencha.gxt.widget.core.client.form.TextField;
-import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
-import com.sencha.gxt.widget.core.client.grid.ColumnModel;
-import com.sencha.gxt.widget.core.client.grid.GridSelectionModel;
-import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
-import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 
 public class JasperReportParameterProposerToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {

@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.baseex.widget.form;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.sencha.gxt.cell.core.client.form.NumberInputCell;
 import com.sencha.gxt.widget.core.client.form.NumberField;
 import com.sencha.gxt.widget.core.client.form.NumberPropertyEditor;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwNumberField<N extends Number & Comparable<N>> extends NumberField<N> {
 

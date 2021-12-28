@@ -37,8 +37,6 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
-import org.olap4j.OlapException;
-import org.olap4j.metadata.Cube;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.SaikuMember;
 import org.legacysaiku.olap.dto.SaikuQuery;
@@ -53,6 +51,8 @@ import org.legacysaiku.olap.util.formatter.HierarchicalCellSetFormatter;
 import org.legacysaiku.olap.util.formatter.ICellSetFormatter;
 import org.legacysaiku.service.util.exception.SaikuServiceException;
 import org.legacysaiku.web.svg.PdfReport;
+import org.olap4j.OlapException;
+import org.olap4j.metadata.Cube;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,8 +65,8 @@ import net.datenwerke.rs.legacysaiku.server.rest.util.RestUtil;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapQueryService;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
 import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.legacysaiku.service.saiku.locale.SaikuEngineMessages;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 /**
  * QueryServlet contains all the methods required when manipulating an OLAP Query.

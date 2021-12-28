@@ -8,9 +8,9 @@ import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.olap4j.CellSet;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.resultset.CellDataSet;
+import org.olap4j.CellSet;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -19,9 +19,9 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorExc
 import net.datenwerke.rs.legacysaiku.server.rest.objects.resultset.QueryResult;
 import net.datenwerke.rs.legacysaiku.server.rest.util.RestUtil;
 import net.datenwerke.rs.legacysaiku.service.saiku.SaikuModule;
-import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledHTMLSaikuReport;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 
 public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
 

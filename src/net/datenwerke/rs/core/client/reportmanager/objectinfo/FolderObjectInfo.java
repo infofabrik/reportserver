@@ -2,11 +2,11 @@ package net.datenwerke.rs.core.client.reportmanager.objectinfo;
 
 import java.util.Date;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProviderImpl;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class FolderObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportFolderDto> {
 

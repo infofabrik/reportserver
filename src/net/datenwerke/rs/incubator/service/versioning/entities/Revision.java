@@ -3,14 +3,14 @@ package net.datenwerke.rs.incubator.service.versioning.entities;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-import net.datenwerke.rs.incubator.service.versioning.RevisionEntityListener;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
-
 import org.hibernate.envers.DefaultRevisionEntity;
 import org.hibernate.envers.RevisionEntity;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.incubator.service.versioning.RevisionEntityListener;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 @Entity
 @Table(name="REVISION")

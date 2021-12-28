@@ -12,6 +12,9 @@ import java.util.Vector;
 
 import javax.annotation.Nullable;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
 import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
@@ -31,9 +34,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.sf.jasperreports.engine.JRException;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 public class ManagedQuery {
 	

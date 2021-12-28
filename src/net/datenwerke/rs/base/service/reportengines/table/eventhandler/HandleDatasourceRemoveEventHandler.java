@@ -3,14 +3,14 @@ package net.datenwerke.rs.base.service.reportengines.table.eventhandler;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleDatasourceRemoveEventHandler implements
 		EventHandler<RemoveEntityEvent> {

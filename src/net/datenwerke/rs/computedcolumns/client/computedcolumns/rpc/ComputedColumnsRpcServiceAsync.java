@@ -1,9 +1,9 @@
 package net.datenwerke.rs.computedcolumns.client.computedcolumns.rpc;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ComputedColumnsRpcServiceAsync {
 

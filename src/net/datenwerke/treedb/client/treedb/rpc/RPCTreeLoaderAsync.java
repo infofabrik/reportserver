@@ -3,12 +3,12 @@ package net.datenwerke.treedb.client.treedb.rpc;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.dto.EntireTreeDTO;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface RPCTreeLoaderAsync {
 

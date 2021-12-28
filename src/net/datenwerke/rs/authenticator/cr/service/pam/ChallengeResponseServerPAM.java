@@ -1,9 +1,9 @@
 package net.datenwerke.rs.authenticator.cr.service.pam;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.authenticator.cr.service.ChallengeResponseService;
 import net.datenwerke.security.service.usermanager.UserManagerService;
-
-import com.google.inject.Inject;
 
 public class ChallengeResponseServerPAM extends ChallengeResponsePAM {
 

@@ -1,13 +1,13 @@
 package net.datenwerke.rs.incubator.service.versioning;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.incubator.service.versioning.hooks.RevSubCommandHook;
 import net.datenwerke.rs.incubator.service.versioning.terminal.commands.ListSubCommand;
 import net.datenwerke.rs.incubator.service.versioning.terminal.commands.RestoreSubCommand;
 import net.datenwerke.rs.incubator.service.versioning.terminal.commands.RevCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
-
-import com.google.inject.Inject;
 
 public class VersioningStartup {
 	

@@ -1,17 +1,5 @@
 package net.datenwerke.rs.dashboard.client.dashboard.ui;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
-import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.dashboard.client.dashboard.dto.DadgetDto;
-import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardDto;
-import net.datenwerke.rs.dashboard.client.dashboard.hooks.DadgetProcessorHook;
-import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtml;
@@ -29,6 +17,18 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
+import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.dashboard.client.dashboard.dto.DadgetDto;
+import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardDto;
+import net.datenwerke.rs.dashboard.client.dashboard.hooks.DadgetProcessorHook;
+import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DadgetCatalog extends DwWindow {
 

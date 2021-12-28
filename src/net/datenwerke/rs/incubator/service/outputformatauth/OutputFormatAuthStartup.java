@@ -1,11 +1,11 @@
 package net.datenwerke.rs.incubator.service.outputformatauth;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutionNotificationHook;
 import net.datenwerke.rs.incubator.service.outputformatauth.hookers.OutputFormatAuthWatchDog;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class OutputFormatAuthStartup {
 

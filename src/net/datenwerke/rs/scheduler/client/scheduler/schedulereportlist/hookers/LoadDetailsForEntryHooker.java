@@ -1,8 +1,13 @@
 package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hookers;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerDao;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
@@ -11,14 +16,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.Repor
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks.ScheduledReportListDetailToolbarHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.inject.Inject;
-
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public class LoadDetailsForEntryHooker implements ScheduledReportListDetailToolbarHook {
 

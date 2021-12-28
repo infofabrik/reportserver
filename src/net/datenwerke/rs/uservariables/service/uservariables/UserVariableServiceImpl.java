@@ -7,6 +7,9 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.uservariables.service.genrights.UserVariableAdminViewSecurityTarget;
 import net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition;
 import net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition__;
@@ -28,10 +31,6 @@ import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
 
 /**
  * 

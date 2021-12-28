@@ -1,8 +1,8 @@
 package net.datenwerke.rs.theme.client.field;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.core.client.GWT;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 
 public class RsStoreFilterFieldAppearance extends

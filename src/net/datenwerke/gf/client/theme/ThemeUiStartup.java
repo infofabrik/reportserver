@@ -1,5 +1,7 @@
 package net.datenwerke.gf.client.theme;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gf.client.theme.dto.ThemeUiConfig;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -7,8 +9,6 @@ import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigge
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
 
 public class ThemeUiStartup {
 

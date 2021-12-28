@@ -1,9 +1,9 @@
 package net.datenwerke.eximport.ex.enclosed;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporterFactory;
-
-import com.google.inject.Inject;
 
 /**
  * 

@@ -3,9 +3,9 @@ package net.datenwerke.rs.scripting.client.scripting.rpc;
 import java.util.HashMap;
 import java.util.List;
 
-import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 
 
 public interface ScriptingRpcServiceAsync {

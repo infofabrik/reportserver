@@ -2,14 +2,14 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.post;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoPostProcessor;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.ColumnReference;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
-
-import com.google.inject.Inject;
 
 public class Dto2TableReportPost implements Dto2PosoPostProcessor<TableReportDto, TableReport> {
 

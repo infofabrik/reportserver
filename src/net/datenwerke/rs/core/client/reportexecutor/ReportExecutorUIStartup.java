@@ -1,5 +1,8 @@
 package net.datenwerke.rs.core.client.reportexecutor;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.dispatcher.hooks.DispatcherTakeOverHook;
 import net.datenwerke.gf.client.history.HistoryUiService;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
@@ -19,9 +22,6 @@ import net.datenwerke.rs.core.client.reportexporter.hookers.ReportViewExportButt
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
 import net.datenwerke.rs.core.client.userprofile.UserProfileViewContentHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

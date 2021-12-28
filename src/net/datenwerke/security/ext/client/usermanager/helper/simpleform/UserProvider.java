@@ -16,7 +16,6 @@ import net.datenwerke.gf.client.treedb.selection.SelectionFilter;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCTreeNodeSelectionFilter;
 import net.datenwerke.gf.client.treedb.simpleform.TreeNodeDtoProvider;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
@@ -25,7 +24,6 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.posomap.OrganisationalUnitDto2PosoMap;
 import net.datenwerke.security.client.usermanager.dto.posomap.UserDto2PosoMap;
 import net.datenwerke.security.ext.client.usermanager.UserManagerTreeLoaderDao;
-import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
 import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserManagerTreeUsers;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 

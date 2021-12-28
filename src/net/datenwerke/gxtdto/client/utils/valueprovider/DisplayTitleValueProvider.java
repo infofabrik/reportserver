@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.utils.valueprovider;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public class DisplayTitleValueProvider<T extends Dto> implements ValueProvider<T, String> {
 

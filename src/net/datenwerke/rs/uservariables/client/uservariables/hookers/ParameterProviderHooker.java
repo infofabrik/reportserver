@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.core.client.parameters.config.ParameterConfigurator;
 import net.datenwerke.rs.core.client.parameters.hooks.ParameterProviderHook;
 import net.datenwerke.rs.uservariables.client.parameters.UserVariableParameterConfigurator;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ParameterProviderHooker implements ParameterProviderHook {
 

@@ -2,9 +2,9 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.listviews;
 
 import java.util.List;
 
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
-
 import com.google.gwt.user.client.ui.Widget;
+
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
 
 public interface TsDiskListView{
 	

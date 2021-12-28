@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dbpool.DbPoolService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
@@ -25,8 +27,6 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDea
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class SqlTerminalCommand implements InteractiveCommandHook {
 

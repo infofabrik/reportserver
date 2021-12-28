@@ -1,6 +1,9 @@
 package net.datenwerke.rs.dashboard.service.dashboard;
 
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode;
@@ -22,9 +25,6 @@ import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class DashboardStartup {
 

@@ -5,9 +5,9 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-
 import org.hibernate.envers.Audited;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Entity
 @Table(name="ADD_COLUMN_SPEC")

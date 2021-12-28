@@ -5,8 +5,8 @@ import java.util.Properties;
 import javax.el.ELContext;
 import javax.el.ExpressionFactory;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import de.odysseus.el.util.SimpleContext;
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface JuelServiceHook extends Hook {
 

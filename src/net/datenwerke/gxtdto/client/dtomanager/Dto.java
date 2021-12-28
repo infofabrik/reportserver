@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+import com.sencha.gxt.core.client.ValueProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.dtomod.ObjectModificationsTracked;
 import net.datenwerke.gxtdto.client.dtomanager.events.BeforeDtoDetachedEvent;
 import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
@@ -23,11 +28,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFai
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ViolatedSecurityExceptionDto;
 import net.datenwerke.gxtdto.client.utils.StringEscapeUtils;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
-import com.sencha.gxt.core.client.ValueProvider;
 
 /**
  * 

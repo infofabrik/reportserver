@@ -1,7 +1,9 @@
 package net.datenwerke.security.service.usermanager;
 
-import net.datenwerke.rs.utils.eventbus.EventBus;
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.usermanager.entities.Group;
@@ -10,8 +12,6 @@ import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.eventhandler.UserRemoveEventHandler;
 import net.datenwerke.security.service.usermanager.hooks.NotificationEmailChangedPasswordHook;
 import net.datenwerke.security.service.usermanager.hooks.PasswordManualSetHook;
-
-import com.google.inject.Inject;
 
 public class UserManagerStartup {
 

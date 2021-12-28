@@ -1,12 +1,12 @@
 package net.datenwerke.rs.base.service.parameters.string.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoPostProcessor;
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.rs.base.client.parameters.string.dto.TextParameterInstanceDto;
 import net.datenwerke.rs.base.service.parameters.string.TextParameterInstance;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
-
-import com.google.inject.Inject;
 
 public class TextParameterInstancePost implements Dto2PosoPostProcessor<TextParameterInstanceDto, TextParameterInstance>, Poso2DtoPostProcessor<TextParameterInstance, TextParameterInstanceDto> {
 	

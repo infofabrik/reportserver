@@ -1,10 +1,10 @@
 package net.datenwerke.gf.client.login;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+
 import net.datenwerke.gf.client.dispatcher.Dispatchable;
 import net.datenwerke.security.client.login.AuthenticateCallback;
 import net.datenwerke.security.client.usermanager.dto.decorator.UserDtoDec;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
 
 public interface LoginService extends Dispatchable{
 

@@ -2,10 +2,10 @@ package net.datenwerke.rs.core.client.reportmanager;
 
 import java.util.List;
 
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ReportManagerUIService {
 

@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.uiutils.info;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.form.error.SideErrorHandler;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * Based on {@link SideErrorHandler}

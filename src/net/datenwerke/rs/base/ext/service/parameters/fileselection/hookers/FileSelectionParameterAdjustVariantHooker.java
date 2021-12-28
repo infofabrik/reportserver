@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition;
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterInstance;
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile;
@@ -12,8 +14,6 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
-
-import com.google.inject.Inject;
 
 public class FileSelectionParameterAdjustVariantHooker implements
 		VariantCreatorHook {

@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
-
 import com.google.gwt.user.client.ui.Widget;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
 
 public class SFFCCustomComponentImpl implements SFFCCustomComponent {
 

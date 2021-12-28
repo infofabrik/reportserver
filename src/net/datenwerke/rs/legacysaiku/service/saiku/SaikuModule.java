@@ -4,11 +4,11 @@ import com.google.inject.AbstractModule;
 import com.google.inject.multibindings.Multibinder;
 
 import net.datenwerke.rs.legacysaiku.server.rest.SaikuRestModule;
-import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.SaikuReportService;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.SaikuReportServiceImpl;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuMetadataExporter;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuPlainMetadataExporter;
+import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 
 public class SaikuModule extends AbstractModule {
 

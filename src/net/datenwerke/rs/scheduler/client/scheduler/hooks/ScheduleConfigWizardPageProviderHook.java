@@ -1,10 +1,10 @@
 package net.datenwerke.rs.scheduler.client.scheduler.hooks;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
-
-import com.google.gwt.user.client.ui.Widget;
 
 public interface ScheduleConfigWizardPageProviderHook extends Hook {
 

@@ -1,12 +1,12 @@
 package net.datenwerke.rs.base.service.datasources.table.hookers;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
 import net.datenwerke.rs.base.service.datasources.table.impl.hooks.TableDbDatasourceOpenedHook;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class QueryCommentAdderHooker implements TableDbDatasourceOpenedHook {
 

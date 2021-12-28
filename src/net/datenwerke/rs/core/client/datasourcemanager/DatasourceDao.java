@@ -1,11 +1,11 @@
 package net.datenwerke.rs.core.client.datasourcemanager;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.rpc.DatasourceRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class DatasourceDao extends Dao {
 

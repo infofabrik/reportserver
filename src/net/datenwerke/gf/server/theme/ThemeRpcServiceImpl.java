@@ -1,15 +1,15 @@
 package net.datenwerke.gf.server.theme;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gf.client.theme.dto.ThemeUiConfig;
 import net.datenwerke.gf.client.theme.rpc.ThemeRpcService;
 import net.datenwerke.gf.service.theme.ThemeService;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 @Singleton
 public class ThemeRpcServiceImpl  extends SecuredRemoteServiceServlet implements ThemeRpcService {

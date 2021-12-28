@@ -1,8 +1,7 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.locale;
 
-import net.datenwerke.rs.utils.localization.Messages;
-
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.localization.Messages;
 
 public interface EmailDatasinkMessages extends Messages {
 

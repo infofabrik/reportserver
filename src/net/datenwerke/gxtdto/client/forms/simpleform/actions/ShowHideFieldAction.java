@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.actions;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.Component;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public class ShowHideFieldAction implements SimpleFormAction {
 

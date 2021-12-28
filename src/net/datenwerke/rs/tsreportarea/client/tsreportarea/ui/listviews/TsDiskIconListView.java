@@ -4,17 +4,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.datenwerke.gxtdto.client.ui.helper.grid.ExtendedKeyNav;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.TsDiskUIService;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteListViewHook;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
-import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
@@ -45,6 +34,17 @@ import com.sencha.gxt.theme.base.client.listview.ListViewCustomAppearance;
 import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
 import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
+
+import net.datenwerke.gxtdto.client.ui.helper.grid.ExtendedKeyNav;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.TsDiskUIService;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteListViewHook;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 
 public class TsDiskIconListView implements TsFavoriteListViewHook {
 	

@@ -2,6 +2,13 @@ package net.datenwerke.rs.base.client.datasources.dto.decorator;
 
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.TextArea;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.rs.base.client.datasources.config.CsvDatasourceConfigConfigurator;
@@ -12,13 +19,6 @@ import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
-
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.TextArea;
 
 /**
  * Dto Decorator for {@link ArgumentDatasourceConnectorDto}

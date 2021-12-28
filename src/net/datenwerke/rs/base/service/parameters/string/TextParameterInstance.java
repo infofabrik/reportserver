@@ -6,6 +6,10 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.parameters.string.post.TextParameterInstancePost;
@@ -15,10 +19,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
 
 
 /**

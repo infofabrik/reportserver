@@ -3,6 +3,10 @@ package net.datenwerke.rs.core.service.datasourcemanager.stump;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Scopes;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceServiceImpl;
@@ -12,10 +16,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServer
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
 
 public class DatasourceStumpModule extends AbstractReportServerModule {
 

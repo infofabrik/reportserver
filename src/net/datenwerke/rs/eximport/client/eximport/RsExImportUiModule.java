@@ -1,8 +1,8 @@
 package net.datenwerke.rs.eximport.client.eximport;
 
-import net.datenwerke.rs.eximport.client.eximport.im.ImportUIModule;
-
 import com.google.gwt.inject.client.AbstractGinModule;
+
+import net.datenwerke.rs.eximport.client.eximport.im.ImportUIModule;
 
 public class RsExImportUiModule extends AbstractGinModule {
 

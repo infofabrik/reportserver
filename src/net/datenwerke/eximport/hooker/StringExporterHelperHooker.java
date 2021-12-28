@@ -2,11 +2,11 @@ package net.datenwerke.eximport.hooker;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.apache.commons.text.StringEscapeUtils;
+
 import net.datenwerke.eximport.ex.ExportSupervisor;
 import net.datenwerke.eximport.hooks.BasicObjectExImporterHelperHookImpl;
 import net.datenwerke.eximport.obj.ComplexItemProperty;
-
-import org.apache.commons.text.StringEscapeUtils;
 
 /**
  * Handles Dates.

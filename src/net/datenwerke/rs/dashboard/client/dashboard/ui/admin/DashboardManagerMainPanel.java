@@ -1,10 +1,10 @@
 package net.datenwerke.rs.dashboard.client.dashboard.ui.admin;
 
-import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeMainPanel;
-import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeMainPanel;
+import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
 
 /**
  * The actual implementation of the dashboard managers main component.

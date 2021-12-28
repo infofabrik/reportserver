@@ -1,13 +1,13 @@
 package net.datenwerke.gxtdto.client.servercommunication.callback;
 
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
+
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class NotamCallback<T> implements AsyncCallback<T> {
 

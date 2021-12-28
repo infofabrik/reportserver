@@ -1,10 +1,10 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.grideditor.client.grideditor.dto.RegExValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
+
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.RegExValidatorDto;
 
 /**
  * Dto Decorator for {@link RegExValidatorDto}

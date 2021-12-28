@@ -3,12 +3,12 @@ package net.datenwerke.eximport.im;
 import java.util.Collection;
 import java.util.Queue;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.exceptions.ImportException;
 import net.datenwerke.eximport.obj.EnclosedItemProperty;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import com.google.inject.Inject;
 
 /**
  * 

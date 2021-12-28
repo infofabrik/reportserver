@@ -8,16 +8,16 @@ import java.util.TreeSet;
 
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.incubator.service.versioning.entities.Revision;
-import net.datenwerke.rs.utils.jpa.EntityUtils;
-import net.datenwerke.rs.utils.reflection.ReflectionService;
-
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.Audited;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.incubator.service.versioning.entities.Revision;
+import net.datenwerke.rs.utils.jpa.EntityUtils;
+import net.datenwerke.rs.utils.reflection.ReflectionService;
 
 public class VersioningServiceImpl implements VersioningService{
 	

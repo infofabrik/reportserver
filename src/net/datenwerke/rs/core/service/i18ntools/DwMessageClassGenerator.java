@@ -3,8 +3,6 @@ package net.datenwerke.rs.core.service.i18ntools;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import net.datenwerke.gxtdto.client.i18n.remotemessages.DwRemoteMessage;
-
 import org.apache.commons.lang3.StringUtils;
 
 import com.google.gwt.core.ext.Generator;
@@ -20,6 +18,8 @@ import com.google.gwt.dev.javac.StandardGeneratorContext;
 import com.google.gwt.i18n.rebind.LocalizableGenerator;
 import com.google.gwt.user.rebind.ClassSourceFileComposerFactory;
 import com.google.gwt.user.rebind.SourceWriter;
+
+import net.datenwerke.gxtdto.client.i18n.remotemessages.DwRemoteMessage;
 
 public class DwMessageClassGenerator extends Generator {
 

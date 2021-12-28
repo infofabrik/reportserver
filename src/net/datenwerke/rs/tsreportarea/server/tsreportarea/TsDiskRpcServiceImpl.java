@@ -14,7 +14,6 @@ import javax.persistence.NoResultException;
 
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
@@ -59,7 +58,6 @@ import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.annotation.ArgumentVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.usermanager.UserManagerService;

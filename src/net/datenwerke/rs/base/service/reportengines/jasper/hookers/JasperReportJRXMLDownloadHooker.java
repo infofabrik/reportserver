@@ -16,7 +16,6 @@ import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsServi
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.treedb.actions.ReadAction;
 
 public class JasperReportJRXMLDownloadHooker implements FileDownloadHandlerHook {

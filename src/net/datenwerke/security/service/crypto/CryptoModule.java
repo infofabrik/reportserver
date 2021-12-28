@@ -2,6 +2,10 @@ package net.datenwerke.security.service.crypto;
 
 import java.security.KeyStore;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.ext.client.crypto.rpc.CryptoRpcService;
@@ -9,10 +13,6 @@ import net.datenwerke.security.ext.server.crypto.CryptoRpcServiceImpl;
 import net.datenwerke.security.service.crypto.passwordhasher.HmacPassphrase;
 import net.datenwerke.security.service.crypto.passwordhasher.PasswordHasherImpl;
 import net.datenwerke.security.service.crypto.pbe.PbeModule;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
 
 /**
  * The crypto module provides functions for handling crypto stuff.

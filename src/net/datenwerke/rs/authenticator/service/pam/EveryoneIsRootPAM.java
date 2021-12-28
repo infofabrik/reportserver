@@ -1,17 +1,17 @@
 package net.datenwerke.rs.authenticator.service.pam;
 
-import net.datenwerke.security.client.login.AuthToken;
-import net.datenwerke.security.service.authenticator.AuthenticationResult;
-import net.datenwerke.security.service.authenticator.ReportServerPAM;
-import net.datenwerke.security.service.usermanager.UserManagerService;
-import net.datenwerke.security.service.usermanager.entities.User;
-
 import java.util.Collection;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.security.client.login.AuthToken;
+import net.datenwerke.security.service.authenticator.AuthenticationResult;
+import net.datenwerke.security.service.authenticator.ReportServerPAM;
+import net.datenwerke.security.service.usermanager.UserManagerService;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class EveryoneIsRootPAM implements ReportServerPAM{
 

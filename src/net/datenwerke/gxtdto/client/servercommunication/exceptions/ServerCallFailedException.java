@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.servercommunication.exceptions;
 
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.core.shared.GWT;
+
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 /**
  * 

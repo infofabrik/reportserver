@@ -1,5 +1,8 @@
 package net.datenwerke.rs.terminal.service.terminal.vfs;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalSessionDeamonHook;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.commands.VfsCommandMv;
 import net.datenwerke.rs.terminal.service.terminal.vfs.commands.VfsCommandPwd;
 import net.datenwerke.rs.terminal.service.terminal.vfs.commands.VfsCommandRm;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hookers.VfsObjectResolver;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class VirtualFileSystemStartup {
 

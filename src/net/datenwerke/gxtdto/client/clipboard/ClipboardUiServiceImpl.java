@@ -3,15 +3,15 @@ package net.datenwerke.gxtdto.client.clipboard;
 import java.util.IdentityHashMap;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardPasteProcessor;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sencha.gxt.core.client.GXT;
 import com.sencha.gxt.widget.core.client.info.Info;
+
+import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
+import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardPasteProcessor;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 @Singleton
 public class ClipboardUiServiceImpl implements ClipboardUiService{

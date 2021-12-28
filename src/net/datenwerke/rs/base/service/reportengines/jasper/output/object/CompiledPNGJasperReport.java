@@ -7,12 +7,12 @@ import java.io.ObjectInputStream;
 
 import javax.imageio.ImageIO;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledPngReport;
-
 import org.apache.commons.codec.binary.Base64;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledPngReport;
 
 /**
  * 

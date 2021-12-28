@@ -2,6 +2,8 @@ package net.datenwerke.rs.passwordpolicy.service.hooker;
 
 import java.util.Date;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.async.DwAsyncService;
 import net.datenwerke.async.helpers.TransactionalRunnableFactory;
 import net.datenwerke.rs.passwordpolicy.client.PasswordExpiredAuthenticationResultInfo;
@@ -14,8 +16,6 @@ import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class BsiPasswordPolicyPostAuthenticateHook implements PostAuthenticateHook{
 

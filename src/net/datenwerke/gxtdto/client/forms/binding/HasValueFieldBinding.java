@@ -1,9 +1,5 @@
 package net.datenwerke.gxtdto.client.forms.binding;
 
-import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
-import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
-
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -12,6 +8,10 @@ import com.google.gwt.user.client.ui.HasValue;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.core.client.util.Util;
 import com.sencha.gxt.data.shared.Converter;
+
+import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
+import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
+import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class HasValueFieldBinding implements ObjectChangedEventHandler, ValueChangeHandler{

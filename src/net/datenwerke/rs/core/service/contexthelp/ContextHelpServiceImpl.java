@@ -2,15 +2,15 @@ package net.datenwerke.rs.core.service.contexthelp;
 
 import java.io.StringWriter;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
-import net.datenwerke.rs.core.service.contexthelp.hooks.ContextHelpAdapterHook;
-import net.datenwerke.rs.utils.man.ManPageService;
-
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.Velocity;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
+import net.datenwerke.rs.core.service.contexthelp.hooks.ContextHelpAdapterHook;
+import net.datenwerke.rs.utils.man.ManPageService;
 
 public class ContextHelpServiceImpl implements ContextHelpService {
 

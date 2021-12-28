@@ -7,15 +7,15 @@ import java.util.Date;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
-import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
-import net.datenwerke.gf.service.tempfile.annotations.TempFileLifeTime;
-
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
+import net.datenwerke.gf.service.tempfile.annotations.TempDirLocation;
+import net.datenwerke.gf.service.tempfile.annotations.TempFileLifeTime;
 
 @Singleton
 public class TempFileMaintenance implements MaintenanceTask{

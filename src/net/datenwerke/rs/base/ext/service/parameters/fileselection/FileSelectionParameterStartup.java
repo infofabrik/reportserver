@@ -1,8 +1,10 @@
 package net.datenwerke.rs.base.ext.service.parameters.fileselection;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.download.hooks.FileDownloadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.base.ext.client.parameters.fileselection.FileSelectionParameterConfigurator;
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.hookers.FileSelectionParameterAdjustVariantHooker;
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.hookers.FileSelectionParameterDownloadHooker;
 import net.datenwerke.rs.base.ext.service.parameters.fileselection.hookers.FileSelectionParameterInstanceCreatedFromDtoHooker;
@@ -10,9 +12,6 @@ import net.datenwerke.rs.base.ext.service.parameters.fileselection.hookers.FileS
 import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterInstanceCreatedFromDtoHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportCreatedFromDtoHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FileSelectionParameterStartup {
 

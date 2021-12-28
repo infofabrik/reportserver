@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser.CurrentArgument;
 import net.datenwerke.rs.terminal.service.terminal.obj.AutocompleteResult;
-
-import com.google.inject.Inject;
 
 public class AutocompleteHelper {
 

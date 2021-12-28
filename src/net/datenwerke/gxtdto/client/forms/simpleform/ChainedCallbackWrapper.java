@@ -4,12 +4,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitCompleteCallback;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTracker;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerService;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerToken;
-
-import com.google.inject.Inject;
 
 
 public class ChainedCallbackWrapper extends SimpleFormSubmissionCallback {

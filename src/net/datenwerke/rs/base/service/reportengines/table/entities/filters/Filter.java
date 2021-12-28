@@ -19,15 +19,15 @@ import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.reportengines.table.entities.FilterRange;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
 
 /**
  * 

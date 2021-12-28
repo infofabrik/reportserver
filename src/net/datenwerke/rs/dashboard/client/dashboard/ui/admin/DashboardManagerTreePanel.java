@@ -1,11 +1,11 @@
 package net.datenwerke.rs.dashboard.client.dashboard.ui.admin;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeNavigationPanel;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.dashboard.client.dashboard.provider.annotations.DashboardManagerAdminViewTree;
-
-import com.google.inject.Inject;
 
 /**
  * 

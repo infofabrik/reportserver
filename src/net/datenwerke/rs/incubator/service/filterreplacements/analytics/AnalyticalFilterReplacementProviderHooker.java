@@ -1,12 +1,12 @@
 package net.datenwerke.rs.incubator.service.filterreplacements.analytics;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.dbhelper.hooks.FilterReplacementProviderHook;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.ManagedQuery;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-
-import com.google.inject.Inject;
 
 public class AnalyticalFilterReplacementProviderHooker implements FilterReplacementProviderHook{
 

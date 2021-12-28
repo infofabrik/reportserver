@@ -1,13 +1,13 @@
 package net.datenwerke.rs.core.client.i18tools;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
-
-import com.google.inject.Inject;
 
 public class I18nToolsUiStartup {
 

@@ -1,10 +1,10 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxLengthValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxLengthValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxLengthValidator.MaxLengthMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxLengthValidatorDto;
 
 /**
  * Dto Decorator for {@link MaxLengthValidatorDto}

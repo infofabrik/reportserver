@@ -2,6 +2,11 @@ package net.datenwerke.rs.terminal.service.terminal.helpmessenger;
 
 import java.lang.reflect.Method;
 
+import org.aopalliance.intercept.MethodInterceptor;
+import org.aopalliance.intercept.MethodInvocation;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -15,11 +20,6 @@ import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.reflection.ProxyUtils;
-
-import org.aopalliance.intercept.MethodInterceptor;
-import org.aopalliance.intercept.MethodInvocation;
-
-import com.google.inject.Inject;
 
 public class HelpMessageInterceptor implements MethodInterceptor {
 

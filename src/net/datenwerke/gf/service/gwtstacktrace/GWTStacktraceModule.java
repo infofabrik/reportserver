@@ -1,10 +1,10 @@
 package net.datenwerke.gf.service.gwtstacktrace;
 
-import net.datenwerke.gf.base.server.gwtstacktrace.annotations.GWTInitClientException;
-import net.datenwerke.rs.utils.guice.GuiceMatchers;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
+
+import net.datenwerke.gf.base.server.gwtstacktrace.annotations.GWTInitClientException;
+import net.datenwerke.rs.utils.guice.GuiceMatchers;
 
 /**
  * 

@@ -1,12 +1,12 @@
 package net.datenwerke.rs.passwordpolicy.client.accountinhibition;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.passwordpolicy.client.accountinhibition.dto.InhibitionState;
 import net.datenwerke.rs.passwordpolicy.client.accountinhibition.rpc.AccountInhibitionRpcServiceAsync;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class AccountInhibitionServiceDao extends Dao {
 	

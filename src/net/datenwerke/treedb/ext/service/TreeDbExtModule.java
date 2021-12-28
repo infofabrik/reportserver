@@ -1,8 +1,8 @@
 package net.datenwerke.treedb.ext.service;
 
-import net.datenwerke.treedb.ext.service.eximport.http.HttpTreeImportModule;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.treedb.ext.service.eximport.http.HttpTreeImportModule;
 
 public class TreeDbExtModule extends AbstractModule {
 

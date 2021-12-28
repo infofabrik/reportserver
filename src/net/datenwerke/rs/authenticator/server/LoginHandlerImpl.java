@@ -2,6 +2,11 @@ package net.datenwerke.rs.authenticator.server;
 
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandler;
@@ -14,11 +19,6 @@ import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class LoginHandlerImpl extends SecuredRemoteServiceServlet implements LoginHandler{

@@ -2,12 +2,12 @@ package net.datenwerke.gxtdto.client.i18n.remotemessages;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.gxtdto.client.i18n.remotemessages.rpc.RemoteMessageRpcServiceAsync;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public class RemoteMessageUiStartup {
 

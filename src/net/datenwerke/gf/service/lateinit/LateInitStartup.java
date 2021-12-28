@@ -4,8 +4,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.persistence.EntityManager;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,6 +11,8 @@ import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class LateInitStartup {
 

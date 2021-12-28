@@ -1,5 +1,8 @@
 package net.datenwerke.rs.base.service.reportengines;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.reportengines.hookers.AdjustBaseReportForExecutionHooker;
 import net.datenwerke.rs.base.service.reportengines.hookers.BaseReportEngineProviderHooker;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHist
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHttpRequestHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseReportEnginesStartup {
 

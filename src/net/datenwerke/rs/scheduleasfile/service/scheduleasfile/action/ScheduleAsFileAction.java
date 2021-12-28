@@ -10,6 +10,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.compiledreportstore.CompiledReportStoreService;
 import net.datenwerke.rs.compiledreportstore.entities.PersistentCompiledReport;
@@ -29,9 +32,6 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
 import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 @Entity
 @Table(name="SCHED_ACTION_AS_FILE")

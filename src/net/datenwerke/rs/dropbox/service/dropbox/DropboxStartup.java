@@ -2,6 +2,7 @@ package net.datenwerke.rs.dropbox.service.dropbox;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkProviderHook;
 import net.datenwerke.rs.dropbox.service.dropbox.hooker.DropboxDatasinkProviderHooker;

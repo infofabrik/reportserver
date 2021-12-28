@@ -2,11 +2,11 @@ package net.datenwerke.rs.scripting.client.scripting;
 
 import java.util.HashMap;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
-
-import com.google.inject.Inject;
 
 public class ScriptingUiServiceImpl implements ScriptingUiService {
 

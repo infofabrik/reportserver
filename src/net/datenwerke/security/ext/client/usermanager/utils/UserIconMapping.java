@@ -1,13 +1,11 @@
 package net.datenwerke.security.ext.client.usermanager.utils;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.gf.client.treedb.icon.IconMapping;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.security.client.usermanager.dto.SexDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.resources.client.ImageResource;
 
 /**
  * 

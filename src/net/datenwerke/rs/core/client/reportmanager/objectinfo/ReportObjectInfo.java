@@ -2,15 +2,15 @@ package net.datenwerke.rs.core.client.reportmanager.objectinfo;
 
 import java.util.Date;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProviderImpl;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
 
 public final class ReportObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportDto> {
 

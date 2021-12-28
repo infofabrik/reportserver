@@ -1,12 +1,12 @@
 package net.datenwerke.security.ext.client.security;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.GenericSecurityTargetContainer;
 import net.datenwerke.security.client.security.dto.RightDto;
-
-import com.google.inject.Inject;
 
 public class SecurityUIServiceImpl implements SecurityUIService {
 

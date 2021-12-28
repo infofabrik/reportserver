@@ -1,13 +1,13 @@
 package net.datenwerke.rs.terminal.service.terminal.operator;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.async.DwAsyncService;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfig;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 public class InBackgroundOperator implements TerminalCommandOperator {
 

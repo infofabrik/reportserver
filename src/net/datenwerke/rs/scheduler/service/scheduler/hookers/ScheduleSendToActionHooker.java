@@ -2,6 +2,9 @@ package net.datenwerke.rs.scheduler.service.scheduler.hookers;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinitionSendToConfig;
 import net.datenwerke.rs.scheduler.service.scheduler.exceptions.InvalidConfigurationException;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 import net.datenwerke.rs.scheduler.service.scheduler.sendto.SendToReportAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedException;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ScheduleSendToActionHooker implements ScheduleConfigProviderHook {
 

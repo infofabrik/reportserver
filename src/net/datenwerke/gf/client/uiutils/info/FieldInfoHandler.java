@@ -3,9 +3,6 @@ package net.datenwerke.gf.client.uiutils.info;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.BaseIconComponent;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -29,6 +26,9 @@ import com.sencha.gxt.widget.core.client.form.error.ErrorHandler;
 import com.sencha.gxt.widget.core.client.form.error.SideErrorHandler;
 import com.sencha.gxt.widget.core.client.form.error.SideErrorHandler.SideErrorTooltipAppearance;
 import com.sencha.gxt.widget.core.client.tips.ToolTip;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.BaseIconComponent;
 
 /**
  * Based on {@link SideErrorHandler}

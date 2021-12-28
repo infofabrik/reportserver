@@ -2,6 +2,10 @@ package net.datenwerke.rs.userprofile.client.userprofile.hookers;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
+
 import net.datenwerke.gf.client.homepage.hooks.HomepageHeaderContentHook;
 import net.datenwerke.gf.client.homepage.ui.DwMainViewportTopBarElement;
 import net.datenwerke.gf.client.login.LoginService;
@@ -13,10 +17,6 @@ import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardPro
 import net.datenwerke.rs.userprofile.client.userprofile.locale.UserProfileMessages;
 import net.datenwerke.security.client.login.AuthenticateCallback;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.container.HBoxLayoutContainer;
 
 /**
  * 

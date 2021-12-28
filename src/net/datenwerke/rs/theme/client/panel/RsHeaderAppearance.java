@@ -1,12 +1,12 @@
 package net.datenwerke.rs.theme.client.panel;
 
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.core.client.dom.XElement;
 import com.sencha.gxt.core.client.util.IconHelper;
 import com.sencha.gxt.theme.neptune.client.base.panel.Css3HeaderAppearance;
+
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 public class RsHeaderAppearance extends Css3HeaderAppearance {
 

@@ -2,6 +2,12 @@ package net.datenwerke.rs.jxlsreport.client.jxlsreport.ui;
 
 import java.util.List;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.client.model.SuccessIndicatorBaseModel;
@@ -12,12 +18,6 @@ import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIService;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporter;
 import net.datenwerke.rs.core.client.reportexporter.exporter.generic.Export2HTML;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.http.client.Request;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 
 public class JxlsReportPreviewView extends AbstractReportPreviewView {
 

@@ -1,5 +1,9 @@
 package net.datenwerke.gf.client;
 
+import com.google.gwt.user.client.Window;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.dispatcher.DispatcherService;
 import net.datenwerke.gf.client.homepage.HomepageDao;
 import net.datenwerke.gf.client.uiutils.date.simpleform.DateFormulaProvider;
@@ -9,10 +13,6 @@ import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigge
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.gwt.user.client.Window;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class DwGwtFrameworkUIStartup {
 	

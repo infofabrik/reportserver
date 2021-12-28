@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.utilityservices.toolbar;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwToolBar extends ToolBar {
 	

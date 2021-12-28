@@ -2,13 +2,13 @@ package net.datenwerke.gf.client.history;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
 import net.datenwerke.gf.client.history.rpc.HistoryRpcServiceAsync;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class HistoryDao extends Dao {
 

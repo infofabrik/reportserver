@@ -1,5 +1,7 @@
 package net.datenwerke.rs.incubator.service.misc.terminal.commands;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExportDataProviderImpl;
 import net.datenwerke.eximport.ImportService;
 import net.datenwerke.eximport.im.ImportConfig;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class ImportAllCommand implements ImportSubCommandHook {
 

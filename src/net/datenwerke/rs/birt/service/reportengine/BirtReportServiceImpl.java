@@ -6,10 +6,6 @@ import java.util.logging.Level;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
-import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
-
 import org.eclipse.birt.core.exception.BirtException;
 import org.eclipse.birt.core.framework.Platform;
 import org.eclipse.birt.report.engine.api.EngineConfig;
@@ -22,6 +18,10 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 
 @Singleton
 public class BirtReportServiceImpl implements BirtReportService {

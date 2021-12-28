@@ -1,8 +1,8 @@
 package net.datenwerke.rs.grideditor.client.grideditor.vp;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 
 public abstract class RowValueProvider<T> implements  ValueProvider<GridEditorRecordDto, T> {
 

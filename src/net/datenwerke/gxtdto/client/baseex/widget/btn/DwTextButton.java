@@ -1,11 +1,11 @@
 package net.datenwerke.gxtdto.client.baseex.widget.btn;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 
 public class DwTextButton extends TextButton {

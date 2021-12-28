@@ -3,12 +3,6 @@ package net.datenwerke.gxtdto.client.ui.helper.info;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.form.DwFormPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -19,6 +13,12 @@ import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderL
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.form.DwFormPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class InfoWindow extends DwWindow {
 

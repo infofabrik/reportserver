@@ -1,10 +1,10 @@
 package net.datenwerke.rs.passwordpolicy.client.activateuser.rpc;
 
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
-import net.datenwerke.security.client.usermanager.dto.UserDto;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
+import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 @RemoteServiceRelativePath("security_activateuser")
 public interface ActivateUserRpcService extends RemoteService {

@@ -3,16 +3,16 @@ package net.datenwerke.rs.teamspace.client.teamspace.helpers.simpleform;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.data.shared.ListStore;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBaseModel;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceMemberDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.pa.UserDtoPA;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-
-import com.google.gwt.core.client.GWT;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.data.shared.ListStore;
 
 public class SFFCTeamSpaceMemberAsUser implements SFFCBaseModel<UserDto> {
 

@@ -1,14 +1,14 @@
 package net.datenwerke.rs.core.client.datasinkmanager.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkFolderDto;
 import net.datenwerke.rs.core.client.datasinkmanager.ui.DatasinkManagerMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FullTreeProvider implements Provider<ManagerHelperTree>{
 

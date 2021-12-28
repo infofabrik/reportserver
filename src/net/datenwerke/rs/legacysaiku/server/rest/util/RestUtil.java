@@ -21,13 +21,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import net.datenwerke.rs.legacysaiku.server.rest.objects.resultset.Cell;
-import net.datenwerke.rs.legacysaiku.server.rest.objects.resultset.QueryResult;
-
 import org.legacysaiku.olap.dto.resultset.AbstractBaseCell;
 import org.legacysaiku.olap.dto.resultset.CellDataSet;
 import org.legacysaiku.olap.dto.resultset.DataCell;
 import org.legacysaiku.olap.dto.resultset.MemberCell;
+
+import net.datenwerke.rs.legacysaiku.server.rest.objects.resultset.Cell;
+import net.datenwerke.rs.legacysaiku.server.rest.objects.resultset.QueryResult;
 
 public class RestUtil {
 	

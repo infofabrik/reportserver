@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.utils;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class IconGuesserService {
 

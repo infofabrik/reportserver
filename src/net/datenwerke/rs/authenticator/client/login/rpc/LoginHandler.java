@@ -3,13 +3,13 @@ package net.datenwerke.rs.authenticator.client.login.rpc;
 
 import java.util.Set;
 
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.client.login.AuthenticateResultDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("login")
 public interface LoginHandler extends RemoteService{

@@ -2,10 +2,6 @@ package net.datenwerke.gxtdto.client.utilityservices.grid;
 
 import java.util.Comparator;
 
-import net.datenwerke.gxtdto.client.utilityservices.form.combo.ComparatorWithEmpty;
-import net.datenwerke.gxtdto.client.utilityservices.form.combo.ConverterWithEmpty;
-import net.datenwerke.gxtdto.client.utilityservices.form.combo.EmptyOption;
-
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
@@ -17,6 +13,10 @@ import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.data.shared.StringLabelProvider;
 import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
+
+import net.datenwerke.gxtdto.client.utilityservices.form.combo.ComparatorWithEmpty;
+import net.datenwerke.gxtdto.client.utilityservices.form.combo.ConverterWithEmpty;
+import net.datenwerke.gxtdto.client.utilityservices.form.combo.EmptyOption;
 
 
 /**

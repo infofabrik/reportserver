@@ -2,10 +2,10 @@ package net.datenwerke.rs.base.service.dbhelper.hookers;
 
 import java.util.regex.Pattern;
 
+import org.apache.commons.lang3.StringUtils;
+
 import net.datenwerke.rs.base.service.dbhelper.hooks.InnerQueryModificationHook;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
-
-import org.apache.commons.lang3.StringUtils;
 
 public class InnerQueryColumnReplacementHooker implements InnerQueryModificationHook {
 	

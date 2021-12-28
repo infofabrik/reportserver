@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterProposalDto;
 import net.datenwerke.rs.core.client.parameters.dto.decorator.ParameterDefinitionDtoDec;
 import net.datenwerke.rs.core.client.parameters.locale.ParametersMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.user.client.ui.Widget;
 
 
 public abstract class ParameterConfiguratorImpl<D extends ParameterDefinitionDto, I extends ParameterInstanceDto> implements ParameterConfigurator<D, I> {

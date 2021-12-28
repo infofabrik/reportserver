@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.grid;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.editing.GridRowEditing;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 
 
 

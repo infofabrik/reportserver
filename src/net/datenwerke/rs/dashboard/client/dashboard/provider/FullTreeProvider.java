@@ -1,14 +1,14 @@
 package net.datenwerke.rs.dashboard.client.dashboard.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
 import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardFolderDto;
 import net.datenwerke.rs.dashboard.client.dashboard.ui.admin.DashboardManagerMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FullTreeProvider implements Provider<ManagerHelperTree>{
 

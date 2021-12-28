@@ -2,14 +2,14 @@ package net.datenwerke.rs.dashboard.service.dashboard.eventhandler;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.dashboard.service.dashboard.DadgetService;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardService;
 import net.datenwerke.rs.dashboard.service.dashboard.dagets.LibraryDadget;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode;
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleDadgetNodeForceRemoveEventHandler implements
 		EventHandler<ForceRemoveEntityEvent> {

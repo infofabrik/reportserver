@@ -1,12 +1,12 @@
 package net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.rs.core.service.reportmanager.helpers.ReportIconHelper;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.ExecutedReportFileReference;
-
-import com.google.inject.Inject;
 
 public class ExecuteReportFileReference2DtoPost implements
 		Poso2DtoPostProcessor<ExecutedReportFileReference, ExecutedReportFileReferenceDto> {

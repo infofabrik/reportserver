@@ -3,6 +3,13 @@ package net.datenwerke.gf.client.homepage.ui;
 
 import java.util.Collection;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.container.Viewport;
+
 import net.datenwerke.gf.client.homepage.modules.ClientMainModule;
 import net.datenwerke.gf.client.homepage.modules.ClientTempModule;
 import net.datenwerke.gf.client.homepage.modules.ui.ModuleManagerModuleSelector;
@@ -11,13 +18,6 @@ import net.datenwerke.gf.client.theme.ThemeUiService;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.statusbar.StatusBarUIService;
 import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.container.Viewport;
 
 /**
  * This LayoutContainer divides the screen in two parts. 

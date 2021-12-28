@@ -2,9 +2,9 @@ package net.datenwerke.rs.core.service.i18ntools;
 
 import java.text.NumberFormat;
 
-import net.datenwerke.security.service.usermanager.entities.User;
-
 import com.google.inject.ImplementedBy;
+
+import net.datenwerke.security.service.usermanager.entities.User;
 
 @ImplementedBy(I18nToolsServiceImpl.class)
 public interface I18nToolsService {

@@ -1,5 +1,9 @@
 package net.datenwerke.rs.authenticator.cr.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
 import net.datenwerke.rs.authenticator.cr.client.ChallengeResponseRpcService;
@@ -7,10 +11,6 @@ import net.datenwerke.rs.authenticator.cr.service.ChallengeResponseService;
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

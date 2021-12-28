@@ -1,5 +1,8 @@
 package net.datenwerke.usermanager.ext.service.eximport;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
@@ -10,9 +13,6 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class HttpUserManagerImportConfigurationHooker extends
 	HttpImportConfigurationProviderHookImplForTrees<AbstractUserManagerNode, AbstractUserManagerNodeDto> {

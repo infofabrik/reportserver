@@ -5,6 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.AfterMergeEntityEvent;
@@ -13,9 +16,6 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode__;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class UserRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 

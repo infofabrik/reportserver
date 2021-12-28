@@ -3,7 +3,6 @@ package net.datenwerke.rs.saiku.service.hooker;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
-import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public class VariantCreatedAdjustSaikuQueryHooker implements VariantCreatorHook {

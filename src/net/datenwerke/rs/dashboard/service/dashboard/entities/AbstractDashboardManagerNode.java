@@ -5,12 +5,12 @@ import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.dashboard.service.dashboard.DashboardManagerService;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
-
-import org.hibernate.envers.Audited;
 
 
 /**

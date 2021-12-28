@@ -4,13 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.client.parameters.locale.RsMessages;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 /**
  * 

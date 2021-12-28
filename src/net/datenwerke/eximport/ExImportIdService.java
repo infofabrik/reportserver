@@ -1,11 +1,11 @@
 package net.datenwerke.eximport;
 
-import net.datenwerke.eximport.hooks.ExImportIdProviderHook;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.eximport.hooks.ExImportIdProviderHook;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 /**
  * Helper service to provide IDs during the export.

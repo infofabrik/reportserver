@@ -5,12 +5,12 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+
 import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultTagDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto;
-
-import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 /**
  * Dto Decorator for {@link SearchResultListDto}

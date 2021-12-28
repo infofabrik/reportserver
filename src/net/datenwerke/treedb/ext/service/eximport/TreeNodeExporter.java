@@ -6,6 +6,10 @@ import java.util.List;
 
 import javax.xml.stream.XMLStreamException;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ex.ExportItemConfig;
 import net.datenwerke.eximport.ex.ExportSupervisor;
@@ -15,10 +19,6 @@ import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporter.ObjectExpo
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporter;
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporterFactory;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
 
 /**
  * 

@@ -1,11 +1,5 @@
 package net.datenwerke.gxtdto.client.dialog.error;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwHorizontalFlowLayoutContainer;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.dom.client.Style.Float;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -16,6 +10,12 @@ import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwHorizontalFlowLayoutContainer;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SimpleErrorDialog extends DwWindow {
 	

@@ -5,6 +5,10 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.base.client.datasources.config.CsvDatasourceConfigConfigurator;
 import net.datenwerke.rs.base.client.datasources.dto.CsvDatasourceDto;
@@ -15,10 +19,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceMan
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class CsvDatasourceConfigProviderHooker implements
 		DatasourceDefinitionConfigProviderHook {

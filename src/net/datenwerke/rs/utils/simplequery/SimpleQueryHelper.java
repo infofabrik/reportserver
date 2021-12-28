@@ -20,13 +20,13 @@ import javax.persistence.metamodel.PluralAttribute;
 import javax.persistence.metamodel.SetAttribute;
 import javax.persistence.metamodel.SingularAttribute;
 
-import net.datenwerke.rs.utils.simplequery.annotations.Join;
-import net.datenwerke.rs.utils.simplequery.annotations.OrderBy;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.hibernate.annotations.common.reflection.MetadataProvider;
 
 import com.google.inject.name.Named;
+
+import net.datenwerke.rs.utils.simplequery.annotations.Join;
+import net.datenwerke.rs.utils.simplequery.annotations.OrderBy;
 
 public class SimpleQueryHelper {
 

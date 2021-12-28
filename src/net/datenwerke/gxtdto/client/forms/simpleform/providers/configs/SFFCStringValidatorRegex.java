@@ -2,13 +2,13 @@ package net.datenwerke.gxtdto.client.forms.simpleform.providers.configs;
 
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
 import com.google.gwt.regexp.shared.RegExp;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.RegExValidator;
+
+import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
 
 public class SFFCStringValidatorRegex implements SFFCStringValidator {
 	

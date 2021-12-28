@@ -1,9 +1,9 @@
 package net.datenwerke.security.ext.client.crypto;
 
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 
 public class CryptoUIServiceImpl implements CryptoUIService {
 

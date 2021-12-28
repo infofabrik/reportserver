@@ -5,14 +5,14 @@ import java.io.InputStream;
 import javax.persistence.Entity;
 import javax.persistence.Lob;
 
+import org.apache.commons.io.IOUtils;
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.base.service.datasources.definitions.FormatBasedDatasourceConfig;
-
-import org.apache.commons.io.IOUtils;
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 @GenerateDto(
 		dtoPackage="net.datenwerke.rs.base.client.datasources.dto"

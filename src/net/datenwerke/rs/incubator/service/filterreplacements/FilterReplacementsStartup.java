@@ -1,12 +1,12 @@
 package net.datenwerke.rs.incubator.service.filterreplacements;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.hooks.FilterReplacementProviderHook;
 import net.datenwerke.rs.incubator.service.filterreplacements.agg.AggregateFilterReplacementProviderHooker;
 import net.datenwerke.rs.incubator.service.filterreplacements.analytics.AnalyticalFilterReplacementProviderHooker;
 import net.datenwerke.rs.incubator.service.filterreplacements.today.TodayFilterReplacementProviderHooker;
-
-import com.google.inject.Inject;
 
 public class FilterReplacementsStartup {
 

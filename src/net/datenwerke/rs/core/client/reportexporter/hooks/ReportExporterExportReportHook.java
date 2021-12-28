@@ -1,9 +1,9 @@
 package net.datenwerke.rs.core.client.reportexporter.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporter;
-
-import com.google.inject.Provider;
 
 public class ReportExporterExportReportHook extends ObjectHook<ReportExporter> {
 

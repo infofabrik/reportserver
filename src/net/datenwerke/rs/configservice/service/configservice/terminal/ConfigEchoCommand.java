@@ -1,5 +1,11 @@
 package net.datenwerke.rs.configservice.service.configservice.terminal;
 
+import java.util.List;
+
+import org.apache.commons.configuration2.Configuration;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.configservice.service.configservice.locale.ConfigMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -8,12 +14,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-
-import java.util.List;
-
-import org.apache.commons.configuration2.Configuration;
-
-import com.google.inject.Inject;
 
 public class ConfigEchoCommand implements ConfigSubCommandHook {
 

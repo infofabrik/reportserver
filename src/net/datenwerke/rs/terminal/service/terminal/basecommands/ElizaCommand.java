@@ -1,5 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.utils.ElizaParse;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -8,8 +10,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.InteractiveCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 public class ElizaCommand implements InteractiveCommandHook {
 

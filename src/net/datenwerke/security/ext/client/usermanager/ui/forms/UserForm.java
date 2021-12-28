@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
@@ -13,9 +16,6 @@ import net.datenwerke.security.client.usermanager.dto.SexDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.pa.UserDtoPA;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 
 public class UserForm extends SimpleFormView {
 

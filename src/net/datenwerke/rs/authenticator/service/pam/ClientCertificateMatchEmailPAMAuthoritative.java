@@ -3,10 +3,10 @@ package net.datenwerke.rs.authenticator.service.pam;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.service.usermanager.UserManagerService;
-
-import com.google.inject.Provider;
 
 public class ClientCertificateMatchEmailPAMAuthoritative extends
 		ClientCertificateMatchEmailPAM {

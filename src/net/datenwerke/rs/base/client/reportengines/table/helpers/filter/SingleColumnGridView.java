@@ -3,17 +3,6 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.model.StringBaseModel;
-import net.datenwerke.gxtdto.client.model.pa.StringBaseModelPa;
-import net.datenwerke.gxtdto.client.utils.SqlTypes;
-import net.datenwerke.gxtdto.client.utils.StringEscapeUtils;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
-import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.IntegerFieldValidator;
-import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.NumericalFieldValidator;
-import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.SqlDateValidator;
-import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.SqlTimestampValidator;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -26,6 +15,17 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.grid.GridSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.editing.ClicksToEdit;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
+
+import net.datenwerke.gxtdto.client.model.StringBaseModel;
+import net.datenwerke.gxtdto.client.model.pa.StringBaseModelPa;
+import net.datenwerke.gxtdto.client.utils.SqlTypes;
+import net.datenwerke.gxtdto.client.utils.StringEscapeUtils;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
+import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.IntegerFieldValidator;
+import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.NumericalFieldValidator;
+import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.SqlDateValidator;
+import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.SqlTimestampValidator;
 
 /**
  * 

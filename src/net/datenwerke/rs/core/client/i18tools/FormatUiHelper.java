@@ -3,10 +3,10 @@ package net.datenwerke.rs.core.client.i18tools;
 
 import javax.inject.Singleton;
 
-import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
+
+import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 
 @Singleton
 public class FormatUiHelper {

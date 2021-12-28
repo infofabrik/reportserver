@@ -1,11 +1,11 @@
 package net.datenwerke.security.service.authenticator.test;
 
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
-import net.datenwerke.security.service.authenticator.ReportServerPAM;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
 import com.google.inject.multibindings.Multibinder;
+
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
+import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
 public class AuthenticatorTestModule extends AbstractModule {
 

@@ -12,17 +12,17 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OrderColumn;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.scriptreport.service.scriptreport.locale.ScriptReportMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
-
-import org.hibernate.envers.Audited;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 @Entity
 @Table(name="SCRIPT_REPORT")

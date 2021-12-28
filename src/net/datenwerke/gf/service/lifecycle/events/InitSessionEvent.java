@@ -1,9 +1,9 @@
 package net.datenwerke.gf.service.lifecycle.events;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
-
-import com.google.inject.Provider;
 
 public class InitSessionEvent extends DwLoggedEvent {
 

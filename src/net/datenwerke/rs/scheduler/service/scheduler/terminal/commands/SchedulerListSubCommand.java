@@ -3,6 +3,8 @@ package net.datenwerke.rs.scheduler.service.scheduler.terminal.commands;
 import java.text.DateFormat;
 import java.util.Arrays;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
@@ -17,8 +19,6 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterConfiguration;
-
-import com.google.inject.Inject;
 
 
 public class SchedulerListSubCommand implements SchedulerSubCommandHook{

@@ -3,14 +3,14 @@ package net.datenwerke.rs.globalconstants.service.globalconstants;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetReplacementProviderImpl;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImpl;
 import net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 /**
  * 

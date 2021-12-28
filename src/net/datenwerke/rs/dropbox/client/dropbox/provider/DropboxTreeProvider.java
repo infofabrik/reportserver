@@ -2,8 +2,10 @@ package net.datenwerke.rs.dropbox.client.dropbox.provider;
 
 import java.util.Arrays;
 import java.util.List;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;

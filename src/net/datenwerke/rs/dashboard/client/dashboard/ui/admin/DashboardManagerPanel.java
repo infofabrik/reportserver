@@ -1,10 +1,10 @@
 package net.datenwerke.rs.dashboard.client.dashboard.ui.admin;
 
-import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
-import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
+import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 
 @Singleton
 public class DashboardManagerPanel extends AbstractTreeManagerPanel {

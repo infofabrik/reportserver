@@ -2,7 +2,6 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages;
 
 import static java.util.stream.Collectors.toList;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -46,7 +45,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.security.SchedulingAdminView
 import net.datenwerke.rs.utils.misc.Nullable;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
-import net.datenwerke.security.client.security.dto.RightDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUserPA;

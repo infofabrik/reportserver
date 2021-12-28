@@ -1,9 +1,9 @@
 package net.datenwerke.rs.terminal.client.terminal.dto.decorator;
 
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultEntryDto;
 import net.datenwerke.rs.terminal.client.terminal.helper.DisplayHelper;
-
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 
 /**
  * Dto Decorator for {@link CommandResultEntryDto}

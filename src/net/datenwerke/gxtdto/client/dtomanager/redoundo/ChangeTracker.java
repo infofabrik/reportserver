@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.dtomanager.redoundo;
 
-import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
-
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
 
 public class ChangeTracker<T, V> {
 	

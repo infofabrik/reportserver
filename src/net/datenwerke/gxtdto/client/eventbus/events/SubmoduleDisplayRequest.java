@@ -3,9 +3,9 @@ package net.datenwerke.gxtdto.client.eventbus.events;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.eventbus.handlers.SubmoduleDisplayRequestHandler;
-
 import com.google.gwt.event.shared.GwtEvent;
+
+import net.datenwerke.gxtdto.client.eventbus.handlers.SubmoduleDisplayRequestHandler;
 
 public class SubmoduleDisplayRequest extends GwtEvent<SubmoduleDisplayRequestHandler> {
 	

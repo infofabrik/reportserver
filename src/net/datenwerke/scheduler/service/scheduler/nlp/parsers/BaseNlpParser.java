@@ -8,6 +8,16 @@ import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.StrMatcher;
+import org.apache.commons.lang3.text.StrTokenizer;
+import org.apache.commons.lang3.time.DateUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 import net.datenwerke.scheduler.service.scheduler.nlp.hooks.NlpTriggerParserHook;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyNthdayTrigger;
@@ -24,16 +34,6 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Days;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.EndTypes;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.StrMatcher;
-import org.apache.commons.lang3.text.StrTokenizer;
-import org.apache.commons.lang3.time.DateUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseNlpParser implements NlpTriggerParserHook {
 	

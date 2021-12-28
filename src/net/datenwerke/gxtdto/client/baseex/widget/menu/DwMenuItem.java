@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.baseex.widget.menu;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 
 public class DwMenuItem extends MenuItem {

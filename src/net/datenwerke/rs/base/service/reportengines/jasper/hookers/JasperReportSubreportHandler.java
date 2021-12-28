@@ -5,6 +5,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 import net.datenwerke.gf.service.fileselection.hooks.FileSelectionHandlerHook;
 import net.datenwerke.gf.service.upload.FileUploadService;
@@ -20,11 +23,7 @@ import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.treedb.actions.UpdateAction;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class JasperReportSubreportHandler implements FileSelectionHandlerHook {
 

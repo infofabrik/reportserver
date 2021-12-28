@@ -2,19 +2,6 @@ package net.datenwerke.gf.client.upload.simpleform;
 
 import java.util.List;
 
-import net.datenwerke.gf.client.upload.FileUploadUiService;
-import net.datenwerke.gf.client.upload.FileUploadUiServiceImpl;
-import net.datenwerke.gf.client.upload.HtmlUploadFieldContainer;
-import net.datenwerke.gf.client.upload.dto.FileToUpload;
-import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener;
-import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener.UploadCallback;
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
-import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-
-import com.google.gwt.dom.client.Element;
-import com.google.gwt.dom.client.NodeList;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -25,6 +12,16 @@ import com.sencha.gxt.widget.core.client.container.Container;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.FileUploadField;
+
+import net.datenwerke.gf.client.upload.FileUploadUiService;
+import net.datenwerke.gf.client.upload.HtmlUploadFieldContainer;
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
+import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener;
+import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener.UploadCallback;
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
+import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
 
 public class FileUploadProvider extends FormFieldProviderHookImpl {
 	

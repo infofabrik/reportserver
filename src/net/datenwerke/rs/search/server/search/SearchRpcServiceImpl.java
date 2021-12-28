@@ -1,5 +1,8 @@
 package net.datenwerke.rs.search.server.search;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
@@ -11,9 +14,6 @@ import net.datenwerke.rs.search.service.search.SearchService;
 import net.datenwerke.rs.search.service.search.results.SearchFilter;
 import net.datenwerke.rs.search.service.search.results.SearchResultList;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class SearchRpcServiceImpl extends SecuredRemoteServiceServlet implements SearchRpcService {

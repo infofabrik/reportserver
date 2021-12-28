@@ -1,10 +1,10 @@
 package net.datenwerke.rs.fileserver.client.fileserver.ui;
 
-import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
-import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
+import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 
 @Singleton
 public class FileServerManagerPanel extends AbstractTreeManagerPanel {

@@ -1,10 +1,10 @@
 package net.datenwerke.rs.utils.eventlogger.console;
 
-import net.datenwerke.rs.utils.eventlogger.EventLoggerEventHandler;
-import net.datenwerke.rs.utils.eventlogger.EventLoggerService;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.utils.eventlogger.EventLoggerEventHandler;
+import net.datenwerke.rs.utils.eventlogger.EventLoggerService;
 
 public class ConsoleEventLoggerModule extends AbstractModule {
 

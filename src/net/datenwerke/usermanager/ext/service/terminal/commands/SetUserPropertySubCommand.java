@@ -5,6 +5,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -21,8 +23,6 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
-
-import com.google.inject.Inject;
 
 
 public class SetUserPropertySubCommand implements UserModSubCommandHook {

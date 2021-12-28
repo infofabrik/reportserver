@@ -1,5 +1,8 @@
 package net.datenwerke.rs.globalconstants.client.globalconstants;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.administration.AdministrationUIService;
 import net.datenwerke.gf.client.administration.hooks.AdminModuleProviderHook;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
@@ -12,9 +15,6 @@ import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

@@ -1,10 +1,10 @@
 package net.datenwerke.eximport.ex;
 
-import net.datenwerke.eximport.ExImportIdService;
-
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.eximport.ExImportIdService;
 
 /**
  * 

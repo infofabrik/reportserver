@@ -3,19 +3,17 @@ package net.datenwerke.security.service.treedb;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.name.Named;
+
 import net.datenwerke.security.service.eventlogger.annotations.FireForceRemoveEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.annotation.UpdateOwner;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
-import net.datenwerke.security.service.security.rights.Delete;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
-
-import com.google.inject.Inject;
-import com.google.inject.name.Named;
 
 public abstract class SecuredTreeDBManagerImpl<A extends SecuredAbstractNode<A>> extends LoggedTreeDbManagerImpl<A> {
 

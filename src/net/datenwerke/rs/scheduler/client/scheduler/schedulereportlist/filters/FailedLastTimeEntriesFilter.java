@@ -3,6 +3,12 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.filters;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.lists.SFFCEnumList;
@@ -13,12 +19,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks.Sch
 import net.datenwerke.scheduler.client.scheduler.dto.OutcomeDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
 public class FailedLastTimeEntriesFilter implements ScheduledReportListFilter {
 

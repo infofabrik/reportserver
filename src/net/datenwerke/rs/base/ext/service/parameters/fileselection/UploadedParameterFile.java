@@ -13,12 +13,12 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
-
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="FILESEL_PARAM_UP_FILE")

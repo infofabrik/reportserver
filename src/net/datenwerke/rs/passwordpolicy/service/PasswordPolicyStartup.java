@@ -1,5 +1,7 @@
 package net.datenwerke.rs.passwordpolicy.service;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 import net.datenwerke.rs.passwordpolicy.service.hooker.UserDtoSetStatusPostProcessor;
@@ -7,8 +9,6 @@ import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
 import net.datenwerke.security.service.usermanager.hooks.UserDtoPostProcessorHook;
-
-import com.google.inject.Inject;
 
 public class PasswordPolicyStartup {
 	

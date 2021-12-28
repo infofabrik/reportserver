@@ -5,6 +5,10 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
+
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.DefaultDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
@@ -22,10 +26,6 @@ import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
 
 /**
  * 

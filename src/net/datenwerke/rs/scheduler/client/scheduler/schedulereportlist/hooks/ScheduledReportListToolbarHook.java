@@ -1,9 +1,9 @@
 package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks;
 
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.ScheduledReportListPanel;
-
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 public interface ScheduledReportListToolbarHook extends Hook {
 

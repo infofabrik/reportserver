@@ -1,5 +1,8 @@
 package net.datenwerke.security.service.eventlogger;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.matcher.Matchers;
+
 import net.datenwerke.security.service.eventlogger.annotations.FireEvent;
 import net.datenwerke.security.service.eventlogger.annotations.FireForceRemoveEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
@@ -10,9 +13,6 @@ import net.datenwerke.security.service.eventlogger.aop.ForceRemoveEntityEventInt
 import net.datenwerke.security.service.eventlogger.aop.MergeEntityEventInterceptor;
 import net.datenwerke.security.service.eventlogger.aop.PersistEntityEventInterceptor;
 import net.datenwerke.security.service.eventlogger.aop.RemoveEntityEventInterceptor;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.matcher.Matchers;
 
 public class DwEventLoggerModule extends AbstractModule {
 

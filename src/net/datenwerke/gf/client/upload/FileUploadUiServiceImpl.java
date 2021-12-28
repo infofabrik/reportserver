@@ -3,18 +3,6 @@ package net.datenwerke.gf.client.upload;
 import java.util.List;
 import java.util.Map.Entry;
 
-import net.datenwerke.gf.client.upload.dto.FileToUpload;
-import net.datenwerke.gf.client.upload.dto.UploadProperties;
-import net.datenwerke.gf.client.upload.dto.UploadResponse;
-import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener;
-import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener.UploadCallback;
-import net.datenwerke.gf.client.upload.locale.UploadMessages;
-import net.datenwerke.gxtdto.client.baseex.widget.form.DwFileUploadField;
-import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
@@ -30,16 +18,27 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.widget.core.client.Component;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import com.sencha.gxt.widget.core.client.container.AbstractHtmlLayoutContainer.HtmlData;
 import com.sencha.gxt.widget.core.client.container.Container;
-import com.sencha.gxt.widget.core.client.container.HtmlLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent;
 import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
 import com.sencha.gxt.widget.core.client.form.FileUploadField;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.FormPanel.Encoding;
 import com.sencha.gxt.widget.core.client.form.FormPanel.Method;
+
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
+import net.datenwerke.gf.client.upload.dto.UploadProperties;
+import net.datenwerke.gf.client.upload.dto.UploadResponse;
+import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener;
+import net.datenwerke.gf.client.upload.html5.Html5FileUploadListener.UploadCallback;
+import net.datenwerke.gf.client.upload.locale.UploadMessages;
+import net.datenwerke.gxtdto.client.baseex.widget.form.DwFileUploadField;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
+import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class FileUploadUiServiceImpl implements FileUploadUiService {
 

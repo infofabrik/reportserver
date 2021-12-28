@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
@@ -23,10 +27,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECSinglePage;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutorExecuteAsHooker;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.inject.Inject;
 
 public class ExecuteAsTableReportPreviewHooker implements ReportExecutorExecuteAsHooker{
 

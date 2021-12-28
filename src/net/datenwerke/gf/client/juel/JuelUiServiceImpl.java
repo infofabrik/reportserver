@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.juel;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.juel.dto.JuelResultDto;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-
-import com.google.inject.Inject;
 
 public class JuelUiServiceImpl implements JuelUiService {
 

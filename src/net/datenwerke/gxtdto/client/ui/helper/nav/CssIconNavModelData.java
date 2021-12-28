@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.ui.helper.nav;
 
-import net.datenwerke.rs.theme.client.icon.CssIconContainer;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
+
+import net.datenwerke.rs.theme.client.icon.CssIconContainer;
 
 public class CssIconNavModelData<M> extends NavigationModelData<M> implements CssIconContainer {
 

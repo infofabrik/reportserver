@@ -3,6 +3,9 @@ package net.datenwerke.rs.base.service.reportengines.table.output.generator;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledDataCountTableReport;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * Generates an {@link RSTableModel} from an report with only the metaInformation set.

@@ -1,13 +1,13 @@
 package net.datenwerke.rs.core.client.urlview.module;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+
 import net.datenwerke.gf.client.homepage.modules.ClientMainModuleImpl;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 
 public class UrlViewClientMainModule extends ClientMainModuleImpl {
 

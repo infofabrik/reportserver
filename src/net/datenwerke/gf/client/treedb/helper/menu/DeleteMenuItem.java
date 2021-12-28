@@ -1,5 +1,11 @@
 package net.datenwerke.gf.client.treedb.helper.menu;
 
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
+import com.sencha.gxt.widget.core.client.info.Info;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -10,12 +16,6 @@ import net.datenwerke.security.client.treedb.dto.decorator.SecuredAbstractNodeDt
 import net.datenwerke.treedb.client.treedb.TreeDbManagerDao;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
-
-import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.info.Info;
 
 public class DeleteMenuItem extends TreeMenuItem {
 	

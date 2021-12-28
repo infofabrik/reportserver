@@ -1,11 +1,11 @@
 package net.datenwerke.rs.core.client.reportexecutor.rpc;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.http.client.Request;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface ReportExecutorRpcServiceAsync {
 

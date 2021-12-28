@@ -1,12 +1,12 @@
 package net.datenwerke.rs.authenticator.client.login.sessiontimeout;
 
-import net.datenwerke.gf.client.login.LoginService;
-import net.datenwerke.gxtdto.client.servercommunication.callback.AsyncCallbackSuccessHook;
-import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandlerAsync;
-
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gf.client.login.LoginService;
+import net.datenwerke.gxtdto.client.servercommunication.callback.AsyncCallbackSuccessHook;
+import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandlerAsync;
 
 public class SessionTimeoutWatchdog {
 	

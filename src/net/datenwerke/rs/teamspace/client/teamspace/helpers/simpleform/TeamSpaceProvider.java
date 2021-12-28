@@ -3,6 +3,12 @@ package net.datenwerke.rs.teamspace.client.teamspace.helpers.simpleform;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.data.shared.ListStore;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.DtoModelProvider;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBaseModel;
@@ -11,12 +17,6 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIService;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.pa.TeamSpaceDtoPA;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.data.shared.ListStore;
 
 public class TeamSpaceProvider extends DtoModelProvider{
 

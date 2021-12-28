@@ -4,22 +4,22 @@ import java.util.List;
 
 import javax.inject.Provider;
 
+import org.legacysaiku.olap.dto.SaikuDimensionSelection;
+import org.legacysaiku.olap.dto.resultset.CellDataSet;
+import org.legacysaiku.web.svg.PdfReport;
+import org.olap4j.CellSet;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledPDFSaikuReport;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
-
-import org.olap4j.CellSet;
-import org.legacysaiku.olap.dto.SaikuDimensionSelection;
-import org.legacysaiku.olap.dto.resultset.CellDataSet;
-import org.legacysaiku.web.svg.PdfReport;
-
-import com.google.inject.Inject;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 
 public class SaikuPDFOutputGenerator extends SaikuOutputGeneratorImpl {
 	

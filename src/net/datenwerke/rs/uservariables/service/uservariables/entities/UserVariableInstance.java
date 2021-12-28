@@ -12,14 +12,14 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
 
 /**
  * 

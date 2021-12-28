@@ -1,8 +1,8 @@
 package net.datenwerke.rs.core.service.i18ntools;
 
-import net.datenwerke.gf.service.localization.RemoteMessageService;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.gf.service.localization.RemoteMessageService;
 
 public class RemoteMessageModule extends AbstractModule {
 

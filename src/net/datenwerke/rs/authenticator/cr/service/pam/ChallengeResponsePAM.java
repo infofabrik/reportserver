@@ -2,6 +2,8 @@ package net.datenwerke.rs.authenticator.cr.service.pam;
 
 import javax.persistence.NoResultException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseAuthToken;
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
 import net.datenwerke.rs.authenticator.cr.client.pam.ChallengeResponseClientPam;
@@ -11,8 +13,6 @@ import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.ReportServerPAM;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class ChallengeResponsePAM implements ReportServerPAM {
 

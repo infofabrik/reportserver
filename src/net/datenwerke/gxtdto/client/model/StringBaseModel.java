@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.model;
 
+import com.sencha.gxt.core.client.ValueProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.HasValueProviderByPath;
 import net.datenwerke.gxtdto.client.model.pa.StringBaseModelPa;
-
-import com.sencha.gxt.core.client.ValueProvider;
 
 
 

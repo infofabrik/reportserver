@@ -1,8 +1,8 @@
 package net.datenwerke.rs.authenticator.cr.service;
 
-import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
-
 import com.google.inject.servlet.SessionScoped;
+
+import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
 
 @SessionScoped
 public class SessionChallengeContainer {

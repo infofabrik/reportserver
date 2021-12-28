@@ -1,6 +1,5 @@
 package net.datenwerke.rs.amazons3.client.amazons3.dto;
 
-import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.AdditionalScheduleInformation;
 
 public class ScheduleAsAmazonS3FileInformation implements AdditionalScheduleInformation {

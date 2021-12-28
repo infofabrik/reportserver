@@ -1,9 +1,9 @@
 package net.datenwerke.rs.adminutils.client.systemconsole;
 
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
-
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.util.Margins;
+
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
 
 public class SystemConsoleView extends DwBorderContainer {
 

@@ -7,8 +7,8 @@ import com.sencha.gxt.core.client.GXT;
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.theme.neptune.client.base.fieldset.Css3FieldSetAppearance;
 import com.sencha.gxt.widget.core.client.button.IconButton;
-import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.button.IconButton.IconConfig;
+import com.sencha.gxt.widget.core.client.button.ToolButton;
 
 public class RsFieldSetAppearance extends Css3FieldSetAppearance {
 

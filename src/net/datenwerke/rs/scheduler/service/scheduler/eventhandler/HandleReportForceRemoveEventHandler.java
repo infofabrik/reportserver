@@ -2,6 +2,8 @@ package net.datenwerke.rs.scheduler.service.scheduler.eventhandler;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleReportForceRemoveEventHandler implements
 		EventHandler<ForceRemoveEntityEvent> {

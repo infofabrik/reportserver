@@ -4,6 +4,11 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.legacysaiku.olap.dto.SaikuDimensionSelection;
+import org.legacysaiku.olap.dto.resultset.CellDataSet;
+import org.legacysaiku.service.util.export.ExcelExporter;
+import org.olap4j.CellSet;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -11,11 +16,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledXLSSaikuReport;
-
-import org.olap4j.CellSet;
-import org.legacysaiku.olap.dto.SaikuDimensionSelection;
-import org.legacysaiku.olap.dto.resultset.CellDataSet;
-import org.legacysaiku.service.util.export.ExcelExporter;
 
 public class SaikuXLSOutputGenerator extends SaikuOutputGeneratorImpl {
 

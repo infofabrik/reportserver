@@ -1,9 +1,9 @@
 package net.datenwerke.rs.saiku.client.datasource.hooker;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.Request;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
-import com.google.gwt.http.client.Request;
 
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;

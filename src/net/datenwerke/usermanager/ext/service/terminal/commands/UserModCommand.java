@@ -3,6 +3,8 @@ package net.datenwerke.usermanager.ext.service.terminal.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
-
-import com.google.inject.Inject;
 
 
 public class UserModCommand extends SubCommandContainerImpl {

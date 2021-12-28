@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 
-import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.rs.utils.juel.annotations.JuelExpressionBlacklist;
-import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Inject;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.utils.juel.annotations.JuelExpressionBlacklist;
+import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
 
 /**
  * The juel module provides basic functionality for handling juel related tasks.

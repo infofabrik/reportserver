@@ -2,9 +2,9 @@ package net.datenwerke.rs.authenticator.client.login.pam;
 
 import java.util.List;
 
-import net.datenwerke.security.client.login.AuthToken;
-
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
+
+import net.datenwerke.security.client.login.AuthToken;
 
 public interface ClientPAM {
 

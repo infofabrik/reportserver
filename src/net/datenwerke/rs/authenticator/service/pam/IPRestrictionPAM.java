@@ -2,17 +2,17 @@ package net.datenwerke.rs.authenticator.service.pam;
 
 import javax.servlet.http.HttpServletRequest;
 
-import net.datenwerke.rs.utils.misc.IPUtils;
-import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
-import net.datenwerke.security.client.login.AuthToken;
-import net.datenwerke.security.service.authenticator.AuthenticationResult;
-import net.datenwerke.security.service.authenticator.ReportServerPAM;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.utils.misc.IPUtils;
+import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
+import net.datenwerke.security.client.login.AuthToken;
+import net.datenwerke.security.service.authenticator.AuthenticationResult;
+import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
 
 public class IPRestrictionPAM implements ReportServerPAM{

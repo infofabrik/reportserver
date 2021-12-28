@@ -6,10 +6,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.async.annotations.WaitBeforeForcedShutdown;
 import net.datenwerke.async.configurations.CachedThreadPoolConfig;
-
-import com.google.inject.Inject;
 
 /**
  * 

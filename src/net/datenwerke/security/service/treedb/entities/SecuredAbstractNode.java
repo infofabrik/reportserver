@@ -9,6 +9,8 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 import javax.persistence.Transient;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.Visibility;
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -29,8 +31,6 @@ import net.datenwerke.security.service.security.entities.HierarchicalAcl;
 import net.datenwerke.security.service.security.interfaces.Owneable;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import org.hibernate.envers.Audited;
 
 /**
  * Extends the abstract node and adds ACL security.

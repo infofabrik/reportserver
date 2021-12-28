@@ -4,11 +4,11 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.Dadget;
-
-import org.hibernate.annotations.Type;
 
 @Entity
 @Table(name="DADGET_STATIC_HTML")

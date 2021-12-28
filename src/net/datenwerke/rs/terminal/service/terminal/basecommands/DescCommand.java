@@ -12,6 +12,9 @@ import javax.persistence.Transient;
 import javax.persistence.metamodel.ManagedType;
 import javax.persistence.metamodel.Metamodel;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.service.reportengines.table.TableModelHelper;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
@@ -28,9 +31,6 @@ import net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class DescCommand implements TerminalCommandHook {
 

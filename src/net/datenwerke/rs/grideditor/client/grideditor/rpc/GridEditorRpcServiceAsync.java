@@ -2,10 +2,10 @@ package net.datenwerke.rs.grideditor.client.grideditor.rpc;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface GridEditorRpcServiceAsync {
 

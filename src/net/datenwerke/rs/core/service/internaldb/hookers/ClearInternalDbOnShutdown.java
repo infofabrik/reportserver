@@ -2,10 +2,10 @@ package net.datenwerke.rs.core.service.internaldb.hookers;
 
 import javax.servlet.ServletContextEvent;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
-
-import com.google.inject.Inject;
 
 public class ClearInternalDbOnShutdown implements ContextHook {
 

@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.model.pa;
 
-import net.datenwerke.gxtdto.client.model.StringBaseModel;
-
 import com.google.gwt.core.client.GWT;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
+
+import net.datenwerke.gxtdto.client.model.StringBaseModel;
 
 public interface StringBaseModelPa extends PropertyAccess<StringBaseModel> {
 	

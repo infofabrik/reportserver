@@ -1,6 +1,5 @@
 package net.datenwerke.gxtdto.client.utilityservices.toolbar;
 
-import com.google.gwt.dom.client.Style.BorderStyle;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.messages.client.DefaultMessages;

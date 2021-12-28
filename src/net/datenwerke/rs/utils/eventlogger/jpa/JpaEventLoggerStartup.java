@@ -2,13 +2,13 @@ package net.datenwerke.rs.utils.eventlogger.jpa;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.eventlogger.EventLoggerEventHandler;
 import net.datenwerke.rs.utils.eventlogger.EventLoggerService;
 import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 public class JpaEventLoggerStartup {
 

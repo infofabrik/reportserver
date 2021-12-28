@@ -1,5 +1,8 @@
 package net.datenwerke.rs.fileserver.client.fileserver.eximport.im.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
@@ -8,9 +11,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.eximport.im.dto.FileServer
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeFolders;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 
 public class FileServerImporterMainPropertiesPanel extends

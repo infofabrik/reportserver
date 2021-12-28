@@ -1,12 +1,12 @@
 package net.datenwerke.rs.teamspace.client.teamspace;
 
-import net.datenwerke.gxtdto.client.stores.LoadableListStore;
-import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
-import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceRoleDto;
-
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
+
+import net.datenwerke.gxtdto.client.stores.LoadableListStore;
+import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
+import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceRoleDto;
 
 
 /**

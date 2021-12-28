@@ -2,6 +2,10 @@ package net.datenwerke.gf.server.upload;
 
 import java.io.IOException;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gf.client.upload.dto.UploadResponse;
 import net.datenwerke.gf.client.upload.rpc.FileUploadRpcService;
@@ -9,10 +13,6 @@ import net.datenwerke.gf.service.upload.FileUploadService;
 import net.datenwerke.gf.service.upload.UploadedFile;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class FileUploadRpcServiceImpl extends SecuredRemoteServiceServlet implements FileUploadRpcService {

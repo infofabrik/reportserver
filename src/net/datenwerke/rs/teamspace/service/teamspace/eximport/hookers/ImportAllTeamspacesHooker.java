@@ -1,13 +1,13 @@
 package net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.im.ImportConfig;
 import net.datenwerke.eximport.im.entity.EntityImportItemConfig;
 import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.teamspace.service.teamspace.eximport.TeamSpaceExporter;
-
-import com.google.inject.Inject;
 
 public class ImportAllTeamspacesHooker implements ImportAllHook {
 

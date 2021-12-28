@@ -1,5 +1,7 @@
 package net.datenwerke.security.service.treedb;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.annotations.FireForceRemoveEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
@@ -8,8 +10,6 @@ import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityE
 import net.datenwerke.security.service.treedb.events.MoveNodeEvent;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.TreeDBManagerImpl;
-
-import com.google.inject.Inject;
 
 public abstract class LoggedTreeDbManagerImpl<A extends AbstractNode<A>> extends TreeDBManagerImpl<A> {
 

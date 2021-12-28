@@ -1,13 +1,13 @@
 package net.datenwerke.security.service.eventlogger.aop;
 
-import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.security.service.eventlogger.jpa.AfterMergeEntityEvent;
-import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.rs.utils.eventbus.EventBus;
+import net.datenwerke.security.service.eventlogger.jpa.AfterMergeEntityEvent;
+import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
 public class MergeEntityEventInterceptor implements MethodInterceptor {
 

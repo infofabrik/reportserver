@@ -1,12 +1,12 @@
 package net.datenwerke.rs.utils.eventlogger.jpa;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.utils.eventlogger.AuditLogEventHandler;
 import net.datenwerke.rs.utils.eventlogger.EventLoggerEventHandler;
 import net.datenwerke.rs.utils.eventlogger.EventLoggerService;
 import net.datenwerke.rs.utils.eventlogger.annotations.EventLoggerCheckInterval;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
 
 public class JpaEventLoggerModule extends AbstractModule {
 

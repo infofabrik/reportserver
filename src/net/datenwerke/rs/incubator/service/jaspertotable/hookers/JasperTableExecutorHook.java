@@ -2,6 +2,8 @@ package net.datenwerke.rs.incubator.service.jaspertotable.hookers;
 
 import java.io.OutputStream;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.jasper.JasperReportEngine;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
@@ -15,8 +17,6 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorExc
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.incubator.service.jaspertotable.JasperToTableService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class JasperTableExecutorHook implements
 		ReportEngineTakeOverExecutionHook {

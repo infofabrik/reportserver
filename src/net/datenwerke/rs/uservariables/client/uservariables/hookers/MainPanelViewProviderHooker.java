@@ -3,6 +3,9 @@ package net.datenwerke.rs.uservariables.client.uservariables.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHookImpl;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -14,9 +17,6 @@ import net.datenwerke.security.client.security.dto.ReadDto;
 import net.datenwerke.security.client.usermanager.dto.OrganisationalUnitDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class MainPanelViewProviderHooker extends MainPanelViewProviderHookImpl {
 

@@ -9,7 +9,6 @@ import javax.inject.Provider;
 
 import org.apache.commons.io.FileUtils;
 
-import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;

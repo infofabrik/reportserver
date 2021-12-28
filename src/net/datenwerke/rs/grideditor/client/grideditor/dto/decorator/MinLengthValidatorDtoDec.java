@@ -2,14 +2,14 @@ package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
 import java.util.List;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MinLengthValidatorDto;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinLengthValidator.MinLengthMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MinLengthValidatorDto;
 
 /**
  * Dto Decorator for {@link MinLengthValidatorDto}

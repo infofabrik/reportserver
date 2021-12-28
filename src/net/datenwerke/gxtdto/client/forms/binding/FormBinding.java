@@ -5,15 +5,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.utils.StringEscapeUtils;
-
 import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
 import com.sencha.gxt.widget.core.client.form.FormPanelHelper;
 import com.sencha.gxt.widget.core.client.form.IsField;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.utils.StringEscapeUtils;
 
 public class FormBinding {
 

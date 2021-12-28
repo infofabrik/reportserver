@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.gxtdto.client.utilityservices.menu.DwHookableMenu;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.gxtdto.client.utilityservices.menu.DwHookableMenu;
 
 public class TreeDBUIMenuProvider {
 

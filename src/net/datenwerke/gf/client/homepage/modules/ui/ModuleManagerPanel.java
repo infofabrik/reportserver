@@ -3,16 +3,16 @@ package net.datenwerke.gf.client.homepage.modules.ui;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.datenwerke.gf.client.homepage.modules.ClientModule;
-import net.datenwerke.gf.client.homepage.modules.ClientTempModule;
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sencha.gxt.widget.core.client.container.CardLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.MarginData;
+
+import net.datenwerke.gf.client.homepage.modules.ClientModule;
+import net.datenwerke.gf.client.homepage.modules.ClientTempModule;
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 /**
  * 

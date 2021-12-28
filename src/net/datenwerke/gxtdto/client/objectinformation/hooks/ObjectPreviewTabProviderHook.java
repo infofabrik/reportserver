@@ -2,9 +2,9 @@ package net.datenwerke.gxtdto.client.objectinformation.hooks;
 
 import java.util.List;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
-
 import com.sencha.gxt.widget.core.client.Component;
+
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ObjectPreviewTabProviderHook extends Hook {
 

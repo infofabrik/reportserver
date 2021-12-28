@@ -2,15 +2,15 @@ package net.datenwerke.usermanager.ext.service.hookers;
 
 import java.util.Locale;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.UserManagerModule;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class UpdateUserLocalHooker implements LocaleChangedNotificationHook {
 

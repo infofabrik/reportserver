@@ -2,13 +2,13 @@ package net.datenwerke.eximport.hooker;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.ExportSupervisor;
 import net.datenwerke.eximport.hooks.BasicObjectExImporterHelperHookImpl;
 import net.datenwerke.eximport.obj.SimpleItemProperty;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import com.google.inject.Inject;
 
 /**
  * Handles enums.

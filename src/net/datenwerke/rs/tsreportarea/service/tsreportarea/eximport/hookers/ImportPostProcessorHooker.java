@@ -3,6 +3,8 @@ package net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.hookers;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.im.ImportResult;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
@@ -19,8 +21,6 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDi
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFolder;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskRoot;
-
-import com.google.inject.Inject;
 
 /**
  * 

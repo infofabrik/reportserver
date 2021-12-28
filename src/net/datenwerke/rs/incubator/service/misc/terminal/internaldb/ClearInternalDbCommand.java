@@ -1,5 +1,7 @@
 package net.datenwerke.rs.incubator.service.misc.terminal.internaldb;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.resultcache.ResultCacheService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -7,8 +9,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 public class ClearInternalDbCommand implements TerminalCommandHook {
 

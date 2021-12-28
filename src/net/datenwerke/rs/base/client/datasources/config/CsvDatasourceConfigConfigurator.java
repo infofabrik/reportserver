@@ -5,6 +5,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorPanel;
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorPanel.ToolBarEnhancer;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -22,12 +28,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerPr
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
-
-import com.google.gwt.event.logical.shared.HasValueChangeHandlers;
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
 
 public class CsvDatasourceConfigConfigurator implements

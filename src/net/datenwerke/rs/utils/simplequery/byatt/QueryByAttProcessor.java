@@ -13,15 +13,15 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
-import net.datenwerke.rs.utils.reflection.ReflectionService;
-import net.datenwerke.rs.utils.simplequery.SimpleQueryHelper;
-import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
-
 import org.aopalliance.intercept.MethodInvocation;
 import org.hibernate.annotations.common.reflection.MetadataProvider;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.utils.reflection.ReflectionService;
+import net.datenwerke.rs.utils.simplequery.SimpleQueryHelper;
+import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 
 /**
  * 

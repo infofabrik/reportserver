@@ -1,8 +1,8 @@
 package net.datenwerke.usermanager.ext.service;
 
-import net.datenwerke.usermanager.ext.service.vfs.UserManagerVFSModule;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.usermanager.ext.service.vfs.UserManagerVFSModule;
 
 
 public class UserManagerExtModule extends AbstractModule {

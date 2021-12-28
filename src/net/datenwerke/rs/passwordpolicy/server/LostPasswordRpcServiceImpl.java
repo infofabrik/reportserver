@@ -1,14 +1,14 @@
 package net.datenwerke.rs.passwordpolicy.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.passwordpolicy.service.lostpassword.LostPasswordService;
 import net.datenwerke.security.client.security.lostpassword.rpc.LostPasswordRpcService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

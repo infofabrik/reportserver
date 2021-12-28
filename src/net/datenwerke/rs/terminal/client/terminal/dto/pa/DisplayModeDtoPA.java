@@ -1,10 +1,10 @@
 package net.datenwerke.rs.terminal.client.terminal.dto.pa;
 
+import com.sencha.gxt.data.shared.PropertyAccess;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.CorrespondingPoso;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.rs.terminal.client.terminal.dto.DisplayModeDto;
-
-import com.sencha.gxt.data.shared.PropertyAccess;
 
 /**
  * This file was automatically created by DtoAnnotationProcessor, version 0.1

@@ -1,8 +1,8 @@
 package net.datenwerke.gf.client.administration;
 
-import net.datenwerke.gf.client.homepage.modules.ClientMainModule;
-
 import com.google.inject.ImplementedBy;
+
+import net.datenwerke.gf.client.homepage.modules.ClientMainModule;
 
 @ImplementedBy(AdministrationUIServiceImpl.class)
 public interface AdministrationUIService extends ClientMainModule {

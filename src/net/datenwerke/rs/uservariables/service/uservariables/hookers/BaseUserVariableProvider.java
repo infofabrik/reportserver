@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition;
 import net.datenwerke.rs.uservariables.service.uservariables.hooks.UserVariableProviderHook;
 import net.datenwerke.rs.uservariables.service.variabletypes.list.ListUserVariableDefinition;
 import net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableDefinition;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseUserVariableProvider implements UserVariableProviderHook {
 

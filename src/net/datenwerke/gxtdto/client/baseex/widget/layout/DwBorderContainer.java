@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.baseex.widget.layout;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.sencha.gxt.widget.core.client.container.BorderLayoutContainer;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwBorderContainer extends BorderLayoutContainer {
 

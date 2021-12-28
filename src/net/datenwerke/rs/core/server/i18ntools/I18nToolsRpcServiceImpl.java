@@ -4,6 +4,8 @@ import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 import net.datenwerke.rs.core.client.i18tools.rpc.I18nToolsRpcService;
@@ -13,8 +15,6 @@ import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class I18nToolsRpcServiceImpl extends SecuredRemoteServiceServlet implements I18nToolsRpcService {

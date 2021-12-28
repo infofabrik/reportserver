@@ -1,5 +1,8 @@
 package net.datenwerke.rs.base.client.reportengines.table.columnfilter;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.hookers.PreviewEnhancerHook;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.hookers.ToolbarEnhancerEditFilter;
@@ -8,9 +11,6 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.propertywi
 import net.datenwerke.rs.base.client.reportengines.table.cubeconfig.CubeConfigViewFactory;
 import net.datenwerke.rs.base.client.reportengines.table.hooks.TableReportPreviewCellEnhancerHook;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

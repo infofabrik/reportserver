@@ -2,14 +2,14 @@ package net.datenwerke.security.ext.client.security.ui.aclview;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.dto.AceDto;
 import net.datenwerke.security.client.security.dto.SecurityViewInformation;
 import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserManagerTreeBasicSingleton;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class GenericTargetACLView extends BasicACLView<GenericTargetIdentifier> {
 

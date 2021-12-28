@@ -1,12 +1,12 @@
 package net.datenwerke.security.service.usermanager.entities.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.hooks.UserDtoPostProcessorHook;
-
-import com.google.inject.Inject;
 
 public class User2DtoPostProcessor implements Poso2DtoPostProcessor<User, UserDto> {
 

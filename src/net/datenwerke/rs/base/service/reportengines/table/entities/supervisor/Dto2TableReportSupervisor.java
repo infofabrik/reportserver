@@ -2,6 +2,8 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.supervisor;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.filters.PreFi
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.supervisor.Dto2ReportSupervisor;
-
-import com.google.inject.Inject;
 
 public class Dto2TableReportSupervisor extends Dto2ReportSupervisor {
 

@@ -1,8 +1,5 @@
 package net.datenwerke.gf.client.treedb.dnd;
 
-import net.datenwerke.gf.client.treedb.UITree;
-import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
 import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.DropTarget;
 import com.sencha.gxt.dnd.core.client.TreeDropTarget;
@@ -10,6 +7,9 @@ import com.sencha.gxt.fx.client.DragCancelEvent;
 import com.sencha.gxt.fx.client.DragCancelEvent.DragCancelHandler;
 import com.sencha.gxt.fx.client.DragEndEvent;
 import com.sencha.gxt.fx.client.DragEndEvent.DragEndHandler;
+
+import net.datenwerke.gf.client.treedb.UITree;
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 
 public class UITreeDragSource extends RsTreePanelDragSource<AbstractNodeDto> {

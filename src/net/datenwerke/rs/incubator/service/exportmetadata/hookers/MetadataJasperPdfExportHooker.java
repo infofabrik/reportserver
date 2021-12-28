@@ -3,6 +3,8 @@ package net.datenwerke.rs.incubator.service.exportmetadata.hookers;
 import java.util.Collection;
 import java.util.Collections;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.hooks.JasperExportHook;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledRSJasperReport;
@@ -12,8 +14,6 @@ import net.datenwerke.security.service.usermanager.entities.User;
 import net.sf.jasperreports.engine.JRExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
-
-import com.google.inject.Inject;
 
 /**
  * 

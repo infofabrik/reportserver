@@ -1,5 +1,8 @@
 package net.datenwerke.rs.jxlsreport.client.jxlsreport;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.execute.Jxls2Html;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.hookers.JxlsReportConfigHooker;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.hookers.JxlsReportFileDownloadToolbarConfiguratorHooker;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.ui.JxlsReportPreviewViewFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class JxlsReportUiStartup {
 

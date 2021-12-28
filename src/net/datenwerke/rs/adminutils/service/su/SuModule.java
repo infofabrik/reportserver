@@ -1,8 +1,8 @@
 package net.datenwerke.rs.adminutils.service.su;
 
-import net.datenwerke.rs.adminutils.service.su.genrights.GenRightsSuModule;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.rs.adminutils.service.su.genrights.GenRightsSuModule;
 
 public class SuModule extends AbstractModule {
 

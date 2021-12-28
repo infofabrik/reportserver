@@ -5,6 +5,14 @@ import java.util.List;
 
 import javax.persistence.EntityManager;
 
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.NodeList;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.name.Named;
+
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport__;
@@ -18,14 +26,6 @@ import net.datenwerke.rs.utils.xml.XMLUtilsService;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.NodeList;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.name.Named;
 
 /**
  * 

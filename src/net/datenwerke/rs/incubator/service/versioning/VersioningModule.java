@@ -2,10 +2,10 @@ package net.datenwerke.rs.incubator.service.versioning;
 
 
 
+import com.google.inject.Scopes;
+
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.incubator.service.versioning.entities.Revision;
-
-import com.google.inject.Scopes;
 
 public class VersioningModule extends AbstractReportServerModule{
 

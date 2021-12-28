@@ -1,9 +1,9 @@
 package net.datenwerke.security.client.security.hooks;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
-
-import com.google.gwt.resources.client.ImageResource;
 
 /**
  * Defines a hook for attaching generic security targets to the generic security target view.

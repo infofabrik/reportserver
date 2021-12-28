@@ -4,22 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
-import net.datenwerke.gxtdto.client.forms.selection.SelectionMode;
-import net.datenwerke.gxtdto.client.forms.selection.SelectionPopup;
-import net.datenwerke.gxtdto.client.forms.selection.SingleSelectionField;
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
-import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBaseModel;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
-import net.datenwerke.gxtdto.client.utils.handlers.GenericStoreHandler;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,6 +23,22 @@ import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
+import net.datenwerke.gxtdto.client.forms.selection.SelectionMode;
+import net.datenwerke.gxtdto.client.forms.selection.SelectionPopup;
+import net.datenwerke.gxtdto.client.forms.selection.SingleSelectionField;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
+import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBaseModel;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
+import net.datenwerke.gxtdto.client.utils.handlers.GenericStoreHandler;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoIdModelKeyProvider;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

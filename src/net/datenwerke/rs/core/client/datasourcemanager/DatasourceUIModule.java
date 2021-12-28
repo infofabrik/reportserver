@@ -15,8 +15,8 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.Data
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeBasic;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFolders;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFull;
-import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeOnlyMondrian;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeNoMondrian;
+import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeOnlyMondrian;
 
 /**
  * 

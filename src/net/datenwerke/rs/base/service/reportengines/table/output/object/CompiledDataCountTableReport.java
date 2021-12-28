@@ -1,8 +1,8 @@
 package net.datenwerke.rs.base.service.reportengines.table.output.object;
 
-import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
-
 import org.apache.commons.lang3.NotImplementedException;
+
+import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 
 /**
  * 

@@ -2,9 +2,9 @@ package net.datenwerke.rs.core.service.reportmanager;
 
 import java.util.HashMap;
 
-import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-
 import com.google.inject.servlet.SessionScoped;
+
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 @SessionScoped
 public class TemporaryReportMap extends HashMap<String, Report> {

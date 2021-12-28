@@ -5,6 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -14,15 +17,12 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDt
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuMessages;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec;
 import net.datenwerke.rs.saiku.client.saiku.dto.pa.RECSaikuChartDtoPA;
-import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.sencha.gxt.widget.core.client.container.MarginData;
 
 public class Saiku2ChartHTML extends ReportExporterImpl {
 

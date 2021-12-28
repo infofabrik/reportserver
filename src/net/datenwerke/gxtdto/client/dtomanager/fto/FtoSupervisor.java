@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.dtomanager.fto;
 
+import com.sencha.gxt.core.client.ValueProvider;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
-
-import com.sencha.gxt.core.client.ValueProvider;
 
 public interface FtoSupervisor {
 

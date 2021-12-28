@@ -1,12 +1,12 @@
 package net.datenwerke.rs.search.client.search.module;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.rs.search.client.search.locale.SearchMessages;
-
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.button.ToolButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.rs.search.client.search.locale.SearchMessages;
 
 public class SearchAreaMainWidget extends DwContentPanel {
 

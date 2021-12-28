@@ -1,15 +1,15 @@
 package net.datenwerke.rs.remoteaccess.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.remoteaccess.service.sftp.SftpService;
 import net.datenwerke.rs.remoteaccess.service.sftp.genrights.SftpSecurityTarget;
 import net.datenwerke.security.service.security.SecurityService;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 public class RemoteAccessStartup {
 

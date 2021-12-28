@@ -3,12 +3,12 @@ package net.datenwerke.rs.installation;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Provides;
+
+import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
+import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 
 public class ReportServerInstallationModule extends AbstractReportServerModule {
 

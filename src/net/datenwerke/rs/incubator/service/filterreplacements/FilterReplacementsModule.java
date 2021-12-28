@@ -1,10 +1,10 @@
 package net.datenwerke.rs.incubator.service.filterreplacements;
 
+import com.google.inject.assistedinject.FactoryModuleBuilder;
+
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.incubator.service.filterreplacements.agg.AggWrapperFactory;
 import net.datenwerke.rs.incubator.service.filterreplacements.analytics.AnalyticalFunctionWrapperFactory;
-
-import com.google.inject.assistedinject.FactoryModuleBuilder;
 
 public class FilterReplacementsModule extends AbstractReportServerModule {
 

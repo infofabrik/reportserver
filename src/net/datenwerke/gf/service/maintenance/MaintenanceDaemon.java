@@ -4,6 +4,13 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
+
 import net.datenwerke.gf.service.maintenance.event.MaintenanceJobEnded;
 import net.datenwerke.gf.service.maintenance.event.MaintenanceJobFailed;
 import net.datenwerke.gf.service.maintenance.event.MaintenanceJobStarted;
@@ -12,13 +19,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.utils.daemon.DwDaemonImpl;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.UnitOfWork;
 
 public class MaintenanceDaemon extends DwDaemonImpl {
 	

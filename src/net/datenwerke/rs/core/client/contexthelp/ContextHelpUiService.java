@@ -1,9 +1,9 @@
 package net.datenwerke.rs.core.client.contexthelp;
 
-import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
+import com.sencha.gxt.widget.core.client.button.ToolButton;
 
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import com.sencha.gxt.widget.core.client.button.ToolButton;
+import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
 
 public interface ContextHelpUiService {
 

@@ -2,6 +2,8 @@ package net.datenwerke.rs.uservariables.service.eventhandler;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.uservariables.service.locale.UserVarMessages;
 import net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterDefinition;
 import net.datenwerke.rs.uservariables.service.uservariables.UserVariableService;
@@ -10,8 +12,6 @@ import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariab
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleUserVarRemoveEvents implements EventHandler<RemoveEntityEvent> {
 

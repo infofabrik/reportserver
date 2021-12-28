@@ -1,9 +1,9 @@
 package net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.ui;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.dto.DatasourceManagerImportConfigDto;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterConfigPanel;
-
-import com.google.inject.Inject;
 
 public class DatasourceImporterConfigPanel extends ImporterConfigPanel<DatasourceManagerImportConfigDto> {
 

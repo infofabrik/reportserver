@@ -1,5 +1,8 @@
 package net.datenwerke.rs.grideditor.client.grideditor.ui;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -9,9 +12,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeBasic;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.pa.GridEditorReportDtoPA;
 import net.datenwerke.rs.grideditor.client.grideditor.locale.GridEditorMessages;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class GridEditorReportForm extends AbstractReportSimpleForm {
 	

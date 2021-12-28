@@ -5,8 +5,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.core.client.datasourcemanager.config.DatasourceDefinitionConfigConfigurator;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
@@ -17,10 +20,6 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceD
 import net.datenwerke.rs.incubator.client.scriptdatasource.locale.ScriptDatasourceMessages;
 import net.datenwerke.rs.incubator.client.scriptdatasource.ui.ScriptDatasourceForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ScriptDatasourceConfigProviderHooker implements
 		DatasourceDefinitionConfigProviderHook {

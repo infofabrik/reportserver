@@ -1,12 +1,12 @@
 package net.datenwerke.rs.search.client.search.rpc;
 
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.search.client.search.dto.SearchFilterDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("search")
 public interface SearchRpcService extends RemoteService{

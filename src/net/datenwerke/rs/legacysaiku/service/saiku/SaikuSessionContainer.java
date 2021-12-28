@@ -2,13 +2,13 @@ package net.datenwerke.rs.legacysaiku.service.saiku;
 
 import java.util.HashMap;
 
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-
 import org.legacysaiku.olap.query.IQuery;
 
 import com.google.common.collect.BiMap;
 import com.google.common.collect.HashBiMap;
 import com.google.inject.servlet.SessionScoped;
+
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 @SessionScoped
 public class SaikuSessionContainer {

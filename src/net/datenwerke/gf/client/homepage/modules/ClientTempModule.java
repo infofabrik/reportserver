@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.homepage.modules;
 
 
-import net.datenwerke.gf.client.homepage.ui.DwMainViewport;
-
 import com.google.gwt.event.dom.client.MouseEvent;
+
+import net.datenwerke.gf.client.homepage.ui.DwMainViewport;
 
 
 /**

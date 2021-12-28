@@ -3,16 +3,13 @@ package net.datenwerke.gf.client.upload.html5;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gf.client.upload.dto.FileToUpload;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-
-import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.AttachEvent;
 import com.google.gwt.event.logical.shared.AttachEvent.Handler;
 import com.google.gwt.event.shared.HandlerRegistration;
-import com.google.gwt.resources.client.ClientBundle;
-import com.google.gwt.resources.client.CssResource;
 import com.sencha.gxt.widget.core.client.Component;
+
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 
 public class Html5FileUploadListener {

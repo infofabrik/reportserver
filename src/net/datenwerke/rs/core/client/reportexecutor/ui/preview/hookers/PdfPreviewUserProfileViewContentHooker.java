@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCStaticDropdownList;
@@ -15,8 +17,6 @@ import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessage
 import net.datenwerke.rs.core.client.userprofile.UserProfileViewContentHook;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.decorator.UserDtoDec;
-
-import com.google.gwt.user.client.ui.Widget;
 
 public class PdfPreviewUserProfileViewContentHooker implements UserProfileViewContentHook {
 

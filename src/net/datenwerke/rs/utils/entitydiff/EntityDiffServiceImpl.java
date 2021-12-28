@@ -9,6 +9,9 @@ import java.util.List;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuide;
 import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuides;
 import net.datenwerke.rs.utils.entitydiff.config.EntityDiffConfig;
@@ -22,9 +25,6 @@ import net.datenwerke.rs.utils.entitydiff.result.EntityFieldDiffResult;
 import net.datenwerke.rs.utils.entitydiff.result.FieldDiffResult;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class EntityDiffServiceImpl implements EntityDiffService {

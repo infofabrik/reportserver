@@ -4,6 +4,8 @@ import java.util.Collection;
 
 import javax.xml.stream.XMLStreamException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ex.ExportItemConfig;
 import net.datenwerke.eximport.ex.ExportSupervisor;
@@ -11,8 +13,6 @@ import net.datenwerke.eximport.ex.ExporterImpl;
 import net.datenwerke.eximport.ex.objectexporters.BasicObjectExporter;
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporter;
 import net.datenwerke.eximport.ex.objectexporters.EntityObjectExporterFactory;
-
-import com.google.inject.Inject;
 
 public abstract class GenericEntityExporter extends ExporterImpl<EntityExportItemConfig> {
 

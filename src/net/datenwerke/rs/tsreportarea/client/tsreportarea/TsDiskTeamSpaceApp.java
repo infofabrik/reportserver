@@ -1,16 +1,15 @@
 package net.datenwerke.rs.tsreportarea.client.tsreportarea;
 
-import net.datenwerke.gxtdto.client.resources.BaseResources;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.Component;
+
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceApp;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.Component;
 
 /**
  * 

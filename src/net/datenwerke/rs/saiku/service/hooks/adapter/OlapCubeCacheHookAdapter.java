@@ -1,10 +1,11 @@
 package net.datenwerke.rs.saiku.service.hooks.adapter;
 
+import org.olap4j.OlapConnection;
+import org.olap4j.metadata.Cube;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-import org.olap4j.OlapConnection;
-import org.olap4j.metadata.Cube;
 
 /**
  * This file was automatically created by DtoAnnotationProcessor, version 0.1

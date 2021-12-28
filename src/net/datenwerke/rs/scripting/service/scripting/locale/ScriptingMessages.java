@@ -3,8 +3,6 @@ package net.datenwerke.rs.scripting.service.scripting.locale;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.Messages;
 
-import com.google.gwt.core.client.GWT;
-
 
 public interface ScriptingMessages extends Messages{
 

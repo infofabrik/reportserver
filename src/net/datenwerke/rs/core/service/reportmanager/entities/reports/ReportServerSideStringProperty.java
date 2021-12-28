@@ -4,12 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.interfaces.ServerSideProperty;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="REPORT_SS_STRING_PROPERTY")

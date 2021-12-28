@@ -11,6 +11,8 @@ import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.action.ScheduleAsFileAction;
@@ -22,8 +24,6 @@ import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceService;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria;
-
-import com.google.inject.Inject;
 
 @GenerateDto(
 	dtoPackage = "net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto"

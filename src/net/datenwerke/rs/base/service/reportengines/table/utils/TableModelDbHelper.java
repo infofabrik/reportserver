@@ -13,6 +13,8 @@ import java.util.concurrent.ExecutionException;
 
 import javax.inject.Inject;
 
+import com.google.inject.Provider;
+
 import liquibase.database.Database;
 import liquibase.database.DatabaseFactory;
 import liquibase.database.jvm.JdbcConnection;
@@ -26,8 +28,6 @@ import net.datenwerke.rs.base.service.reportengines.table.output.generator.RSTab
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
-
-import com.google.inject.Provider;
 
 public class TableModelDbHelper {
 

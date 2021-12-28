@@ -2,7 +2,6 @@ package net.datenwerke.rs.saiku.service.saiku;
 
 import java.util.HashMap;
 
-import org.saiku.olap.query.IQuery;
 import org.saiku.olap.query2.ThinQuery;
 
 import com.google.common.collect.BiMap;

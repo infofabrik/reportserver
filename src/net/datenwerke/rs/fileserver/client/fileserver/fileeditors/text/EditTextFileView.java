@@ -1,12 +1,12 @@
 package net.datenwerke.rs.fileserver.client.fileserver.fileeditors.text;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class EditTextFileView implements EditFileServerFileHook {
 

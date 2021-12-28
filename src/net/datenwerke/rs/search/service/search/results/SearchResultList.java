@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.sencha.gxt.data.shared.loader.PagingLoadResult;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import com.sencha.gxt.data.shared.loader.PagingLoadResult;
 
 
 @GenerateDto(

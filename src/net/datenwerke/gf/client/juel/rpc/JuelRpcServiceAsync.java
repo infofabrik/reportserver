@@ -1,8 +1,8 @@
 package net.datenwerke.gf.client.juel.rpc;
 
-import net.datenwerke.gf.client.juel.dto.JuelResultDto;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.gf.client.juel.dto.JuelResultDto;
 
 public interface JuelRpcServiceAsync {
 

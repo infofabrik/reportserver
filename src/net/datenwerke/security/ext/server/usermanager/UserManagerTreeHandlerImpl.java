@@ -5,9 +5,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.NoResultException;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 import org.hibernate.proxy.HibernateProxy;
+
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.google.inject.name.Named;
@@ -18,6 +18,7 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.ext.client.usermanager.rpc.UserManagerTreeLoader;

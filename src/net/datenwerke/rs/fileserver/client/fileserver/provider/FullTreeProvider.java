@@ -1,14 +1,14 @@
 package net.datenwerke.rs.fileserver.client.fileserver.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 import net.datenwerke.rs.fileserver.client.fileserver.ui.FileServerManagerMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FullTreeProvider implements Provider<ManagerHelperTree>{
 

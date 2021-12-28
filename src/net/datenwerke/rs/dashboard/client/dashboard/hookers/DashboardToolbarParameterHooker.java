@@ -40,9 +40,9 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.ReportDadgetDto;
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.DashboardToolbarHook;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 import net.datenwerke.rs.dashboard.client.dashboard.ui.DadgetPanel;
+import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardContainer.ConfigType;
 import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardMainComponent;
 import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardView;
-import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardContainer.ConfigType;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto;
 

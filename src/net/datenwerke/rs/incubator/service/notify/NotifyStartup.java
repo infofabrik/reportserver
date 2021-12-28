@@ -1,8 +1,8 @@
 package net.datenwerke.rs.incubator.service.notify;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.inject.Inject;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class NotifyStartup {
 

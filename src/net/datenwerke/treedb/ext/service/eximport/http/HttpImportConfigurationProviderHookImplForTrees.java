@@ -3,6 +3,8 @@ package net.datenwerke.treedb.ext.service.eximport.http;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
@@ -19,8 +21,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportNodeConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import com.google.inject.Provider;
 
 abstract public class HttpImportConfigurationProviderHookImplForTrees<N extends AbstractNode<?>, D extends AbstractNodeDto> implements
 		HttpImportConfigurationProviderHook {

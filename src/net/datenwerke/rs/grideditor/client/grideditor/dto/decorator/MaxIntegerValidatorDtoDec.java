@@ -1,10 +1,10 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxIntegerValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxNumberValidator.MaxNumberMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxIntegerValidatorDto;
 
 /**
  * Dto Decorator for {@link MaxIntegerValidatorDto}

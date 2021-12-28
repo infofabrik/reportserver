@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
 import com.google.inject.Singleton;
+
+import net.datenwerke.security.service.security.annotation.SecurityChecked;
 
 /**
  * Remember to make doGet and doPost public for the security check to take effect.

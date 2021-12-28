@@ -4,6 +4,12 @@ import javax.servlet.ServletContextEvent;
 import javax.servlet.http.HttpSessionEvent;
 import javax.servlet.http.HttpSessionListener;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.servlet.GuiceServletContextListener;
+
 import net.datenwerke.gf.service.lifecycle.LifecycleBindingListener;
 import net.datenwerke.gf.service.lifecycle.events.InitSessionEvent;
 import net.datenwerke.gf.service.lifecycle.events.ShutdownEvent;
@@ -13,12 +19,6 @@ import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 import net.datenwerke.gf.service.lifecycle.hooks.SessionHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.servlet.GuiceServletContextListener;
 
 
 public abstract class DwGwtFrameworkBase extends GuiceServletContextListener implements HttpSessionListener {

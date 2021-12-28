@@ -1,12 +1,12 @@
 package net.datenwerke.rs.base.ext.service.security.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.eximport.ex.entity.EntityExportItemConfig;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity;
-
-import com.google.inject.Inject;
 
 public class ExportAllGenericRightsHooker implements ExportAllHook {
 

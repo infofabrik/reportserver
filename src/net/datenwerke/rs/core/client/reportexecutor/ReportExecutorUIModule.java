@@ -1,9 +1,9 @@
 package net.datenwerke.rs.core.client.reportexecutor;
 
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
-
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
 
 /**
  * 

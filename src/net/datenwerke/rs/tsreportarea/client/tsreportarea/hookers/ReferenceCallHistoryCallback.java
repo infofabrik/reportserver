@@ -2,6 +2,9 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 
 import java.util.Collection;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.history.HistoryCallback;
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -15,9 +18,6 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNode
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.event.shared.EventBus;
-import com.google.inject.Inject;
 
 public class ReferenceCallHistoryCallback implements HistoryCallback {
 

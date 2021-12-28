@@ -4,8 +4,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.administration.hooks.AdminModuleProviderHook;
-import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
-import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.license.client.security.LicenseGenericTargetIdentifier;

@@ -3,6 +3,14 @@ package net.datenwerke.rs.uservariables.client.uservariables;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.sencha.gxt.data.shared.loader.ListLoadResult;
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
+
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.callback.DaoAsyncCallback;
@@ -13,14 +21,6 @@ import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableDefi
 import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableInstanceDto;
 import net.datenwerke.rs.uservariables.client.uservariables.rpc.UserVariablesRpcServiceAsync;
 import net.datenwerke.security.client.usermanager.dto.AbstractUserManagerNodeDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
-import com.sencha.gxt.data.shared.loader.ListLoadResult;
-import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
 
 public class UserVariableDao extends Dao {
 

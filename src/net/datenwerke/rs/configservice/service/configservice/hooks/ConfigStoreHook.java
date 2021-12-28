@@ -1,9 +1,9 @@
 package net.datenwerke.rs.configservice.service.configservice.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
 import net.datenwerke.rs.configservice.service.configservice.AbstractConfigStore;
-
-import com.google.inject.Provider;
 
 public class ConfigStoreHook extends ObjectHook<AbstractConfigStore> {
 

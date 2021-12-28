@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.baseex.widget.menu;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.sencha.gxt.widget.core.client.menu.Menu;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwMenu extends Menu {
 

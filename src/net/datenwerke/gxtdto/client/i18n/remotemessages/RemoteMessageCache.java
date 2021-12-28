@@ -2,11 +2,11 @@ package net.datenwerke.gxtdto.client.i18n.remotemessages;
 
 import java.util.HashMap;
 
-import net.datenwerke.gxtdto.client.i18n.remotemessages.rpc.RemoteMessageRpcServiceAsync;
-
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.gxtdto.client.i18n.remotemessages.rpc.RemoteMessageRpcServiceAsync;
 
 
 public class RemoteMessageCache {

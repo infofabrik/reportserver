@@ -1,10 +1,10 @@
 package net.datenwerke.rs.core.service.reportserver;
 
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesServiceImpl;
-
-import com.google.inject.Singleton;
 
 public class ReportServerModule extends AbstractReportServerModule {
 

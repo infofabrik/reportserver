@@ -1,11 +1,5 @@
 package net.datenwerke.gxtdto.client.baseex.widget;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.CssIconContainer;
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-import net.datenwerke.rs.theme.client.tree.RsTreeAppearance;
-
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.DomEvent;
 import com.google.gwt.resources.client.ImageResource;
@@ -16,6 +10,12 @@ import com.sencha.gxt.data.shared.TreeStore;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.TreeStyle;
 import com.sencha.gxt.widget.core.client.tree.TreeView;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.CssIconContainer;
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
+import net.datenwerke.rs.theme.client.tree.RsTreeAppearance;
 
 public class DwTreePanel<M> extends Tree<M, String> {
 	

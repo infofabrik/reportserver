@@ -1,9 +1,9 @@
 package net.datenwerke.rs.core.client.reportexecutor.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
-
-import com.google.inject.Provider;
 
 /**
  * 

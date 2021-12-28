@@ -1,8 +1,8 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.ValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.ValidatorDto;
 
 /**
  * Dto Decorator for {@link ValidatorDto}

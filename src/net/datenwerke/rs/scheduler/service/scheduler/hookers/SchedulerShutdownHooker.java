@@ -2,10 +2,10 @@ package net.datenwerke.rs.scheduler.service.scheduler.hookers;
 
 import javax.servlet.ServletContextEvent;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
-
-import com.google.inject.Inject;
 
 public class SchedulerShutdownHooker implements ContextHook {
 

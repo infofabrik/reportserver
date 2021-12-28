@@ -3,14 +3,14 @@ package net.datenwerke.rs.incubator.client.reportmetadata.hookers;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.incubator.client.reportmetadata.ui.ReportMetadataView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

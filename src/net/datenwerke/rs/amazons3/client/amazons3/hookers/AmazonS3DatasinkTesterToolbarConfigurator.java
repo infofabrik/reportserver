@@ -13,9 +13,9 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
 import net.datenwerke.gxtdto.client.servercommunication.callback.TimeoutCallback;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.amazons3.client.amazons3.AmazonS3Dao;
 import net.datenwerke.rs.amazons3.client.amazons3.dto.AmazonS3DatasinkDto;
+import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 

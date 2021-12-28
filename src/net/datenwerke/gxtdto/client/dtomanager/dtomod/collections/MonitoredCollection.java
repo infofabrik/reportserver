@@ -3,13 +3,13 @@ package net.datenwerke.gxtdto.client.dtomanager.dtomod.collections;
 import java.io.Serializable;
 import java.util.Collection;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 import net.datenwerke.gxtdto.client.dtomanager.dtomod.ObjectModificationsTracked;
 import net.datenwerke.gxtdto.client.eventbus.EventBusHelper;
 import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
 import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
-
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 public class MonitoredCollection<E, C extends Collection<E>> implements ObjectModificationsTracked<C>, Serializable {
 

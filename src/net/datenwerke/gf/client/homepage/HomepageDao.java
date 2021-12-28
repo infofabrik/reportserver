@@ -2,9 +2,9 @@ package net.datenwerke.gf.client.homepage;
 
 import javax.inject.Inject;
 
-import net.datenwerke.gf.client.homepage.rpc.HomepageRpcServiceAsync;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.gf.client.homepage.rpc.HomepageRpcServiceAsync;
 
 public class HomepageDao {
 	

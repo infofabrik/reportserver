@@ -1,12 +1,12 @@
 package net.datenwerke.security.service.security;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.eventhandler.SecurityIntegrityValidator;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
 
 @Singleton
 public class SecurityStartup {

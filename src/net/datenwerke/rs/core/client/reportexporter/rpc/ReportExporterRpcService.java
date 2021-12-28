@@ -2,7 +2,6 @@ package net.datenwerke.rs.core.client.reportexporter.rpc;
 
 import java.util.List;
 
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 

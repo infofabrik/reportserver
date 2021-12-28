@@ -3,6 +3,9 @@ package net.datenwerke.rs.core.client.reportmanager.provider;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeManagerDao;
 import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.core.client.reportmanager.dto.posomap.ReportFolderDto2PosoMap;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportManagerNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FolderTreeProvider implements Provider<ManagerHelperTree>{
 

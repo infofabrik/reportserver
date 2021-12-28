@@ -7,19 +7,18 @@ import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Field;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 @Entity
 @Table(name="DASHBOARD_DASHBOARD_NODE")

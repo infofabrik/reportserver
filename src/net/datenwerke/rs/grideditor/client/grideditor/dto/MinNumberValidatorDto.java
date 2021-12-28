@@ -2,6 +2,8 @@ package net.datenwerke.rs.grideditor.client.grideditor.dto;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.dtomanager.PropertyAccessor;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.ValidatorDto
 import net.datenwerke.rs.grideditor.client.grideditor.dto.pa.MinNumberValidatorDtoPA;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.posomap.MinNumberValidatorDto2PosoMap;
 import net.datenwerke.rs.grideditor.service.grideditor.definition.validator.MinIntegerValidator;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * Dto for {@link MinIntegerValidator}

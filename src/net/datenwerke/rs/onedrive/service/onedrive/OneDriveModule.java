@@ -1,10 +1,5 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-
-import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_ID;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DATASINK_NAME;
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_DISABLED;
@@ -12,6 +7,11 @@ import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROP
 
 import java.util.Optional;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.onedrive.service.onedrive.annotations.DefaultOneDriveDatasink;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 

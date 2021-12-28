@@ -1,13 +1,13 @@
 package net.datenwerke.rs.dsbundle.client.dsbundle.config;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.base.client.datasources.config.DatabaseDatasourceConfigConfigurator;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
-
-import com.google.inject.Inject;
 
 public class DatabaseBundleConfigConfigurator extends
 	DatabaseDatasourceConfigConfigurator {

@@ -1,16 +1,5 @@
 package net.datenwerke.rs.core.client.parameters.helper;
 
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwHorizontalFlowLayoutContainer;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.rs.core.client.parameters.ParameterUIService;
-import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
-import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
-import net.datenwerke.rs.core.client.parameters.locale.ParametersMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.BaseIconComponent;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
@@ -23,6 +12,17 @@ import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwHorizontalFlowLayoutContainer;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.rs.core.client.parameters.ParameterUIService;
+import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
+import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
+import net.datenwerke.rs.core.client.parameters.locale.ParametersMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.BaseIconComponent;
 
 public class ParameterFieldWrapperForFrontend extends DwHorizontalFlowLayoutContainer {
 

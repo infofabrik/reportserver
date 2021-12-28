@@ -4,6 +4,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
@@ -14,8 +16,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.decorator.ReportD
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
-
-import com.google.inject.Inject;
 
 /**
  * 

@@ -18,15 +18,15 @@ import javax.persistence.Transient;
 import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
-import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
-import net.datenwerke.rs.utils.reflection.ReflectionService;
-
 import org.hibernate.Hibernate;
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
+import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
+import net.datenwerke.rs.utils.reflection.ReflectionService;
 
 public class EntityUtils {
 

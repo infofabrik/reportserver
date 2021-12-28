@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.hooks.DbFilterExecutorHook;
 import net.datenwerke.rs.base.service.dbhelper.hooks.FilterReplacementProviderHook;
@@ -27,9 +30,6 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filte
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.FilterSpec;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FilterExecutorHooker implements DbFilterExecutorHook {
 

@@ -1,13 +1,13 @@
 package net.datenwerke.gxtdto.client.baseex.widget.mb;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 
 public class DwConfirmMessageBox extends ConfirmMessageBox {
 

@@ -2,6 +2,8 @@ package net.datenwerke.rs.authenticator.service.pam;
 
 import javax.persistence.NoResultException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.authenticator.client.login.dto.UserPasswordAuthToken;
 import net.datenwerke.rs.authenticator.client.login.pam.UserPasswordClientPAM;
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
@@ -10,8 +12,6 @@ import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.ReportServerPAM;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class UserPasswordPAM implements ReportServerPAM{
 	

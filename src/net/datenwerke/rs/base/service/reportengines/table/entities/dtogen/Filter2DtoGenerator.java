@@ -3,6 +3,8 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.dtogen;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoGenerator;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
@@ -12,8 +14,6 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.FilterRangeDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.FilterDtoDec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.FilterRange;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter;
-
-import com.google.inject.Inject;
 
 /**
  * Poso2DtoGenerator for Filter

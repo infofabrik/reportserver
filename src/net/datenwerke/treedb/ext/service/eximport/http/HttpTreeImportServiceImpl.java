@@ -7,6 +7,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.ExportService;
 import net.datenwerke.eximport.ex.Exporter;
@@ -15,8 +17,6 @@ import net.datenwerke.eximport.obj.ReferenceItemProperty;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.eximport.service.eximport.im.http.HttpImportService;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
-
-import com.google.inject.Provider;
 
 public class HttpTreeImportServiceImpl implements HttpTreeImportService {
 

@@ -3,6 +3,10 @@ package net.datenwerke.rs.uservariables.service.parameters;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
@@ -12,10 +16,6 @@ import net.datenwerke.rs.uservariables.service.uservariables.UserVariableService
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition;
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableInstance;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
 
 /**
  * 

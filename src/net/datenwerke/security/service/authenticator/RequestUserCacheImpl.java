@@ -3,12 +3,12 @@ package net.datenwerke.security.service.authenticator;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRuntimeException;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class RequestUserCacheImpl implements RequestUserCache {
 

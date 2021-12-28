@@ -3,13 +3,13 @@ package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.CustomValidatorDto;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 import com.sencha.gxt.widget.core.client.form.validator.AbstractValidator;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.CustomValidatorDto;
 
 /**
  * Dto Decorator for {@link CustomValidatorDto}

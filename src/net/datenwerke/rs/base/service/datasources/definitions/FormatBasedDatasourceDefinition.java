@@ -7,14 +7,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToOne;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnector;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.hibernate.envers.Audited;
 
 @GenerateDto(
 	dtoPackage="net.datenwerke.rs.base.client.datasources.dto",

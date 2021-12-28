@@ -3,6 +3,11 @@ package net.datenwerke.rs.base.service.dbhelper;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Scopes;
+import com.google.inject.assistedinject.FactoryProvider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.annotations.QueryConditionInMaxSize;
 import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
@@ -11,11 +16,6 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QuoteHelper;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.Scopes;
-import com.google.inject.assistedinject.FactoryProvider;
 
 public class DBHelperModule extends AbstractReportServerModule {
 

@@ -1,12 +1,12 @@
 package net.datenwerke.security.ext.client.usermanager;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.security.client.usermanager.dto.SexDto;
 import net.datenwerke.security.ext.client.usermanager.rpc.UserManagerTreeLoaderAsync;
 import net.datenwerke.treedb.client.treedb.TreeDbFtoConverter;
 import net.datenwerke.treedb.client.treedb.TreeDbFtoConverter.TypeConverter;
 import net.datenwerke.treedb.client.treedb.TreeDbLoaderDao;
-
-import com.google.inject.Inject;
 
 public class UserManagerTreeLoaderDao extends TreeDbLoaderDao {
 

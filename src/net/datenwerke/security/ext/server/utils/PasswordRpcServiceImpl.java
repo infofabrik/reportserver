@@ -3,6 +3,12 @@ package net.datenwerke.security.ext.server.utils;
 
 import javax.inject.Provider;
 
+import org.apache.commons.codec.binary.Base64;
+
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.security.ext.client.password.PasswordRpcService;
@@ -13,12 +19,6 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.codec.binary.Base64;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

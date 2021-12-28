@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.datenwerke.gf.client.administration.AdministrationUIService;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
@@ -21,10 +23,6 @@ import net.datenwerke.rs.base.client.parameters.separator.SeparatorConfigurator;
 import net.datenwerke.rs.base.client.parameters.string.TextParameterConfigurator;
 import net.datenwerke.rs.core.client.parameters.config.ParameterConfigurator;
 import net.datenwerke.rs.core.client.parameters.hooks.ParameterProviderHook;
-import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

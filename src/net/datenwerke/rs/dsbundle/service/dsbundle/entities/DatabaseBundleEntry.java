@@ -11,13 +11,13 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
-
-import org.hibernate.envers.Audited;
-import net.datenwerke.gf.base.service.annotations.Field;
 
 @Entity
 @Table(name="DATABASE_BUNDLE_ENTRY")

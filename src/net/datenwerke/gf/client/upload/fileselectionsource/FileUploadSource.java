@@ -3,6 +3,27 @@ package net.datenwerke.gf.client.upload.fileselectionsource;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.json.client.JSONObject;
+import com.google.gwt.json.client.JSONString;
+import com.google.gwt.json.client.JSONValue;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.util.DelayedTask;
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
+import com.sencha.gxt.widget.core.client.button.TextButton;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.event.SubmitEvent;
+import com.sencha.gxt.widget.core.client.event.SubmitEvent.SubmitHandler;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.FileUploadField;
+import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gf.client.download.dto.DownloadProperties;
 import net.datenwerke.gf.client.fileselection.FileSelectionWidget;
 import net.datenwerke.gf.client.fileselection.FileSelectorSource;
@@ -20,32 +41,11 @@ import net.datenwerke.gf.client.upload.locale.UploadMessages;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.http.client.Request;
-import com.google.gwt.json.client.JSONObject;
-import com.google.gwt.json.client.JSONString;
-import com.google.gwt.json.client.JSONValue;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.util.DelayedTask;
-import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
-import com.sencha.gxt.widget.core.client.box.ProgressMessageBox;
-import com.sencha.gxt.widget.core.client.button.TextButton;
-import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.event.SubmitEvent;
-import com.sencha.gxt.widget.core.client.event.SubmitEvent.SubmitHandler;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.FileUploadField;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 
 public class FileUploadSource 

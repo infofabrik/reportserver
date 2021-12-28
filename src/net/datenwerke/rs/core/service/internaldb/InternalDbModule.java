@@ -1,10 +1,10 @@
 package net.datenwerke.rs.core.service.internaldb;
 
-import net.datenwerke.rs.resultcache.ResultCacheService;
-import net.datenwerke.rs.resultcache.ResultCacheServiceImpl;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.resultcache.ResultCacheService;
+import net.datenwerke.rs.resultcache.ResultCacheServiceImpl;
 
 public class InternalDbModule extends AbstractModule {
 

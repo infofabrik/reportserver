@@ -2,13 +2,13 @@ package net.datenwerke.rs.scripting.client.scripting.codemirror.plugin;
 
 import java.util.List;
 
+import com.google.gwt.event.dom.client.KeyPressEvent;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorTextArea;
 import net.datenwerke.gxtdto.client.codemirror.hooks.CodeMirrorKeyboardHook;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.scripting.client.scripting.ScriptingDao;
-
-import com.google.gwt.event.dom.client.KeyPressEvent;
-import com.google.inject.Inject;
 
 public class GroovyImportCompleter implements CodeMirrorKeyboardHook {
 

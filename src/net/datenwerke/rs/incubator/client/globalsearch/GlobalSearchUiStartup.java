@@ -1,11 +1,11 @@
 package net.datenwerke.rs.incubator.client.globalsearch;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.homepage.hooks.HomepageHeaderContentHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.incubator.client.globalsearch.hookers.GlobalSearchHooker;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class GlobalSearchUiStartup {
 

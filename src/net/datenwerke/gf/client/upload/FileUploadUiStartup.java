@@ -1,11 +1,11 @@
 package net.datenwerke.gf.client.upload;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.upload.simpleform.FileUploadProvider;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FileUploadUiStartup {
 

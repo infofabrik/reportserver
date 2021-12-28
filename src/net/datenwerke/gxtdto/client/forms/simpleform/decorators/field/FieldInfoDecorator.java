@@ -3,9 +3,6 @@ package net.datenwerke.gxtdto.client.forms.simpleform.decorators.field;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
@@ -20,6 +17,9 @@ import com.sencha.gxt.widget.core.client.event.ShowEvent.ShowHandler;
 import com.sencha.gxt.widget.core.client.form.error.SideErrorHandler.SideErrorTooltipAppearance;
 import com.sencha.gxt.widget.core.client.tips.ToolTip;
 import com.sencha.gxt.widget.core.client.tips.ToolTipConfig;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

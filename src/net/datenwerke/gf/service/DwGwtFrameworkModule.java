@@ -1,10 +1,10 @@
 package net.datenwerke.gf.service;
 
+import com.google.inject.AbstractModule;
+
 import net.datenwerke.gf.service.download.FileDownloadModule;
 import net.datenwerke.gf.service.tempfile.TempFileModule;
 import net.datenwerke.gf.service.upload.FileUploadModule;
-
-import com.google.inject.AbstractModule;
 
 public class DwGwtFrameworkModule extends AbstractModule {
 	

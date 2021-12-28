@@ -4,10 +4,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
-import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-import net.datenwerke.rs.grideditor.client.grideditor.dto.LongSelectionListEditorDto;
-
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
 import com.sencha.gxt.data.shared.Converter;
 import com.sencha.gxt.data.shared.ListStore;
@@ -16,6 +12,10 @@ import com.sencha.gxt.widget.core.client.form.ComboBox;
 import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
+
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.LongSelectionListEditorDto;
 
 /**
  * Dto Decorator for {@link LongSelectionListEditorDto}

@@ -14,6 +14,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Injector;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.eximport.ex.annotations.ExportableField;
@@ -31,10 +35,6 @@ import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.treedb.actions.ReadAction;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Injector;
 
 @Entity
 @Table(name="FILESEL_PARAM_SEL_FILE")

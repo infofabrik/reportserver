@@ -1,11 +1,11 @@
 package net.datenwerke.scheduler.service.scheduler.locale;
 
+import com.google.gwt.core.client.GWT;
+
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Days;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Months;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Nth;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits;
-
-import com.google.gwt.core.client.GWT;
 
 public class LocaliseDateHelper {
 

@@ -3,9 +3,9 @@ package net.datenwerke.rs.globalconstants.client.globalconstants.rpc;
 import java.util.Collection;
 import java.util.List;
 
-import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConstantDto;
 
 public interface GlobalConstantsRpcServiceAsync {
 

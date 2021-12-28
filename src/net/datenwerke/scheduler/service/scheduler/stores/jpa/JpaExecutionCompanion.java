@@ -5,6 +5,13 @@ import java.util.Date;
 
 import javax.persistence.EntityManager;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
 import net.datenwerke.scheduler.service.scheduler.entities.Outcome;
@@ -13,13 +20,6 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogE
 import net.datenwerke.scheduler.service.scheduler.entities.history.JobEntry;
 import net.datenwerke.scheduler.service.scheduler.stores.JobExecutionCompanionImpl;
 import net.datenwerke.scheduler.service.scheduler.tasks.SchedulerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.UnitOfWork;
 
 public class JpaExecutionCompanion extends JobExecutionCompanionImpl {
 	

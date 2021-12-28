@@ -1,15 +1,14 @@
 package net.datenwerke.treedb.service.treedb.dtogen;
 
 import java.util.ArrayList;
-import java.util.Stack;
+
+import com.google.inject.Inject;
 
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.treedb.client.treedb.dto.decorator.AbstractNodeDtoDec;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import com.google.inject.Inject;
 
 /**
  * 

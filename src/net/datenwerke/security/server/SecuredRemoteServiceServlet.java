@@ -2,12 +2,12 @@ package net.datenwerke.security.server;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.inject.Singleton;
+
 import net.datenwerke.gf.base.server.DwRemoteServiceServlet;
 import net.datenwerke.gf.base.server.RemoteRequest;
 import net.datenwerke.gf.base.server.gwtstacktrace.annotations.GWTInitClientException;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
-import com.google.inject.Singleton;
 
 @Singleton
 @SecurityChecked(

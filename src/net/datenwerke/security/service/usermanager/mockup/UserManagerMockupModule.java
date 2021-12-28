@@ -1,12 +1,12 @@
 package net.datenwerke.security.service.usermanager.mockup;
 
+import com.google.inject.AbstractModule;
+import com.google.inject.Scopes;
+
 import net.datenwerke.rs.utils.crypto.PasswordHasher;
 import net.datenwerke.security.service.crypto.passwordhasher.DummyPasswordHasherImpl;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserManagerServiceImpl;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Scopes;
 
 /**
  * 

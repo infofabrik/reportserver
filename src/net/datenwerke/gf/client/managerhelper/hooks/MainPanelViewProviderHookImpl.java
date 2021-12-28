@@ -5,11 +5,11 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
 
 public abstract class MainPanelViewProviderHookImpl implements MainPanelViewProviderHook {
 

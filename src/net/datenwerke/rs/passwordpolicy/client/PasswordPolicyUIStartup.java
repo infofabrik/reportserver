@@ -1,9 +1,9 @@
 package net.datenwerke.rs.passwordpolicy.client;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.authenticator.client.login.PostAuthenticateClientHook;
-
-import com.google.inject.Inject;
 
 public class PasswordPolicyUIStartup {
 

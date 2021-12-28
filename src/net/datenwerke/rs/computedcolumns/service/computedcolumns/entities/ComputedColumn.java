@@ -4,12 +4,12 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="COMPUTED_COLUMN")

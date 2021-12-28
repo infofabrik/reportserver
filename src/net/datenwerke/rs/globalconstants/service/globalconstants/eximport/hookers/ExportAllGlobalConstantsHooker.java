@@ -1,12 +1,12 @@
 package net.datenwerke.rs.globalconstants.service.globalconstants.eximport.hookers;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.eximport.ex.entity.EntityExportItemConfig;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.globalconstants.service.globalconstants.GlobalConstantsService;
 import net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant;
-
-import com.google.inject.Inject;
 
 public class ExportAllGlobalConstantsHooker implements ExportAllHook {
 

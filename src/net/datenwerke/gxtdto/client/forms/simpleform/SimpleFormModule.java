@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.forms.simpleform;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorBigDecimal;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorDouble;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStringValidatorFloat;
-
-import com.google.gwt.inject.client.AbstractGinModule;
 
 /**
  * 

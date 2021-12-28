@@ -2,6 +2,7 @@ package net.datenwerke.rs.box.service.box.hooker;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;

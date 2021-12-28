@@ -2,12 +2,12 @@ package net.datenwerke.gf.client.fileselection;
 
 import java.util.ArrayList;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 import net.datenwerke.gf.client.fileselection.rpc.FileSelectionRpcServiceAsync;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class FileSelectionDao extends Dao {
 

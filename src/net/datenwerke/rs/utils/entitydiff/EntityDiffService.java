@@ -1,9 +1,9 @@
 package net.datenwerke.rs.utils.entitydiff;
 
+import com.google.inject.ImplementedBy;
+
 import net.datenwerke.rs.utils.entitydiff.config.EntityDiffConfig;
 import net.datenwerke.rs.utils.entitydiff.result.EntityDiffResult;
-
-import com.google.inject.ImplementedBy;
 
 @ImplementedBy(EntityDiffServiceImpl.class)
 public interface EntityDiffService {

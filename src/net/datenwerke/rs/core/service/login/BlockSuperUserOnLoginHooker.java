@@ -1,12 +1,12 @@
 package net.datenwerke.rs.core.service.login;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.client.login.resultinfos.AccountInhibitionAuthenticateResultInfo;
 import net.datenwerke.security.service.authenticator.AuthenticationResult;
 import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
 
 public class BlockSuperUserOnLoginHooker implements PostAuthenticateHook {
 

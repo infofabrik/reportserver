@@ -1,12 +1,12 @@
 package net.datenwerke.scheduler.service.scheduler;
 
-import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.scheduler.service.scheduler.events.SchedulerDaemonRessurectionEvent;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.rs.utils.eventbus.EventBus;
+import net.datenwerke.scheduler.service.scheduler.events.SchedulerDaemonRessurectionEvent;
 
 public class SchedulerWatchdog implements Runnable {
 	

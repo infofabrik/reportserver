@@ -1,5 +1,9 @@
 package net.datenwerke.gf.client.administration;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.administration.security.AdminGenericTargetIdentifier;
 import net.datenwerke.gf.client.administration.security.AdminSecurityTargetDomainHooker;
 import net.datenwerke.gf.client.administration.ui.AdministrationNavPanel;
@@ -15,10 +19,6 @@ import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.gwt.event.shared.EventBus;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

@@ -1,32 +1,16 @@
 package net.datenwerke.rs.base.ext.service.parameters.fileselection.hookers;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
-import net.datenwerke.gf.service.upload.FileUploadService;
-import net.datenwerke.gf.service.upload.UploadedFile;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.server.dtomanager.DtoService;
-import net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.FileSelectionParameterDefinitionDto;
-import net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.decorator.FileSelectionParameterInstanceDtoDec;
-import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDefinition;
-import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDtoHelper;
-import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterInstance;
-import net.datenwerke.rs.base.ext.service.parameters.fileselection.SelectedParameterFile;
-import net.datenwerke.rs.base.ext.service.parameters.fileselection.UploadedParameterFile;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.decorator.ReportDtoDec;
-import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.core.service.reportmanager.hooks.ReportCreatedFromDtoHook;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
-import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode;
-import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
-
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
+
+import net.datenwerke.gf.service.upload.FileUploadService;
+import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.base.ext.service.parameters.fileselection.FileSelectionParameterDtoHelper;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
+import net.datenwerke.rs.core.service.reportmanager.hooks.ReportCreatedFromDtoHook;
+import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 
 public class FileSelectionParameterReportFromDtoHooker implements
 		ReportCreatedFromDtoHook {

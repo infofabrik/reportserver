@@ -14,6 +14,7 @@ import javax.mail.MessagingException;
 import org.apache.commons.configuration2.Configuration;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
+import net.datenwerke.rs.amazons3.service.amazons3.action.ScheduleAsAmazonS3FileAction;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportJobForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
@@ -21,7 +22,6 @@ import net.datenwerke.rs.base.service.parameterreplacements.provider.UserListFor
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.MailTemplate;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
-import net.datenwerke.rs.amazons3.service.amazons3.action.ScheduleAsAmazonS3FileAction;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;

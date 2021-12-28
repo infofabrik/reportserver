@@ -2,8 +2,11 @@ package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.filters;
 
 import java.util.List;
 
+import com.sencha.gxt.widget.core.client.button.ToggleButton;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwToggleButton;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwHookableToolbar;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
@@ -13,10 +16,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks.Sch
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto;
-
-import com.sencha.gxt.widget.core.client.button.ToggleButton;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 public class MyOrToMeScheduledEntriesFilter implements ScheduledReportToolbarListFilter {
 

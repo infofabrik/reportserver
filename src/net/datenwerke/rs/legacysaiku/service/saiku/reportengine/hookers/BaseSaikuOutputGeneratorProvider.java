@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.SaikuOutputGeneratorProviderHook;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuCSVOutputGenerator;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuChartHTMLOutputGenerator;
@@ -11,9 +14,6 @@ import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuPDFOutputGenerator;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuXLSOutputGenerator;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseSaikuOutputGeneratorProvider implements SaikuOutputGeneratorProviderHook{
 

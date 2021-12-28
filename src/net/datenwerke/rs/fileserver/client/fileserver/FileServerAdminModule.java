@@ -1,15 +1,14 @@
 package net.datenwerke.rs.fileserver.client.fileserver;
 
-import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
-import net.datenwerke.rs.fileserver.client.fileserver.ui.FileServerManagerPanel;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.gf.client.administration.interfaces.AdminModule;
+import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
+import net.datenwerke.rs.fileserver.client.fileserver.ui.FileServerManagerPanel;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

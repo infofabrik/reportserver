@@ -3,6 +3,14 @@ package net.datenwerke.rs.base.service.reportengines.table.output.generator;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import org.apache.commons.configuration2.Configuration;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledXLSTableReport;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledXLSXTableReport;
@@ -13,14 +21,6 @@ import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
-
-import org.apache.commons.configuration2.Configuration;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
-import com.google.inject.Inject;
  
 public class XLSOutputGenerator extends RSTableOutputGenerator{
 

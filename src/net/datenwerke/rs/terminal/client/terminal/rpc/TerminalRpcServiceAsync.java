@@ -1,9 +1,9 @@
 package net.datenwerke.rs.terminal.client.terminal.rpc;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface TerminalRpcServiceAsync {
 

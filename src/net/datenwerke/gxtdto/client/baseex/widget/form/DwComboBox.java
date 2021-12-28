@@ -1,8 +1,5 @@
 package net.datenwerke.gxtdto.client.baseex.widget.form;
 
-import net.datenwerke.rs.theme.client.field.RsTriggerFieldAppearance;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.sencha.gxt.cell.core.client.form.ComboBoxCell;
@@ -11,6 +8,9 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.widget.core.client.ListView;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.form.ComboBox;
+
+import net.datenwerke.rs.theme.client.field.RsTriggerFieldAppearance;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwComboBox<M> extends ComboBox<M> {
 

@@ -10,9 +10,9 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCPasswordField;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.box.client.box.dto.pa.BoxDatasinkDtoPA;
+import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 
 public class BoxDatasinkForm extends SimpleFormView {
 

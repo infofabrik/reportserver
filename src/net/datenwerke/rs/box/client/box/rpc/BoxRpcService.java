@@ -7,11 +7,11 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
+import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
-import net.datenwerke.rs.box.client.box.dto.BoxDatasinkDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 @RemoteServiceRelativePath("box")

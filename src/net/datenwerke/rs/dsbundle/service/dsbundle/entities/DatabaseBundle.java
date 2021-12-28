@@ -9,15 +9,15 @@ import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.dsbundle.service.dsbundle.locale.DatasourceBundleMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
-
-import org.hibernate.envers.Audited;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 @Entity
 @Table(name="DB_BUNDLE_DATASOURCE")

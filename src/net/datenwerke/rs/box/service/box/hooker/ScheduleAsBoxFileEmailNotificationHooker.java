@@ -18,10 +18,10 @@ import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJu
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportJobForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserListForJuelPrinter;
+import net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction;
 import net.datenwerke.rs.core.service.mail.MailService;
 import net.datenwerke.rs.core.service.mail.MailTemplate;
 import net.datenwerke.rs.core.service.mail.SimpleMail;
-import net.datenwerke.rs.box.service.box.action.ScheduleAsBoxFileAction;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;

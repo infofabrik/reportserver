@@ -2,6 +2,12 @@ package net.datenwerke.treedb.client.treedb;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
+import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
+import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
+
 import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
@@ -12,12 +18,6 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.NeedForcefulDeleteClientException;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.rpc.RPCTreeManagerAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
 
 abstract public class TreeDbManagerDao<M extends RPCTreeManagerAsync> extends Dao {
 

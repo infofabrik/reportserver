@@ -3,12 +3,12 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.sencha.gxt.data.shared.ListStore;
+
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.FilterRangeDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
-
-import com.sencha.gxt.data.shared.ListStore;
 
 /**
  * 

@@ -1,5 +1,8 @@
 package net.datenwerke.rs.fileserver.service.fileserver.eximport;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
@@ -12,9 +15,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class HttpFileServerImportConfigurationHooker extends
 	HttpImportConfigurationProviderHookImplForTrees<AbstractFileServerNode, AbstractFileServerNodeDto> {

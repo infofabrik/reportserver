@@ -1,8 +1,5 @@
 package net.datenwerke.rs.base.client.parameters.datasource.dto.decorator;
 
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-
 import net.datenwerke.gxtdto.client.dtomanager.IdedDto;
 import net.datenwerke.rs.base.client.parameters.datasource.dto.DatasourceParameterDataDto;
 

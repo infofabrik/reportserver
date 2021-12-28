@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.download;
 
+import com.google.gwt.core.client.GWT;
+
 import net.datenwerke.gf.client.download.dto.DownloadProperties;
 import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
-
-import com.google.gwt.core.client.GWT;
 
 public class FileDownloadUiServiceImpl implements FileDownloadUiService {
 

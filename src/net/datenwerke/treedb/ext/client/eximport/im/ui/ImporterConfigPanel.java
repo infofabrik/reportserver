@@ -1,12 +1,12 @@
 package net.datenwerke.treedb.ext.client.eximport.im.ui;
 
+import com.google.gwt.core.client.GWT;
+import com.sencha.gxt.widget.core.client.TabItemConfig;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
-
-import com.google.gwt.core.client.GWT;
-import com.sencha.gxt.widget.core.client.TabItemConfig;
 
 /**
  * 

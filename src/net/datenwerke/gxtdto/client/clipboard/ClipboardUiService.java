@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.clipboard;
 
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardPasteProcessor;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.ImplementedBy;
+
+import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
+import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardPasteProcessor;
 
 @ImplementedBy(ClipboardUiServiceImpl.class)
 public interface ClipboardUiService {

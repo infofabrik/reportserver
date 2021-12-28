@@ -3,15 +3,15 @@ package net.datenwerke.rs.authenticator.cr.service;
 import java.security.SecureRandom;
 import java.util.Arrays;
 
-import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
-import net.datenwerke.rs.utils.crypto.HashUtil;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.ArrayUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
+import net.datenwerke.rs.utils.crypto.HashUtil;
 
 @Singleton
 public class ChallengeResponseServiceImpl implements ChallengeResponseService{

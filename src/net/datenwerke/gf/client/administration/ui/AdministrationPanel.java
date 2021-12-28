@@ -1,14 +1,14 @@
 package net.datenwerke.gf.client.administration.ui;
 
-import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.sencha.gxt.core.client.util.Margins;
+
+import net.datenwerke.gf.client.administration.interfaces.AdminModule;
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 @Singleton
 public class AdministrationPanel extends DwBorderContainer {

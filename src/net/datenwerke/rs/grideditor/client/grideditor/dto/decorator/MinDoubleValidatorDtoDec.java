@@ -1,10 +1,10 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MinDoubleValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.MinNumberValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MinNumberValidator.MinNumberMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MinDoubleValidatorDto;
 
 /**
  * Dto Decorator for {@link MinDoubleValidatorDto}

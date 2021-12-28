@@ -1,5 +1,8 @@
 package net.datenwerke.usermanager.ext.service.vfs;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.TreeBasedVirtualFileSystem;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -7,9 +10,6 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.security.service.usermanager.entities.Group;
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class UserManagerVFS extends TreeBasedVirtualFileSystem<AbstractUserManagerNode> {
 

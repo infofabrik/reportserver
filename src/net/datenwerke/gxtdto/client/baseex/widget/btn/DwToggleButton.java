@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.baseex.widget.btn;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.sencha.gxt.cell.core.client.form.ToggleButtonCell;
 import com.sencha.gxt.widget.core.client.button.ToggleButton;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwToggleButton extends ToggleButton {
 

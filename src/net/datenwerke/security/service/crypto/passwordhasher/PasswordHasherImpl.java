@@ -8,13 +8,13 @@ import java.security.SignatureException;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 
-import net.datenwerke.rs.utils.crypto.PasswordHasher;
-
 import org.bouncycastle.util.encoders.Base64;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.utils.crypto.PasswordHasher;
 
 /**
  * 

@@ -4,14 +4,14 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceConfig;
 import net.datenwerke.rs.birt.service.datasources.birtreport.entities.BirtReportDatasourceConfig__;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEvents;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BirtDatasourceServiceImpl implements BirtDatasourceService {
 

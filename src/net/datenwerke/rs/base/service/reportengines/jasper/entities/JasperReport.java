@@ -10,8 +10,14 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.base.client.reportengines.jasper.locale.JasperMessages;
 import net.datenwerke.rs.base.service.reportengines.jasper.util.JasperUtilsService;
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
@@ -19,13 +25,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
-
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Indexed;
-
-import com.google.inject.Inject;
-import com.google.inject.Injector;
 
 /**
  * 

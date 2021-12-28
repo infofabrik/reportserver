@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfs;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;

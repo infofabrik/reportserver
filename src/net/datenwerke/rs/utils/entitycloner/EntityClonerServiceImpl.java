@@ -17,6 +17,13 @@ import javax.persistence.EntityManager;
 import javax.persistence.Id;
 import javax.persistence.Version;
 
+import org.hibernate.proxy.HibernateProxy;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.entitycloner.annotation.CloneGuide;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -25,13 +32,6 @@ import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.entitycloner.config.ClonerConfig;
 import net.datenwerke.rs.utils.entitycloner.config.DefaultClonerConfig;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
-
-import org.hibernate.proxy.HibernateProxy;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class EntityClonerServiceImpl implements EntityClonerService {
 	

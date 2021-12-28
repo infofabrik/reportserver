@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.ex;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.administration.AdministrationUIService;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
@@ -10,8 +12,6 @@ import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.ex.hookers.E
 import net.datenwerke.rs.eximport.client.eximport.security.ExportGenericTargetIdentifier;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
-
-import com.google.inject.Inject;
 
 public class DatasourceManagerExportUIStartup {
 

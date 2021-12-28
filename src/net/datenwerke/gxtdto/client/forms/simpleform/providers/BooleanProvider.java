@@ -1,14 +1,14 @@
 package net.datenwerke.gxtdto.client.forms.simpleform.providers;
 
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
-import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.widget.core.client.form.CheckBox;
 import com.sencha.gxt.widget.core.client.form.Field;
+
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
+import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 
 /**
  * 

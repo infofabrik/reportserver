@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.dtomanager;
 
-import net.datenwerke.gxtdto.client.dtomanager.stores.DtoAwareListStore;
-import net.datenwerke.gxtdto.client.dtomanager.stores.DtoAwareTreeStore;
-
 import com.google.gwt.inject.client.AbstractGinModule;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gxtdto.client.dtomanager.stores.DtoAwareListStore;
+import net.datenwerke.gxtdto.client.dtomanager.stores.DtoAwareTreeStore;
 
 /**
  * 

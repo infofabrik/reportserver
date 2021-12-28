@@ -3,15 +3,15 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.validator;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
+
+import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
 
 public class NumericalFieldValidator implements Validator<String> {
 

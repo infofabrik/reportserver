@@ -3,6 +3,15 @@ package net.datenwerke.gf.service.authenticator;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.AbstractModule;
+import com.google.inject.Inject;
+import com.google.inject.Injector;
+import com.google.inject.Provides;
+import com.google.inject.servlet.ServletScopes;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -12,15 +21,6 @@ import net.datenwerke.security.service.authenticator.ReportServerPAM;
 import net.datenwerke.security.service.authenticator.RequestUserCache;
 import net.datenwerke.security.service.authenticator.RequestUserCacheImpl;
 import net.datenwerke.security.service.authenticator.hooks.PAMHook;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.AbstractModule;
-import com.google.inject.Inject;
-import com.google.inject.Injector;
-import com.google.inject.Provides;
-import com.google.inject.servlet.ServletScopes;
 
 /**
  *

@@ -1,5 +1,8 @@
 package net.datenwerke.rs.birt.client.reportengines;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
@@ -23,9 +26,6 @@ import net.datenwerke.rs.dashboard.client.dashboard.hooks.ReportDadgetExportHook
 import net.datenwerke.rs.dashboard.client.dashboard.security.DashboardViewGenericTargetIdentifier;
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BirtUiStartup {
 	

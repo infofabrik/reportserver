@@ -1,5 +1,10 @@
 package net.datenwerke.rs.passwordpolicy.server;
 
+import com.google.inject.Inject;
+import com.google.inject.Singleton;
+import com.google.inject.name.Named;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.rs.passwordpolicy.client.activateuser.rpc.ActivateUserRpcService;
 import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserService;
@@ -11,11 +16,6 @@ import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Singleton;
-import com.google.inject.name.Named;
-import com.google.inject.persist.Transactional;
 
 /**
  * 

@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.exceptions.IllegalImportConfigException;
 import net.datenwerke.eximport.im.ImportMode;
 import net.datenwerke.eximport.obj.ExportedItem;
@@ -20,9 +23,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class HttpDatasourceManagerImportConfigurationHooker extends
 	HttpImportConfigurationProviderHookImplForTrees<AbstractDatasourceManagerNode, AbstractDatasourceManagerNodeDto> {

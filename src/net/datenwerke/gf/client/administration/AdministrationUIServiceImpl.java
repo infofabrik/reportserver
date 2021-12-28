@@ -1,16 +1,15 @@
 package net.datenwerke.gf.client.administration;
 
-import net.datenwerke.gf.client.administration.locale.AdministrationMessages;
-import net.datenwerke.gf.client.administration.ui.AdministrationPanel;
-import net.datenwerke.gf.client.homepage.modules.ui.ClientModuleSelector;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.administration.locale.AdministrationMessages;
+import net.datenwerke.gf.client.administration.ui.AdministrationPanel;
+import net.datenwerke.gf.client.homepage.modules.ui.ClientModuleSelector;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 @Singleton
 public class AdministrationUIServiceImpl implements AdministrationUIService {

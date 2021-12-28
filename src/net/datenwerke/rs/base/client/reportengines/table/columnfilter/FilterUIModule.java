@@ -1,13 +1,13 @@
 package net.datenwerke.rs.base.client.reportengines.table.columnfilter;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.AbstractFilterAspect;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.DistinctSelectorPanel;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.GridView;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.LikeFilterComponent;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.SelectionPanel;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.TextView;
-
-import com.google.gwt.inject.client.AbstractGinModule;
 
 /**
  * 

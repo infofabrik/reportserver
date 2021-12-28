@@ -1,8 +1,8 @@
 package net.datenwerke.rs.remoteaccess.service;
 
-import net.datenwerke.rs.remoteaccess.service.sftp.SftpModule;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.rs.remoteaccess.service.sftp.SftpModule;
 
 public class RemoteAccessModule extends AbstractModule {
 

@@ -1,9 +1,9 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.pa;
 
+import com.google.gwt.core.client.GWT;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.CorrespondingPoso;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
-
-import com.google.gwt.core.client.GWT;
 
 /**
  * This file was automatically created by DtoAnnotationProcessor, version 0.1

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.base.service.reportengines.jasper.hooks.JasperOutputGeneratorProviderHook;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.JasperCsvOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.JasperHTMLOutputGenerator;
@@ -12,9 +15,6 @@ import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.Jasp
 import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.JasperPNGOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.JasperRTFOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.JasperXLSOutputGenerator;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseJasperOutputGeneratorProvider implements JasperOutputGeneratorProviderHook {
 

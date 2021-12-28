@@ -3,6 +3,9 @@ package net.datenwerke.rs.incubator.service.filterreplacements.agg;
 import java.security.AccessController;
 import java.security.PrivilegedAction;
 
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.ManagedQuery;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier;
@@ -14,9 +17,6 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorExc
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 public class AggregateWrapper {
 

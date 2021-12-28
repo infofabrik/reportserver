@@ -3,8 +3,10 @@ package net.datenwerke.rs.base.client.reportengines.table.prefilter.hookers;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.forms.selection.SelectionMode;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnFilterDto;
@@ -20,9 +22,6 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidge
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.EditPreFilterCallback;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.InstantiatePreFilterCallback;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
 
 public class ColumnFilterConfiguratorHooker implements
 		PreFilterConfiguratorHook {

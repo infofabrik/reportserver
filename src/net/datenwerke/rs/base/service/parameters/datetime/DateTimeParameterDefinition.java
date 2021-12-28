@@ -5,13 +5,13 @@ import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.client.parameters.locale.RsMessages;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinitionForJuel;
-
-import org.hibernate.envers.Audited;
 
 /**
  * 

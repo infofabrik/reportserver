@@ -7,11 +7,11 @@ import javax.xml.XMLConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ex.Exporter;
 import nu.xom.Element;
 import nu.xom.XPathContext;
-
-import com.google.inject.Inject;
 
 /**
  * Helper service used during im and export.

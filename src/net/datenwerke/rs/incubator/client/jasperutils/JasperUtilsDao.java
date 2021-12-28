@@ -2,13 +2,13 @@ package net.datenwerke.rs.incubator.client.jasperutils;
 
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.base.client.jasperutils.dto.JasperParameterProposalDto;
 import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
 import net.datenwerke.rs.incubator.client.jasperutils.rpc.JasperUtilsRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class JasperUtilsDao extends Dao {
 

@@ -2,13 +2,11 @@ package net.datenwerke.usermanager.ext.service.terminal.commands;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceMember;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -19,7 +17,6 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.ObjectResolverDeamon;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.UserManagerService;

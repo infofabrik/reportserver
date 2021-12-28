@@ -1,10 +1,10 @@
 package net.datenwerke.rs.eximport.service;
 
+import com.google.inject.AbstractModule;
+
 import net.datenwerke.rs.eximport.service.eximport.ex.http.HttpExportModule;
 import net.datenwerke.rs.eximport.service.eximport.im.http.HttpImportModule;
 import net.datenwerke.rs.eximport.service.genrights.GenRightsExImportModule;
-
-import com.google.inject.AbstractModule;
 
 public class RsExImportModule extends AbstractModule {
 

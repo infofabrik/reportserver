@@ -1,11 +1,11 @@
 package net.datenwerke.gxtdto.client.eventbus.events;
 
+import com.google.gwt.event.shared.GwtEvent;
+import com.google.gwt.event.shared.HandlerRegistration;
+
 import net.datenwerke.gxtdto.client.eventbus.EventBusHelper;
 import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
 import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
-
-import com.google.gwt.event.shared.GwtEvent;
-import com.google.gwt.event.shared.HandlerRegistration;
 
 public final class InstanceContainer<T> implements HasObjectChangedEventHandler<T> {
 	

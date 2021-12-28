@@ -4,6 +4,13 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.persist.UnitOfWork;
+
 import net.datenwerke.async.DwAsyncPool;
 import net.datenwerke.async.DwAsyncService;
 import net.datenwerke.async.configurations.FixedThreadPoolConfig;
@@ -19,13 +26,6 @@ import net.datenwerke.scheduler.service.scheduler.events.SchedulerDaemonSuicideE
 import net.datenwerke.scheduler.service.scheduler.stores.JobExecutionCompanion;
 import net.datenwerke.scheduler.service.scheduler.stores.JobStore;
 import net.datenwerke.scheduler.service.scheduler.tasks.SchedulerTask;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.persist.UnitOfWork;
 
 public class SchedulerDaemon implements Runnable{
 

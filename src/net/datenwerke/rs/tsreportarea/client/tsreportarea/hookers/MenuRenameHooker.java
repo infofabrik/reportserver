@@ -2,6 +2,17 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.ValueProvider;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
@@ -10,7 +21,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCTextAreaImpl;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIService;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.TsDiskTreeManagerDao;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
@@ -24,18 +34,6 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteMenuHo
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.ValueProvider;
-import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.menu.Item;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 public class MenuRenameHooker implements TsFavoriteMenuHook {
 	

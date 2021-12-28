@@ -2,9 +2,9 @@ package net.datenwerke.rs.incubator.service.versioning;
 
 import java.util.Set;
 
-import net.datenwerke.rs.incubator.service.versioning.entities.Revision;
-
 import org.hibernate.envers.AuditReader;
+
+import net.datenwerke.rs.incubator.service.versioning.entities.Revision;
 
 public interface VersioningService {
 

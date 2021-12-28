@@ -11,6 +11,12 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.configuration2.Configuration;
+import org.codehaus.jackson.map.util.ISO8601DateFormat;
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterServiceImpl;
@@ -27,12 +33,6 @@ import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.configuration2.Configuration;
-import org.codehaus.jackson.map.util.ISO8601DateFormat;
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
 
 /**
  * 

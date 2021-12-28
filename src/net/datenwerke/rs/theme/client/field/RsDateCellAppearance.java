@@ -1,8 +1,8 @@
 package net.datenwerke.rs.theme.client.field;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.sencha.gxt.cell.core.client.form.DateCell.DateCellAppearance;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 
 public class RsDateCellAppearance extends RsTriggerFieldAppearance implements DateCellAppearance  {

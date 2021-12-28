@@ -1,10 +1,10 @@
 package net.datenwerke.rs.core.client.userprofile;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardProviderHook;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardProviderHook;
 
 public class CoreUserProfileStartup {
 

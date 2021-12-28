@@ -4,17 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
-import net.datenwerke.security.service.crypto.credentialproviders.CryptoCredentialProvider;
-import net.datenwerke.security.service.crypto.hooks.UserCryptoCredentialHook;
-
 import org.apache.commons.configuration2.HierarchicalConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
+
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.utils.config.ConfigFileNotFoundException;
+import net.datenwerke.security.service.crypto.credentialproviders.CryptoCredentialProvider;
+import net.datenwerke.security.service.crypto.hooks.UserCryptoCredentialHook;
 
 public class CryptoServiceImpl implements CryptoService {
 

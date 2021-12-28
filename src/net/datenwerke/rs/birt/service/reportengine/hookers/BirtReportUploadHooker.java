@@ -2,6 +2,9 @@ package net.datenwerke.rs.birt.service.reportengine.hookers;
 
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.upload.UploadedFile;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.rs.birt.client.reportengines.BirtUiModule;
@@ -12,11 +15,7 @@ import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.treedb.actions.UpdateAction;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BirtReportUploadHooker implements FileUploadHandlerHook {
 	

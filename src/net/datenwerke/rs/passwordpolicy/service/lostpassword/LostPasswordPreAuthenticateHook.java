@@ -4,6 +4,9 @@ import java.util.Set;
 
 import javax.persistence.NoResultException;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseAuthToken;
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContainer;
 import net.datenwerke.rs.authenticator.client.login.dto.NamedUserAuthToken;
@@ -19,9 +22,6 @@ import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.entities.UserProperty;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * Tests whether a user tries to authenticate with a temporary password,

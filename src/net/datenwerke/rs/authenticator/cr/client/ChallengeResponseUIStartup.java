@@ -1,11 +1,11 @@
 package net.datenwerke.rs.authenticator.cr.client;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.authenticator.client.login.hooks.ClientPAMHook;
 import net.datenwerke.rs.authenticator.cr.client.pam.ChallengeResponseClientPam;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ChallengeResponseUIStartup {
 

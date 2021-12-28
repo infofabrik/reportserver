@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.baseex.widget.form;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.form.FileUploadField;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 
 public class DwFileUploadField extends FileUploadField {
 

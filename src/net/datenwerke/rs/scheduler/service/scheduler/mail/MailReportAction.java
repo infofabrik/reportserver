@@ -2,7 +2,6 @@ package net.datenwerke.rs.scheduler.service.scheduler.mail;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Collections;
 
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;

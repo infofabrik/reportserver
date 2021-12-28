@@ -2,12 +2,12 @@ package net.datenwerke.gxtdto.client.utils.sort;
 
 import java.util.Comparator;
 
+import com.sencha.gxt.data.shared.SortDir;
+import com.sencha.gxt.data.shared.Store.StoreSortInfo;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.FolderDto;
 import net.datenwerke.gxtdto.client.dtomanager.stores.TreeDto;
-
-import com.sencha.gxt.data.shared.SortDir;
-import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 
 public class AlphabeticStoreSortInfo<X extends Dto> extends StoreSortInfo<X> {
 	

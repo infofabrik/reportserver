@@ -2,19 +2,21 @@ package net.datenwerke.rs.box.client.box.provider;
 
 import java.util.Arrays;
 import java.util.List;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
 import net.datenwerke.gf.client.treedb.stores.EnhancedTreeStore;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
+import net.datenwerke.rs.box.client.box.dto.posomap.BoxDatasinkDto2PosoMap;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeLoaderDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.posomap.DatasinkFolderDto2PosoMap;
-import net.datenwerke.rs.box.client.box.dto.posomap.BoxDatasinkDto2PosoMap;
 
 public class BoxTreeProvider implements Provider<ManagerHelperTree> {
 

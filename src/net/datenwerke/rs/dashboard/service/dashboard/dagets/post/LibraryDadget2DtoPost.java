@@ -1,13 +1,13 @@
 package net.datenwerke.rs.dashboard.service.dashboard.dagets.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.LibraryDadgetDto;
 import net.datenwerke.rs.dashboard.service.dashboard.dagets.LibraryDadget;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class LibraryDadget2DtoPost
 		implements

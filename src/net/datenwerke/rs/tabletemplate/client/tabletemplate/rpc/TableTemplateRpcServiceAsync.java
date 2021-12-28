@@ -3,10 +3,10 @@ package net.datenwerke.rs.tabletemplate.client.tabletemplate.rpc;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTemplateDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface TableTemplateRpcServiceAsync {
 

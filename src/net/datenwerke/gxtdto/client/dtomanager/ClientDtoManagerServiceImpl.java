@@ -8,17 +8,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.datenwerke.gxtdto.client.dtoinfo.DtoInformationService;
-import net.datenwerke.gxtdto.client.dtomanager.events.BeforeDtoDetachedEvent;
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoAddedEvent;
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoChangedEvent;
-import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.gxtdto.client.dtoinfo.DtoInformationService;
+import net.datenwerke.gxtdto.client.dtomanager.events.BeforeDtoDetachedEvent;
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoAddedEvent;
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoChangedEvent;
+import net.datenwerke.gxtdto.client.dtomanager.events.DtoListener;
 
 /**
  * 

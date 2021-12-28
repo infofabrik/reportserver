@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.Version;
 import javax.xml.stream.XMLStreamException;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+import com.google.inject.assistedinject.Assisted;
+
 import net.datenwerke.eximport.EnclosedObjectConfig;
 import net.datenwerke.eximport.ExImportHelperService;
 import net.datenwerke.eximport.ex.ExportItemConfig;
@@ -18,11 +23,6 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.interfaces.Callback2;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
-import com.google.inject.assistedinject.Assisted;
 
 /**
  * Exporter to export entities (database entities) honoring fields marked as enclosed or referenced.

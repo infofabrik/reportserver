@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.eventbus.events;
 
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
-import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
-
 import com.google.gwt.event.shared.GwtEvent;
 import com.sencha.gxt.core.client.ValueProvider;
+
+import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
+import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
 
 public class ObjectChangedEvent<T> extends GwtEvent<ObjectChangedEventHandler<T>> {
 	

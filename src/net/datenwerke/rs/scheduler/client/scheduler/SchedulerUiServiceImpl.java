@@ -6,13 +6,6 @@ import java.util.List;
 
 import javax.inject.Inject;
 
-import net.datenwerke.rs.core.client.i18tools.FormatUiHelper;
-import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
-import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
-import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformationPA;
-import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
-import net.datenwerke.scheduler.client.scheduler.dto.filter.OrderDto;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.DateCell;
 import com.google.gwt.core.client.GWT;
@@ -24,6 +17,13 @@ import com.sencha.gxt.data.shared.SortInfo;
 import com.sencha.gxt.data.shared.loader.PagingLoadConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
+
+import net.datenwerke.rs.core.client.i18tools.FormatUiHelper;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
+import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformationPA;
+import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
+import net.datenwerke.scheduler.client.scheduler.dto.filter.OrderDto;
 
 public class SchedulerUiServiceImpl implements SchedulerUiService {
 

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.ext.service.security.eximport;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.im.entity.EntityImportItemConfig;
 import net.datenwerke.eximport.im.entity.GenericEntityImporter;
 import net.datenwerke.eximport.im.objectimporters.BasicObjectImporter;
@@ -7,8 +9,6 @@ import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.entities.Ace;
 import net.datenwerke.security.service.security.entities.GenericSecurityTargetEntity;
-
-import com.google.inject.Inject;
 
 public class GenericRightsImporter extends GenericEntityImporter {
 

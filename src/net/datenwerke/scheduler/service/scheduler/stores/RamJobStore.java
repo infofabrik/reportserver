@@ -7,13 +7,13 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 import net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterConfiguration;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 public class RamJobStore extends JobStoreImpl {
 

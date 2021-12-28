@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.utils.SqlTypes;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
@@ -27,8 +29,6 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column.OrderP
 import net.datenwerke.rs.base.service.reportengines.table.entities.Order;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
-
-import com.google.inject.Inject;
 
 public class QueryBuilder{
 	

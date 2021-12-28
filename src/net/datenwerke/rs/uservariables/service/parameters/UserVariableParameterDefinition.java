@@ -4,13 +4,13 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.uservariables.client.uservariables.locale.UserVariablesMessages;
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition;
-
-import org.hibernate.envers.Audited;
 
 /**
  *

@@ -4,14 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.core.client.urlview.rpc.UrlViewRpcService;
 import net.datenwerke.rs.core.service.urlview.annotations.UrlViewConfig;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 @Singleton
 public class UrlViewRpcServiceImpl extends SecuredRemoteServiceServlet implements UrlViewRpcService {

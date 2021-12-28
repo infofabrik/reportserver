@@ -3,10 +3,10 @@ package net.datenwerke.rs;
 
 import java.util.Properties;
 
+import com.google.inject.persist.jpa.JpaPersistModule;
+
 import net.datenwerke.gf.service.jpa.annotations.JpaUnit;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
-
-import com.google.inject.persist.jpa.JpaPersistModule;
 
 public class ReportServerPUModule extends AbstractReportServerModule {
 	

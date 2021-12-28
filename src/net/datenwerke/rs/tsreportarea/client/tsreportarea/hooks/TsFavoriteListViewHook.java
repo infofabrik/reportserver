@@ -1,10 +1,10 @@
 package net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.listviews.TsDiskListView;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public interface TsFavoriteListViewHook extends Hook {
 

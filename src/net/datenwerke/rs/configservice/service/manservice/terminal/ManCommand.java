@@ -1,5 +1,7 @@
 package net.datenwerke.rs.configservice.service.manservice.terminal;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.configservice.service.manservice.locale.ManMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -8,8 +10,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.man.ManPageService;
-
-import com.google.inject.Inject;
 
 
 public class ManCommand implements TerminalCommandHook {

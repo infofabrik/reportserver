@@ -2,6 +2,8 @@ package net.datenwerke.rs.crystal.client.crystal.ui;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPre
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
-
-import com.google.inject.Inject;
 
 public class CrystalReportPreviewViewFactory extends PreviewViewFactory {
 	

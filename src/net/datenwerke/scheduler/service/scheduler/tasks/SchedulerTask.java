@@ -9,6 +9,14 @@ import java.util.concurrent.Callable;
 
 import javax.persistence.PersistenceException;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.HibernateException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.scheduler.service.scheduler.annotations.StandardVetoDelay;
@@ -29,14 +37,6 @@ import net.datenwerke.scheduler.service.scheduler.helper.VetoJobExecutionMode;
 import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 import net.datenwerke.scheduler.service.scheduler.stores.JobExecutionCompanion;
 import net.datenwerke.scheduler.service.scheduler.stores.JobStore;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.time.DateUtils;
-import org.hibernate.HibernateException;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 public class SchedulerTask implements Callable<SchedulerTaskResult> {
 	

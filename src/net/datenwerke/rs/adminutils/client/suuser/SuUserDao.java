@@ -1,11 +1,11 @@
 package net.datenwerke.rs.adminutils.client.suuser;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.adminutils.client.suuser.rpc.SuUserRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class SuUserDao extends Dao {
 

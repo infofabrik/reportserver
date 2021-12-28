@@ -1,14 +1,14 @@
 package net.datenwerke.gxtdto.client.utilityservices;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+import com.google.inject.Singleton;
+
 import net.datenwerke.gxtdto.client.utilityservices.grid.GridHelperService;
 import net.datenwerke.gxtdto.client.utilityservices.grid.GridHelperServiceImpl;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerService;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerServiceImpl;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarServiceImpl;
-
-import com.google.gwt.inject.client.AbstractGinModule;
-import com.google.inject.Singleton;
 
 public class UtilsUIModule extends AbstractGinModule {
 

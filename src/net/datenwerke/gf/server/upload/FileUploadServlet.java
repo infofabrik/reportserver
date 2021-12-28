@@ -11,12 +11,6 @@ import java.util.logging.Logger;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.gf.client.upload.FileUploadUIModule;
-import net.datenwerke.gf.service.upload.FileUploadService;
-import net.datenwerke.gf.service.upload.UploadedFile;
-import net.datenwerke.rs.utils.misc.MimeUtils;
-import net.datenwerke.security.server.SecuredHttpServlet;
-
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
 import org.apache.commons.fileupload.FileUploadException;
@@ -28,6 +22,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.Singleton;
 import com.google.inject.persist.Transactional;
+
+import net.datenwerke.gf.client.upload.FileUploadUIModule;
+import net.datenwerke.gf.service.upload.FileUploadService;
+import net.datenwerke.gf.service.upload.UploadedFile;
+import net.datenwerke.rs.utils.misc.MimeUtils;
+import net.datenwerke.security.server.SecuredHttpServlet;
 
 @Singleton
 public class FileUploadServlet extends SecuredHttpServlet {

@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.baseex.widget.form;
 
-import net.datenwerke.rs.theme.client.field.RsTwinTriggerFieldAppearance;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.sencha.gxt.widget.core.client.form.PropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TwinTriggerField;
+
+import net.datenwerke.rs.theme.client.field.RsTwinTriggerFieldAppearance;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwTwinTriggerField<D> extends TwinTriggerField<D> {
 	

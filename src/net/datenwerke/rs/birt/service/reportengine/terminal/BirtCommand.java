@@ -3,6 +3,8 @@ package net.datenwerke.rs.birt.service.reportengine.terminal;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.birt.service.reportengine.locale.BirtEngineMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -12,8 +14,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 
 public class BirtCommand extends SubCommandContainerImpl {

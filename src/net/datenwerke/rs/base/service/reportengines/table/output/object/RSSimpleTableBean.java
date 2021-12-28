@@ -5,16 +5,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
-import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
-import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
-
 import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
+import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
+import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 
 public class RSSimpleTableBean extends CompiledTableReport implements CompiledReport{
 

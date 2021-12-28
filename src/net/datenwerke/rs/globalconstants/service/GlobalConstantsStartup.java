@@ -1,5 +1,8 @@
 package net.datenwerke.rs.globalconstants.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -11,9 +14,6 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.eximport.Global
 import net.datenwerke.rs.globalconstants.service.globalconstants.eximport.hookers.ExportAllGlobalConstantsHooker;
 import net.datenwerke.rs.globalconstants.service.globalconstants.eximport.hookers.ImportAllGlobalConstantsHooker;
 import net.datenwerke.rs.globalconstants.service.globalconstants.hookers.ParameterSetReplacementProviderHooker;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class GlobalConstantsStartup {
 

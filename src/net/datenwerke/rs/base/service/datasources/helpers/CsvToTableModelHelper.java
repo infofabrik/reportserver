@@ -8,11 +8,11 @@ import java.io.Reader;
 import java.util.Arrays;
 import java.util.List;
 
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
-
 import org.supercsv.io.CsvListReader;
 import org.supercsv.prefs.CsvPreference;
+
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 
 public class CsvToTableModelHelper {
 	

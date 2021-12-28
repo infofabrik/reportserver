@@ -5,9 +5,14 @@ import javax.persistence.Entity;
 import javax.persistence.Lob;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.gxtdto.client.dtomanager.FolderDto;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
@@ -20,12 +25,6 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBDeniedChildren;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
-
-import net.datenwerke.gf.base.service.annotations.Field;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 /**
  * Entity that can be used to organize reports and reportgroups hierarchically.

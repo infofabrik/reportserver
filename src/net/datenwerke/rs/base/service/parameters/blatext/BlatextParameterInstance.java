@@ -3,12 +3,12 @@ package net.datenwerke.rs.base.service.parameters.blatext;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
 
 /**
  * 

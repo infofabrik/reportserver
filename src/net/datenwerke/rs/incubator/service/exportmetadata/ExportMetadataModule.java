@@ -1,17 +1,17 @@
 package net.datenwerke.rs.incubator.service.exportmetadata;
 
+import org.apache.commons.configuration2.Configuration;
+
+import com.google.inject.Inject;
+import com.google.inject.Provides;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleAuthor;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleCreator;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleProperties;
 import net.datenwerke.rs.incubator.service.exportmetadata.annotations.ExportMetadataModuleTitle;
-
-import org.apache.commons.configuration2.Configuration;
-
-import com.google.inject.Inject;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
 
 /**
  * 

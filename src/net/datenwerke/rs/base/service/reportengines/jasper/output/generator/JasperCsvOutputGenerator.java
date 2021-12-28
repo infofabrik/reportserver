@@ -2,10 +2,12 @@ package net.datenwerke.rs.base.service.reportengines.jasper.output.generator;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledCSVJasperReport;
-import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledHTMLJasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledRSJasperReport;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -17,10 +19,6 @@ import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRExporterParameter;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.export.JRCsvExporter;
-import net.sf.jasperreports.engine.export.JRHtmlExporterParameter;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 public class JasperCsvOutputGenerator extends JasperOutputGeneratorImpl {
 	

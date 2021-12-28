@@ -1,9 +1,9 @@
 package net.datenwerke.rs.passwordpolicy.service.lostpassword;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.security.service.authenticator.hooks.PreAuthenticateHook;
-
-import com.google.inject.Inject;
 
 public class LostPasswordModuleStartup {
 

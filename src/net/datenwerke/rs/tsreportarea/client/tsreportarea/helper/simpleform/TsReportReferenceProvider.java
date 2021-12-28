@@ -3,11 +3,20 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.simpleform;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.Style.SelectionMode;
+import com.sencha.gxt.widget.core.client.event.TriggerClickEvent;
+import com.sencha.gxt.widget.core.client.event.TriggerClickEvent.TriggerClickHandler;
+
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
 import net.datenwerke.gf.client.treedb.UiTreeFactory;
 import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.TreeNodeDtoProvider;
 import net.datenwerke.gf.client.treedb.stores.EnhancedTreeStore;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
@@ -20,15 +29,6 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.TsDiskFold
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.TsDiskRootDto2PosoMap;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.core.client.Style.SelectionMode;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
-import com.sencha.gxt.widget.core.client.event.TriggerClickEvent;
-import com.sencha.gxt.widget.core.client.event.TriggerClickEvent.TriggerClickHandler;
 
 /**
  * 

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.incubator.service.misc.terminal.exportcontentprovider;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocationInfo;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSObjectInfo;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualContentProvi
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperServiceImpl;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
-
-import com.google.inject.Inject;
 
 public class TerminalExportContentProvider extends
 		VirtualContentProviderImpl {

@@ -1,9 +1,5 @@
 package net.datenwerke.rs.theme.client.tree;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.CssIconContainer;
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ImageResource;
@@ -20,6 +16,10 @@ import com.sencha.gxt.widget.core.client.tree.Tree.CheckState;
 import com.sencha.gxt.widget.core.client.tree.Tree.Joint;
 import com.sencha.gxt.widget.core.client.tree.TreeStyle;
 import com.sencha.gxt.widget.core.client.tree.TreeView.TreeViewRenderMode;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.CssIconContainer;
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 public class RsTreeAppearance extends Css3TreeAppearance {
 

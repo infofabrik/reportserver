@@ -7,11 +7,11 @@ import java.util.GregorianCalendar;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DailyConfig;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTriggerConfig;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.DailyPattern;
-
-import org.apache.commons.lang3.time.DateUtils;
 
 @Entity
 @Table(name="SCHED_TRIG_DAILY_NTHDAY")

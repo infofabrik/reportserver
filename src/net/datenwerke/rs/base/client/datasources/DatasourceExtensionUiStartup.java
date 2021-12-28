@@ -7,7 +7,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.datasources.hooker.ArgumentDatasourceConnectorConfigHooker;
 import net.datenwerke.rs.base.client.datasources.hooker.CsvDatasourceConfigProviderHooker;

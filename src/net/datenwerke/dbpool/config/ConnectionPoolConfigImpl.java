@@ -4,14 +4,13 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.Properties;
 
-import net.datenwerke.dbpool.annotations.ConnectionPoolConfigFile;
-import net.datenwerke.rs.utils.misc.Nullable;
-
 import org.apache.commons.configuration2.HierarchicalConfiguration;
-import org.apache.commons.configuration2.SubnodeConfiguration;
 
 import com.google.inject.Inject;
 import com.google.inject.assistedinject.Assisted;
+
+import net.datenwerke.dbpool.annotations.ConnectionPoolConfigFile;
+import net.datenwerke.rs.utils.misc.Nullable;
 
 public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
 

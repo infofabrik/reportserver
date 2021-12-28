@@ -3,12 +3,12 @@ package net.datenwerke.rs.eximport.client.eximport.im.rpc;
 import java.util.Collection;
 import java.util.Map;
 
+import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfigDto;
-
-import com.google.gwt.user.client.rpc.RemoteService;
-import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("importrpc")
 public interface ImportRpcService extends RemoteService {

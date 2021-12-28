@@ -1,11 +1,11 @@
 package net.datenwerke.rs.tabletemplate.client.engines.velocity.hookers;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.tabletemplate.client.engines.velocity.VelocityTemplateUIModule;
 import net.datenwerke.rs.tabletemplate.client.engines.velocity.locale.VelocityTemplateMessages;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.hooks.TableTemplateClientProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class VelocityTemplateClientProvider implements
 		TableTemplateClientProviderHook {

@@ -1,11 +1,5 @@
 package net.datenwerke.rs.core.client.reportexecutor.ui.preview;
 
-import net.datenwerke.gxtdto.client.model.DwModel;
-import net.datenwerke.gxtdto.client.model.SuccessIndicatorBaseModel;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.Request;
 import com.google.gwt.user.client.Random;
@@ -15,6 +9,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
+
+import net.datenwerke.gxtdto.client.model.DwModel;
+import net.datenwerke.gxtdto.client.model.SuccessIndicatorBaseModel;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ImageReportPreviewView extends AbstractReportPreviewView {
 

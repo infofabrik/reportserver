@@ -1,10 +1,9 @@
 package net.datenwerke.gf.service.maintenance;
 
-import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
-
 import com.google.inject.AbstractModule;
-import com.google.inject.Scope;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 
 /**
  * A module providing a maintenance thread which periodically runs

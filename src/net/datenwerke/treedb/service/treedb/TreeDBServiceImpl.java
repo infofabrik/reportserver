@@ -6,6 +6,12 @@ import javax.persistence.EntityManager;
 import javax.persistence.FlushModeType;
 import javax.persistence.Query;
 
+import org.hibernate.proxy.HibernateProxy;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+
 import net.datenwerke.rs.utils.reflection.ProxyUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
@@ -13,12 +19,6 @@ import net.datenwerke.treedb.service.treedb.exceptions.MultipleRootException;
 import net.datenwerke.treedb.service.treedb.exceptions.TreeDBCorruptException;
 import net.datenwerke.treedb.service.treedb.exceptions.UnsupportedRootTypeException;
 import net.datenwerke.treedb.service.treedb.locale.TreeDbMessages;
-
-import org.hibernate.proxy.HibernateProxy;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
 
 /**
  * 

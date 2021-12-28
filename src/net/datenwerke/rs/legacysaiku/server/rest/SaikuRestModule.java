@@ -1,5 +1,8 @@
 package net.datenwerke.rs.legacysaiku.server.rest;
 
+import com.google.inject.AbstractModule;
+import com.sun.jersey.api.core.ClassNamesResourceConfig;
+
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicTagRepositoryResource;
@@ -10,9 +13,6 @@ import net.datenwerke.rs.legacysaiku.server.rest.resources.QueryResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.SaikuI18nResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.SessionResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.StatisticsResource;
-
-import com.google.inject.AbstractModule;
-import com.sun.jersey.api.core.ClassNamesResourceConfig;
 
 public class SaikuRestModule extends AbstractModule {
 

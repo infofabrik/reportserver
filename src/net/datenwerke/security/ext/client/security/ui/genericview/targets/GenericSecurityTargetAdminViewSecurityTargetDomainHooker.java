@@ -1,12 +1,11 @@
 package net.datenwerke.security.ext.client.security.ui.genericview.targets;
 
-import net.datenwerke.gxtdto.client.resources.BaseResources;
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class GenericSecurityTargetAdminViewSecurityTargetDomainHooker implements
 		GenericSecurityViewDomainHook {

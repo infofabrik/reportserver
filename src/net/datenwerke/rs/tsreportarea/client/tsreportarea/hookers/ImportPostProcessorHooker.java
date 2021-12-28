@@ -1,10 +1,12 @@
 package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.dialog.properties.PropertiesDialogCard;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTeamSpace;
-import net.datenwerke.gxtdto.client.ui.helper.wrapper.HeadDescMainWrapper;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterPostProcessorConfiguratorHook;
@@ -12,9 +14,6 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskPostProcessorConfigDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
 
 public class ImportPostProcessorHooker implements
 		ImporterPostProcessorConfiguratorHook {

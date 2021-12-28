@@ -8,11 +8,11 @@ import java.util.List;
 
 import javax.swing.event.TableModelListener;
 
+import org.apache.commons.lang3.NotImplementedException;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
-
-import org.apache.commons.lang3.NotImplementedException;
 
 /**
  * 

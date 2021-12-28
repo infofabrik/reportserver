@@ -1,12 +1,5 @@
 package net.datenwerke.rs.terminal.client.terminal;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
-import net.datenwerke.rs.terminal.client.terminal.helper.DisplayHelper;
-import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHook;
-import net.datenwerke.rs.terminal.client.terminal.ui.TerminalWindow;
-
 import com.google.gwt.user.client.Event;
 import com.google.gwt.user.client.Event.NativePreviewEvent;
 import com.google.gwt.user.client.Event.NativePreviewHandler;
@@ -15,6 +8,13 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.dom.ScrollSupport.ScrollMode;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
+import net.datenwerke.rs.terminal.client.terminal.helper.DisplayHelper;
+import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHook;
+import net.datenwerke.rs.terminal.client.terminal.ui.TerminalWindow;
 
 /**
  * 

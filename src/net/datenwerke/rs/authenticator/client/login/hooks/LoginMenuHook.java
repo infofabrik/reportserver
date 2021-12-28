@@ -1,9 +1,9 @@
 package net.datenwerke.rs.authenticator.client.login.hooks;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
-
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
 
 public class LoginMenuHook extends ObjectHook<MenuItem>{
 

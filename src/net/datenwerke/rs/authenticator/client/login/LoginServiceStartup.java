@@ -3,6 +3,13 @@ package net.datenwerke.rs.authenticator.client.login;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.History;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.dispatcher.DispatcherService;
 import net.datenwerke.gf.client.homepage.hooks.HomepageHeaderContentHook;
 import net.datenwerke.gf.client.login.LoginService;
@@ -21,13 +28,6 @@ import net.datenwerke.rs.authenticator.client.login.pam.ClientPAM;
 import net.datenwerke.rs.authenticator.client.login.pam.UserPasswordClientPAM;
 import net.datenwerke.rs.authenticator.client.login.sessiontimeout.SessionTimeoutWatchdog;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.History;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class LoginServiceStartup {
 

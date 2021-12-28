@@ -2,10 +2,10 @@ package net.datenwerke.rs.base.service.reportengines.table.output.metadata;
 
 import java.util.Set;
 
-import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetadataExporterManager;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetadataExporterManager;
 
 
 /**

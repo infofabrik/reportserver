@@ -1,11 +1,11 @@
 package net.datenwerke.rs.tabletemplate.client.engines.xsl.hookers;
 
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.tabletemplate.client.engines.xsl.XslTemplateUIModule;
 import net.datenwerke.rs.tabletemplate.client.engines.xsl.locale.XslTemplateMessages;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.hooks.TableTemplateClientProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class XslTemplateClientProvider implements
 		TableTemplateClientProviderHook {

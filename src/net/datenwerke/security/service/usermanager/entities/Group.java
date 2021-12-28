@@ -12,18 +12,18 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Type;
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
+import net.datenwerke.gf.base.service.annotations.Field;
+import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
-
-import org.hibernate.annotations.Type;
-import org.hibernate.envers.Audited;
-import net.datenwerke.gf.base.service.annotations.Field;
-import net.datenwerke.gf.base.service.annotations.Indexed;
 
 /**
  * 

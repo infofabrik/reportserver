@@ -9,9 +9,9 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
-
 import org.hibernate.annotations.Type;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 
 @Table(name="SCHED_BASE_PROPERTY")
 @Entity

@@ -3,6 +3,10 @@ package net.datenwerke.rs.core.client.userprofile;
 import java.util.Iterator;
 import java.util.List;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitCompleteCallback;
@@ -13,10 +17,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardProviderHookImpl;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 public class UserProfileViewContainerHooker extends UserProfileCardProviderHookImpl {
 	

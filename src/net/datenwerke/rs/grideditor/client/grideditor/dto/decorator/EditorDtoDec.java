@@ -1,11 +1,11 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.EditorDto;
-import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-
 import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.EditorDto;
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 
 /**
  * Dto Decorator for {@link EditorDto}

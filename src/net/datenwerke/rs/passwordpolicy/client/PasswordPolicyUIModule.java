@@ -1,9 +1,9 @@
 package net.datenwerke.rs.passwordpolicy.client;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+
 import net.datenwerke.rs.passwordpolicy.client.accountinhibition.AccountInhibitionUIModule;
 import net.datenwerke.rs.passwordpolicy.client.activateuser.ActivateUserUIModule;
-
-import com.google.gwt.inject.client.AbstractGinModule;
 
 public class PasswordPolicyUIModule extends AbstractGinModule {
 

@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -14,9 +17,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.ui.forms.FileForm;
 import net.datenwerke.rs.fileserver.client.fileserver.ui.forms.FolderForm;
 import net.datenwerke.security.ext.client.security.ui.SecurityView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 

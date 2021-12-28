@@ -3,6 +3,11 @@ package net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto;
@@ -12,11 +17,6 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks.Sch
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto;
-
-import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.event.logical.shared.ValueChangeHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
 public class TeamspaceFilter implements ScheduledReportListFilter {
 	

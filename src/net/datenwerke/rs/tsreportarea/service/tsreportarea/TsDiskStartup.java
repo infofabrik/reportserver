@@ -1,5 +1,8 @@
 package net.datenwerke.rs.tsreportarea.service.tsreportarea;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
@@ -23,9 +26,6 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers.TsFavoriteHis
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class TsDiskStartup {
 

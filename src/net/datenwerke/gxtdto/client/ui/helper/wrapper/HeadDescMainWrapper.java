@@ -1,12 +1,12 @@
 package net.datenwerke.gxtdto.client.ui.helper.wrapper;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.widgets.SeparatorTextLabel;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.widgets.SeparatorTextLabel;
 
 public class HeadDescMainWrapper extends DwContentPanel {
 

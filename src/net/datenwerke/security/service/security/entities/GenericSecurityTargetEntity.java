@@ -10,10 +10,10 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.security.service.security.SecurityTarget;
-
-import org.hibernate.envers.Audited;
 
 /**
  * 

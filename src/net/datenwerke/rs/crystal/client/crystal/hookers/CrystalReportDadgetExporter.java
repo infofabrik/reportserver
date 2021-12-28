@@ -5,7 +5,8 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
-import net.datenwerke.gxtdto.client.resources.BaseResources;
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterDao;
@@ -15,8 +16,6 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 import net.datenwerke.rs.dashboard.client.dashboard.hookers.ReportDadgetDefaultExportHooker;
 import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public class CrystalReportDadgetExporter extends ReportDadgetDefaultExportHooker {
 

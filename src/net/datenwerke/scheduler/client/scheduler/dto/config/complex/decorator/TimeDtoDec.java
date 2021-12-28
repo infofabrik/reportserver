@@ -2,10 +2,10 @@ package net.datenwerke.scheduler.client.scheduler.dto.config.complex.decorator;
 
 import java.util.Date;
 
-import net.datenwerke.scheduler.client.scheduler.dto.config.complex.TimeDto;
-
 import com.google.gwt.i18n.shared.DateTimeFormat;
 import com.sencha.gxt.core.client.util.DateWrapper;
+
+import net.datenwerke.scheduler.client.scheduler.dto.config.complex.TimeDto;
 
 /**
  * Dto Decorator for {@link TimeDto}

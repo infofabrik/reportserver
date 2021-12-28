@@ -1,11 +1,5 @@
 package net.datenwerke.gxtdto.client.utilityservices.toolbar;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
-import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
-import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
@@ -13,6 +7,12 @@ import com.sencha.gxt.data.client.loader.RpcProxy;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.utils.loadconfig.SearchLoadConfig;
+import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
+import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface ToolbarService {
 

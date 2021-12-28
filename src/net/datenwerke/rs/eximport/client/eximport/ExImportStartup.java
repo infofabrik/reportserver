@@ -1,12 +1,12 @@
 package net.datenwerke.rs.eximport.client.eximport;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.eximport.client.eximport.security.ExportSecurityTargetDomainHooker;
 import net.datenwerke.rs.eximport.client.eximport.security.ImportSecurityTargetDomainHooker;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
-
-import com.google.inject.Inject;
 
 public class ExImportStartup {
 

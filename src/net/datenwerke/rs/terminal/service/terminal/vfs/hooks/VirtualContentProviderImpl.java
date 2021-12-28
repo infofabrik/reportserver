@@ -8,8 +8,6 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSObjectInfo;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.helper.PathHelper;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.SecurityTarget;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 

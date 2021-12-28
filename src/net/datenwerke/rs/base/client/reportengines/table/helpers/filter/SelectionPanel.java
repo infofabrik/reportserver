@@ -2,15 +2,6 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
-import net.datenwerke.gxtdto.client.model.StringBaseModel;
-import net.datenwerke.gxtdto.client.utils.SqlTypes;
-import net.datenwerke.gxtdto.client.utils.handlers.GenericStoreHandler;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -20,6 +11,15 @@ import com.sencha.gxt.widget.core.client.TabItemConfig;
 import com.sencha.gxt.widget.core.client.TabPanel;
 import com.sencha.gxt.widget.core.client.TabPanel.TabPanelAppearance;
 import com.sencha.gxt.widget.core.client.TabPanel.TabPanelBottomAppearance;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
+import net.datenwerke.gxtdto.client.model.StringBaseModel;
+import net.datenwerke.gxtdto.client.utils.SqlTypes;
+import net.datenwerke.gxtdto.client.utils.handlers.GenericStoreHandler;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
+import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 
 /**
  * 

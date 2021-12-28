@@ -26,7 +26,6 @@ import net.datenwerke.gxtdto.client.utilityservices.form.combo.EmptyableSimpleCo
 import net.datenwerke.gxtdto.client.utils.SqlTypes;
 import net.datenwerke.gxtdto.client.widgets.SeparatorTextLabel;
 import net.datenwerke.rs.base.client.AvailableReportProperties;
-import net.datenwerke.rs.base.client.reportengines.BaseReportEngineUiModule;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.NullHandlingDto;

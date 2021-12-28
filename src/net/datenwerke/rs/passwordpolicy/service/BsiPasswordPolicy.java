@@ -1,5 +1,12 @@
 package net.datenwerke.rs.passwordpolicy.service;
 
+import org.apache.commons.configuration2.Configuration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyChangePasswordHook;
 import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyPasswordSetHook;
@@ -7,13 +14,6 @@ import net.datenwerke.rs.passwordpolicy.service.hooker.BsiPasswordPolicyPostAuth
 import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
-
-import org.apache.commons.configuration2.Configuration;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * A password policy based on the recommendations from

@@ -2,12 +2,12 @@ package net.datenwerke.gxtdto.client.dialog.properties;
 
 import java.util.Iterator;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitCompleteCallback;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTracker;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerService;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerToken;
-
-import com.google.inject.Inject;
 
 /**
  * 

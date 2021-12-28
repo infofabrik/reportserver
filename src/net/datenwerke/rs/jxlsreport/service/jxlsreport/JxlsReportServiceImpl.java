@@ -3,11 +3,11 @@ package net.datenwerke.rs.jxlsreport.service.jxlsreport;
 import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile;
-import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile;
+import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityEvents;
 
 @Singleton
 public class JxlsReportServiceImpl implements JxlsReportService {

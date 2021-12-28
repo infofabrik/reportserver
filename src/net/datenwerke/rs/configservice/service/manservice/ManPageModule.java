@@ -1,9 +1,9 @@
 package net.datenwerke.rs.configservice.service.manservice;
 
-import net.datenwerke.rs.utils.man.ManPageService;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
+
+import net.datenwerke.rs.utils.man.ManPageService;
 
 public class ManPageModule extends AbstractModule {
 

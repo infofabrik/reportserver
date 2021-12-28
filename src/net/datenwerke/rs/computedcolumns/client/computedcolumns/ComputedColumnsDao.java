@@ -1,12 +1,12 @@
 package net.datenwerke.rs.computedcolumns.client.computedcolumns;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColumnDto;
 import net.datenwerke.rs.computedcolumns.client.computedcolumns.rpc.ComputedColumnsRpcServiceAsync;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.inject.Inject;
 
 public class ComputedColumnsDao extends Dao {
 

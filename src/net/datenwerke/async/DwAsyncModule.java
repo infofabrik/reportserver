@@ -1,10 +1,10 @@
 package net.datenwerke.async;
 
-import net.datenwerke.async.annotations.WaitBeforeForcedShutdown;
-import net.datenwerke.async.helpers.TransactionalRunnableFactory;
-
 import com.google.inject.AbstractModule;
 import com.google.inject.assistedinject.FactoryModuleBuilder;
+
+import net.datenwerke.async.annotations.WaitBeforeForcedShutdown;
+import net.datenwerke.async.helpers.TransactionalRunnableFactory;
 
 public class DwAsyncModule extends AbstractModule {
 

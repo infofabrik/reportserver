@@ -1,5 +1,9 @@
 package net.datenwerke.rs.fileserver.client.fileserver.fileeditors.text;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.core.client.util.Margins;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorPanel.ToolBarEnhancer;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -13,11 +17,6 @@ import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.rs.fileserver.client.fileserver.FileServerDao;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
-
-import com.sencha.gxt.core.client.util.Margins;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-
-import com.google.inject.Inject;
 
 public class TextFileView extends SimpleFormView{
 

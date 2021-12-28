@@ -1,10 +1,10 @@
 package net.datenwerke.rs.core.client.datasinkmanager.ui;
 
-import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeMainPanel;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeMainPanel;
+import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 
 /**
  * The actual implementation of the user managers main component.

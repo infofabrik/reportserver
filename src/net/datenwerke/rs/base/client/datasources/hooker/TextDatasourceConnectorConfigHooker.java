@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.client.datasources.hooker;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTextArea;
 import net.datenwerke.rs.base.client.datasources.dto.DatasourceConnectorDto;
@@ -8,8 +10,6 @@ import net.datenwerke.rs.base.client.datasources.dto.TextDatasourceConnectorDto;
 import net.datenwerke.rs.base.client.datasources.dto.pa.TextDatasourceConnectorDtoPA;
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
-
-import com.google.gwt.user.client.ui.Widget;
 
 public class TextDatasourceConnectorConfigHooker implements
 		DatasourceConnectorConfiguratorHook {

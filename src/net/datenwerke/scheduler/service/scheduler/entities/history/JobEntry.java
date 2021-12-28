@@ -14,12 +14,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Type;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.scheduler.service.scheduler.entities.Outcome;
-
-import org.hibernate.annotations.Type;
 
 @GenerateDto(
 	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.history"

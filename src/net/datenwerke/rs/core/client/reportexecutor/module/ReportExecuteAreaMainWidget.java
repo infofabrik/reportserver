@@ -5,23 +5,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIModule;
-import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessages;
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
-import net.datenwerke.rs.core.client.reportexecutor.ui.aware.CloseableAware;
-import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
-import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.gwt.user.client.History;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.Style.HideMode;
 import com.sencha.gxt.core.client.util.Format;
@@ -31,6 +20,16 @@ import com.sencha.gxt.widget.core.client.TabItemConfig;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIModule;
+import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessages;
+import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
+import net.datenwerke.rs.core.client.reportexecutor.ui.aware.CloseableAware;
+import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
+import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ReportExecuteAreaMainWidget extends DwTabPanel {
 

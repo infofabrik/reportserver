@@ -16,14 +16,14 @@ import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import net.datenwerke.gf.service.localization.RemoteMessageService;
-import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuNativeMessages;
-
 import org.codehaus.jackson.JsonNode;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.ObjectMapper;
 
 import com.google.common.collect.ImmutableList;
+
+import net.datenwerke.gf.service.localization.RemoteMessageService;
+import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuNativeMessages;
 
 @Path("/legacysaiku/i18n")
 @XmlAccessorType(XmlAccessType.NONE)

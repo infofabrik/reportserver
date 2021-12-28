@@ -10,9 +10,9 @@ import javax.persistence.Lob;
 import javax.persistence.Table;
 import javax.persistence.Version;
 
-import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
-
 import org.hibernate.annotations.Type;
+
+import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 
 @Entity
 @Table(name="SCHED_ACTION_SEND_TO_V")

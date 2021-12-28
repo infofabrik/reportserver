@@ -3,9 +3,6 @@ package net.datenwerke.gf.client.uiutils.date;
 import java.text.ParseException;
 import java.util.Date;
 
-import net.datenwerke.gf.client.juel.dto.JuelResultDto;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwDateMenu;
-
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -34,6 +31,9 @@ import com.sencha.gxt.widget.core.client.event.ExpandEvent.ExpandHandler;
 import com.sencha.gxt.widget.core.client.event.ExpandEvent.HasExpandHandlers;
 import com.sencha.gxt.widget.core.client.event.HideEvent;
 import com.sencha.gxt.widget.core.client.event.HideEvent.HideHandler;
+
+import net.datenwerke.gf.client.juel.dto.JuelResultDto;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwDateMenu;
 
 public class DateFormulaPickerCell extends TriggerFieldCell<DateFormulaContainer> implements HasExpandHandlers, HasCollapseHandlers {
 

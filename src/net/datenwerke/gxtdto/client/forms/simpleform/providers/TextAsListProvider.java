@@ -5,16 +5,16 @@ import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
-import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
-import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.lists.SFFCTextFieldList;
-
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.widget.core.client.form.TextField;
+
+import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
+import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
+import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.lists.SFFCTextFieldList;
 
 public class TextAsListProvider extends FormFieldProviderHookImpl {
 

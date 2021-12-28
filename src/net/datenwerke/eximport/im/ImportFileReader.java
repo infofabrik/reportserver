@@ -12,12 +12,12 @@ import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 
-import net.datenwerke.eximport.exceptions.InvalidImportDocumentException;
-
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import net.datenwerke.eximport.exceptions.InvalidImportDocumentException;
 
 @Deprecated
 public class ImportFileReader {

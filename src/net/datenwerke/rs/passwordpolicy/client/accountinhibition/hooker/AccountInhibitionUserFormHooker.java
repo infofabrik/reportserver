@@ -2,11 +2,14 @@ package net.datenwerke.rs.passwordpolicy.client.accountinhibition.hooker;
 
 import java.util.Date;
 
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+
 import net.datenwerke.gf.client.managerhelper.hooks.SimpleFormViewHook;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormSubmissionCallback;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCustomComponent;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDate;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomComponent;
@@ -19,10 +22,6 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
 import net.datenwerke.security.ext.client.usermanager.ui.forms.UserForm;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
 
 public class AccountInhibitionUserFormHooker extends SimpleFormViewHook{
 

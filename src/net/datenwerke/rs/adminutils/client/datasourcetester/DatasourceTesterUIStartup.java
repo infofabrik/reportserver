@@ -1,9 +1,9 @@
 package net.datenwerke.rs.adminutils.client.datasourcetester;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
 
 public class DatasourceTesterUIStartup {
 

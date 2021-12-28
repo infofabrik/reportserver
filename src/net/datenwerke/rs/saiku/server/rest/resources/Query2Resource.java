@@ -72,7 +72,6 @@ import net.datenwerke.rs.saiku.service.saiku.ThinQueryService;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Execute;
 
 /**

@@ -4,12 +4,12 @@ import java.util.Enumeration;
 
 import javax.inject.Inject;
 
+import com.google.inject.Injector;
+
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaRequestAndLocationImpl;
-
-import com.google.inject.Injector;
 
 public class ConfigureBaseReportViaRequestHooker extends ConfigureReportViaRequestAndLocationImpl {
 	

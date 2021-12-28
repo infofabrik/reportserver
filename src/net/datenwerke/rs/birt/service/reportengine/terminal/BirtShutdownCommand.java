@@ -1,5 +1,7 @@
 package net.datenwerke.rs.birt.service.reportengine.terminal;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.birt.service.reportengine.BirtReportService;
 import net.datenwerke.rs.birt.service.reportengine.locale.BirtEngineMessages;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -8,8 +10,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-
-import com.google.inject.Inject;
 
 public class BirtShutdownCommand implements BirtSubCommandHook {
 

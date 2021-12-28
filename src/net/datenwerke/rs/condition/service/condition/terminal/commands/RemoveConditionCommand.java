@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.persistence.NoResultException;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.condition.service.condition.ConditionService;
 import net.datenwerke.rs.condition.service.condition.entity.ReportCondition;
 import net.datenwerke.rs.condition.service.condition.locale.ConditionMessages;
@@ -18,8 +20,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Read;
-
-import com.google.inject.Inject;
 
 public class RemoveConditionCommand implements ConditionSubCommandHook {
 	

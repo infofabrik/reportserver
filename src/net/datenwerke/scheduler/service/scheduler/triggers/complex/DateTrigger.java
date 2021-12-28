@@ -12,6 +12,8 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.time.DateUtils;
+
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 import net.datenwerke.scheduler.service.scheduler.locale.SchedulerServerMessages;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.DateTriggerConfig;
@@ -19,8 +21,6 @@ import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.Time;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.DailyRepeatType;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.EndTypes;
 import net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits;
-
-import org.apache.commons.lang3.time.DateUtils;
 
 @Entity
 @Table(name="SCHED_TRIG_DATE")

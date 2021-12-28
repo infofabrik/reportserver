@@ -1,5 +1,8 @@
 package net.datenwerke.rs.uservariables.service;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -21,9 +24,6 @@ import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class UserVariableStartup {
 

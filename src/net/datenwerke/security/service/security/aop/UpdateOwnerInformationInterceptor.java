@@ -5,17 +5,17 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
-import net.datenwerke.security.service.security.annotation.UpdateOwner;
-import net.datenwerke.security.service.security.interfaces.Owneable;
-import net.datenwerke.security.service.usermanager.entities.User;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
+
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
+import net.datenwerke.security.service.security.annotation.UpdateOwner;
+import net.datenwerke.security.service.security.interfaces.Owneable;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class UpdateOwnerInformationInterceptor implements MethodInterceptor {
 

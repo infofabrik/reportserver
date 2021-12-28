@@ -1,7 +1,5 @@
 package net.datenwerke.rs.grideditor.client.grideditor.ui;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
-
 import com.google.gwt.event.shared.GwtEvent;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.sencha.gxt.data.shared.Converter;
@@ -10,6 +8,8 @@ import com.sencha.gxt.widget.core.client.form.IsField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.Grid.GridCell;
 import com.sencha.gxt.widget.core.client.grid.editing.AbstractGridEditing;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 
 public class DummyGridEditingCapturer extends AbstractGridEditing<GridEditorRecordDto> {
 

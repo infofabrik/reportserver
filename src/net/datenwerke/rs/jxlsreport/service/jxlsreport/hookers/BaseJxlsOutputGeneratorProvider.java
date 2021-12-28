@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsOutputGeneratorProviderHook;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.generator.JxlsHTMLOutputGenerator;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.generator.JxlsOutputGenerator;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.generator.JxlsOutputGeneratorImpl;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseJxlsOutputGeneratorProvider implements JxlsOutputGeneratorProviderHook{
 

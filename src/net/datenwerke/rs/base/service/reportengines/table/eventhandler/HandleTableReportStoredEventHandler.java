@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.service.reportengines.table.eventhandler;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtilsImpl;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
@@ -8,8 +10,6 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.JpaEvent;
 import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 import net.datenwerke.security.service.eventlogger.jpa.PersistEntityEvent;
-
-import com.google.inject.Inject;
 
 public class HandleTableReportStoredEventHandler implements EventHandler<JpaEvent> {
 

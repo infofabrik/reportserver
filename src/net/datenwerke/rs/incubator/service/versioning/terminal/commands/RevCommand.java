@@ -3,6 +3,8 @@ package net.datenwerke.rs.incubator.service.versioning.terminal.commands;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.incubator.service.versioning.hooks.RevSubCommandHook;
 import net.datenwerke.rs.incubator.service.versioning.locale.VersioningMessages;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-
-import com.google.inject.Inject;
 
 public class RevCommand extends SubCommandContainerImpl{
 	

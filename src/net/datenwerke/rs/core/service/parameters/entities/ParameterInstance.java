@@ -17,6 +17,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
@@ -26,10 +30,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImp
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
 
 /**
  * 

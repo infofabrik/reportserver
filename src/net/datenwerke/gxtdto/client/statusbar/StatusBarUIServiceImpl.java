@@ -1,11 +1,11 @@
 package net.datenwerke.gxtdto.client.statusbar;
 
-import net.datenwerke.gxtdto.client.statusbar.ui.StatusBarWidget;
-
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.container.Viewport;
+
+import net.datenwerke.gxtdto.client.statusbar.ui.StatusBarWidget;
 
 /**
  * 

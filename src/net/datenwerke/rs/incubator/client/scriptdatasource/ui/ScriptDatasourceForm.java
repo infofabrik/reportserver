@@ -1,5 +1,7 @@
 package net.datenwerke.rs.incubator.client.scriptdatasource.ui;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
@@ -10,8 +12,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeBasic;
 import net.datenwerke.rs.incubator.client.scriptdatasource.dto.pa.ScriptDatasourceDtoPA;
 import net.datenwerke.rs.incubator.client.scriptdatasource.locale.ScriptDatasourceMessages;
-
-import com.google.inject.Inject;
 
 /**
  * 

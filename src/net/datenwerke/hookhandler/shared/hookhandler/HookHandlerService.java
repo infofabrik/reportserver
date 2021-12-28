@@ -2,9 +2,9 @@ package net.datenwerke.hookhandler.shared.hookhandler;
 
 import java.util.List;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
-
 import com.google.inject.Provider;
+
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 /**
  * 

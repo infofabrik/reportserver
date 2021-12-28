@@ -2,6 +2,9 @@ package net.datenwerke.gf.server.juel;
 
 import javax.inject.Singleton;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.juel.dto.JuelResultDto;
 import net.datenwerke.gf.client.juel.rpc.JuelRpcService;
 import net.datenwerke.gf.service.juel.JuelResult;
@@ -9,9 +12,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 @Singleton
 public class JuelRpcServiceImpl extends SecuredRemoteServiceServlet implements JuelRpcService {

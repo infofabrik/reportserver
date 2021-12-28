@@ -6,6 +6,9 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
+import com.google.inject.name.Named;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.birt.client.reportengines.dto.BirtReportDto;
@@ -23,9 +26,6 @@ import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
-
-import com.google.inject.name.Named;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class BirtUtilsRpcServiceImpl extends SecuredRemoteServiceServlet implements BirtUtilsRpcService {

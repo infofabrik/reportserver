@@ -1,9 +1,9 @@
 package net.datenwerke.rs.dashboard.client.dashboard.ui;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
+
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.DadgetProcessorHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.safehtml.shared.SafeHtml;
 
 class DadgetProcessorModel {
    private String title;

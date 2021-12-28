@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
+
 import net.datenwerke.gxtdto.client.utilityservices.ext.HookableContainer;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.hooks.ToolbarBaseHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 
 public class DwHookableToolbar extends DwToolBar implements HookableContainer {
 

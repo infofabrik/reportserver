@@ -1,5 +1,8 @@
 package net.datenwerke.gxtdto.client.forms.simpleform;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.BooleanProvider;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.CustomComponentProvider;
@@ -15,9 +18,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.StaticListProvide
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.StringProvider;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.TextAsListProvider;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class SimpleFormStartup {
 

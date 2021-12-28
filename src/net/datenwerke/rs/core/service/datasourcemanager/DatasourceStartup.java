@@ -2,6 +2,9 @@ package net.datenwerke.rs.core.service.datasourcemanager;
 
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.history.DatasourceManage
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class DatasourceStartup {
 

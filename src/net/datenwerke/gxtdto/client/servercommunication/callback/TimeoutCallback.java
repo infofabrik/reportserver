@@ -1,10 +1,10 @@
 package net.datenwerke.gxtdto.client.servercommunication.callback;
 
-import net.datenwerke.gxtdto.client.servercommunication.callback.locale.CallbackHandlerMessages;
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.core.client.util.DelayedTask;
+
+import net.datenwerke.gxtdto.client.servercommunication.callback.locale.CallbackHandlerMessages;
+import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 
 public class TimeoutCallback <T> implements AsyncCallback<T>{
 

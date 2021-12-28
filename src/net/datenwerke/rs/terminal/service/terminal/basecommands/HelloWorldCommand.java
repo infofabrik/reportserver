@@ -1,5 +1,8 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
@@ -9,9 +12,6 @@ import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class HelloWorldCommand implements TerminalCommandHook {
 

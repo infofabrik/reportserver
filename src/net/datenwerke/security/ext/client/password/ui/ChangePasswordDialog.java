@@ -3,13 +3,8 @@ package net.datenwerke.security.ext.client.password.ui;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
-
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
@@ -18,6 +13,11 @@ import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.PasswordField;
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
 
 public class ChangePasswordDialog extends DwWindow {
 

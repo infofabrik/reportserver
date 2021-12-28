@@ -1,10 +1,10 @@
 package net.datenwerke.rs.grideditor.client.grideditor.dto.decorator;
 
-import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxDateValidatorDto;
-
 import com.sencha.gxt.widget.core.client.form.Validator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxDateValidator;
 import com.sencha.gxt.widget.core.client.form.validator.MaxDateValidator.MaxDateMessages;
+
+import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxDateValidatorDto;
 
 /**
  * Dto Decorator for {@link MaxDateValidatorDto}

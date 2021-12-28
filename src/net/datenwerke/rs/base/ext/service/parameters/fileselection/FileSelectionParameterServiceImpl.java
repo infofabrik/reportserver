@@ -2,19 +2,15 @@ package net.datenwerke.rs.base.ext.service.parameters.fileselection;
 
 import javax.persistence.EntityManager;
 
-import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
-import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportJRXMLFile;
-import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport__;
-import net.datenwerke.rs.utils.simplequery.annotations.Join;
-import net.datenwerke.rs.utils.simplequery.annotations.Predicate;
-import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
-import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
-import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
-import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.name.Named;
+
+import net.datenwerke.rs.utils.simplequery.annotations.Join;
+import net.datenwerke.rs.utils.simplequery.annotations.Predicate;
+import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
+import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
+import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntityEvents;
 
 public class FileSelectionParameterServiceImpl implements FileSelectionParameterService {
 

@@ -9,20 +9,6 @@ import java.util.Date;
 
 import javax.inject.Inject;
 
-import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledPDFJasperReport;
-import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledPDFTableReport;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
-import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
-import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
-import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
-import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
-import net.datenwerke.rs.core.service.reportserver.ReportServerService;
-import net.datenwerke.rs.utils.misc.PdfUtils;
-import net.datenwerke.security.service.usermanager.entities.User;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,6 +27,20 @@ import com.lowagie.text.pdf.PdfPTable;
 import com.lowagie.text.pdf.PdfPageEventHelper;
 import com.lowagie.text.pdf.PdfTemplate;
 import com.lowagie.text.pdf.PdfWriter;
+
+import net.datenwerke.rs.base.service.reportengines.jasper.output.object.CompiledPDFJasperReport;
+import net.datenwerke.rs.base.service.reportengines.table.entities.Column.CellFormatter;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.CompiledPDFTableReport;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
+import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
+import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
+import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
+import net.datenwerke.rs.core.service.reportserver.ReportServerService;
+import net.datenwerke.rs.utils.misc.PdfUtils;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class LegacyTablePDFOutputGenerator extends TableOutputGeneratorImpl {
 	

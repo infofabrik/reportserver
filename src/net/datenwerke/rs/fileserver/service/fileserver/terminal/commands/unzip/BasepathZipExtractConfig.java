@@ -4,13 +4,13 @@ import java.util.zip.ZipEntry;
 
 import javax.inject.Inject;
 
+import com.google.inject.assistedinject.Assisted;
+
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.utils.zip.ZipExtractionConfig;
-
-import com.google.inject.assistedinject.Assisted;
 
 public class BasepathZipExtractConfig extends ZipExtractionConfig {
 

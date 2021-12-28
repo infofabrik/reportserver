@@ -1,15 +1,14 @@
 package net.datenwerke.security.ext.client.usermanager;
 
-import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
-import net.datenwerke.security.ext.client.usermanager.ui.UserManagerPanel;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+
+import net.datenwerke.gf.client.administration.interfaces.AdminModule;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages;
+import net.datenwerke.security.ext.client.usermanager.ui.UserManagerPanel;
 
 /**
  * 

@@ -1,12 +1,12 @@
 package net.datenwerke.rs.passwordpolicy.service.hooker;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.passwordpolicy.service.BsiPasswordPolicyService;
 import net.datenwerke.rs.passwordpolicy.service.BsiPasswordPolicyUserMetadata;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
-
-import com.google.inject.Inject;
 
 public class BsiPasswordPolicyPasswordSetHook implements PasswordSetHook{
 	

@@ -3,6 +3,8 @@ package net.datenwerke.security.service.treedb.entities;
 import java.util.HashSet;
 import java.util.Set;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.security.client.security.dto.DeleteDto;
@@ -19,8 +21,6 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.GrantAccess;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
-
-import com.google.inject.Inject;
 
 /**
  * 

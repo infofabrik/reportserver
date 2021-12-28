@@ -5,15 +5,6 @@ import java.text.ParseException;
 import java.util.List;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.baseex.widget.form.DwTwinTriggerField;
-import net.datenwerke.gxtdto.client.baseex.widget.form.DwTwinTriggerFieldCell;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.gxtdto.client.dtomanager.Dto;
-import net.datenwerke.gxtdto.client.forms.selection.SelectionPopup.ItemsSelectedCallback;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.sencha.gxt.core.client.ValueProvider;
@@ -24,6 +15,15 @@ import com.sencha.gxt.widget.core.client.form.PropertyEditor;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
+import net.datenwerke.gxtdto.client.baseex.widget.form.DwTwinTriggerField;
+import net.datenwerke.gxtdto.client.baseex.widget.form.DwTwinTriggerFieldCell;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.forms.selection.SelectionPopup.ItemsSelectedCallback;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

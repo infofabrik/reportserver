@@ -1,9 +1,9 @@
 package net.datenwerke.gxtdto.client.eventbus.handlers.has;
 
-import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
-
 import com.google.gwt.event.shared.HandlerRegistration;
 import com.google.gwt.event.shared.HasHandlers;
+
+import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
 
 public interface HasObjectChangedEventHandler<T> extends HasHandlers {
 

@@ -1,9 +1,9 @@
 package net.datenwerke.rs.theme.client.toolbar;
 
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.theme.neptune.client.base.toolbar.Css3PagingToolBarAppearance;
+
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class RsPagingToolbarAppearance extends Css3PagingToolBarAppearance {
 

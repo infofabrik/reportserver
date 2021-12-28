@@ -4,6 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import com.google.gwt.event.dom.client.LoadEvent;
+import com.google.gwt.event.dom.client.LoadHandler;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Provider;
+import com.sencha.gxt.widget.core.client.container.SimpleContainer;
+
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
@@ -12,12 +18,6 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.gwt.event.dom.client.LoadEvent;
-import com.google.gwt.event.dom.client.LoadHandler;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Provider;
-import com.sencha.gxt.widget.core.client.container.SimpleContainer;
 
 public class ViewProviderHooker implements MainPanelViewProviderHook {
 

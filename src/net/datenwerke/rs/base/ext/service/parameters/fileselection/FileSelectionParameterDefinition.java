@@ -9,13 +9,13 @@ import java.util.regex.Pattern;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeMethodToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.client.parameters.locale.RsMessages;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
-
-import org.hibernate.envers.Audited;
 
 @Entity
 @Table(name="FILESEL_PARAM_DEF")

@@ -20,6 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import javax.persistence.Version;
 
+import org.hibernate.annotations.Type;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -29,10 +33,6 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.JobHistory;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedException;
 import net.datenwerke.scheduler.service.scheduler.exceptions.JobExecutionException;
 import net.datenwerke.scheduler.service.scheduler.hooks.MonitorJobExecutionHook;
-
-import org.hibernate.annotations.Type;
-
-import com.google.inject.Inject;
 
 @Entity
 @Table(name="SCHED_JOB")

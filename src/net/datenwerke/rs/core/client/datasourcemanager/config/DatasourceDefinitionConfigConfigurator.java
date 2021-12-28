@@ -1,12 +1,12 @@
 package net.datenwerke.rs.core.client.datasourcemanager.config;
 
+import com.google.gwt.user.client.ui.Widget;
+
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerProviderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionConfigDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
-
-import com.google.gwt.user.client.ui.Widget;
 
 /**
  * 

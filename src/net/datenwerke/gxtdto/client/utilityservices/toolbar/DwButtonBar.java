@@ -1,8 +1,8 @@
 package net.datenwerke.gxtdto.client.utilityservices.toolbar;
 
-import net.datenwerke.gxtdto.client.theme.CssClassConstant;
-
 import com.sencha.gxt.widget.core.client.button.ButtonBar;
+
+import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwButtonBar extends ButtonBar {
 	

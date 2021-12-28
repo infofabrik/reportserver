@@ -1,8 +1,8 @@
 package net.datenwerke.rs.passwordpolicy.client.activateuser.rpc;
 
-import net.datenwerke.security.client.usermanager.dto.UserDto;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
+
+import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public interface ActivateUserRpcServiceAsync {
 

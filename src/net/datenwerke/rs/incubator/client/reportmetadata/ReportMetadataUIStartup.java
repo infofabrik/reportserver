@@ -1,10 +1,10 @@
 package net.datenwerke.rs.incubator.client.reportmetadata;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.incubator.client.reportmetadata.hookers.MainPanelViewProviderHooker;
-
-import com.google.inject.Inject;
 
 public class ReportMetadataUIStartup {
 

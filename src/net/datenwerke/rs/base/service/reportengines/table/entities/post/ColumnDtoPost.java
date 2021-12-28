@@ -3,6 +3,8 @@ package net.datenwerke.rs.base.service.reportengines.table.entities.post;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoPostProcessor;
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.gxtdto.client.utils.SqlTypes;
@@ -13,8 +15,6 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.FilterRange;
 import net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
-
-import com.google.inject.Inject;
 
 public class ColumnDtoPost implements Dto2PosoPostProcessor<ColumnDto, Column>, Poso2DtoPostProcessor<Column, ColumnDto> {
 

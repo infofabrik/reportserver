@@ -1,5 +1,8 @@
 package net.datenwerke.rs.base.service.reportengines.hookers;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.NonFatalException;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.base.service.reportengines.table.utils.TableReportColumnMetadataService;
@@ -8,9 +11,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.AdjustReportForExecutionHook;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class AdjustBaseReportForExecutionHooker implements AdjustReportForExecutionHook {
 

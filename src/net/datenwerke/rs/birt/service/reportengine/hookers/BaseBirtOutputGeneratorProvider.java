@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.birt.service.reportengine.hooks.BirtOutputGeneratorProviderHook;
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtDOCOutputGenerator;
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtHTMLOutputGenerator;
@@ -11,9 +14,6 @@ import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtOutputGe
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtPDFOutputGenerator;
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtPNGOutputGenerator;
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtXLSOutputGenerator;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BaseBirtOutputGeneratorProvider implements BirtOutputGeneratorProviderHook{
 

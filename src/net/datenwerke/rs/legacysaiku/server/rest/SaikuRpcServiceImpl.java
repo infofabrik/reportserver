@@ -15,12 +15,12 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.legacysaiku.client.saiku.SaikuRpcService;
-import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
-import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
 import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
+import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
+import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
+import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
@@ -29,7 +29,6 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.annotation.ArgumentVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 

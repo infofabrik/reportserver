@@ -1,5 +1,7 @@
 package net.datenwerke.treedb.ext.service.eximport.helper;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.ExportDataAnalyzerService;
 import net.datenwerke.eximport.ex.Exporter;
 import net.datenwerke.eximport.im.ImportConfig;
@@ -12,8 +14,6 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImporterConfig;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
-
-import com.google.inject.Inject;
 
 public abstract class ImportAllNodesHooker<N extends AbstractNode<N>> implements ImportAllHook {
 

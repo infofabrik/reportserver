@@ -1,13 +1,13 @@
 package net.datenwerke.rs.search.service.search.results.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoPostProcessor;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.search.client.search.dto.SearchFilterDto;
 import net.datenwerke.rs.search.client.search.dto.decorator.SearchFilterDtoDec;
 import net.datenwerke.rs.search.service.search.results.SearchFilter;
-
-import com.google.inject.Inject;
 
 public class Dto2SearchFilterPost implements Dto2PosoPostProcessor<SearchFilterDto, SearchFilter> {
 

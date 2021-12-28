@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.service.reportmanager.entities.reports.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.interfaces.Dto2PosoPostProcessor;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
@@ -9,8 +11,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportStringProperty;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportCreatedFromDtoHook;
-
-import com.google.inject.Inject;
 
 public class Dto2ReportPostProcessor implements Dto2PosoPostProcessor<ReportDto, Report> {
 

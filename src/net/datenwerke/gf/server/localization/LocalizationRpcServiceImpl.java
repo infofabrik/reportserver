@@ -9,15 +9,15 @@ import java.util.TreeMap;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import com.google.inject.Singleton;
+import com.google.inject.persist.Transactional;
+
 import net.datenwerke.gf.client.localization.rpc.LocalizationRpcService;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.annotations.DefaultLocale;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
-
-import com.google.inject.Singleton;
-import com.google.inject.persist.Transactional;
 
 @Singleton
 public class LocalizationRpcServiceImpl extends SecuredRemoteServiceServlet implements LocalizationRpcService {

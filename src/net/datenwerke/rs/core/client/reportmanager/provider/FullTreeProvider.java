@@ -2,6 +2,9 @@ package net.datenwerke.rs.core.client.reportmanager.provider;
 
 import java.util.Collection;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.history.HistoryUiService;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
@@ -12,9 +15,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.core.client.reportmanager.ui.ReportManagerMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class FullTreeProvider implements Provider<ManagerHelperTree>{
 

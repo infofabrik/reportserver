@@ -4,26 +4,6 @@ import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwToggleButton;
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.model.StringBaseModel;
-import net.datenwerke.gxtdto.client.model.pa.StringBaseModelPa;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwPagingToolBar;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
-import net.datenwerke.gxtdto.client.utils.SqlTypes;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
-import net.datenwerke.gxtdto.client.widgets.SeparatorTextLabel;
-import net.datenwerke.rs.base.client.AvailableReportProperties;
-import net.datenwerke.rs.base.client.datasources.statementmanager.StatementManagerDao;
-import net.datenwerke.rs.base.client.reportengines.BaseReportEngineUiModule;
-import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
-import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
-import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
-import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.editor.client.Editor;
@@ -66,6 +46,25 @@ import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.PagingToolBar;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwToggleButton;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.model.StringBaseModel;
+import net.datenwerke.gxtdto.client.model.pa.StringBaseModelPa;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwPagingToolBar;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
+import net.datenwerke.gxtdto.client.utils.SqlTypes;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
+import net.datenwerke.gxtdto.client.widgets.SeparatorTextLabel;
+import net.datenwerke.rs.base.client.AvailableReportProperties;
+import net.datenwerke.rs.base.client.datasources.statementmanager.StatementManagerDao;
+import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
+import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.FilterMessages;
+import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 

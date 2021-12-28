@@ -2,11 +2,11 @@ package net.datenwerke.security.service.eventlogger.jpa;
 
 import java.util.Map;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.utils.eventbus.ObjectEvent;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
-
-import com.google.inject.Inject;
 
 public abstract class JpaEvent extends DwLoggedEvent implements ObjectEvent {
 

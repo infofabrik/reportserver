@@ -1,9 +1,9 @@
 package net.datenwerke.gf.client.administration.hooks;
 
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.administration.interfaces.AdminModule;
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
-
-import com.google.inject.Provider;
 
 /**
  * 

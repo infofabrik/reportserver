@@ -1,16 +1,15 @@
 package net.datenwerke.rs.search.service.search;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.lateinit.LateInitHook;
-import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
 import net.datenwerke.rs.search.service.search.provider.EntitySearchProvider;
 import net.datenwerke.rs.search.service.search.terminal.commands.LocateCommand;
 import net.datenwerke.rs.search.service.search.terminal.commands.UpdateDBCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class SearchStartup {
 

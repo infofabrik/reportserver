@@ -1,14 +1,14 @@
 package net.datenwerke.rs.base.client.reportengines.table.prefilter;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.hookers.BinaryColumnFilterConfiguratorHooker;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.hookers.ColumnFilterConfiguratorHooker;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.hooks.PreFilterConfiguratorHook;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterViewFactory;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class PreFilterUiStartup {
 

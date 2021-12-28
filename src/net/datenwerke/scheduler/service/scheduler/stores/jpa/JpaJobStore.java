@@ -16,6 +16,12 @@ import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.simplequery.annotations.QueryByAttribute;
 import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
@@ -28,12 +34,6 @@ import net.datenwerke.scheduler.service.scheduler.stores.JobExecutionCompanion;
 import net.datenwerke.scheduler.service.scheduler.stores.JobStoreImpl;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterConfiguration;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class JpaJobStore extends JobStoreImpl {
 	

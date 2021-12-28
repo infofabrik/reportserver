@@ -9,9 +9,9 @@ import java.security.UnrecoverableKeyException;
 import java.security.cert.Certificate;
 import java.security.cert.X509Certificate;
 
-import net.datenwerke.security.service.crypto.CryptoCredentials;
-
 import org.apache.commons.configuration2.HierarchicalConfiguration;
+
+import net.datenwerke.security.service.crypto.CryptoCredentials;
 
 public abstract class KeyStoreCredentialProvider implements	CryptoCredentialProvider {
 	

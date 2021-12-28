@@ -4,6 +4,11 @@ import java.util.HashMap;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.configuration2.Configuration;
+
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.DwGwtFrameworkBase;
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
@@ -20,11 +25,6 @@ import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.configuration2.Configuration;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class ActivateUserServiceImpl implements ActivateUserService {
 

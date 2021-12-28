@@ -3,10 +3,10 @@ package net.datenwerke.security.service.authenticator;
 import java.util.Map;
 import java.util.Set;
 
+import com.google.inject.AbstractModule;
+
 import net.datenwerke.security.client.login.AuthToken;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.AbstractModule;
 
 public class AuthenticateEverythingModule extends AbstractModule {
 

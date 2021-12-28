@@ -1,8 +1,8 @@
 package net.datenwerke.rs.base.service.parameters;
 
-import net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterModule;
-
 import com.google.inject.AbstractModule;
+
+import net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterModule;
 
 public class BaseParametersModule extends AbstractModule {
 

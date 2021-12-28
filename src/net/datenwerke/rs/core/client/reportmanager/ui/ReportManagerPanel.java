@@ -1,10 +1,10 @@
 package net.datenwerke.rs.core.client.reportmanager.ui;
 
-import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
-import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
-
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.managerhelper.ui.AbstractTreeManagerPanel;
+import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 
 @Singleton
 public class ReportManagerPanel extends AbstractTreeManagerPanel {

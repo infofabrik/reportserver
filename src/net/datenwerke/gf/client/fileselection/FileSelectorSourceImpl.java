@@ -1,13 +1,12 @@
 package net.datenwerke.gf.client.fileselection;
 
-import net.datenwerke.gf.client.download.dto.DownloadProperties;
-import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.sencha.gxt.widget.core.client.grid.Grid;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gf.client.download.dto.DownloadProperties;
+import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public abstract class FileSelectorSourceImpl implements FileSelectorSource {
 

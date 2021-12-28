@@ -3,6 +3,13 @@ package net.datenwerke.gf.client.administration.ui;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.event.shared.EventBus;
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+import com.google.inject.Singleton;
+import com.sencha.gxt.data.shared.TreeStore;
+import com.sencha.gxt.widget.core.client.tree.Tree;
+
 import net.datenwerke.gf.client.administration.hooks.AdminModuleProviderHook;
 import net.datenwerke.gf.client.administration.interfaces.AdminModule;
 import net.datenwerke.gf.client.administration.locale.AdministrationMessages;
@@ -14,13 +21,6 @@ import net.datenwerke.gxtdto.client.ui.helper.nav.NavigationModelData;
 import net.datenwerke.gxtdto.client.ui.helper.nav.NavigationPanelHelper;
 import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyProvider;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
-import com.google.gwt.event.shared.EventBus;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
-import com.google.inject.Singleton;
-import com.sencha.gxt.data.shared.TreeStore;
-import com.sencha.gxt.widget.core.client.tree.Tree;
 
 /**
  * 

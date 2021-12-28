@@ -1,14 +1,14 @@
 package net.datenwerke.rs.scheduleasfile.client.scheduleasfile.hookers;
 
+import com.google.gwt.core.client.GWT;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.ScheduleAsFileUiModule;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.GeneralReferenceHandlerHook;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
-
-import com.google.gwt.core.client.GWT;
-import com.google.inject.Inject;
 
 public class HandleExecutedReportFileHooker implements
 		GeneralReferenceHandlerHook {

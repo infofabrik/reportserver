@@ -2,6 +2,14 @@ package net.datenwerke.rs.scheduleasfile.client.scheduleasfile.hookers;
 
 import java.util.List;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.logical.shared.SelectionHandler;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.menu.Item;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
+
 import net.datenwerke.gf.client.uiutils.ClientDownloadHelper;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
@@ -15,15 +23,6 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteMenuHo
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.menu.Item;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 public class TSMenuDownloadHooker implements TsFavoriteMenuHook {
 

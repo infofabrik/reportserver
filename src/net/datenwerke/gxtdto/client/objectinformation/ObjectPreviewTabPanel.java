@@ -6,12 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
-import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
-import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabKeyInfoProvider;
-import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProviderHook;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -20,6 +14,12 @@ import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.TabItemConfig;
 import com.sencha.gxt.widget.core.client.TabPanel.TabPanelAppearance;
 import com.sencha.gxt.widget.core.client.TabPanel.TabPanelBottomAppearance;
+
+import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
+import net.datenwerke.gxtdto.client.baseex.widget.DwTabPanel;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabKeyInfoProvider;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectPreviewTabProviderHook;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 /**
  * Creates a component with information about a given object.

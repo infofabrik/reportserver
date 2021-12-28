@@ -1,12 +1,12 @@
 package net.datenwerke.security.ext.client.password;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.security.ext.client.crypto.CryptoUIService;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.GXT;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.security.ext.client.crypto.CryptoUIService;
 
 public class PasswordServiceDao extends Dao {
 	

@@ -11,16 +11,8 @@ import javax.el.ExpressionFactory;
 import javax.inject.Provider;
 import javax.inject.Singleton;
 
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.utils.juel.annotations.JuelExpressionBlacklist;
-import net.datenwerke.rs.utils.juel.hooks.JuelServiceHook;
-import net.datenwerke.rs.utils.juel.wrapper.ServerInfoWrapper;
-import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
-import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
-import net.datenwerke.rs.utils.misc.DateUtils;
-
-import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,6 +21,13 @@ import com.google.inject.Inject;
 import de.odysseus.el.ExpressionFactoryImpl;
 import de.odysseus.el.util.SimpleContext;
 import de.odysseus.el.util.SimpleResolver;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.utils.juel.annotations.JuelExpressionBlacklist;
+import net.datenwerke.rs.utils.juel.hooks.JuelServiceHook;
+import net.datenwerke.rs.utils.juel.wrapper.ServerInfoWrapper;
+import net.datenwerke.rs.utils.juel.wrapper.SimpleDateWrapper;
+import net.datenwerke.rs.utils.juel.wrapper.TodayWrapper;
+import net.datenwerke.rs.utils.misc.DateUtils;
 
 /**
  * 

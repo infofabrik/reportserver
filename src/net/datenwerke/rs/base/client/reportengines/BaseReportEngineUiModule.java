@@ -1,13 +1,13 @@
 package net.datenwerke.rs.base.client.reportengines;
 
+import com.google.gwt.inject.client.AbstractGinModule;
+
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterUIModule;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.ColumnFilterWindow;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.ColumnFormatWindow;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.ColumnSelector;
 import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.NumericalFieldValidator;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.PreFilterUiModule;
-
-import com.google.gwt.inject.client.AbstractGinModule;
 
 public class BaseReportEngineUiModule extends AbstractGinModule {
 

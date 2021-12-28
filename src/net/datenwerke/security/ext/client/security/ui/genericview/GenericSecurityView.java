@@ -1,9 +1,9 @@
 package net.datenwerke.security.ext.client.security.ui.genericview;
 
-import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
-
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.util.Margins;
+
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwBorderContainer;
 
 public class GenericSecurityView extends DwBorderContainer {
 

@@ -3,6 +3,9 @@ package net.datenwerke.rs.dashboard.client.dashboard.hookers;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewProviderHook;
 import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.DadgetNodeDto;
@@ -13,9 +16,6 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.admin.forms.DashboardNode
 import net.datenwerke.rs.dashboard.client.dashboard.ui.admin.forms.FolderForm;
 import net.datenwerke.security.ext.client.security.ui.SecurityView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 

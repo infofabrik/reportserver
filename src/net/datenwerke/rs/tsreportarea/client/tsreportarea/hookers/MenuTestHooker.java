@@ -2,17 +2,18 @@ package net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.menu.Menu;
-import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
-import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
+import com.sencha.gxt.widget.core.client.menu.Menu;
+import com.sencha.gxt.widget.core.client.menu.MenuItem;
 
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
+import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.reportdoc.client.ReportDocumentationUiService;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;

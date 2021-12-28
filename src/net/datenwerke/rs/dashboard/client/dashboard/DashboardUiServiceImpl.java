@@ -25,7 +25,6 @@ import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
 import net.datenwerke.gxtdto.client.baseex.widget.tool.DwToolButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;

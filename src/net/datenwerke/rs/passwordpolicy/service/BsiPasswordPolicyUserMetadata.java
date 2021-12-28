@@ -11,15 +11,15 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import net.datenwerke.rs.core.service.reportserver.ReportServerModule;
-import net.datenwerke.rs.utils.crypto.PasswordHasher;
-import net.datenwerke.security.service.usermanager.UserPropertiesService;
-import net.datenwerke.security.service.usermanager.entities.User;
-
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.core.service.reportserver.ReportServerModule;
+import net.datenwerke.rs.utils.crypto.PasswordHasher;
+import net.datenwerke.security.service.usermanager.UserPropertiesService;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class BsiPasswordPolicyUserMetadata {
 	

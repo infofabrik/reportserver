@@ -1,20 +1,19 @@
 package net.datenwerke.rs.teamspace.client.teamspace.hookers;
 
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTeamSpace;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.ui.helper.wrapper.HeadDescMainWrapper;
 import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerToken;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceDao;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.teamspace.client.teamspace.locale.TeamSpaceMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardProviderHookImpl;
-
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
 
 /**
  * 

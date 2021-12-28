@@ -4,6 +4,10 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import org.hibernate.envers.Audited;
+
+import com.google.inject.Injector;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Indexed;
@@ -12,10 +16,6 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.grideditor.service.grideditor.locale.GridEditorMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
-
-import org.hibernate.envers.Audited;
-
-import com.google.inject.Injector;
 
 @Entity
 @Table(name="GRID_EDT_REPORT")

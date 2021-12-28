@@ -6,6 +6,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 import net.datenwerke.rs.core.service.reportserver.ReportServerModule;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
@@ -14,9 +17,6 @@ import net.datenwerke.security.service.usermanager.UserPropertiesServiceImpl;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.entities.UserProperty__;
 import net.datenwerke.security.service.usermanager.entities.User__;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public class BlockUserMaintenanceTask implements MaintenanceTask {
 

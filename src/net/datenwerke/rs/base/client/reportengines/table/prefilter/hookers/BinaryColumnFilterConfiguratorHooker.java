@@ -1,10 +1,22 @@
 package net.datenwerke.rs.base.client.reportengines.table.prefilter.hookers;
 
+import com.google.gwt.core.client.GWT;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.inject.Inject;
+import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
+import com.sencha.gxt.data.shared.StringLabelProvider;
+import com.sencha.gxt.widget.core.client.container.MarginData;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
+import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
+
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
 import net.datenwerke.gxtdto.client.forms.selection.SingleSelectionField;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
 import net.datenwerke.rs.base.client.reportengines.table.TableReportUtilityDao;
 import net.datenwerke.rs.base.client.reportengines.table.dto.BinaryColumnFilterDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.BinaryOperatorDto;
@@ -20,21 +32,6 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidge
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.EditPreFilterCallback;
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.InstantiatePreFilterCallback;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.inject.Inject;
-import com.sencha.gxt.cell.core.client.form.ComboBoxCell.TriggerAction;
-import com.sencha.gxt.data.shared.StringLabelProvider;
-
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
-import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.form.FieldLabel;
-import com.sencha.gxt.widget.core.client.form.FormPanel;
-import com.sencha.gxt.widget.core.client.form.SimpleComboBox;
 
 public class BinaryColumnFilterConfiguratorHooker implements
 		PreFilterConfiguratorHook {

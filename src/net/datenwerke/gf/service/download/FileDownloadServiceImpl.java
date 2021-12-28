@@ -5,11 +5,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import net.datenwerke.gf.service.download.hooks.FileDownloadHandlerHook;
-import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-
 import com.google.inject.Inject;
+
+import net.datenwerke.gf.service.download.hooks.FileDownloadHandlerHook;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class FileDownloadServiceImpl implements FileDownloadService {
 

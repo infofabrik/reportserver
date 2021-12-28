@@ -10,11 +10,11 @@ import javax.persistence.CascadeType;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.OneToMany;
 
+import org.apache.commons.io.IOUtils;
+
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.entities.BaseProperty;
-
-import org.apache.commons.io.IOUtils;
 
 @MappedSuperclass
 public abstract class BaseJob extends AbstractJob {

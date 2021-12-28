@@ -2,10 +2,10 @@ package net.datenwerke.eximport.ids;
 
 import javax.persistence.Entity;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.eximport.hooks.ExImportIdProviderHook;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
-
-import com.google.inject.Inject;
 
 /**
  * Provides IDs for entities.

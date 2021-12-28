@@ -34,11 +34,6 @@ import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import net.datenwerke.rs.legacysaiku.service.saiku.OlapQueryService;
-import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
-import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.vfs.FileObject;
 import org.apache.commons.vfs.FileSystemManager;
@@ -46,10 +41,6 @@ import org.apache.commons.vfs.VFS;
 import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.map.type.TypeFactory;
-import org.olap4j.mdx.ParseTreeWriter;
-import org.olap4j.mdx.SelectNode;
-import org.olap4j.mdx.parser.impl.DefaultMdxParserImpl;
-import org.olap4j.metadata.Cube;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.SaikuMember;
 import org.legacysaiku.olap.dto.SaikuQuery;
@@ -62,8 +53,17 @@ import org.legacysaiku.olap.util.ObjectUtil;
 import org.legacysaiku.olap.util.SaikuProperties;
 import org.legacysaiku.service.util.KeyValue;
 import org.legacysaiku.service.util.exception.SaikuServiceException;
+import org.olap4j.mdx.ParseTreeWriter;
+import org.olap4j.mdx.SelectNode;
+import org.olap4j.mdx.parser.impl.DefaultMdxParserImpl;
+import org.olap4j.metadata.Cube;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.legacysaiku.service.saiku.OlapQueryService;
+import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
+import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 @Path("/legacysaiku/{username}/tags")
 @XmlAccessorType(XmlAccessType.NONE)

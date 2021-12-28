@@ -3,12 +3,12 @@ package net.datenwerke.rs.uservariables.client.uservariables.rpc;
 import java.util.Collection;
 import java.util.List;
 
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.sencha.gxt.data.shared.loader.ListLoadResult;
+
 import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableDefinitionDto;
 import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableInstanceDto;
 import net.datenwerke.security.client.usermanager.dto.AbstractUserManagerNodeDto;
-
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.sencha.gxt.data.shared.loader.ListLoadResult;
 
 public interface UserVariablesRpcServiceAsync {
 

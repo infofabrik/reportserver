@@ -1,7 +1,5 @@
 package net.datenwerke.gf.client.treedb.dnd;
 
-import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.Element;
 import com.google.gwt.user.client.Timer;
@@ -13,6 +11,8 @@ import com.sencha.gxt.dnd.core.client.Insert;
 import com.sencha.gxt.dnd.core.client.TreeDropTarget;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 import com.sencha.gxt.widget.core.client.tree.Tree.TreeNode;
+
+import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 /**
  * Fixed TreePanelDropTarget to provide callbacks to allow/deny drop between and on specific nodes.

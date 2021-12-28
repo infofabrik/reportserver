@@ -1,5 +1,9 @@
 package net.datenwerke.rs.incubator.service.jaspertotable;
 
+import org.apache.commons.lang3.StringUtils;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport;
 import net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant;
@@ -9,10 +13,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceConta
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportProperty;
 import net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig;
-
-import org.apache.commons.lang3.StringUtils;
-
-import com.google.inject.Inject;
 
 public class JasperToTableServiceImpl implements JasperToTableService {
 	private final JasperUtilsService jasperUtils;

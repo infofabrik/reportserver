@@ -6,6 +6,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import org.apache.commons.io.IOUtils;
+import org.legacysaiku.olap.dto.SaikuDimensionSelection;
+import org.legacysaiku.olap.dto.resultset.CellDataSet;
+import org.legacysaiku.olap.query.IQuery;
+import org.legacysaiku.olap.query.IQuery.QueryType;
+import org.olap4j.CellSet;
+import org.olap4j.metadata.Cube;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.datasources.transformers.DatasourceTransformationService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
@@ -17,27 +29,15 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRun
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapQueryService;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
-import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuOutputGeneratorManager;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuMetadataExporter;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuMetadataExporterManager;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
+import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import org.apache.commons.io.IOUtils;
-import org.olap4j.CellSet;
-import org.olap4j.metadata.Cube;
-import org.legacysaiku.olap.dto.SaikuDimensionSelection;
-import org.legacysaiku.olap.dto.resultset.CellDataSet;
-import org.legacysaiku.olap.query.IQuery;
-import org.legacysaiku.olap.query.IQuery.QueryType;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 
 public class SaikuReportEngine extends ReportEngine<Connection, SaikuOutputGenerator, SaikuMetadataExporter> {

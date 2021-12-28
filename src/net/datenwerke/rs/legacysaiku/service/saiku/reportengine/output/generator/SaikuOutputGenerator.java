@@ -2,16 +2,16 @@ package net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generato
 
 import java.util.List;
 
-import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
-import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
-import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator;
-import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
-
-import org.olap4j.CellSet;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.resultset.CellDataSet;
 import org.legacysaiku.olap.util.formatter.ICellSetFormatter;
+import org.olap4j.CellSet;
+
+import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
+import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
+import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator;
+import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
+import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 
 public interface SaikuOutputGenerator extends ReportOutputGenerator {

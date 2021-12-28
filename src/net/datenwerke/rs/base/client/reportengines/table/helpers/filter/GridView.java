@@ -2,6 +2,13 @@ package net.datenwerke.rs.base.client.reportengines.table.helpers.filter;
 
 import java.util.List;
 
+import com.google.inject.Inject;
+import com.sencha.gxt.data.shared.ListStore;
+import com.sencha.gxt.widget.core.client.event.SelectEvent;
+import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+import com.sencha.gxt.widget.core.client.grid.Grid;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwNorthSouthContainer;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
@@ -9,13 +16,6 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.rs.base.client.reportengines.table.columnfilter.FilterService;
 import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.inject.Inject;
-import com.sencha.gxt.data.shared.ListStore;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
-import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 /**
  * 

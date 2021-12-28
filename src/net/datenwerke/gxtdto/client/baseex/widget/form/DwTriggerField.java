@@ -1,11 +1,11 @@
 package net.datenwerke.gxtdto.client.baseex.widget.form;
 
-import net.datenwerke.rs.theme.client.field.RsTriggerFieldAppearance;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.sencha.gxt.cell.core.client.form.TriggerFieldCell;
 import com.sencha.gxt.widget.core.client.form.PropertyEditor;
 import com.sencha.gxt.widget.core.client.form.TriggerField;
+
+import net.datenwerke.rs.theme.client.field.RsTriggerFieldAppearance;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwTriggerField<D> extends TriggerField<D> {
 

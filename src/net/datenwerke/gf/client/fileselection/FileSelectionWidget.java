@@ -3,22 +3,6 @@ package net.datenwerke.gf.client.fileselection;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.datenwerke.gf.client.download.FileDownloadUiService;
-import net.datenwerke.gf.client.download.dto.DownloadProperties;
-import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
-import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapperPA;
-import net.datenwerke.gf.client.fileselection.locale.FileSelectionMessages;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
-import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
-import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoTypeAwareIdProvider;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
-
-import com.crystaldecisions.reports.dataengine.datafoundation.AddFieldLinkCommand;
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -32,7 +16,6 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.event.StoreHandlers;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
-import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent;
@@ -52,10 +35,26 @@ import com.sencha.gxt.widget.core.client.grid.editing.GridEditing;
 import com.sencha.gxt.widget.core.client.grid.editing.GridInlineEditing;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
-import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
+import net.datenwerke.gf.client.download.FileDownloadUiService;
+import net.datenwerke.gf.client.download.dto.DownloadProperties;
+import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
+import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapperPA;
+import net.datenwerke.gf.client.fileselection.locale.FileSelectionMessages;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwSplitButton;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwAlertMessageBox;
+import net.datenwerke.gxtdto.client.baseex.widget.mb.DwConfirmMessageBox;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
+import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
+import net.datenwerke.gxtdto.client.utils.modelkeyprovider.DtoTypeAwareIdProvider;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 public class FileSelectionWidget extends VerticalLayoutContainer {
 

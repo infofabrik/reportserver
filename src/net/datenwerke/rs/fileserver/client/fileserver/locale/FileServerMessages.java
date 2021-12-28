@@ -2,7 +2,6 @@ package net.datenwerke.rs.fileserver.client.fileserver.locale;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
-import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface FileServerMessages extends Messages {
 

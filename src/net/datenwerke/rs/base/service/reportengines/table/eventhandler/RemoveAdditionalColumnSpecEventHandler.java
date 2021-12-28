@@ -1,12 +1,12 @@
 package net.datenwerke.rs.base.service.reportengines.table.eventhandler;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.rs.base.service.reportengines.table.TableReportUtils;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 import net.datenwerke.rs.base.service.reportengines.table.entities.ColumnReference;
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
-
-import com.google.inject.Inject;
 
 public class RemoveAdditionalColumnSpecEventHandler implements EventHandler<RemoveEntityEvent> {
 

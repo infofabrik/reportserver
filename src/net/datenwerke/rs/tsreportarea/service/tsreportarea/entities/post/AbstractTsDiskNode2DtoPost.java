@@ -1,13 +1,13 @@
 package net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.post;
 
+import com.google.inject.Inject;
+
 import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso2DtoPostProcessor;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskService;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode;
-
-import com.google.inject.Inject;
 
 public class AbstractTsDiskNode2DtoPost implements Poso2DtoPostProcessor<AbstractTsDiskNode, AbstractTsDiskNodeDto> {
 

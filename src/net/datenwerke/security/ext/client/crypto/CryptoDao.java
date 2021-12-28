@@ -1,10 +1,10 @@
 package net.datenwerke.security.ext.client.crypto;
 
-import net.datenwerke.gxtdto.client.dtomanager.Dao;
-import net.datenwerke.security.ext.client.crypto.rpc.CryptoRpcServiceAsync;
-
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
+
+import net.datenwerke.gxtdto.client.dtomanager.Dao;
+import net.datenwerke.security.ext.client.crypto.rpc.CryptoRpcServiceAsync;
 
 public class CryptoDao extends Dao {
 

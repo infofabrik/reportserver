@@ -1,5 +1,8 @@
 package net.datenwerke.security.ext.client.usermanager.provider;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.dnd.UITreeDragDropConfiguration;
@@ -9,9 +12,6 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.ext.client.usermanager.UserManagerTreeManagerDao;
 import net.datenwerke.security.ext.client.usermanager.UserManagerUIModule;
 import net.datenwerke.security.ext.client.usermanager.ui.UserMainPanel;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * Provides the user manager tree with all goodies.

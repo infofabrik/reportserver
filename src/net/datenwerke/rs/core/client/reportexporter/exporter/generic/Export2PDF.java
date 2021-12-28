@@ -1,12 +1,11 @@
 package net.datenwerke.rs.core.client.reportexporter.exporter.generic;
 
-import net.datenwerke.gxtdto.client.resources.BaseResources;
+import com.google.gwt.resources.client.ImageResource;
+
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.resources.client.ImageResource;
 
 public abstract class Export2PDF extends ReportExporterImpl {
 	

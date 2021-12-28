@@ -2,12 +2,6 @@ package net.datenwerke.rs.authenticator.client.login.sessiontimeout;
 
 import java.util.Date;
 
-import net.datenwerke.gf.client.login.LoginService;
-import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.authenticator.client.login.locale.LoginMessages;
-import net.datenwerke.security.client.login.AuthenticateCallback;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Label;
@@ -15,12 +9,18 @@ import com.google.inject.Inject;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.ProgressBar;
 import com.sencha.gxt.widget.core.client.button.ButtonBar;
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gf.client.login.LoginService;
+import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.authenticator.client.login.locale.LoginMessages;
+import net.datenwerke.security.client.login.AuthenticateCallback;
 
 public class SessionTimeoutWarningDialog extends DwWindow {
 

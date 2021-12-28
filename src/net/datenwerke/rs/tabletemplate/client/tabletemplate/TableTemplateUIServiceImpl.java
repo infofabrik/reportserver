@@ -1,14 +1,14 @@
 package net.datenwerke.rs.tabletemplate.client.tabletemplate;
 
-import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
-import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTemplateDto;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactories;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactory;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactoryMethod;
+
+import net.datenwerke.gxtdto.client.xtemplates.NullSafeFormatter;
+import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTemplateDto;
 
 public class TableTemplateUIServiceImpl implements TableTemplateUIService {
 

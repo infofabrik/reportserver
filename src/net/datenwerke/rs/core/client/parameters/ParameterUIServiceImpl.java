@@ -7,13 +7,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.gf.client.config.ClientConfigService;
 import net.datenwerke.rs.core.client.parameters.config.ParameterConfigurator;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
 import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 /**
  * 

@@ -3,8 +3,8 @@ package net.datenwerke.rs.condition.service.condition;
 import java.util.List;
 
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
-import net.datenwerke.rs.condition.client.condition.dto.SimpleCondition;
 import net.datenwerke.rs.condition.client.condition.Condition;
+import net.datenwerke.rs.condition.client.condition.dto.SimpleCondition;
 import net.datenwerke.rs.condition.service.condition.entity.ReportCondition;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;

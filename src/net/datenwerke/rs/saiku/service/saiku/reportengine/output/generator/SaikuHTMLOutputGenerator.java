@@ -1,17 +1,14 @@
 package net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import javax.inject.Inject;
 
 import org.apache.commons.configuration2.BaseConfiguration;
 import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.io.IOUtils;
 import org.olap4j.CellSet;
 import org.saiku.olap.dto.resultset.CellDataSet;
 import org.saiku.olap.query2.ThinHierarchy;
@@ -24,8 +21,6 @@ import net.datenwerke.gf.service.theme.ThemeService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.ReportForJuel;
 import net.datenwerke.rs.base.service.reportengines.locale.ReportEnginesMessages;
-import net.datenwerke.rs.base.service.reportengines.table.entities.Column.ColumnFormatCellFormatter;
-import net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatNumber;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;

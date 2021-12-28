@@ -2,6 +2,18 @@ package net.datenwerke.rs.core.client.reportexecutor.ui.preview;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.http.client.Request;
+import com.google.gwt.resources.client.ImageResource;
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Widget;
+import com.google.inject.Inject;
+import com.sencha.gxt.widget.core.client.Component;
+import com.sencha.gxt.widget.core.client.container.ResizeContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
+import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
+import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
+
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
@@ -18,18 +30,6 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.aware.MainPanelAwareView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.aware.SelectionAwareView;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
-import com.google.gwt.http.client.Request;
-import com.google.gwt.resources.client.ImageResource;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.ui.Widget;
-import com.google.inject.Inject;
-import com.sencha.gxt.widget.core.client.Component;
-import com.sencha.gxt.widget.core.client.container.ResizeContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
-import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
-import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 /**
  * This is the common baseclass for all ReportOutputUIs i.e.

@@ -1,8 +1,8 @@
 package net.datenwerke.security.client.login.hooks;
 
-import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
-
 import com.sencha.gxt.widget.core.client.container.Container;
+
+import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface AuthenticatorWindowExtraOptionHook extends Hook {
 	

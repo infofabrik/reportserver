@@ -5,13 +5,13 @@ import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRuntimeException;
 import net.datenwerke.security.service.usermanager.entities.User;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 public abstract class DwLoggedEvent implements LoggedEvent {
 

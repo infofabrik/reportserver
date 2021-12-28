@@ -2,8 +2,6 @@ package net.datenwerke.gxtdto.client.baseex.widget.date;
 
 import java.util.Date;
 
-import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
-
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.DateTimeFormat.PredefinedFormat;
 import com.sencha.gxt.core.client.dom.XElement;
@@ -12,6 +10,8 @@ import com.sencha.gxt.widget.core.client.DatePicker;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.event.SelectEvent;
 import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
+
+import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 
 
 public class DwDatePicker extends DatePicker {

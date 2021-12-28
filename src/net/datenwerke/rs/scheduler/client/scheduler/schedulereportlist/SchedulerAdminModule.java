@@ -1,14 +1,13 @@
 package net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist;
 
-import net.datenwerke.gf.client.administration.interfaces.AdminModule;
-import net.datenwerke.gxtdto.client.resources.BaseResources;
-import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
-import net.datenwerke.rs.theme.client.icon.BaseIcon;
-
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+
+import net.datenwerke.gf.client.administration.interfaces.AdminModule;
+import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 @Singleton
 public class SchedulerAdminModule implements AdminModule{
