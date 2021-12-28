@@ -17,13 +17,14 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 @RemoteServiceRelativePath("usermanager")
 public interface UserManagerRpcService extends RemoteService {
 
-	public ListLoadResult<StrippedDownUser> getStrippedDownUsers() throws ServerCallFailedException;
-	
-	public ListLoadResult<StrippedDownGroup> getStrippedDownGroups() throws ServerCallFailedException;
-	
-	public UserDto changeActiveUserData(UserDto userDto) throws ServerCallFailedException;
-	
-	public List<StrippedDownUser> getStrippedDownUsers(Collection<Long> ids) throws ServerCallFailedException;
-	
-	public GroupDto updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds) throws ServerCallFailedException;
+   public ListLoadResult<StrippedDownUser> getStrippedDownUsers() throws ServerCallFailedException;
+
+   public ListLoadResult<StrippedDownGroup> getStrippedDownGroups() throws ServerCallFailedException;
+
+   public UserDto changeActiveUserData(UserDto userDto) throws ServerCallFailedException;
+
+   public List<StrippedDownUser> getStrippedDownUsers(Collection<Long> ids) throws ServerCallFailedException;
+
+   public GroupDto updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds)
+         throws ServerCallFailedException;
 }

@@ -10,34 +10,33 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.PreFilterDto;
  */
 public class PreFilterDtoDec extends PreFilterDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	
-	transient private boolean initTypes;
+   transient private boolean initTypes;
 
-	public PreFilterDtoDec() {
-		super();
-	}
+   public PreFilterDtoDec() {
+      super();
+   }
 
-	public void clearFilter() {
-		FilterBlockDtoDec rootBlock = (FilterBlockDtoDec) getRootBlock();
-		rootBlock.clearBlock();
-		setRootBlock(rootBlock);
-	}
+   public void clearFilter() {
+      FilterBlockDtoDec rootBlock = (FilterBlockDtoDec) getRootBlock();
+      rootBlock.clearBlock();
+      setRootBlock(rootBlock);
+   }
 
-	@Override
-	public FilterBlockDto getRootBlock() {
-		FilterBlockDto block = super.getRootBlock();
-		if(! initTypes)
-			initBlockTypes();
-		
-		return block;
-	}
-	
-	public void initBlockTypes(){
-		initTypes = true;
-		((FilterBlockDtoDec)getRootBlock()).initBlockTypes(getRootBlockType());
-		initTypes = false;
-	}
+   @Override
+   public FilterBlockDto getRootBlock() {
+      FilterBlockDto block = super.getRootBlock();
+      if (!initTypes)
+         initBlockTypes();
+
+      return block;
+   }
+
+   public void initBlockTypes() {
+      initTypes = true;
+      ((FilterBlockDtoDec) getRootBlock()).initBlockTypes(getRootBlockType());
+      initTypes = false;
+   }
 
 }

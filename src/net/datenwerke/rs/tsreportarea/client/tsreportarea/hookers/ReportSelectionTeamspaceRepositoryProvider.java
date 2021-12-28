@@ -49,162 +49,161 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.simpleform.SFFC
 
 public class ReportSelectionTeamspaceRepositoryProvider implements ReportSelectionRepositoryProviderHook {
 
-	private final TsDiskDao diskDao;
-	private final TsDiskUIService diskService;
-	private final ToolbarService toolbarService;
-	
-	@Inject
-	public ReportSelectionTeamspaceRepositoryProvider(TsDiskDao diskDao,
-			TsDiskUIService diskService, ToolbarService toolbarService) {
-		this.diskDao = diskDao;
-		this.diskService = diskService;
-		this.toolbarService = toolbarService;
-	}
+   private final TsDiskDao diskDao;
+   private final TsDiskUIService diskService;
+   private final ToolbarService toolbarService;
 
-	@Override
-	public void addCards(final ReportSelectionDialog dialog, Optional<ReportDto> selectedReport, RepositoryProviderConfig[] configs) {
-		diskDao.getTeamSpacesWithFavoriteApp(new RsAsyncCallback<List<TeamSpaceDto>>(){
-			@Override
-			public void onSuccess(List<TeamSpaceDto> result) {
-			   result.forEach(teamspace -> addTeamSpace(dialog, teamspace));
-			}
-		});
-	}
+   @Inject
+   public ReportSelectionTeamspaceRepositoryProvider(TsDiskDao diskDao, TsDiskUIService diskService,
+         ToolbarService toolbarService) {
+      this.diskDao = diskDao;
+      this.diskService = diskService;
+      this.toolbarService = toolbarService;
+   }
 
-	protected void addTeamSpace(final ReportSelectionDialog dialog, final TeamSpaceDto teamSpace) {
-		final ListStore<TsDiskReportReferenceDto> store = new ListStore<TsDiskReportReferenceDto>(new DtoIdModelKeyProvider()); 
-		
-		/* create grid */
-		final Grid<TsDiskReportReferenceDto> grid = new Grid<TsDiskReportReferenceDto>(store, new ColumnModel<TsDiskReportReferenceDto>(diskService.createGridColumnConfig(TsDiskReportReferenceDto.class)));
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
-		/* fill store */
-		grid.addAttachHandler(new Handler() {
-			private boolean workDone = false;
-			@Override
-			public void onAttachOrDetach(AttachEvent event) {
-				if(workDone)
-					return;
-				workDone = true;
-				
-				diskDao.getReferencesInApp(teamSpace, new RsAsyncCallback<List<TsDiskReportReferenceDto>>(){
-					@Override
-					public void onSuccess(List<TsDiskReportReferenceDto> result) {
-						store.addAll(result);
-					}
-				});
-			}
-		});
-		
-		grid.setContextMenu(new DwMenu());
-	
-		grid.addBeforeShowContextMenuHandler(new BeforeShowContextMenuHandler() {
-			@Override
-			public void onBeforeShowContextMenu(BeforeShowContextMenuEvent event) {
-				TsDiskReportReferenceDtoDec dto = (TsDiskReportReferenceDtoDec) grid.getSelectionModel().getSelectedItem();
-				if(null == dto){
-					event.setCancelled(true);
-					return;
-				}
-			
-				Menu menu =  dialog.getContextMenuFor(dto, ReportSelectionTeamspaceRepositoryProvider.this, teamSpace);
-				if(null == menu){
-					event.setCancelled(true);
-					return;
-				}
-				grid.setContextMenu(menu);
-			}
-		});
-		
-		/* show context menue on doubleclick */
-		grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
-			@Override
-			public void onCellClick(CellDoubleClickEvent event) {
-				TsDiskReportReferenceDtoDec dto = (TsDiskReportReferenceDtoDec) grid.getStore().get(event.getRowIndex());
-                if(null != dto)
-                	dialog.handleDoubleClick(dto, ReportSelectionTeamspaceRepositoryProvider.this, event.getEvent(), teamSpace);
+   @Override
+   public void addCards(final ReportSelectionDialog dialog, Optional<ReportDto> selectedReport,
+         RepositoryProviderConfig[] configs) {
+      diskDao.getTeamSpacesWithFavoriteApp(new RsAsyncCallback<List<TeamSpaceDto>>() {
+         @Override
+         public void onSuccess(List<TeamSpaceDto> result) {
+            result.forEach(teamspace -> addTeamSpace(dialog, teamspace));
+         }
+      });
+   }
+
+   protected void addTeamSpace(final ReportSelectionDialog dialog, final TeamSpaceDto teamSpace) {
+      final ListStore<TsDiskReportReferenceDto> store = new ListStore<TsDiskReportReferenceDto>(
+            new DtoIdModelKeyProvider());
+
+      /* create grid */
+      final Grid<TsDiskReportReferenceDto> grid = new Grid<TsDiskReportReferenceDto>(store,
+            new ColumnModel<TsDiskReportReferenceDto>(
+                  diskService.createGridColumnConfig(TsDiskReportReferenceDto.class)));
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+      /* fill store */
+      grid.addAttachHandler(new Handler() {
+         private boolean workDone = false;
+
+         @Override
+         public void onAttachOrDetach(AttachEvent event) {
+            if (workDone)
+               return;
+            workDone = true;
+
+            diskDao.getReferencesInApp(teamSpace, new RsAsyncCallback<List<TsDiskReportReferenceDto>>() {
+               @Override
+               public void onSuccess(List<TsDiskReportReferenceDto> result) {
+                  store.addAll(result);
+               }
+            });
+         }
+      });
+
+      grid.setContextMenu(new DwMenu());
+
+      grid.addBeforeShowContextMenuHandler(new BeforeShowContextMenuHandler() {
+         @Override
+         public void onBeforeShowContextMenu(BeforeShowContextMenuEvent event) {
+            TsDiskReportReferenceDtoDec dto = (TsDiskReportReferenceDtoDec) grid.getSelectionModel().getSelectedItem();
+            if (null == dto) {
+               event.setCancelled(true);
+               return;
             }
-        });
-		
-		
-		/* create wrapper */
-		DwNorthSouthContainer wrapper = new DwNorthSouthContainer();
-		wrapper.add(grid);
-		
-		ToolBar tb = new DwToolBar();
-		wrapper.setNorthWidget(tb);
-		
-		final StoreFilterField<TsDiskReportReferenceDto> textFilter = new StoreFilterField<TsDiskReportReferenceDto>(){
-			
-			@Override
-			protected boolean doSelect(Store<TsDiskReportReferenceDto> store,
-					TsDiskReportReferenceDto parent,
-					TsDiskReportReferenceDto item, String filter) {
-				String title = item.getName();
-				if(null != title && title.toLowerCase().contains(filter.toLowerCase()))
-					return true;
-				
-				return false;
-			}
-		   
-	    };  
-	    textFilter.bind(store);
-	    
-	    /* folder selector */
-	    ValueBaseField<TsDiskFolderDto> folderSelector = (ValueBaseField<TsDiskFolderDto>) SimpleForm.createFormlessField(TsDiskFolderDto.class, new SFFCTsTeamSpaceSelector() {
-			@Override
-			public TeamSpaceDto getTeamSpace() {
-				return teamSpace;
-			} 
-		});
-	    folderSelector.addValueChangeHandler(new ValueChangeHandler<TsDiskFolderDto>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<TsDiskFolderDto> event) {
-				textFilter.clear();
-				AbstractTsDiskNodeDto folder = event.getValue();
-				loadIn(teamSpace, folder instanceof TsDiskFolderDto ? (TsDiskFolderDto) folder : null, grid, store);
-			}
-		});
 
-	    /* add items to toolbar */
-	    toolbarService.addPlainToolbarItem(tb, BaseIcon.SEARCH);
-	    tb.add(textFilter);
-	    toolbarService.addPlainToolbarItem(tb, BaseIcon.FOLDER_OPEN_O);
-	    tb.add(folderSelector);
-	    tb.add(new FillToolItem());
-		
-		dialog.addCard(
-			teamSpace.getName(), 
-			BaseIcon.GROUP_EDIT, 
-			wrapper,
-			new ReportSelectionCardConfig(){
-				@Override
-				public void cardSelected() {
-				}
+            Menu menu = dialog.getContextMenuFor(dto, ReportSelectionTeamspaceRepositoryProvider.this, teamSpace);
+            if (null == menu) {
+               event.setCancelled(true);
+               return;
+            }
+            grid.setContextMenu(menu);
+         }
+      });
 
-				@Override
-				public ReportContainerDto getSelectedReport() {
-					return (TsDiskReportReferenceDtoDec)grid.getSelectionModel().getSelectedItem();
-				}
-				
-			}
-		);
-	}
+      /* show context menue on doubleclick */
+      grid.addCellDoubleClickHandler(new CellDoubleClickHandler() {
+         @Override
+         public void onCellClick(CellDoubleClickEvent event) {
+            TsDiskReportReferenceDtoDec dto = (TsDiskReportReferenceDtoDec) grid.getStore().get(event.getRowIndex());
+            if (null != dto)
+               dialog.handleDoubleClick(dto, ReportSelectionTeamspaceRepositoryProvider.this, event.getEvent(),
+                     teamSpace);
+         }
+      });
 
-	protected void loadIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder,
-			final Grid<TsDiskReportReferenceDto> grid,
-			final ListStore<TsDiskReportReferenceDto> store) {
-		grid.mask(BaseMessages.INSTANCE.loadingMsg());
-		diskDao.getReferencesInApp(teamSpace, folder, new RsAsyncCallback<List<TsDiskReportReferenceDto>>(){
-			@Override
-			public void onSuccess(List<TsDiskReportReferenceDto> result) {
-				store.removeFilters();
-				store.clear();
-				store.addAll(result);
-				grid.unmask();
-			}
-		});
-	}
+      /* create wrapper */
+      DwNorthSouthContainer wrapper = new DwNorthSouthContainer();
+      wrapper.add(grid);
+
+      ToolBar tb = new DwToolBar();
+      wrapper.setNorthWidget(tb);
+
+      final StoreFilterField<TsDiskReportReferenceDto> textFilter = new StoreFilterField<TsDiskReportReferenceDto>() {
+
+         @Override
+         protected boolean doSelect(Store<TsDiskReportReferenceDto> store, TsDiskReportReferenceDto parent,
+               TsDiskReportReferenceDto item, String filter) {
+            String title = item.getName();
+            if (null != title && title.toLowerCase().contains(filter.toLowerCase()))
+               return true;
+
+            return false;
+         }
+
+      };
+      textFilter.bind(store);
+
+      /* folder selector */
+      ValueBaseField<TsDiskFolderDto> folderSelector = (ValueBaseField<TsDiskFolderDto>) SimpleForm
+            .createFormlessField(TsDiskFolderDto.class, new SFFCTsTeamSpaceSelector() {
+               @Override
+               public TeamSpaceDto getTeamSpace() {
+                  return teamSpace;
+               }
+            });
+      folderSelector.addValueChangeHandler(new ValueChangeHandler<TsDiskFolderDto>() {
+
+         @Override
+         public void onValueChange(ValueChangeEvent<TsDiskFolderDto> event) {
+            textFilter.clear();
+            AbstractTsDiskNodeDto folder = event.getValue();
+            loadIn(teamSpace, folder instanceof TsDiskFolderDto ? (TsDiskFolderDto) folder : null, grid, store);
+         }
+      });
+
+      /* add items to toolbar */
+      toolbarService.addPlainToolbarItem(tb, BaseIcon.SEARCH);
+      tb.add(textFilter);
+      toolbarService.addPlainToolbarItem(tb, BaseIcon.FOLDER_OPEN_O);
+      tb.add(folderSelector);
+      tb.add(new FillToolItem());
+
+      dialog.addCard(teamSpace.getName(), BaseIcon.GROUP_EDIT, wrapper, new ReportSelectionCardConfig() {
+         @Override
+         public void cardSelected() {
+         }
+
+         @Override
+         public ReportContainerDto getSelectedReport() {
+            return (TsDiskReportReferenceDtoDec) grid.getSelectionModel().getSelectedItem();
+         }
+
+      });
+   }
+
+   protected void loadIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder, final Grid<TsDiskReportReferenceDto> grid,
+         final ListStore<TsDiskReportReferenceDto> store) {
+      grid.mask(BaseMessages.INSTANCE.loadingMsg());
+      diskDao.getReferencesInApp(teamSpace, folder, new RsAsyncCallback<List<TsDiskReportReferenceDto>>() {
+         @Override
+         public void onSuccess(List<TsDiskReportReferenceDto> result) {
+            store.removeFilters();
+            store.clear();
+            store.addAll(result);
+            grid.unmask();
+         }
+      });
+   }
 
 }

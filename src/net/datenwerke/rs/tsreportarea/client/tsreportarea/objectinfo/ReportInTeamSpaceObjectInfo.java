@@ -21,51 +21,48 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessa
  */
 public class ReportInTeamSpaceObjectInfo implements ObjectInfoAdditionalInfoProvider {
 
-	private final TsDiskDao favoriteDao;
-	private final TsDiskUIService tsDiskUiService;
-	
-	@Inject
-	public ReportInTeamSpaceObjectInfo(
-		TsDiskDao favoriteDao,
-		TsDiskUIService tsDiskUiService
-		){
-		
-		/* store object */
-		this.favoriteDao = favoriteDao;
-		this.tsDiskUiService = tsDiskUiService;
-	}
-	
-	@Override
-	public boolean consumes(Object object) {
-		return object instanceof ReportDto;
-	}
-	
-	@Override
-	public void addInfoFor(Object object, InfoWindow window) {
-		final DwContentPanel panel = window.addDelayedSimpelInfoPanel("TeamSpace");
-		
-		favoriteDao.getTeamSpacesWithPathsThatLinkToAsHtml((ReportDto)object, new RsAsyncCallback<SafeHtml>(){
-			@Override
-			public void onSuccess(SafeHtml result) {
-				panel.clear();
-				panel.enableScrollContainer();
-				
-				if(null == result)
-					panel.add(new Label(TsFavoriteMessages.INSTANCE.reportNotInTeamSpacesMessages()));
-				else {
-					SafeHtmlBuilder builder = new SafeHtmlBuilder();
-					builder.appendHtmlConstant("<div class=\"rs-infopanel-reportinteamspace\">");
-					
-					builder.append(result);
-					
-					builder.appendHtmlConstant("</div>");
-					
-					panel.add(new HTML(builder.toSafeHtml()));
-				}
-					
-				panel.forceLayout();
-			}
-		});
-	}
+   private final TsDiskDao favoriteDao;
+   private final TsDiskUIService tsDiskUiService;
+
+   @Inject
+   public ReportInTeamSpaceObjectInfo(TsDiskDao favoriteDao, TsDiskUIService tsDiskUiService) {
+
+      /* store object */
+      this.favoriteDao = favoriteDao;
+      this.tsDiskUiService = tsDiskUiService;
+   }
+
+   @Override
+   public boolean consumes(Object object) {
+      return object instanceof ReportDto;
+   }
+
+   @Override
+   public void addInfoFor(Object object, InfoWindow window) {
+      final DwContentPanel panel = window.addDelayedSimpelInfoPanel("TeamSpace");
+
+      favoriteDao.getTeamSpacesWithPathsThatLinkToAsHtml((ReportDto) object, new RsAsyncCallback<SafeHtml>() {
+         @Override
+         public void onSuccess(SafeHtml result) {
+            panel.clear();
+            panel.enableScrollContainer();
+
+            if (null == result)
+               panel.add(new Label(TsFavoriteMessages.INSTANCE.reportNotInTeamSpacesMessages()));
+            else {
+               SafeHtmlBuilder builder = new SafeHtmlBuilder();
+               builder.appendHtmlConstant("<div class=\"rs-infopanel-reportinteamspace\">");
+
+               builder.append(result);
+
+               builder.appendHtmlConstant("</div>");
+
+               panel.add(new HTML(builder.toSafeHtml()));
+            }
+
+            panel.forceLayout();
+         }
+      });
+   }
 
 }

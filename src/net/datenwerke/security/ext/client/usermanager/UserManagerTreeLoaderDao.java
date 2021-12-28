@@ -10,25 +10,25 @@ import net.datenwerke.treedb.client.treedb.TreeDbLoaderDao;
 
 public class UserManagerTreeLoaderDao extends TreeDbLoaderDao {
 
-	@Inject
-	public UserManagerTreeLoaderDao(UserManagerTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter){
-		super(treeLoader, treeDbFtoConverter);
-		
-		/* UserDto */
-		treeDbFtoConverter.addTypeConverter(new TypeConverter() {
-			
-			@Override
-			public Object convert(Class<?> type, String val) {
-				if(null == val)
-					return null;
-				return SexDto.valueOf(val);
-			}
-			
-			@Override
-			public boolean consumes(Class<?> type) {
-				return type.equals(SexDto.class);
-			}
-		});
-		
-	}
+   @Inject
+   public UserManagerTreeLoaderDao(UserManagerTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeLoader, treeDbFtoConverter);
+
+      /* UserDto */
+      treeDbFtoConverter.addTypeConverter(new TypeConverter() {
+
+         @Override
+         public Object convert(Class<?> type, String val) {
+            if (null == val)
+               return null;
+            return SexDto.valueOf(val);
+         }
+
+         @Override
+         public boolean consumes(Class<?> type) {
+            return type.equals(SexDto.class);
+         }
+      });
+
+   }
 }

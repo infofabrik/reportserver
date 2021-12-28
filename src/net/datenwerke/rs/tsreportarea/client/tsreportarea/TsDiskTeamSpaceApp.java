@@ -17,53 +17,49 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
  */
 public class TsDiskTeamSpaceApp implements TeamSpaceApp {
 
-	public static final String APP_ID = "tsApp-favoriteReports";
-	
-	private final Provider<TsDiskMainComponent> mainComponentProvider;
-	
-	private TsDiskMainComponent appComponent;
-	
-	@Inject
-	public TsDiskTeamSpaceApp(
-		Provider<TsDiskMainComponent> mainComponentProvider	
-		){
-		
-		/* store objects */
-		this.mainComponentProvider = mainComponentProvider;
-	}
-	
-	@Override
-	public String getAppId() {
-		return APP_ID;
-	}
+   public static final String APP_ID = "tsApp-favoriteReports";
 
-	
-	@Override
-	public String getName() {
-		return TsFavoriteMessages.INSTANCE.appName();
-	}
-	
-	@Override
-	public String getDescription() {
-		return TsFavoriteMessages.INSTANCE.appDescription();
-	}
+   private final Provider<TsDiskMainComponent> mainComponentProvider;
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.NEWSPAPER_O.toImageResource();
-	}
+   private TsDiskMainComponent appComponent;
 
-	@Override
-	public Component getAppComponent() {
-		if(null == appComponent)
-			appComponent = mainComponentProvider.get();
-		return appComponent;
-	}
+   @Inject
+   public TsDiskTeamSpaceApp(Provider<TsDiskMainComponent> mainComponentProvider) {
 
-	@Override
-	public void displaySpace(TeamSpaceDto currentSpace) {
-		appComponent.setCurrentSpace(currentSpace);
-	}
+      /* store objects */
+      this.mainComponentProvider = mainComponentProvider;
+   }
 
+   @Override
+   public String getAppId() {
+      return APP_ID;
+   }
+
+   @Override
+   public String getName() {
+      return TsFavoriteMessages.INSTANCE.appName();
+   }
+
+   @Override
+   public String getDescription() {
+      return TsFavoriteMessages.INSTANCE.appDescription();
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.NEWSPAPER_O.toImageResource();
+   }
+
+   @Override
+   public Component getAppComponent() {
+      if (null == appComponent)
+         appComponent = mainComponentProvider.get();
+      return appComponent;
+   }
+
+   @Override
+   public void displaySpace(TeamSpaceDto currentSpace) {
+      appComponent.setCurrentSpace(currentSpace);
+   }
 
 }

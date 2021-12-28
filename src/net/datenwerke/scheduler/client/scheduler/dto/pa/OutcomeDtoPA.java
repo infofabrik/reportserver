@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.OutcomeDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.entities.Outcome.class)
 public interface OutcomeDtoPA extends PropertyAccess<OutcomeDto> {
 
-
-
 }

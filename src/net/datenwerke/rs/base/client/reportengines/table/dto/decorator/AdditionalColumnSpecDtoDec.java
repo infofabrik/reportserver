@@ -9,20 +9,19 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
  */
 public class AdditionalColumnSpecDtoDec extends AdditionalColumnSpecDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public AdditionalColumnSpecDtoDec() {
+      super();
+   }
 
-	public AdditionalColumnSpecDtoDec() {
-		super();
-	}
+   public ColumnDto cloneColumnForSelection() {
+      ColumnReferenceDtoDec clone = new ColumnReferenceDtoDec();
 
-	public ColumnDto cloneColumnForSelection() {
-		ColumnReferenceDtoDec clone = new ColumnReferenceDtoDec();
-		
-		copyPropertiesTo(clone);
-		((ColumnReferenceDtoDec)clone).setReference(this);
-		
-		return clone;
-	}
+      copyPropertiesTo(clone);
+      ((ColumnReferenceDtoDec) clone).setReference(this);
+
+      return clone;
+   }
 
 }

@@ -9,13 +9,11 @@ import net.datenwerke.scheduler.service.scheduler.nlp.parsers.BaseNlpParser;
 
 public class SchedulerStartup {
 
-	@Inject
-	public SchedulerStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<BaseNlpParser> nlpParser
-		) {
-		
-		hookHandler.attachHooker(NlpTriggerParserHook.class, nlpParser, HookHandlerService.PRIORITY_LOWER);
-	}
+   @Inject
+   public SchedulerStartup(HookHandlerService hookHandler,
+
+         Provider<BaseNlpParser> nlpParser) {
+
+      hookHandler.attachHooker(NlpTriggerParserHook.class, nlpParser, HookHandlerService.PRIORITY_LOWER);
+   }
 }

@@ -9,9 +9,9 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 @RemoteServiceRelativePath("logfiles")
 public interface LogFilesRpcService extends RemoteService {
-	
-	List<String> readLastLines(String filename) throws ServerCallFailedException;
-	
-	void emailFile(String filename) throws ServerCallFailedException;
+
+   List<String> readLastLines(String filename) throws ServerCallFailedException;
+
+   void emailFile(String filename) throws ServerCallFailedException;
 
 }

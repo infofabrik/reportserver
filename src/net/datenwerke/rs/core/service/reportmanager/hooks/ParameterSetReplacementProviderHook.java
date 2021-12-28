@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetRepla
 
 public interface ParameterSetReplacementProviderHook extends Hook {
 
-	Collection<? extends ParameterSetReplacementProvider> getProviders();
+   Collection<? extends ParameterSetReplacementProvider> getProviders();
 
 }

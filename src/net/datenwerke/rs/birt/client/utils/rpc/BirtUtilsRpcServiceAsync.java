@@ -9,8 +9,9 @@ import net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto;
 
 public interface BirtUtilsRpcServiceAsync {
 
-	void proposeParametersFor(BirtReportDto report, AsyncCallback<List<BirtParameterProposalDto>> callback);
-	
-	void addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos, AsyncCallback<BirtReportDto> rsAsyncCallback);
+   void proposeParametersFor(BirtReportDto report, AsyncCallback<List<BirtParameterProposalDto>> callback);
+
+   void addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos,
+         AsyncCallback<BirtReportDto> rsAsyncCallback);
 
 }

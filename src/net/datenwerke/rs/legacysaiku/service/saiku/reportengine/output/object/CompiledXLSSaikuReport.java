@@ -4,14 +4,14 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledX
 
 public class CompiledXLSSaikuReport extends CompiledXlsxReport implements CompiledRSSaikuReport {
 
-	private static final long serialVersionUID = 1684884393282821852L;
+   private static final long serialVersionUID = 1684884393282821852L;
 
-	public CompiledXLSSaikuReport() {
-		super(null);
-	}
-	
-	public CompiledXLSSaikuReport(byte[] report) {
-		super(report);
-	}
+   public CompiledXLSSaikuReport() {
+      super(null);
+   }
+
+   public CompiledXLSSaikuReport(byte[] report) {
+      super(report);
+   }
 
 }

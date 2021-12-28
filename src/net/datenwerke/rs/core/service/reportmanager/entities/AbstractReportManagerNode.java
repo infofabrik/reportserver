@@ -16,46 +16,37 @@ import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.security.service.treedb.entities.SecuredAbstractNode;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
 
-
 /**
  * Provides the base class for all user nodes
  * 
  *
  */
 @Entity
-@Table(name="REPORT_MNGR_NODE")
+@Table(name = "REPORT_MNGR_NODE")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@TreeDBTree(
-	rootTypes=ReportFolder.class,
-	manager=ReportService.class
-)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.reportmanager.dto.reports",
-	abstractDto=true,
-	whitelist={
-		ReportVariantDto.class,
-		ReportDto.class,ReportVariantDto.class,ReportFolderDto.class,
-		AbstractDatasourceManagerNodeDto.class
-	}
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@TreeDBTree(rootTypes = ReportFolder.class, manager = ReportService.class)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.reportmanager.dto.reports", abstractDto = true, whitelist = {
+      ReportVariantDto.class, ReportDto.class, ReportVariantDto.class, ReportFolderDto.class,
+      AbstractDatasourceManagerNodeDto.class })
 abstract public class AbstractReportManagerNode extends SecuredAbstractNode<AbstractReportManagerNode> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3336712332134719828L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3336712332134719828L;
 
-	abstract public String getName();
-	abstract public String getDescription();
+   abstract public String getName();
 
-	@Override
-	public String getNodeName() {
-		return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
-	}
+   abstract public String getDescription();
 
-	@Override
-	public String getRootNodeName() {
-		return "reportmanager";
-	}
+   @Override
+   public String getNodeName() {
+      return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
+   }
+
+   @Override
+   public String getRootNodeName() {
+      return "reportmanager";
+   }
 }

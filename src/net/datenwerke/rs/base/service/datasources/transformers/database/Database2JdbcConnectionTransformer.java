@@ -17,38 +17,36 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public class Database2JdbcConnectionTransformer implements DataSourceDefinitionTransformer<Connection> {
 
-	private Provider<DbPoolService> dbPoolService;
+   private Provider<DbPoolService> dbPoolService;
 
-	@Inject	
-	public Database2JdbcConnectionTransformer(Provider<DbPoolService> dbPoolService) {
-		super();
-		this.dbPoolService = dbPoolService;
-	}
+   @Inject
+   public Database2JdbcConnectionTransformer(Provider<DbPoolService> dbPoolService) {
+      super();
+      this.dbPoolService = dbPoolService;
+   }
 
-	
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof DatabaseDatasource && dst.isAssignableFrom(Connection.class));
-	}
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof DatabaseDatasource
+            && dst.isAssignableFrom(Connection.class));
+   }
 
-	@Override
-	public Connection transform(
-			DatasourceContainerProvider containerProvider,
-			Class<?> dst, ParameterSet parameters) throws UnsupportedDriverException,
-			DatabaseConnectionException {
-		
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		DatabaseDatasource ds = (DatabaseDatasource) container.getDatasource();
-		
-		try {
-			Connection conn = (Connection) dbPoolService.get().getConnection(ds.getConnectionConfig(), new ReadOnlyConnectionConfig()).get();
-			return conn;
-		} catch (Exception e) {
-			DatabaseConnectionException dce = new DatabaseConnectionException(ds.getUrl(), ds.getUsername(), e);
-			throw dce;
-		}
-	}
+   @Override
+   public Connection transform(DatasourceContainerProvider containerProvider, Class<?> dst, ParameterSet parameters)
+         throws UnsupportedDriverException, DatabaseConnectionException {
 
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      DatabaseDatasource ds = (DatabaseDatasource) container.getDatasource();
+
+      try {
+         Connection conn = (Connection) dbPoolService.get()
+               .getConnection(ds.getConnectionConfig(), new ReadOnlyConnectionConfig()).get();
+         return conn;
+      } catch (Exception e) {
+         DatabaseConnectionException dce = new DatabaseConnectionException(ds.getUrl(), ds.getUsername(), e);
+         throw dce;
+      }
+   }
 
 }

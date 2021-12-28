@@ -56,12 +56,8 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
    private final HookHandlerService hookHandlerService;
 
    @Inject
-   public UserManagerServiceImpl(
-         TreeDBService treeDB, 
-         Provider<EntityManager> entityManagerProvider,
-         PasswordHasher passwordHasher, 
-         HookHandlerService hookHandlerService
-         ) {
+   public UserManagerServiceImpl(TreeDBService treeDB, Provider<EntityManager> entityManagerProvider,
+         PasswordHasher passwordHasher, HookHandlerService hookHandlerService) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
@@ -303,35 +299,31 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
 
    @Override
    public Set<Group> getGroups(Collection<Long> ids) {
-      return ids
-         .stream()
-         .map(this::getNodeById)
-         .filter(node -> node instanceof Group)
-         .map(node -> (Group) node)
-         .collect(toSet());
+      return ids.stream().map(this::getNodeById).filter(node -> node instanceof Group).map(node -> (Group) node)
+            .collect(toSet());
    }
 
    @Override
    public void setPassword(final User user, final String newPassword) {
       user.setPassword(newPassword, passwordHasher);
-      
-      hookHandlerService.getHookers(PasswordSetHook.class)
-         .forEach(h -> h.passwordWasSet(user));
+
+      hookHandlerService.getHookers(PasswordSetHook.class).forEach(h -> h.passwordWasSet(user));
    }
 
    @Override
-   public void changePassword(final User user, final String oldPassword, final String newPassword) throws ExpectedException {
+   public void changePassword(final User user, final String oldPassword, final String newPassword)
+         throws ExpectedException {
       if (null != user.getPassword() && !passwordHasher.validatePassword(user.getPassword(), oldPassword))
          throw new ExpectedException("old password wrong");
 
       hookHandlerService.getHookers(ChangePasswordHook.class)
-         .forEach( rethrowConsumer(cph -> cph.beforePasswordChanged(user, newPassword )));
+            .forEach(rethrowConsumer(cph -> cph.beforePasswordChanged(user, newPassword)));
 
       user.setPassword(newPassword, passwordHasher);
       merge(user);
 
       hookHandlerService.getHookers(ChangePasswordHook.class)
-         .forEach( rethrowConsumer(cph ->  cph.afterPasswordChanged(user)) );
+            .forEach(rethrowConsumer(cph -> cph.afterPasswordChanged(user)));
    }
 
    @Override
@@ -397,12 +389,8 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
 
    @Override
    public Set<OrganisationalUnit> getOUs(Collection<Long> ids) {
-      return ids
-         .stream()
-         .map(this::getNodeById)
-         .filter(node -> node instanceof OrganisationalUnit)
-         .map(node -> (OrganisationalUnit) node)
-         .collect(toSet());
+      return ids.stream().map(this::getNodeById).filter(node -> node instanceof OrganisationalUnit)
+            .map(node -> (OrganisationalUnit) node).collect(toSet());
    }
 
 }

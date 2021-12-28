@@ -6,10 +6,10 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ReportCreatedFromDtoHook extends Hook {
 
-	void reportCreated(ReportDto reportDto, Report report);
+   void reportCreated(ReportDto reportDto, Report report);
 
-	void reportMerged(ReportDto reportDto, Report report);
+   void reportMerged(ReportDto reportDto, Report report);
 
-	void reportCreatedUnmanaged(ReportDto reportDto, Report report);
+   void reportCreatedUnmanaged(ReportDto reportDto, Report report);
 
 }

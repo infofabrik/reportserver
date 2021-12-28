@@ -21,73 +21,72 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Entity
-@Table(name="TEAMSPACE_APP")
+@Table(name = "TEAMSPACE_APP")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.teamspace.client.teamspace.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.teamspace.client.teamspace.dto")
 public class TeamSpaceApp {
 
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@JoinTable(name="TEAMSPACE_APP_2_PROPERTY")
-	@ExposeToClient
-	@EnclosedEntity
-    @OneToMany(cascade={CascadeType.ALL})
-    private Set<AppProperty> appProperties = new HashSet<AppProperty>();
+   @Version
+   private Long version;
 
-	@ExposeToClient
-	@Column(length=32)
-	private String type;
-	
-	@ExposeToClient
-	private Boolean installed = false;
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getVersion() {
-		return version;
-	}
+   @JoinTable(name = "TEAMSPACE_APP_2_PROPERTY")
+   @ExposeToClient
+   @EnclosedEntity
+   @OneToMany(cascade = { CascadeType.ALL })
+   private Set<AppProperty> appProperties = new HashSet<AppProperty>();
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient
+   @Column(length = 32)
+   private String type;
 
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient
+   private Boolean installed = false;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public Set<AppProperty> getAppProperties() {
-		return appProperties;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setAppProperties(Set<AppProperty> appProperties) {
-		this.appProperties = appProperties;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public String getType() {
-		return type;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setType(String type) {
-		this.type = type;
-	}
+   public Set<AppProperty> getAppProperties() {
+      return appProperties;
+   }
 
-	public void setInstalled(Boolean installed) {
-		if(null == installed)
-			installed = false;
-		this.installed = installed;
-	}
+   public void setAppProperties(Set<AppProperty> appProperties) {
+      this.appProperties = appProperties;
+   }
 
-	public Boolean isInstalled() {
-		return installed;
-	}
-	
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
+   }
+
+   public void setInstalled(Boolean installed) {
+      if (null == installed)
+         installed = false;
+      this.installed = installed;
+   }
+
+   public Boolean isInstalled() {
+      return installed;
+   }
+
 }

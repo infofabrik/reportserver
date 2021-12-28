@@ -25,39 +25,31 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class DropboxUiStartup {
-   
+
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 40;
-   
+
    @Inject
-   public DropboxUiStartup(
-         final Provider<ExportToDropboxHooker> exportToDropboxHooker,
-         final Provider<FileExportToDropboxHooker> fileExportToDatasinkHooker,
-         final HookHandlerService hookHandler, 
-         final WaitOnEventUIService waitOnEventService, 
-         final DropboxDao dao,
+   public DropboxUiStartup(final Provider<ExportToDropboxHooker> exportToDropboxHooker,
+         final Provider<FileExportToDropboxHooker> fileExportToDatasinkHooker, final HookHandlerService hookHandler,
+         final WaitOnEventUIService waitOnEventService, final DropboxDao dao,
          final Provider<DropboxDatasinkConfigProviderHooker> dropboxTreeConfiguratorProvider,
          final DropboxDatasinkTesterToolbarConfigurator dropboxTestToolbarConfigurator,
          final DropboxDatasinkOAuthToolbarConfigurator dropboxOauthToolbarConfigurator,
          final Provider<DropboxExportSnippetProvider> dropboxExportSnippetProvider,
          final DropboxUiService dropboxUiService,
-         final Provider<DropboxSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final Provider<DropboxSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(),
-            PRIO);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, dropboxTreeConfiguratorProvider.get(), PRIO);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToDropboxHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToDropboxHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, dropboxTestToolbarConfigurator,
-            PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, dropboxTestToolbarConfigurator, PRIO);
 
       /* Oauth */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, dropboxOauthToolbarConfigurator);
@@ -68,10 +60,9 @@ public class DropboxUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-               ((DropboxUiServiceImpl)dropboxUiService).setEnabledConfigs(result);
+               ((DropboxUiServiceImpl) dropboxUiService).setEnabledConfigs(result);
                if (result.get(StorageType.DROPBOX) && result.get(StorageType.DROPBOX_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider,
-                        PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider, PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, dropboxExportSnippetProvider);
             }

@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.JobExecutionStatusDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.entities.JobExecutionStatus.class)
 public interface JobExecutionStatusDtoPA extends PropertyAccess<JobExecutionStatusDto> {
 
-
-
 }

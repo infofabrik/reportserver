@@ -8,151 +8,149 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultExtension;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.scripting.client.scripting.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scripting.client.scripting.dto")
 public class AddToolbarEntryExtension extends CommandResultExtension {
 
-	DisplayConditionType wl_1;
-	
-	@ExposeToClient
-	private String toolbarName;
-	
-	@ExposeToClient
-	private boolean left = true;
-	
-	@ExposeToClient
-	private String label;
-	
-	@ExposeToClient
-	private String icon;
-	
-	@ExposeToClient
-	private String scriptLocation;
-	
-	@ExposeToClient(allowArbitraryLobSize=true,disableHtmlEncode=true)
-	private String javaScript;
-	
-	@ExposeToClient
-	private String arguments;
-	
-	@ExposeToClient
-	private boolean large = false;
+   DisplayConditionType wl_1;
 
-	@ExposeToClient
-	private int columns = 1;
-	
-	@EnclosedEntity
-	@ExposeToClient
-	private List<AddToolbarEntryExtension> groupEntries = new ArrayList<AddToolbarEntryExtension>();
-	
-	@EnclosedEntity
-	@ExposeToClient
-	private List<AddMenuEntryExtension> subMenuEntries = new ArrayList<AddMenuEntryExtension>();
-	
-	@EnclosedEntity
-	@ExposeToClient
-	private List<DisplayCondition> displayConditions = new ArrayList<DisplayCondition>();
+   @ExposeToClient
+   private String toolbarName;
 
-	public void setSubMenuEntries(List<AddMenuEntryExtension> subMenuEntries) {
-		this.subMenuEntries = subMenuEntries;
-	}
+   @ExposeToClient
+   private boolean left = true;
 
-	public List<AddMenuEntryExtension> getSubMenuEntries() {
-		return subMenuEntries;
-	}
+   @ExposeToClient
+   private String label;
 
-	public String getLabel() {
-		return label;
-	}
+   @ExposeToClient
+   private String icon;
 
-	public void setLabel(String label) {
-		this.label = label;
-	}
+   @ExposeToClient
+   private String scriptLocation;
 
-	public String getIcon() {
-		return icon;
-	}
+   @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true)
+   private String javaScript;
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+   @ExposeToClient
+   private String arguments;
 
-	public String getScriptLocation() {
-		return scriptLocation;
-	}
+   @ExposeToClient
+   private boolean large = false;
 
-	public void setScriptLocation(String scriptLocation) {
-		this.scriptLocation = scriptLocation;
-	}
+   @ExposeToClient
+   private int columns = 1;
 
-	public void setLarge(boolean large) {
-		this.large = large;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   private List<AddToolbarEntryExtension> groupEntries = new ArrayList<AddToolbarEntryExtension>();
 
-	public boolean isLarge() {
-		return large;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   private List<AddMenuEntryExtension> subMenuEntries = new ArrayList<AddMenuEntryExtension>();
 
-	public void setLeft(boolean left) {
-		this.left = left;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   private List<DisplayCondition> displayConditions = new ArrayList<DisplayCondition>();
 
-	public boolean isLeft() {
-		return left;
-	}
+   public void setSubMenuEntries(List<AddMenuEntryExtension> subMenuEntries) {
+      this.subMenuEntries = subMenuEntries;
+   }
 
-	public void setGroupEntries(List<AddToolbarEntryExtension> groupEntries) {
-		this.groupEntries = groupEntries;
-	}
+   public List<AddMenuEntryExtension> getSubMenuEntries() {
+      return subMenuEntries;
+   }
 
-	public List<AddToolbarEntryExtension> getGroupEntries() {
-		return groupEntries;
-	}
+   public String getLabel() {
+      return label;
+   }
 
-	public void setColumns(int columns) {
-		this.columns = columns;
-	}
+   public void setLabel(String label) {
+      this.label = label;
+   }
 
-	public int getColumns() {
-		return columns;
-	}
+   public String getIcon() {
+      return icon;
+   }
 
-	public void setToolbarName(String toolbarName) {
-		this.toolbarName = toolbarName;
-	}
+   public void setIcon(String icon) {
+      this.icon = icon;
+   }
 
-	public String getToolbarName() {
-		return toolbarName;
-	}
+   public String getScriptLocation() {
+      return scriptLocation;
+   }
 
-	public String getArguments() {
-		return arguments;
-	}
-	
-	public void setArguments(String arguments) {
-		this.arguments = arguments;
-	}
-	
-	public void setDisplayConditions(List<DisplayCondition> displayConditions) {
-		this.displayConditions = displayConditions;
-	}
-	
-	public void addDisplayCondition(DisplayCondition displayCondition) {
-		if(null == displayConditions)
-			displayConditions = new ArrayList<DisplayCondition>();
-		this.displayConditions.add(displayCondition);
-	}
+   public void setScriptLocation(String scriptLocation) {
+      this.scriptLocation = scriptLocation;
+   }
 
-	public List<DisplayCondition> getDisplayConditions() {
-		return displayConditions;
-	}
+   public void setLarge(boolean large) {
+      this.large = large;
+   }
 
-	public String getJavaScript() {
-		return javaScript;
-	}
+   public boolean isLarge() {
+      return large;
+   }
 
-	public void setJavaScript(String javaScript) {
-		this.javaScript = javaScript;
-	}
+   public void setLeft(boolean left) {
+      this.left = left;
+   }
+
+   public boolean isLeft() {
+      return left;
+   }
+
+   public void setGroupEntries(List<AddToolbarEntryExtension> groupEntries) {
+      this.groupEntries = groupEntries;
+   }
+
+   public List<AddToolbarEntryExtension> getGroupEntries() {
+      return groupEntries;
+   }
+
+   public void setColumns(int columns) {
+      this.columns = columns;
+   }
+
+   public int getColumns() {
+      return columns;
+   }
+
+   public void setToolbarName(String toolbarName) {
+      this.toolbarName = toolbarName;
+   }
+
+   public String getToolbarName() {
+      return toolbarName;
+   }
+
+   public String getArguments() {
+      return arguments;
+   }
+
+   public void setArguments(String arguments) {
+      this.arguments = arguments;
+   }
+
+   public void setDisplayConditions(List<DisplayCondition> displayConditions) {
+      this.displayConditions = displayConditions;
+   }
+
+   public void addDisplayCondition(DisplayCondition displayCondition) {
+      if (null == displayConditions)
+         displayConditions = new ArrayList<DisplayCondition>();
+      this.displayConditions.add(displayCondition);
+   }
+
+   public List<DisplayCondition> getDisplayConditions() {
+      return displayConditions;
+   }
+
+   public String getJavaScript() {
+      return javaScript;
+   }
+
+   public void setJavaScript(String javaScript) {
+      this.javaScript = javaScript;
+   }
 }

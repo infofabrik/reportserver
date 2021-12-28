@@ -9,6 +9,7 @@ import net.datenwerke.rs.oauth.client.oauth.OAuthAuthenticationUriInfo;
 
 @RemoteServiceRelativePath("oauthrpc")
 public interface OAuthRpcService extends RemoteService {
-   
-   OAuthAuthenticationUriInfo generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto) throws ServerCallFailedException;
+
+   OAuthAuthenticationUriInfo generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto)
+         throws ServerCallFailedException;
 }

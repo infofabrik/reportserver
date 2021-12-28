@@ -21,61 +21,54 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class ReferenceCallHistoryCallback implements HistoryCallback {
 
-	private final TsDiskTreeLoaderDao diskDao;
-	private final EventBus eventbus;
+   private final TsDiskTreeLoaderDao diskDao;
+   private final EventBus eventbus;
 
-	@Inject
-	public ReferenceCallHistoryCallback(
-		TsDiskTreeLoaderDao diskDao,
-		final EventBus eventbus
-		){
-		
-		this.diskDao = diskDao;
-		this.eventbus = eventbus;
-	}
-	
-	@Override
-	public void locationChanged(final HistoryLocation location) {
-		String strId = location.getParameterValue("id");
-		try{
-			final Long id = Long.valueOf(strId);
-			
-			
-			diskDao.loadNodeById(id, new RsAsyncCallback<AbstractNodeDto>(){
-				@Override
-				public void onSuccess(final AbstractNodeDto result) {
-					if(null == result)
-						return;
+   @Inject
+   public ReferenceCallHistoryCallback(TsDiskTreeLoaderDao diskDao, final EventBus eventbus) {
 
-					Long tsId = ((AbstractTsDiskNodeDtoDec)result).getTeamSpaceId();
-					if(null == tsId)
-						return;
-					
-					SubmoduleDisplayRequest req = new SubmoduleDisplayRequest(null, TeamSpaceUIModule.TEAMSPACE_PANEL_ID);
-					req.addParameter(TeamSpaceUIModule.TEAMSPACE_ID_KEY, tsId);
-					req.setCallback(new ParentDisplayedCallback() {
-						@Override
-						public void notify(Object obj) {
-							Collection<TeamSpaceApp> apps = (Collection<TeamSpaceApp>) obj;
-							for(final TeamSpaceApp app : apps){
-								if(app instanceof TsDiskTeamSpaceApp){
-									((TsDiskMainComponent)app.getAppComponent()).itemOpened((AbstractTsDiskNodeDto) result);
-									break;
-								}
-							}
-						}
-					});
-					
-					eventbus.fireEvent(req);
-				}
-			});
-		} catch(NumberFormatException e){
-			return;
-		}
-		
-		
-		
-		
-	}
+      this.diskDao = diskDao;
+      this.eventbus = eventbus;
+   }
+
+   @Override
+   public void locationChanged(final HistoryLocation location) {
+      String strId = location.getParameterValue("id");
+      try {
+         final Long id = Long.valueOf(strId);
+
+         diskDao.loadNodeById(id, new RsAsyncCallback<AbstractNodeDto>() {
+            @Override
+            public void onSuccess(final AbstractNodeDto result) {
+               if (null == result)
+                  return;
+
+               Long tsId = ((AbstractTsDiskNodeDtoDec) result).getTeamSpaceId();
+               if (null == tsId)
+                  return;
+
+               SubmoduleDisplayRequest req = new SubmoduleDisplayRequest(null, TeamSpaceUIModule.TEAMSPACE_PANEL_ID);
+               req.addParameter(TeamSpaceUIModule.TEAMSPACE_ID_KEY, tsId);
+               req.setCallback(new ParentDisplayedCallback() {
+                  @Override
+                  public void notify(Object obj) {
+                     Collection<TeamSpaceApp> apps = (Collection<TeamSpaceApp>) obj;
+                     for (final TeamSpaceApp app : apps) {
+                        if (app instanceof TsDiskTeamSpaceApp) {
+                           ((TsDiskMainComponent) app.getAppComponent()).itemOpened((AbstractTsDiskNodeDto) result);
+                           break;
+                        }
+                     }
+                  }
+               });
+
+               eventbus.fireEvent(req);
+            }
+         });
+      } catch (NumberFormatException e) {
+         return;
+      }
+
+   }
 
 }

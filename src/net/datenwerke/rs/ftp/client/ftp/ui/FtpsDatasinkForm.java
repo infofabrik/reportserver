@@ -106,8 +106,8 @@ public class FtpsDatasinkForm extends SimpleFormView {
             });
 
       // dataChannelProtectionLevel
-      form.addField(List.class, FtpsDatasinkDtoPA.INSTANCE.dataChannelProtectionLevel(), BaseMessages.INSTANCE.protectionLevel(),
-            new SFFCStaticDropdownList<String>() {
+      form.addField(List.class, FtpsDatasinkDtoPA.INSTANCE.dataChannelProtectionLevel(),
+            BaseMessages.INSTANCE.protectionLevel(), new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
 

@@ -17,30 +17,29 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface DadgetService {
 
-	FavoriteList loadFavoriteList();
+   FavoriteList loadFavoriteList();
 
-	void persist(FavoriteListEntry entry);
+   void persist(FavoriteListEntry entry);
 
-	FavoriteList merge(FavoriteList list);
-	
-	void remove(FavoriteList list);
+   FavoriteList merge(FavoriteList list);
 
-	void remove(FavoriteList list, FavoriteListEntry entry);
+   void remove(FavoriteList list);
 
-	void removeFromFavorites(AbstractTsDiskNode node);
+   void remove(FavoriteList list, FavoriteListEntry entry);
 
-	void removeFromReportDadgets(Report node);
+   void removeFromFavorites(AbstractTsDiskNode node);
 
-	List<LibraryDadget> getLibraryDadgetsWith(DadgetNode node);
+   void removeFromReportDadgets(Report node);
 
-	List<DashboardReference> getDashboardContainerssWith(DashboardNode node);
+   List<LibraryDadget> getLibraryDadgetsWith(DadgetNode node);
 
-	void removeFromReportDadgets(TsDiskReportReference reference);
+   List<DashboardReference> getDashboardContainerssWith(DashboardNode node);
 
-	Collection<ReportDadget> getReportDadgetsWith(Report report);
+   void removeFromReportDadgets(TsDiskReportReference reference);
 
-	Collection<ReportDadget> getReportDadgetsWith(
-			TsDiskReportReference reference);
-	
-	FavoriteList loadFavoriteList(User currentUser);
+   Collection<ReportDadget> getReportDadgetsWith(Report report);
+
+   Collection<ReportDadget> getReportDadgetsWith(TsDiskReportReference reference);
+
+   FavoriteList loadFavoriteList(User currentUser);
 }

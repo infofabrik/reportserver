@@ -26,50 +26,47 @@ import net.datenwerke.security.service.security.rights.Write;
  * 
  *
  */
-public class SecuredAbstractNode2DtoPostProcessor implements Poso2DtoPostProcessor<SecuredAbstractNode, SecuredAbstractNodeDtoDec> {
+public class SecuredAbstractNode2DtoPostProcessor
+      implements Poso2DtoPostProcessor<SecuredAbstractNode, SecuredAbstractNodeDtoDec> {
 
-	private final SecurityService securityService;
-	
-	@Inject
-	public SecuredAbstractNode2DtoPostProcessor(
-		SecurityService securityService	
-		){
-		
-		this.securityService = securityService;
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public void dtoCreated(SecuredAbstractNode poso,
-			SecuredAbstractNodeDtoDec dto) {
-		if(dto.getDtoView() == DtoView.LIST_FTO || dto.getDtoView() == DtoView.FTO)
-			return;
-		
-		Set<RightDto> availableRights = new HashSet<RightDto>();
-		Set<RightDto> availableInheritedRights = new HashSet<RightDto>();
-		
-		if( securityService.checkRights(poso, SecurityServiceSecuree.class, Read.class))
-			availableRights.add(new ReadDto());
-		if( securityService.checkRights(poso, SecurityServiceSecuree.class, Write.class))
-			availableRights.add(new WriteDto());
-		if(securityService.checkRights(poso, true, SecurityServiceSecuree.class, Write.class))
-			availableInheritedRights.add(new WriteDto());
-		if( securityService.checkRights(poso, SecurityServiceSecuree.class, Delete.class))
-			availableRights.add(new DeleteDto());
-		if( securityService.checkRights(poso, SecurityServiceSecuree.class, Execute.class))
-			availableRights.add(new ExecuteDto());
-		if( securityService.checkRights(poso, SecurityServiceSecuree.class, GrantAccess.class))
-			availableRights.add(new GrantAccessDto());
-		
-		dto.setAvailableAccessRights(availableRights);
-		dto.setAvailableInheritedAccessRights(availableInheritedRights);
-		
-		dto.setAvailableAccessRightsSet(true);
-	}
+   private final SecurityService securityService;
 
-	@Override
-	public void dtoInstantiated(SecuredAbstractNode poso,
-			SecuredAbstractNodeDtoDec dto) {
-	}
+   @Inject
+   public SecuredAbstractNode2DtoPostProcessor(SecurityService securityService) {
+
+      this.securityService = securityService;
+   }
+
+   @SuppressWarnings("unchecked")
+   @Override
+   public void dtoCreated(SecuredAbstractNode poso, SecuredAbstractNodeDtoDec dto) {
+      if (dto.getDtoView() == DtoView.LIST_FTO || dto.getDtoView() == DtoView.FTO)
+         return;
+
+      Set<RightDto> availableRights = new HashSet<RightDto>();
+      Set<RightDto> availableInheritedRights = new HashSet<RightDto>();
+
+      if (securityService.checkRights(poso, SecurityServiceSecuree.class, Read.class))
+         availableRights.add(new ReadDto());
+      if (securityService.checkRights(poso, SecurityServiceSecuree.class, Write.class))
+         availableRights.add(new WriteDto());
+      if (securityService.checkRights(poso, true, SecurityServiceSecuree.class, Write.class))
+         availableInheritedRights.add(new WriteDto());
+      if (securityService.checkRights(poso, SecurityServiceSecuree.class, Delete.class))
+         availableRights.add(new DeleteDto());
+      if (securityService.checkRights(poso, SecurityServiceSecuree.class, Execute.class))
+         availableRights.add(new ExecuteDto());
+      if (securityService.checkRights(poso, SecurityServiceSecuree.class, GrantAccess.class))
+         availableRights.add(new GrantAccessDto());
+
+      dto.setAvailableAccessRights(availableRights);
+      dto.setAvailableInheritedAccessRights(availableInheritedRights);
+
+      dto.setAvailableAccessRightsSet(true);
+   }
+
+   @Override
+   public void dtoInstantiated(SecuredAbstractNode poso, SecuredAbstractNodeDtoDec dto) {
+   }
 
 }

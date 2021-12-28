@@ -5,19 +5,17 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralRefer
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskGeneralReferenceDtoDec;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskGeneralReference;
 
-public class GeneralReference2DtoPost implements Poso2DtoPostProcessor<TsDiskGeneralReference, TsDiskGeneralReferenceDto> {
+public class GeneralReference2DtoPost
+      implements Poso2DtoPostProcessor<TsDiskGeneralReference, TsDiskGeneralReferenceDto> {
 
-	@Override
-	public void dtoCreated(TsDiskGeneralReference poso,
-			TsDiskGeneralReferenceDto dto) {
-		((TsDiskGeneralReferenceDtoDec)dto).setReferenceLastUpdated(poso.getReferenceLastUpdated());
-	}
+   @Override
+   public void dtoCreated(TsDiskGeneralReference poso, TsDiskGeneralReferenceDto dto) {
+      ((TsDiskGeneralReferenceDtoDec) dto).setReferenceLastUpdated(poso.getReferenceLastUpdated());
+   }
 
-	@Override
-	public void dtoInstantiated(TsDiskGeneralReference arg0,
-			TsDiskGeneralReferenceDto arg1) {
-		
-	}
+   @Override
+   public void dtoInstantiated(TsDiskGeneralReference arg0, TsDiskGeneralReferenceDto arg1) {
 
+   }
 
 }

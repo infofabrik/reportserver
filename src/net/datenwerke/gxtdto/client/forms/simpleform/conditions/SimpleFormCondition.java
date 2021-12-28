@@ -11,10 +11,9 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
  */
 public interface SimpleFormCondition {
 
-	/**
-	 * Determines whether the condition is met.
-	 */
-	public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook,
-			SimpleForm form);
+   /**
+    * Determines whether the condition is met.
+    */
+   public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form);
 
 }

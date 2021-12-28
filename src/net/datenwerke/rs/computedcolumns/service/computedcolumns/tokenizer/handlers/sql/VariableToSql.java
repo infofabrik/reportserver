@@ -8,15 +8,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class VariableToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof VariableExpressionToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof VariableExpressionToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		return ((VariableExpressionToken)token).getName();
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      return ((VariableExpressionToken) token).getName();
+   }
 
 }

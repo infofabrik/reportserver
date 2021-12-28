@@ -6,8 +6,8 @@ import net.datenwerke.rs.license.client.dto.LicenseInformationDto;
 
 public interface LicenseRpcServiceAsync {
 
-	void loadLicenseInformation(AsyncCallback<LicenseInformationDto> transformAndKeepCallback);
+   void loadLicenseInformation(AsyncCallback<LicenseInformationDto> transformAndKeepCallback);
 
-	void updateLicense(String license, AsyncCallback<Void> transformAndKeepCallback);
+   void updateLicense(String license, AsyncCallback<Void> transformAndKeepCallback);
 
 }

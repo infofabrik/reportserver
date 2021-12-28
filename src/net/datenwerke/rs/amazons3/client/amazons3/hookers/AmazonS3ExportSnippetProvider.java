@@ -109,7 +109,7 @@ public class AmazonS3ExportSnippetProvider implements ScheduleExportSnippetProvi
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

@@ -17,81 +17,80 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.CustomCompo
 
 public class CustomComponentProvider implements FormFieldProviderHook {
 
-	private SimpleFormFieldConfiguration[] configs;
+   private SimpleFormFieldConfiguration[] configs;
 
-	@Override
-	public boolean consumes(Class<?> type,
-			SimpleFormFieldConfiguration... configs) {
-		boolean consumes =  type.equals(CustomComponent.class) && configs.length > 0 && configs[0] instanceof SFFCCustomComponent;
-		if(consumes)
-			this.configs = configs;
-		return consumes;
-	}
-	
-	@Override
-	public boolean consumes(String type,
-			SimpleFormFieldJson config) {
-		return false;
-	}
+   @Override
+   public boolean consumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      boolean consumes = type.equals(CustomComponent.class) && configs.length > 0
+            && configs[0] instanceof SFFCCustomComponent;
+      if (consumes)
+         this.configs = configs;
+      return consumes;
+   }
 
-	@Override
-	public void init(String name, SimpleForm form) {
-		
-	}
+   @Override
+   public boolean consumes(String type, SimpleFormFieldJson config) {
+      return false;
+   }
 
-	@Override
-	public Widget createFormField() {
-		return getCustomComponent();
-	}
-	
-	public Widget getCustomComponent(){
-		return ((SFFCCustomComponent)configs[0]).getComponent();
-	}
+   @Override
+   public void init(String name, SimpleForm form) {
 
-	@Override
-	public void addFieldBindings(Object model, ValueProvider vp, Widget field) {
-	}
+   }
 
-	@Override
-	public void removeFieldBindings(Object model, Widget field) {
-	}
+   @Override
+   public Widget createFormField() {
+      return getCustomComponent();
+   }
 
-	public HandlerRegistration addValueChangeHandler(ValueChangeHandler handler){
-		 return EventBusHelper.EVENT_BUS.addHandler(ValueChangeEvent.getType(), handler);
-	}
-	
-	public void fireEvent(GwtEvent<?> event) {
-		EventBusHelper.EVENT_BUS.fireEvent(event);
-	}
+   public Widget getCustomComponent() {
+      return ((SFFCCustomComponent) configs[0]).getComponent();
+   }
 
-	@Override
-	public Object getValue(Widget field) {
-		return null;
-	}
-	
-	@Override
-	public String getStringValue(Widget field) {
-		return null;
-	}
-	
-	@Override
-	public void setValue(Widget field, Object value) {
-		//
-	}
+   @Override
+   public void addFieldBindings(Object model, ValueProvider vp, Widget field) {
+   }
 
-	@Override
-	public Widget reload(Widget field) {
-		return createFormField();
-	}
+   @Override
+   public void removeFieldBindings(Object model, Widget field) {
+   }
 
-	@Override
-	public boolean isDecorateable() {
-		return false;
-	}
+   public HandlerRegistration addValueChangeHandler(ValueChangeHandler handler) {
+      return EventBusHelper.EVENT_BUS.addHandler(ValueChangeEvent.getType(), handler);
+   }
 
-	@Override
-	public void installBlankValidation(Widget field) {
-		throw new UnsupportedOperationException();
-	}
+   public void fireEvent(GwtEvent<?> event) {
+      EventBusHelper.EVENT_BUS.fireEvent(event);
+   }
+
+   @Override
+   public Object getValue(Widget field) {
+      return null;
+   }
+
+   @Override
+   public String getStringValue(Widget field) {
+      return null;
+   }
+
+   @Override
+   public void setValue(Widget field, Object value) {
+      //
+   }
+
+   @Override
+   public Widget reload(Widget field) {
+      return createFormField();
+   }
+
+   @Override
+   public boolean isDecorateable() {
+      return false;
+   }
+
+   @Override
+   public void installBlankValidation(Widget field) {
+      throw new UnsupportedOperationException();
+   }
 
 }

@@ -21,34 +21,34 @@ import net.datenwerke.security.client.security.dto.ReadDto;
 
 public class GridEditorUiStartup {
 
-	@Inject
-	public GridEditorUiStartup(
-			final HookHandlerService hookHandler,
-			final WaitOnEventUIService waitOnEventService,
-			final SecurityUIService securityService,
-			
-			GridEditorConfigHooker gridEditorReportConfigHooker,
-			GridEditorReportPreviewViewFactory gridEditorReportPreviewViewFactory,
-			
-			Provider<GridEditor2Excel> gridEditor2Excel,
-			
-			final Provider<ReportDadgetExporter> reportDadgetExporterProvider
-			) {
+   @Inject
+   public GridEditorUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
 
-			hookHandler.attachHooker(ReportTypeConfigHook.class, gridEditorReportConfigHooker,80);
-			hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(gridEditorReportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
+         GridEditorConfigHooker gridEditorReportConfigHooker,
+         GridEditorReportPreviewViewFactory gridEditorReportPreviewViewFactory,
 
-			hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(gridEditor2Excel));
-			
-			waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-				
-				public void execute(final WaitOnEventTicket ticket) {
-					if(securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)){
-						hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
-					}
+         Provider<GridEditor2Excel> gridEditor2Excel,
 
-					waitOnEventService.signalProcessingDone(ticket);
-				}
-			});
-		}
+         final Provider<ReportDadgetExporter> reportDadgetExporterProvider) {
+
+      hookHandler.attachHooker(ReportTypeConfigHook.class, gridEditorReportConfigHooker, 80);
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(gridEditorReportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(ReportExporterExportReportHook.class,
+            new ReportExporterExportReportHook(gridEditor2Excel));
+
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)) {
+                     hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
+                  }
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 }

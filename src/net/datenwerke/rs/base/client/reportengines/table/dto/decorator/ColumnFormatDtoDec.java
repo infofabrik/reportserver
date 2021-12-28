@@ -9,20 +9,19 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnFormatDto;
  */
 public abstract class ColumnFormatDtoDec extends ColumnFormatDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFormatDtoDec() {
+      super();
+   }
 
-	public ColumnFormatDtoDec() {
-		super();
-	}
+   public static ColumnFormatDto clone(ColumnFormatDto format) {
+      if (null == format)
+         return null;
 
-	public static ColumnFormatDto clone(ColumnFormatDto format) {
-		if(null == format)
-			return null;
-		
-		return ((ColumnFormatDtoDec)format).cloneFormat();
-	}
+      return ((ColumnFormatDtoDec) format).cloneFormat();
+   }
 
-	public abstract ColumnFormatDto cloneFormat();
+   public abstract ColumnFormatDto cloneFormat();
 
 }

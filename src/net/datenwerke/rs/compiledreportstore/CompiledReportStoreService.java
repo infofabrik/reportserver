@@ -8,20 +8,20 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface CompiledReportStoreService {
 
-	PersistentCompiledReport getById(Long id);
-	
-	void persist(PersistentCompiledReport cReport);
-	
-	PersistentCompiledReport merge(PersistentCompiledReport cReport);
-	
-	void remove(PersistentCompiledReport cReport);
+   PersistentCompiledReport getById(Long id);
 
-	PersistentCompiledReport toPersistenReport(CompiledReport compiledReport, Report report);
+   void persist(PersistentCompiledReport cReport);
 
-	List<PersistentCompiledReport> getCompiledReportsFor(Report report);
+   PersistentCompiledReport merge(PersistentCompiledReport cReport);
 
-	void removeForReport(Report report);
+   void remove(PersistentCompiledReport cReport);
 
-	void unsetForReport(Report report);
+   PersistentCompiledReport toPersistenReport(CompiledReport compiledReport, Report report);
+
+   List<PersistentCompiledReport> getCompiledReportsFor(Report report);
+
+   void removeForReport(Report report);
+
+   void unsetForReport(Report report);
 
 }

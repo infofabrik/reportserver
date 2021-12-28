@@ -27,68 +27,61 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
  *
  */
 @Singleton
-public class ReportManagerExportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements ReportManagerExportRpcService {
+public class ReportManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements ReportManagerExportRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4930126638050553141L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4930126638050553141L;
 
-	private final DtoService dtoService;
-	private final ExportService exportService;
-	private final Provider<HttpExportService> httpExportServiceProvider;
-	
-	@Inject
-	public ReportManagerExportRpcServiceImpl(
-		DtoService dtoService,
-		ExportService exportService,
-		Provider<HttpExportService> httpExportServiceProvider
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.exportService = exportService;
-		this.httpExportServiceProvider = httpExportServiceProvider;
-	}
-	
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = { 
-				@GenericTargetVerification(
-					target = ExportSecurityTarget.class, 
-					verify = @RightsVerification(rights = Execute.class)) 
-			})
-	@Transactional(rollbackOn={Exception.class})
-	public void quickExport(AbstractReportManagerNodeDto nodeDto,
-			boolean includeVariants) throws ServerCallFailedException {
-		AbstractReportManagerNode node = (AbstractReportManagerNode) dtoService.loadPoso(nodeDto);
-		
-		/* export report */
-		ExportConfig exportConfig = new ExportConfig();
-		exportConfig.setName("Report-Export");
-		exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
-		
-		addChildren(exportConfig, node, includeVariants);
-		
-		String exportXML = exportService.exportIndent(exportConfig);
-		
-		httpExportServiceProvider.get().storeExport(exportXML, node.getName());
-	}
-	
-	private void addChildren(ExportConfig exportConfig, AbstractReportManagerNode report, boolean includeVariants) {
-		for(AbstractReportManagerNode childNode : report.getChildren()){
-			if(includeVariants || !(childNode instanceof ReportVariant)){
-				exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-				addChildren(exportConfig, childNode, includeVariants);
-			}
-		}
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public String loadResult() throws ServerCallFailedException {
-		return httpExportServiceProvider.get().getAndRemoveStoredExport();
-	}
+   private final DtoService dtoService;
+   private final ExportService exportService;
+   private final Provider<HttpExportService> httpExportServiceProvider;
+
+   @Inject
+   public ReportManagerExportRpcServiceImpl(DtoService dtoService, ExportService exportService,
+         Provider<HttpExportService> httpExportServiceProvider) {
+
+      /* store objects */
+      this.dtoService = dtoService;
+      this.exportService = exportService;
+      this.httpExportServiceProvider = httpExportServiceProvider;
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void quickExport(AbstractReportManagerNodeDto nodeDto, boolean includeVariants)
+         throws ServerCallFailedException {
+      AbstractReportManagerNode node = (AbstractReportManagerNode) dtoService.loadPoso(nodeDto);
+
+      /* export report */
+      ExportConfig exportConfig = new ExportConfig();
+      exportConfig.setName("Report-Export");
+      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+
+      addChildren(exportConfig, node, includeVariants);
+
+      String exportXML = exportService.exportIndent(exportConfig);
+
+      httpExportServiceProvider.get().storeExport(exportXML, node.getName());
+   }
+
+   private void addChildren(ExportConfig exportConfig, AbstractReportManagerNode report, boolean includeVariants) {
+      for (AbstractReportManagerNode childNode : report.getChildren()) {
+         if (includeVariants || !(childNode instanceof ReportVariant)) {
+            exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+            addChildren(exportConfig, childNode, includeVariants);
+         }
+      }
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public String loadResult() throws ServerCallFailedException {
+      return httpExportServiceProvider.get().getAndRemoveStoredExport();
+   }
 
 }

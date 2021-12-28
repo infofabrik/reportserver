@@ -8,13 +8,12 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.Scheduled
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto;
 
-public interface ScheduledReportToolbarListFilter extends Hook  {
+public interface ScheduledReportToolbarListFilter extends Hook {
 
-	boolean addToToolbar(ScheduledReportListPanel scheduledReportListPanel,
-			DwHookableToolbar mainToolbar);
+   boolean addToToolbar(ScheduledReportListPanel scheduledReportListPanel, DwHookableToolbar mainToolbar);
 
-	void configure(ScheduledReportListPanel scheduledReportListPanel,
-			JobFilterConfigurationDto jobFilterConfig, List<JobFilterCriteriaDto> addCriterions);
+   void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto jobFilterConfig,
+         List<JobFilterCriteriaDto> addCriterions);
 
-	boolean appliesTo(String panelName);
+   boolean appliesTo(String panelName);
 }

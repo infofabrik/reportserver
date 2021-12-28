@@ -23,105 +23,106 @@ import net.datenwerke.gxtdto.client.utils.sort.AlphabeticStoreSortInfo;
 
 public class DtoAwareListStore<X extends Dto> extends ListStore<X> {
 
-	@Inject
-	private static ClientDtoManagerService dtoManager;
-	
-	private DtoListener dtoChangeListener = new DtoListener() {
-		
-		@SuppressWarnings("unchecked")
-		@Override
-		public void dtoChanged(DtoChangedEvent e) {
-			try{
-				X dto = (X) e.getDto();
-				if(null != findModel(dto))
-					updateDto(dto);	
-			} catch(ClassCastException ex){}
-		}
-		
-		public void beforeDtoDetached(BeforeDtoDetachedEvent e) {
-			try{
-				X dto = (X) e.getDto();
-				if(null != findModel(dto))
-					removeDto(dto);	
-			} catch(ClassCastException ex){}
-		};
+   @Inject
+   private static ClientDtoManagerService dtoManager;
 
-	};
-	
-	private StoreSortInfo<X> alphabeticSorter = new AlphabeticStoreSortInfo();
+   private DtoListener dtoChangeListener = new DtoListener() {
 
-	public DtoAwareListStore(){
-		this(new DtoTypeAwareIdProvider(), true);
-	}
-	
-	public DtoAwareListStore(ModelKeyProvider<? super X> keyProvider, boolean changeAware) { 
-		 super(keyProvider);
-		 
-		 addSortInfo(alphabeticSorter);
-		 
-		 if(changeAware)
-			 enableDtoAwareness();
-	}
-	
-	
-	protected void enableDtoAwareness(){
-		addStoreHandlers(new StoreHandlers<X>(){
-			@Override
-			public void onAdd(StoreAddEvent<X> event) {
-				updateListener();
-			}
+      @SuppressWarnings("unchecked")
+      @Override
+      public void dtoChanged(DtoChangedEvent e) {
+         try {
+            X dto = (X) e.getDto();
+            if (null != findModel(dto))
+               updateDto(dto);
+         } catch (ClassCastException ex) {
+         }
+      }
 
-			@Override
-			public void onRemove(StoreRemoveEvent<X> event) {
-				updateListener();
-			}
+      public void beforeDtoDetached(BeforeDtoDetachedEvent e) {
+         try {
+            X dto = (X) e.getDto();
+            if (null != findModel(dto))
+               removeDto(dto);
+         } catch (ClassCastException ex) {
+         }
+      };
 
-			@Override
-			public void onFilter(StoreFilterEvent<X> event) {
-				
-			}
+   };
 
-			@Override
-			public void onClear(StoreClearEvent<X> event) {
-				updateListener();
-			}
+   private StoreSortInfo<X> alphabeticSorter = new AlphabeticStoreSortInfo();
 
-			@Override
-			public void onUpdate(StoreUpdateEvent<X> event) {
-				updateListener();
-			}
+   public DtoAwareListStore() {
+      this(new DtoTypeAwareIdProvider(), true);
+   }
 
-			@Override
-			public void onDataChange(StoreDataChangeEvent<X> event) {
-				updateListener();
-			}
+   public DtoAwareListStore(ModelKeyProvider<? super X> keyProvider, boolean changeAware) {
+      super(keyProvider);
 
-			@Override
-			public void onRecordChange(StoreRecordChangeEvent<X> event) {
-				updateListener();
-			}
+      addSortInfo(alphabeticSorter);
 
-			@Override
-			public void onSort(StoreSortEvent<X> event) {
-				
-			}
-			
-		});
-	}
-	
-	protected void updateListener() {
-		if(size() > 0)
-			dtoManager.onDtoChange(dtoChangeListener);
-		else
-			dtoManager.removeDtoChangeListener(dtoChangeListener);
-	}
+      if (changeAware)
+         enableDtoAwareness();
+   }
 
-	protected void updateDto(X dto) {
-		update(dto);
-	}
-	
-	protected void removeDto(X dto) {
-		remove(dto);
-	}
+   protected void enableDtoAwareness() {
+      addStoreHandlers(new StoreHandlers<X>() {
+         @Override
+         public void onAdd(StoreAddEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onRemove(StoreRemoveEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onFilter(StoreFilterEvent<X> event) {
+
+         }
+
+         @Override
+         public void onClear(StoreClearEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onUpdate(StoreUpdateEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onDataChange(StoreDataChangeEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onRecordChange(StoreRecordChangeEvent<X> event) {
+            updateListener();
+         }
+
+         @Override
+         public void onSort(StoreSortEvent<X> event) {
+
+         }
+
+      });
+   }
+
+   protected void updateListener() {
+      if (size() > 0)
+         dtoManager.onDtoChange(dtoChangeListener);
+      else
+         dtoManager.removeDtoChangeListener(dtoChangeListener);
+   }
+
+   protected void updateDto(X dto) {
+      update(dto);
+   }
+
+   protected void removeDto(X dto) {
+      remove(dto);
+   }
 
 }

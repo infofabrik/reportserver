@@ -4,8 +4,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface CacheableDatasourceResult extends CacheableResult {
-	
-	
-	public boolean consumes(DatasourceDefinitionConfig config, ParameterSet parameters);
+
+   public boolean consumes(DatasourceDefinitionConfig config, ParameterSet parameters);
 
 }

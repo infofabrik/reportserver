@@ -13,25 +13,26 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactor
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class BirtReportPreviewViewFactory extends PreviewViewFactory {
-	
-	private ReportExecutorUIService reportExecutorUIService;
 
-	@Inject
-	public BirtReportPreviewViewFactory(ReportExecutorUIService reportExecutorUIService) {
-		this.reportExecutorUIService = reportExecutorUIService;
-	}
-	
-	@Override
-	public ReportExecutorMainPanelView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		AbstractReportPreviewView view = reportExecutorUIService.getPdfPreviewView();
-		view.setReport(report);
-		
-		return view;
-	}
+   private ReportExecutorUIService reportExecutorUIService;
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return (report instanceof BirtReportDto);
-	}
+   @Inject
+   public BirtReportPreviewViewFactory(ReportExecutorUIService reportExecutorUIService) {
+      this.reportExecutorUIService = reportExecutorUIService;
+   }
+
+   @Override
+   public ReportExecutorMainPanelView newInstance(ReportDto report,
+         Collection<? extends ReportViewConfiguration> configs) {
+      AbstractReportPreviewView view = reportExecutorUIService.getPdfPreviewView();
+      view.setReport(report);
+
+      return view;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      return (report instanceof BirtReportDto);
+   }
 
 }

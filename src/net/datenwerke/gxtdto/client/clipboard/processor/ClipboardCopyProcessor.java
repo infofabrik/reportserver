@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 
 public interface ClipboardCopyProcessor {
 
-	public ClipboardItem getItem();
+   public ClipboardItem getItem();
 }

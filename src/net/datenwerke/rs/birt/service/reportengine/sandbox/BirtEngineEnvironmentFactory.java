@@ -9,12 +9,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface BirtEngineEnvironmentFactory {
-	public BirtEngineEnvironment create(
-			IReportEngine reportEngine,
-			byte[] reportBytes,
-			ParameterSet parameters,
-			Connection connection,
-			String outputFormat,
-			BirtOutputGenerator outputGenerator,
-			ReportExecutionConfig[] configs);
+   public BirtEngineEnvironment create(IReportEngine reportEngine, byte[] reportBytes, ParameterSet parameters,
+         Connection connection, String outputFormat, BirtOutputGenerator outputGenerator,
+         ReportExecutionConfig[] configs);
 }

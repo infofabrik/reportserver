@@ -10,10 +10,10 @@ import net.datenwerke.security.service.security.rights.Write;
 
 public class MoveNodeActionForReference extends SecurityActionImpl {
 
-	public Collection<Right> getRights() {
-		List<Right> list = new ArrayList<Right>();
-		list.add(new Write());
-		return list;
-	}
+   public Collection<Right> getRights() {
+      List<Right> list = new ArrayList<Right>();
+      list.add(new Write());
+      return list;
+   }
 
 }

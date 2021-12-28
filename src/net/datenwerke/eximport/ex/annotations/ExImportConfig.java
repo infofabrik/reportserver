@@ -11,6 +11,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ExImportConfig {
 
-	String[] excludeFields() default {};
+   String[] excludeFields() default {};
 
 }

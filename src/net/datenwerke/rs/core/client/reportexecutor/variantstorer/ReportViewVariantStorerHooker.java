@@ -67,267 +67,272 @@ import net.datenwerke.security.client.security.dto.ExecuteDto;
  */
 public class ReportViewVariantStorerHooker implements VariantStorerHook {
 
-	private final LoginService loginService;
-	
-	private ExecutorEventHandler eventHandler;
-	private VariantStorerConfig config;
-	
-	@Inject
-	public ReportViewVariantStorerHooker(
-		LoginService loginService
-		){
+   private final LoginService loginService;
 
-		/* store objects */
-		this.loginService = loginService;
-	}
-	
-	@Override
-	public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		return false;
-	}
+   private ExecutorEventHandler eventHandler;
+   private VariantStorerConfig config;
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		if(! report.hasAccessRight(ExecuteDto.class))
-			return false;
-		
-		/* store variant */
-		TextButton storeVariantBtn = createStoreVariantButton(report, info.getExecuteReportToken());
-		toolbar.add(storeVariantBtn);
-		
-		return true;
-	}
+   @Inject
+   public ReportViewVariantStorerHooker(LoginService loginService) {
 
-	private TextButton createStoreVariantButton(final ReportDto report, final String executeToken) {
-		TextButton btn = null;
-		if(report instanceof ReportVariantDto && config.allowEditVariant()){
-			btn = new DwSplitButton(ReportexecutorMessages.INSTANCE.store());
-			((DwSplitButton)btn).setIcon(BaseIcon.REPORT_DISK); 
-			btn.addSelectHandler(new SelectHandler() {
-				
-				@Override
-				public void onSelect(SelectEvent event) {
-					if(config.displayEditVariantOnStore())
-						displayStoreVariantDialog(report, executeToken, true);
-					else {
-						ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportexecutorMessages.INSTANCE.editVariantConfirmTitle(), ReportexecutorMessages.INSTANCE.editVariantConfirmMsg());
-						cmb.addDialogHideHandler(new DialogHideHandler() {
-							@Override
-							public void onDialogHide(DialogHideEvent event) {
-								if (event.getHideButton() == PredefinedButton.YES) { 
-									/* prepare callback */
-									AsyncCallback<ReportDto> callback = new ModalAsyncCallback<ReportDto>(ReportexecutorMessages.INSTANCE.storedSuccessfully()) { 
-											@Override
-											public void doOnSuccess(ReportDto resultReport) {
-												VariantChangedEvent event = new VariantChangedEvent();
-												event.setVariant(resultReport);
-												eventHandler.handleEvent(event);
-											}
-									};
-									
-									/* perform server call */
-									config.getServerCallHandler().editVariant(report,executeToken,report.getName(),	report.getDescription(),callback);
-								}	
-							}
-						});
-						cmb.show();
-					}
-				}
-			});
-			
-			Menu menu = new DwMenu(); 
+      /* store objects */
+      this.loginService = loginService;
+   }
 
-			MenuItem saveNewItem = new DwMenuItem(ReportexecutorMessages.INSTANCE.storeNew(), BaseIcon.REPORT_ADD);
-			saveNewItem.addSelectionHandler(new SelectionHandler<Item>() {
+   @Override
+   public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      return false;
+   }
 
-				@Override
-				public void onSelection(SelectionEvent<Item> event) {
-					displayStoreVariantDialog(report,executeToken, false);
-				}
-			});
-			menu.add(saveNewItem);
+   @Override
+   public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      if (!report.hasAccessRight(ExecuteDto.class))
+         return false;
 
-			btn.setMenu(menu);
-		} else {
-			btn = new DwTextButton(ReportexecutorMessages.INSTANCE.store(),BaseIcon.REPORT_DISK);
-			btn.addSelectHandler(new SelectHandler() {
-				
-				@Override
-				public void onSelect(SelectEvent event) {
-					displayStoreVariantDialog(report, executeToken, false);
-				}
-			});
-		}
-		
-		
-		
-		return btn;
-	}
-	
-	private void displayStoreVariantDialog(final ReportDto report, final String executeToken, final boolean edit) {
-		final DwWindow dialog = DwWindow.newAutoSizeDialog(400);
-		dialog.addStyleName("rs-saveas-d");
-		dialog.setWidth(450);
-		if(edit)
-			dialog.setHeading(ReportexecutorMessages.INSTANCE.changeVariant(Format.ellipse(report.getName(),100)));
-		else
-			dialog.setHeading(ReportexecutorMessages.INSTANCE.createNewVariant(Format.ellipse(report.getName(),100))); 
-		
-		dialog.setModal(true);
-		dialog.setCenterOnShow(true);
-		
-		/* create form */
-		DwContentPanel panelWrapper = DwContentPanel.newInlineInstance();
-		panelWrapper.setLightDarkStyle();
-		dialog.add(panelWrapper);
-		
-		VerticalLayoutContainer fieldWrapper = new VerticalLayoutContainer();
-		panelWrapper.add(fieldWrapper, new MarginData(10));
-		
-		final TextField nameField = new TextField();
-		nameField.setWidth(200);
-		nameField.setEmptyText(BaseMessages.INSTANCE.name());
-		nameField.setAllowBlank(false);
-		
-		FieldLabel nameLabel = new FieldLabel(nameField, BaseMessages.INSTANCE.saveAs());
-		nameLabel.setLabelWidth(120);
-		
-		final HTML icon = new HTML(BaseIcon.CHEVRON_DOWN.toSafeHtml());
-		icon.addStyleName("rs-saveas-detail-btn");
-		
-		nameLabel.addStyleName("rs-saveas-flabel");		
-		
-		HBoxLayoutContainer hbox = new HBoxLayoutContainer();
-		fieldWrapper.add(hbox, new VerticalLayoutData(-1, -1));
-		hbox.setHBoxLayoutAlign(HBoxLayoutAlign.MIDDLE);
-		hbox.setPack(BoxLayoutPack.START);
-		hbox.setWidth(430);
-		
-		hbox.add(nameLabel);
-		hbox.add(icon);
-	
-		final HTML separator = new HTML("<hr class='rs-saveas-sep'/>");
-		separator.setVisible(false);
-		
-		fieldWrapper.add(separator, new VerticalLayoutData(1,-1));
-		
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		form.hide();
-		form.setWidth(430);
-		fieldWrapper.add(form, new VerticalLayoutData(1,-1,new Margins(5,0,0,0)));
-		form.setLabelAlign(LabelAlign.LEFT);
-		
-		final String teamSpaceKey = "tskey";
-		final String folderKey = "folderkey";
-		
-		final String descKey = form.addField(String.class, ReportDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl(80));
-		
-		if(! edit){
-			form.addField(TeamSpaceDto.class, teamSpaceKey, TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText());
-			
-			form.addField(TsDiskFolderDto.class, folderKey, BaseMessages.INSTANCE.folder(), new SFFCTsTeamSpaceSelector(){
-				@Override
-				public TeamSpaceDto getTeamSpace() {
-					return (TeamSpaceDto) form.getValue(teamSpaceKey);
-				}
-			});
-			
-			form.addCondition(teamSpaceKey, new FieldChanged(), new SetValueFieldAction(folderKey, null));
-		}
+      /* store variant */
+      TextButton storeVariantBtn = createStoreVariantButton(report, info.getExecuteReportToken());
+      toolbar.add(storeVariantBtn);
 
-		form.loadFields();
-		
-		icon.addClickHandler(event -> {
-			if(separator.isVisible()){
-				separator.setVisible(false);
-				form.hide();
-				icon.setHTML(BaseIcon.CHEVRON_DOWN.toSafeHtml());
-			} else {
-				separator.setVisible(true);
-				form.show();
-				icon.setHTML(BaseIcon.CHEVRON_UP.toSafeHtml());
-			}
-			dialog.forceLayout();
-		});
-		
-		
-		if(edit){
-			nameField.setValue(report.getName());
-			form.setValue(descKey, report.getDescription());
-		} else {
-			if (report instanceof ReportVariantDto) {
-				nameField.setValue(report.getName() + " (copy)");
-				form.setValue(descKey, report.getDescription());
-			}
-			form.setValue(teamSpaceKey, config.getTeamSpace());
-			form.setValue(folderKey, config.getTeamSpaceFolder());
-		}
+      return true;
+   }
 
-		/* add buttons */
-		dialog.addCancelButton();
-		
-		dialog.addSpecButton(new OnButtonClickHandler() {
-			@Override
-			public void onClick() {
-				String name = nameField.getValue();
-				if(null == name || "".equals(name.trim())){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), ReportexecutorMessages.INSTANCE.pleaseProvideName()).show();
-					return;
-				}
-				
-				String desc = (String) form.getValue(descKey);
-				
-				TeamSpaceDto teamSpace = null; 
-				TsDiskFolderDto folder = null;
-				if(! edit){
-					teamSpace = (TeamSpaceDto) form.getValue(teamSpaceKey);
-					AbstractTsDiskNodeDto folderNode = (AbstractTsDiskNodeDto) form.getValue(folderKey);
-					if(folderNode instanceof TsDiskFolderDto)
-						folder = (TsDiskFolderDto) folderNode;
-				}
-				
-				if(null == teamSpace && ! edit && ! config.allowNullTeamSpace()){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), ReportexecutorMessages.INSTANCE.pleaseProvideName()).show();
-					return;
-				}
+   private TextButton createStoreVariantButton(final ReportDto report, final String executeToken) {
+      TextButton btn = null;
+      if (report instanceof ReportVariantDto && config.allowEditVariant()) {
+         btn = new DwSplitButton(ReportexecutorMessages.INSTANCE.store());
+         ((DwSplitButton) btn).setIcon(BaseIcon.REPORT_DISK);
+         btn.addSelectHandler(new SelectHandler() {
 
-				/* prepare callback and properties */
-				AsyncCallback<ReportDto> callback = new ModalAsyncCallback<ReportDto>(ReportexecutorMessages.INSTANCE.storedSuccessfully()) { 
-						@Override
-						public void doOnSuccess(ReportDto resultReport) {
-							VariantCreatedEvent event = new VariantCreatedEvent();
-							event.setVariant(resultReport);
-							eventHandler.handleEvent(event);
-						}
-				};
-				
-				/* server call */
-				if(edit)
-					config.getServerCallHandler().editVariant(report, executeToken,name,desc,callback);
-				else
-					config.getServerCallHandler().createNewVariant(report,teamSpace,folder,executeToken, name,	desc, callback);
-				
-				dialog.hide();
-			}
-		},	edit ? ReportexecutorMessages.INSTANCE.editVariant() : ReportexecutorMessages.INSTANCE.createVariant(), false);
+            @Override
+            public void onSelect(SelectEvent event) {
+               if (config.displayEditVariantOnStore())
+                  displayStoreVariantDialog(report, executeToken, true);
+               else {
+                  ConfirmMessageBox cmb = new DwConfirmMessageBox(
+                        ReportexecutorMessages.INSTANCE.editVariantConfirmTitle(),
+                        ReportexecutorMessages.INSTANCE.editVariantConfirmMsg());
+                  cmb.addDialogHideHandler(new DialogHideHandler() {
+                     @Override
+                     public void onDialogHide(DialogHideEvent event) {
+                        if (event.getHideButton() == PredefinedButton.YES) {
+                           /* prepare callback */
+                           AsyncCallback<ReportDto> callback = new ModalAsyncCallback<ReportDto>(
+                                 ReportexecutorMessages.INSTANCE.storedSuccessfully()) {
+                              @Override
+                              public void doOnSuccess(ReportDto resultReport) {
+                                 VariantChangedEvent event = new VariantChangedEvent();
+                                 event.setVariant(resultReport);
+                                 eventHandler.handleEvent(event);
+                              }
+                           };
 
-		
-		dialog.show();
-	}
-	
-	@Override
-	public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
-		// do not care
-	}
+                           /* perform server call */
+                           config.getServerCallHandler().editVariant(report, executeToken, report.getName(),
+                                 report.getDescription(), callback);
+                        }
+                     }
+                  });
+                  cmb.show();
+               }
+            }
+         });
 
-	@Override
-	public void setEventHandler(ExecutorEventHandler eventHandler) {
-		this.eventHandler = eventHandler;
-	}
+         Menu menu = new DwMenu();
 
-	@Override
-	public void setConfig(VariantStorerConfig variantStorerConfig) {
-		this.config = variantStorerConfig;
-	}
+         MenuItem saveNewItem = new DwMenuItem(ReportexecutorMessages.INSTANCE.storeNew(), BaseIcon.REPORT_ADD);
+         saveNewItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+            @Override
+            public void onSelection(SelectionEvent<Item> event) {
+               displayStoreVariantDialog(report, executeToken, false);
+            }
+         });
+         menu.add(saveNewItem);
+
+         btn.setMenu(menu);
+      } else {
+         btn = new DwTextButton(ReportexecutorMessages.INSTANCE.store(), BaseIcon.REPORT_DISK);
+         btn.addSelectHandler(new SelectHandler() {
+
+            @Override
+            public void onSelect(SelectEvent event) {
+               displayStoreVariantDialog(report, executeToken, false);
+            }
+         });
+      }
+
+      return btn;
+   }
+
+   private void displayStoreVariantDialog(final ReportDto report, final String executeToken, final boolean edit) {
+      final DwWindow dialog = DwWindow.newAutoSizeDialog(400);
+      dialog.addStyleName("rs-saveas-d");
+      dialog.setWidth(450);
+      if (edit)
+         dialog.setHeading(ReportexecutorMessages.INSTANCE.changeVariant(Format.ellipse(report.getName(), 100)));
+      else
+         dialog.setHeading(ReportexecutorMessages.INSTANCE.createNewVariant(Format.ellipse(report.getName(), 100)));
+
+      dialog.setModal(true);
+      dialog.setCenterOnShow(true);
+
+      /* create form */
+      DwContentPanel panelWrapper = DwContentPanel.newInlineInstance();
+      panelWrapper.setLightDarkStyle();
+      dialog.add(panelWrapper);
+
+      VerticalLayoutContainer fieldWrapper = new VerticalLayoutContainer();
+      panelWrapper.add(fieldWrapper, new MarginData(10));
+
+      final TextField nameField = new TextField();
+      nameField.setWidth(200);
+      nameField.setEmptyText(BaseMessages.INSTANCE.name());
+      nameField.setAllowBlank(false);
+
+      FieldLabel nameLabel = new FieldLabel(nameField, BaseMessages.INSTANCE.saveAs());
+      nameLabel.setLabelWidth(120);
+
+      final HTML icon = new HTML(BaseIcon.CHEVRON_DOWN.toSafeHtml());
+      icon.addStyleName("rs-saveas-detail-btn");
+
+      nameLabel.addStyleName("rs-saveas-flabel");
+
+      HBoxLayoutContainer hbox = new HBoxLayoutContainer();
+      fieldWrapper.add(hbox, new VerticalLayoutData(-1, -1));
+      hbox.setHBoxLayoutAlign(HBoxLayoutAlign.MIDDLE);
+      hbox.setPack(BoxLayoutPack.START);
+      hbox.setWidth(430);
+
+      hbox.add(nameLabel);
+      hbox.add(icon);
+
+      final HTML separator = new HTML("<hr class='rs-saveas-sep'/>");
+      separator.setVisible(false);
+
+      fieldWrapper.add(separator, new VerticalLayoutData(1, -1));
+
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      form.hide();
+      form.setWidth(430);
+      fieldWrapper.add(form, new VerticalLayoutData(1, -1, new Margins(5, 0, 0, 0)));
+      form.setLabelAlign(LabelAlign.LEFT);
+
+      final String teamSpaceKey = "tskey";
+      final String folderKey = "folderkey";
+
+      final String descKey = form.addField(String.class, ReportDtoPA.INSTANCE.description(),
+            BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl(80));
+
+      if (!edit) {
+         form.addField(TeamSpaceDto.class, teamSpaceKey, TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText());
+
+         form.addField(TsDiskFolderDto.class, folderKey, BaseMessages.INSTANCE.folder(), new SFFCTsTeamSpaceSelector() {
+            @Override
+            public TeamSpaceDto getTeamSpace() {
+               return (TeamSpaceDto) form.getValue(teamSpaceKey);
+            }
+         });
+
+         form.addCondition(teamSpaceKey, new FieldChanged(), new SetValueFieldAction(folderKey, null));
+      }
+
+      form.loadFields();
+
+      icon.addClickHandler(event -> {
+         if (separator.isVisible()) {
+            separator.setVisible(false);
+            form.hide();
+            icon.setHTML(BaseIcon.CHEVRON_DOWN.toSafeHtml());
+         } else {
+            separator.setVisible(true);
+            form.show();
+            icon.setHTML(BaseIcon.CHEVRON_UP.toSafeHtml());
+         }
+         dialog.forceLayout();
+      });
+
+      if (edit) {
+         nameField.setValue(report.getName());
+         form.setValue(descKey, report.getDescription());
+      } else {
+         if (report instanceof ReportVariantDto) {
+            nameField.setValue(report.getName() + " (copy)");
+            form.setValue(descKey, report.getDescription());
+         }
+         form.setValue(teamSpaceKey, config.getTeamSpace());
+         form.setValue(folderKey, config.getTeamSpaceFolder());
+      }
+
+      /* add buttons */
+      dialog.addCancelButton();
+
+      dialog.addSpecButton(new OnButtonClickHandler() {
+         @Override
+         public void onClick() {
+            String name = nameField.getValue();
+            if (null == name || "".equals(name.trim())) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(),
+                     ReportexecutorMessages.INSTANCE.pleaseProvideName()).show();
+               return;
+            }
+
+            String desc = (String) form.getValue(descKey);
+
+            TeamSpaceDto teamSpace = null;
+            TsDiskFolderDto folder = null;
+            if (!edit) {
+               teamSpace = (TeamSpaceDto) form.getValue(teamSpaceKey);
+               AbstractTsDiskNodeDto folderNode = (AbstractTsDiskNodeDto) form.getValue(folderKey);
+               if (folderNode instanceof TsDiskFolderDto)
+                  folder = (TsDiskFolderDto) folderNode;
+            }
+
+            if (null == teamSpace && !edit && !config.allowNullTeamSpace()) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(),
+                     ReportexecutorMessages.INSTANCE.pleaseProvideName()).show();
+               return;
+            }
+
+            /* prepare callback and properties */
+            AsyncCallback<ReportDto> callback = new ModalAsyncCallback<ReportDto>(
+                  ReportexecutorMessages.INSTANCE.storedSuccessfully()) {
+               @Override
+               public void doOnSuccess(ReportDto resultReport) {
+                  VariantCreatedEvent event = new VariantCreatedEvent();
+                  event.setVariant(resultReport);
+                  eventHandler.handleEvent(event);
+               }
+            };
+
+            /* server call */
+            if (edit)
+               config.getServerCallHandler().editVariant(report, executeToken, name, desc, callback);
+            else
+               config.getServerCallHandler().createNewVariant(report, teamSpace, folder, executeToken, name, desc,
+                     callback);
+
+            dialog.hide();
+         }
+      }, edit ? ReportexecutorMessages.INSTANCE.editVariant() : ReportexecutorMessages.INSTANCE.createVariant(), false);
+
+      dialog.show();
+   }
+
+   @Override
+   public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
+      // do not care
+   }
+
+   @Override
+   public void setEventHandler(ExecutorEventHandler eventHandler) {
+      this.eventHandler = eventHandler;
+   }
+
+   @Override
+   public void setConfig(VariantStorerConfig variantStorerConfig) {
+      this.config = variantStorerConfig;
+   }
 
 }

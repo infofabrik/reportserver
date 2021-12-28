@@ -13,8 +13,9 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTempl
 @RemoteServiceRelativePath("tabletemplate")
 public interface TableTemplateRpcService extends RemoteService {
 
-	List<TableReportTemplateDto> loadTemplates(ReportDto report, String executeToken) throws ServerCallFailedException;
-	
-	void removeTemplates(ReportDto report, String executeToken, Collection<TableReportTemplateDto> templates) throws ServerCallFailedException;
+   List<TableReportTemplateDto> loadTemplates(ReportDto report, String executeToken) throws ServerCallFailedException;
+
+   void removeTemplates(ReportDto report, String executeToken, Collection<TableReportTemplateDto> templates)
+         throws ServerCallFailedException;
 
 }

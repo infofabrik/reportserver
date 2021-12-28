@@ -45,92 +45,95 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class SchedulerUIStartup {
 
-	@Inject
-	public SchedulerUIStartup(
-		final WaitOnEventUIService waitOnEventService,
-			
-		final SchedulerDao schedulerDao,
-		
-		final HookHandlerService hookHandler,
-		final Provider<SchedulerAdminModule> adminModuleProvider,
-		ReportViewScheduleButtonHooker scheduleButtonHooker,
-		final Provider<SchedulerClientModule> schedulerModuleProvider,
-		SchedulingAdminViewSecurityTargetDomainHooker adminSecurityTargetDomain,
-		SchedulingBasicSecurityTargetDomainHooker basicSecurityTargetDomain,
-		
-		Provider<EmailExportSnippetProvider> emailExportSnippet,
-		
-		Provider<RemoveScheduleEntryHooker> removeScheduleEntryHooker,
-		Provider<LoadDetailsForEntryHooker> loadDetailsScheduleEntryHooker,
-		Provider<EditScheduleEntryHooker> editScheduleEntryHooker,
-		Provider<ScheduleNowHooker> scheduleNowHooker,
-		
-		Provider<MyOrToMeScheduledEntriesFilter> myOrToMeFilter,
-		Provider<JobIdScheduledEntriesFilter> jobIdFilter,
-		Provider<JobNameScheduledEntriesFilter> jobNameFilter,
-		Provider<ReportIdScheduledEntriesFilter> reportIdFilter,
-		Provider<FilterUserScheduledEntriesFilter> userFilter,
-		Provider<ExecutionStatusEntriesFilter> statusFilter,
-		Provider<FailedLastTimeEntriesFilter> failedLastFilter,
-		
-		Provider<GenericActionLogEntryDetailHooker> genericActionLogEntryHooker,
-		
-		final ReportInSchedulerObjectInfo reportInSchedulerInfo,
-		
-		final SecurityUIService securityService
-		){
-		
-		hookHandler.attachHooker(ScheduledReportToolbarListFilter.class, myOrToMeFilter);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, jobIdFilter, 10);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, jobNameFilter, 15);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, reportIdFilter, 20);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, userFilter, 30);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, statusFilter, 40);
-		hookHandler.attachHooker(ScheduledReportListFilter.class, failedLastFilter, 50);
-		
-		hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippet, HookHandlerService.PRIORITY_HIGH);
-		
-		/* schedule ui */
-		hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, removeScheduleEntryHooker);
-		hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, loadDetailsScheduleEntryHooker, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, editScheduleEntryHooker);
-		hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, scheduleNowHooker);
-		
-		/* logs */
-		hookHandler.attachHooker(ActionLogEntryDetailHook.class, genericActionLogEntryHooker, HookHandlerService.PRIORITY_LOWER);
-		
-		/* attach hookers */
-		/* report view toolbar */
-		hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, scheduleButtonHooker, HookHandlerService.PRIORITY_LOW);
-		
-		hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, reportInSchedulerInfo);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(adminSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, adminSecurityTargetDomain);
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(basicSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, basicSecurityTargetDomain);
-		
-		/* test if user has rights to see scheduler admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, new SynchronousCallbackOnEventTrigger(){
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ReadDto.class))
-					hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),  HookHandlerService.PRIORITY_HIGH + 110);
+   @Inject
+   public SchedulerUIStartup(final WaitOnEventUIService waitOnEventService,
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-		
-		
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(SchedulingBasicGenericTargetIdentifier.class, ReadDto.class)){
-					/* attach uimodule */
-					hookHandler.attachHooker(ClientMainModuleProviderHook.class, new ClientMainModuleProviderHook(schedulerModuleProvider), HookHandlerService.PRIORITY_LOW - 10);
-				} 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+         final SchedulerDao schedulerDao,
+
+         final HookHandlerService hookHandler, final Provider<SchedulerAdminModule> adminModuleProvider,
+         ReportViewScheduleButtonHooker scheduleButtonHooker,
+         final Provider<SchedulerClientModule> schedulerModuleProvider,
+         SchedulingAdminViewSecurityTargetDomainHooker adminSecurityTargetDomain,
+         SchedulingBasicSecurityTargetDomainHooker basicSecurityTargetDomain,
+
+         Provider<EmailExportSnippetProvider> emailExportSnippet,
+
+         Provider<RemoveScheduleEntryHooker> removeScheduleEntryHooker,
+         Provider<LoadDetailsForEntryHooker> loadDetailsScheduleEntryHooker,
+         Provider<EditScheduleEntryHooker> editScheduleEntryHooker, Provider<ScheduleNowHooker> scheduleNowHooker,
+
+         Provider<MyOrToMeScheduledEntriesFilter> myOrToMeFilter, Provider<JobIdScheduledEntriesFilter> jobIdFilter,
+         Provider<JobNameScheduledEntriesFilter> jobNameFilter, Provider<ReportIdScheduledEntriesFilter> reportIdFilter,
+         Provider<FilterUserScheduledEntriesFilter> userFilter, Provider<ExecutionStatusEntriesFilter> statusFilter,
+         Provider<FailedLastTimeEntriesFilter> failedLastFilter,
+
+         Provider<GenericActionLogEntryDetailHooker> genericActionLogEntryHooker,
+
+         final ReportInSchedulerObjectInfo reportInSchedulerInfo,
+
+         final SecurityUIService securityService) {
+
+      hookHandler.attachHooker(ScheduledReportToolbarListFilter.class, myOrToMeFilter);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, jobIdFilter, 10);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, jobNameFilter, 15);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, reportIdFilter, 20);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, userFilter, 30);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, statusFilter, 40);
+      hookHandler.attachHooker(ScheduledReportListFilter.class, failedLastFilter, 50);
+
+      hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippet,
+            HookHandlerService.PRIORITY_HIGH);
+
+      /* schedule ui */
+      hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, removeScheduleEntryHooker);
+      hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, loadDetailsScheduleEntryHooker,
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, editScheduleEntryHooker);
+      hookHandler.attachHooker(ScheduledReportListDetailToolbarHook.class, scheduleNowHooker);
+
+      /* logs */
+      hookHandler.attachHooker(ActionLogEntryDetailHook.class, genericActionLogEntryHooker,
+            HookHandlerService.PRIORITY_LOWER);
+
+      /* attach hookers */
+      /* report view toolbar */
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, scheduleButtonHooker,
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, reportInSchedulerInfo);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(adminSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, adminSecurityTargetDomain);
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(basicSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, basicSecurityTargetDomain);
+
+      /* test if user has rights to see scheduler admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ReadDto.class))
+                     hookHandler.attachHooker(AdminModuleProviderHook.class,
+                           new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 110);
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(SchedulingBasicGenericTargetIdentifier.class, ReadDto.class)) {
+                     /* attach uimodule */
+                     hookHandler.attachHooker(ClientMainModuleProviderHook.class,
+                           new ClientMainModuleProviderHook(schedulerModuleProvider),
+                           HookHandlerService.PRIORITY_LOW - 10);
+                  }
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 }

@@ -58,16 +58,20 @@ public interface ZipUtilsService {
     * @throws IOException if an I/O error has occurred
     */
    void createZip(String contentFilename, Object content, OutputStream os) throws IOException;
-   
+
    /**
-    * Replaces invalid characters from a filename to be zipped with valid characters.
+    * Replaces invalid characters from a filename to be zipped with valid
+    * characters.
+    * 
     * @param filename the filename to be cleaned
     * @return the cleaned filename
     */
    String cleanFilename(String filename);
-   
+
    /**
-    * Replaces invalid characters from a directory name to be zipped with valid characters.
+    * Replaces invalid characters from a directory name to be zipped with valid
+    * characters.
+    * 
     * @param dirname the directory name to be cleaned
     * @return the cleaned directory name
     */

@@ -28,41 +28,46 @@ import net.datenwerke.treedb.client.treedb.rpc.RPCTreeManager;
 @RemoteServiceRelativePath("ts/favorites")
 public interface TsDiskRpcService extends RemoteService, RPCTreeLoader, RPCTreeManager {
 
-	TsDiskItemList getItemsIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder) throws ServerCallFailedException;
-	
-	TsDiskFolderDto createFolder(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, TsDiskFolderDto dummy ) throws ServerCallFailedException;
-	
-	TsDiskReportReferenceDto importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copyReport, boolean reference) throws ServerCallFailedException;
-	
-	TsDiskReportReferenceDto importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copyReport, String name, String description, boolean reference) throws ServerCallFailedException;
-	
-	List<TeamSpaceDto> getTeamSpacesWithTsDiskApp() throws ServerCallFailedException;
-	
-	List<ReportDto> getReportsInCatalog() throws ServerCallFailedException;
-	
-	List<TsDiskReportReferenceDto> getReferencesInApp(TeamSpaceDto teamSpace, TsDiskFolderDto folder) throws ServerCallFailedException;
-	
-	void sendUserViewChangedNotice(String viewId) throws ServerCallFailedException;
-	
-	List<TeamSpaceDto> getTeamSpacesWithReferenceTo(ReportDto report) throws ServerCallFailedException;
-	
-	Map<TeamSpaceDto, List<List<AbstractTsDiskNodeDto>>> getTeamSpacesWithPathsThatLinkTo(ReportDto report) throws ServerCallFailedException;
-	
-	SafeHtml getTeamSpacesWithPathsThatLinkToAsHtml(ReportDto report) throws ServerCallFailedException;
-	
-	AbstractNodeDto updateNode(AbstractNodeDto nodeDto,
-			boolean changeUnderlyingReport, String name, String description,
-			Dto state) throws ServerCallFailedException;
+   TsDiskItemList getItemsIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder) throws ServerCallFailedException;
 
-	TsDiskReportReferenceDto createAndImportVariant(TeamSpaceDto currentSpace,
-			TsDiskFolderDto currentFolder, ReportDto reportVariantDto,
-			String executeToken, String name, String desc) throws ServerCallFailedException;
+   TsDiskFolderDto createFolder(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, TsDiskFolderDto dummy)
+         throws ServerCallFailedException;
 
-	TsDiskReportReferenceDto updateReferenceAndReport(TsDiskReportReferenceDto reference, ReportDto report, String executeToken, String name, String description) throws ServerCallFailedException;
-	
-	void deleteNodes(List<AbstractNodeDto> nodes, Dto state) throws ServerCallFailedException, NeedForcefulDeleteClientException;
-	
-	void deleteNodesWithForce(List<AbstractNodeDto> nodes, Dto state) throws ServerCallFailedException;
-	
-	List<TsReferenceInfo> getReferenceInfosFor(ReportDto report) throws ServerCallFailedException;
+   TsDiskReportReferenceDto importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report,
+         boolean copyReport, boolean reference) throws ServerCallFailedException;
+
+   TsDiskReportReferenceDto importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report,
+         boolean copyReport, String name, String description, boolean reference) throws ServerCallFailedException;
+
+   List<TeamSpaceDto> getTeamSpacesWithTsDiskApp() throws ServerCallFailedException;
+
+   List<ReportDto> getReportsInCatalog() throws ServerCallFailedException;
+
+   List<TsDiskReportReferenceDto> getReferencesInApp(TeamSpaceDto teamSpace, TsDiskFolderDto folder)
+         throws ServerCallFailedException;
+
+   void sendUserViewChangedNotice(String viewId) throws ServerCallFailedException;
+
+   List<TeamSpaceDto> getTeamSpacesWithReferenceTo(ReportDto report) throws ServerCallFailedException;
+
+   Map<TeamSpaceDto, List<List<AbstractTsDiskNodeDto>>> getTeamSpacesWithPathsThatLinkTo(ReportDto report)
+         throws ServerCallFailedException;
+
+   SafeHtml getTeamSpacesWithPathsThatLinkToAsHtml(ReportDto report) throws ServerCallFailedException;
+
+   AbstractNodeDto updateNode(AbstractNodeDto nodeDto, boolean changeUnderlyingReport, String name, String description,
+         Dto state) throws ServerCallFailedException;
+
+   TsDiskReportReferenceDto createAndImportVariant(TeamSpaceDto currentSpace, TsDiskFolderDto currentFolder,
+         ReportDto reportVariantDto, String executeToken, String name, String desc) throws ServerCallFailedException;
+
+   TsDiskReportReferenceDto updateReferenceAndReport(TsDiskReportReferenceDto reference, ReportDto report,
+         String executeToken, String name, String description) throws ServerCallFailedException;
+
+   void deleteNodes(List<AbstractNodeDto> nodes, Dto state)
+         throws ServerCallFailedException, NeedForcefulDeleteClientException;
+
+   void deleteNodesWithForce(List<AbstractNodeDto> nodes, Dto state) throws ServerCallFailedException;
+
+   List<TsReferenceInfo> getReferenceInfosFor(ReportDto report) throws ServerCallFailedException;
 }

@@ -12,48 +12,49 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.TreeDbManagerContainer;
 
-public class BaseTreeComponentsForTreeNavToolbarHooker implements
-		ManagerHelperTreeToolbarEnhancerHook, TreeSelectionToolbarEnhancerHook {
-	
-	@Override
-	public void treeNavigationToolbarEnhancerHook_addLeft(ToolBar toolbar,
-			UITree tree, TreeDbManagerContainer treeManagerContainer) {
-	}
-	
-	@Override
-	public void treeNavigationToolbarEnhancerHook_addRight(ToolBar toolbar, final UITree tree, TreeDbManagerContainer treeManagerContainer) {
-		/* expand all button */
-		DwTextButton expandAllButton = new DwTextButton(BaseIcon.EXPAND_ALL);
-		expandAllButton.setToolTip(BaseMessages.INSTANCE.expandAll());
-		expandAllButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				tree.expandAll();
-			}
-		});
-		toolbar.add(expandAllButton);
+public class BaseTreeComponentsForTreeNavToolbarHooker
+      implements ManagerHelperTreeToolbarEnhancerHook, TreeSelectionToolbarEnhancerHook {
 
-		/* collapse all button */
-		DwTextButton collapseAllButton = new DwTextButton(BaseIcon.COLLAPSE_ALL);
-		collapseAllButton.setToolTip(BaseMessages.INSTANCE.collapseAll());
-		collapseAllButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				tree.collapseAll();
-			}
-		});
-		toolbar.add(collapseAllButton);
+   @Override
+   public void treeNavigationToolbarEnhancerHook_addLeft(ToolBar toolbar, UITree tree,
+         TreeDbManagerContainer treeManagerContainer) {
+   }
 
-		/* reload button */
-		DwTextButton reloadButton = new DwTextButton(BaseIcon.REFRESH);
-		reloadButton.setToolTip(BaseMessages.INSTANCE.refresh());
-		reloadButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				tree.reload();
-			}
-		});
-		toolbar.add(reloadButton);
-	}
+   @Override
+   public void treeNavigationToolbarEnhancerHook_addRight(ToolBar toolbar, final UITree tree,
+         TreeDbManagerContainer treeManagerContainer) {
+      /* expand all button */
+      DwTextButton expandAllButton = new DwTextButton(BaseIcon.EXPAND_ALL);
+      expandAllButton.setToolTip(BaseMessages.INSTANCE.expandAll());
+      expandAllButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            tree.expandAll();
+         }
+      });
+      toolbar.add(expandAllButton);
+
+      /* collapse all button */
+      DwTextButton collapseAllButton = new DwTextButton(BaseIcon.COLLAPSE_ALL);
+      collapseAllButton.setToolTip(BaseMessages.INSTANCE.collapseAll());
+      collapseAllButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            tree.collapseAll();
+         }
+      });
+      toolbar.add(collapseAllButton);
+
+      /* reload button */
+      DwTextButton reloadButton = new DwTextButton(BaseIcon.REFRESH);
+      reloadButton.setToolTip(BaseMessages.INSTANCE.refresh());
+      reloadButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            tree.reload();
+         }
+      });
+      toolbar.add(reloadButton);
+   }
 
 }

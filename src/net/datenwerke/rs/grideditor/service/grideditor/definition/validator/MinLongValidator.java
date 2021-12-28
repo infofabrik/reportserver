@@ -3,32 +3,26 @@ package net.datenwerke.rs.grideditor.service.grideditor.definition.validator;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.grideditor.client.grideditor.dto",
-	generateDto2Poso=false,
-	createDecorator = true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", generateDto2Poso = false, createDecorator = true)
 public class MinLongValidator extends MinNumberValidator {
 
-	@ExposeToClient
-	private Long number;
-	
-	public MinLongValidator(){
-	}
+   @ExposeToClient
+   private Long number;
 
-	public MinLongValidator(long number, String errorMsg){
-		setNumber(number);
-		setErrorMsg(errorMsg);
-	}
+   public MinLongValidator() {
+   }
 
-	public Long getNumber() {
-		return number;
-	}
+   public MinLongValidator(long number, String errorMsg) {
+      setNumber(number);
+      setErrorMsg(errorMsg);
+   }
 
-	public void setNumber(Long number) {
-		this.number = number;
-	}
-	
-	
-	
+   public Long getNumber() {
+      return number;
+   }
+
+   public void setNumber(Long number) {
+      this.number = number;
+   }
+
 }

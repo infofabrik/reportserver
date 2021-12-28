@@ -40,14 +40,10 @@ public class LostPasswordPreAuthenticateHook implements PreAuthenticateHook {
    private final Provider<SessionChallengeContainer> challengeContainerProvider;
 
    @Inject
-   public LostPasswordPreAuthenticateHook(
-         UserManagerService userManagerService, 
-         PasswordHasher passwordHasher,
-         ChallengeResponseService challengeResponseService, 
-         UserPropertiesService userPropertiesService,
+   public LostPasswordPreAuthenticateHook(UserManagerService userManagerService, PasswordHasher passwordHasher,
+         ChallengeResponseService challengeResponseService, UserPropertiesService userPropertiesService,
          BsiPasswordPolicyService bsiPasswordPolicyService,
-         Provider<SessionChallengeContainer> challengeContainerProvider
-         ) {
+         Provider<SessionChallengeContainer> challengeContainerProvider) {
 
       this.userManagerService = userManagerService;
       this.passwordHasher = passwordHasher;

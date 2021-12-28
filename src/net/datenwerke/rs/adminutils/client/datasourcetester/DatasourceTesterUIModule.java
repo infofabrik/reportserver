@@ -4,10 +4,10 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class DatasourceTesterUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* startup */
-		bind(DatasourceTesterUIStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      /* startup */
+      bind(DatasourceTesterUIStartup.class).asEagerSingleton();
+   }
 
 }

@@ -17,109 +17,106 @@ import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public class BsiPasswordPolicyPostAuthenticateHook implements PostAuthenticateHook{
+public class BsiPasswordPolicyPostAuthenticateHook implements PostAuthenticateHook {
 
-	private final static int MILLISECONDS_PER_MINUTE = 60 * 1000;
+   private final static int MILLISECONDS_PER_MINUTE = 60 * 1000;
 
-	private final UserManagerService userManagerService;
-	private final DwAsyncService dwAsyncService;
-	private final TransactionalRunnableFactory trFactory;
+   private final UserManagerService userManagerService;
+   private final DwAsyncService dwAsyncService;
+   private final TransactionalRunnableFactory trFactory;
 
-	private final BsiPasswordPolicyService bsiPasswordPolicyService;
+   private final BsiPasswordPolicyService bsiPasswordPolicyService;
 
-	@Inject
-	public BsiPasswordPolicyPostAuthenticateHook(
-			UserManagerService userManagerService, 
-			DwAsyncService dwAsyncService,
-			TransactionalRunnableFactory trFactory, 
-			BsiPasswordPolicyService bsiPasswordPolicyService
-			) {
-		this.userManagerService = userManagerService;
-		this.dwAsyncService = dwAsyncService;
-		this.trFactory = trFactory;
-		this.bsiPasswordPolicyService = bsiPasswordPolicyService;
-	}
+   @Inject
+   public BsiPasswordPolicyPostAuthenticateHook(UserManagerService userManagerService, DwAsyncService dwAsyncService,
+         TransactionalRunnableFactory trFactory, BsiPasswordPolicyService bsiPasswordPolicyService) {
+      this.userManagerService = userManagerService;
+      this.dwAsyncService = dwAsyncService;
+      this.trFactory = trFactory;
+      this.bsiPasswordPolicyService = bsiPasswordPolicyService;
+   }
 
-	@Override
-	public void authenticated(final AuthenticationResult authRes) {
-		if(!bsiPasswordPolicyService.isActive())
-			return;
+   @Override
+   public void authenticated(final AuthenticationResult authRes) {
+      if (!bsiPasswordPolicyService.isActive())
+         return;
 
-		User user = authRes.getUser();
+      User user = authRes.getUser();
 
-		if(null != user){
-			final BsiPasswordPolicyUserMetadata data = bsiPasswordPolicyService.getUserMetadata(user);
-			
-			BsiPasswordPolicy bsiPasswordPolicy = bsiPasswordPolicyService.getPolicy();
-			
-			/* Check if there are failed login attempts to reset */
-			if(null != data.getLastFailedLogin()){
-				long sinceLastFailure = (System.currentTimeMillis() - data.getLastFailedLogin().getTime())/MILLISECONDS_PER_MINUTE;
-				if(sinceLastFailure > bsiPasswordPolicy.getAccountLockoutAutoResetTimeout()){
-					data.setFailedLoginCount(0);
-					data.setLastFailedLogin(null);
-				}
-			}
-			
-			/* Check if account is locked */
-			if(data.getFailedLoginCount() > bsiPasswordPolicy.getAccountLockoutThreshold()){
-				authRes.setAllowed(false);
-				authRes.addInfo(new AccountLockedAuthenticateResultInfo(new Date((long)data.getLastFailedLogin().getTime() + ((long)bsiPasswordPolicy.getAccountLockoutAutoResetTimeout() * (long)MILLISECONDS_PER_MINUTE))));
-				return;
-			}
-			
-			if(authRes.isAllowed()){
-				/* process successful login */
-				data.registerSuccessfulLogin();
+      if (null != user) {
+         final BsiPasswordPolicyUserMetadata data = bsiPasswordPolicyService.getUserMetadata(user);
 
-				/* Check if password has expired */
-				if(bsiPasswordPolicy.getPasswordMaxAge() > 0){
-					if(null != user.getPassword()){
-						int expiresIn = 0;
+         BsiPasswordPolicy bsiPasswordPolicy = bsiPasswordPolicyService.getPolicy();
 
-						if(null != data.getLastChangedPassword()){
+         /* Check if there are failed login attempts to reset */
+         if (null != data.getLastFailedLogin()) {
+            long sinceLastFailure = (System.currentTimeMillis() - data.getLastFailedLogin().getTime())
+                  / MILLISECONDS_PER_MINUTE;
+            if (sinceLastFailure > bsiPasswordPolicy.getAccountLockoutAutoResetTimeout()) {
+               data.setFailedLoginCount(0);
+               data.setLastFailedLogin(null);
+            }
+         }
 
-							expiresIn = bsiPasswordPolicy.getPasswordMaxAge() - DateUtils.getDeltaDays(data.getLastChangedPassword(), new Date());
-						}
+         /* Check if account is locked */
+         if (data.getFailedLoginCount() > bsiPasswordPolicy.getAccountLockoutThreshold()) {
+            authRes.setAllowed(false);
+            authRes.addInfo(new AccountLockedAuthenticateResultInfo(new Date((long) data.getLastFailedLogin().getTime()
+                  + ((long) bsiPasswordPolicy.getAccountLockoutAutoResetTimeout() * (long) MILLISECONDS_PER_MINUTE))));
+            return;
+         }
 
-						if(expiresIn <= 5){
-							authRes.addInfo(new PasswordExpiredAuthenticationResultInfo(user.getUsername(), expiresIn));
-						}
+         if (authRes.isAllowed()) {
+            /* process successful login */
+            data.registerSuccessfulLogin();
 
-						if(expiresIn <= 0){
-							authRes.setAllowed(false);
-						}
-					}
-				}
+            /* Check if password has expired */
+            if (bsiPasswordPolicy.getPasswordMaxAge() > 0) {
+               if (null != user.getPassword()) {
+                  int expiresIn = 0;
 
-				/* Check if password change is enforced */
-				if(data.isEnforcePasswordChange()){
-					authRes.addInfo(new PasswordExpiredAuthenticationResultInfo(user.getUsername(), 0));
-					authRes.setAllowed(false);
-				}
+                  if (null != data.getLastChangedPassword()) {
 
-			}else{
-				/* process failed login */
-				data.registerFailedLogin();
-			}
+                     expiresIn = bsiPasswordPolicy.getPasswordMaxAge()
+                           - DateUtils.getDeltaDays(data.getLastChangedPassword(), new Date());
+                  }
 
+                  if (expiresIn <= 5) {
+                     authRes.addInfo(new PasswordExpiredAuthenticationResultInfo(user.getUsername(), expiresIn));
+                  }
 
-			final long userId = authRes.getUser().getId();
-			Runnable updateUserProperties = trFactory.create(new Runnable() {
+                  if (expiresIn <= 0) {
+                     authRes.setAllowed(false);
+                  }
+               }
+            }
 
-				@Override
-				public void run() {
-					User user = (User) userManagerService.getNodeById(userId);
-					bsiPasswordPolicyService.updateUserMetadata(user, data);
-					userManagerService.merge(user);
+            /* Check if password change is enforced */
+            if (data.isEnforcePasswordChange()) {
+               authRes.addInfo(new PasswordExpiredAuthenticationResultInfo(user.getUsername(), 0));
+               authRes.setAllowed(false);
+            }
 
-				}
-			});
+         } else {
+            /* process failed login */
+            data.registerFailedLogin();
+         }
 
-			dwAsyncService.submit(updateUserProperties);	
-		}
+         final long userId = authRes.getUser().getId();
+         Runnable updateUserProperties = trFactory.create(new Runnable() {
 
-	}
+            @Override
+            public void run() {
+               User user = (User) userManagerService.getNodeById(userId);
+               bsiPasswordPolicyService.updateUserMetadata(user, data);
+               userManagerService.merge(user);
 
+            }
+         });
+
+         dwAsyncService.submit(updateUserProperties);
+      }
+
+   }
 
 }

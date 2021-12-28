@@ -11,10 +11,8 @@ import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class LocaleChangedNotificationHookAdapter implements LocaleChangedNotificationHook {
 
-	@Override
-	public void localeChanged(Locale locale)  {
-	}
-
-
+   @Override
+   public void localeChanged(Locale locale) {
+   }
 
 }

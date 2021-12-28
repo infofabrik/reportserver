@@ -8,10 +8,10 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface AddSelectionFieldMenuItemHook extends Hook {
 
-	public interface MenuNodeProvider{
-		public AbstractNodeDto getNode();
-	}
-	
-	public void addMenuEntries(SingleTreeSelectionField singleTreeSelectionField, Menu menu, MenuNodeProvider callback);
-	
+   public interface MenuNodeProvider {
+      public AbstractNodeDto getNode();
+   }
+
+   public void addMenuEntries(SingleTreeSelectionField singleTreeSelectionField, Menu menu, MenuNodeProvider callback);
+
 }

@@ -4,9 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ReportManagerExportUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(ReportManagerExportUIStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(ReportManagerExportUIStartup.class).asEagerSingleton();
+   }
 
 }

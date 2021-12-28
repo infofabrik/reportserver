@@ -6,10 +6,10 @@ import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 
 public interface I18nToolsRpcServiceAsync {
 
-	void getDecimalSeparator(AsyncCallback<String> callback);
+   void getDecimalSeparator(AsyncCallback<String> callback);
 
-	void setDecimalSeparator(String separatorChar, AsyncCallback<Void> callback);
+   void setDecimalSeparator(String separatorChar, AsyncCallback<Void> callback);
 
-	void getFormatPatterns(AsyncCallback<FormatPatternsDto> callback);
+   void getFormatPatterns(AsyncCallback<FormatPatternsDto> callback);
 
 }

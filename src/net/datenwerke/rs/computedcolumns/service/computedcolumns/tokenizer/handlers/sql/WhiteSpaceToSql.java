@@ -8,15 +8,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class WhiteSpaceToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof WhiteSpaceToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof WhiteSpaceToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		return " ";
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      return " ";
+   }
 
 }

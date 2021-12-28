@@ -27,72 +27,58 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
  *
  */
 @Entity
-@Table(name="DATASOURCE_FOLDER")
+@Table(name = "DATASOURCE_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	DatasourceFolder.class,
-	DatasourceDefinition.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.datasourcemanager.dto",
-	dtoImplementInterfaces=FolderDto.class,
-	typeDescriptionMsg=BaseMessages.class, typeDescriptionKey="folder",
-	icon="folder"
-)
-@InstanceDescription(
-	msgLocation = DatasourceManagerMessages.class,
-	objNameKey = "databaseFolderTypeName",
-	icon = "folder"
-)
+@TreeDBAllowedChildren({ DatasourceFolder.class, DatasourceDefinition.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasourcemanager.dto", dtoImplementInterfaces = FolderDto.class, typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
+@InstanceDescription(msgLocation = DatasourceManagerMessages.class, objNameKey = "databaseFolderTypeName", icon = "folder")
 public class DatasourceFolder extends AbstractDatasourceManagerNode {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3139118358223220435L;
 
-	@ExposeToClient(
-		displayTitle=true
-	)
-	@Column(length = 128)
-	@Title
-	@Field
-	private String name;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Description
-	@Field
-    private String description;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3139118358223220435L;
 
-	public DatasourceFolder(){
-		
-	}
-	
-    public DatasourceFolder(String folder) {
-		setName(folder);
-	}
+   @ExposeToClient(displayTitle = true)
+   @Column(length = 128)
+   @Title
+   @Field
+   private String name;
 
-	public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Description
+   @Field
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public DatasourceFolder() {
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   }
 
-	public String getDescription() {
-		return description;
-	}
-    
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public DatasourceFolder(String folder) {
+      setName(folder);
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
 }

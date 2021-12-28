@@ -21,64 +21,62 @@ import net.datenwerke.eximport.ex.annotations.ExportableField;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 
 @Entity
-@Table(name="FILESEL_PARAM_UP_FILE")
+@Table(name = "FILESEL_PARAM_UP_FILE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.ext.client.parameters.fileselection.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.ext.client.parameters.fileselection.dto")
 public class UploadedParameterFile implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8547958671841889543L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8547958671841889543L;
 
-	
-	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	private byte[] content;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@ExportableField(exportField=false)
-	@Transient 
-	@TransientID
-	private Long oldTransientId;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @Lob
+   @Basic(fetch = FetchType.LAZY)
+   private byte[] content;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-	
-	public byte[] getContent() {
-		return content;
-	}
-	
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
-	
-	public Long getOldTransientId() {
-		return oldTransientId;
-	}
-	
-	public void setOldTransientId(Long oldTransientId) {
-		this.oldTransientId = oldTransientId;
-	}
+   @Version
+   private Long version;
+
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
+
+   @ExportableField(exportField = false)
+   @Transient
+   @TransientID
+   private Long oldTransientId;
+
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public byte[] getContent() {
+      return content;
+   }
+
+   public void setContent(byte[] content) {
+      this.content = content;
+   }
+
+   public Long getOldTransientId() {
+      return oldTransientId;
+   }
+
+   public void setOldTransientId(Long oldTransientId) {
+      this.oldTransientId = oldTransientId;
+   }
 }

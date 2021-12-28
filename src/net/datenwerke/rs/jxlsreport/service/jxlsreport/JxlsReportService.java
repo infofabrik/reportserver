@@ -4,7 +4,6 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile;
 
 public interface JxlsReportService {
 
-	public void remove(JxlsReportFile file);
-
+   public void remove(JxlsReportFile file);
 
 }

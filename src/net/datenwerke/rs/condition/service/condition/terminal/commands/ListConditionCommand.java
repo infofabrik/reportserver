@@ -20,49 +20,44 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 
 public class ListConditionCommand implements ConditionSubCommandHook {
-	
-	public static final String BASE_COMMAND = "list";
-	
-	private final ConditionService conditionService;
 
-	@Inject
-	public ListConditionCommand(
-		ConditionService conditionService,
-		TableModelHelper tableModelHelper
-		){
-		
-		/* store objects */
-		this.conditionService = conditionService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "list";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConditionMessages.class,
-		name = BASE_COMMAND,
-		description = "commandRcondition_sub_list_desc"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		RSTableModel table = new RSTableModel();
-		table.setTableDefinition(new TableDefinition(Arrays.asList(new String[]{"id", "name", "key", "description", "report"})));
-		
-		for(ReportCondition cond : conditionService.getReportConditions())
-			table.addDataRow(new RSStringTableRow(cond.getId().toString(), cond.getName(), cond.getKey(), cond.getDescription(), null != cond.getReport() ? cond.getReport().getId().toString(): "null"));
-		
-		return new CommandResult(table);
-	}
+   private final ConditionService conditionService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public ListConditionCommand(ConditionService conditionService, TableModelHelper tableModelHelper) {
+
+      /* store objects */
+      this.conditionService = conditionService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ConditionMessages.class, name = BASE_COMMAND, description = "commandRcondition_sub_list_desc")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      RSTableModel table = new RSTableModel();
+      table.setTableDefinition(
+            new TableDefinition(Arrays.asList(new String[] { "id", "name", "key", "description", "report" })));
+
+      for (ReportCondition cond : conditionService.getReportConditions())
+         table.addDataRow(new RSStringTableRow(cond.getId().toString(), cond.getName(), cond.getKey(),
+               cond.getDescription(), null != cond.getReport() ? cond.getReport().getId().toString() : "null"));
+
+      return new CommandResult(table);
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

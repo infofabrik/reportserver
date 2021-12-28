@@ -8,6 +8,6 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface AdaptBirtRenderOptionsHook extends Hook {
 
-	public RenderOption adapt(RenderOption options);
+   public RenderOption adapt(RenderOption options);
 
 }

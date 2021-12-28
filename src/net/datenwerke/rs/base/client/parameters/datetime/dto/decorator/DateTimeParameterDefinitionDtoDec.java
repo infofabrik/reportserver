@@ -8,12 +8,10 @@ import net.datenwerke.rs.base.client.parameters.datetime.dto.DateTimeParameterDe
  */
 public class DateTimeParameterDefinitionDtoDec extends DateTimeParameterDefinitionDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public DateTimeParameterDefinitionDtoDec() {
-		super();
-	}
-
+   public DateTimeParameterDefinitionDtoDec() {
+      super();
+   }
 
 }

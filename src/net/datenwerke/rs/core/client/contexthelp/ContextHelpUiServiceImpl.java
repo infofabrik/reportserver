@@ -41,7 +41,7 @@ public class ContextHelpUiServiceImpl implements ContextHelpUiService {
    @Override
    public ToolButton createToolButton(final ContextHelpInfo contextHelpInfo) {
       ToolButton toolbtn = new ToolButton(ToolButton.QUESTION);
-      toolbtn.addSelectHandler(event ->  displayContextHelp(contextHelpInfo));
+      toolbtn.addSelectHandler(event -> displayContextHelp(contextHelpInfo));
       return toolbtn;
    }
 

@@ -17,22 +17,17 @@ import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.posomap.DatasinkFolderDto2PosoMap;
 
+public class FolderTreeProvider implements Provider<ManagerHelperTree> {
 
-public class FolderTreeProvider implements Provider<ManagerHelperTree>{
-   
    private final TreeDBUIService treeDBUIService;
    private final DatasinkTreeLoaderDao datasinkTreeLoader;
    private final DatasinkTreeManagerDao datasinkTreeManager;
    private final ManagerHelperTreeFactory treeFactory;
-   
+
    @Inject
-   public FolderTreeProvider(
-      TreeDBUIService treeDBUIService, 
-      DatasinkTreeLoaderDao datasinkTreeLoader,
-      DatasinkTreeManagerDao datasinkTreeManager,
-      ManagerHelperTreeFactory treeFactory
-      ){
-      
+   public FolderTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
+
       this.treeDBUIService = treeDBUIService;
       this.datasinkTreeLoader = datasinkTreeLoader;
       this.datasinkTreeManager = datasinkTreeManager;
@@ -44,10 +39,12 @@ public class FolderTreeProvider implements Provider<ManagerHelperTree>{
       /* store */
       List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
       filters.add(new DatasinkFolderDto2PosoMap());
-      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader, false, filters);
-      
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
+            false, filters);
+
       /* build tree */
-      final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader, datasinkTreeManager);
+      final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,
+            datasinkTreeManager);
       tree.configureIconProvider();
 
       return tree;

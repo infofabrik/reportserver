@@ -15,44 +15,34 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-
 public class ConfigCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "config";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ConfigCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "config";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConfigMessages.class,
-		name = BASE_COMMAND,
-		description = "commandConfig_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<ConfigSubCommandHook> list =  hookHandler.getHookers(ConfigSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public ConfigCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandConfig_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<ConfigSubCommandHook> list = hookHandler.getHookers(ConfigSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

@@ -29,127 +29,91 @@ import net.datenwerke.security.service.security.rights.Write;
  *
  */
 @Singleton
-public class GlobalConstantsRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements GlobalConstantsRpcService {
+public class GlobalConstantsRpcServiceImpl extends SecuredRemoteServiceServlet implements GlobalConstantsRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7354627066364356935L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7354627066364356935L;
 
-	private final DtoService dtoService;
-	private final GlobalConstantsService globalConstantsService;
-	
-	@Inject
-	public GlobalConstantsRpcServiceImpl(
-		DtoService dtoService,
-		GlobalConstantsService globalConstantsService
-		){
-		
-		this.dtoService = dtoService;
-		this.globalConstantsService = globalConstantsService;
-	}
+   private final DtoService dtoService;
+   private final GlobalConstantsService globalConstantsService;
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = {
-				@GenericTargetVerification(
-					target=GlobalConstantsAdminViewSecurityTarget.class,
-					verify=@RightsVerification(rights=Read.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	public List<GlobalConstantDto> loadGlobalConstants() {
-		List<GlobalConstantDto> constantDtos = new ArrayList<GlobalConstantDto>();
-		
-		for(GlobalConstant constant : globalConstantsService.getAllGlobalConstants())
-			constantDtos.add((GlobalConstantDto) dtoService.createDto(constant));
-		
-		Collections.sort(constantDtos, new Comparator<GlobalConstantDto>(){
+   @Inject
+   public GlobalConstantsRpcServiceImpl(DtoService dtoService, GlobalConstantsService globalConstantsService) {
 
-			@Override
-			public int compare(GlobalConstantDto o1,
-					GlobalConstantDto o2) {
-				if(null == o1.getName())
-					return 0;
-				
-				return o1.getName().compareTo(o2.getName());
-			}
-			
-		});
-		
-		return constantDtos;
-	}
+      this.dtoService = dtoService;
+      this.globalConstantsService = globalConstantsService;
+   }
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = {
-				@GenericTargetVerification(
-					target=GlobalConstantsAdminViewSecurityTarget.class,
-					verify=@RightsVerification(rights=Write.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	public GlobalConstantDto addNewConstant() {
-		GlobalConstant constant = new GlobalConstant();
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = GlobalConstantsAdminViewSecurityTarget.class, verify = @RightsVerification(rights = Read.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public List<GlobalConstantDto> loadGlobalConstants() {
+      List<GlobalConstantDto> constantDtos = new ArrayList<GlobalConstantDto>();
 
-		globalConstantsService.persist(constant);
-		
-		return (GlobalConstantDto) dtoService.createDto(constant);
-	}
+      for (GlobalConstant constant : globalConstantsService.getAllGlobalConstants())
+         constantDtos.add((GlobalConstantDto) dtoService.createDto(constant));
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = {
-				@GenericTargetVerification(
-					target=GlobalConstantsAdminViewSecurityTarget.class,
-					verify=@RightsVerification(rights=Write.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	public void removeAllConstants() {
-		globalConstantsService.removeAllConstants();
-	}
+      Collections.sort(constantDtos, new Comparator<GlobalConstantDto>() {
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = {
-				@GenericTargetVerification(
-					target=GlobalConstantsAdminViewSecurityTarget.class,
-					verify=@RightsVerification(rights=Write.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	public void removeConstants(Collection<GlobalConstantDto> constantDtos) {
-		for(GlobalConstantDto constantDto : constantDtos ){
-			GlobalConstant constant = (GlobalConstant) dtoService.loadPoso(constantDto);
-			globalConstantsService.remove(constant);
-		}
-	}
+         @Override
+         public int compare(GlobalConstantDto o1, GlobalConstantDto o2) {
+            if (null == o1.getName())
+               return 0;
 
-	@Override
-	@SecurityChecked(
-		genericTargetVerification = {
-			@GenericTargetVerification(
-				target=GlobalConstantsAdminViewSecurityTarget.class,
-				verify=@RightsVerification(rights=Write.class)
-			)
-		}
-	)
-	@Transactional(rollbackOn={Exception.class})
-	public GlobalConstantDto updateConstant(
-			GlobalConstantDto constantDto) throws ExpectedException {
-		GlobalConstant constant = (GlobalConstant) dtoService.loadPoso(constantDto);
-		
-		dtoService.mergePoso(constantDto, constant);
-		
-		globalConstantsService.merge(constant);
-		
-		return (GlobalConstantDto) dtoService.createDto(constant);
-	}
-	
+            return o1.getName().compareTo(o2.getName());
+         }
+
+      });
+
+      return constantDtos;
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = GlobalConstantsAdminViewSecurityTarget.class, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public GlobalConstantDto addNewConstant() {
+      GlobalConstant constant = new GlobalConstant();
+
+      globalConstantsService.persist(constant);
+
+      return (GlobalConstantDto) dtoService.createDto(constant);
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = GlobalConstantsAdminViewSecurityTarget.class, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void removeAllConstants() {
+      globalConstantsService.removeAllConstants();
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = GlobalConstantsAdminViewSecurityTarget.class, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void removeConstants(Collection<GlobalConstantDto> constantDtos) {
+      for (GlobalConstantDto constantDto : constantDtos) {
+         GlobalConstant constant = (GlobalConstant) dtoService.loadPoso(constantDto);
+         globalConstantsService.remove(constant);
+      }
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = GlobalConstantsAdminViewSecurityTarget.class, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public GlobalConstantDto updateConstant(GlobalConstantDto constantDto) throws ExpectedException {
+      GlobalConstant constant = (GlobalConstant) dtoService.loadPoso(constantDto);
+
+      dtoService.mergePoso(constantDto, constant);
+
+      globalConstantsService.merge(constant);
+
+      return (GlobalConstantDto) dtoService.createDto(constant);
+   }
+
 }

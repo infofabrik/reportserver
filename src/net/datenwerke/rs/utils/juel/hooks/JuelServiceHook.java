@@ -10,13 +10,12 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface JuelServiceHook extends Hook {
 
-	void adaptContext(SimpleContext context);
+   void adaptContext(SimpleContext context);
 
-	void propertiesForFactoryCreation(Properties properties);
+   void propertiesForFactoryCreation(Properties properties);
 
-	void adaptFactory(ExpressionFactory factory);
+   void adaptFactory(ExpressionFactory factory);
 
-	void aboutToEvaluate(ExpressionFactory factory, ELContext context,
-			String template);
+   void aboutToEvaluate(ExpressionFactory factory, ELContext context, String template);
 
 }

@@ -4,30 +4,28 @@ import com.google.gwt.user.client.Window;
 
 import net.datenwerke.gf.client.history.HistoryLocation;
 
-public abstract class DispatcherTakeOverHookImpl implements
-		DispatcherTakeOverHook {
+public abstract class DispatcherTakeOverHookImpl implements DispatcherTakeOverHook {
 
-	@Override
-	public boolean isActive() {
-		HistoryLocation hLocation = getHistoryLocation();
-		return getLocation().equals(hLocation.getLocation()) && checkParameters(hLocation);
-	}
-	
-	protected boolean checkParameters(HistoryLocation hLocation) {
-		return true;
-	}
+   @Override
+   public boolean isActive() {
+      HistoryLocation hLocation = getHistoryLocation();
+      return getLocation().equals(hLocation.getLocation()) && checkParameters(hLocation);
+   }
 
-	public HistoryLocation getHistoryLocation(){
-		String hash = Window.Location.getHash();
-		if(null == hash || ! hash.startsWith("#"))
-			return new HistoryLocation();
-		
-		HistoryLocation location = HistoryLocation.fromString(hash.substring(1));
+   protected boolean checkParameters(HistoryLocation hLocation) {
+      return true;
+   }
 
-		return location;
-	}
+   public HistoryLocation getHistoryLocation() {
+      String hash = Window.Location.getHash();
+      if (null == hash || !hash.startsWith("#"))
+         return new HistoryLocation();
 
-	public abstract String getLocation();
-	
+      HistoryLocation location = HistoryLocation.fromString(hash.substring(1));
+
+      return location;
+   }
+
+   public abstract String getLocation();
 
 }

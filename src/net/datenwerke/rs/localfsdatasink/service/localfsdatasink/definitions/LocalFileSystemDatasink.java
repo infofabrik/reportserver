@@ -15,7 +15,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.locale.LocalFileSystemMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
-
 /**
  * Used to define local file system datasinks that can be used in ReportServer
  * to send reports to a given local file system.
@@ -23,15 +22,8 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 @Entity
 @Table(name = "LOCALFILESYSTEM_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto",
-      icon = "upload"
-      )
-@InstanceDescription(
-      msgLocation = LocalFileSystemMessages.class,
-      objNameKey = "localFileSystemDatasinkTypeName",
-      icon = "server"
-      )
+@GenerateDto(dtoPackage = "net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto", icon = "upload")
+@InstanceDescription(msgLocation = LocalFileSystemMessages.class, objNameKey = "localFileSystemDatasinkTypeName", icon = "server")
 @Indexed
 public class LocalFileSystemDatasink extends DatasinkDefinition implements FolderedDatasink {
    /**
@@ -48,7 +40,7 @@ public class LocalFileSystemDatasink extends DatasinkDefinition implements Folde
    @Field
    @Column(length = 1024)
    private String folder = "./";
-   
+
    public String getPath() {
       return path;
    }

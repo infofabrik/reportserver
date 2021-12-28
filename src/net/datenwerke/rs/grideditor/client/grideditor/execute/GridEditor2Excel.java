@@ -6,9 +6,9 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto;
 
 public class GridEditor2Excel extends Export2Excel {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof GridEditorReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof GridEditorReportDto;
+   }
 
 }

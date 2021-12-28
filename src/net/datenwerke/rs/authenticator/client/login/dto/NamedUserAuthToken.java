@@ -4,6 +4,6 @@ import net.datenwerke.security.client.login.AuthToken;
 
 public interface NamedUserAuthToken extends AuthToken {
 
-	public String getUsername();
-	
+   public String getUsername();
+
 }

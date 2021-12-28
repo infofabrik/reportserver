@@ -17,39 +17,37 @@ import net.datenwerke.rs.core.client.reportmanager.ReportManagerUIModule;
 import net.datenwerke.rs.core.client.reportmanager.dto.posomap.ReportFolderDto2PosoMap;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportManagerNodeDto;
 
-public class FolderTreeProvider implements Provider<ManagerHelperTree>{
+public class FolderTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final TreeDBUIService treeDBUIService;
-	
-	private final ReportManagerTreeLoaderDao reportLoaderDao;
-	private final ReportManagerTreeManagerDao reportManagerDao;
-	
-	private final ManagerHelperTreeFactory treeFactory;
-	
-	@Inject
-	public FolderTreeProvider(
-		TreeDBUIService treeDBUIService,	
-		ReportManagerTreeLoaderDao reportLoaderDao,
-		ReportManagerTreeManagerDao reportManagerDao,
-		ManagerHelperTreeFactory treeFactory
-		){
-		
-		this.treeDBUIService = treeDBUIService;
-		this.reportLoaderDao = reportLoaderDao;
-		this.reportManagerDao = reportManagerDao;
-		this.treeFactory = treeFactory;
-	}
+   private final TreeDBUIService treeDBUIService;
 
-	public ManagerHelperTree get() {
-		/* store */
-		List<Dto2PosoMapper>  filters = new ArrayList<Dto2PosoMapper>();
-		filters.add(new ReportFolderDto2PosoMap());
-		EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractReportManagerNodeDto.class, reportLoaderDao, false, filters);
-		
-		/* build tree */
-		final ManagerHelperTree tree = treeFactory.create(ReportManagerUIModule.class, store, reportLoaderDao, reportManagerDao);
-		tree.configureIconProvider();
-	
-		return tree;
-	}
+   private final ReportManagerTreeLoaderDao reportLoaderDao;
+   private final ReportManagerTreeManagerDao reportManagerDao;
+
+   private final ManagerHelperTreeFactory treeFactory;
+
+   @Inject
+   public FolderTreeProvider(TreeDBUIService treeDBUIService, ReportManagerTreeLoaderDao reportLoaderDao,
+         ReportManagerTreeManagerDao reportManagerDao, ManagerHelperTreeFactory treeFactory) {
+
+      this.treeDBUIService = treeDBUIService;
+      this.reportLoaderDao = reportLoaderDao;
+      this.reportManagerDao = reportManagerDao;
+      this.treeFactory = treeFactory;
+   }
+
+   public ManagerHelperTree get() {
+      /* store */
+      List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
+      filters.add(new ReportFolderDto2PosoMap());
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractReportManagerNodeDto.class, reportLoaderDao,
+            false, filters);
+
+      /* build tree */
+      final ManagerHelperTree tree = treeFactory.create(ReportManagerUIModule.class, store, reportLoaderDao,
+            reportManagerDao);
+      tree.configureIconProvider();
+
+      return tree;
+   }
 }

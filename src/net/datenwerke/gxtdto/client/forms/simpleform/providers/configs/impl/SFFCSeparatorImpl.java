@@ -6,37 +6,37 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCSepar
 
 public class SFFCSeparatorImpl implements SFFCSeparator {
 
-	private final TYPE type;
-	private final String text;
-	private final MarginData layoutData;
-	
-	public SFFCSeparatorImpl(TYPE type){
-		this(type, null, null);
-	}
-	
-	public SFFCSeparatorImpl(TYPE type, String text){
-		this(type, text, null);
-	}
-	
-	public SFFCSeparatorImpl(TYPE type, String text, MarginData layoutData) {
-		this.type = type;
-		this.text = text;
-		this.layoutData = layoutData;
-	}
+   private final TYPE type;
+   private final String text;
+   private final MarginData layoutData;
 
-	@Override
-	public MarginData getMargins() {
-		return layoutData;
-	}
+   public SFFCSeparatorImpl(TYPE type) {
+      this(type, null, null);
+   }
 
-	@Override
-	public String getText() {
-		return text;
-	}
+   public SFFCSeparatorImpl(TYPE type, String text) {
+      this(type, text, null);
+   }
 
-	@Override
-	public TYPE getType() {
-		return type;
-	}
+   public SFFCSeparatorImpl(TYPE type, String text, MarginData layoutData) {
+      this.type = type;
+      this.text = text;
+      this.layoutData = layoutData;
+   }
+
+   @Override
+   public MarginData getMargins() {
+      return layoutData;
+   }
+
+   @Override
+   public String getText() {
+      return text;
+   }
+
+   @Override
+   public TYPE getType() {
+      return type;
+   }
 
 }

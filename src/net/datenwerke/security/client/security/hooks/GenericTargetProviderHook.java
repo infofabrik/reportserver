@@ -5,8 +5,8 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 
 public class GenericTargetProviderHook extends ObjectHook<GenericTargetIdentifier> {
 
-	public GenericTargetProviderHook(GenericTargetIdentifier object) {
-		super(object);
-	}
+   public GenericTargetProviderHook(GenericTargetIdentifier object) {
+      super(object);
+   }
 
 }

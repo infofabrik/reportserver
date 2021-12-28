@@ -10,24 +10,32 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ReportTypeConfigHook extends Hook {
 
-	Class<? extends ReportDto> getReportClass();
-	Class<? extends ReportDto> getReportVariantClass();
-	ReportDto instantiateReport();
-	ReportDto instantiateReportVariant();
-	String getReportName();
-	
-	ImageResource getReportIcon();
-	ImageResource getReportVariantIcon();
-	ImageResource getReportIconLarge();
-	ImageResource getReportVariantIconLarge();
-	ImageResource getReportLinkIcon();
-	ImageResource getReportLinkIconLarge();
-	boolean consumes(ReportDto report);
-	Collection<? extends MainPanelView> getAdminViews(ReportDto report);
-	
-	boolean isAvailable();
-	
-	
+   Class<? extends ReportDto> getReportClass();
 
-	
+   Class<? extends ReportDto> getReportVariantClass();
+
+   ReportDto instantiateReport();
+
+   ReportDto instantiateReportVariant();
+
+   String getReportName();
+
+   ImageResource getReportIcon();
+
+   ImageResource getReportVariantIcon();
+
+   ImageResource getReportIconLarge();
+
+   ImageResource getReportVariantIconLarge();
+
+   ImageResource getReportLinkIcon();
+
+   ImageResource getReportLinkIconLarge();
+
+   boolean consumes(ReportDto report);
+
+   Collection<? extends MainPanelView> getAdminViews(ReportDto report);
+
+   boolean isAvailable();
+
 }

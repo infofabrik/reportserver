@@ -8,10 +8,9 @@ import net.datenwerke.treedb.client.treedb.TreeDbLoaderDao;
 
 public class TsDiskTreeLoaderDao extends TreeDbLoaderDao {
 
-	@Inject
-	public TsDiskTreeLoaderDao(
-			TsDiskRpcServiceAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
-		super(treeLoader, treeDbFtoConverter);
-	}
+   @Inject
+   public TsDiskTreeLoaderDao(TsDiskRpcServiceAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeLoader, treeDbFtoConverter);
+   }
 
 }

@@ -11,33 +11,30 @@ import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 
 public class I18nToolsUiStartup {
 
-	@Inject
-	public I18nToolsUiStartup(
-			final I18nToolsDao dao,
-			final I18nToolsUiServiceImpl service,
-			final WaitOnEventUIService waitOnEventService, 
-			final FormatUiHelper formatUiHelper
-			){
+   @Inject
+   public I18nToolsUiStartup(final I18nToolsDao dao, final I18nToolsUiServiceImpl service,
+         final WaitOnEventUIService waitOnEventService, final FormatUiHelper formatUiHelper) {
 
-		/* load generic rights after login */
-		waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, new SynchronousCallbackOnEventTrigger() {
-			@Override
-			public void execute(final WaitOnEventTicket ticket) {
-				dao.getDecimalSeparator(new RsAsyncCallback<String>(){
-					@Override
-					public void onSuccess(String result) {
-						service.setUserDecimalSeparator(result);
-					}
-				});
+      /* load generic rights after login */
+      waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN,
+            new SynchronousCallbackOnEventTrigger() {
+               @Override
+               public void execute(final WaitOnEventTicket ticket) {
+                  dao.getDecimalSeparator(new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        service.setUserDecimalSeparator(result);
+                     }
+                  });
 
-				dao.getFormatPatterns(new RsAsyncCallback<FormatPatternsDto>(){
-					public void onSuccess(FormatPatternsDto result) {
-						formatUiHelper.setFormatPatterns(result);
-					}
-				});
+                  dao.getFormatPatterns(new RsAsyncCallback<FormatPatternsDto>() {
+                     public void onSuccess(FormatPatternsDto result) {
+                        formatUiHelper.setFormatPatterns(result);
+                     }
+                  });
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 }

@@ -7,5 +7,5 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 @ImplementedBy(NlpTriggerServiceImpl.class)
 public interface NlpTriggerService {
 
-	AbstractTrigger parseExpression(String expression);
+   AbstractTrigger parseExpression(String expression);
 }

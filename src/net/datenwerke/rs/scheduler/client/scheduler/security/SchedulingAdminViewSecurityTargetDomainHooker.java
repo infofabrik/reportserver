@@ -7,24 +7,22 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
-public class SchedulingAdminViewSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.CLOCK_O.toImageResource();
-	}
+public class SchedulingAdminViewSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return SchedulerMessages.INSTANCE.schedulerAdminHeading();
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return SchedulerMessages.INSTANCE.schedulerAdminDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.CLOCK_O.toImageResource();
+   }
 
+   public String genericSecurityViewDomainHook_getName() {
+      return SchedulerMessages.INSTANCE.schedulerAdminHeading();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new SchedulingAdminViewGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getDescription() {
+      return SchedulerMessages.INSTANCE.schedulerAdminDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new SchedulingAdminViewGenericTargetIdentifier();
+   }
 
 }

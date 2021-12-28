@@ -3,38 +3,38 @@ package net.datenwerke.rs.birt.client.reportengines.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface BirtMessages extends Messages{
+public interface BirtMessages extends Messages {
 
-	public final static BirtMessages INSTANCE = GWT.create(BirtMessages.class);
-	
-	String reportTypeName();
+   public final static BirtMessages INSTANCE = GWT.create(BirtMessages.class);
 
-	String editBirtReport();
+   String reportTypeName();
 
-	String rptdesign();
+   String editBirtReport();
 
-	String fileName();
+   String rptdesign();
 
-	String birtDownloadToolbarHeading();
+   String fileName();
 
-	String birtDownloadToolbarButtonText();
+   String birtDownloadToolbarHeading();
 
-	String birtReportDatasourceTypeName();
+   String birtDownloadToolbarButtonText();
 
-	String parameterProposalBtn();
+   String birtReportDatasourceTypeName();
 
-	String noProposalsFoundTitle();
+   String parameterProposalBtn();
 
-	String noProposalsFoundText();
+   String noProposalsFoundTitle();
 
-	String datasourceTarget();
+   String noProposalsFoundText();
 
-	String datasourceReport();
+   String datasourceTarget();
 
-	String datasourceType();
+   String datasourceReport();
 
-	String queryWrapper();
+   String datasourceType();
 
-	String fileMustBeRptDesign();
+   String queryWrapper();
+
+   String fileMustBeRptDesign();
 
 }

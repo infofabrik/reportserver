@@ -23,72 +23,69 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 
 @Singleton
-public class ComputedColumnsRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements ComputedColumnsRpcService {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3404036079518006885L;
+public class ComputedColumnsRpcServiceImpl extends SecuredRemoteServiceServlet implements ComputedColumnsRpcService {
 
-	private final DtoService dtoService;
-	private final ReportDtoService reportDtoService;
-	private final SimpleDataSupplier dataSupplyer;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -3404036079518006885L;
 
-	private final SecurityService securityService;
-	
-	@Inject
-	public ComputedColumnsRpcServiceImpl(
-			DtoService dtoService,
-			ReportDtoService reportDtoService,
-			SecurityService securityService,
-			SimpleDataSupplier dataSupplyer
-		) {
+   private final DtoService dtoService;
+   private final ReportDtoService reportDtoService;
+   private final SimpleDataSupplier dataSupplyer;
 
-		/* store objects */
-		this.dtoService = dtoService;
-		this.reportDtoService = reportDtoService;
-		this.securityService = securityService;
-		this.dataSupplyer = dataSupplyer;
-	}
+   private final SecurityService securityService;
 
+   @Inject
+   public ComputedColumnsRpcServiceImpl(DtoService dtoService, ReportDtoService reportDtoService,
+         SecurityService securityService, SimpleDataSupplier dataSupplyer) {
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public Integer getColumnType(@Named("node")TableReportDto reportDto, ComputedColumnDto oldColumn, ComputedColumnDto newColumn) throws ServerCallFailedException {
-		return doGetColumnType(reportDto, oldColumn, newColumn);
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public Integer getColumnType(@Named("node")TableReportDto reportDto, ComputedColumnDto column) throws ServerCallFailedException {
-		return doGetColumnType(reportDto, null, column);
-	}
-	
-	private Integer doGetColumnType(@Named("node")TableReportDto reportDto, ComputedColumnDto oldColumn, ComputedColumnDto newColumn) throws ServerCallFailedException {
-		/* get reference report */
-		TableReport referenceReport = (TableReport) reportDtoService.getReferenceReport(reportDto);
-		
-		/* check rights */
-		securityService.assertRights(referenceReport, Execute.class);
-		
-		/* create temp variant (without column) */
-		if (null != oldColumn)
-			reportDto.getAdditionalColumns().remove(oldColumn);
-		reportDto.getColumns().clear();
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		referenceReport = (TableReport) referenceReport.createTemporaryVariant(adjustedReport);
-		
-		ComputedColumn computedColumn = (ComputedColumn) dtoService.createPoso(newColumn);
-		ColumnReference reference = new ColumnReference();
-		reference.setReference(computedColumn);
-		
-		try {
-			TableDefinition definition = dataSupplyer.getInfo(referenceReport, reference);
-			return definition.getSqlColumnTypes().get(definition.size() - 1);
-		} catch (Exception e) {
-			throw new ExpectedException(e);
-		}
-	}
+      /* store objects */
+      this.dtoService = dtoService;
+      this.reportDtoService = reportDtoService;
+      this.securityService = securityService;
+      this.dataSupplyer = dataSupplyer;
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public Integer getColumnType(@Named("node") TableReportDto reportDto, ComputedColumnDto oldColumn,
+         ComputedColumnDto newColumn) throws ServerCallFailedException {
+      return doGetColumnType(reportDto, oldColumn, newColumn);
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public Integer getColumnType(@Named("node") TableReportDto reportDto, ComputedColumnDto column)
+         throws ServerCallFailedException {
+      return doGetColumnType(reportDto, null, column);
+   }
+
+   private Integer doGetColumnType(@Named("node") TableReportDto reportDto, ComputedColumnDto oldColumn,
+         ComputedColumnDto newColumn) throws ServerCallFailedException {
+      /* get reference report */
+      TableReport referenceReport = (TableReport) reportDtoService.getReferenceReport(reportDto);
+
+      /* check rights */
+      securityService.assertRights(referenceReport, Execute.class);
+
+      /* create temp variant (without column) */
+      if (null != oldColumn)
+         reportDto.getAdditionalColumns().remove(oldColumn);
+      reportDto.getColumns().clear();
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      referenceReport = (TableReport) referenceReport.createTemporaryVariant(adjustedReport);
+
+      ComputedColumn computedColumn = (ComputedColumn) dtoService.createPoso(newColumn);
+      ColumnReference reference = new ColumnReference();
+      reference.setReference(computedColumn);
+
+      try {
+         TableDefinition definition = dataSupplyer.getInfo(referenceReport, reference);
+         return definition.getSqlColumnTypes().get(definition.size() - 1);
+      } catch (Exception e) {
+         throw new ExpectedException(e);
+      }
+   }
 
 }

@@ -53,304 +53,319 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.fileselector.Te
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 @Singleton
-public class FileSelectionParameterConfigurator extends ParameterConfiguratorImpl<FileSelectionParameterDefinitionDto, FileSelectionParameterInstanceDto> {
+public class FileSelectionParameterConfigurator
+      extends ParameterConfiguratorImpl<FileSelectionParameterDefinitionDto, FileSelectionParameterInstanceDto> {
 
-	private static final String FILE_TYPE = "fileselectionparameter_selectiontype";
-	
-	private final Provider<FileSelectionWidget> selectionWidgetProvider;
-	private final Provider<FileServerFileSelectorSource> fileServerSourceProvider;
-	
-	@Inject
-	public FileSelectionParameterConfigurator(
-			Provider<FileSelectionWidget> fileSelectionWidgetProvider,
-			Provider<FileServerFileSelectorSource> fileServerSourceProvider) {
-		this.selectionWidgetProvider = fileSelectionWidgetProvider;
-		this.fileServerSourceProvider = fileServerSourceProvider;
-	}
+   private static final String FILE_TYPE = "fileselectionparameter_selectiontype";
 
-	@Override
-	public Widget getEditComponentForDefinition(FileSelectionParameterDefinitionDto definition, ReportDto report) {
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.beginRow(1,-1);
-		form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.width(), BaseMessages.INSTANCE.width());
-		form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.height(), BaseMessages.INSTANCE.height());
-		form.endRow();
-		
-		form.setLabelAlign(LabelAlign.LEFT);
-		form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowFileUpload(), RsMessages.INSTANCE.enableFileUpload());
-		form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowTeamSpaceSelection(), RsMessages.INSTANCE.enableTeamSpaceSelection());
-		form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowFileServerSelection(), RsMessages.INSTANCE.enableFileServerSelection());
-		
-		
-		form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.minNumberOfFiles(), RsMessages.INSTANCE.minNumberOfFiles());
-		form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.maxNumberOfFiles(), RsMessages.INSTANCE.maxNumberOfFiles());
-		
-		form.setLabelAlign(LabelAlign.TOP);
-		form.addField(String.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowedFileExtensions(), RsMessages.INSTANCE.allowedFileExtensions());
-		
-		form.setFieldWidth(0.5);
-		form.addField(String.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.fileSizeString(), RsMessages.INSTANCE.maximalFileSize());
-		form.setFieldWidth(1);
-		
-		form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowDownload(), RsMessages.INSTANCE.enableDownload());
-				
+   private final Provider<FileSelectionWidget> selectionWidgetProvider;
+   private final Provider<FileServerFileSelectorSource> fileServerSourceProvider;
+
+   @Inject
+   public FileSelectionParameterConfigurator(Provider<FileSelectionWidget> fileSelectionWidgetProvider,
+         Provider<FileServerFileSelectorSource> fileServerSourceProvider) {
+      this.selectionWidgetProvider = fileSelectionWidgetProvider;
+      this.fileServerSourceProvider = fileServerSourceProvider;
+   }
+
+   @Override
+   public Widget getEditComponentForDefinition(FileSelectionParameterDefinitionDto definition, ReportDto report) {
+      final SimpleForm form = SimpleForm.getInlineInstance();
+
+      form.beginRow(1, -1);
+      form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.width(),
+            BaseMessages.INSTANCE.width());
+      form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.height(),
+            BaseMessages.INSTANCE.height());
+      form.endRow();
+
+      form.setLabelAlign(LabelAlign.LEFT);
+      form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowFileUpload(),
+            RsMessages.INSTANCE.enableFileUpload());
+      form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowTeamSpaceSelection(),
+            RsMessages.INSTANCE.enableTeamSpaceSelection());
+      form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowFileServerSelection(),
+            RsMessages.INSTANCE.enableFileServerSelection());
+
+      form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.minNumberOfFiles(),
+            RsMessages.INSTANCE.minNumberOfFiles());
+      form.addField(Integer.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.maxNumberOfFiles(),
+            RsMessages.INSTANCE.maxNumberOfFiles());
+
+      form.setLabelAlign(LabelAlign.TOP);
+      form.addField(String.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowedFileExtensions(),
+            RsMessages.INSTANCE.allowedFileExtensions());
+
+      form.setFieldWidth(0.5);
+      form.addField(String.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.fileSizeString(),
+            RsMessages.INSTANCE.maximalFileSize());
+      form.setFieldWidth(1);
+
+      form.addField(Boolean.class, FileSelectionParameterDefinitionDtoPA.INSTANCE.allowDownload(),
+            RsMessages.INSTANCE.enableDownload());
+
 //		form.addCondition(modeKey, radioCheckCond, new ShowHideFieldAction(boxPackColSizeKey));
-		
-		/* bind definition */
-		form.bind(definition);
-		
-		return form;
-	}
 
-	@Override
-	public Widget doGetEditComponentForInstance(final FileSelectionParameterInstanceDto instance, Collection<ParameterInstanceDto> relevantInstances, final FileSelectionParameterDefinitionDto definition, boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
-		final FileSelectionWidget selectionWidget = selectionWidgetProvider.get();
-		selectionWidget.setWidth(definition.getWidth());
-		selectionWidget.setGridHeight(definition.getHeight());
-		
-		Integer minFiles = definition.getMinNumberOfFiles();
-		Integer maxFiles = definition.getMaxNumberOfFiles();
-		if(null != minFiles)
-			selectionWidget.setMinFiles(minFiles);
-		if(null != maxFiles)
-			selectionWidget.setMaxFiles(maxFiles);
-		
-		/* configure uploads */
-		if(definition.isAllowFileUpload()){
-			FileUploadSource uploadSource = new FileUploadSource();
-			uploadSource.setUploadFilter(new FileUploadFilter() {
-				@Override
-				public String doProcess(String name, long size, String base64) {
-					if(size > 0 && definition.getFileSize() > 0 && definition.getFileSize() < size)
-						return FileSelectionParameterMessages.INSTANCE.maxFileSizeExceeded(definition.getFileSizeString());
-					
-					String extensions = definition.getAllowedFileExtensions();
-					if(null != extensions && ! "".equals(extensions.trim())){
-						for(String ext : extensions.split(","))
-							if(name.endsWith(ext.trim()))
-								return null;
-						return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
-					}
+      /* bind definition */
+      form.bind(definition);
 
-					return null;
-				}
-			});
-			
-			selectionWidget.addSource(uploadSource);
-		}
-		
-		/* configure teamspace */
-		if(definition.isAllowTeamSpaceSelection()){
-			TeamSpaceFileSelectorSource tsSource = new TeamSpaceFileSelectorSource();
-			selectionWidget.addSource(tsSource);
-			final String extensions = definition.getAllowedFileExtensions();
-			if(null != extensions && ! "".equals(extensions.trim())){
-				tsSource.setSelectionFilter(new SelectionFilter() {
-					@Override
-					public String allowSelectionOf(AbstractNodeDto node) {
-						if(! (node instanceof TsDiskGeneralReferenceDto))
-							return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
-						String name = ((TsDiskGeneralReferenceDto)node).getName();
-						for(String ext : extensions.split(","))
-							if(null != name && name.endsWith(ext.trim()))
-								return null;
-						return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
-					}
-				});
-			}
-		}
-		
-		/* configure file selection */
-		if(definition.isAllowFileServerSelection()){
-			FileServerFileSelectorSource fsSource = fileServerSourceProvider.get();
-			selectionWidget.addSource(fsSource);
-			final String extensions = definition.getAllowedFileExtensions();
-			if(null != extensions && ! "".equals(extensions.trim())){
-				fsSource.setSelectionFilter(new SelectionFilter() {
-					@Override
-					public String allowSelectionOf(AbstractNodeDto node) {
-						if(! (node instanceof FileServerFileDto))
-							return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
-						String name = ((FileServerFileDto)node).getName();
-						for(String ext : extensions.split(","))
-							if(null != name && name.endsWith(ext.trim()))
-								return null;
-						return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
-					}
-				});
-				
-			}
-		}
-		
-		/* own source */
-		selectionWidget.addSource(new FileSelectorSourceImpl() {
-			@Override
-			public boolean consumes(SelectedFileWrapper value) {
-				return null != value && FILE_TYPE.equals(value.getType());
-			}
-			@Override
-			public boolean isDownloadEnabled(SelectedFileWrapper item) {
-				if(! definition.isAllowDownload())
-					return false;
-				
-				SelectedParameterFileDto file = (SelectedParameterFileDto) item.getOriginalDto();
-				if(null != file.getTeamSpaceFile() && ! (file.getTeamSpaceFile() instanceof TsDiskGeneralReferenceDto))
-					return false;
-				
-				return true;
-			}
-			@Override
-			public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
-				return true;
-			}
-			@Override
-			public String getTypeDescription(SelectedFileWrapper value) {
-				if(null == value)
-					return null;
-				
-				SelectedParameterFileDto file = (SelectedParameterFileDto) value.getOriginalDto();
-				if(null != file.getUploadedFile())
-					return RsMessages.INSTANCE.uploadedFile(); 
-				if(null != file.getTeamSpaceFile())
-					return RsMessages.INSTANCE.teamspaceFile(); 
-				if(null != file.getFileServerFile())
-					return RsMessages.INSTANCE.fileserverFile(); 
-							
-				return super.getTypeDescription(value);
-			}
-			@Override
-			public DownloadProperties getDownloadPropertiesFor(
-					SelectedFileWrapper selectedItem) {
-				SelectedParameterFileDto file = (SelectedParameterFileDto) selectedItem.getOriginalDto();
-				
-				DownloadProperties properties = new DownloadProperties(String.valueOf(file.getId()), FileSelectionParameterUiModule.SELECTED_FILE_DOWNLOAD_HANDLER);
-				return properties;
+      return form;
+   }
 
-			}
-		});
-		
-		/* construct widget */
-		FileSelectionConfig config = new FileSelectionConfig(FileSelectionParameterUiModule.FILE_SELECTION_HANDLER);
-		config.addMetadata(FileSelectionParameterUiModule.PARAMETER_INSTANCE_ID, String.valueOf(instance.getId()));
-		selectionWidget.build(config);
-		
-		/* add files */
-		for(SelectedParameterFileDto file : instance.getSelectedFiles()){
-			SelectedFileWrapper wrapper = new SelectedFileWrapper(FILE_TYPE, file, file.getName());
-			selectionWidget.add(wrapper);
-		}
-		
-		/* disable edit form, if parameter is not editable */
-		if(! definition.isEditable())
-			selectionWidget.disable();
-		else{
-			selectionWidget.addStoreHandler(new StoreHandlers<SelectedFileWrapper>(){
+   @Override
+   public Widget doGetEditComponentForInstance(final FileSelectionParameterInstanceDto instance,
+         Collection<ParameterInstanceDto> relevantInstances, final FileSelectionParameterDefinitionDto definition,
+         boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
+      final FileSelectionWidget selectionWidget = selectionWidgetProvider.get();
+      selectionWidget.setWidth(definition.getWidth());
+      selectionWidget.setGridHeight(definition.getHeight());
 
-				@Override
-				public void onAdd(StoreAddEvent<SelectedFileWrapper> event) {
-					updateData();
-				}
+      Integer minFiles = definition.getMinNumberOfFiles();
+      Integer maxFiles = definition.getMaxNumberOfFiles();
+      if (null != minFiles)
+         selectionWidget.setMinFiles(minFiles);
+      if (null != maxFiles)
+         selectionWidget.setMaxFiles(maxFiles);
 
-				@Override
-				public void onRemove(StoreRemoveEvent<SelectedFileWrapper> event) {
-					updateData();					
-				}
+      /* configure uploads */
+      if (definition.isAllowFileUpload()) {
+         FileUploadSource uploadSource = new FileUploadSource();
+         uploadSource.setUploadFilter(new FileUploadFilter() {
+            @Override
+            public String doProcess(String name, long size, String base64) {
+               if (size > 0 && definition.getFileSize() > 0 && definition.getFileSize() < size)
+                  return FileSelectionParameterMessages.INSTANCE.maxFileSizeExceeded(definition.getFileSizeString());
 
-				@Override
-				public void onFilter(StoreFilterEvent<SelectedFileWrapper> event) {
-				}
+               String extensions = definition.getAllowedFileExtensions();
+               if (null != extensions && !"".equals(extensions.trim())) {
+                  for (String ext : extensions.split(","))
+                     if (name.endsWith(ext.trim()))
+                        return null;
+                  return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
+               }
 
-				@Override
-				public void onClear(StoreClearEvent<SelectedFileWrapper> event) {
-					updateData();
-				}
+               return null;
+            }
+         });
 
-				@Override
-				public void onUpdate(StoreUpdateEvent<SelectedFileWrapper> event) {
-					updateData();
-				}
+         selectionWidget.addSource(uploadSource);
+      }
 
-				@Override
-				public void onDataChange(
-						StoreDataChangeEvent<SelectedFileWrapper> event) {
-					updateData();
-				}
+      /* configure teamspace */
+      if (definition.isAllowTeamSpaceSelection()) {
+         TeamSpaceFileSelectorSource tsSource = new TeamSpaceFileSelectorSource();
+         selectionWidget.addSource(tsSource);
+         final String extensions = definition.getAllowedFileExtensions();
+         if (null != extensions && !"".equals(extensions.trim())) {
+            tsSource.setSelectionFilter(new SelectionFilter() {
+               @Override
+               public String allowSelectionOf(AbstractNodeDto node) {
+                  if (!(node instanceof TsDiskGeneralReferenceDto))
+                     return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
+                  String name = ((TsDiskGeneralReferenceDto) node).getName();
+                  for (String ext : extensions.split(","))
+                     if (null != name && name.endsWith(ext.trim()))
+                        return null;
+                  return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
+               }
+            });
+         }
+      }
 
-				@Override
-				public void onRecordChange(
-						StoreRecordChangeEvent<SelectedFileWrapper> event) {
-					updateData();
-				}
+      /* configure file selection */
+      if (definition.isAllowFileServerSelection()) {
+         FileServerFileSelectorSource fsSource = fileServerSourceProvider.get();
+         selectionWidget.addSource(fsSource);
+         final String extensions = definition.getAllowedFileExtensions();
+         if (null != extensions && !"".equals(extensions.trim())) {
+            fsSource.setSelectionFilter(new SelectionFilter() {
+               @Override
+               public String allowSelectionOf(AbstractNodeDto node) {
+                  if (!(node instanceof FileServerFileDto))
+                     return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
+                  String name = ((FileServerFileDto) node).getName();
+                  for (String ext : extensions.split(","))
+                     if (null != name && name.endsWith(ext.trim()))
+                        return null;
+                  return FileSelectionParameterMessages.INSTANCE.mismatchingFileExtension(extensions);
+               }
+            });
 
-				@Override
-				public void onSort(StoreSortEvent<SelectedFileWrapper> event) {
-				}
-				
-				private void updateData() {
-					ArrayList<SelectedFileWrapper> data = new ArrayList<SelectedFileWrapper>(selectionWidget.getFileStore().getAll());
-					((FileSelectionParameterInstanceDtoDec) instance).setTempSelection(data);
-					instance.setStillDefault(false);
-					
-					instance.fireObjectChangedEvent();
-				}
-				
-			});
-		}
-		
-		return new ParameterFieldWrapperForFrontend(definition, instance, selectionWidget, labelWidth, new DefaultValueSetter() {
-			@Override
-			public void setDefaultValue() {
-				setDefaultValueInInstance(instance, definition);
-			}
-		});
-	}
+         }
+      }
 
-	@Override
-	protected void doSetDefaultValueInInstance(FileSelectionParameterInstanceDto instance, FileSelectionParameterDefinitionDto definition) {
-	}
+      /* own source */
+      selectionWidget.addSource(new FileSelectorSourceImpl() {
+         @Override
+         public boolean consumes(SelectedFileWrapper value) {
+            return null != value && FILE_TYPE.equals(value.getType());
+         }
 
-	public String getName() {
-		return ReportmanagerMessages.INSTANCE.fileSelectionParameterName();
-	}
+         @Override
+         public boolean isDownloadEnabled(SelectedFileWrapper item) {
+            if (!definition.isAllowDownload())
+               return false;
 
-	@Override
-	protected FileSelectionParameterDefinitionDto doGetNewDto() {
-		return new FileSelectionParameterDefinitionDto();
-	}
-	
-	@Override
-	public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
-		return FileSelectionParameterDefinitionDto.class.equals(type);
-	}
+            SelectedParameterFileDto file = (SelectedParameterFileDto) item.getOriginalDto();
+            if (null != file.getTeamSpaceFile() && !(file.getTeamSpaceFile() instanceof TsDiskGeneralReferenceDto))
+               return false;
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.ARROW_UP.toImageResource();
-	}
+            return true;
+         }
 
-	@Override
-	public boolean canHandle(ParameterProposalDto proposal) {
-		return false;
-	}
+         @Override
+         public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
+            return true;
+         }
 
-	@Override
-	public ParameterDefinitionDto getNewDto(ParameterProposalDto proposal, ReportDto report) {
-		FileSelectionParameterDefinitionDto definition = (FileSelectionParameterDefinitionDto) getNewDto(report);
-		
-		
-		
-		return definition;
-	}
-	
-	@Override
-	public List<String> validateParameter(FileSelectionParameterDefinitionDto definition, FileSelectionParameterInstanceDto instance, Widget widget) {
-		List<String> errList = super.validateParameter(definition, instance, widget);
-		
-		if(! ((FileSelectionWidget)((ParameterFieldWrapperForFrontend)widget).getComponent()).isValid())
-			errList.add(RsMessages.INSTANCE.invalidParameter(definition.getName()));
-		
-		return errList;
-	}
+         @Override
+         public String getTypeDescription(SelectedFileWrapper value) {
+            if (null == value)
+               return null;
+
+            SelectedParameterFileDto file = (SelectedParameterFileDto) value.getOriginalDto();
+            if (null != file.getUploadedFile())
+               return RsMessages.INSTANCE.uploadedFile();
+            if (null != file.getTeamSpaceFile())
+               return RsMessages.INSTANCE.teamspaceFile();
+            if (null != file.getFileServerFile())
+               return RsMessages.INSTANCE.fileserverFile();
+
+            return super.getTypeDescription(value);
+         }
+
+         @Override
+         public DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem) {
+            SelectedParameterFileDto file = (SelectedParameterFileDto) selectedItem.getOriginalDto();
+
+            DownloadProperties properties = new DownloadProperties(String.valueOf(file.getId()),
+                  FileSelectionParameterUiModule.SELECTED_FILE_DOWNLOAD_HANDLER);
+            return properties;
+
+         }
+      });
+
+      /* construct widget */
+      FileSelectionConfig config = new FileSelectionConfig(FileSelectionParameterUiModule.FILE_SELECTION_HANDLER);
+      config.addMetadata(FileSelectionParameterUiModule.PARAMETER_INSTANCE_ID, String.valueOf(instance.getId()));
+      selectionWidget.build(config);
+
+      /* add files */
+      for (SelectedParameterFileDto file : instance.getSelectedFiles()) {
+         SelectedFileWrapper wrapper = new SelectedFileWrapper(FILE_TYPE, file, file.getName());
+         selectionWidget.add(wrapper);
+      }
+
+      /* disable edit form, if parameter is not editable */
+      if (!definition.isEditable())
+         selectionWidget.disable();
+      else {
+         selectionWidget.addStoreHandler(new StoreHandlers<SelectedFileWrapper>() {
+
+            @Override
+            public void onAdd(StoreAddEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onRemove(StoreRemoveEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onFilter(StoreFilterEvent<SelectedFileWrapper> event) {
+            }
+
+            @Override
+            public void onClear(StoreClearEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onUpdate(StoreUpdateEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onDataChange(StoreDataChangeEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onRecordChange(StoreRecordChangeEvent<SelectedFileWrapper> event) {
+               updateData();
+            }
+
+            @Override
+            public void onSort(StoreSortEvent<SelectedFileWrapper> event) {
+            }
+
+            private void updateData() {
+               ArrayList<SelectedFileWrapper> data = new ArrayList<SelectedFileWrapper>(
+                     selectionWidget.getFileStore().getAll());
+               ((FileSelectionParameterInstanceDtoDec) instance).setTempSelection(data);
+               instance.setStillDefault(false);
+
+               instance.fireObjectChangedEvent();
+            }
+
+         });
+      }
+
+      return new ParameterFieldWrapperForFrontend(definition, instance, selectionWidget, labelWidth,
+            new DefaultValueSetter() {
+               @Override
+               public void setDefaultValue() {
+                  setDefaultValueInInstance(instance, definition);
+               }
+            });
+   }
+
+   @Override
+   protected void doSetDefaultValueInInstance(FileSelectionParameterInstanceDto instance,
+         FileSelectionParameterDefinitionDto definition) {
+   }
+
+   public String getName() {
+      return ReportmanagerMessages.INSTANCE.fileSelectionParameterName();
+   }
+
+   @Override
+   protected FileSelectionParameterDefinitionDto doGetNewDto() {
+      return new FileSelectionParameterDefinitionDto();
+   }
+
+   @Override
+   public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
+      return FileSelectionParameterDefinitionDto.class.equals(type);
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.ARROW_UP.toImageResource();
+   }
+
+   @Override
+   public boolean canHandle(ParameterProposalDto proposal) {
+      return false;
+   }
+
+   @Override
+   public ParameterDefinitionDto getNewDto(ParameterProposalDto proposal, ReportDto report) {
+      FileSelectionParameterDefinitionDto definition = (FileSelectionParameterDefinitionDto) getNewDto(report);
+
+      return definition;
+   }
+
+   @Override
+   public List<String> validateParameter(FileSelectionParameterDefinitionDto definition,
+         FileSelectionParameterInstanceDto instance, Widget widget) {
+      List<String> errList = super.validateParameter(definition, instance, widget);
+
+      if (!((FileSelectionWidget) ((ParameterFieldWrapperForFrontend) widget).getComponent()).isValid())
+         errList.add(RsMessages.INSTANCE.invalidParameter(definition.getName()));
+
+      return errList;
+   }
 
 }

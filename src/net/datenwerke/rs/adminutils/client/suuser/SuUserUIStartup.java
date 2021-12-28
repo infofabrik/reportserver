@@ -28,82 +28,79 @@ import net.datenwerke.security.ext.client.usermanager.helper.simpleform.SFFCUser
 
 public class SuUserUIStartup {
 
-	private String userKey;
-	
-	@Inject
-	public SuUserUIStartup(
-			final HookHandlerService hookHandler,
-			final SecurityUIService securityService,
-			final WaitOnEventUIService waitOnEventService,
+   private String userKey;
 
-			SuViewSecurityTargetDomainHooker securityTargetDomain,
-			
-			final SuUserDao suUserDao,
-			final UtilsUIService utilsService
-			){
-			
-			/* attach security target domains */
-			hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-			hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+   @Inject
+   public SuUserUIStartup(final HookHandlerService hookHandler, final SecurityUIService securityService,
+         final WaitOnEventUIService waitOnEventService,
 
-		
-			waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger(){
-				public void execute(final WaitOnEventTicket ticket) {
-					if(securityService.hasRight(SuGenericTargetIdentifier.class, ExecuteDto.class))
-						attachSu(suUserDao, utilsService);
+         SuViewSecurityTargetDomainHooker securityTargetDomain,
 
-					waitOnEventService.signalProcessingDone(ticket);
-				}
-			});
-		}
+         final SuUserDao suUserDao, final UtilsUIService utilsService) {
 
-	protected void attachSu(final SuUserDao suUserDao, final UtilsUIService utilsService) {
-		Event.addNativePreviewHandler(new NativePreviewHandler(){
-			@Override
-			public void onPreviewNativeEvent(NativePreviewEvent event) {
-				if(event.getTypeInt() == Event.ONKEYUP){
-					boolean ctrlKey = event.getNativeEvent().getCtrlKey();
-					if(ctrlKey){
-						int keyCode = event.getNativeEvent().getKeyCode();
-						if(ctrlKey && (keyCode == 'L' || keyCode == 'l')){
-							DwWindow window = new DwWindow();
-							window.setModal(true);
-							window.setHeaderIcon(BaseIcon.USER_SECRET);
-							window.setSize(300, 180);
-							window.setResizable(false);
-							window.setHeading(SuMessages.INSTANCE.suPromptHeader());
-							
-							final SimpleForm form = SimpleForm.getInlineInstance();
-							
-							userKey = form.addField(UserDto.class, SuMessages.INSTANCE.userLabel(), new SFFCUserSelector() {
-								@Override
-								public UserDto getUser() {
-									return (UserDto) form.getValue(userKey);
-								}
-							});
-							
-							form.loadFields();
-							window.add(form, new MarginData(10));
-							
-							window.addCancelButton();
-							window.addSubmitButton(new OnButtonClickHandler() {
-								@Override
-								public void onClick() {
-									UserDto user = (UserDto) form.getValue(userKey);
-									suUserDao.su(user.getId(), new RsAsyncCallback<Void>(){
-										public void onSuccess(Void result) {
-											utilsService.reloadPageWithoutAsking();
-										};
-									});
-								}
-							});
-							
-							window.show();
-						}
-					}
-				}
-			}
-			
-		}); 
-	}
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(SuGenericTargetIdentifier.class, ExecuteDto.class))
+                     attachSu(suUserDao, utilsService);
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
+
+   protected void attachSu(final SuUserDao suUserDao, final UtilsUIService utilsService) {
+      Event.addNativePreviewHandler(new NativePreviewHandler() {
+         @Override
+         public void onPreviewNativeEvent(NativePreviewEvent event) {
+            if (event.getTypeInt() == Event.ONKEYUP) {
+               boolean ctrlKey = event.getNativeEvent().getCtrlKey();
+               if (ctrlKey) {
+                  int keyCode = event.getNativeEvent().getKeyCode();
+                  if (ctrlKey && (keyCode == 'L' || keyCode == 'l')) {
+                     DwWindow window = new DwWindow();
+                     window.setModal(true);
+                     window.setHeaderIcon(BaseIcon.USER_SECRET);
+                     window.setSize(300, 180);
+                     window.setResizable(false);
+                     window.setHeading(SuMessages.INSTANCE.suPromptHeader());
+
+                     final SimpleForm form = SimpleForm.getInlineInstance();
+
+                     userKey = form.addField(UserDto.class, SuMessages.INSTANCE.userLabel(), new SFFCUserSelector() {
+                        @Override
+                        public UserDto getUser() {
+                           return (UserDto) form.getValue(userKey);
+                        }
+                     });
+
+                     form.loadFields();
+                     window.add(form, new MarginData(10));
+
+                     window.addCancelButton();
+                     window.addSubmitButton(new OnButtonClickHandler() {
+                        @Override
+                        public void onClick() {
+                           UserDto user = (UserDto) form.getValue(userKey);
+                           suUserDao.su(user.getId(), new RsAsyncCallback<Void>() {
+                              public void onSuccess(Void result) {
+                                 utilsService.reloadPageWithoutAsking();
+                              };
+                           });
+                        }
+                     });
+
+                     window.show();
+                  }
+               }
+            }
+         }
+
+      });
+   }
 }

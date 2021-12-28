@@ -6,10 +6,9 @@ import net.datenwerke.rs.remoteaccess.service.sftp.SftpModule;
 
 public class RemoteAccessModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		install(new SftpModule());
-	}
-	
-	
+   @Override
+   protected void configure() {
+      install(new SftpModule());
+   }
+
 }

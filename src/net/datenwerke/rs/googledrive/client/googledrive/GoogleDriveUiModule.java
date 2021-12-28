@@ -11,7 +11,7 @@ import net.datenwerke.rs.googledrive.client.googledrive.provider.annotations.Dat
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class GoogleDriveUiModule extends AbstractGinModule {
-   
+
    public final static String NAME = "Google Drive";
    public final static BaseIcon ICON = BaseIcon.GOOGLE;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = GoogleDriveDatasinkDto.class;
@@ -19,7 +19,7 @@ public class GoogleDriveUiModule extends AbstractGinModule {
    @Override
    protected void configure() {
       bind(GoogleDriveUiService.class).to(GoogleDriveUiServiceImpl.class).in(Singleton.class);
-      
+
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeGoogleDrive.class).toProvider(GoogleDriveTreeProvider.class);
       bind(GoogleDriveUiStartup.class).asEagerSingleton();

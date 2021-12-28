@@ -64,11 +64,11 @@ import net.datenwerke.rs.reportdoc.client.ReportDocumentationUIModule;
  */
 public class ReportDocumentationModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		bind(ReportDocumentationStartup.class).asEagerSingleton();
-		
-		bind(ReportDocumentationService.class).to(ReportDocumentationServiceImpl.class).in(Singleton.class);
-	}
+   @Override
+   protected void configure() {
+      bind(ReportDocumentationStartup.class).asEagerSingleton();
+
+      bind(ReportDocumentationService.class).to(ReportDocumentationServiceImpl.class).in(Singleton.class);
+   }
 
 }

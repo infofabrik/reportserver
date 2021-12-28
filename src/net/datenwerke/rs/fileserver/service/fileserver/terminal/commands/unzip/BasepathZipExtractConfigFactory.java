@@ -4,5 +4,5 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 
 public interface BasepathZipExtractConfigFactory {
 
-	public BasepathZipExtractConfig create(FileServerFolder parent);
+   public BasepathZipExtractConfig create(FileServerFolder parent);
 }

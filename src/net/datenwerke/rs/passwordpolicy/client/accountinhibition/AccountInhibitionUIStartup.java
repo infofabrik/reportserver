@@ -12,16 +12,14 @@ import net.datenwerke.rs.passwordpolicy.client.accountinhibition.hooker.AccountI
  *
  */
 public class AccountInhibitionUIStartup {
-	
-	@Inject
-	public AccountInhibitionUIStartup(
-		HookHandlerService hookHandlerService,
-		AccountInhibitionUserFormHooker accountInhibitionUserFormHooker, 
-		AccountInhibitionPostAuthenticateClientHook accountInhibitionPostAuthenticateClientHook
-		) {
-		
-		hookHandlerService.attachHooker(SimpleFormViewHook.class, accountInhibitionUserFormHooker);
-		
-	}
+
+   @Inject
+   public AccountInhibitionUIStartup(HookHandlerService hookHandlerService,
+         AccountInhibitionUserFormHooker accountInhibitionUserFormHooker,
+         AccountInhibitionPostAuthenticateClientHook accountInhibitionPostAuthenticateClientHook) {
+
+      hookHandlerService.attachHooker(SimpleFormViewHook.class, accountInhibitionUserFormHooker);
+
+   }
 
 }

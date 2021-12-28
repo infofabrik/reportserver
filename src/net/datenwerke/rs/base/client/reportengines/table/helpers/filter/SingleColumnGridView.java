@@ -33,58 +33,58 @@ import net.datenwerke.rs.base.client.reportengines.table.helpers.validator.SqlTi
  */
 public class SingleColumnGridView extends GridView<StringBaseModel> {
 
-	private static StringBaseModelPa sbmPa = GWT.create(StringBaseModelPa.class);
-	
-	public SingleColumnGridView(ListStore<StringBaseModel> store, ColumnDto column, SelectionPanel<StringBaseModel> selectionPanel) {
-		super(store, column, selectionPanel);
-	}
+   private static StringBaseModelPa sbmPa = GWT.create(StringBaseModelPa.class);
 
-	@Override
-	protected Grid<StringBaseModel> createGrid(ListStore<StringBaseModel> store) {
-		List<ColumnConfig<StringBaseModel,?>> columns = new ArrayList<ColumnConfig<StringBaseModel,?>>();
-		
-		ColumnConfig<StringBaseModel, String> column = new ColumnConfig<StringBaseModel, String>(sbmPa.value(), 200, FilterMessages.INSTANCE.value()); 
-		column.setMenuDisabled(true);
-		
-		TextField field = new TextField();
-		Integer type = this.column.getType();
-		if(SqlTypes.isInteger(type))
-			field.addValidator(new IntegerFieldValidator());
-		else if(SqlTypes.isNumerical(type)) 
-			field.addValidator(new NumericalFieldValidator());
-		else if(SqlTypes.isTimeStamp(type))
-			field.addValidator(new SqlTimestampValidator());
-		else if(SqlTypes.isDate(type))
-			field.addValidator(new SqlDateValidator());
+   public SingleColumnGridView(ListStore<StringBaseModel> store, ColumnDto column,
+         SelectionPanel<StringBaseModel> selectionPanel) {
+      super(store, column, selectionPanel);
+   }
 
-		column.setCell(new AbstractCell<String>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					String value, SafeHtmlBuilder sb) {
-				if(null != value)
-					sb.appendEscaped(StringEscapeUtils.escapeAngleBrackets(filterService.getStringValue(value, 0)));
-			}
-		});
-		columns.add(column);
-		
-		Grid<StringBaseModel> grid = new Grid<StringBaseModel>((ListStore<StringBaseModel>) store, new ColumnModel<StringBaseModel>(columns));
-		grid.setSelectionModel(new GridSelectionModel<StringBaseModel>());
-		
-		GridInlineEditing<StringBaseModel> editing = new GridInlineEditing<StringBaseModel>(grid);
-		editing.setClicksToEdit(ClicksToEdit.TWO);
-		
-		editing.addEditor(column, field);
-		
-		grid.getView().setShowDirtyCells(false);
-		
-		return grid;
-	}
+   @Override
+   protected Grid<StringBaseModel> createGrid(ListStore<StringBaseModel> store) {
+      List<ColumnConfig<StringBaseModel, ?>> columns = new ArrayList<ColumnConfig<StringBaseModel, ?>>();
 
-	
-	@Override
-	protected void createGridDropTarget(Grid<StringBaseModel> grid) {
-		new GridDropTarget<StringBaseModel>(grid);
-	}
-	
+      ColumnConfig<StringBaseModel, String> column = new ColumnConfig<StringBaseModel, String>(sbmPa.value(), 200,
+            FilterMessages.INSTANCE.value());
+      column.setMenuDisabled(true);
+
+      TextField field = new TextField();
+      Integer type = this.column.getType();
+      if (SqlTypes.isInteger(type))
+         field.addValidator(new IntegerFieldValidator());
+      else if (SqlTypes.isNumerical(type))
+         field.addValidator(new NumericalFieldValidator());
+      else if (SqlTypes.isTimeStamp(type))
+         field.addValidator(new SqlTimestampValidator());
+      else if (SqlTypes.isDate(type))
+         field.addValidator(new SqlDateValidator());
+
+      column.setCell(new AbstractCell<String>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, String value, SafeHtmlBuilder sb) {
+            if (null != value)
+               sb.appendEscaped(StringEscapeUtils.escapeAngleBrackets(filterService.getStringValue(value, 0)));
+         }
+      });
+      columns.add(column);
+
+      Grid<StringBaseModel> grid = new Grid<StringBaseModel>((ListStore<StringBaseModel>) store,
+            new ColumnModel<StringBaseModel>(columns));
+      grid.setSelectionModel(new GridSelectionModel<StringBaseModel>());
+
+      GridInlineEditing<StringBaseModel> editing = new GridInlineEditing<StringBaseModel>(grid);
+      editing.setClicksToEdit(ClicksToEdit.TWO);
+
+      editing.addEditor(column, field);
+
+      grid.getView().setShowDirtyCells(false);
+
+      return grid;
+   }
+
+   @Override
+   protected void createGridDropTarget(Grid<StringBaseModel> grid) {
+      new GridDropTarget<StringBaseModel>(grid);
+   }
 
 }

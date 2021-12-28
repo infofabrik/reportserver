@@ -20,75 +20,74 @@ import net.datenwerke.treedb.client.treedb.dto.EntireTreeDTO;
  */
 public class EnhancedTreeStore extends DtoAwareTreeStore<AbstractNodeDto> {
 
-	private final TreeDbLoaderDao treeLoader;
+   private final TreeDbLoaderDao treeLoader;
 
-	private Collection<Dto2PosoMapper> entireTreeWhitelistFilters = null;
-	private Collection<Dto2PosoMapper> entireTreeBlacklistFilters = null;
+   private Collection<Dto2PosoMapper> entireTreeWhitelistFilters = null;
+   private Collection<Dto2PosoMapper> entireTreeBlacklistFilters = null;
 
-	public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader) {
-		this(treeLoader, loader, true);
-	}
-	
-	public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware) {
-		this(new DtoIdModelKeyProvider(), treeLoader, loader, changeAware);
-	}
+   public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader) {
+      this(treeLoader, loader, true);
+   }
 
-	public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware, Collection<Dto2PosoMapper> whitelistFilters) {
-		this(treeLoader, loader, changeAware);
-		this.entireTreeWhitelistFilters = whitelistFilters;
-	}
+   public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware) {
+      this(new DtoIdModelKeyProvider(), treeLoader, loader, changeAware);
+   }
 
-	public EnhancedTreeStore(TreeDbLoaderDao treeLoader,
-			TreeLoader<AbstractNodeDto> loader,
-			boolean changeAware,
-			Collection<Dto2PosoMapper> wlFilters,
-			Collection<Dto2PosoMapper> blFilters) {
-		this(treeLoader, loader, changeAware);
-		this.entireTreeWhitelistFilters = wlFilters;
-		this.entireTreeBlacklistFilters = blFilters;
-	}
+   public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware,
+         Collection<Dto2PosoMapper> whitelistFilters) {
+      this(treeLoader, loader, changeAware);
+      this.entireTreeWhitelistFilters = whitelistFilters;
+   }
 
-	public EnhancedTreeStore(ModelKeyProvider<? super AbstractNodeDto> mkp,	TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware) {
-		super(mkp, loader, changeAware);
-		this.treeLoader = treeLoader;
-	}
+   public EnhancedTreeStore(TreeDbLoaderDao treeLoader, TreeLoader<AbstractNodeDto> loader, boolean changeAware,
+         Collection<Dto2PosoMapper> wlFilters, Collection<Dto2PosoMapper> blFilters) {
+      this(treeLoader, loader, changeAware);
+      this.entireTreeWhitelistFilters = wlFilters;
+      this.entireTreeBlacklistFilters = blFilters;
+   }
 
-	public void loadEntireTree(boolean useFto){
-		loadEntireTree(new EnhancedTreeStoreLoadListener() {
-			public void loadComplete() {}
-		}, useFto);
-	}
+   public EnhancedTreeStore(ModelKeyProvider<? super AbstractNodeDto> mkp, TreeDbLoaderDao treeLoader,
+         TreeLoader<AbstractNodeDto> loader, boolean changeAware) {
+      super(mkp, loader, changeAware);
+      this.treeLoader = treeLoader;
+   }
 
-	public void loadEntireTree(final EnhancedTreeStoreLoadListener listener, boolean useFto){
-		treeLoader.loadAll(entireTreeWhitelistFilters, entireTreeBlacklistFilters, new RsAsyncCallback<EntireTreeDTO>() {
-			@Override
-			public void onSuccess(EntireTreeDTO result) {
-				/* clear store */
-				clear();
-				fillEntireTree(result);
-				listener.loadComplete();
-			}
-		}, useFto);
-	}
+   public void loadEntireTree(boolean useFto) {
+      loadEntireTree(new EnhancedTreeStoreLoadListener() {
+         public void loadComplete() {
+         }
+      }, useFto);
+   }
 
-	protected void fillEntireTree(EntireTreeDTO tree) {
-		for(AbstractNodeDto root : tree.getRoots()){
-			add(root);
-			fillTreeWithChildren(root, tree);
-		}
-	}
+   public void loadEntireTree(final EnhancedTreeStoreLoadListener listener, boolean useFto) {
+      treeLoader.loadAll(entireTreeWhitelistFilters, entireTreeBlacklistFilters, new RsAsyncCallback<EntireTreeDTO>() {
+         @Override
+         public void onSuccess(EntireTreeDTO result) {
+            /* clear store */
+            clear();
+            fillEntireTree(result);
+            listener.loadComplete();
+         }
+      }, useFto);
+   }
 
-	private void fillTreeWithChildren(AbstractNodeDto parent, EntireTreeDTO tree) {
-		for(AbstractNodeDto child : tree.getChildrenFor(parent)){
-			add(parent, child);
-			fillTreeWithChildren(child, tree);
-		}
+   protected void fillEntireTree(EntireTreeDTO tree) {
+      for (AbstractNodeDto root : tree.getRoots()) {
+         add(root);
+         fillTreeWithChildren(root, tree);
+      }
+   }
 
-	}
+   private void fillTreeWithChildren(AbstractNodeDto parent, EntireTreeDTO tree) {
+      for (AbstractNodeDto child : tree.getChildrenFor(parent)) {
+         add(parent, child);
+         fillTreeWithChildren(child, tree);
+      }
 
-	protected UITree getUiTree(){
-		return (UITree)treePanel;
-	}
+   }
 
+   protected UITree getUiTree() {
+      return (UITree) treePanel;
+   }
 
 }

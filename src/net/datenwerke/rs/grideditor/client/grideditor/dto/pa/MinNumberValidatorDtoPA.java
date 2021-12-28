@@ -12,11 +12,8 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @CorrespondingPoso(net.datenwerke.rs.grideditor.service.grideditor.definition.validator.MinIntegerValidator.class)
 public interface MinNumberValidatorDtoPA extends ValidatorDtoPA {
 
+   public static final MinNumberValidatorDtoPA INSTANCE = GWT.create(MinNumberValidatorDtoPA.class);
 
-	public static final MinNumberValidatorDtoPA INSTANCE = GWT.create(MinNumberValidatorDtoPA.class);
-
-
-	/* Properties */
-
+   /* Properties */
 
 }

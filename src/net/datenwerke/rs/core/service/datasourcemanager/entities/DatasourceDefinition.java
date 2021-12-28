@@ -26,67 +26,61 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
  * 
  * <p>
  * 
- * </p> 
- *  
+ * </p>
+ * 
  *
  */
 @Entity
-@Table(name="DATASOURCE_DEFINITION")
+@Table(name = "DATASOURCE_DEFINITION")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.datasourcemanager.dto",
-	abstractDto=true,
-	typeDescriptionMsg=DatasourcesMessages.class,
-	typeDescriptionKey="dataSource"
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasourcemanager.dto", abstractDto = true, typeDescriptionMsg = DatasourcesMessages.class, typeDescriptionKey = "dataSource")
 abstract public class DatasourceDefinition extends AbstractDatasourceManagerNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5049862067210491425L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -5049862067210491425L;
 
-	@ExposeToClient(displayTitle=true)
-	@Field
-	@Column(length = 128)
-	@Title
-	private String name;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Field
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Description
-    private String description;
+   @ExposeToClient(displayTitle = true)
+   @Field
+   @Column(length = 128)
+   @Title
+   private String name;
 
-	public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Field
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Description
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public String getName() {
+      return name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
+   public String getDescription() {
+      return description;
+   }
 
-	@Transient
-	public String escapeString(Injector injector, String string){
-		return string;
-	}
-    
-    @Transient
-    public abstract DatasourceDefinitionConfig createConfigObject();
+   @Transient
+   public String escapeString(Injector injector, String string) {
+      return string;
+   }
 
-    @Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Transient
+   public abstract DatasourceDefinitionConfig createConfigObject();
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

@@ -20,40 +20,40 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ReportRefreshExecutionHooker implements ReportExecutorViewToolbarHook {
 
-	private final ToolbarService toolbarService;
+   private final ToolbarService toolbarService;
 
-	@Inject
-	public ReportRefreshExecutionHooker(ToolbarService toolbarService) {
+   @Inject
+   public ReportRefreshExecutionHooker(ToolbarService toolbarService) {
 
-		this.toolbarService = toolbarService;
-	}
+      this.toolbarService = toolbarService;
+   }
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
-			ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		return false;
-	}
+   @Override
+   public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      return false;
+   }
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, final ReportDto report,
-			ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		DwTextButton refreshBtn = toolbarService.createSmallButtonLeft(BaseMessages.INSTANCE.previewRefresh(),
-				BaseIcon.REFRESH);
-		refreshBtn.addSelectHandler(event -> {
-			for (ReportExecutorMainPanelView view: mainPanel.getViews()) {
-				if (mainPanel.isViewSelected(view) && view instanceof AbstractReportPreviewView) {
-					((AbstractReportPreviewView)view).reload();
-				} 
-			}
-		});
-		toolbar.add(refreshBtn);
+   @Override
+   public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, final ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      DwTextButton refreshBtn = toolbarService.createSmallButtonLeft(BaseMessages.INSTANCE.previewRefresh(),
+            BaseIcon.REFRESH);
+      refreshBtn.addSelectHandler(event -> {
+         for (ReportExecutorMainPanelView view : mainPanel.getViews()) {
+            if (mainPanel.isViewSelected(view) && view instanceof AbstractReportPreviewView) {
+               ((AbstractReportPreviewView) view).reload();
+            }
+         }
+      });
+      toolbar.add(refreshBtn);
 
-		return true;
-	}
+      return true;
+   }
 
-	@Override
-	public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
+   @Override
+   public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
 
-	}
+   }
 
 }

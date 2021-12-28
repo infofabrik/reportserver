@@ -15,31 +15,30 @@ import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class SaikuReportPreviewViewFactory extends PreviewViewFactory {
-	
-	private final Provider<SaikuReportPreviewView> brpvProvider;
 
-	@Inject
-	public SaikuReportPreviewViewFactory(
-			Provider<SaikuReportPreviewView> brpvProvider 
-	) {
-		this.brpvProvider = brpvProvider;
-	}
-	
-	@Override
-	public ReportExecutorMainPanelView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		AbstractReportPreviewView view = brpvProvider.get();
-		view.setReport(report);
-		
-		return view;
-	}
+   private final Provider<SaikuReportPreviewView> brpvProvider;
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		if (! (report instanceof SaikuReportDto) ) 
-			return false;
-		
-		DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-		return !((MondrianDatasourceDto)datasourceContainer.getDatasource()).isMondrian3();
-	}
+   @Inject
+   public SaikuReportPreviewViewFactory(Provider<SaikuReportPreviewView> brpvProvider) {
+      this.brpvProvider = brpvProvider;
+   }
+
+   @Override
+   public ReportExecutorMainPanelView newInstance(ReportDto report,
+         Collection<? extends ReportViewConfiguration> configs) {
+      AbstractReportPreviewView view = brpvProvider.get();
+      view.setReport(report);
+
+      return view;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      if (!(report instanceof SaikuReportDto))
+         return false;
+
+      DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
+      return !((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+   }
 
 }

@@ -11,17 +11,16 @@ import net.datenwerke.gxtdto.client.dtomanager.Dao;
 
 public class FileSelectionDao extends Dao {
 
-	private final FileSelectionRpcServiceAsync rpcService;
+   private final FileSelectionRpcServiceAsync rpcService;
 
-	@Inject
-	public FileSelectionDao(FileSelectionRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public FileSelectionDao(FileSelectionRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public void submit(ArrayList<SelectedFileWrapper> data,	FileSelectionConfig config, AsyncCallback<Void> callback) {
-		rpcService.submit(data, config, callback);
-	}
-	
-	
+   public void submit(ArrayList<SelectedFileWrapper> data, FileSelectionConfig config, AsyncCallback<Void> callback) {
+      rpcService.submit(data, config, callback);
+   }
+
 }

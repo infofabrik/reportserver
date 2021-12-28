@@ -32,82 +32,71 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.utils.XlsxToHtmlConverter
 
 public class JxlsHTMLOutputGenerator extends JxlsOutputGeneratorImpl {
 
-	@Inject
-	public JxlsHTMLOutputGenerator(HookHandlerService hookHandler, DwAsyncService asyncService) {
-		super(hookHandler, asyncService);
-	}
-	
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_HTML};
-	}
-	
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledHtmlReportImpl(null);
-	}
-	
-	@Override
-	public CompiledReport exportReport(OutputStream os, byte[] template,
-			Connection connection, JxlsReport jxlsReport, ParameterSet parameters,
-			String outputFormat, ReportExecutionConfig... configs)
-			throws ReportExecutorException {
-	   Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
-       return exportReport(os, workbook);
-	}
-	
-    private CompiledReport exportReport(OutputStream os, Workbook workbook) throws ReportExecutorException {
-        try{
-            Document xmlDocument = DocumentBuilderFactory.newInstance()
-                    .newDocumentBuilder().newDocument();
-            
-            Transformer transformer = TransformerFactory.newInstance()
-                    .newTransformer();
-            transformer.setOutputProperty( OutputKeys.INDENT, "no" );
-            transformer.setOutputProperty( OutputKeys.ENCODING, "utf-8" );
-            transformer.setOutputProperty( OutputKeys.METHOD, "html" );
+   @Inject
+   public JxlsHTMLOutputGenerator(HookHandlerService hookHandler, DwAsyncService asyncService) {
+      super(hookHandler, asyncService);
+   }
 
-            String html = null;
-            
-            if(workbook instanceof HSSFWorkbook){
-                ExcelToHtmlConverter xlsToHtmlConverter = new ExcelToHtmlConverter(xmlDocument);
-                xlsToHtmlConverter.processWorkbook(  (HSSFWorkbook) workbook );
-                
-                if(null == os){
-                    StringWriter stringWriter = new StringWriter();
-                    transformer.transform(
-                            new DOMSource( xlsToHtmlConverter.getDocument() ),
-                            new StreamResult( stringWriter ) );
-            
-                    html = stringWriter.toString();
-                } else {
-                     transformer.transform(
-                                new DOMSource( xlsToHtmlConverter.getDocument() ),
-                                new StreamResult(os) );
-                }
-            } else if(workbook instanceof XSSFWorkbook) {
-                XlsxToHtmlConverter xlsToHtmlConverter = new XlsxToHtmlConverter(xmlDocument);
-                xlsToHtmlConverter.processWorkbook(  (XSSFWorkbook) workbook );
-                
-                if(null == os){
-                    StringWriter stringWriter = new StringWriter();
-                    transformer.transform(
-                            new DOMSource( xlsToHtmlConverter.getDocument() ),
-                            new StreamResult( stringWriter ) );
-            
-                    html = stringWriter.toString();
-                } else {
-                     transformer.transform(
-                                new DOMSource( xlsToHtmlConverter.getDocument() ),
-                                new StreamResult(os) );
-                }
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_HTML };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledHtmlReportImpl(null);
+   }
+
+   @Override
+   public CompiledReport exportReport(OutputStream os, byte[] template, Connection connection, JxlsReport jxlsReport,
+         ParameterSet parameters, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException {
+      Workbook workbook = processWorkbook(parameters, template, connection, jxlsReport, outputFormat);
+      return exportReport(os, workbook);
+   }
+
+   private CompiledReport exportReport(OutputStream os, Workbook workbook) throws ReportExecutorException {
+      try {
+         Document xmlDocument = DocumentBuilderFactory.newInstance().newDocumentBuilder().newDocument();
+
+         Transformer transformer = TransformerFactory.newInstance().newTransformer();
+         transformer.setOutputProperty(OutputKeys.INDENT, "no");
+         transformer.setOutputProperty(OutputKeys.ENCODING, "utf-8");
+         transformer.setOutputProperty(OutputKeys.METHOD, "html");
+
+         String html = null;
+
+         if (workbook instanceof HSSFWorkbook) {
+            ExcelToHtmlConverter xlsToHtmlConverter = new ExcelToHtmlConverter(xmlDocument);
+            xlsToHtmlConverter.processWorkbook((HSSFWorkbook) workbook);
+
+            if (null == os) {
+               StringWriter stringWriter = new StringWriter();
+               transformer.transform(new DOMSource(xlsToHtmlConverter.getDocument()), new StreamResult(stringWriter));
+
+               html = stringWriter.toString();
             } else {
-                html = "Could not convert file";
+               transformer.transform(new DOMSource(xlsToHtmlConverter.getDocument()), new StreamResult(os));
             }
-            
-            return new CompiledHtmlReportImpl(html);
-        } catch(Exception e){
-            throw new ReportExecutorException(e);
-        }
-    }
+         } else if (workbook instanceof XSSFWorkbook) {
+            XlsxToHtmlConverter xlsToHtmlConverter = new XlsxToHtmlConverter(xmlDocument);
+            xlsToHtmlConverter.processWorkbook((XSSFWorkbook) workbook);
+
+            if (null == os) {
+               StringWriter stringWriter = new StringWriter();
+               transformer.transform(new DOMSource(xlsToHtmlConverter.getDocument()), new StreamResult(stringWriter));
+
+               html = stringWriter.toString();
+            } else {
+               transformer.transform(new DOMSource(xlsToHtmlConverter.getDocument()), new StreamResult(os));
+            }
+         } else {
+            html = "Could not convert file";
+         }
+
+         return new CompiledHtmlReportImpl(html);
+      } catch (Exception e) {
+         throw new ReportExecutorException(e);
+      }
+   }
 }

@@ -18,34 +18,31 @@ import net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto;
  */
 public class SearchResultListDtoDec extends SearchResultListDto implements PagingLoadResult {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public SearchResultListDtoDec() {
+      super();
+   }
 
-	public SearchResultListDtoDec() {
-		super();
-	}
+   public SearchResultListDtoDec(ArrayList<SearchResultEntryDto> data) {
+      super();
+      silenceEvents(true);
+      setData(data);
+      silenceEvents(false);
+   }
 
-	public SearchResultListDtoDec(ArrayList<SearchResultEntryDto> data) {
-		super();
-		silenceEvents(true);
-		setData(data);
-		silenceEvents(false);
-	}
+   public List<SearchResultTagTypeDto> getTagTypes() {
+      List<SearchResultTagTypeDto> list = new ArrayList<SearchResultTagTypeDto>();
+      Set<String> found = new HashSet<String>();
 
-	public List<SearchResultTagTypeDto> getTagTypes(){
-		List<SearchResultTagTypeDto> list = new ArrayList<SearchResultTagTypeDto>();
-		Set<String> found = new HashSet<String>();
-		
-		for(SearchResultTagDto tag : getTags()){
-			if(! found.contains(tag.getType().getType())){
-				list.add(tag.getType());
-				found.add(tag.getType().getType());
-			}
-		}
-		
-		return list;
-	}
+      for (SearchResultTagDto tag : getTags()) {
+         if (!found.contains(tag.getType().getType())) {
+            list.add(tag.getType());
+            found.add(tag.getType().getType());
+         }
+      }
 
-
+      return list;
+   }
 
 }

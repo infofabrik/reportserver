@@ -82,10 +82,8 @@ public class RECJxls implements ReportExecutionConfig {
 
       if (obj instanceof RECJxls) {
          final RECJxls other = (RECJxls) obj;
-         return numberColumnWidth == other.numberColumnWidth 
-               && textColumnWidth == other.textColumnWidth
-               && dateColumnWidth == other.dateColumnWidth 
-               && currencyColumnWidth == other.currencyColumnWidth
+         return numberColumnWidth == other.numberColumnWidth && textColumnWidth == other.textColumnWidth
+               && dateColumnWidth == other.dateColumnWidth && currencyColumnWidth == other.currencyColumnWidth
                && jxlsReport == other.jxlsReport;
       } else {
          return false;

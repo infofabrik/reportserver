@@ -11,8 +11,8 @@ import net.datenwerke.rs.adminutils.client.systemconsole.connpool.dto.Connection
 
 @RemoteServiceRelativePath("connectionpoolconsole")
 public interface ConnectionPoolConsoleRpcService extends RemoteService {
-   
+
    List<ConnectionPoolDatasourceDto> loadDatasources() throws ServerCallFailedException;
-   
+
    ConnectionPoolInfoDto getDatasourceById(Long id) throws ServerCallFailedException;
 }

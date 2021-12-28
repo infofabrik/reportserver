@@ -15,18 +15,19 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public interface FtpRpcServiceAsync {
 
-   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback);
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
-   
+
    void getAllStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
 
    Request testFtpDataSink(FtpDatasinkDto ftpDatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed, AsyncCallback<Void> callback);
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 
 }

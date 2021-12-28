@@ -20,152 +20,137 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 
 @Entity
-@Table(name="TABLE_REPORT_TEMPLATE")
+@Table(name = "TABLE_REPORT_TEMPLATE")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tabletemplate.client.tabletemplate.dto",
-	abstractDto=true
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tabletemplate.client.tabletemplate.dto", abstractDto = true)
 abstract public class TableReportTemplate {
 
-	@ExposeToClient(
-		view=DtoView.LIST,
-		displayTitle=true
-	)
-	private String name = "unnamed";
-	
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description; 
-	
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	private String contentType;
-	
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	private String fileExtension;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	private String key;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Transient @TransientID
-	private Long temporaryId;
-	
-	@ExposeToClient(view=DtoView.LIST)
-	private String templateType;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public String getKey() {
-		return key;
-	}
+   @ExposeToClient(view = DtoView.LIST, displayTitle = true)
+   private String name = "unnamed";
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-	public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   private String contentType;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   private String fileExtension;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   @Version
+   private Long version;
 
-	public String getName() {
-		return name;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   private String key;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public String getDescription() {
-		return description;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Transient
+   @TransientID
+   private Long temporaryId;
 
-	public void setTemporaryId(Long temporaryId) {
-		this.temporaryId = temporaryId;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   private String templateType;
 
-	public Long getTemporaryId() {
-		return temporaryId;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setTemplateType(String templateType) {
-		this.templateType = templateType;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public String getTemplateType() {
-		return templateType;
-	}
-	
-	public void setFileExtension(String fileExtension) {
-		this.fileExtension = fileExtension;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public String getFileExtension() {
-		return fileExtension;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+   public void setKey(String key) {
+      this.key = key;
+   }
 
-	public String getContentType() {
-		return contentType;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void updateData(TableReportTemplate template) {
-		setName(template.getName());
-		setDescription(template.getDescription());
-		setKey(template.getKey());
-		setFileExtension(template.fileExtension);
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	final public TableReportTemplate createTemporary() {
-		TableReportTemplate template = doCreateTemporary();
-		
-		template.setTemplateType(templateType);
-		template.setName(name);
-		template.setKey(key);
-		template.setId(getId());
-		template.setDescription(description);
-		template.setFileExtension(fileExtension);
-		
-		return template;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	abstract protected TableReportTemplate doCreateTemporary();
+   public String getName() {
+      return name;
+   }
 
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
+   public String getDescription() {
+      return description;
+   }
 
+   public void setTemporaryId(Long temporaryId) {
+      this.temporaryId = temporaryId;
+   }
+
+   public Long getTemporaryId() {
+      return temporaryId;
+   }
+
+   public void setTemplateType(String templateType) {
+      this.templateType = templateType;
+   }
+
+   public String getTemplateType() {
+      return templateType;
+   }
+
+   public void setFileExtension(String fileExtension) {
+      this.fileExtension = fileExtension;
+   }
+
+   public String getFileExtension() {
+      return fileExtension;
+   }
+
+   public void setContentType(String contentType) {
+      this.contentType = contentType;
+   }
+
+   public String getContentType() {
+      return contentType;
+   }
+
+   public void updateData(TableReportTemplate template) {
+      setName(template.getName());
+      setDescription(template.getDescription());
+      setKey(template.getKey());
+      setFileExtension(template.fileExtension);
+   }
+
+   final public TableReportTemplate createTemporary() {
+      TableReportTemplate template = doCreateTemporary();
+
+      template.setTemplateType(templateType);
+      template.setName(name);
+      template.setKey(key);
+      template.setId(getId());
+      template.setDescription(description);
+      template.setFileExtension(fileExtension);
+
+      return template;
+   }
+
+   abstract protected TableReportTemplate doCreateTemporary();
 
 }

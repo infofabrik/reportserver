@@ -13,22 +13,22 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class HandleReportRemoveEvent implements EventHandler<RemoveEntityEvent> {
 
-	private final TsDiskService diskService;
-	
-	@Inject
-	public HandleReportRemoveEvent(TsDiskService diskService) {
-		this.diskService = diskService;
-	}
+   private final TsDiskService diskService;
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		Report report = (Report) event.getObject();
-		
-		List<TsDiskReportReference> references = diskService.getReferencesTo(report);
-		if(null != references && ! references.isEmpty()){
-			StringBuilder error = new StringBuilder("Report " + report.getId() + " is still referenced in TeamSpaces.");
-			throw new NeedForcefulDeleteException(error.toString());
-		}
-	}
+   @Inject
+   public HandleReportRemoveEvent(TsDiskService diskService) {
+      this.diskService = diskService;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      Report report = (Report) event.getObject();
+
+      List<TsDiskReportReference> references = diskService.getReferencesTo(report);
+      if (null != references && !references.isEmpty()) {
+         StringBuilder error = new StringBuilder("Report " + report.getId() + " is still referenced in TeamSpaces.");
+         throw new NeedForcefulDeleteException(error.toString());
+      }
+   }
 
 }

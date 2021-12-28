@@ -14,22 +14,21 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class UserVariablesUIStartup {
 
-	@Inject
-	public UserVariablesUIStartup(
-		final HookHandlerService hookHandler,
-		final SecurityUIService securityService,
-		
-		final ParameterProviderHooker parameterProvider,
-		
-		UserVariableAdminViewSecurityTargetDomainHooker securityTargetDomain,
-		MainPanelViewProviderHooker mainPanelViewProviderHooker
-		){
-		
-		hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProviderHooker, HookHandlerService.PRIORITY_LOW);
-	}
+   @Inject
+   public UserVariablesUIStartup(final HookHandlerService hookHandler, final SecurityUIService securityService,
+
+         final ParameterProviderHooker parameterProvider,
+
+         UserVariableAdminViewSecurityTargetDomainHooker securityTargetDomain,
+         MainPanelViewProviderHooker mainPanelViewProviderHooker) {
+
+      hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProviderHooker,
+            HookHandlerService.PRIORITY_LOW);
+   }
 }

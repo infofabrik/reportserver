@@ -46,7 +46,7 @@ public class ColumnFilter extends FilterSpec {
    public Collection<Column> getColumns() {
       if (null == column)
          return Collections.emptyList();
-      
+
       return Arrays.asList(column);
    }
 
@@ -54,7 +54,7 @@ public class ColumnFilter extends FilterSpec {
    public Map<String, Object> asMap() {
       if (null == column)
          return Collections.emptyMap();
-      
+
       Map<String, Object> asMap = new HashMap<>();
       asMap.put(column.getName(), column.getFilterAsMap());
       return asMap;

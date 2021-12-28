@@ -9,10 +9,10 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public interface TerminalCommandHook extends Hook {
 
-	boolean consumes(CommandParser parser, TerminalSession session);
+   boolean consumes(CommandParser parser, TerminalSession session);
 
-	CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException;
+   CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException;
 
-	void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session);
+   void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session);
 
 }

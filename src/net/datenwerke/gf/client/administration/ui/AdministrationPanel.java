@@ -13,56 +13,53 @@ import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 @Singleton
 public class AdministrationPanel extends DwBorderContainer {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-admin";
-	
-	@CssClassConstant
-	public static final String CSS_MAIN_NAME = "rs-admin-main";
-	
-	final private AdministrationNavPanel navigationPanel;
-	
-	@Inject
-	public AdministrationPanel(
-		AdministrationNavPanel navigationPanel
-		){
-		super();
-		
-		this.navigationPanel = navigationPanel;
-		
-		initializeUI();
-		
-		navigationPanel.setAdministrationPanel(this);
-	}
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-admin";
 
-	@Override
-	public String getCssName() {
-		return super.getCssName() + " " + CSS_NAME;
-	}
-	
-	public String getCssMainName() {
-		return CSS_MAIN_NAME;
-	}
+   @CssClassConstant
+   public static final String CSS_MAIN_NAME = "rs-admin-main";
 
+   final private AdministrationNavPanel navigationPanel;
 
-	private void initializeUI() {
-		/* set layout */
-		BorderLayoutData westData = new BorderLayoutData(200);
-		westData.setSplit(true);
-		westData.setCollapsible(true);
-		westData.setMargins(new Margins(0,15,0,0));
+   @Inject
+   public AdministrationPanel(AdministrationNavPanel navigationPanel) {
+      super();
 
-		setWestWidget(navigationPanel, westData);
-		setCenterWidget(DwContentPanel.newInlineInstance());
-	}
+      this.navigationPanel = navigationPanel;
 
-	public void showAdminModule(AdminModule adminModule) {
-		adminModule.notifyOfSelection();
-		
-		/* add module's widget */
-		Widget widget = adminModule.getMainWidget();
-		widget.getElement().addClassName(getCssMainName());
-		setCenterWidget(widget);
-		
-		forceLayout();
-	}
+      initializeUI();
+
+      navigationPanel.setAdministrationPanel(this);
+   }
+
+   @Override
+   public String getCssName() {
+      return super.getCssName() + " " + CSS_NAME;
+   }
+
+   public String getCssMainName() {
+      return CSS_MAIN_NAME;
+   }
+
+   private void initializeUI() {
+      /* set layout */
+      BorderLayoutData westData = new BorderLayoutData(200);
+      westData.setSplit(true);
+      westData.setCollapsible(true);
+      westData.setMargins(new Margins(0, 15, 0, 0));
+
+      setWestWidget(navigationPanel, westData);
+      setCenterWidget(DwContentPanel.newInlineInstance());
+   }
+
+   public void showAdminModule(AdminModule adminModule) {
+      adminModule.notifyOfSelection();
+
+      /* add module's widget */
+      Widget widget = adminModule.getMainWidget();
+      widget.getElement().addClassName(getCssMainName());
+      setCenterWidget(widget);
+
+      forceLayout();
+   }
 }

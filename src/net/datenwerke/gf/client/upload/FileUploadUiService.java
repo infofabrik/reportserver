@@ -15,40 +15,36 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public interface FileUploadUiService {
 
-	public interface UploadHandler {
-		void onSuccess(JSONValue json);
-		
-		void onError();
-	}
-	
-	FileUploadField addBaseUploadField(UploadProperties uploadProperties,
-			Container fieldWrapper);
+   public interface UploadHandler {
+      void onSuccess(JSONValue json);
 
-	String getFormAction();
+      void onError();
+   }
 
-	void handleUploadReturn(FormPanel form);
-	
-	void handleUploadReturn(FormPanel form, UploadHandler handler);
-	
-	void handleUploadReturn(SimpleForm form);
-	
-	void handleUploadReturn(SimpleForm form, UploadHandler handler);
+   FileUploadField addBaseUploadField(UploadProperties uploadProperties, Container fieldWrapper);
 
-	void prepareForUpload(SimpleForm form);
-	
-	void prepareForUpload(FormPanel form);
+   String getFormAction();
 
-	void attachHtmlUploadTo(Component component,
-			UploadProperties uploadProperties);
-	
-	Component addCombinedUploadField(UploadProperties properties);
+   void handleUploadReturn(FormPanel form);
 
-	Request uploadInterimFile(FileToUpload uploadedFile,
-			AsyncCallback<UploadResponse> rsAsyncCallback);
+   void handleUploadReturn(FormPanel form, UploadHandler handler);
 
-	String getValueOf(Component component);
+   void handleUploadReturn(SimpleForm form);
 
-	long getSize(FileUploadField field);
+   void handleUploadReturn(SimpleForm form, UploadHandler handler);
 
+   void prepareForUpload(SimpleForm form);
+
+   void prepareForUpload(FormPanel form);
+
+   void attachHtmlUploadTo(Component component, UploadProperties uploadProperties);
+
+   Component addCombinedUploadField(UploadProperties properties);
+
+   Request uploadInterimFile(FileToUpload uploadedFile, AsyncCallback<UploadResponse> rsAsyncCallback);
+
+   String getValueOf(Component component);
+
+   long getSize(FileUploadField field);
 
 }

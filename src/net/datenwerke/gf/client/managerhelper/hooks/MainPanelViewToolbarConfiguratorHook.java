@@ -8,8 +8,10 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface MainPanelViewToolbarConfiguratorHook extends Hook {
 
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode);
-	
-	public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode);
-	
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode);
+
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode);
+
 }

@@ -35,11 +35,11 @@ public class ScheduleAsScpFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private ScpService scpService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -56,17 +56,17 @@ public class ScheduleAsScpFileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-      
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-      
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -103,7 +103,7 @@ public class ScheduleAsScpFileAction extends AbstractAction {
          throw new ActionExecutionException("folder is empty");
 
    }
-   
+
    private void sendViaSCPDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {

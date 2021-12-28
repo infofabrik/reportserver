@@ -10,18 +10,14 @@ import net.datenwerke.rs.incubator.service.filterreplacements.today.TodayFilterR
 
 public class FilterReplacementsStartup {
 
-	@Inject
-	public FilterReplacementsStartup(
-		HookHandlerService hookHandler,
-		
-		TodayFilterReplacementProviderHooker todayFilter,
-		AggregateFilterReplacementProviderHooker aggFilter,
-		AnalyticalFilterReplacementProviderHooker analyticalFunctionFilter
-		){
-		
-		
-		hookHandler.attachHooker(FilterReplacementProviderHook.class, todayFilter);
-		hookHandler.attachHooker(FilterReplacementProviderHook.class, aggFilter);
-		hookHandler.attachHooker(FilterReplacementProviderHook.class, analyticalFunctionFilter);
-	}
+   @Inject
+   public FilterReplacementsStartup(HookHandlerService hookHandler,
+
+         TodayFilterReplacementProviderHooker todayFilter, AggregateFilterReplacementProviderHooker aggFilter,
+         AnalyticalFilterReplacementProviderHooker analyticalFunctionFilter) {
+
+      hookHandler.attachHooker(FilterReplacementProviderHook.class, todayFilter);
+      hookHandler.attachHooker(FilterReplacementProviderHook.class, aggFilter);
+      hookHandler.attachHooker(FilterReplacementProviderHook.class, analyticalFunctionFilter);
+   }
 }

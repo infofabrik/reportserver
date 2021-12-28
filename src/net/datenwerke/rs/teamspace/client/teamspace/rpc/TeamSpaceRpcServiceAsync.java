@@ -10,31 +10,27 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 
 public interface TeamSpaceRpcServiceAsync {
 
-	void getPrimarySpace(AsyncCallback<TeamSpaceDto> callback);
-	
-	void getExplicitPrimarySpace(AsyncCallback<TeamSpaceDto> callback);
+   void getPrimarySpace(AsyncCallback<TeamSpaceDto> callback);
 
-	void setPrimarySpace(TeamSpaceDto teamSpaceDto, AsyncCallback<Void> callback);
-	
-	void reloadTeamSpace(TeamSpaceDto teamSpace,
-			AsyncCallback<TeamSpaceDto> callback);
-	
-	void createNewTeamSpace(TeamSpaceDto dummySpace,
-			AsyncCallback<TeamSpaceDto> callback);
+   void getExplicitPrimarySpace(AsyncCallback<TeamSpaceDto> callback);
 
-	void loadTeamSpaces(AsyncCallback<ListLoadResult<TeamSpaceDto>> callback);
+   void setPrimarySpace(TeamSpaceDto teamSpaceDto, AsyncCallback<Void> callback);
 
-	void removeTeamSpace(TeamSpaceDto teamSpace, AsyncCallback<Void> callback);
+   void reloadTeamSpace(TeamSpaceDto teamSpace, AsyncCallback<TeamSpaceDto> callback);
 
-	void editTeamSpaceSettings(TeamSpaceDto space,
-			AsyncCallback<TeamSpaceDto> callback);
+   void createNewTeamSpace(TeamSpaceDto dummySpace, AsyncCallback<TeamSpaceDto> callback);
 
-	void setMembers(TeamSpaceDto teamSpace,
-			Collection<StrippedDownTeamSpaceMemberDto> members,
-			AsyncCallback<TeamSpaceDto> callback);
+   void loadTeamSpaces(AsyncCallback<ListLoadResult<TeamSpaceDto>> callback);
 
-	void loadAllTeamSpaces(AsyncCallback<ListLoadResult<TeamSpaceDto>> callback);
+   void removeTeamSpace(TeamSpaceDto teamSpace, AsyncCallback<Void> callback);
 
-	void reloadTeamSpaceForEdit(TeamSpaceDto teamSpaceDto, AsyncCallback<TeamSpaceDto> callback);
-	
+   void editTeamSpaceSettings(TeamSpaceDto space, AsyncCallback<TeamSpaceDto> callback);
+
+   void setMembers(TeamSpaceDto teamSpace, Collection<StrippedDownTeamSpaceMemberDto> members,
+         AsyncCallback<TeamSpaceDto> callback);
+
+   void loadAllTeamSpaces(AsyncCallback<ListLoadResult<TeamSpaceDto>> callback);
+
+   void reloadTeamSpaceForEdit(TeamSpaceDto teamSpaceDto, AsyncCallback<TeamSpaceDto> callback);
+
 }

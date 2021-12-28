@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.MisfireInstructionDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.entities.MisfireInstruction.class)
 public interface MisfireInstructionDtoPA extends PropertyAccess<MisfireInstructionDto> {
 
-
-
 }

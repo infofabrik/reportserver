@@ -8,15 +8,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class CommaSeparatorToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof CommaSeparatorExpressionToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof CommaSeparatorExpressionToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		return ",";
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      return ",";
+   }
 
 }

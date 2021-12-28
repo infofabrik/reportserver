@@ -7,9 +7,10 @@ import java.lang.annotation.Target;
 
 import net.datenwerke.rs.utils.eventbus.Event;
 
-@Retention(RetentionPolicy.RUNTIME) 
-@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
 public @interface FireEvent {
-	Class<? extends Event> event();
-	EventProperty[] properties() default {};
+   Class<? extends Event> event();
+
+   EventProperty[] properties() default {};
 }

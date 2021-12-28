@@ -10,43 +10,43 @@ import com.sencha.gxt.widget.core.client.form.Field;
 
 public class DwFieldAdapter<D> extends AdapterField<D> {
 
-	protected Field<D> field;
+   protected Field<D> field;
 
-	public DwFieldAdapter(Widget widget, Field<D> field) {
-		super(widget);
-		this.field = field;
-		
-		addListeners();
-	}
+   public DwFieldAdapter(Widget widget, Field<D> field) {
+      super(widget);
+      this.field = field;
 
-	protected void addListeners() {
-		field.addValueChangeHandler(new ValueChangeHandler<D>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<D> event) {
-				DwFieldAdapter.this.fireEvent(event);
-			}
-		});
+      addListeners();
+   }
 
-		field.addBlurHandler(new BlurHandler() {
-			
-			@Override
-			public void onBlur(BlurEvent event) {
-				DwFieldAdapter.this.fireEvent(new BlurEvent());
-			}
-		});
-	}
+   protected void addListeners() {
+      field.addValueChangeHandler(new ValueChangeHandler<D>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<D> event) {
+            DwFieldAdapter.this.fireEvent(event);
+         }
+      });
 
-	@Override
-	public D getValue() {
-		return field.getValue();
-	}
-	
-	public void setValue(final Object value) {
-		field.setValue((D)value, true);
-	}
-	
-	@Override
-	public void setSize(String width, String height) {
-		getWidget().setSize(width, height);
-	}
+      field.addBlurHandler(new BlurHandler() {
+
+         @Override
+         public void onBlur(BlurEvent event) {
+            DwFieldAdapter.this.fireEvent(new BlurEvent());
+         }
+      });
+   }
+
+   @Override
+   public D getValue() {
+      return field.getValue();
+   }
+
+   public void setValue(final Object value) {
+      field.setValue((D) value, true);
+   }
+
+   @Override
+   public void setSize(String width, String height) {
+      getWidget().setSize(width, height);
+   }
 }

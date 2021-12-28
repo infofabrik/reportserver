@@ -4,9 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class SuUserUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(SuUserUIStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(SuUserUIStartup.class).asEagerSingleton();
+   }
 
 }

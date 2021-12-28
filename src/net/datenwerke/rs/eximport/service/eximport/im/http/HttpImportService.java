@@ -12,31 +12,28 @@ import net.datenwerke.eximport.obj.ExportedItem;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfigDto;
 
-
 public interface HttpImportService {
 
-	boolean hasCurrentConfig();
+   boolean hasCurrentConfig();
 
-	HttpImportConfiguration getCurrentConfig();
+   HttpImportConfiguration getCurrentConfig();
 
-	void invalidateCurrentConfig();
+   void invalidateCurrentConfig();
 
-	HttpImportConfiguration createNewConfig();
+   HttpImportConfiguration createNewConfig();
 
-	void setData(String xmldata) throws InvalidImportDocumentException;
+   void setData(String xmldata) throws InvalidImportDocumentException;
 
-	Collection<String> getInvolvedExporterIds();
+   Collection<String> getInvolvedExporterIds();
 
-	void resetImportConfig();
+   void resetImportConfig();
 
-	void addItemConfig(ImportItemConfig nodeConfig);
+   void addItemConfig(ImportItemConfig nodeConfig);
 
-	void configureImport(Map<String, ImportConfigDto> configMap);
+   void configureImport(Map<String, ImportConfigDto> configMap);
 
-	List<ExportedItem> getExportedItemsFor(
-			Class<? extends Exporter> exporterType) throws ClassNotFoundException;
+   List<ExportedItem> getExportedItemsFor(Class<? extends Exporter> exporterType) throws ClassNotFoundException;
 
-	void runPostProcess(Map<String, ImportPostProcessConfigDto> configMap,
-			ImportResult result);
+   void runPostProcess(Map<String, ImportPostProcessConfigDto> configMap, ImportResult result);
 
 }

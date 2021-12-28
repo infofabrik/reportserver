@@ -32,119 +32,112 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogE
 import net.datenwerke.scheduler.service.scheduler.hooks.adapter.SchedulerExecutionHookAdapter;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public class ScheduleAsFtpsFileEmailNotificationHooker extends SchedulerExecutionHookAdapter{
-    private static final String PROPERTY_FOLDER = "folder";
-    private static final String PROPERTY_NAME = "name";
-    private static final String PROPERTY_REPORT = "report";
-    private static final String PROPERTY_JOB = "job";
-    private static final String PROPERTY_FILENAME = "filename";
-    private static final String PROPERTY_EXECUTOR = "executor";
-    private static final String PROPERTY_SCHEDULED_BY = "scheduledBy";
-    private static final String PROPERTY_OWNERS = "owners";
-    
-    public static final String PROPERTY_EXCEPTION = "exception";
-    public static final String PROPERTY_EXCEPTIONST= "trace";
-    
-    public static final String PROPERTY_FTPS_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionFtps.subject";
-    public static final String PROPERTY_FTPS_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionFtps.text";
+public class ScheduleAsFtpsFileEmailNotificationHooker extends SchedulerExecutionHookAdapter {
+   private static final String PROPERTY_FOLDER = "folder";
+   private static final String PROPERTY_NAME = "name";
+   private static final String PROPERTY_REPORT = "report";
+   private static final String PROPERTY_JOB = "job";
+   private static final String PROPERTY_FILENAME = "filename";
+   private static final String PROPERTY_EXECUTOR = "executor";
+   private static final String PROPERTY_SCHEDULED_BY = "scheduledBy";
+   private static final String PROPERTY_OWNERS = "owners";
 
-    private static final String PROPERTY_FTPS_NOTIFICATION_DISABLED = "scheduler.fileactionFtps[@disabled]";
-    private static final String PROPERTY_FTPS_NOTIFICATION_HTML = "scheduler.fileactionFtps[@html]";
+   public static final String PROPERTY_EXCEPTION = "exception";
+   public static final String PROPERTY_EXCEPTIONST = "trace";
 
+   public static final String PROPERTY_FTPS_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionFtps.subject";
+   public static final String PROPERTY_FTPS_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionFtps.text";
 
-    private Configuration config;
-    private MailService mailService;
+   private static final String PROPERTY_FTPS_NOTIFICATION_DISABLED = "scheduler.fileactionFtps[@disabled]";
+   private static final String PROPERTY_FTPS_NOTIFICATION_HTML = "scheduler.fileactionFtps[@html]";
 
-    private RemoteMessageService remoteMessageService;
-    
-    @Inject
-    public ScheduleAsFtpsFileEmailNotificationHooker(
-            @SchedulerModuleProperties Configuration config,
-            MailService mailService,
-            RemoteMessageService remoteMessageService) {
-        
-        this.config = config;
-        this.mailService = mailService;
-        this.remoteMessageService = remoteMessageService;
-    }
-    
-    @Override
-    public void actionExecutionEndedSuccessfully(AbstractJob abstractJob,
-            AbstractAction abstractAction, ExecutionLogEntry logEntry) {
-        if(! (abstractJob instanceof ReportExecuteJob))
-            return;
-        
-        if(! (abstractAction instanceof ScheduleAsFtpsFileAction))
-            return;
+   private Configuration config;
+   private MailService mailService;
 
-        ReportExecuteJob job = (ReportExecuteJob) abstractJob;
-        
-        try {
-            sendmail((ScheduleAsFtpsFileAction) abstractAction, job, null);
-        } catch (MessagingException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-    }
-    
+   private RemoteMessageService remoteMessageService;
 
-    private void sendmail(ScheduleAsFtpsFileAction action, ReportExecuteJob job, Exception e) throws MessagingException{
-        if(config.getBoolean(PROPERTY_FTPS_NOTIFICATION_DISABLED, false))
-            return;
-        
-        List<User> recipients = ((ReportExecuteJob)job).getRecipients();
-        if(null == recipients || recipients.isEmpty())
-            return;
-        
-        Map<String, Object> datamap = new HashMap<String, Object>();
-        
-        datamap.put(PROPERTY_REPORT, new ReportForJuel(action.getReport()));
-        datamap.put(PROPERTY_JOB, new ReportJobForJuel(job));
-        UserForJuel executor = UserForJuel.createInstance(job.getExecutor());
-        datamap.put("user", executor);
-        datamap.put(PROPERTY_EXECUTOR, executor);
-        datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
-        
-        datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()), 
+   @Inject
+   public ScheduleAsFtpsFileEmailNotificationHooker(@SchedulerModuleProperties Configuration config,
+         MailService mailService, RemoteMessageService remoteMessageService) {
+
+      this.config = config;
+      this.mailService = mailService;
+      this.remoteMessageService = remoteMessageService;
+   }
+
+   @Override
+   public void actionExecutionEndedSuccessfully(AbstractJob abstractJob, AbstractAction abstractAction,
+         ExecutionLogEntry logEntry) {
+      if (!(abstractJob instanceof ReportExecuteJob))
+         return;
+
+      if (!(abstractAction instanceof ScheduleAsFtpsFileAction))
+         return;
+
+      ReportExecuteJob job = (ReportExecuteJob) abstractJob;
+
+      try {
+         sendmail((ScheduleAsFtpsFileAction) abstractAction, job, null);
+      } catch (MessagingException e) {
+         // TODO Auto-generated catch block
+         e.printStackTrace();
+      }
+   }
+
+   private void sendmail(ScheduleAsFtpsFileAction action, ReportExecuteJob job, Exception e) throws MessagingException {
+      if (config.getBoolean(PROPERTY_FTPS_NOTIFICATION_DISABLED, false))
+         return;
+
+      List<User> recipients = ((ReportExecuteJob) job).getRecipients();
+      if (null == recipients || recipients.isEmpty())
+         return;
+
+      Map<String, Object> datamap = new HashMap<String, Object>();
+
+      datamap.put(PROPERTY_REPORT, new ReportForJuel(action.getReport()));
+      datamap.put(PROPERTY_JOB, new ReportJobForJuel(job));
+      UserForJuel executor = UserForJuel.createInstance(job.getExecutor());
+      datamap.put("user", executor);
+      datamap.put(PROPERTY_EXECUTOR, executor);
+      datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
+
+      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
             config.getBoolean(PROPERTY_FTPS_NOTIFICATION_HTML, false)));
 
-        datamap.put(PROPERTY_FOLDER, action.getFolder());
-        datamap.put(PROPERTY_NAME, action.getFilename());
-        datamap.put(PROPERTY_FILENAME, action.getFilename());
-        
-        if(null != e){
-            datamap.put(PROPERTY_EXCEPTION, e);
-            ByteArrayOutputStream bos = new ByteArrayOutputStream();
-            PrintWriter pw = new PrintWriter(bos);
-            e.printStackTrace(pw);
-            pw.close();
-            datamap.put(PROPERTY_EXCEPTIONST, bos.toString());
-        }
-        
-        String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
-        
-        HashMap<String, HashMap<String, String>> msgs = remoteMessageService.getMessages(currentLanguage);
-        datamap.put("msgs", msgs);
-        
-        String subjectTemplate = config.getString(PROPERTY_FTPS_NOTIFICATION_SUBJECT_SUCCESS, 
-                msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpsMsgSubject"));
-        String messageTemplate = config.getString(PROPERTY_FTPS_NOTIFICATION_TEXT_SUCCESS,
-                msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpsMsgText"));
-        
-        
-        MailTemplate mailTemplate = new MailTemplate();
-        mailTemplate.setHtml(config.getBoolean(PROPERTY_FTPS_NOTIFICATION_HTML, false));
-        mailTemplate.setSubjectTemplate(subjectTemplate);
-        mailTemplate.setMessageTemplate(messageTemplate);
-        mailTemplate.setDataMap(datamap);
-        
-        SimpleMail simpleMail = mailService.newTemplateMail(mailTemplate);
-        simpleMail.setRecipients(javax.mail.Message.RecipientType.BCC, 
-                mailService.getEmailList(recipients)
-                    .stream()
-                    .toArray(Address[]::new));
-    
-        mailService.sendMail(simpleMail);
-    }
+      datamap.put(PROPERTY_FOLDER, action.getFolder());
+      datamap.put(PROPERTY_NAME, action.getFilename());
+      datamap.put(PROPERTY_FILENAME, action.getFilename());
+
+      if (null != e) {
+         datamap.put(PROPERTY_EXCEPTION, e);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         PrintWriter pw = new PrintWriter(bos);
+         e.printStackTrace(pw);
+         pw.close();
+         datamap.put(PROPERTY_EXCEPTIONST, bos.toString());
+      }
+
+      String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
+
+      HashMap<String, HashMap<String, String>> msgs = remoteMessageService.getMessages(currentLanguage);
+      datamap.put("msgs", msgs);
+
+      String subjectTemplate = config.getString(PROPERTY_FTPS_NOTIFICATION_SUBJECT_SUCCESS,
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpsMsgSubject"));
+      String messageTemplate = config.getString(PROPERTY_FTPS_NOTIFICATION_TEXT_SUCCESS,
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpsMsgText"));
+
+      MailTemplate mailTemplate = new MailTemplate();
+      mailTemplate.setHtml(config.getBoolean(PROPERTY_FTPS_NOTIFICATION_HTML, false));
+      mailTemplate.setSubjectTemplate(subjectTemplate);
+      mailTemplate.setMessageTemplate(messageTemplate);
+      mailTemplate.setDataMap(datamap);
+
+      SimpleMail simpleMail = mailService.newTemplateMail(mailTemplate);
+      simpleMail.setRecipients(javax.mail.Message.RecipientType.BCC,
+            mailService.getEmailList(recipients).stream().toArray(Address[]::new));
+
+      mailService.sendMail(simpleMail);
+   }
 
 }

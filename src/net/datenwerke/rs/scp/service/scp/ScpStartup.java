@@ -15,15 +15,12 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 
 public class ScpStartup {
    @Inject
-   public ScpStartup(
-         HookHandlerService hookHandler, 
-         Provider<ScpDatasinkProviderHooker> scpDatasinkProvider,
+   public ScpStartup(HookHandlerService hookHandler, Provider<ScpDatasinkProviderHooker> scpDatasinkProvider,
          Provider<ScheduleConfigAsScpFileHooker> scheduleAsScpFileConfigHooker,
          Provider<ScheduleAsScpFileEmailNotificationHooker> emailScpNotificationHooker,
-         
-         Provider<ScpPrivateKeyUploadHooker> scpPrivateKeyUploadHooker
-   ) {
-      
+
+         Provider<ScpPrivateKeyUploadHooker> scpPrivateKeyUploadHooker) {
+
       hookHandler.attachHooker(FileUploadHandlerHook.class, scpPrivateKeyUploadHooker);
 
       hookHandler.attachHooker(DatasinkProviderHook.class, scpDatasinkProvider);

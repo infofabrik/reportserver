@@ -12,23 +12,23 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface ConditionService {
 
-	public ReportCondition getReportConditionById(Long id);
-	
-	public List<ReportCondition> getReportConditions();
-	
-	public void persist(ReportCondition condition);
-	
-	public ReportCondition merge(ReportCondition condition);
-	
-	public void remove(ReportCondition condition);
+   public ReportCondition getReportConditionById(Long id);
 
-	public List<String> getReplacementsFor(ReportCondition condition);
+   public List<ReportCondition> getReportConditions();
 
-	public boolean executeCondition(Condition condition, String expression) throws ReportExecutorException;
+   public void persist(ReportCondition condition);
 
-	public boolean executeCondition(Condition condition, String expression, User user) throws ReportExecutorException;
-	
-	public List<ReportCondition> getReportConditionsFor(TableReport report);
+   public ReportCondition merge(ReportCondition condition);
 
-	List<SimpleCondition> getSimpleConditionsFor(Report report);
+   public void remove(ReportCondition condition);
+
+   public List<String> getReplacementsFor(ReportCondition condition);
+
+   public boolean executeCondition(Condition condition, String expression) throws ReportExecutorException;
+
+   public boolean executeCondition(Condition condition, String expression, User user) throws ReportExecutorException;
+
+   public List<ReportCondition> getReportConditionsFor(TableReport report);
+
+   List<SimpleCondition> getSimpleConditionsFor(Report report);
 }

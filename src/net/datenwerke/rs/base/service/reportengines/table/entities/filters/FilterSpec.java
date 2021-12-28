@@ -24,62 +24,55 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 
 @Audited
 @Entity
-@Table(name="FILTER_SPEC")
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator = true,
-	displayTitle = "toDisplayTitle()",
-	abstractDto = true
-)
+@Table(name = "FILTER_SPEC")
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true, displayTitle = "toDisplayTitle()", abstractDto = true)
 public abstract class FilterSpec implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1115601157549509981L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1115601157549509981L;
 
-	@ExposeToClient(
-		view=DtoView.MINIMAL
-	)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Version
-	private Long version;
-	
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public abstract Collection<Column> getColumns();
-	
-	public abstract Map<String, Object> asMap();
-	
-	
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public abstract Collection<Column> getColumns();
+
+   public abstract Map<String, Object> asMap();
+
 }

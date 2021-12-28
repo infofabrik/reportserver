@@ -79,15 +79,16 @@ public class AdminResource {
 //        IDatasourceManager repositoryDatasourceManager) {
 //        this.repositoryDatasourceManager = repositoryDatasourceManager;
 //    }
-    /**
-     * Get all the available data sources on the platform.
-     * @return A response containing a list of datasources.
-     */
-    @GET
-    @Produces( {"application/json"})
-    @Path("/datasources")
+   /**
+    * Get all the available data sources on the platform.
+    * 
+    * @return A response containing a list of datasources.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/datasources")
 //    @ReturnType("java.lang.List<SaikuDatasource>")
-    public Response getAvailableDataSources() {
+   public Response getAvailableDataSources() {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -101,21 +102,22 @@ public class AdminResource {
 //            log.error(this.getClass().getName(), e);
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage()).type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Update a specific Saiku data source.
-     * @param json The Json data source object
-     * @param id The datasource id.
-     * @return A response containing the datasource.
-     */
-    @PUT
-    @Produces( {"application/json"})
-    @Consumes( {"application/json"})
-    @Path("/datasources/{id}")
+   /**
+    * Update a specific Saiku data source.
+    * 
+    * @param json The Json data source object
+    * @param id   The datasource id.
+    * @return A response containing the datasource.
+    */
+   @PUT
+   @Produces({ "application/json" })
+   @Consumes({ "application/json" })
+   @Path("/datasources/{id}")
 //    @ReturnType("org.saiku.web.rest.objects.DataSourceMapper")
-    public Response updateDatasource(DataSourceMapper json, @PathParam("id") String id) {
+   public Response updateDatasource(DataSourceMapper json, @PathParam("id") String id) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -128,19 +130,20 @@ public class AdminResource {
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage())
 //                           .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Refresh a Saiku data source.
-     * @param id The data source id.
-     * @return A response containing the data source definition.
-     */
-    @GET
-    @Produces( {"application/json"})
-    @Path("/datasources/{id}/refresh")
+   /**
+    * Refresh a Saiku data source.
+    * 
+    * @param id The data source id.
+    * @return A response containing the data source definition.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/datasources/{id}/refresh")
 //    @ReturnType("java.util.List<SaikuConnection>")
-    public Response refreshDatasource(@PathParam("id") String id) {
+   public Response refreshDatasource(@PathParam("id") String id) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -153,21 +156,22 @@ public class AdminResource {
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage())
 //                           .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
+      throw new RuntimeException("not implemented");
 
-    }
+   }
 
-    /**
-     * Create a data source on the Saiku server.
-     * @param json The json data source object
-     * @return A response containing the data source object
-     */
-    @POST
-    @Produces( {"application/json"})
-    @Consumes( {"application/json"})
-    @Path("/datasources")
+   /**
+    * Create a data source on the Saiku server.
+    * 
+    * @param json The json data source object
+    * @return A response containing the data source object
+    */
+   @POST
+   @Produces({ "application/json" })
+   @Consumes({ "application/json" })
+   @Path("/datasources")
 //    @ReturnType("org.saiku.web.rest.objects.DataSourceMapper")
-    public Response createDatasource(DataSourceMapper json) {
+   public Response createDatasource(DataSourceMapper json) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -181,58 +185,62 @@ public class AdminResource {
 //                           .entity(e.getLocalizedMessage())
 //                           .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Delete data source from the Saiku server
-     * @param id The data source ID
-     * @return A response containing a list of data sources remaining on the platform.
-     */
-    @DELETE
-    @Path("/datasources/{id}")
-    public Response deleteDatasource(@PathParam("id") String id) {
+   /**
+    * Delete data source from the Saiku server
+    * 
+    * @param id The data source ID
+    * @return A response containing a list of data sources remaining on the
+    *         platform.
+    */
+   @DELETE
+   @Path("/datasources/{id}")
+   public Response deleteDatasource(@PathParam("id") String id) {
 //
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        datasourceService.removeDatasource(id);
 //        return Response.ok().type("application/json").entity(datasourceService.getDatasources()).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get all the available schema.
-     * @return A list of schema
-     */
-    @GET
-    @Produces( {"application/json"})
-    @Path("/schema")
+   /**
+    * Get all the available schema.
+    * 
+    * @return A list of schema
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/schema")
 //    @ReturnType("java.util.List<MondrianSchema>")
-    public Response getAvailableSchema() {
+   public Response getAvailableSchema() {
 //
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        return Response.ok().entity(datasourceService.getAvailableSchema()).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Upload a new schema to the Saiku server.
-     * @param is Input stream (file form data param)
-     * @param detail Detail (file form data param)
-     * @param name Schema name
-     * @param id Schema id
-     * @return A response containing a list of available schema.
-     */
-    @PUT
-    @Produces( {"application/json"})
-    @Consumes(MediaType.MULTIPART_FORM_DATA)
-    @Path("/schema/{id}")
+   /**
+    * Upload a new schema to the Saiku server.
+    * 
+    * @param is     Input stream (file form data param)
+    * @param detail Detail (file form data param)
+    * @param name   Schema name
+    * @param id     Schema id
+    * @return A response containing a list of available schema.
+    */
+   @PUT
+   @Produces({ "application/json" })
+   @Consumes(MediaType.MULTIPART_FORM_DATA)
+   @Path("/schema/{id}")
 //    @ReturnType("java.util.List<MondrianSchema>")
-    public Response uploadSchemaPut(InputStream is, FormDataContentDisposition detail,
-          String name, @PathParam("id") String id) {
+   public Response uploadSchemaPut(InputStream is, FormDataContentDisposition detail, String name,
+         @PathParam("id") String id) {
 //    public Response uploadSchemaPut(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail,
 //                                    @FormDataParam("name") String name, @PathParam("id") String id) {
 //        if(!userService.isAdmin()){
@@ -249,25 +257,26 @@ public class AdminResource {
 //                           .entity(e.getLocalizedMessage())
 //                           .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
+      throw new RuntimeException("not implemented");
 
-    }
+   }
 
-    /**
-     * Upload new schema to the Saiku server
-     * @param is Input stream (file form data param)
-     * @param detail Detail (file form data param)
-     * @param name Schema name
-     * @param id Schema id
-     * @return A response containing a list of available schema.
-     */
-    @POST
-    @Produces( {"application/json"})
-    @Consumes("multipart/form-data")
-    @Path("/schema/{id}")
+   /**
+    * Upload new schema to the Saiku server
+    * 
+    * @param is     Input stream (file form data param)
+    * @param detail Detail (file form data param)
+    * @param name   Schema name
+    * @param id     Schema id
+    * @return A response containing a list of available schema.
+    */
+   @POST
+   @Produces({ "application/json" })
+   @Consumes("multipart/form-data")
+   @Path("/schema/{id}")
 //    @ReturnType("java.util.List<MondrianSchema>")
-    public Response uploadSchema(InputStream is, FormDataContentDisposition detail,
-          String name, @PathParam("id") String id) {
+   public Response uploadSchema(InputStream is, FormDataContentDisposition detail, String name,
+         @PathParam("id") String id) {
 //    public Response uploadSchema(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail,
 //                                 @FormDataParam("name") String name, @PathParam("id") String id) {
 //        if(!userService.isAdmin()){
@@ -284,21 +293,22 @@ public class AdminResource {
 //                           .entity(e.getLocalizedMessage())
 //                           .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Updates the locale parameter of the datasource
-     * @param locale the new locale for the data source
-     * @param datasourceName ID of the data source whose locale should be changed
-     * @return Response indicating success or fail
-     */
-    @PUT
-    @Produces({"application/json"})
-    @Consumes({"application/json"})
-    @Path("/datasources/{datasourceName}/locale")
+   /**
+    * Updates the locale parameter of the datasource
+    * 
+    * @param locale         the new locale for the data source
+    * @param datasourceName ID of the data source whose locale should be changed
+    * @return Response indicating success or fail
+    */
+   @PUT
+   @Produces({ "application/json" })
+   @Consumes({ "application/json" })
+   @Path("/datasources/{datasourceName}/locale")
 //    @ReturnType("org.saiku.web.rest.objects.DataSourceMapper")
-    public Response updateDatasourceLocale(String locale, @PathParam("datasourceName") String datasourceName) {
+   public Response updateDatasourceLocale(String locale, @PathParam("datasourceName") String datasourceName) {
 //        try {
 //            boolean overwrite = true;
 //            SaikuDatasource saikuDatasource = datasourceService.getDatasource(datasourceName);
@@ -311,52 +321,55 @@ public class AdminResource {
 //            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage())
 //                .type("text/plain").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get existing Saiku users from the Saiku server.
-     * @return A list of available users.
-     */
-    @GET
-    @Produces( {"application/json"})
-    @Path("/users")
+   /**
+    * Get existing Saiku users from the Saiku server.
+    * 
+    * @return A list of available users.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/users")
 //    @ReturnType("java.util.List<SaikuUser>")
-    public Response getExistingUsers() {
+   public Response getExistingUsers() {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        return Response.ok().entity(userService.getUsers()).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Delete a schema from the Saiku server.
-     * @param id The schema ID.
-     * @return A response containing available schema.
-     */
-    @DELETE
-    @Path("/schema/{id}")
+   /**
+    * Delete a schema from the Saiku server.
+    * 
+    * @param id The schema ID.
+    * @return A response containing available schema.
+    */
+   @DELETE
+   @Path("/schema/{id}")
 //    @ReturnType("java.util.List<MondrianSchema>")
-    public Response deleteSchema(@PathParam("id") String id) {
+   public Response deleteSchema(@PathParam("id") String id) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        datasourceService.removeSchema(id);
 //        return Response.status(Response.Status.NO_CONTENT).entity(datasourceService.getAvailableSchema()).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get Saved Schema By ID
-     * @param id
-     * @return a schema file.
-     */
-    @GET
-    @Path("/schema/{id}")
-    @Produces("application/xml")
+   /**
+    * Get Saved Schema By ID
+    * 
+    * @param id
+    * @return a schema file.
+    */
+   @GET
+   @Path("/schema/{id}")
+   @Produces("application/xml")
 //    @ReturnType("MondrianSchema")
-    public Response getSavedSchema(@PathParam("id") String id){
+   public Response getSavedSchema(@PathParam("id") String id) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -377,86 +390,91 @@ public class AdminResource {
 //            .ok(p.getBytes(), MediaType.APPLICATION_OCTET_STREAM)
 //            .header("content-disposition", "attachment; filename = " + id)
 //            .build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Import a legacy data source into the Saiku server.
-     * @return A status 200.
-     */
-    @GET
-    @Path("/datasource/import")
-    public Response importLegacyDatasources() {
+   /**
+    * Import a legacy data source into the Saiku server.
+    * 
+    * @return A status 200.
+    */
+   @GET
+   @Path("/datasource/import")
+   public Response importLegacyDatasources() {
 //
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        datasourceService.importLegacyDatasources();
 //        return Response.ok().build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Import legacy schema.
-     * @return A status 200
-     */
-    @GET
-    @Path("/schema/import")
-    public Response importLegacySchema() {
+   /**
+    * Import legacy schema.
+    * 
+    * @return A status 200
+    */
+   @GET
+   @Path("/schema/import")
+   public Response importLegacySchema() {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //
 //        datasourceService.importLegacySchema();
 //        return Response.ok().build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Import legacy users into the Saiku server/
-     * @return A status 200.
-     */
-    @GET
-    @Path("/users/import")
-    public Response importLegacyUsers() {
+   /**
+    * Import legacy users into the Saiku server/
+    * 
+    * @return A status 200.
+    */
+   @GET
+   @Path("/users/import")
+   public Response importLegacyUsers() {
 //
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        datasourceService.importLegacyUsers();
 //        return Response.ok().build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get user details for a user in the Saiku server.
-     * @param id The user ID.
-     * @return A response containing the user details object for the selected user.
-     */
-    @GET
-    @Produces( {"application/json"})
-    @Path("/users/{id}")
+   /**
+    * Get user details for a user in the Saiku server.
+    * 
+    * @param id The user ID.
+    * @return A response containing the user details object for the selected user.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/users/{id}")
 //    @ReturnType("org.saiku.database.dto.SaikuUser")
-    public Response getUserDetails(@PathParam("id") int id) {
+   public Response getUserDetails(@PathParam("id") int id) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        return Response.ok().entity(userService.getUser(id)).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Update a users user details on the Saiku server.
-     * @param jsonString SaikuUser object.
-     * @param userName The username for the user to be updated.
-     * @return A response containing a user object.
-     */
-    @PUT
-    @Produces( {"application/json"})
-    @Consumes("application/json")
-    @Path("/users/{username}")
+   /**
+    * Update a users user details on the Saiku server.
+    * 
+    * @param jsonString SaikuUser object.
+    * @param userName   The username for the user to be updated.
+    * @return A response containing a user object.
+    */
+   @PUT
+   @Produces({ "application/json" })
+   @Consumes("application/json")
+   @Path("/users/{username}")
 //    @ReturnType("org.saiku.database.dto.SaikuUser")
-    public Response updateUserDetails(SaikuUser jsonString, @PathParam("username") String userName) {
+   public Response updateUserDetails(SaikuUser jsonString, @PathParam("username") String userName) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -466,51 +484,54 @@ public class AdminResource {
 //        else{
 //            return Response.ok().entity(userService.updateUser(jsonString, true)).build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Create user details on the Saiku server.
-     * @param jsonString SaikuUser object
-     * @return A response containing the user object.
-     */
-    @POST
-    @Produces( {"application/json"})
-    @Consumes( {"application/json"})
-    @Path("/users")
+   /**
+    * Create user details on the Saiku server.
+    * 
+    * @param jsonString SaikuUser object
+    * @return A response containing the user object.
+    */
+   @POST
+   @Produces({ "application/json" })
+   @Consumes({ "application/json" })
+   @Path("/users")
 //    @ReturnType("org.saiku.database.dto.SaikuUser")
-    public Response createUserDetails(SaikuUser jsonString) {
+   public Response createUserDetails(SaikuUser jsonString) {
 //
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        return Response.ok().entity(userService.addUser(jsonString)).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Delete a user from the Saiku server.
-     * @param username The username to remove
-     * @return A status 200.
-     */
-    @DELETE
-    @Produces( {"application/json"})
-    @Path("/users/{username}")
-    public Response removeUser(@PathParam("username") String username) {
+   /**
+    * Delete a user from the Saiku server.
+    * 
+    * @param username The username to remove
+    * @return A status 200.
+    */
+   @DELETE
+   @Produces({ "application/json" })
+   @Path("/users/{username}")
+   public Response removeUser(@PathParam("username") String username) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
 //        userService.removeUser(username);
 //        return Response.ok().build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get string from an input stream object.
-     * @param is The input stream to convert.
-     * @return A string representation of the input stream.
-     */
-    private static String getStringFromInputStream(InputStream is) {
+   /**
+    * Get string from an input stream object.
+    * 
+    * @param is The input stream to convert.
+    * @return A string representation of the input stream.
+    */
+   private static String getStringFromInputStream(InputStream is) {
 //
 //        BufferedReader br = null;
 //        StringBuilder sb = new StringBuilder();
@@ -536,18 +557,19 @@ public class AdminResource {
 //        }
 //
 //        return sb.toString();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Get the Saiku server version.
-     * @return A Response containing the Saiku server version.
-     */
-    @GET
-    @Produces("text/plain")
-    @Path("/version")
+   /**
+    * Get the Saiku server version.
+    * 
+    * @return A Response containing the Saiku server version.
+    */
+   @GET
+   @Produces("text/plain")
+   @Path("/version")
 //    @ReturnType("java.lang.String")
-    public Response getVersion(){
+   public Response getVersion() {
 //        Properties prop = new Properties();
 //        InputStream input = null;
 //        String version = "";
@@ -566,17 +588,18 @@ public class AdminResource {
 //            log.error("IO Exception when reading input stream", ex);
 //        }
 //        return Response.ok().entity(version).type("text/plain").build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Backup the Saiku server repository.
-     * @return A Zip file containing the backup.
-     */
-    @GET
-    @Produces("application/zip")
-    @Path("/backup")
-    public StreamingOutput getBackup(){
+   /**
+    * Backup the Saiku server repository.
+    * 
+    * @return A Zip file containing the backup.
+    */
+   @GET
+   @Produces("application/zip")
+   @Path("/backup")
+   public StreamingOutput getBackup() {
 //        if(!userService.isAdmin()){
 //            return null;
 //        }
@@ -587,20 +610,21 @@ public class AdminResource {
 //
 //            }
 //        };
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Restore the repository on a Saiku server.
-     * @param is The input stream
-     * @param detail The file detail
-     * @return A status 200.
-     */
-    @POST
-    @Produces("text/plain")
-    @Consumes("multipart/form-data")
-    @Path("/restore")
-    public Response postRestore(InputStream is, FormDataContentDisposition detail){
+   /**
+    * Restore the repository on a Saiku server.
+    * 
+    * @param is     The input stream
+    * @param detail The file detail
+    * @return A status 200.
+    */
+   @POST
+   @Produces("text/plain")
+   @Consumes("multipart/form-data")
+   @Path("/restore")
+   public Response postRestore(InputStream is, FormDataContentDisposition detail) {
 //    public Response postRestore(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail){
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
@@ -613,20 +637,21 @@ public class AdminResource {
 //            log.error("Error reading restore file", e);
 //        }
 //        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Restore Ok").type("text/plain").build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    /**
-     * Restore old legacy files on the Saiku server.
-     * @param is Input stream
-     * @param detail The file detail
-     * @return A status 200
-     */
-    @POST
-    @Produces("text/plain")
-    @Consumes("multipart/form-data")
-    @Path("/legacyfiles")
-    public Response postRestoreFiles(InputStream is, FormDataContentDisposition detail){
+   /**
+    * Restore old legacy files on the Saiku server.
+    * 
+    * @param is     Input stream
+    * @param detail The file detail
+    * @return A status 200
+    */
+   @POST
+   @Produces("text/plain")
+   @Consumes("multipart/form-data")
+   @Path("/legacyfiles")
+   public Response postRestoreFiles(InputStream is, FormDataContentDisposition detail) {
 //    public Response postRestoreFiles(@FormDataParam("file") InputStream is, @FormDataParam("file") FormDataContentDisposition detail){
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
@@ -639,13 +664,13 @@ public class AdminResource {
 //            log.error("Error reading restore file", e);
 //        }
 //        return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity("Restore Ok").type("text/plain").build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    @GET
-    @Produces("text/plain")
-    @Path("/log/{logname}")
-    public Response getLogFile(@PathParam("logname") String logname){
+   @GET
+   @Produces("text/plain")
+   @Path("/log/{logname}")
+   public Response getLogFile(@PathParam("logname") String logname) {
 //        if(!userService.isAdmin()){
 //            return Response.status(Response.Status.FORBIDDEN).build();
 //        }
@@ -655,14 +680,14 @@ public class AdminResource {
 //            log.error("Could not read log file",e);
 //            return Response.serverError().entity("Could not read log file").build();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 
-    @GET
-    @Produces("application/json")
-    @Path("/datakeys")
-    public Response getPropertiesKeys(){
+   @GET
+   @Produces("application/json")
+   @Path("/datakeys")
+   public Response getPropertiesKeys() {
 //        return Response.ok(repositoryDatasourceManager.getAvailablePropertiesKeys()).build();
-    	throw new RuntimeException("not implemented");
-    }
+      throw new RuntimeException("not implemented");
+   }
 }

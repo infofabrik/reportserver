@@ -10,7 +10,7 @@ public class SystemConsoleModule extends AbstractModule {
    @Override
    protected void configure() {
       install(new GeneralInfoModule());
-      
+
       /* rights */
       install(new GenRightsSystemConsoleModule());
    }

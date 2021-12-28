@@ -58,12 +58,10 @@ public class AuthenticatorWindow extends VerticalLayoutContainer {
       topTb.add(themeService.getLoginLogo());
 
       /* create language */
-      hookHandlerService
-         .getHookers(AuthenticatorWindowExtraOptionHook.class)
-         .stream()
-         .filter(hooker -> hooker.getPosition() == ExtraOptionPosition.TOP)
-         .forEach(hooker -> hooker.configure(topTb));
-      
+      hookHandlerService.getHookers(AuthenticatorWindowExtraOptionHook.class).stream()
+            .filter(hooker -> hooker.getPosition() == ExtraOptionPosition.TOP)
+            .forEach(hooker -> hooker.configure(topTb));
+
       /* load fields */
       // for now only a single page
       final FlowLayoutContainer fieldWrapper = new FlowLayoutContainer();
@@ -74,12 +72,10 @@ public class AuthenticatorWindow extends VerticalLayoutContainer {
       clientPAM.get(0).addFields(fieldWrapper, () -> loginButton.fireEvent(new SelectEvent()));
 
       /* load additional fields */
-      hookHandlerService
-         .getHookers(AuthenticatorWindowExtraOptionHook.class)
-         .stream()
-         .filter(hooker -> hooker.getPosition() == ExtraOptionPosition.FIELD)
-         .forEach(hooker -> hooker.configure(fieldWrapper));
-      
+      hookHandlerService.getHookers(AuthenticatorWindowExtraOptionHook.class).stream()
+            .filter(hooker -> hooker.getPosition() == ExtraOptionPosition.FIELD)
+            .forEach(hooker -> hooker.configure(fieldWrapper));
+
       createLoginMenu();
 
       fieldWrapper.add(loginButton, new MarginData(0, 0, 10, 190));

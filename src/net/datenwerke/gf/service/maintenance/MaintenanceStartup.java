@@ -7,20 +7,16 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class MaintenanceStartup {
 
-	@Inject
-	public MaintenanceStartup(
-		final MaintenanceService maintenanceService, 
-		HookHandlerService hookHandlerService
-		){
-		
-		
-		hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
-			
-			@Override
-			public void initialize() {
-				maintenanceService.start();
-			}
-		}, HookHandlerService.PRIORITY_LOW);
-		
-	}
+   @Inject
+   public MaintenanceStartup(final MaintenanceService maintenanceService, HookHandlerService hookHandlerService) {
+
+      hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
+
+         @Override
+         public void initialize() {
+            maintenanceService.start();
+         }
+      }, HookHandlerService.PRIORITY_LOW);
+
+   }
 }

@@ -11,6 +11,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 @RemoteServiceRelativePath("dashboardmanager_import")
 public interface DashboardManagerImportRpcService extends RemoteService {
 
-	public List<ImportTreeModel> loadTree() throws ServerCallFailedException;
-	
+   public List<ImportTreeModel> loadTree() throws ServerCallFailedException;
+
 }

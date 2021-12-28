@@ -11,31 +11,28 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 
-public class CubeConfigViewFactory implements ReportViewFactory{
-	
-	private final Provider<CubeConfigView> cubeConfigViewProvider;
-	
-	@Inject
-	public CubeConfigViewFactory(
-			Provider<CubeConfigView> cubeConfigViewProvider
-		) {
-		this.cubeConfigViewProvider = cubeConfigViewProvider;
-	}
-	
-	public CubeConfigView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		CubeConfigView fw = cubeConfigViewProvider.get();
-		fw.setReport((TableReportDto) report);
-		return fw;
-	}
+public class CubeConfigViewFactory implements ReportViewFactory {
 
-	public boolean consumes(ReportDto report) {
-		return 
-			report instanceof TableReportDto &&
-			report.hasAccessRight(ExecuteDto.class) && ((TableReportDto)report).isCubeFlag() && !report.isConfigurationProtected();
-	}
-	
-	@Override
-	public String getViewId() {
-		return CubeConfigView.VIEW_ID;
-	}
+   private final Provider<CubeConfigView> cubeConfigViewProvider;
+
+   @Inject
+   public CubeConfigViewFactory(Provider<CubeConfigView> cubeConfigViewProvider) {
+      this.cubeConfigViewProvider = cubeConfigViewProvider;
+   }
+
+   public CubeConfigView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
+      CubeConfigView fw = cubeConfigViewProvider.get();
+      fw.setReport((TableReportDto) report);
+      return fw;
+   }
+
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && report.hasAccessRight(ExecuteDto.class)
+            && ((TableReportDto) report).isCubeFlag() && !report.isConfigurationProtected();
+   }
+
+   @Override
+   public String getViewId() {
+      return CubeConfigView.VIEW_ID;
+   }
 }

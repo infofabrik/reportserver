@@ -30,76 +30,75 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 @Singleton
-public class BirtReportEngine extends ReportEngine<Connection, BirtOutputGenerator, BirtMetadataExporter>{
+public class BirtReportEngine extends ReportEngine<Connection, BirtOutputGenerator, BirtMetadataExporter> {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private final BirtReportService birtReportService;
-	private final BirtEngineEnvironmentFactory birtEngineEnvironmentFactory;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public BirtReportEngine(
-			BirtReportService birtReportService,
-			BirtOutputGeneratorManager outputGeneratorManager,
-			BirtMetadataExporterManager metadataExporterManager,
-			BirtEngineEnvironmentFactory birtEngineEnvironmentFactory, 
-			DatasourceTransformationService datasourceTransformationService
-			) {
+   private final BirtReportService birtReportService;
+   private final BirtEngineEnvironmentFactory birtEngineEnvironmentFactory;
 
-		super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
-		this.birtReportService = birtReportService;
+   @Inject
+   public BirtReportEngine(BirtReportService birtReportService, BirtOutputGeneratorManager outputGeneratorManager,
+         BirtMetadataExporterManager metadataExporterManager, BirtEngineEnvironmentFactory birtEngineEnvironmentFactory,
+         DatasourceTransformationService datasourceTransformationService) {
 
-		this.birtEngineEnvironmentFactory = birtEngineEnvironmentFactory;
-	}
+      super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
+      this.birtReportService = birtReportService;
 
-	@Override
-	protected CompiledReport doExecute(OutputStream os, Report report, User user, ParameterSet parameters, String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException {
-		if(! birtReportService.isBirtEnabled())
-			throw new ReportExecutorException("BIRT is disabled");
-		
-		/* validate arguments and cast them */
-		if(!(report instanceof BirtReport))
-			throw new IllegalArgumentException("Needs a report of type BirtReport."); //$NON-NLS-1$
-		BirtReport bReport = (BirtReport) report;
-		
-		if(null == bReport.getReportFile()){
-			throw new IllegalArgumentException("No file has been uploaded.");
-		}
+      this.birtEngineEnvironmentFactory = birtEngineEnvironmentFactory;
+   }
 
-		Connection con = transformDatasource(Connection.class, report, parameters);
-		
-		return executeReport(con, bReport, parameters, outputFormat, user, configs);
-	}
-	
-	private CompiledReport executeReport(Connection connection, BirtReport bReport, ParameterSet parameters, String outputFormat, User user, ReportExecutionConfig... configs) {
-		try{
-			/* get output generator */
-			BirtOutputGenerator outputGenerator = outputGeneratorManager.getOutputGenerator(outputFormat);
-			byte[] reportBytes = bReport.getReportFile().getContent().getBytes("UTF-8");
-			
-			IReportEngine reportEngine = birtReportService.getReportEngine();
-			BirtEngineEnvironment env = birtEngineEnvironmentFactory.create(reportEngine, reportBytes, parameters, connection, outputFormat, outputGenerator, configs);
-			
-			return env.call();
-		}catch (UnsupportedEncodingException e1) {
-			IllegalStateException ise = new IllegalStateException("Could not load XML as UTF-8: " + e1.getMessage()); //$NON-NLS-1$
-			ise.initCause(e1);
-			throw ise;
-		} catch(Exception e){
-			throw new ReportExecutorRuntimeException(e);
-		} finally {
-			try {
-				if(null != connection && ! connection.isClosed())
-					connection.close();
-			} catch (SQLException e) {
-				logger.info( "Could not close connection after birt report execution", e);
-			}
-		}
-	}
+   @Override
+   protected CompiledReport doExecute(OutputStream os, Report report, User user, ParameterSet parameters,
+         String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException {
+      if (!birtReportService.isBirtEnabled())
+         throw new ReportExecutorException("BIRT is disabled");
 
-	@Override
-	public boolean consumes(Report report) {
-		return report instanceof BirtReport;
-	}
+      /* validate arguments and cast them */
+      if (!(report instanceof BirtReport))
+         throw new IllegalArgumentException("Needs a report of type BirtReport."); //$NON-NLS-1$
+      BirtReport bReport = (BirtReport) report;
+
+      if (null == bReport.getReportFile()) {
+         throw new IllegalArgumentException("No file has been uploaded.");
+      }
+
+      Connection con = transformDatasource(Connection.class, report, parameters);
+
+      return executeReport(con, bReport, parameters, outputFormat, user, configs);
+   }
+
+   private CompiledReport executeReport(Connection connection, BirtReport bReport, ParameterSet parameters,
+         String outputFormat, User user, ReportExecutionConfig... configs) {
+      try {
+         /* get output generator */
+         BirtOutputGenerator outputGenerator = outputGeneratorManager.getOutputGenerator(outputFormat);
+         byte[] reportBytes = bReport.getReportFile().getContent().getBytes("UTF-8");
+
+         IReportEngine reportEngine = birtReportService.getReportEngine();
+         BirtEngineEnvironment env = birtEngineEnvironmentFactory.create(reportEngine, reportBytes, parameters,
+               connection, outputFormat, outputGenerator, configs);
+
+         return env.call();
+      } catch (UnsupportedEncodingException e1) {
+         IllegalStateException ise = new IllegalStateException("Could not load XML as UTF-8: " + e1.getMessage()); //$NON-NLS-1$
+         ise.initCause(e1);
+         throw ise;
+      } catch (Exception e) {
+         throw new ReportExecutorRuntimeException(e);
+      } finally {
+         try {
+            if (null != connection && !connection.isClosed())
+               connection.close();
+         } catch (SQLException e) {
+            logger.info("Could not close connection after birt report execution", e);
+         }
+      }
+   }
+
+   @Override
+   public boolean consumes(Report report) {
+      return report instanceof BirtReport;
+   }
 
 }

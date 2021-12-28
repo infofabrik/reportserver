@@ -38,18 +38,10 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "DROPBOX_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.dropbox.client.dropbox.dto", 
-      poso2DtoPostProcessors = DropboxDatasink2DtoPostProcessor.class, 
-      additionalFields = {
-            @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
-            @AdditionalField(name = "hasSecretKey", type = Boolean.class) 
-      }, 
-      icon = "dropbox")
-@InstanceDescription(
-      msgLocation = DropboxDatasinkMessages.class, 
-      objNameKey = "dropboxDatasinkTypeName", 
-      icon = "dropbox")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dropbox.client.dropbox.dto", poso2DtoPostProcessors = DropboxDatasink2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
+      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "dropbox")
+@InstanceDescription(msgLocation = DropboxDatasinkMessages.class, objNameKey = "dropboxDatasinkTypeName", icon = "dropbox")
 @Indexed
 public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 
@@ -167,11 +159,9 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
 
    @Override
    public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
-      Map<String,String> additionalParameters = new HashMap<>();
+      Map<String, String> additionalParameters = new HashMap<>();
       additionalParameters.put("token_access_type", "offline");
-      return authorizationUrlBuilder
-            .additionalParams(additionalParameters)
-            .build();
+      return authorizationUrlBuilder.additionalParams(additionalParameters).build();
    }
 
 }

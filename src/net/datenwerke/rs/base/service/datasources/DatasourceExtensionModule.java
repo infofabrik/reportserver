@@ -10,20 +10,18 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class DatasourceExtensionModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* startup */
-		bind(DatasourceExtensionStartup.class).asEagerSingleton();
-		bind(StatementManagerService.class).to(StatementManagerServiceImpl.class);
-		bind(DatasourceTransformationService.class).to(DatasourceTransformationServiceImpl.class);
-		
-		/* install private modules */
-		install(new TableDatasourceModule());
-		
-		/* static injection */
-		requestStaticInjection(
-			DatabaseDatasource.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* startup */
+      bind(DatasourceExtensionStartup.class).asEagerSingleton();
+      bind(StatementManagerService.class).to(StatementManagerServiceImpl.class);
+      bind(DatasourceTransformationService.class).to(DatasourceTransformationServiceImpl.class);
+
+      /* install private modules */
+      install(new TableDatasourceModule());
+
+      /* static injection */
+      requestStaticInjection(DatabaseDatasource.class);
+   }
 
 }

@@ -8,11 +8,11 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 
 @RemoteServiceRelativePath("saikupivot")
 public interface SaikuPivotRpcService extends RemoteService {
-	
-	public void stashReport(String token, TableReportDto report) throws ServerCallFailedException;
-	
-	public String cubeExport(String token, TableReportDto report) throws ServerCallFailedException;
-	
-	public String cubeExportMondrian3(String token, TableReportDto report) throws ServerCallFailedException;
+
+   public void stashReport(String token, TableReportDto report) throws ServerCallFailedException;
+
+   public String cubeExport(String token, TableReportDto report) throws ServerCallFailedException;
+
+   public String cubeExportMondrian3(String token, TableReportDto report) throws ServerCallFailedException;
 
 }

@@ -16,61 +16,52 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
+public class SchedulerUnscheduleSubCommand implements SchedulerSubCommandHook {
 
-public class SchedulerUnscheduleSubCommand implements SchedulerSubCommandHook{
+   public static final String BASE_COMMAND = "unschedule";
 
-	public static final String BASE_COMMAND = "unschedule";
-	
-	private final SchedulerService schedulerService;
+   private final SchedulerService schedulerService;
 
-	@Inject
-	public SchedulerUnscheduleSubCommand(
-		SchedulerService schedulerService
-		){
-		
-		/* store objects */
-		this.schedulerService = schedulerService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Inject
+   public SchedulerUnscheduleSubCommand(SchedulerService schedulerService) {
 
-	@Override
-	@CliHelpMessage(
-		messageClass = SchedulerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandScheduler_sub_unschedule_description",
-		nonOptArgs = {
-			@NonOptArgument(name="jobId", description="commandScheduler_sub_unschedule_arg1", mandatory=true)
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> args = parser.getNonOptionArguments();
-		if(args.size() != 1)
-			throw new IllegalArgumentException("Expected exactly one argument");
-		
-		Long id = Long.valueOf(args.get(0));
-		AbstractJob job = schedulerService.getJobById(id);
-		if(null == job)
-			return new CommandResult("Could not find job with id: " + id);
-		
-		if(! job.isActive())
-			return new CommandResult("Job is already inactive");
-		
-		schedulerService.unschedule(job);
-		
-		return new CommandResult("unscheduled job: " + id);
-	}
+      /* store objects */
+      this.schedulerService = schedulerService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = SchedulerMessages.class, name = BASE_COMMAND, description = "commandScheduler_sub_unschedule_description", nonOptArgs = {
+         @NonOptArgument(name = "jobId", description = "commandScheduler_sub_unschedule_arg1", mandatory = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> args = parser.getNonOptionArguments();
+      if (args.size() != 1)
+         throw new IllegalArgumentException("Expected exactly one argument");
+
+      Long id = Long.valueOf(args.get(0));
+      AbstractJob job = schedulerService.getJobById(id);
+      if (null == job)
+         return new CommandResult("Could not find job with id: " + id);
+
+      if (!job.isActive())
+         return new CommandResult("Job is already inactive");
+
+      schedulerService.unschedule(job);
+
+      return new CommandResult("unscheduled job: " + id);
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

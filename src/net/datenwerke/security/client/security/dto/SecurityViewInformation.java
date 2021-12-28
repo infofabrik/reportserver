@@ -10,52 +10,53 @@ import java.util.Map;
 import net.datenwerke.security.client.treedb.dto.SecuredAbstractNodeDto;
 
 /**
- * Contains all the information needed to display the security view for an "ACE container".
+ * Contains all the information needed to display the security view for an "ACE
+ * container".
  *
  */
 public class SecurityViewInformation implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4590378711038525589L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4590378711038525589L;
 
-	private List<AceDto> aces = new ArrayList<AceDto>();
-	private List<AceDto> inheritedAces = new ArrayList<AceDto>();
-	private Map<AceDto,SecuredAbstractNodeDto> referencesToInheritedNodes = new HashMap<AceDto, SecuredAbstractNodeDto>();
-	
-	private Collection<SecureeDto> availableSecurees = new ArrayList<SecureeDto>();
-	
-	public void setAces(List<AceDto> aces) {
-		this.aces = aces;
-	}
+   private List<AceDto> aces = new ArrayList<AceDto>();
+   private List<AceDto> inheritedAces = new ArrayList<AceDto>();
+   private Map<AceDto, SecuredAbstractNodeDto> referencesToInheritedNodes = new HashMap<AceDto, SecuredAbstractNodeDto>();
 
-	public List<AceDto> getAces() {
-		return aces;
-	}
+   private Collection<SecureeDto> availableSecurees = new ArrayList<SecureeDto>();
 
-	public void setAvailableSecurees(Collection<SecureeDto> availableSecurees) {
-		this.availableSecurees = availableSecurees;
-	}
+   public void setAces(List<AceDto> aces) {
+      this.aces = aces;
+   }
 
-	public Collection<SecureeDto> getAvailableSecurees() {
-		return availableSecurees;
-	}
+   public List<AceDto> getAces() {
+      return aces;
+   }
 
-	public void setInheritedAces(List<AceDto> inheritedAces) {
-		this.inheritedAces = inheritedAces;
-	}
+   public void setAvailableSecurees(Collection<SecureeDto> availableSecurees) {
+      this.availableSecurees = availableSecurees;
+   }
 
-	public List<AceDto> getInheritedAces() {
-		return inheritedAces;
-	}
+   public Collection<SecureeDto> getAvailableSecurees() {
+      return availableSecurees;
+   }
 
-	public void setReferencesToInheritedNodes(Map<AceDto,SecuredAbstractNodeDto> referencesToInheritedNodes) {
-		this.referencesToInheritedNodes = referencesToInheritedNodes;
-	}
+   public void setInheritedAces(List<AceDto> inheritedAces) {
+      this.inheritedAces = inheritedAces;
+   }
 
-	public Map<AceDto,SecuredAbstractNodeDto> getReferencesToInheritedNodes() {
-		return referencesToInheritedNodes;
-	}
+   public List<AceDto> getInheritedAces() {
+      return inheritedAces;
+   }
+
+   public void setReferencesToInheritedNodes(Map<AceDto, SecuredAbstractNodeDto> referencesToInheritedNodes) {
+      this.referencesToInheritedNodes = referencesToInheritedNodes;
+   }
+
+   public Map<AceDto, SecuredAbstractNodeDto> getReferencesToInheritedNodes() {
+      return referencesToInheritedNodes;
+   }
 
 }

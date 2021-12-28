@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.parameters.datasource.dto.ModeDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.parameters.datasource.Mode.class)
 public interface ModeDtoPA extends PropertyAccess<ModeDto> {
 
-
-
 }

@@ -13,32 +13,32 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public abstract class MainPanelViewProviderHookImpl implements MainPanelViewProviderHook {
 
-	protected final HookHandlerService hookHandler;
-	
-	@Inject
-	public MainPanelViewProviderHookImpl(HookHandlerService hookHandler){
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		List<MainPanelView> views = new ArrayList<MainPanelView>();
-		
-		views.addAll(getPrimaryViews(node));
-		
-		for(MainPanelViewProviderConfigHook config : hookHandler.getHookers(MainPanelViewProviderConfigHook.class)){
-			if(config.applies(getViewProviderId(), node)){
-				views.addAll(config.gatherViews(getViewProviderId(), node));
-			}
-		}
-		
-		return views;
-	}
-	
-	protected Collection<? extends MainPanelView> getPrimaryViews(AbstractNodeDto node){
-		return Collections.emptyList();
-	}
+   protected final HookHandlerService hookHandler;
 
-	abstract public String getViewProviderId();
+   @Inject
+   public MainPanelViewProviderHookImpl(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      List<MainPanelView> views = new ArrayList<MainPanelView>();
+
+      views.addAll(getPrimaryViews(node));
+
+      for (MainPanelViewProviderConfigHook config : hookHandler.getHookers(MainPanelViewProviderConfigHook.class)) {
+         if (config.applies(getViewProviderId(), node)) {
+            views.addAll(config.gatherViews(getViewProviderId(), node));
+         }
+      }
+
+      return views;
+   }
+
+   protected Collection<? extends MainPanelView> getPrimaryViews(AbstractNodeDto node) {
+      return Collections.emptyList();
+   }
+
+   abstract public String getViewProviderId();
 
 }

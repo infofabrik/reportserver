@@ -20,53 +20,51 @@ import net.datenwerke.security.server.SecuredHttpServlet;
 @Singleton
 public class FileDownloadServlet extends SecuredHttpServlet {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7745426896682214945L;
-	
-	private final Provider<FileDownloadService> fileDownloadServiceProvider;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7745426896682214945L;
 
-	@Inject
-	public FileDownloadServlet(
-			Provider<FileDownloadService> fileDownloadServiceProvider
-			){
-				this.fileDownloadServiceProvider = fileDownloadServiceProvider;
+   private final Provider<FileDownloadService> fileDownloadServiceProvider;
 
-	}
-	
-	@Override
-	public void doGet(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		doPost(request, response);
-	}
-	
-	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException ,IOException {
-		/* grep handler and id */
-		String id = request.getParameter("id");
-		String handler = request.getParameter("handler");
-		
-		/* get metadata */
-		Map<String,String> metadata = new HashMap<String, String>();
-		
-		Enumeration names = request.getParameterNames();
-		while(names.hasMoreElements()){
-			Object el = names.nextElement();
-			if(el instanceof String){
-				String name = (String) el;
-				
-				if(name.startsWith(FileDownloadUiModule.META_FIELD_PREFIX) && name.length() > FileDownloadUiModule.META_FIELD_PREFIX.length()){
-					String metaname = name.substring(FileDownloadUiModule.META_FIELD_PREFIX.length());
-					String value = request.getParameter(name);
-					
-					metadata.put(metaname,value);
-				}
-				
-			}
-		}
-		
-		FileDownloadService fileDownloadService = fileDownloadServiceProvider.get();
-		
-		fileDownloadService.processDownload(id, handler, metadata, response);
-	}
+   @Inject
+   public FileDownloadServlet(Provider<FileDownloadService> fileDownloadServiceProvider) {
+      this.fileDownloadServiceProvider = fileDownloadServiceProvider;
+
+   }
+
+   @Override
+   public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      doPost(request, response);
+   }
+
+   public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+      /* grep handler and id */
+      String id = request.getParameter("id");
+      String handler = request.getParameter("handler");
+
+      /* get metadata */
+      Map<String, String> metadata = new HashMap<String, String>();
+
+      Enumeration names = request.getParameterNames();
+      while (names.hasMoreElements()) {
+         Object el = names.nextElement();
+         if (el instanceof String) {
+            String name = (String) el;
+
+            if (name.startsWith(FileDownloadUiModule.META_FIELD_PREFIX)
+                  && name.length() > FileDownloadUiModule.META_FIELD_PREFIX.length()) {
+               String metaname = name.substring(FileDownloadUiModule.META_FIELD_PREFIX.length());
+               String value = request.getParameter(name);
+
+               metadata.put(metaname, value);
+            }
+
+         }
+      }
+
+      FileDownloadService fileDownloadService = fileDownloadServiceProvider.get();
+
+      fileDownloadService.processDownload(id, handler, metadata, response);
+   }
 }

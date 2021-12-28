@@ -20,32 +20,29 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.Compiled
 
 public class SaikuXLSOutputGenerator extends SaikuOutputGeneratorImpl {
 
-	@Inject
-	public SaikuXLSOutputGenerator(HookHandlerService hookHandler) {
-		super(hookHandler);
-		// TODO Auto-generated constructor stub
-	}
+   @Inject
+   public SaikuXLSOutputGenerator(HookHandlerService hookHandler) {
+      super(hookHandler);
+      // TODO Auto-generated constructor stub
+   }
 
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_EXCEL };
+   }
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_EXCEL};
-	}
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledXLSSaikuReport();
+   }
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledXLSSaikuReport();
-	}
+   @Override
+   public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset, List<ThinHierarchy> filters,
+         ICellSetFormatter formatter, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException {
 
-
-	@Override
-	public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet,
-			CellSet cellset, List<ThinHierarchy> filters, ICellSetFormatter formatter,
-			String outputFormat, ReportExecutionConfig... configs)
-			throws ReportExecutorException {
-
-		byte[] excel = ExcelExporter.exportExcel(cellDataSet, formatter, filters);
-		return new CompiledXLSSaikuReport(excel);
-	}
+      byte[] excel = ExcelExporter.exportExcel(cellDataSet, formatter, filters);
+      return new CompiledXLSSaikuReport(excel);
+   }
 
 }

@@ -15,7 +15,7 @@ public class SambaUiModule extends AbstractGinModule {
    public final static String NAME = "Samba - SMB/CIFS";
    public final static BaseIcon ICON = BaseIcon.ANGLE_DOUBLE_UP;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = SambaDatasinkDto.class;
-   
+
    @Override
    protected void configure() {
       bind(SambaUiService.class).to(SambaUiServiceImpl.class).in(Singleton.class);

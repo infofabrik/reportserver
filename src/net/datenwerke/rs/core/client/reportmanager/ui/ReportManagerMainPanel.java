@@ -14,16 +14,14 @@ import net.datenwerke.rs.core.client.reportmanager.ReportManagerTreeManagerDao;
 @Singleton
 public class ReportManagerMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public ReportManagerMainPanel(
-		ReportManagerTreeManagerDao reportManagerTreeManager
-		){
-	
-		super(reportManagerTreeManager);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "reportmanager:admin:view:toolbar";
-	}
+   @Inject
+   public ReportManagerMainPanel(ReportManagerTreeManagerDao reportManagerTreeManager) {
+
+      super(reportManagerTreeManager);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "reportmanager:admin:view:toolbar";
+   }
 }

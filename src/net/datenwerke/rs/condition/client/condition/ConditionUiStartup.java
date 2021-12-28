@@ -9,15 +9,12 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleConfigWizardPa
 
 public class ConditionUiStartup {
 
-	
-	@Inject
-	public ConditionUiStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<SchedulerConditionPageProvider> conditionPageProvider
-		){
-		
-		hookHandler.attachHooker(ScheduleConfigWizardPageProviderHook.class, conditionPageProvider);
-		
-	}
+   @Inject
+   public ConditionUiStartup(HookHandlerService hookHandler,
+
+         Provider<SchedulerConditionPageProvider> conditionPageProvider) {
+
+      hookHandler.attachHooker(ScheduleConfigWizardPageProviderHook.class, conditionPageProvider);
+
+   }
 }

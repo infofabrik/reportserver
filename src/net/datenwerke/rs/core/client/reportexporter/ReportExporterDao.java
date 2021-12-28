@@ -15,52 +15,51 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class ReportExporterDao extends Dao {
 
-	private final ReportExporterRpcServiceAsync rpcService;
+   private final ReportExporterRpcServiceAsync rpcService;
 
-	@Inject
-	public ReportExporterDao(ReportExporterRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public ReportExporterDao(ReportExporterRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public Request storeInSessionForExport(ReportDto reportDto, String executorToken,
-			String format, AsyncCallback<Void> callback){
-		List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
-		return storeInSessionForExport(reportDto, executorToken, format, configs, callback);
-	}
-	
-	public Request storeInSessionForExport(ReportDto reportDto, String executorToken,
-			String format, ReportExecutionConfigDto config,
-			AsyncCallback<Void> callback){
-		List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
-		configs.add(config);
-		return storeInSessionForExport(reportDto, executorToken, format, configs, callback);
-	}
-	
-	public Request storeInSessionForExport(ReportDto reportDto, String executorToken,
-			String format, List<ReportExecutionConfigDto> configs,
-			AsyncCallback<Void> callback){
-		reportDto = unproxy(reportDto);
-		return rpcService.storeInSessionForExport(reportDto, executorToken, format, configs, transformAndKeepCallback(callback));
-	}
+   public Request storeInSessionForExport(ReportDto reportDto, String executorToken, String format,
+         AsyncCallback<Void> callback) {
+      List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
+      return storeInSessionForExport(reportDto, executorToken, format, configs, callback);
+   }
 
-	
-	public void exportViaMail(ReportDto reportDto, String executorToke, String format,
-	List<ReportExecutionConfigDto> configs, String subject,
-	String message, boolean compressedExpKey, List<StrippedDownUser> recipients,
-	AsyncCallback<Void> callback){
-		rpcService.exportViaMail(reportDto, executorToke, format, configs, subject, message, compressedExpKey, recipients, transformAndKeepCallback(callback));
-	}
-	
-	public void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback) {
-		rpcService.getExportDefaultSettingsAsXml(identifier, transformAndKeepCallback(callback));
-	}
-	
-	public void getExportDefaultCharset(AsyncCallback<String> callback) {
-		rpcService.getExportDefaultCharset(transformAndKeepCallback(callback));
-	}
-	
-	public Request exportSkipDownload(ReportDto reportDto, String executorToken, String format, AsyncCallback<Void> callback) {
-		return rpcService.exportSkipDownload(reportDto, executorToken, format, transformAndKeepCallback(callback));
-	}
+   public Request storeInSessionForExport(ReportDto reportDto, String executorToken, String format,
+         ReportExecutionConfigDto config, AsyncCallback<Void> callback) {
+      List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
+      configs.add(config);
+      return storeInSessionForExport(reportDto, executorToken, format, configs, callback);
+   }
+
+   public Request storeInSessionForExport(ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs, AsyncCallback<Void> callback) {
+      reportDto = unproxy(reportDto);
+      return rpcService.storeInSessionForExport(reportDto, executorToken, format, configs,
+            transformAndKeepCallback(callback));
+   }
+
+   public void exportViaMail(ReportDto reportDto, String executorToke, String format,
+         List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressedExpKey,
+         List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
+      rpcService.exportViaMail(reportDto, executorToke, format, configs, subject, message, compressedExpKey, recipients,
+            transformAndKeepCallback(callback));
+   }
+
+   public void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback) {
+      rpcService.getExportDefaultSettingsAsXml(identifier, transformAndKeepCallback(callback));
+   }
+
+   public void getExportDefaultCharset(AsyncCallback<String> callback) {
+      rpcService.getExportDefaultCharset(transformAndKeepCallback(callback));
+   }
+
+   public Request exportSkipDownload(ReportDto reportDto, String executorToken, String format,
+         AsyncCallback<Void> callback) {
+      return rpcService.exportSkipDownload(reportDto, executorToken, format, transformAndKeepCallback(callback));
+   }
 }

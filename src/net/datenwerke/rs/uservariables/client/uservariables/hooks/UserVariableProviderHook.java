@@ -7,5 +7,5 @@ import net.datenwerke.rs.uservariables.client.uservariables.UserVariableConfigur
 
 public interface UserVariableProviderHook extends Hook {
 
-	public Collection<UserVariableConfigurator> userVariableProviderHook_getConfigurators();
+   public Collection<UserVariableConfigurator> userVariableProviderHook_getConfigurators();
 }

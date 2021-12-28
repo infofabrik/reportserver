@@ -18,45 +18,43 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ImageReportPreviewView extends AbstractReportPreviewView {
 
-	private FlowLayoutContainer wrapper;
+   private FlowLayoutContainer wrapper;
 
-	@Inject
-	public ImageReportPreviewView (
-			ReportExecutorDao rexService, 
-			HookHandlerService hookHandler) {
-		super(rexService, hookHandler);
-		
-		wrapper = new FlowLayoutContainer();
-		wrapper.setScrollMode(ScrollMode.AUTO);
-	}
-	
-	@Override
-	protected boolean isCreateStatusBar() {
-		return false;
-	}
-	
-	@Override
-	public Widget doGetViewComponent() {
-		return wrapper;
-	}
+   @Inject
+   public ImageReportPreviewView(ReportExecutorDao rexService, HookHandlerService hookHandler) {
+      super(rexService, hookHandler);
 
-	@Override
-	protected void doLoadReport(DwModel reportExecutionResult) {
-		if(((SuccessIndicatorBaseModel)reportExecutionResult).isSuccess()){
-			wrapper.clear();
-			final Image image = new Image(GWT.getModuleBaseURL() + "jasperpreviewprovider?rnd="+Random.nextInt()); //$NON-NLS-1$ //$NON-NLS-2$
-			wrapper.add(image);
-		}
-	}
+      wrapper = new FlowLayoutContainer();
+      wrapper.setScrollMode(ScrollMode.AUTO);
+   }
 
-	@Override
-	protected void cancelExecution(String executeToken) {
-		// TODO Auto-generated method stub
-	}
-	
-	@Override
-	public Request execute(ReportDto report, String executeToken, AsyncCallback<DwModel> callback) {
-		return reportExecutorDao.storePNGInSession(executeToken, report, callback);
-	}
+   @Override
+   protected boolean isCreateStatusBar() {
+      return false;
+   }
+
+   @Override
+   public Widget doGetViewComponent() {
+      return wrapper;
+   }
+
+   @Override
+   protected void doLoadReport(DwModel reportExecutionResult) {
+      if (((SuccessIndicatorBaseModel) reportExecutionResult).isSuccess()) {
+         wrapper.clear();
+         final Image image = new Image(GWT.getModuleBaseURL() + "jasperpreviewprovider?rnd=" + Random.nextInt()); //$NON-NLS-1$ //$NON-NLS-2$
+         wrapper.add(image);
+      }
+   }
+
+   @Override
+   protected void cancelExecution(String executeToken) {
+      // TODO Auto-generated method stub
+   }
+
+   @Override
+   public Request execute(ReportDto report, String executeToken, AsyncCallback<DwModel> callback) {
+      return reportExecutorDao.storePNGInSession(executeToken, report, callback);
+   }
 
 }

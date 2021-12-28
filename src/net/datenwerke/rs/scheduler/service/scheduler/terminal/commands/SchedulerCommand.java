@@ -16,44 +16,34 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-
 public class SchedulerCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "scheduler";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public SchedulerCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "scheduler";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = SchedulerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandScheduler_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<SchedulerSubCommandHook> list =  hookHandler.getHookers(SchedulerSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public SchedulerCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = SchedulerMessages.class, name = BASE_COMMAND, description = "commandScheduler_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<SchedulerSubCommandHook> list = hookHandler.getHookers(SchedulerSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

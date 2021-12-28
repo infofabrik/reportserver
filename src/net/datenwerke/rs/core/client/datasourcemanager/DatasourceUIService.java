@@ -13,20 +13,12 @@ import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSe
  *
  */
 public interface DatasourceUIService {
-	
-	public DatasourceDefinitionConfigConfigurator getConfigurator(Class<? extends DatasourceDefinitionDto> configClazz);
-	
-	public DatasourceSelectionField getSelectionField(
-			Container container, 
-			boolean displayOptionalAdditionalConfigFields, 
-			Provider<UITree> datasourceTreeProvider,
-			Class<? extends DatasourceDefinitionDto>... types
-	);
-	
-	
-	public DatasourceSelectionField getSelectionField(
-			Container container,
-			Provider<UITree> datasourceTreeProvider
-	);
-	
+
+   public DatasourceDefinitionConfigConfigurator getConfigurator(Class<? extends DatasourceDefinitionDto> configClazz);
+
+   public DatasourceSelectionField getSelectionField(Container container, boolean displayOptionalAdditionalConfigFields,
+         Provider<UITree> datasourceTreeProvider, Class<? extends DatasourceDefinitionDto>... types);
+
+   public DatasourceSelectionField getSelectionField(Container container, Provider<UITree> datasourceTreeProvider);
+
 }

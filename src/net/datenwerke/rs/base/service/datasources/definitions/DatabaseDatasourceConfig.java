@@ -17,36 +17,35 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
  *
  */
 @Entity
-@Table(name="DATABASE_DATASOURCE_CONF")
+@Table(name = "DATABASE_DATASOURCE_CONF")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.datasources.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto")
 public class DatabaseDatasourceConfig extends DatasourceDefinitionConfig {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2133375471305510767L;
-	
-	@ExposeToClient(allowArbitraryLobSize=true,disableHtmlEncode=true)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	protected String query;
-	
-	public String getQuery() {
-		return query;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2133375471305510767L;
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
+   @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   protected String query;
 
-	@Override
-	public boolean contentEquals(DatasourceDefinition definition, DatasourceDefinitionConfig config) {
-		if(! (config instanceof DatabaseDatasourceConfig))
-			return false;
-		return null == query ? null == ((DatabaseDatasourceConfig)config).getQuery() : query.equals(((DatabaseDatasourceConfig)config).getQuery());
-	}
-	
+   public String getQuery() {
+      return query;
+   }
+
+   public void setQuery(String query) {
+      this.query = query;
+   }
+
+   @Override
+   public boolean contentEquals(DatasourceDefinition definition, DatasourceDefinitionConfig config) {
+      if (!(config instanceof DatabaseDatasourceConfig))
+         return false;
+      return null == query ? null == ((DatabaseDatasourceConfig) config).getQuery()
+            : query.equals(((DatabaseDatasourceConfig) config).getQuery());
+   }
+
 }

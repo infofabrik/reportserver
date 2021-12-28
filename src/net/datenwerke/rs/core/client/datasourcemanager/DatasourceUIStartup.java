@@ -33,53 +33,48 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
  */
 public class DatasourceUIStartup {
 
-	@Inject
-	public DatasourceUIStartup(
-		final HookHandlerService hookHandler,
-		Provider<DatasourceSimpleFormProvider> datasourceSimpleFormProvider,
-		
-		final WaitOnEventUIService waitOnEventService,
-		final DatasourceUIService datasourceService,
-		
-		DatasourceManagerViewSecurityTargetDomainHooker securityTargetDomain,
-		
-		MainPanelViewProviderHooker mainPanelViewProvider,
-		final Provider<DatasourceAdminModule> adminModuleProvider,
-		final SecurityUIService securityService,
-		
-		final DatasourceManagerTreeConfigurationHooker treeConfigurator,
-		
-		HistoryUiService historyService,
-		@DatasourceManagerAdminViewTree Provider<UITree> datasourceManagerTree,
-		EventBus eventBus,
-		Provider<DatasourceManagerPanel> datasourceManagerAdminPanel
-		){
-		
-		/* config tree */
-		hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-		
-		/* attach Hooks */
-		hookHandler.attachHooker(FormFieldProviderHook.class, datasourceSimpleFormProvider);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		/* attach views */
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-		
-		/* test if user has rights to see datasource manager admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-			if (securityService.hasRight(DatasourceManagerGenericTargetIdentifier.class, ReadDto.class)) 
-				hookHandler.attachHooker(AdminModuleProviderHook.class,
-						new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 20);
-			
-			waitOnEventService.signalProcessingDone(ticket);
-		});
-		
-		/* configureHistory */
-		historyService.addHistoryCallback(DatasourceUIModule.DATASOURCE_FAV_HISTORY_TOKEN,
-				new TreeDBHistoryCallback(datasourceManagerTree, eventBus, datasourceManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
-	}
-	
+   @Inject
+   public DatasourceUIStartup(final HookHandlerService hookHandler,
+         Provider<DatasourceSimpleFormProvider> datasourceSimpleFormProvider,
+
+         final WaitOnEventUIService waitOnEventService, final DatasourceUIService datasourceService,
+
+         DatasourceManagerViewSecurityTargetDomainHooker securityTargetDomain,
+
+         MainPanelViewProviderHooker mainPanelViewProvider, final Provider<DatasourceAdminModule> adminModuleProvider,
+         final SecurityUIService securityService,
+
+         final DatasourceManagerTreeConfigurationHooker treeConfigurator,
+
+         HistoryUiService historyService, @DatasourceManagerAdminViewTree Provider<UITree> datasourceManagerTree,
+         EventBus eventBus, Provider<DatasourceManagerPanel> datasourceManagerAdminPanel) {
+
+      /* config tree */
+      hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+
+      /* attach Hooks */
+      hookHandler.attachHooker(FormFieldProviderHook.class, datasourceSimpleFormProvider);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* attach views */
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+
+      /* test if user has rights to see datasource manager admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
+         if (securityService.hasRight(DatasourceManagerGenericTargetIdentifier.class, ReadDto.class))
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
+                  HookHandlerService.PRIORITY_HIGH + 20);
+
+         waitOnEventService.signalProcessingDone(ticket);
+      });
+
+      /* configureHistory */
+      historyService.addHistoryCallback(DatasourceUIModule.DATASOURCE_FAV_HISTORY_TOKEN, new TreeDBHistoryCallback(
+            datasourceManagerTree, eventBus, datasourceManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
+   }
+
 }

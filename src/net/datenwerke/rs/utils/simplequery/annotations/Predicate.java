@@ -13,9 +13,10 @@ import net.datenwerke.rs.utils.simplequery.PredicateType;
 @Target(ElementType.TYPE)
 public @interface Predicate {
 
-	PredicateType type() default PredicateType.EQUAL;
-	String attribute() default "";
-	
-	String value() default "";
-	
+   PredicateType type() default PredicateType.EQUAL;
+
+   String attribute() default "";
+
+   String value() default "";
+
 }

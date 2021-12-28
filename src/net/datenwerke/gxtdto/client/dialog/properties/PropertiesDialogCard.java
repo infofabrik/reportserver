@@ -5,13 +5,18 @@ import com.google.gwt.user.client.ui.Widget;
 
 public interface PropertiesDialogCard {
 
-	ImageResource getIcon();
-	Widget getCard();
-	String getName();
+   ImageResource getIcon();
 
-	void cancelPressed();
-	String isValid();
-	void submitPressed();
-	int getHeight();
+   Widget getCard();
+
+   String getName();
+
+   void cancelPressed();
+
+   String isValid();
+
+   void submitPressed();
+
+   int getHeight();
 
 }

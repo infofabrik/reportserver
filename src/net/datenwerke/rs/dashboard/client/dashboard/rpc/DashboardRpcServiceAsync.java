@@ -18,65 +18,59 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.FavoriteListDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
 
-
 public interface DashboardRpcServiceAsync {
 
-	void getDashboardForUser(AsyncCallback<DashboardContainerDto> callback);
+   void getDashboardForUser(AsyncCallback<DashboardContainerDto> callback);
 
-	void createDashboardForUser(AsyncCallback<DashboardDto> callback);
+   void createDashboardForUser(AsyncCallback<DashboardDto> callback);
 
-	void removeDashboard(DashboardDto dashboard,
-			AsyncCallback<Void> callback);
-	
-	void getExplicitPrimaryDashboard(AsyncCallback<DashboardDto> callback);
+   void removeDashboard(DashboardDto dashboard, AsyncCallback<Void> callback);
 
-	void reloadDashboard(DashboardDto dashboard, AsyncCallback<DashboardDto> callbar);
-	
-	void editDashboard(DashboardDto dashboard,
-			AsyncCallback<DashboardDto> callback);
+   void getExplicitPrimaryDashboard(AsyncCallback<DashboardDto> callback);
 
-	void addDadgetToDashboard(DashboardDto dashboard, DadgetDto dadget,
-			AsyncCallback<DashboardDto> callback);
+   void reloadDashboard(DashboardDto dashboard, AsyncCallback<DashboardDto> callbar);
 
-	void removeDadgetFromDashboard(DashboardDto dashboard, DadgetDto dadget,
-			AsyncCallback<DashboardDto> callback);
+   void editDashboard(DashboardDto dashboard, AsyncCallback<DashboardDto> callback);
 
-	void editDadgetToDashboard(DashboardDto dashboardDto, DadgetDto dadget,
-			AsyncCallback<DashboardDto> callback);
+   void addDadgetToDashboard(DashboardDto dashboard, DadgetDto dadget, AsyncCallback<DashboardDto> callback);
 
-	void addToFavorites(AbstractTsDiskNodeDto node, AsyncCallback<Void> callback);
-	
-	void removeFromFavorites(AbstractTsDiskNodeDto node, AsyncCallback<Void> callback);
+   void removeDadgetFromDashboard(DashboardDto dashboard, DadgetDto dadget, AsyncCallback<DashboardDto> callback);
 
-	void loadFavorites(AsyncCallback<FavoriteListDto> callback);
+   void editDadgetToDashboard(DashboardDto dashboardDto, DadgetDto dadget, AsyncCallback<DashboardDto> callback);
 
-	void importReferencedDashboardForUser(DashboardNodeDto dashboard,
-			AsyncCallback<DashboardDto> callback);
+   void addToFavorites(AbstractTsDiskNodeDto node, AsyncCallback<Void> callback);
 
-	void editDashboards(ArrayList<DashboardDto> dashboards,
-			AsyncCallback<Void> callback);
+   void removeFromFavorites(AbstractTsDiskNodeDto node, AsyncCallback<Void> callback);
 
-	void getDashboardParameterInstances(DashboardDto dashboardDto, AsyncCallback<Map<String,ParameterInstanceDto>> callback);
+   void loadFavorites(AsyncCallback<FavoriteListDto> callback);
 
-	void setDashboardParameterInstances(DashboardDto dashboardDto, Set<ParameterInstanceDto> parameterInstances, AsyncCallback<List<DadgetDto>> callback);
+   void importReferencedDashboardForUser(DashboardNodeDto dashboard, AsyncCallback<DashboardDto> callback);
 
-	void getDadgetParameterInstances(DadgetDto dadgetDto, AsyncCallback<Map<String, ParameterInstanceDto>> callback);
+   void editDashboards(ArrayList<DashboardDto> dashboards, AsyncCallback<Void> callback);
 
-	void setDadgetParameterInstances(DadgetDto dadgetDto, Set<ParameterInstanceDto> parameterInstances,
-			AsyncCallback<DadgetDto> callback);
+   void getDashboardParameterInstances(DashboardDto dashboardDto,
+         AsyncCallback<Map<String, ParameterInstanceDto>> callback);
 
-	void resetReferencedDashboard(DashboardReferenceDto dashboardDto, AsyncCallback<DashboardDto> callback);
+   void setDashboardParameterInstances(DashboardDto dashboardDto, Set<ParameterInstanceDto> parameterInstances,
+         AsyncCallback<List<DadgetDto>> callback);
 
-	void loadDashboardForDisplay(DashboardDto dashboard, AsyncCallback<DashboardDto> transformAndKeepCallback);
+   void getDadgetParameterInstances(DadgetDto dadgetDto, AsyncCallback<Map<String, ParameterInstanceDto>> callback);
 
-	void changeDashboardOrder(ArrayList<Long> dashboardIds, AsyncCallback<Void> callback);
+   void setDadgetParameterInstances(DadgetDto dadgetDto, Set<ParameterInstanceDto> parameterInstances,
+         AsyncCallback<DadgetDto> callback);
 
-	void loadDashboardForDisplayFrom(HistoryLocation location, AsyncCallback<DashboardDto> callback);
+   void resetReferencedDashboard(DashboardReferenceDto dashboardDto, AsyncCallback<DashboardDto> callback);
 
-	void loadAllDashboards(AsyncCallback<ListLoadResult<DashboardDto>> callback);
-	
-	void loadDashboards(AsyncCallback<ListLoadResult<DashboardDto>> callback);
-	
-	void setPrimaryDashboard(DashboardDto dashboardDto, AsyncCallback<Void> callback);
-	
+   void loadDashboardForDisplay(DashboardDto dashboard, AsyncCallback<DashboardDto> transformAndKeepCallback);
+
+   void changeDashboardOrder(ArrayList<Long> dashboardIds, AsyncCallback<Void> callback);
+
+   void loadDashboardForDisplayFrom(HistoryLocation location, AsyncCallback<DashboardDto> callback);
+
+   void loadAllDashboards(AsyncCallback<ListLoadResult<DashboardDto>> callback);
+
+   void loadDashboards(AsyncCallback<ListLoadResult<DashboardDto>> callback);
+
+   void setPrimaryDashboard(DashboardDto dashboardDto, AsyncCallback<Void> callback);
+
 }

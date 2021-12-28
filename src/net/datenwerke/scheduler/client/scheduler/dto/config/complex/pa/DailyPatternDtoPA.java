@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.DailyPattern
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.DailyPattern.class)
 public interface DailyPatternDtoPA extends PropertyAccess<DailyPatternDto> {
 
-
-
 }

@@ -20,44 +20,38 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MainPanelViewProviderHooker extends MainPanelViewProviderHookImpl {
 
-	public static final String USERMANAGER_VIEW_PROVIDER_ID = "USERMANAGER_MAIN_VIEW_PROVIDER";
-	
-	private final Provider<UserVariablesView> userVariablesViewProvider;
-	private final Provider<UserVariablesDefinitionPanel> defProvider;
-	private final SecurityUIService securityService;
+   public static final String USERMANAGER_VIEW_PROVIDER_ID = "USERMANAGER_MAIN_VIEW_PROVIDER";
 
+   private final Provider<UserVariablesView> userVariablesViewProvider;
+   private final Provider<UserVariablesDefinitionPanel> defProvider;
+   private final SecurityUIService securityService;
 
-	@Inject
-	public MainPanelViewProviderHooker(
-			HookHandlerService hookHandlerService, 
-			Provider<UserVariablesView> userVariablesViewProvider,
-			Provider<UserVariablesDefinitionPanel> defProvider,
-			SecurityUIService securityService
-			) {
-		super(hookHandlerService);
-		this.userVariablesViewProvider = userVariablesViewProvider;
-		this.defProvider = defProvider;
-		this.securityService = securityService;
-	}
+   @Inject
+   public MainPanelViewProviderHooker(HookHandlerService hookHandlerService,
+         Provider<UserVariablesView> userVariablesViewProvider, Provider<UserVariablesDefinitionPanel> defProvider,
+         SecurityUIService securityService) {
+      super(hookHandlerService);
+      this.userVariablesViewProvider = userVariablesViewProvider;
+      this.defProvider = defProvider;
+      this.securityService = securityService;
+   }
 
-	public List<MainPanelView> getPrimaryViews(AbstractNodeDto node) {
-		List<MainPanelView> views = new ArrayList<MainPanelView>();
-		
-		if(node instanceof OrganisationalUnitDto && Boolean.TRUE.equals(((OrganisationalUnitDto)node).isIsUserRoot()))
-			if(securityService.hasRight(UserVariableAdminViewGenericTargetIdentifier.class, ReadDto.class))
-				views.add(defProvider.get());
-		
-		if(node instanceof UserDto || node instanceof OrganisationalUnitDto)
-			views.add(userVariablesViewProvider.get());
-		
-		return views;
-	}
+   public List<MainPanelView> getPrimaryViews(AbstractNodeDto node) {
+      List<MainPanelView> views = new ArrayList<MainPanelView>();
 
+      if (node instanceof OrganisationalUnitDto && Boolean.TRUE.equals(((OrganisationalUnitDto) node).isIsUserRoot()))
+         if (securityService.hasRight(UserVariableAdminViewGenericTargetIdentifier.class, ReadDto.class))
+            views.add(defProvider.get());
 
+      if (node instanceof UserDto || node instanceof OrganisationalUnitDto)
+         views.add(userVariablesViewProvider.get());
 
-	@Override
-	public String getViewProviderId() {
-		return USERMANAGER_VIEW_PROVIDER_ID;
-	}
+      return views;
+   }
+
+   @Override
+   public String getViewProviderId() {
+      return USERMANAGER_VIEW_PROVIDER_ID;
+   }
 
 }

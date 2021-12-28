@@ -65,18 +65,10 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public SftpRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         SftpService sftpService, 
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public SftpRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, SftpService sftpService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -93,17 +85,15 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
          final List<ReportExecutionConfigDto> configs) throws ExpectedException {
       return Stream.concat(
-               configs
-               .stream()
-               .map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
-            Stream.of(new RECReportExecutorToken(executorToken)))
-            .toArray(ReportExecutionConfig[]::new);
+            configs.stream().map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
+            Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof SftpDatasinkDto))
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
+      if (!(datasinkDto instanceof SftpDatasinkDto))
          throw new IllegalArgumentException("Not an SFTP datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -133,8 +123,8 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), sftpDatasink, sftpService,
                      new DatasinkFilenameFolderConfig() {
 
@@ -179,10 +169,10 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    @Override
    public boolean testSftpDatasink(SftpDatasinkDto sftpDatasinkDto) throws ServerCallFailedException {
       SftpDatasink sftpDatasink = (SftpDatasink) dtoService.loadPoso(sftpDatasinkDto);
-      
+
       /* check rights */
       securityService.assertRights(sftpDatasink, Read.class, Execute.class);
-      
+
       try {
          datasinkServiceProvider.get().testDatasink(sftpDatasink, sftpService, new DatasinkFilenameFolderConfig() {
 
@@ -197,12 +187,12 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
             }
 
          });
-      } catch(Exception e){
-         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
+      } catch (Exception e) {
+         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }
-      
+
       return true;
    }
 
@@ -218,14 +208,14 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sftpService, filename,
-       folder, compressed);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sftpService, filename, folder,
+            compressed);
    }
 }

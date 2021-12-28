@@ -14,10 +14,9 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class ReportExportAdjustHttpHeaderHookAdapter implements ReportExportAdjustHttpHeaderHook {
 
-	@Override
-	public void adjustHeaders(Report report, CompiledReport executedReport, HttpServletRequest req, HttpServletResponse resp)  {
-	}
-
-
+   @Override
+   public void adjustHeaders(Report report, CompiledReport executedReport, HttpServletRequest req,
+         HttpServletResponse resp) {
+   }
 
 }

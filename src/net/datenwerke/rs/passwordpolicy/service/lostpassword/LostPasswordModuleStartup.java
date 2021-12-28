@@ -8,10 +8,8 @@ import net.datenwerke.security.service.authenticator.hooks.PreAuthenticateHook;
 public class LostPasswordModuleStartup {
 
    @Inject
-   public LostPasswordModuleStartup(
-         HookHandlerService hookHandler,
-         LostPasswordPreAuthenticateHook lostPasswordPreAuthenticateHook
-         ) {
+   public LostPasswordModuleStartup(HookHandlerService hookHandler,
+         LostPasswordPreAuthenticateHook lostPasswordPreAuthenticateHook) {
       hookHandler.attachHooker(PreAuthenticateHook.class, lostPasswordPreAuthenticateHook);
    }
 

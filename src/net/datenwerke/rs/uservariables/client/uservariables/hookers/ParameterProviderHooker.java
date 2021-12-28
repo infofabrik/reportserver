@@ -13,15 +13,16 @@ import net.datenwerke.rs.uservariables.client.parameters.UserVariableParameterCo
 
 public class ParameterProviderHooker implements ParameterProviderHook {
 
-	@Inject Provider<UserVariableParameterConfigurator> parameter;
-	
-	@Override
-	public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
-		List<ParameterConfigurator> list = new ArrayList<ParameterConfigurator>();
-		
-		list.add(parameter.get());
-		
-		return list;
-	}
+   @Inject
+   Provider<UserVariableParameterConfigurator> parameter;
+
+   @Override
+   public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
+      List<ParameterConfigurator> list = new ArrayList<ParameterConfigurator>();
+
+      list.add(parameter.get());
+
+      return list;
+   }
 
 }

@@ -12,23 +12,23 @@ import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 
 public class SaikuModule extends AbstractModule {
 
-	public final static String OUTPUT_FORMAT_CHART_HTML = "SAIKU_CHART_HTML";
-	
-	@Override
-	protected void configure() {
-		requestStaticInjection(MondrianDatasource.class);
-		
-		/* bind metadata exporter */
-		Multibinder<SaikuMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(), SaikuMetadataExporter.class);
-		metadataExporterBinder.addBinding().to(SaikuPlainMetadataExporter.class);
-		
-		bind(OlapUtilService.class).to(OlapUtilServiceImpl.class);
-		bind(OlapQueryService.class).to(OlapQueryServiceImpl.class);
-		bind(SaikuReportService.class).to(SaikuReportServiceImpl.class);
-		bind(SaikuStartup.class).asEagerSingleton();
-		
-		install(new SaikuRestModule());
-	}
+   public final static String OUTPUT_FORMAT_CHART_HTML = "SAIKU_CHART_HTML";
 
+   @Override
+   protected void configure() {
+      requestStaticInjection(MondrianDatasource.class);
+
+      /* bind metadata exporter */
+      Multibinder<SaikuMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(),
+            SaikuMetadataExporter.class);
+      metadataExporterBinder.addBinding().to(SaikuPlainMetadataExporter.class);
+
+      bind(OlapUtilService.class).to(OlapUtilServiceImpl.class);
+      bind(OlapQueryService.class).to(OlapQueryServiceImpl.class);
+      bind(SaikuReportService.class).to(SaikuReportServiceImpl.class);
+      bind(SaikuStartup.class).asEagerSingleton();
+
+      install(new SaikuRestModule());
+   }
 
 }

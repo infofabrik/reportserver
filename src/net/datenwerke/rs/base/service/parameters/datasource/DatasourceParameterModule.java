@@ -6,15 +6,13 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class DatasourceParameterModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* service */
-		bind(DatasourceParameterService.class).to(DatasourceParameterServiceImpl.class).in(Singleton.class);
-		
-		/* static injection */
-		requestStaticInjection(
-			DatasourceParameterDefinition.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* service */
+      bind(DatasourceParameterService.class).to(DatasourceParameterServiceImpl.class).in(Singleton.class);
+
+      /* static injection */
+      requestStaticInjection(DatasourceParameterDefinition.class);
+   }
 
 }

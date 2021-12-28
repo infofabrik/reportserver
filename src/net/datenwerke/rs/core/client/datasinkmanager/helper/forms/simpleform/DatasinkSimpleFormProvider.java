@@ -71,12 +71,10 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
 
       return wrapper;
    }
-   
+
    private SFFCDatasinkDao getDatasinkDaoProvider() {
-      return Arrays.stream(configs)
-            .filter(config -> config instanceof SFFCDatasinkDao)
-            .map(config -> ((SFFCDatasinkDao) config))
-            .findAny()
+      return Arrays.stream(configs).filter(config -> config instanceof SFFCDatasinkDao)
+            .map(config -> ((SFFCDatasinkDao) config)).findAny()
             .orElseThrow(() -> new IllegalStateException("No SFFCDatasinkDao!"));
    }
 

@@ -15,15 +15,19 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 @RemoteServiceRelativePath("reportmanager_parameter")
 public interface ParameterRpcService extends RemoteService {
 
-	public ReportDto addParameter(ParameterDefinitionDto parameter, AbstractNodeDto correspondingNode) throws ServerCallFailedException;
-	
-	public ReportDto updateParameter(ParameterDefinitionDto parameter) throws ServerCallFailedException, ExpectedException;
-	
-	public ReportDto removeParameters(Collection<ParameterDefinitionDto> parameters) throws ServerCallFailedException;
-	
-	public ReportDto updateParameterInstances(Collection<ParameterDefinitionDto> parameters) throws ServerCallFailedException;
-	
-	public ReportDto movedParameter(ParameterDefinitionDto parameter, int to) throws ServerCallFailedException;
-	
-	public ReportDto duplicateParameters(List<ParameterDefinitionDto> params, AbstractNodeDto correspondingNode) throws ServerCallFailedException, ExpectedException;
+   public ReportDto addParameter(ParameterDefinitionDto parameter, AbstractNodeDto correspondingNode)
+         throws ServerCallFailedException;
+
+   public ReportDto updateParameter(ParameterDefinitionDto parameter)
+         throws ServerCallFailedException, ExpectedException;
+
+   public ReportDto removeParameters(Collection<ParameterDefinitionDto> parameters) throws ServerCallFailedException;
+
+   public ReportDto updateParameterInstances(Collection<ParameterDefinitionDto> parameters)
+         throws ServerCallFailedException;
+
+   public ReportDto movedParameter(ParameterDefinitionDto parameter, int to) throws ServerCallFailedException;
+
+   public ReportDto duplicateParameters(List<ParameterDefinitionDto> params, AbstractNodeDto correspondingNode)
+         throws ServerCallFailedException, ExpectedException;
 }

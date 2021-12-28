@@ -22,97 +22,81 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 @Entity
-@Table(name="FILE_SERVER_FOLDER")
+@Table(name = "FILE_SERVER_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	FileServerFolder.class,
-	FileServerFile.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.fileserver.client.fileserver.dto",
-	dtoImplementInterfaces=FolderDto.class,	
-	typeDescriptionMsg=BaseMessages.class, typeDescriptionKey="folder",
-	icon="folder"
-)
-@InstanceDescription(
-	msgLocation=FileserverMessages.class,
-	objNameKey="folderTypeName",
-	icon = "folder"
-)
+@TreeDBAllowedChildren({ FileServerFolder.class, FileServerFile.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.fileserver.client.fileserver.dto", dtoImplementInterfaces = FolderDto.class, typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
+@InstanceDescription(msgLocation = FileserverMessages.class, objNameKey = "folderTypeName", icon = "folder")
 public class FileServerFolder extends AbstractFileServerNode {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5246206383961083936L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5246206383961083936L;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   @Field
+   @Title
+   private String name;
 
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Column(length = 128)
-	@Field
-	@Title
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @Description
+   private String description;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@Description
-    private String description;
-	
-	@ExposeToClient
-	private boolean publiclyAccessible = false;
-	
-	public FileServerFolder() {
-		super();
-	}
-	
-    public FileServerFolder(String name) {
-    	super();
-    	this.name = name;
-	}
+   @ExposeToClient
+   private boolean publiclyAccessible = false;
 
-	public String getName() {
-        return name;
-    }
+   public FileServerFolder() {
+      super();
+   }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public FileServerFolder(String name) {
+      super();
+      this.name = name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public void setPubliclyAccessible(boolean publiclyAccessible) {
-		this.publiclyAccessible = publiclyAccessible;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public boolean isPubliclyAccessible() {
-		return publiclyAccessible;
-	}
-	
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public FileServerFolder getSubfolderByName(String name) {
-		if(null == name)
-			return null;
-		
-		for(FileServerFolder f : getChildrenOfType(FileServerFolder.class))
-			if(name.equals(f.getName()))
-				return f;
-		
-		return null;
-	}
+   public void setPubliclyAccessible(boolean publiclyAccessible) {
+      this.publiclyAccessible = publiclyAccessible;
+   }
+
+   public boolean isPubliclyAccessible() {
+      return publiclyAccessible;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
+
+   public FileServerFolder getSubfolderByName(String name) {
+      if (null == name)
+         return null;
+
+      for (FileServerFolder f : getChildrenOfType(FileServerFolder.class))
+         if (name.equals(f.getName()))
+            return f;
+
+      return null;
+   }
 }

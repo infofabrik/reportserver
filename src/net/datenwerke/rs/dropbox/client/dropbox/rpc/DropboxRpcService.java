@@ -24,9 +24,9 @@ public interface DropboxRpcService extends RemoteService {
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
 
    boolean testDropboxDatasink(DropboxDatasinkDto dropboxDatasinkDto) throws ServerCallFailedException;
-   
+
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 }

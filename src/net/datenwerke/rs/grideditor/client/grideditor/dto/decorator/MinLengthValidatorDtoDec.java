@@ -17,29 +17,28 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MinLengthValidatorDto;
  */
 public class MinLengthValidatorDtoDec extends MinLengthValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MinLengthValidatorDtoDec() {
+      super();
+   }
 
-	public MinLengthValidatorDtoDec() {
-		super();
-	}
-
-	@Override
-	public Validator<?> getValidator() {
-		MinLengthValidator validator = new MinLengthValidator(getLength()){
-			@Override
-			public List<EditorError> validate(Editor<String> field, String value) {
-				if(null == value)
-					return createError(new DefaultEditorError(field, getMessages().minLengthText(minLength), value));
-				return super.validate(field, value);
-			}
-		};
-		validator.setMessages(new MinLengthMessages() {
-			@Override
-			public String minLengthText(int length) {
-				return getErrorMsg();
-			}
-		});
-		return validator;
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MinLengthValidator validator = new MinLengthValidator(getLength()) {
+         @Override
+         public List<EditorError> validate(Editor<String> field, String value) {
+            if (null == value)
+               return createError(new DefaultEditorError(field, getMessages().minLengthText(minLength), value));
+            return super.validate(field, value);
+         }
+      };
+      validator.setMessages(new MinLengthMessages() {
+         @Override
+         public String minLengthText(int length) {
+            return getErrorMsg();
+         }
+      });
+      return validator;
+   }
 }

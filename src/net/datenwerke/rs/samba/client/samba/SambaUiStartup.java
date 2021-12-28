@@ -26,47 +26,37 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 public class SambaUiStartup {
 
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 25;
-   
+
    @Inject
-   public SambaUiStartup(
-         final HookHandlerService hookHandler, 
-         final Provider<ExportToSambaHooker> exportToSambaHooker,
+   public SambaUiStartup(final HookHandlerService hookHandler, final Provider<ExportToSambaHooker> exportToSambaHooker,
          final Provider<FileExportToSambaHooker> fileExportToDatasinkHooker,
          final Provider<SambaExportSnippetProvider> sambaExportSnippetProvider,
          final Provider<SambaDatasinkConfigProviderHooker> sambaTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, 
-         final SambaDao dao,
-         final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator,
-         final SambaUiService sambaUiService,
-         final Provider<SambaSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final WaitOnEventUIService waitOnEventService, final SambaDao dao,
+         final SambaDatasinkTesterToolbarConfigurator sambaTestToolbarConfigurator, final SambaUiService sambaUiService,
+         final Provider<SambaSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sambaTreeConfiguratorProvider.get(),
-            PRIO);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sambaTreeConfiguratorProvider.get(), PRIO);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSambaHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSambaHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sambaTestToolbarConfigurator,
-            PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sambaTestToolbarConfigurator, PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
-         
-         dao.getSambaEnabledConfigs(new RsAsyncCallback<Map<StorageType,Boolean>>() {
+
+         dao.getSambaEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
-            public void onSuccess(final Map<StorageType,Boolean> result) {
-               ((SambaUiServiceImpl)sambaUiService).setEnabledConfigs(result);
+            public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((SambaUiServiceImpl) sambaUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SAMBA) && result.get(StorageType.SAMBA_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider,
-                        PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider, PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, sambaExportSnippetProvider);
             }

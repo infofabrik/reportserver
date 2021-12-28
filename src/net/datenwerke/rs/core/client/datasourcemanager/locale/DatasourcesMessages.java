@@ -5,62 +5,72 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface DatasourcesMessages extends Messages {
 
-	public final static DatasourcesMessages INSTANCE = GWT.create(DatasourcesMessages.class);
-	
-	String dataSourcePermissionModuleDescription();
+   public final static DatasourcesMessages INSTANCE = GWT.create(DatasourcesMessages.class);
 
-	String datasources();
+   String dataSourcePermissionModuleDescription();
 
-	String query();
-	
-	String url();
-	String username();
-	String password();
-	String database();
+   String datasources();
 
-	String folder();
-	String insert();
-	
-	String adminModuleName();
-	String editDataSource();
+   String query();
 
-	String dataSource();
+   String url();
 
-	String editFolder();
+   String username();
 
-	String useDefault();
+   String password();
 
-	String useDefaultFailureTitle();
+   String database();
 
-	String useDefaultFailureMessage();
+   String folder();
 
-	String useDefaultSuccessMessage();
+   String insert();
 
-	String loading();
-	String submit();
+   String adminModuleName();
 
-	String setDefaultDatasource();
-	
-	String urlContainsWhitespaceWarning();
+   String editDataSource();
 
-	String clearPassword();
+   String dataSource();
 
-	String importWhereTo();
-	String importConfigFailureNoParent();
-	String importMainPropertiesDescription();
-	String importMainPropertiesHeadline();
+   String editFolder();
 
-	String importerName();
+   String useDefault();
 
-	String exportGroup();
-	String quickExportText();
+   String useDefaultFailureTitle();
 
-	String execute();
+   String useDefaultFailureMessage();
 
-	String dataSourceConfigTitle();
+   String useDefaultSuccessMessage();
 
-	String defaultDatasource();
+   String loading();
 
-	String mondrian3();
-	
+   String submit();
+
+   String setDefaultDatasource();
+
+   String urlContainsWhitespaceWarning();
+
+   String clearPassword();
+
+   String importWhereTo();
+
+   String importConfigFailureNoParent();
+
+   String importMainPropertiesDescription();
+
+   String importMainPropertiesHeadline();
+
+   String importerName();
+
+   String exportGroup();
+
+   String quickExportText();
+
+   String execute();
+
+   String dataSourceConfigTitle();
+
+   String defaultDatasource();
+
+   String mondrian3();
+
 }

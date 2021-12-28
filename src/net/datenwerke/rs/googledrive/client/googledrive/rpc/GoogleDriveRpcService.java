@@ -26,7 +26,7 @@ public interface GoogleDriveRpcService extends RemoteService {
    boolean testGoogleDriveDatasink(GoogleDriveDatasinkDto googleDriveDatasinkDto) throws ServerCallFailedException;
 
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 }

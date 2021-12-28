@@ -33,7 +33,7 @@ public class LocalFileSystemSendToFormConfiguratorHooker implements DatasinkSend
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return LocalFileSystemUiModule.NAME;
@@ -53,5 +53,5 @@ public class LocalFileSystemSendToFormConfiguratorHooker implements DatasinkSend
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

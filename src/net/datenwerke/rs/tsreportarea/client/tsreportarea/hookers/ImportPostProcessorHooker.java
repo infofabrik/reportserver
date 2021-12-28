@@ -15,105 +15,105 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskPostProcessorConfigDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
 
-public class ImportPostProcessorHooker implements
-		ImporterPostProcessorConfiguratorHook {
+public class ImportPostProcessorHooker implements ImporterPostProcessorConfiguratorHook {
 
-	private static final String POST_PROCESSOR_ID = "FavoritesPostProcessor";
+   private static final String POST_PROCESSOR_ID = "FavoritesPostProcessor";
 
-	private TsDiskPostProcessorConfigDto config;
-	private PropertiesDialogCard card;
-	
-	@Override
-	public ImportPostProcessConfigDto getConfiguration()
-			throws NotProperlyConfiguredException {
-		return config;
-	}
+   private TsDiskPostProcessorConfigDto config;
+   private PropertiesDialogCard card;
 
-	@Override
-	public String getPostProcessorId() {
-		return POST_PROCESSOR_ID;
-	}
+   @Override
+   public ImportPostProcessConfigDto getConfiguration() throws NotProperlyConfiguredException {
+      return config;
+   }
 
-	@Override
-	public PropertiesDialogCard getCard() {
-		if(null == card)
-			card = createCard();
-		
-		return card;
-	}
+   @Override
+   public String getPostProcessorId() {
+      return POST_PROCESSOR_ID;
+   }
 
-	private PropertiesDialogCard createCard() {
-		return new PropertiesDialogCard(){
+   @Override
+   public PropertiesDialogCard getCard() {
+      if (null == card)
+         card = createCard();
 
-			private SimpleForm form;
-			private String teamspaceKey;
-			
-			@Override
-			public ImageResource getIcon() {
-				return BaseIcon.NEWSPAPER_O.toImageResource(1);
-			}
+      return card;
+   }
 
-			@Override
-			public Widget getCard() {
-				form = SimpleForm.getInlineInstance();
-				
-				teamspaceKey = form.addField(TeamSpaceDto.class, TsFavoriteMessages.INSTANCE.importPostProcessorIntoTeamspace(), new SFFCTeamSpace() {
-					@Override
-					public boolean isMulti() {
-						return false;
-					}
-					
-					@Override
-					public boolean isLoadAll() {
-						return true;
-					}
-				});
-				
-				form.loadFields();
-				
-				DwContentPanel wrapper = DwContentPanel.newLightHeaderPanel(TsFavoriteMessages.INSTANCE.importPostProcessorHeadline(), form);
-				wrapper.setInfoText(TsFavoriteMessages.INSTANCE.importPostProcessorDescription());
-				return wrapper;
-			}
+   private PropertiesDialogCard createCard() {
+      return new PropertiesDialogCard() {
 
-			@Override
-			public String getName() {
-				return TsFavoriteMessages.INSTANCE.importPostProcessorName();
-			}
+         private SimpleForm form;
+         private String teamspaceKey;
 
-			@Override
-			public void cancelPressed() {
-				
-			}
+         @Override
+         public ImageResource getIcon() {
+            return BaseIcon.NEWSPAPER_O.toImageResource(1);
+         }
 
-			@Override
-			public String isValid() {
-				return null;
-			}
+         @Override
+         public Widget getCard() {
+            form = SimpleForm.getInlineInstance();
 
-			@Override
-			public void submitPressed() {
-				TeamSpaceDto teamSpace = (TeamSpaceDto) form.getValue(teamspaceKey);
-				
-				if(null == teamSpace)
-					config = null;
-				else {
-					config = new TsDiskPostProcessorConfigDto();
-					config.setTeamSpace(teamSpace);
-				}
-			}
+            teamspaceKey = form.addField(TeamSpaceDto.class,
+                  TsFavoriteMessages.INSTANCE.importPostProcessorIntoTeamspace(), new SFFCTeamSpace() {
+                     @Override
+                     public boolean isMulti() {
+                        return false;
+                     }
 
-			@Override
-			public int getHeight() {
-				return 280;
-			}
-			
-		};
-	}
+                     @Override
+                     public boolean isLoadAll() {
+                        return true;
+                     }
+                  });
 
-	@Override
-	public void reset() {
-		card = null;
-	}
+            form.loadFields();
+
+            DwContentPanel wrapper = DwContentPanel
+                  .newLightHeaderPanel(TsFavoriteMessages.INSTANCE.importPostProcessorHeadline(), form);
+            wrapper.setInfoText(TsFavoriteMessages.INSTANCE.importPostProcessorDescription());
+            return wrapper;
+         }
+
+         @Override
+         public String getName() {
+            return TsFavoriteMessages.INSTANCE.importPostProcessorName();
+         }
+
+         @Override
+         public void cancelPressed() {
+
+         }
+
+         @Override
+         public String isValid() {
+            return null;
+         }
+
+         @Override
+         public void submitPressed() {
+            TeamSpaceDto teamSpace = (TeamSpaceDto) form.getValue(teamspaceKey);
+
+            if (null == teamSpace)
+               config = null;
+            else {
+               config = new TsDiskPostProcessorConfigDto();
+               config.setTeamSpace(teamSpace);
+            }
+         }
+
+         @Override
+         public int getHeight() {
+            return 280;
+         }
+
+      };
+   }
+
+   @Override
+   public void reset() {
+      card = null;
+   }
 
 }

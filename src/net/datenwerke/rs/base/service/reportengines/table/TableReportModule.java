@@ -30,21 +30,14 @@ public class TableReportModule extends AbstractReportServerModule {
       /* bind utilities */
       bind(TableReportUtils.class).to(TableReportUtilsImpl.class).in(Singleton.class);
       bind(TableReportColumnMetadataService.class).to(TableReportColumnMetadataServiceImpl.class).in(Singleton.class);
-      
+
       bind(FilterService.class).to(FilterServiceImpl.class);
 
       /* bind startup */
       bind(TableReportStartup.class).asEagerSingleton();
 
-      requestStaticInjection(
-            ColumnFormatTemplate.class, 
-            ColumnFormatDate.class, 
-            TableOutputGeneratorImpl.class,
-            RSTableToXLS.class, 
-            Filter.class, 
-            Column.class, 
-            CurrencyType.class
-            );
+      requestStaticInjection(ColumnFormatTemplate.class, ColumnFormatDate.class, TableOutputGeneratorImpl.class,
+            RSTableToXLS.class, Filter.class, Column.class, CurrencyType.class);
    }
 
 }

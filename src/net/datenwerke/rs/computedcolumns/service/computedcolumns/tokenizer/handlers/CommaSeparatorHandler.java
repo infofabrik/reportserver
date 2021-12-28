@@ -7,9 +7,10 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class CommaSeparatorHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		return ",".equals(strToken) ? new CommaSeparatorExpressionToken() : null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      return ",".equals(strToken) ? new CommaSeparatorExpressionToken() : null;
+   }
 
 }

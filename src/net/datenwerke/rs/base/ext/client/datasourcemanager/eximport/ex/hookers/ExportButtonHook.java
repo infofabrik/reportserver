@@ -16,44 +16,37 @@ import net.datenwerke.treedb.ext.client.eximport.ex.QuickExportHookerBase;
  *
  */
 public class ExportButtonHook extends QuickExportHookerBase {
-	
-	private final DatasourceManagerExportDao dsDao;
 
-	@Inject
-	public ExportButtonHook(
-		DatasourceManagerExportDao reDao,
-		ToolbarService toolbarUIService,
-		UtilsUIService utilsUIService
-		) {
-		super(toolbarUIService, utilsUIService);
-		
-		/* store objects */
-		this.dsDao = reDao;
-	}
-	
-	@Override
-	protected boolean viewApplies(MainPanelView view,
-			AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof AbstractDatasourceManagerNodeDto) )
-			return false;
-		if(! MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
-			return false;
-		
-		return true;
-	}
+   private final DatasourceManagerExportDao dsDao;
 
-	@Override
-	protected void quickExportClicked(AbstractNodeDto selectedNode) {
-		startProgress();
-		dsDao.quickExport((AbstractDatasourceManagerNodeDto) selectedNode, getExportCallback());
-	}
+   @Inject
+   public ExportButtonHook(DatasourceManagerExportDao reDao, ToolbarService toolbarUIService,
+         UtilsUIService utilsUIService) {
+      super(toolbarUIService, utilsUIService);
 
-	@Override
-	protected void loadAndDisplayResult(
-			AsyncCallback<String> callback) {
-		dsDao.loadResult(callback);
-	}
+      /* store objects */
+      this.dsDao = reDao;
+   }
 
+   @Override
+   protected boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof AbstractDatasourceManagerNodeDto))
+         return false;
+      if (!MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
+         return false;
 
-	
+      return true;
+   }
+
+   @Override
+   protected void quickExportClicked(AbstractNodeDto selectedNode) {
+      startProgress();
+      dsDao.quickExport((AbstractDatasourceManagerNodeDto) selectedNode, getExportCallback());
+   }
+
+   @Override
+   protected void loadAndDisplayResult(AsyncCallback<String> callback) {
+      dsDao.loadResult(callback);
+   }
+
 }

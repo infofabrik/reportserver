@@ -2,7 +2,7 @@ package net.datenwerke.rs.utils.entitycloner.config;
 
 public interface ClonerConfig {
 
-	boolean nullReferencedEntities();
-	
-	boolean cloneReferencedEntities();
+   boolean nullReferencedEntities();
+
+   boolean cloneReferencedEntities();
 }

@@ -14,10 +14,10 @@ import net.datenwerke.security.service.usermanager.UserManagerServiceImpl;
  */
 public class UserManagerMockupModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(UserManagerService.class).to(UserManagerServiceImpl.class).in(Scopes.SINGLETON);
-		bind(PasswordHasher.class).to(DummyPasswordHasherImpl.class);
-	}
+   @Override
+   protected void configure() {
+      bind(UserManagerService.class).to(UserManagerServiceImpl.class).in(Scopes.SINGLETON);
+      bind(PasswordHasher.class).to(DummyPasswordHasherImpl.class);
+   }
 
 }

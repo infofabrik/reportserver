@@ -10,10 +10,10 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 @ImplementedBy(ReportDocumentationUiServiceImpl.class)
 public interface ReportDocumentationUiService {
 
-	void openDocumentationForopen(ReportDto report);
-	
-	void openDeployAnalyzeForopen(ReportDto leftReport, ReportDto rightReport, boolean ignoreCase);
-	
-	void openVariantTestForopen(ReportDto report, List<DatasourceDefinitionDto> datasources);
+   void openDocumentationForopen(ReportDto report);
+
+   void openDeployAnalyzeForopen(ReportDto leftReport, ReportDto rightReport, boolean ignoreCase);
+
+   void openVariantTestForopen(ReportDto report, List<DatasourceDefinitionDto> datasources);
 
 }

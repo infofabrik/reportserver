@@ -21,37 +21,38 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public interface OlapUtilService {
 
-	OlapConnection getOlapConnection(SaikuReport report) throws ClassNotFoundException, IOException, SQLException;
+   OlapConnection getOlapConnection(SaikuReport report) throws ClassNotFoundException, IOException, SQLException;
 
-	OlapConnection getOlapConnection(MondrianDatasource mondrianDatasource, SaikuReport report, boolean resetParameters) throws IOException, ClassNotFoundException, SQLException;
+   OlapConnection getOlapConnection(MondrianDatasource mondrianDatasource, SaikuReport report, boolean resetParameters)
+         throws IOException, ClassNotFoundException, SQLException;
 
-	Cube getCube(SaikuReport report) throws ClassNotFoundException, IOException, SQLException;
-	
-	String replaceParametersInQuery(ParameterSet parameterSet, Map<String, ParameterValue> pMap, String mondrianSchema, boolean resetParameters);
+   Cube getCube(SaikuReport report) throws ClassNotFoundException, IOException, SQLException;
 
-	List<Member> getAllMeasures(Cube cube) throws OlapException;
+   String replaceParametersInQuery(ParameterSet parameterSet, Map<String, ParameterValue> pMap, String mondrianSchema,
+         boolean resetParameters);
 
-	List<Dimension> getAllDimensions(Cube cube);
+   List<Member> getAllMeasures(Cube cube) throws OlapException;
 
-	List<Member> getAllMembers(Cube cube, String dimension, String hierarchy, String level) throws OlapException;
+   List<Dimension> getAllDimensions(Cube cube);
 
-	List<Level> getAllLevels(Cube cube, String dimension, String hierarchy) throws OlapException;
+   List<Member> getAllMembers(Cube cube, String dimension, String hierarchy, String level) throws OlapException;
 
-	List<Member> getHierarchyRootMembers(Cube cube, String hierarchyName) throws OlapException;
+   List<Level> getAllLevels(Cube cube, String dimension, String hierarchy) throws OlapException;
 
-	List<String> getCubes(MondrianDatasource datasource, SaikuReport saikuReport)
-			throws ClassNotFoundException, IOException, SQLException;
-	
-	/**
-	 * Clears the Mondrian Cache of the given report.
-	 * 
-	 * @param report
-	 *            the report of which the cache should be cleared
-	 */
-	void flushCache(Report report);
-	
-	void flushCache(MondrianDatasource datasource);
-	
-	boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException;
+   List<Member> getHierarchyRootMembers(Cube cube, String hierarchyName) throws OlapException;
+
+   List<String> getCubes(MondrianDatasource datasource, SaikuReport saikuReport)
+         throws ClassNotFoundException, IOException, SQLException;
+
+   /**
+    * Clears the Mondrian Cache of the given report.
+    * 
+    * @param report the report of which the cache should be cleared
+    */
+   void flushCache(Report report);
+
+   void flushCache(MondrianDatasource datasource);
+
+   boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException;
 
 }

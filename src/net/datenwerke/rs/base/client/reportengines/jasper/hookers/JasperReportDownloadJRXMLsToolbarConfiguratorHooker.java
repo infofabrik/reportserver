@@ -23,53 +23,52 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class JasperReportDownloadJRXMLsToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {
 
-	private final ToolbarService toolbarUtils;
-	private final UtilsUIService utilsUIService;
-	
-	@Inject
-	public JasperReportDownloadJRXMLsToolbarConfiguratorHooker(
-		ToolbarService toolbarUtils,
-		UtilsUIService utilsUIService
-		){
-		
-		/* store objects */
-		this.toolbarUtils = toolbarUtils;
-		this.utilsUIService = utilsUIService;
-	}
-	
-	
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof JasperReportDto))
-			return;
-		if(! (view instanceof FormView))
-			return;
-		
-		final JasperReportDto report = (JasperReportDto) selectedNode;
-		
-		/* add parameter */
-		DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(JasperMessages.INSTANCE.jasperDownloadToolbarButtonText(), BaseIcon.FILE_PICTURE_O);
-		createPreviewBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(null == report.getMasterFile()){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded()).show();
-					return;
-				}
-				
-				String id = String.valueOf(report.getId());
-				String url = GWT.getModuleBaseURL() + "JRXMLDownload?id=" + id; //$NON-NLS-1$
-				ClientDownloadHelper.triggerDownload(url);
-			}
-		});
-		
-		toolbar.add(createPreviewBtn);
-	}
+   private final ToolbarService toolbarUtils;
+   private final UtilsUIService utilsUIService;
 
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		
-	}
+   @Inject
+   public JasperReportDownloadJRXMLsToolbarConfiguratorHooker(ToolbarService toolbarUtils,
+         UtilsUIService utilsUIService) {
+
+      /* store objects */
+      this.toolbarUtils = toolbarUtils;
+      this.utilsUIService = utilsUIService;
+   }
+
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof JasperReportDto))
+         return;
+      if (!(view instanceof FormView))
+         return;
+
+      final JasperReportDto report = (JasperReportDto) selectedNode;
+
+      /* add parameter */
+      DwTextButton createPreviewBtn = toolbarUtils
+            .createSmallButtonLeft(JasperMessages.INSTANCE.jasperDownloadToolbarButtonText(), BaseIcon.FILE_PICTURE_O);
+      createPreviewBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (null == report.getMasterFile()) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded())
+                     .show();
+               return;
+            }
+
+            String id = String.valueOf(report.getId());
+            String url = GWT.getModuleBaseURL() + "JRXMLDownload?id=" + id; //$NON-NLS-1$
+            ClientDownloadHelper.triggerDownload(url);
+         }
+      });
+
+      toolbar.add(createPreviewBtn);
+   }
+
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+
+   }
 
 }

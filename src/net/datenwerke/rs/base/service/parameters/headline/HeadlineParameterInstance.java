@@ -15,32 +15,29 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Entity
-@Table(name="HEADLINE_PARAM_INST")
+@Table(name = "HEADLINE_PARAM_INST")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.parameters.headline.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.parameters.headline.dto")
 public class HeadlineParameterInstance extends ParameterInstance<HeadlineParameterDefinition> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 330691242202913445L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 330691242202913445L;
 
-	@Override
-	public Object getSelectedValue(User user) {
-		return ((HeadlineParameterDefinition)getDefinition()).getValue();
-	}
+   @Override
+   public Object getSelectedValue(User user) {
+      return ((HeadlineParameterDefinition) getDefinition()).getValue();
+   }
 
-	@Override
-	public Object getDefaultValue(User user, ParameterSet parameterSet) {
-		return getSelectedValue(user);
-	}
+   @Override
+   public Object getDefaultValue(User user, ParameterSet parameterSet) {
+      return getSelectedValue(user);
+   }
 
-	@Override
-	protected Class<?> getType() {
-		return String.class;
-	}
-
+   @Override
+   protected Class<?> getType() {
+      return String.class;
+   }
 
 }

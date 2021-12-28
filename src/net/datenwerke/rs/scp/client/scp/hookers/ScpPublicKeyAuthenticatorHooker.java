@@ -30,21 +30,21 @@ import net.datenwerke.rs.scp.client.scp.dto.pa.ScpDatasinkDtoPA;
 public class ScpPublicKeyAuthenticatorHooker implements DatasinkAuthenticatorConfiguratorHook {
 
    private final FileUploadUiService fileUploadService;
-   
+
    public static final String AUTHENTICATION_TYPE = "public-key-auth";
-   
+
    @Inject
    public ScpPublicKeyAuthenticatorHooker(FileUploadUiService fileUploadService) {
       this.fileUploadService = fileUploadService;
    }
-   
+
    @Override
    public Widget configureForm(final SimpleFormView mainForm, final DatasinkDefinitionDto datasink) {
       SimpleForm form = SimpleForm.getInlineInstance();
       fileUploadService.prepareForUpload(form);
 
       form.setFieldWidth(760);
-      
+
       form.beginFloatRow();
       form.addField(String.class, ScpDatasinkDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
       form.endRow();

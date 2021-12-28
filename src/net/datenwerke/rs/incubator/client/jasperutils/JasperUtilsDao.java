@@ -12,23 +12,21 @@ import net.datenwerke.rs.incubator.client.jasperutils.rpc.JasperUtilsRpcServiceA
 
 public class JasperUtilsDao extends Dao {
 
-	private final JasperUtilsRpcServiceAsync rpcService;
-	
-	@Inject
-	public JasperUtilsDao(
-		JasperUtilsRpcServiceAsync rpcService
-		){
-		this.rpcService = rpcService;
-	}
-	
-	public void proposeParametersFor(JasperReportDto jasperReportDto,
-			AsyncCallback<List<JasperParameterProposalDto>> callback){
-		rpcService.proposeParametersFor(jasperReportDto, transformAndKeepCallback(callback));
-	}
-	
-	public void addParametersFor(JasperReportDto jasperReportDto,
-			List<JasperParameterProposalDto> proposalDtos,
-			AsyncCallback<JasperReportDto> callback){
-		rpcService.addParametersFor(jasperReportDto, (List<JasperParameterProposalDto>) unproxy(proposalDtos), transformDtoCallback(callback));
-	}
+   private final JasperUtilsRpcServiceAsync rpcService;
+
+   @Inject
+   public JasperUtilsDao(JasperUtilsRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void proposeParametersFor(JasperReportDto jasperReportDto,
+         AsyncCallback<List<JasperParameterProposalDto>> callback) {
+      rpcService.proposeParametersFor(jasperReportDto, transformAndKeepCallback(callback));
+   }
+
+   public void addParametersFor(JasperReportDto jasperReportDto, List<JasperParameterProposalDto> proposalDtos,
+         AsyncCallback<JasperReportDto> callback) {
+      rpcService.addParametersFor(jasperReportDto, (List<JasperParameterProposalDto>) unproxy(proposalDtos),
+            transformDtoCallback(callback));
+   }
 }

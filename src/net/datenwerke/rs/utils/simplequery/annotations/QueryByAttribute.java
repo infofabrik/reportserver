@@ -13,16 +13,21 @@ import net.datenwerke.rs.utils.simplequery.PredicateType;
 @Target(ElementType.METHOD)
 public @interface QueryByAttribute {
 
-	Class<?> from() default Void.class;
-	String where();
-	PredicateType type() default PredicateType.EQUAL;
-	
-	String select() default "";
-	boolean distinct() default false;
-	OrderBy[] orderBy() default {};
-	
-	int limit() default -1;
-	int offset() default -1;
+   Class<?> from() default Void.class;
 
-	boolean throwNoResultException() default false;
+   String where();
+
+   PredicateType type() default PredicateType.EQUAL;
+
+   String select() default "";
+
+   boolean distinct() default false;
+
+   OrderBy[] orderBy() default {};
+
+   int limit() default -1;
+
+   int offset() default -1;
+
+   boolean throwNoResultException() default false;
 }

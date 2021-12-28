@@ -9,10 +9,8 @@ import net.datenwerke.gf.service.maintenance.hooks.MaintenanceTask;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class MaintenanceTaskAdapter implements MaintenanceTask {
 
-	@Override
-	public void performMaintenance()  {
-	}
-
-
+   @Override
+   public void performMaintenance() {
+   }
 
 }

@@ -12,32 +12,30 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
  */
 public class TsDiskImporter extends TreeNodeImporter {
 
-	public static final String IMPORTER_ID = "TsDiskImporter";
-	
-	private final TsDiskService diskService;
-	
-	@Inject
-	public TsDiskImporter(
-			TsDiskService diskService
-		){
-		
-		/* store objects */
-		this.diskService = diskService;
-	}
-	
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{TsDiskExporter.class};
-	}
+   public static final String IMPORTER_ID = "TsDiskImporter";
 
-	@Override
-	protected TreeDBManager getTreeDBManager() {
-		return diskService;
-	}
+   private final TsDiskService diskService;
 
-	@Override
-	public String getId() {
-		return IMPORTER_ID;
-	}
+   @Inject
+   public TsDiskImporter(TsDiskService diskService) {
+
+      /* store objects */
+      this.diskService = diskService;
+   }
+
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { TsDiskExporter.class };
+   }
+
+   @Override
+   protected TreeDBManager getTreeDBManager() {
+      return diskService;
+   }
+
+   @Override
+   public String getId() {
+      return IMPORTER_ID;
+   }
 
 }

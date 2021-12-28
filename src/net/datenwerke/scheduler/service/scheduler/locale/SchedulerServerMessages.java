@@ -5,8 +5,9 @@ import net.datenwerke.rs.utils.localization.Messages;
 
 public interface SchedulerServerMessages extends Messages {
 
-	public final static SchedulerServerMessages INSTANCE = LocalizationServiceImpl.getMessages(SchedulerServerMessages.class);
-	
-	public String triggerConfigException();
+   public final static SchedulerServerMessages INSTANCE = LocalizationServiceImpl
+         .getMessages(SchedulerServerMessages.class);
+
+   public String triggerConfigException();
 
 }

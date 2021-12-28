@@ -44,176 +44,170 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ReportExportToTemplateHooker extends ReportExporterImpl {
 
-	private static final TableTemplateMessages messages = GWT.create(TableTemplateMessages.class);
-	
-	private static TableReportTemplateDtoPA trtPa = GWT.create(TableReportTemplateDtoPA.class);
-	
-	private final TableTemplateDao tableTemplateDao;
-	private final TableTemplateUIService tableTemplateService;
-	
-	private RECTableTemplateDto configuration;
-	
-	@Inject
-	public ReportExportToTemplateHooker(
-		TableTemplateDao tableTemplateDao,
-		TableTemplateUIService tableTemplateService
-		){
-		
-		/* store objects */
-		this.tableTemplateDao = tableTemplateDao;
-		this.tableTemplateService = tableTemplateService;
-	}
-	
-	@Override
-	public boolean consumesConfiguration(ReportDto report) {
-		return true;
-	}
-	
-	@Override
-	public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
-		if(null == exportConfiguration || exportConfiguration.isEmpty())
-			return;
-		
-		exportConfiguration
-			.stream()
-			.filter(config -> config instanceof RECTableTemplateDto)
-			.findAny()
-			.ifPresent(config -> configuration = (RECTableTemplateDto) config);
-	}
+   private static final TableTemplateMessages messages = GWT.create(TableTemplateMessages.class);
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof TableReportDto && ! ((TableReportDto)report).isCubeFlag();
-	}
+   private static TableReportTemplateDtoPA trtPa = GWT.create(TableReportTemplateDtoPA.class);
 
-	@Override
-	public String getExportTitle() {
-		return messages.exportTitle();
-	}
+   private final TableTemplateDao tableTemplateDao;
+   private final TableTemplateUIService tableTemplateService;
 
-	@Override
-	public String getExportDescription() {
-		return messages.exportDescription();
-	}
+   private RECTableTemplateDto configuration;
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.TEMPLATE.toImageResource();
-	}
+   @Inject
+   public ReportExportToTemplateHooker(TableTemplateDao tableTemplateDao, TableTemplateUIService tableTemplateService) {
 
-	@Override
-	public String getOutputFormat() {
-		return TableTemplateUIModule.EXPORT_OUTPUT_FORMAT;
-	}
+      /* store objects */
+      this.tableTemplateDao = tableTemplateDao;
+      this.tableTemplateService = tableTemplateService;
+   }
 
-	@Override
-	public void displayConfiguration(ReportDto report, String executorToken,
-			final boolean allowAutomaticConfig, final ConfigurationFinishedCallback callback) {
-		final DwWindow window = new DwWindow();
-		window.setSize(300, 400);
-		window.setHeading(messages.exportTitle());
-		
-		final ListStore<TableReportTemplateDto> templateStore = new ListStore<>(new BasicObjectModelKeyProvider<TableReportTemplateDto>());
+   @Override
+   public boolean consumesConfiguration(ReportDto report) {
+      return true;
+   }
 
-		templateStore.addSortInfo(new StoreSortInfo<TableReportTemplateDto>(trtPa.name(), SortDir.ASC));
-		
-		/* create column model */
-		List<ColumnConfig<TableReportTemplateDto,?>> columns = new ArrayList<>();
-		
-		ColumnConfig<TableReportTemplateDto,Long> idConfig = new ColumnConfig<>(trtPa.id(), 50, messages.templateId());
-		idConfig.setMenuDisabled(true);
-		columns.add(idConfig);
-		
-		ColumnConfig<TableReportTemplateDto, TableReportTemplateDto> descriptionConfig = new ColumnConfig<TableReportTemplateDto,TableReportTemplateDto>(new IdentityValueProvider<TableReportTemplateDto>(), 200, messages.templateName());
-		descriptionConfig.setCell(new AbstractCell<TableReportTemplateDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					TableReportTemplateDto value, SafeHtmlBuilder sb) {
-				sb.append(tableTemplateService.getDescriptionTemplate().descriptionTemplate(value));
-			}
-		});
-		descriptionConfig.setMenuDisabled(true);
-		columns.add(descriptionConfig);
-		
-		/* create grid */
-		final Grid<TableReportTemplateDto> grid = new Grid<>(templateStore, new ColumnModel<>(columns));
-		grid.setLoadMask(true);
-		grid.getView().setEmptyText(messages.noTemplates());
-		grid.getView().setAutoExpandColumn(descriptionConfig);
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
-		window.add(grid);
-		
-		final DwTextButton exportBtn = new DwTextButton(BaseMessages.INSTANCE.submit());
-		exportBtn.setEnabled(null != grid.getSelectionModel().getSelectedItem());
-		grid.getSelectionModel().addSelectionChangedHandler(
-				event -> exportBtn.setEnabled(null != grid.getSelectionModel().getSelectedItem()));
-		window.addButton(exportBtn);
-		exportBtn.addSelectHandler(event -> {
-			TableReportTemplateDto template = grid.getSelectionModel().getSelectedItem();
-			if(null != template){
-				configuration = new RECTableTemplateDto();
-				configuration.setTemplateId(template.getId());
-				configuration.setTemporaryId(template.getTemporaryId());
+   @Override
+   public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
+      if (null == exportConfiguration || exportConfiguration.isEmpty())
+         return;
 
-				window.hide();
-				callback.success();
-			}
-		});
-		
-		tableTemplateDao.loadTemplates(report, executorToken, new RsAsyncCallback<List<TableReportTemplateDto>>(){
-			@Override
-			public void onSuccess(List<TableReportTemplateDto> result) {
-				try{
-					templateStore.addAll(result);
-					
-					if(null != result && result.size() == 1 && allowAutomaticConfig){
-						TableReportTemplateDto template = result.get(0);
-						configuration = new RECTableTemplateDto();
-						configuration.setTemplateId(template.getId());
-						configuration.setTemporaryId(template.getTemporaryId());
-	
-						window.hide();
-						callback.success();
-					} else {
-						if(null != configuration && null != configuration.getTemplateId()){
-							templateStore.getAll()
-								.stream()
-								.filter(m -> configuration.getTemplateId().equals(m.getId()))
-								.findAny()
-								.ifPresent(m -> grid.getSelectionModel().select(m, false));
-						}
-					}
-				} catch(Exception e){
-					new DwAlertMessageBox(e.getMessage(), e.getMessage());
-					e.printStackTrace();
-				}
-			}
-		});
-		
-		window.show();
-	}
-	
-	@Override
-	public List<ReportExecutionConfigDto> getConfiguration(){
-		List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
-		configs.add(configuration);
-		return configs;
-	}
-	
-	@Override
-	public boolean isConfigured() {
-		return null != configuration;
-	}
-	
-	@Override
-	public boolean hasConfiguration() {
-		return true;
-	}
-	
-	@Override
-	public boolean wantsToBeTop(ReportDto report) {
-		return consumes(report) && consumesConfiguration(report) && report instanceof ReportVariantDto && ((ReportDtoDec)report).hasReportPropertyWithName(TableTemplateUIModule.TEMPLATE_LIST_PROPERTY_NAME);
-	}
+      exportConfiguration.stream().filter(config -> config instanceof RECTableTemplateDto).findAny()
+            .ifPresent(config -> configuration = (RECTableTemplateDto) config);
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && !((TableReportDto) report).isCubeFlag();
+   }
+
+   @Override
+   public String getExportTitle() {
+      return messages.exportTitle();
+   }
+
+   @Override
+   public String getExportDescription() {
+      return messages.exportDescription();
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.TEMPLATE.toImageResource();
+   }
+
+   @Override
+   public String getOutputFormat() {
+      return TableTemplateUIModule.EXPORT_OUTPUT_FORMAT;
+   }
+
+   @Override
+   public void displayConfiguration(ReportDto report, String executorToken, final boolean allowAutomaticConfig,
+         final ConfigurationFinishedCallback callback) {
+      final DwWindow window = new DwWindow();
+      window.setSize(300, 400);
+      window.setHeading(messages.exportTitle());
+
+      final ListStore<TableReportTemplateDto> templateStore = new ListStore<>(
+            new BasicObjectModelKeyProvider<TableReportTemplateDto>());
+
+      templateStore.addSortInfo(new StoreSortInfo<TableReportTemplateDto>(trtPa.name(), SortDir.ASC));
+
+      /* create column model */
+      List<ColumnConfig<TableReportTemplateDto, ?>> columns = new ArrayList<>();
+
+      ColumnConfig<TableReportTemplateDto, Long> idConfig = new ColumnConfig<>(trtPa.id(), 50, messages.templateId());
+      idConfig.setMenuDisabled(true);
+      columns.add(idConfig);
+
+      ColumnConfig<TableReportTemplateDto, TableReportTemplateDto> descriptionConfig = new ColumnConfig<TableReportTemplateDto, TableReportTemplateDto>(
+            new IdentityValueProvider<TableReportTemplateDto>(), 200, messages.templateName());
+      descriptionConfig.setCell(new AbstractCell<TableReportTemplateDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, TableReportTemplateDto value,
+               SafeHtmlBuilder sb) {
+            sb.append(tableTemplateService.getDescriptionTemplate().descriptionTemplate(value));
+         }
+      });
+      descriptionConfig.setMenuDisabled(true);
+      columns.add(descriptionConfig);
+
+      /* create grid */
+      final Grid<TableReportTemplateDto> grid = new Grid<>(templateStore, new ColumnModel<>(columns));
+      grid.setLoadMask(true);
+      grid.getView().setEmptyText(messages.noTemplates());
+      grid.getView().setAutoExpandColumn(descriptionConfig);
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+      window.add(grid);
+
+      final DwTextButton exportBtn = new DwTextButton(BaseMessages.INSTANCE.submit());
+      exportBtn.setEnabled(null != grid.getSelectionModel().getSelectedItem());
+      grid.getSelectionModel().addSelectionChangedHandler(
+            event -> exportBtn.setEnabled(null != grid.getSelectionModel().getSelectedItem()));
+      window.addButton(exportBtn);
+      exportBtn.addSelectHandler(event -> {
+         TableReportTemplateDto template = grid.getSelectionModel().getSelectedItem();
+         if (null != template) {
+            configuration = new RECTableTemplateDto();
+            configuration.setTemplateId(template.getId());
+            configuration.setTemporaryId(template.getTemporaryId());
+
+            window.hide();
+            callback.success();
+         }
+      });
+
+      tableTemplateDao.loadTemplates(report, executorToken, new RsAsyncCallback<List<TableReportTemplateDto>>() {
+         @Override
+         public void onSuccess(List<TableReportTemplateDto> result) {
+            try {
+               templateStore.addAll(result);
+
+               if (null != result && result.size() == 1 && allowAutomaticConfig) {
+                  TableReportTemplateDto template = result.get(0);
+                  configuration = new RECTableTemplateDto();
+                  configuration.setTemplateId(template.getId());
+                  configuration.setTemporaryId(template.getTemporaryId());
+
+                  window.hide();
+                  callback.success();
+               } else {
+                  if (null != configuration && null != configuration.getTemplateId()) {
+                     templateStore.getAll().stream().filter(m -> configuration.getTemplateId().equals(m.getId()))
+                           .findAny().ifPresent(m -> grid.getSelectionModel().select(m, false));
+                  }
+               }
+            } catch (Exception e) {
+               new DwAlertMessageBox(e.getMessage(), e.getMessage());
+               e.printStackTrace();
+            }
+         }
+      });
+
+      window.show();
+   }
+
+   @Override
+   public List<ReportExecutionConfigDto> getConfiguration() {
+      List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
+      configs.add(configuration);
+      return configs;
+   }
+
+   @Override
+   public boolean isConfigured() {
+      return null != configuration;
+   }
+
+   @Override
+   public boolean hasConfiguration() {
+      return true;
+   }
+
+   @Override
+   public boolean wantsToBeTop(ReportDto report) {
+      return consumes(report) && consumesConfiguration(report) && report instanceof ReportVariantDto
+            && ((ReportDtoDec) report).hasReportPropertyWithName(TableTemplateUIModule.TEMPLATE_LIST_PROPERTY_NAME);
+   }
 
 }

@@ -9,16 +9,16 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
  */
 public class RECCsvDtoDec extends RECCsvDto implements ReportExecutionConfigDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public RECCsvDtoDec() {
-		super();
-		
-		setPrintHeader(true);
-		setQuote("\"");
-		setSeparator(";");
-		setLineSeparator("\\r\\n");
-		setCharset("UTF-8");
-	}
+   public RECCsvDtoDec() {
+      super();
+
+      setPrintHeader(true);
+      setQuote("\"");
+      setSeparator(";");
+      setLineSeparator("\\r\\n");
+      setCharset("UTF-8");
+   }
 
 }

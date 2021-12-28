@@ -8,13 +8,9 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.hooks.TableTemplateC
 
 public class XslTemplateUIStartup {
 
-	@Inject
-	public XslTemplateUIStartup(
-		HookHandlerService hookHandler,
-		XslTemplateClientProvider templateProvider
-		){
-		
-		
-		hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
-	}
+   @Inject
+   public XslTemplateUIStartup(HookHandlerService hookHandler, XslTemplateClientProvider templateProvider) {
+
+      hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
+   }
 }

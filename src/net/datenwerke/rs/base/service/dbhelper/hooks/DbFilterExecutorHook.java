@@ -13,12 +13,9 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 
 public interface DbFilterExecutorHook extends Hook {
 
-	QryCondition getQueryCondition(FilterSpec filter,
-			Map<String, ParameterValue> pMap, QueryReplacementHelper prefixer,
-			QueryBuilder queryBuilder, ManagedQuery managedQuery,
-			Connection connection);
+   QryCondition getQueryCondition(FilterSpec filter, Map<String, ParameterValue> pMap, QueryReplacementHelper prefixer,
+         QueryBuilder queryBuilder, ManagedQuery managedQuery, Connection connection);
 
-	boolean consumes(FilterSpec filter);
-
+   boolean consumes(FilterSpec filter);
 
 }

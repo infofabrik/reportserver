@@ -12,20 +12,20 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class ExportAllReportsHooker implements ExportAllHook {
 
-	private final ReportService reportService;
-	
-	@Inject
-	public ExportAllReportsHooker(ReportService reportService) {
-		this.reportService = reportService;
-	}
+   private final ReportService reportService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
-		specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
-		config.addSpecificExporterConfigs(specConfig);
-		
-		for(AbstractNode<?> node : reportService.getAllNodes())
-			config.addItemConfig(new TreeNodeExportItemConfig(node));
-	}
+   @Inject
+   public ExportAllReportsHooker(ReportService reportService) {
+      this.reportService = reportService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
+      specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
+      config.addSpecificExporterConfigs(specConfig);
+
+      for (AbstractNode<?> node : reportService.getAllNodes())
+         config.addItemConfig(new TreeNodeExportItemConfig(node));
+   }
 }

@@ -35,11 +35,11 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private GoogleDriveService googleDriveService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -56,17 +56,17 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-      
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-      
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -103,7 +103,7 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
          throw new ActionExecutionException("folder is empty");
 
    }
-   
+
    private void sendViaGoogleDriveDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {
@@ -131,20 +131,20 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), googleDriveDatasink, googleDriveService,
-                  new DatasinkFilenameFolderConfig() {
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), googleDriveDatasink,
+                  googleDriveService, new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filenameScheduling;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-            });
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Google Drive", e);

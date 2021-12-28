@@ -15,24 +15,23 @@ import net.datenwerke.security.service.eventlogger.annotations.FireMergeEntityEv
 
 public class BirtDatasourceServiceImpl implements BirtDatasourceService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public BirtDatasourceServiceImpl(
-			Provider<EntityManager> entityManagerProvider) {
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@Override
-	@QueryByAttribute(where=BirtReportDatasourceConfig__.report)
-	public Collection<BirtReportDatasourceConfig> getDatasourceConfigsWith(Report report) {
-		return null; // magic
-	}
-	
-	@Override
-	@FireMergeEntityEvents
-	public BirtReportDatasourceConfig merge(BirtReportDatasourceConfig config) {
-		return entityManagerProvider.get().merge(config);
-	}
-	
+   @Inject
+   public BirtDatasourceServiceImpl(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
+
+   @Override
+   @QueryByAttribute(where = BirtReportDatasourceConfig__.report)
+   public Collection<BirtReportDatasourceConfig> getDatasourceConfigsWith(Report report) {
+      return null; // magic
+   }
+
+   @Override
+   @FireMergeEntityEvents
+   public BirtReportDatasourceConfig merge(BirtReportDatasourceConfig config) {
+      return entityManagerProvider.get().merge(config);
+   }
+
 }

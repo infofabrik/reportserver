@@ -33,10 +33,7 @@ public class IdCommand implements TerminalCommandHook {
    private final BsiPasswordPolicyService bsiPasswordPolicyService;
 
    @Inject
-   public IdCommand(
-         UserManagerService userService, 
-         BsiPasswordPolicyService bsiPasswordPolicyService
-         ) {
+   public IdCommand(UserManagerService userService, BsiPasswordPolicyService bsiPasswordPolicyService) {
       this.userService = userService;
       this.bsiPasswordPolicyService = bsiPasswordPolicyService;
    }
@@ -46,21 +43,15 @@ public class IdCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(
-         messageClass = UserManagerMessages.class,
-         name = BASE_COMMAND,
-         description = "commandId_description",
-            nonOptArgs = {
-                  @NonOptArgument(name="username", description="commandId_arg_username", mandatory=true)
-            }
-         )
+   @CliHelpMessage(messageClass = UserManagerMessages.class, name = BASE_COMMAND, description = "commandId_description", nonOptArgs = {
+         @NonOptArgument(name = "username", description = "commandId_arg_username", mandatory = true) })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       CommandResult result = new CommandResult();
 
       List<String> arguments = parser.getNonOptionArguments();
 
-      if (arguments.size() != 1) 
+      if (arguments.size() != 1)
          throw new IllegalArgumentException("Please enter the username");
 
       String username = arguments.remove(0);

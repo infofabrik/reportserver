@@ -2,20 +2,20 @@ package net.datenwerke.rs.utils.daemon;
 
 public interface DwDaemonService {
 
-	boolean isActive();
+   boolean isActive();
 
-	boolean isShutdown();
+   boolean isShutdown();
 
-	boolean isTerminated();
+   boolean isTerminated();
 
-	void shutdown();
+   void shutdown();
 
-	void start();
+   void start();
 
-	boolean isOrderdShutdown();
+   boolean isOrderdShutdown();
 
-	boolean isWatchdogActive();
+   boolean isWatchdogActive();
 
-	void shutdownWatchdog();
+   void shutdownWatchdog();
 
 }

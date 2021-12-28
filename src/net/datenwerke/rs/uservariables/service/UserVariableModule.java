@@ -19,29 +19,29 @@ import net.datenwerke.rs.uservariables.service.uservariables.hooks.UserVariableP
 
 public class UserVariableModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(UserVariableService.class).to(UserVariableServiceImpl.class).in(Scopes.SINGLETON);
-		
-		/* bind startup */
-		bind(UserVariableStartup.class).asEagerSingleton();
-		
-		install(new ClientUserVariableModule());
-		
-		requestStaticInjection(			// should not be here
-			UserVariableParameterInstance.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(UserVariableService.class).to(UserVariableServiceImpl.class).in(Scopes.SINGLETON);
 
-	
-	@Provides @UserVariableTypes @Inject
-	public Set<UserVariableDefinition> provideUserVariableTypes(HookHandlerService hookHandler){
-		Set<UserVariableDefinition> definitions = new HashSet<UserVariableDefinition>();
-		
-		for(UserVariableProviderHook hooker : hookHandler.getHookers(UserVariableProviderHook.class))
-			definitions.addAll(hooker.getVariables());
-		
-		return definitions;
-	}
+      /* bind startup */
+      bind(UserVariableStartup.class).asEagerSingleton();
+
+      install(new ClientUserVariableModule());
+
+      requestStaticInjection( // should not be here
+            UserVariableParameterInstance.class);
+   }
+
+   @Provides
+   @UserVariableTypes
+   @Inject
+   public Set<UserVariableDefinition> provideUserVariableTypes(HookHandlerService hookHandler) {
+      Set<UserVariableDefinition> definitions = new HashSet<UserVariableDefinition>();
+
+      for (UserVariableProviderHook hooker : hookHandler.getHookers(UserVariableProviderHook.class))
+         definitions.addAll(hooker.getVariables());
+
+      return definitions;
+   }
 }

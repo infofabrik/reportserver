@@ -5,10 +5,10 @@ import com.google.inject.Singleton;
 
 public class DatasourceBundleUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(DatasourceBundleUiService.class).to(DatasourceBundleUiServiceImpl.class).in(Singleton.class);
-		bind(DatasourceBundleUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(DatasourceBundleUiService.class).to(DatasourceBundleUiServiceImpl.class).in(Singleton.class);
+      bind(DatasourceBundleUiStartup.class).asEagerSingleton();
+   }
 
 }

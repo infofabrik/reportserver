@@ -15,31 +15,29 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Entity
-@Table(name="BLATEXT_PARAM_INST")
+@Table(name = "BLATEXT_PARAM_INST")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.parameters.blatext.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.parameters.blatext.dto")
 public class BlatextParameterInstance extends ParameterInstance<BlatextParameterDefinition> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2332220199796956927L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2332220199796956927L;
 
-	@Override
-	public Object getSelectedValue(User user) {
-		return ((BlatextParameterDefinition)getDefinition()).getValue();
-	}
+   @Override
+   public Object getSelectedValue(User user) {
+      return ((BlatextParameterDefinition) getDefinition()).getValue();
+   }
 
-	@Override
-	public Object getDefaultValue(User user, ParameterSet parameterSet) {
-		return getSelectedValue(user);
-	}
+   @Override
+   public Object getDefaultValue(User user, ParameterSet parameterSet) {
+      return getSelectedValue(user);
+   }
 
-	@Override
-	protected Class<?> getType() {
-		return String.class;
-	}
+   @Override
+   protected Class<?> getType() {
+      return String.class;
+   }
 
 }

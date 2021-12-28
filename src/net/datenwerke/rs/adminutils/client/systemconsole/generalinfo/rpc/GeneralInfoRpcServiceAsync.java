@@ -6,6 +6,6 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.General
 
 public interface GeneralInfoRpcServiceAsync {
 
-	void loadGeneralInfo(AsyncCallback<GeneralInfoDto> transformAndKeepCallback);
+   void loadGeneralInfo(AsyncCallback<GeneralInfoDto> transformAndKeepCallback);
 
 }

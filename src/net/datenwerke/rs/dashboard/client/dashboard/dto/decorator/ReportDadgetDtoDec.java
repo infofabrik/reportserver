@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.ReportDadgetDto;
  */
 public class ReportDadgetDtoDec extends ReportDadgetDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public ReportDadgetDtoDec() {
-		super();
-	}
-
+   public ReportDadgetDtoDec() {
+      super();
+   }
 
 }

@@ -14,47 +14,46 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Entity
-@Table(name="DATASOURCE_CONNECTOR_CFG")
+@Table(name = "DATASOURCE_CONNECTOR_CFG")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.datasources.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto")
 public class DatasourceConnectorConfig {
-	
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@ExposeToClient(id=true)
-	private Long id;
-	
-	@ExposeToClient
-	private String key;
-	
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@ExposeToClient
-	private String value;
 
-	public String getKey() {
-		return key;
-	}
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @ExposeToClient(id = true)
+   private Long id;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   @ExposeToClient
+   private String key;
 
-	public String getValue() {
-		return value;
-	}
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @ExposeToClient
+   private String value;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public Long getId() {
-		return id;
-	}
+   public void setKey(String key) {
+      this.key = key;
+   }
 
-	public boolean contentEquals(DatasourceConnectorConfig otherConnectorConfig) {
-		return null == value ? otherConnectorConfig == null : value.equals(otherConnectorConfig.getValue());
-	}
-	
+   public String getValue() {
+      return value;
+   }
+
+   public void setValue(String value) {
+      this.value = value;
+   }
+
+   public Long getId() {
+      return id;
+   }
+
+   public boolean contentEquals(DatasourceConnectorConfig otherConnectorConfig) {
+      return null == value ? otherConnectorConfig == null : value.equals(otherConnectorConfig.getValue());
+   }
+
 }

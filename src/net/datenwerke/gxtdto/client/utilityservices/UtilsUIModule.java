@@ -12,14 +12,14 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarServiceImpl;
 
 public class UtilsUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(UtilsUIService.class).to(UtilsUIServiceImpl.class).in(Singleton.class);
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(UtilsUIService.class).to(UtilsUIServiceImpl.class).in(Singleton.class);
 
-		bind(GridHelperService.class).to(GridHelperServiceImpl.class).in(Singleton.class);
-		bind(ToolbarService.class).to(ToolbarServiceImpl.class).in(Singleton.class);
-		bind(SubmitTrackerService.class).to(SubmitTrackerServiceImpl.class).in(Singleton.class);
-	}
+      bind(GridHelperService.class).to(GridHelperServiceImpl.class).in(Singleton.class);
+      bind(ToolbarService.class).to(ToolbarServiceImpl.class).in(Singleton.class);
+      bind(SubmitTrackerService.class).to(SubmitTrackerServiceImpl.class).in(Singleton.class);
+   }
 
 }

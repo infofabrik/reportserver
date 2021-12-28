@@ -8,23 +8,23 @@ import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 @Singleton
 public class DatasourceParameterUiServiceImpl implements DatasourceParameterUiService {
 
-	private final EnterpriseUiService enterpriseService;
+   private final EnterpriseUiService enterpriseService;
 
-	private boolean allowPostProcessing;
-	
-	@Inject
-	public DatasourceParameterUiServiceImpl(EnterpriseUiService enterpriseService) {
-		this.enterpriseService = enterpriseService;
-	}
+   private boolean allowPostProcessing;
 
-	@Override
-	public void setAllowPostProcessing(boolean b) {
-		this.allowPostProcessing = b;
-	}
-	
-	@Override
-	public boolean isAllowPostProcessing() {
-		return allowPostProcessing && enterpriseService.isEnterprise();
-	}
+   @Inject
+   public DatasourceParameterUiServiceImpl(EnterpriseUiService enterpriseService) {
+      this.enterpriseService = enterpriseService;
+   }
+
+   @Override
+   public void setAllowPostProcessing(boolean b) {
+      this.allowPostProcessing = b;
+   }
+
+   @Override
+   public boolean isAllowPostProcessing() {
+      return allowPostProcessing && enterpriseService.isEnterprise();
+   }
 
 }

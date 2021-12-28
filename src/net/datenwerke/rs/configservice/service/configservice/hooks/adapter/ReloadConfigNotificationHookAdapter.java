@@ -9,15 +9,12 @@ import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigN
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class ReloadConfigNotificationHookAdapter implements ReloadConfigNotificationHook {
 
-	@Override
-	public void reloadConfig()  {
-	}
+   @Override
+   public void reloadConfig() {
+   }
 
-
-	@Override
-	public void reloadConfig(String identifier)  {
-	}
-
-
+   @Override
+   public void reloadConfig(String identifier) {
+   }
 
 }

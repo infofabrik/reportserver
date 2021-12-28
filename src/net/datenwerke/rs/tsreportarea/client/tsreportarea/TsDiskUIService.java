@@ -15,12 +15,13 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  */
 public interface TsDiskUIService {
 
-	abstract <A extends AbstractTsDiskNodeDto> List<ColumnConfig<A, ?>> createGridColumnConfig(Class<A> type);
+   abstract <A extends AbstractTsDiskNodeDto> List<ColumnConfig<A, ?>> createGridColumnConfig(Class<A> type);
 
-	abstract <A extends AbstractTsDiskNodeDto> List<ColumnConfig<A, ?>> createGridColumnConfig(Class<A> type, boolean idColumn);
+   abstract <A extends AbstractTsDiskNodeDto> List<ColumnConfig<A, ?>> createGridColumnConfig(Class<A> type,
+         boolean idColumn);
 
-	abstract ImageResource getIconFor(AbstractTsDiskNodeDto node, boolean largeIcons);
+   abstract ImageResource getIconFor(AbstractTsDiskNodeDto node, boolean largeIcons);
 
-	IconProvider<AbstractNodeDto> getIconProvider();
-	
+   IconProvider<AbstractNodeDto> getIconProvider();
+
 }

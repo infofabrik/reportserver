@@ -13,16 +13,16 @@ import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
  */
 public class FolderForm extends SimpleFormView {
 
-	@Override
-	public void configureSimpleForm(SimpleForm form) {
-		form.setHeading(DashboardMessages.INSTANCE.editFolder() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-		
-		form.addField(String.class, DashboardFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName()); 
-		
-		form.addField(String.class, DashboardFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
-		
-	}
+   @Override
+   public void configureSimpleForm(SimpleForm form) {
+      form.setHeading(DashboardMessages.INSTANCE.editFolder()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
+      form.addField(String.class, DashboardFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
 
-	
+      form.addField(String.class, DashboardFolderDtoPA.INSTANCE.description(),
+            BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
+
+   }
+
 }

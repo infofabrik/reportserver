@@ -13,16 +13,13 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class OlapCubeCacheHookAdapter implements OlapCubeCacheHook {
 
-	@Override
-	public Cube getCubeFromCache(SaikuReport report)  {
-		return null;
-	}
+   @Override
+   public Cube getCubeFromCache(SaikuReport report) {
+      return null;
+   }
 
-
-	@Override
-	public void putCubeInCache(SaikuReport report, Cube cube, OlapConnection olapConnection)  {
-	}
-
-
+   @Override
+   public void putCubeInCache(SaikuReport report, Cube cube, OlapConnection olapConnection) {
+   }
 
 }

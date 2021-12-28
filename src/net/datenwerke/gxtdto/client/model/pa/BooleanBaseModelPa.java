@@ -7,6 +7,6 @@ import net.datenwerke.gxtdto.client.model.BooleanBaseModel;
 
 public interface BooleanBaseModelPa extends PropertyAccess<BooleanBaseModel> {
 
-	public ValueProvider<BooleanBaseModel,Boolean> value();
-	
+   public ValueProvider<BooleanBaseModel, Boolean> value();
+
 }

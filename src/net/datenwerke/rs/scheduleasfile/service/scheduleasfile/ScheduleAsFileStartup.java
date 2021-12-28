@@ -11,17 +11,16 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 
 public class ScheduleAsFileStartup {
 
-	@Inject
-	public ScheduleAsFileStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ScheduleConfigAsFileHooker> scheduleAsFileConfigHooker, 
-		Provider<ScheduleAsFileEmailNotificationHooker> emailNotificationHooker
-		
-	){
-		
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFileConfigHooker);
-		
-		hookHandler.attachHooker(SchedulerExecutionHook.class, emailNotificationHooker);
-	}
+   @Inject
+   public ScheduleAsFileStartup(HookHandlerService hookHandler,
+
+         Provider<ScheduleConfigAsFileHooker> scheduleAsFileConfigHooker,
+         Provider<ScheduleAsFileEmailNotificationHooker> emailNotificationHooker
+
+   ) {
+
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFileConfigHooker);
+
+      hookHandler.attachHooker(SchedulerExecutionHook.class, emailNotificationHooker);
+   }
 }

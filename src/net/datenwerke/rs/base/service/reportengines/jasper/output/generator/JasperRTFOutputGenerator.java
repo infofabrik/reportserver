@@ -24,57 +24,56 @@ import net.sf.jasperreports.engine.export.JRRtfExporter;
  *
  */
 public class JasperRTFOutputGenerator extends JasperOutputGeneratorImpl {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	@Inject
-	public JasperRTFOutputGenerator(
-		HookHandlerService hookHandler	
-		){
-		super(hookHandler);
-	}
 
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_RTF};
-	}
-	
-	@Override
-	public CompiledRSJasperReport exportReport(JasperPrint jasperPrint, String outputFormat, JasperReport report,  User user, ReportExecutionConfig...configs) {
-		JRAbstractExporter exporter;
-		
-		exporter = new JRRtfExporter();
-		
-		/* create buffer for output */
-		StringBuffer out = new StringBuffer();
-		
-		/* configure exporter */
-		exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-		exporter.setParameter(JRExporterParameter.OUTPUT_STRING_BUFFER, out);
-		
-		callPreHooks(outputFormat, exporter, report, user);
-		
-		/* export */
-		try {
-			exporter.exportReport();
-		} catch (JRException e) {
-			logger.warn( e.getMessage(), e);
-		}
-		
-		/* create return object */
-		CompiledRSJasperReport cjrReport = new CompiledRTFJasperReport();
-		cjrReport.setData(jasperPrint);
-		
-		/* add report to object */
-		cjrReport.setReport(out.toString());
-		
-		callPostHooks(outputFormat, exporter, report, cjrReport, user);
-		
-		/* return compiled report */
-		return cjrReport;
-	}
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledRTFJasperReport();
-	}
+   @Inject
+   public JasperRTFOutputGenerator(HookHandlerService hookHandler) {
+      super(hookHandler);
+   }
+
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_RTF };
+   }
+
+   @Override
+   public CompiledRSJasperReport exportReport(JasperPrint jasperPrint, String outputFormat, JasperReport report,
+         User user, ReportExecutionConfig... configs) {
+      JRAbstractExporter exporter;
+
+      exporter = new JRRtfExporter();
+
+      /* create buffer for output */
+      StringBuffer out = new StringBuffer();
+
+      /* configure exporter */
+      exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
+      exporter.setParameter(JRExporterParameter.OUTPUT_STRING_BUFFER, out);
+
+      callPreHooks(outputFormat, exporter, report, user);
+
+      /* export */
+      try {
+         exporter.exportReport();
+      } catch (JRException e) {
+         logger.warn(e.getMessage(), e);
+      }
+
+      /* create return object */
+      CompiledRSJasperReport cjrReport = new CompiledRTFJasperReport();
+      cjrReport.setData(jasperPrint);
+
+      /* add report to object */
+      cjrReport.setReport(out.toString());
+
+      callPostHooks(outputFormat, exporter, report, cjrReport, user);
+
+      /* return compiled report */
+      return cjrReport;
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledRTFJasperReport();
+   }
 }

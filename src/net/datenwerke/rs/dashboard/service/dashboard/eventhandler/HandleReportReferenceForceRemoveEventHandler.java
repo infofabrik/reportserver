@@ -7,21 +7,20 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReport
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 
-public class HandleReportReferenceForceRemoveEventHandler implements
-		EventHandler<ForceRemoveEntityEvent> {
+public class HandleReportReferenceForceRemoveEventHandler implements EventHandler<ForceRemoveEntityEvent> {
 
-	private final DadgetService dadgetService;
+   private final DadgetService dadgetService;
 
-	@Inject
-	public HandleReportReferenceForceRemoveEventHandler(DadgetService dadgetService) {
-		this.dadgetService = dadgetService;
-	}
+   @Inject
+   public HandleReportReferenceForceRemoveEventHandler(DadgetService dadgetService) {
+      this.dadgetService = dadgetService;
+   }
 
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		TsDiskReportReference node = (TsDiskReportReference) event.getObject();
-		
-		dadgetService.removeFromReportDadgets(node);
-	}
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      TsDiskReportReference node = (TsDiskReportReference) event.getObject();
+
+      dadgetService.removeFromReportDadgets(node);
+   }
 
 }

@@ -30,85 +30,72 @@ import net.datenwerke.security.service.security.rights.Write;
 @Singleton
 public class BirtUtilsRpcServiceImpl extends SecuredRemoteServiceServlet implements BirtUtilsRpcService {
 
+   private DtoService dtoService;
+   private BirtUtilService birtUtils;
+   private ReportParameterService parameterService;
+   private ReportService reportService;
 
-	private DtoService dtoService;
-	private BirtUtilService birtUtils;
-	private ReportParameterService parameterService;
-	private ReportService reportService;
+   @Inject
+   public BirtUtilsRpcServiceImpl(DtoService dtoService, BirtUtilService birtUtils,
+         ReportParameterService parameterService, ReportService reportService) {
+      this.dtoService = dtoService;
+      this.birtUtils = birtUtils;
+      this.parameterService = parameterService;
+      this.reportService = reportService;
+   }
 
-	@Inject
-	public BirtUtilsRpcServiceImpl(DtoService dtoService, BirtUtilService birtUtils, ReportParameterService parameterService, ReportService reportService) {
-		this.dtoService = dtoService;
-		this.birtUtils = birtUtils;
-		this.parameterService = parameterService;
-		this.reportService = reportService;
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Write.class })) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public List<BirtParameterProposalDto> proposeParametersFor(@Named("report") BirtReportDto birtReportDto) {
 
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "report",
-							isDto = true,
-							verify = @RightsVerification(rights={Read.class, Write.class})
-							)
-			}
-			)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public List<BirtParameterProposalDto> proposeParametersFor(@Named("report") BirtReportDto birtReportDto) {
+      /* load jasper report */
+      BirtReport report = (BirtReport) dtoService.loadPoso(birtReportDto);
+      if (null == report || null == report.getReportFile())
+         return null;
 
-		/* load jasper report */
-		BirtReport report = (BirtReport) dtoService.loadPoso(birtReportDto);
-		if(null == report || null == report.getReportFile())
-			return null;
+      List<BirtParameterProposal> proposals = birtUtils.extractParameters(report.getReportFile());
 
-		List<BirtParameterProposal> proposals = birtUtils.extractParameters(report.getReportFile());
+      List<BirtParameterProposalDto> proposalDtos = new ArrayList<BirtParameterProposalDto>();
+      for (BirtParameterProposal proposal : proposals)
+         proposalDtos.add((BirtParameterProposalDto) dtoService.createDto(proposal));
 
-		List<BirtParameterProposalDto> proposalDtos = new ArrayList<BirtParameterProposalDto>();
-		for(BirtParameterProposal proposal : proposals)
-			proposalDtos.add((BirtParameterProposalDto) dtoService.createDto(proposal));
+      return proposalDtos;
+   }
 
-		return proposalDtos;
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Write.class })) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public BirtReportDto addParametersFor(@Named("report") BirtReportDto reportDto,
+         List<BirtParameterProposalDto> proposalDtos) throws ExpectedException {
+      BirtReport report = (BirtReport) dtoService.loadPoso(reportDto);
+      if (null == report)
+         return null;
 
-	
-	
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "report",
-					isDto = true,
-					verify = @RightsVerification(rights={Read.class, Write.class})
-				)
-			}
-		)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public BirtReportDto addParametersFor(@Named("report") BirtReportDto reportDto, List<BirtParameterProposalDto> proposalDtos) throws ExpectedException {
-		BirtReport report = (BirtReport) dtoService.loadPoso(reportDto);
-		if(null == report)
-			return null;
+      for (BirtParameterProposalDto proposal : proposalDtos) {
+         if (null == proposal.getParameterProposal())
+            continue;
 
-		for(BirtParameterProposalDto proposal : proposalDtos){
-			if(null == proposal.getParameterProposal())
-				continue;
+         ParameterDefinition definition = (ParameterDefinition) dtoService.createPoso(proposal.getParameterProposal());
 
-			ParameterDefinition definition = (ParameterDefinition) dtoService.createPoso(proposal.getParameterProposal());
+         /* init default values */
+         definition.initWithDefaultValues();
 
-			/* init default values */
-			definition.initWithDefaultValues();
+         /* override with parameters from proposal */
+         definition.setKey(proposal.getKey());
+         definition.setName(proposal.getName());
 
-			/* override with parameters from proposal */
-			definition.setKey(proposal.getKey());
-			definition.setName(proposal.getName());
+         /* add to report/folder */
+         parameterService.addParameterDefinition(report, definition);
+      }
 
-			/* add to report/folder */
-			parameterService.addParameterDefinition(report, definition);
-		}
+      /* persist parameter */
+      reportService.merge(report);
 
-		/* persist parameter */
-		reportService.merge(report);
-
-		return (BirtReportDto) dtoService.createDto(report);
-	}
+      return (BirtReportDto) dtoService.createDto(report);
+   }
 }

@@ -19,84 +19,76 @@ import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 
 public class DemoContentInstallTask implements DbInstallationTask {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private Provider<PackagedScriptHelper> packagedScriptHelper;
-	private FileServerService fileServerService;
-	private Provider<ConfigDirService> configDirServiceProvider;
 
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
+   private Provider<PackagedScriptHelper> packagedScriptHelper;
+   private FileServerService fileServerService;
+   private Provider<ConfigDirService> configDirServiceProvider;
 
+   @Inject
+   public DemoContentInstallTask(Provider<PackagedScriptHelper> packagedScriptHelper,
+         FileServerService fileServerService, Provider<ConfigDirService> configDirServiceProvider) {
+      this.packagedScriptHelper = packagedScriptHelper;
+      this.fileServerService = fileServerService;
+      this.configDirServiceProvider = configDirServiceProvider;
+   }
 
-	@Inject
-	public DemoContentInstallTask(
-			Provider<PackagedScriptHelper> packagedScriptHelper,
-			FileServerService fileServerService,
-			Provider<ConfigDirService> configDirServiceProvider
-			) {
-				this.packagedScriptHelper = packagedScriptHelper;
-				this.fileServerService = fileServerService;
-				this.configDirServiceProvider = configDirServiceProvider;
-	}
+   @Override
+   public void executeOnFirstRun() {
+      ConfigDirService configDirService = configDirServiceProvider.get();
+      if (configDirService.isEnabled()) {
+         File initpropsfile = new File(configDirService.getConfigDir(), InitConfigTask.RSINIT_PROPERTIES);
+         if (initpropsfile.exists()) {
+            try {
+               Properties props = new Properties();
+               FileReader reader = new FileReader(initpropsfile);
+               props.load(reader);
+               IOUtils.closeQuietly(reader);
 
-	@Override
-	public void executeOnFirstRun() {
-		ConfigDirService configDirService = configDirServiceProvider.get();
-		if(configDirService.isEnabled()){
-			File initpropsfile = new File(configDirService.getConfigDir(), InitConfigTask.RSINIT_PROPERTIES);
-			if(initpropsfile.exists()){
-				try {
-					Properties props = new Properties();
-					FileReader reader = new FileReader(initpropsfile);
-					props.load(reader);
-					IOUtils.closeQuietly(reader);
-					
-					if(Boolean.valueOf(props.getProperty("democontent.install", "false"))){
-						PackagedScriptHelper helper = packagedScriptHelper.get();
-						File demobuilderFile = null;;
-						for(File f: helper.listPackages()){
-							if(f.getName().startsWith("demobuilder-"))
-								demobuilderFile = f;
-						}
-						if(null == demobuilderFile)
-							return;
-						
-						if(helper.validateZip(demobuilderFile, false)){
+               if (Boolean.valueOf(props.getProperty("democontent.install", "false"))) {
+                  PackagedScriptHelper helper = packagedScriptHelper.get();
+                  File demobuilderFile = null;
+                  ;
+                  for (File f : helper.listPackages()) {
+                     if (f.getName().startsWith("demobuilder-"))
+                        demobuilderFile = f;
+                  }
+                  if (null == demobuilderFile)
+                     return;
 
-							logger.info( "Executing package: " + demobuilderFile.getAbsolutePath());
-							FileServerFolder targetDir = null;
-							try {
-								targetDir = helper.extractPackageTemporarily(new FileInputStream(demobuilderFile));
-								helper.executePackage(targetDir);
-							} catch (FileNotFoundException e) {
-								e.printStackTrace();
-							} catch (IOException e) {
-								e.printStackTrace();
-							} finally {
-								if(null != targetDir)
-									fileServerService.forceRemove(targetDir);
-							}
-						}
-					}
-					
-				} catch (FileNotFoundException e) {
-					logger.warn("Failed to initialize using rsinit.properties", e);
-				} catch (IOException e) {
-					logger.warn("Failed to initialize using rsinit.properties", e);
-				}
-				
-				
-			}
-		}
-	}
+                  if (helper.validateZip(demobuilderFile, false)) {
 
+                     logger.info("Executing package: " + demobuilderFile.getAbsolutePath());
+                     FileServerFolder targetDir = null;
+                     try {
+                        targetDir = helper.extractPackageTemporarily(new FileInputStream(demobuilderFile));
+                        helper.executePackage(targetDir);
+                     } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                     } catch (IOException e) {
+                        e.printStackTrace();
+                     } finally {
+                        if (null != targetDir)
+                           fileServerService.forceRemove(targetDir);
+                     }
+                  }
+               }
 
+            } catch (FileNotFoundException e) {
+               logger.warn("Failed to initialize using rsinit.properties", e);
+            } catch (IOException e) {
+               logger.warn("Failed to initialize using rsinit.properties", e);
+            }
 
-	@Override
-	public void executeOnStartup() {
-		// TODO Auto-generated method stub
+         }
+      }
+   }
 
-	}
+   @Override
+   public void executeOnStartup() {
+      // TODO Auto-generated method stub
+
+   }
 
 }

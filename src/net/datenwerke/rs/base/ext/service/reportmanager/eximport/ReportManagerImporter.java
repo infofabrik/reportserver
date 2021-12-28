@@ -23,90 +23,93 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
  */
 public class ReportManagerImporter extends TreeNodeImporter {
 
-	public static final String IMPORTER_ID = "ReportManagerImporter";
-	
-	private final ReportService reportService;
-	
-	@Inject
-	public ReportManagerImporter(
-		ReportService reportService
-		){
-		
-		/* store objects */
-		this.reportService = reportService;
-	}
-	
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{ReportManagerExporter.class};
-	}
+   public static final String IMPORTER_ID = "ReportManagerImporter";
 
-	@Override
-	protected TreeDBManager getTreeDBManager() {
-		return reportService;
-	}
+   private final ReportService reportService;
 
-	@Override
-	public String getId() {
-		return IMPORTER_ID;
-	}
-	
-	@Override
-	protected void finishUpImportCreateMode(
-			TreeNodeImportItemConfig itemConfig, AbstractNode<?> node) {
-		super.finishUpImportCreateMode(itemConfig, node);
-	
-		/* check key */
-		if(node instanceof Report){
-			String key = ((Report)node).getKey();
-			if(null != key){
-				Report reportByKey = reportService.getReportByKey(key);
-				if(null != reportByKey){
-					if(itemConfig instanceof ImportReportItemConfig && ((ImportReportItemConfig)itemConfig).isCleanKeys())
-						 ((Report)node).setKey(null);
-					else
-						throw new IllegalStateException("A report with key " + key + " already exists");
-				}
-			}
-		}
-		
-		/* if we have a variant make sure we get the definitions for the instances right */
-		if(node instanceof ReportVariant){
-			if(null == itemConfig.getParent())
-				return; // everything should be ok
-			
-			Report parentReport = (Report) node.getParent();
-			
-			/* parameters */
-			Report variant = (Report) node;
-			
-			if(parentReport.getParameterDefinitions().size() < variant.getParameterInstances().size())
-				throw new ImportException("New parent's parameters are not a superset of the old parent (parentId=" + parentReport.getId() + ", variantName=" + variant.getName() + ")");
-			
-			Set<Long> handledParameters = new HashSet<Long>(); 
-			for(ParameterInstance<?> instance : variant.getParameterInstances()){
-				String importId = importSupervisor.getImportIdForImportedObject(instance);
-				EnclosedItemProperty exItem = importSupervisor.getEnclosedItemPropertyForId(importId);
-				String key = exItem.getElement().getAttribute(ParameterInstanceExporter.KEY_ATTRIBUTE).getValue();
-				ParameterDefinition<?> definition = parentReport.getParameterDefinitionByKey(key);
-				if(null == definition)
-					throw new ImportException("New parent's parameters are not a superset of the old parent (parentId=" + parentReport.getId() + ", variantName=" + variant.getName() + ")");
-				
-				if(!( definition.createParameterInstance().getClass().isAssignableFrom(instance.getClass()))){
-					throw new ImportException("ParameterInstance and definitiontype do not match between variant and parent (parentId=" + parentReport.getId() + ", variantName=" + variant.getName() + ")");
-				}
-				
-				instance.setDefinition(definition);
-				handledParameters.add(definition.getId());
-			}
-			
-			for(ParameterDefinition<?> def : parentReport.getParameterDefinitions()){
-				if(handledParameters.contains(def.getId()))
-					continue;
-				
-				ParameterInstance<?> instance = def.createParameterInstance();
-				variant.addParameterInstance(instance);
-			}
-		}
-	}
+   @Inject
+   public ReportManagerImporter(ReportService reportService) {
+
+      /* store objects */
+      this.reportService = reportService;
+   }
+
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { ReportManagerExporter.class };
+   }
+
+   @Override
+   protected TreeDBManager getTreeDBManager() {
+      return reportService;
+   }
+
+   @Override
+   public String getId() {
+      return IMPORTER_ID;
+   }
+
+   @Override
+   protected void finishUpImportCreateMode(TreeNodeImportItemConfig itemConfig, AbstractNode<?> node) {
+      super.finishUpImportCreateMode(itemConfig, node);
+
+      /* check key */
+      if (node instanceof Report) {
+         String key = ((Report) node).getKey();
+         if (null != key) {
+            Report reportByKey = reportService.getReportByKey(key);
+            if (null != reportByKey) {
+               if (itemConfig instanceof ImportReportItemConfig && ((ImportReportItemConfig) itemConfig).isCleanKeys())
+                  ((Report) node).setKey(null);
+               else
+                  throw new IllegalStateException("A report with key " + key + " already exists");
+            }
+         }
+      }
+
+      /*
+       * if we have a variant make sure we get the definitions for the instances right
+       */
+      if (node instanceof ReportVariant) {
+         if (null == itemConfig.getParent())
+            return; // everything should be ok
+
+         Report parentReport = (Report) node.getParent();
+
+         /* parameters */
+         Report variant = (Report) node;
+
+         if (parentReport.getParameterDefinitions().size() < variant.getParameterInstances().size())
+            throw new ImportException("New parent's parameters are not a superset of the old parent (parentId="
+                  + parentReport.getId() + ", variantName=" + variant.getName() + ")");
+
+         Set<Long> handledParameters = new HashSet<Long>();
+         for (ParameterInstance<?> instance : variant.getParameterInstances()) {
+            String importId = importSupervisor.getImportIdForImportedObject(instance);
+            EnclosedItemProperty exItem = importSupervisor.getEnclosedItemPropertyForId(importId);
+            String key = exItem.getElement().getAttribute(ParameterInstanceExporter.KEY_ATTRIBUTE).getValue();
+            ParameterDefinition<?> definition = parentReport.getParameterDefinitionByKey(key);
+            if (null == definition)
+               throw new ImportException("New parent's parameters are not a superset of the old parent (parentId="
+                     + parentReport.getId() + ", variantName=" + variant.getName() + ")");
+
+            if (!(definition.createParameterInstance().getClass().isAssignableFrom(instance.getClass()))) {
+               throw new ImportException(
+                     "ParameterInstance and definitiontype do not match between variant and parent (parentId="
+                           + parentReport.getId() + ", variantName=" + variant.getName() + ")");
+            }
+
+            instance.setDefinition(definition);
+            handledParameters.add(definition.getId());
+         }
+
+         for (ParameterDefinition<?> def : parentReport.getParameterDefinitions()) {
+            if (handledParameters.contains(def.getId()))
+               continue;
+
+            ParameterInstance<?> instance = def.createParameterInstance();
+            variant.addParameterInstance(instance);
+         }
+      }
+   }
 }

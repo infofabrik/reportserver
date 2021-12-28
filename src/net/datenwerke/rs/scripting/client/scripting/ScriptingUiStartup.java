@@ -24,18 +24,14 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
 public class ScriptingUiStartup {
 
    @Inject
-   public ScriptingUiStartup(
-         HookHandlerService hookHandler, 
-         final ScriptingDao scriptingDao,
-         final TerminalUIService terminalService, 
-         final WaitOnEventUIService waitOnEventService,
+   public ScriptingUiStartup(HookHandlerService hookHandler, final ScriptingDao scriptingDao,
+         final TerminalUIService terminalService, final WaitOnEventUIService waitOnEventService,
 
          Provider<ScriptingCommandResultProcessorHooker> commandResultProcessor,
 
          Provider<GroovyImportCompleter> groovyImportCompleterProvider,
 
-         final EnterpriseUiService enterpriseUiService
-         ) {
+         final EnterpriseUiService enterpriseUiService) {
 
       hookHandler.attachHooker(CodeMirrorKeyboardHook.class, groovyImportCompleterProvider);
 

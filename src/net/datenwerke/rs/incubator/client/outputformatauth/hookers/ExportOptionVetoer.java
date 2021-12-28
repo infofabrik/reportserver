@@ -10,27 +10,28 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.decorator.ReportD
 
 public class ExportOptionVetoer implements VetoReportExporterHook {
 
-	@Override
-	public boolean doesVetoExporter(ReportExporter exporter, ReportDto report) {
-		ReportDtoDec rep = (ReportDtoDec) report;
-		
-		ReportPropertyDto property = rep.getEffectiveReportProperty(AvailableReportProperties.PROPERTY_OUTPUT_FORMAT_AUTH.getValue());
+   @Override
+   public boolean doesVetoExporter(ReportExporter exporter, ReportDto report) {
+      ReportDtoDec rep = (ReportDtoDec) report;
 
-		if(null != property && property instanceof ReportStringPropertyDto){
-			String allowedFormatsString = ((ReportStringPropertyDto) property).getStrValue();
-			String[] formats = allowedFormatsString.split(",");
-			
-			boolean found = false;
-			for(String f : formats){
-				if(f.trim().toUpperCase().equals(exporter.getOutputFormat().toUpperCase())){
-					found = true;
-					break;
-				}
-			}
-			return !found;
-		}
-		
-		return false;
-	}
+      ReportPropertyDto property = rep
+            .getEffectiveReportProperty(AvailableReportProperties.PROPERTY_OUTPUT_FORMAT_AUTH.getValue());
+
+      if (null != property && property instanceof ReportStringPropertyDto) {
+         String allowedFormatsString = ((ReportStringPropertyDto) property).getStrValue();
+         String[] formats = allowedFormatsString.split(",");
+
+         boolean found = false;
+         for (String f : formats) {
+            if (f.trim().toUpperCase().equals(exporter.getOutputFormat().toUpperCase())) {
+               found = true;
+               break;
+            }
+         }
+         return !found;
+      }
+
+      return false;
+   }
 
 }

@@ -8,15 +8,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class InToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof InExpressionToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof InExpressionToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		return "IN";
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      return "IN";
+   }
 
 }

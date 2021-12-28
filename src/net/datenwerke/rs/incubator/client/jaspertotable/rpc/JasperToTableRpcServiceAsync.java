@@ -7,10 +7,8 @@ import net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigD
 
 public interface JasperToTableRpcServiceAsync {
 
-	void getConfig(JasperReportDto report,
-			AsyncCallback<JasperToTableConfigDto> callback);
+   void getConfig(JasperReportDto report, AsyncCallback<JasperToTableConfigDto> callback);
 
-	void setConfig(JasperReportDto report, JasperToTableConfigDto config,
-			AsyncCallback<Void> callback);
+   void setConfig(JasperReportDto report, JasperToTableConfigDto config, AsyncCallback<Void> callback);
 
 }

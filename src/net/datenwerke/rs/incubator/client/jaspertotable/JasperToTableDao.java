@@ -10,24 +10,21 @@ import net.datenwerke.rs.incubator.client.jaspertotable.rpc.JasperToTableRpcServ
 
 public class JasperToTableDao extends Dao {
 
-	final private JasperToTableRpcServiceAsync rpcService;
-	
-	@Inject
-	public JasperToTableDao(JasperToTableRpcServiceAsync rpcService){
-		
-		/* store object */
-		this.rpcService = rpcService;
-	}
-	
-	public void getConfig(JasperReportDto report,
-			AsyncCallback<JasperToTableConfigDto> callback){
-		rpcService.getConfig(report, transformAndKeepCallback(callback));
-	}
-	
-	public void setConfig(JasperReportDto report, JasperToTableConfigDto config,
-			AsyncCallback<Void> callback){
-		rpcService.setConfig(report, config, transformAndKeepCallback(callback));
-	}
-	
-	
+   final private JasperToTableRpcServiceAsync rpcService;
+
+   @Inject
+   public JasperToTableDao(JasperToTableRpcServiceAsync rpcService) {
+
+      /* store object */
+      this.rpcService = rpcService;
+   }
+
+   public void getConfig(JasperReportDto report, AsyncCallback<JasperToTableConfigDto> callback) {
+      rpcService.getConfig(report, transformAndKeepCallback(callback));
+   }
+
+   public void setConfig(JasperReportDto report, JasperToTableConfigDto config, AsyncCallback<Void> callback) {
+      rpcService.setConfig(report, config, transformAndKeepCallback(callback));
+   }
+
 }

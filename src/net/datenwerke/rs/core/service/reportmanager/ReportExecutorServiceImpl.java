@@ -82,20 +82,13 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
    private final ParameterSetFactory parameterSetFactory;
 
    @Inject
-   public ReportExecutorServiceImpl(
-         @ReportEngines Provider<Set<Class<? extends ReportEngine>>> reportEnginesProvider,
-         Injector injector, 
-         Provider<AuthenticatorService> authenticatorServiceProvider, 
-         HookHandlerService hookHandler,
-         Provider<ExceptionServices> exceptionServiceProvider, 
-         EventBus eventBus,
+   public ReportExecutorServiceImpl(@ReportEngines Provider<Set<Class<? extends ReportEngine>>> reportEnginesProvider,
+         Injector injector, Provider<AuthenticatorService> authenticatorServiceProvider, HookHandlerService hookHandler,
+         Provider<ExceptionServices> exceptionServiceProvider, EventBus eventBus,
          Provider<SimpleDatasourceBundleService> bundleServiceProvider,
-         Provider<TsDiskServiceImpl> tsDiskServiceProvider, 
-         Provider<JasperUtilsService> jasperUtilsServiceProvider,
-         Provider<UserManagerService> userManagerServiceProvider, 
-         ParameterSetFactory parameterSetFactory,
-         Provider<FilterService> filterServiceProvider
-         ) {
+         Provider<TsDiskServiceImpl> tsDiskServiceProvider, Provider<JasperUtilsService> jasperUtilsServiceProvider,
+         Provider<UserManagerService> userManagerServiceProvider, ParameterSetFactory parameterSetFactory,
+         Provider<FilterService> filterServiceProvider) {
 
       /* store objects */
       this.injector = injector;
@@ -218,7 +211,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
                   "output_format", outputFormat, "uuid", uuid, "token", token, "report_configuration",
                   new ObjectMapper().writeValueAsString(reportConfiguration)));
          }
-         
+
          /* sanitize configs */
          if (null == configs)
             configs = new ReportExecutionConfig[] {};

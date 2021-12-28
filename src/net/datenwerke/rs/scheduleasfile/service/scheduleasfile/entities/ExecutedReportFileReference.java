@@ -24,96 +24,87 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
-@Table(name="EXEC_REPORT_AS_FILE_REF")
+@Table(name = "EXEC_REPORT_AS_FILE_REF")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto",
-	createDecorator=true,
-	poso2DtoPostProcessors=ExecuteReportFileReference2DtoPost.class,
-	additionalFields ={
-		@AdditionalField(name="iconStr", type=String.class),
-		@AdditionalField(name="typeStr", type=String.class),
-	}
-)
-@InstanceDescription(
-      msgLocation=ScheduleAsFileMessages.class,
-      objNameKey="reportTypeName"
-  )
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto", createDecorator = true, poso2DtoPostProcessors = ExecuteReportFileReference2DtoPost.class, additionalFields = {
+      @AdditionalField(name = "iconStr", type = String.class),
+      @AdditionalField(name = "typeStr", type = String.class), })
+@InstanceDescription(msgLocation = ScheduleAsFileMessages.class, objNameKey = "reportTypeName")
 public class ExecutedReportFileReference extends TsDiskGeneralReference {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7405420338212859521L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7405420338212859521L;
 
-	@OneToOne(cascade=CascadeType.ALL, fetch=FetchType.LAZY)
-	@EnclosedEntity
-	@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
-	private PersistentCompiledReport compiledReport;
-	
-	@ExposeToClient
-	private String outputFormat;
+   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   @EnclosedEntity
+   @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
+   private PersistentCompiledReport compiledReport;
 
-	public void setCompiledReport(PersistentCompiledReport compiledReport) {
-		this.compiledReport = compiledReport;
-	}
+   @ExposeToClient
+   private String outputFormat;
 
-	public PersistentCompiledReport getCompiledReport() {
-		return compiledReport;
-	}
+   public void setCompiledReport(PersistentCompiledReport compiledReport) {
+      this.compiledReport = compiledReport;
+   }
 
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
+   public PersistentCompiledReport getCompiledReport() {
+      return compiledReport;
+   }
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+   public void setOutputFormat(String outputFormat) {
+      this.outputFormat = outputFormat;
+   }
 
-	@Override
-	public Date getReferenceLastUpdated() {
-		return getLastUpdated();
-	}
+   public String getOutputFormat() {
+      return outputFormat;
+   }
 
-	@Override
-	public boolean hasData() {
-		return null != compiledReport;
-	}
-	
-	@Override
-	public byte[] getData() {
-		CompiledReport report = compiledReport.getCompiledReport();
-		if(null == report)
-			return null;
-		
-		if(report.isStringReport())
-			return ((String)report.getReport()).getBytes();
-		Object data = report.getReport();
-		if(data instanceof byte[])
-			return (byte[]) data;
-		return compiledReport.getSerializedReport();
-	}
-	
-	@Override
-	public long getSize() {
-		CompiledReport report = compiledReport.getCompiledReport();
-		if(null == report)
-			return 0;
-		
-		if(report.isStringReport())
-			return ((String)report.getReport()).getBytes().length;
-		Object data = report.getReport();
-		if(data instanceof byte[])
-			return ((byte[])data).length;
-		return compiledReport.getSerializedReport().length;
-	}
-	
-	@Override
-	public String getDataContentType() {
-		CompiledReport report = compiledReport.getCompiledReport();
-		if(null == report)
-			return null;
-		return report.getMimeType();
-	}
+   @Override
+   public Date getReferenceLastUpdated() {
+      return getLastUpdated();
+   }
+
+   @Override
+   public boolean hasData() {
+      return null != compiledReport;
+   }
+
+   @Override
+   public byte[] getData() {
+      CompiledReport report = compiledReport.getCompiledReport();
+      if (null == report)
+         return null;
+
+      if (report.isStringReport())
+         return ((String) report.getReport()).getBytes();
+      Object data = report.getReport();
+      if (data instanceof byte[])
+         return (byte[]) data;
+      return compiledReport.getSerializedReport();
+   }
+
+   @Override
+   public long getSize() {
+      CompiledReport report = compiledReport.getCompiledReport();
+      if (null == report)
+         return 0;
+
+      if (report.isStringReport())
+         return ((String) report.getReport()).getBytes().length;
+      Object data = report.getReport();
+      if (data instanceof byte[])
+         return ((byte[]) data).length;
+      return compiledReport.getSerializedReport().length;
+   }
+
+   @Override
+   public String getDataContentType() {
+      CompiledReport report = compiledReport.getCompiledReport();
+      if (null == report)
+         return null;
+      return report.getMimeType();
+   }
 }

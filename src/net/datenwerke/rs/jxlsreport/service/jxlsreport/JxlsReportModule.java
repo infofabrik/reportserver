@@ -8,15 +8,16 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.metad
 
 public class JxlsReportModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* bind metadata exporter */
-		Multibinder<JxlsMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(), JxlsMetadataExporter.class);
-		metadataExporterBinder.addBinding().to(JxlsPlainMetadataExporter.class);
-		
-		bind(JxlsReportService.class).to(JxlsReportServiceImpl.class);
-		bind(JxlsReportStartup.class).asEagerSingleton();
-		
-	}
+   @Override
+   protected void configure() {
+      /* bind metadata exporter */
+      Multibinder<JxlsMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(),
+            JxlsMetadataExporter.class);
+      metadataExporterBinder.addBinding().to(JxlsPlainMetadataExporter.class);
+
+      bind(JxlsReportService.class).to(JxlsReportServiceImpl.class);
+      bind(JxlsReportStartup.class).asEagerSingleton();
+
+   }
 
 }

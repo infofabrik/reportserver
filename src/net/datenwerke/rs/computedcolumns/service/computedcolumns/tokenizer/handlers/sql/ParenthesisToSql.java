@@ -9,17 +9,16 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class ParenthesisToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof ParenthesisExpressionToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof ParenthesisExpressionToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		if(((ParenthesisExpressionToken)token).getType() == ParanthesisType.L_BRACKET)
-			return "(";
-		return ")";
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      if (((ParenthesisExpressionToken) token).getType() == ParanthesisType.L_BRACKET)
+         return "(";
+      return ")";
+   }
 
 }

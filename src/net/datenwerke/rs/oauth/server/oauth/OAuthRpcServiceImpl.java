@@ -24,24 +24,22 @@ public class OAuthRpcServiceImpl extends SecuredRemoteServiceServlet implements 
     * 
     */
    private static final long serialVersionUID = 2861287980553611185L;
-   
+
    private final SecurityService securityService;
    private final DtoService dtoService;
    private final OAuthAuthenticationService oAuthAuthenticationService;
-   
+
    @Inject
-   public OAuthRpcServiceImpl(
-         SecurityService securityService,
-         DtoService dtoService,
-         OAuthAuthenticationService oAuthAuthenticationService
-         ) {
+   public OAuthRpcServiceImpl(SecurityService securityService, DtoService dtoService,
+         OAuthAuthenticationService oAuthAuthenticationService) {
       this.securityService = securityService;
       this.dtoService = dtoService;
       this.oAuthAuthenticationService = oAuthAuthenticationService;
    }
-   
+
    @Override
-   public OAuthAuthenticationUriInfo generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto) throws ServerCallFailedException {
+   public OAuthAuthenticationUriInfo generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto)
+         throws ServerCallFailedException {
 
       DatasinkDefinition oAuthDatasink = (DatasinkDefinition) dtoService.loadPoso(oAuthDatasinkDto);
 
@@ -50,9 +48,10 @@ public class OAuthRpcServiceImpl extends SecuredRemoteServiceServlet implements 
 
       /* check rights */
       securityService.assertRights(oAuthDatasink, Read.class, Execute.class);
-      
+
       OAuthAuthenticationUriInfo uriInfo = new OAuthAuthenticationUriInfo();
-      uriInfo.setAuthenticationUri(oAuthAuthenticationService.generateAuthenticationUrl((OAuthAuthenticatable) oAuthDatasink));
+      uriInfo.setAuthenticationUri(
+            oAuthAuthenticationService.generateAuthenticationUrl((OAuthAuthenticatable) oAuthDatasink));
       uriInfo.setRedirectUri(oAuthAuthenticationService.getRedirectUri());
 
       return uriInfo;

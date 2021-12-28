@@ -2,6 +2,6 @@ package net.datenwerke.rs.passwordpolicy.service;
 
 public interface PasswordGenerator {
 
-	public String newPassword();
-	
+   public String newPassword();
+
 }

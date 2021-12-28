@@ -43,15 +43,8 @@ public class ViewLogFileCommand implements TerminalCommandHook {
    }
 
    @Override
-   @CliHelpMessage(
-         messageClass = AdminUtilsMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandViewLogFile_description", 
-         nonOptArgs = {
-               @NonOptArgument(
-                     name = "logFilename",
-                     description = "commandViewLogFile_logFile", 
-                     mandatory = true) })
+   @CliHelpMessage(messageClass = AdminUtilsMessages.class, name = BASE_COMMAND, description = "commandViewLogFile_description", nonOptArgs = {
+         @NonOptArgument(name = "logFilename", description = "commandViewLogFile_logFile", mandatory = true) })
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       Path logPath = Paths.get(logFilesServiceProvider.get().getLogDirectory());
       if (!Files.exists(logPath))

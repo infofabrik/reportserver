@@ -12,28 +12,27 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxDoubleValidatorDto;
  */
 public class MaxDoubleValidatorDtoDec extends MaxDoubleValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MaxDoubleValidatorDtoDec() {
+      super();
+   }
 
-	public MaxDoubleValidatorDtoDec() {
-		super();
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MaxNumberValidator<Double> validator = new MaxNumberValidator<Double>(getNumber());
+      validator.setMessages(new MaxNumberMessages() {
+         @Override
+         public String numberMaxText(double min) {
+            return getErrorMsg();
+         }
 
-	@Override
-	public Validator<?> getValidator() {
-		MaxNumberValidator<Double> validator = new MaxNumberValidator<Double>(getNumber());
-		validator.setMessages(new MaxNumberMessages() {
-			@Override
-			public String numberMaxText(double min) {
-				return getErrorMsg();
-			}
-			
-			@Override
-			public String numberMaxText(String formattedValue) {
-				return getErrorMsg();
-			}
-		});
-		return validator;
-	}
+         @Override
+         public String numberMaxText(String formattedValue) {
+            return getErrorMsg();
+         }
+      });
+      return validator;
+   }
 
 }

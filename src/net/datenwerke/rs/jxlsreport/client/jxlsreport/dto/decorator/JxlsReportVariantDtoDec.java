@@ -9,12 +9,10 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
  */
 public class JxlsReportVariantDtoDec extends JxlsReportVariantDto implements ReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public JxlsReportVariantDtoDec() {
-		super();
-	}
-
+   public JxlsReportVariantDtoDec() {
+      super();
+   }
 
 }

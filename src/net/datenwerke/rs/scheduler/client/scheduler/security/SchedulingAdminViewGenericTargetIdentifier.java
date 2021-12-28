@@ -8,17 +8,15 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 
 /**
- * Transport object to identify the corresponding generic security target. 
+ * Transport object to identify the corresponding generic security target.
  *
  */
-@GenericTargetIdentifierMapper(SchedulingAdminSecurityTarget.class) 
-public class SchedulingAdminViewGenericTargetIdentifier implements GenericTargetIdentifier{
+@GenericTargetIdentifierMapper(SchedulingAdminSecurityTarget.class)
+public class SchedulingAdminViewGenericTargetIdentifier implements GenericTargetIdentifier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2245411445759565802L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 2245411445759565802L;
 
-
-	
 }

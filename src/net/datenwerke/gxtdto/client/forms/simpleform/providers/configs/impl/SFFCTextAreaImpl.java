@@ -4,24 +4,24 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCTextA
 
 public class SFFCTextAreaImpl implements SFFCTextArea {
 
-	private int height;
+   private int height;
 
-	public SFFCTextAreaImpl() {
-		this(150);
-	}
-	
-	public SFFCTextAreaImpl(int height){
-		this.height = height;
-	}
-	
-	@Override
-	public int getWidth() {
-		return -1;
-	}
+   public SFFCTextAreaImpl() {
+      this(150);
+   }
 
-	@Override
-	public int getHeight() {
-		return height;
-	}
+   public SFFCTextAreaImpl(int height) {
+      this.height = height;
+   }
+
+   @Override
+   public int getWidth() {
+      return -1;
+   }
+
+   @Override
+   public int getHeight() {
+      return height;
+   }
 
 }

@@ -14,16 +14,14 @@ import net.datenwerke.rs.core.client.datasourcemanager.DatasourceTreeManagerDao;
 @Singleton
 public class DatasourceManagerMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public DatasourceManagerMainPanel(
-		DatasourceTreeManagerDao datasourceTreeManager
-		){
-	
-		super(datasourceTreeManager);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "datasource:admin:view:toolbar";
-	}
+   @Inject
+   public DatasourceManagerMainPanel(DatasourceTreeManagerDao datasourceTreeManager) {
+
+      super(datasourceTreeManager);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "datasource:admin:view:toolbar";
+   }
 }

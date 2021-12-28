@@ -25,104 +25,96 @@ import net.datenwerke.security.service.security.exceptions.ViolatedSecurityExcep
 import net.datenwerke.security.service.security.rights.Read;
 
 public class CreateConditionCommand implements ConditionSubCommandHook {
-	
-	public static final String BASE_COMMAND = "create";
-	
-	private final ConditionService conditionService;
-	private final ReportService reportService;
-	private final SecurityService securityService;
 
-	@Inject
-	public CreateConditionCommand(
-		ConditionService conditionService,
-		ReportService reportService,
-		SecurityService securityService
-		){
-		
-		/* store objects */
-		this.conditionService = conditionService;
-		this.reportService = reportService;
-		this.securityService = securityService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "create";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConditionMessages.class,
-		name = BASE_COMMAND,
-		description = "commandRcondition_sub_create_desc",
-		nonOptArgs={
-			@NonOptArgument(name="report", description="commandRcondition_sub_create_par_reportId", mandatory=true),
-			@NonOptArgument(name="name", description="commandRcondition_sub_create_par_name", mandatory=true),
-			@NonOptArgument(name="key", description="commandRcondition_sub_create_par_key"),
-			@NonOptArgument(name="description", description="commandRcondition_sub_create_par_desc")
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> args = parser.getNonOptionArguments();
-		if(args.size() < 2)
-			throw new IllegalArgumentException("Expect at least two arguments");
-		
-		String reportRef = args.get(0);
-		String name = args.get(1);
-		String key = args.size() > 2 ? args.get(2) : "";
-		String description = args.size() > 3 ? args.get(3) : "";
-		
-		try{
-			Collection<Object> results = session.getObjectResolver().getObjects(reportRef,Read.class);
-			Object result = null;
-			
-			if (null == results || results.size()==0) {
-				try{
-					Long id = Long.parseLong(reportRef);
-					result = reportService.getReportById(id);
-					if(! securityService.checkRights((Report)result, Read.class))
-						throw new ViolatedSecurityException("insufficient rights");
-						
-				} catch(Exception e){}
-				
-				if (null == result)
-					return new CommandResult("Could not find table report with object resolver query: " + reportRef);
-			} else {
-				result = results.iterator().next();
-			}
-			
-			if (results.size()>1)
-				return new CommandResult("The object resolver query returned more than one result: " + reportRef);
-			
-			if(null == result || !( result instanceof TableReport) )
-				return new CommandResult("Could not find table report with object resolver query: " + reportRef);
-			
-			TableReport report = (TableReport) result;
-			
-			if(! (report instanceof ReportVariant))
-				return new CommandResult("Expected a report variant.");
-			
-			ReportCondition cond = new ReportCondition();
-			cond.setName(name);
-			cond.setKey(key);
-			cond.setDescription(description);
-			cond.setReport(report);
-			
-			conditionService.persist(cond);
-			
-			return new CommandResult("Condition created");
-		} catch(ClassCastException e){
-			return new CommandResult("Could not find report");
-		}
-	}
+   private final ConditionService conditionService;
+   private final ReportService reportService;
+   private final SecurityService securityService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public CreateConditionCommand(ConditionService conditionService, ReportService reportService,
+         SecurityService securityService) {
+
+      /* store objects */
+      this.conditionService = conditionService;
+      this.reportService = reportService;
+      this.securityService = securityService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ConditionMessages.class, name = BASE_COMMAND, description = "commandRcondition_sub_create_desc", nonOptArgs = {
+         @NonOptArgument(name = "report", description = "commandRcondition_sub_create_par_reportId", mandatory = true),
+         @NonOptArgument(name = "name", description = "commandRcondition_sub_create_par_name", mandatory = true),
+         @NonOptArgument(name = "key", description = "commandRcondition_sub_create_par_key"),
+         @NonOptArgument(name = "description", description = "commandRcondition_sub_create_par_desc") })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> args = parser.getNonOptionArguments();
+      if (args.size() < 2)
+         throw new IllegalArgumentException("Expect at least two arguments");
+
+      String reportRef = args.get(0);
+      String name = args.get(1);
+      String key = args.size() > 2 ? args.get(2) : "";
+      String description = args.size() > 3 ? args.get(3) : "";
+
+      try {
+         Collection<Object> results = session.getObjectResolver().getObjects(reportRef, Read.class);
+         Object result = null;
+
+         if (null == results || results.size() == 0) {
+            try {
+               Long id = Long.parseLong(reportRef);
+               result = reportService.getReportById(id);
+               if (!securityService.checkRights((Report) result, Read.class))
+                  throw new ViolatedSecurityException("insufficient rights");
+
+            } catch (Exception e) {
+            }
+
+            if (null == result)
+               return new CommandResult("Could not find table report with object resolver query: " + reportRef);
+         } else {
+            result = results.iterator().next();
+         }
+
+         if (results.size() > 1)
+            return new CommandResult("The object resolver query returned more than one result: " + reportRef);
+
+         if (null == result || !(result instanceof TableReport))
+            return new CommandResult("Could not find table report with object resolver query: " + reportRef);
+
+         TableReport report = (TableReport) result;
+
+         if (!(report instanceof ReportVariant))
+            return new CommandResult("Expected a report variant.");
+
+         ReportCondition cond = new ReportCondition();
+         cond.setName(name);
+         cond.setKey(key);
+         cond.setDescription(description);
+         cond.setReport(report);
+
+         conditionService.persist(cond);
+
+         return new CommandResult("Condition created");
+      } catch (ClassCastException e) {
+         return new CommandResult("Could not find report");
+      }
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

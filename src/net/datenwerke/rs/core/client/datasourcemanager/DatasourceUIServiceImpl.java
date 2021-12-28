@@ -21,50 +21,47 @@ import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitio
  */
 public class DatasourceUIServiceImpl implements DatasourceUIService {
 
-	private final HookHandlerService hookHandler;
-	private final DatasourceDao datasourceDao;
+   private final HookHandlerService hookHandler;
+   private final DatasourceDao datasourceDao;
 
-	private Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> configuratorLookup;
-	private final DatasourceSelectionFieldFactory fieldFactory;
+   private Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> configuratorLookup;
+   private final DatasourceSelectionFieldFactory fieldFactory;
 
-	@Inject
-	public DatasourceUIServiceImpl(
-		HookHandlerService hookHandler,
-		DatasourceDao generalPropertiesDao,
-		DatasourceSelectionFieldFactory fieldFactory
-		){
-	
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.datasourceDao = generalPropertiesDao;
-		this.fieldFactory = fieldFactory;
-	}
-	
-	public DatasourceDefinitionConfigConfigurator getConfigurator(
-			Class<? extends DatasourceDefinitionDto> configClazz) {
-		if(null== configuratorLookup)
-			initConfigurator();
-		
-		Provider<? extends DatasourceDefinitionConfigConfigurator> provider = configuratorLookup.get(configClazz);
-		if(null == provider)
-			throw new IllegalStateException("I should probably know the provider for " + configClazz.getName()); //$NON-NLS-1$
-		return provider.get();
-	}
-	
-	protected void initConfigurator(){
-		configuratorLookup =
-			new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
-		
-		for(DatasourceDefinitionConfigProviderHook configProvider : hookHandler.getHookers(DatasourceDefinitionConfigProviderHook.class))
-			configuratorLookup.putAll(configProvider.getConfigs());
-	}
+   @Inject
+   public DatasourceUIServiceImpl(HookHandlerService hookHandler, DatasourceDao generalPropertiesDao,
+         DatasourceSelectionFieldFactory fieldFactory) {
 
-	public DatasourceSelectionField getSelectionField(Container container, boolean displayConfigFields, Provider<UITree> datasourceTreeProvider, Class<? extends DatasourceDefinitionDto>... types){
-		return fieldFactory.create(displayConfigFields, container, datasourceTreeProvider.get(), datasourceDao, types);
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.datasourceDao = generalPropertiesDao;
+      this.fieldFactory = fieldFactory;
+   }
 
-	public DatasourceSelectionField getSelectionField(Container container, Provider<UITree> datasourceTreeProvider){
-		return fieldFactory.create(true, container, datasourceTreeProvider.get(), datasourceDao, new Class[]{});
-	}
+   public DatasourceDefinitionConfigConfigurator getConfigurator(Class<? extends DatasourceDefinitionDto> configClazz) {
+      if (null == configuratorLookup)
+         initConfigurator();
+
+      Provider<? extends DatasourceDefinitionConfigConfigurator> provider = configuratorLookup.get(configClazz);
+      if (null == provider)
+         throw new IllegalStateException("I should probably know the provider for " + configClazz.getName()); //$NON-NLS-1$
+      return provider.get();
+   }
+
+   protected void initConfigurator() {
+      configuratorLookup = new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
+
+      for (DatasourceDefinitionConfigProviderHook configProvider : hookHandler
+            .getHookers(DatasourceDefinitionConfigProviderHook.class))
+         configuratorLookup.putAll(configProvider.getConfigs());
+   }
+
+   public DatasourceSelectionField getSelectionField(Container container, boolean displayConfigFields,
+         Provider<UITree> datasourceTreeProvider, Class<? extends DatasourceDefinitionDto>... types) {
+      return fieldFactory.create(displayConfigFields, container, datasourceTreeProvider.get(), datasourceDao, types);
+   }
+
+   public DatasourceSelectionField getSelectionField(Container container, Provider<UITree> datasourceTreeProvider) {
+      return fieldFactory.create(true, container, datasourceTreeProvider.get(), datasourceDao, new Class[] {});
+   }
 
 }

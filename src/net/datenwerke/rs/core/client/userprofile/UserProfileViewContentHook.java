@@ -8,7 +8,7 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public interface UserProfileViewContentHook extends Hook {
 
-	public void submitPressed(SubmitTrackerToken token);
+   public void submitPressed(SubmitTrackerToken token);
 
-	public Widget getComponent(UserDto user);
+   public Widget getComponent(UserDto user);
 }

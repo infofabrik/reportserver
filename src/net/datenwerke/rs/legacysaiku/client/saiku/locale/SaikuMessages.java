@@ -5,32 +5,32 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface SaikuMessages extends Messages {
 
-	public final static SaikuMessages INSTANCE = GWT.create(SaikuMessages.class);
-	
-	String export2chartHtml();
-	
-	String reportTypeName();
+   public final static SaikuMessages INSTANCE = GWT.create(SaikuMessages.class);
 
-	String editReport();
-	
-	String databaseDatasourceTypeName();
+   String export2chartHtml();
 
-	String editDataSource();
+   String reportTypeName();
 
-	String propertySchema();
+   String editReport();
 
-	String propertyProperties();
+   String databaseDatasourceTypeName();
 
-	String cubeLabel();
+   String editDataSource();
 
-	String cubePreview();
+   String propertySchema();
 
-	String chartType();
+   String propertyProperties();
 
-	String reportDadgetFormatChart(String string);
+   String cubeLabel();
 
-	String enableMdx();
-	String fieldLabelEnableMdx();
+   String cubePreview();
 
+   String chartType();
+
+   String reportDadgetFormatChart(String string);
+
+   String enableMdx();
+
+   String fieldLabelEnableMdx();
 
 }

@@ -10,6 +10,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 @RemoteServiceRelativePath("urlviewconfig")
 public interface UrlViewRpcService extends RemoteService {
-	
-	Map<String,Map<String, List<String[]>>> loadViewConfiguration() throws ServerCallFailedException;
+
+   Map<String, Map<String, List<String[]>>> loadViewConfiguration() throws ServerCallFailedException;
 }

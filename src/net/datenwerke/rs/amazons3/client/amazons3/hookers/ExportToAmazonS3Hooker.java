@@ -36,16 +36,13 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
    private final Provider<AmazonS3Dao> datasinkDaoProvider;
 
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-   
+
    private final Provider<DatasinkUIService> datasinkUiServiceProvider;
 
    @Inject
-   public ExportToAmazonS3Hooker(
-         @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
-         Provider<AmazonS3Dao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider
-         ) {
+   public ExportToAmazonS3Hooker(@DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
+         Provider<AmazonS3Dao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
@@ -82,26 +79,21 @@ public class ExportToAmazonS3Hooker implements ExportExternalEntryProviderHook {
 
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            AmazonS3DatasinkDto.class,
-            report.getName(), treeProvider, datasinkDaoProvider, report, 
-            Optional.of(info),
-            new AsyncCallback<Map<String,Object>>() {
-               
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(AmazonS3DatasinkDto.class, report.getName(),
+            treeProvider, datasinkDaoProvider, report, Optional.of(info), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
-                  final ExportTypeSelection formatType = (ExportTypeSelection) result.get(DatasinkUIModule.REPORT_FORMAT_KEY);
-                  datasinkDaoProvider.get().exportReportIntoDatasink(
-                        report, 
-                        info.getExecuteReportToken(),
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        formatType.getOutputFormat(), 
-                        formatType.getExportConfiguration(),
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
-                        (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY), 
+               public void onSuccess(Map<String, Object> result) {
+                  final ExportTypeSelection formatType = (ExportTypeSelection) result
+                        .get(DatasinkUIModule.REPORT_FORMAT_KEY);
+                  datasinkDaoProvider.get().exportReportIntoDatasink(report, info.getExecuteReportToken(),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), formatType.getOutputFormat(),
+                        formatType.getExportConfiguration(), (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
+                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

@@ -15,31 +15,28 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualContentProvi
 
 public class MiscCommandStartup {
 
-	@Inject
-	public MiscCommandStartup(
-		HookHandlerService hookHandler,
-		Provider<SqlTerminalCommand> sqlCommand,
-		
-		Provider<ImportAllCommand> importAllCommand,
-		
-		Provider<MasterJrxmlContentProvider> masterJrxmlProvider,
-		Provider<SubreportJrxmlContentProvider> subreportsJrxmlProvider,
-		
-		Provider<ClearInternalDbCommand> clearInternalDbCommand
-		
+   @Inject
+   public MiscCommandStartup(HookHandlerService hookHandler, Provider<SqlTerminalCommand> sqlCommand,
+
+         Provider<ImportAllCommand> importAllCommand,
+
+         Provider<MasterJrxmlContentProvider> masterJrxmlProvider,
+         Provider<SubreportJrxmlContentProvider> subreportsJrxmlProvider,
+
+         Provider<ClearInternalDbCommand> clearInternalDbCommand
+
 //		Provider<TerminalExportContentProvider> exportContentProvider
-		){
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);
-		
-		hookHandler.attachHooker(ImportSubCommandHook.class, importAllCommand);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, clearInternalDbCommand);
-		
-		
-		hookHandler.attachHooker(VirtualContentProviderHook.class, masterJrxmlProvider);
-		hookHandler.attachHooker(VirtualContentProviderHook.class, subreportsJrxmlProvider);
-		
+   ) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);
+
+      hookHandler.attachHooker(ImportSubCommandHook.class, importAllCommand);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, clearInternalDbCommand);
+
+      hookHandler.attachHooker(VirtualContentProviderHook.class, masterJrxmlProvider);
+      hookHandler.attachHooker(VirtualContentProviderHook.class, subreportsJrxmlProvider);
+
 //		hookHandler.attachHooker(VirtualContentProviderHook.class, exportContentProvider);
-	}
+   }
 }

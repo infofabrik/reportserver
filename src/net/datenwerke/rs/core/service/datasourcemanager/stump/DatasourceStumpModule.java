@@ -19,34 +19,33 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class DatasourceStumpModule extends AbstractReportServerModule {
 
-		
-	@Override
-	protected void configure() {
-		bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
-		
-		/* startup */
-		bind(DatasourceStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
 
+      /* startup */
+      bind(DatasourceStartup.class).asEagerSingleton();
+   }
 
-	/**
-	 * Register DatasourceDefinitions
-	 * 
-	 */
-	@Provides @ReportServerDatasourceDefinitions @Inject
-	public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(
-		HookHandlerService hookHandler	
-		){
-		Set<Class<? extends DatasourceDefinition>> definitions = new HashSet<Class<? extends DatasourceDefinition>>();
-		
-		for(DatasourceProviderHook dsProvider : hookHandler.getHookers(DatasourceProviderHook.class))
-			definitions.addAll(dsProvider.getDatasources());
-		
-		return definitions;
-	}
-	
-	@Provides @DefaultDatasource
-	public String provideDefaultDatasourceId(){
-		return null;
-	}
+   /**
+    * Register DatasourceDefinitions
+    * 
+    */
+   @Provides
+   @ReportServerDatasourceDefinitions
+   @Inject
+   public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(HookHandlerService hookHandler) {
+      Set<Class<? extends DatasourceDefinition>> definitions = new HashSet<Class<? extends DatasourceDefinition>>();
+
+      for (DatasourceProviderHook dsProvider : hookHandler.getHookers(DatasourceProviderHook.class))
+         definitions.addAll(dsProvider.getDatasources());
+
+      return definitions;
+   }
+
+   @Provides
+   @DefaultDatasource
+   public String provideDefaultDatasourceId() {
+      return null;
+   }
 }

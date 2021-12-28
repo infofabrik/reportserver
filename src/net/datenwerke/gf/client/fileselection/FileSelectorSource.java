@@ -9,25 +9,24 @@ import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 
 public interface FileSelectorSource {
 
-	void configureToolbar(FileSelectionWidget fileSelectionWidget,
-			ToolBar toolbar);
+   void configureToolbar(FileSelectionWidget fileSelectionWidget, ToolBar toolbar);
 
-	void configureGrid(FileSelectionWidget fileSelectionWidget, Grid<SelectedFileWrapper> grid);
+   void configureGrid(FileSelectionWidget fileSelectionWidget, Grid<SelectedFileWrapper> grid);
 
-	void init(FileSelectionWidget fileSelectionWidget);
+   void init(FileSelectionWidget fileSelectionWidget);
 
-	boolean consumes(SelectedFileWrapper value);
+   boolean consumes(SelectedFileWrapper value);
 
-	ImageResource getIconFor(SelectedFileWrapper value);
+   ImageResource getIconFor(SelectedFileWrapper value);
 
-	boolean isEditNameEnabled(SelectedFileWrapper selectedItem);
+   boolean isEditNameEnabled(SelectedFileWrapper selectedItem);
 
-	boolean isDownloadEnabled(SelectedFileWrapper item);
+   boolean isDownloadEnabled(SelectedFileWrapper item);
 
-	DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem);
+   DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem);
 
-	String getTypeDescription(SelectedFileWrapper value);
+   String getTypeDescription(SelectedFileWrapper value);
 
-	boolean isValid();
+   boolean isValid();
 
 }

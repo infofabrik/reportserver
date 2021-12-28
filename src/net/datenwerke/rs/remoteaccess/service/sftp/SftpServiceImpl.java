@@ -72,19 +72,12 @@ public class SftpServiceImpl implements SftpService {
    private final Provider<TempFileService> tempFileServiceProvider;
 
    @Inject
-   public SftpServiceImpl(
-         Provider<SftpAuthenticator> authenticatorProvider, 
-         Provider<PropertiesService> propertiesService,
-         Provider<EntityManager> entityManagerProvider, 
-         Provider<UnitOfWork> unitOfWorkProvider,
-         HookHandlerService hookhandler, 
-         Provider<TerminalService> terminalServiceProvider,
-         Provider<RsSftpSubSystemFactory> rsSftpSubSystemFactory,
-         Provider<TempFileService> tempFileService,
-         @Nullable @KeyLocation Provider<String> keyLocation,
-         @SftpPort Provider<Integer> port,
-         @SftpEnabled Provider<Boolean> sftpEnabled
-         ) {
+   public SftpServiceImpl(Provider<SftpAuthenticator> authenticatorProvider,
+         Provider<PropertiesService> propertiesService, Provider<EntityManager> entityManagerProvider,
+         Provider<UnitOfWork> unitOfWorkProvider, HookHandlerService hookhandler,
+         Provider<TerminalService> terminalServiceProvider, Provider<RsSftpSubSystemFactory> rsSftpSubSystemFactory,
+         Provider<TempFileService> tempFileService, @Nullable @KeyLocation Provider<String> keyLocation,
+         @SftpPort Provider<Integer> port, @SftpEnabled Provider<Boolean> sftpEnabled) {
       this.authenticatorProvider = authenticatorProvider;
       this.propertiesService = propertiesService;
       this.entityManagerProvider = entityManagerProvider;
@@ -92,7 +85,7 @@ public class SftpServiceImpl implements SftpService {
       this.terminalServiceProvider = terminalServiceProvider;
       this.rsSftpSubSystemFactory = rsSftpSubSystemFactory;
       this.tempFileServiceProvider = tempFileService;
-      
+
       this.keyLocation = keyLocation;
       this.port = port;
       this.sftpEnabled = sftpEnabled;
@@ -145,7 +138,7 @@ public class SftpServiceImpl implements SftpService {
          @Override
          public FileSystem createFileSystem(SessionContext sessionContext) throws IOException {
             URI vfsUri = URI.create("rs-vfs:/");
-            Map<String,Object> env = new HashMap<>();
+            Map<String, Object> env = new HashMap<>();
             env.put(RSVFSFileSystem.VFS, terminalServiceProvider);
             env.put(RSVFSFileSystem.SESSION_CONTEXT, sessionContext);
             env.put(RSVFSFileSystem.TEMPFILESERVICE_PROVIDER, tempFileServiceProvider);
@@ -157,9 +150,9 @@ public class SftpServiceImpl implements SftpService {
          public Path getUserHomeDir(SessionContext sessionContext) throws IOException {
             return ((RSVFSFileSystem) createFileSystem(sessionContext)).getDefaultDir();
          }
-         
-        });
-      
+
+      });
+
       sshd.start();
    }
 

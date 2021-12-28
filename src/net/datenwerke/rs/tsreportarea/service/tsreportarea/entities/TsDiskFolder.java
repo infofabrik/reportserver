@@ -21,73 +21,57 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 @Entity
-@Table(name="TS_DISK_FOLDER")
+@Table(name = "TS_DISK_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	TsDiskFolder.class,
-	TsDiskReportReference.class,
-	TsDiskGeneralReference.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tsreportarea.client.tsreportarea.dto",
-	typeDescriptionMsg=BaseMessages.class, typeDescriptionKey="folder",
-	icon="folder"
-)
-@InstanceDescription(
-	msgLocation=TsDiskMessages.class,
-	objNameKey="tsFolderTypeName",
-	icon = "folder"
-)
+@TreeDBAllowedChildren({ TsDiskFolder.class, TsDiskReportReference.class, TsDiskGeneralReference.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tsreportarea.client.tsreportarea.dto", typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
+@InstanceDescription(msgLocation = TsDiskMessages.class, objNameKey = "tsFolderTypeName", icon = "folder")
 public class TsDiskFolder extends AbstractTsDiskNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4539377247922399820L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4539377247922399820L;
 
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   @Field
+   @Title
+   private String name;
 
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Column(length = 128)
-	@Field
-	@Title
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Field
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Description
+   private String description;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Field
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Description
-    private String description;
-	
-	public TsDiskFolder() {
-	}
-	
-    public TsDiskFolder(String name) {
-    	this.name = name;
-	}
+   public TsDiskFolder() {
+   }
 
-	public String getName() {
-        return name;
-    }
+   public TsDiskFolder(String name) {
+      this.name = name;
+   }
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public String getName() {
+      return name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
-	
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
 }

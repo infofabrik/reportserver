@@ -13,6 +13,4 @@ import net.datenwerke.security.client.security.dto.InheritanceTypeDto;
 @CorrespondingPoso(net.datenwerke.security.service.security.entities.InheritanceType.class)
 public interface InheritanceTypeDtoPA extends PropertyAccess<InheritanceTypeDto> {
 
-
-
 }

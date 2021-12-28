@@ -38,13 +38,9 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
    private final Provider<AmazonS3UiService> amazonS3UiService;
 
    @Inject
-   public FileExportToAmazonS3Hooker(
-         @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
-         Provider<AmazonS3Dao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<AmazonS3UiService> amazonS3UiService
-         ) {
+   public FileExportToAmazonS3Hooker(@DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
+         Provider<AmazonS3Dao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<AmazonS3UiService> amazonS3UiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
@@ -54,8 +50,9 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      final FileSendToMenuItem item = new FileSendToMenuItem(AmazonS3UiModule.NAME, treeHandler, AmazonS3UiModule.ICON.toImageResource());
-      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
+      final FileSendToMenuItem item = new FileSendToMenuItem(AmazonS3UiModule.NAME, treeHandler,
+            AmazonS3UiModule.ICON.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto) node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
       item.disable();
@@ -64,28 +61,26 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
    protected void displayExportDialog(final AbstractFileServerNodeDto toExport) {
       if (!(toExport instanceof AbstractFileServerNodeDto))
          throw new IllegalArgumentException(toExport.getClass() + " not supported");
-      
-      String name="";
+
+      String name = "";
       if (toExport instanceof FileServerFolderDto)
-         name = ((FileServerFolderDto)toExport).getName();
+         name = ((FileServerFolderDto) toExport).getName();
       else if (toExport instanceof FileServerFileDto)
-         name = ((FileServerFileDto)toExport).getName();
-      
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            AmazonS3DatasinkDto.class,
-            name, treeProvider, datasinkDaoProvider, toExport, 
-            Optional.empty(),
-            new AsyncCallback<Map<String,Object>>() {
-               
+         name = ((FileServerFileDto) toExport).getName();
+
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(AmazonS3DatasinkDto.class, name, treeProvider,
+            datasinkDaoProvider, toExport, Optional.empty(), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
+               public void onSuccess(Map<String, Object> result) {
                   datasinkDaoProvider.get().exportFileIntoDatasink(toExport,
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
-                        (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY),
+                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
+                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

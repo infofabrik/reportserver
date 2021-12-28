@@ -11,23 +11,22 @@ import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHo
  * 
  *
  */
-public class GlobalConstantsViewSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.EDIT.toImageResource(); 
-	}
+public class GlobalConstantsViewSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return GlobalConstantsMessages.INSTANCE.securityTitle(); 
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return GlobalConstantsMessages.INSTANCE.securityDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.EDIT.toImageResource();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new GlobalConstantsGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getName() {
+      return GlobalConstantsMessages.INSTANCE.securityTitle();
+   }
+
+   public String genericSecurityViewDomainHook_getDescription() {
+      return GlobalConstantsMessages.INSTANCE.securityDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new GlobalConstantsGenericTargetIdentifier();
+   }
 
 }

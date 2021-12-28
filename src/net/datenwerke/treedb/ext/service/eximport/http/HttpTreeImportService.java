@@ -7,7 +7,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 
 public interface HttpTreeImportService {
 
-	List<ImportTreeModel> loadTreeDto(Class<? extends Exporter> exporterType);
-	
-	
+   List<ImportTreeModel> loadTreeDto(Class<? extends Exporter> exporterType);
+
 }

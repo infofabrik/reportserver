@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria.class)
 public interface JobFilterCriteriaDtoPA extends PropertyAccess<JobFilterCriteriaDto> {
 
-
-
 }

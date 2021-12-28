@@ -32,106 +32,97 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  * 
  *
  */
-public class EditJasperToTablePropertiesHooker implements
-		MainPanelViewToolbarConfiguratorHook {
+public class EditJasperToTablePropertiesHooker implements MainPanelViewToolbarConfiguratorHook {
 
-	
-	private final JasperToTableDao jttDao;
-	private final ToolbarService toolbarUtils;
-	
-	@Inject
-	public EditJasperToTablePropertiesHooker(
-		JasperToTableDao jttDao,
-		ToolbarService toolbarUtils	
-		){
-		
-		/* store objects */
-		this.jttDao = jttDao;
-		this.toolbarUtils = toolbarUtils;
-	}
-	
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(
-			MainPanelView view, ToolBar toolbar, final AbstractNodeDto selectedNode) {
-		if(! MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
-			return;
-		if(! (selectedNode instanceof JasperReportDto))
-			return;
+   private final JasperToTableDao jttDao;
+   private final ToolbarService toolbarUtils;
 
-		/* add parameter */
-		DwTextButton editJasperToTableBtn = toolbarUtils.createSmallButtonLeft(JasperToTableMessages.INSTANCE.editJasperToTableBtnText(), BaseIcon.fromFileExtension("xls"));
-		editJasperToTableBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				displayEditDialog((JasperReportDto)selectedNode);
-			}
-		});
-		
-		toolbar.add(editJasperToTableBtn);
-	}
+   @Inject
+   public EditJasperToTablePropertiesHooker(JasperToTableDao jttDao, ToolbarService toolbarUtils) {
 
-	protected void displayEditDialog(final JasperReportDto report) {
-		final DwWindow window = new DwWindow();
-		window.setHeading(JasperToTableMessages.INSTANCE.editJasperToTableBtnText());
-		window.setSize(600, 450);
-		
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		final DwFlowContainer container = new DwFlowContainer();
-		container.setScrollMode(ScrollMode.AUTOY);
-		window.add(container, new MarginData(10));
-		window.mask(BaseMessages.INSTANCE.loadingMsg());
-		
-		final String activeKey = form.addField(
-				Boolean.class,
-				JasperToTableConfigDtoPA.INSTANCE.active(),
-				JasperToTableMessages.INSTANCE.allowJasperToTableLabel());
-		
-		final String datasourceKey = form.addField(
-					DatasourceContainerDto.class, 
-					JasperToTableConfigDtoPA.INSTANCE.datasourceContainer(),
-					JasperToTableMessages.INSTANCE.datasourceLabel()); 
-		
-		form.addCondition(activeKey, new FieldEquals(Boolean.TRUE), new EnableDisableAction(datasourceKey));
-		
-			
-		jttDao.getConfig(report, new RsAsyncCallback<JasperToTableConfigDto>(){
-			@Override
-			public void onSuccess(JasperToTableConfigDto result) {
-				window.unmask();
-				
-				if(null != result){
-					((JasperToTableConfigDtoDec)result).setActive(true);
-					form.bind(result);
-				} else
-					form.bind(new JasperToTableConfigDtoDec());
-				
-				/* only attach after bind */
-				container.add(form);
-			}
-		});
-		
-		DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.submit());
-		submitBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				jttDao.setConfig(report, (JasperToTableConfigDto) form.getBoundModel(), new RsAsyncCallback<Void>(){
-					@Override
-					public void onSuccess(Void result) {
-						window.hide();
-					}
-				});
-			}
-		});
-		window.addButton(submitBtn);
-		
-		window.show();
-	}
+      /* store objects */
+      this.jttDao = jttDao;
+      this.toolbarUtils = toolbarUtils;
+   }
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         final AbstractNodeDto selectedNode) {
+      if (!MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
+         return;
+      if (!(selectedNode instanceof JasperReportDto))
+         return;
 
-	}
+      /* add parameter */
+      DwTextButton editJasperToTableBtn = toolbarUtils.createSmallButtonLeft(
+            JasperToTableMessages.INSTANCE.editJasperToTableBtnText(), BaseIcon.fromFileExtension("xls"));
+      editJasperToTableBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            displayEditDialog((JasperReportDto) selectedNode);
+         }
+      });
+
+      toolbar.add(editJasperToTableBtn);
+   }
+
+   protected void displayEditDialog(final JasperReportDto report) {
+      final DwWindow window = new DwWindow();
+      window.setHeading(JasperToTableMessages.INSTANCE.editJasperToTableBtnText());
+      window.setSize(600, 450);
+
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      final DwFlowContainer container = new DwFlowContainer();
+      container.setScrollMode(ScrollMode.AUTOY);
+      window.add(container, new MarginData(10));
+      window.mask(BaseMessages.INSTANCE.loadingMsg());
+
+      final String activeKey = form.addField(Boolean.class, JasperToTableConfigDtoPA.INSTANCE.active(),
+            JasperToTableMessages.INSTANCE.allowJasperToTableLabel());
+
+      final String datasourceKey = form.addField(DatasourceContainerDto.class,
+            JasperToTableConfigDtoPA.INSTANCE.datasourceContainer(), JasperToTableMessages.INSTANCE.datasourceLabel());
+
+      form.addCondition(activeKey, new FieldEquals(Boolean.TRUE), new EnableDisableAction(datasourceKey));
+
+      jttDao.getConfig(report, new RsAsyncCallback<JasperToTableConfigDto>() {
+         @Override
+         public void onSuccess(JasperToTableConfigDto result) {
+            window.unmask();
+
+            if (null != result) {
+               ((JasperToTableConfigDtoDec) result).setActive(true);
+               form.bind(result);
+            } else
+               form.bind(new JasperToTableConfigDtoDec());
+
+            /* only attach after bind */
+            container.add(form);
+         }
+      });
+
+      DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.submit());
+      submitBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            jttDao.setConfig(report, (JasperToTableConfigDto) form.getBoundModel(), new RsAsyncCallback<Void>() {
+               @Override
+               public void onSuccess(Void result) {
+                  window.hide();
+               }
+            });
+         }
+      });
+      window.addButton(submitBtn);
+
+      window.show();
+   }
+
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+
+   }
 
 }

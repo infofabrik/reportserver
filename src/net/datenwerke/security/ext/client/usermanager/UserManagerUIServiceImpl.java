@@ -25,70 +25,69 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUserPA;
  */
 public class UserManagerUIServiceImpl implements UserManagerUIService {
 
-	private static StrippedDownUserPA sduPa = GWT.create(StrippedDownUserPA.class);
-	private static StrippedDownGroupPA sdgPa = GWT.create(StrippedDownGroupPA.class);
-	
-	private final UserManagerDao userManagerDao;
-	
-	
-	@Inject
-	public UserManagerUIServiceImpl(
-		UserManagerDao userManagerDao	
-		){
-		
-		/* store objects */
-		this.userManagerDao = userManagerDao;
-	}
-	
-	@Override
-	public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>> getStrippedUserLoader() {
-		RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownUser>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownUser>>() {
-			@Override
-			public void load(ListLoadConfig loadConfig,
-					AsyncCallback<ListLoadResult<StrippedDownUser>> callback) {
-				userManagerDao.getStrippedDownUsers(callback);
-			}
-		};
-		
-		return  new ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>>(proxy);
-	}
+   private static StrippedDownUserPA sduPa = GWT.create(StrippedDownUserPA.class);
+   private static StrippedDownGroupPA sdgPa = GWT.create(StrippedDownGroupPA.class);
 
-	@Override
-	public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> getStrippedGroupLoader() {
-		RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownGroup>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownGroup>>() {
-			@Override
-			public void load(ListLoadConfig loadConfig, AsyncCallback<ListLoadResult<StrippedDownGroup>> callback) {
-				userManagerDao.getStrippedDownGroups(callback);
-			}
-		};
-		
-		ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> listLoader = new ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>>(proxy);
-		
-		return listLoader;
-	}
+   private final UserManagerDao userManagerDao;
 
-	@Override
-	public BaseIcon getIcon(AbstractUserManagerNodeDto node){
-		if(null == node)
-			return null;
-		
-		if(node  instanceof OrganisationalUnitDto)
-			return BaseIcon.FOLDER_USER;
-		if(node instanceof GroupDto)
-			return BaseIcon.GROUP;
-		if(node instanceof UserDto)
-			return BaseIcon.USER;
-		
-		return null;
-	}
+   @Inject
+   public UserManagerUIServiceImpl(UserManagerDao userManagerDao) {
 
-	@Override
-	public LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>> getStrippedUserStore() {
-		return new LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>>(sduPa.dtoId(), getStrippedUserLoader());
-	}
+      /* store objects */
+      this.userManagerDao = userManagerDao;
+   }
 
-	@Override
-	public LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>> getStrippedGroupStore() {
-		return new LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>>(sdgPa.dtoId(), getStrippedGroupLoader());
-	}
+   @Override
+   public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>> getStrippedUserLoader() {
+      RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownUser>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownUser>>() {
+         @Override
+         public void load(ListLoadConfig loadConfig, AsyncCallback<ListLoadResult<StrippedDownUser>> callback) {
+            userManagerDao.getStrippedDownUsers(callback);
+         }
+      };
+
+      return new ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>>(proxy);
+   }
+
+   @Override
+   public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> getStrippedGroupLoader() {
+      RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownGroup>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<StrippedDownGroup>>() {
+         @Override
+         public void load(ListLoadConfig loadConfig, AsyncCallback<ListLoadResult<StrippedDownGroup>> callback) {
+            userManagerDao.getStrippedDownGroups(callback);
+         }
+      };
+
+      ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> listLoader = new ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>>(
+            proxy);
+
+      return listLoader;
+   }
+
+   @Override
+   public BaseIcon getIcon(AbstractUserManagerNodeDto node) {
+      if (null == node)
+         return null;
+
+      if (node instanceof OrganisationalUnitDto)
+         return BaseIcon.FOLDER_USER;
+      if (node instanceof GroupDto)
+         return BaseIcon.GROUP;
+      if (node instanceof UserDto)
+         return BaseIcon.USER;
+
+      return null;
+   }
+
+   @Override
+   public LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>> getStrippedUserStore() {
+      return new LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>>(sduPa.dtoId(),
+            getStrippedUserLoader());
+   }
+
+   @Override
+   public LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>> getStrippedGroupStore() {
+      return new LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>>(sdgPa.dtoId(),
+            getStrippedGroupLoader());
+   }
 }

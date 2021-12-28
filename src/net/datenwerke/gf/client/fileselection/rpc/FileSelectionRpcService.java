@@ -12,6 +12,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 @RemoteServiceRelativePath("fileselectionservice")
 public interface FileSelectionRpcService extends RemoteService {
 
-	void submit(ArrayList<SelectedFileWrapper> data, FileSelectionConfig config) throws ServerCallFailedException;
+   void submit(ArrayList<SelectedFileWrapper> data, FileSelectionConfig config) throws ServerCallFailedException;
 
 }

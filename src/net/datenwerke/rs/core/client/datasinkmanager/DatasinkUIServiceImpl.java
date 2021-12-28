@@ -61,15 +61,12 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
 
    private Map<Class<? extends DatasinkDefinitionDto>, Provider<? extends DatasinkDefinitionConfigConfigurator>> configuratorLookup;
    private final DatasinkSelectionFieldFactory fieldFactory;
-   
+
    private final Provider<DatasinkDao> datasinkDaoProvider;
 
    @Inject
-   public DatasinkUIServiceImpl(
-         HookHandlerService hookHandlerService, 
-         DatasinkSelectionFieldFactory fieldFactory,
-         Provider<DatasinkDao> datasinkDaoProvider
-         ) {
+   public DatasinkUIServiceImpl(HookHandlerService hookHandlerService, DatasinkSelectionFieldFactory fieldFactory,
+         Provider<DatasinkDao> datasinkDaoProvider) {
 
       /* store objects */
       this.hookHandlerService = hookHandlerService;
@@ -93,48 +90,45 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
-         Container container, Provider<UITree> datasinkTreeProvider, Class<? extends DatasinkDefinitionDto>... types) {
-      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTreeProvider.get(), types);
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
+         BaseIcon defaultDatasinkIcon, Container container, Provider<UITree> datasinkTreeProvider,
+         Class<? extends DatasinkDefinitionDto>... types) {
+      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTreeProvider.get(),
+            types);
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
-         Container container, Provider<UITree> datasinkTreeProvider) {
-      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon,  container, datasinkTreeProvider.get(), new Class[] {});
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
+         BaseIcon defaultDatasinkIcon, Container container, Provider<UITree> datasinkTreeProvider) {
+      return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTreeProvider.get(),
+            new Class[] {});
    }
 
    @Override
-   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon defaultDatasinkIcon,
-         Container container, UITree datasinkTree) {
+   public DatasinkSelectionField getSelectionField(Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
+         BaseIcon defaultDatasinkIcon, Container container, UITree datasinkTree) {
       return fieldFactory.create(datasinkDaoProvider, defaultDatasinkIcon, container, datasinkTree, new Class[] {});
    }
-   
+
    @Override
-   public void displaySendToDatasinkDialog(
-         final Class<? extends DatasinkDefinitionDto> datasinkType,
-         final String filename, 
-         final Provider<UITree> treeProvider,
-         final Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
-         final AbstractNodeDto toExport,
+   public void displaySendToDatasinkDialog(final Class<? extends DatasinkDefinitionDto> datasinkType,
+         final String filename, final Provider<UITree> treeProvider,
+         final Provider<? extends HasDefaultDatasink> datasinkDaoProvider, final AbstractNodeDto toExport,
          final Optional<ReportExecutorInformation> reportInfo,
-         final AsyncCallback<Map<String,Object>> onSelectHandler) {
-      if (!(toExport instanceof AbstractFileServerNodeDto)
-            && !(toExport instanceof ReportDto))
-           throw new IllegalArgumentException(toExport.getClass() + " not supported");
-      
-      if (toExport instanceof ReportDto && !reportInfo.isPresent()) 
+         final AsyncCallback<Map<String, Object>> onSelectHandler) {
+      if (!(toExport instanceof AbstractFileServerNodeDto) && !(toExport instanceof ReportDto))
+         throw new IllegalArgumentException(toExport.getClass() + " not supported");
+
+      if (toExport instanceof ReportDto && !reportInfo.isPresent())
          throw new IllegalArgumentException("Report info not available");
-      
-      final Optional<DatasinkSendToFormConfiguratorHook> formConfiguratorOpt = 
-            hookHandlerService.getHookers(DatasinkSendToFormConfiguratorHook.class)
-            .stream()
-            .filter(hooker -> hooker.consumes(datasinkType))
-            .findAny();
+
+      final Optional<DatasinkSendToFormConfiguratorHook> formConfiguratorOpt = hookHandlerService
+            .getHookers(DatasinkSendToFormConfiguratorHook.class).stream()
+            .filter(hooker -> hooker.consumes(datasinkType)).findAny();
       if (!formConfiguratorOpt.isPresent())
          throw new IllegalStateException("no form configurator found for datasink " + datasinkType);
       final DatasinkSendToFormConfiguratorHook formConfigurator = formConfiguratorOpt.get();
-      
+
       final DwWindow window = new DwWindow();
       window.setHeaderIcon(formConfigurator.getIcon());
       window.setHeading(formConfigurator.getWindowTitle());
@@ -157,50 +151,50 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
 
       form.setFieldWidth(215);
       form.beginFloatRow();
-      
-      final String datasinkKey = form.addField(DatasinkSelectionField.class, formConfigurator.getWindowTitle(), new SFFCGenericTreeNode() {
-         @Override
-         public UITree getTreeForPopup() {
-            return treeProvider.get();
-         }
-      }, new SFFCAllowBlank() {
-         @Override
-         public boolean allowBlank() {
-            return false;
-         }
-      }, new SFFCDatasinkDao() {
-         @Override
-         public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
-            return datasinkDaoProvider;
-         }
 
-         @Override
-         public BaseIcon getIcon() {
-            return formConfigurator.getIcon();
-         }
-      });
-      
-      final ObjectHolder<String> folderKey = new ObjectHolder<>();
-      if (formConfigurator.isFolderedDatasink()) {
-         folderKey.set(form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(),
-            new SFFCAllowBlank() {
+      final String datasinkKey = form.addField(DatasinkSelectionField.class, formConfigurator.getWindowTitle(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            }, new SFFCAllowBlank() {
                @Override
                public boolean allowBlank() {
                   return false;
                }
+            }, new SFFCDatasinkDao() {
+               @Override
+               public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
+                  return datasinkDaoProvider;
+               }
+
+               @Override
+               public BaseIcon getIcon() {
+                  return formConfigurator.getIcon();
+               }
+            });
+
+      final ObjectHolder<String> folderKey = new ObjectHolder<>();
+      if (formConfigurator.isFolderedDatasink()) {
+         folderKey.set(form.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
+            @Override
+            public boolean allowBlank() {
+               return false;
+            }
          }));
       }
-      
+
       form.endRow();
       form.setFieldWidth(1);
-      
+
       final ObjectHolder<String> formatKey = new ObjectHolder<>();
       if (toExport instanceof ReportDto) {
-         formatKey.set(form.addField(ExportTypeSelection.class,
-               ScheduleAsFileMessages.INSTANCE.exportTypeLabel(), new SFFCExportTypeSelector() {
+         formatKey.set(form.addField(ExportTypeSelection.class, ScheduleAsFileMessages.INSTANCE.exportTypeLabel(),
+               new SFFCExportTypeSelector() {
                   @Override
                   public ReportDto getReport() {
-                     return (ReportDto)toExport;
+                     return (ReportDto) toExport;
                   }
 
                   @Override
@@ -209,21 +203,20 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                   }
                }));
       }
-      
+
       final String nameKey = form.addField(String.class, ScheduleAsFileMessages.INSTANCE.nameLabel(),
-         new SFFCAllowBlank() {
-            @Override
-            public boolean allowBlank() {
-               return false;
-            }
+            new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
             });
-      
-      
+
       /* add additional fields */
       formConfigurator.installAdditionalFields(form);
-      
+
       final ObjectHolder<String> compressedKey = new ObjectHolder<>();
-      
+
       if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto) {
          compressedKey.set(form.addField(Boolean.class, "", new SFFCBoolean() {
             @Override
@@ -235,19 +228,19 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
             }
          }));
       }
-      
+
       wrapper.setWidget(formWrapper);
       window.add(wrapper, new MarginData(10));
 
       /* set properties */
-      if(filename.contains("."))
+      if (filename.contains("."))
          form.setValue(nameKey, filename.substring(0, filename.lastIndexOf(".")));
       else
          form.setValue(nameKey, filename);
 
       /* load fields */
       form.loadFields();
-      
+
       final SingleTreeSelectionField datasinkField = extractSingleTreeSelectionField(form.getField(datasinkKey));
 
       if (formConfigurator.isFolderedDatasink()) {
@@ -269,7 +262,7 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                   });
          });
       }
-      
+
       window.addCancelButton();
 
       DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.submit());
@@ -278,7 +271,7 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
 
          if (!form.isValid())
             return;
-         
+
          if (toExport instanceof ReportDto) {
             ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey.get());
 
@@ -287,13 +280,10 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                      ReportExporterMessages.INSTANCE.exportTypeNotConfigured()).show();
                return;
             }
-            
-            hookHandlerService.getHookers(PrepareReportModelForStorageOrExecutionHook.class)
-            .stream()
-            .filter(hooker -> hooker.consumes((ReportDto) toExport))
-            .forEach(
-                     hooker -> hooker.prepareForExecutionOrStorage((ReportDto) toExport,
-                        reportInfo.get().getExecuteReportToken()));
+
+            hookHandlerService.getHookers(PrepareReportModelForStorageOrExecutionHook.class).stream()
+                  .filter(hooker -> hooker.consumes((ReportDto) toExport)).forEach(hooker -> hooker
+                        .prepareForExecutionOrStorage((ReportDto) toExport, reportInfo.get().getExecuteReportToken()));
          }
 
          InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
@@ -301,24 +291,24 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
          infoConfig.setWidth(350);
          infoConfig.setDisplay(3500);
          Info.display(infoConfig);
-         
-         Map<String,Object> values = new HashMap<>();
+
+         Map<String, Object> values = new HashMap<>();
          values.put(DatasinkUIModule.DATASINK_KEY, form.getValue(datasinkKey));
          values.put(DatasinkUIModule.DATASINK_FILENAME, ((String) form.getValue(nameKey)).trim());
          if (formConfigurator.isFolderedDatasink())
             values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey.get())).trim());
          if (toExport instanceof ReportDto)
             values.put(DatasinkUIModule.REPORT_FORMAT_KEY, ((ExportTypeSelection) form.getValue(formatKey.get())));
-         if(toExport instanceof FileServerFileDto || toExport instanceof ReportDto)
+         if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto)
             values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) form.getValue(compressedKey.get()));
          else
             values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) true);
-         
+
          /* add additional values */
          Optional<Map<String, Object>> additionalValues = formConfigurator.getAdditionalFieldsValues(form);
          if (additionalValues.isPresent())
             values.putAll(additionalValues.get());
-         
+
          onSelectHandler.onSuccess(values);
          window.hide();
       });

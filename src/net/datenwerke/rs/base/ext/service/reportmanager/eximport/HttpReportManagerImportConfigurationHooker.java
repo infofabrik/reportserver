@@ -21,85 +21,80 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportNodeConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
 
-public class HttpReportManagerImportConfigurationHooker extends
-	HttpImportConfigurationProviderHookImplForTrees<AbstractReportManagerNode, AbstractReportManagerNodeDto> {
+public class HttpReportManagerImportConfigurationHooker
+      extends HttpImportConfigurationProviderHookImplForTrees<AbstractReportManagerNode, AbstractReportManagerNodeDto> {
 
-	private static final String UUID_FIELD = "uuid";
+   private static final String UUID_FIELD = "uuid";
 
-	@Inject
-	public HttpReportManagerImportConfigurationHooker(
-		DtoService dtoService,
-		Provider<HttpImportService> httpImportServiceProvider, 
-		SecurityService securityService
-		){
-		super(dtoService, httpImportServiceProvider, securityService);
-		
-	}
-	
-	@Override
-	public boolean consumes(String id) {
-		return ReportManagerImporter.IMPORTER_ID.equals(id);
-	}	
-	
-	@Override
-	protected TreeNodeImportItemConfig initItemConfig(ImportTreeModel model) {
-		return new ImportReportItemConfig(model.getId());
-	}
+   @Inject
+   public HttpReportManagerImportConfigurationHooker(DtoService dtoService,
+         Provider<HttpImportService> httpImportServiceProvider, SecurityService securityService) {
+      super(dtoService, httpImportServiceProvider, securityService);
 
+   }
 
-	@Override
-	protected void doConfigureNodeConfig(
-			TreeNodeImportItemConfig realConfigNode, ImportTreeModel model,
-			TreeImportConfigDto<AbstractReportManagerNodeDto> treeConfig) {
-		ReportManagerImportConfigDto rmConfig = (ReportManagerImportConfigDto) treeConfig;
-		
-		if(rmConfig.isRemoveKey())
-			((ImportReportItemConfig)realConfigNode).setCleanKeys(true);
-		
-		/* always ignore uuids */
-		realConfigNode.addIgnoredField(UUID_FIELD);
-	}
+   @Override
+   public boolean consumes(String id) {
+      return ReportManagerImporter.IMPORTER_ID.equals(id);
+   }
 
-	@Override
-	public void validate(ImportConfigDto config)throws IllegalImportConfigException {
-		TreeImportConfigDto<AbstractReportManagerNodeDto> treeConfig = (TreeImportConfigDto<AbstractReportManagerNodeDto>) config;
-		
-		AbstractReportManagerNodeDto parent = treeConfig.getParent();
-		if(null != parent){
-			if(parent instanceof ReportVariantDto)
-				throw new IllegalImportConfigException("tried to use report variant as base for import.");
-			
-			if(parent instanceof ReportDto){
-				for(ImportItemConfigDto itemConfig : treeConfig.getConfigs()){
-					TreeImportNodeConfigDto treeNodeConfig = (TreeImportNodeConfigDto) itemConfig;
-					
-					String type = treeNodeConfig.getModel().getType();
-					try {
-						Class<?> typeC = Class.forName(type);
-						if(! ReportVariantDto.class.isAssignableFrom(typeC)){
-							throw new IllegalImportConfigException("tried to import a non report variant beneath a report");
-						}
-					} catch (ClassNotFoundException e) {
-						throw new IllegalImportConfigException(e);
-					}
-				}
-			}
-		}
-	}
-	
-	@Override
-	protected boolean validateParent(ImportTreeModel model, AbstractReportManagerNode parent) {
-		if(parent instanceof ReportFolder){
-			String type = model.getType();
-			try {
-				Class<?> typeC = Class.forName(type);
-				if(ReportVariantDto.class.isAssignableFrom(typeC)){
-					throw new IllegalImportConfigException("tried to importa variant beneath a folder");
-				}
-			} catch (ClassNotFoundException e) {
-				throw new IllegalImportConfigException(e);
-			}
-		}
-		return true;
-	}
+   @Override
+   protected TreeNodeImportItemConfig initItemConfig(ImportTreeModel model) {
+      return new ImportReportItemConfig(model.getId());
+   }
+
+   @Override
+   protected void doConfigureNodeConfig(TreeNodeImportItemConfig realConfigNode, ImportTreeModel model,
+         TreeImportConfigDto<AbstractReportManagerNodeDto> treeConfig) {
+      ReportManagerImportConfigDto rmConfig = (ReportManagerImportConfigDto) treeConfig;
+
+      if (rmConfig.isRemoveKey())
+         ((ImportReportItemConfig) realConfigNode).setCleanKeys(true);
+
+      /* always ignore uuids */
+      realConfigNode.addIgnoredField(UUID_FIELD);
+   }
+
+   @Override
+   public void validate(ImportConfigDto config) throws IllegalImportConfigException {
+      TreeImportConfigDto<AbstractReportManagerNodeDto> treeConfig = (TreeImportConfigDto<AbstractReportManagerNodeDto>) config;
+
+      AbstractReportManagerNodeDto parent = treeConfig.getParent();
+      if (null != parent) {
+         if (parent instanceof ReportVariantDto)
+            throw new IllegalImportConfigException("tried to use report variant as base for import.");
+
+         if (parent instanceof ReportDto) {
+            for (ImportItemConfigDto itemConfig : treeConfig.getConfigs()) {
+               TreeImportNodeConfigDto treeNodeConfig = (TreeImportNodeConfigDto) itemConfig;
+
+               String type = treeNodeConfig.getModel().getType();
+               try {
+                  Class<?> typeC = Class.forName(type);
+                  if (!ReportVariantDto.class.isAssignableFrom(typeC)) {
+                     throw new IllegalImportConfigException("tried to import a non report variant beneath a report");
+                  }
+               } catch (ClassNotFoundException e) {
+                  throw new IllegalImportConfigException(e);
+               }
+            }
+         }
+      }
+   }
+
+   @Override
+   protected boolean validateParent(ImportTreeModel model, AbstractReportManagerNode parent) {
+      if (parent instanceof ReportFolder) {
+         String type = model.getType();
+         try {
+            Class<?> typeC = Class.forName(type);
+            if (ReportVariantDto.class.isAssignableFrom(typeC)) {
+               throw new IllegalImportConfigException("tried to importa variant beneath a folder");
+            }
+         } catch (ClassNotFoundException e) {
+            throw new IllegalImportConfigException(e);
+         }
+      }
+      return true;
+   }
 }

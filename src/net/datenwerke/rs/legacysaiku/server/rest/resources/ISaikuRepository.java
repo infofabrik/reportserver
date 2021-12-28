@@ -16,43 +16,46 @@ import net.datenwerke.rs.legacysaiku.server.rest.objects.repository.IRepositoryO
 
 public interface ISaikuRepository {
 
-	/**
-	 * Get Saved Queries.
-	 * @return A list of SavedQuery Objects.
-	 */
-	@GET
-	@Produces({ "application/json" })
-	public List<IRepositoryObject> getRepository(
-			@QueryParam("path") String path, @QueryParam("type") String type, @PathParam("username") String username);
+   /**
+    * Get Saved Queries.
+    * 
+    * @return A list of SavedQuery Objects.
+    */
+   @GET
+   @Produces({ "application/json" })
+   public List<IRepositoryObject> getRepository(@QueryParam("path") String path, @QueryParam("type") String type,
+         @PathParam("username") String username);
 
-	/**
-	 * Load a resource.
-	 * @param file - The name of the repository file to load.
-	 * @return A Repository File Object.
-	 */
-	@GET
-	@Produces({ "text/plain" })
-	@Path("/resource")
-	public Response getResource(@QueryParam("file") String file, @PathParam("username") String username);
+   /**
+    * Load a resource.
+    * 
+    * @param file - The name of the repository file to load.
+    * @return A Repository File Object.
+    */
+   @GET
+   @Produces({ "text/plain" })
+   @Path("/resource")
+   public Response getResource(@QueryParam("file") String file, @PathParam("username") String username);
 
-	/**
-	 * Save a resource.
-	 * @param file - The name of the repository file to load.
-	 * @param content - The content to save.
-	 * @return Status
-	 */
-	@POST
-	@Path("/resource")
-	public Response saveResource(@FormParam("file") String file,
-			@FormParam("content") String content);
+   /**
+    * Save a resource.
+    * 
+    * @param file    - The name of the repository file to load.
+    * @param content - The content to save.
+    * @return Status
+    */
+   @POST
+   @Path("/resource")
+   public Response saveResource(@FormParam("file") String file, @FormParam("content") String content);
 
-	/**
-	 * Delete a resource.
-	 * @param file - The name of the repository file to load.
-	 * @return Status
-	 */
-	@DELETE
-	@Path("/resource")
-	public Response deleteResource(@QueryParam("file") String file);
+   /**
+    * Delete a resource.
+    * 
+    * @param file - The name of the repository file to load.
+    * @return Status
+    */
+   @DELETE
+   @Path("/resource")
+   public Response deleteResource(@QueryParam("file") String file);
 
 }

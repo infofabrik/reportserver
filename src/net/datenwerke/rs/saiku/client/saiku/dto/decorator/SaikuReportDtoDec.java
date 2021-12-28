@@ -8,12 +8,10 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
  */
 public class SaikuReportDtoDec extends SaikuReportDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public SaikuReportDtoDec() {
-		super();
-	}
-
+   public SaikuReportDtoDec() {
+      super();
+   }
 
 }

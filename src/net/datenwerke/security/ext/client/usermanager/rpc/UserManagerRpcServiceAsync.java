@@ -14,17 +14,15 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public interface UserManagerRpcServiceAsync {
 
-	void getStrippedDownUsers(AsyncCallback<ListLoadResult<StrippedDownUser>> callback);
+   void getStrippedDownUsers(AsyncCallback<ListLoadResult<StrippedDownUser>> callback);
 
-	void getStrippedDownGroups(AsyncCallback<ListLoadResult<StrippedDownGroup>> callback);
+   void getStrippedDownGroups(AsyncCallback<ListLoadResult<StrippedDownGroup>> callback);
 
-	void getStrippedDownUsers(Collection<Long> ids,
-			AsyncCallback<List<StrippedDownUser>> callback);
+   void getStrippedDownUsers(Collection<Long> ids, AsyncCallback<List<StrippedDownUser>> callback);
 
-	void changeActiveUserData(UserDto userDto, AsyncCallback<UserDto> callback);
-	
-	void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
-			AsyncCallback<GroupDto> callback);
-	
-	
+   void changeActiveUserData(UserDto userDto, AsyncCallback<UserDto> callback);
+
+   void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
+         AsyncCallback<GroupDto> callback);
+
 }

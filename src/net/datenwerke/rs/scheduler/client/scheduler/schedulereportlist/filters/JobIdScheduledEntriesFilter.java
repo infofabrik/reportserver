@@ -17,41 +17,39 @@ import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto
 
 public class JobIdScheduledEntriesFilter implements ScheduledReportListFilter {
 
-	private FormFieldProviderHook jobIdHook;
-	private Widget jobIdField;
-	
-	public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel){
-		jobIdHook = SimpleForm.getResponsibleHooker(String.class);
-		jobIdField = jobIdHook.createFormField();
-		
-		jobIdHook.addValueChangeHandler(event -> scheduledReportListPanel.reload());
-		
-		FieldLabel jobIdLabel = new FieldLabel(jobIdField, SchedulerMessages.INSTANCE.jobId());
-		jobIdLabel.setLabelWidth(120);
-		
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
-		widgets.add(jobIdLabel);
-		
-		return widgets;
-	}
-	
-	public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto config, List<JobFilterCriteriaDto> addCriterions){
-		config.setJobId(null);
-		
-		if(null != jobIdHook){
-			String id = (String) jobIdHook.getValue(jobIdField);
-			
-			if( null != id && ! "".equals(id.trim()))
-				config.setJobId(id);
-		}
-	}
+   private FormFieldProviderHook jobIdHook;
+   private Widget jobIdField;
 
-	@Override
-	public boolean appliesTo(String panelName) {
-		return SchedulerAdminModule.ADMIN_FILTER_PANEL.equals(panelName);
-	}
+   public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel) {
+      jobIdHook = SimpleForm.getResponsibleHooker(String.class);
+      jobIdField = jobIdHook.createFormField();
 
-	
-	
-	
+      jobIdHook.addValueChangeHandler(event -> scheduledReportListPanel.reload());
+
+      FieldLabel jobIdLabel = new FieldLabel(jobIdField, SchedulerMessages.INSTANCE.jobId());
+      jobIdLabel.setLabelWidth(120);
+
+      ArrayList<Widget> widgets = new ArrayList<Widget>();
+      widgets.add(jobIdLabel);
+
+      return widgets;
+   }
+
+   public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto config,
+         List<JobFilterCriteriaDto> addCriterions) {
+      config.setJobId(null);
+
+      if (null != jobIdHook) {
+         String id = (String) jobIdHook.getValue(jobIdField);
+
+         if (null != id && !"".equals(id.trim()))
+            config.setJobId(id);
+      }
+   }
+
+   @Override
+   public boolean appliesTo(String panelName) {
+      return SchedulerAdminModule.ADMIN_FILTER_PANEL.equals(panelName);
+   }
+
 }

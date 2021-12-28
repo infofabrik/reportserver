@@ -7,25 +7,22 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
-public class ExportSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.EXPORT.toImageResource();
-	}
+public class ExportSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return ExImportMessages.INSTANCE.exportSecurityLabel();
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return ExImportMessages.INSTANCE.exportSecurityDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.EXPORT.toImageResource();
+   }
 
+   public String genericSecurityViewDomainHook_getName() {
+      return ExImportMessages.INSTANCE.exportSecurityLabel();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new ExportGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getDescription() {
+      return ExImportMessages.INSTANCE.exportSecurityDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new ExportGenericTargetIdentifier();
+   }
 
 }

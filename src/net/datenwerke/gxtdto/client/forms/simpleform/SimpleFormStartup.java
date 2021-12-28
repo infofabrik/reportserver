@@ -21,38 +21,30 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class SimpleFormStartup {
 
-	@Inject
-	public SimpleFormStartup(
-		HookHandlerService hookHandler,
-		Provider<BooleanProvider> booleanProvider,
-		Provider<DtoModelProvider> baseModelProvider,
-		Provider<CustomComponentProvider> customComponentProvider,
-		Provider<DateProvider> dateProvider,
-		Provider<DynamicListProvider> dynamicListProvider,
-		Provider<IntegerProvider> integerProvider,
-		Provider<LongProvider> longProvider,
-		Provider<DoubleProvider> doubleProvider,
-		Provider<SeparatorProvider> separatorProvider,
-		Provider<StaticLabelProvider> staticLabelProvider,
-		Provider<StaticListProvider> staticListProvider,
-		Provider<StringProvider> stringProvider,
-		Provider<TextAsListProvider> textAsListProvider
-		
-		){
-		
-		/* attach hooks */
-		hookHandler.attachHooker(FormFieldProviderHook.class, booleanProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, baseModelProvider, HookHandlerService.PRIORITY_LOWER);
-		hookHandler.attachHooker(FormFieldProviderHook.class, customComponentProvider);
-		hookHandler.attachHooker(FormFieldProviderHook.class, dateProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, dynamicListProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, integerProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, longProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, doubleProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, separatorProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, staticLabelProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, staticListProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, stringProvider, HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(FormFieldProviderHook.class, textAsListProvider, HookHandlerService.PRIORITY_LOW);
-	}
+   @Inject
+   public SimpleFormStartup(HookHandlerService hookHandler, Provider<BooleanProvider> booleanProvider,
+         Provider<DtoModelProvider> baseModelProvider, Provider<CustomComponentProvider> customComponentProvider,
+         Provider<DateProvider> dateProvider, Provider<DynamicListProvider> dynamicListProvider,
+         Provider<IntegerProvider> integerProvider, Provider<LongProvider> longProvider,
+         Provider<DoubleProvider> doubleProvider, Provider<SeparatorProvider> separatorProvider,
+         Provider<StaticLabelProvider> staticLabelProvider, Provider<StaticListProvider> staticListProvider,
+         Provider<StringProvider> stringProvider, Provider<TextAsListProvider> textAsListProvider
+
+   ) {
+
+      /* attach hooks */
+      hookHandler.attachHooker(FormFieldProviderHook.class, booleanProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, baseModelProvider, HookHandlerService.PRIORITY_LOWER);
+      hookHandler.attachHooker(FormFieldProviderHook.class, customComponentProvider);
+      hookHandler.attachHooker(FormFieldProviderHook.class, dateProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, dynamicListProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, integerProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, longProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, doubleProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, separatorProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, staticLabelProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, staticListProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, stringProvider, HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(FormFieldProviderHook.class, textAsListProvider, HookHandlerService.PRIORITY_LOW);
+   }
 }

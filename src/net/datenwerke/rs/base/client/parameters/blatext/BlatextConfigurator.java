@@ -26,87 +26,89 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  *
  */
 @Singleton
-public class BlatextConfigurator extends ParameterConfiguratorImpl<BlatextParameterDefinitionDto, BlatextParameterInstanceDto> {
+public class BlatextConfigurator
+      extends ParameterConfiguratorImpl<BlatextParameterDefinitionDto, BlatextParameterInstanceDto> {
 
-	private final Resources resources = GWT.create(Resources.class);
-	
-	interface Resources extends ClientBundle {
-		@Source("blatext.gss")
-		Style css();    
-	}
+   private final Resources resources = GWT.create(Resources.class);
 
-	interface Style extends CssResource {
-		@ClassName("rs-parameter-text")
-		String parameterText();
-	}	
-	
-	public BlatextConfigurator(){
-		super();
-		
-		resources.css().ensureInjected();
-	}
-	
-	@Override
-	public Widget getEditComponentForDefinition(BlatextParameterDefinitionDto definition, ReportDto report) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.addField(String.class, BlatextParameterDefinitionDto.PROPERTY_VALUE, RsMessages.INSTANCE.text(), new SFFCRichTextEditor() { 
-			public int getWidth() {
-				return 300;
-			}
-			
-			public int getHeight() {
-				return 400;
-			}
-		});
-		
-		/* bind definition */
-		form.setValue(BlatextParameterDefinitionDto.PROPERTY_VALUE, definition.getValue());
-		
-		form.loadFields();
-		
-		return form;
-	}
-	
-	@Override
-	public void updateDefinitionOnSubmit(
-			BlatextParameterDefinitionDto definition, Widget component) {
-		SimpleForm form = (SimpleForm) component;
-		
-		String value = (String) form.getValue(BlatextParameterDefinitionDto.PROPERTY_VALUE);
-		
-		definition.setValue(value);
-	}
+   interface Resources extends ClientBundle {
+      @Source("blatext.gss")
+      Style css();
+   }
 
-	@Override
-	public Widget doGetEditComponentForInstance(BlatextParameterInstanceDto instance, Collection<ParameterInstanceDto> relevantInstances, final BlatextParameterDefinitionDto definition, boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
-		HTML text = new HTML(definition.getValue());
-		text.addStyleName(resources.css().parameterText());
-		return text;
-	}
+   interface Style extends CssResource {
+      @ClassName("rs-parameter-text")
+      String parameterText();
+   }
 
-	public String getName() {
-		return RsMessages.INSTANCE.displayText();
-	}
+   public BlatextConfigurator() {
+      super();
 
-	@Override
-	protected BlatextParameterDefinitionDto doGetNewDto() {
-		return new BlatextParameterDefinitionDto();
-	}
+      resources.css().ensureInjected();
+   }
 
-	@Override
-	public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
-		return BlatextParameterDefinitionDto.class.equals(type);
-	}
-	
-	public ImageResource getIcon() {
-		return BaseIcon.ALIGN_LEFT.toImageResource(); 
-	}
+   @Override
+   public Widget getEditComponentForDefinition(BlatextParameterDefinitionDto definition, ReportDto report) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-	@Override
-	public ParameterType getType(){
-		return ParameterType.Separator;
-	}
+      form.addField(String.class, BlatextParameterDefinitionDto.PROPERTY_VALUE, RsMessages.INSTANCE.text(),
+            new SFFCRichTextEditor() {
+               public int getWidth() {
+                  return 300;
+               }
 
+               public int getHeight() {
+                  return 400;
+               }
+            });
+
+      /* bind definition */
+      form.setValue(BlatextParameterDefinitionDto.PROPERTY_VALUE, definition.getValue());
+
+      form.loadFields();
+
+      return form;
+   }
+
+   @Override
+   public void updateDefinitionOnSubmit(BlatextParameterDefinitionDto definition, Widget component) {
+      SimpleForm form = (SimpleForm) component;
+
+      String value = (String) form.getValue(BlatextParameterDefinitionDto.PROPERTY_VALUE);
+
+      definition.setValue(value);
+   }
+
+   @Override
+   public Widget doGetEditComponentForInstance(BlatextParameterInstanceDto instance,
+         Collection<ParameterInstanceDto> relevantInstances, final BlatextParameterDefinitionDto definition,
+         boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
+      HTML text = new HTML(definition.getValue());
+      text.addStyleName(resources.css().parameterText());
+      return text;
+   }
+
+   public String getName() {
+      return RsMessages.INSTANCE.displayText();
+   }
+
+   @Override
+   protected BlatextParameterDefinitionDto doGetNewDto() {
+      return new BlatextParameterDefinitionDto();
+   }
+
+   @Override
+   public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
+      return BlatextParameterDefinitionDto.class.equals(type);
+   }
+
+   public ImageResource getIcon() {
+      return BaseIcon.ALIGN_LEFT.toImageResource();
+   }
+
+   @Override
+   public ParameterType getType() {
+      return ParameterType.Separator;
+   }
 
 }

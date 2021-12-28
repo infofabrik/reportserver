@@ -8,11 +8,11 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.ScriptDatasourceUiMod
 
 public class RsIncubatorUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		install(new ManagerHelperSearchUiModule());
-		install(new GlobalSearchUiModule());
-		install(new ScriptDatasourceUiModule());
-	}
+   @Override
+   protected void configure() {
+      install(new ManagerHelperSearchUiModule());
+      install(new GlobalSearchUiModule());
+      install(new ScriptDatasourceUiModule());
+   }
 
 }

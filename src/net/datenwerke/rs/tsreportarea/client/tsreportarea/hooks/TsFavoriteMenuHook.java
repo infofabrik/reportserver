@@ -11,6 +11,7 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
 
 public interface TsFavoriteMenuHook extends Hook {
 
-	public boolean addContextMenuEntries(Menu menu, List<AbstractTsDiskNodeDto> abstractTsFavoriteNodeDto, ItemSelector itemSelector, TsDiskMainComponent mainComponent);
-	
+   public boolean addContextMenuEntries(Menu menu, List<AbstractTsDiskNodeDto> abstractTsFavoriteNodeDto,
+         ItemSelector itemSelector, TsDiskMainComponent mainComponent);
+
 }

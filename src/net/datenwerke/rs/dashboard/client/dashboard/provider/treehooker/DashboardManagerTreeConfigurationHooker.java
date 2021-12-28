@@ -27,81 +27,77 @@ import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class DashboardManagerTreeConfigurationHooker implements
-		TreeConfiguratorHook {
+public class DashboardManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
-	private final DashboardTreeManagerDao treeHandler;
-	
-	@Inject
-	public DashboardManagerTreeConfigurationHooker(
-		DashboardTreeManagerDao treeHandler	
-		){
-		
-		/* store objects */
-		this.treeHandler = treeHandler;
-	}
-	
-	@Override
-	public boolean consumes(ManagerHelperTree tree) {
-		return DashboardUiModule.class.equals(tree.getGuarantor());
-	}
+   private final DashboardTreeManagerDao treeHandler;
 
-	@Override
-	public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-		iconProvider.addMappings(	
-			new IconMapping(DadgetNodeDto.class,  BaseIcon.MAP_O),
-			new IconMapping(DashboardNodeDto.class,  BaseIcon.ITEMS_DETAIL)
-		);
-	}
+   @Inject
+   public DashboardManagerTreeConfigurationHooker(DashboardTreeManagerDao treeHandler) {
 
-	@Override
-	public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
-		/* Folder */
-		Menu folderMenu = menuProvider.createOrGetMenuFor(DashboardFolderDto.class);
-		MenuItem insertItem = generateInsertMenu();
-		folderMenu.add(insertItem);
-		folderMenu.add(new DeleteMenuItem(treeHandler));
-		folderMenu.add(new SeparatorMenuItem());
-		folderMenu.add(new ReloadMenuItem());
-		
-		/* File */
-		Menu fileMenu = menuProvider.createOrGetMenuFor(DadgetNodeDto.class);
-		insertItem = generateInsertMenu();
-		insertItem.disable();
-		fileMenu.add(insertItem);
-		fileMenu.add(new DuplicateMenuItem(treeHandler));
-		fileMenu.add(new DeleteMenuItem(treeHandler));
-		
-		/* File */
-		Menu dashboardMenu = menuProvider.createOrGetMenuFor(DashboardNodeDto.class);
-		insertItem = generateInsertMenu();
-		insertItem.disable();
-		dashboardMenu.add(insertItem);
-		dashboardMenu.add(new DuplicateMenuItem(treeHandler));
-		dashboardMenu.add(new DeleteMenuItem(treeHandler));
-	}
+      /* store objects */
+      this.treeHandler = treeHandler;
+   }
 
+   @Override
+   public boolean consumes(ManagerHelperTree tree) {
+      return DashboardUiModule.class.equals(tree.getGuarantor());
+   }
 
-	private MenuItem generateInsertMenu(){
-		Menu insertMenu = new DwMenu();
-		insertMenu.add(new InsertMenuItem(new DashboardFolderDto(), BaseMessages.INSTANCE.folder(), treeHandler, BaseIcon.FOLDER_O));
-		insertMenu.add(new InsertMenuItem(new DadgetNodeDto(), DashboardMessages.INSTANCE.dadget(), treeHandler, BaseIcon.MAP_O));
-		insertMenu.add(new InsertMenuItem(new DashboardNodeDto(), DashboardMessages.INSTANCE.dashboard(), treeHandler, BaseIcon.ITEMS_DETAIL));
-		
-		MenuItem insertItem = new DwMenuItem(DashboardMessages.INSTANCE.insert(), BaseIcon.FILE_O);
-		insertItem.setSubMenu(insertMenu);
-		
-		return insertItem;
-	}
+   @Override
+   public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
+      iconProvider.addMappings(new IconMapping(DadgetNodeDto.class, BaseIcon.MAP_O),
+            new IconMapping(DashboardNodeDto.class, BaseIcon.ITEMS_DETAIL));
+   }
 
-	@Override
-	public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
-		
-	}
-	
-	
-	@Override
-	public void configureFolderTypes(ManagerHelperTree tree) {
-		tree.addFolderTypes(DashboardFolderDto.class);
-	}
+   @Override
+   public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
+      /* Folder */
+      Menu folderMenu = menuProvider.createOrGetMenuFor(DashboardFolderDto.class);
+      MenuItem insertItem = generateInsertMenu();
+      folderMenu.add(insertItem);
+      folderMenu.add(new DeleteMenuItem(treeHandler));
+      folderMenu.add(new SeparatorMenuItem());
+      folderMenu.add(new ReloadMenuItem());
+
+      /* File */
+      Menu fileMenu = menuProvider.createOrGetMenuFor(DadgetNodeDto.class);
+      insertItem = generateInsertMenu();
+      insertItem.disable();
+      fileMenu.add(insertItem);
+      fileMenu.add(new DuplicateMenuItem(treeHandler));
+      fileMenu.add(new DeleteMenuItem(treeHandler));
+
+      /* File */
+      Menu dashboardMenu = menuProvider.createOrGetMenuFor(DashboardNodeDto.class);
+      insertItem = generateInsertMenu();
+      insertItem.disable();
+      dashboardMenu.add(insertItem);
+      dashboardMenu.add(new DuplicateMenuItem(treeHandler));
+      dashboardMenu.add(new DeleteMenuItem(treeHandler));
+   }
+
+   private MenuItem generateInsertMenu() {
+      Menu insertMenu = new DwMenu();
+      insertMenu.add(new InsertMenuItem(new DashboardFolderDto(), BaseMessages.INSTANCE.folder(), treeHandler,
+            BaseIcon.FOLDER_O));
+      insertMenu.add(
+            new InsertMenuItem(new DadgetNodeDto(), DashboardMessages.INSTANCE.dadget(), treeHandler, BaseIcon.MAP_O));
+      insertMenu.add(new InsertMenuItem(new DashboardNodeDto(), DashboardMessages.INSTANCE.dashboard(), treeHandler,
+            BaseIcon.ITEMS_DETAIL));
+
+      MenuItem insertItem = new DwMenuItem(DashboardMessages.INSTANCE.insert(), BaseIcon.FILE_O);
+      insertItem.setSubMenu(insertMenu);
+
+      return insertItem;
+   }
+
+   @Override
+   public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
+
+   }
+
+   @Override
+   public void configureFolderTypes(ManagerHelperTree tree) {
+      tree.addFolderTypes(DashboardFolderDto.class);
+   }
 }

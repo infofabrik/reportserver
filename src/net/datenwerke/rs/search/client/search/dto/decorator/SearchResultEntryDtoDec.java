@@ -9,10 +9,10 @@ import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
  */
 public class SearchResultEntryDtoDec extends SearchResultEntryDto implements IdedDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public SearchResultEntryDtoDec() {
-		super();
-	}
+   public SearchResultEntryDtoDec() {
+      super();
+   }
 
 }

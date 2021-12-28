@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.filter.OrderDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.Order.class)
 public interface OrderDtoPA extends PropertyAccess<OrderDto> {
 
-
-
 }

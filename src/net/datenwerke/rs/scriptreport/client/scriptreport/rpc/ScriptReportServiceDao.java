@@ -11,15 +11,15 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.parameters.dto.ScriptP
 
 public class ScriptReportServiceDao extends Dao {
 
-	private final ScriptReportRpcServiceAsync rpcService;
-	
-	@Inject
-	public ScriptReportServiceDao(ScriptReportRpcServiceAsync scriptReportRpcServiceAsync) {
-		this.rpcService =  scriptReportRpcServiceAsync;
-	}
-	
-	
-	public void getScriptParameterContents(ScriptParameterDefinitionDto definition, Collection<ParameterInstanceDto> relevantInstances, RsAsyncCallback<String> callback) {
-		rpcService.getScriptParameterContents(definition, unproxy(relevantInstances), callback);
-	}
+   private final ScriptReportRpcServiceAsync rpcService;
+
+   @Inject
+   public ScriptReportServiceDao(ScriptReportRpcServiceAsync scriptReportRpcServiceAsync) {
+      this.rpcService = scriptReportRpcServiceAsync;
+   }
+
+   public void getScriptParameterContents(ScriptParameterDefinitionDto definition,
+         Collection<ParameterInstanceDto> relevantInstances, RsAsyncCallback<String> callback) {
+      rpcService.getScriptParameterContents(definition, unproxy(relevantInstances), callback);
+   }
 }

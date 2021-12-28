@@ -25,102 +25,100 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Entity
-@Table(name="PRE_FILTER")
+@Table(name = "PRE_FILTER")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
 public class PreFilter implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 735717078346133105L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 735717078346133105L;
 
-	@EnclosedEntity
-	@ExposeToClient
-	@OneToOne(cascade=CascadeType.ALL)
-	private FilterBlock rootBlock = new FilterBlock();
-	
-	@ExposeToClient
-	private BlockType rootBlockType = BlockType.OR;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description = "";
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Version
-	private Long version;
+   @EnclosedEntity
+   @ExposeToClient
+   @OneToOne(cascade = CascadeType.ALL)
+   private FilterBlock rootBlock = new FilterBlock();
 
-	public FilterBlock getRootBlock() {
-		initBlockTypes();
-		return rootBlock;
-	}
+   @ExposeToClient
+   private BlockType rootBlockType = BlockType.OR;
 
-	public void setRootBlock(FilterBlock rootBlock) {
-		this.rootBlock = rootBlock;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description = "";
 
-	public String getDescription() {
-		return description;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   @Version
+   private Long version;
 
-	public Long getId() {
-		return id;
-	}
+   public FilterBlock getRootBlock() {
+      initBlockTypes();
+      return rootBlock;
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public void setRootBlock(FilterBlock rootBlock) {
+      this.rootBlock = rootBlock;
+   }
 
-	public Long getVersion() {
-		return version;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public BlockType getRootBlockType() {
-		return rootBlockType;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setRootBlockType(BlockType rootBlockType) {
-		if(null == rootBlockType)
-			rootBlockType = BlockType.OR;
-		this.rootBlockType = rootBlockType;
-	}
-	
-	public void initBlockTypes(){
-		rootBlock.initBlockTypes(rootBlockType);
-	}
-	
-	public Collection<Column> getAllColumns(){
-		Set<Column> columns = new HashSet<Column>();
-		
-		FilterBlock block = getRootBlock();
-		getAllColumns(columns, block);
-		
-		return columns;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	private void getAllColumns(Set<Column> columns, FilterBlock block) {
-		if(null == block)
-			return;
-		for(FilterSpec f : block.getFilters())
-			columns.addAll(f.getColumns());
-		for(FilterBlock c : block.getChildBlocks())
-			getAllColumns(columns, c);
-	}
-	
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public BlockType getRootBlockType() {
+      return rootBlockType;
+   }
+
+   public void setRootBlockType(BlockType rootBlockType) {
+      if (null == rootBlockType)
+         rootBlockType = BlockType.OR;
+      this.rootBlockType = rootBlockType;
+   }
+
+   public void initBlockTypes() {
+      rootBlock.initBlockTypes(rootBlockType);
+   }
+
+   public Collection<Column> getAllColumns() {
+      Set<Column> columns = new HashSet<Column>();
+
+      FilterBlock block = getRootBlock();
+      getAllColumns(columns, block);
+
+      return columns;
+   }
+
+   private void getAllColumns(Set<Column> columns, FilterBlock block) {
+      if (null == block)
+         return;
+      for (FilterSpec f : block.getFilters())
+         columns.addAll(f.getColumns());
+      for (FilterBlock c : block.getChildBlocks())
+         getAllColumns(columns, c);
+   }
+
 }

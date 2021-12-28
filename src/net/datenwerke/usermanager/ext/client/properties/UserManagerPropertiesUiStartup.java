@@ -8,14 +8,13 @@ import net.datenwerke.usermanager.ext.client.properties.hookers.UserPropertiesVi
 
 public class UserManagerPropertiesUiStartup {
 
-	@Inject
-	public UserManagerPropertiesUiStartup(
-			HookHandlerService hookHandler,
-			
-			UserPropertiesViewProviderHooker mainPanelViewProvider
-			){
-			
-			hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider, HookHandlerService.PRIORITY_LOW -5);
-		
-	}
+   @Inject
+   public UserManagerPropertiesUiStartup(HookHandlerService hookHandler,
+
+         UserPropertiesViewProviderHooker mainPanelViewProvider) {
+
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider,
+            HookHandlerService.PRIORITY_LOW - 5);
+
+   }
 }

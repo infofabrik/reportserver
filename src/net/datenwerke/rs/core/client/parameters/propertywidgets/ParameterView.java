@@ -34,237 +34,238 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ParameterView extends ReportExecutorMainPanelView implements DeselectionAwareView {
 
-	public static final String VIEW_ID = "parameter";
+   public static final String VIEW_ID = "parameter";
 
-	@Inject
-	private static ParameterUIService parameterService;
-	
-	private VerticalLayoutContainer parameterContainer;
-	
-	private Map<ParameterDefinitionDto, Widget[]> componentMap = new HashMap<ParameterDefinitionDto, Widget[]>();
+   @Inject
+   private static ParameterUIService parameterService;
 
-	private Map<ParameterDefinitionDto, ParameterConfigurator> configuratorMap = new HashMap<ParameterDefinitionDto, ParameterConfigurator>();
-	
-	private List<ParameterDefinitionDto> parameterDefinitions;
-	private Set<ParameterInstanceDto> parameterInstances;
+   private VerticalLayoutContainer parameterContainer;
 
-	private ReportDto report;
-	
-	public ParameterView(List<ParameterDefinitionDto> parameterDefinitions, Set<ParameterInstanceDto> parameterInstances){
-		this.parameterDefinitions = parameterDefinitions;
-		this.parameterInstances = parameterInstances;
+   private Map<ParameterDefinitionDto, Widget[]> componentMap = new HashMap<ParameterDefinitionDto, Widget[]>();
 
-	}
-	
-	public ParameterView(ReportDto report){
-		this.report = report;
-		this.parameterDefinitions = report.getParameterDefinitions();
-		this.parameterInstances = report.getParameterInstances();
-	}
+   private Map<ParameterDefinitionDto, ParameterConfigurator> configuratorMap = new HashMap<ParameterDefinitionDto, ParameterConfigurator>();
 
-	@Override
-	public String getViewId(){
-		return VIEW_ID;
-	}
-	
-	@Override
-	public boolean wantsToBeDefault() {
-		return true;
-	}
-	
-	@Override
-	public String getComponentHeader() {
-		return ReportexecutorMessages.INSTANCE.parameterWidgetHeader();
-	}
+   private List<ParameterDefinitionDto> parameterDefinitions;
+   private Set<ParameterInstanceDto> parameterInstances;
 
-	public VerticalLayoutContainer getParameterContainer(){
-		/* create panel */
-		parameterContainer = new VerticalLayoutContainer();
-		
-		int labelWidth = -1;
-		
-		/* add all parameters */
-		DwHorizontalFlowLayoutContainer colLayout = new DwHorizontalFlowLayoutContainer();
-		for(final ParameterDefinitionDto definition : parameterDefinitions){
-			/* update label width */
-			if(null != definition.getLabelWidth())
-				labelWidth = definition.getLabelWidth();
-			
-			/* get instance */
-			ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
-			Collection<ParameterInstanceDto> relevantInstances = parameterService.getRelevantInstancesFor(parameterDefinitions, parameterInstances, definition);
-			
-			/* get configurator */
-			ParameterConfigurator configurator = getConfigurator(definition);
-			if(null == configurator)
-				throw new IllegalArgumentException("Should have a configurator for this parameter definition"); //$NON-NLS-1$
+   private ReportDto report;
 
-			/* get edit form */
-			Widget editWidget = configurator.getEditComponentForInstance(instance, definition, relevantInstances, true, labelWidth, getExecuteReportToken(), report);
-			componentMap.put(definition, new Widget[]{colLayout, editWidget});
-			
-			/* hide parameter if hidden */
-			editWidget.setVisible(! definition.isHidden());
+   public ParameterView(List<ParameterDefinitionDto> parameterDefinitions,
+         Set<ParameterInstanceDto> parameterInstances) {
+      this.parameterDefinitions = parameterDefinitions;
+      this.parameterInstances = parameterInstances;
 
-			/* listen to change events and update paramaters */
-			listenToChangeEvents(definition);
-			
-			/* add edit form */
-			colLayout.add(editWidget);
-			
-			/* if definition is block, create new colLayout */
-			if(! definition.isDisplayInline()){
-				parameterContainer.add(colLayout, new VerticalLayoutData(1,-1));
-				
-				colLayout = new DwHorizontalFlowLayoutContainer();
-			}
-		}
-		
-		if( -1 == parameterContainer.getWidgetIndex(colLayout))
-			parameterContainer.add(colLayout, new VerticalLayoutData(1,-1));
-		
-		return parameterContainer;
-	}
+   }
 
-	@Override
-	public Widget getViewComponent() {
-		this.parameterContainer = getParameterContainer();
-		
-		/* create wrapper */
-		DwContentPanel wrapper = new DwContentPanel();
-		wrapper.setLightDarkStyle();
-		wrapper.setHeading(ReportexecutorMessages.INSTANCE.frontendHeadline());
-		wrapper.add(parameterContainer);
-		
-		VerticalLayoutContainer scrollWrapper = new VerticalLayoutContainer();
-		scrollWrapper.setScrollMode(ScrollMode.AUTO);
-		scrollWrapper.add(wrapper, new VerticalLayoutData(1,-1, new Margins(10)));
-		
-		return scrollWrapper;
-	}
-	
+   public ParameterView(ReportDto report) {
+      this.report = report;
+      this.parameterDefinitions = report.getParameterDefinitions();
+      this.parameterInstances = report.getParameterInstances();
+   }
 
-	private void listenToChangeEvents(final ParameterDefinitionDto definition) {
-		/* get instance */
-		final ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
-		
-		instance.addInstanceChangedHandler(new ObjectChangedEventHandler<Dto>() {
-			
-			@Override
-			public void onObjectChangedEvent(ObjectChangedEvent<Dto> event) {
-				if(null != report)
-					report.fireObjectChangedEvent();
-				
-				/* instance is not default any longer */
-				boolean silent = instance.isSilenceEvents();
-				instance.silenceEvents(true);
-				
-				instance.setStillDefault(false);
-				
-				instance.silenceEvents(silent);
-			}
-		});
+   @Override
+   public String getViewId() {
+      return VIEW_ID;
+   }
 
-		
-		instance.addInstanceChangedHandler(new ObjectChangedEventHandler<Dto>() {
+   @Override
+   public boolean wantsToBeDefault() {
+      return true;
+   }
 
-			@Override
-			public void onObjectChangedEvent(ObjectChangedEvent<Dto> event) {
-				int labelWidth = -1;
-				
-				/* test all definitions if they are interested in that particular change */
-				for(final ParameterDefinitionDto aDefinition : parameterDefinitions){
-					/* update label width */
-					if(null != aDefinition.getLabelWidth())
-						labelWidth = aDefinition.getLabelWidth();
-					
-					if(! aDefinition.equals(definition) && aDefinition.getDependsOn() instanceof List){
-						if(aDefinition.getDependsOn().contains(definition)){
-							final int fLabelWidth = labelWidth;
-							
-							Scheduler.get().scheduleDeferred(new Command() {
-								public void execute() {
-									if(aDefinition.isHidden())
-										return;
-									
-									/* get instance */
-									Collection<ParameterInstanceDto> relevantInstances = parameterService.getRelevantInstancesFor(parameterDefinitions, parameterInstances, aDefinition);
-									ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, aDefinition);
-									
-									/* get configurator */
-									final ParameterConfigurator configurator = getConfigurator(aDefinition);
-									if(null == configurator)
-										throw new IllegalArgumentException("Should have a configurator for this parameter definition"); //$NON-NLS-1$
-									
-									/* update form */
-									configurator.dependeeInstanceChanged(instance,aDefinition, relevantInstances);
-									Widget editWidget = configurator.getEditComponentForInstance(instance, aDefinition, relevantInstances, false, fLabelWidth, getExecuteReportToken(), report);
-									
-									/* find position and remove component */
-									DwHorizontalFlowLayoutContainer colLayout = null;
-									if(componentMap.containsKey(aDefinition)){
-										Widget[] oldStuff = componentMap.get(aDefinition);
-										colLayout = (DwHorizontalFlowLayoutContainer) oldStuff[0];
-										Widget oldComponent = oldStuff[1];
-										
-										int position = 0;
-										for(position = 0; position < colLayout.getWidgetCount(); position++)
-											if(oldComponent.equals(colLayout.getWidget(position)))
-												break;
-										colLayout.remove(oldComponent);
-										
-										colLayout.insert(editWidget, position);
-										
-										/* store in component map */
-										parameterContainer.forceLayout();
-										componentMap.put(aDefinition, new Widget[]{colLayout, editWidget});
-									} else {
-										parameterContainer.add(editWidget);
-										
-										/* store in component map */
-										parameterContainer.forceLayout();
-										componentMap.put(aDefinition, new Widget[]{parameterContainer, editWidget});
-									}
-								}
-							});
-							
-							
-						}
-					}
-				}
-			}
-		});
-	}
+   @Override
+   public String getComponentHeader() {
+      return ReportexecutorMessages.INSTANCE.parameterWidgetHeader();
+   }
 
+   public VerticalLayoutContainer getParameterContainer() {
+      /* create panel */
+      parameterContainer = new VerticalLayoutContainer();
 
-	@Override
-	public ImageResource getIcon(){
-		return BaseIcon.EDIT.toImageResource();
-	}
+      int labelWidth = -1;
 
+      /* add all parameters */
+      DwHorizontalFlowLayoutContainer colLayout = new DwHorizontalFlowLayoutContainer();
+      for (final ParameterDefinitionDto definition : parameterDefinitions) {
+         /* update label width */
+         if (null != definition.getLabelWidth())
+            labelWidth = definition.getLabelWidth();
 
-	public void makeAwareOfDeselection() {
-	}
-	
-	@Override
-	public List<String> validateView() {
-		List<String> errorList = new ArrayList<String>();
-		for( ParameterDefinitionDto definition : componentMap.keySet()){
-			ParameterConfigurator configurator = getConfigurator(definition);
-			
-			ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
-			List<String> error = configurator.validateParameter(definition, instance, componentMap.get(definition)[1]);
-			if(null != error)
-				errorList.addAll(error);
-		}
-		return errorList;
-	}
+         /* get instance */
+         ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
+         Collection<ParameterInstanceDto> relevantInstances = parameterService
+               .getRelevantInstancesFor(parameterDefinitions, parameterInstances, definition);
 
-	protected ParameterConfigurator getConfigurator(ParameterDefinitionDto definition) {
-		if(! configuratorMap .containsKey(definition))
-			configuratorMap.put(definition,parameterService.getConfigurator(definition));
-		return configuratorMap.get(definition);
-	}
+         /* get configurator */
+         ParameterConfigurator configurator = getConfigurator(definition);
+         if (null == configurator)
+            throw new IllegalArgumentException("Should have a configurator for this parameter definition"); //$NON-NLS-1$
 
+         /* get edit form */
+         Widget editWidget = configurator.getEditComponentForInstance(instance, definition, relevantInstances, true,
+               labelWidth, getExecuteReportToken(), report);
+         componentMap.put(definition, new Widget[] { colLayout, editWidget });
+
+         /* hide parameter if hidden */
+         editWidget.setVisible(!definition.isHidden());
+
+         /* listen to change events and update paramaters */
+         listenToChangeEvents(definition);
+
+         /* add edit form */
+         colLayout.add(editWidget);
+
+         /* if definition is block, create new colLayout */
+         if (!definition.isDisplayInline()) {
+            parameterContainer.add(colLayout, new VerticalLayoutData(1, -1));
+
+            colLayout = new DwHorizontalFlowLayoutContainer();
+         }
+      }
+
+      if (-1 == parameterContainer.getWidgetIndex(colLayout))
+         parameterContainer.add(colLayout, new VerticalLayoutData(1, -1));
+
+      return parameterContainer;
+   }
+
+   @Override
+   public Widget getViewComponent() {
+      this.parameterContainer = getParameterContainer();
+
+      /* create wrapper */
+      DwContentPanel wrapper = new DwContentPanel();
+      wrapper.setLightDarkStyle();
+      wrapper.setHeading(ReportexecutorMessages.INSTANCE.frontendHeadline());
+      wrapper.add(parameterContainer);
+
+      VerticalLayoutContainer scrollWrapper = new VerticalLayoutContainer();
+      scrollWrapper.setScrollMode(ScrollMode.AUTO);
+      scrollWrapper.add(wrapper, new VerticalLayoutData(1, -1, new Margins(10)));
+
+      return scrollWrapper;
+   }
+
+   private void listenToChangeEvents(final ParameterDefinitionDto definition) {
+      /* get instance */
+      final ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
+
+      instance.addInstanceChangedHandler(new ObjectChangedEventHandler<Dto>() {
+
+         @Override
+         public void onObjectChangedEvent(ObjectChangedEvent<Dto> event) {
+            if (null != report)
+               report.fireObjectChangedEvent();
+
+            /* instance is not default any longer */
+            boolean silent = instance.isSilenceEvents();
+            instance.silenceEvents(true);
+
+            instance.setStillDefault(false);
+
+            instance.silenceEvents(silent);
+         }
+      });
+
+      instance.addInstanceChangedHandler(new ObjectChangedEventHandler<Dto>() {
+
+         @Override
+         public void onObjectChangedEvent(ObjectChangedEvent<Dto> event) {
+            int labelWidth = -1;
+
+            /* test all definitions if they are interested in that particular change */
+            for (final ParameterDefinitionDto aDefinition : parameterDefinitions) {
+               /* update label width */
+               if (null != aDefinition.getLabelWidth())
+                  labelWidth = aDefinition.getLabelWidth();
+
+               if (!aDefinition.equals(definition) && aDefinition.getDependsOn() instanceof List) {
+                  if (aDefinition.getDependsOn().contains(definition)) {
+                     final int fLabelWidth = labelWidth;
+
+                     Scheduler.get().scheduleDeferred(new Command() {
+                        public void execute() {
+                           if (aDefinition.isHidden())
+                              return;
+
+                           /* get instance */
+                           Collection<ParameterInstanceDto> relevantInstances = parameterService
+                                 .getRelevantInstancesFor(parameterDefinitions, parameterInstances, aDefinition);
+                           ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances,
+                                 aDefinition);
+
+                           /* get configurator */
+                           final ParameterConfigurator configurator = getConfigurator(aDefinition);
+                           if (null == configurator)
+                              throw new IllegalArgumentException(
+                                    "Should have a configurator for this parameter definition"); //$NON-NLS-1$
+
+                           /* update form */
+                           configurator.dependeeInstanceChanged(instance, aDefinition, relevantInstances);
+                           Widget editWidget = configurator.getEditComponentForInstance(instance, aDefinition,
+                                 relevantInstances, false, fLabelWidth, getExecuteReportToken(), report);
+
+                           /* find position and remove component */
+                           DwHorizontalFlowLayoutContainer colLayout = null;
+                           if (componentMap.containsKey(aDefinition)) {
+                              Widget[] oldStuff = componentMap.get(aDefinition);
+                              colLayout = (DwHorizontalFlowLayoutContainer) oldStuff[0];
+                              Widget oldComponent = oldStuff[1];
+
+                              int position = 0;
+                              for (position = 0; position < colLayout.getWidgetCount(); position++)
+                                 if (oldComponent.equals(colLayout.getWidget(position)))
+                                    break;
+                              colLayout.remove(oldComponent);
+
+                              colLayout.insert(editWidget, position);
+
+                              /* store in component map */
+                              parameterContainer.forceLayout();
+                              componentMap.put(aDefinition, new Widget[] { colLayout, editWidget });
+                           } else {
+                              parameterContainer.add(editWidget);
+
+                              /* store in component map */
+                              parameterContainer.forceLayout();
+                              componentMap.put(aDefinition, new Widget[] { parameterContainer, editWidget });
+                           }
+                        }
+                     });
+
+                  }
+               }
+            }
+         }
+      });
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.EDIT.toImageResource();
+   }
+
+   public void makeAwareOfDeselection() {
+   }
+
+   @Override
+   public List<String> validateView() {
+      List<String> errorList = new ArrayList<String>();
+      for (ParameterDefinitionDto definition : componentMap.keySet()) {
+         ParameterConfigurator configurator = getConfigurator(definition);
+
+         ParameterInstanceDto instance = parameterService.getParameterInstanceFor(parameterInstances, definition);
+         List<String> error = configurator.validateParameter(definition, instance, componentMap.get(definition)[1]);
+         if (null != error)
+            errorList.addAll(error);
+      }
+      return errorList;
+   }
+
+   protected ParameterConfigurator getConfigurator(ParameterDefinitionDto definition) {
+      if (!configuratorMap.containsKey(definition))
+         configuratorMap.put(definition, parameterService.getConfigurator(definition));
+      return configuratorMap.get(definition);
+   }
 
 }

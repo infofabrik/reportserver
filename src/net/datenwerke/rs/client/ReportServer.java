@@ -11,16 +11,16 @@ import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
  */
 public class ReportServer implements EntryPoint {
 
-	private final RSGinjector ginjector = GWT.create(RSGinjector.class);
-	
-	public void onModuleLoad() {
-		GXT.setUseShims(true);
-		
-		/* ext exception swallow problem */
-		/* http://code.google.com/p/gwt-ext/issues/detail?id=424 */
-		if (!GWT.isScript()) 
-		      GWT.setUncaughtExceptionHandler(e -> new DetailErrorDialog(e));
-		
-		ginjector.getDispatcherService().dispatch();
-	}
+   private final RSGinjector ginjector = GWT.create(RSGinjector.class);
+
+   public void onModuleLoad() {
+      GXT.setUseShims(true);
+
+      /* ext exception swallow problem */
+      /* http://code.google.com/p/gwt-ext/issues/detail?id=424 */
+      if (!GWT.isScript())
+         GWT.setUncaughtExceptionHandler(e -> new DetailErrorDialog(e));
+
+      ginjector.getDispatcherService().dispatch();
+   }
 }

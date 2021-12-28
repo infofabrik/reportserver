@@ -8,19 +8,16 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 
 @Singleton
 public class ReportManagerPanel extends AbstractTreeManagerPanel {
-	
-	@Inject
-	public ReportManagerPanel(
-		ReportManagerMainPanel mainPanel,
-		ReportManagerTreePanel treePanel
-		){
-		
-		super(mainPanel, treePanel);
-	}
-	
-	@Override
-	protected String getHeadingText() {
-		return ReportmanagerMessages.INSTANCE.reportmanager();
-	}
+
+   @Inject
+   public ReportManagerPanel(ReportManagerMainPanel mainPanel, ReportManagerTreePanel treePanel) {
+
+      super(mainPanel, treePanel);
+   }
+
+   @Override
+   protected String getHeadingText() {
+      return ReportmanagerMessages.INSTANCE.reportmanager();
+   }
 
 }

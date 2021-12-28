@@ -8,9 +8,9 @@ import com.google.inject.AbstractModule;
  */
 public class OutputFormatAuthModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(OutputFormatAuthStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(OutputFormatAuthStartup.class).asEagerSingleton();
+   }
 
 }

@@ -11,22 +11,21 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
  */
 public class CompositeOrCondition implements SimpleFormCondition {
 
-	private final SimpleFormCondition[] conditions;
-	
-	public CompositeOrCondition(SimpleFormCondition... conditions){
-		this.conditions = conditions;
-	}
-	
-	public boolean isMet(Widget formField,
-			FormFieldProviderHook responsibleHook, SimpleForm form) {
-		if(null == conditions)
-			return false;
-		
-		for(SimpleFormCondition condition : conditions)
-			if(condition.isMet(formField, responsibleHook, form))
-				return true;
+   private final SimpleFormCondition[] conditions;
 
-		return false;
-	}
+   public CompositeOrCondition(SimpleFormCondition... conditions) {
+      this.conditions = conditions;
+   }
+
+   public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+      if (null == conditions)
+         return false;
+
+      for (SimpleFormCondition condition : conditions)
+         if (condition.isMet(formField, responsibleHook, form))
+            return true;
+
+      return false;
+   }
 
 }

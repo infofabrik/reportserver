@@ -35,11 +35,11 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private AmazonS3Service amazonS3Service;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -56,17 +56,17 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-   
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-   
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -90,7 +90,7 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
       SimpleJuel juel = simpleJuelProvider.get();
       juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
       filename = null == name ? "" : juel.parse(name);
-      
+
       sendViaAmazonS3Datasink(rJob, filename);
 
       if (null == name || name.trim().isEmpty())
@@ -101,9 +101,9 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
 
       if (null == folder || folder.trim().isEmpty())
          throw new ActionExecutionException("folder is empty");
-      
+
    }
-   
+
    private void sendViaAmazonS3Datasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {
@@ -134,17 +134,17 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), amazonS3Datasink, amazonS3Service,
                   new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filenameScheduling;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
-               
-            });
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
+
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Amazon S3", e);

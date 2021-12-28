@@ -24,8 +24,8 @@ public interface DropboxRpcServiceAsync {
    Request testDropboxDatasink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder, boolean compressed,AsyncCallback<Void> callback);
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 
 }

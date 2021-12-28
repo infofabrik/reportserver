@@ -8,5 +8,4 @@ import net.datenwerke.treedb.client.treedb.rpc.RPCTreeManager;
 @RemoteServiceRelativePath("reportmanager_tree")
 public interface ReportManagerTreeManager extends RPCTreeManager, RemoteService {
 
-	
 }

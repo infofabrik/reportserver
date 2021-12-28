@@ -26,93 +26,91 @@ import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityE
 @Singleton
 public class BirtReportServiceImpl implements BirtReportService {
 
-	private static final String BIRT_ENABLE_PROP = "reportengine.birt.enable";
+   private static final String BIRT_ENABLE_PROP = "reportengine.birt.enable";
 
-	private static final String CONFIG_FILE = "reportengines/reportengines.cf";
+   private static final String CONFIG_FILE = "reportengines/reportengines.cf";
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private final Provider<EntityManager> entityManagerProvider;
-	private final FileServerServiceResourceLocator fileServerServiceResourceLocator;
-	
-	private IReportEngine reportEngine;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private ConfigService configService;
-	
-	@Inject
-	public BirtReportServiceImpl(
-		Provider<EntityManager> entityManagerProvider,
-		ConfigService configService,
-		FileServerServiceResourceLocator fileServerServiceResourceLocator
-		) {
-		this.entityManagerProvider = entityManagerProvider;
-		this.configService = configService;
-		this.fileServerServiceResourceLocator = fileServerServiceResourceLocator;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
+   private final FileServerServiceResourceLocator fileServerServiceResourceLocator;
 
-	@Override
-	@FireRemoveEntityEvents
-	public void remove(BirtReportFile file) {
-		EntityManager em = entityManagerProvider.get();
-		file = em.find(file.getClass(), file.getId());
-		if(null != file)
-			em.remove(file);
-	}
+   private IReportEngine reportEngine;
 
-	@Override
-	public boolean isBirtEnabled() {
-		return configService.getConfigFailsafe(CONFIG_FILE).getBoolean(BIRT_ENABLE_PROP, true);
-	}
-	
-	@Override
-	public IReportEngine getReportEngine() throws BirtException{
-		if(null != reportEngine)
-			return reportEngine;
+   private ConfigService configService;
 
-		EngineConfig config = createEngineConfig();
-		Platform.startup(config); 
-		IReportEngineFactory reportEngineFactory = (IReportEngineFactory) Platform.createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
-		IReportEngine reportEngine = reportEngineFactory.createReportEngine(config);
-		reportEngine.changeLogLevel(Level.WARNING);
+   @Inject
+   public BirtReportServiceImpl(Provider<EntityManager> entityManagerProvider, ConfigService configService,
+         FileServerServiceResourceLocator fileServerServiceResourceLocator) {
+      this.entityManagerProvider = entityManagerProvider;
+      this.configService = configService;
+      this.fileServerServiceResourceLocator = fileServerServiceResourceLocator;
+   }
 
-		this.reportEngine = reportEngine;
+   @Override
+   @FireRemoveEntityEvents
+   public void remove(BirtReportFile file) {
+      EntityManager em = entityManagerProvider.get();
+      file = em.find(file.getClass(), file.getId());
+      if (null != file)
+         em.remove(file);
+   }
 
-		return reportEngine;
-	}
-	
-	@Override
-	public void shutdown() {
-		if(null == reportEngine)
-			return;
-		
-		try{
-			reportEngine.destroy();
-			Platform.shutdown();
-			RegistryProviderFactory.releaseDefault();
-			clearFontCache();
-		} finally {
-			reportEngine = null;
-		}
-	}
+   @Override
+   public boolean isBirtEnabled() {
+      return configService.getConfigFailsafe(CONFIG_FILE).getBoolean(BIRT_ENABLE_PROP, true);
+   }
 
-	private EngineConfig createEngineConfig(){
-		EngineConfig config = new EngineConfig();
+   @Override
+   public IReportEngine getReportEngine() throws BirtException {
+      if (null != reportEngine)
+         return reportEngine;
 
-		config.setResourceLocator(fileServerServiceResourceLocator);
+      EngineConfig config = createEngineConfig();
+      Platform.startup(config);
+      IReportEngineFactory reportEngineFactory = (IReportEngineFactory) Platform
+            .createFactoryObject(IReportEngineFactory.EXTENSION_REPORT_ENGINE_FACTORY);
+      IReportEngine reportEngine = reportEngineFactory.createReportEngine(config);
+      reportEngine.changeLogLevel(Level.WARNING);
 
-		return config;
-	}
+      this.reportEngine = reportEngine;
 
-	@Override
-	public void clearFontCache() {
-		try{
-			Field instanceField = FontMappingManagerFactory.class.getDeclaredField("instance");
-			instanceField.setAccessible(true);
-			instanceField.set(null, null);
-		} catch(Exception e){
-			logger.warn("Could not clear BIRT font cache",e);
-		}
-		
-	}
-	
+      return reportEngine;
+   }
+
+   @Override
+   public void shutdown() {
+      if (null == reportEngine)
+         return;
+
+      try {
+         reportEngine.destroy();
+         Platform.shutdown();
+         RegistryProviderFactory.releaseDefault();
+         clearFontCache();
+      } finally {
+         reportEngine = null;
+      }
+   }
+
+   private EngineConfig createEngineConfig() {
+      EngineConfig config = new EngineConfig();
+
+      config.setResourceLocator(fileServerServiceResourceLocator);
+
+      return config;
+   }
+
+   @Override
+   public void clearFontCache() {
+      try {
+         Field instanceField = FontMappingManagerFactory.class.getDeclaredField("instance");
+         instanceField.setAccessible(true);
+         instanceField.set(null, null);
+      } catch (Exception e) {
+         logger.warn("Could not clear BIRT font cache", e);
+      }
+
+   }
+
 }

@@ -14,23 +14,22 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.hookers.ReportExport
 
 public class TableTemplateUIStartup {
 
-	@Inject
-	public TableTemplateUIStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final EnterpriseUiService enterpriseUiService,
-		
-		final Provider<ReportExportToTemplateHooker> exportToTemplateHooker,
-		final Provider<EnhanceFilterToolbarHooker> enhanceFilterToolbarProvider
-		){
-		
-		waitOnEventService.callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN, 
-				ticket -> {
-					if(enterpriseUiService.isEnterprise()){
-						hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(exportToTemplateHooker), HookHandlerService.PRIORITY_LOWER);
-						hookHandler.attachHooker(FilterViewEnhanceToolbarHook.class, enhanceFilterToolbarProvider, HookHandlerService.PRIORITY_LOW);
-					}
-					waitOnEventService.signalProcessingDone(ticket);
-				});
-	}
+   @Inject
+   public TableTemplateUIStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final EnterpriseUiService enterpriseUiService,
+
+         final Provider<ReportExportToTemplateHooker> exportToTemplateHooker,
+         final Provider<EnhanceFilterToolbarHooker> enhanceFilterToolbarProvider) {
+
+      waitOnEventService.callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN,
+            ticket -> {
+               if (enterpriseUiService.isEnterprise()) {
+                  hookHandler.attachHooker(ReportExporterExportReportHook.class,
+                        new ReportExporterExportReportHook(exportToTemplateHooker), HookHandlerService.PRIORITY_LOWER);
+                  hookHandler.attachHooker(FilterViewEnhanceToolbarHook.class, enhanceFilterToolbarProvider,
+                        HookHandlerService.PRIORITY_LOW);
+               }
+               waitOnEventService.signalProcessingDone(ticket);
+            });
+   }
 }

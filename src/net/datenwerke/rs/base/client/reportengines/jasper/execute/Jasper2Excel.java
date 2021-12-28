@@ -10,10 +10,8 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class Jasper2Excel extends Export2Excel {
 
-	
-	public boolean consumes(ReportDto report) {
-		return report instanceof JasperReportDto;
-	}
-
+   public boolean consumes(ReportDto report) {
+      return report instanceof JasperReportDto;
+   }
 
 }

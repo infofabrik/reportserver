@@ -7,43 +7,42 @@ import net.datenwerke.gxtdto.client.model.DwModel;
 
 public class FileSelectionConfig implements Serializable, DwModel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4418656779746516676L;
-	
-	private String handler;
-	private HashMap<String, String> metadata = new HashMap<String, String>();
-	
-	public FileSelectionConfig(){
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4418656779746516676L;
 
-	public FileSelectionConfig(String handler) {
-		super();
-		this.handler = handler;
-	}
+   private String handler;
+   private HashMap<String, String> metadata = new HashMap<String, String>();
 
-	public String getHandler() {
-		return handler;
-	}
+   public FileSelectionConfig() {
+   }
 
-	public void setHandler(String handler) {
-		this.handler = handler;
-	}
+   public FileSelectionConfig(String handler) {
+      super();
+      this.handler = handler;
+   }
 
-	public HashMap<String, String> getMetadata() {
-		return metadata;
-	}
+   public String getHandler() {
+      return handler;
+   }
 
-	public void setMetadata(HashMap<String, String> metadata) {
-		if(null==metadata)
-			metadata = new HashMap<String, String>();
-		this.metadata = metadata;
-	}
+   public void setHandler(String handler) {
+      this.handler = handler;
+   }
 
-	public void addMetadata(String key, String value){
-		this.metadata.put(key,value);
-	}
-	
+   public HashMap<String, String> getMetadata() {
+      return metadata;
+   }
+
+   public void setMetadata(HashMap<String, String> metadata) {
+      if (null == metadata)
+         metadata = new HashMap<String, String>();
+      this.metadata = metadata;
+   }
+
+   public void addMetadata(String key, String value) {
+      this.metadata.put(key, value);
+   }
 
 }

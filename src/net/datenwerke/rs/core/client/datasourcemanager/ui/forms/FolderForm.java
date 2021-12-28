@@ -12,14 +12,16 @@ import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessage
  *
  */
 public class FolderForm extends SimpleFormView {
-	
-	@Override
-	public void configureSimpleForm(SimpleForm form) {
-		form.setHeading(DatasourcesMessages.INSTANCE.editFolder() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-		
-		form.addField(String.class, DatasourceFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name()); 
-		
-		form.addField(String.class, DatasourceFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());
-	}
+
+   @Override
+   public void configureSimpleForm(SimpleForm form) {
+      form.setHeading(DatasourcesMessages.INSTANCE.editFolder()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
+
+      form.addField(String.class, DatasourceFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+
+      form.addField(String.class, DatasourceFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
+            new SFFCTextAreaImpl());
+   }
 
 }

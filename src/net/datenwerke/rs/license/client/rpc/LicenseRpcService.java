@@ -9,8 +9,8 @@ import net.datenwerke.rs.license.client.dto.LicenseInformationDto;
 @RemoteServiceRelativePath("license")
 public interface LicenseRpcService extends RemoteService {
 
-	LicenseInformationDto loadLicenseInformation() throws ServerCallFailedException;
+   LicenseInformationDto loadLicenseInformation() throws ServerCallFailedException;
 
-	void updateLicense(String license) throws ServerCallFailedException;
+   void updateLicense(String license) throws ServerCallFailedException;
 
 }

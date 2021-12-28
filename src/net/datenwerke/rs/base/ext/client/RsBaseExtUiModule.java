@@ -9,15 +9,15 @@ import net.datenwerke.rs.base.ext.client.reportmanager.eximport.ex.ReportManager
 
 public class RsBaseExtUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(RsBaseExtUiStartup.class).asEagerSingleton();
-		
-		/* sub modules */
-		install(new DatasourceManagerExportUIModule());
-		install(new ReportManagerExportUIModule());
-		install(new DashboardManagerExportUIModule());
-		install(new DatasinkManagerExportUIModule());
-	}
+   @Override
+   protected void configure() {
+      bind(RsBaseExtUiStartup.class).asEagerSingleton();
+
+      /* sub modules */
+      install(new DatasourceManagerExportUIModule());
+      install(new ReportManagerExportUIModule());
+      install(new DashboardManagerExportUIModule());
+      install(new DatasinkManagerExportUIModule());
+   }
 
 }

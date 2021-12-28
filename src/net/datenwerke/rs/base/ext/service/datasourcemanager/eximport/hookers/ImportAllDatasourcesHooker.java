@@ -7,13 +7,11 @@ import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.treedb.ext.service.eximport.helper.ImportAllNodesHooker;
 
-public class ImportAllDatasourcesHooker extends ImportAllNodesHooker<AbstractDatasourceManagerNode>{
+public class ImportAllDatasourcesHooker extends ImportAllNodesHooker<AbstractDatasourceManagerNode> {
 
-	@Inject
-	public ImportAllDatasourcesHooker(
-		DatasourceService treeDbManager
-		) {
-		super(treeDbManager, DatasourceManagerExporter.class);
-	}
+   @Inject
+   public ImportAllDatasourcesHooker(DatasourceService treeDbManager) {
+      super(treeDbManager, DatasourceManagerExporter.class);
+   }
 
 }

@@ -9,27 +9,26 @@ import net.datenwerke.rs.base.client.datasources.dto.decorator.ArgumentDatasourc
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 
-public class ArgumentDatasourceConnectorConfigHooker implements
-		DatasourceConnectorConfiguratorHook {
+public class ArgumentDatasourceConnectorConfigHooker implements DatasourceConnectorConfiguratorHook {
 
-	@Override
-	public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
-		return null;
-	}
+   @Override
+   public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
+      return null;
+   }
 
-	@Override
-	public DatasourceConnectorDto instantiateConnector() {
-		return new ArgumentDatasourceConnectorDtoDec();
-	}
+   @Override
+   public DatasourceConnectorDto instantiateConnector() {
+      return new ArgumentDatasourceConnectorDtoDec();
+   }
 
-	@Override
-	public String getConnectorName() {
-		return BaseDatasourceMessages.INSTANCE.argumentConnector();
-	}
+   @Override
+   public String getConnectorName() {
+      return BaseDatasourceMessages.INSTANCE.argumentConnector();
+   }
 
-	@Override
-	public boolean consumes(DatasourceConnectorDto connector) {
-		return connector instanceof ArgumentDatasourceConnectorDto;
-	}
+   @Override
+   public boolean consumes(DatasourceConnectorDto connector) {
+      return connector instanceof ArgumentDatasourceConnectorDto;
+   }
 
 }

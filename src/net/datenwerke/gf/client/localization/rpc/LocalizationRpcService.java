@@ -9,10 +9,10 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 @RemoteServiceRelativePath("localization")
 public interface LocalizationRpcService extends RemoteService {
-	
-	public Map<String, String> getLanguageSelectorConfiguration() throws ServerCallFailedException;
 
-	public void setUserLocale(String locale) throws ServerCallFailedException;
+   public Map<String, String> getLanguageSelectorConfiguration() throws ServerCallFailedException;
 
-	void setUserTimezone(String timezone);
+   public void setUserLocale(String locale) throws ServerCallFailedException;
+
+   void setUserTimezone(String timezone);
 }

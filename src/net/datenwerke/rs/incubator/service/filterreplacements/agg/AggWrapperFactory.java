@@ -8,6 +8,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface AggWrapperFactory {
 
-	public AggregateWrapper create(Column column, ParameterSet parameters,
-			DatasourceContainerProvider datasourceContainerProvider, QueryBuilder queryBuilder, ManagedQuery query);
+   public AggregateWrapper create(Column column, ParameterSet parameters,
+         DatasourceContainerProvider datasourceContainerProvider, QueryBuilder queryBuilder, ManagedQuery query);
 }

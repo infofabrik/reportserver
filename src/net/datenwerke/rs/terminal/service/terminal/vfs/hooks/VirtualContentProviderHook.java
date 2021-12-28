@@ -10,49 +10,48 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.helper.PathHelper;
 
 public interface VirtualContentProviderHook extends Hook {
 
-	boolean consumes(VFSLocation momentaryLocation) throws VFSException;
-	
-	boolean consumes(VFSLocation momentaryLocation, PathHelper path) throws VFSException;
+   boolean consumes(VFSLocation momentaryLocation) throws VFSException;
 
-	VFSLocation getLocation(VFSLocation momentaryLocation, PathHelper path)throws VFSException;
+   boolean consumes(VFSLocation momentaryLocation, PathHelper path) throws VFSException;
 
-	String getName();
+   VFSLocation getLocation(VFSLocation momentaryLocation, PathHelper path) throws VFSException;
 
-	VFSLocationInfo getLocationInfo(VFSLocation vfsLocation);
+   String getName();
 
-	boolean isFolder(VFSLocation vfsLocation);
+   VFSLocationInfo getLocationInfo(VFSLocation vfsLocation);
 
-	String prettyPrint(String pathInVirtualSystem);
+   boolean isFolder(VFSLocation vfsLocation);
 
-	boolean hasContent(VFSLocation vfsLocation) throws VFSException;
+   String prettyPrint(String pathInVirtualSystem);
 
-	byte[] getContent(VFSLocation vfsLocation) throws VFSException;
+   boolean hasContent(VFSLocation vfsLocation) throws VFSException;
 
-	void setContent(VFSLocation vfsLocation, byte[] content)  throws VFSException;
+   byte[] getContent(VFSLocation vfsLocation) throws VFSException;
 
-	String getContentType(VFSLocation vfsLocation)  throws VFSException;
+   void setContent(VFSLocation vfsLocation, byte[] content) throws VFSException;
 
-	String translatePathWay(VFSLocation location);
+   String getContentType(VFSLocation vfsLocation) throws VFSException;
 
-	public boolean enhanceNonVirtual(VFSLocation location) throws VFSException;
+   String translatePathWay(VFSLocation location);
 
-	Date getLastModified(VFSLocation vfsLocation);
+   public boolean enhanceNonVirtual(VFSLocation location) throws VFSException;
 
-	boolean exists(VFSLocation vfsLocation);
+   Date getLastModified(VFSLocation vfsLocation);
 
-	long getSize(VFSLocation vfsLocation);
+   boolean exists(VFSLocation vfsLocation);
 
-	boolean canWriteIntoLocation(VFSLocation vfsLocation);
+   long getSize(VFSLocation vfsLocation);
 
-	boolean isLocationDeletable(VFSLocation vfsLocation);
+   boolean canWriteIntoLocation(VFSLocation vfsLocation);
 
-	void delete(VFSLocation vfsLocation) throws VFSException;
+   boolean isLocationDeletable(VFSLocation vfsLocation);
 
-	VFSLocation create(VFSLocation vfsLocation) throws VFSException;
+   void delete(VFSLocation vfsLocation) throws VFSException;
 
-	void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData) throws VFSException;
+   VFSLocation create(VFSLocation vfsLocation) throws VFSException;
 
-	Object getObjectFor(VFSLocation vfsLocation) throws VFSException;
+   void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData) throws VFSException;
 
+   Object getObjectFor(VFSLocation vfsLocation) throws VFSException;
 
 }

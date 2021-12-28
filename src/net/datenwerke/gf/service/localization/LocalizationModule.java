@@ -51,7 +51,8 @@ import net.datenwerke.security.service.usermanager.UserPropertiesService;
  * <ul>
  * <li><a href="http://code.google.com/p/google-guice/">Google Guice</a></li>
  * <li><a href="http://cglib.sourceforge.net/">CGLib</a></li>
- * <li><a href="http://code.google.com/intl/de-DE/webtoolkit/">Google GWT</a></li>
+ * <li><a href="http://code.google.com/intl/de-DE/webtoolkit/">Google
+ * GWT</a></li>
  * </ul>
  * 
  * <h2>Others</h2>
@@ -61,58 +62,63 @@ import net.datenwerke.security.service.usermanager.UserPropertiesService;
  */
 public class LocalizationModule extends AbstractModule {
 
-	public static final String CONFIG_FILE = "main/localization.cf";
-	public static final String USER_LOCAL_PROPERTY_NAME = "localization:locale";
-	
-	
-	
-	@Override
-	protected void configure() {
-		bind(LocalizationStartup.class).asEagerSingleton();
-		
-		requestStaticInjection(LocalizationServiceImpl.class);
-	}
-	
-	@Provides @Inject @DefaultLocale
-	public String provideDefaultLocale(ConfigService configService){
-		return configService.getConfigFailsafe(CONFIG_FILE).getString("localization.default", "en");
-	}
-	
-	@Provides @Inject @AvailableLocales
-	public Collection<String> provideLocales(ConfigService configService, RemoteMessageService remoteMsgService){
-		String fallback = "en,de";
+   public static final String CONFIG_FILE = "main/localization.cf";
+   public static final String USER_LOCAL_PROPERTY_NAME = "localization:locale";
 
-		/* Check remote message service */
-		Collection<String> availableLanguages = remoteMsgService.getAvailableLanguages();
-		if(null != availableLanguages && !availableLanguages.isEmpty()){
-			
-			/* Filter on configured available languages. */
-			if (configService.getConfigFailsafe(CONFIG_FILE).containsKey("localization.locales")) {
-				String cfgVal = configService.getConfigFailsafe(CONFIG_FILE).getString("localization.locales", fallback);
-				List<String> configuredLanguages = Arrays.asList(cfgVal.split(","));
-				
-				availableLanguages = availableLanguages.stream().filter(lng -> configuredLanguages.contains(lng))
-						.collect(Collectors.toList()); 
-			}
-			return availableLanguages;
-		}
-		
-		/* check config */
-		String cfgVal = configService.getConfigFailsafe(CONFIG_FILE).getString("localization.locales", fallback);
-		
-		return Arrays.asList(cfgVal.split(","));
-	}
+   @Override
+   protected void configure() {
+      bind(LocalizationStartup.class).asEagerSingleton();
 
-	@Provides @Inject @CurrentLocale
-	public String provideDefaultLocale(
-			Provider<AuthenticatorService> authenticatorServiceProvider, 
-			Provider<UserPropertiesService> userPropertiesServiceProvider){
-		try{
-			Locale locale = LocalizationServiceImpl.getUserLocal();
-			if(null != locale)
-				return locale.toLanguageTag();
-		} catch(Exception e){}
-		
-		return userPropertiesServiceProvider.get().getPropertyValue(authenticatorServiceProvider.get().getCurrentUser(), USER_LOCAL_PROPERTY_NAME);
-	}
+      requestStaticInjection(LocalizationServiceImpl.class);
+   }
+
+   @Provides
+   @Inject
+   @DefaultLocale
+   public String provideDefaultLocale(ConfigService configService) {
+      return configService.getConfigFailsafe(CONFIG_FILE).getString("localization.default", "en");
+   }
+
+   @Provides
+   @Inject
+   @AvailableLocales
+   public Collection<String> provideLocales(ConfigService configService, RemoteMessageService remoteMsgService) {
+      String fallback = "en,de";
+
+      /* Check remote message service */
+      Collection<String> availableLanguages = remoteMsgService.getAvailableLanguages();
+      if (null != availableLanguages && !availableLanguages.isEmpty()) {
+
+         /* Filter on configured available languages. */
+         if (configService.getConfigFailsafe(CONFIG_FILE).containsKey("localization.locales")) {
+            String cfgVal = configService.getConfigFailsafe(CONFIG_FILE).getString("localization.locales", fallback);
+            List<String> configuredLanguages = Arrays.asList(cfgVal.split(","));
+
+            availableLanguages = availableLanguages.stream().filter(lng -> configuredLanguages.contains(lng))
+                  .collect(Collectors.toList());
+         }
+         return availableLanguages;
+      }
+
+      /* check config */
+      String cfgVal = configService.getConfigFailsafe(CONFIG_FILE).getString("localization.locales", fallback);
+
+      return Arrays.asList(cfgVal.split(","));
+   }
+
+   @Provides
+   @Inject
+   @CurrentLocale
+   public String provideDefaultLocale(Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<UserPropertiesService> userPropertiesServiceProvider) {
+      try {
+         Locale locale = LocalizationServiceImpl.getUserLocal();
+         if (null != locale)
+            return locale.toLanguageTag();
+      } catch (Exception e) {
+      }
+
+      return userPropertiesServiceProvider.get().getPropertyValue(authenticatorServiceProvider.get().getCurrentUser(),
+            USER_LOCAL_PROPERTY_NAME);
+   }
 }

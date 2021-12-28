@@ -13,38 +13,32 @@ import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
 
 public class EasterEggStartup {
 
-	@Inject
-	public EasterEggStartup(
-			final HookHandlerService hookHandler,
-			
-			final RsPacmanView pacman,
-			final RsPacmanObjectInfo pacmanObjectView,
-			final ClientConfigService clientConfigService,
-			
-			final WaitOnEventUIService waitOnEventService
-			){
-			
-		waitOnEventService.callbackOnEvent(ClientConfigModule.CLIENT_CONFIG_FILE_LOADED, new SynchronousCallbackOnEventTrigger() {
-			@Override
-			public void execute(final WaitOnEventTicket ticket) {
-				waitOnEventService.signalProcessingDone(ticket);
+   @Inject
+   public EasterEggStartup(final HookHandlerService hookHandler,
 
-				try{
-					boolean disable = clientConfigService.getBoolean("eastereggs.disable", false);
-					if(! disable){
-						/* easter egg */
-						hookHandler.attachHooker(UrlViewSpecialViewHandler.class, pacman);
-				 		hookHandler.attachHooker(
-							ObjectPreviewTabProviderHook.class,
-							pacmanObjectView,
-							HookHandlerService.PRIORITY_LOW
-				 			);
-					}
-				} catch(Exception e){}
-			}
-		});
-		
-		
+         final RsPacmanView pacman, final RsPacmanObjectInfo pacmanObjectView,
+         final ClientConfigService clientConfigService,
 
-	}
+         final WaitOnEventUIService waitOnEventService) {
+
+      waitOnEventService.callbackOnEvent(ClientConfigModule.CLIENT_CONFIG_FILE_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+               @Override
+               public void execute(final WaitOnEventTicket ticket) {
+                  waitOnEventService.signalProcessingDone(ticket);
+
+                  try {
+                     boolean disable = clientConfigService.getBoolean("eastereggs.disable", false);
+                     if (!disable) {
+                        /* easter egg */
+                        hookHandler.attachHooker(UrlViewSpecialViewHandler.class, pacman);
+                        hookHandler.attachHooker(ObjectPreviewTabProviderHook.class, pacmanObjectView,
+                              HookHandlerService.PRIORITY_LOW);
+                     }
+                  } catch (Exception e) {
+                  }
+               }
+            });
+
+   }
 }

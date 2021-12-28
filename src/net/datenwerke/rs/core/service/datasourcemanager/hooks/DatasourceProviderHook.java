@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 
 public interface DatasourceProviderHook extends Hook {
 
-	Collection<? extends Class<? extends DatasourceDefinition>> getDatasources();
+   Collection<? extends Class<? extends DatasourceDefinition>> getDatasources();
 
 }

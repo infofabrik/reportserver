@@ -16,29 +16,29 @@ import com.google.inject.persist.Transactional;
 import net.datenwerke.security.server.SecuredHttpServlet;
 
 @Singleton
-public class JasperPreviewProvider extends SecuredHttpServlet{
+public class JasperPreviewProvider extends SecuredHttpServlet {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5593388658395337773L;
-	
-	public static final String IMAGE_SESSION_KEY = "jasperPreview_image";
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		HttpSession session = req.getSession();
-		
-		Object image = session.getAttribute(IMAGE_SESSION_KEY);
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5593388658395337773L;
 
-		if(null != image && image instanceof RenderedImage){
-			resp.setContentType("image/png"); //$NON-NLS-1$
-			OutputStream os = resp.getOutputStream();
-			ImageIO.write((RenderedImage) image, "png", os);
-			os.close();
-		}
-		
-		session.setAttribute(IMAGE_SESSION_KEY, null);
-	}
+   public static final String IMAGE_SESSION_KEY = "jasperPreview_image";
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      HttpSession session = req.getSession();
+
+      Object image = session.getAttribute(IMAGE_SESSION_KEY);
+
+      if (null != image && image instanceof RenderedImage) {
+         resp.setContentType("image/png"); //$NON-NLS-1$
+         OutputStream os = resp.getOutputStream();
+         ImageIO.write((RenderedImage) image, "png", os);
+         os.close();
+      }
+
+      session.setAttribute(IMAGE_SESSION_KEY, null);
+   }
 }

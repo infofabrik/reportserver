@@ -9,7 +9,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 @RemoteServiceRelativePath("juel")
 public interface JuelRpcService extends RemoteService {
 
-	JuelResultDto evaluateExpression(String expression) throws ServerCallFailedException;
-	
-	 
+   JuelResultDto evaluateExpression(String expression) throws ServerCallFailedException;
+
 }

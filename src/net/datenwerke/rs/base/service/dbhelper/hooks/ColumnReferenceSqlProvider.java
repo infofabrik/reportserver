@@ -6,8 +6,8 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalCol
 
 public interface ColumnReferenceSqlProvider extends Hook {
 
-	boolean consumes(AdditionalColumnSpec col, QueryBuilder queryBuilder);
+   boolean consumes(AdditionalColumnSpec col, QueryBuilder queryBuilder);
 
-	String getSelectSnipped(AdditionalColumnSpec col, QueryBuilder queryBuilder);
+   String getSelectSnipped(AdditionalColumnSpec col, QueryBuilder queryBuilder);
 
 }

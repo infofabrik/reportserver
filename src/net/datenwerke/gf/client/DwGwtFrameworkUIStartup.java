@@ -15,34 +15,31 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class DwGwtFrameworkUIStartup {
-	
-	@Inject
-	public DwGwtFrameworkUIStartup(
-			Provider<DateFormulaProvider> dateFormulaProvider,
-			
-			HookHandlerService hookHandler,
-			final HomepageDao homepageDao,
-			final WaitOnEventUIService waitOnEventService
-			) {
-		
-		/* simple form */
-		hookHandler.attachHooker(FormFieldProviderHook.class, dateFormulaProvider, HookHandlerService.PRIORITY_LOW);
-		
-		/* Set Window Title */
-		waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_BEFORE_STARTUP, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				homepageDao.getPageTitle(new HandledAsyncCallback<String>(null) {
-					@Override
-					public void doOnSuccess(String result) {
-						if(null != result){
-							Window.setTitle(result);
-						}
-					}
-				});
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+
+   @Inject
+   public DwGwtFrameworkUIStartup(Provider<DateFormulaProvider> dateFormulaProvider,
+
+         HookHandlerService hookHandler, final HomepageDao homepageDao, final WaitOnEventUIService waitOnEventService) {
+
+      /* simple form */
+      hookHandler.attachHooker(FormFieldProviderHook.class, dateFormulaProvider, HookHandlerService.PRIORITY_LOW);
+
+      /* Set Window Title */
+      waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_BEFORE_STARTUP,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  homepageDao.getPageTitle(new HandledAsyncCallback<String>(null) {
+                     @Override
+                     public void doOnSuccess(String result) {
+                        if (null != result) {
+                           Window.setTitle(result);
+                        }
+                     }
+                  });
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 
 }

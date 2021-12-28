@@ -21,38 +21,33 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.ItemSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 
 public class MarkNodeAsFavoriteHooker implements TsFavoriteMenuHook {
-	
-	private DashboardDao dashboardDao;
 
+   private DashboardDao dashboardDao;
 
-	@Inject
-	public MarkNodeAsFavoriteHooker(
-			DashboardDao dashboardDao
-		){
-		
-		this.dashboardDao = dashboardDao;
-	}
-	
-	
-	@Override
-	public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector, 
-			final TsDiskMainComponent mainComponent) {
-		if(null == items || items.isEmpty() || items.size() > 1)
-			return false;
-		if(items.get(0) instanceof TsDiskRootDto)
-			return false;
-		
-		MenuItem addItem = new DwMenuItem(DashboardMessages.INSTANCE.addToFavorites(), BaseIcon.STAR_O);
-		menu.add(addItem);
-		addItem.addSelectionHandler(new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				dashboardDao.addToFavorites(items.get(0), new RsAsyncCallback<Void>());
-			}
-		});
+   @Inject
+   public MarkNodeAsFavoriteHooker(DashboardDao dashboardDao) {
 
-		
-		return true;
-	}
+      this.dashboardDao = dashboardDao;
+   }
+
+   @Override
+   public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector,
+         final TsDiskMainComponent mainComponent) {
+      if (null == items || items.isEmpty() || items.size() > 1)
+         return false;
+      if (items.get(0) instanceof TsDiskRootDto)
+         return false;
+
+      MenuItem addItem = new DwMenuItem(DashboardMessages.INSTANCE.addToFavorites(), BaseIcon.STAR_O);
+      menu.add(addItem);
+      addItem.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            dashboardDao.addToFavorites(items.get(0), new RsAsyncCallback<Void>());
+         }
+      });
+
+      return true;
+   }
 
 }

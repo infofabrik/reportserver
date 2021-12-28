@@ -28,78 +28,75 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 import net.datenwerke.security.ext.client.usermanager.utils.UserIconMapping;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class UserManagerTreeConfigurationHooker implements
-		TreeConfiguratorHook {
+public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
-	final private UserManagerTreeManagerDao treeHandler;
-	
-	@Inject
-	public UserManagerTreeConfigurationHooker(
-		UserManagerTreeManagerDao treeHandler	
-		){
-		
-		/* store objects */
-		this.treeHandler = treeHandler;
-	}
-	
-	@Override
-	public boolean consumes(ManagerHelperTree tree) {
-		return UserManagerUIModule.class.equals(tree.getGuarantor());
-	}
+   final private UserManagerTreeManagerDao treeHandler;
 
-	@Override
-	public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-		iconProvider.addMappings(
-				new UserIconMapping(),
-				new IconMapping(GroupDto.class, BaseIcon.GROUP)
-		);
-	}
+   @Inject
+   public UserManagerTreeConfigurationHooker(UserManagerTreeManagerDao treeHandler) {
 
-	@Override
-	public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
-		/* user */
-		Menu userMenu = menuProvider.createOrGetMenuFor(UserDto.class);
-		MenuItem inserItem = generateInsertMenu();
-		inserItem.disable();
-		userMenu.add(inserItem);
-		userMenu.add(new DeleteMenuItem(treeHandler));
-		
-		/* role */
-		Menu groupMenu = menuProvider.createOrGetMenuFor(GroupDto.class);
-		inserItem = generateInsertMenu();
-		inserItem.disable();
-		groupMenu.add(inserItem);
-		groupMenu.add(new DeleteMenuItem(treeHandler));
-		
-		/* OU */
-		Menu ouMenu = menuProvider.createOrGetMenuFor(OrganisationalUnitDto.class);
-		inserItem = generateInsertMenu();
-		ouMenu.add(inserItem);
-		ouMenu.add(new DeleteMenuItem(treeHandler));
-		ouMenu.add(new SeparatorMenuItem());
-		ouMenu.add(new ReloadMenuItem());
-	}
+      /* store objects */
+      this.treeHandler = treeHandler;
+   }
 
-	private MenuItem generateInsertMenu(){
-		Menu insertMenu = new DwMenu();
-		insertMenu.add(new InsertMenuItem(new OrganisationalUnitDto(), UsermanagerMessages.INSTANCE.ou(), treeHandler, BaseIcon.FOLDER_USER));
-		insertMenu.add(new InsertMenuItem(new GroupDto(), UsermanagerMessages.INSTANCE.role(), treeHandler, BaseIcon.GROUP));
-		insertMenu.add(new InsertMenuItem(new UserDtoDec(), UsermanagerMessages.INSTANCE.user(), treeHandler, BaseIcon.USER));
-		
-		MenuItem insertItem = new DwMenuItem(BaseMessages.INSTANCE.insert(), BaseIcon.FILE_O);
-		insertItem.setSubMenu(insertMenu);
-		
-		return insertItem;
-	}
+   @Override
+   public boolean consumes(ManagerHelperTree tree) {
+      return UserManagerUIModule.class.equals(tree.getGuarantor());
+   }
 
-	@Override
-	public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
-		
-	}
+   @Override
+   public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
+      iconProvider.addMappings(new UserIconMapping(), new IconMapping(GroupDto.class, BaseIcon.GROUP));
+   }
 
-	@Override
-	public void configureFolderTypes(ManagerHelperTree tree) {
-		tree.addFolderTypes(OrganisationalUnitDto.class);
-	}
-	
+   @Override
+   public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
+      /* user */
+      Menu userMenu = menuProvider.createOrGetMenuFor(UserDto.class);
+      MenuItem inserItem = generateInsertMenu();
+      inserItem.disable();
+      userMenu.add(inserItem);
+      userMenu.add(new DeleteMenuItem(treeHandler));
+
+      /* role */
+      Menu groupMenu = menuProvider.createOrGetMenuFor(GroupDto.class);
+      inserItem = generateInsertMenu();
+      inserItem.disable();
+      groupMenu.add(inserItem);
+      groupMenu.add(new DeleteMenuItem(treeHandler));
+
+      /* OU */
+      Menu ouMenu = menuProvider.createOrGetMenuFor(OrganisationalUnitDto.class);
+      inserItem = generateInsertMenu();
+      ouMenu.add(inserItem);
+      ouMenu.add(new DeleteMenuItem(treeHandler));
+      ouMenu.add(new SeparatorMenuItem());
+      ouMenu.add(new ReloadMenuItem());
+   }
+
+   private MenuItem generateInsertMenu() {
+      Menu insertMenu = new DwMenu();
+      insertMenu.add(new InsertMenuItem(new OrganisationalUnitDto(), UsermanagerMessages.INSTANCE.ou(), treeHandler,
+            BaseIcon.FOLDER_USER));
+      insertMenu
+            .add(new InsertMenuItem(new GroupDto(), UsermanagerMessages.INSTANCE.role(), treeHandler, BaseIcon.GROUP));
+      insertMenu
+            .add(new InsertMenuItem(new UserDtoDec(), UsermanagerMessages.INSTANCE.user(), treeHandler, BaseIcon.USER));
+
+      MenuItem insertItem = new DwMenuItem(BaseMessages.INSTANCE.insert(), BaseIcon.FILE_O);
+      insertItem.setSubMenu(insertMenu);
+
+      return insertItem;
+   }
+
+   @Override
+   public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
+
+   }
+
+   @Override
+   public void configureFolderTypes(ManagerHelperTree tree) {
+      tree.addFolderTypes(OrganisationalUnitDto.class);
+   }
+
 }

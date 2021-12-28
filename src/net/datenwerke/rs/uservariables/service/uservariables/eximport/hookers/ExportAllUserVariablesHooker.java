@@ -11,20 +11,20 @@ import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariab
 
 public class ExportAllUserVariablesHooker implements ExportAllHook {
 
-	private final UserVariableService service;
-	
-	@Inject
-	public ExportAllUserVariablesHooker(UserVariableService teamSpaceService) {
-		this.service = teamSpaceService;
-	}
+   private final UserVariableService service;
 
-	@Override
-	public void configure(ExportConfig config) {
-		for(UserVariableDefinition def : service.getDefinedVariableDefinitions()){
-			config.addItemConfig(new EntityExportItemConfig(def));
-			for(UserVariableInstance inst : service.getInstancesForDefinition(def))
-				config.addItemConfig(new EntityExportItemConfig(inst));
-		}
-	}
+   @Inject
+   public ExportAllUserVariablesHooker(UserVariableService teamSpaceService) {
+      this.service = teamSpaceService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      for (UserVariableDefinition def : service.getDefinedVariableDefinitions()) {
+         config.addItemConfig(new EntityExportItemConfig(def));
+         for (UserVariableInstance inst : service.getInstancesForDefinition(def))
+            config.addItemConfig(new EntityExportItemConfig(inst));
+      }
+   }
 
 }

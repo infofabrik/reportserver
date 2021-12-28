@@ -7,10 +7,10 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 
 public interface SaikuPivotRpcServiceAsync {
 
-	public Request stashReport(String token, TableReportDto report, AsyncCallback<Void> callback);
-	
-	void cubeExport(String token, TableReportDto report, AsyncCallback<String> callback);
-	
-	void cubeExportMondrian3(String token, TableReportDto report, AsyncCallback<String> callback);
+   public Request stashReport(String token, TableReportDto report, AsyncCallback<Void> callback);
+
+   void cubeExport(String token, TableReportDto report, AsyncCallback<String> callback);
+
+   void cubeExportMondrian3(String token, TableReportDto report, AsyncCallback<String> callback);
 
 }

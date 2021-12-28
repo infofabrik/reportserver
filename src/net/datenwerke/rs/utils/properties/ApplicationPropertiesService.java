@@ -6,24 +6,26 @@ import org.apache.commons.configuration2.Configuration;
 
 public interface ApplicationPropertiesService {
 
-	public final static String RS_PROPERTIES_FILE_NAME = "reportserver.properties";
-	public final static String RS_PROPERTIES_OVERRIDE_FILE_NAME = "reportserver.overrides.properties";
-	
-	public Configuration getProperties();
-	
-	public String getString(String key);
+   public final static String RS_PROPERTIES_FILE_NAME = "reportserver.properties";
+   public final static String RS_PROPERTIES_OVERRIDE_FILE_NAME = "reportserver.overrides.properties";
 
-	String getString(String key, String defaultValue);
+   public Configuration getProperties();
 
-	List<String> getList(String key);
+   public String getString(String key);
 
-	public Long getLong(String propertyExecuteUserId);
+   String getString(String key, String defaultValue);
 
-	public Integer getInteger(String key);
-	public Integer getInteger(String key, int defaultValue);
+   List<String> getList(String key);
 
-	public boolean getBoolean(String key);
-	public boolean getBoolean(String key, boolean defaultValue);
+   public Long getLong(String propertyExecuteUserId);
 
-	public Long getLong(String key, Long defaultValue);
+   public Integer getInteger(String key);
+
+   public Integer getInteger(String key, int defaultValue);
+
+   public boolean getBoolean(String key);
+
+   public boolean getBoolean(String key, boolean defaultValue);
+
+   public Long getLong(String key, Long defaultValue);
 }

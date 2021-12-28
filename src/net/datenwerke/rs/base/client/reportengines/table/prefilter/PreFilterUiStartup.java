@@ -12,23 +12,19 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
 
 public class PreFilterUiStartup {
 
-	@Inject
-	public PreFilterUiStartup(
-		HookHandlerService hookHandler,
-		PreFilterViewFactory preFilterViewFactory,
-		
-		Provider<ColumnFilterConfiguratorHooker> columnFilterConfig,
-		Provider<BinaryColumnFilterConfiguratorHooker> binaryColumnFilterConfig
-		){
-		
-		/* attach hooks */
-		hookHandler.attachHooker(
-				ReportViewHook.class,
-				new ReportViewHook(preFilterViewFactory),
-				HookHandlerService.PRIORITY_MEDIUM - 5);
-		
-		hookHandler.attachHooker(PreFilterConfiguratorHook.class, columnFilterConfig);
-		hookHandler.attachHooker(PreFilterConfiguratorHook.class, binaryColumnFilterConfig, HookHandlerService.PRIORITY_LOW);
-		
-	}
+   @Inject
+   public PreFilterUiStartup(HookHandlerService hookHandler, PreFilterViewFactory preFilterViewFactory,
+
+         Provider<ColumnFilterConfiguratorHooker> columnFilterConfig,
+         Provider<BinaryColumnFilterConfiguratorHooker> binaryColumnFilterConfig) {
+
+      /* attach hooks */
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(preFilterViewFactory),
+            HookHandlerService.PRIORITY_MEDIUM - 5);
+
+      hookHandler.attachHooker(PreFilterConfiguratorHook.class, columnFilterConfig);
+      hookHandler.attachHooker(PreFilterConfiguratorHook.class, binaryColumnFilterConfig,
+            HookHandlerService.PRIORITY_LOW);
+
+   }
 }

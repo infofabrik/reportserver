@@ -21,58 +21,55 @@ import net.datenwerke.eximport.obj.ExportedItem;
  */
 public class EnclosedObjectImporter implements Importer {
 
-	public static final String IMPORTER_ID = "EnclosedObjectImporter";
-	
-	protected BasicObjectImporterFactory objectImporterFactory;
-	protected ImportSupervisor importSupervisor;
-	
-	@Inject
-	public void setObjectImporterFactory(
-			BasicObjectImporterFactory objectImporterFactory) {
-		this.objectImporterFactory = objectImporterFactory;
-	}
-	
-	@Override
-	public void configure(ImportSupervisor importSupervisor,
-			Collection<ImporterSpecificConfig> specificConfigs,
-			Queue<ImportItemConfig> collection) {
-		this.importSupervisor = importSupervisor;
-	}
+   public static final String IMPORTER_ID = "EnclosedObjectImporter";
 
-	@Override
-	public boolean consumes(ExportedItem exportedItem, ImportItemConfig itemConfig) {
-		return false;
-	}
+   protected BasicObjectImporterFactory objectImporterFactory;
+   protected ImportSupervisor importSupervisor;
 
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{EnclosedObjectExporter.class};
-	}
+   @Inject
+   public void setObjectImporterFactory(BasicObjectImporterFactory objectImporterFactory) {
+      this.objectImporterFactory = objectImporterFactory;
+   }
 
-	@Override
-	public void importData() {
-	}
+   @Override
+   public void configure(ImportSupervisor importSupervisor, Collection<ImporterSpecificConfig> specificConfigs,
+         Queue<ImportItemConfig> collection) {
+      this.importSupervisor = importSupervisor;
+   }
 
-	@Override
-	public Object importEnclosedObject(EnclosedItemProperty property, boolean registerImportedObject) {
-		BasicObjectImporter importer = objectImporterFactory.create(importSupervisor, property);
-		Object imported = importer.importObject();
-		return imported;
-	}
+   @Override
+   public boolean consumes(ExportedItem exportedItem, ImportItemConfig itemConfig) {
+      return false;
+   }
 
-	@Override
-	public void importReference(ImportItemConfig itemConfig) {
-	}
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { EnclosedObjectExporter.class };
+   }
 
-	@Override
-	public boolean postProcess(String id, Object object, boolean enclosed) {
-		return true;
-	}
+   @Override
+   public void importData() {
+   }
 
-	@Override
-	public String getId() {
-		return IMPORTER_ID;
-	}
+   @Override
+   public Object importEnclosedObject(EnclosedItemProperty property, boolean registerImportedObject) {
+      BasicObjectImporter importer = objectImporterFactory.create(importSupervisor, property);
+      Object imported = importer.importObject();
+      return imported;
+   }
 
-	
+   @Override
+   public void importReference(ImportItemConfig itemConfig) {
+   }
+
+   @Override
+   public boolean postProcess(String id, Object object, boolean enclosed) {
+      return true;
+   }
+
+   @Override
+   public String getId() {
+      return IMPORTER_ID;
+   }
+
 }

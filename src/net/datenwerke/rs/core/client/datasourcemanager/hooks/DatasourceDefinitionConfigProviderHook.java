@@ -14,21 +14,20 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 
 public interface DatasourceDefinitionConfigProviderHook extends Hook {
 
-	boolean consumes(DatasourceDefinitionDto dsd);
-	
-	Collection<? extends MainPanelView> getAdminViews(
-			DatasourceDefinitionDto dsd);
+   boolean consumes(DatasourceDefinitionDto dsd);
 
-	Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs();
+   Collection<? extends MainPanelView> getAdminViews(DatasourceDefinitionDto dsd);
 
-	Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass();
+   Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs();
 
-	String getDatasourceName();
+   Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass();
 
-	AbstractDatasourceManagerNodeDto instantiateDatasource();
+   String getDatasourceName();
 
-	ImageResource getDatasourceIcon();
+   AbstractDatasourceManagerNodeDto instantiateDatasource();
 
-	boolean isAvailable();
+   ImageResource getDatasourceIcon();
+
+   boolean isAvailable();
 
 }

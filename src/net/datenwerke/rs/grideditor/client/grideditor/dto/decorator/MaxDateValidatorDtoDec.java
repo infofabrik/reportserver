@@ -12,22 +12,21 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxDateValidatorDto;
  */
 public class MaxDateValidatorDtoDec extends MaxDateValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MaxDateValidatorDtoDec() {
+      super();
+   }
 
-	public MaxDateValidatorDtoDec() {
-		super();
-	}
-
-	@Override
-	public Validator<?> getValidator() {
-		MaxDateValidator maxDateValidator = new MaxDateValidator(getMaxDate());
-		maxDateValidator.setMessages(new MaxDateMessages() {
-			@Override
-			public String dateMaxText(String max) {
-				return getErrorMsg();
-			}
-		});
-		return maxDateValidator;
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MaxDateValidator maxDateValidator = new MaxDateValidator(getMaxDate());
+      maxDateValidator.setMessages(new MaxDateMessages() {
+         @Override
+         public String dateMaxText(String max) {
+            return getErrorMsg();
+         }
+      });
+      return maxDateValidator;
+   }
 }

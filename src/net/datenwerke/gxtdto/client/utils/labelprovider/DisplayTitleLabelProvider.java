@@ -7,9 +7,9 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class DisplayTitleLabelProvider<D extends Dto> implements LabelProvider<D> {
 
-	@Override
-	public String getLabel(D item) {
-		return null == item ? BaseMessages.INSTANCE.unknown() : item.toDisplayTitle();
-	}
+   @Override
+   public String getLabel(D item) {
+      return null == item ? BaseMessages.INSTANCE.unknown() : item.toDisplayTitle();
+   }
 
 }

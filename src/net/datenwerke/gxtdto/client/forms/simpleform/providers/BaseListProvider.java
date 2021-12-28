@@ -10,11 +10,10 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.lists.SFF
  */
 public abstract class BaseListProvider extends FormFieldProviderHookImpl {
 
-	
-	public boolean isMultiSelect(){
-		if(configs[0] instanceof SFFCList)
-			return ((SFFCList)configs[0]).isMultiselect();
-		return ((SFFCSimpleList)configs[0]).isMultiselect();
-	}
-	
+   public boolean isMultiSelect() {
+      if (configs[0] instanceof SFFCList)
+         return ((SFFCList) configs[0]).isMultiselect();
+      return ((SFFCSimpleList) configs[0]).isMultiselect();
+   }
+
 }

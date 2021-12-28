@@ -33,7 +33,7 @@ public class ScpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return ScpUiModule.NAME;
@@ -53,5 +53,5 @@ public class ScpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

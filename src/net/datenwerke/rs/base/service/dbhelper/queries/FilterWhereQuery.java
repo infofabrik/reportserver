@@ -8,29 +8,27 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.queryconditions.QryC
 
 public class FilterWhereQuery extends CompositeQuery {
 
-	private QueryBuilder queryBuilder;
+   private QueryBuilder queryBuilder;
 
+   public FilterWhereQuery(Query nestedQuery, QueryBuilder queryBuilder, ColumnNamingService columnNamingService) {
+      super(nestedQuery);
+      this.queryBuilder = queryBuilder;
+      this.columnNamingService = columnNamingService;
+   }
 
-	public FilterWhereQuery(Query nestedQuery, QueryBuilder queryBuilder, ColumnNamingService columnNamingService) {
-		super(nestedQuery);
-		this.queryBuilder = queryBuilder;
-		this.columnNamingService = columnNamingService;
-	}
-	
-	
-	@Override
-	public void appendToBuffer(StringBuffer buf) {
-		buf.append("SELECT * FROM (");
-		nestedQuery.appendToBuffer(buf);
-		buf.append(") filterQry ");
-		buf.append(" WHERE ");
-		
-		Iterator<QryCondition> it = queryBuilder.getConditionsWhere().iterator();
-		while(it.hasNext()){
-			it.next().appendToBuffer(buf, columnNamingService);
-			if(it.hasNext())
-				buf.append(" AND ");
-		}
-	}
+   @Override
+   public void appendToBuffer(StringBuffer buf) {
+      buf.append("SELECT * FROM (");
+      nestedQuery.appendToBuffer(buf);
+      buf.append(") filterQry ");
+      buf.append(" WHERE ");
+
+      Iterator<QryCondition> it = queryBuilder.getConditionsWhere().iterator();
+      while (it.hasNext()) {
+         it.next().appendToBuffer(buf, columnNamingService);
+         if (it.hasNext())
+            buf.append(" AND ");
+      }
+   }
 
 }

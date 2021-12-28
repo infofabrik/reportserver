@@ -20,55 +20,52 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class JxlsReportFileDownloadToolbarConfiguratorHooker implements	MainPanelViewToolbarConfiguratorHook {
-	
-	private final ToolbarService toolbarUtils;
-	private final UtilsUIService utilsUIService;
+public class JxlsReportFileDownloadToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {
 
-	@Inject
-	public JxlsReportFileDownloadToolbarConfiguratorHooker(
-			ToolbarService toolbarUtils,
-			UtilsUIService utilsUIService
-		) {
-			this.toolbarUtils = toolbarUtils;
-			this.utilsUIService = utilsUIService;
-	}
-	
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof JxlsReportDto))
-			return;
-		if(! (view instanceof FormView))
-			return;
+   private final ToolbarService toolbarUtils;
+   private final UtilsUIService utilsUIService;
 
-		final JxlsReportDto report = (JxlsReportDto) selectedNode;
-		
-		   
-		/* add parameter */
-		DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(BaseMessages.INSTANCE.download(), BaseIcon.FILE_PICTURE_O); 
-		createPreviewBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(null == report.getReportFile()){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded()).show();
-					return;
-				}
-				
-				String id = String.valueOf(report.getId());
-				String url = GWT.getModuleBaseURL() + "jxlsReportDownload?id=" + id; //$NON-NLS-1$
-				ClientDownloadHelper.triggerDownload(url);
-			}
-		});
+   @Inject
+   public JxlsReportFileDownloadToolbarConfiguratorHooker(ToolbarService toolbarUtils, UtilsUIService utilsUIService) {
+      this.toolbarUtils = toolbarUtils;
+      this.utilsUIService = utilsUIService;
+   }
 
-		
-		toolbar.add(createPreviewBtn);
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof JxlsReportDto))
+         return;
+      if (!(view instanceof FormView))
+         return;
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
+      final JxlsReportDto report = (JxlsReportDto) selectedNode;
 
-	}
+      /* add parameter */
+      DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(BaseMessages.INSTANCE.download(),
+            BaseIcon.FILE_PICTURE_O);
+      createPreviewBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (null == report.getReportFile()) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded())
+                     .show();
+               return;
+            }
+
+            String id = String.valueOf(report.getId());
+            String url = GWT.getModuleBaseURL() + "jxlsReportDownload?id=" + id; //$NON-NLS-1$
+            ClientDownloadHelper.triggerDownload(url);
+         }
+      });
+
+      toolbar.add(createPreviewBtn);
+   }
+
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+
+   }
 
 }

@@ -5,5 +5,5 @@ import net.datenwerke.rs.base.client.datasources.config.DatabaseDatasourceConfig
 
 public interface SFFCDatasourceSpecificConfig extends SimpleFormFieldConfiguration {
 
-	public DatabaseSpecificFieldConfigExecution getConfigExecution();
+   public DatabaseSpecificFieldConfigExecution getConfigExecution();
 }

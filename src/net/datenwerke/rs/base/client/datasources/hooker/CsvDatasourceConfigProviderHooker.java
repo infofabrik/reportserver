@@ -20,67 +20,62 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class CsvDatasourceConfigProviderHooker implements
-		DatasourceDefinitionConfigProviderHook {
+public class CsvDatasourceConfigProviderHooker implements DatasourceDefinitionConfigProviderHook {
 
-	private final Provider<CsvDatasourceConfigConfigurator> configurator;
-	private final Provider<CsvDatasourceForm> formProvider;
-	
-	@Inject
-	public CsvDatasourceConfigProviderHooker(
-		Provider<CsvDatasourceConfigConfigurator> configurator,
-		Provider<CsvDatasourceForm> formProvider
-		){
-		
-		/* store objects */
-		this.configurator = configurator;
-		this.formProvider = formProvider;
-	}
-	
-	@Override
-	public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
-		Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map =
-			new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
-				
-		map.put(CsvDatasourceDto.class, configurator);
-		
-		return map;
-	}
+   private final Provider<CsvDatasourceConfigConfigurator> configurator;
+   private final Provider<CsvDatasourceForm> formProvider;
 
-	@Override
-	public boolean consumes(DatasourceDefinitionDto dsd) {
-		return dsd instanceof CsvDatasourceDto;
-	}
+   @Inject
+   public CsvDatasourceConfigProviderHooker(Provider<CsvDatasourceConfigConfigurator> configurator,
+         Provider<CsvDatasourceForm> formProvider) {
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(
-			DatasourceDefinitionDto dsd) {
-		return Collections.singleton(formProvider.get());
-	}
+      /* store objects */
+      this.configurator = configurator;
+      this.formProvider = formProvider;
+   }
 
-	@Override
-	public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
-		return CsvDatasourceDto.class;
-	}
+   @Override
+   public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
+      Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map = new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
 
-	@Override
-	public String getDatasourceName() {
-		return BaseDatasourceMessages.INSTANCE.csvDatasourceTypeName();
-	}
+      map.put(CsvDatasourceDto.class, configurator);
 
-	@Override
-	public AbstractDatasourceManagerNodeDto instantiateDatasource() {
-		return new CsvDatasourceDto();
-	}
+      return map;
+   }
 
-	@Override
-	public ImageResource getDatasourceIcon() {
-		return BaseIcon.fromFileExtension("csv").toImageResource();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public boolean consumes(DatasourceDefinitionDto dsd) {
+      return dsd instanceof CsvDatasourceDto;
+   }
+
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasourceDefinitionDto dsd) {
+      return Collections.singleton(formProvider.get());
+   }
+
+   @Override
+   public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
+      return CsvDatasourceDto.class;
+   }
+
+   @Override
+   public String getDatasourceName() {
+      return BaseDatasourceMessages.INSTANCE.csvDatasourceTypeName();
+   }
+
+   @Override
+   public AbstractDatasourceManagerNodeDto instantiateDatasource() {
+      return new CsvDatasourceDto();
+   }
+
+   @Override
+   public ImageResource getDatasourceIcon() {
+      return BaseIcon.fromFileExtension("csv").toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 
 }

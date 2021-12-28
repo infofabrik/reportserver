@@ -18,38 +18,35 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManager
 import net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.DadgetNodeDto2PosoMap;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.DashboardFolderDto2PosoMap;
 
-public class DadgetsTreeProvider implements Provider<ManagerHelperTree>{
+public class DadgetsTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final TreeDBUIService treeDBUIService;
-	private final DashboardTreeLoaderDao treeLoader;
-	private final DashboardTreeManagerDao treeManager;
-	private final ManagerHelperTreeFactory treeFactory;
-	
-	@Inject
-	public DadgetsTreeProvider(
-		TreeDBUIService treeDBUIService,	
-		DashboardTreeLoaderDao treeLoader,
-		DashboardTreeManagerDao treeManager,
-		ManagerHelperTreeFactory treeFactory
-		){
-		
-		this.treeDBUIService = treeDBUIService;
-		this.treeLoader = treeLoader;
-		this.treeManager = treeManager;
-		this.treeFactory = treeFactory;
-	}
+   private final TreeDBUIService treeDBUIService;
+   private final DashboardTreeLoaderDao treeLoader;
+   private final DashboardTreeManagerDao treeManager;
+   private final ManagerHelperTreeFactory treeFactory;
 
-	public ManagerHelperTree get() {
-		/* store */
-		List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
-		filters.add(new DashboardFolderDto2PosoMap());
-		filters.add(new DadgetNodeDto2PosoMap());
-		EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDashboardManagerNodeDto.class, treeLoader, false, filters);
-		
-		/* build tree */
-		final ManagerHelperTree tree = treeFactory.create(DashboardUiModule.class, store, treeLoader, treeManager);
-		tree.configureIconProvider();
+   @Inject
+   public DadgetsTreeProvider(TreeDBUIService treeDBUIService, DashboardTreeLoaderDao treeLoader,
+         DashboardTreeManagerDao treeManager, ManagerHelperTreeFactory treeFactory) {
 
-		return tree;
-	}
+      this.treeDBUIService = treeDBUIService;
+      this.treeLoader = treeLoader;
+      this.treeManager = treeManager;
+      this.treeFactory = treeFactory;
+   }
+
+   public ManagerHelperTree get() {
+      /* store */
+      List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
+      filters.add(new DashboardFolderDto2PosoMap());
+      filters.add(new DadgetNodeDto2PosoMap());
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDashboardManagerNodeDto.class, treeLoader, false,
+            filters);
+
+      /* build tree */
+      final ManagerHelperTree tree = treeFactory.create(DashboardUiModule.class, store, treeLoader, treeManager);
+      tree.configureIconProvider();
+
+      return tree;
+   }
 }

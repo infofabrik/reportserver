@@ -1,6 +1,5 @@
 package net.datenwerke.rs.legacysaiku.server.rest.resources;
 
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.InputStream;
@@ -27,35 +26,31 @@ import org.legacysaiku.web.svg.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 @Path("/legacysaiku/{username}/export")
 @XmlAccessorType(XmlAccessType.NONE)
 public class ExporterResource {
 
-	private static final Logger log = LoggerFactory.getLogger(ExporterResource.class);
+   private static final Logger log = LoggerFactory.getLogger(ExporterResource.class);
 
-	private static final String PREFIX_PARAMETER = "param";
+   private static final String PREFIX_PARAMETER = "param";
 
-	private ISaikuRepository repository;
+   private ISaikuRepository repository;
 
-	private QueryResource queryResource;
+   private QueryResource queryResource;
 
-	public void setQueryResource(QueryResource qr){
-		this.queryResource = qr;
-	}
+   public void setQueryResource(QueryResource qr) {
+      this.queryResource = qr;
+   }
 
-	public void setRepository(ISaikuRepository repository){
-		this.repository = repository;
-	}
+   public void setRepository(ISaikuRepository repository) {
+      this.repository = repository;
+   }
 
-
-	@GET
-	@Produces({"application/json" })
-	@Path("/saiku/xls")
-	public Response exportExcel(@QueryParam("file") String file, 
-			@QueryParam("formatter") String formatter,
-			@Context HttpServletRequest servletRequest) 
-	{
+   @GET
+   @Produces({ "application/json" })
+   @Path("/saiku/xls")
+   public Response exportExcel(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @Context HttpServletRequest servletRequest) {
 //		try {
 //			Response f = repository.getResource(file);
 //			String fileContent = new String( (byte[]) f.getEntity());
@@ -68,16 +63,14 @@ public class ExporterResource {
 //			log.error("Error exporting XLS for file: " + file, e);
 //			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
 //		}
-		throw new RuntimeException("not implemented");
-	}
+      throw new RuntimeException("not implemented");
+   }
 
-	@GET
-	@Produces({"application/json" })
-	@Path("/saiku/csv")
-	public Response exportCsv(@QueryParam("file") String file, 
-			@QueryParam("formatter") String formatter,
-			@Context HttpServletRequest servletRequest) 
-	{
+   @GET
+   @Produces({ "application/json" })
+   @Path("/saiku/csv")
+   public Response exportCsv(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @Context HttpServletRequest servletRequest) {
 //		try {
 //			Response f = repository.getResource(file);
 //			String fileContent = (String) f.getEntity();
@@ -90,16 +83,14 @@ public class ExporterResource {
 //			log.error("Error exporting CSV for file: " + file, e);
 //			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
 //		}
-		throw new RuntimeException("not implemented");
-	}
+      throw new RuntimeException("not implemented");
+   }
 
-	@GET
-	@Produces({"application/json" })
-	@Path("/saiku/json")
-	public Response exportJson(@QueryParam("file") String file, 
-			@QueryParam("formatter") String formatter,
-			@Context HttpServletRequest servletRequest) 
-	{
+   @GET
+   @Produces({ "application/json" })
+   @Path("/saiku/json")
+   public Response exportJson(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @Context HttpServletRequest servletRequest) {
 //		try {
 //			Response f = repository.getResource(file);
 //			String fileContent = (String) f.getEntity();
@@ -112,84 +103,78 @@ public class ExporterResource {
 //			log.error("Error exporting CSV for file: " + file, e);
 //			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
 //		}
-		throw new RuntimeException("not implemented");
-	}
+      throw new RuntimeException("not implemented");
+   }
 
-	@POST
-	@Produces({"image/*" })
-	@Path("/saiku/chart")
-	public Response exportChart(
-			@FormParam("type") @DefaultValue("png")  String type,
-			@FormParam("svg") String svg,
-			@FormParam("size") Integer size) 
-	{
-		try {
-			final String imageType = type.toUpperCase();
-			Converter converter = Converter.byType(imageType);
-			if (converter == null)
-			{
-				throw new Exception("Image convert is null");
-			}
+   @POST
+   @Produces({ "image/*" })
+   @Path("/saiku/chart")
+   public Response exportChart(@FormParam("type") @DefaultValue("png") String type, @FormParam("svg") String svg,
+         @FormParam("size") Integer size) {
+      try {
+         final String imageType = type.toUpperCase();
+         Converter converter = Converter.byType(imageType);
+         if (converter == null) {
+            throw new Exception("Image convert is null");
+         }
 
+         // resp.setContentType(converter.getContentType());
+         // resp.setHeader("Content-disposition", "attachment; filename=chart." +
+         // converter.getExtension());
+         // final Integer size = req.getParameter("size") != null?
+         // Integer.parseInt(req.getParameter("size")) : null;
+         // final String svgDocument = req.getParameter("svg");
+         // if (svgDocument == null)
+         // {
+         // resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'svg'
+         // parameter");
+         // return;
+         // }
+         if (StringUtils.isBlank(svg)) {
+            throw new Exception("Missing 'svg' parameter");
+         }
+         final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
+         final ByteArrayOutputStream out = new ByteArrayOutputStream();
+         converter.convert(in, out, size);
+         out.flush();
+         byte[] doc = out.toByteArray();
+         return Response.ok(doc).type(converter.getContentType())
+               .header("content-disposition", "attachment; filename = chart." + converter.getExtension())
+               .header("content-length", doc.length).build();
+      } catch (Exception e) {
+         log.error("Error exporting Chart to  " + type, e);
+         return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      }
+   }
 
-			//		       resp.setContentType(converter.getContentType());
-			//		       resp.setHeader("Content-disposition", "attachment; filename=chart." + converter.getExtension());
-			//		       final Integer size = req.getParameter("size") != null? Integer.parseInt(req.getParameter("size")) : null;
-			//		       final String svgDocument = req.getParameter("svg");
-			//		       if (svgDocument == null)
-			//		       {
-			//		           resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'svg' parameter");
-			//		           return;
-			//		       }
-			if (StringUtils.isBlank(svg)) {
-				throw new Exception("Missing 'svg' parameter");
-			}
-			final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			converter.convert(in, out, size);
-			out.flush();
-			byte[] doc = out.toByteArray();
-			return Response.ok(doc).type(converter.getContentType()).header(
-					"content-disposition",
-					"attachment; filename = chart." + converter.getExtension()).header(
-							"content-length",doc.length).build();
-		} catch (Exception e) {
-			log.error("Error exporting Chart to  " + type, e);
-			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+   private Map<String, String> getParameters(HttpServletRequest req) {
 
+      Map<String, String> queryParams = new HashMap<String, String>();
+      if (req != null) {
+         // ... and the query parameters
+         // We identify any pathParams starting with "param" as query parameters
 
-	private Map<String, String> getParameters(HttpServletRequest req) {
+         // FIXME we should probably be able to have array params as well
+         Enumeration<String> enumeration = req.getParameterNames();
+         while (enumeration.hasMoreElements()) {
+            String param = (String) enumeration.nextElement();
+            String value = req.getParameter(param);
+            if (param.toLowerCase().startsWith(PREFIX_PARAMETER)) {
+               param = param.substring(PREFIX_PARAMETER.length());
+               queryParams.put(param, value);
+            }
+         }
+      }
+      return queryParams;
+   }
 
-		Map<String, String> queryParams = new HashMap<String, String>();
-		if (req != null) {
-			// ... and the query parameters
-			// We identify any pathParams starting with "param" as query parameters 
+   private String replaceParameters(String query, Map<String, String> parameters) {
+      for (String parameter : parameters.keySet()) {
+         String value = parameters.get(parameter);
+         query = query.replaceAll("\\$\\{" + parameter + "\\}", value);
+      }
 
-			// FIXME we should probably be able to have array params as well
-			Enumeration<String> enumeration = req.getParameterNames();
-			while (enumeration.hasMoreElements()) {
-				String param = (String) enumeration.nextElement();
-				String value = req.getParameter(param);
-				if (param.toLowerCase().startsWith(PREFIX_PARAMETER))
-				{
-					param = param.substring(PREFIX_PARAMETER.length());
-					queryParams.put(param, value);
-				}
-			}
-		}
-		return queryParams;
-	}
-
-	private String replaceParameters(String query, Map<String,String> parameters) {
-		for (String parameter : parameters.keySet()) {
-			String value = parameters.get(parameter);
-			query = query.replaceAll("\\$\\{" + parameter + "\\}", value);
-		}
-
-		return query;
-	}
-
+      return query;
+   }
 
 }

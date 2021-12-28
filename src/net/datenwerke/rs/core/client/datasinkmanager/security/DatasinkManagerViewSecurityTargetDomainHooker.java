@@ -7,23 +7,22 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
-public class DatasinkManagerViewSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.SERVER.toImageResource();
-	}
+public class DatasinkManagerViewSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return DatasinksMessages.INSTANCE.datasinks();
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return DatasinksMessages.INSTANCE.datasinkPermissionModuleDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.SERVER.toImageResource();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new DatasinkManagerGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getName() {
+      return DatasinksMessages.INSTANCE.datasinks();
+   }
+
+   public String genericSecurityViewDomainHook_getDescription() {
+      return DatasinksMessages.INSTANCE.datasinkPermissionModuleDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new DatasinkManagerGenericTargetIdentifier();
+   }
 
 }

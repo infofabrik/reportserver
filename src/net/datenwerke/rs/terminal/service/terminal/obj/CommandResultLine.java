@@ -3,32 +3,29 @@ package net.datenwerke.rs.terminal.service.terminal.obj;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.terminal.client.terminal.dto",
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.terminal.client.terminal.dto", createDecorator = true)
 public class CommandResultLine extends CommandResultEntry {
-	
-	@ExposeToClient
-	private String line = "";
-	
-	public CommandResultLine() {
-	}
 
-	public CommandResultLine(String line) {
-		this.setLine(line);
-	}
+   @ExposeToClient
+   private String line = "";
 
-	public void setLine(String line) {
-		this.line = line;
-	}
+   public CommandResultLine() {
+   }
 
-	public String getLine() {
-		return line;
-	}
+   public CommandResultLine(String line) {
+      this.setLine(line);
+   }
 
-	@Override
-	public String toString() {
-		return line;
-	}
+   public void setLine(String line) {
+      this.line = line;
+   }
+
+   public String getLine() {
+      return line;
+   }
+
+   @Override
+   public String toString() {
+      return line;
+   }
 }

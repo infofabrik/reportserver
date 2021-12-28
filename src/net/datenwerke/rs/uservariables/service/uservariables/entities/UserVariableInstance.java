@@ -26,94 +26,91 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Entity
-@Table(name="USERVAR_INST")
+@Table(name = "USERVAR_INST")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.uservariables.client.uservariables.dto",
-	abstractDto=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.uservariables.client.uservariables.dto", abstractDto = true)
 abstract public class UserVariableInstance implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5940158658373392060L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -5940158658373392060L;
 
-	@ExposeToClient
-	@ManyToOne(targetEntity=UserVariableDefinition.class)
-	private UserVariableDefinition definition;
-	
-	@ExposeToClient
-	@ManyToOne
-	private AbstractUserManagerNode folk;
-	
-	@Version
-	private Long version;
+   @ExposeToClient
+   @ManyToOne(targetEntity = UserVariableDefinition.class)
+   private UserVariableDefinition definition;
 
-	@ExposeToClient(id=true)
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+   @ExposeToClient
+   @ManyToOne
+   private AbstractUserManagerNode folk;
 
-	public Long getId() {
-		return id;
-	}
+   @Version
+   private Long version;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getVersion() {
-		return version;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setDefinition(UserVariableDefinition definition) {
-		this.definition = definition;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public UserVariableDefinition getDefinition() {
-		return definition;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public final String getName() {
-		return definition.getName();
-	}
-	
-	public void setFolk(AbstractUserManagerNode folk) {
-		if(! ((folk instanceof User) || (folk instanceof OrganisationalUnit)) )
-			throw new IllegalArgumentException("User Variables may only be assigned to Users and OUs."); //$NON-NLS-1$
-		
-		this.folk = folk;
-	}
+   public void setDefinition(UserVariableDefinition definition) {
+      this.definition = definition;
+   }
 
-	public AbstractUserManagerNode getFolk() {
-		return folk;
-	}
-	
-	public abstract Object getVariableValue();
+   public UserVariableDefinition getDefinition() {
+      return definition;
+   }
 
-	@Override
-	public int hashCode() {
-		if (null == id)
-			return super.hashCode();
-		return id.hashCode();
-	}
+   public final String getName() {
+      return definition.getName();
+   }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (null == obj || !(obj instanceof ParameterInstance))
-			return false;
+   public void setFolk(AbstractUserManagerNode folk) {
+      if (!((folk instanceof User) || (folk instanceof OrganisationalUnit)))
+         throw new IllegalArgumentException("User Variables may only be assigned to Users and OUs."); //$NON-NLS-1$
 
-		ParameterInstance p = (ParameterInstance) obj;
-		if (null == p.getId())
-			return getId() == null;
+      this.folk = folk;
+   }
 
-		return p.getId().equals(getId());
-	}
+   public AbstractUserManagerNode getFolk() {
+      return folk;
+   }
+
+   public abstract Object getVariableValue();
+
+   @Override
+   public int hashCode() {
+      if (null == id)
+         return super.hashCode();
+      return id.hashCode();
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (null == obj || !(obj instanceof ParameterInstance))
+         return false;
+
+      ParameterInstance p = (ParameterInstance) obj;
+      if (null == p.getId())
+         return getId() == null;
+
+      return p.getId().equals(getId());
+   }
 
 }

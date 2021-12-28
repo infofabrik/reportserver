@@ -15,41 +15,43 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.Fil
 
 public class NumericalFieldValidator implements Validator<String> {
 
-	@Inject
-	protected static I18nToolsUIService i18nTools;
-	
-	@Override
-	public List<EditorError> validate(Editor<String> editor, String value) {
-		if(null == value)
-			return null;
-		
-		value = i18nTools.translateNumberFromUserToSystem(value);
-		
-		try{
-			if(value.contains("$") && value.contains("{") && value.contains("}"))
-				return null;
-			if(value.contains("*") || value.contains("?")){
-				if(! value.matches("^[0-9.,*?\\-]*$")){
-					List<EditorError> list = new ArrayList<EditorError>();
-					list.add(new DefaultEditorError(editor, FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
-					return list;
-				}
-				
-				if(value.contains(",") && value.contains(".")){
-					List<EditorError> list = new ArrayList<EditorError>();
-					list.add(new DefaultEditorError(editor, FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
-					return list;
-				}
-			} else 
-				NumberFormat.getDecimalFormat().parse(value);
-		} catch(NumberFormatException e){
-			List<EditorError> list = new ArrayList<EditorError>();
-			list.add(new DefaultEditorError(editor, FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
-			return list;
-		}
-		
-		
-		return null;
-	}
+   @Inject
+   protected static I18nToolsUIService i18nTools;
+
+   @Override
+   public List<EditorError> validate(Editor<String> editor, String value) {
+      if (null == value)
+         return null;
+
+      value = i18nTools.translateNumberFromUserToSystem(value);
+
+      try {
+         if (value.contains("$") && value.contains("{") && value.contains("}"))
+            return null;
+         if (value.contains("*") || value.contains("?")) {
+            if (!value.matches("^[0-9.,*?\\-]*$")) {
+               List<EditorError> list = new ArrayList<EditorError>();
+               list.add(new DefaultEditorError(editor,
+                     FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
+               return list;
+            }
+
+            if (value.contains(",") && value.contains(".")) {
+               List<EditorError> list = new ArrayList<EditorError>();
+               list.add(new DefaultEditorError(editor,
+                     FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
+               return list;
+            }
+         } else
+            NumberFormat.getDecimalFormat().parse(value);
+      } catch (NumberFormatException e) {
+         List<EditorError> list = new ArrayList<EditorError>();
+         list.add(new DefaultEditorError(editor,
+               FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
+         return list;
+      }
+
+      return null;
+   }
 
 }

@@ -13,29 +13,28 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class UserNodeForceRemoveEventHandler implements EventHandler<ForceRemoveEntityEvent> {
 
-	private final TeamSpaceService tsService;
-	
-	@Inject
-	public UserNodeForceRemoveEventHandler(TeamSpaceService tsService) {
-		this.tsService = tsService;
-	}
+   private final TeamSpaceService tsService;
 
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		AbstractUserManagerNode userNode = (AbstractUserManagerNode) event.getObject();
-	
-		if(userNode instanceof User){
-			User user = (User) userNode;
-			
-			Collection<TeamSpace> ownedTs = tsService.getOwnedTeamSpaces(user);
-			if(null != ownedTs && ! ownedTs.isEmpty()){
-				for(TeamSpace teamspace : ownedTs){
-					teamspace.setOwner(null);
-					tsService.merge(teamspace);
-				}
-			}
-		}
-	}
-	
+   @Inject
+   public UserNodeForceRemoveEventHandler(TeamSpaceService tsService) {
+      this.tsService = tsService;
+   }
+
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      AbstractUserManagerNode userNode = (AbstractUserManagerNode) event.getObject();
+
+      if (userNode instanceof User) {
+         User user = (User) userNode;
+
+         Collection<TeamSpace> ownedTs = tsService.getOwnedTeamSpaces(user);
+         if (null != ownedTs && !ownedTs.isEmpty()) {
+            for (TeamSpace teamspace : ownedTs) {
+               teamspace.setOwner(null);
+               tsService.merge(teamspace);
+            }
+         }
+      }
+   }
 
 }

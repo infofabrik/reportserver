@@ -5,7 +5,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface PrepareReportModelForStorageOrExecutionHook extends Hook {
 
-	public boolean consumes(ReportDto report);
-	
-	public void prepareForExecutionOrStorage(ReportDto report, String executeToken);
+   public boolean consumes(ReportDto report);
+
+   public void prepareForExecutionOrStorage(ReportDto report, String executeToken);
 }

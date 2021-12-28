@@ -10,13 +10,14 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @HookConfig
 public interface ConditionProviderHook extends Hook {
 
-	public SimpleCondition provideConditionFor(Report report);
+   public SimpleCondition provideConditionFor(Report report);
 
-	public boolean consumes(String key);
+   public boolean consumes(String key);
 
-	public boolean execute(String key, String expression, User user, ReportExecuteJob rJob);
+   public boolean execute(String key, String expression, User user, ReportExecuteJob rJob);
 
-	public boolean isBeforeActions();
-	public boolean isBeforeJob();
-	
+   public boolean isBeforeActions();
+
+   public boolean isBeforeJob();
+
 }

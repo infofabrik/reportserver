@@ -8,19 +8,19 @@ import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig.DefaultInfoConfi
 
 public class RsDefaultInfoConfigAppearance implements DefaultInfoConfigAppearance {
 
-	  interface Template extends XTemplates {
-	    @XTemplate("<div class='rs-info-title'>{title}</div><div class='rs-info-msg'>{message}</div>")
-	    SafeHtml render(SafeHtml title, SafeHtml message);
-	  }
+   interface Template extends XTemplates {
+      @XTemplate("<div class='rs-info-title'>{title}</div><div class='rs-info-msg'>{message}</div>")
+      SafeHtml render(SafeHtml title, SafeHtml message);
+   }
 
-	  private Template template;
+   private Template template;
 
-	  public RsDefaultInfoConfigAppearance() {
-	    template = GWT.create(Template.class);
-	  }
+   public RsDefaultInfoConfigAppearance() {
+      template = GWT.create(Template.class);
+   }
 
-	  @Override
-	  public void render(SafeHtmlBuilder sb, SafeHtml title, SafeHtml message) {
-	    sb.append(template.render(title, message));
-	  }
+   @Override
+   public void render(SafeHtmlBuilder sb, SafeHtml title, SafeHtml message) {
+      sb.append(template.render(title, message));
+   }
 }

@@ -9,22 +9,23 @@ import net.datenwerke.rs.core.client.parameters.helper.ParameterFieldWrapperForF
 
 public class ScriptParameterParameterWrapper extends ParameterFieldWrapperForFrontend {
 
-	private ScriptParameterClientEditComponent configurator;
+   private ScriptParameterClientEditComponent configurator;
 
-	public ScriptParameterParameterWrapper(ParameterDefinitionDto definition, ParameterInstanceDto instance, Component component, int labelWidth ){
-		super(definition, instance, component, labelWidth, null);
-	}
-	
-	public ScriptParameterParameterWrapper(ParameterDefinitionDto definition, ParameterInstanceDto instance, Component component, int labelWidth, DefaultValueSetter defaultValueSetter){
-		super(definition, instance, component, labelWidth, defaultValueSetter);
-	}
-	
-	public void setScriptParameterConfigurator(
-			ScriptParameterClientEditComponent scriptParameterClientEditComponent) {
-		this.configurator = scriptParameterClientEditComponent;
-	}
+   public ScriptParameterParameterWrapper(ParameterDefinitionDto definition, ParameterInstanceDto instance,
+         Component component, int labelWidth) {
+      super(definition, instance, component, labelWidth, null);
+   }
 
-	public ScriptParameterClientEditComponent getConfigurator() {
-		return configurator;
-	}
+   public ScriptParameterParameterWrapper(ParameterDefinitionDto definition, ParameterInstanceDto instance,
+         Component component, int labelWidth, DefaultValueSetter defaultValueSetter) {
+      super(definition, instance, component, labelWidth, defaultValueSetter);
+   }
+
+   public void setScriptParameterConfigurator(ScriptParameterClientEditComponent scriptParameterClientEditComponent) {
+      this.configurator = scriptParameterClientEditComponent;
+   }
+
+   public ScriptParameterClientEditComponent getConfigurator() {
+      return configurator;
+   }
 }

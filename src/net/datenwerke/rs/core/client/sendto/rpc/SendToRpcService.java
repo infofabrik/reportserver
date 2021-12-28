@@ -15,9 +15,9 @@ import net.datenwerke.rs.core.client.sendto.SendToClientConfig;
 @RemoteServiceRelativePath("sendtorpc")
 public interface SendToRpcService extends RemoteService {
 
-	
-	public ArrayList<SendToClientConfig> loadClientConfigsFor(ReportDto report) throws ServerCallFailedException;
+   public ArrayList<SendToClientConfig> loadClientConfigsFor(ReportDto report) throws ServerCallFailedException;
 
-	String sendTo(ReportDto report, String executorToken, String id, String format, List<ReportExecutionConfigDto> formatConfig, Map<String, String> values) throws ServerCallFailedException;
+   String sendTo(ReportDto report, String executorToken, String id, String format,
+         List<ReportExecutionConfigDto> formatConfig, Map<String, String> values) throws ServerCallFailedException;
 
 }

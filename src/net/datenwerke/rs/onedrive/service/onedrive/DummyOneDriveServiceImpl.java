@@ -10,7 +10,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class DummyOneDriveServiceImpl implements OneDriveService {
 
-
    @Override
    public Optional<OneDriveDatasink> getDefaultDatasink() {
       return null;

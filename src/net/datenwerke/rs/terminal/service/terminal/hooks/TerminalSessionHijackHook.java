@@ -9,18 +9,17 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public interface TerminalSessionHijackHook extends Hook, Serializable {
 
-	AutocompleteResult autocomplete(TerminalSession terminalSession,
-			String command, int cursorPosition, boolean forceResult);
+   AutocompleteResult autocomplete(TerminalSession terminalSession, String command, int cursorPosition,
+         boolean forceResult);
 
-	CommandResult execute(TerminalSession terminalSession, String command);
+   CommandResult execute(TerminalSession terminalSession, String command);
 
-	boolean consumes(TerminalSession terminalSession, CommandResult result);
+   boolean consumes(TerminalSession terminalSession, CommandResult result);
 
-	CommandResult adapt(TerminalSession terminalSession, CommandResult result);
+   CommandResult adapt(TerminalSession terminalSession, CommandResult result);
 
-	CommandResult ctrlC(TerminalSession terminalSession);
+   CommandResult ctrlC(TerminalSession terminalSession);
 
-	boolean wantsToContinue(TerminalSession terminalSession, String command);
-
+   boolean wantsToContinue(TerminalSession terminalSession, String command);
 
 }

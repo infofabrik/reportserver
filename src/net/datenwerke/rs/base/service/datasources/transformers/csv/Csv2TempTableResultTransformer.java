@@ -16,26 +16,24 @@ import net.datenwerke.rs.resultcache.ResultCacheService;
 
 public class Csv2TempTableResultTransformer extends Csv2XTransformer<TempTableResult> {
 
-	@Inject
-	public Csv2TempTableResultTransformer(
-			DbPoolService dbPoolService,
-			DBHelperService dbHelperService, 
-			TempTableService tempTableService, 
-			TableModelDbHelper tableModelDbHelper, 
-			ResultCacheService resultCacheService
-			){
-		super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
-	}
+   @Inject
+   public Csv2TempTableResultTransformer(DbPoolService dbPoolService, DBHelperService dbHelperService,
+         TempTableService tempTableService, TableModelDbHelper tableModelDbHelper,
+         ResultCacheService resultCacheService) {
+      super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
+   }
 
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof CsvDatasource && dst.isAssignableFrom(TempTableResult.class));
-	}
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof CsvDatasource
+            && dst.isAssignableFrom(TempTableResult.class));
+   }
 
-	@Override
-	protected TempTableResult transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet, Class<TableDataSource> targetType) {
-		TempTableResult tempTableResult = (TempTableResult) r;
-		return tempTableResult;
-	}
+   @Override
+   protected TempTableResult transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider,
+         ParameterSet parameterSet, Class<TableDataSource> targetType) {
+      TempTableResult tempTableResult = (TempTableResult) r;
+      return tempTableResult;
+   }
 }

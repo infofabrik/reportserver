@@ -8,9 +8,9 @@ import com.google.inject.AbstractModule;
  */
 public class LateInitModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(LateInitStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(LateInitStartup.class).asEagerSingleton();
+   }
 
 }

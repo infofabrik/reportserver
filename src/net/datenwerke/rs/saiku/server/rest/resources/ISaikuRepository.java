@@ -1,6 +1,5 @@
 package net.datenwerke.rs.saiku.server.rest.resources;
 
-
 import java.util.List;
 
 import javax.ws.rs.DELETE;
@@ -16,43 +15,45 @@ import org.saiku.repository.IRepositoryObject;
 
 public interface ISaikuRepository {
 
-	/**
-	 * Get Saved Queries.
-	 * @return A list of SavedQuery Objects.
-	 */
-	@GET
-	@Produces({ "application/json" })
-	List<IRepositoryObject> getReposaasitory(
-		@QueryParam("path") String path, @QueryParam("type") String type);
+   /**
+    * Get Saved Queries.
+    * 
+    * @return A list of SavedQuery Objects.
+    */
+   @GET
+   @Produces({ "application/json" })
+   List<IRepositoryObject> getReposaasitory(@QueryParam("path") String path, @QueryParam("type") String type);
 
-	/**
-	 * Load a resource.
-	 * @param file - The name of the repository file to load.
-	 * @return A Repository File Object.
-	 */
-	@GET
-	@Produces({ "text/plain" })
-	@Path("/resource")
-	Response getRessdource(@QueryParam("file") String file);
+   /**
+    * Load a resource.
+    * 
+    * @param file - The name of the repository file to load.
+    * @return A Repository File Object.
+    */
+   @GET
+   @Produces({ "text/plain" })
+   @Path("/resource")
+   Response getRessdource(@QueryParam("file") String file);
 
-	/**
-	 * Save a resource.
-	 * @param file - The name of the repository file to load.
-	 * @param content - The content to save.
-	 * @return Status
-	 */
-	@POST
-	@Path("/resource")
-	Response saveRedfsource(@FormParam("file") String file,
-						  @FormParam("content") String content);
+   /**
+    * Save a resource.
+    * 
+    * @param file    - The name of the repository file to load.
+    * @param content - The content to save.
+    * @return Status
+    */
+   @POST
+   @Path("/resource")
+   Response saveRedfsource(@FormParam("file") String file, @FormParam("content") String content);
 
-	/**
-	 * Delete a resource.
-	 * @param file - The name of the repository file to load.
-	 * @return Status
-	 */
-	@DELETE
-	@Path("/resource")
-	Response deletesdResource(@QueryParam("file") String file);
+   /**
+    * Delete a resource.
+    * 
+    * @param file - The name of the repository file to load.
+    * @return Status
+    */
+   @DELETE
+   @Path("/resource")
+   Response deletesdResource(@QueryParam("file") String file);
 
 }

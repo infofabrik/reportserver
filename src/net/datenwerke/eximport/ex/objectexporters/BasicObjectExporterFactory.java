@@ -4,6 +4,6 @@ import net.datenwerke.eximport.ex.ExportSupervisor;
 
 public interface BasicObjectExporterFactory {
 
-	public BasicObjectExporter create(ExportSupervisor exportSupervisor, String id, Object toExport);
-	
+   public BasicObjectExporter create(ExportSupervisor exportSupervisor, String id, Object toExport);
+
 }

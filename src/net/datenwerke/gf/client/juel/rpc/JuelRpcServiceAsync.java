@@ -6,7 +6,6 @@ import net.datenwerke.gf.client.juel.dto.JuelResultDto;
 
 public interface JuelRpcServiceAsync {
 
-	void evaluateExpression(String expression,
-			AsyncCallback<JuelResultDto> callback);
+   void evaluateExpression(String expression, AsyncCallback<JuelResultDto> callback);
 
 }

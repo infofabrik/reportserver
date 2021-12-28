@@ -21,55 +21,52 @@ import net.datenwerke.rs.birt.client.reportengines.locale.BirtMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class BirtReportFileDownloadToolbarConfiguratorHooker implements	MainPanelViewToolbarConfiguratorHook {
-	
-	private final ToolbarService toolbarUtils;
-	private final UtilsUIService utilsUIService;
+public class BirtReportFileDownloadToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {
 
-	@Inject
-	public BirtReportFileDownloadToolbarConfiguratorHooker(
-			ToolbarService toolbarUtils,
-			UtilsUIService utilsUIService
-		) {
-			this.toolbarUtils = toolbarUtils;
-			this.utilsUIService = utilsUIService;
-	}
-	
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof BirtReportDto))
-			return;
-		if(! (view instanceof FormView))
-			return;
+   private final ToolbarService toolbarUtils;
+   private final UtilsUIService utilsUIService;
 
-		final BirtReportDto report = (BirtReportDto) selectedNode;
-		
-		   
-		/* add parameter */
-		DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(BirtMessages.INSTANCE.birtDownloadToolbarButtonText(), BaseIcon.FILE_PICTURE_O); 
-		createPreviewBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(null == report.getReportFile()){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded()).show();
-					return;
-				}
-				
-				String id = String.valueOf(report.getId());
-				String url = GWT.getModuleBaseURL() + "birtDownload?id=" + id; //$NON-NLS-1$
-				ClientDownloadHelper.triggerDownload(url);
-			}
-		});
+   @Inject
+   public BirtReportFileDownloadToolbarConfiguratorHooker(ToolbarService toolbarUtils, UtilsUIService utilsUIService) {
+      this.toolbarUtils = toolbarUtils;
+      this.utilsUIService = utilsUIService;
+   }
 
-		
-		toolbar.add(createPreviewBtn);
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof BirtReportDto))
+         return;
+      if (!(view instanceof FormView))
+         return;
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
+      final BirtReportDto report = (BirtReportDto) selectedNode;
 
-	}
+      /* add parameter */
+      DwTextButton createPreviewBtn = toolbarUtils
+            .createSmallButtonLeft(BirtMessages.INSTANCE.birtDownloadToolbarButtonText(), BaseIcon.FILE_PICTURE_O);
+      createPreviewBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (null == report.getReportFile()) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded())
+                     .show();
+               return;
+            }
+
+            String id = String.valueOf(report.getId());
+            String url = GWT.getModuleBaseURL() + "birtDownload?id=" + id; //$NON-NLS-1$
+            ClientDownloadHelper.triggerDownload(url);
+         }
+      });
+
+      toolbar.add(createPreviewBtn);
+   }
+
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+
+   }
 
 }

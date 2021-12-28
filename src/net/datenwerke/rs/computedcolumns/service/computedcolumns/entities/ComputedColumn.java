@@ -12,42 +12,40 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.base.service.reportengines.table.entities.AdditionalColumnSpec;
 
 @Entity
-@Table(name="COMPUTED_COLUMN")
+@Table(name = "COMPUTED_COLUMN")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.computedcolumns.client.computedcolumns.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.computedcolumns.client.computedcolumns.dto")
 public class ComputedColumn extends AdditionalColumnSpec {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6766016497691991076L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -6766016497691991076L;
 
-	@ExposeToClient(disableHtmlEncode=true)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String expression;
-	
-	/* @ExposeToClient -> is exposed by Column */
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description;
-	
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
+   @ExposeToClient(disableHtmlEncode = true)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String expression;
 
-	public String getExpression() {
-		return expression;
-	}
+   /* @ExposeToClient -> is exposed by Column */
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-	public String getDescription() {
-		return description;
-	}
+   public void setExpression(String expression) {
+      this.expression = expression;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	
+   public String getExpression() {
+      return expression;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
 }

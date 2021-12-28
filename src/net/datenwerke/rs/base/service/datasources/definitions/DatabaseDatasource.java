@@ -42,174 +42,164 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
  * 
  * <p>
  * 
- * </p> 
- *  
+ * </p>
+ * 
  *
  */
 @Entity
-@Table(name="DATABASE_DATASOURCE")
+@Table(name = "DATABASE_DATASOURCE")
 @Audited
-@GenerateDto(
-		dtoPackage="net.datenwerke.rs.base.client.datasources.dto",
-		poso2DtoPostProcessors=DatabaseDatasource2DtoPostProcessor.class,
-		additionalFields = {
-			@AdditionalField(name="hasPassword", type=Boolean.class),
-		},
-		icon="database"
-		)
-@InstanceDescription(
-		msgLocation = DatasourcesMessages.class,
-		objNameKey = "databaseDatasourceTypeName",
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto", poso2DtoPostProcessors = DatabaseDatasource2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasPassword", type = Boolean.class), }, icon = "database")
+@InstanceDescription(msgLocation = DatasourcesMessages.class, objNameKey = "databaseDatasourceTypeName",
 
-		icon = "database"
-		)
+      icon = "database")
 @Indexed
 public class DatabaseDatasource extends DatasourceDefinition implements ParameterAwareDatasource {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5532424176260294397L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5532424176260294397L;
 
+   @Inject
+   protected static Provider<PbeService> pbeServiceProvider;
 
-	@Inject
-	protected static Provider<PbeService> pbeServiceProvider;
+   @Inject
+   protected static Provider<ConnectionPoolConfigFactory> connectionConfigFactoryProvider;
 
-	@Inject
-	protected static Provider<ConnectionPoolConfigFactory> connectionConfigFactoryProvider;
+   @Inject
+   protected static Provider<DBHelperService> dbHelperServiceProvider;
 
-	@Inject
-	protected static Provider<DBHelperService> dbHelperServiceProvider;
+   @ExposeToClient
+   @Field
+   @Column(length = 1024)
+   private String url;
 
-	@ExposeToClient
-	@Field
-	@Column(length = 1024)
-	private String url;
+   @ExposeToClient
+   @Field
+   private String username;
 
-	@ExposeToClient
-	@Field
-	private String username;
+   @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
+   private String password;
 
-	@ExposeToClient(
-			exposeValueToClient=false,
-			mergeDtoValueBack=true
-			)
-	private String password;
-	
-	@ExposeToClient(disableHtmlEncode = true)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String jdbcProperties;
+   @ExposeToClient(disableHtmlEncode = true)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String jdbcProperties;
 
-	@ExposeToClient
-	private String databaseDescriptor;
+   @ExposeToClient
+   private String databaseDescriptor;
 
-	public String getUrl() {
-		return url;
-	}
+   public String getUrl() {
+      return url;
+   }
 
-	public void setUrl(String url) {
-		this.url = url;
-	}
+   public void setUrl(String url) {
+      this.url = url;
+   }
 
-	public String getUsername() {
-		return username;
-	}
+   public String getUsername() {
+      return username;
+   }
 
-	public void setUsername(String username) {
-		this.username = username;
-	}
+   public void setUsername(String username) {
+      this.username = username;
+   }
 
-	public String getPassword() {
-		if(null == password)
-			return null;
-		if("".equals(password))
-			return "";
+   public String getPassword() {
+      if (null == password)
+         return null;
+      if ("".equals(password))
+         return "";
 
-		EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
-		String decrypted = new String(encryptionService.decryptFromHex(password));
-		return decrypted;
-	}
+      EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
+      String decrypted = new String(encryptionService.decryptFromHex(password));
+      return decrypted;
+   }
 
-	public void setPassword(String password) {
-		if(null == password)
-			password = "";
+   public void setPassword(String password) {
+      if (null == password)
+         password = "";
 
-		EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
-		byte[] encrypted = encryptionService.encrypt(password);
+      EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
+      byte[] encrypted = encryptionService.encrypt(password);
 
-		this.password = new String(Hex.encodeHex(encrypted));
-	}
-	
-	public String getJdbcProperties() {
-		return jdbcProperties;
-	}
-	public void setJdbcProperties(String jdbcProperties) {
-		this.jdbcProperties = jdbcProperties;
-	}
+      this.password = new String(Hex.encodeHex(encrypted));
+   }
 
-	public void setDatabaseDescriptor(String databaseDescriptor) {
-		this.databaseDescriptor = databaseDescriptor;
-	}
+   public String getJdbcProperties() {
+      return jdbcProperties;
+   }
 
-	public String getDatabaseDescriptor() {
-		return databaseDescriptor;
-	}
+   public void setJdbcProperties(String jdbcProperties) {
+      this.jdbcProperties = jdbcProperties;
+   }
 
-	@Override @Transient
-	public String escapeString(Injector injector, String string){
-		if(null == getDatabaseDescriptor())
-			return string;
+   public void setDatabaseDescriptor(String databaseDescriptor) {
+      this.databaseDescriptor = databaseDescriptor;
+   }
 
-		DBHelperService dbHelperService = injector.getInstance(DBHelperService.class);
-		DatabaseHelper dbHelper = dbHelperService.getDatabaseHelper(getDatabaseDescriptor());
+   public String getDatabaseDescriptor() {
+      return databaseDescriptor;
+   }
 
-		return dbHelper.escapeString(string);
-	}
+   @Override
+   @Transient
+   public String escapeString(Injector injector, String string) {
+      if (null == getDatabaseDescriptor())
+         return string;
 
-	@Override @Transient
-	public DatasourceDefinitionConfig createConfigObject() {
-		return new DatabaseDatasourceConfig();
-	}
+      DBHelperService dbHelperService = injector.getInstance(DBHelperService.class);
+      DatabaseHelper dbHelper = dbHelperService.getDatabaseHelper(getDatabaseDescriptor());
 
-	public ConnectionPoolConfig getConnectionConfig() {
-		ConnectionPoolConfigImpl config = connectionConfigFactoryProvider.get().create(getId());
+      return dbHelper.escapeString(string);
+   }
 
-		config.setUsername(getUsername());
-		config.setPassword(getPassword());
-		config.setJdbcUrl(getUrl());
-		config.setDatasourceId(getId());
-		config.setDatasourceName(getName());
-		config.setDriver(dbHelperServiceProvider.get().getDatabaseHelper(getDatabaseDescriptor()).getDriver());
-		config.setLastUpdated(getLastUpdated());
-		config.setJdbcProperties(parseJdbcProperties());
+   @Override
+   @Transient
+   public DatasourceDefinitionConfig createConfigObject() {
+      return new DatabaseDatasourceConfig();
+   }
 
-		return config;
-	}
-	
-	protected Properties parseJdbcProperties() {
-		if(null != jdbcProperties && ! "".equals(jdbcProperties.trim())){
-			Properties props = new Properties();
-			try {
-				props.load(new StringReader(jdbcProperties));
-			} catch (IOException e) {
-				throw new IllegalStateException("Could not parse jdbc jdbcProperties.", e);
-			}
-			return props;
-		}
-		return null;
-	}
+   public ConnectionPoolConfig getConnectionConfig() {
+      ConnectionPoolConfigImpl config = connectionConfigFactoryProvider.get().create(getId());
 
-	@Override
-	public boolean usesParameter(DatasourceDefinitionConfig config, String key) {
-		if(null == config)
-			return false;
+      config.setUsername(getUsername());
+      config.setPassword(getPassword());
+      config.setJdbcUrl(getUrl());
+      config.setDatasourceId(getId());
+      config.setDatasourceName(getName());
+      config.setDriver(dbHelperServiceProvider.get().getDatabaseHelper(getDatabaseDescriptor()).getDriver());
+      config.setLastUpdated(getLastUpdated());
+      config.setJdbcProperties(parseJdbcProperties());
 
-		String query = ((DatabaseDatasourceConfig)config).getQuery();
-		if(null == query)
-			return false;
+      return config;
+   }
 
-		return query.contains(key);
-	}
+   protected Properties parseJdbcProperties() {
+      if (null != jdbcProperties && !"".equals(jdbcProperties.trim())) {
+         Properties props = new Properties();
+         try {
+            props.load(new StringReader(jdbcProperties));
+         } catch (IOException e) {
+            throw new IllegalStateException("Could not parse jdbc jdbcProperties.", e);
+         }
+         return props;
+      }
+      return null;
+   }
+
+   @Override
+   public boolean usesParameter(DatasourceDefinitionConfig config, String key) {
+      if (null == config)
+         return false;
+
+      String query = ((DatabaseDatasourceConfig) config).getQuery();
+      if (null == query)
+         return false;
+
+      return query.contains(key);
+   }
 
 }

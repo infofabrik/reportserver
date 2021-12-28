@@ -8,17 +8,15 @@ import net.datenwerke.security.service.genrights.usermanager.UserManagerAdminVie
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 
 /**
- * Transport object to identify the corresponding generic security target. 
+ * Transport object to identify the corresponding generic security target.
  *
  */
-@GenericTargetIdentifierMapper(UserManagerAdminViewSecurityTarget.class) 
-public class UserManagerAdminViewGenericTargetIdentifier implements GenericTargetIdentifier{
+@GenericTargetIdentifierMapper(UserManagerAdminViewSecurityTarget.class)
+public class UserManagerAdminViewGenericTargetIdentifier implements GenericTargetIdentifier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8129331353993021497L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8129331353993021497L;
 
-
-	
 }

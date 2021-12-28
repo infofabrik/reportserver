@@ -9,19 +9,19 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceMan
 
 public class DatasourceManagerExportDao extends Dao {
 
-	private final DatasourceManagerExportRpcServiceAsync rpcService;
+   private final DatasourceManagerExportRpcServiceAsync rpcService;
 
-	@Inject
-	public DatasourceManagerExportDao(DatasourceManagerExportRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void quickExport(AbstractDatasourceManagerNodeDto dto, AsyncCallback<Void> callback){
-		rpcService.quickExport(dto, transformAndKeepCallback(callback));
-	}
-	
-	public void loadResult(AsyncCallback<String> callback){
-		rpcService.loadResult(transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public DatasourceManagerExportDao(DatasourceManagerExportRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void quickExport(AbstractDatasourceManagerNodeDto dto, AsyncCallback<Void> callback) {
+      rpcService.quickExport(dto, transformAndKeepCallback(callback));
+   }
+
+   public void loadResult(AsyncCallback<String> callback) {
+      rpcService.loadResult(transformAndKeepCallback(callback));
+   }
+
 }

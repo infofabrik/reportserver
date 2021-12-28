@@ -12,32 +12,29 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class ThemeUiStartup {
 
-	@Inject
-	public ThemeUiStartup(	HookHandlerService hookHandlerService, 
-			final WaitOnEventUIService waitOnEventService,
-			final ThemeDao themeDao,
-			final ThemeUiService themeService
-		) {
-		
-		SynchronousCallbackOnEventTrigger callback = new SynchronousCallbackOnEventTrigger() {
-			@Override
-			public void execute(final WaitOnEventTicket ticket) {
-				themeDao.loadUiTheme(new RsAsyncCallback<ThemeUiConfig>(){
-					public void onSuccess(ThemeUiConfig result) {
-						themeService.setThemeConfig(result);
-						waitOnEventService.signalProcessingDone(ticket);
-					};
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						super.onFailure(caught);
-						waitOnEventService.signalProcessingDone(ticket);
-					}
-				});
-			}
-		};
-		
-		waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, callback);
-		waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_BEFORE_AUTH_WINDOW_LOAD, callback);
-	}
+   @Inject
+   public ThemeUiStartup(HookHandlerService hookHandlerService, final WaitOnEventUIService waitOnEventService,
+         final ThemeDao themeDao, final ThemeUiService themeService) {
+
+      SynchronousCallbackOnEventTrigger callback = new SynchronousCallbackOnEventTrigger() {
+         @Override
+         public void execute(final WaitOnEventTicket ticket) {
+            themeDao.loadUiTheme(new RsAsyncCallback<ThemeUiConfig>() {
+               public void onSuccess(ThemeUiConfig result) {
+                  themeService.setThemeConfig(result);
+                  waitOnEventService.signalProcessingDone(ticket);
+               };
+
+               @Override
+               public void onFailure(Throwable caught) {
+                  super.onFailure(caught);
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+         }
+      };
+
+      waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, callback);
+      waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_BEFORE_AUTH_WINDOW_LOAD, callback);
+   }
 }

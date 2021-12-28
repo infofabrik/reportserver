@@ -9,8 +9,8 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewTool
  */
 public interface VariantStorerHook extends ReportExecutorViewToolbarHook {
 
-	void setEventHandler(ExecutorEventHandler eventHandler);
+   void setEventHandler(ExecutorEventHandler eventHandler);
 
-	void setConfig(VariantStorerConfig variantStorerConfig);
+   void setConfig(VariantStorerConfig variantStorerConfig);
 
 }

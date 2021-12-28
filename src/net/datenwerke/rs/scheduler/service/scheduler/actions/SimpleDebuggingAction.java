@@ -5,10 +5,9 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
 public class SimpleDebuggingAction extends AbstractAction {
 
-	@Override
-	public void execute(AbstractJob abstractJob) {
-		System.out.println("executed job: " + abstractJob.getClass().getName()); //$NON-NLS-1$
-	}
-
+   @Override
+   public void execute(AbstractJob abstractJob) {
+      System.out.println("executed job: " + abstractJob.getClass().getName()); //$NON-NLS-1$
+   }
 
 }

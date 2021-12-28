@@ -48,12 +48,13 @@ public class DatasinkImporterMainPropertiesPanel extends ImporterMainPropertiesP
    protected void configureForm() {
       super.configureForm();
 
-      parentKey = form.addField(DatasinkFolderDto.class, DatasinksMessages.INSTANCE.importWhereTo(), new SFFCGenericTreeNode() {
-         @Override
-         public UITree getTreeForPopup() {
-            return treeProvider.get();
-         }
-      });
+      parentKey = form.addField(DatasinkFolderDto.class, DatasinksMessages.INSTANCE.importWhereTo(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            });
    }
 
    @Override

@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.ParameterDadgetDto;
  */
 public class ParameterDadgetDtoDec extends ParameterDadgetDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public ParameterDadgetDtoDec() {
-		super();
-	}
-
+   public ParameterDadgetDtoDec() {
+      super();
+   }
 
 }

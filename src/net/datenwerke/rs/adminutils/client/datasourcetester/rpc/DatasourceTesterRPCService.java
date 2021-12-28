@@ -9,5 +9,5 @@ import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 @RemoteServiceRelativePath("convenience_datasourcetester")
 public interface DatasourceTesterRPCService extends RemoteService {
 
-	public boolean testConnection(DatabaseDatasourceDto databaseDto) throws ServerCallFailedException;
+   public boolean testConnection(DatabaseDatasourceDto databaseDto) throws ServerCallFailedException;
 }

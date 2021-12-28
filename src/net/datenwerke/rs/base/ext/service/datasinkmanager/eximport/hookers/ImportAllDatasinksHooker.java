@@ -7,12 +7,10 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkTreeService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.treedb.ext.service.eximport.helper.ImportAllNodesHooker;
 
-public class ImportAllDatasinksHooker extends ImportAllNodesHooker<AbstractDatasinkManagerNode>{
+public class ImportAllDatasinksHooker extends ImportAllNodesHooker<AbstractDatasinkManagerNode> {
 
    @Inject
-   public ImportAllDatasinksHooker(
-      DatasinkTreeService treeDbManager
-      ) {
+   public ImportAllDatasinksHooker(DatasinkTreeService treeDbManager) {
       super(treeDbManager, DatasinkManagerExporter.class);
    }
 }

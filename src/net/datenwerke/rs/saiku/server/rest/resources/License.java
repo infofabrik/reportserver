@@ -50,37 +50,37 @@ public class License {
 //    userService = us;
 //  }
 
-  /**
-   * Get the saiku
-   * @return A response containing a license object.
-   */
-  @GET
-  @Produces({ "application/json" })
+   /**
+    * Get the saiku
+    * 
+    * @return A response containing a license object.
+    */
+   @GET
+   @Produces({ "application/json" })
 //  @ReturnType("bi.meteorite.license.SaikuLicense")
-  public Response getLicense() {
+   public Response getLicense() {
 //    try {
 //      return Response.ok().entity(licenseUtils.getLicense()).build();
 //    } catch (IOException | RepositoryException | ClassNotFoundException e) {
 //      e.printStackTrace();
 //    }
 //    return Response.serverError().build();
-	  
-	  return Response.ok().entity(new SaikuLicense()).build();
-  }
 
-  private static final int SIZE = 2048;
+      return Response.ok().entity(new SaikuLicense()).build();
+   }
 
+   private static final int SIZE = 2048;
 
-
-  /**
-   * Validate the license installed on the server.
-   * @return A response indicating whether the operation was successful.
-   */
-  @GET
-  @Path("/validate")
-  @Produces({ "text/plain" })
+   /**
+    * Validate the license installed on the server.
+    * 
+    * @return A response indicating whether the operation was successful.
+    */
+   @GET
+   @Path("/validate")
+   @Produces({ "text/plain" })
 //  @ReturnType("java.lang.String")
-  public Response validateLicense() {
+   public Response validateLicense() {
 //    if(!userService.isAdmin()){
 //      return Response.status(Response.Status.FORBIDDEN).build();
 //    }
@@ -104,22 +104,20 @@ public class License {
 //      e.printStackTrace();
 //    }
 
-    return Response.ok().entity("Valid License").build();
+      return Response.ok().entity("Valid License").build();
 
+   }
 
-  }
-
-
-
-  /**
-   * Get the current user list from the server.
-   * @return A list of users.
-   */
-  @GET
-  @Path("/users")
-  @Produces({"application/json"})
+   /**
+    * Get the current user list from the server.
+    * 
+    * @return A list of users.
+    */
+   @GET
+   @Path("/users")
+   @Produces({ "application/json" })
 //  @ReturnType("java.util.ArrayList<UserList>")
-  public Response getUserlist(){
+   public Response getUserlist() {
 //    if(!userService.isAdmin()){
 //      return Response.status(Response.Status.FORBIDDEN).build();
 //    }
@@ -138,33 +136,34 @@ public class License {
 //      e.printStackTrace();
 //    }
 //    return null;
-	  throw new RuntimeException("Not implemented.");
-  }
+      throw new RuntimeException("Not implemented.");
+   }
 
-
-  /**
-   * Get the valid users from the database.
-   * @return a list of usernames
-   * @throws SQLException
-   */
-  private List<String> getAuthUsers() throws SQLException {
+   /**
+    * Get the valid users from the database.
+    * 
+    * @return a list of usernames
+    * @throws SQLException
+    */
+   private List<String> getAuthUsers() throws SQLException {
 //    return databaseManager.getUsers();
-	  throw new RuntimeException("Not implemented.");
-  }
+      throw new RuntimeException("Not implemented.");
+   }
 
-  /**
-   * Get the user quota for existing users with no license
-   * @return a list of user quota.
-   */
-  @GET
-  @Produces("application/json")
-  @Path("/quota")
+   /**
+    * Get the user quota for existing users with no license
+    * 
+    * @return a list of user quota.
+    */
+   @GET
+   @Produces("application/json")
+   @Path("/quota")
 //  @ReturnType("java.util.List<UserQuota>")
-  public Response getUserQuota(){
+   public Response getUserQuota() {
 //    if(!userService.isAdmin()){
 //      return Response.status(Response.Status.FORBIDDEN).build();
 //    }
 //    return Response.ok().entity(licenseUtils.getQuota()).build();
-	  throw new RuntimeException("Not implemented.");
-  }
+      throw new RuntimeException("Not implemented.");
+   }
 }

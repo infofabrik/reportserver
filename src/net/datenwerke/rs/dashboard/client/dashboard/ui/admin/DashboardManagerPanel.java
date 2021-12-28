@@ -9,18 +9,15 @@ import net.datenwerke.rs.dashboard.client.dashboard.locale.DashboardMessages;
 @Singleton
 public class DashboardManagerPanel extends AbstractTreeManagerPanel {
 
-	@Inject
-	public DashboardManagerPanel(
-		DashboardManagerMainPanel mainPanel,
-		DashboardManagerTreePanel treePanel
-		){
-		
-		super(mainPanel, treePanel);
-	}
+   @Inject
+   public DashboardManagerPanel(DashboardManagerMainPanel mainPanel, DashboardManagerTreePanel treePanel) {
 
-	@Override
-	protected String getHeadingText() {
-		return DashboardMessages.INSTANCE.mainPanelHeading();
-	}
-	
+      super(mainPanel, treePanel);
+   }
+
+   @Override
+   protected String getHeadingText() {
+      return DashboardMessages.INSTANCE.mainPanelHeading();
+   }
+
 }

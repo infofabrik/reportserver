@@ -9,16 +9,16 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.genrights.GenRi
 
 public class GlobalConstantsModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(GlobalConstantsService.class).to(GlobalConstantsServiceImpl.class).in(Singleton.class);
-		
-		/* startup */
-		bind(GlobalConstantsStartup.class).asEagerSingleton();
-		
-		/* sub modules */
-		install(new GenRightsGlobalConstantsManagerModule());
-	}
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(GlobalConstantsService.class).to(GlobalConstantsServiceImpl.class).in(Singleton.class);
+
+      /* startup */
+      bind(GlobalConstantsStartup.class).asEagerSingleton();
+
+      /* sub modules */
+      install(new GenRightsGlobalConstantsManagerModule());
+   }
 
 }

@@ -10,16 +10,16 @@ import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.action.SecurityAction;
 import net.datenwerke.security.service.security.rights.Right;
 
-@Retention(RetentionPolicy.RUNTIME) 
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RightsVerification {
 
-	/**
-	 * Is only evaluated for the specified rights.
-	 */
-	public Class<? extends Securee> securee() default SecurityServiceSecuree.class;
-	
-	public Class<? extends Right>[] rights() default {};
+   /**
+    * Is only evaluated for the specified rights.
+    */
+   public Class<? extends Securee> securee() default SecurityServiceSecuree.class;
 
-	public Class<? extends SecurityAction>[] actions() default {};
+   public Class<? extends Right>[] rights() default {};
+
+   public Class<? extends SecurityAction>[] actions() default {};
 }

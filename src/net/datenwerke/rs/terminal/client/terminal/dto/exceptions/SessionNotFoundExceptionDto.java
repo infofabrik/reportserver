@@ -4,9 +4,9 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 public class SessionNotFoundExceptionDto extends ServerCallFailedException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8109186168105432943L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8109186168105432943L;
 
 }

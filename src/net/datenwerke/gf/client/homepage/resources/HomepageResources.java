@@ -6,8 +6,8 @@ import com.google.gwt.resources.client.ImageResource;
 
 public interface HomepageResources extends ClientBundle {
 
-	public static HomepageResources INSTANCE = GWT.create(HomepageResources.class);
-	
-	@Source("img/ReportServerLogo2.png")
-	ImageResource logo();
+   public static HomepageResources INSTANCE = GWT.create(HomepageResources.class);
+
+   @Source("img/ReportServerLogo2.png")
+   ImageResource logo();
 }

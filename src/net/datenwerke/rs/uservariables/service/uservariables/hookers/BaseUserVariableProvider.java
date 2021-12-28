@@ -14,17 +14,19 @@ import net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVa
 
 public class BaseUserVariableProvider implements UserVariableProviderHook {
 
-	@Inject private Provider<StringUserVariableDefinition> stringProvider;
-	@Inject private Provider<ListUserVariableDefinition> listProvider;
-	
-	@Override
-	public Collection<? extends UserVariableDefinition> getVariables() {
-		List<UserVariableDefinition> list = new ArrayList<UserVariableDefinition>();
-		
-		list.add(stringProvider.get());
-		list.add(listProvider.get());
-		
-		return list;
-	}
+   @Inject
+   private Provider<StringUserVariableDefinition> stringProvider;
+   @Inject
+   private Provider<ListUserVariableDefinition> listProvider;
+
+   @Override
+   public Collection<? extends UserVariableDefinition> getVariables() {
+      List<UserVariableDefinition> list = new ArrayList<UserVariableDefinition>();
+
+      list.add(stringProvider.get());
+      list.add(listProvider.get());
+
+      return list;
+   }
 
 }

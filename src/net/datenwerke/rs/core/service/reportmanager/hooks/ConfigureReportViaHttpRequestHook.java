@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ConfigureReportViaHttpRequestHook extends Hook {
 
-	void adjustReport(Report report, HttpServletRequest req);
+   void adjustReport(Report report, HttpServletRequest req);
 
 }

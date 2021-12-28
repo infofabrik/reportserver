@@ -36,35 +36,36 @@ import com.google.inject.Inject;
  * Info Resource to get platform information.
  */
 @Path("/saiku/info")
-@XmlAccessorType( XmlAccessType.NONE)
+@XmlAccessorType(XmlAccessType.NONE)
 public class InfoResource {
 
-  private static final Logger log = LoggerFactory.getLogger( InfoResource.class );
+   private static final Logger log = LoggerFactory.getLogger(InfoResource.class);
 
-  private PlatformUtilsService platformService;
+   private PlatformUtilsService platformService;
 
-  //@Autowired
+   // @Autowired
 //  public void setPlatformUtilsService(Object ps) {
 ////    this.platformService = ps;
 //  }
-  
-  @Inject
-  public InfoResource(PlatformUtilsService platformService){
-	  this.platformService = platformService;
-  }
 
-  /**
-   * Get a list of available plugins.
-   * @return A response containing a list of plugins.
-   */
-  @GET
-  @Produces({"application/json" })
+   @Inject
+   public InfoResource(PlatformUtilsService platformService) {
+      this.platformService = platformService;
+   }
+
+   /**
+    * Get a list of available plugins.
+    * 
+    * @return A response containing a list of plugins.
+    */
+   @GET
+   @Produces({ "application/json" })
 //  @ReturnType("java.util.List<Plugin>")
-  public Response getAvailablePlugins() {
+   public Response getAvailablePlugins() {
 
-    GenericEntity<List<Plugin>> entity =
-         new GenericEntity<List<Plugin>>(platformService.getAvailablePlugins()){};
-     return Response.ok(entity).build();
-  }
+      GenericEntity<List<Plugin>> entity = new GenericEntity<List<Plugin>>(platformService.getAvailablePlugins()) {
+      };
+      return Response.ok(entity).build();
+   }
 
 }

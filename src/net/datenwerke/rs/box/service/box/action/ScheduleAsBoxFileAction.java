@@ -34,11 +34,11 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private BoxService boxService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -55,17 +55,17 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-   
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-   
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -102,7 +102,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
          throw new ActionExecutionException("folder is empty");
 
    }
-   
+
    private void sendViaBoxDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {
@@ -113,35 +113,35 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), boxDatasink, boxService, 
+               datasinkService.exportIntoDatasink(os.toByteArray(), boxDatasink, boxService,
                      new DatasinkFilenameFolderConfig() {
-                  
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
-                  
-                  @Override
-                  public String getFilename() {
-                     return filenameScheduling;
-                  }
-               });
+
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
+
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, boxService,
                   new DatasinkFilenameFolderConfig() {
-               
-               @Override
-               public String getFolder() {
-                  return filenameScheduling;
-               }
-               
-               @Override
-               public String getFilename() {
-                  return folder;
-               }
-            });
+
+                     @Override
+                     public String getFolder() {
+                        return filenameScheduling;
+                     }
+
+                     @Override
+                     public String getFilename() {
+                        return folder;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to box", e);

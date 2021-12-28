@@ -26,107 +26,99 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.rpc.TsDiskRpcServiceAs
  */
 public class TsDiskDao extends Dao {
 
-	private final TsDiskRpcServiceAsync rpcService;
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public TsDiskDao(
-		TsDiskRpcServiceAsync rpcservice,
-		HookHandlerService hookHandler
-		){
-		/* store objects */
-		this.rpcService = rpcservice;
-		this.hookHandler = hookHandler;
-	}
+   private final TsDiskRpcServiceAsync rpcService;
+   private final HookHandlerService hookHandler;
 
-	public void getItemsIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder,
-			AsyncCallback<TsDiskItemList> callback) {
-		rpcService.getItemsIn(teamSpace, folder, transformContainerCallback(callback));
-	}
-	
-	public void createFolder(TeamSpaceDto teamSpaceDto,
-			TsDiskFolderDto parent, TsDiskFolderDto dummy,
-			AsyncCallback<TsDiskFolderDto> callback){
-		rpcService.createFolder(teamSpaceDto, parent, dummy, transformDtoCallback(callback));
-	}
-	
-	public void importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copy, boolean reference,
-			AsyncCallback<TsDiskReportReferenceDto> callback){
-		rpcService.importReport(teamSpaceDto, parent, report, copy, reference, transformAndKeepCallback(callback));
-	}
-	
-	public void importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copy, String name, String description, boolean reference,
-			AsyncCallback<TsDiskReportReferenceDto> callback){
-		rpcService.importReport(teamSpaceDto, parent, report, copy, name, description, reference, transformAndKeepCallback(callback));
-	}
-	
-	public void getTeamSpacesWithFavoriteApp(AsyncCallback<List<TeamSpaceDto>> callback){
-		rpcService.getTeamSpacesWithTsDiskApp(transformListCallback(callback));
-	}
-	
-	public void getReportsInCatalog(AsyncCallback<List<ReportDto>> callback){
-		rpcService.getReportsInCatalog(transformListCallback(callback));
-	}
-	
-	public void getReferencesInApp(TeamSpaceDto teamSpace,
-			AsyncCallback<List<TsDiskReportReferenceDto>> callback){
-		getReferencesInApp(teamSpace, null, callback);
-	}
-	
-	public void getReferencesInApp(TeamSpaceDto teamSpace, TsDiskFolderDto folder,
-			AsyncCallback<List<TsDiskReportReferenceDto>> callback){
-		rpcService.getReferencesInApp(teamSpace, folder, transformListCallback(callback));
-	}
-	
-	public void sendUserViewChangedNotice(String viewId,
-			AsyncCallback<Void> callback){
-		rpcService.sendUserViewChangedNotice(viewId, transformAndKeepCallback(callback));
-	}
-	
-	public void getTeamSpacesWithReferenceTo(ReportDto report,
-			AsyncCallback<List<TeamSpaceDto>> callback){
-		rpcService.getTeamSpacesWithReferenceTo(report, transformListCallback(callback));
-	}
-	
-	public void getTeamSpacesWithPathsThatLinkTo(ReportDto report, 
-			AsyncCallback<Map<TeamSpaceDto, List<List<AbstractTsDiskNodeDto>>>> callback) {
-		rpcService.getTeamSpacesWithPathsThatLinkTo(report, transformMapOfListListCallback(callback));
-	}
-	
-	public void getTeamSpacesWithPathsThatLinkToAsHtml(ReportDto report, 
-			AsyncCallback<SafeHtml> callback) {
-		rpcService.getTeamSpacesWithPathsThatLinkToAsHtml(report, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public TsDiskDao(TsDiskRpcServiceAsync rpcservice, HookHandlerService hookHandler) {
+      /* store objects */
+      this.rpcService = rpcservice;
+      this.hookHandler = hookHandler;
+   }
 
-	public void createAndImportVariant(TeamSpaceDto currentSpace,
-			TsDiskFolderDto currentFolder, ReportDto report,
-			String executeToken, String name, String desc,
-			RsAsyncCallback<TsDiskReportReferenceDto> callback) {
-		ReportDto reportVariantDto = unproxy(report);
-		
-		prepareForStorage(reportVariantDto, executeToken);
-		
-		rpcService.createAndImportVariant(currentSpace, currentFolder, reportVariantDto, executeToken, name, desc, transformDtoCallback(callback));
-	}
+   public void getItemsIn(TeamSpaceDto teamSpace, TsDiskFolderDto folder, AsyncCallback<TsDiskItemList> callback) {
+      rpcService.getItemsIn(teamSpace, folder, transformContainerCallback(callback));
+   }
 
-	public void updateReferenceAndReport(TsDiskReportReferenceDto reference,
-			ReportDto report, String executeToken, String name, String description, RsAsyncCallback<TsDiskReportReferenceDto> callback) {
-		
-		prepareForStorage(report, executeToken);
-		
-		rpcService.updateReferenceAndReport(reference, report, executeToken, name, description, transformDtoCallback(callback));
-	}
-	
-	private void prepareForStorage(ReportDto reportDto, String executeToken) {
-		for(PrepareReportModelForStorageOrExecutionHook hooker : hookHandler.getHookers(PrepareReportModelForStorageOrExecutionHook.class)){
-			if(hooker.consumes(reportDto)){
-				hooker.prepareForExecutionOrStorage(reportDto, executeToken);
-			}
-		}
-	}
-	
-	public void getReferenceInfosFor(ReportDto report, AsyncCallback<List<TsReferenceInfo>> callback){
-		rpcService.getReferenceInfosFor(report, transformAndKeepCallback(callback));
-	}
+   public void createFolder(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, TsDiskFolderDto dummy,
+         AsyncCallback<TsDiskFolderDto> callback) {
+      rpcService.createFolder(teamSpaceDto, parent, dummy, transformDtoCallback(callback));
+   }
+
+   public void importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copy,
+         boolean reference, AsyncCallback<TsDiskReportReferenceDto> callback) {
+      rpcService.importReport(teamSpaceDto, parent, report, copy, reference, transformAndKeepCallback(callback));
+   }
+
+   public void importReport(TeamSpaceDto teamSpaceDto, TsDiskFolderDto parent, ReportDto report, boolean copy,
+         String name, String description, boolean reference, AsyncCallback<TsDiskReportReferenceDto> callback) {
+      rpcService.importReport(teamSpaceDto, parent, report, copy, name, description, reference,
+            transformAndKeepCallback(callback));
+   }
+
+   public void getTeamSpacesWithFavoriteApp(AsyncCallback<List<TeamSpaceDto>> callback) {
+      rpcService.getTeamSpacesWithTsDiskApp(transformListCallback(callback));
+   }
+
+   public void getReportsInCatalog(AsyncCallback<List<ReportDto>> callback) {
+      rpcService.getReportsInCatalog(transformListCallback(callback));
+   }
+
+   public void getReferencesInApp(TeamSpaceDto teamSpace, AsyncCallback<List<TsDiskReportReferenceDto>> callback) {
+      getReferencesInApp(teamSpace, null, callback);
+   }
+
+   public void getReferencesInApp(TeamSpaceDto teamSpace, TsDiskFolderDto folder,
+         AsyncCallback<List<TsDiskReportReferenceDto>> callback) {
+      rpcService.getReferencesInApp(teamSpace, folder, transformListCallback(callback));
+   }
+
+   public void sendUserViewChangedNotice(String viewId, AsyncCallback<Void> callback) {
+      rpcService.sendUserViewChangedNotice(viewId, transformAndKeepCallback(callback));
+   }
+
+   public void getTeamSpacesWithReferenceTo(ReportDto report, AsyncCallback<List<TeamSpaceDto>> callback) {
+      rpcService.getTeamSpacesWithReferenceTo(report, transformListCallback(callback));
+   }
+
+   public void getTeamSpacesWithPathsThatLinkTo(ReportDto report,
+         AsyncCallback<Map<TeamSpaceDto, List<List<AbstractTsDiskNodeDto>>>> callback) {
+      rpcService.getTeamSpacesWithPathsThatLinkTo(report, transformMapOfListListCallback(callback));
+   }
+
+   public void getTeamSpacesWithPathsThatLinkToAsHtml(ReportDto report, AsyncCallback<SafeHtml> callback) {
+      rpcService.getTeamSpacesWithPathsThatLinkToAsHtml(report, transformAndKeepCallback(callback));
+   }
+
+   public void createAndImportVariant(TeamSpaceDto currentSpace, TsDiskFolderDto currentFolder, ReportDto report,
+         String executeToken, String name, String desc, RsAsyncCallback<TsDiskReportReferenceDto> callback) {
+      ReportDto reportVariantDto = unproxy(report);
+
+      prepareForStorage(reportVariantDto, executeToken);
+
+      rpcService.createAndImportVariant(currentSpace, currentFolder, reportVariantDto, executeToken, name, desc,
+            transformDtoCallback(callback));
+   }
+
+   public void updateReferenceAndReport(TsDiskReportReferenceDto reference, ReportDto report, String executeToken,
+         String name, String description, RsAsyncCallback<TsDiskReportReferenceDto> callback) {
+
+      prepareForStorage(report, executeToken);
+
+      rpcService.updateReferenceAndReport(reference, report, executeToken, name, description,
+            transformDtoCallback(callback));
+   }
+
+   private void prepareForStorage(ReportDto reportDto, String executeToken) {
+      for (PrepareReportModelForStorageOrExecutionHook hooker : hookHandler
+            .getHookers(PrepareReportModelForStorageOrExecutionHook.class)) {
+         if (hooker.consumes(reportDto)) {
+            hooker.prepareForExecutionOrStorage(reportDto, executeToken);
+         }
+      }
+   }
+
+   public void getReferenceInfosFor(ReportDto report, AsyncCallback<List<TsReferenceInfo>> callback) {
+      rpcService.getReferenceInfosFor(report, transformAndKeepCallback(callback));
+   }
 }
-

@@ -11,21 +11,17 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.PreFilterUiMo
 
 public class BaseReportEngineUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(BaseReportEngineUiStartup.class).asEagerSingleton();
-		
-		/* submodules */
-		install(new FilterUIModule());
-		install(new PreFilterUiModule());
-		
-		/* static injection */
-		requestStaticInjection(
-			ColumnFilterWindow.class,
-			ColumnFormatWindow.class,
-			ColumnSelector.class,
-			NumericalFieldValidator.class
-		);
-	}
+   @Override
+   protected void configure() {
+      bind(BaseReportEngineUiStartup.class).asEagerSingleton();
+
+      /* submodules */
+      install(new FilterUIModule());
+      install(new PreFilterUiModule());
+
+      /* static injection */
+      requestStaticInjection(ColumnFilterWindow.class, ColumnFormatWindow.class, ColumnSelector.class,
+            NumericalFieldValidator.class);
+   }
 
 }

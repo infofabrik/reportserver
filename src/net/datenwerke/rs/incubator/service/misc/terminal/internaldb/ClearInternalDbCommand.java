@@ -12,37 +12,32 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class ClearInternalDbCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "clearInternalDbCache";
-	
-	private TempTableService tempTableService;
-	private ResultCacheService resultCacheService;
-	
-	@Inject
-	public ClearInternalDbCommand(
-			TempTableService tempTableService,
-			ResultCacheService resultCacheService
-		){
-			this.tempTableService = tempTableService;
-			this.resultCacheService = resultCacheService;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "clearInternalDbCache";
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		tempTableService.shutdown();
-		resultCacheService.flush();
-		return new CommandResult("cache cleared");
-	}
+   private TempTableService tempTableService;
+   private ResultCacheService resultCacheService;
 
-	
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Inject
+   public ClearInternalDbCommand(TempTableService tempTableService, ResultCacheService resultCacheService) {
+      this.tempTableService = tempTableService;
+      this.resultCacheService = resultCacheService;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      tempTableService.shutdown();
+      resultCacheService.flush();
+      return new CommandResult("cache cleared");
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }
-	

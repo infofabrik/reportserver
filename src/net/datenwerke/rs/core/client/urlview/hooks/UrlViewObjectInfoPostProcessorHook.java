@@ -4,6 +4,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface UrlViewObjectInfoPostProcessorHook extends Hook {
 
-	String postProcess(String[] conf, String url, Object object);
+   String postProcess(String[] conf, String url, Object object);
 
 }

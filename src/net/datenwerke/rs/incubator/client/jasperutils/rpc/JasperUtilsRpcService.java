@@ -10,9 +10,11 @@ import net.datenwerke.rs.base.client.jasperutils.dto.JasperParameterProposalDto;
 import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
 
 @RemoteServiceRelativePath("jasperutils")
-public interface JasperUtilsRpcService extends RemoteService{
+public interface JasperUtilsRpcService extends RemoteService {
 
-	public List<JasperParameterProposalDto> proposeParametersFor(JasperReportDto jasperReportDto) throws ServerCallFailedException;
-	
-	public JasperReportDto addParametersFor(JasperReportDto jasperReportDto, List<JasperParameterProposalDto> proposalDtos)  throws ServerCallFailedException;
+   public List<JasperParameterProposalDto> proposeParametersFor(JasperReportDto jasperReportDto)
+         throws ServerCallFailedException;
+
+   public JasperReportDto addParametersFor(JasperReportDto jasperReportDto,
+         List<JasperParameterProposalDto> proposalDtos) throws ServerCallFailedException;
 }

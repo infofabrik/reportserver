@@ -4,5 +4,4 @@ import net.datenwerke.treedb.client.treedb.rpc.RPCTreeManagerAsync;
 
 public interface ReportManagerTreeManagerAsync extends RPCTreeManagerAsync {
 
-
 }

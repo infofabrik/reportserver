@@ -40,10 +40,8 @@ public class DatasourceModule extends AbstractReportServerModule {
    @ReportServerDatasourceDefinitions
    @Inject
    public Set<Class<? extends DatasourceDefinition>> provideDataSourceDefinitions(HookHandlerService hookHandler) {
-      return hookHandler.getHookers(DatasourceProviderHook.class)
-            .stream()
-            .flatMap(dsProvider -> dsProvider.getDatasources().stream())
-            .collect(Collectors.toSet());
+      return hookHandler.getHookers(DatasourceProviderHook.class).stream()
+            .flatMap(dsProvider -> dsProvider.getDatasources().stream()).collect(Collectors.toSet());
    }
 
    @Provides

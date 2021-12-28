@@ -40,10 +40,8 @@ public class HistoryRpcServiceImpl extends SecuredRemoteServiceServlet implement
       Object obj = dtoService.loadPoso(dto);
 
       securityService.assertRights(obj, Read.class);
-      
-      return historyService.buildLinksFor(obj)
-            .stream()
-            .map(link -> (HistoryLinkDto) dtoService.createDto(link))
+
+      return historyService.buildLinksFor(obj).stream().map(link -> (HistoryLinkDto) dtoService.createDto(link))
             .collect(Collectors.toList());
    }
 

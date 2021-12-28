@@ -10,6 +10,6 @@ import net.datenwerke.rs.utils.juel.SimpleJuel;
 @HookConfig
 public interface FilterReplacementProviderHook extends Hook {
 
-	void enhance(SimpleJuel juel, Column column, QueryBuilder queryBuilder, ManagedQuery query);
+   void enhance(SimpleJuel juel, Column column, QueryBuilder queryBuilder, ManagedQuery query);
 
 }

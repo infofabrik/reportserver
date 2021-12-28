@@ -12,16 +12,16 @@ import com.google.inject.Provider;
  */
 public class QueryByIdInterceptor implements MethodInterceptor {
 
-	@Inject
-	private Provider<QueryByIdProcessor> processorProvider;
-	
-	@Override
-	public Object invoke(MethodInvocation invocation) throws Throwable {
-		QueryByIdHandler handler = QueryByIdHandler.from(invocation.getMethod());
-		if(null == handler)
-			return invocation.proceed();
+   @Inject
+   private Provider<QueryByIdProcessor> processorProvider;
 
-		return processorProvider.get().process(handler, invocation);
-	}
-	
+   @Override
+   public Object invoke(MethodInvocation invocation) throws Throwable {
+      QueryByIdHandler handler = QueryByIdHandler.from(invocation.getMethod());
+      if (null == handler)
+         return invocation.proceed();
+
+      return processorProvider.get().process(handler, invocation);
+   }
+
 }

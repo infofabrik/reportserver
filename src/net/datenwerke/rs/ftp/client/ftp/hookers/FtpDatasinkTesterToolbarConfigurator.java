@@ -22,7 +22,7 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 public class FtpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
    final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
-   
+
    private final ToolbarService toolbarUtils;
    private final FtpDao ftpDao;
 
@@ -39,13 +39,17 @@ public class FtpDatasinkTesterToolbarConfigurator implements MainPanelViewToolba
          return;
       if (!(selectedNode instanceof FtpDatasinkDto))
          return;
-      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(), BaseIcon.LINK);
-      testBtn.addSelectHandler(
-            event -> {
-               ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(), messages.testFailed(), messages.success(), messages.testSuccess(),  messages.pleaseWait(), messages.testingTitle(),   messages.testingProgressMessage()){}; 
-               Request request = ftpDao.testFtpDataSink((FtpDatasinkDto) selectedNode, new TimeoutCallback<Boolean>(120000, callback));
-               callback.setRequest(request);
-            });
+      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(),
+            BaseIcon.LINK);
+      testBtn.addSelectHandler(event -> {
+         ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),
+               messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
+               messages.testingTitle(), messages.testingProgressMessage()) {
+         };
+         Request request = ftpDao.testFtpDataSink((FtpDatasinkDto) selectedNode,
+               new TimeoutCallback<Boolean>(120000, callback));
+         callback.setRequest(request);
+      });
       toolbar.add(testBtn);
    }
 

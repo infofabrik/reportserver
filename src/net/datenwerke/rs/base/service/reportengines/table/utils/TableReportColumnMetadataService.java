@@ -10,10 +10,10 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface TableReportColumnMetadataService {
 
-	void augmentWithMetadata(TableReport report, User user) throws NonFatalException;
-	
-	void augmentWithMetadata(Collection<Column> columns, TableReport report, User user) throws NonFatalException;
+   void augmentWithMetadata(TableReport report, User user) throws NonFatalException;
 
-	Map<String, ColumnMetadata> createColumnMetadataMap(TableReport realReport, User user) throws NonFatalException;
+   void augmentWithMetadata(Collection<Column> columns, TableReport report, User user) throws NonFatalException;
+
+   Map<String, ColumnMetadata> createColumnMetadataMap(TableReport realReport, User user) throws NonFatalException;
 
 }

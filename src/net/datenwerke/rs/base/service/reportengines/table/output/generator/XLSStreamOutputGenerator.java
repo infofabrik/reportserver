@@ -120,17 +120,12 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    private final String dataSheetName;
    private final String configurationSheetName;
-   
+
    private final Provider<FilterService> filterServiceProvider;
 
    @Inject
-   public XLSStreamOutputGenerator(
-         XLSOutputGenerator basicXlsGenerator, 
-         StupidOracleService sos,
-         LicenseService licenseService, 
-         ConfigService configService,
-         Provider<FilterService> filterServiceProvider
-         ) {
+   public XLSStreamOutputGenerator(XLSOutputGenerator basicXlsGenerator, StupidOracleService sos,
+         LicenseService licenseService, ConfigService configService, Provider<FilterService> filterServiceProvider) {
       super();
       this.basicXlsGenerator = basicXlsGenerator;
       this.sos = sos;
@@ -315,9 +310,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          configSheet = workbook.getSheet(configurationSheetName);
          if (null == configSheet)
             configSheet = workbook.createSheet(configurationSheetName);
-         
+
          addFiltersOutput();
-         configRowOffset++; 
+         configRowOffset++;
          addPrefilterOutput();
       }
    }
@@ -382,9 +377,9 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
    private void addFiltersOutput() {
       Map<String, Map<String, Object>> filterMap = filterServiceProvider.get().getFilterMap(report);
-      
+
       addFilterHeading(!filterMap.isEmpty());
-      
+
       if (filterMap.isEmpty()) {
          configSheet.addMergedRegion(new CellRangeAddress(configRowOffset, configRowOffset, 0, 2));
          configRowOffset++;
@@ -396,23 +391,22 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          configRowOffset++;
          ObjectHolder<Row> columnRow = new ObjectHolder<>();
          columnRow.set(configSheet.createRow(configRowOffset));
-         
+
          filterMap.forEach((column, filters) -> {
             final int rowSpan = filters.size();
             final Cell columnNameCell = columnRow.get().createCell(0);
-            
+
             columnNameCell.setCellValue(column);
-            configSheet
-                  .addMergedRegion(new CellRangeAddress(configRowOffset, configRowOffset + (rowSpan - 1), 0, 0));
+            configSheet.addMergedRegion(new CellRangeAddress(configRowOffset, configRowOffset + (rowSpan - 1), 0, 0));
             CellUtil.setVerticalAlignment(columnNameCell, VerticalAlignment.CENTER);
-            
+
             filters.forEach((type, value) -> {
                Cell cell = columnRow.get().createCell(1);
-               
+
                cell.setCellValue(type);
                cell = columnRow.get().createCell(2);
                cell.setCellValue(value.toString());
-               
+
                configRowOffset++;
                columnRow.set(configSheet.createRow(configRowOffset));
             });
@@ -439,14 +433,14 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
 
          cellFilter = headerRow.createCell(2);
          cellFilter.setCellValue(messages.value());
-      } 
+      }
    }
 
    private void addPrefilterOutput() {
       Map<BlockType, Object> prefilterMap = filterServiceProvider.get().getPrefilterMap(report);
-      
+
       addPrefilterHeading();
-      
+
       if (prefilterMap.isEmpty()) {
          configRowOffset++;
          configSheet.addMergedRegion(new CellRangeAddress(configRowOffset, configRowOffset, 0, 2));
@@ -467,7 +461,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          prefilterMap.forEach((blockType, val) -> {
             printPrefilterBlock(blockType, (Set<?>) val, 0, maxBlockDepth);
          });
-         
+
       }
    }
 
@@ -477,7 +471,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       Row preFilterRow = configSheet.createRow(configRowOffset);
       IntStream.range(currentDepth, maxDepth + 1).forEach(i -> {
          Cell cellPreFilter = preFilterRow.createCell(i);
-         cellPreFilter.setCellStyle(currentDepth % 2 == 0? configCellColorEven : configCellColorOdd);
+         cellPreFilter.setCellStyle(currentDepth % 2 == 0 ? configCellColorEven : configCellColorOdd);
          if (i == currentDepth)
             cellPreFilter.setCellValue(blockType.name());
       });
@@ -500,7 +494,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
          }
       });
    }
-   
+
    private void printBinaryColumnFilter(int offset, String operator, List<?> values) {
       if (2 != values.size())
          throw new IllegalArgumentException("Values of binary column filter must have size 2");
@@ -510,7 +504,7 @@ public class XLSStreamOutputGenerator extends TableOutputGeneratorImpl {
       Cell cell = row.createCell(offset);
       cell.setCellValue(values.get(0).toString() + " " + operator + " " + values.get(1).toString());
    }
-   
+
    private void printColumnFilter(int offset, String columnName, Map<?, ?> columnFilters) {
       configRowOffset++;
       Row r = configSheet.createRow(configRowOffset);

@@ -8,26 +8,24 @@ import net.datenwerke.security.service.security.locale.SecurityMessages;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
 public class Delete implements Right {
 
-	private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
-	
-	@Override
-	public String getDescription() {
-		return messages.deleteRightName();
-	}
+   private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
 
-	@Override
-	public long getBitField() {
-		return SecurityServiceRightsDefinition.RIGHT_DELETE;
-	}
+   @Override
+   public String getDescription() {
+      return messages.deleteRightName();
+   }
 
-	@Override
-	public String getAbbreviation() {
-		return messages.deleteRightAbbreviation();
-	}
+   @Override
+   public long getBitField() {
+      return SecurityServiceRightsDefinition.RIGHT_DELETE;
+   }
+
+   @Override
+   public String getAbbreviation() {
+      return messages.deleteRightAbbreviation();
+   }
 
 }

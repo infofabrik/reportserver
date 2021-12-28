@@ -14,27 +14,28 @@ import net.datenwerke.rs.fileserver.client.fileserver.rpc.FileServerRpcServiceAs
 
 public class FileServerDao extends Dao {
 
-	private final FileServerRpcServiceAsync rpcService;
+   private final FileServerRpcServiceAsync rpcService;
 
-	@Inject
-	public FileServerDao(FileServerRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void updateFile(FileServerFileDto file, String data, AsyncCallback<Void> callback){
-		rpcService.updateFile(file, data, transformAndKeepCallback(callback));
-	}
-	
-	public void loadFileDataAsString(FileServerFileDto file, AsyncCallback<String> callback){
-		rpcService.loadFileDataAsString(file, transformAndKeepCallback(callback));
-	}
-	
-	public void uploadFiles(FileServerFolderDto folder, List<FileToUpload> files, AsyncCallback<List<FileServerFileDto>> callback){
-		rpcService.uploadFiles(folder, files, transformListCallback(callback));
-	}
+   @Inject
+   public FileServerDao(FileServerRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void uploadAndExtract(FileServerFolderDto folder, FileToUpload fileToUpload,
-			AsyncCallback<List<AbstractFileServerNodeDto>> callback) {
-		rpcService.uploadAndExtract(folder, fileToUpload, transformListCallback(callback));
-	}
+   public void updateFile(FileServerFileDto file, String data, AsyncCallback<Void> callback) {
+      rpcService.updateFile(file, data, transformAndKeepCallback(callback));
+   }
+
+   public void loadFileDataAsString(FileServerFileDto file, AsyncCallback<String> callback) {
+      rpcService.loadFileDataAsString(file, transformAndKeepCallback(callback));
+   }
+
+   public void uploadFiles(FileServerFolderDto folder, List<FileToUpload> files,
+         AsyncCallback<List<FileServerFileDto>> callback) {
+      rpcService.uploadFiles(folder, files, transformListCallback(callback));
+   }
+
+   public void uploadAndExtract(FileServerFolderDto folder, FileToUpload fileToUpload,
+         AsyncCallback<List<AbstractFileServerNodeDto>> callback) {
+      rpcService.uploadAndExtract(folder, fileToUpload, transformListCallback(callback));
+   }
 }

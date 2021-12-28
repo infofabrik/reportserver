@@ -9,9 +9,10 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 
 public class FtpDatasinkProviderHooker implements DatasinkProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends DatasinkDefinition>> getDatasinks() {
-		return (Collection<? extends Class<? extends DatasinkDefinition>>) Arrays.asList(new Class[]{FtpDatasink.class}); 
-	}
+   @Override
+   public Collection<? extends Class<? extends DatasinkDefinition>> getDatasinks() {
+      return (Collection<? extends Class<? extends DatasinkDefinition>>) Arrays
+            .asList(new Class[] { FtpDatasink.class });
+   }
 
 }

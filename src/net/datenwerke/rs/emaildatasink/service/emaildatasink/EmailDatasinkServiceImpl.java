@@ -30,14 +30,10 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<MailService> mailServiceProvider;
    private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
 
-
    @Inject
-   public EmailDatasinkServiceImpl(
-         Provider<MailBuilderFactory> mailBuilderFactoryProvider, 
-         Provider<MailService> mailServiceProvider,
-         Provider<MimeUtils> mimeUtilsProvider,
-         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
-         ) {
+   public EmailDatasinkServiceImpl(Provider<MailBuilderFactory> mailBuilderFactoryProvider,
+         Provider<MailService> mailServiceProvider, Provider<MimeUtils> mimeUtilsProvider,
+         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider) {
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.mimeUtilsProvider = mimeUtilsProvider;
@@ -45,27 +41,28 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config) 
+   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       Objects.requireNonNull(datasink, "datasink is null!");
       if (!(config instanceof DatasinkEmailConfig))
          throw new IllegalStateException("Not a DatasinkEmailConfig config");
       if (!(datasink instanceof EmailDatasink))
          throw new IllegalStateException("Not an Email datasink");
-      
+
       DatasinkEmailConfig emailConfig = (DatasinkEmailConfig) config;
       EmailDatasink emailDatasink = (EmailDatasink) datasink;
-      
+
       Objects.requireNonNull(emailConfig.getFilename());
 
       try {
-         SimpleMail mail = mailBuilderFactoryProvider.get().create(emailConfig.getSubject(), emailConfig.getBody(), 
-               emailConfig.getRecipients())
+         SimpleMail mail = mailBuilderFactoryProvider.get()
+               .create(emailConfig.getSubject(), emailConfig.getBody(), emailConfig.getRecipients())
                .withEmailDatasink(emailDatasink)
-               .withAttachments(Arrays.asList(new SimpleAttachment(report, 
-                     mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()), emailConfig.getFilename())))
+               .withAttachments(Arrays.asList(new SimpleAttachment(report,
+                     mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()),
+                     emailConfig.getFilename())))
                .build();
-   
+
          if (emailConfig.isSendSyncEmail())
             mailServiceProvider.get().sendMailSync(Optional.of(emailDatasink), mail);
          else

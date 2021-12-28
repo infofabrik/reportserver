@@ -13,15 +13,17 @@ import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelect
  */
 public interface DatasinkDefinitionConfigConfigurator {
 
-	Iterable<Widget> getDefaultAdditionalFormfields(DatasinkDefinitionDto datasinkDefinitionDto, DatasinkSelectionField datasinkSelectionField, DatasinkContainerProviderDto datasinkContainerProvider); 
-	
-	Iterable<Widget> getOptionalAdditionalFormfields(DatasinkDefinitionDto datasinkDefinitionDto, DatasinkSelectionField datasinkSelectionField, DatasinkContainerProviderDto datasinkContainerProvider);
-	
-	void inheritChanges(DatasinkDefinitionDto datasinkDefinitionDto);
-	
-	boolean consumes(DatasinkDefinitionDto datasinkDefinitionDto);
+   Iterable<Widget> getDefaultAdditionalFormfields(DatasinkDefinitionDto datasinkDefinitionDto,
+         DatasinkSelectionField datasinkSelectionField, DatasinkContainerProviderDto datasinkContainerProvider);
 
-	boolean isValid(DatasinkContainerDto datasinkContainer);
+   Iterable<Widget> getOptionalAdditionalFormfields(DatasinkDefinitionDto datasinkDefinitionDto,
+         DatasinkSelectionField datasinkSelectionField, DatasinkContainerProviderDto datasinkContainerProvider);
 
-	boolean isReloadOnDatasinkChange();
+   void inheritChanges(DatasinkDefinitionDto datasinkDefinitionDto);
+
+   boolean consumes(DatasinkDefinitionDto datasinkDefinitionDto);
+
+   boolean isValid(DatasinkContainerDto datasinkContainer);
+
+   boolean isReloadOnDatasinkChange();
 }

@@ -9,24 +9,24 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractPlainMetada
  */
 public class TablePlainExporter extends AbstractPlainMetadataExporter implements TableMetadataExporter {
 
-	@Override
-	public void beginColumnSection() {
-		beginSection("Selected Columns");
-	}
+   @Override
+   public void beginColumnSection() {
+      beginSection("Selected Columns");
+   }
 
-	@Override
-	public void visitColumn(Column column) {
-		dataBuilder.append(column.getName() + " - " + column.getAlias() + " - " + column.getDescription() +  "\n");
-	}
+   @Override
+   public void visitColumn(Column column) {
+      dataBuilder.append(column.getName() + " - " + column.getAlias() + " - " + column.getDescription() + "\n");
+   }
 
-	@Override
-	public void beginFilterSection() {
-		beginSection("Filtered Columns");
-	}
+   @Override
+   public void beginFilterSection() {
+      beginSection("Filtered Columns");
+   }
 
-	@Override
-	public void visitFilter(Column column) {
-		dataBuilder.append(column.getName() + " - " + column.getAlias() + " - " + column.getDescription() + "\n");
-	}
+   @Override
+   public void visitFilter(Column column) {
+      dataBuilder.append(column.getName() + " - " + column.getAlias() + " - " + column.getDescription() + "\n");
+   }
 
 }

@@ -16,132 +16,133 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 
-public class RSSimpleTableBean extends CompiledTableReport implements CompiledReport{
+public class RSSimpleTableBean extends CompiledTableReport implements CompiledReport {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6857312595785000533L;
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6857312595785000533L;
 
-	private List<String> attributes = new ArrayList<String>();
-	
-	private BasicDynaClass dynaClass;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private DynaProperty[] props;
-	
-	private HashMap<Integer, List<String>> idxToAttributeMap = new HashMap<Integer, List<String>>();
-	
-	private List<DynaBean> rows = new ArrayList<DynaBean>();
-	private DynaBean row;
-	private int fieldIndex = 0;
-	
-	public RSSimpleTableBean(){
-	}
-	
-	private void addToIdxToAttributeMap(Integer idx, String attribute){
-		List<String> list;
-		if(!idxToAttributeMap.containsKey(idx)){
-			list = new ArrayList<String>();
-			idxToAttributeMap.put(idx, list);
-		}else{
-			list = idxToAttributeMap.get(idx);
-		}
-		
-		list.add(attribute);
-	}
-	
-	public void setDefinition(TableDefinition td, TableReport report) {
-		this.attributes = new ArrayList<String>(); 
-		
-		ArrayList<DynaProperty> props = new ArrayList<DynaProperty>();
-		
-		int i = 0;
-		for(String colName : td.getColumnNames()){
-			if(!attributes.contains(colName)){
-				attributes.add(colName);
+   private List<String> attributes = new ArrayList<String>();
 
-				props.add(new DynaProperty(colName, Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
-				addToIdxToAttributeMap(i, colName);
-			} else
-				throw new ReportExecutorRuntimeException(ReportEnginesMessages.INSTANCE.exceptionOutputFormatNotSupportsDuplicateNames(colName));
-			i++;
-		}
-		
-		i = 0;
-		for(String colName : td.getOriginalColumnNames()){
-			if(!attributes.contains(colName)){
-				attributes.add(colName);
-				props.add(new DynaProperty(colName, Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
-				addToIdxToAttributeMap(i, colName);
-			}
-			i++;
-		}
-		
-		this.props = props.toArray(new DynaProperty[0]);
-		dynaClass = new BasicDynaClass("rssimpletable", null, this.props);
-		
-		/* init */
-		nextRow();
-	}
+   private BasicDynaClass dynaClass;
 
-	
-	public List<String> getAttributes(){
-		return this.attributes;
-	}
-	
-	@Override
-	public Object getReport() {
-		return null;
-	}
+   private DynaProperty[] props;
 
-	@Override
-	public String getMimeType() {
-		return null;
-	}
+   private HashMap<Integer, List<String>> idxToAttributeMap = new HashMap<Integer, List<String>>();
 
-	@Override
-	public String getFileExtension() {
-		return null;
-	}
+   private List<DynaBean> rows = new ArrayList<DynaBean>();
+   private DynaBean row;
+   private int fieldIndex = 0;
 
-	public void addField(Object value) {
-		for(String attrib : idxToAttributeMap.get(fieldIndex))
-			row.set(attrib, value);	
-		
-		fieldIndex++;
-	}
+   public RSSimpleTableBean() {
+   }
 
-	public List<DynaBean> getTable() {
-		return rows;
-	}
+   private void addToIdxToAttributeMap(Integer idx, String attribute) {
+      List<String> list;
+      if (!idxToAttributeMap.containsKey(idx)) {
+         list = new ArrayList<String>();
+         idxToAttributeMap.put(idx, list);
+      } else {
+         list = idxToAttributeMap.get(idx);
+      }
 
-	public void nextRow() {
-		fieldIndex  = 0;
-		
-		try {
-			if(null != row)
-				rows.add(row);
-			row = dynaClass.newInstance();
-		} catch (Exception e) {
-			logger.warn( e.getMessage(), e);
-		}
-	}
+      list.add(attribute);
+   }
 
-	@Override
-	public boolean isStringReport() {
-		return false;
-	}
+   public void setDefinition(TableDefinition td, TableReport report) {
+      this.attributes = new ArrayList<String>();
 
-	public void close() {
-		if(null != row)
-			rows.add(row);
-		
-		fieldIndex  = 0;
-		row = null;
-		
-	}
+      ArrayList<DynaProperty> props = new ArrayList<DynaProperty>();
 
-	
+      int i = 0;
+      for (String colName : td.getColumnNames()) {
+         if (!attributes.contains(colName)) {
+            attributes.add(colName);
+
+            props.add(new DynaProperty(colName,
+                  Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
+            addToIdxToAttributeMap(i, colName);
+         } else
+            throw new ReportExecutorRuntimeException(
+                  ReportEnginesMessages.INSTANCE.exceptionOutputFormatNotSupportsDuplicateNames(colName));
+         i++;
+      }
+
+      i = 0;
+      for (String colName : td.getOriginalColumnNames()) {
+         if (!attributes.contains(colName)) {
+            attributes.add(colName);
+            props.add(new DynaProperty(colName,
+                  Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
+            addToIdxToAttributeMap(i, colName);
+         }
+         i++;
+      }
+
+      this.props = props.toArray(new DynaProperty[0]);
+      dynaClass = new BasicDynaClass("rssimpletable", null, this.props);
+
+      /* init */
+      nextRow();
+   }
+
+   public List<String> getAttributes() {
+      return this.attributes;
+   }
+
+   @Override
+   public Object getReport() {
+      return null;
+   }
+
+   @Override
+   public String getMimeType() {
+      return null;
+   }
+
+   @Override
+   public String getFileExtension() {
+      return null;
+   }
+
+   public void addField(Object value) {
+      for (String attrib : idxToAttributeMap.get(fieldIndex))
+         row.set(attrib, value);
+
+      fieldIndex++;
+   }
+
+   public List<DynaBean> getTable() {
+      return rows;
+   }
+
+   public void nextRow() {
+      fieldIndex = 0;
+
+      try {
+         if (null != row)
+            rows.add(row);
+         row = dynaClass.newInstance();
+      } catch (Exception e) {
+         logger.warn(e.getMessage(), e);
+      }
+   }
+
+   @Override
+   public boolean isStringReport() {
+      return false;
+   }
+
+   public void close() {
+      if (null != row)
+         rows.add(row);
+
+      fieldIndex = 0;
+      row = null;
+
+   }
+
 }

@@ -10,47 +10,44 @@ import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkFolderDto;
 import net.datenwerke.rs.core.client.datasinkmanager.ui.DatasinkManagerMainPanel;
 
-public class FullTreeProvider implements Provider<ManagerHelperTree>{
+public class FullTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final BasicTreeProvider basicTreeProvider;
-	private final DatasinkTreeManagerDao datasinkTreeHandler;
-	private final DatasinkManagerMainPanel mainPanel;
-	
-	@Inject
-	public FullTreeProvider(
-			BasicTreeProvider basicTreeProvider,
-			DatasinkTreeManagerDao datasinkTreeHandler,
-			DatasinkManagerMainPanel mainPanel
-		){
-		
-		this.basicTreeProvider = basicTreeProvider;
-		this.datasinkTreeHandler = datasinkTreeHandler;
-		this.mainPanel = mainPanel;
-	}
+   private final BasicTreeProvider basicTreeProvider;
+   private final DatasinkTreeManagerDao datasinkTreeHandler;
+   private final DatasinkManagerMainPanel mainPanel;
 
-	public ManagerHelperTree get() {
-		/* build tree */
-		final ManagerHelperTree tree = basicTreeProvider.get();
-		tree.getStore().enableDtoAwareness(true);
-				
-		/* dnd */
-		UITreeDragDropConfiguration dndConfig = new UITreeDragDropConfiguration();
-		dndConfig.addDropTarget(DatasinkFolderDto.class);
-		tree.enableDragDrop(datasinkTreeHandler, dndConfig);
-		tree.enableClipboardProvider();
+   @Inject
+   public FullTreeProvider(BasicTreeProvider basicTreeProvider, DatasinkTreeManagerDao datasinkTreeHandler,
+         DatasinkManagerMainPanel mainPanel) {
 
-		/* set selections */
-		tree.setSelectionProvider(mainPanel);
-		
-		/* double click */
-		tree.enableDoubleClickAction();
-		
-		/* history location */
-		tree.setHistoryLocation(DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN);
-		
-		/* tree menu */
-		tree.configureMenuProvider(DatasinkUIModule.ADMIN_TREE_MENU_NAME);
-		
-		return tree;
-	}
+      this.basicTreeProvider = basicTreeProvider;
+      this.datasinkTreeHandler = datasinkTreeHandler;
+      this.mainPanel = mainPanel;
+   }
+
+   public ManagerHelperTree get() {
+      /* build tree */
+      final ManagerHelperTree tree = basicTreeProvider.get();
+      tree.getStore().enableDtoAwareness(true);
+
+      /* dnd */
+      UITreeDragDropConfiguration dndConfig = new UITreeDragDropConfiguration();
+      dndConfig.addDropTarget(DatasinkFolderDto.class);
+      tree.enableDragDrop(datasinkTreeHandler, dndConfig);
+      tree.enableClipboardProvider();
+
+      /* set selections */
+      tree.setSelectionProvider(mainPanel);
+
+      /* double click */
+      tree.enableDoubleClickAction();
+
+      /* history location */
+      tree.setHistoryLocation(DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN);
+
+      /* tree menu */
+      tree.configureMenuProvider(DatasinkUIModule.ADMIN_TREE_MENU_NAME);
+
+      return tree;
+   }
 }

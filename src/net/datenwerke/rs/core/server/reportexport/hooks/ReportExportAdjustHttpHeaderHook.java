@@ -11,6 +11,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 @HookConfig
 public interface ReportExportAdjustHttpHeaderHook extends Hook {
 
-	void adjustHeaders(Report report, CompiledReport executedReport, HttpServletRequest req, HttpServletResponse resp);
+   void adjustHeaders(Report report, CompiledReport executedReport, HttpServletRequest req, HttpServletResponse resp);
 
 }

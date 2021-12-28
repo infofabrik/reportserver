@@ -8,6 +8,6 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.gener
 
 @HookConfig
 public interface JxlsOutputGeneratorProviderHook extends ReportOutputGeneratorProvider<JxlsOutputGenerator> {
-	
-	public Collection<JxlsOutputGenerator> provideGenerators();
+
+   public Collection<JxlsOutputGenerator> provideGenerators();
 }

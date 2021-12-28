@@ -9,33 +9,34 @@ import net.datenwerke.scheduler.service.scheduler.tasks.SchedulerTask;
 
 public interface JobExecutionCompanion {
 
-	public AbstractJob initJobForExecution(AbstractJob job);
+   public AbstractJob initJobForExecution(AbstractJob job);
 
-	public AbstractJob beginSchedulerTask(AbstractJob job);
-	
-	public void endSchedulerTask(AbstractJob job, ExecutionLogEntry logEntry, boolean badFailure);
+   public AbstractJob beginSchedulerTask(AbstractJob job);
 
-	public void updateStateAfterJobExecution(AbstractJob job, ExecutionLogEntry entry, JobEntry jobEntry, boolean success);
+   public void endSchedulerTask(AbstractJob job, ExecutionLogEntry logEntry, boolean badFailure);
 
-	public ExecutionLogEntry initHistoryEntry(AbstractJob job);
+   public void updateStateAfterJobExecution(AbstractJob job, ExecutionLogEntry entry, JobEntry jobEntry,
+         boolean success);
 
-	public void updateStateAfterActionExecution(AbstractJob job, ExecutionLogEntry entry,
-			ActionEntry actionEntry, boolean success);
+   public ExecutionLogEntry initHistoryEntry(AbstractJob job);
 
-	public AbstractAction initActionForExecution(AbstractAction action);
+   public void updateStateAfterActionExecution(AbstractJob job, ExecutionLogEntry entry, ActionEntry actionEntry,
+         boolean success);
 
-	public void beginInnerTransaction(SchedulerTask schedulerTask);
-	
-	void finishInnerTransaction(SchedulerTask schedulerTask, boolean success);
+   public AbstractAction initActionForExecution(AbstractAction action);
 
-	public void failExecutingJob(AbstractJob job);
+   public void beginInnerTransaction(SchedulerTask schedulerTask);
 
-	public void resetWaitingJob(AbstractJob job);
+   void finishInnerTransaction(SchedulerTask schedulerTask, boolean success);
 
-	public void flush();
+   public void failExecutingJob(AbstractJob job);
 
-	public ActionEntry initActionEntry(ExecutionLogEntry logEntry);
+   public void resetWaitingJob(AbstractJob job);
 
-	public JobEntry initJobEntry(ExecutionLogEntry entry);
-	
+   public void flush();
+
+   public ActionEntry initActionEntry(ExecutionLogEntry logEntry);
+
+   public JobEntry initJobEntry(ExecutionLogEntry entry);
+
 }

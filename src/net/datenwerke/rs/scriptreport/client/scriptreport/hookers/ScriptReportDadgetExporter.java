@@ -12,21 +12,20 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto;
 
 public class ScriptReportDadgetExporter extends ReportDadgetDefaultExportHooker {
 
-	@Inject
-	public ScriptReportDadgetExporter(ReportExecutorUIService reportExecutorService,
-			ReportExporterUIService reportExportService,
-			ReportExecutorDao reportExecutorDao,
-			ReportExporterDao reportExporterDao) {
-		super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
-	}
+   @Inject
+   public ScriptReportDadgetExporter(ReportExecutorUIService reportExecutorService,
+         ReportExporterUIService reportExportService, ReportExecutorDao reportExecutorDao,
+         ReportExporterDao reportExporterDao) {
+      super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
+   }
 
-	@Override
-	protected boolean isSupportedReport(ReportDto report) {
-		return report instanceof ScriptReportDto;
-	}
+   @Override
+   protected boolean isSupportedReport(ReportDto report) {
+      return report instanceof ScriptReportDto;
+   }
 
-	@Override
-	public String getPropertyName() {
-		return "scriptConfig";
-	}
+   @Override
+   public String getPropertyName() {
+      return "scriptConfig";
+   }
 }

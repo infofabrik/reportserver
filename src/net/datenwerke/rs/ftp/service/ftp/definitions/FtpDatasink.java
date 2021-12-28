@@ -29,21 +29,11 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
  * to a given FTP server.
  */
 @Entity
-@Table(name="FTP_DATASINK")
+@Table(name = "FTP_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage="net.datenwerke.rs.ftp.client.ftp.dto",
-      poso2DtoPostProcessors=FtpDatasink2DtoPostProcessor.class,
-      additionalFields = {
-            @AdditionalField(name="hasPassword", type=Boolean.class),
-      },
-      icon="upload"
-      )
-@InstanceDescription(
-      msgLocation = FtpMessages.class,
-		objNameKey = "ftpDatasinkTypeName",
-		icon = "upload"
-		)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.ftp.client.ftp.dto", poso2DtoPostProcessors = FtpDatasink2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasPassword", type = Boolean.class), }, icon = "upload")
+@InstanceDescription(msgLocation = FtpMessages.class, objNameKey = "ftpDatasinkTypeName", icon = "upload")
 @Indexed
 public class FtpDatasink extends DatasinkDefinition implements HostDatasink, FolderedDatasink {
 
@@ -75,7 +65,7 @@ public class FtpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    @Field
    @Column(length = 1024)
    private String folder = "./";
-   
+
    /**
     * Active / passive mode.
     */
@@ -114,7 +104,7 @@ public class FtpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    public void setFolder(String folder) {
       this.folder = folder;
    }
-   
+
    public String getFtpMode() {
       return ftpMode;
    }
@@ -129,6 +119,7 @@ public class FtpDatasink extends DatasinkDefinition implements HostDatasink, Fol
 
    /**
     * Gets the decrypted password.
+    * 
     * @return the decrypted password
     */
    public String getPassword() {
@@ -143,6 +134,7 @@ public class FtpDatasink extends DatasinkDefinition implements HostDatasink, Fol
 
    /**
     * Encrypts and sets the given password.
+    * 
     * @param password the password to encrypt and set
     */
    public void setPassword(String password) {

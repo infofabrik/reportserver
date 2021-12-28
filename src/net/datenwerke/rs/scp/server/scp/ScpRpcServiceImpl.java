@@ -66,18 +66,10 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public ScpRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         ScpService scpService, 
-         ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public ScpRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, ScpService scpService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -93,9 +85,10 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
 
    @Override
    @Transactional(rollbackOn = { Exception.class })
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof ScpDatasinkDto))
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
+      if (!(datasinkDto instanceof ScpDatasinkDto))
          throw new IllegalArgumentException("Not a SCP datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -124,8 +117,8 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), scpDatasink, scpService,
                      new DatasinkFilenameFolderConfig() {
 
@@ -205,7 +198,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
 
       return true;
    }
-   
+
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
@@ -219,15 +212,15 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, scpService, filename,
-           folder, compressed);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, scpService, filename, folder,
+            compressed);
    }
 
 }

@@ -80,7 +80,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
    private VerticalLayoutContainer layout = new VerticalLayoutContainer();
    private final ConnectionPoolInfoDtoPA props = ConnectionPoolInfoDtoPA.INSTANCE;
    private final ListStore<ConnectionPoolInfoDto> store = new ListStore<>(props.key());
-   
+
    private SimpleForm chartAdditionalInfoForm;
    private String threadsAwaitingConnectionKey;
    private String orphanedConnectionsKey;
@@ -181,26 +181,27 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       chart.setDefaultInsets(30);
 
       createAdditionalInfoForm();
-      
+
       update = new Timer() {
          @Override
          public void run() {
-            ConnectionPoolDatasourceDto selectedDatasource = ((SimpleComboBox<ConnectionPoolDatasourceDto>)configurationForm.getField(datasourcesKey)).getCurrentValue();
+            ConnectionPoolDatasourceDto selectedDatasource = ((SimpleComboBox<ConnectionPoolDatasourceDto>) configurationForm
+                  .getField(datasourcesKey)).getCurrentValue();
             if (null != selectedDatasource) {
                connPoolConsoleDao.getDatasourceById(selectedDatasource.getDsId(),
-                   new RsAsyncCallback<ConnectionPoolInfoDto>() {
-                      @Override
-                      public void onSuccess(ConnectionPoolInfoDto result) {
-                         super.onSuccess(result);
-                         updateChart(result);
-                      }
- 
-                      @Override
-                      public void onFailure(Throwable caught) {
-                         super.onFailure(caught);
-                         unmask();
-                      }
-                   });
+                     new RsAsyncCallback<ConnectionPoolInfoDto>() {
+                        @Override
+                        public void onSuccess(ConnectionPoolInfoDto result) {
+                           super.onSuccess(result);
+                           updateChart(result);
+                        }
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                           super.onFailure(caught);
+                           unmask();
+                        }
+                     });
             }
          }
       };
@@ -218,21 +219,21 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
 
       chartAdditionalInfoForm.setLabelWidth(250);
       chartAdditionalInfoForm.beginFloatRow();
-      
-      threadsAwaitingConnectionKey = chartAdditionalInfoForm.addField(Integer.class, 
+
+      threadsAwaitingConnectionKey = chartAdditionalInfoForm.addField(Integer.class,
             SystemConsoleMessages.INSTANCE.threadsAwaitingCheckout());
-      orphanedConnectionsKey = chartAdditionalInfoForm.addField(Integer.class, 
+      orphanedConnectionsKey = chartAdditionalInfoForm.addField(Integer.class,
             SystemConsoleMessages.INSTANCE.unclosedOrphanedConnections());
       chartAdditionalInfoForm.endRow();
       chartAdditionalInfoForm.loadFields();
-      
+
       chartAdditionalInfoForm.clearButtonBar();
-      
-      NumberField<Integer> threadsAwaitingConnectionField = 
-            (NumberField<Integer>) chartAdditionalInfoForm.getField(threadsAwaitingConnectionKey);
+
+      NumberField<Integer> threadsAwaitingConnectionField = (NumberField<Integer>) chartAdditionalInfoForm
+            .getField(threadsAwaitingConnectionKey);
       threadsAwaitingConnectionField.setReadOnly(true);
-      NumberField<Integer> orphanedConnectionsField = 
-            (NumberField<Integer>) chartAdditionalInfoForm.getField(orphanedConnectionsKey);
+      NumberField<Integer> orphanedConnectionsField = (NumberField<Integer>) chartAdditionalInfoForm
+            .getField(orphanedConnectionsKey);
       orphanedConnectionsField.setReadOnly(true);
    }
 
@@ -254,7 +255,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
 
       configurationForm.beginFloatRow();
       configurationForm.setFieldWidth(600);
-      
+
       datasourcesKey = configurationForm.addField(List.class, new SFFCSimpleDynamicList<ConnectionPoolDatasourceDto>() {
 
          @Override
@@ -286,12 +287,13 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
                }
             };
          }
-         
+
       });
-      
+
       configurationForm.setFieldWidth(150);
-      
-      DwTextButton refreshDatasourcesBtn = new DwTextButton(SystemConsoleMessages.INSTANCE.refreshDatasources(), BaseIcon.REFRESH);
+
+      DwTextButton refreshDatasourcesBtn = new DwTextButton(SystemConsoleMessages.INSTANCE.refreshDatasources(),
+            BaseIcon.REFRESH);
       configurationForm.addField(CustomComponent.class, new SFFCCustomComponentImpl(refreshDatasourcesBtn));
       refreshDatasourcesBtn.addSelectHandler(
             event -> connPoolConsoleDao.loadDatasources(new RsAsyncCallback<List<ConnectionPoolDatasourceDto>>() {
@@ -300,10 +302,10 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
                   Info.display(BaseMessages.INSTANCE.changesApplied(), BaseMessages.INSTANCE.changesApplied());
                };
             }));
-      
+
       configurationForm.setFieldWidth(200);
       configurationForm.beginFloatRow();
-      
+
       numberOfUnitsKey = configurationForm.addField(Integer.class, SystemConsoleMessages.INSTANCE.numberUnits(),
             new SFFCAllowBlank() {
                @Override
@@ -321,7 +323,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
                }
             });
       configurationForm.setValue(unitIntervalKey, 1);
-      
+
       showMaxKey = configurationForm.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
@@ -329,7 +331,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
          }
       });
       configurationForm.setValue(showMaxKey, true);
-      
+
       configurationForm.setValidateOnSubmit(true);
       configurationForm.addSubmissionListener(event -> {
          Info.display(BaseMessages.INSTANCE.changesApplied(), BaseMessages.INSTANCE.changesApplied());
@@ -351,7 +353,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       configurationForm.loadFields();
 
       configurationForm.clearButtonBar();
-      
+
       configurationForm.addButton(playStopBtn);
       configurationForm.addSubmitButton();
 
@@ -362,10 +364,10 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       });
 
       buttonsLayout.add(configurationForm, new HorizontalLayoutData(1000, 20, new Margins(10)));
-      
-      //switch datasources
-      ((SimpleComboBox<ConnectionPoolDatasourceDto>)configurationForm.getField(datasourcesKey))
-         .addSelectionHandler(event -> store.clear());
+
+      // switch datasources
+      ((SimpleComboBox<ConnectionPoolDatasourceDto>) configurationForm.getField(datasourcesKey))
+            .addSelectionHandler(event -> store.clear());
    }
 
    private void updateDatasourcesCombobox(List<ConnectionPoolDatasourceDto> datasources) {
@@ -375,7 +377,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
    private void updateChart(final ConnectionPoolInfoDto connectionPoolInfo) {
       chartAdditionalInfoForm.setValue(threadsAwaitingConnectionKey, connectionPoolInfo.getThreadsAwaitingConnection());
       chartAdditionalInfoForm.setValue(orphanedConnectionsKey, connectionPoolInfo.getUnclosedOrphanedConnections());
-      
+
       store.add(connectionPoolInfo);
 
       maxPoolSize = connectionPoolInfo.getMaxPoolSize();
@@ -391,7 +393,7 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       }
 
       int numberOfUnitsToDelete = store.size() - maxNumberOfUnits;
-      if (numberOfUnitsToDelete > 0) 
+      if (numberOfUnitsToDelete > 0)
          IntStream.range(0, numberOfUnitsToDelete).forEach(store::remove);
 
       chart.redrawChart();

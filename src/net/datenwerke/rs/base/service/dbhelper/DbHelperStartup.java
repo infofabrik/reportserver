@@ -15,23 +15,21 @@ import net.datenwerke.rs.base.service.dbhelper.hooks.StatementModificationHook;
 
 public class DbHelperStartup {
 
-	@Inject
-	public DbHelperStartup(
-		HookHandlerService hookHandler,
-			
-		Provider<FilterExecutorHooker> filterExecutor,
-		Provider<InnerQueryColumnReplacementHooker> innerQueryColumnReplacementHooker,
-		
-		CteQueryHandler cteHandler,
-		
-		ProvideBaseDatabaseHelpersHookers provideBaseDbHelpers
-		){
-		
-		hookHandler.attachHooker(DbFilterExecutorHook.class, filterExecutor);
-		
-		hookHandler.attachHooker(DatabaseHelperProviderHook.class, provideBaseDbHelpers);
-		hookHandler.attachHooker(InnerQueryModificationHook.class, innerQueryColumnReplacementHooker);
-		
-		hookHandler.attachHooker(StatementModificationHook.class, cteHandler);
-	}
+   @Inject
+   public DbHelperStartup(HookHandlerService hookHandler,
+
+         Provider<FilterExecutorHooker> filterExecutor,
+         Provider<InnerQueryColumnReplacementHooker> innerQueryColumnReplacementHooker,
+
+         CteQueryHandler cteHandler,
+
+         ProvideBaseDatabaseHelpersHookers provideBaseDbHelpers) {
+
+      hookHandler.attachHooker(DbFilterExecutorHook.class, filterExecutor);
+
+      hookHandler.attachHooker(DatabaseHelperProviderHook.class, provideBaseDbHelpers);
+      hookHandler.attachHooker(InnerQueryModificationHook.class, innerQueryColumnReplacementHooker);
+
+      hookHandler.attachHooker(StatementModificationHook.class, cteHandler);
+   }
 }

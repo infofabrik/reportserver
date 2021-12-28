@@ -9,13 +9,11 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class ReportDocumentationStartup {
 
-	@Inject
-	public ReportDocumentationStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<VariantTestCommand> variantTestCommand
-		){
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, variantTestCommand);
-	}
+   @Inject
+   public ReportDocumentationStartup(HookHandlerService hookHandler,
+
+         Provider<VariantTestCommand> variantTestCommand) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, variantTestCommand);
+   }
 }

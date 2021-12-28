@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 
 public interface ClipboardPasteProcessor {
 
-	public void paste(ClipboardItem item);
+   public void paste(ClipboardItem item);
 }

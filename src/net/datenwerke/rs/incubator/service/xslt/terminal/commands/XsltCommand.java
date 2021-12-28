@@ -52,25 +52,10 @@ public class XsltCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(
-         messageClass = XsltCommandMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandXslt_description", 
-         nonOptArgs = {
-               @NonOptArgument(
-                     name = "stylesheet", 
-                     description = "commandXslt_stylesheet",
-                     mandatory = true
-                     ),
-               @NonOptArgument(
-                     name = "intput", 
-                     description = "commandXslt_input",
-                     mandatory = true
-                     ),
-               @NonOptArgument(
-                     name = "output", 
-                     description = "commandXslt_output",
-                     mandatory = true) })
+   @CliHelpMessage(messageClass = XsltCommandMessages.class, name = BASE_COMMAND, description = "commandXslt_description", nonOptArgs = {
+         @NonOptArgument(name = "stylesheet", description = "commandXslt_stylesheet", mandatory = true),
+         @NonOptArgument(name = "intput", description = "commandXslt_input", mandatory = true),
+         @NonOptArgument(name = "output", description = "commandXslt_output", mandatory = true) })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) {
       List<String> args = parser.getNonOptionArguments();

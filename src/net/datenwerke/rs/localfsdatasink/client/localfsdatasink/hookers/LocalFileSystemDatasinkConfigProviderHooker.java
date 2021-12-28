@@ -22,10 +22,8 @@ public class LocalFileSystemDatasinkConfigProviderHooker implements DatasinkDefi
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public LocalFileSystemDatasinkConfigProviderHooker(
-         Provider<LocalFileSystemDatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider
-         ) {
+   public LocalFileSystemDatasinkConfigProviderHooker(Provider<LocalFileSystemDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
       /* store objects */
       this.formProvider = formProvider;

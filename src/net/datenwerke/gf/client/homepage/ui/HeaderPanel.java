@@ -30,98 +30,94 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
  */
 public class HeaderPanel extends DwContentPanel {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-header";
-	
-	@CssClassConstant
-	public static final String CSS_HEADER_SEP = "rs-header-r-sep";
-	
-	@CssClassConstant
-	public static final String CSS_HEADER_TEXT = "rs-header-r-text";
-	
-	@CssClassConstant
-	public static final String CSS_LOGO_NAME = "rs-logo";
-	
-	private final HookHandlerService hookHandler;
-	private final ModuleManagerModuleSelector moduleSelector;
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-header";
 
-	private ThemeUiService themeService;
-	
-	@Inject
-	public HeaderPanel(
-		HookHandlerService hookHandler,
-		ModuleManagerModuleSelector moduleSelector,
-		ThemeUiService themeService
-		) {
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.moduleSelector = moduleSelector;
-		this.themeService = themeService;
-		
-		initializeUI();
-	}
-	
-	@Override
-	public String getCssName() {
-		return super.getCssName() + " " + CSS_NAME;
-	}
-	
-	public static String getCssLogoName() {
-		return CSS_LOGO_NAME;
-	}
-	
-	private void initializeUI() {
-		setHeaderVisible(false);
-		setBodyBorder(false);
-		setBorders(false);
-		
-		HBoxLayoutContainer container = new HBoxLayoutContainer();
-		container.setEnableOverflow(false);
-		container.setPack(BoxLayoutPack.START);
-		container.setPadding(new Padding(0, 15, 0, 15));
-		container.setAllowTextSelection(false);
-		container.setHBoxLayoutAlign(HBoxLayoutAlign.MIDDLE);
-		add(container);
-		
-		HTML logo = themeService.getHeaderLogo();
-		container.add(logo);
-		
-		/* fill ponels */ 
-		List<HomepageHeaderContentHook> hookers = hookHandler.getHookers(HomepageHeaderContentHook.class);
-		moduleSelector.addModules(container);
-		
-		container.add(new FillToolItem());
+   @CssClassConstant
+   public static final String CSS_HEADER_SEP = "rs-header-r-sep";
 
-		boolean first = true;
-		for(HomepageHeaderContentHook hooker : hookers){
-			final DwMainViewportTopBarElement tbElement = hooker.homepageHeaderContentHook_addTopRight(container);
-			if(null == tbElement)
-				continue;
-			
-			if(first)
-				first = false;
-			else {
-				Label sep = new Label("|");
-				sep.setStyleName(CSS_HEADER_SEP);
-				container.add(sep, new BoxLayoutData(new Margins(0, 5, 0, 5)));
-			}
-			
-			ClickHandler elClickHandler = event -> tbElement.onClick();
-			
-			if(tbElement instanceof DwMainViewportTopBarWidget){
-				container.add(((DwMainViewportTopBarWidget)tbElement).getComponent());
-			} else {
-				String textLabel = tbElement.getName();
-				
-				Label text = new Label(textLabel);
-				text.addStyleName(CSS_HEADER_TEXT);
-				text.getElement().getStyle().setCursor(Cursor.POINTER);
-				text.addDomHandler(elClickHandler, ClickEvent.getType());
-				container.add(text);
-			}
-		}
-	}
+   @CssClassConstant
+   public static final String CSS_HEADER_TEXT = "rs-header-r-text";
 
+   @CssClassConstant
+   public static final String CSS_LOGO_NAME = "rs-logo";
+
+   private final HookHandlerService hookHandler;
+   private final ModuleManagerModuleSelector moduleSelector;
+
+   private ThemeUiService themeService;
+
+   @Inject
+   public HeaderPanel(HookHandlerService hookHandler, ModuleManagerModuleSelector moduleSelector,
+         ThemeUiService themeService) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.moduleSelector = moduleSelector;
+      this.themeService = themeService;
+
+      initializeUI();
+   }
+
+   @Override
+   public String getCssName() {
+      return super.getCssName() + " " + CSS_NAME;
+   }
+
+   public static String getCssLogoName() {
+      return CSS_LOGO_NAME;
+   }
+
+   private void initializeUI() {
+      setHeaderVisible(false);
+      setBodyBorder(false);
+      setBorders(false);
+
+      HBoxLayoutContainer container = new HBoxLayoutContainer();
+      container.setEnableOverflow(false);
+      container.setPack(BoxLayoutPack.START);
+      container.setPadding(new Padding(0, 15, 0, 15));
+      container.setAllowTextSelection(false);
+      container.setHBoxLayoutAlign(HBoxLayoutAlign.MIDDLE);
+      add(container);
+
+      HTML logo = themeService.getHeaderLogo();
+      container.add(logo);
+
+      /* fill ponels */
+      List<HomepageHeaderContentHook> hookers = hookHandler.getHookers(HomepageHeaderContentHook.class);
+      moduleSelector.addModules(container);
+
+      container.add(new FillToolItem());
+
+      boolean first = true;
+      for (HomepageHeaderContentHook hooker : hookers) {
+         final DwMainViewportTopBarElement tbElement = hooker.homepageHeaderContentHook_addTopRight(container);
+         if (null == tbElement)
+            continue;
+
+         if (first)
+            first = false;
+         else {
+            Label sep = new Label("|");
+            sep.setStyleName(CSS_HEADER_SEP);
+            container.add(sep, new BoxLayoutData(new Margins(0, 5, 0, 5)));
+         }
+
+         ClickHandler elClickHandler = event -> tbElement.onClick();
+
+         if (tbElement instanceof DwMainViewportTopBarWidget) {
+            container.add(((DwMainViewportTopBarWidget) tbElement).getComponent());
+         } else {
+            String textLabel = tbElement.getName();
+
+            Label text = new Label(textLabel);
+            text.addStyleName(CSS_HEADER_TEXT);
+            text.getElement().getStyle().setCursor(Cursor.POINTER);
+            text.addDomHandler(elClickHandler, ClickEvent.getType());
+            container.add(text);
+         }
+      }
+   }
 
 }

@@ -27,10 +27,7 @@ public class MondrianDatasourceTesterToolbarConfigurator implements MainPanelVie
    private final ToolbarService toolbarUtils;
 
    @Inject
-   public MondrianDatasourceTesterToolbarConfigurator(
-         ToolbarService toolbarUtils,
-         SaikuDao saikuDao
-         ) {
+   public MondrianDatasourceTesterToolbarConfigurator(ToolbarService toolbarUtils, SaikuDao saikuDao) {
 
       this.toolbarUtils = toolbarUtils;
       this.saikuDao = saikuDao;
@@ -45,7 +42,7 @@ public class MondrianDatasourceTesterToolbarConfigurator implements MainPanelVie
          return;
 
       final MondrianDatasourceDto datasourceDto = (MondrianDatasourceDto) selectedNode;
-      
+
       DwTextButton datasourceTestBtn = toolbarUtils.createSmallButtonLeft(messages.testConnection(), BaseIcon.LINK);
       datasourceTestBtn.addSelectHandler(event -> {
          ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),

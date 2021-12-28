@@ -5,7 +5,6 @@ import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
 
 public interface TableDbDatasourceOpenedHook extends Hook {
 
-	void datasourceOpenend(TableDBDataSource tableDBDataSource,
-			String executorToken);
+   void datasourceOpenend(TableDBDataSource tableDBDataSource, String executorToken);
 
 }

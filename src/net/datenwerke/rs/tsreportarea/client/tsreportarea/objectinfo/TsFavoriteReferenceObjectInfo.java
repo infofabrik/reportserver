@@ -15,26 +15,25 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportRefere
  */
 public class TsFavoriteReferenceObjectInfo implements ObjectPreviewTabKeyInfoProvider {
 
-	@Override
-	public boolean consumes(Object object) {
-		return object instanceof TsDiskReportReferenceDto;
-	}
+   @Override
+   public boolean consumes(Object object) {
+      return object instanceof TsDiskReportReferenceDto;
+   }
 
-	@Override
-	public Collection<?> getSubtypes(Object object) {
-		return null;
-	}
+   @Override
+   public Collection<?> getSubtypes(Object object) {
+      return null;
+   }
 
-	@Override
-	public void setInfoPanel(final ObjectPreviewTabPanel infoPanel, Object object) {
-		TsDiskReportReferenceDto reference = (TsDiskReportReferenceDto) object;
-		infoPanel.addInfoFor(reference.getReport());
-	}
+   @Override
+   public void setInfoPanel(final ObjectPreviewTabPanel infoPanel, Object object) {
+      TsDiskReportReferenceDto reference = (TsDiskReportReferenceDto) object;
+      infoPanel.addInfoFor(reference.getReport());
+   }
 
-	@Override
-	public List<PreviewComponent> getInfoComponents(Object object) {
-		return new ArrayList<ObjectPreviewTabProviderHook.PreviewComponent>();
-	}
-
+   @Override
+   public List<PreviewComponent> getInfoComponents(Object object) {
+      return new ArrayList<ObjectPreviewTabProviderHook.PreviewComponent>();
+   }
 
 }

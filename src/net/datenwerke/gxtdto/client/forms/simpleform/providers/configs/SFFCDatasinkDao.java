@@ -8,5 +8,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface SFFCDatasinkDao extends SimpleFormFieldConfiguration {
    Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider();
+
    BaseIcon getIcon();
 }

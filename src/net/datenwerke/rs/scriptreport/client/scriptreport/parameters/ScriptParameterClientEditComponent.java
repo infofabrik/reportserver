@@ -32,43 +32,39 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.rpc.ScriptReportServic
 
 public class ScriptParameterClientEditComponent {
 
-	private ScriptReportServiceDao scriptReportServiceDao;
-	private EnterpriseUiService enterpriseService;
-	
-	private ScriptParameterInstanceDto instance;
-	private ScriptParameterDefinitionDto definition;
-	private String name;
+   private ScriptReportServiceDao scriptReportServiceDao;
+   private EnterpriseUiService enterpriseService;
 
+   private ScriptParameterInstanceDto instance;
+   private ScriptParameterDefinitionDto definition;
+   private String name;
 
-	@Inject
-	public ScriptParameterClientEditComponent(
-			ScriptReportServiceDao scriptReportServiceDao,
-			EnterpriseUiService enterpriseService){
-		this.scriptReportServiceDao = scriptReportServiceDao;
-		this.enterpriseService = enterpriseService;
-		
-	}
-	
-	protected void initFrame(String name,
-			ScriptParameterInstanceDto instance,
-			ScriptParameterDefinitionDto definition) {
-		try{
-			ScriptParameterOverlay jsObj = (ScriptParameterOverlay) JavaScriptObject.createObject().cast();
-			
-			jsObj.setDefaultValue(definition.getDefaultValue());
-			jsObj.setValue(instance.getValue());
-			jsObj.setEditable(definition.isEditable());
-			jsObj.setMandatory(definition.isMandatory());
-			jsObj.setName(definition.getName());
-			jsObj.setKey(definition.getKey());
-			
-			jsInitFrame(name, jsObj);
-		} catch(Exception e){
-			GWT.log(e.getMessage());
-		}
-	}
-	
-	protected native void jsInitFrame(String name, ScriptParameterOverlay obj) /*-{
+   @Inject
+   public ScriptParameterClientEditComponent(ScriptReportServiceDao scriptReportServiceDao,
+         EnterpriseUiService enterpriseService) {
+      this.scriptReportServiceDao = scriptReportServiceDao;
+      this.enterpriseService = enterpriseService;
+
+   }
+
+   protected void initFrame(String name, ScriptParameterInstanceDto instance, ScriptParameterDefinitionDto definition) {
+      try {
+         ScriptParameterOverlay jsObj = (ScriptParameterOverlay) JavaScriptObject.createObject().cast();
+
+         jsObj.setDefaultValue(definition.getDefaultValue());
+         jsObj.setValue(instance.getValue());
+         jsObj.setEditable(definition.isEditable());
+         jsObj.setMandatory(definition.isMandatory());
+         jsObj.setName(definition.getName());
+         jsObj.setKey(definition.getKey());
+
+         jsInitFrame(name, jsObj);
+      } catch (Exception e) {
+         GWT.log(e.getMessage());
+      }
+   }
+
+   protected native void jsInitFrame(String name, ScriptParameterOverlay obj) /*-{
 	    // get document
 	    var f = $doc.getElementById(name);
 	    d = (f.contentWindow || f.contentDocument);
@@ -80,100 +76,91 @@ public class ScriptParameterClientEditComponent {
   		}); 
 	    
 	    d.initParameter(obj, callbackFn); 
-	}-*/; 
-	
-	public void setValueFromJsni(String value){
-		instance.setValue(value);
-		instance.setStillDefault(false);
-	}
+	}-*/;
 
-	public Widget getEditComponentForInstance(
-			ScriptParameterConfigurator configurator,
-			final ScriptParameterInstanceDto instance,
-			final Collection<ParameterInstanceDto> relevantInstances,
-			final ScriptParameterDefinitionDto definition, boolean initial,
-			int labelWidth, 
-			String executeReportToken) {
-		if(! enterpriseService.isEnterprise()){
-			return new ParameterFieldWrapperForFrontend(
-					definition,
-					instance,
-					new WidgetComponent(new Label("Script parameter is not available in Community Edition.")),
-					labelWidth
-				); 
-		}
-		
-		this.instance = instance;
-		this.definition = definition;
-		
-		this.name = "param-" + executeReportToken + "-" + definition.getId();
-		NamedFrame myFrame = new NamedFrame(name);
-		DOM.setElementAttribute(myFrame.getElement(), "id", name);
-		
-		myFrame.setHeight("100%");
-		myFrame.setWidth("100%");
-		myFrame.getElement().setAttribute("width", "100%");
-		myFrame.getElement().setAttribute("height", "100%");
-		myFrame.getElement().setAttribute("frameborder", "0");
-		myFrame.getElement().getStyle().setProperty("border", "none");
-		myFrame.getElement().getStyle().setProperty("margin","0");
-		
-		
-		myFrame.addLoadHandler(new LoadHandler() {
-			@Override
-			public void onLoad(LoadEvent event) {
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						initFrame(name, instance, definition);
-					}
-				});
-			}
-		});
-		myFrame.addAttachHandler(new Handler() {
-			@Override
-			public void onAttachOrDetach(AttachEvent event) {
-				scriptReportServiceDao.getScriptParameterContents(definition, relevantInstances, new RsAsyncCallback<String>(){
-					@Override
-					public void onSuccess(String result) {
-						fillIframe(name, result);
-					}
-				});
-			}
-		});
-		
-		
-		DwContentPanel wrapper = DwContentPanel.newInlineInstance(myFrame);
-		wrapper.setWidth(definition.getWidth());
-		wrapper.setHeight(definition.getHeight());
-		
-		ScriptParameterParameterWrapper paramWrapper = new ScriptParameterParameterWrapper(definition, instance, wrapper, labelWidth, new DefaultValueSetter() {
-			@Override
-			public void setDefaultValue() {
-				setDefaultValueInInstance(instance, definition);
-			}
-		});
-		paramWrapper.setScriptParameterConfigurator(this);
-		return paramWrapper;
-	}
+   public void setValueFromJsni(String value) {
+      instance.setValue(value);
+      instance.setStillDefault(false);
+   }
 
-	protected void setDefaultValueInInstance(
-			ScriptParameterInstanceDto instance,
-			ScriptParameterDefinitionDto definition) {
-		boolean silent = instance.isSilenceEvents();
-		instance.silenceEvents(true);
-		instance.setValue(null);
-		instance.setStillDefault(true);
-		instance.silenceEvents(silent);
-		
-		try{
-			jsResetFrame(name, definition.getDefaultValue());
-		} catch(Exception e){
-			GWT.log(e.getMessage());
-		}
-	}
-	
-	protected native void jsResetFrame(String name, String value) /*-{
+   public Widget getEditComponentForInstance(ScriptParameterConfigurator configurator,
+         final ScriptParameterInstanceDto instance, final Collection<ParameterInstanceDto> relevantInstances,
+         final ScriptParameterDefinitionDto definition, boolean initial, int labelWidth, String executeReportToken) {
+      if (!enterpriseService.isEnterprise()) {
+         return new ParameterFieldWrapperForFrontend(definition, instance,
+               new WidgetComponent(new Label("Script parameter is not available in Community Edition.")), labelWidth);
+      }
+
+      this.instance = instance;
+      this.definition = definition;
+
+      this.name = "param-" + executeReportToken + "-" + definition.getId();
+      NamedFrame myFrame = new NamedFrame(name);
+      DOM.setElementAttribute(myFrame.getElement(), "id", name);
+
+      myFrame.setHeight("100%");
+      myFrame.setWidth("100%");
+      myFrame.getElement().setAttribute("width", "100%");
+      myFrame.getElement().setAttribute("height", "100%");
+      myFrame.getElement().setAttribute("frameborder", "0");
+      myFrame.getElement().getStyle().setProperty("border", "none");
+      myFrame.getElement().getStyle().setProperty("margin", "0");
+
+      myFrame.addLoadHandler(new LoadHandler() {
+         @Override
+         public void onLoad(LoadEvent event) {
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+               @Override
+               public void execute() {
+                  initFrame(name, instance, definition);
+               }
+            });
+         }
+      });
+      myFrame.addAttachHandler(new Handler() {
+         @Override
+         public void onAttachOrDetach(AttachEvent event) {
+            scriptReportServiceDao.getScriptParameterContents(definition, relevantInstances,
+                  new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        fillIframe(name, result);
+                     }
+                  });
+         }
+      });
+
+      DwContentPanel wrapper = DwContentPanel.newInlineInstance(myFrame);
+      wrapper.setWidth(definition.getWidth());
+      wrapper.setHeight(definition.getHeight());
+
+      ScriptParameterParameterWrapper paramWrapper = new ScriptParameterParameterWrapper(definition, instance, wrapper,
+            labelWidth, new DefaultValueSetter() {
+               @Override
+               public void setDefaultValue() {
+                  setDefaultValueInInstance(instance, definition);
+               }
+            });
+      paramWrapper.setScriptParameterConfigurator(this);
+      return paramWrapper;
+   }
+
+   protected void setDefaultValueInInstance(ScriptParameterInstanceDto instance,
+         ScriptParameterDefinitionDto definition) {
+      boolean silent = instance.isSilenceEvents();
+      instance.silenceEvents(true);
+      instance.setValue(null);
+      instance.setStillDefault(true);
+      instance.silenceEvents(silent);
+
+      try {
+         jsResetFrame(name, definition.getDefaultValue());
+      } catch (Exception e) {
+         GWT.log(e.getMessage());
+      }
+   }
+
+   protected native void jsResetFrame(String name, String value) /*-{
 	    // get document
 	    var f = $doc.getElementById(name);
 	    d = (f.contentWindow || f.contentDocument);
@@ -181,22 +168,22 @@ public class ScriptParameterClientEditComponent {
 	    d.reset(value); 
 	}-*/;
 
-	public List<String> validateParameter(ScriptParameterDefinitionDto definition,
-			ScriptParameterInstanceDto instance, Widget widget) {
-		List<String> list = new ArrayList<String>();
-		
-		try{
-			String error = doValidate(name);
-			if(null != error && ! "".equals(error))
-				list.add(error);
-		} catch(Exception e){// swallow, no exception here
-		}
-		
-		return list;
-			
-	}
-	
-	private native void fillIframe(String name, String content) /*-{
+   public List<String> validateParameter(ScriptParameterDefinitionDto definition, ScriptParameterInstanceDto instance,
+         Widget widget) {
+      List<String> list = new ArrayList<String>();
+
+      try {
+         String error = doValidate(name);
+         if (null != error && !"".equals(error))
+            list.add(error);
+      } catch (Exception e) {// swallow, no exception here
+      }
+
+      return list;
+
+   }
+
+   private native void fillIframe(String name, String content) /*-{
 		
 		var iframe = $doc.getElementById(name);
 		var doc = iframe.document;
@@ -210,15 +197,13 @@ public class ScriptParameterClientEditComponent {
 		doc.write(content);
 		doc.close();
 	}-*/;
-	
-	protected native String doValidate(String name) /*-{
+
+   protected native String doValidate(String name) /*-{
 	    // get document
 	    var f = $doc.getElementById(name);
 	    d = (f.contentWindow || f.contentDocument);
 	    
 	    return d.validate(); 
 	}-*/;
-	
-	
-	
+
 }

@@ -24,83 +24,77 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
  */
 public class HomepageProfileHooker implements HomepageHeaderContentHook {
 
-	
-	private final LoginService loginService;
-	private final Provider<RpcPropertiesDialog> propertiesDialogProvider;
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public HomepageProfileHooker(
-		LoginService loginService,
-		Provider<RpcPropertiesDialog> propertiesDialogProvider,
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.loginService = loginService;
-		this.propertiesDialogProvider = propertiesDialogProvider;
-		this.hookHandler = hookHandler;
-	}
-	
-	
-	@Override
-	public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container) {
-		final UserDto user = loginService.getCurrentUser();
-		
-		return new DwMainViewportTopBarElement() {
-			
-			@Override
-			public void onClick() {
-				displayProfile();
-			}
-			
-			@Override
-			public String getName() {
-				String textLabel = UserProfileMessages.INSTANCE.headerText(user.toDisplayTitle());
-				
-				return textLabel;
-			}
-		};
-	}
-	
+   private final LoginService loginService;
+   private final Provider<RpcPropertiesDialog> propertiesDialogProvider;
+   private final HookHandlerService hookHandler;
 
-	protected void displayProfile() {
-		UserDto user = loginService.getCurrentUser();
-		
-		/* create window */
-		final RpcPropertiesDialog profile = propertiesDialogProvider.get();
-		profile.setSize(640, 480);
-		profile.setHeading(UserProfileMessages.INSTANCE.profileHeader(user.toDisplayTitle()));
-		profile.setMaskOnSubmit(BaseMessages.INSTANCE.loadingMsg());
-		profile.setModal(true);
-		profile.setPerformSubmitsConsecutively(true);
+   @Inject
+   public HomepageProfileHooker(LoginService loginService, Provider<RpcPropertiesDialog> propertiesDialogProvider,
+         HookHandlerService hookHandler) {
 
-		/* load cards */
-		final List<UserProfileCardProviderHook> cardProviders = hookHandler.getHookers(UserProfileCardProviderHook.class);
-		for(UserProfileCardProviderHook cardProvider : cardProviders)
-			profile.addCard(cardProvider);
-		
-		profile.setSubmitCompleteCallback(new SubmitCompleteCallback() {
-			
-			@Override
-			public void onSuccess() {
-				/* reauthenticate so that current user is up to date */
-				loginService.tryReAuthenticate(new AuthenticateCallback() {
-					@Override
-					public void execute(boolean authenticateSucceeded) {
-						profile.hide();						
-					}
-				});
-			}
-			
-			@Override
-			public void onFailure(Throwable t) {
-				profile.hide();
-			}
-		});
-		
-		/* show window */
-		profile.show();
-	}
+      /* store objects */
+      this.loginService = loginService;
+      this.propertiesDialogProvider = propertiesDialogProvider;
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container) {
+      final UserDto user = loginService.getCurrentUser();
+
+      return new DwMainViewportTopBarElement() {
+
+         @Override
+         public void onClick() {
+            displayProfile();
+         }
+
+         @Override
+         public String getName() {
+            String textLabel = UserProfileMessages.INSTANCE.headerText(user.toDisplayTitle());
+
+            return textLabel;
+         }
+      };
+   }
+
+   protected void displayProfile() {
+      UserDto user = loginService.getCurrentUser();
+
+      /* create window */
+      final RpcPropertiesDialog profile = propertiesDialogProvider.get();
+      profile.setSize(640, 480);
+      profile.setHeading(UserProfileMessages.INSTANCE.profileHeader(user.toDisplayTitle()));
+      profile.setMaskOnSubmit(BaseMessages.INSTANCE.loadingMsg());
+      profile.setModal(true);
+      profile.setPerformSubmitsConsecutively(true);
+
+      /* load cards */
+      final List<UserProfileCardProviderHook> cardProviders = hookHandler.getHookers(UserProfileCardProviderHook.class);
+      for (UserProfileCardProviderHook cardProvider : cardProviders)
+         profile.addCard(cardProvider);
+
+      profile.setSubmitCompleteCallback(new SubmitCompleteCallback() {
+
+         @Override
+         public void onSuccess() {
+            /* reauthenticate so that current user is up to date */
+            loginService.tryReAuthenticate(new AuthenticateCallback() {
+               @Override
+               public void execute(boolean authenticateSucceeded) {
+                  profile.hide();
+               }
+            });
+         }
+
+         @Override
+         public void onFailure(Throwable t) {
+            profile.hide();
+         }
+      });
+
+      /* show window */
+      profile.show();
+   }
 
 }

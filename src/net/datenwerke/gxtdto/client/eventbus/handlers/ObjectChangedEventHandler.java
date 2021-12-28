@@ -6,5 +6,5 @@ import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
 
 public interface ObjectChangedEventHandler<T> extends EventHandler {
 
-	void onObjectChangedEvent(ObjectChangedEvent<T> event);
+   void onObjectChangedEvent(ObjectChangedEvent<T> event);
 }

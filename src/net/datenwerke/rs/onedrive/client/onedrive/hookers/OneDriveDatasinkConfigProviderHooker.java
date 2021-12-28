@@ -21,10 +21,8 @@ public class OneDriveDatasinkConfigProviderHooker implements DatasinkDefinitionC
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public OneDriveDatasinkConfigProviderHooker(
-         Provider<OneDriveDatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider
-         ) {
+   public OneDriveDatasinkConfigProviderHooker(Provider<OneDriveDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
       /* store objects */
       this.formProvider = formProvider;

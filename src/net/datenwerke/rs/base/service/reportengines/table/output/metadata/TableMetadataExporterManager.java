@@ -7,7 +7,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetadataExporterManager;
 
-
 /**
  * Manages the output generators for table reports.
  * 
@@ -20,11 +19,10 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetad
  *
  */
 public class TableMetadataExporterManager extends AbstractReportMetadataExporterManager<TableMetadataExporter> {
-	
-	@Inject
-	public TableMetadataExporterManager(
-			Provider<Set<TableMetadataExporter>> exporters) {
-		super(exporters);
-	}
-	
+
+   @Inject
+   public TableMetadataExporterManager(Provider<Set<TableMetadataExporter>> exporters) {
+      super(exporters);
+   }
+
 }

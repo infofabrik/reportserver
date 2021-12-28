@@ -10,33 +10,33 @@ import net.datenwerke.rs.base.client.datasources.dto.pa.UrlDatasourceConnectorDt
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 
-public class UrlDatasourceConnectorConfigHooker implements
-		DatasourceConnectorConfiguratorHook {
+public class UrlDatasourceConnectorConfigHooker implements DatasourceConnectorConfiguratorHook {
 
-	@Override
-	public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.addField(String.class, UrlDatasourceConnectorDtoPA.INSTANCE.url(), BaseDatasourceMessages.INSTANCE.urlLabel());
-		
-		form.bind(datasource.getConnector());
-		
-		return form;
-	}
+   @Override
+   public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-	@Override
-	public DatasourceConnectorDto instantiateConnector() {
-		return new UrlDatasourceConnectorDto();
-	}
+      form.addField(String.class, UrlDatasourceConnectorDtoPA.INSTANCE.url(),
+            BaseDatasourceMessages.INSTANCE.urlLabel());
 
-	@Override
-	public String getConnectorName() {
-		return BaseDatasourceMessages.INSTANCE.urlConnectorName();
-	}
+      form.bind(datasource.getConnector());
 
-	@Override
-	public boolean consumes(DatasourceConnectorDto connector) {
-		return connector instanceof UrlDatasourceConnectorDto;
-	}
+      return form;
+   }
+
+   @Override
+   public DatasourceConnectorDto instantiateConnector() {
+      return new UrlDatasourceConnectorDto();
+   }
+
+   @Override
+   public String getConnectorName() {
+      return BaseDatasourceMessages.INSTANCE.urlConnectorName();
+   }
+
+   @Override
+   public boolean consumes(DatasourceConnectorDto connector) {
+      return connector instanceof UrlDatasourceConnectorDto;
+   }
 
 }

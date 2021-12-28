@@ -149,10 +149,8 @@ public class SeriesConfigurationForm extends DwContentPanel implements Validatab
    private FormatUiHelper formatUiHelper;
 
    @Inject
-   public SeriesConfigurationForm(
-         FormatUiHelper formatUiHelper,
-         @Nullable @Assisted ReportScheduleDefinition definition
-         ) {
+   public SeriesConfigurationForm(FormatUiHelper formatUiHelper,
+         @Nullable @Assisted ReportScheduleDefinition definition) {
       this.formatUiHelper = formatUiHelper;
 
       setHeaderVisible(false);
@@ -173,10 +171,7 @@ public class SeriesConfigurationForm extends DwContentPanel implements Validatab
             dailyRepeatType }));
 
       /* disallow blank as a valid value for all fields */
-      allFields
-         .stream()
-         .filter(f -> f instanceof TextField)
-         .forEach(f -> ((TextField) f).setAllowBlank(false));
+      allFields.stream().filter(f -> f instanceof TextField).forEach(f -> ((TextField) f).setAllowBlank(false));
 
       attachFieldConfigurator();
 
@@ -1345,11 +1340,8 @@ public class SeriesConfigurationForm extends DwContentPanel implements Validatab
    }
 
    public void setDailyRepeatType(final DailyRepeatTypeDto type) {
-      dailyRepeatType
-         .stream()
-         .filter(radio -> ((Radio) radio).getData(ENUM_VALUE) == type)
-         .findFirst()
-         .ifPresent(radio -> ((Radio) radio).setValue(true, true));
+      dailyRepeatType.stream().filter(radio -> ((Radio) radio).getData(ENUM_VALUE) == type).findFirst()
+            .ifPresent(radio -> ((Radio) radio).setValue(true, true));
    }
 
    public DailyRepeatTypeDto getDailyRepeatType() {

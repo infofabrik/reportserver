@@ -8,14 +8,14 @@ import net.datenwerke.rs.saikupivot.client.table.SaikuTableReportPreviewViewFact
 
 public class SaikuPivotUiStartup {
 
-	@Inject
-	public SaikuPivotUiStartup(
-		HookHandlerService hookHandlerService,
-		
-		SaikuTableReportPreviewViewFactory saikuTableReportPreviewViewFactory
-		
-		) {
-		hookHandlerService.attachHooker(ReportViewHook.class, new ReportViewHook(saikuTableReportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
-		
-	}
+   @Inject
+   public SaikuPivotUiStartup(HookHandlerService hookHandlerService,
+
+         SaikuTableReportPreviewViewFactory saikuTableReportPreviewViewFactory
+
+   ) {
+      hookHandlerService.attachHooker(ReportViewHook.class, new ReportViewHook(saikuTableReportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
+
+   }
 }

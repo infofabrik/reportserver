@@ -44,161 +44,159 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.pa.ImportTreeModelPA;
  */
 public class ImporterItemsPanel<C extends ImportConfigDto> extends DwContentPanel {
 
-	@CssClassConstant
-	public static final String CSS_IMPORT_MAIN_PANEL = "rs-import-item-panel";
+   @CssClassConstant
+   public static final String CSS_IMPORT_MAIN_PANEL = "rs-import-item-panel";
 
-	@CssClassConstant
-	public static final String CSS_IMPORT_MAIN_TREE = "rs-import-item-tree";
+   @CssClassConstant
+   public static final String CSS_IMPORT_MAIN_TREE = "rs-import-item-tree";
 
-	@CssClassConstant
-	public static final String CSS_IMPORT_MAIN_DETAIL = "rs-import-item-detail";
+   @CssClassConstant
+   public static final String CSS_IMPORT_MAIN_DETAIL = "rs-import-item-detail";
 
-	
-	protected DwContentPanel navigationPanel;
-	protected DwContentPanel mainPanel;
-	
-	protected TreeStore<ImportTreeModel> store;
-	protected Tree<ImportTreeModel,String> tree;
-	
-	private ImportTreeModel contextMenuItem;
-	
-	@Inject
-	public ImporterItemsPanel(){
-		
-		/* init */
-		initializeUI();
-	}
-	
-	@Override
-	public String getCssName() {
-		return super.getCssName() + " " + CSS_IMPORT_MAIN_PANEL;
-	}
+   protected DwContentPanel navigationPanel;
+   protected DwContentPanel mainPanel;
 
-	private void initializeUI() {
-		/* init us */
-		setHeaderVisible(false);
-		setBodyBorder(false);
-		setBorders(false);
-		
-		/* init panels */
-		instantiateNavigationPanel();
-		instantiateMainPanel();
-		
-		/* layout */
-		BorderLayoutContainer borderContainer = new DwBorderContainer();
-		setWidget(borderContainer);
-		
-		BorderLayoutData westData = new BorderLayoutData(400);
-		westData.setSplit(true);
-		westData.setMargins(new Margins(0,2,0,0));
-		
-		/* add panels */
-		borderContainer.setWestWidget(navigationPanel, westData);
-		borderContainer.setCenterWidget(mainPanel);
-	}
+   protected TreeStore<ImportTreeModel> store;
+   protected Tree<ImportTreeModel, String> tree;
 
-	protected void buildTree(List<ImportTreeModel> roots) {
-		store = new TreeStore<ImportTreeModel>(ImportTreeModelPA.INSTANCE.dtoId());
-		store.addSubTree(0,roots);
-		
-		tree = new DwTreePanel<ImportTreeModel>(store, ImportTreeModelPA.INSTANCE.name());
-		tree.addStyleName(CSS_IMPORT_MAIN_TREE);
-		tree.setCheckable(true);
-		tree.setAutoLoad(true);
-		tree.setCheckStyle(CheckCascade.CHILDREN);
-		
-		configureTree();
-		
-		TreeSelectionModel<ImportTreeModel> sModel = new TreeSelectionModel<ImportTreeModel>();
-		sModel.setSelectionMode(SelectionMode.SINGLE);
-		sModel.addSelectionChangedHandler(new SelectionChangedHandler<ImportTreeModel>() {
-			@Override
-			public void onSelectionChanged(
-					SelectionChangedEvent<ImportTreeModel> event) {
-				if(null == event.getSelection() || event.getSelection().isEmpty())
-					return;
-				
-				ImportTreeModel model = event.getSelection().get(0);
-				if(null != model)
-					modelSelected(model);
-			}
-		});
-		tree.setSelectionModel(sModel);
-		
-		
-		navigationPanel.add(tree, new MarginData(4, 0, 0, 0));
-		navigationPanel.forceLayout();
-	}
-	
-	protected void configureTree() {
-		configureContextMenu();
-	}
+   private ImportTreeModel contextMenuItem;
 
-	protected void configureContextMenu() {
-		Menu cMenu = new DwMenu();
-		tree.setContextMenu(cMenu);
-		tree.addShowContextMenuHandler(new ShowContextMenuHandler() {
-			@Override
-			public void onShowContextMenu(ShowContextMenuEvent event) {
-				contextMenuItem = tree.getSelectionModel().getSelectedItem();
-			}
-		});
-		
-		MenuItem selectChildren = new DwMenuItem(ExImportMessages.INSTANCE.selectChildrenLabel(), BaseIcon.PLUS_SQUARE);
-		cMenu.add(selectChildren);
-		selectChildren.addSelectionHandler(new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				if(null == contextMenuItem)
-					return;
-				
-				for(ImportTreeModel model : store.getChildren(contextMenuItem))
-					tree.setChecked(model, CheckState.CHECKED);
-			}
-		});
-		
-		MenuItem deselectChildren = new DwMenuItem(ExImportMessages.INSTANCE.deselectChildrenLabel(), BaseIcon.MINUS_SQUARE);
-		cMenu.add(deselectChildren);
-		deselectChildren.addSelectionHandler(new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				if(null == contextMenuItem)
-					return;
-				
-				for(ImportTreeModel model : store.getChildren(contextMenuItem))
-					tree.setChecked(model, CheckState.UNCHECKED);
-			}
-		});
-	}
+   @Inject
+   public ImporterItemsPanel() {
 
-	public ImportTreeModel getContextMenuItem() {
-		return contextMenuItem;
-	}
-	
-	protected void modelSelected(ImportTreeModel model) {
-		
-	}
+      /* init */
+      initializeUI();
+   }
 
-	private void instantiateMainPanel() {
-		mainPanel = DwContentPanel.newInlineInstance();
-		mainPanel.addStyleName(CSS_IMPORT_MAIN_DETAIL);
-	}
+   @Override
+   public String getCssName() {
+      return super.getCssName() + " " + CSS_IMPORT_MAIN_PANEL;
+   }
 
-	private void instantiateNavigationPanel() {
-		navigationPanel = DwContentPanel.newInlineInstance();
-	}
+   private void initializeUI() {
+      /* init us */
+      setHeaderVisible(false);
+      setBodyBorder(false);
+      setBorders(false);
 
-	public void populateConfig(C config) {
-		for(ImportTreeModel model : tree.getCheckedSelection()){
-			TreeImportNodeConfigDto configNode = new TreeImportNodeConfigDto(model);
-			config.addConfig(configNode);
-		}
-	}
+      /* init panels */
+      instantiateNavigationPanel();
+      instantiateMainPanel();
 
-	public void validateConfig(C config) {
-	}
+      /* layout */
+      BorderLayoutContainer borderContainer = new DwBorderContainer();
+      setWidget(borderContainer);
 
-	public void resetConfig() {
-		tree.setCheckedSelection(new ArrayList<ImportTreeModel>());
-	}
+      BorderLayoutData westData = new BorderLayoutData(400);
+      westData.setSplit(true);
+      westData.setMargins(new Margins(0, 2, 0, 0));
+
+      /* add panels */
+      borderContainer.setWestWidget(navigationPanel, westData);
+      borderContainer.setCenterWidget(mainPanel);
+   }
+
+   protected void buildTree(List<ImportTreeModel> roots) {
+      store = new TreeStore<ImportTreeModel>(ImportTreeModelPA.INSTANCE.dtoId());
+      store.addSubTree(0, roots);
+
+      tree = new DwTreePanel<ImportTreeModel>(store, ImportTreeModelPA.INSTANCE.name());
+      tree.addStyleName(CSS_IMPORT_MAIN_TREE);
+      tree.setCheckable(true);
+      tree.setAutoLoad(true);
+      tree.setCheckStyle(CheckCascade.CHILDREN);
+
+      configureTree();
+
+      TreeSelectionModel<ImportTreeModel> sModel = new TreeSelectionModel<ImportTreeModel>();
+      sModel.setSelectionMode(SelectionMode.SINGLE);
+      sModel.addSelectionChangedHandler(new SelectionChangedHandler<ImportTreeModel>() {
+         @Override
+         public void onSelectionChanged(SelectionChangedEvent<ImportTreeModel> event) {
+            if (null == event.getSelection() || event.getSelection().isEmpty())
+               return;
+
+            ImportTreeModel model = event.getSelection().get(0);
+            if (null != model)
+               modelSelected(model);
+         }
+      });
+      tree.setSelectionModel(sModel);
+
+      navigationPanel.add(tree, new MarginData(4, 0, 0, 0));
+      navigationPanel.forceLayout();
+   }
+
+   protected void configureTree() {
+      configureContextMenu();
+   }
+
+   protected void configureContextMenu() {
+      Menu cMenu = new DwMenu();
+      tree.setContextMenu(cMenu);
+      tree.addShowContextMenuHandler(new ShowContextMenuHandler() {
+         @Override
+         public void onShowContextMenu(ShowContextMenuEvent event) {
+            contextMenuItem = tree.getSelectionModel().getSelectedItem();
+         }
+      });
+
+      MenuItem selectChildren = new DwMenuItem(ExImportMessages.INSTANCE.selectChildrenLabel(), BaseIcon.PLUS_SQUARE);
+      cMenu.add(selectChildren);
+      selectChildren.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            if (null == contextMenuItem)
+               return;
+
+            for (ImportTreeModel model : store.getChildren(contextMenuItem))
+               tree.setChecked(model, CheckState.CHECKED);
+         }
+      });
+
+      MenuItem deselectChildren = new DwMenuItem(ExImportMessages.INSTANCE.deselectChildrenLabel(),
+            BaseIcon.MINUS_SQUARE);
+      cMenu.add(deselectChildren);
+      deselectChildren.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            if (null == contextMenuItem)
+               return;
+
+            for (ImportTreeModel model : store.getChildren(contextMenuItem))
+               tree.setChecked(model, CheckState.UNCHECKED);
+         }
+      });
+   }
+
+   public ImportTreeModel getContextMenuItem() {
+      return contextMenuItem;
+   }
+
+   protected void modelSelected(ImportTreeModel model) {
+
+   }
+
+   private void instantiateMainPanel() {
+      mainPanel = DwContentPanel.newInlineInstance();
+      mainPanel.addStyleName(CSS_IMPORT_MAIN_DETAIL);
+   }
+
+   private void instantiateNavigationPanel() {
+      navigationPanel = DwContentPanel.newInlineInstance();
+   }
+
+   public void populateConfig(C config) {
+      for (ImportTreeModel model : tree.getCheckedSelection()) {
+         TreeImportNodeConfigDto configNode = new TreeImportNodeConfigDto(model);
+         config.addConfig(configNode);
+      }
+   }
+
+   public void validateConfig(C config) {
+   }
+
+   public void resetConfig() {
+      tree.setCheckedSelection(new ArrayList<ImportTreeModel>());
+   }
 }

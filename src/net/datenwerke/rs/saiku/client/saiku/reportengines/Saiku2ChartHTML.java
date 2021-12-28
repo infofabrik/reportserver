@@ -116,11 +116,8 @@ public class Saiku2ChartHTML extends ReportExporterImpl {
 
          @Override
          public Map<String, ImageResource> getIconMap() {
-            return Arrays.stream(ChartTypes.values())
-               .collect(
-                     LinkedHashMap::new, 
-                     (map, chartType) -> map.put(chartType.label, chartType.image), 
-                     Map::putAll);
+            return Arrays.stream(ChartTypes.values()).collect(LinkedHashMap::new,
+                  (map, chartType) -> map.put(chartType.label, chartType.image), Map::putAll);
          }
 
          @Override
@@ -131,11 +128,8 @@ public class Saiku2ChartHTML extends ReportExporterImpl {
 
          @Override
          public Map<String, String> getValues() {
-            return Arrays.stream(ChartTypes.values())
-               .collect(
-                     LinkedHashMap::new,
-                     (map, chartType) -> map.put(chartType.label, chartType.name()),
-                     Map::putAll);
+            return Arrays.stream(ChartTypes.values()).collect(LinkedHashMap::new,
+                  (map, chartType) -> map.put(chartType.label, chartType.name()), Map::putAll);
          }
 
       };

@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.BlockTypeDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.filters.BlockType.class)
 public interface BlockTypeDtoPA extends PropertyAccess<BlockTypeDto> {
 
-
-
 }

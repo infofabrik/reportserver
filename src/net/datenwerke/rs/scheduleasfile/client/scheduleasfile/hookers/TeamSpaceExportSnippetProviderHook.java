@@ -28,167 +28,165 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.config.TeamSpaceViewConfig;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.simpleform.SFFCTsTeamSpaceSelector;
 
-public class TeamSpaceExportSnippetProviderHook implements
-		ScheduleExportSnippetProviderHook {
+public class TeamSpaceExportSnippetProviderHook implements ScheduleExportSnippetProviderHook {
 
+   private String isExportAsFileKey;
+   private String teamSpaceKey;
+   private String folderKey;
+   private String nameKey;
+   private String descriptionKey;
 
-	private String isExportAsFileKey;
-	private String teamSpaceKey;
-	private String folderKey;
-	private String nameKey;
-	private String descriptionKey;
+   @Override
+   public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
+      return true;
+   }
 
-	@Override
-	public boolean appliesFor(ReportDto report,
-			Collection<ReportViewConfiguration> configs) {
-		return true;
-	}
+   @Override
+   public void configureSimpleForm(final SimpleForm xform, ReportDto report,
+         Collection<ReportViewConfiguration> configs) {
+      xform.setFieldWidth(250);
 
-	@Override
-	public void configureSimpleForm(final SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
-		xform.setFieldWidth(250);
-		
-		xform.setLabelWidth(0);
-		xform.setLabelAlign(LabelAlign.LEFT);
-		isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
-			@Override
-			public String getBoxLabel() {
-				return ScheduleAsFileMessages.INSTANCE.askStoreAsFile();
-			}
-		});
-		
-		xform.setLabelAlign(LabelAlign.TOP);
-		xform.setLabelWidth(300);
-		xform.beginRow();
-		teamSpaceKey = xform.addField(TeamSpaceDto.class, ScheduleAsFileMessages.INSTANCE.teamspace());
-		
-		folderKey = xform.addField(TsDiskFolderDto.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCTsTeamSpaceSelector() {
-			@Override
-			public TeamSpaceDto getTeamSpace() {
-				return (TeamSpaceDto) xform.getValue(teamSpaceKey);
-			}
-		});
-		xform.endRow();
-		
-		xform.setLabelAlign(LabelAlign.TOP);
-		xform.setFieldWidth(1);
-		nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName());
-		descriptionKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
-		
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(teamSpaceKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-		xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(descriptionKey));
-		
-		/* We set the folder to null when the teamspace changes. */
-		xform.addCondition(teamSpaceKey, new SimpleFormCondition() {
-			
-			/* 
-			 * We want the condition to met when the user changes the form value, NOT when the
-			 * form is first loaded.
-			 */
-			private boolean firstCall = true;
-			@Override
-			public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
-				if (firstCall) {
-					firstCall = false;
-					return false;
-				}
-				return true;
-			}
-		}, new SimpleFormAction() {
-			public void onSuccess(SimpleForm form) {
-				if (form.isFieldsLoaded()) {
-					
-				}
-				Widget widget = form.getField(folderKey);
-				if(widget instanceof SingleTreeSelectionField){
-					SingleTreeSelectionField stsf = (SingleTreeSelectionField)widget;
-					/* Set the folder to null when the teamspace changes. */
-					stsf.setValue(null);
-				}
-			}
-			
-			public void onFailure(SimpleForm form) {
-			}
-		});
+      xform.setLabelWidth(0);
+      xform.setLabelAlign(LabelAlign.LEFT);
+      isExportAsFileKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return ScheduleAsFileMessages.INSTANCE.askStoreAsFile();
+         }
+      });
 
-		TeamSpaceViewConfig config = getConfig(configs);
-		if(null != config)
-			xform.setValue(teamSpaceKey, config.getTeamSpace());
-	}
+      xform.setLabelAlign(LabelAlign.TOP);
+      xform.setLabelWidth(300);
+      xform.beginRow();
+      teamSpaceKey = xform.addField(TeamSpaceDto.class, ScheduleAsFileMessages.INSTANCE.teamspace());
 
-	private TeamSpaceViewConfig getConfig(
-			Collection<ReportViewConfiguration> configs) {
-		for(ReportViewConfiguration conf : configs)
-			if(conf instanceof TeamSpaceViewConfig)
-				return (TeamSpaceViewConfig) conf;
-		return null;
-	}
+      folderKey = xform.addField(TsDiskFolderDto.class, ScheduleAsFileMessages.INSTANCE.folder(),
+            new SFFCTsTeamSpaceSelector() {
+               @Override
+               public TeamSpaceDto getTeamSpace() {
+                  return (TeamSpaceDto) xform.getValue(teamSpaceKey);
+               }
+            });
+      xform.endRow();
 
-	@Override
-	public boolean isValid(SimpleForm simpleForm) {
-		TeamSpaceDto ts = (TeamSpaceDto) simpleForm.getValue(teamSpaceKey); 
-		AbstractTsDiskNodeDto folder = (AbstractTsDiskNodeDto) simpleForm.getValue(folderKey);
-		String name = (String) simpleForm.getValue(nameKey);
-		
-		return (null != ts && null != folder && null != name && !name.isEmpty());
-	}
+      xform.setLabelAlign(LabelAlign.TOP);
+      xform.setFieldWidth(1);
+      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName());
+      descriptionKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyDescription(),
+            new SFFCTextAreaImpl());
 
-	@Override
-	public void configureConfig(ReportScheduleDefinition configDto, SimpleForm form) {
-		if(! isActive(form))
-			return;
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(teamSpaceKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(descriptionKey));
 
-		ScheduleAsFileInformation info = new ScheduleAsFileInformation();
-		info.setName((String) form.getValue(nameKey));
-		info.setDescription((String) form.getValue(descriptionKey));
-		info.setFolder((AbstractTsDiskNodeDto) form.getValue(folderKey));
-		
-		configDto.addAdditionalInfo(info);
-	}
+      /* We set the folder to null when the teamspace changes. */
+      xform.addCondition(teamSpaceKey, new SimpleFormCondition() {
 
-	@Override
-	public boolean isActive(SimpleForm simpleForm) {
-		return (Boolean) simpleForm.getValue(isExportAsFileKey);
-	}
+         /*
+          * We want the condition to met when the user changes the form value, NOT when
+          * the form is first loaded.
+          */
+         private boolean firstCall = true;
 
-	@Override
-	public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
-		if(null != definition){ 
-			form.setValue(nameKey, "${now} - " + definition.getTitle());
-			ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
-			if(null != info){
-				form.setValue(teamSpaceKey, info.getTeamSpace());
-				form.setValue(isExportAsFileKey, true);
-				form.setValue(nameKey, info.getName());
-				form.setValue(descriptionKey, info.getDescription());
-				form.setValue(folderKey, info.getFolder());
-			}
-		}
+         @Override
+         public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+            if (firstCall) {
+               firstCall = false;
+               return false;
+            }
+            return true;
+         }
+      }, new SimpleFormAction() {
+         public void onSuccess(SimpleForm form) {
+            if (form.isFieldsLoaded()) {
 
-		form.loadFields();
-	}
+            }
+            Widget widget = form.getField(folderKey);
+            if (widget instanceof SingleTreeSelectionField) {
+               SingleTreeSelectionField stsf = (SingleTreeSelectionField) widget;
+               /* Set the folder to null when the teamspace changes. */
+               stsf.setValue(null);
+            }
+         }
 
-	@Override
-	public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
-			ReportDto report) {
-		if (! (page instanceof JobMetadataConfigurationForm))
-			return;
-		
-		JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-		
-		String jobTitle = metadataForm.getTitleValue();
-		
-		form.setValue(nameKey, "${now} - " + jobTitle);
-		if (null != definition) {
-			ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
-			if(null != info)
-				form.setValue(nameKey, info.getName());
-		}
-		
-	}
+         public void onFailure(SimpleForm form) {
+         }
+      });
 
-	
+      TeamSpaceViewConfig config = getConfig(configs);
+      if (null != config)
+         xform.setValue(teamSpaceKey, config.getTeamSpace());
+   }
+
+   private TeamSpaceViewConfig getConfig(Collection<ReportViewConfiguration> configs) {
+      for (ReportViewConfiguration conf : configs)
+         if (conf instanceof TeamSpaceViewConfig)
+            return (TeamSpaceViewConfig) conf;
+      return null;
+   }
+
+   @Override
+   public boolean isValid(SimpleForm simpleForm) {
+      TeamSpaceDto ts = (TeamSpaceDto) simpleForm.getValue(teamSpaceKey);
+      AbstractTsDiskNodeDto folder = (AbstractTsDiskNodeDto) simpleForm.getValue(folderKey);
+      String name = (String) simpleForm.getValue(nameKey);
+
+      return (null != ts && null != folder && null != name && !name.isEmpty());
+   }
+
+   @Override
+   public void configureConfig(ReportScheduleDefinition configDto, SimpleForm form) {
+      if (!isActive(form))
+         return;
+
+      ScheduleAsFileInformation info = new ScheduleAsFileInformation();
+      info.setName((String) form.getValue(nameKey));
+      info.setDescription((String) form.getValue(descriptionKey));
+      info.setFolder((AbstractTsDiskNodeDto) form.getValue(folderKey));
+
+      configDto.addAdditionalInfo(info);
+   }
+
+   @Override
+   public boolean isActive(SimpleForm simpleForm) {
+      return (Boolean) simpleForm.getValue(isExportAsFileKey);
+   }
+
+   @Override
+   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
+      if (null != definition) {
+         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
+         if (null != info) {
+            form.setValue(teamSpaceKey, info.getTeamSpace());
+            form.setValue(isExportAsFileKey, true);
+            form.setValue(nameKey, info.getName());
+            form.setValue(descriptionKey, info.getDescription());
+            form.setValue(folderKey, info.getFolder());
+         }
+      }
+
+      form.loadFields();
+   }
+
+   @Override
+   public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
+         ReportDto report) {
+      if (!(page instanceof JobMetadataConfigurationForm))
+         return;
+
+      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
+
+      String jobTitle = metadataForm.getTitleValue();
+
+      form.setValue(nameKey, "${now} - " + jobTitle);
+      if (null != definition) {
+         ScheduleAsFileInformation info = definition.getAdditionalInfo(ScheduleAsFileInformation.class);
+         if (null != info)
+            form.setValue(nameKey, info.getName());
+      }
+
+   }
 
 }

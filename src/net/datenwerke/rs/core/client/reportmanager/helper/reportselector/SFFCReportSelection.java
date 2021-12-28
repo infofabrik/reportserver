@@ -6,8 +6,9 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCReportSelection extends SimpleFormFieldConfiguration {
 
-	public Collection<ReportSelectionDialog.RepositoryProviderConfig> getRepositoryConfigs();
-	
-	public boolean showCatalog();
-	public boolean showVariantsInCatalog();
+   public Collection<ReportSelectionDialog.RepositoryProviderConfig> getRepositoryConfigs();
+
+   public boolean showCatalog();
+
+   public boolean showVariantsInCatalog();
 }

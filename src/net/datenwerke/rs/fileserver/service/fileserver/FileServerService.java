@@ -7,28 +7,26 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface FileServerService extends TreeDBManager<AbstractFileServerNode> {
 
-	/**
-	 * Checks rights.
-	 * 
-	 * @param location
-	 */
-	FileServerFile createFileAtLocation(String location);
-	
-	FileServerFile createFileAtLocation(String location, boolean checkRights);
+   /**
+    * Checks rights.
+    * 
+    * @param location
+    */
+   FileServerFile createFileAtLocation(String location);
 
-	/**
-	 * Checks rights.
-	 * 
-	 * @param location
-	 */
-	FileServerFile createFileAtLocation(VFSLocation location);
-	
-	FileServerFile createFileAtLocation(VFSLocation location, boolean checkRights);
-	
-	AbstractFileServerNode getNodeByPath(String path);
+   FileServerFile createFileAtLocation(String location, boolean checkRights);
 
-	AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
+   /**
+    * Checks rights.
+    * 
+    * @param location
+    */
+   FileServerFile createFileAtLocation(VFSLocation location);
 
+   FileServerFile createFileAtLocation(VFSLocation location, boolean checkRights);
 
+   AbstractFileServerNode getNodeByPath(String path);
+
+   AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
 
 }

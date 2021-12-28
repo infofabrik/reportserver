@@ -8,10 +8,10 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 
 public interface FilterViewEnhanceToolbarHook extends Hook {
 
-	void enhanceToolbarLeft(ToolBar toolbar);
+   void enhanceToolbarLeft(ToolBar toolbar);
 
-	void enhanceToolbarRight(ToolBar toolbar);
+   void enhanceToolbarRight(ToolBar toolbar);
 
-	void initialize(FilterView filterView, TableReportDto report);
-	
+   void initialize(FilterView filterView, TableReportDto report);
+
 }

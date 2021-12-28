@@ -17,37 +17,34 @@ import net.datenwerke.security.service.security.rights.Write;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
-public class SecurityServiceSecuree implements Securee{
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
+public class SecurityServiceSecuree implements Securee {
 
-	private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
-	
-	public static final String SECUREE_ID = "SecurityService_DefaultSecuree"; //$NON-NLS-1$
+   private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
 
-	@Override
-	public List<Right> getRights() {	
-		List<Right> rights = new ArrayList<Right>();
-		
-		rights.add(new Read());
-		rights.add(new Write());
-		rights.add(new Execute());
-		rights.add(new Delete());
-		rights.add(new GrantAccess());
-		
-		return rights;
-	}
+   public static final String SECUREE_ID = "SecurityService_DefaultSecuree"; //$NON-NLS-1$
 
-	@Override
-	public String getSecureeId() {
-		return SECUREE_ID;
-	}
-	
-	@Override
-	public String getName(){
-		return messages.securitySecureeName();
-	}
-	
+   @Override
+   public List<Right> getRights() {
+      List<Right> rights = new ArrayList<Right>();
+
+      rights.add(new Read());
+      rights.add(new Write());
+      rights.add(new Execute());
+      rights.add(new Delete());
+      rights.add(new GrantAccess());
+
+      return rights;
+   }
+
+   @Override
+   public String getSecureeId() {
+      return SECUREE_ID;
+   }
+
+   @Override
+   public String getName() {
+      return messages.securitySecureeName();
+   }
 
 }

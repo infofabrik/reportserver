@@ -10,14 +10,14 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface TreeConfiguratorHook extends Hook {
 
-	boolean consumes(ManagerHelperTree tree);
+   boolean consumes(ManagerHelperTree tree);
 
-	void configureTreeIcons(TreeDBUIIconProvider iconProvider);
+   void configureTreeIcons(TreeDBUIIconProvider iconProvider);
 
-	void configureTreeMenu(TreeDBUIMenuProvider menuProvider);
+   void configureTreeMenu(TreeDBUIMenuProvider menuProvider);
 
-	void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event);
+   void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event);
 
-	void configureFolderTypes(ManagerHelperTree managerHelperTree);
+   void configureFolderTypes(ManagerHelperTree managerHelperTree);
 
 }

@@ -22,155 +22,150 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardView.EditSuccess
 
 public class DashboardInlineDispatcher extends DispatcherTakeOverHookImpl {
 
-	public static final String LOCATION = "inlinedashboard";
+   public static final String LOCATION = "inlinedashboard";
 
-	public static final String TYPE_SINGLE = "single";
-	public static final String DASHBOARD_NR = "nr";
-	public static final String DASHBOARD_NR_OFFSET = "nrOffset";
-	public static final String DASHBOARD_ID = "id";
+   public static final String TYPE_SINGLE = "single";
+   public static final String DASHBOARD_NR = "nr";
+   public static final String DASHBOARD_NR_OFFSET = "nrOffset";
+   public static final String DASHBOARD_ID = "id";
 
-	public static final String IS_STATIC = "static";
-	public static final String CYCLE_INTERVAL = "cycle_interval";
+   public static final String IS_STATIC = "static";
+   public static final String CYCLE_INTERVAL = "cycle_interval";
 
-	private static final String P_CLASS_NAME = "css_class";
+   private static final String P_CLASS_NAME = "css_class";
 
-	private final Provider<DashboardView> dashboardViewProvider;
-	private final Provider<DashboardMainComponent> mainComponentProvider;
-	private final DashboardDao dashboardDao;
+   private final Provider<DashboardView> dashboardViewProvider;
+   private final Provider<DashboardMainComponent> mainComponentProvider;
+   private final DashboardDao dashboardDao;
 
-	private boolean isProtected;
+   private boolean isProtected;
 
-	private Viewport viewport;
+   private Viewport viewport;
 
-	private HistoryLocation hLocation;
+   private HistoryLocation hLocation;
 
-	private int offset = 1;
+   private int offset = 1;
 
+   @Inject
+   public DashboardInlineDispatcher(Provider<DashboardView> dashboardViewProvider,
+         Provider<DashboardMainComponent> mainComponentProvider, DashboardDao dashboardDao) {
+      this.dashboardViewProvider = dashboardViewProvider;
+      this.mainComponentProvider = mainComponentProvider;
+      this.dashboardDao = dashboardDao;
+   }
 
-	@Inject
-	public DashboardInlineDispatcher(
-			Provider<DashboardView> dashboardViewProvider,
-			Provider<DashboardMainComponent> mainComponentProvider,
-			DashboardDao dashboardDao
-			){
-		this.dashboardViewProvider = dashboardViewProvider;
-		this.mainComponentProvider = mainComponentProvider;
-		this.dashboardDao = dashboardDao;
-	}
+   @Override
+   public Dispatchable getDispatcheable() {
+      hLocation = getHistoryLocation();
 
-	@Override
-	public Dispatchable getDispatcheable() {
-		hLocation = getHistoryLocation();
+      viewport = new Viewport();
 
-		viewport = new Viewport();
+      this.isProtected = !"false".equals(hLocation.getParameterValue(IS_STATIC));
 
-		this.isProtected = ! "false".equals(hLocation.getParameterValue(IS_STATIC)); 
-		
-		if("user".equals(hLocation.getParameterValue("type"))){
-			DashboardMainComponent comp = mainComponentProvider.get();
-			if(hLocation.hasParameter(P_CLASS_NAME))
-				comp.addStyleName(hLocation.getParameterValue(P_CLASS_NAME));
-			
+      if ("user".equals(hLocation.getParameterValue("type"))) {
+         DashboardMainComponent comp = mainComponentProvider.get();
+         if (hLocation.hasParameter(P_CLASS_NAME))
+            comp.addStyleName(hLocation.getParameterValue(P_CLASS_NAME));
+
 //			comp.hideToolbar();
-			if(isProtected){
-				comp.setProtected();
-				comp.hideToolsButton();
-				comp.hideAddButton();
-			}
-			viewport.add(comp);
-			comp.selected();
-		} else {
-			dashboardDao.loadDashboardForDisplayFrom(hLocation, new RsAsyncCallback<DashboardDto>(){
-				@Override
-				public void onSuccess(DashboardDto dashboard) {
-					loadAndDisplay(dashboard);
-				}
-				@Override
-				public void onFailure(Throwable caught) {
-					viewport.mask(caught.getMessage());
-				}
-			});
-			
-	
-			if(hLocation.hasParameter(CYCLE_INTERVAL)){
-				Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
-					
-					@Override
-					public boolean execute() {
-						viewport.clear();
-						
-						hLocation.addParameter(DASHBOARD_NR_OFFSET, "" + offset++);
-						
-						dashboardDao.loadDashboardForDisplayFrom(hLocation, new RsAsyncCallback<DashboardDto>(){
-							@Override
-							public void onSuccess(DashboardDto dashboard) {
-								loadAndDisplay(dashboard);
-							}
-							@Override
-							public void onFailure(Throwable caught) {
-								viewport.mask(caught.getMessage());
-							}
-						});
-						return true;
-					}
-				}, Integer.parseInt(hLocation.getParameterValue(CYCLE_INTERVAL)) * 1000);
-			}
-		}
-		
+         if (isProtected) {
+            comp.setProtected();
+            comp.hideToolsButton();
+            comp.hideAddButton();
+         }
+         viewport.add(comp);
+         comp.selected();
+      } else {
+         dashboardDao.loadDashboardForDisplayFrom(hLocation, new RsAsyncCallback<DashboardDto>() {
+            @Override
+            public void onSuccess(DashboardDto dashboard) {
+               loadAndDisplay(dashboard);
+            }
 
-		return new Dispatchable() {
-			@Override
-			public Widget getWidget() {
-				return viewport;
-			}
-		};
-	}
+            @Override
+            public void onFailure(Throwable caught) {
+               viewport.mask(caught.getMessage());
+            }
+         });
 
-	@Override
-	public String getLocation() {
-		return LOCATION;
-	}
+         if (hLocation.hasParameter(CYCLE_INTERVAL)) {
+            Scheduler.get().scheduleFixedDelay(new RepeatingCommand() {
 
-	protected void loadAndDisplay(DashboardDto dashboardDto){
-		final DashboardView dashboardView = dashboardViewProvider.get();
+               @Override
+               public boolean execute() {
+                  viewport.clear();
 
-		/* check for class name */
-		if(hLocation.hasParameter(P_CLASS_NAME)){
-			dashboardView.addStyleName(hLocation.getParameterValue(P_CLASS_NAME));
-		}
-		
-		dashboardView.init(new DashboardContainer() {
-			@Override
-			public void resizeDadget(DashboardDto dashboard, DadgetDto dadget,
-					int offsetHeight) {
-			}
+                  hLocation.addParameter(DASHBOARD_NR_OFFSET, "" + offset++);
 
-			@Override
-			public void remove(DashboardDto dashboard, DadgetDto dadget) {
-			}
+                  dashboardDao.loadDashboardForDisplayFrom(hLocation, new RsAsyncCallback<DashboardDto>() {
+                     @Override
+                     public void onSuccess(DashboardDto dashboard) {
+                        loadAndDisplay(dashboard);
+                     }
 
-			@Override
-			public void reload(DashboardDto dashboard) {
-			}
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        viewport.mask(caught.getMessage());
+                     }
+                  });
+                  return true;
+               }
+            }, Integer.parseInt(hLocation.getParameterValue(CYCLE_INTERVAL)) * 1000);
+         }
+      }
 
-			@Override
-			public void dadgetConfigured(DashboardDto dashboard, DadgetDto dadget,ConfigType type,
-					EditSuccessCallback callback) {
-				callback.onSuccess(dashboard, dadget);
-			}
+      return new Dispatchable() {
+         @Override
+         public Widget getWidget() {
+            return viewport;
+         }
+      };
+   }
 
-			@Override
-			public void addDadget(DashboardDto dashboard, DadgetDto dadget) {
-			}
+   @Override
+   public String getLocation() {
+      return LOCATION;
+   }
 
-			@Override
-			public void edited(DashboardDto dashboard) {
-			}
-		}, dashboardDto, isProtected);
+   protected void loadAndDisplay(DashboardDto dashboardDto) {
+      final DashboardView dashboardView = dashboardViewProvider.get();
 
-		viewport.add(dashboardView);
-		dashboardView.makeAwareOfSelection();
+      /* check for class name */
+      if (hLocation.hasParameter(P_CLASS_NAME)) {
+         dashboardView.addStyleName(hLocation.getParameterValue(P_CLASS_NAME));
+      }
 
-		viewport.forceLayout();
-	}
+      dashboardView.init(new DashboardContainer() {
+         @Override
+         public void resizeDadget(DashboardDto dashboard, DadgetDto dadget, int offsetHeight) {
+         }
+
+         @Override
+         public void remove(DashboardDto dashboard, DadgetDto dadget) {
+         }
+
+         @Override
+         public void reload(DashboardDto dashboard) {
+         }
+
+         @Override
+         public void dadgetConfigured(DashboardDto dashboard, DadgetDto dadget, ConfigType type,
+               EditSuccessCallback callback) {
+            callback.onSuccess(dashboard, dadget);
+         }
+
+         @Override
+         public void addDadget(DashboardDto dashboard, DadgetDto dadget) {
+         }
+
+         @Override
+         public void edited(DashboardDto dashboard) {
+         }
+      }, dashboardDto, isProtected);
+
+      viewport.add(dashboardView);
+      dashboardView.makeAwareOfSelection();
+
+      viewport.forceLayout();
+   }
 }

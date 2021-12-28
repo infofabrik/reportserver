@@ -13,59 +13,59 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 
 public class Dto2TableReportPost implements Dto2PosoPostProcessor<TableReportDto, TableReport> {
 
-	@Inject
-	public Dto2TableReportPost() {
-		super();
-	}
+   @Inject
+   public Dto2TableReportPost() {
+      super();
+   }
 
-	@Override
-	public void posoCreated(TableReportDto arg0, TableReport arg1) {
-		
-	}
+   @Override
+   public void posoCreated(TableReportDto arg0, TableReport arg1) {
 
-	@Override
-	public void posoInstantiated(TableReport arg0) {
-		
-	}
+   }
 
-	@Override
-	public void posoLoaded(TableReportDto arg0, TableReport arg1) {
-		
-	}
+   @Override
+   public void posoInstantiated(TableReport arg0) {
 
-	@Override
-	public void posoMerged(TableReportDto arg0, TableReport arg1) {
+   }
 
-	}
+   @Override
+   public void posoLoaded(TableReportDto arg0, TableReport arg1) {
 
-	@Override
-	public void posoCreatedUnmanaged(TableReportDto arg0, TableReport report) {
-		/* this is a rather crude hack, but the dto generator is not capable enough */
-		for(AdditionalColumnSpec spec : report.getAdditionalColumns()){
-			for(Column col : report.getColumns()){
-				if(col instanceof ColumnReference){
-					AdditionalColumnSpec reference = ((ColumnReference) col).getReference();
-					if(null != reference.getTransientId() && reference.getTransientId().equals(spec.getTransientId()))
-						 ((ColumnReference) col).setReference(spec);
-				}
-			}
-		}
-		
-		/* validate */
-		for(Column col : report.getColumns()){
-			if(col instanceof ColumnReference){
-				AdditionalColumnSpec spec = ((ColumnReference) col).getReference();
-				if(! containsSpec(report.getAdditionalColumns(), spec))
-					throw new IllegalStateException();
-			}
-		}
-	}
+   }
 
-	private boolean containsSpec(Collection<AdditionalColumnSpec> toCompare, AdditionalColumnSpec spec) {
-		for(AdditionalColumnSpec toComp : toCompare)
-			if(toComp == spec)
-				return true;
-		return false;
-	}
+   @Override
+   public void posoMerged(TableReportDto arg0, TableReport arg1) {
+
+   }
+
+   @Override
+   public void posoCreatedUnmanaged(TableReportDto arg0, TableReport report) {
+      /* this is a rather crude hack, but the dto generator is not capable enough */
+      for (AdditionalColumnSpec spec : report.getAdditionalColumns()) {
+         for (Column col : report.getColumns()) {
+            if (col instanceof ColumnReference) {
+               AdditionalColumnSpec reference = ((ColumnReference) col).getReference();
+               if (null != reference.getTransientId() && reference.getTransientId().equals(spec.getTransientId()))
+                  ((ColumnReference) col).setReference(spec);
+            }
+         }
+      }
+
+      /* validate */
+      for (Column col : report.getColumns()) {
+         if (col instanceof ColumnReference) {
+            AdditionalColumnSpec spec = ((ColumnReference) col).getReference();
+            if (!containsSpec(report.getAdditionalColumns(), spec))
+               throw new IllegalStateException();
+         }
+      }
+   }
+
+   private boolean containsSpec(Collection<AdditionalColumnSpec> toCompare, AdditionalColumnSpec spec) {
+      for (AdditionalColumnSpec toComp : toCompare)
+         if (toComp == spec)
+            return true;
+      return false;
+   }
 
 }

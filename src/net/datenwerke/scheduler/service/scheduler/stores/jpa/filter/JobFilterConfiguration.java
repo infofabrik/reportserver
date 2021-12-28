@@ -23,188 +23,188 @@ import net.datenwerke.scheduler.service.scheduler.entities.Outcome;
 import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry_;
 import net.datenwerke.scheduler.service.scheduler.entities.history.JobHistory_;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.filter"
-)
-public class JobFilterConfiguration implements JobFilterCriteria{
+@GenerateDto(dtoPackage = "net.datenwerke.scheduler.client.scheduler.dto.filter")
+public class JobFilterConfiguration implements JobFilterCriteria {
 
-	@ExposeToClient
-	private String sortField;
-	
-	@ExposeToClient
-	private Order order;
-	
-	@ExposeToClient
-	private int offset = 0;
-	
-	@ExposeToClient
-	private int limit = -1;
-	
-	@ExposeToClient
-	private boolean active = true;
-	
-	@ExposeToClient
-	private boolean inActive = false;
-	
-	@ExposeToClient
-	private JobExecutionStatus executionStatus = null;
-	
-	@ExposeToClient
-	private Outcome lastOutcome = null;
-	
-	@ExposeToClient
-	private String jobId = null;
-	
-	@ExposeToClient
-	private String jobTitle = null;
-	
-	private Class<? extends AbstractJob> jobType = AbstractJob.class;
-	
-	public String getSortField() {
-		return sortField;
-	}
+   @ExposeToClient
+   private String sortField;
 
-	public void setSortField(String sortField) {
-		this.sortField = sortField;
-	}
+   @ExposeToClient
+   private Order order;
 
-	public Order getOrder() {
-		return order;
-	}
+   @ExposeToClient
+   private int offset = 0;
 
-	public void setOrder(Order order) {
-		this.order = order;
-	}
+   @ExposeToClient
+   private int limit = -1;
 
-	public int getOffset() {
-		return offset;
-	}
+   @ExposeToClient
+   private boolean active = true;
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+   @ExposeToClient
+   private boolean inActive = false;
 
-	public int getLimit() {
-		return limit;
-	}
+   @ExposeToClient
+   private JobExecutionStatus executionStatus = null;
 
-	public void setLimit(int limit) {
-		this.limit = limit;
-	}
+   @ExposeToClient
+   private Outcome lastOutcome = null;
 
-	public void setInActive(boolean inActive) {
-		this.inActive = inActive;
-	}
+   @ExposeToClient
+   private String jobId = null;
 
-	public boolean isInActive() {
-		return inActive;
-	}
+   @ExposeToClient
+   private String jobTitle = null;
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+   private Class<? extends AbstractJob> jobType = AbstractJob.class;
 
-	public boolean isActive() {
-		return active;
-	}
-	
-	public Class<? extends AbstractJob> getJobType() {
-		return jobType;
-	}
+   public String getSortField() {
+      return sortField;
+   }
 
-	public void setJobType(Class<? extends AbstractJob> jobType) {
-		this.jobType = jobType;
-	}
+   public void setSortField(String sortField) {
+      this.sortField = sortField;
+   }
 
-	public String getJobId() {
-		return jobId;
-	}
-	public void setJobId(String jobId) {
-		this.jobId = jobId;
-	}
-	
-	public String getJobTitle() {
-		return jobTitle;
-	}
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
-	
-	public boolean validateSortField(String sortField) {
-		if(null == sortField)
-			return false;
+   public Order getOrder() {
+      return order;
+   }
 
-		if("jobId".equals(sortField))
-			return true;
-		if("lastScheduled".equals(sortField))
-			return true;
-		if("nextScheduled".equals(sortField))
-			return true;
-		return false;
-	}
+   public void setOrder(Order order) {
+      this.order = order;
+   }
 
-	public Expression<?> transformSortField(String sortField, CriteriaBuilder builder, CriteriaQuery<AbstractJob> cQuery, Root<? extends AbstractJob> root) {
-		if("jobId".equals(sortField))
-			return root.get(AbstractJob_.id);
-		if("lastScheduled".equals(sortField))
-			return root.join(AbstractJob_.history).join(JobHistory_.executionLogEntries, JoinType.LEFT).get(ExecutionLogEntry_.start);
-		if("nextScheduled".equals(sortField))
-			return root.join(AbstractJob_.trigger, JoinType.LEFT).get(AbstractTrigger_.nextScheduledFireTime);
-		return null;
-	}
+   public int getOffset() {
+      return offset;
+   }
 
-	@Override
-	public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder,
-			CriteriaQuery<?> cQuery, Root<? extends AbstractJob> root) {
-		List<Predicate> predicates = new ArrayList<Predicate>();
- 		
-		if(null != executionStatus)
-			predicates.add(root.get(AbstractJob_.executionStatus).in(executionStatus));
-		
-		/* join trigger */
-		if(! active || ! inActive){
-			Join<AbstractJob, AbstractTrigger> trigger = root.join(AbstractJob__.trigger);
-			
-			if(! inActive)
-				predicates.add(trigger.get(AbstractTrigger_.nextScheduledFireTime).isNotNull());
-			else
-				predicates.add(trigger.get(AbstractTrigger_.nextScheduledFireTime).isNull());
-		}
-		
-		if(null != lastOutcome)
-			predicates.add(root.get(AbstractJob_.lastOutcome).in(lastOutcome));
+   public void setOffset(int offset) {
+      this.offset = offset;
+   }
 
-		if(null != jobId){
-			String query = jobId.replace("?", "_").replace("*", "%");
-			if(! "".equals(query.trim()))
-				predicates.add(builder.like(root.get(AbstractJob_.id).as(String.class), query));
-		}
-		
-		if(null != jobTitle){
-			String query = jobTitle.replace("?", "_").replace("*", "%");
-			if(! "".equals(query.trim()))
-				predicates.add(builder.like(root.get(AbstractJob_.title).as(String.class), query));
-		}
-		
-		return predicates;
-	}
+   public int getLimit() {
+      return limit;
+   }
 
-	public Outcome getLastOutcome() {
-		return lastOutcome;
-	}
-	
-	public void setLastOutcome(Outcome lastOutcome) {
-		this.lastOutcome = lastOutcome;
-	}
-	
-	public JobExecutionStatus getExecutionStatus() {
-		return executionStatus;
-	}
+   public void setLimit(int limit) {
+      this.limit = limit;
+   }
 
-	public void setExecutionStatus(JobExecutionStatus executionStatus) {
-		this.executionStatus = executionStatus;
-	}
+   public void setInActive(boolean inActive) {
+      this.inActive = inActive;
+   }
 
-	
-	
+   public boolean isInActive() {
+      return inActive;
+   }
+
+   public void setActive(boolean active) {
+      this.active = active;
+   }
+
+   public boolean isActive() {
+      return active;
+   }
+
+   public Class<? extends AbstractJob> getJobType() {
+      return jobType;
+   }
+
+   public void setJobType(Class<? extends AbstractJob> jobType) {
+      this.jobType = jobType;
+   }
+
+   public String getJobId() {
+      return jobId;
+   }
+
+   public void setJobId(String jobId) {
+      this.jobId = jobId;
+   }
+
+   public String getJobTitle() {
+      return jobTitle;
+   }
+
+   public void setJobTitle(String jobTitle) {
+      this.jobTitle = jobTitle;
+   }
+
+   public boolean validateSortField(String sortField) {
+      if (null == sortField)
+         return false;
+
+      if ("jobId".equals(sortField))
+         return true;
+      if ("lastScheduled".equals(sortField))
+         return true;
+      if ("nextScheduled".equals(sortField))
+         return true;
+      return false;
+   }
+
+   public Expression<?> transformSortField(String sortField, CriteriaBuilder builder, CriteriaQuery<AbstractJob> cQuery,
+         Root<? extends AbstractJob> root) {
+      if ("jobId".equals(sortField))
+         return root.get(AbstractJob_.id);
+      if ("lastScheduled".equals(sortField))
+         return root.join(AbstractJob_.history).join(JobHistory_.executionLogEntries, JoinType.LEFT)
+               .get(ExecutionLogEntry_.start);
+      if ("nextScheduled".equals(sortField))
+         return root.join(AbstractJob_.trigger, JoinType.LEFT).get(AbstractTrigger_.nextScheduledFireTime);
+      return null;
+   }
+
+   @Override
+   public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> cQuery,
+         Root<? extends AbstractJob> root) {
+      List<Predicate> predicates = new ArrayList<Predicate>();
+
+      if (null != executionStatus)
+         predicates.add(root.get(AbstractJob_.executionStatus).in(executionStatus));
+
+      /* join trigger */
+      if (!active || !inActive) {
+         Join<AbstractJob, AbstractTrigger> trigger = root.join(AbstractJob__.trigger);
+
+         if (!inActive)
+            predicates.add(trigger.get(AbstractTrigger_.nextScheduledFireTime).isNotNull());
+         else
+            predicates.add(trigger.get(AbstractTrigger_.nextScheduledFireTime).isNull());
+      }
+
+      if (null != lastOutcome)
+         predicates.add(root.get(AbstractJob_.lastOutcome).in(lastOutcome));
+
+      if (null != jobId) {
+         String query = jobId.replace("?", "_").replace("*", "%");
+         if (!"".equals(query.trim()))
+            predicates.add(builder.like(root.get(AbstractJob_.id).as(String.class), query));
+      }
+
+      if (null != jobTitle) {
+         String query = jobTitle.replace("?", "_").replace("*", "%");
+         if (!"".equals(query.trim()))
+            predicates.add(builder.like(root.get(AbstractJob_.title).as(String.class), query));
+      }
+
+      return predicates;
+   }
+
+   public Outcome getLastOutcome() {
+      return lastOutcome;
+   }
+
+   public void setLastOutcome(Outcome lastOutcome) {
+      this.lastOutcome = lastOutcome;
+   }
+
+   public JobExecutionStatus getExecutionStatus() {
+      return executionStatus;
+   }
+
+   public void setExecutionStatus(JobExecutionStatus executionStatus) {
+      this.executionStatus = executionStatus;
+   }
+
 }

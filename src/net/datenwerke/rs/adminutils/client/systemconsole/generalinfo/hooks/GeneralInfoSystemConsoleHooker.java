@@ -10,30 +10,28 @@ import net.datenwerke.rs.adminutils.client.systemconsole.hooks.SystemConsoleView
 import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class GeneralInfoSystemConsoleHooker implements
-		SystemConsoleViewDomainHook {
-	
-	private final Provider<GeneralInfoPanel> mainWidgetProvider;
-	
-	@Inject
-	public GeneralInfoSystemConsoleHooker(
-			Provider<GeneralInfoPanel> mainWidgetProvider) {
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return SystemConsoleMessages.INSTANCE.generalInfo();
-	}
+public class GeneralInfoSystemConsoleHooker implements SystemConsoleViewDomainHook {
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.INFO_CIRCLE.toImageResource();
-	}
+   private final Provider<GeneralInfoPanel> mainWidgetProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return mainWidgetProvider.get();
-	}
+   @Inject
+   public GeneralInfoSystemConsoleHooker(Provider<GeneralInfoPanel> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
+
+   @Override
+   public String getNavigationText() {
+      return SystemConsoleMessages.INSTANCE.generalInfo();
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.INFO_CIRCLE.toImageResource();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return mainWidgetProvider.get();
+   }
 
 }

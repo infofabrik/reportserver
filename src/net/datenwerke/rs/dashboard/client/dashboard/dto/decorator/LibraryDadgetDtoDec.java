@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.LibraryDadgetDto;
  */
 public class LibraryDadgetDtoDec extends LibraryDadgetDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public LibraryDadgetDtoDec() {
-		super();
-	}
-
+   public LibraryDadgetDtoDec() {
+      super();
+   }
 
 }

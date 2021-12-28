@@ -20,84 +20,80 @@ import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 
 public class AggregateWrapper {
 
-	private final EntityClonerService entityClonerService;
-	private final SimpleDataSupplier datasupplier;
-	private final DatasourceContainerProvider datasourceContainerProvider;
-	private final Column column;
-	private final ParameterSet parameterSet;
-	private final ManagedQuery query;
-	private AggregateFunction agg;
-	private final QueryBuilder queryBuilder;
+   private final EntityClonerService entityClonerService;
+   private final SimpleDataSupplier datasupplier;
+   private final DatasourceContainerProvider datasourceContainerProvider;
+   private final Column column;
+   private final ParameterSet parameterSet;
+   private final ManagedQuery query;
+   private AggregateFunction agg;
+   private final QueryBuilder queryBuilder;
 
-	@Inject
-	public AggregateWrapper(
-		EntityClonerService entityClonerService,
-		SimpleDataSupplier datasupplier,
-		@Assisted Column column,
-		@Assisted ParameterSet parameterSet,
-		@Assisted DatasourceContainerProvider datasourceContainerProvider,
-		@Assisted ManagedQuery query,
-		@Assisted QueryBuilder queryBuilder
-		) {
-		
-		this.entityClonerService = entityClonerService;
-		this.datasupplier = datasupplier;
-		this.column = column;
-		this.parameterSet = parameterSet;
-		this.datasourceContainerProvider = datasourceContainerProvider;
-		this.query = query;
-		this.queryBuilder = queryBuilder;
-	}
-	
-	public Object max(){
-		return execute(AggregateFunction.MAX);
-	}
+   @Inject
+   public AggregateWrapper(EntityClonerService entityClonerService, SimpleDataSupplier datasupplier,
+         @Assisted Column column, @Assisted ParameterSet parameterSet,
+         @Assisted DatasourceContainerProvider datasourceContainerProvider, @Assisted ManagedQuery query,
+         @Assisted QueryBuilder queryBuilder) {
 
-	public Object min(){
-		return execute(AggregateFunction.MIN);
-	}
+      this.entityClonerService = entityClonerService;
+      this.datasupplier = datasupplier;
+      this.column = column;
+      this.parameterSet = parameterSet;
+      this.datasourceContainerProvider = datasourceContainerProvider;
+      this.query = query;
+      this.queryBuilder = queryBuilder;
+   }
 
-	public Object avg(){
-		return execute(AggregateFunction.AVG);
-	}
+   public Object max() {
+      return execute(AggregateFunction.MAX);
+   }
 
-	public Object count(){
-		return execute(AggregateFunction.COUNT);
-	}
+   public Object min() {
+      return execute(AggregateFunction.MIN);
+   }
 
-	public Object countDistinct(){
-		return execute(AggregateFunction.COUNT_DISTINCT);
-	}
+   public Object avg() {
+      return execute(AggregateFunction.AVG);
+   }
 
-	public Object sum(){
-		return execute(AggregateFunction.SUM);
-	}
+   public Object count() {
+      return execute(AggregateFunction.COUNT);
+   }
 
-	public Object variance(){
-		return execute(AggregateFunction.VARIANCE);
-	}
-	
-	public Object execute(final AggregateFunction agg) {
-		return AccessController.doPrivileged(new PrivilegedAction<Object>() {
-			@Override
-			public Object run() {
-				if(null == agg)
-					throw new ReportExecutorRuntimeException("aggregate filter needs an aggregate. for example: agg.max()");
-				
-				try {
-					Column clone = entityClonerService.cloneEntity(column);
-					clone.setAggregateFunction(agg);
-					clone.setFilter(null);
-					
-					RSTableModel model = datasupplier.getColumnValuesPaged(datasourceContainerProvider, parameterSet, clone, null, null, false);
-					if(model.getRowCount() != 1)
-						throw new ReportExecutorRuntimeException("expected one max value");
-					
-					return model.getData().get(0).getAt(0);
-				} catch (ReportExecutorException e) {
-					throw new ReportExecutorRuntimeException(e);
-				}
-			}
-		});
-	}
+   public Object countDistinct() {
+      return execute(AggregateFunction.COUNT_DISTINCT);
+   }
+
+   public Object sum() {
+      return execute(AggregateFunction.SUM);
+   }
+
+   public Object variance() {
+      return execute(AggregateFunction.VARIANCE);
+   }
+
+   public Object execute(final AggregateFunction agg) {
+      return AccessController.doPrivileged(new PrivilegedAction<Object>() {
+         @Override
+         public Object run() {
+            if (null == agg)
+               throw new ReportExecutorRuntimeException("aggregate filter needs an aggregate. for example: agg.max()");
+
+            try {
+               Column clone = entityClonerService.cloneEntity(column);
+               clone.setAggregateFunction(agg);
+               clone.setFilter(null);
+
+               RSTableModel model = datasupplier.getColumnValuesPaged(datasourceContainerProvider, parameterSet, clone,
+                     null, null, false);
+               if (model.getRowCount() != 1)
+                  throw new ReportExecutorRuntimeException("expected one max value");
+
+               return model.getData().get(0).getAt(0);
+            } catch (ReportExecutorException e) {
+               throw new ReportExecutorRuntimeException(e);
+            }
+         }
+      });
+   }
 }

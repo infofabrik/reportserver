@@ -6,20 +6,19 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 
 public class DatasourceManagerImportConfigDto extends TreeImportConfigDto<AbstractDatasourceManagerNodeDto> {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1879599255965355795L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1879599255965355795L;
+   private DatasourceDefinitionDto defaultDatasource;
 
-	private DatasourceDefinitionDto defaultDatasource;
-	
-	public void setDefaultDatasource(DatasourceDefinitionDto defaultDatasource) {
-		this.defaultDatasource = defaultDatasource;
-	}
-	
-	public DatasourceDefinitionDto getDefaultDatasource() {
-		return defaultDatasource;
-	}
-	
+   public void setDefaultDatasource(DatasourceDefinitionDto defaultDatasource) {
+      this.defaultDatasource = defaultDatasource;
+   }
+
+   public DatasourceDefinitionDto getDefaultDatasource() {
+      return defaultDatasource;
+   }
+
 }

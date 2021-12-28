@@ -13,11 +13,9 @@ import net.datenwerke.rs.base.service.reportengines.jasper.output.generator.Jasp
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class JasperOutputGeneratorProviderHookAdapter implements JasperOutputGeneratorProviderHook {
 
-	@Override
-	public Collection<JasperOutputGenerator> provideGenerators()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<JasperOutputGenerator> provideGenerators() {
+      return new HashSet();
+   }
 
 }

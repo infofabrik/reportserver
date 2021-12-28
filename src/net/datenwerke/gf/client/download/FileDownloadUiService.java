@@ -4,5 +4,5 @@ import net.datenwerke.gf.client.download.dto.DownloadProperties;
 
 public interface FileDownloadUiService {
 
-	public void triggerDownload(DownloadProperties properties);
+   public void triggerDownload(DownloadProperties properties);
 }

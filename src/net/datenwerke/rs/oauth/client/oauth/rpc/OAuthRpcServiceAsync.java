@@ -6,5 +6,6 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.oauth.client.oauth.OAuthAuthenticationUriInfo;
 
 public interface OAuthRpcServiceAsync {
-   void generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto, AsyncCallback<OAuthAuthenticationUriInfo> callback);
+   void generateAuthenticationUrl(DatasinkDefinitionDto oAuthDatasinkDto,
+         AsyncCallback<OAuthAuthenticationUriInfo> callback);
 }

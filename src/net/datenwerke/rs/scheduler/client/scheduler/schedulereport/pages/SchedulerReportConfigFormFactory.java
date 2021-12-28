@@ -11,6 +11,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleConfigWizardPa
 
 public interface SchedulerReportConfigFormFactory {
 
-	public JobReportConfigurationForm create(Optional<ReportDto> report, Collection<ReportViewConfiguration> configs, ReportScheduleDefinition definition, List<ScheduleConfigWizardPageProviderHook> advancedPages);
-	
+   public JobReportConfigurationForm create(Optional<ReportDto> report, Collection<ReportViewConfiguration> configs,
+         ReportScheduleDefinition definition, List<ScheduleConfigWizardPageProviderHook> advancedPages);
+
 }

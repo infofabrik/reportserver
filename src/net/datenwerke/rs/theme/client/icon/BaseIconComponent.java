@@ -8,23 +8,23 @@ import com.google.gwt.user.client.ui.HTML;
 import com.sencha.gxt.core.shared.event.GroupingHandlerRegistration;
 import com.sencha.gxt.widget.core.client.WidgetComponent;
 
-public class BaseIconComponent extends WidgetComponent implements HasClickHandlers{
+public class BaseIconComponent extends WidgetComponent implements HasClickHandlers {
 
-	private GroupingHandlerRegistration handlers = new GroupingHandlerRegistration();
-	
-	public BaseIconComponent(SafeHtml safeHtml) {
-		super(new HTML(safeHtml));
-	}
+   private GroupingHandlerRegistration handlers = new GroupingHandlerRegistration();
 
-	@Override
-	public HandlerRegistration addClickHandler(ClickHandler handler) {
-		HandlerRegistration clickHandler = ((HTML)getWidget()).addClickHandler(handler);
-		handlers.add(clickHandler);
-		return clickHandler;
-	}
-	
-	public void release() {
-		handlers.removeHandler();
-		handlers = null;
-	}
+   public BaseIconComponent(SafeHtml safeHtml) {
+      super(new HTML(safeHtml));
+   }
+
+   @Override
+   public HandlerRegistration addClickHandler(ClickHandler handler) {
+      HandlerRegistration clickHandler = ((HTML) getWidget()).addClickHandler(handler);
+      handlers.add(clickHandler);
+      return clickHandler;
+   }
+
+   public void release() {
+      handlers.removeHandler();
+      handlers = null;
+   }
 }

@@ -12,35 +12,35 @@ import nu.xom.Element;
  */
 public abstract class ItemProperty {
 
-	protected final String name;
-	protected final Class<?> type;
-	protected final Element element;
-	
-	public ItemProperty(String name, Class<?> type, Element element) {
-		super();
-		this.name = name;
-		this.type = type;
-		this.element = element;
-	}
+   protected final String name;
+   protected final Class<?> type;
+   protected final Element element;
 
-	public String getName() {
-		return name;
-	}
+   public ItemProperty(String name, Class<?> type, Element element) {
+      super();
+      this.name = name;
+      this.type = type;
+      this.element = element;
+   }
 
-	public Class<?> getType() {
-		return type;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public Collection<String> getReferencedIds() {
-		return new HashSet<String>();
-	}
+   public Class<?> getType() {
+      return type;
+   }
 
-	public Collection<String> getEnclosedObjectIds() {
-		return Collections.emptySet();
-	}
-	
-	public Element getElement() {
-		return element;
-	}
-	
+   public Collection<String> getReferencedIds() {
+      return new HashSet<String>();
+   }
+
+   public Collection<String> getEnclosedObjectIds() {
+      return Collections.emptySet();
+   }
+
+   public Element getElement() {
+      return element;
+   }
+
 }

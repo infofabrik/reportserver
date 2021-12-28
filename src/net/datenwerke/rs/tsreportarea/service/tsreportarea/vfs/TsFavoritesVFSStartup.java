@@ -8,12 +8,9 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemMa
 
 public class TsFavoritesVFSStartup {
 
-	@Inject
-	public TsFavoritesVFSStartup(
-		HookHandlerService hookHandler,
-		Provider<TsFavoritesVFS> vfsProvider
-		){
-		
-		hookHandler.attachHooker(VirtualFileSystemManagerHook.class, vfsProvider);
-	}
+   @Inject
+   public TsFavoritesVFSStartup(HookHandlerService hookHandler, Provider<TsFavoritesVFS> vfsProvider) {
+
+      hookHandler.attachHooker(VirtualFileSystemManagerHook.class, vfsProvider);
+   }
 }

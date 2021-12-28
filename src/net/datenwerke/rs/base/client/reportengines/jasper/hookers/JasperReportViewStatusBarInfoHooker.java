@@ -19,53 +19,56 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class JasperReportViewStatusBarInfoHooker implements ReportPreviewViewStatusbarHook {
 
-	private Status countPages;
-	
-	@Inject
-	public JasperReportViewStatusBarInfoHooker(
-		){
-	}
-	
-	@Override
-	public void reportPreviewViewStatusbarHook_addLeft(final AbstractReportPreviewView reportPreviewView, ToolBar toolbar, final ReportDto report) {
-		if(! (report instanceof JasperReportDto))
-			return;
-		
-		countPages = new Status();
-		countPages.setBorders(false);
-		toolbar.add(countPages);
-	}
+   private Status countPages;
 
-	@Override
-	public void reportPreviewViewStatusbarHook_addRight(AbstractReportPreviewView reportPreviewView, ToolBar toolbar, ReportDto report) {
-	}
-	
-	@Override
-	public void reportPreviewViewStatusbarHook_reportToBeReloaded(ReportDto report, AbstractReportPreviewView abstractReportPreviewView) {
-	}
+   @Inject
+   public JasperReportViewStatusBarInfoHooker() {
+   }
 
-	@Override
-	public void reportPreviewViewStatusbarHook_reportUpdated(ReportDto report, final AbstractReportPreviewView abstractReportPreviewView, boolean configChanged) {
-	}
-	
-	@Override
-	public void reportPreviewViewStatusbarHook_reportLoaded(ReportDto report,
-			AsyncCallback<DwModel> modalAsyncCallback, DwModel result, boolean configChanged) {
-		if(! (report instanceof JasperReportDto))
-			return;
-		
-		if(result instanceof SuccessIndicatorBaseModel){
-			SuccessIndicatorBaseModel suc = (SuccessIndicatorBaseModel) result;
-			if(suc.getData().size() > 0){
-				countPages.setText(ReportexecutorMessages.INSTANCE.pages() + suc.getData().get(0).getValue());
-			}
-		}
-	}
+   @Override
+   public void reportPreviewViewStatusbarHook_addLeft(final AbstractReportPreviewView reportPreviewView,
+         ToolBar toolbar, final ReportDto report) {
+      if (!(report instanceof JasperReportDto))
+         return;
 
-	@Override
-	public void reportPreviewViewStatusbarHook_cancel(ReportDto report,
-			AbstractReportPreviewView abstractReportPreviewView) {
-		// TODO Auto-generated method stub
-		
-	}
+      countPages = new Status();
+      countPages.setBorders(false);
+      toolbar.add(countPages);
+   }
+
+   @Override
+   public void reportPreviewViewStatusbarHook_addRight(AbstractReportPreviewView reportPreviewView, ToolBar toolbar,
+         ReportDto report) {
+   }
+
+   @Override
+   public void reportPreviewViewStatusbarHook_reportToBeReloaded(ReportDto report,
+         AbstractReportPreviewView abstractReportPreviewView) {
+   }
+
+   @Override
+   public void reportPreviewViewStatusbarHook_reportUpdated(ReportDto report,
+         final AbstractReportPreviewView abstractReportPreviewView, boolean configChanged) {
+   }
+
+   @Override
+   public void reportPreviewViewStatusbarHook_reportLoaded(ReportDto report, AsyncCallback<DwModel> modalAsyncCallback,
+         DwModel result, boolean configChanged) {
+      if (!(report instanceof JasperReportDto))
+         return;
+
+      if (result instanceof SuccessIndicatorBaseModel) {
+         SuccessIndicatorBaseModel suc = (SuccessIndicatorBaseModel) result;
+         if (suc.getData().size() > 0) {
+            countPages.setText(ReportexecutorMessages.INSTANCE.pages() + suc.getData().get(0).getValue());
+         }
+      }
+   }
+
+   @Override
+   public void reportPreviewViewStatusbarHook_cancel(ReportDto report,
+         AbstractReportPreviewView abstractReportPreviewView) {
+      // TODO Auto-generated method stub
+
+   }
 }

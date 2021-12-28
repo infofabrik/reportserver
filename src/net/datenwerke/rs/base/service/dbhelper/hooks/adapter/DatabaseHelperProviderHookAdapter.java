@@ -13,11 +13,9 @@ import net.datenwerke.rs.base.service.dbhelper.hooks.DatabaseHelperProviderHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class DatabaseHelperProviderHookAdapter implements DatabaseHelperProviderHook {
 
-	@Override
-	public Collection<DatabaseHelper> provideDatabaseHelpers()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<DatabaseHelper> provideDatabaseHelpers() {
+      return new HashSet();
+   }
 
 }

@@ -13,8 +13,8 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNode
 @RemoteServiceRelativePath("ts/scheduelasfile")
 public interface ScheduleAsFileRpcService extends RemoteService {
 
-	void exportIntoTeamSpace(ReportDto reportDto, String executorToke,
-			String format, List<ReportExecutionConfigDto> configs,
-			AbstractTsDiskNodeDto folder, String name, String description) throws ServerCallFailedException;
-	
+   void exportIntoTeamSpace(ReportDto reportDto, String executorToke, String format,
+         List<ReportExecutionConfigDto> configs, AbstractTsDiskNodeDto folder, String name, String description)
+         throws ServerCallFailedException;
+
 }

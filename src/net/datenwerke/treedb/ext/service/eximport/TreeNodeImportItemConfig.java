@@ -13,39 +13,39 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
  */
 public class TreeNodeImportItemConfig extends ImportItemConfig {
 
-	private AbstractNode<?> parent;
-	
-	private Set<String> ignoredFields = new HashSet<String>();
-	
-	public TreeNodeImportItemConfig(String id) {
-		super(id);
-	}
-	
-	public TreeNodeImportItemConfig(String id, ImportMode importMode){
-		super(id, importMode);
-	}
-	
-	public TreeNodeImportItemConfig(String id, ImportMode importMode, Object referenceObject) {
-		super(id, importMode, referenceObject);
-	}
+   private AbstractNode<?> parent;
 
-	public void setParent(AbstractNode<?> parent){
-		this.parent = parent;
-	}
+   private Set<String> ignoredFields = new HashSet<String>();
 
-	public AbstractNode<?> getParent(){
-		return parent;
-	}
+   public TreeNodeImportItemConfig(String id) {
+      super(id);
+   }
 
-	public void setIgnoredFields(Set<String> ignoredFields) {
-		this.ignoredFields = ignoredFields;
-	}
+   public TreeNodeImportItemConfig(String id, ImportMode importMode) {
+      super(id, importMode);
+   }
 
-	public Set<String> getIgnoredFields() {
-		return ignoredFields;
-	}
-	
-	public void addIgnoredField(String field){
-		this.ignoredFields.add(field);
-	}
+   public TreeNodeImportItemConfig(String id, ImportMode importMode, Object referenceObject) {
+      super(id, importMode, referenceObject);
+   }
+
+   public void setParent(AbstractNode<?> parent) {
+      this.parent = parent;
+   }
+
+   public AbstractNode<?> getParent() {
+      return parent;
+   }
+
+   public void setIgnoredFields(Set<String> ignoredFields) {
+      this.ignoredFields = ignoredFields;
+   }
+
+   public Set<String> getIgnoredFields() {
+      return ignoredFields;
+   }
+
+   public void addIgnoredField(String field) {
+      this.ignoredFields.add(field);
+   }
 }

@@ -28,103 +28,94 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class SetRoleSubCommand implements TeamspaceModSubCommandHook {
 
-public static final String BASE_COMMAND = "setrole";
-	
-	private final TeamSpaceService teamspaceService;
+   public static final String BASE_COMMAND = "setrole";
 
-	@Inject
-	public SetRoleSubCommand(
-		TeamSpaceService teamspaceService
-		){
-		
-		/* store objects */
-		this.teamspaceService = teamspaceService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final TeamSpaceService teamspaceService;
 
-	@Override
-	@CliHelpMessage(
-		messageClass = TeamSpaceMessages.class,
-		name = BASE_COMMAND,
-		description = "commandTeamspacemod_sub_setrole_description",
-		nonOptArgs = {
-			@NonOptArgument(name="role", description="commandTeamspacemod_sub_setrole_arg1", mandatory=true),
-			@NonOptArgument(name="teamspace", description="commandTeamspacemod_sub_setrole_arg2", mandatory=true),
-			@NonOptArgument(name="users", description="commandTeamspacemod_sub_setrole_arg3", mandatory=true, varArgs=true)
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> arguments = parser.getNonOptionArguments();
-		if(2 > arguments.size())
-			throw new IllegalArgumentException();
-		
-		ObjectResolverDeamon objectResolver = session.getObjectResolver();
+   @Inject
+   public SetRoleSubCommand(TeamSpaceService teamspaceService) {
 
-		String roleStr = arguments.remove(0);
-		TeamSpaceRole role;
-		if("admin".equals(roleStr))
-			role = TeamSpaceRole.ADMIN;
-		else if("manager".equals(roleStr))
-			role = TeamSpaceRole.MANAGER;
-		else if("user".equals(roleStr))
-			role = TeamSpaceRole.USER;
-		else if("guest".equals(roleStr))
-			role = TeamSpaceRole.GUEST;
-		else
-			throw new IllegalArgumentException("Unsupported role: " + roleStr);
-		
-		
-		/* locate teamspace */
-		String teamspaceLocator = arguments.remove(0);
-		Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
-		if(teamspaceCandidates.size() != 1)
-			throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
-		if(! (teamspaceCandidates.iterator().next() instanceof TeamSpace))
-			throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
-		TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
-			
-		/* check rights */
-		if(! teamspaceService.isManager(teamspace))
-			throw new ViolatedSecurityException();
-		
-		/* get users */
-		Set<User> userList = new HashSet<User>();
-		for(String locationStr : arguments){
-			Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
-			if(objectList.isEmpty())
-				throw new IllegalArgumentException("No users selected");
-			
-			for(Object obj : objectList){
-				if(! (obj instanceof AbstractUserManagerNode))
-					throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
-				if(obj instanceof User)
-					userList.add((User) obj);
-			}
-		}
-		
-		/* add members */
-		for(User user : userList){
-			TeamSpaceMember member = teamspaceService.getMemberFor(teamspace,user);
-			if(null != member)
-				member.setRole(role);
-		}
-		
-		teamspaceService.merge(teamspace);
-		
-		return new CommandResult();
-	}
+      /* store objects */
+      this.teamspaceService = teamspaceService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = TeamSpaceMessages.class, name = BASE_COMMAND, description = "commandTeamspacemod_sub_setrole_description", nonOptArgs = {
+         @NonOptArgument(name = "role", description = "commandTeamspacemod_sub_setrole_arg1", mandatory = true),
+         @NonOptArgument(name = "teamspace", description = "commandTeamspacemod_sub_setrole_arg2", mandatory = true),
+         @NonOptArgument(name = "users", description = "commandTeamspacemod_sub_setrole_arg3", mandatory = true, varArgs = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> arguments = parser.getNonOptionArguments();
+      if (2 > arguments.size())
+         throw new IllegalArgumentException();
+
+      ObjectResolverDeamon objectResolver = session.getObjectResolver();
+
+      String roleStr = arguments.remove(0);
+      TeamSpaceRole role;
+      if ("admin".equals(roleStr))
+         role = TeamSpaceRole.ADMIN;
+      else if ("manager".equals(roleStr))
+         role = TeamSpaceRole.MANAGER;
+      else if ("user".equals(roleStr))
+         role = TeamSpaceRole.USER;
+      else if ("guest".equals(roleStr))
+         role = TeamSpaceRole.GUEST;
+      else
+         throw new IllegalArgumentException("Unsupported role: " + roleStr);
+
+      /* locate teamspace */
+      String teamspaceLocator = arguments.remove(0);
+      Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
+      if (teamspaceCandidates.size() != 1)
+         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+      if (!(teamspaceCandidates.iterator().next() instanceof TeamSpace))
+         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+      TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
+
+      /* check rights */
+      if (!teamspaceService.isManager(teamspace))
+         throw new ViolatedSecurityException();
+
+      /* get users */
+      Set<User> userList = new HashSet<User>();
+      for (String locationStr : arguments) {
+         Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
+         if (objectList.isEmpty())
+            throw new IllegalArgumentException("No users selected");
+
+         for (Object obj : objectList) {
+            if (!(obj instanceof AbstractUserManagerNode))
+               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+            if (obj instanceof User)
+               userList.add((User) obj);
+         }
+      }
+
+      /* add members */
+      for (User user : userList) {
+         TeamSpaceMember member = teamspaceService.getMemberFor(teamspace, user);
+         if (null != member)
+            member.setRole(role);
+      }
+
+      teamspaceService.merge(teamspace);
+
+      return new CommandResult();
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

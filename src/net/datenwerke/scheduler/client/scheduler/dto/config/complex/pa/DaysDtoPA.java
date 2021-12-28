@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.DaysDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Days.class)
 public interface DaysDtoPA extends PropertyAccess<DaysDto> {
 
-
-
 }

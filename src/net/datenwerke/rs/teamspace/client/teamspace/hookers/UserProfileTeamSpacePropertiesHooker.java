@@ -19,75 +19,71 @@ import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardPro
  * 
  *
  */
-public class UserProfileTeamSpacePropertiesHooker extends
-		UserProfileCardProviderHookImpl {
+public class UserProfileTeamSpacePropertiesHooker extends UserProfileCardProviderHookImpl {
 
-	private static final String DEFAULT_TEAMSPACE_KEY = "_defaultTeamSpace";
+   private static final String DEFAULT_TEAMSPACE_KEY = "_defaultTeamSpace";
 
-	private final TeamSpaceDao tsDao;
+   private final TeamSpaceDao tsDao;
 
-	private SimpleForm form;
-	
-	@Inject
-	public UserProfileTeamSpacePropertiesHooker(
-		TeamSpaceDao tsDao
-		){
-		
-		/* store objects */
-		this.tsDao = tsDao;
-	}
-	
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.GROUP.toImageResource(1);
-	}
+   private SimpleForm form;
 
-	@Override
-	public Widget getCard() {
-		form = SimpleForm.getInlineInstance();
-		form.addField(
-			TeamSpaceDto.class, DEFAULT_TEAMSPACE_KEY, TeamSpaceMessages.INSTANCE.defaultTeamSpaceLabel(),
-			new SFFCTeamSpace(){
-				@Override
-				public boolean isMulti() {
-					return false;
-				}
+   @Inject
+   public UserProfileTeamSpacePropertiesHooker(TeamSpaceDao tsDao) {
 
-				@Override
-				public boolean isLoadAll() {
-					return false;
-				}
-			});
-			
-		form.loadFields();
-		
-		form.mask(BaseMessages.INSTANCE.loadingMsg());
-		tsDao.getExplicitPrimarySpace(new RsAsyncCallback<TeamSpaceDto>(){
-			@Override
-			public void onSuccess(TeamSpaceDto result) {
-				if(null != result)
-					form.setValue(DEFAULT_TEAMSPACE_KEY, result);
-				form.unmask();
-			}
-		});
-		
-		return form;
-	}
-	
-	@Override
-	public void submitPressed(final SubmitTrackerToken token) {
-		TeamSpaceDto teamSpace = (TeamSpaceDto) form.getValue(DEFAULT_TEAMSPACE_KEY);
-		tsDao.setPrimarySpace(teamSpace, new RsAsyncCallback(){
-			@Override
-			public void onSuccess(Object result) {
-				token.setCompleted();
-			}
-		});
-	}
+      /* store objects */
+      this.tsDao = tsDao;
+   }
 
-	@Override
-	public String getName() {
-		return TeamSpaceMessages.INSTANCE.clientModuleName();
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.GROUP.toImageResource(1);
+   }
+
+   @Override
+   public Widget getCard() {
+      form = SimpleForm.getInlineInstance();
+      form.addField(TeamSpaceDto.class, DEFAULT_TEAMSPACE_KEY, TeamSpaceMessages.INSTANCE.defaultTeamSpaceLabel(),
+            new SFFCTeamSpace() {
+               @Override
+               public boolean isMulti() {
+                  return false;
+               }
+
+               @Override
+               public boolean isLoadAll() {
+                  return false;
+               }
+            });
+
+      form.loadFields();
+
+      form.mask(BaseMessages.INSTANCE.loadingMsg());
+      tsDao.getExplicitPrimarySpace(new RsAsyncCallback<TeamSpaceDto>() {
+         @Override
+         public void onSuccess(TeamSpaceDto result) {
+            if (null != result)
+               form.setValue(DEFAULT_TEAMSPACE_KEY, result);
+            form.unmask();
+         }
+      });
+
+      return form;
+   }
+
+   @Override
+   public void submitPressed(final SubmitTrackerToken token) {
+      TeamSpaceDto teamSpace = (TeamSpaceDto) form.getValue(DEFAULT_TEAMSPACE_KEY);
+      tsDao.setPrimarySpace(teamSpace, new RsAsyncCallback() {
+         @Override
+         public void onSuccess(Object result) {
+            token.setCompleted();
+         }
+      });
+   }
+
+   @Override
+   public String getName() {
+      return TeamSpaceMessages.INSTANCE.clientModuleName();
+   }
 
 }

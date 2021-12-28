@@ -10,25 +10,25 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 
 public class LfsCommand extends SubCommandContainerImpl {
-	
-	public static final String BASE_COMMAND = "lfs";
-	
-	private HookHandlerService hookHandler;
-	
-	@Inject
-	public LfsCommand(HookHandlerService hookHandler) {
-		this.hookHandler = hookHandler;
-	}
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "lfs";
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<LfsSubCommandHook> list =  hookHandler.getHookers(LfsSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   private HookHandlerService hookHandler;
+
+   @Inject
+   public LfsCommand(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<LfsSubCommandHook> list = hookHandler.getHookers(LfsSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

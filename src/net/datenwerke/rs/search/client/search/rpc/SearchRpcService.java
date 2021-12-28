@@ -9,12 +9,12 @@ import net.datenwerke.rs.search.client.search.dto.SearchFilterDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 
 @RemoteServiceRelativePath("search")
-public interface SearchRpcService extends RemoteService{
-	
-	public SearchResultListDto find(String searchStr) throws ServerCallFailedException;
-	
-	public SearchResultListDto find(Dto2PosoMapper type, String searchStr) throws ServerCallFailedException;
+public interface SearchRpcService extends RemoteService {
 
-	SearchResultListDto find(String searchStr, SearchFilterDto filter) throws ServerCallFailedException;
+   public SearchResultListDto find(String searchStr) throws ServerCallFailedException;
+
+   public SearchResultListDto find(Dto2PosoMapper type, String searchStr) throws ServerCallFailedException;
+
+   SearchResultListDto find(String searchStr, SearchFilterDto filter) throws ServerCallFailedException;
 
 }

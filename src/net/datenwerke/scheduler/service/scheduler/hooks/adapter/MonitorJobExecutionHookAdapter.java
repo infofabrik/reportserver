@@ -10,20 +10,16 @@ import net.datenwerke.scheduler.service.scheduler.hooks.MonitorJobExecutionHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class MonitorJobExecutionHookAdapter implements MonitorJobExecutionHook {
 
-	@Override
-	public void notifyOfExecution(AbstractJob reportExecuteJob)  {
-	}
+   @Override
+   public void notifyOfExecution(AbstractJob reportExecuteJob) {
+   }
 
+   @Override
+   public void jobExecutedSuccessfully(AbstractJob reportExecuteJob) {
+   }
 
-	@Override
-	public void jobExecutedSuccessfully(AbstractJob reportExecuteJob)  {
-	}
-
-
-	@Override
-	public void jobExecutionFailed(AbstractJob reportExecuteJob, Exception e)  {
-	}
-
-
+   @Override
+   public void jobExecutionFailed(AbstractJob reportExecuteJob, Exception e) {
+   }
 
 }

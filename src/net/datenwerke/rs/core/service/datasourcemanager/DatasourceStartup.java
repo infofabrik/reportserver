@@ -19,35 +19,32 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class DatasourceStartup {
 
-	@Inject
-	public DatasourceStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		final Provider<SecurityService> securityServiceProvider,
-		final @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
-		
-		Provider<DatasourceManagerHistoryUrlBuilderHooker> datasourceManagerUrlBuilder,
-		HandleDatasourceForceRemoveEventHandler handleDatasourceForceRemoveHandler
-		){
-		
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasourceDefinition.class, handleDatasourceForceRemoveHandler);
-		
-		/* history */
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasourceManagerUrlBuilder);
-		
-		/* register security targets */
-		hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
-			
-			@Override
-			public void configDone() {
-				/* secure folder */
-				securityServiceProvider.get().registerSecurityTarget(DatasourceFolder.class);
+   @Inject
+   public DatasourceStartup(HookHandlerService hookHandler, EventBus eventBus,
+         final Provider<SecurityService> securityServiceProvider,
+         final @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
 
-				
-				/* secure datasource definition entities */
-				for(Class<? extends DatasourceDefinition> dClass : installedDataSourceDefinitions.get())
-					securityServiceProvider.get().registerSecurityTarget(dClass);
-			}
-		});
-	}
+         Provider<DatasourceManagerHistoryUrlBuilderHooker> datasourceManagerUrlBuilder,
+         HandleDatasourceForceRemoveEventHandler handleDatasourceForceRemoveHandler) {
+
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasourceDefinition.class,
+            handleDatasourceForceRemoveHandler);
+
+      /* history */
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasourceManagerUrlBuilder);
+
+      /* register security targets */
+      hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
+
+         @Override
+         public void configDone() {
+            /* secure folder */
+            securityServiceProvider.get().registerSecurityTarget(DatasourceFolder.class);
+
+            /* secure datasource definition entities */
+            for (Class<? extends DatasourceDefinition> dClass : installedDataSourceDefinitions.get())
+               securityServiceProvider.get().registerSecurityTarget(dClass);
+         }
+      });
+   }
 }

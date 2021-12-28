@@ -5,8 +5,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface MenuBaseHook extends Hook {
 
-	boolean consumes(DwHookableMenu dwMenu);
+   boolean consumes(DwHookableMenu dwMenu);
 
-	boolean attachTo(DwHookableMenu dwMenu, boolean addSeparator);
+   boolean attachTo(DwHookableMenu dwMenu, boolean addSeparator);
 
 }

@@ -17,7 +17,7 @@ public interface DatasourceBundleRpcService extends RemoteService {
    Map<String, String> getBundleSelectorConfiguration() throws ServerCallFailedException;
 
    void setSelectedBundle(String bundleKey) throws ServerCallFailedException;
-   
+
    boolean testConnection(DatabaseBundleDto databaseBundleDto) throws ServerCallFailedException;
 
 }

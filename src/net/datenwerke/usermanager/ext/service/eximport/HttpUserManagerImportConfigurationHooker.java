@@ -14,29 +14,26 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
 
-public class HttpUserManagerImportConfigurationHooker extends
-	HttpImportConfigurationProviderHookImplForTrees<AbstractUserManagerNode, AbstractUserManagerNodeDto> {
+public class HttpUserManagerImportConfigurationHooker
+      extends HttpImportConfigurationProviderHookImplForTrees<AbstractUserManagerNode, AbstractUserManagerNodeDto> {
 
-	@Inject
-	public HttpUserManagerImportConfigurationHooker(
-		DtoService dtoService,
-		Provider<HttpImportService> httpImportServiceProvider,  
-		SecurityService securityService
-		){
-		super(dtoService, httpImportServiceProvider, securityService);
-	}
-	
-	@Override
-	public boolean consumes(String id) {
-		return UserManagerImporter.IMPORTER_ID.equals(id);
-	}
+   @Inject
+   public HttpUserManagerImportConfigurationHooker(DtoService dtoService,
+         Provider<HttpImportService> httpImportServiceProvider, SecurityService securityService) {
+      super(dtoService, httpImportServiceProvider, securityService);
+   }
 
+   @Override
+   public boolean consumes(String id) {
+      return UserManagerImporter.IMPORTER_ID.equals(id);
+   }
 
-	@Override
-	public void validate(ImportConfigDto config) throws IllegalImportConfigException {
-		TreeImportConfigDto<AbstractUserManagerNodeDto> treeConfig = (TreeImportConfigDto<AbstractUserManagerNodeDto>) config;
-		
-		if(null != treeConfig.getParent() && ! (treeConfig.getParent() instanceof OrganisationalUnitDto))
-			throw new IllegalImportConfigException("Illegal user import destination. Has to be a folder, but was: " + treeConfig.getParent().getClass());
-	}
+   @Override
+   public void validate(ImportConfigDto config) throws IllegalImportConfigException {
+      TreeImportConfigDto<AbstractUserManagerNodeDto> treeConfig = (TreeImportConfigDto<AbstractUserManagerNodeDto>) config;
+
+      if (null != treeConfig.getParent() && !(treeConfig.getParent() instanceof OrganisationalUnitDto))
+         throw new IllegalImportConfigException(
+               "Illegal user import destination. Has to be a folder, but was: " + treeConfig.getParent().getClass());
+   }
 }

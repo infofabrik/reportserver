@@ -18,63 +18,61 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledP
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.jasper.dto"
-)
-public class CompiledPNGJasperReport extends CompiledRSJasperReport implements CompiledPngReport{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto")
+public class CompiledPNGJasperReport extends CompiledRSJasperReport implements CompiledPngReport {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5661102670095695972L;
-	
-	private BufferedImage[] report;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	public BufferedImage[] getReport() {
-		return report;
-	}
-	
-	public String getBase64Report() {
-		try {
-			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-			ImageIO.write(report[0], "png", baos);
-			byte[] bytesOut = baos.toByteArray();
-			
-			return new String(Base64.encodeBase64(bytesOut));
-		} catch (IOException e) {
-			logger.warn( "Failed getting report as base64", e);
-		}
-		
-		return "";
-		
-	}
-	
-	public void setBase64Report(String report){
-		// ignore
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -5661102670095695972L;
 
-	public void setReport(Object report) {
-		try{
-			this.report = (BufferedImage[]) report;
-		} catch(ClassCastException e){
-			IllegalArgumentException iae = new IllegalArgumentException("Expected BufferedImage array"); //$NON-NLS-1$
-			iae.initCause(e);
-			throw iae;
-		}
-	}
+   private BufferedImage[] report;
 
-	public String getFileExtension() {
-		return "png"; //$NON-NLS-1$
-	}
+   public BufferedImage[] getReport() {
+      return report;
+   }
 
-	public String getMimeType() {
-		return "image/png"; //$NON-NLS-1$
-	}
-	
-	private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
-		
-	}
-	
+   public String getBase64Report() {
+      try {
+         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+         ImageIO.write(report[0], "png", baos);
+         byte[] bytesOut = baos.toByteArray();
+
+         return new String(Base64.encodeBase64(bytesOut));
+      } catch (IOException e) {
+         logger.warn("Failed getting report as base64", e);
+      }
+
+      return "";
+
+   }
+
+   public void setBase64Report(String report) {
+      // ignore
+   }
+
+   public void setReport(Object report) {
+      try {
+         this.report = (BufferedImage[]) report;
+      } catch (ClassCastException e) {
+         IllegalArgumentException iae = new IllegalArgumentException("Expected BufferedImage array"); //$NON-NLS-1$
+         iae.initCause(e);
+         throw iae;
+      }
+   }
+
+   public String getFileExtension() {
+      return "png"; //$NON-NLS-1$
+   }
+
+   public String getMimeType() {
+      return "image/png"; //$NON-NLS-1$
+   }
+
+   private void readObject(ObjectInputStream ois) throws ClassNotFoundException, IOException {
+
+   }
+
 }

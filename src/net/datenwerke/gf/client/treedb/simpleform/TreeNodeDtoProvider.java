@@ -19,58 +19,56 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  */
 public class TreeNodeDtoProvider extends FormFieldProviderHookImpl {
 
-	private final ClipboardUiService clipboardService;
+   private final ClipboardUiService clipboardService;
 
-	@Inject
-	public TreeNodeDtoProvider(ClipboardUiService clipboardService){
-		this.clipboardService = clipboardService;
-	}
-			
-	
-	@Override
-	public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
-		if(configs.length == 0 || ! (configs[0] instanceof SFFCGenericTreeNode))
-			return false;
-		
-		while(type != null){
-			if(type.equals(AbstractNodeDto.class))
-				return true;
-			type = type.getSuperclass();
-		}
-		return false;
-	}
+   @Inject
+   public TreeNodeDtoProvider(ClipboardUiService clipboardService) {
+      this.clipboardService = clipboardService;
+   }
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Widget createFormField() {
-		SFFCGenericTreeNode config = (SFFCGenericTreeNode) configs[0];
-		
-		final SingleTreeSelectionField ssf = new SingleTreeSelectionField((Class<? extends AbstractNodeDto>)type);
-		
-		ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
-				ValueChangeEvent.fire(TreeNodeDtoProvider.this, event.getValue());
-			}
-		});
-		
-		/* clipboard */
-		clipboardService.registerPasteHandler(ssf, new ClipboardDtoPasteProcessor(type) {
-			@Override
-			protected void doPaste(ClipboardDtoItem dtoItem) {
-				ssf.setValue((AbstractNodeDto) dtoItem.getDto(), true);
-			}
-		});
-		
-		ssf.setName(name);
-		ssf.setTreePanel(config.getTreeForPopup());
-		
-		return ssf;
-	}
-	
-	
-	public Object getValue(Widget field){
-		return ((SingleTreeSelectionField)field).getValue();
-	}
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      if (configs.length == 0 || !(configs[0] instanceof SFFCGenericTreeNode))
+         return false;
+
+      while (type != null) {
+         if (type.equals(AbstractNodeDto.class))
+            return true;
+         type = type.getSuperclass();
+      }
+      return false;
+   }
+
+   @SuppressWarnings("unchecked")
+   @Override
+   public Widget createFormField() {
+      SFFCGenericTreeNode config = (SFFCGenericTreeNode) configs[0];
+
+      final SingleTreeSelectionField ssf = new SingleTreeSelectionField((Class<? extends AbstractNodeDto>) type);
+
+      ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
+            ValueChangeEvent.fire(TreeNodeDtoProvider.this, event.getValue());
+         }
+      });
+
+      /* clipboard */
+      clipboardService.registerPasteHandler(ssf, new ClipboardDtoPasteProcessor(type) {
+         @Override
+         protected void doPaste(ClipboardDtoItem dtoItem) {
+            ssf.setValue((AbstractNodeDto) dtoItem.getDto(), true);
+         }
+      });
+
+      ssf.setName(name);
+      ssf.setTreePanel(config.getTreeForPopup());
+
+      return ssf;
+   }
+
+   public Object getValue(Widget field) {
+      return ((SingleTreeSelectionField) field).getValue();
+   }
 
 }

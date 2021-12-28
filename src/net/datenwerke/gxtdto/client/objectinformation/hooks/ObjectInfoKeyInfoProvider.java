@@ -8,16 +8,18 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ObjectInfoKeyInfoProvider extends Hook {
 
-	public boolean consumes(Object object);
-	
-	String getName(Object object);
-	String getDescription(Object object);
-	String getType(Object object);
-	Date getCreatedOn(Object object);
-	Date getLastUpdatedOn(Object object);
+   public boolean consumes(Object object);
 
-	public ImageResource getIconSmall(Object object);
-	
-	
-	
+   String getName(Object object);
+
+   String getDescription(Object object);
+
+   String getType(Object object);
+
+   Date getCreatedOn(Object object);
+
+   Date getLastUpdatedOn(Object object);
+
+   public ImageResource getIconSmall(Object object);
+
 }

@@ -12,9 +12,7 @@ public class DatasinkDao extends Dao {
    private final DatasinkRpcServiceAsync rpcService;
 
    @Inject
-   public DatasinkDao(
-         DatasinkRpcServiceAsync rpcService
-   ) {
+   public DatasinkDao(DatasinkRpcServiceAsync rpcService) {
       this.rpcService = rpcService;
    }
 

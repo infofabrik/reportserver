@@ -13,27 +13,27 @@ import net.datenwerke.gxtdto.client.forms.binding.HasValueFieldBinding;
 
 public class EmptyableSimpleComboBox<T> extends SimpleComboBox<Object> {
 
-	public EmptyableSimpleComboBox() {
-		this(new StringLabelProvider<Object>());
-	}
-	
-	public EmptyableSimpleComboBox(LabelProvider<? super Object> labelProvider) {
-		super(labelProvider);
-		add(new EmptyOption());
-		setAllowBlank(true);
-		setForceSelection(true);
-		
-	}
+   public EmptyableSimpleComboBox() {
+      this(new StringLabelProvider<Object>());
+   }
 
-	public <C> void createValueBinding(C obj, ValueProvider<C, T> vp) {
-		new HasValueFieldBinding(this, obj, vp, new ConverterWithEmpty<T>());
-	}
+   public EmptyableSimpleComboBox(LabelProvider<? super Object> labelProvider) {
+      super(labelProvider);
+      add(new EmptyOption());
+      setAllowBlank(true);
+      setForceSelection(true);
 
-	public void setSorted(SortDir dir){
-		getStore().addSortInfo(new StoreSortInfo<Object>(new ComparatorWithEmpty(), dir));
-	}
-	
-	public void addAll(List<T> values) {
-		getStore().addAll(values);
-	}
+   }
+
+   public <C> void createValueBinding(C obj, ValueProvider<C, T> vp) {
+      new HasValueFieldBinding(this, obj, vp, new ConverterWithEmpty<T>());
+   }
+
+   public void setSorted(SortDir dir) {
+      getStore().addSortInfo(new StoreSortInfo<Object>(new ComparatorWithEmpty(), dir));
+   }
+
+   public void addAll(List<T> values) {
+      getStore().addAll(values);
+   }
 }

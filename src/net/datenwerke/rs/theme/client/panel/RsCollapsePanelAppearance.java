@@ -8,51 +8,48 @@ import com.sencha.gxt.theme.neptune.client.base.widget.Css3CollapsePanelAppearan
 
 public class RsCollapsePanelAppearance extends Css3CollapsePanelAppearance {
 
-	private Css3CollapsePanelResources resources;
-	private Css3CollapsePanelStyle style;
+   private Css3CollapsePanelResources resources;
+   private Css3CollapsePanelStyle style;
 
+   public RsCollapsePanelAppearance() {
+      this(GWT.<Css3CollapsePanelResources>create(Css3CollapsePanelResources.class));
+   }
 
-	public RsCollapsePanelAppearance() {
-		this(GWT.<Css3CollapsePanelResources>create(Css3CollapsePanelResources.class));
-	}
+   public RsCollapsePanelAppearance(Css3CollapsePanelResources resources) {
+      super();
+      this.resources = resources;
+      this.style = this.resources.style();
 
-	public RsCollapsePanelAppearance(Css3CollapsePanelResources resources) {
-		super();
-		this.resources = resources;
-		this.style = this.resources.style();
+      StyleInjectorHelper.ensureInjected(style, true);
+   }
 
-		StyleInjectorHelper.ensureInjected(style, true);
-	}
+   @Override
+   public void render(SafeHtmlBuilder sb, LayoutRegion region, boolean header) {
+      String cls = style.panel();
 
+      switch (region) {
+      case WEST:
+         cls += " " + style.west();
+         break;
+      case EAST:
+         cls += " " + style.east();
+         break;
+      case NORTH:
+         cls += " " + style.north();
+         break;
+      case SOUTH:
+         cls += " " + style.south();
+         break;
+      }
 
-	@Override
-	public void render(SafeHtmlBuilder sb, LayoutRegion region, boolean header) {
-		String cls = style.panel();
+      if (!header) {
+         cls += " " + style.noHeader();
+      }
 
-		switch (region) {
-		case WEST:
-			cls += " " + style.west();
-			break;
-		case EAST:
-			cls += " " + style.east();
-			break;
-		case NORTH:
-			cls += " " + style.north();
-			break;
-		case SOUTH:
-			cls += " " + style.south();
-			break;
-		}
-		
-		if (!header) {
-			cls += " " + style.noHeader();
-		}
-
-
-		sb.appendHtmlConstant("<div class='" + cls + " rs-cp-collapse'>");
-		sb.appendHtmlConstant("<div class='" + style.iconWrap() + "'></div>");
-		sb.appendHtmlConstant("<div class='" + style.textWrap() + "'></div>");
-		sb.appendHtmlConstant("</div>");
-	}
+      sb.appendHtmlConstant("<div class='" + cls + " rs-cp-collapse'>");
+      sb.appendHtmlConstant("<div class='" + style.iconWrap() + "'></div>");
+      sb.appendHtmlConstant("<div class='" + style.textWrap() + "'></div>");
+      sb.appendHtmlConstant("</div>");
+   }
 
 }

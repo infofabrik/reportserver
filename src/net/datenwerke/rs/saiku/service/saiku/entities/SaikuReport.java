@@ -21,131 +21,119 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 @Entity
-@Table(name="SAIKU_REPORT")
+@Table(name = "SAIKU_REPORT")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	SaikuReportVariant.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.saiku.client.saiku.dto",
-	createDecorator=true,
-	typeDescriptionMsg=SaikuMessages.class,
-	typeDescriptionKey="reportTypeName",
-	icon="cubes"
-)
-@InstanceDescription(
-	msgLocation=SaikuEngineMessages.class,
-	objNameKey="reportTypeName",
-	icon = "cubes"
-)
+@TreeDBAllowedChildren({ SaikuReportVariant.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.saiku.client.saiku.dto", createDecorator = true, typeDescriptionMsg = SaikuMessages.class, typeDescriptionKey = "reportTypeName", icon = "cubes")
+@InstanceDescription(msgLocation = SaikuEngineMessages.class, objNameKey = "reportTypeName", icon = "cubes")
 public class SaikuReport extends Report {
 
-	private static final long serialVersionUID = 895906038962019952L;
+   private static final long serialVersionUID = 895906038962019952L;
 
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@ExposeToClient(allowArbitraryLobSize=true,disableHtmlEncode=true,exposeValueToClient=false)
-	private String queryXml;
-	
-	@ExposeToClient
-	private boolean allowMdx;
-	
-	@ExposeToClient
-	private boolean hideParents;
-	
-	/* Saiku reports are created dynamically when executing a pivot report. 
-	 * This flag indicates this for the current Saiku report. */
-	@ExposeToClient @Transient
-	private boolean createdFromPivotReport;
-	
-	/*
-	 * When the current Saiku report was created dynamically from a pivot report, 
-	 * the original report id.
-	 */
-	@ExposeToClient @Transient
-	private long originalPivotReportId;
-	
-	public String getQueryXml() {
-		String connection = getUuid();
-		if(null == connection || null == queryXml)
-			return queryXml;
-		
-		if (queryXml.startsWith("<?xml"))
-				return queryXml.replaceFirst("connection=\"[^\"]+\"","connection=\"" + connection + "\"");
-		
-		return queryXml;
-	}
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true, exposeValueToClient = false)
+   private String queryXml;
 
-	public void setQueryXml(String queryXml) {
-		this.queryXml = queryXml;
-	}
-	
-	public boolean isCreatedFromPivotReport() {
-		return createdFromPivotReport;
-	}
+   @ExposeToClient
+   private boolean allowMdx;
 
-	public void setCreatedFromPivotReport(boolean createdFromTableReport) {
-		this.createdFromPivotReport = createdFromTableReport;
-	}
+   @ExposeToClient
+   private boolean hideParents;
 
-	public long getOriginalPivotReportId() {
-		return originalPivotReportId;
-	}
+   /*
+    * Saiku reports are created dynamically when executing a pivot report. This
+    * flag indicates this for the current Saiku report.
+    */
+   @ExposeToClient
+   @Transient
+   private boolean createdFromPivotReport;
 
-	public void setOriginalPivotReportId(long originalTableReportId) {
-		this.originalPivotReportId = originalTableReportId;
-	}
+   /*
+    * When the current Saiku report was created dynamically from a pivot report,
+    * the original report id.
+    */
+   @ExposeToClient
+   @Transient
+   private long originalPivotReportId;
 
+   public String getQueryXml() {
+      String connection = getUuid();
+      if (null == connection || null == queryXml)
+         return queryXml;
 
-	public void setHideParents(boolean hideParents) {
-		this.hideParents = hideParents;
-	}
-	
+      if (queryXml.startsWith("<?xml"))
+         return queryXml.replaceFirst("connection=\"[^\"]+\"", "connection=\"" + connection + "\"");
 
-	public boolean isHideParents() {
-		return hideParents;
-	}
-	
-	@Override
-	protected Report createVariant(Report report) {
-		if(! (report instanceof SaikuReport))
-			throw new IllegalArgumentException("Expected SaikuReport");
-		
-		SaikuReportVariant variant = new SaikuReportVariant();
-		
-		/* copy parameter instances */
-		initVariant(variant, report);
-		
-		variant.setQueryXml(((SaikuReport)report).getQueryXml());
-		variant.setHideParents(((SaikuReport)report).isHideParents());
-		
-		return variant;
-		
-	}
+      return queryXml;
+   }
 
-	@Override
-	public void replaceWith(Report aReport, Injector injector) {
-		if(! (aReport instanceof SaikuReport))
-			throw new IllegalArgumentException("Expected SaikuReport");
-		
-		super.replaceWith(aReport, injector);
-		
-		SaikuReport report = (SaikuReport) aReport;
-		
-		/* set any fields from this report */
-		setQueryXml(report.getQueryXml());
-	}
+   public void setQueryXml(String queryXml) {
+      this.queryXml = queryXml;
+   }
 
-	public boolean isAllowMdx() {
-		return allowMdx;
-	}
+   public boolean isCreatedFromPivotReport() {
+      return createdFromPivotReport;
+   }
 
-	public void setAllowMdx(boolean allowMdx) {
-		this.allowMdx = allowMdx;
-	}
-	
-	
-	
+   public void setCreatedFromPivotReport(boolean createdFromTableReport) {
+      this.createdFromPivotReport = createdFromTableReport;
+   }
+
+   public long getOriginalPivotReportId() {
+      return originalPivotReportId;
+   }
+
+   public void setOriginalPivotReportId(long originalTableReportId) {
+      this.originalPivotReportId = originalTableReportId;
+   }
+
+   public void setHideParents(boolean hideParents) {
+      this.hideParents = hideParents;
+   }
+
+   public boolean isHideParents() {
+      return hideParents;
+   }
+
+   @Override
+   protected Report createVariant(Report report) {
+      if (!(report instanceof SaikuReport))
+         throw new IllegalArgumentException("Expected SaikuReport");
+
+      SaikuReportVariant variant = new SaikuReportVariant();
+
+      /* copy parameter instances */
+      initVariant(variant, report);
+
+      variant.setQueryXml(((SaikuReport) report).getQueryXml());
+      variant.setHideParents(((SaikuReport) report).isHideParents());
+
+      return variant;
+
+   }
+
+   @Override
+   public void replaceWith(Report aReport, Injector injector) {
+      if (!(aReport instanceof SaikuReport))
+         throw new IllegalArgumentException("Expected SaikuReport");
+
+      super.replaceWith(aReport, injector);
+
+      SaikuReport report = (SaikuReport) aReport;
+
+      /* set any fields from this report */
+      setQueryXml(report.getQueryXml());
+   }
+
+   public boolean isAllowMdx() {
+      return allowMdx;
+   }
+
+   public void setAllowMdx(boolean allowMdx) {
+      this.allowMdx = allowMdx;
+   }
+
 }

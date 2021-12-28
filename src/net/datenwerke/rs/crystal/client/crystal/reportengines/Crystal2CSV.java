@@ -23,85 +23,87 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 
 public class Crystal2CSV extends Export2CSV {
-	
-	private final ReportExporterDao exporterDao;
-	private final ClientConfigXmlService jsonService;
-	private static final String configurationFile = "csvexport.cf";
 
-	@Inject
-	public Crystal2CSV(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
-		super(exporterDao, jsonService);
-		this.exporterDao = exporterDao;
-		this.jsonService = jsonService;
-	}
+   private final ReportExporterDao exporterDao;
+   private final ClientConfigXmlService jsonService;
+   private static final String configurationFile = "csvexport.cf";
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof CrystalReportDto;
-	}
+   @Inject
+   public Crystal2CSV(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
+      super(exporterDao, jsonService);
+      this.exporterDao = exporterDao;
+      this.jsonService = jsonService;
+   }
 
-	@Override
-	public boolean hasConfiguration() {
-		return false;
-	}
-	
-	@Override
-	public boolean isConfigured() {
-		return null != config;
-	}
-	
-	@Override
-	public void displayConfiguration(final ReportDto report, final String executorToken, boolean allowAutomaticConfig, final ConfigurationFinishedCallback callback){
-		final DwWindow window = new DwWindow();
-		window.setHeading(getExportTitle());
-		window.getHeader().setIcon(getIcon());
-		window.setSize(420, 300);
-		window.setModal(true);
-		
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		window.add(form, new MarginData(10));
-		form.addField(String.class, RECCsvDtoPA.INSTANCE.separator(), ReportexecutorMessages.INSTANCE.csvConfigSeparator());
-		form.addField(String.class, RECCsvDtoPA.INSTANCE.quote(), ReportexecutorMessages.INSTANCE.csvConfigQuote());
-		
-		if(null == config) {
-			config = new RECCsvDtoDec();
-			exporterDao.getExportDefaultSettingsAsXml(configurationFile, new RsAsyncCallback<String>() {
-				@Override
-				public void onSuccess(String result) {
-					if (!"".equals(result.trim())) {
-						jsonService.setXmlConfig(result);
-						boolean printHeader = jsonService.getBoolean("csv.printHeader", true);
-						String separator = jsonService.getString("csv.separator", ";");
-						String quote = jsonService.getString("csv.quote", "\"");
-						String lineSeparator = jsonService.getString("csv.lineSeparator", "\\r\\n");
-						config.setPrintHeader(printHeader);
-						config.setSeparator(separator);
-						config.setQuote(quote);
-						config.setLineSeparator(lineSeparator);
-					}
-				}
-			});
-		}
-		form.bind(config);
-		
-		window.addCancelButton();
-		
-		DwTextButton submitBtn = window.addSubmitButton(new OnButtonClickHandler() {
-			@Override
-			public void onClick() {
-				callback.success();
-			}
-		});
-		submitBtn.setText(ReportExporterMessages.INSTANCE.exportReport());
-		
-		window.show();
-	}
-	
-	@Override
-	public List<ReportExecutionConfigDto> getConfiguration() {
-		List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
-		if (null != config)
-			configs.add(config);
-		return configs;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof CrystalReportDto;
+   }
+
+   @Override
+   public boolean hasConfiguration() {
+      return false;
+   }
+
+   @Override
+   public boolean isConfigured() {
+      return null != config;
+   }
+
+   @Override
+   public void displayConfiguration(final ReportDto report, final String executorToken, boolean allowAutomaticConfig,
+         final ConfigurationFinishedCallback callback) {
+      final DwWindow window = new DwWindow();
+      window.setHeading(getExportTitle());
+      window.getHeader().setIcon(getIcon());
+      window.setSize(420, 300);
+      window.setModal(true);
+
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      window.add(form, new MarginData(10));
+      form.addField(String.class, RECCsvDtoPA.INSTANCE.separator(),
+            ReportexecutorMessages.INSTANCE.csvConfigSeparator());
+      form.addField(String.class, RECCsvDtoPA.INSTANCE.quote(), ReportexecutorMessages.INSTANCE.csvConfigQuote());
+
+      if (null == config) {
+         config = new RECCsvDtoDec();
+         exporterDao.getExportDefaultSettingsAsXml(configurationFile, new RsAsyncCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+               if (!"".equals(result.trim())) {
+                  jsonService.setXmlConfig(result);
+                  boolean printHeader = jsonService.getBoolean("csv.printHeader", true);
+                  String separator = jsonService.getString("csv.separator", ";");
+                  String quote = jsonService.getString("csv.quote", "\"");
+                  String lineSeparator = jsonService.getString("csv.lineSeparator", "\\r\\n");
+                  config.setPrintHeader(printHeader);
+                  config.setSeparator(separator);
+                  config.setQuote(quote);
+                  config.setLineSeparator(lineSeparator);
+               }
+            }
+         });
+      }
+      form.bind(config);
+
+      window.addCancelButton();
+
+      DwTextButton submitBtn = window.addSubmitButton(new OnButtonClickHandler() {
+         @Override
+         public void onClick() {
+            callback.success();
+         }
+      });
+      submitBtn.setText(ReportExporterMessages.INSTANCE.exportReport());
+
+      window.show();
+   }
+
+   @Override
+   public List<ReportExecutionConfigDto> getConfiguration() {
+      List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
+      if (null != config)
+         configs.add(config);
+      return configs;
+   }
 }

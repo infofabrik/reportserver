@@ -8,29 +8,29 @@ import net.datenwerke.rs.utils.misc.PdfUtils;
 
 public class RegisterPdfFontsOnConfigReload implements ReloadConfigNotificationHook {
 
-	private final PdfUtils pdfUtils;
-	private final BirtReportService birtService;
+   private final PdfUtils pdfUtils;
+   private final BirtReportService birtService;
 
-	@Inject
-	public RegisterPdfFontsOnConfigReload(PdfUtils pdfUtils, BirtReportService birtService) {
-		this.pdfUtils = pdfUtils;
-		this.birtService = birtService;
-	}
-	
-	@Override
-	public void reloadConfig() {
-		registerFonts();
-	}
+   @Inject
+   public RegisterPdfFontsOnConfigReload(PdfUtils pdfUtils, BirtReportService birtService) {
+      this.pdfUtils = pdfUtils;
+      this.birtService = birtService;
+   }
 
-	@Override
-	public void reloadConfig(String identifier) {
-		if(PdfUtils.PDF_CONFIG_FILE.equals(identifier))
-			registerFonts();
-	}
+   @Override
+   public void reloadConfig() {
+      registerFonts();
+   }
 
-	protected void registerFonts() {
-		pdfUtils.registerPdfFonts();
-		birtService.clearFontCache();
-	}
+   @Override
+   public void reloadConfig(String identifier) {
+      if (PdfUtils.PDF_CONFIG_FILE.equals(identifier))
+         registerFonts();
+   }
+
+   protected void registerFonts() {
+      pdfUtils.registerPdfFonts();
+      birtService.clearFontCache();
+   }
 
 }

@@ -11,20 +11,18 @@ import javax.net.ssl.X509TrustManager;
  */
 public class DummyManager implements X509TrustManager {
 
-	public void checkClientTrusted(X509Certificate[] chain, String authType)
-			throws CertificateException {
-		// allow all
-		
-	}
+   public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+      // allow all
 
-	public void checkServerTrusted(X509Certificate[] chain, String authType)
-			throws CertificateException {
-		// allow all
-		
-	}
+   }
 
-	public X509Certificate[] getAcceptedIssuers() {
-		return new X509Certificate[0];
-	}
+   public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
+      // allow all
+
+   }
+
+   public X509Certificate[] getAcceptedIssuers() {
+      return new X509Certificate[0];
+   }
 
 }

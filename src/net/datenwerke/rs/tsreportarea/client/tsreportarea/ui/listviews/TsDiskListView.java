@@ -6,12 +6,12 @@ import com.google.gwt.user.client.ui.Widget;
 
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
 
-public interface TsDiskListView{
-	
-	public abstract Widget getComponent();
+public interface TsDiskListView {
 
-	public abstract void select(AbstractTsDiskNodeDto model);
-	
-	public abstract List<AbstractTsDiskNodeDto> getSelected();
+   public abstract Widget getComponent();
+
+   public abstract void select(AbstractTsDiskNodeDto model);
+
+   public abstract List<AbstractTsDiskNodeDto> getSelected();
 
 }

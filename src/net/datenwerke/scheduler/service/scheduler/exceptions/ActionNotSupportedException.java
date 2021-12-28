@@ -5,14 +5,13 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
 public class ActionNotSupportedException extends Exception {
 
-	public ActionNotSupportedException(AbstractJob abstractJob,
-			AbstractAction action) {
-		super();
-	}
+   public ActionNotSupportedException(AbstractJob abstractJob, AbstractAction action) {
+      super();
+   }
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7656568142728605278L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7656568142728605278L;
 
 }

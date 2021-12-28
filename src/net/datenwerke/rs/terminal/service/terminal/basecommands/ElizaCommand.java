@@ -13,80 +13,73 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class ElizaCommand implements InteractiveCommandHook {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3012114708971363827L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3012114708971363827L;
 
-	public static final String BASE_COMMAND = "eliza";
-	
-	private final ElizaParse eliza;
-	
-	private boolean keepInteractiveSession = true;
+   public static final String BASE_COMMAND = "eliza";
 
-	@Inject
-	public ElizaCommand(ElizaParse eliza){
-		this.eliza = eliza;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final ElizaParse eliza;
 
-	@CliHelpMessage(
-		messageClass = TerminalMessages.class,
-		name = BASE_COMMAND,
-		description = "commandEliza_description"
-	)
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		return initResult();
-	}
+   private boolean keepInteractiveSession = true;
 
-	private CommandResult initResult() {
-		CommandResult result = new CommandResult();
-		
-		for(String line : eliza.getIntroMsg())
-			result.addResultLine(line);
-		
-		return result;
-	}
+   @Inject
+   public ElizaCommand(ElizaParse eliza) {
+      this.eliza = eliza;
+   }
 
-	@Override
-	public CommandResult executeSubsequent(String command) {
-		CommandResult result = new CommandResult();
-		if(null != command && command.trim().equals("bye")) {
-			keepInteractiveSession = false;
-			result.addResultLine("Good Bye");
-		} else {
-			eliza.handleLine(command);
-		
-			for(Object line : eliza.msg.toArray())
-				result.addResultLine((String)line);
-			eliza.msg.clear();
-		}
-		
-		return result;
-	}
-	
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-	@Override
-	public boolean isKeepInteractiveSession() {
-		return keepInteractiveSession;
-	}
+   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandEliza_description")
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      return initResult();
+   }
 
-	@Override
-	public CommandResult ctrlC() {
-		keepInteractiveSession = false;
-		return new CommandResult("good bye");
-	}
+   private CommandResult initResult() {
+      CommandResult result = new CommandResult();
 
+      for (String line : eliza.getIntroMsg())
+         result.addResultLine(line);
 
-	
+      return result;
+   }
+
+   @Override
+   public CommandResult executeSubsequent(String command) {
+      CommandResult result = new CommandResult();
+      if (null != command && command.trim().equals("bye")) {
+         keepInteractiveSession = false;
+         result.addResultLine("Good Bye");
+      } else {
+         eliza.handleLine(command);
+
+         for (Object line : eliza.msg.toArray())
+            result.addResultLine((String) line);
+         eliza.msg.clear();
+      }
+
+      return result;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
+
+   @Override
+   public boolean isKeepInteractiveSession() {
+      return keepInteractiveSession;
+   }
+
+   @Override
+   public CommandResult ctrlC() {
+      keepInteractiveSession = false;
+      return new CommandResult("good bye");
+   }
 
 }

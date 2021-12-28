@@ -9,25 +9,23 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnFormatDto;
  */
 public class ColumnFormatDateDtoDec extends ColumnFormatDateDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFormatDateDtoDec() {
+      super();
+   }
 
-	public ColumnFormatDateDtoDec() {
-		super();
-	}
+   @Override
+   public ColumnFormatDto cloneFormat() {
+      ColumnFormatDateDtoDec clone = new ColumnFormatDateDtoDec();
 
-	@Override
-	public ColumnFormatDto cloneFormat() {
-		ColumnFormatDateDtoDec clone = new ColumnFormatDateDtoDec();
-		
-		clone.setBaseFormat(getBaseFormat());
-		clone.setTargetFormat(getTargetFormat());
-		clone.setErrorReplacement(getErrorReplacement());
-		clone.setReplaceErrors(isReplaceErrors());
-		clone.setRollOver(isRollOver());
-		
-		return clone;
-	}
+      clone.setBaseFormat(getBaseFormat());
+      clone.setTargetFormat(getTargetFormat());
+      clone.setErrorReplacement(getErrorReplacement());
+      clone.setReplaceErrors(isReplaceErrors());
+      clone.setRollOver(isRollOver());
 
+      return clone;
+   }
 
 }

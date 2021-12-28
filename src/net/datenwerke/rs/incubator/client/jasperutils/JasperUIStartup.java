@@ -8,14 +8,11 @@ import net.datenwerke.rs.incubator.client.jasperutils.hookers.JasperReportParame
 
 public class JasperUIStartup {
 
-	@Inject
-	public JasperUIStartup(
-		HookHandlerService hookHandler,
-		
-		JasperReportParameterProposerToolbarConfiguratorHooker parameterProposer
-		){
-		
-		
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, parameterProposer);
-	}
+   @Inject
+   public JasperUIStartup(HookHandlerService hookHandler,
+
+         JasperReportParameterProposerToolbarConfiguratorHooker parameterProposer) {
+
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, parameterProposer);
+   }
 }

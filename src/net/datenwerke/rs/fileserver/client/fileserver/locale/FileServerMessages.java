@@ -5,59 +5,62 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface FileServerMessages extends Messages {
 
-	public static final FileServerMessages INSTANCE = GWT.create(FileServerMessages.class);
-	
-	String adminLabel();
+   public static final FileServerMessages INSTANCE = GWT.create(FileServerMessages.class);
 
-	String mainPanelHeading();
+   String adminLabel();
 
-	String folder();
-	String insert();
+   String mainPanelHeading();
 
-	String permissionModuleDescription();
+   String folder();
 
-	String file();
+   String insert();
 
-	String editFolder();
-	String editFile();
-	
-	String contentTypeLabel();
-	String fileUploadLabel();
-	String previewLabel();
+   String permissionModuleDescription();
 
-	String sizeLabel();
-	String sizeValue(int bytes);
-	String sizeValueKb(double d);
-	String sizeValueMb(double d);
+   String file();
 
-	String publiclyAccessibleLabel();
+   String editFolder();
 
-	String previewUrlLabel();
+   String editFile();
 
-	String fileViewHeader();
+   String contentTypeLabel();
 
-	String importConfigFailureNoParent();
+   String fileUploadLabel();
 
-	String importWhereTo();
+   String previewLabel();
 
-	String importMainPropertiesDescription();
+   String sizeLabel();
 
-	String importMainPropertiesHeadline();
+   String sizeValue(int bytes);
 
-	String selectFileFromFileServerText();
+   String sizeValueKb(double d);
 
-	String folderDescription();
-	String fileDescription();
+   String sizeValueMb(double d);
 
-	String zipUploadedTitle();
-	String zipUploadedMsg();
-	
-	String fileCompress();
+   String publiclyAccessibleLabel();
 
+   String previewUrlLabel();
 
+   String fileViewHeader();
 
-	
+   String importConfigFailureNoParent();
 
+   String importWhereTo();
 
+   String importMainPropertiesDescription();
+
+   String importMainPropertiesHeadline();
+
+   String selectFileFromFileServerText();
+
+   String folderDescription();
+
+   String fileDescription();
+
+   String zipUploadedTitle();
+
+   String zipUploadedMsg();
+
+   String fileCompress();
 
 }

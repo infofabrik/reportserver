@@ -1,15 +1,14 @@
 package net.datenwerke.rs.utils.man;
 
-
 public interface ManPageService {
 
-	String getManPage(String identifier);
-	
-	String getManPage(String identifier, boolean useCache);
+   String getManPage(String identifier);
 
-	void clearCache();
+   String getManPage(String identifier, boolean useCache);
 
-	void clearCache(String identifier);
+   void clearCache();
 
-	String getManPageFailsafe(String identifier);
+   void clearCache(String identifier);
+
+   String getManPageFailsafe(String identifier);
 }

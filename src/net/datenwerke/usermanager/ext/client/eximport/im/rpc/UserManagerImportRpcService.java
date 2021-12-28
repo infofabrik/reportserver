@@ -11,6 +11,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 @RemoteServiceRelativePath("usermanager_import")
 public interface UserManagerImportRpcService extends RemoteService {
 
-	public List<ImportTreeModel> loadTree() throws ServerCallFailedException;
-	
+   public List<ImportTreeModel> loadTree() throws ServerCallFailedException;
+
 }

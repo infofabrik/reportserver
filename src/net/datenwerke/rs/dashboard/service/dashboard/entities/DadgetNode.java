@@ -20,66 +20,61 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
 @Entity
-@Table(name="DASHBOARD_DADGET_NODE")
+@Table(name = "DASHBOARD_DADGET_NODE")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto"
-)
-public class DadgetNode extends AbstractDashboardManagerNode  {
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto")
+public class DadgetNode extends AbstractDashboardManagerNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8596090281743976223L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8596090281743976223L;
 
-	@ExposeToClient(
-			view=DtoView.MINIMAL,
-			displayTitle=true
-			)
-	@Column(length = 128)
-	@Field
-	@Title
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   @Field
+   @Title
+   private String name;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@Description
-	private String description;
-	
-	@ExposeToClient
-	@EnclosedEntity
-    @OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
-    private Dadget dadget;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @Description
+   private String description;
 
-	public String getName() {
-		return name;
-	}
+   @ExposeToClient
+   @EnclosedEntity
+   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+   private Dadget dadget;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public Dadget getDadget() {
-		return dadget;
-	}
-	
-	public void setDadget(Dadget dadget) {
-		this.dadget = dadget;
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   public String getDescription() {
+      return description;
+   }
+
+   public Dadget getDadget() {
+      return dadget;
+   }
+
+   public void setDadget(Dadget dadget) {
+      this.dadget = dadget;
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

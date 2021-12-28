@@ -9,35 +9,31 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledH
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	generateDto2Poso=false,
-	dtoImplementInterfaces=CompiledHtmlReportDto.class
-)
-public class CompiledHTMLTableReport extends CompiledTableReport implements CompiledHtmlReport{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", generateDto2Poso = false, dtoImplementInterfaces = CompiledHtmlReportDto.class)
+public class CompiledHTMLTableReport extends CompiledTableReport implements CompiledHtmlReport {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5784381788512286605L;
-	
-	@ExposeToClient
-	private final String report;
-	
-	public CompiledHTMLTableReport(String htmlReport) {
-		this.report = htmlReport;
-	}
-	
-	public String getFileExtension() {
-		return "html"; //$NON-NLS-1$
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5784381788512286605L;
 
-	public String getMimeType() {
-		return "text/html"; //$NON-NLS-1$
-	}
+   @ExposeToClient
+   private final String report;
 
-	public String getReport() {
-		return report;
-	}
+   public CompiledHTMLTableReport(String htmlReport) {
+      this.report = htmlReport;
+   }
+
+   public String getFileExtension() {
+      return "html"; //$NON-NLS-1$
+   }
+
+   public String getMimeType() {
+      return "text/html"; //$NON-NLS-1$
+   }
+
+   public String getReport() {
+      return report;
+   }
 
 }

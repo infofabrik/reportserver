@@ -5,6 +5,6 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.ManagedQuery;
 
 public interface ManagedQueryFactory {
 
-	public ManagedQuery create(String query, DatabaseHelper dbHelper, TableDBDataSource tableDBDataSource);
+   public ManagedQuery create(String query, DatabaseHelper dbHelper, TableDBDataSource tableDBDataSource);
 
 }

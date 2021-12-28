@@ -23,53 +23,51 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class CrystalReportDownloadToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {
 
-	private final ToolbarService toolbarUtils;
-	private final UtilsUIService utilsUIService;
-	
-	@Inject
-	public CrystalReportDownloadToolbarConfiguratorHooker(
-		ToolbarService toolbarUtils,
-		UtilsUIService utilsUIService
-		){
-		
-		/* store objects */
-		this.toolbarUtils = toolbarUtils;
-		this.utilsUIService = utilsUIService;
-	}
-	
-	
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof CrystalReportDto))
-			return;
-		if(! (view instanceof FormView))
-			return;
-		
-		final CrystalReportDto report = (CrystalReportDto) selectedNode;
-		
-		/* add parameter */
-		DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(CrystalMessages.INSTANCE.downloadReportToolbarButtonText(), BaseIcon.FILE_PICTURE_O);
-		createPreviewBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(null == report.getReportFile()){
-					new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded()).show();
-					return;
-				}
-				
-				String id = String.valueOf(report.getId());
-				String url = GWT.getModuleBaseURL() + "CrystalRptDownload?id=" + id; //$NON-NLS-1$
-				ClientDownloadHelper.triggerDownload(url);
-			}
-		});
-		
-		toolbar.add(createPreviewBtn);
-	}
+   private final ToolbarService toolbarUtils;
+   private final UtilsUIService utilsUIService;
 
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		
-	}
+   @Inject
+   public CrystalReportDownloadToolbarConfiguratorHooker(ToolbarService toolbarUtils, UtilsUIService utilsUIService) {
+
+      /* store objects */
+      this.toolbarUtils = toolbarUtils;
+      this.utilsUIService = utilsUIService;
+   }
+
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof CrystalReportDto))
+         return;
+      if (!(view instanceof FormView))
+         return;
+
+      final CrystalReportDto report = (CrystalReportDto) selectedNode;
+
+      /* add parameter */
+      DwTextButton createPreviewBtn = toolbarUtils
+            .createSmallButtonLeft(CrystalMessages.INSTANCE.downloadReportToolbarButtonText(), BaseIcon.FILE_PICTURE_O);
+      createPreviewBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (null == report.getReportFile()) {
+               new DwAlertMessageBox(BaseMessages.INSTANCE.warning(), FileSelectionMessages.INSTANCE.noFileUploaded())
+                     .show();
+               return;
+            }
+
+            String id = String.valueOf(report.getId());
+            String url = GWT.getModuleBaseURL() + "CrystalRptDownload?id=" + id; //$NON-NLS-1$
+            ClientDownloadHelper.triggerDownload(url);
+         }
+      });
+
+      toolbar.add(createPreviewBtn);
+   }
+
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+
+   }
 
 }

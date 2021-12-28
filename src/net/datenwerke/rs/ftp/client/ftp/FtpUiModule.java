@@ -28,15 +28,15 @@ public class FtpUiModule extends AbstractGinModule {
    public final static String FTP_NAME = "FTP";
    public final static BaseIcon FTP_ICON = BaseIcon.UPLOAD;
    public final static Class<? extends DatasinkDefinitionDto> FTP_TYPE = FtpDatasinkDto.class;
-   
+
    public final static String SFTP_NAME = "SFTP";
    public final static BaseIcon SFTP_ICON = BaseIcon.ARROW_CIRCLE_UP;
    public final static Class<? extends DatasinkDefinitionDto> SFTP_TYPE = SftpDatasinkDto.class;
-   
+
    public final static String FTPS_NAME = "FTPS";
    public final static BaseIcon FTPS_ICON = BaseIcon.ARROW_CIRCLE_O_UP;
    public final static Class<? extends DatasinkDefinitionDto> FTPS_TYPE = FtpsDatasinkDto.class;
-   
+
    /**
     * Identifies the {@link FileUploadHandlerHook} to use
     * {@link SftpPrivateKeyUploadHooker} in case of SFTP private key upload
@@ -53,7 +53,7 @@ public class FtpUiModule extends AbstractGinModule {
    @Override
    protected void configure() {
       bind(FtpUiService.class).to(FtpUiServiceImpl.class).in(Singleton.class);
-      
+
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeFtp.class).toProvider(FtpTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasinkTreeSftp.class).toProvider(SftpTreeProvider.class);

@@ -8,25 +8,23 @@ import net.datenwerke.security.service.security.locale.SecurityMessages;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
 public class Write implements Right {
 
-	private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
-	
-	@Override
-	public String getDescription() {
-		return messages.writeRightName();
-	}
+   private final SecurityMessages messages = LocalizationServiceImpl.getMessages(SecurityMessages.class);
 
-	@Override
-	public long getBitField() {
-		return SecurityServiceRightsDefinition.RIGHT_WRITE;
-	}
+   @Override
+   public String getDescription() {
+      return messages.writeRightName();
+   }
 
-	@Override
-	public String getAbbreviation() {
-		return messages.writeRightAbbreviation();
-	}
+   @Override
+   public long getBitField() {
+      return SecurityServiceRightsDefinition.RIGHT_WRITE;
+   }
+
+   @Override
+   public String getAbbreviation() {
+      return messages.writeRightAbbreviation();
+   }
 }

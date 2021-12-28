@@ -8,13 +8,9 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.hooks.TableTemplateC
 
 public class XdocTemplateUIStartup {
 
-	@Inject
-	public XdocTemplateUIStartup(
-		HookHandlerService hookHandler,
-		XdocTemplateClientProvider templateProvider
-		){
-		
-		
-		hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
-	}
+   @Inject
+   public XdocTemplateUIStartup(HookHandlerService hookHandler, XdocTemplateClientProvider templateProvider) {
+
+      hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
+   }
 }

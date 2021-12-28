@@ -12,43 +12,38 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportCreatedFromDtoHook;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 
-public class FileSelectionParameterReportFromDtoHooker implements
-		ReportCreatedFromDtoHook {
+public class FileSelectionParameterReportFromDtoHooker implements ReportCreatedFromDtoHook {
 
-	private final FileUploadService uploadService;
-	private final DtoService dtoService;
-	private final EntityClonerService entityCloner;
-	private final FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper;
-	private final Provider<Injector> injectorProvider;
-	
-	
-	@Inject
-	public FileSelectionParameterReportFromDtoHooker(
-			FileUploadService uploadService,
-			DtoService dtoService,
-			EntityClonerService entityCloner,
-			FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper,
-			Provider<Injector> injectorProvider) {
-		this.uploadService = uploadService;
-		this.dtoService = dtoService;
-		this.entityCloner = entityCloner;
-		this.fileSelectionParameterDtoHelper = fileSelectionParameterDtoHelper;
-		this.injectorProvider =injectorProvider;
-	}
+   private final FileUploadService uploadService;
+   private final DtoService dtoService;
+   private final EntityClonerService entityCloner;
+   private final FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper;
+   private final Provider<Injector> injectorProvider;
 
-	@Override
-	public void reportCreated(ReportDto reportDto, Report report) {
-		fileSelectionParameterDtoHelper.adaptPoso(reportDto,report);
-	}
+   @Inject
+   public FileSelectionParameterReportFromDtoHooker(FileUploadService uploadService, DtoService dtoService,
+         EntityClonerService entityCloner, FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper,
+         Provider<Injector> injectorProvider) {
+      this.uploadService = uploadService;
+      this.dtoService = dtoService;
+      this.entityCloner = entityCloner;
+      this.fileSelectionParameterDtoHelper = fileSelectionParameterDtoHelper;
+      this.injectorProvider = injectorProvider;
+   }
 
-	@Override
-	public void reportMerged(ReportDto reportDto, Report report) {
-		fileSelectionParameterDtoHelper.adaptPoso(reportDto,report);
-	}
+   @Override
+   public void reportCreated(ReportDto reportDto, Report report) {
+      fileSelectionParameterDtoHelper.adaptPoso(reportDto, report);
+   }
 
-	@Override
-	public void reportCreatedUnmanaged(ReportDto reportDto, Report report) {
-		
-	}
+   @Override
+   public void reportMerged(ReportDto reportDto, Report report) {
+      fileSelectionParameterDtoHelper.adaptPoso(reportDto, report);
+   }
+
+   @Override
+   public void reportCreatedUnmanaged(ReportDto reportDto, Report report) {
+
+   }
 
 }

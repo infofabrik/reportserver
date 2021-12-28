@@ -9,7 +9,7 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManager
 @RemoteServiceRelativePath("dashboardmanager_export")
 public interface DashboardManagerExportRpcService extends RemoteService {
 
-	public void quickExport(AbstractDashboardManagerNodeDto dto) throws ServerCallFailedException;
+   public void quickExport(AbstractDashboardManagerNodeDto dto) throws ServerCallFailedException;
 
-	public String loadResult() throws ServerCallFailedException;
+   public String loadResult() throws ServerCallFailedException;
 }

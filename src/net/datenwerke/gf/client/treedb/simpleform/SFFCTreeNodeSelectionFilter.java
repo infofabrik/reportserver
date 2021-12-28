@@ -5,6 +5,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCTreeNodeSelectionFilter extends SimpleFormFieldConfiguration {
 
-	public SelectionFilter getFilter();
-	
+   public SelectionFilter getFilter();
+
 }

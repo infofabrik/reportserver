@@ -14,43 +14,39 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleDatasourceRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleDatasourceRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final DatasourceParameterService datasourceParameterService;
-	private final ReportParameterService reportParameterService;
-	
-	@Inject
-	public HandleDatasourceRemoveEventHandler(
-		DatasourceParameterService DatasourceParameterService,
-		ReportParameterService reportParameterService ) {
-		
-		/* store obejcts */
-		this.datasourceParameterService = DatasourceParameterService;
-		this.reportParameterService = reportParameterService;
-	}
+   private final DatasourceParameterService datasourceParameterService;
+   private final ReportParameterService reportParameterService;
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
-		
-		List<DatasourceParameterDefinition> parameters = datasourceParameterService.getParametersWithDatasource(ds);
-		if(null != parameters && ! parameters.isEmpty()){
-			Iterator<DatasourceParameterDefinition> it = parameters.iterator();
-			Report report =  reportParameterService.getReportWithParameter(it.next());
-			StringBuilder error = new StringBuilder();
-			if(null != report)
-				error.append("Datasource " + ds.getId() + " is used in parameters. Report Ids: " + report.getId());
-			while(it.hasNext()){
-				report =  reportParameterService.getReportWithParameter(it.next());
-				if(null != report)
-					error.append(", ").append(report.getId());
-			}
-			
-			throw new NeedForcefulDeleteException(error.toString());
-		}
-	}
-	
-	
+   @Inject
+   public HandleDatasourceRemoveEventHandler(DatasourceParameterService DatasourceParameterService,
+         ReportParameterService reportParameterService) {
+
+      /* store obejcts */
+      this.datasourceParameterService = DatasourceParameterService;
+      this.reportParameterService = reportParameterService;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
+
+      List<DatasourceParameterDefinition> parameters = datasourceParameterService.getParametersWithDatasource(ds);
+      if (null != parameters && !parameters.isEmpty()) {
+         Iterator<DatasourceParameterDefinition> it = parameters.iterator();
+         Report report = reportParameterService.getReportWithParameter(it.next());
+         StringBuilder error = new StringBuilder();
+         if (null != report)
+            error.append("Datasource " + ds.getId() + " is used in parameters. Report Ids: " + report.getId());
+         while (it.hasNext()) {
+            report = reportParameterService.getReportWithParameter(it.next());
+            if (null != report)
+               error.append(", ").append(report.getId());
+         }
+
+         throw new NeedForcefulDeleteException(error.toString());
+      }
+   }
 
 }

@@ -6,8 +6,8 @@ import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfig
 
 public interface HttpImportPostProcessProviderHook extends Hook {
 
-	boolean consumes(String id);
+   boolean consumes(String id);
 
-	void postProcess(ImportPostProcessConfigDto config, ImportResult result);
+   void postProcess(ImportPostProcessConfigDto config, ImportResult result);
 
 }

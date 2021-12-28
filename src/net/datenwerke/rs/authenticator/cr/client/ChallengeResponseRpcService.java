@@ -8,8 +8,8 @@ import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContain
 
 @RemoteServiceRelativePath("security_challengeresponse")
 public interface ChallengeResponseRpcService extends RemoteService {
-	
-	public ChallengeResponseContainer requestChallenge() throws ServerCallFailedException;
-	
-	public String getHmacPassphrase();
+
+   public ChallengeResponseContainer requestChallenge() throws ServerCallFailedException;
+
+   public String getHmacPassphrase();
 }

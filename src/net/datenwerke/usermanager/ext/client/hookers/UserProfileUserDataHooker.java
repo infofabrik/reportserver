@@ -40,197 +40,189 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 
 public class UserProfileUserDataHooker extends UserProfileCardProviderHookImpl {
 
-	private final LoginService loginService;
-	private final UserManagerDao dao;
-	private final PasswordServiceDao passwordService;
-	
-	private UserDto userData;
-	private SimpleForm form;
+   private final LoginService loginService;
+   private final UserManagerDao dao;
+   private final PasswordServiceDao passwordService;
 
-	
-	@Inject
-	public UserProfileUserDataHooker(
-		LoginService loginService,
-		UserManagerDao dao, 
-		PasswordServiceDao passwordService
-		){
-		
-		/* store object */
-		this.loginService = loginService;
-		this.dao = dao;
-		this.passwordService = passwordService;
-	}
-	
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.USER_PROFILE.toImageResource(1);
-	}
+   private UserDto userData;
+   private SimpleForm form;
 
-	@Override
-	public String getName() {
-		return UsermanagerMessages.INSTANCE.userProfileUserDataName();
-	}
+   @Inject
+   public UserProfileUserDataHooker(LoginService loginService, UserManagerDao dao, PasswordServiceDao passwordService) {
 
-	@Override
-	public Widget getCard() {
-		UserDto user = loginService.getCurrentUser();
-		
-		/* create model */
-		userData = new UserDtoDec();
-		userData.setSex(user.getSex());
-		userData.setFirstname(user.getFirstname());
-		userData.setLastname(user.getLastname());
-		userData.setEmail(user.getEmail());
-		
-		form = SimpleForm.getInlineInstance();
-		
-		/* ReadOnly */
-		SimpleFormFieldConfiguration[] configs;
-		if(user.hasAccessRight(WriteDto.class)){
-			configs = new SimpleFormFieldConfiguration[]{SFFCReadOnly.FALSE};
-		}else{
-			configs = new SimpleFormFieldConfiguration[]{SFFCReadOnly.TRUE};
-		}
-		
-		form.beginRow();
-		
-		/* sex */
-		form.setFieldWidth(0.5);
-		form.addField(
-				List.class, UserDtoPA.INSTANCE.sex(), UsermanagerMessages.INSTANCE.gender(), //$NON-NLS-1$
-				new SFFCStaticDropdownList<SexDto>() {
-					public Map<String, SexDto> getValues() {
-						Map<String, SexDto> map = new HashMap<String, SexDto>();
-						
-						map.put(UsermanagerMessages.INSTANCE.genderMale(), SexDto.Male);
-						map.put(UsermanagerMessages.INSTANCE.genderFemale(), SexDto.Female);
-						
-						return map;
-					}
-					@Override
-					public boolean allowBlank() {
-						return true;
-					}
-			});
-		
-		form.endRow();
-		
-		form.setFieldWidth(1);
-		
-		form.beginRow();
-		/* first name */
-		form.addField(String.class, UserDtoPA.INSTANCE.firstname(), UsermanagerMessages.INSTANCE.firstname(), configs); //$NON-NLS-1$
-		
-		/* last name */
-		form.addField(String.class, UserDtoPA.INSTANCE.lastname(), UsermanagerMessages.INSTANCE.lastname(), new SimpleFormFieldConfiguration[] {configs[0], 
-				new SFFCAllowBlank() {
-			
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		}}); //$NON-NLS-1$
-		
-		form.endRow();
-		
-		/* email */
-		form.setFieldWidth(0.75);
-		form.addField(String.class, UserDtoPA.INSTANCE.email(), UsermanagerMessages.INSTANCE.email(), configs); //$NON-NLS-1$
-		
-		form.setFieldWidth(1);
-		
-		form.addField(Separator.class);
-		form.addField(StaticLabel.class, new SFFCStaticLabel(){
-			@Override
-			public String getLabel() {
-				return UsermanagerMessages.INSTANCE.changePasswordDescription();
-			}
-		});
-		
-		form.setFieldWidth(150);
-		form.addField(CustomComponent.class, new SFFCCustomComponent(){
-			@Override
-			public Widget getComponent() {
-				DwTextButton changePasswordBtn = new DwTextButton(UsermanagerMessages.INSTANCE.changePassword());
-				changePasswordBtn.setWidth(150);
-				changePasswordBtn.addSelectHandler(new SelectHandler() {
-					@Override
-					public void onSelect(SelectEvent event) {
-						final ChangePasswordDialog dialog = new ChangePasswordDialog(true);
-						
-						dialog.addSubmitHandler(new SelectHandler() {
-							@Override
-							public void onSelect(SelectEvent event) {
-								passwordService.changePassword(dialog.getOldPassword(), dialog.getNewPassword(),
-										new NotamCallback<Void>(UsermanagerMessages.INSTANCE.passwordChangeSuccess()){
-									@Override
-									public void doOnSuccess(Void result) {
-										dialog.hide();
-									}
-								});
-							}
-						});
-						
-						dialog.show();
-					}
-				});
-				return changePasswordBtn;
-			}
-			
-		});
-		
-		form.bind(userData);
-		form.setValidateOnSubmit(true);
-		
-		return form;
-	}
-	
-	@Override
-	public int getHeight() {
-		return 400;
-	}
+      /* store object */
+      this.loginService = loginService;
+      this.dao = dao;
+      this.passwordService = passwordService;
+   }
 
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.USER_PROFILE.toImageResource(1);
+   }
 
-	@Override
-	public void submitPressed(final SubmitTrackerToken token) {
-		UserDto user = loginService.getCurrentUser();
+   @Override
+   public String getName() {
+      return UsermanagerMessages.INSTANCE.userProfileUserDataName();
+   }
 
-		if (!form.isValid()) {
-			token.failure(new IllegalStateException("Form invalid"));
-			return;
-		}
-		
-		
-		if(!user.hasAccessRight(WriteDto.class)){
-			token.setCompleted();
-			return;
-		}
-		
-		user.setSex(userData.getSex());
-		user.setFirstname((String) userData.getFirstname());
-		user.setLastname((String) userData.getLastname());
-		user.setEmail((String) userData.getEmail());
-		
-		if(user.isFirstnameModified() || user.isLastnameModified() || user.isEmailModified() || user.isSexModified()){
-			dao.changeActiveUserData(user, new NotamCallback<UserDto>(BaseMessages.INSTANCE.changesApplied()){
-				@Override
-				public void doOnSuccess(UserDto result) {
-					token.setCompleted();
-				}
-			});
-		}else{
-			token.setCompleted();
-		}
-		
-		
-	}
+   @Override
+   public Widget getCard() {
+      UserDto user = loginService.getCurrentUser();
 
-	@Override
-	public String isValid() {
-		if (! form.isValid()) 
-			return FormsMessages.INSTANCE.validationFailedMessage();
-		
-		return null;
-	}
+      /* create model */
+      userData = new UserDtoDec();
+      userData.setSex(user.getSex());
+      userData.setFirstname(user.getFirstname());
+      userData.setLastname(user.getLastname());
+      userData.setEmail(user.getEmail());
+
+      form = SimpleForm.getInlineInstance();
+
+      /* ReadOnly */
+      SimpleFormFieldConfiguration[] configs;
+      if (user.hasAccessRight(WriteDto.class)) {
+         configs = new SimpleFormFieldConfiguration[] { SFFCReadOnly.FALSE };
+      } else {
+         configs = new SimpleFormFieldConfiguration[] { SFFCReadOnly.TRUE };
+      }
+
+      form.beginRow();
+
+      /* sex */
+      form.setFieldWidth(0.5);
+      form.addField(List.class, UserDtoPA.INSTANCE.sex(), UsermanagerMessages.INSTANCE.gender(), // $NON-NLS-1$
+            new SFFCStaticDropdownList<SexDto>() {
+               public Map<String, SexDto> getValues() {
+                  Map<String, SexDto> map = new HashMap<String, SexDto>();
+
+                  map.put(UsermanagerMessages.INSTANCE.genderMale(), SexDto.Male);
+                  map.put(UsermanagerMessages.INSTANCE.genderFemale(), SexDto.Female);
+
+                  return map;
+               }
+
+               @Override
+               public boolean allowBlank() {
+                  return true;
+               }
+            });
+
+      form.endRow();
+
+      form.setFieldWidth(1);
+
+      form.beginRow();
+      /* first name */
+      form.addField(String.class, UserDtoPA.INSTANCE.firstname(), UsermanagerMessages.INSTANCE.firstname(), configs); // $NON-NLS-1$
+
+      /* last name */
+      form.addField(String.class, UserDtoPA.INSTANCE.lastname(), UsermanagerMessages.INSTANCE.lastname(),
+            new SimpleFormFieldConfiguration[] { configs[0], new SFFCAllowBlank() {
+
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+            } }); // $NON-NLS-1$
+
+      form.endRow();
+
+      /* email */
+      form.setFieldWidth(0.75);
+      form.addField(String.class, UserDtoPA.INSTANCE.email(), UsermanagerMessages.INSTANCE.email(), configs); // $NON-NLS-1$
+
+      form.setFieldWidth(1);
+
+      form.addField(Separator.class);
+      form.addField(StaticLabel.class, new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return UsermanagerMessages.INSTANCE.changePasswordDescription();
+         }
+      });
+
+      form.setFieldWidth(150);
+      form.addField(CustomComponent.class, new SFFCCustomComponent() {
+         @Override
+         public Widget getComponent() {
+            DwTextButton changePasswordBtn = new DwTextButton(UsermanagerMessages.INSTANCE.changePassword());
+            changePasswordBtn.setWidth(150);
+            changePasswordBtn.addSelectHandler(new SelectHandler() {
+               @Override
+               public void onSelect(SelectEvent event) {
+                  final ChangePasswordDialog dialog = new ChangePasswordDialog(true);
+
+                  dialog.addSubmitHandler(new SelectHandler() {
+                     @Override
+                     public void onSelect(SelectEvent event) {
+                        passwordService.changePassword(dialog.getOldPassword(), dialog.getNewPassword(),
+                              new NotamCallback<Void>(UsermanagerMessages.INSTANCE.passwordChangeSuccess()) {
+                                 @Override
+                                 public void doOnSuccess(Void result) {
+                                    dialog.hide();
+                                 }
+                              });
+                     }
+                  });
+
+                  dialog.show();
+               }
+            });
+            return changePasswordBtn;
+         }
+
+      });
+
+      form.bind(userData);
+      form.setValidateOnSubmit(true);
+
+      return form;
+   }
+
+   @Override
+   public int getHeight() {
+      return 400;
+   }
+
+   @Override
+   public void submitPressed(final SubmitTrackerToken token) {
+      UserDto user = loginService.getCurrentUser();
+
+      if (!form.isValid()) {
+         token.failure(new IllegalStateException("Form invalid"));
+         return;
+      }
+
+      if (!user.hasAccessRight(WriteDto.class)) {
+         token.setCompleted();
+         return;
+      }
+
+      user.setSex(userData.getSex());
+      user.setFirstname((String) userData.getFirstname());
+      user.setLastname((String) userData.getLastname());
+      user.setEmail((String) userData.getEmail());
+
+      if (user.isFirstnameModified() || user.isLastnameModified() || user.isEmailModified() || user.isSexModified()) {
+         dao.changeActiveUserData(user, new NotamCallback<UserDto>(BaseMessages.INSTANCE.changesApplied()) {
+            @Override
+            public void doOnSuccess(UserDto result) {
+               token.setCompleted();
+            }
+         });
+      } else {
+         token.setCompleted();
+      }
+
+   }
+
+   @Override
+   public String isValid() {
+      if (!form.isValid())
+         return FormsMessages.INSTANCE.validationFailedMessage();
+
+      return null;
+   }
 
 }

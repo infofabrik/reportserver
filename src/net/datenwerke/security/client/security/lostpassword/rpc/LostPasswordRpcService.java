@@ -7,8 +7,8 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 @RemoteServiceRelativePath("security_lostpassword")
 public interface LostPasswordRpcService extends RemoteService {
-   
+
    public String requestNewPassword(String username) throws ServerCallFailedException;
-   
+
    public boolean isLostPasswordDisabled() throws ServerCallFailedException;
 }

@@ -28,126 +28,122 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.Data
  */
 public class DatasourceSimpleFormProvider extends FormFieldProviderHookImpl {
 
-	private final DatasourceUIService datasourceService;
-	
-	private DatasourceSelectionField datasourceFieldCreator;
-	
-	private final Provider<UITree> datasourceTreeProvider;
-	
-	@Inject
-	public DatasourceSimpleFormProvider(
-		DatasourceUIService datasourceService,
-		@DatasourceTreeBasic Provider<UITree> datasourceTreeProvider
-		){
-		
-		/* store objects */
-		this.datasourceService = datasourceService;
-		this.datasourceTreeProvider = datasourceTreeProvider;
-	}
-	
-	@Override
-	public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
-		return DatasourceContainerDto.class.equals(type);
-	}
+   private final DatasourceUIService datasourceService;
 
-	public Widget createFormField() {
-		Container wrapper = new VerticalLayoutContainer();
-		
-		datasourceFieldCreator = datasourceService.getSelectionField(wrapper, ! hasSupressConfigConfig(), datasourceTreeProvider);
-		
-		FieldLabel label = new FieldLabel();
-		if(null != form.getSField(name).getFieldLayoutConfig().getLabelText())
-			label.setText(form.getSField(name).getFieldLayoutConfig().getLabelText());
-		if(null != form.getSField(name).getFieldLayoutConfig().getLabelAlign())
-			label.setLabelAlign(form.getSField(name).getFieldLayoutConfig().getLabelAlign());
-		datasourceFieldCreator.setFieldLabel(label);
-		
-		DatabaseSpecificFieldConfigExecution specificExecutionConfig = getSpecificExecutionConfig();
-		if(null!=specificExecutionConfig)
-			datasourceFieldCreator.addSpecificDatasourceConfig(specificExecutionConfig);
+   private DatasourceSelectionField datasourceFieldCreator;
 
-		DatabaseSpecificFieldConfigToolbar specificToolbarConfig = getSpecificToolbarConfig();
-		if(null!=specificToolbarConfig)
-			datasourceFieldCreator.addSpecificDatasourceConfig(specificToolbarConfig);
-		
-		datasourceFieldCreator.addSelectionField();
-		if(! hasSupressDefaultConfig())
-			datasourceFieldCreator.addDisplayDefaultButton();
+   private final Provider<UITree> datasourceTreeProvider;
 
-		datasourceFieldCreator.addValueChangeHandler(new ValueChangeHandler<DatasourceContainerDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<DatasourceContainerDto> event) {
-				ValueChangeEvent.fire(DatasourceSimpleFormProvider.this, event.getValue());
-			}
-		});
-		
-		return wrapper;
-	}
-	
-	private DatabaseSpecificFieldConfigExecution getSpecificExecutionConfig() {
-		for(SimpleFormFieldConfiguration config : getConfigs())
-			if(config instanceof SFFCDatasourceSpecificConfig)
-				return ((SFFCDatasourceSpecificConfig)config).getConfigExecution();
-		return null;
-	}
+   @Inject
+   public DatasourceSimpleFormProvider(DatasourceUIService datasourceService,
+         @DatasourceTreeBasic Provider<UITree> datasourceTreeProvider) {
 
-	private DatabaseSpecificFieldConfigToolbar getSpecificToolbarConfig() {
-		for(SimpleFormFieldConfiguration config : getConfigs())
-			if(config instanceof SFFCDatasourceToolbarConfig)
-				return ((SFFCDatasourceToolbarConfig)config).getFieldConfigToolbar();
-		return null;
-	}
+      /* store objects */
+      this.datasourceService = datasourceService;
+      this.datasourceTreeProvider = datasourceTreeProvider;
+   }
 
-	public void addFieldBindings(Object model, ValueProvider vp, Widget field) {
-		/* get datasource container */
-		DatasourceContainerProviderDto datasourceContainerProvider;
-		
-		SFFCDatasourceMultipleContainerConfig multipleContainerConfig = getMultipleContainerConfig();
-		
-		if(null != multipleContainerConfig)
-			datasourceContainerProvider = multipleContainerConfig.getSpecialDatasourceContainer((DwModel)model);
-		else
-			datasourceContainerProvider = (DatasourceContainerProviderDto)model;
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      return DatasourceContainerDto.class.equals(type);
+   }
 
-		/* ask creator to init form binding */
-		datasourceFieldCreator.initFormBinding(datasourceContainerProvider);
-	}
-	
-	
-	
-	private SFFCDatasourceMultipleContainerConfig getMultipleContainerConfig() {
-		for(SimpleFormFieldConfiguration config : getConfigs())
-			if(config instanceof SFFCDatasourceMultipleContainerConfig)
-				return (SFFCDatasourceMultipleContainerConfig) config;
-		return null;
-	}
+   public Widget createFormField() {
+      Container wrapper = new VerticalLayoutContainer();
 
-	
-	private boolean hasSupressConfigConfig() {
-		for(SimpleFormFieldConfiguration config : getConfigs())
-			if(config instanceof SFFCDatasourceSuppressConfig)
-				return true;
-		return false;
-	}
-	
-	private boolean hasSupressDefaultConfig() {
-		for(SimpleFormFieldConfiguration config : getConfigs())
-			if(config instanceof SFFCDatasourceSuppressDefault)
-				return true;
-		return false;
-	}
+      datasourceFieldCreator = datasourceService.getSelectionField(wrapper, !hasSupressConfigConfig(),
+            datasourceTreeProvider);
 
-	public Object getValue(Widget field){
-		return datasourceFieldCreator.getDatasourceContainer();
-	}
+      FieldLabel label = new FieldLabel();
+      if (null != form.getSField(name).getFieldLayoutConfig().getLabelText())
+         label.setText(form.getSField(name).getFieldLayoutConfig().getLabelText());
+      if (null != form.getSField(name).getFieldLayoutConfig().getLabelAlign())
+         label.setLabelAlign(form.getSField(name).getFieldLayoutConfig().getLabelAlign());
+      datasourceFieldCreator.setFieldLabel(label);
 
-	public void removeFieldBindings(Object model, Widget field) {
-		throw new RuntimeException("not yet implemented"); //$NON-NLS-1$
-	}
-	
-	@Override
-	public boolean isDecorateable() {
-		return false;
-	}
+      DatabaseSpecificFieldConfigExecution specificExecutionConfig = getSpecificExecutionConfig();
+      if (null != specificExecutionConfig)
+         datasourceFieldCreator.addSpecificDatasourceConfig(specificExecutionConfig);
+
+      DatabaseSpecificFieldConfigToolbar specificToolbarConfig = getSpecificToolbarConfig();
+      if (null != specificToolbarConfig)
+         datasourceFieldCreator.addSpecificDatasourceConfig(specificToolbarConfig);
+
+      datasourceFieldCreator.addSelectionField();
+      if (!hasSupressDefaultConfig())
+         datasourceFieldCreator.addDisplayDefaultButton();
+
+      datasourceFieldCreator.addValueChangeHandler(new ValueChangeHandler<DatasourceContainerDto>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<DatasourceContainerDto> event) {
+            ValueChangeEvent.fire(DatasourceSimpleFormProvider.this, event.getValue());
+         }
+      });
+
+      return wrapper;
+   }
+
+   private DatabaseSpecificFieldConfigExecution getSpecificExecutionConfig() {
+      for (SimpleFormFieldConfiguration config : getConfigs())
+         if (config instanceof SFFCDatasourceSpecificConfig)
+            return ((SFFCDatasourceSpecificConfig) config).getConfigExecution();
+      return null;
+   }
+
+   private DatabaseSpecificFieldConfigToolbar getSpecificToolbarConfig() {
+      for (SimpleFormFieldConfiguration config : getConfigs())
+         if (config instanceof SFFCDatasourceToolbarConfig)
+            return ((SFFCDatasourceToolbarConfig) config).getFieldConfigToolbar();
+      return null;
+   }
+
+   public void addFieldBindings(Object model, ValueProvider vp, Widget field) {
+      /* get datasource container */
+      DatasourceContainerProviderDto datasourceContainerProvider;
+
+      SFFCDatasourceMultipleContainerConfig multipleContainerConfig = getMultipleContainerConfig();
+
+      if (null != multipleContainerConfig)
+         datasourceContainerProvider = multipleContainerConfig.getSpecialDatasourceContainer((DwModel) model);
+      else
+         datasourceContainerProvider = (DatasourceContainerProviderDto) model;
+
+      /* ask creator to init form binding */
+      datasourceFieldCreator.initFormBinding(datasourceContainerProvider);
+   }
+
+   private SFFCDatasourceMultipleContainerConfig getMultipleContainerConfig() {
+      for (SimpleFormFieldConfiguration config : getConfigs())
+         if (config instanceof SFFCDatasourceMultipleContainerConfig)
+            return (SFFCDatasourceMultipleContainerConfig) config;
+      return null;
+   }
+
+   private boolean hasSupressConfigConfig() {
+      for (SimpleFormFieldConfiguration config : getConfigs())
+         if (config instanceof SFFCDatasourceSuppressConfig)
+            return true;
+      return false;
+   }
+
+   private boolean hasSupressDefaultConfig() {
+      for (SimpleFormFieldConfiguration config : getConfigs())
+         if (config instanceof SFFCDatasourceSuppressDefault)
+            return true;
+      return false;
+   }
+
+   public Object getValue(Widget field) {
+      return datasourceFieldCreator.getDatasourceContainer();
+   }
+
+   public void removeFieldBindings(Object model, Widget field) {
+      throw new RuntimeException("not yet implemented"); //$NON-NLS-1$
+   }
+
+   @Override
+   public boolean isDecorateable() {
+      return false;
+   }
 
 }

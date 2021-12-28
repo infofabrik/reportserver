@@ -6,9 +6,8 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportMan
 
 public interface ReportManagerExportRpcServiceAsync {
 
-	void quickExport(AbstractReportManagerNodeDto dto, boolean includeVariants,
-			AsyncCallback<Void> callback);
+   void quickExport(AbstractReportManagerNodeDto dto, boolean includeVariants, AsyncCallback<Void> callback);
 
-	void loadResult(AsyncCallback<String> callback);
+   void loadResult(AsyncCallback<String> callback);
 
 }

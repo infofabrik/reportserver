@@ -26,174 +26,175 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class Saiku2ChartHTML extends ReportExporterImpl {
 
-	private RECSaikuChartDtoDec config;
-	private enum ChartTypes {
-		
-		bar("Bar", BaseResources.INSTANCE.saikuChartBar()),
-		stackedBar("Stacked Bar", BaseResources.INSTANCE.saikuChartStackedbar()),
-		stackedBar100("Stacked Bar 100%", BaseResources.INSTANCE.saikuChart100bar()),
-		multiplebar("Multiple Bar", BaseResources.INSTANCE.saikuChartMultiple()), 
-		line("Line", BaseResources.INSTANCE.saikuChartLine()), 
-		area("Area", BaseResources.INSTANCE.saikuChartArea()),
-		heatgrid("Heat Grid", BaseResources.INSTANCE.saikuChartHeat()), 
-		dot("Dot", BaseResources.INSTANCE.saikuChartDot()), 
-		waterfall("Waterfall", BaseResources.INSTANCE.saikuChartWaterfall()), 
-		pie("Pie", BaseResources.INSTANCE.saikuChartPie());
+   private RECSaikuChartDtoDec config;
 
-		
-		public final String label;
-		public final ImageResource image;
+   private enum ChartTypes {
 
-		ChartTypes(String label, ImageResource image){
-			this.label = label;
-			this.image = image;
-		}
-	}
+      bar("Bar", BaseResources.INSTANCE.saikuChartBar()),
+      stackedBar("Stacked Bar", BaseResources.INSTANCE.saikuChartStackedbar()),
+      stackedBar100("Stacked Bar 100%", BaseResources.INSTANCE.saikuChart100bar()),
+      multiplebar("Multiple Bar", BaseResources.INSTANCE.saikuChartMultiple()),
+      line("Line", BaseResources.INSTANCE.saikuChartLine()), area("Area", BaseResources.INSTANCE.saikuChartArea()),
+      heatgrid("Heat Grid", BaseResources.INSTANCE.saikuChartHeat()),
+      dot("Dot", BaseResources.INSTANCE.saikuChartDot()),
+      waterfall("Waterfall", BaseResources.INSTANCE.saikuChartWaterfall()),
+      pie("Pie", BaseResources.INSTANCE.saikuChartPie());
 
-	@Override
-	public boolean consumesConfiguration(ReportDto report) {
-		return true;
-	}
-	
-	@Override
-	public boolean canBeScheduled() {
-		return false;
-	}
+      public final String label;
+      public final ImageResource image;
 
-	@Override
-	public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
-		if(null == exportConfiguration || exportConfiguration.isEmpty())
-			return;
-		
-		for(ReportExecutionConfigDto config : exportConfiguration){
-			if(config instanceof RECSaikuChartDtoDec){
-				this.config = (RECSaikuChartDtoDec) config;
-				break;
-			}
-		}
-	}
-	
-	@Override
-	public void displayConfiguration(ReportDto report, String executorToken, boolean allowAutomaticConfig, final ConfigurationFinishedCallback callback) {
-		final DwWindow window = new DwWindow();
-		window.setHeading(getExportTitle());
-		window.getHeader().setIcon(getIcon());
-		window.setSize(420, 250);
-		window.setModal(true);
-		
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		window.add(form, new MarginData(10));
-		
-		form.addField(List.class,RECSaikuChartDtoPA.INSTANCE.type(), SaikuMessages.INSTANCE.chartType(), createFancySFFC());
-		
-		if(null == config){
-			config = new RECSaikuChartDtoDec();
-			config.setType("bar");
-		}
-		form.bind(config);
-		
-		window.addCancelButton();
-		
-		window.addSubmitButton(new OnButtonClickHandler() {
-			@Override
-			public void onClick() {
-				callback.success();
-			}
-		});
-		
-		window.show();
-	}
-	
-	private SFFCFancyStaticList<String> createFancySFFC() {
-		return new SFFCFancyStaticList<String>() {
+      ChartTypes(String label, ImageResource image) {
+         this.label = label;
+         this.image = image;
+      }
+   }
 
-			@Override
-			public int getHeight() {
-				return 36;
-			}
+   @Override
+   public boolean consumesConfiguration(ReportDto report) {
+      return true;
+   }
 
-			@Override
-			public int getWidth() {
-				return 300;
-			}
+   @Override
+   public boolean canBeScheduled() {
+      return false;
+   }
 
-			@Override
-			public Map<String, ImageResource> getIconMap() {
-				LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
-				
-				for(ChartTypes ct : ChartTypes.values()){
-					icons.put(ct.label, ct.image);
-				}
-								
-				return icons;
-			}
+   @Override
+   public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
+      if (null == exportConfiguration || exportConfiguration.isEmpty())
+         return;
 
-			@Override
-			public Map<String, String> getDescriptionMap() {
-				LinkedHashMap<String, String> descriptions = new LinkedHashMap<String, String>();
-				return descriptions;
-			}
+      for (ReportExecutionConfigDto config : exportConfiguration) {
+         if (config instanceof RECSaikuChartDtoDec) {
+            this.config = (RECSaikuChartDtoDec) config;
+            break;
+         }
+      }
+   }
 
-			@Override
-			public Map<String, String> getValues() {
-				LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
-				
-				for(ChartTypes ct : ChartTypes.values()){
-					values.put(ct.label, ct.name());
-				}
-				
-				return values;
-			}
+   @Override
+   public void displayConfiguration(ReportDto report, String executorToken, boolean allowAutomaticConfig,
+         final ConfigurationFinishedCallback callback) {
+      final DwWindow window = new DwWindow();
+      window.setHeading(getExportTitle());
+      window.getHeader().setIcon(getIcon());
+      window.setSize(420, 250);
+      window.setModal(true);
 
-		};
-	}
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      window.add(form, new MarginData(10));
 
-	@Override
-	public boolean isConfigured() {
-		return null != config;
-	}
-	
-	@Override
-	public List<ReportExecutionConfigDto> getConfiguration(){
-		List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
-		configs.add(config);
-		return configs;
-	}
-	
-	@Override
-	public boolean consumes(ReportDto report) {
-		if (report instanceof SaikuReportDto) {
-		    DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-		    return ((MondrianDatasourceDto)datasourceContainer.getDatasource()).isMondrian3();
-			
-		}
-		
-		return false;
-	}
+      form.addField(List.class, RECSaikuChartDtoPA.INSTANCE.type(), SaikuMessages.INSTANCE.chartType(),
+            createFancySFFC());
 
-	@Override
-	public String getExportTitle() {
-		return "Chart";
-	}
+      if (null == config) {
+         config = new RECSaikuChartDtoDec();
+         config.setType("bar");
+      }
+      form.bind(config);
 
-	@Override
-	public String getExportDescription() {
-		return SaikuMessages.INSTANCE.export2chartHtml();
-	}
+      window.addCancelButton();
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.CHART_LINE.toImageResource();
-	}
+      window.addSubmitButton(new OnButtonClickHandler() {
+         @Override
+         public void onClick() {
+            callback.success();
+         }
+      });
 
-	@Override
-	public String getOutputFormat() {
-		return "SAIKU_CHART_HTML";
-	}
+      window.show();
+   }
 
-	@Override
-	public boolean hasConfiguration() {
-		return true;
-	}
+   private SFFCFancyStaticList<String> createFancySFFC() {
+      return new SFFCFancyStaticList<String>() {
+
+         @Override
+         public int getHeight() {
+            return 36;
+         }
+
+         @Override
+         public int getWidth() {
+            return 300;
+         }
+
+         @Override
+         public Map<String, ImageResource> getIconMap() {
+            LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
+
+            for (ChartTypes ct : ChartTypes.values()) {
+               icons.put(ct.label, ct.image);
+            }
+
+            return icons;
+         }
+
+         @Override
+         public Map<String, String> getDescriptionMap() {
+            LinkedHashMap<String, String> descriptions = new LinkedHashMap<String, String>();
+            return descriptions;
+         }
+
+         @Override
+         public Map<String, String> getValues() {
+            LinkedHashMap<String, String> values = new LinkedHashMap<String, String>();
+
+            for (ChartTypes ct : ChartTypes.values()) {
+               values.put(ct.label, ct.name());
+            }
+
+            return values;
+         }
+
+      };
+   }
+
+   @Override
+   public boolean isConfigured() {
+      return null != config;
+   }
+
+   @Override
+   public List<ReportExecutionConfigDto> getConfiguration() {
+      List<ReportExecutionConfigDto> configs = new ArrayList<ReportExecutionConfigDto>();
+      configs.add(config);
+      return configs;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      if (report instanceof SaikuReportDto) {
+         DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
+         return ((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+
+      }
+
+      return false;
+   }
+
+   @Override
+   public String getExportTitle() {
+      return "Chart";
+   }
+
+   @Override
+   public String getExportDescription() {
+      return SaikuMessages.INSTANCE.export2chartHtml();
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.CHART_LINE.toImageResource();
+   }
+
+   @Override
+   public String getOutputFormat() {
+      return "SAIKU_CHART_HTML";
+   }
+
+   @Override
+   public boolean hasConfiguration() {
+      return true;
+   }
 
 }

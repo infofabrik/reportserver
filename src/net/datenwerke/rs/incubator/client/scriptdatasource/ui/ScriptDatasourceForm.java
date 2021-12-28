@@ -17,36 +17,40 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.locale.ScriptDatasour
  * 
  *
  */
-public class ScriptDatasourceForm extends SimpleFormView{
+public class ScriptDatasourceForm extends SimpleFormView {
 
-	@Inject @FileServerTreeBasic UITree tree;
-	
-	@Override
-	protected void configureSimpleForm(SimpleForm form) {
-		/* configure form */
-		form.setHeading(ScriptDatasourceMessages.INSTANCE.editDataSource() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")")); 
-		
-		/* name name */
-		form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName()); 
-		
-		form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
-		
-		form.setFieldWidth(0.4);
-		form.addField(FileServerFileDto.class, ScriptDatasourceDtoPA.INSTANCE.script(), ScriptDatasourceMessages.INSTANCE.scriptLabel(), new SFFCGenericTreeNode(){
-			@Override
-			public UITree getTreeForPopup() {
-				return tree;
-			}
-		});
-		
-		form.addField(Boolean.class, ScriptDatasourceDtoPA.INSTANCE.defineAtTarget(), ScriptDatasourceMessages.INSTANCE.defineAtTargetLabel());
-		
-		form.setFieldWidth(0.4);
-		form.addField(Integer.class, ScriptDatasourceDtoPA.INSTANCE.databaseCache(), ScriptDatasourceMessages.INSTANCE.databaseCacheLabel());
-		form.setFieldWidth(1);
-	}
+   @Inject
+   @FileServerTreeBasic
+   UITree tree;
 
+   @Override
+   protected void configureSimpleForm(SimpleForm form) {
+      /* configure form */
+      form.setHeading(ScriptDatasourceMessages.INSTANCE.editDataSource()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
+      /* name name */
+      form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.propertyName());
 
-	
+      form.addField(String.class, ScriptDatasourceDtoPA.INSTANCE.description(),
+            BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
+
+      form.setFieldWidth(0.4);
+      form.addField(FileServerFileDto.class, ScriptDatasourceDtoPA.INSTANCE.script(),
+            ScriptDatasourceMessages.INSTANCE.scriptLabel(), new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return tree;
+               }
+            });
+
+      form.addField(Boolean.class, ScriptDatasourceDtoPA.INSTANCE.defineAtTarget(),
+            ScriptDatasourceMessages.INSTANCE.defineAtTargetLabel());
+
+      form.setFieldWidth(0.4);
+      form.addField(Integer.class, ScriptDatasourceDtoPA.INSTANCE.databaseCache(),
+            ScriptDatasourceMessages.INSTANCE.databaseCacheLabel());
+      form.setFieldWidth(1);
+   }
+
 }

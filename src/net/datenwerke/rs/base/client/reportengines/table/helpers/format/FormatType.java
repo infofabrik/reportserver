@@ -4,52 +4,52 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.Fil
 
 public enum FormatType {
 
-	DEFAULT {
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeDefault();
-		}
-	},
-	NUMBER{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeNumber();
-		}
-	},
-	CURRENCY{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeCurrency();
-		}
-	},
-	DATE{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeDate();
-		}
-	},
-	PERCENT{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypePercent();
-		}
-	},
-	SCIENTIFIC{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeScientific();
-		}
-	},
-	TEXT{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeText();
-		}
-	},
-	TEMPLATE{
-		@Override
-		public String toString() {
-			return FilterMessages.INSTANCE.formatTypeTemplate();
-		}
-	}
+   DEFAULT {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeDefault();
+      }
+   },
+   NUMBER {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeNumber();
+      }
+   },
+   CURRENCY {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeCurrency();
+      }
+   },
+   DATE {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeDate();
+      }
+   },
+   PERCENT {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypePercent();
+      }
+   },
+   SCIENTIFIC {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeScientific();
+      }
+   },
+   TEXT {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeText();
+      }
+   },
+   TEMPLATE {
+      @Override
+      public String toString() {
+         return FilterMessages.INSTANCE.formatTypeTemplate();
+      }
+   }
 }

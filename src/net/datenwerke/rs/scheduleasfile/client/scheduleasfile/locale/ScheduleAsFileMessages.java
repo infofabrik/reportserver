@@ -5,29 +5,33 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface ScheduleAsFileMessages extends Messages {
 
-	public final static ScheduleAsFileMessages INSTANCE = GWT.create(ScheduleAsFileMessages.class);
-	
-	String askStoreAsFile();
+   public final static ScheduleAsFileMessages INSTANCE = GWT.create(ScheduleAsFileMessages.class);
 
-	String folder();
+   String askStoreAsFile();
 
-	String teamspace();
+   String folder();
 
-	String executedReportNodeType();
+   String teamspace();
 
-	String exportToTeamSpaceLabel();
-	String exportTypeLabel();
-	String nameLabel();
-	String descriptionLabel();
-	
-	String appName();
-	String appDescription();
+   String executedReportNodeType();
 
-	String teamspaceSchedulerToolTip();
+   String exportToTeamSpaceLabel();
 
-	String noFolderSelected();
+   String exportTypeLabel();
 
-	String executedReport();
+   String nameLabel();
 
-	String dataSent();
+   String descriptionLabel();
+
+   String appName();
+
+   String appDescription();
+
+   String teamspaceSchedulerToolTip();
+
+   String noFolderSelected();
+
+   String executedReport();
+
+   String dataSent();
 }

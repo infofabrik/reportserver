@@ -13,22 +13,18 @@ import net.datenwerke.security.client.security.dto.ReadDto;
 
 public class ImportUIStartup {
 
-	@Inject
-	public ImportUIStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
-		final Provider<ImportAdminModule> importAdminModule
-	){
-		
-		/* test if user has rights to see mass mail view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-			if(securityService.hasRight(ImportGenericTargetIdentifier.class, ReadDto.class))
-				hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(importAdminModule), HookHandlerService.PRIORITY_HIGH + 80);
+   @Inject
+   public ImportUIStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService, final Provider<ImportAdminModule> importAdminModule) {
 
-			waitOnEventService.signalProcessingDone(ticket);
-		});
-	}
+      /* test if user has rights to see mass mail view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
+         if (securityService.hasRight(ImportGenericTargetIdentifier.class, ReadDto.class))
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(importAdminModule),
+                  HookHandlerService.PRIORITY_HIGH + 80);
 
-	
+         waitOnEventService.signalProcessingDone(ticket);
+      });
+   }
+
 }

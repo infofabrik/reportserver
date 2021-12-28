@@ -5,5 +5,5 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(InstanceDescriptionServiceImpl.class)
 public interface InstanceDescriptionService {
 
-	public InstanceDescription getDescriptionFor(Object object);
+   public InstanceDescription getDescriptionFor(Object object);
 }

@@ -14,56 +14,55 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 
 public final class ReportObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportDto> {
 
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ReportObjectInfo(HookHandlerService hookHandler) {
-		this.hookHandler = hookHandler;
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	protected String doGetName(ReportDto report) {
-		return report.getName();
-	}
+   @Inject
+   public ReportObjectInfo(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
 
-	@Override
-	protected String doGetDescription(ReportDto report) {
-		return report.getDescription();
-	}
+   @Override
+   protected String doGetName(ReportDto report) {
+      return report.getName();
+   }
 
-	@Override
-	protected Date doGetLastUpdatedOn(ReportDto object) {
-		return object.getLastUpdated();
-	}
+   @Override
+   protected String doGetDescription(ReportDto report) {
+      return report.getDescription();
+   }
 
-	@Override
-	protected Date doGetCreatedOn(ReportDto object) {
-		return object.getCreatedOn();
-	}
+   @Override
+   protected Date doGetLastUpdatedOn(ReportDto object) {
+      return object.getLastUpdated();
+   }
 
-	@Override
-	public boolean consumes(Object object) {
-		return object instanceof ReportDto;
-	}
+   @Override
+   protected Date doGetCreatedOn(ReportDto object) {
+      return object.getCreatedOn();
+   }
 
-	@Override
-	protected String doGetType(ReportDto report) {
-		return getConfigHook(report).getReportName() + ((report instanceof ReportVariantDto) ? " (" + ReportmanagerMessages.INSTANCE.variant() + ")": "");
-	}
+   @Override
+   public boolean consumes(Object object) {
+      return object instanceof ReportDto;
+   }
 
-	@Override
-	protected ImageResource doGetIconSmall(ReportDto report) {
-		return (report instanceof ReportVariantDto) ?
-				getConfigHook(report).getReportVariantIcon()
-				: getConfigHook(report).getReportIcon();
-	}
+   @Override
+   protected String doGetType(ReportDto report) {
+      return getConfigHook(report).getReportName()
+            + ((report instanceof ReportVariantDto) ? " (" + ReportmanagerMessages.INSTANCE.variant() + ")" : "");
+   }
 
-	protected ReportTypeConfigHook getConfigHook(ReportDto report){
-		for(ReportTypeConfigHook hooker : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(hooker.consumes(report))
-				return hooker;
-		throw new IllegalArgumentException("Could not find config provider for: " + report.getClass());
-	}
-	
+   @Override
+   protected ImageResource doGetIconSmall(ReportDto report) {
+      return (report instanceof ReportVariantDto) ? getConfigHook(report).getReportVariantIcon()
+            : getConfigHook(report).getReportIcon();
+   }
+
+   protected ReportTypeConfigHook getConfigHook(ReportDto report) {
+      for (ReportTypeConfigHook hooker : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (hooker.consumes(report))
+            return hooker;
+      throw new IllegalArgumentException("Could not find config provider for: " + report.getClass());
+   }
 
 }

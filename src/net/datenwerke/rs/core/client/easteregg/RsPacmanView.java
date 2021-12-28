@@ -7,19 +7,19 @@ import net.datenwerke.rs.core.client.urlview.hooks.UrlViewSpecialViewHandler;
 
 public class RsPacmanView implements UrlViewSpecialViewHandler {
 
-	@Override
-	public boolean consumes(String url) {
-		return "rs:pacman://".equals(url);
-	}
+   @Override
+   public boolean consumes(String url) {
+      return "rs:pacman://".equals(url);
+   }
 
-	@Override
-	public Widget getWidget(String url) {
-		DwContentPanel panel = new DwContentPanel();
-		panel.setHeaderVisible(false);
-		
-		panel.setUrl("resources/ee/pm/index.html");
-		
-		return panel;
-	}
+   @Override
+   public Widget getWidget(String url) {
+      DwContentPanel panel = new DwContentPanel();
+      panel.setHeaderVisible(false);
+
+      panel.setUrl("resources/ee/pm/index.html");
+
+      return panel;
+   }
 
 }

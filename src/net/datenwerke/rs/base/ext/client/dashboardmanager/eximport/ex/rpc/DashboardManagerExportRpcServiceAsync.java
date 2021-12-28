@@ -6,9 +6,8 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManager
 
 public interface DashboardManagerExportRpcServiceAsync {
 
-	void quickExport(AbstractDashboardManagerNodeDto dto,
-			AsyncCallback<Void> callback);
+   void quickExport(AbstractDashboardManagerNodeDto dto, AsyncCallback<Void> callback);
 
-	void loadResult(AsyncCallback<String> callback);
+   void loadResult(AsyncCallback<String> callback);
 
 }

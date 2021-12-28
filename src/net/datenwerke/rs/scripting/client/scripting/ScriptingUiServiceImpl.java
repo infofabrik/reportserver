@@ -14,10 +14,7 @@ public class ScriptingUiServiceImpl implements ScriptingUiService {
    private final TerminalUIService terminalService;
 
    @Inject
-   public ScriptingUiServiceImpl(
-         ScriptingDao scriptingDao, 
-         TerminalUIService terminalService
-         ) {
+   public ScriptingUiServiceImpl(ScriptingDao scriptingDao, TerminalUIService terminalService) {
 
       /* store objects */
       this.terminalService = terminalService;

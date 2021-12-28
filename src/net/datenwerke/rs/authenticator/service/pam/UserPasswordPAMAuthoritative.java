@@ -7,14 +7,14 @@ import net.datenwerke.security.service.usermanager.UserManagerService;
 
 public class UserPasswordPAMAuthoritative extends UserPasswordPAM {
 
-	@Inject
-	public UserPasswordPAMAuthoritative(UserManagerService userManagerService, PasswordHasher passwordHasher) {
-		super(userManagerService, passwordHasher);
-	}
-	
-	@Override
-	protected boolean isAuthoritative() {
-		return true;
-	}
+   @Inject
+   public UserPasswordPAMAuthoritative(UserManagerService userManagerService, PasswordHasher passwordHasher) {
+      super(userManagerService, passwordHasher);
+   }
+
+   @Override
+   protected boolean isAuthoritative() {
+      return true;
+   }
 
 }

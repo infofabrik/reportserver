@@ -8,8 +8,8 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public interface FunctionToSqlProviderHook extends Hook {
 
-	boolean consumes(FunctionExpressionToken token);
+   boolean consumes(FunctionExpressionToken token);
 
-	String handleToken(FunctionExpressionToken token, Iterator<ExpressionToken> tokenIt);
+   String handleToken(FunctionExpressionToken token, Iterator<ExpressionToken> tokenIt);
 
 }

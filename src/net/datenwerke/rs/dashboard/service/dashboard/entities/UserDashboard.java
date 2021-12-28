@@ -18,54 +18,55 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 @Audited
 @Entity
-@Table(name="DASHBOARD_USER")
+@Table(name = "DASHBOARD_USER")
 public class UserDashboard {
-	
-	@ExposeToClient
-	@ManyToOne
-	private User user;
-	
-	@ExposeToClient
-	@OneToOne(cascade=CascadeType.ALL)
-	@EnclosedEntity
-	private DashboardContainer dashboardContainer;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
 
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   @ManyToOne
+   private User user;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient
+   @OneToOne(cascade = CascadeType.ALL)
+   @EnclosedEntity
+   private DashboardContainer dashboardContainer;
 
-	public void setUser(User user) {
-		this.user = user;
-	}
+   @Version
+   private Long version;
 
-	public User getUser() {
-		return user;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setDashboardContainer(DashboardContainer dashboardContainer) {
-		this.dashboardContainer = dashboardContainer;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public DashboardContainer getDashboardContainer() {
-		return dashboardContainer;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public void setUser(User user) {
+      this.user = user;
+   }
+
+   public User getUser() {
+      return user;
+   }
+
+   public void setDashboardContainer(DashboardContainer dashboardContainer) {
+      this.dashboardContainer = dashboardContainer;
+   }
+
+   public DashboardContainer getDashboardContainer() {
+      return dashboardContainer;
+   }
 }

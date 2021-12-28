@@ -25,48 +25,45 @@ import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCriteria;
 
-@GenerateDto(
-	dtoPackage = "net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto")
 public class TeamSpaceReportJobFilter implements JobFilterCriteria, AuthoritativeSchedulerCriteria {
 
-	@ExposeToClient
-	private Long teamspaceId;
+   @ExposeToClient
+   private Long teamspaceId;
 
-	@Transient @Inject
-	private TeamSpaceService tsService;
-	
-	public void setTeamspaceId(Long teamspaceId) {
-		this.teamspaceId = teamspaceId;
-	}
+   @Transient
+   @Inject
+   private TeamSpaceService tsService;
 
-	public Long getTeamspaceId() {
-		return teamspaceId;
-	}
-	
-	
-	@Override
-	public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder,
-			CriteriaQuery<?> cQuery, Root<? extends AbstractJob> root) {
-		List<Predicate> predicates = new ArrayList<Predicate>();
-		
-		if(null != teamspaceId){
-			Join<ReportExecuteJob, ScheduleAsFileAction> actions = root.join(ReportExecuteJob__.actions, JoinType.LEFT);
-			predicates.add(actions.get(ScheduleAsFileAction_.teamspaceId).in(teamspaceId));
-		} 
-		
-		return predicates;
-	}
+   public void setTeamspaceId(Long teamspaceId) {
+      this.teamspaceId = teamspaceId;
+   }
 
-	@Override
-	public boolean isAuthoritative() {
-		if(null != teamspaceId){
-			TeamSpace ts = tsService.getTeamSpaceById(teamspaceId);
-			if(null != ts && tsService.mayAccess(ts))
-				return true;
-		}
-		return false;
-	}
-	
-	
+   public Long getTeamspaceId() {
+      return teamspaceId;
+   }
+
+   @Override
+   public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> cQuery,
+         Root<? extends AbstractJob> root) {
+      List<Predicate> predicates = new ArrayList<Predicate>();
+
+      if (null != teamspaceId) {
+         Join<ReportExecuteJob, ScheduleAsFileAction> actions = root.join(ReportExecuteJob__.actions, JoinType.LEFT);
+         predicates.add(actions.get(ScheduleAsFileAction_.teamspaceId).in(teamspaceId));
+      }
+
+      return predicates;
+   }
+
+   @Override
+   public boolean isAuthoritative() {
+      if (null != teamspaceId) {
+         TeamSpace ts = tsService.getTeamSpaceById(teamspaceId);
+         if (null != ts && tsService.mayAccess(ts))
+            return true;
+      }
+      return false;
+   }
+
 }

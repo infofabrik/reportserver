@@ -47,7 +47,7 @@ public class FilterServiceImpl implements FilterService {
    public int calculatePrefilterDepth(TableReport report) {
       PreFilter pf = report.getPreFilter();
       FilterBlock rootBlock = pf.getRootBlock();
-      
+
       return doCalculatePrefilterDepth(rootBlock, 1);
    }
 

@@ -21,64 +21,61 @@ import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitio
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class BirtReportDatasourceConfigProviderHooker implements DatasourceDefinitionConfigProviderHook {
-	
-	private Provider<BirtReportDatasourceForm> formProvider;
-	private Provider<BirtReportDatasourceConfigConfigurator> configurator;
 
-	@Inject
-	public BirtReportDatasourceConfigProviderHooker(
-			Provider<BirtReportDatasourceForm> formProvider, 
-			Provider<BirtReportDatasourceConfigConfigurator> configurator
-			) {
-				this.formProvider = formProvider;
-				this.configurator = configurator;
+   private Provider<BirtReportDatasourceForm> formProvider;
+   private Provider<BirtReportDatasourceConfigConfigurator> configurator;
 
-	}
+   @Inject
+   public BirtReportDatasourceConfigProviderHooker(Provider<BirtReportDatasourceForm> formProvider,
+         Provider<BirtReportDatasourceConfigConfigurator> configurator) {
+      this.formProvider = formProvider;
+      this.configurator = configurator;
 
-	@Override
-	public boolean consumes(DatasourceDefinitionDto dsd) {
-		return (dsd instanceof BirtReportDatasourceDefinitionDto);
-	}
+   }
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(DatasourceDefinitionDto dsd) {
-		return Collections.singleton(formProvider.get());
-	}
+   @Override
+   public boolean consumes(DatasourceDefinitionDto dsd) {
+      return (dsd instanceof BirtReportDatasourceDefinitionDto);
+   }
 
-	@Override
-	public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
-		
-		Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map =
-				new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasourceDefinitionDto dsd) {
+      return Collections.singleton(formProvider.get());
+   }
 
-		map.put(BirtReportDatasourceDefinitionDto.class, configurator);
+   @Override
+   public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
 
-		return map;
-	}
+      Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map = new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
 
-	@Override
-	public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
-		return BirtReportDatasourceDefinitionDto.class;
-	}
+      map.put(BirtReportDatasourceDefinitionDto.class, configurator);
 
-	@Override
-	public String getDatasourceName() {
-		return BirtMessages.INSTANCE.birtReportDatasourceTypeName();
-	}
+      return map;
+   }
 
-	@Override
-	public AbstractDatasourceManagerNodeDto instantiateDatasource() {
-		return new BirtReportDatasourceDefinitionDto();
-	}
+   @Override
+   public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
+      return BirtReportDatasourceDefinitionDto.class;
+   }
 
-	@Override
-	public ImageResource getDatasourceIcon() {
-		return BaseIcon.REPORT.toImageResource();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public String getDatasourceName() {
+      return BirtMessages.INSTANCE.birtReportDatasourceTypeName();
+   }
+
+   @Override
+   public AbstractDatasourceManagerNodeDto instantiateDatasource() {
+      return new BirtReportDatasourceDefinitionDto();
+   }
+
+   @Override
+   public ImageResource getDatasourceIcon() {
+      return BaseIcon.REPORT.toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 
 }

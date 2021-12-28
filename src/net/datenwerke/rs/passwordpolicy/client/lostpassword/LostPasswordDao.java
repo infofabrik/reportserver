@@ -18,7 +18,7 @@ public class LostPasswordDao extends Dao {
    public void requestNewPassword(String username, AsyncCallback<String> callback) {
       rpcService.requestNewPassword(username, transformAndKeepCallback(callback));
    }
-   
+
    public void isLostPasswordDisabled(AsyncCallback<Boolean> callback) {
       rpcService.isLostPasswordDisabled(transformAndKeepCallback(callback));
    }

@@ -9,18 +9,19 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 
 @Singleton
-public class CommunityEnterpriseCheckRpcServiceImpl extends SecuredRemoteServiceServlet implements EnterpriseCheckRpcService {
+public class CommunityEnterpriseCheckRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements EnterpriseCheckRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	@Override
-	@SecurityChecked(bypass=true)
-	public EnterpriseInformationDto getEnterpriseInfos() throws ServerCallFailedException {
-		EnterpriseInformationDto info = new EnterpriseInformationDto();
-		return info;
-	}
+   @Override
+   @SecurityChecked(bypass = true)
+   public EnterpriseInformationDto getEnterpriseInfos() throws ServerCallFailedException {
+      EnterpriseInformationDto info = new EnterpriseInformationDto();
+      return info;
+   }
 
 }

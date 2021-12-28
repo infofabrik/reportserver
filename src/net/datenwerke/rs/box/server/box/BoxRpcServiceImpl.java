@@ -64,18 +64,10 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public BoxRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         BoxService boxService, 
-         ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService, 
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public BoxRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, BoxService boxService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -90,12 +82,12 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
-      if (! (datasinkDto instanceof BoxDatasinkDto))
+      if (!(datasinkDto instanceof BoxDatasinkDto))
          throw new IllegalArgumentException("Not a box datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       BoxDatasink boxDatasink = (BoxDatasink) dtoService.loadPoso(datasinkDto);
@@ -219,11 +211,12 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
 
    @Override
    public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
-         String filename, String folder,boolean compressed) throws ServerCallFailedException {
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, boxService, filename, folder, compressed);
-      
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, boxService, filename, folder,
+            compressed);
+
    }
 }

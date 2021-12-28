@@ -129,16 +129,9 @@ public class DashboardMainComponent extends DwContentPanel implements DashboardC
    private TreeSelectionPopup importDashboardPopup;
 
    @Inject
-   public DashboardMainComponent(
-         DashboardDao dao, 
-         HookHandlerService hookHandler, 
-         Provider<DashboardView> viewProvider,
-         NavigationPanelHelper nagPanelHelper, 
-         ToolbarService toolbarService, 
-         DadgetCatalogFactory catalogFactory,
-         @DashboardTreeDashboards UITree dashboardTree, 
-         SecurityUIService securityService
-         ) {
+   public DashboardMainComponent(DashboardDao dao, HookHandlerService hookHandler, Provider<DashboardView> viewProvider,
+         NavigationPanelHelper nagPanelHelper, ToolbarService toolbarService, DadgetCatalogFactory catalogFactory,
+         @DashboardTreeDashboards UITree dashboardTree, SecurityUIService securityService) {
 
       this.dao = dao;
       this.hookHandler = hookHandler;
@@ -374,8 +367,8 @@ public class DashboardMainComponent extends DwContentPanel implements DashboardC
       List<ColumnConfig<DashboardDto, ?>> columns = new ArrayList<>();
 
       /* name column */
-      ColumnConfig<DashboardDto, String> nameConfig = new ColumnConfig<>(
-            DashboardDtoPA.INSTANCE.name(), 200, BaseMessages.INSTANCE.name());
+      ColumnConfig<DashboardDto, String> nameConfig = new ColumnConfig<>(DashboardDtoPA.INSTANCE.name(), 200,
+            BaseMessages.INSTANCE.name());
       nameConfig.setMenuDisabled(true);
       columns.add(nameConfig);
 
@@ -397,13 +390,12 @@ public class DashboardMainComponent extends DwContentPanel implements DashboardC
       submitBtn.addSelectHandler(event -> {
          ArrayList<Long> ids = new ArrayList<Long>();
          ArrayList<DashboardDto> dashboards = new ArrayList<DashboardDto>(store.getAll());
-         
-         IntStream.range(0, dashboards.size())
-         .forEach(i -> {
+
+         IntStream.range(0, dashboards.size()).forEach(i -> {
             dashboards.get(i).setN(i);
             ids.add(dashboards.get(i).getId());
          });
-         
+
          cardContainer.mask(BaseMessages.INSTANCE.storingMsg());
 
          dao.changeDashboardOrder(ids, new RsAsyncCallback<Void>() {
@@ -544,7 +536,7 @@ public class DashboardMainComponent extends DwContentPanel implements DashboardC
          reloadCounter++;
          final int myCounter = reloadCounter;
          Scheduler.get().scheduleFixedPeriod(() -> {
-            if (reloadCounter != myCounter) 
+            if (reloadCounter != myCounter)
                return false;
 
             viewMap.get(dashboard).getAllDagetPanels().forEach(DadgetPanel::refresh);
@@ -711,7 +703,7 @@ public class DashboardMainComponent extends DwContentPanel implements DashboardC
       }
 
       final DashboardView view = viewMap.get(dashboard);
-      
+
       hookHandler.getHookers(DashboardToolbarHook.class)
             .forEach(hooker -> hooker.dashboardDisplayed(view.getDashboard(), view));
 

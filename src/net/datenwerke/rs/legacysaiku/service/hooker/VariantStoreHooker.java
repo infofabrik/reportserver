@@ -15,43 +15,42 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 
 public class VariantStoreHooker implements VariantToBeStoredHook {
 
-	private Provider<SaikuSessionContainer> saikuSessionContainer;
+   private Provider<SaikuSessionContainer> saikuSessionContainer;
 
-	@Inject
-	public VariantStoreHooker(
-			Provider<SaikuSessionContainer> saikuSessionContainer) {
-		
-		this.saikuSessionContainer = saikuSessionContainer;
-	}
+   @Inject
+   public VariantStoreHooker(Provider<SaikuSessionContainer> saikuSessionContainer) {
 
-	@Override
-	public void variantToBeStored(Report report, String executerToken) {
-		if(report instanceof SaikuReportVariant) {
-			SaikuReportVariant variant = (SaikuReportVariant) report;
-			SaikuReport report2 = saikuSessionContainer.get().getReport(executerToken);
-			IQuery query = saikuSessionContainer.get().getQueryForReport(report2);
-			if(null == query)
-				return;
-				
-			String queryXml = query.toXml();
-			variant.setQueryXml(queryXml);
-			if(null != report2)
-				variant.setHideParents(report2.isHideParents());
-		} else if(report instanceof TableReport && ((TableReport)report).isCubeFlag()){
-			TableReportVariant variant = (TableReportVariant) report;
-			
-			SaikuReport report2 = saikuSessionContainer.get().getReport(executerToken);
-			if(null == report2)
-				return;
-			IQuery query = saikuSessionContainer.get().getQueryForReport(report2);
-			if(null == query)
-				return;
-			
-			variant.setHideParents(report2.isHideParents());
-			
-			String queryXml = query.toXml();
-			variant.setCubeXml(queryXml);
-		}
-	}
+      this.saikuSessionContainer = saikuSessionContainer;
+   }
+
+   @Override
+   public void variantToBeStored(Report report, String executerToken) {
+      if (report instanceof SaikuReportVariant) {
+         SaikuReportVariant variant = (SaikuReportVariant) report;
+         SaikuReport report2 = saikuSessionContainer.get().getReport(executerToken);
+         IQuery query = saikuSessionContainer.get().getQueryForReport(report2);
+         if (null == query)
+            return;
+
+         String queryXml = query.toXml();
+         variant.setQueryXml(queryXml);
+         if (null != report2)
+            variant.setHideParents(report2.isHideParents());
+      } else if (report instanceof TableReport && ((TableReport) report).isCubeFlag()) {
+         TableReportVariant variant = (TableReportVariant) report;
+
+         SaikuReport report2 = saikuSessionContainer.get().getReport(executerToken);
+         if (null == report2)
+            return;
+         IQuery query = saikuSessionContainer.get().getQueryForReport(report2);
+         if (null == query)
+            return;
+
+         variant.setHideParents(report2.isHideParents());
+
+         String queryXml = query.toXml();
+         variant.setCubeXml(queryXml);
+      }
+   }
 
 }

@@ -11,12 +11,12 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface TableExportHook extends Hook {
 
-	Collection<String> getFormats();
+   Collection<String> getFormats();
 
-	void afterExport(Report report, User user, CompiledReport compiledReport,
-			TableOutputGenerator outputGenerator, String outputFormat);
+   void afterExport(Report report, User user, CompiledReport compiledReport, TableOutputGenerator outputGenerator,
+         String outputFormat);
 
-	void beforeExport(Report report, User user, TableDefinition td,
-			TableOutputGenerator outputGenerator, String outputFormat);
+   void beforeExport(Report report, User user, TableDefinition td, TableOutputGenerator outputGenerator,
+         String outputFormat);
 
 }

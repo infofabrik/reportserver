@@ -7,17 +7,15 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
 public interface Right {
 
-	@ExposeMethodToClient
-	public String getAbbreviation();
-	
-	@ExposeMethodToClient
-	public String getDescription();
+   @ExposeMethodToClient
+   public String getAbbreviation();
 
-	@ExposeMethodToClient
-	public long getBitField();
+   @ExposeMethodToClient
+   public String getDescription();
+
+   @ExposeMethodToClient
+   public long getBitField();
 }

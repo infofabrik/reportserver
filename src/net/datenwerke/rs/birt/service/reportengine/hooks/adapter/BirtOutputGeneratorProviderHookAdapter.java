@@ -13,11 +13,9 @@ import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtOutputGe
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class BirtOutputGeneratorProviderHookAdapter implements BirtOutputGeneratorProviderHook {
 
-	@Override
-	public Collection<BirtOutputGenerator> provideGenerators()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<BirtOutputGenerator> provideGenerators() {
+      return new HashSet();
+   }
 
 }

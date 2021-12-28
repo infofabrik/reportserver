@@ -39,10 +39,7 @@ public abstract class Export2JXLS extends ReportExporterImpl {
    private static final String CONFIGURATION_FILE = "jxlsexport.cf";
 
    @Inject
-   public Export2JXLS(
-         ReportExporterDao exporterDao, 
-         ClientConfigXmlService jsonService
-         ) {
+   public Export2JXLS(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
       this.exporterDao = exporterDao;
       this.jsonService = jsonService;
    }
@@ -54,12 +51,9 @@ public abstract class Export2JXLS extends ReportExporterImpl {
 
    @Override
    public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
-      this.config = streamOfNullable(exportConfiguration)
-         .filter(config -> !exportConfiguration.isEmpty())
-         .filter(config -> config instanceof RECJxlsDtoDec)
-         .map(config -> (RECJxlsDto) config)
-         .findAny()
-         .orElse(null);
+      this.config = streamOfNullable(exportConfiguration).filter(config -> !exportConfiguration.isEmpty())
+            .filter(config -> config instanceof RECJxlsDtoDec).map(config -> (RECJxlsDto) config).findAny()
+            .orElse(null);
    }
 
    @Override
@@ -132,9 +126,8 @@ public abstract class Export2JXLS extends ReportExporterImpl {
    public List<ReportExecutionConfigDto> getConfiguration() {
       if (null == config)
          return new ArrayList<>();
-      
-      return Stream.of(config)
-            .collect(toList());
+
+      return Stream.of(config).collect(toList());
    }
 
    @Override

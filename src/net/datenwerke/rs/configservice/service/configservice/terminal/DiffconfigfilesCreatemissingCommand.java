@@ -35,25 +35,19 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
    private static final String REGEX_TO_MATCH_SLASHFILENAME_STRING = "/(?:.(?!/))+$";
 
    @Inject
-   public DiffconfigfilesCreatemissingCommand(
-         HistoryService historyService,
-         FileServerService fileServerService,
-         ConfigService configService,
-         SecurityService securityService) {
+   public DiffconfigfilesCreatemissingCommand(HistoryService historyService, FileServerService fileServerService,
+         ConfigService configService, SecurityService securityService) {
       super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
-   @CliHelpMessage(
-         messageClass = ConfigMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandDiffConfigFiles_sub_createmissing_description")
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandDiffConfigFiles_sub_createmissing_description")
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       FileServerFolder root = (FileServerFolder) fileServerService.getRoots().get(0);
       FileServerFolder etc = root.getSubfolderByName("etc");
-      securityService.assertRights((SecurityTarget)root, Read.class);
-      securityService.assertRights((SecurityTarget)etc, Read.class, Write.class);
-      
+      securityService.assertRights((SecurityTarget) root, Read.class);
+      securityService.assertRights((SecurityTarget) etc, Read.class, Write.class);
+
       List<HistoryLink> missingConfigFileLinks = null;
       List<FileServerFile> newFilesInActualConfig = null;
       try {
@@ -61,9 +55,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
          configService.extractBasicConfigFilesTo(super.tmpDirName);
          missingConfigFileLinks = findMissingConfigFiles(super.tmpConfigFolder);
          moveMissingConfigFiles(missingConfigFileLinks);
-         newFilesInActualConfig = missingConfigFileLinks
-               .stream()
-               .map(fileLink -> findFileInActualConfig(fileLink))
+         newFilesInActualConfig = missingConfigFileLinks.stream().map(fileLink -> findFileInActualConfig(fileLink))
                .collect(toList());
       } catch (Exception e) {
          throw new TerminalException("the config files could not be calculated: " + e.getMessage(), e);
@@ -76,7 +68,8 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
    private void moveMissingConfigFiles(List<HistoryLink> missingConfigFileLinks) {
       missingConfigFileLinks.forEach(link -> {
          AbstractFileServerNode fileToMove = fileServerService.getNodeByPath(getFilePathFromHistoryLink(link), false);
-         AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(getDstFolderPathFromHistoryLink(link), false);
+         AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(getDstFolderPathFromHistoryLink(link),
+               false);
          fileServerService.copy(fileToMove, dstFolder, true);
       });
    }
@@ -95,8 +88,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
          return new CommandResult("No missing files detected - no files were copied");
       CommandResult commandResult = new CommandResult();
       List<CommandResultHyperlink> hyperLinkEntries = copiedFiles.stream()
-            .map(file -> historyService.buildLinksFor(file))
-            .map(listHistoryLinks -> listHistoryLinks.get(0))
+            .map(file -> historyService.buildLinksFor(file)).map(listHistoryLinks -> listHistoryLinks.get(0))
             .map(historyLink -> new CommandResultHyperlink(
                   historyLink.getObjectCaption() + " (" + historyLink.getHistoryLinkBuilderId() + ")",
                   historyLink.getLink()))
@@ -117,9 +109,7 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
 
       FileServerFolder expectedFolder = (FileServerFolder) fileServerService.getNodeByPath(dstFolderPath, false);
       List<FileServerFile> files = expectedFolder.getChildrenOfType(FileServerFile.class);
-      Optional<FileServerFile> findAny = files
-            .stream()
-            .filter(file -> file.getName().equals(expectedFileName))
+      Optional<FileServerFile> findAny = files.stream().filter(file -> file.getName().equals(expectedFileName))
             .findAny();
       if (!findAny.isPresent())
          throw new IllegalArgumentException("Not found: " + expectedFileName);

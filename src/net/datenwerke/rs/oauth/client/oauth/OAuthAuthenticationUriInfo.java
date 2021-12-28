@@ -8,7 +8,7 @@ public class OAuthAuthenticationUriInfo implements Serializable {
     * 
     */
    private static final long serialVersionUID = -4623732267255306841L;
-   
+
    private String authenticationUri;
    private String redirectUri;
 

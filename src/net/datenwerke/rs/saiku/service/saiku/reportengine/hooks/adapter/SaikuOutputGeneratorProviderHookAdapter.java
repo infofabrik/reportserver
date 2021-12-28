@@ -13,11 +13,9 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.Saiku
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class SaikuOutputGeneratorProviderHookAdapter implements SaikuOutputGeneratorProviderHook {
 
-	@Override
-	public Collection<SaikuOutputGenerator> provideGenerators()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<SaikuOutputGenerator> provideGenerators() {
+      return new HashSet();
+   }
 
 }

@@ -9,10 +9,10 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportVariantDto;
  */
 public class SaikuReportVariantDtoDec extends SaikuReportVariantDto implements ReportVariantDto {
 
-	private static final long serialVersionUID = 1L;
-	
-	public SaikuReportVariantDtoDec() {
-		super();
-	}
+   private static final long serialVersionUID = 1L;
+
+   public SaikuReportVariantDtoDec() {
+      super();
+   }
 
 }

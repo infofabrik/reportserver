@@ -44,17 +44,14 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
    private String nameKey;
    private String sambaKey;
    private String compressedKey;
-   
+
    private final Provider<UITree> treeProvider;
    private final Provider<SambaDao> datasinkDaoProvider;
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public SambaExportSnippetProvider(
-         @DatasinkTreeSamba Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<SambaDao> datasinkDaoProvider
-         ) {
+   public SambaExportSnippetProvider(@DatasinkTreeSamba Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<SambaDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -96,6 +93,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
          public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
+
          @Override
          public BaseIcon getIcon() {
             return SambaUiModule.ICON;
@@ -118,7 +116,7 @@ public class SambaExportSnippetProvider implements ScheduleExportSnippetProvider
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

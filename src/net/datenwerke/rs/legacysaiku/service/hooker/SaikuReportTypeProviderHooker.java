@@ -10,13 +10,13 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public class SaikuReportTypeProviderHooker implements ReportTypeProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends Report>> getReportTypes() {
-		Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
+   @Override
+   public Collection<? extends Class<? extends Report>> getReportTypes() {
+      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
 
-		types.add(SaikuReport.class);
+      types.add(SaikuReport.class);
 
-		return types;
-	}
+      return types;
+   }
 
 }

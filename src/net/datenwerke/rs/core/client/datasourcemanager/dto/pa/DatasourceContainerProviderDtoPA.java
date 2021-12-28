@@ -13,6 +13,4 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerPr
 @CorrespondingPoso(net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainerProvider.class)
 public interface DatasourceContainerProviderDtoPA extends PropertyAccess<DatasourceContainerProviderDto> {
 
-
-
 }

@@ -35,139 +35,122 @@ import net.datenwerke.security.service.security.rights.Execute;
 @Singleton
 public class SendToRpcServiceImpl extends SecuredRemoteServiceServlet implements SendToRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	private final HookHandlerService hookHandlerService;
-	private final DtoService dtoService;
-	private final ReportDtoService reportDtoService;
-	private final ReportExecutorService reportExecutorService;
-	private final ReportService reportService;
-	private final SecurityService securityService;
-	
-	@Inject
-	public SendToRpcServiceImpl(
-			HookHandlerService hookHandlerService,
-			DtoService dtoService,
-			ReportDtoService reportDtoService,
-			ReportExecutorService reportExecutorService,
-			ReportService reportService,
-			SecurityService securityService
-			) {
-		super();
-		this.hookHandlerService = hookHandlerService;
-		this.dtoService = dtoService;
-		this.reportDtoService = reportDtoService;
-		this.reportExecutorService = reportExecutorService;
-		this.reportService = reportService;
-		this.securityService = securityService;
-	}
+   private final HookHandlerService hookHandlerService;
+   private final DtoService dtoService;
+   private final ReportDtoService reportDtoService;
+   private final ReportExecutorService reportExecutorService;
+   private final ReportService reportService;
+   private final SecurityService securityService;
 
+   @Inject
+   public SendToRpcServiceImpl(HookHandlerService hookHandlerService, DtoService dtoService,
+         ReportDtoService reportDtoService, ReportExecutorService reportExecutorService, ReportService reportService,
+         SecurityService securityService) {
+      super();
+      this.hookHandlerService = hookHandlerService;
+      this.dtoService = dtoService;
+      this.reportDtoService = reportDtoService;
+      this.reportExecutorService = reportExecutorService;
+      this.reportService = reportService;
+      this.securityService = securityService;
+   }
 
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = {
+               Execute.class })) })
+   @Override
+   public ArrayList<SendToClientConfig> loadClientConfigsFor(@Named("report") ReportDto reportDto)
+         throws ServerCallFailedException {
+      Report report = (Report) dtoService.loadPoso(reportDto);
 
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "report",
-							isDto = true,
-							verify = @RightsVerification(rights={Execute.class})
-							)
-			}
-			)
-	@Override
-	public ArrayList<SendToClientConfig> loadClientConfigsFor(@Named("report")ReportDto reportDto)
-			throws ServerCallFailedException {
-		Report report = (Report) dtoService.loadPoso(reportDto);
-		
-		/* check rights */
-		securityService.assertRights(report, Execute.class);
-		
-		ArrayList<SendToClientConfig> list = new ArrayList<SendToClientConfig>();
-		
-		for(SendToTargetProviderHook hooker : hookHandlerService.getHookers(SendToTargetProviderHook.class)){
-			SendToClientConfig config = hooker.consumes(report);
-			if(null != config){
-				config.setId(hooker.getId());
-				config.setSupportsScheduling(hooker.supportsScheduling());
-				list.add(config);
-			}
-		}
+      /* check rights */
+      securityService.assertRights(report, Execute.class);
 
-		return list;
-	}
-	
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "report",
-							isDto = true,
-							verify = @RightsVerification(rights={Execute.class})
-							)
-			}
-			)
-	@Override
-	public String sendTo(@Named("report") ReportDto reportDto, String executorToken, String id, String format, 
-			List<ReportExecutionConfigDto> formatConfig, Map<String, String> values) throws ServerCallFailedException {
-		for(SendToTargetProviderHook hooker : hookHandlerService.getHookers(SendToTargetProviderHook.class)){
-			if(! id.equals(hooker.getId()))
-				continue;
-			/* get a clean and unmanaged report from the database */
-			Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-			Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
-			
-			/* check rights */
-			securityService.assertRights(referenceReport, Execute.class);
-			
-			/* create variant */
-			Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-			Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-			
-			final ReportExecutionConfig[] configArray = getConfigArray(executorToken, formatConfig);
-			for(ReportExportViaSessionHook viaSessionHooker : hookHandlerService.getHookers(ReportExportViaSessionHook.class)){
-				viaSessionHooker.adjustReport(toExecute, configArray);
-			}
+      ArrayList<SendToClientConfig> list = new ArrayList<SendToClientConfig>();
 
-			if(null == format){
-				/* call handler without executed report */
-				try{
-					return hooker.sendTo(toExecute, values, new ReportExecutionConfig[]{new RECReportExecutorToken(executorToken)});
-				} catch(Exception e){
-					throw new ServerCallFailedException("Could not execute send to " + id, e);
-				}
-			} else {
-				/* execute report */
-				try {
-					ReportExecutionConfig[] executionConfig = getConfigArray(executorToken, formatConfig);
-					
-					CompiledReport cReport = reportExecutorService.execute(toExecute, format, executionConfig);
-					
-					return hooker.sendTo(cReport, toExecute, format, values, new ReportExecutionConfig[]{new RECReportExecutorToken(executorToken)});
-				} catch(Exception e){
-					throw new ServerCallFailedException("Could not execute send to " + id, e);
-				}
-			}
-			
-			
-		}
-		throw new ServerCallFailedException("Could not find SendToProvider for " + id);
-	}
+      for (SendToTargetProviderHook hooker : hookHandlerService.getHookers(SendToTargetProviderHook.class)) {
+         SendToClientConfig config = hooker.consumes(report);
+         if (null != config) {
+            config.setId(hooker.getId());
+            config.setSupportsScheduling(hooker.supportsScheduling());
+            list.add(config);
+         }
+      }
 
-	private ReportExecutionConfig[] getConfigArray(String executorToken,
-			List<ReportExecutionConfigDto> configs) throws ExpectedException {
-		
-		if(null == configs) {
-			ReportExecutionConfig[] configArray = { new RECReportExecutorToken(executorToken) };
-			return configArray;
-		} 
-			
-		ReportExecutionConfig[] configArray = new ReportExecutionConfig[configs.size()+1];
-		for(int i = 0; i < configs.size(); i++)
-			configArray[i] = (ReportExecutionConfig) dtoService.createPoso(configs.get(i));
-		configArray[configs.size()] = new RECReportExecutorToken(executorToken);
-		
-		return configArray;
-	}
+      return list;
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = {
+               Execute.class })) })
+   @Override
+   public String sendTo(@Named("report") ReportDto reportDto, String executorToken, String id, String format,
+         List<ReportExecutionConfigDto> formatConfig, Map<String, String> values) throws ServerCallFailedException {
+      for (SendToTargetProviderHook hooker : hookHandlerService.getHookers(SendToTargetProviderHook.class)) {
+         if (!id.equals(hooker.getId()))
+            continue;
+         /* get a clean and unmanaged report from the database */
+         Report referenceReport = reportDtoService.getReferenceReport(reportDto);
+         Report orgReport = (Report) reportService.getUnmanagedReportById(reportDto.getId());
+
+         /* check rights */
+         securityService.assertRights(referenceReport, Execute.class);
+
+         /* create variant */
+         Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+         Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
+
+         final ReportExecutionConfig[] configArray = getConfigArray(executorToken, formatConfig);
+         for (ReportExportViaSessionHook viaSessionHooker : hookHandlerService
+               .getHookers(ReportExportViaSessionHook.class)) {
+            viaSessionHooker.adjustReport(toExecute, configArray);
+         }
+
+         if (null == format) {
+            /* call handler without executed report */
+            try {
+               return hooker.sendTo(toExecute, values,
+                     new ReportExecutionConfig[] { new RECReportExecutorToken(executorToken) });
+            } catch (Exception e) {
+               throw new ServerCallFailedException("Could not execute send to " + id, e);
+            }
+         } else {
+            /* execute report */
+            try {
+               ReportExecutionConfig[] executionConfig = getConfigArray(executorToken, formatConfig);
+
+               CompiledReport cReport = reportExecutorService.execute(toExecute, format, executionConfig);
+
+               return hooker.sendTo(cReport, toExecute, format, values,
+                     new ReportExecutionConfig[] { new RECReportExecutorToken(executorToken) });
+            } catch (Exception e) {
+               throw new ServerCallFailedException("Could not execute send to " + id, e);
+            }
+         }
+
+      }
+      throw new ServerCallFailedException("Could not find SendToProvider for " + id);
+   }
+
+   private ReportExecutionConfig[] getConfigArray(String executorToken, List<ReportExecutionConfigDto> configs)
+         throws ExpectedException {
+
+      if (null == configs) {
+         ReportExecutionConfig[] configArray = { new RECReportExecutorToken(executorToken) };
+         return configArray;
+      }
+
+      ReportExecutionConfig[] configArray = new ReportExecutionConfig[configs.size() + 1];
+      for (int i = 0; i < configs.size(); i++)
+         configArray[i] = (ReportExecutionConfig) dtoService.createPoso(configs.get(i));
+      configArray[configs.size()] = new RECReportExecutorToken(executorToken);
+
+      return configArray;
+   }
 
 }

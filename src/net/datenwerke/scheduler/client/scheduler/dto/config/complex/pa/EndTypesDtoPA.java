@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.EndTypesDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.EndTypes.class)
 public interface EndTypesDtoPA extends PropertyAccess<EndTypesDto> {
 
-
-
 }

@@ -39,11 +39,9 @@ public class DatasourceServiceImpl extends SecuredTreeDBManagerImpl<AbstractData
    private final Provider<EntityManager> entityManagerProvider;
 
    @Inject
-   public DatasourceServiceImpl(
-         Provider<EntityManager> entityManagerProvider,
+   public DatasourceServiceImpl(Provider<EntityManager> entityManagerProvider,
          @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
-         @DefaultDatasource Provider<String> defaultDatasourceProvider
-         ) {
+         @DefaultDatasource Provider<String> defaultDatasourceProvider) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;

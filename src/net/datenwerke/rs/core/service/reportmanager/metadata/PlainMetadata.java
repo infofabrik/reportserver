@@ -6,18 +6,17 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledR
  * 
  *
  */
-public class PlainMetadata implements CompiledReportMetadata{
+public class PlainMetadata implements CompiledReportMetadata {
 
-	private final String data;
-	
-	public PlainMetadata(String data){
-		this.data = data;
-	}
-	
-	@Override
-	public String getMetadata() {
-		return data;
-	}
+   private final String data;
 
-	
+   public PlainMetadata(String data) {
+      this.data = data;
+   }
+
+   @Override
+   public String getMetadata() {
+      return data;
+   }
+
 }

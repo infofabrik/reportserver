@@ -10,8 +10,8 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.VariantToBeStoredHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class VariantToBeStoredHookAdapter implements VariantToBeStoredHook {
 
-	@Override
-	public void variantToBeStored(Report report, String executerToken)  {
-	}
+   @Override
+   public void variantToBeStored(Report report, String executerToken) {
+   }
 
 }

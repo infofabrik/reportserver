@@ -9,20 +9,19 @@ package net.datenwerke.rs.saikupivot.service;
 @Deprecated
 public class SaikuDatasourceQueryTransformerMarker {
 
-	private String query;
+   private String query;
 
-	public SaikuDatasourceQueryTransformerMarker(String query) {
-		super();
-		this.query = query;
-	}
+   public SaikuDatasourceQueryTransformerMarker(String query) {
+      super();
+      this.query = query;
+   }
 
-	public String getQuery() {
-		return query;
-	}
+   public String getQuery() {
+      return query;
+   }
 
-	public void setQuery(String query) {
-		this.query = query;
-	}
-	
-	
+   public void setQuery(String query) {
+      this.query = query;
+   }
+
 }

@@ -9,12 +9,10 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVarian
  */
 public class GridEditorReportVariantDtoDec extends GridEditorReportVariantDto implements ReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public GridEditorReportVariantDtoDec() {
-		super();
-	}
-
+   public GridEditorReportVariantDtoDec() {
+      super();
+   }
 
 }

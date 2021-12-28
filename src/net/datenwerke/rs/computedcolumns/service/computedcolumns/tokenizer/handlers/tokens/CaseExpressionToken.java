@@ -2,44 +2,39 @@ package net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hand
 
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionToken;
 
-
 public class CaseExpressionToken implements ExpressionToken {
 
-	public enum CaseType {
-		CASE,
-		WHEN,
-		THEN,
-		ELSE,
-		END
-	}
-	
-	private final CaseType type;
-	private final boolean greedy;
+   public enum CaseType {
+      CASE, WHEN, THEN, ELSE, END
+   }
 
-	public CaseExpressionToken(CaseType type, boolean greedy) {
-		super();
-		this.type = type;
-		this.greedy = greedy;
-	}
+   private final CaseType type;
+   private final boolean greedy;
 
-	public CaseType getType() {
-		return type;
-	}
+   public CaseExpressionToken(CaseType type, boolean greedy) {
+      super();
+      this.type = type;
+      this.greedy = greedy;
+   }
 
-	@Override
-	public int hashCode() {
-		return type.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(! (obj instanceof CaseExpressionToken))
-			return false;
-		return type.equals(((CaseExpressionToken)obj).type);
-	}
-	
-	@Override
-	public boolean isGreedy() {
-		return greedy;
-	}
+   public CaseType getType() {
+      return type;
+   }
+
+   @Override
+   public int hashCode() {
+      return type.hashCode();
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (!(obj instanceof CaseExpressionToken))
+         return false;
+      return type.equals(((CaseExpressionToken) obj).type);
+   }
+
+   @Override
+   public boolean isGreedy() {
+      return greedy;
+   }
 }

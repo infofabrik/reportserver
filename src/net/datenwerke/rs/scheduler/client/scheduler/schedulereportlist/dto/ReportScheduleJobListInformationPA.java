@@ -9,18 +9,26 @@ import com.sencha.gxt.data.shared.PropertyAccess;
 
 public interface ReportScheduleJobListInformationPA extends PropertyAccess<ReportScheduleJobListInformation> {
 
-	@Path("jobId")
-	public ModelKeyProvider<ReportScheduleJobListInformation> dtoId();
-	
-	public ValueProvider<ReportScheduleJobListInformation, Long> reportId();
-	public ValueProvider<ReportScheduleJobListInformation, String> reportName();
-	public ValueProvider<ReportScheduleJobListInformation, String> reportDescription();
-	public ValueProvider<ReportScheduleJobListInformation, Date> lastScheduled();
-	public ValueProvider<ReportScheduleJobListInformation, Date> nextScheduled();
-	
-	public ValueProvider<ReportScheduleJobListInformation, Long> jobId();
-	public ValueProvider<ReportScheduleJobListInformation, String> jobTitle();
-	public ValueProvider<ReportScheduleJobListInformation, String> jobDescription();
-	public ValueProvider<ReportScheduleJobListInformation, Boolean> reportDeleted();
-	public ValueProvider<ReportScheduleJobListInformation, Boolean> executorDeleted();
+   @Path("jobId")
+   public ModelKeyProvider<ReportScheduleJobListInformation> dtoId();
+
+   public ValueProvider<ReportScheduleJobListInformation, Long> reportId();
+
+   public ValueProvider<ReportScheduleJobListInformation, String> reportName();
+
+   public ValueProvider<ReportScheduleJobListInformation, String> reportDescription();
+
+   public ValueProvider<ReportScheduleJobListInformation, Date> lastScheduled();
+
+   public ValueProvider<ReportScheduleJobListInformation, Date> nextScheduled();
+
+   public ValueProvider<ReportScheduleJobListInformation, Long> jobId();
+
+   public ValueProvider<ReportScheduleJobListInformation, String> jobTitle();
+
+   public ValueProvider<ReportScheduleJobListInformation, String> jobDescription();
+
+   public ValueProvider<ReportScheduleJobListInformation, Boolean> reportDeleted();
+
+   public ValueProvider<ReportScheduleJobListInformation, Boolean> executorDeleted();
 }

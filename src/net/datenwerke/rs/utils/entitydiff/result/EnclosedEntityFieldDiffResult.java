@@ -4,9 +4,8 @@ import java.lang.reflect.Field;
 
 public class EnclosedEntityFieldDiffResult extends BaseFieldDiffResult {
 
-	public EnclosedEntityFieldDiffResult(Field field, Object valueA,
-			Object valueB) {
-		super(field, valueA, valueB);
-	}
+   public EnclosedEntityFieldDiffResult(Field field, Object valueA, Object valueB) {
+      super(field, valueA, valueB);
+   }
 
 }

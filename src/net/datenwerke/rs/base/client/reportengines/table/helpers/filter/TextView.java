@@ -25,56 +25,56 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
  */
 public abstract class TextView<M> extends DwNorthSouthContainer {
 
-	@Inject
-	protected static FilterService filterService;
-	
-	final protected ListStore<M> store;
-	final protected SelectionPanel<M> selectionPanel;
-	final protected ColumnDto column;
+   @Inject
+   protected static FilterService filterService;
 
-	protected TextArea textArea;
-	
-	public TextView(ListStore<M> store, SelectionPanel<M> selectionPanel, ColumnDto column, final TabPanel tPanel) {
-		this.store = store;
-		this.selectionPanel = selectionPanel;
-		this.column = column;
-		
-		this.textArea = new TextArea();
+   final protected ListStore<M> store;
+   final protected SelectionPanel<M> selectionPanel;
+   final protected ColumnDto column;
 
-		setBorders(false);
-		
-		setWidget(textArea);
-		
-		new DropTarget(textArea){
-			@Override
-			protected void onDragDrop(DndDropEvent e) {
-			    super.onDragDrop(e);
-			    Object data = e.getData();
-			    List<Object> models = prepareDropData(data, true);
-			    
-			    handleDroppedData(models, e);
-			  }
-		};
-		
-		tPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Widget>() {
-			@Override
-			public void onBeforeSelection(BeforeSelectionEvent<Widget> event) {
-				if(tPanel.getContainer().getActiveWidget() == TextView.this){
-					try{
-						List<M> newDtos = tryParseText();
-						TextView.this.store.clear();
-						TextView.this.store.addAll(newDtos);
-					}catch (RuntimeException e) {
-						new DwAlertMessageBox(FilterMessages.INSTANCE.textViewInvalidMessage(), e.getMessage()).show();
-						event.cancel();
-					}
-				}
-			}
-		});
-	}
-	
-	abstract protected void handleDroppedData(List<Object> models, DndDropEvent e);
+   protected TextArea textArea;
 
-	abstract protected List<M> tryParseText() throws RuntimeException;
-	
+   public TextView(ListStore<M> store, SelectionPanel<M> selectionPanel, ColumnDto column, final TabPanel tPanel) {
+      this.store = store;
+      this.selectionPanel = selectionPanel;
+      this.column = column;
+
+      this.textArea = new TextArea();
+
+      setBorders(false);
+
+      setWidget(textArea);
+
+      new DropTarget(textArea) {
+         @Override
+         protected void onDragDrop(DndDropEvent e) {
+            super.onDragDrop(e);
+            Object data = e.getData();
+            List<Object> models = prepareDropData(data, true);
+
+            handleDroppedData(models, e);
+         }
+      };
+
+      tPanel.addBeforeSelectionHandler(new BeforeSelectionHandler<Widget>() {
+         @Override
+         public void onBeforeSelection(BeforeSelectionEvent<Widget> event) {
+            if (tPanel.getContainer().getActiveWidget() == TextView.this) {
+               try {
+                  List<M> newDtos = tryParseText();
+                  TextView.this.store.clear();
+                  TextView.this.store.addAll(newDtos);
+               } catch (RuntimeException e) {
+                  new DwAlertMessageBox(FilterMessages.INSTANCE.textViewInvalidMessage(), e.getMessage()).show();
+                  event.cancel();
+               }
+            }
+         }
+      });
+   }
+
+   abstract protected void handleDroppedData(List<Object> models, DndDropEvent e);
+
+   abstract protected List<M> tryParseText() throws RuntimeException;
+
 }

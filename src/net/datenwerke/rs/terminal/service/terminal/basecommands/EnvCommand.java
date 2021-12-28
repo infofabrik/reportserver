@@ -32,13 +32,9 @@ public class EnvCommand implements TerminalCommandHook {
    public boolean consumes(CommandParser parser, TerminalSession session) {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
-   
+
    @Override
-   @CliHelpMessage(
-         messageClass = TerminalMessages.class,
-         name = BASE_COMMAND,
-         description = "commandEnv_description"
-   )
+   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandEnv_description")
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       CommandResult result = new CommandResult();
 

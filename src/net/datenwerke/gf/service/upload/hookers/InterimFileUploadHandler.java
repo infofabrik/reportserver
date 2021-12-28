@@ -15,9 +15,7 @@ public class InterimFileUploadHandler implements FileUploadHandlerHook {
    private final FileUploadService fileUploadService;
 
    @Inject
-   public InterimFileUploadHandler(
-         FileUploadService fileUploadService
-         ) {
+   public InterimFileUploadHandler(FileUploadService fileUploadService) {
       this.fileUploadService = fileUploadService;
    }
 

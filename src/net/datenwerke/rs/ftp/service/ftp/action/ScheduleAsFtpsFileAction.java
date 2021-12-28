@@ -32,153 +32,153 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionExce
 @Inheritance(strategy = InheritanceType.JOINED)
 public class ScheduleAsFtpsFileAction extends AbstractAction {
 
-    @Transient
-    @Inject
-    private Provider<SimpleJuel> simpleJuelProvider;
-    
-    @Transient
-    @Inject
-    private FtpsService ftpsService;
-    
-    @Transient
-    @Inject
-    private DatasinkService datasinkService;
+   @Transient
+   @Inject
+   private Provider<SimpleJuel> simpleJuelProvider;
 
-    @EnclosedEntity
-    @OneToOne
-    private FtpsDatasink ftpsDatasink;
+   @Transient
+   @Inject
+   private FtpsService ftpsService;
 
-    @Transient
-    private Report report;
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
 
-    @Transient
-    private String filename;
+   @EnclosedEntity
+   @OneToOne
+   private FtpsDatasink ftpsDatasink;
 
-    private String name;
-    private String folder;
-    
-    private Boolean compressed = false;
-    
-    public Boolean isCompressed() {
-       return compressed;
-    }
-    
-    public void setCompressed(Boolean compressed) {
-       this.compressed = compressed;
-    }
-    
-    @Transient
-    @Inject
-    private ZipUtilsService zipUtilsService;
+   @Transient
+   private Report report;
 
-    @Override
-    public void execute(AbstractJob job) throws ActionExecutionException {
-        if (!(job instanceof ReportExecuteJob))
-            throw new ActionExecutionException("No idea what job that is");
+   @Transient
+   private String filename;
 
-        ReportExecuteJob rJob = (ReportExecuteJob) job;
+   private String name;
+   private String folder;
 
-        /* did everything go as planned ? */
-        if (null == rJob.getExecutedReport())
-            return;
+   private Boolean compressed = false;
 
-        if (!datasinkService.isEnabled(ftpsService) || !datasinkService.isSchedulingEnabled(ftpsService))
-            throw new ActionExecutionException("ftps scheduling is disabled");
+   public Boolean isCompressed() {
+      return compressed;
+   }
 
-        report = rJob.getReport();
+   public void setCompressed(Boolean compressed) {
+      this.compressed = compressed;
+   }
 
-        SimpleJuel juel = simpleJuelProvider.get();
-        juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
-        filename = null == name ? "" : juel.parse(name);
+   @Transient
+   @Inject
+   private ZipUtilsService zipUtilsService;
 
-        sendViaFTPSDatasink(rJob, filename);
+   @Override
+   public void execute(AbstractJob job) throws ActionExecutionException {
+      if (!(job instanceof ReportExecuteJob))
+         throw new ActionExecutionException("No idea what job that is");
 
-        if (null == name || name.trim().isEmpty())
-            throw new ActionExecutionException("name is empty");
+      ReportExecuteJob rJob = (ReportExecuteJob) job;
 
-        if (null == ftpsDatasink)
-            throw new ActionExecutionException("ftps datasink is empty");
+      /* did everything go as planned ? */
+      if (null == rJob.getExecutedReport())
+         return;
 
-        if (null == folder || folder.trim().isEmpty())
-            throw new ActionExecutionException("folder is empty");
+      if (!datasinkService.isEnabled(ftpsService) || !datasinkService.isSchedulingEnabled(ftpsService))
+         throw new ActionExecutionException("ftps scheduling is disabled");
 
-    }
-    
-    private void sendViaFTPSDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
-       try {
-          if (compressed) {
-             String filenameScheduling = filename + ".zip";
-             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-                Object reportObj = rJob.getExecutedReport().getReport();
-                String reportFileExtension = rJob.getExecutedReport().getFileExtension();
-                zipUtilsService.createZip(
-                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
-                      os);
-                datasinkService.exportIntoDatasink(os.toByteArray(), ftpsDatasink, ftpsService,
-                      new DatasinkFilenameFolderConfig() {
+      report = rJob.getReport();
 
-                         @Override
-                         public String getFolder() {
-                            return folder;
-                         }
+      SimpleJuel juel = simpleJuelProvider.get();
+      juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
+      filename = null == name ? "" : juel.parse(name);
 
-                         @Override
-                         public String getFilename() {
-                            return filenameScheduling;
-                         }
-                      });
-             }
-          } else {
-             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), ftpsDatasink, ftpsService,
-                   new DatasinkFilenameFolderConfig() {
+      sendViaFTPSDatasink(rJob, filename);
 
-                      @Override
-                      public String getFolder() {
-                         return folder;
-                      }
+      if (null == name || name.trim().isEmpty())
+         throw new ActionExecutionException("name is empty");
 
-                      @Override
-                      public String getFilename() {
-                         return filenameScheduling;
-                      }
-                   });
-          }
-       } catch (Exception e) {
-          throw new ActionExecutionException("report could not be sent to FTPS", e);
-       }
-    }
+      if (null == ftpsDatasink)
+         throw new ActionExecutionException("ftps datasink is empty");
 
-    public String getName() {
-        return name;
-    }
+      if (null == folder || folder.trim().isEmpty())
+         throw new ActionExecutionException("folder is empty");
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   }
 
-    public String getFilename() {
-        return filename;
-    }
+   private void sendViaFTPSDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
+      try {
+         if (compressed) {
+            String filenameScheduling = filename + ".zip";
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = rJob.getExecutedReport().getReport();
+               String reportFileExtension = rJob.getExecutedReport().getFileExtension();
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
+                     os);
+               datasinkService.exportIntoDatasink(os.toByteArray(), ftpsDatasink, ftpsService,
+                     new DatasinkFilenameFolderConfig() {
 
-    public String getFolder() {
-        return folder;
-    }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-    public void setFolder(String folder) {
-        this.folder = folder;
-    }
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
+                     });
+            }
+         } else {
+            String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), ftpsDatasink, ftpsService,
+                  new DatasinkFilenameFolderConfig() {
 
-    public Report getReport() {
-        return report;
-    }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-    public FtpsDatasink getFtpsDatasink() {
-        return ftpsDatasink;
-    }
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
+                  });
+         }
+      } catch (Exception e) {
+         throw new ActionExecutionException("report could not be sent to FTPS", e);
+      }
+   }
 
-    public void setFtpsDatasink(FtpsDatasink ftpsDatasink) {
-        this.ftpsDatasink = ftpsDatasink;
-    }
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getFilename() {
+      return filename;
+   }
+
+   public String getFolder() {
+      return folder;
+   }
+
+   public void setFolder(String folder) {
+      this.folder = folder;
+   }
+
+   public Report getReport() {
+      return report;
+   }
+
+   public FtpsDatasink getFtpsDatasink() {
+      return ftpsDatasink;
+   }
+
+   public void setFtpsDatasink(FtpsDatasink ftpsDatasink) {
+      this.ftpsDatasink = ftpsDatasink;
+   }
 
 }

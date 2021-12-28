@@ -18,26 +18,24 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  */
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final Provider<ReportMetadataView> propertiesViewProvider;
-	
-	@Inject
-	public MainPanelViewProviderHooker(
-		Provider<ReportMetadataView> propertiesViewProvider
-		){
+   private final Provider<ReportMetadataView> propertiesViewProvider;
 
-		/* store objects */
-		this.propertiesViewProvider = propertiesViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof ReportDto)
-			return getViewForReport();
+   @Inject
+   public MainPanelViewProviderHooker(Provider<ReportMetadataView> propertiesViewProvider) {
 
-		return null;
-	}
+      /* store objects */
+      this.propertiesViewProvider = propertiesViewProvider;
+   }
 
-	private List<MainPanelView> getViewForReport() {
-		return Arrays.asList(new MainPanelView[]{propertiesViewProvider.get()});
-	}
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof ReportDto)
+         return getViewForReport();
+
+      return null;
+   }
+
+   private List<MainPanelView> getViewForReport() {
+      return Arrays.asList(new MainPanelView[] { propertiesViewProvider.get() });
+   }
 
 }

@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCSimpleList extends SimpleFormFieldConfiguration {
 
-	public Boolean isMultiselect();
+   public Boolean isMultiselect();
 }

@@ -12,23 +12,22 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MinDateValidatorDto;
  */
 public class MinDateValidatorDtoDec extends MinDateValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MinDateValidatorDtoDec() {
+      super();
+   }
 
-	public MinDateValidatorDtoDec() {
-		super();
-	}
-
-	@Override
-	public Validator<?> getValidator() {
-		MinDateValidator minDateValidator = new MinDateValidator(getMinDate());
-		minDateValidator.setMessages(new MinDateMessages() {
-			@Override
-			public String dateMinText(String max) {
-				return getErrorMsg();
-			}
-		});
-		return minDateValidator;
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MinDateValidator minDateValidator = new MinDateValidator(getMinDate());
+      minDateValidator.setMessages(new MinDateMessages() {
+         @Override
+         public String dateMinText(String max) {
+            return getErrorMsg();
+         }
+      });
+      return minDateValidator;
+   }
 
 }

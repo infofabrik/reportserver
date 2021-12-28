@@ -5,24 +5,24 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface UploadMessages extends Messages {
 
-	public static final UploadMessages INSTANCE = GWT.create(UploadMessages.class);
-	
-	String uploadSingleDropzoneDescription();
+   public static final UploadMessages INSTANCE = GWT.create(UploadMessages.class);
 
-	String fileName(String name);
+   String uploadSingleDropzoneDescription();
 
-	String uploadHeading();
+   String fileName(String name);
 
-	String uploadBtn();
+   String uploadHeading();
 
-	String uploadLabel();
+   String uploadBtn();
 
-	String uploadInProgress(int filesToUpload, int filesUploaded);
+   String uploadLabel();
 
-	String uploadErrorMsg(int size);
+   String uploadInProgress(int filesToUpload, int filesUploaded);
 
-	String uploadedFileType();
+   String uploadErrorMsg(int size);
 
-	String invalidFileMessage();
+   String uploadedFileType();
+
+   String invalidFileMessage();
 
 }

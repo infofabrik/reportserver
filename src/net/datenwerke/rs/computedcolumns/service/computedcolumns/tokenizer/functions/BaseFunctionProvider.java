@@ -13,28 +13,30 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.hooks.FunctionP
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.ExpressionTokenizer;
 
 public class BaseFunctionProvider implements FunctionProviderHook {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject @AllowedFunctions
-	private List<String> functions;
-	
-	@Override
-	public boolean consumes(String strToken, ExpressionTokenizer expressionTokenizer) {
-		try {
-			if(strToken.contains("(") && StringUtils.countMatches(strToken, ")") != StringUtils.countMatches(strToken, "("))
-				return false;
-			
-			for(String func : functions){
-				if(func.toLowerCase().equals(strToken.toLowerCase()))
-					return true;
-			}
-			
-		} catch(Exception e){
-			logger.info( "Exception while processing funciton", e);
-		}
-		
-		return false;
-	}
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+
+   @Inject
+   @AllowedFunctions
+   private List<String> functions;
+
+   @Override
+   public boolean consumes(String strToken, ExpressionTokenizer expressionTokenizer) {
+      try {
+         if (strToken.contains("(")
+               && StringUtils.countMatches(strToken, ")") != StringUtils.countMatches(strToken, "("))
+            return false;
+
+         for (String func : functions) {
+            if (func.toLowerCase().equals(strToken.toLowerCase()))
+               return true;
+         }
+
+      } catch (Exception e) {
+         logger.info("Exception while processing funciton", e);
+      }
+
+      return false;
+   }
 
 }

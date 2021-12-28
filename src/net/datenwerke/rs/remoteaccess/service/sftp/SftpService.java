@@ -4,14 +4,14 @@ import java.io.IOException;
 
 public interface SftpService {
 
-	void start() throws IOException;
+   void start() throws IOException;
 
-	boolean isActive();
+   boolean isActive();
 
-	boolean isShutdown();
+   boolean isShutdown();
 
-	boolean isTerminated();
+   boolean isTerminated();
 
-	void shutdown();
+   void shutdown();
 
 }

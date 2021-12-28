@@ -1,6 +1,5 @@
 package net.datenwerke.security.ext.server.utils;
 
-
 import javax.inject.Provider;
 
 import org.apache.commons.codec.binary.Base64;
@@ -27,75 +26,72 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @Singleton
 public class PasswordRpcServiceImpl extends SecuredRemoteServiceServlet implements PasswordRpcService {
 
-	private static final long serialVersionUID = 6864534096215565334L;
+   private static final long serialVersionUID = 6864534096215565334L;
 
-	private final UserManagerService userManager;
-	private final PbeService pbeService;
+   private final UserManagerService userManager;
+   private final PbeService pbeService;
 
-	private final Provider<AuthenticatorService> authServiceProvider;
-	
-	@Inject
-	public PasswordRpcServiceImpl(
-			Provider<AuthenticatorService> authServiceProvider,
-			UserManagerService userManager,
-			PbeService pbeService
-			) {
-		
-		/* store objects */
-		this.authServiceProvider = authServiceProvider;
-		this.userManager = userManager;
-		this.pbeService = pbeService;
-	}
+   private final Provider<AuthenticatorService> authServiceProvider;
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void changePassword(String oldPasswordB64, String newPasswordB64, boolean encrypted) throws ServerCallFailedException {
-		String oldPassword;
-		String newPassword;
-		
-		if(encrypted){
-			/* decrypt */
-			oldPassword = decrypt(oldPasswordB64);
-			newPassword = decrypt(newPasswordB64);
-		}else{
-			oldPassword = oldPasswordB64;
-			newPassword = newPasswordB64;
-		}
-		
-		userManager.changePassword(authServiceProvider.get().getCurrentUser(), oldPassword, newPassword);
-	}
-	
+   @Inject
+   public PasswordRpcServiceImpl(Provider<AuthenticatorService> authServiceProvider, UserManagerService userManager,
+         PbeService pbeService) {
 
-	@Override
-	@SecurityChecked(loginRequired=false)
-	@Transactional(rollbackOn={Exception.class})
-	public void changePassword(String username, String oldPasswordB64, String newPasswordB64, boolean encrypted) throws ExpectedException {
-		User user = userManager.getUserByName(username);
-		
-		String oldPassword;
-		String newPassword;
-		
-		if(encrypted){
-			/* decrypt */
-			oldPassword = decrypt(user, oldPasswordB64);
-			newPassword = decrypt(user, newPasswordB64);
-		}else{
-			oldPassword = oldPasswordB64;
-			newPassword = newPasswordB64;
-		}
+      /* store objects */
+      this.authServiceProvider = authServiceProvider;
+      this.userManager = userManager;
+      this.pbeService = pbeService;
+   }
 
-		userManager.changePassword(username, oldPassword, newPassword);
-	}
-	
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void changePassword(String oldPasswordB64, String newPasswordB64, boolean encrypted)
+         throws ServerCallFailedException {
+      String oldPassword;
+      String newPassword;
 
-	private String decrypt(String oldPasswordB64) {
-		EncryptionService encService = pbeService.getClientEncryptionService();
-		return new String(encService.decrypt(Base64.decodeBase64(oldPasswordB64.getBytes())));
-	}
-	
-	private String decrypt(User user, String oldPasswordB64) {
-		EncryptionService encService = pbeService.getClientEncryptionService(user);
-		return new String(encService.decrypt(Base64.decodeBase64(oldPasswordB64.getBytes())));
-	}
+      if (encrypted) {
+         /* decrypt */
+         oldPassword = decrypt(oldPasswordB64);
+         newPassword = decrypt(newPasswordB64);
+      } else {
+         oldPassword = oldPasswordB64;
+         newPassword = newPasswordB64;
+      }
+
+      userManager.changePassword(authServiceProvider.get().getCurrentUser(), oldPassword, newPassword);
+   }
+
+   @Override
+   @SecurityChecked(loginRequired = false)
+   @Transactional(rollbackOn = { Exception.class })
+   public void changePassword(String username, String oldPasswordB64, String newPasswordB64, boolean encrypted)
+         throws ExpectedException {
+      User user = userManager.getUserByName(username);
+
+      String oldPassword;
+      String newPassword;
+
+      if (encrypted) {
+         /* decrypt */
+         oldPassword = decrypt(user, oldPasswordB64);
+         newPassword = decrypt(user, newPasswordB64);
+      } else {
+         oldPassword = oldPasswordB64;
+         newPassword = newPasswordB64;
+      }
+
+      userManager.changePassword(username, oldPassword, newPassword);
+   }
+
+   private String decrypt(String oldPasswordB64) {
+      EncryptionService encService = pbeService.getClientEncryptionService();
+      return new String(encService.decrypt(Base64.decodeBase64(oldPasswordB64.getBytes())));
+   }
+
+   private String decrypt(User user, String oldPasswordB64) {
+      EncryptionService encService = pbeService.getClientEncryptionService(user);
+      return new String(encService.decrypt(Base64.decodeBase64(oldPasswordB64.getBytes())));
+   }
 
 }

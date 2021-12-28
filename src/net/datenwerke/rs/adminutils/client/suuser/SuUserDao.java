@@ -9,19 +9,19 @@ import net.datenwerke.rs.adminutils.client.suuser.rpc.SuUserRpcServiceAsync;
 
 public class SuUserDao extends Dao {
 
-	private final SuUserRpcServiceAsync rpcService;
+   private final SuUserRpcServiceAsync rpcService;
 
-	@Inject
-	public SuUserDao(SuUserRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void su(String username, AsyncCallback<Void> callback){
-		rpcService.su(username, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public SuUserDao(SuUserRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void su(Long id, RsAsyncCallback<Void> callback) {
-		rpcService.su(id, transformAndKeepCallback(callback));		
-	}
-	
+   public void su(String username, AsyncCallback<Void> callback) {
+      rpcService.su(username, transformAndKeepCallback(callback));
+   }
+
+   public void su(Long id, RsAsyncCallback<Void> callback) {
+      rpcService.su(id, transformAndKeepCallback(callback));
+   }
+
 }

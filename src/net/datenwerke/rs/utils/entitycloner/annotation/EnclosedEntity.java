@@ -10,14 +10,15 @@ import java.lang.annotation.Target;
 /**
  * Marks a property of an entity as an enclosed entity.
  * 
- * <p>Should be set on to the set and get methods of the entity</p>
+ * <p>
+ * Should be set on to the set and get methods of the entity
+ * </p>
  * 
  *
  */
 @Documented
-@Target({ElementType.FIELD,ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RUNTIME)
 public @interface EnclosedEntity {
 
-	
 }

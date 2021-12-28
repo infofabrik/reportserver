@@ -60,13 +60,9 @@ public class TableReportUtilsImpl implements TableReportUtils {
    private final ProxyUtils proxyUtils;
 
    @Inject
-   public TableReportUtilsImpl(
-         TableReportColumnMetadataService tableReportMetadataService,
-         ReportExecutorService reportExecutor, 
-         Provider<EntityManager> entityManagerProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider, 
-         ProxyUtils proxyUtils
-         ) {
+   public TableReportUtilsImpl(TableReportColumnMetadataService tableReportMetadataService,
+         ReportExecutorService reportExecutor, Provider<EntityManager> entityManagerProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, ProxyUtils proxyUtils) {
 
       /* store objects */
       this.tableReportMetadataService = tableReportMetadataService;
@@ -82,12 +78,9 @@ public class TableReportUtilsImpl implements TableReportUtils {
       TableReportInformation information = new TableReportInformation();
 
       /* visible count */
-      long visCols = report.getColumns()
-            .stream()
-            .filter(col -> null == col.isHidden() || !col.isHidden())
-            .count();
-      
-      information.setVisibleCount((int)visCols);
+      long visCols = report.getColumns().stream().filter(col -> null == col.isHidden() || !col.isHidden()).count();
+
+      information.setVisibleCount((int) visCols);
 
       /* column count */
       RSTableModel res = (RSTableModel) reportExecutor.execute(report, ReportExecutorService.OUTPUT_FORMAT_METADATA,

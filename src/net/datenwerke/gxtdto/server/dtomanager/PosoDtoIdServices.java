@@ -11,9 +11,9 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(PosoDtoIdServiceImpl.class)
 public interface PosoDtoIdServices {
 
-	public Field getIdField(Class<?> type);
-	
-	public Field getIdField(Object entity);
-	
-	public Object getId(Object entity);
+   public Field getIdField(Class<?> type);
+
+   public Field getIdField(Object entity);
+
+   public Object getId(Object entity);
 }

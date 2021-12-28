@@ -8,33 +8,32 @@ import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
 
-public class BsiPasswordPolicyPasswordSetHook implements PasswordSetHook{
-	
-	private final UserManagerService userManagerService;
-	private final BsiPasswordPolicyService bsiPasswordPolicyService;
+public class BsiPasswordPolicyPasswordSetHook implements PasswordSetHook {
 
-	@Inject
-	public BsiPasswordPolicyPasswordSetHook(
-			UserManagerService userManagerService, 
-			BsiPasswordPolicyService bsiPasswordPolicyService) {
-		this.userManagerService = userManagerService;
-		this.bsiPasswordPolicyService = bsiPasswordPolicyService;
-	}
+   private final UserManagerService userManagerService;
+   private final BsiPasswordPolicyService bsiPasswordPolicyService;
 
-	@Override
-	public void passwordWasSet(User user) {
-		if(!bsiPasswordPolicyService.isActive())
-			return;
-		
-		BsiPasswordPolicyUserMetadata userMetadata = bsiPasswordPolicyService.getUserMetadata(user);
-		
-		userMetadata.setFailedLoginCount(0);
-		userMetadata.setLastChangedPassword(null);
-		userMetadata.enforcePasswordChangeOnNextLogin();
+   @Inject
+   public BsiPasswordPolicyPasswordSetHook(UserManagerService userManagerService,
+         BsiPasswordPolicyService bsiPasswordPolicyService) {
+      this.userManagerService = userManagerService;
+      this.bsiPasswordPolicyService = bsiPasswordPolicyService;
+   }
 
-		bsiPasswordPolicyService.updateUserMetadata(user, userMetadata);
-		
-		userManagerService.merge(user);
-	}
+   @Override
+   public void passwordWasSet(User user) {
+      if (!bsiPasswordPolicyService.isActive())
+         return;
+
+      BsiPasswordPolicyUserMetadata userMetadata = bsiPasswordPolicyService.getUserMetadata(user);
+
+      userMetadata.setFailedLoginCount(0);
+      userMetadata.setLastChangedPassword(null);
+      userMetadata.enforcePasswordChangeOnNextLogin();
+
+      bsiPasswordPolicyService.updateUserMetadata(user, userMetadata);
+
+      userManagerService.merge(user);
+   }
 
 }

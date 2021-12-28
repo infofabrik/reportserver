@@ -8,6 +8,6 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 
 public interface DatasourceManagerImportRpcServiceAsync {
 
-	void loadTree(AsyncCallback<List<ImportTreeModel>> callback);
+   void loadTree(AsyncCallback<List<ImportTreeModel>> callback);
 
 }

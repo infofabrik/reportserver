@@ -15,19 +15,19 @@ import net.datenwerke.rs.base.client.reportengines.table.helpers.filter.TextView
  */
 public class FilterUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* bind hook handler */
-		bind(FilterUIStartup.class).asEagerSingleton();
-		
-		bind(FilterService.class).to(FilterServiceImpl.class);
-		
-		requestStaticInjection(DistinctSelectorPanel.class);
-		requestStaticInjection(LikeFilterComponent.class);
-		requestStaticInjection(SelectionPanel.class);
-		requestStaticInjection(TextView.class);
-		requestStaticInjection(GridView.class);
-		requestStaticInjection(AbstractFilterAspect.class);
-	}
+   @Override
+   protected void configure() {
+      /* bind hook handler */
+      bind(FilterUIStartup.class).asEagerSingleton();
+
+      bind(FilterService.class).to(FilterServiceImpl.class);
+
+      requestStaticInjection(DistinctSelectorPanel.class);
+      requestStaticInjection(LikeFilterComponent.class);
+      requestStaticInjection(SelectionPanel.class);
+      requestStaticInjection(TextView.class);
+      requestStaticInjection(GridView.class);
+      requestStaticInjection(AbstractFilterAspect.class);
+   }
 
 }

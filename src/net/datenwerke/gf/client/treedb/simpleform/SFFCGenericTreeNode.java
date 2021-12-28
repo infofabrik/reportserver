@@ -5,5 +5,5 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCGenericTreeNode extends SimpleFormFieldConfiguration {
 
-	public UITree getTreeForPopup();
+   public UITree getTreeForPopup();
 }

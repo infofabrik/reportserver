@@ -64,18 +64,10 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public OneDriveRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         OneDriveService oneDriveService, 
-         ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public OneDriveRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, OneDriveService oneDriveService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -93,7 +85,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
-      if (! (datasinkDto instanceof OneDriveDatasinkDto))
+      if (!(datasinkDto instanceof OneDriveDatasinkDto))
          throw new IllegalArgumentException("Not a OneDrive datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -123,8 +115,8 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), oneDriveDatasink, oneDriveService,
                      new DatasinkFilenameFolderConfig() {
 
@@ -219,10 +211,10 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);

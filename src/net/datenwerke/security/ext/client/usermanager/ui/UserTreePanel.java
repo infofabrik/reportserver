@@ -13,11 +13,9 @@ import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserM
  */
 public class UserTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public UserTreePanel(
-		HookHandlerService hookHandler,	
-		@UserManagerAdminViewTree UITree tree){
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public UserTreePanel(HookHandlerService hookHandler, @UserManagerAdminViewTree UITree tree) {
+      super(hookHandler, tree);
+   }
+
 }

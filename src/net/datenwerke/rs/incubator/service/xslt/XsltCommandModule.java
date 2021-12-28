@@ -4,9 +4,9 @@ import com.google.inject.AbstractModule;
 
 public class XsltCommandModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(XsltCommandStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(XsltCommandStartup.class).asEagerSingleton();
+   }
 
 }

@@ -16,27 +16,31 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.ui.JxlsReportPreviewViewFa
 
 public class JxlsReportUiStartup {
 
-	@Inject
-	public JxlsReportUiStartup(HookHandlerService hookHandler,
-		JxlsReportConfigHooker jxlsReportConfigHooker,
-		JxlsReportPreviewViewFactory jxlsReportPreviewViewFactory,
-		
-		JxlsReportFileDownloadToolbarConfiguratorHooker jxlsReportFileDownloadToolbarConfiguratorHooker,
-		
-		Provider<Jxls2Excel> jxls2Excel,
-		Provider<Jxls2Html> jxls2Html
-		) {
+   @Inject
+   public JxlsReportUiStartup(HookHandlerService hookHandler, JxlsReportConfigHooker jxlsReportConfigHooker,
+         JxlsReportPreviewViewFactory jxlsReportPreviewViewFactory,
 
-		hookHandler.attachHooker(ReportTypeConfigHook.class, jxlsReportConfigHooker,50);
-		hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(jxlsReportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
+         JxlsReportFileDownloadToolbarConfiguratorHooker jxlsReportFileDownloadToolbarConfiguratorHooker,
 
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, jxlsReportFileDownloadToolbarConfiguratorHooker);
+         Provider<Jxls2Excel> jxls2Excel, Provider<Jxls2Html> jxls2Html) {
 
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(jxls2Excel));
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(jxls2Html), HookHandlerService.PRIORITY_LOWER);
-		
-		//			hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(crystal2Text), HookHandlerService.PRIORITY_LOW);
-		//			hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(crystal2XML), HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportTypeConfigHook.class, jxlsReportConfigHooker, 50);
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(jxlsReportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
 
-	}
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class,
+            jxlsReportFileDownloadToolbarConfiguratorHooker);
+
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(jxls2Excel));
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(jxls2Html),
+            HookHandlerService.PRIORITY_LOWER);
+
+      // hookHandler.attachHooker(ReportExporterExportReportHook.class, new
+      // ReportExporterExportReportHook(crystal2Text),
+      // HookHandlerService.PRIORITY_LOW);
+      // hookHandler.attachHooker(ReportExporterExportReportHook.class, new
+      // ReportExporterExportReportHook(crystal2XML),
+      // HookHandlerService.PRIORITY_LOW);
+
+   }
 }

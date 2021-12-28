@@ -11,31 +11,25 @@ import net.datenwerke.rs.dashboard.service.dashboard.entities.Dadget;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.DadgetNode;
 
 @Entity
-@Table(name="DADGET_LIBRARY")
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	createDecorator=true,
-	poso2DtoPostProcessors=LibraryDadget2DtoPost.class
-)
+@Table(name = "DADGET_LIBRARY")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", createDecorator = true, poso2DtoPostProcessors = LibraryDadget2DtoPost.class)
 public class LibraryDadget extends Dadget {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4343069561738262668L;
-	
-	@ExposeToClient(inheritDtoView=true)
-	@ManyToOne
-	private DadgetNode dadgetNode;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4343069561738262668L;
 
-	public DadgetNode getDadgetNode() {
-		return dadgetNode;
-	}
+   @ExposeToClient(inheritDtoView = true)
+   @ManyToOne
+   private DadgetNode dadgetNode;
 
-	public void setDadgetNode(DadgetNode dadgetNode) {
-		this.dadgetNode = dadgetNode;
-	}
+   public DadgetNode getDadgetNode() {
+      return dadgetNode;
+   }
 
+   public void setDadgetNode(DadgetNode dadgetNode) {
+      this.dadgetNode = dadgetNode;
+   }
 
 }

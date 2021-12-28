@@ -10,15 +10,15 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.entities.Global
  */
 public interface GlobalConstantsService {
 
-	public List<GlobalConstant> getAllGlobalConstants();
+   public List<GlobalConstant> getAllGlobalConstants();
 
-	public void removeAllConstants();
+   public void removeAllConstants();
 
-	public void remove(GlobalConstant constant);
+   public void remove(GlobalConstant constant);
 
-	public GlobalConstant merge(GlobalConstant constant);
-	
-	public void persist(GlobalConstant constant);
-	
-	public String getConstantFor(String name);
+   public GlobalConstant merge(GlobalConstant constant);
+
+   public void persist(GlobalConstant constant);
+
+   public String getConstantFor(String name);
 }

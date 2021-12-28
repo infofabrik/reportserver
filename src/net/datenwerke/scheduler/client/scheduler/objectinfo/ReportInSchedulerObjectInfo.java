@@ -20,40 +20,40 @@ import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
  */
 public class ReportInSchedulerObjectInfo implements ObjectInfoAdditionalInfoProvider {
 
-	private final SchedulerDao schedulerDao;
+   private final SchedulerDao schedulerDao;
 
-	@Inject
-	public ReportInSchedulerObjectInfo(SchedulerDao schedulerDao) {
-		this.schedulerDao = schedulerDao;
-	}
+   @Inject
+   public ReportInSchedulerObjectInfo(SchedulerDao schedulerDao) {
+      this.schedulerDao = schedulerDao;
+   }
 
-	@Override
-	public boolean consumes(Object object) {
-		return object instanceof ReportDto;
-	}
+   @Override
+   public boolean consumes(Object object) {
+      return object instanceof ReportDto;
+   }
 
-	@Override
-	public void addInfoFor(Object object, InfoWindow window) {
-		final DwContentPanel panel = window.addDelayedSimpelInfoPanel(SchedulerMessages.INSTANCE.scheduler());
+   @Override
+   public void addInfoFor(Object object, InfoWindow window) {
+      final DwContentPanel panel = window.addDelayedSimpelInfoPanel(SchedulerMessages.INSTANCE.scheduler());
 
-		schedulerDao.getReportJobListAsHtml((ReportDto) object, new RsAsyncCallback<SafeHtml>() {
-			@Override
-			public void onSuccess(SafeHtml result) {
-				panel.clear();
-				panel.enableScrollContainer();
+      schedulerDao.getReportJobListAsHtml((ReportDto) object, new RsAsyncCallback<SafeHtml>() {
+         @Override
+         public void onSuccess(SafeHtml result) {
+            panel.clear();
+            panel.enableScrollContainer();
 
-				if (null == result)
-					panel.add(new Label(SchedulerMessages.INSTANCE.reportNotInJobMessages()));
-				else {
-					SafeHtmlBuilder builder = new SafeHtmlBuilder();
-					builder.appendHtmlConstant("<div class=\"rs-infopanel-reportinscheduler\">");
-					builder.append(result);
-					panel.add(new HTML(builder.toSafeHtml()));
-				}
+            if (null == result)
+               panel.add(new Label(SchedulerMessages.INSTANCE.reportNotInJobMessages()));
+            else {
+               SafeHtmlBuilder builder = new SafeHtmlBuilder();
+               builder.appendHtmlConstant("<div class=\"rs-infopanel-reportinscheduler\">");
+               builder.append(result);
+               panel.add(new HTML(builder.toSafeHtml()));
+            }
 
-				panel.forceLayout();
-			}
-		});
-	}
+            panel.forceLayout();
+         }
+      });
+   }
 
 }

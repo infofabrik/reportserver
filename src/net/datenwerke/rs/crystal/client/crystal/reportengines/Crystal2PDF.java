@@ -6,9 +6,9 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 
 public class Crystal2PDF extends Export2PDF {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof CrystalReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof CrystalReportDto;
+   }
 
 }

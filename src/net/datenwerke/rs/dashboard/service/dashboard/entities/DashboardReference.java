@@ -11,29 +11,25 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Audited
 @Entity
-@Table(name="DASHBOARD_REFERENCE")
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	createDecorator=true
-)
-public class DashboardReference extends Dashboard{
+@Table(name = "DASHBOARD_REFERENCE")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", createDecorator = true)
+public class DashboardReference extends Dashboard {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3667835383035261556L;
-	
-	@ExposeToClient(inheritDtoView=true)
-	@ManyToOne
-	private DashboardNode dashboardNode;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3667835383035261556L;
 
-	public DashboardNode getDashboardNode() {
-		return dashboardNode;
-	}
+   @ExposeToClient(inheritDtoView = true)
+   @ManyToOne
+   private DashboardNode dashboardNode;
 
-	public void setDashboardNode(DashboardNode dashboardNode) {
-		this.dashboardNode = dashboardNode;
-	}
+   public DashboardNode getDashboardNode() {
+      return dashboardNode;
+   }
 
-	
+   public void setDashboardNode(DashboardNode dashboardNode) {
+      this.dashboardNode = dashboardNode;
+   }
+
 }

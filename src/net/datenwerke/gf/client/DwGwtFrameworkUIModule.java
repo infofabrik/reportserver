@@ -9,15 +9,15 @@ import net.datenwerke.gf.client.upload.FileUploadUIModule;
 
 public class DwGwtFrameworkUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		install(new FileUploadUIModule());		
-		install(new FileDownloadUiModule());
-		
-		bind(DwGwtFrameworkUIStartup.class).asEagerSingleton();
-				
-		requestStaticInjection(DateFormulaPicker.class);
-		requestStaticInjection(ClientDownloadHelper.class);
-	}
+   @Override
+   protected void configure() {
+      install(new FileUploadUIModule());
+      install(new FileDownloadUiModule());
+
+      bind(DwGwtFrameworkUIStartup.class).asEagerSingleton();
+
+      requestStaticInjection(DateFormulaPicker.class);
+      requestStaticInjection(ClientDownloadHelper.class);
+   }
 
 }

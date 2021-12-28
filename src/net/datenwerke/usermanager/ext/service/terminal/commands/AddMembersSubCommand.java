@@ -29,127 +29,116 @@ import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 
 public class AddMembersSubCommand implements GroupModSubCommandHook {
 
-public static final String BASE_COMMAND = "addmembers";
-	
-	private final UserManagerService userManagerService;
-	private final SecurityService securityService;
+   public static final String BASE_COMMAND = "addmembers";
 
-	@Inject
-	public AddMembersSubCommand(
-			UserManagerService userManagerService,
-			SecurityService securityService
-		){
-		
-		this.userManagerService = userManagerService;
-		this.securityService = securityService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final UserManagerService userManagerService;
+   private final SecurityService securityService;
 
-	@Override
-	@CliHelpMessage(
-		messageClass = UserManagerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandGroupmod_sub_memberadd_description",
-		args = {
-			@Argument(flag="c", description="commandGroupmod_sub_memberadd_cflag")
-		},
-		nonOptArgs = {
-			@NonOptArgument(name="group", description="commandGroupmod_sub_memberadd_arg_groupid", mandatory=true),
-			@NonOptArgument(name="members", description="commandGroupmod_sub_memberadd_arg_members", varArgs=true)
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> arguments = parser.getNonOptionArguments();
-		if(1 > arguments.size())
-			throw new IllegalArgumentException();
-		
-		ObjectResolverDeamon objectResolver = session.getObjectResolver();
+   @Inject
+   public AddMembersSubCommand(UserManagerService userManagerService, SecurityService securityService) {
 
-		/* locate group */
-		String groupLocator = arguments.remove(0);
-		Collection<Object> groupCandidates = objectResolver.getObjects(groupLocator, Read.class);
-		if(groupCandidates.size() != 1)
-			throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
-		if(! (groupCandidates.iterator().next() instanceof Group))
-			throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
-		Group group = (Group) groupCandidates.iterator().next();
-			
-		/* check rights */
-		securityService.assertRights(group, Write.class);
-		
-		/* get users */
-		Set<AbstractUserManagerNode> memberList = new HashSet<>();
-		for(String locationStr : arguments){
-			Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
-			if(objectList.isEmpty())
-				throw new IllegalArgumentException("No users, groups or OUs selected: " + locationStr);
-			
-			for(Object obj : objectList){
-				if(! (obj instanceof AbstractUserManagerNode))
-					throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
-				AbstractUserManagerNode node = (AbstractUserManagerNode) obj;
-				node.getName();
-				memberList.add((AbstractUserManagerNode) obj);
-			}
-		}
-		
-		boolean removeMembers = parser.hasOption("c");
-		
-		if(removeMembers && memberList.isEmpty()){
-			group.clearMembers();
-		}
-		
-		/* add/remove members */
-		for(AbstractUserManagerNode member : memberList){
-			if (!removeMembers) {
-				/* add members */
-				if (member instanceof User) {
-					User user = (User) member;
-					if (! group.getUsers().contains(user))
-						group.addUser(user);
-				} else if (member instanceof Group) {
-					Group referencedGroup = (Group) member;
-					if (! group.getReferencedGroups().contains(referencedGroup))
-						group.addReferencedGroup(referencedGroup);
-				} else if (member instanceof OrganisationalUnit) {
-					OrganisationalUnit ou = (OrganisationalUnit) member;
-					if (! group.getOus().contains(ou))
-						group.addOu(ou);
-				}
-			} else {
-				/* remove members */
-				if (member instanceof User) {
-					User user = (User) member;
-					if (group.getUsers().contains(user))
-						group.removeUser(user);
-				} else if (member instanceof Group) {
-					Group referencedGroup = (Group) member;
-					if (group.getReferencedGroups().contains(referencedGroup))
-						group.removeReferencedGroup(referencedGroup);
-				} else if (member instanceof OrganisationalUnit) {
-					OrganisationalUnit ou = (OrganisationalUnit) member;
-					if (group.getOus().contains(ou))
-						group.removeOu(ou);
-				}
-			}
-		}
-		
-		userManagerService.merge(group);
-		
-		return new CommandResult();
-	}
+      this.userManagerService = userManagerService;
+      this.securityService = securityService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = UserManagerMessages.class, name = BASE_COMMAND, description = "commandGroupmod_sub_memberadd_description", args = {
+         @Argument(flag = "c", description = "commandGroupmod_sub_memberadd_cflag") }, nonOptArgs = {
+               @NonOptArgument(name = "group", description = "commandGroupmod_sub_memberadd_arg_groupid", mandatory = true),
+               @NonOptArgument(name = "members", description = "commandGroupmod_sub_memberadd_arg_members", varArgs = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> arguments = parser.getNonOptionArguments();
+      if (1 > arguments.size())
+         throw new IllegalArgumentException();
+
+      ObjectResolverDeamon objectResolver = session.getObjectResolver();
+
+      /* locate group */
+      String groupLocator = arguments.remove(0);
+      Collection<Object> groupCandidates = objectResolver.getObjects(groupLocator, Read.class);
+      if (groupCandidates.size() != 1)
+         throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
+      if (!(groupCandidates.iterator().next() instanceof Group))
+         throw new IllegalArgumentException("Could not find group single group: " + groupLocator);
+      Group group = (Group) groupCandidates.iterator().next();
+
+      /* check rights */
+      securityService.assertRights(group, Write.class);
+
+      /* get users */
+      Set<AbstractUserManagerNode> memberList = new HashSet<>();
+      for (String locationStr : arguments) {
+         Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
+         if (objectList.isEmpty())
+            throw new IllegalArgumentException("No users, groups or OUs selected: " + locationStr);
+
+         for (Object obj : objectList) {
+            if (!(obj instanceof AbstractUserManagerNode))
+               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+            AbstractUserManagerNode node = (AbstractUserManagerNode) obj;
+            node.getName();
+            memberList.add((AbstractUserManagerNode) obj);
+         }
+      }
+
+      boolean removeMembers = parser.hasOption("c");
+
+      if (removeMembers && memberList.isEmpty()) {
+         group.clearMembers();
+      }
+
+      /* add/remove members */
+      for (AbstractUserManagerNode member : memberList) {
+         if (!removeMembers) {
+            /* add members */
+            if (member instanceof User) {
+               User user = (User) member;
+               if (!group.getUsers().contains(user))
+                  group.addUser(user);
+            } else if (member instanceof Group) {
+               Group referencedGroup = (Group) member;
+               if (!group.getReferencedGroups().contains(referencedGroup))
+                  group.addReferencedGroup(referencedGroup);
+            } else if (member instanceof OrganisationalUnit) {
+               OrganisationalUnit ou = (OrganisationalUnit) member;
+               if (!group.getOus().contains(ou))
+                  group.addOu(ou);
+            }
+         } else {
+            /* remove members */
+            if (member instanceof User) {
+               User user = (User) member;
+               if (group.getUsers().contains(user))
+                  group.removeUser(user);
+            } else if (member instanceof Group) {
+               Group referencedGroup = (Group) member;
+               if (group.getReferencedGroups().contains(referencedGroup))
+                  group.removeReferencedGroup(referencedGroup);
+            } else if (member instanceof OrganisationalUnit) {
+               OrganisationalUnit ou = (OrganisationalUnit) member;
+               if (group.getOus().contains(ou))
+                  group.removeOu(ou);
+            }
+         }
+      }
+
+      userManagerService.merge(group);
+
+      return new CommandResult();
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

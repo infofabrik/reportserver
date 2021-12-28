@@ -5,17 +5,16 @@ import net.datenwerke.security.service.security.entities.GenericSecurityTargetEn
 
 public class GenericRightsExporter extends GenericEntityExporter {
 
-	public static final String EXPORTER_ID = "GenericRightsExporter";
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
+   public static final String EXPORTER_ID = "GenericRightsExporter";
 
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[]{GenericSecurityTargetEntity.class};
-	}
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
 
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { GenericSecurityTargetEntity.class };
+   }
 
 }

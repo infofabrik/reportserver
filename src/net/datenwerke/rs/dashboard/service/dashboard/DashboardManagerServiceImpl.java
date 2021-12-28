@@ -15,34 +15,32 @@ import net.datenwerke.rs.utils.simplequery.annotations.QueryById;
 import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
 import net.datenwerke.security.service.treedb.SecuredTreeDBManagerImpl;
 
-public class DashboardManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractDashboardManagerNode> implements DashboardManagerService {
+public class DashboardManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractDashboardManagerNode>
+      implements DashboardManagerService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public DashboardManagerServiceImpl(
-			Provider<EntityManager> entityManagerProvider) {
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@QueryById
-	@Override
-	public AbstractDashboardManagerNode getNodeById(long id) {
-		return null; // magic
-	}
+   @Inject
+   public DashboardManagerServiceImpl(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
 
-	@Override
-	@QueryByAttribute(where=AbstractDashboardManagerNode__.parent,type=PredicateType.IS_NULL)
-	public List<AbstractDashboardManagerNode> getRoots() {
-		return null;
-	}
+   @QueryById
+   @Override
+   public AbstractDashboardManagerNode getNodeById(long id) {
+      return null; // magic
+   }
 
-	@Override
-	@SimpleQuery
-	public List<AbstractDashboardManagerNode> getAllNodes() {
-		return null;
-	}
+   @Override
+   @QueryByAttribute(where = AbstractDashboardManagerNode__.parent, type = PredicateType.IS_NULL)
+   public List<AbstractDashboardManagerNode> getRoots() {
+      return null;
+   }
 
-	
+   @Override
+   @SimpleQuery
+   public List<AbstractDashboardManagerNode> getAllNodes() {
+      return null;
+   }
 
 }

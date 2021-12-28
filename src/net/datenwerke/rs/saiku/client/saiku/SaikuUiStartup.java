@@ -30,30 +30,24 @@ import net.datenwerke.security.client.security.dto.ReadDto;
 public class SaikuUiStartup {
 
    @Inject
-   public SaikuUiStartup(final HookHandlerService hookHandler, 
-         final WaitOnEventUIService waitOnEventService,
+   public SaikuUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
          final SecurityUIService securityService,
 
-         SaikuReportConfigHooker saikuReportConfigHooker, 
-         SaikuReportPreviewViewFactory saikuReportPreviewViewFactory,
+         SaikuReportConfigHooker saikuReportConfigHooker, SaikuReportPreviewViewFactory saikuReportPreviewViewFactory,
 
          MondrianDatasourceConfigProviderHooker configProvider,
 
-         Provider<Saiku2Excel> saiku2Excel, 
-         Provider<Saiku2PDF> saiku2PDF, 
-         Provider<Saiku2CSV> saiku2CSV,
-         Provider<Saiku2HTML> saiku2HTML, 
-         Provider<Saiku2ChartHTML> saiku2ChartHTML,
+         Provider<Saiku2Excel> saiku2Excel, Provider<Saiku2PDF> saiku2PDF, Provider<Saiku2CSV> saiku2CSV,
+         Provider<Saiku2HTML> saiku2HTML, Provider<Saiku2ChartHTML> saiku2ChartHTML,
 
          final Provider<ReportDadgetSaikuExportHooker> reportDadgetSaikuExporterProvider,
 
          SaikuModelStorerHooker storerHooker,
-         
-         MondrianDatasourceTesterToolbarConfigurator datasourceTesterConfigurator
-   ) {
+
+         MondrianDatasourceTesterToolbarConfigurator datasourceTesterConfigurator) {
 
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, datasourceTesterConfigurator);
-      
+
       hookHandler.attachHooker(ReportTypeConfigHook.class, saikuReportConfigHooker, 60);
       hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(saikuReportPreviewViewFactory),
             HookHandlerService.PRIORITY_LOW);
@@ -74,7 +68,7 @@ public class SaikuUiStartup {
 
       /* request callback after login and check for rights */
       waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, ticket -> {
-         if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)) 
+         if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class))
             hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetSaikuExporterProvider);
 
          waitOnEventService.signalProcessingDone(ticket);

@@ -14,48 +14,48 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNode
  */
 public class TsDiskItemList implements Serializable, DtoContainer {
 
-	private List<AbstractTsDiskNodeDto> items = new ArrayList<AbstractTsDiskNodeDto>();
-	
-	private List<AbstractTsDiskNodeDto> path = new ArrayList<AbstractTsDiskNodeDto>();
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8645371464170972130L;
+   private List<AbstractTsDiskNodeDto> items = new ArrayList<AbstractTsDiskNodeDto>();
 
-	@Override
-	public void registerDtos(DtoRegistrar registrar) {
-		for(AbstractTsDiskNodeDto node : path)
-			registrar.registerDto(node);
-		for(AbstractTsDiskNodeDto node : items)
-			registrar.registerDto(node);
-	}
+   private List<AbstractTsDiskNodeDto> path = new ArrayList<AbstractTsDiskNodeDto>();
 
-	public void setPath(List<AbstractTsDiskNodeDto> path) {
-		this.path = path;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8645371464170972130L;
 
-	public List<AbstractTsDiskNodeDto> getPath() {
-		return new ArrayList<AbstractTsDiskNodeDto>(path);
-	}
+   @Override
+   public void registerDtos(DtoRegistrar registrar) {
+      for (AbstractTsDiskNodeDto node : path)
+         registrar.registerDto(node);
+      for (AbstractTsDiskNodeDto node : items)
+         registrar.registerDto(node);
+   }
 
-	public void setItems(List<AbstractTsDiskNodeDto> items) {
-		this.items = items;
-	}
+   public void setPath(List<AbstractTsDiskNodeDto> path) {
+      this.path = path;
+   }
 
-	public List<AbstractTsDiskNodeDto> getItems() {
-		return new ArrayList<AbstractTsDiskNodeDto>(items);
-	}
+   public List<AbstractTsDiskNodeDto> getPath() {
+      return new ArrayList<AbstractTsDiskNodeDto>(path);
+   }
 
-	public AbstractTsDiskNodeDto getItem(Long id) {
-		if(null == id)
-			return null;
-		
-		for(AbstractTsDiskNodeDto item : getItems())
-			if(id.equals(item.getId()))
-				return item;
-		
-		return null;
-	}
+   public void setItems(List<AbstractTsDiskNodeDto> items) {
+      this.items = items;
+   }
+
+   public List<AbstractTsDiskNodeDto> getItems() {
+      return new ArrayList<AbstractTsDiskNodeDto>(items);
+   }
+
+   public AbstractTsDiskNodeDto getItem(Long id) {
+      if (null == id)
+         return null;
+
+      for (AbstractTsDiskNodeDto item : getItems())
+         if (id.equals(item.getId()))
+            return item;
+
+      return null;
+   }
 
 }

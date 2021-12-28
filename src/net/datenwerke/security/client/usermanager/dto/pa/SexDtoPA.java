@@ -13,6 +13,4 @@ import net.datenwerke.security.client.usermanager.dto.SexDto;
 @CorrespondingPoso(net.datenwerke.security.service.usermanager.entities.Sex.class)
 public interface SexDtoPA extends PropertyAccess<SexDto> {
 
-
-
 }

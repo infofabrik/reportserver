@@ -26,29 +26,27 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessa
  */
 public class ImportReportDialogCreator {
 
-	private final Provider<ReportSelectionDialog> dialogProvider;
-	
-	@Inject
-	public ImportReportDialogCreator(
-		Provider<ReportSelectionDialog> dialogProvider
-		){
-		
-		/* store objects */
-		this.dialogProvider = dialogProvider;
-	}
-	
-	public void displayDialog(final TsDiskMainComponent mainComponent){
-		final ReportSelectionDialog reportSelector = dialogProvider.get();
-		reportSelector.initRepositories(Optional.empty(), new ReportCatalogOnDemandRepositoryProvider.Config() {
-			@Override
-			public boolean includeVariants() {
-				return false;
-			}
-			
-			@Override
-			public boolean showCatalog() {
-				return true;
-			}
+   private final Provider<ReportSelectionDialog> dialogProvider;
+
+   @Inject
+   public ImportReportDialogCreator(Provider<ReportSelectionDialog> dialogProvider) {
+
+      /* store objects */
+      this.dialogProvider = dialogProvider;
+   }
+
+   public void displayDialog(final TsDiskMainComponent mainComponent) {
+      final ReportSelectionDialog reportSelector = dialogProvider.get();
+      reportSelector.initRepositories(Optional.empty(), new ReportCatalogOnDemandRepositoryProvider.Config() {
+         @Override
+         public boolean includeVariants() {
+            return false;
+         }
+
+         @Override
+         public boolean showCatalog() {
+            return true;
+         }
 
          @Override
          public boolean filterOnSchedulableReports() {
@@ -64,50 +62,50 @@ public class ImportReportDialogCreator {
          public boolean filterOnTeamSpaceImportableReports() {
             return true;
          }
-		});
-		
-		reportSelector.setHeading(TsFavoriteMessages.INSTANCE.importReportText());
-		reportSelector.setHeaderIcon(BaseIcon.REPORT_ADD);
-		reportSelector.setClosable(true);
-		reportSelector.setOnEsc(true);
-		
-		reportSelector.setEventHandler(new ReportSelectionDialogEventHandler() {
-			
-			@Override
-			public boolean handleSubmit(ReportContainerDto container) {
-				return false;
-			}
-			
-			@Override
-			public void handleDoubleClick(final ReportContainerDto report,
-					ReportSelectionRepositoryProviderHook hooker, NativeEvent event, Object... info) {
-				createMenu(report.getReport()).showAt(event.getClientX(), event.getClientY());
-			}
-			
-			@Override
-			public Menu getContextMenuFor(final ReportContainerDto report,
-					ReportSelectionRepositoryProviderHook hooker, final Object... info) {
-				return createMenu(report.getReport());
-			}
+      });
 
-			private Menu createMenu(final ReportDto report) {
-				final Menu menu = new DwMenu();
-				
-				MenuItem addReference = new DwMenuItem(TsFavoriteMessages.INSTANCE.newReference(), BaseIcon.REPORT_LINK);
-				menu.add(addReference);
-				addReference.addSelectionHandler( event -> mainComponent.importReport(report, false, true) );
-				
-				if(report instanceof ReportVariantDto){
-					MenuItem addCopy = new DwMenuItem(TsFavoriteMessages.INSTANCE.newCopy(), BaseIcon.REPORT_ADD);
-					menu.add(addCopy);
-					addCopy.addSelectionHandler( event -> mainComponent.importReport(report, true, false) );
-				}
-				
-				return menu;
-			}
-		});
-		
-		reportSelector.show();
-	}
+      reportSelector.setHeading(TsFavoriteMessages.INSTANCE.importReportText());
+      reportSelector.setHeaderIcon(BaseIcon.REPORT_ADD);
+      reportSelector.setClosable(true);
+      reportSelector.setOnEsc(true);
+
+      reportSelector.setEventHandler(new ReportSelectionDialogEventHandler() {
+
+         @Override
+         public boolean handleSubmit(ReportContainerDto container) {
+            return false;
+         }
+
+         @Override
+         public void handleDoubleClick(final ReportContainerDto report, ReportSelectionRepositoryProviderHook hooker,
+               NativeEvent event, Object... info) {
+            createMenu(report.getReport()).showAt(event.getClientX(), event.getClientY());
+         }
+
+         @Override
+         public Menu getContextMenuFor(final ReportContainerDto report, ReportSelectionRepositoryProviderHook hooker,
+               final Object... info) {
+            return createMenu(report.getReport());
+         }
+
+         private Menu createMenu(final ReportDto report) {
+            final Menu menu = new DwMenu();
+
+            MenuItem addReference = new DwMenuItem(TsFavoriteMessages.INSTANCE.newReference(), BaseIcon.REPORT_LINK);
+            menu.add(addReference);
+            addReference.addSelectionHandler(event -> mainComponent.importReport(report, false, true));
+
+            if (report instanceof ReportVariantDto) {
+               MenuItem addCopy = new DwMenuItem(TsFavoriteMessages.INSTANCE.newCopy(), BaseIcon.REPORT_ADD);
+               menu.add(addCopy);
+               addCopy.addSelectionHandler(event -> mainComponent.importReport(report, true, false));
+            }
+
+            return menu;
+         }
+      });
+
+      reportSelector.show();
+   }
 
 }

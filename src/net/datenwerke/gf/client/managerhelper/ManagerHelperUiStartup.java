@@ -9,13 +9,11 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class ManagerHelperUiStartup {
 
-	@Inject
-	public ManagerHelperUiStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<BaseTreeComponentsForTreeNavToolbarHooker> baseTreeComponentsHooker
-		){
-		
-		hookHandler.attachHooker(ManagerHelperTreeToolbarEnhancerHook.class, baseTreeComponentsHooker);
-	}
+   @Inject
+   public ManagerHelperUiStartup(HookHandlerService hookHandler,
+
+         Provider<BaseTreeComponentsForTreeNavToolbarHooker> baseTreeComponentsHooker) {
+
+      hookHandler.attachHooker(ManagerHelperTreeToolbarEnhancerHook.class, baseTreeComponentsHooker);
+   }
 }

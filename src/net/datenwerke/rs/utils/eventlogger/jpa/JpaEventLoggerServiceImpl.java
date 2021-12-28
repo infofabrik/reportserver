@@ -9,14 +9,10 @@ import net.datenwerke.rs.utils.eventlogger.EventLoggerService;
 
 public class JpaEventLoggerServiceImpl extends DwDaemonServiceImpl<JpaEventLoggerDaemon> implements EventLoggerService {
 
-	@Inject
-	public JpaEventLoggerServiceImpl(
-		Provider<JpaEventLoggerDaemon> daemonProvider,
-		Provider<DwDaemonWatchdog> watchdogProvider
-		){
-		super(daemonProvider, watchdogProvider);
-	}
-	
-	
-	
+   @Inject
+   public JpaEventLoggerServiceImpl(Provider<JpaEventLoggerDaemon> daemonProvider,
+         Provider<DwDaemonWatchdog> watchdogProvider) {
+      super(daemonProvider, watchdogProvider);
+   }
+
 }

@@ -13,6 +13,4 @@ import net.datenwerke.security.client.security.dto.RightDto;
 @CorrespondingPoso(net.datenwerke.security.service.security.rights.Right.class)
 public interface RightDtoPA extends PropertyAccess<RightDto> {
 
-
-
 }

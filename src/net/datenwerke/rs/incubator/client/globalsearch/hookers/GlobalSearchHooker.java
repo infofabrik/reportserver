@@ -68,249 +68,239 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class GlobalSearchHooker implements HomepageHeaderContentHook {
 
-	@CssClassConstant
-	public static final String CSS_NAME_COMBO = "rs-search-box";
+   @CssClassConstant
+   public static final String CSS_NAME_COMBO = "rs-search-box";
 
-	@CssClassConstant
-	public static final String CSS_NAME_ICON = "rs-search-box-icon";
-	
-	private NativeEvent currentNativeEvent;
+   @CssClassConstant
+   public static final String CSS_NAME_ICON = "rs-search-box-icon";
 
-	@FormatterFactories(@FormatterFactory(factory=NullSafeFormatter.class,methods=@FormatterFactoryMethod(name="nullsafe")))
-	interface GlobalSearchTemplates extends XTemplates {
-		@XTemplate("<div class=\"rs-search-li\">" +
-				"<div class=\"rs-search-li-icon\"><i class=\"{icon}\"></i></div>" +
-				"<div class=\"rs-search-li-info\">" +
-				"<div class=\"rs-search-li-title\">{entry.title:nullsafe}" +
-				"<tpl for=\"entry.links\">" +
-				"<tpl if=\"# == 1\">" +
-				" ({historyLinkBuilderName})" +
-				"</tpl>" +
-				"</tpl>" +
-				"</div>" +
-				"</div>" +
-				"<div class=\"rs-search-li-done\"></div>" +
-				"</div>")
-		public SafeHtml render(SearchResultEntryDto entry, String icon); 
-	}
+   private NativeEvent currentNativeEvent;
 
-	private final SearchDao searcher;
-	private final SearchUiService searchService;
-	private final HistoryUiService historyService;
+   @FormatterFactories(@FormatterFactory(factory = NullSafeFormatter.class, methods = @FormatterFactoryMethod(name = "nullsafe")))
+   interface GlobalSearchTemplates extends XTemplates {
+      @XTemplate("<div class=\"rs-search-li\">" + "<div class=\"rs-search-li-icon\"><i class=\"{icon}\"></i></div>"
+            + "<div class=\"rs-search-li-info\">" + "<div class=\"rs-search-li-title\">{entry.title:nullsafe}"
+            + "<tpl for=\"entry.links\">" + "<tpl if=\"# == 1\">" + " ({historyLinkBuilderName})" + "</tpl>" + "</tpl>"
+            + "</div>" + "</div>" + "<div class=\"rs-search-li-done\"></div>" + "</div>")
+      public SafeHtml render(SearchResultEntryDto entry, String icon);
+   }
 
-	private HTML icon;
-	
-	@Inject
-	public GlobalSearchHooker(
-			SearchDao searcher,
-			HistoryUiService historyService,
-			SearchUiService searchService
-			){
+   private final SearchDao searcher;
+   private final SearchUiService searchService;
+   private final HistoryUiService historyService;
 
-		/* store objects */
-		this.searcher = searcher;
-		this.historyService = historyService;
-		this.searchService = searchService;
-	}
+   private HTML icon;
 
+   @Inject
+   public GlobalSearchHooker(SearchDao searcher, HistoryUiService historyService, SearchUiService searchService) {
 
+      /* store objects */
+      this.searcher = searcher;
+      this.historyService = historyService;
+      this.searchService = searchService;
+   }
 
-	@Override
-	public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(final HBoxLayoutContainer container) {
-		RpcProxy<SearchLoadConfig, SearchResultListDto> proxy = new RpcProxy<SearchLoadConfig, SearchResultListDto>() {
-			@Override
-			public void load(SearchLoadConfig loadConfig, AsyncCallback<SearchResultListDto> callback) {
-				String query = loadConfig.getQuery();
-				if(null != query && query.length() > 1){
-					query = searchService.enhanceQuery(query);
-					searcher.find(query, callback);
-				}
-			}
-		};
+   @Override
+   public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(final HBoxLayoutContainer container) {
+      RpcProxy<SearchLoadConfig, SearchResultListDto> proxy = new RpcProxy<SearchLoadConfig, SearchResultListDto>() {
+         @Override
+         public void load(SearchLoadConfig loadConfig, AsyncCallback<SearchResultListDto> callback) {
+            String query = loadConfig.getQuery();
+            if (null != query && query.length() > 1) {
+               query = searchService.enhanceQuery(query);
+               searcher.find(query, callback);
+            }
+         }
+      };
 
-		DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto> reader = new DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto>() {
-			@Override
-			public PagingLoadResult<SearchResultEntryDto> read(Object loadConfig, SearchResultListDto data) {
-				if( data.getTotalLength() > 0)
-					return new PagingLoadResultBean<SearchResultEntryDto>(data.getData(), data.getTotalLength(), data.getOffset());
-				List<SearchResultEntryDto> emptyList = new ArrayList<SearchResultEntryDto>();
-				emptyList.add(new EmptySearchResultDto(GlobalSearchMessages.INSTANCE.noResultTitle(), GlobalSearchMessages.INSTANCE.noResultDesc(), BaseIcon.EXCLAMATION.toString()));
-				return new PagingLoadResultBean<SearchResultEntryDto>(emptyList, data.getTotalLength(), data.getOffset());
-			}
-		};
+      DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto> reader = new DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto>() {
+         @Override
+         public PagingLoadResult<SearchResultEntryDto> read(Object loadConfig, SearchResultListDto data) {
+            if (data.getTotalLength() > 0)
+               return new PagingLoadResultBean<SearchResultEntryDto>(data.getData(), data.getTotalLength(),
+                     data.getOffset());
+            List<SearchResultEntryDto> emptyList = new ArrayList<SearchResultEntryDto>();
+            emptyList.add(new EmptySearchResultDto(GlobalSearchMessages.INSTANCE.noResultTitle(),
+                  GlobalSearchMessages.INSTANCE.noResultDesc(), BaseIcon.EXCLAMATION.toString()));
+            return new PagingLoadResultBean<SearchResultEntryDto>(emptyList, data.getTotalLength(), data.getOffset());
+         }
+      };
 
+      PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>> listLoader = new PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>>(
+            proxy, reader);
 
-		PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>> listLoader = new PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>>(proxy, reader);
+      ListStore<SearchResultEntryDto> store = new ListStore<SearchResultEntryDto>(
+            SearchResultEntryDtoPA.INSTANCE.dtoId());
+      listLoader.addLoadHandler(
+            new LoadResultListStoreBinding<SearchLoadConfig, SearchResultEntryDto, PagingLoadResult<SearchResultEntryDto>>(
+                  store));
 
-		ListStore<SearchResultEntryDto> store = new ListStore<SearchResultEntryDto>(SearchResultEntryDtoPA.INSTANCE.dtoId());
-		listLoader.addLoadHandler(new LoadResultListStoreBinding<SearchLoadConfig, SearchResultEntryDto, PagingLoadResult<SearchResultEntryDto>>(store));
+      final GlobalSearchTemplates template = GWT.create(GlobalSearchTemplates.class);
 
-		final GlobalSearchTemplates template = GWT.create(GlobalSearchTemplates.class);
+      ListView<SearchResultEntryDto, SearchResultEntryDto> view = new ListView<SearchResultEntryDto, SearchResultEntryDto>(
+            store, new IdentityValueProvider<SearchResultEntryDto>());
+      view.setCell(new AbstractCell<SearchResultEntryDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, SearchResultEntryDto value,
+               SafeHtmlBuilder sb) {
+            sb.append(template.render(value, BaseIcon.from(value.getIconSmall()).getCssName()));
+         }
+      });
 
-		ListView<SearchResultEntryDto, SearchResultEntryDto> view = new ListView<SearchResultEntryDto, SearchResultEntryDto>(store, new IdentityValueProvider<SearchResultEntryDto>());
-		view.setCell(new AbstractCell<SearchResultEntryDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					SearchResultEntryDto value, SafeHtmlBuilder sb) {
-				sb.append(template.render(value, BaseIcon.from(value.getIconSmall()).getCssName()));
-			}
-		});
+      final DwComboBox<SearchResultEntryDto> combo = new DwComboBox<SearchResultEntryDto>(
+            new ComboBoxCell<SearchResultEntryDto>(store, new DisplayTitleLabelProvider<SearchResultEntryDto>(), view) {
 
-		final DwComboBox<SearchResultEntryDto> combo = new DwComboBox<SearchResultEntryDto>(new ComboBoxCell<SearchResultEntryDto>(store, new DisplayTitleLabelProvider<SearchResultEntryDto>(), view){
+               /*
+                * gxt workarround http://www.sencha.com/forum/showthread.php?185967
+                */
+               @Override
+               protected PagingLoadConfig getParams(String query) {
+                  SearchLoadConfig config = null;
+                  if (loader.isReuseLoadConfig()) {
+                     config = (SearchLoadConfig) loader.getLastLoadConfig();
+                  } else {
+                     config = new SearchLoadConfigBean();
+                  }
+                  config.setLimit(pageSize);
+                  config.setOffset(0);
+                  config.setQuery(query);
 
-			/* gxt workarround
-			 * http://www.sencha.com/forum/showthread.php?185967
-			 * */
-			@Override
-			protected PagingLoadConfig getParams(String query) {
-				SearchLoadConfig config = null;
-				if (loader.isReuseLoadConfig()) {
-					config = (SearchLoadConfig) loader.getLastLoadConfig();
-				} else {
-					config = new SearchLoadConfigBean();
-				}
-				config.setLimit(pageSize);
-				config.setOffset(0);
-				config.setQuery(query);
+                  return config;
+               }
 
-				return config;
-			}
-			@Override
-			protected void onViewClick(XElement parent, NativeEvent event, boolean focus, boolean takeSelected) {
-				currentNativeEvent = event;
-				super.onViewClick(parent, event, focus, takeSelected);
-			}
+               @Override
+               protected void onViewClick(XElement parent, NativeEvent event, boolean focus, boolean takeSelected) {
+                  currentNativeEvent = event;
+                  super.onViewClick(parent, event, focus, takeSelected);
+               }
 
-		});
-		combo.setTriggerIcon(BaseIcon.SEARCH);
-		
-		combo.setWidth(200); 
-		combo.addStyleName(CSS_NAME_COMBO);
-		combo.setLoader(listLoader);
+            });
+      combo.setTriggerIcon(BaseIcon.SEARCH);
 
-		combo.setEmptyText(GlobalSearchMessages.INSTANCE.emptyText());
-		combo.setMinListWidth(400);
-		combo.setMinChars(3);
-		
-		combo.addTriggerClickHandler(new TriggerClickHandler() {
-			
-			@Override
-			public void onTriggerClick(TriggerClickEvent event) {
-				searchService.runSearch(searchService.enhanceQuery(combo.getText()));
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					
-					@Override
-					public void execute() {
-						combo.fireEvent(new BlurEvent());
-					}
-				});
-			}
-		});
+      combo.setWidth(200);
+      combo.addStyleName(CSS_NAME_COMBO);
+      combo.setLoader(listLoader);
 
-		combo.addSelectionHandler(new SelectionHandler<SearchResultEntryDto>() {
+      combo.setEmptyText(GlobalSearchMessages.INSTANCE.emptyText());
+      combo.setMinListWidth(400);
+      combo.setMinChars(3);
 
-			@Override
-			public void onSelection(SelectionEvent<SearchResultEntryDto> event) {
-				combo.clear();
-				
-				if(currentNativeEvent.getCtrlKey()){
-					return;
-				}
+      combo.addTriggerClickHandler(new TriggerClickHandler() {
 
-				SearchResultEntryDto selection = event.getSelectedItem();
-				combo.clear();
+         @Override
+         public void onTriggerClick(TriggerClickEvent event) {
+            searchService.runSearch(searchService.enhanceQuery(combo.getText()));
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-				if(null == selection)
-					return;
-				SearchResultEntryDto result = selection;
-				if(null == result || result instanceof EmptySearchResultDto)
-					return;
+               @Override
+               public void execute() {
+                  combo.fireEvent(new BlurEvent());
+               }
+            });
+         }
+      });
 
-				NativeEvent e = currentNativeEvent;
+      combo.addSelectionHandler(new SelectionHandler<SearchResultEntryDto>() {
 
-				if(result.getLinks().size() == 1 || (null != e && e.getButton() != NativeEvent.BUTTON_RIGHT))
-					fire(result);
-				else {
-					Menu menu = new DwMenu();
+         @Override
+         public void onSelection(SelectionEvent<SearchResultEntryDto> event) {
+            combo.clear();
 
-					for(final HistoryLinkDto link : result.getLinks()){
-						MenuItem linkItem = new DwMenuItem(link.getHistoryLinkBuilderName(), BaseIcon.from(link.getHistoryLinkBuilderIcon()));
-						linkItem.addSelectionHandler(new SelectionHandler<Item>() {
-							@Override
-							public void onSelection(SelectionEvent<Item> event) {
-								historyService.fire(link);
-							}
-						});
-						menu.add(linkItem);
-					}
+            if (currentNativeEvent.getCtrlKey()) {
+               return;
+            }
 
-					int x = e.getClientX();
-					int y = e.getClientY();
-					menu.showAt(x, y);
-				}
+            SearchResultEntryDto selection = event.getSelectedItem();
+            combo.clear();
 
-				Scheduler.get().scheduleDeferred(new ScheduledCommand(){
-					@Override
-					public void execute() {
-						combo.clear();
-						combo.setText("");
-					}
-				});
-			}
-		});
-		
-		combo.addBlurHandler(new BlurHandler() {
-			
-			@Override
-			public void onBlur(BlurEvent event) {
-				int index = container.getWidgetIndex(combo);
-				if(-1 != index){
-					combo.clear();
-					container.insert(icon, index);
-					container.remove(combo);
-					container.forceLayout();
-				}
-			}
-		});
-		
-		combo.setLayoutData(new MarginData(0,5,0,0));
+            if (null == selection)
+               return;
+            SearchResultEntryDto result = selection;
+            if (null == result || result instanceof EmptySearchResultDto)
+               return;
 
-		icon = new HTML(BaseIcon.SEARCH.toSafeHtml());
-		icon.setStyleName(CSS_NAME_ICON);
-		icon.addClickHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				container.insert(combo, container.getWidgetIndex(icon));
-				container.remove(icon);
-				combo.focus();
-				container.forceLayout();
-			}
-		});
-		
-		
-		return new DwMainViewportTopBarWidget() {
+            NativeEvent e = currentNativeEvent;
 
-			@Override
-			public Widget getComponent() {
-				return icon;
-			}
-			
-			@Override
-			public int getSize() {
-				return 20;
-			}
-		};
-	}
+            if (result.getLinks().size() == 1 || (null != e && e.getButton() != NativeEvent.BUTTON_RIGHT))
+               fire(result);
+            else {
+               Menu menu = new DwMenu();
 
+               for (final HistoryLinkDto link : result.getLinks()) {
+                  MenuItem linkItem = new DwMenuItem(link.getHistoryLinkBuilderName(),
+                        BaseIcon.from(link.getHistoryLinkBuilderIcon()));
+                  linkItem.addSelectionHandler(new SelectionHandler<Item>() {
+                     @Override
+                     public void onSelection(SelectionEvent<Item> event) {
+                        historyService.fire(link);
+                     }
+                  });
+                  menu.add(linkItem);
+               }
 
-	protected void fire(SearchResultEntryDto result) {
-		for(HistoryLinkDto link : result.getLinks()){
-			historyService.fire(link);
-			break;
-		}
-	}
+               int x = e.getClientX();
+               int y = e.getClientY();
+               menu.showAt(x, y);
+            }
 
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+               @Override
+               public void execute() {
+                  combo.clear();
+                  combo.setText("");
+               }
+            });
+         }
+      });
 
+      combo.addBlurHandler(new BlurHandler() {
+
+         @Override
+         public void onBlur(BlurEvent event) {
+            int index = container.getWidgetIndex(combo);
+            if (-1 != index) {
+               combo.clear();
+               container.insert(icon, index);
+               container.remove(combo);
+               container.forceLayout();
+            }
+         }
+      });
+
+      combo.setLayoutData(new MarginData(0, 5, 0, 0));
+
+      icon = new HTML(BaseIcon.SEARCH.toSafeHtml());
+      icon.setStyleName(CSS_NAME_ICON);
+      icon.addClickHandler(new ClickHandler() {
+
+         @Override
+         public void onClick(ClickEvent event) {
+            container.insert(combo, container.getWidgetIndex(icon));
+            container.remove(icon);
+            combo.focus();
+            container.forceLayout();
+         }
+      });
+
+      return new DwMainViewportTopBarWidget() {
+
+         @Override
+         public Widget getComponent() {
+            return icon;
+         }
+
+         @Override
+         public int getSize() {
+            return 20;
+         }
+      };
+   }
+
+   protected void fire(SearchResultEntryDto result) {
+      for (HistoryLinkDto link : result.getLinks()) {
+         historyService.fire(link);
+         break;
+      }
+   }
 
 }

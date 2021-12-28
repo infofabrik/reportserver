@@ -6,42 +6,35 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.grideditor.service.grideditor.locale.GridEditorMessages;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.grideditor.client.grideditor.dto",
-	generateDto2Poso=false,
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", generateDto2Poso = false, createDecorator = true)
 public class MinDateValidator extends Validator<Date> {
 
-	@ExposeToClient
-	private Date minDate;
-	
-	public MinDateValidator(){
-	}
+   @ExposeToClient
+   private Date minDate;
 
-	public MinDateValidator(Date maxDate, String errorMsg){
-		setMinDate(maxDate);
-		setErrorMsg(errorMsg);
-	}
+   public MinDateValidator() {
+   }
 
-	public Date getMinDate() {
-		return minDate;
-	}
+   public MinDateValidator(Date maxDate, String errorMsg) {
+      setMinDate(maxDate);
+      setErrorMsg(errorMsg);
+   }
 
-	public void setMinDate(Date minDate) {
-		this.minDate = minDate;
-	}
+   public Date getMinDate() {
+      return minDate;
+   }
 
-	@Override
-	public String validate(Date d) {
-		if(null == d)
-			return null;
-		
-		return minDate.before(d) ? null :
-				(null == getErrorMsg() ? GridEditorMessages.INSTANCE.validationFailedDefaultMessage() : getErrorMsg());
-	}
-	
+   public void setMinDate(Date minDate) {
+      this.minDate = minDate;
+   }
 
-	
-	
+   @Override
+   public String validate(Date d) {
+      if (null == d)
+         return null;
+
+      return minDate.before(d) ? null
+            : (null == getErrorMsg() ? GridEditorMessages.INSTANCE.validationFailedDefaultMessage() : getErrorMsg());
+   }
+
 }

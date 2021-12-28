@@ -20,37 +20,36 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteMenuHo
 
 public class ScheduleAsFileUiStartup {
 
-	@Inject
-	public ScheduleAsFileUiStartup(
-		final HookHandlerService hookHandler,
-		
-		Provider<TeamSpaceExportSnippetProviderHook> teamspaceExportSnippetProvider,
-		Provider<HandleExecutedReportFileHooker> handleExecutedFileProvider,
-		
-		Provider<ExecutedReportObjectInfoHooker> executedReportObjectInfo,
-		Provider<TSMenuDownloadHooker> tsMenuDownloadHooker, 
-		
-		Provider<TeamspaceFilter> teamSpaceFilter,
-		
-		final Provider<ExportToTeamSpaceHooker> exportToTeamSpaceHooker,
-		
-		final WaitOnEventUIService waitOnEventService
-		){
-		
-		hookHandler.attachHooker(ScheduledReportListFilter.class, teamSpaceFilter);
-		
-		/* export */
-		hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToTeamSpaceHooker, HookHandlerService.PRIORITY_HIGH + 30);
+   @Inject
+   public ScheduleAsFileUiStartup(final HookHandlerService hookHandler,
 
-		hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, teamspaceExportSnippetProvider, HookHandlerService.PRIORITY_HIGH + 10);
-		
-		hookHandler.attachHooker(GeneralReferenceHandlerHook.class, handleExecutedFileProvider);
-		
-		hookHandler.attachHooker(TsFavoriteMenuHook.class, tsMenuDownloadHooker);
-		
-		/* object info */
-		hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, executedReportObjectInfo);
+         Provider<TeamSpaceExportSnippetProviderHook> teamspaceExportSnippetProvider,
+         Provider<HandleExecutedReportFileHooker> handleExecutedFileProvider,
 
+         Provider<ExecutedReportObjectInfoHooker> executedReportObjectInfo,
+         Provider<TSMenuDownloadHooker> tsMenuDownloadHooker,
 
-	}
+         Provider<TeamspaceFilter> teamSpaceFilter,
+
+         final Provider<ExportToTeamSpaceHooker> exportToTeamSpaceHooker,
+
+         final WaitOnEventUIService waitOnEventService) {
+
+      hookHandler.attachHooker(ScheduledReportListFilter.class, teamSpaceFilter);
+
+      /* export */
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToTeamSpaceHooker,
+            HookHandlerService.PRIORITY_HIGH + 30);
+
+      hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, teamspaceExportSnippetProvider,
+            HookHandlerService.PRIORITY_HIGH + 10);
+
+      hookHandler.attachHooker(GeneralReferenceHandlerHook.class, handleExecutedFileProvider);
+
+      hookHandler.attachHooker(TsFavoriteMenuHook.class, tsMenuDownloadHooker);
+
+      /* object info */
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, executedReportObjectInfo);
+
+   }
 }

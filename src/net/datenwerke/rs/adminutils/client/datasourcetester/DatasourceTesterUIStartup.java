@@ -7,14 +7,12 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class DatasourceTesterUIStartup {
 
-	@Inject
-	public DatasourceTesterUIStartup(
-		HookHandlerService hookHandler,
-		
-		DatasourceTesterToolbarConfigurator toolbarConfigurator
-		){
-		
-		/* attach configurator */
-        hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, toolbarConfigurator);
-	}
+   @Inject
+   public DatasourceTesterUIStartup(HookHandlerService hookHandler,
+
+         DatasourceTesterToolbarConfigurator toolbarConfigurator) {
+
+      /* attach configurator */
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, toolbarConfigurator);
+   }
 }

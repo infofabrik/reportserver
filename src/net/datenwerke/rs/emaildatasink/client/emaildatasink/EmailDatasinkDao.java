@@ -30,8 +30,8 @@ public class EmailDatasinkDao extends Dao implements HasDefaultDatasink {
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
          List<StrippedDownUser> recipients, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, subject, message, compressed,
-            recipients, transformAndKeepCallback(callback));
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, subject,
+            message, compressed, recipients, transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
@@ -41,15 +41,17 @@ public class EmailDatasinkDao extends Dao implements HasDefaultDatasink {
    public Request testEmailDatasink(EmailDatasinkDto emailDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testEmailDatasink(emailDatasinkDto, transformAndKeepCallback(callback));
    }
-   
+
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String name,
-         String folder, boolean compressed, String subject, String message, List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(abstractNodeDto, datasinkDto, name, folder, compressed, subject, message, recipients, transformAndKeepCallback(callback));
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String name, String folder, boolean compressed, String subject, String message,
+         List<StrippedDownUser> recipients, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(abstractNodeDto, datasinkDto, name, folder, compressed, subject, message,
+            recipients, transformAndKeepCallback(callback));
    }
 
 }

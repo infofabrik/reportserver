@@ -70,20 +70,11 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    private final Provider<FtpsService> ftpsServiceProvider;
 
    @Inject
-   public FtpRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         FtpService ftpService, 
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<SftpService> sftpServiceProvider,
-         Provider<FtpsService> ftpsServiceProvider
-         ) {
+   public FtpRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, FtpService ftpService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider,
+         Provider<SftpService> sftpServiceProvider, Provider<FtpsService> ftpsServiceProvider) {
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
       this.dtoService = dtoService;
@@ -99,11 +90,12 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof FtpDatasinkDto))
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
+      if (!(datasinkDto instanceof FtpDatasinkDto))
          throw new IllegalArgumentException("Not a FTP datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       FtpDatasink ftpDatasink = (FtpDatasink) dtoService.loadPoso(datasinkDto);
@@ -132,26 +124,26 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), ftpDatasink, ftpService,
                      new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), ftpDatasink,
-                  ftpService, new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), ftpDatasink, ftpService,
+                  new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFolder() {
@@ -225,14 +217,14 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    }
 
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, ftpService, filename,
-        folder, compressed);
-      
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, ftpService, filename, folder,
+            compressed);
+
    }
 
    @Override
@@ -241,7 +233,7 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(ftpService));
       configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(sftpServiceProvider.get()));
       configs.putAll(datasinkServiceProvider.get().getEnabledConfigs(ftpsServiceProvider.get()));
-      
+
       return configs;
    }
 }

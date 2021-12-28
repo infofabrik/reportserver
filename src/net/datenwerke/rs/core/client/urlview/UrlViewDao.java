@@ -11,15 +11,15 @@ import net.datenwerke.rs.core.client.urlview.rpc.UrlViewRpcServiceAsync;
 
 public class UrlViewDao extends Dao {
 
-	private final UrlViewRpcServiceAsync rpcService;
+   private final UrlViewRpcServiceAsync rpcService;
 
-	@Inject
-	public UrlViewDao(UrlViewRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void loadViewConfiguration(AsyncCallback<Map<String,Map<String, List<String[]>>>> callback){
-		rpcService.loadViewConfiguration(transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public UrlViewDao(UrlViewRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void loadViewConfiguration(AsyncCallback<Map<String, Map<String, List<String[]>>>> callback) {
+      rpcService.loadViewConfiguration(transformAndKeepCallback(callback));
+   }
+
 }

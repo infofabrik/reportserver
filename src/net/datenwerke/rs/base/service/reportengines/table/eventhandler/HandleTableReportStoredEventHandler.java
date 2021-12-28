@@ -13,37 +13,35 @@ import net.datenwerke.security.service.eventlogger.jpa.PersistEntityEvent;
 
 public class HandleTableReportStoredEventHandler implements EventHandler<JpaEvent> {
 
-	private final TableReportUtilsImpl service;
-	
-	@Inject
-	public HandleTableReportStoredEventHandler(TableReportUtilsImpl service) {
-		this.service = service;
-	}
+   private final TableReportUtilsImpl service;
 
-	@Override
-	public void handle(JpaEvent event) {
-		if(! (event instanceof PersistEntityEvent) && !(event instanceof MergeEntityEvent))
-			return;
-		
-		Object obj = event.getObject();
-		if(! (obj instanceof TableReport))
-			return;
-		
-		TableReport report = (TableReport) obj;
-		
-		/* persist additional columns */
-		if(null != report.getAdditionalColumns())
-			for(AdditionalColumnSpec spec : report.getAdditionalColumns())
-				if(null == spec.getId())
-					service.persist(spec);
-		
-		/* persist columns */
-		if(null != report.getAdditionalColumns())
-			for(Column col : report.getColumns())
-				if(null == col.getId())
-					service.persist(col);
-	}
+   @Inject
+   public HandleTableReportStoredEventHandler(TableReportUtilsImpl service) {
+      this.service = service;
+   }
 
+   @Override
+   public void handle(JpaEvent event) {
+      if (!(event instanceof PersistEntityEvent) && !(event instanceof MergeEntityEvent))
+         return;
 
+      Object obj = event.getObject();
+      if (!(obj instanceof TableReport))
+         return;
+
+      TableReport report = (TableReport) obj;
+
+      /* persist additional columns */
+      if (null != report.getAdditionalColumns())
+         for (AdditionalColumnSpec spec : report.getAdditionalColumns())
+            if (null == spec.getId())
+               service.persist(spec);
+
+      /* persist columns */
+      if (null != report.getAdditionalColumns())
+         for (Column col : report.getColumns())
+            if (null == col.getId())
+               service.persist(col);
+   }
 
 }

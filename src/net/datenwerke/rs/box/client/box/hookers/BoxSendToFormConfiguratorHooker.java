@@ -33,7 +33,7 @@ public class BoxSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return BoxUiModule.NAME;
@@ -43,7 +43,7 @@ public class BoxSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public BaseIcon getIcon() {
       return BoxUiModule.ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;

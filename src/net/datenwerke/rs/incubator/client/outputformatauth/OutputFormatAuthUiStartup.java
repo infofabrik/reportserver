@@ -9,13 +9,11 @@ import net.datenwerke.rs.incubator.client.outputformatauth.hookers.ExportOptionV
 
 public class OutputFormatAuthUiStartup {
 
-	@Inject
-	public OutputFormatAuthUiStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ExportOptionVetoer> exportVetoer
-		){
-		
-		hookHandler.attachHooker(VetoReportExporterHook.class, exportVetoer);
-	}
+   @Inject
+   public OutputFormatAuthUiStartup(HookHandlerService hookHandler,
+
+         Provider<ExportOptionVetoer> exportVetoer) {
+
+      hookHandler.attachHooker(VetoReportExporterHook.class, exportVetoer);
+   }
 }

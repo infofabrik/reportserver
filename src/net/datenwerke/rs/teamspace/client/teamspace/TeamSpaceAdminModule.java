@@ -16,34 +16,32 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class TeamSpaceAdminModule implements AdminModule {
 
-	final private Provider<TeamSpaceManagerPanel> managerPanelanelProvider;
-	
-	@Inject
-	public TeamSpaceAdminModule(
-		Provider<TeamSpaceManagerPanel> managerPanelanelProvider
-		){
-		
-		/* store objects */
-		this.managerPanelanelProvider = managerPanelanelProvider;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.GROUP_EDIT.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return TeamSpaceMessages.INSTANCE.clientModuleName();
-	}
+   final private Provider<TeamSpaceManagerPanel> managerPanelanelProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return managerPanelanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-		
-	}
+   @Inject
+   public TeamSpaceAdminModule(Provider<TeamSpaceManagerPanel> managerPanelanelProvider) {
+
+      /* store objects */
+      this.managerPanelanelProvider = managerPanelanelProvider;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.GROUP_EDIT.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return TeamSpaceMessages.INSTANCE.clientModuleName();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return managerPanelanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+
+   }
 }

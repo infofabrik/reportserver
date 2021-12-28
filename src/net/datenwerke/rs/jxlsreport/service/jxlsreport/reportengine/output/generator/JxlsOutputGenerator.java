@@ -10,9 +10,9 @@ import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport;
 
-
 public interface JxlsOutputGenerator extends ReportOutputGenerator {
-	
-	public CompiledReport exportReport(OutputStream os, byte[] template, Connection connection, JxlsReport jxlsReport, ParameterSet parameters, String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException;
+
+   public CompiledReport exportReport(OutputStream os, byte[] template, Connection connection, JxlsReport jxlsReport,
+         ParameterSet parameters, String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException;
 
 }

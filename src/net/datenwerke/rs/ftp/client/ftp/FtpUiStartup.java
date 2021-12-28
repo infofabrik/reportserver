@@ -44,11 +44,9 @@ public class FtpUiStartup {
    private static final int SFTP_PRIO = HookHandlerService.PRIORITY_LOW + 10;
    private static final int FTPS_PRIO = HookHandlerService.PRIORITY_LOW + 15;
    private static final int FTP_PRIO = HookHandlerService.PRIORITY_LOW + 20;
-   
+
    @Inject
-   public FtpUiStartup(
-         final HookHandlerService hookHandler, 
-         final Provider<ExportToFtpHooker> exportToFtpHooker,
+   public FtpUiStartup(final HookHandlerService hookHandler, final Provider<ExportToFtpHooker> exportToFtpHooker,
          final Provider<FileExportToFtpHooker> fileExportToFtpDatasinkHooker,
          final Provider<FtpExportSnippetProvider> ftpExportSnippetProvider,
          final Provider<SftpExportSnippetProvider> sftpExportSnippetProvider,
@@ -60,8 +58,7 @@ public class FtpUiStartup {
          final Provider<FtpDatasinkConfigProviderHooker> ftpTreeConfiguratorProvider,
          final Provider<SftpDatasinkConfigProviderHooker> sftpTreeConfiguratorProvider,
          final Provider<FtpsDatasinkConfigProviderHooker> ftpsTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, 
-         final FtpDao dao,
+         final WaitOnEventUIService waitOnEventService, final FtpDao dao,
          final FtpDatasinkTesterToolbarConfigurator ftpTestToolbarConfigurator,
          final SftpDatasinkTesterToolbarConfigurator sftpTestToolbarConfigurator,
          final FtpsDatasinkTesterToolbarConfigurator ftpsTestToolbarConfigurator,
@@ -69,56 +66,45 @@ public class FtpUiStartup {
          final SftpPublicKeyAuthenticatorHooker sftpPublicKeyAuthenticator,
          final FtpsUsernamePasswordAuthenticatorHooker ftpsUsernamePasswordAuthenticator,
          final FtpUiService ftpUiService,
-         
+
          final Provider<FtpSendToFormConfiguratorHooker> ftpSendToConfigHookProvider,
          final Provider<SftpSendToFormConfiguratorHooker> sftpSendToConfigHookProvider,
-         final Provider<FtpsSendToFormConfiguratorHooker> ftpsSendToConfigHookProvider
-         ) {
+         final Provider<FtpsSendToFormConfiguratorHooker> ftpsSendToConfigHookProvider) {
 
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, ftpSendToConfigHookProvider.get());
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sftpSendToConfigHookProvider.get());
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, ftpsSendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sftpTreeConfiguratorProvider.get(), 
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, sftpTreeConfiguratorProvider.get(),
             SFTP_PRIO);
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpsTreeConfiguratorProvider.get(), 
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpsTreeConfiguratorProvider.get(),
             FTPS_PRIO);
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpTreeConfiguratorProvider.get(), 
-            FTP_PRIO);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, ftpTreeConfiguratorProvider.get(), FTP_PRIO);
 
       /* SFTP authenticators */
-      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, sftpUsernamePasswordAuthenticator, 
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, sftpUsernamePasswordAuthenticator,
             HookHandlerService.PRIORITY_MEDIUM);
-      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, sftpPublicKeyAuthenticator, 
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, sftpPublicKeyAuthenticator,
             HookHandlerService.PRIORITY_MEDIUM + 10);
-      
-      /* FTPS authenticators */        
-      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, ftpsUsernamePasswordAuthenticator, 
-            HookHandlerService.PRIORITY_MEDIUM);        
+
+      /* FTPS authenticators */
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, ftpsUsernamePasswordAuthenticator,
+            HookHandlerService.PRIORITY_MEDIUM);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSftpHooker,
-            SFTP_PRIO);
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpsHooker,
-            FTPS_PRIO);
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpHooker,
-            FTP_PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToSftpDatasinkHooker,
-            SFTP_PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpsDatasinkHooker,
-            FTPS_PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpDatasinkHooker,
-            FTP_PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToSftpHooker, SFTP_PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpsHooker, FTPS_PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToFtpHooker, FTP_PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToSftpDatasinkHooker, SFTP_PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpsDatasinkHooker, FTPS_PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToFtpDatasinkHooker, FTP_PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, ftpTestToolbarConfigurator,
-            SFTP_PRIO);
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sftpTestToolbarConfigurator,
-            FTPS_PRIO);
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, ftpsTestToolbarConfigurator,
-            FTP_PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, ftpTestToolbarConfigurator, SFTP_PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, sftpTestToolbarConfigurator, FTPS_PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, ftpsTestToolbarConfigurator, FTP_PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -126,13 +112,13 @@ public class FtpUiStartup {
          dao.getAllStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-               ((FtpUiServiceImpl)ftpUiService).setEnabledConfigs(result);
+               ((FtpUiServiceImpl) ftpUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SFTP) && result.get(StorageType.SFTP_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, sftpExportSnippetProvider,
                         SFTP_PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, sftpExportSnippetProvider);
-               
+
                if (result.get(StorageType.FTPS) && result.get(StorageType.FTPS_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, ftpsExportSnippetProvider,
                         FTPS_PRIO);
@@ -140,8 +126,7 @@ public class FtpUiStartup {
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, ftpsExportSnippetProvider);
 
                if (result.get(StorageType.FTP) && result.get(StorageType.FTP_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, ftpExportSnippetProvider,
-                        FTP_PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, ftpExportSnippetProvider, FTP_PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, ftpExportSnippetProvider);
             }

@@ -12,19 +12,21 @@ import net.datenwerke.rs.utils.xml.annotations.DisableXMLValidation;
 
 public class XmlRsUtilsModule extends AbstractModule {
 
-	public static final String DISABLE_XML_VALIDATION_PROPERTY = "xmlutils.disablevalidation";
-	
-	@Override
-	protected void configure() {
-		System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
-		
-		bind(XMLUtilsService.class).to(XMLUtilsServiceImpl.class).in(Scopes.SINGLETON);
-	}
-	
-	@Provides @Inject @DisableXMLValidation
-	public boolean providerDisableXMLValidation(ConfigService configService){
-		return configService.getConfigFailsafe("misc/misc.cf").getBoolean(DISABLE_XML_VALIDATION_PROPERTY, false);
-		
-	}
+   public static final String DISABLE_XML_VALIDATION_PROPERTY = "xmlutils.disablevalidation";
+
+   @Override
+   protected void configure() {
+      System.setProperty("javax.xml.transform.TransformerFactory", "net.sf.saxon.TransformerFactoryImpl");
+
+      bind(XMLUtilsService.class).to(XMLUtilsServiceImpl.class).in(Scopes.SINGLETON);
+   }
+
+   @Provides
+   @Inject
+   @DisableXMLValidation
+   public boolean providerDisableXMLValidation(ConfigService configService) {
+      return configService.getConfigFailsafe("misc/misc.cf").getBoolean(DISABLE_XML_VALIDATION_PROPERTY, false);
+
+   }
 
 }

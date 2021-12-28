@@ -5,21 +5,21 @@ import com.sencha.gxt.core.client.util.KeyNav;
 
 public class ExtendedKeyNav extends KeyNav {
 
-	public ExtendedKeyNav() {
-		super();
-	}
-	
-	public ExtendedKeyNav(Widget target) {
-		super(target);
-	}
+   public ExtendedKeyNav() {
+      super();
+   }
 
-	public void onKeyPress(com.google.gwt.dom.client.NativeEvent evt) {
-		if(evt.getCtrlKey() && 65 == evt.getKeyCode()){
-			onSelectAll();
-		}
-	}
+   public ExtendedKeyNav(Widget target) {
+      super(target);
+   }
 
-	protected void onSelectAll() {
-		// implement
-	};
+   public void onKeyPress(com.google.gwt.dom.client.NativeEvent evt) {
+      if (evt.getCtrlKey() && 65 == evt.getKeyCode()) {
+         onSelectAll();
+      }
+   }
+
+   protected void onSelectAll() {
+      // implement
+   };
 }

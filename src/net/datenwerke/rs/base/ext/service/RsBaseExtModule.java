@@ -9,15 +9,15 @@ import net.datenwerke.rs.base.ext.service.reportmanager.vfs.ReportManagerVFSModu
 
 public class RsBaseExtModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		install(new ReportManagerVFSModule());
-		install(new DatasourceManagerVFSModule());
-		install(new DatasinkManagerVFSModule());
-		
-		install(new FileSelectionParameterModule());
-		
-		bind(RsBaseExtStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      install(new ReportManagerVFSModule());
+      install(new DatasourceManagerVFSModule());
+      install(new DatasinkManagerVFSModule());
+
+      install(new FileSelectionParameterModule());
+
+      bind(RsBaseExtStartup.class).asEagerSingleton();
+   }
 
 }

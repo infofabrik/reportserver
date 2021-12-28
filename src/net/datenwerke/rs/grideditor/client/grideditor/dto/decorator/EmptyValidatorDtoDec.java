@@ -17,28 +17,26 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.EmptyValidatorDto;
  */
 public class EmptyValidatorDtoDec extends EmptyValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public EmptyValidatorDtoDec() {
+      super();
+   }
 
-	public EmptyValidatorDtoDec() {
-		super();
-	}
+   @Override
+   public Validator<?> getValidator() {
+      return new AbstractValidator<Object>() {
 
-	@Override
-	public Validator<?> getValidator() {
-		return new AbstractValidator<Object>() {
-
-			@Override
-			public List<EditorError> validate(Editor<Object> editor,
-					Object value) {
-				if (value == null || "".equals(String.valueOf(value))) {
-					List<EditorError> errors = new ArrayList<EditorError>();
-					errors.add(new DefaultEditorError(editor, getErrorMsg(), ""));
-					return errors;
-				}
-				return null;
-			}
-		};
-	}
+         @Override
+         public List<EditorError> validate(Editor<Object> editor, Object value) {
+            if (value == null || "".equals(String.valueOf(value))) {
+               List<EditorError> errors = new ArrayList<EditorError>();
+               errors.add(new DefaultEditorError(editor, getErrorMsg(), ""));
+               return errors;
+            }
+            return null;
+         }
+      };
+   }
 
 }

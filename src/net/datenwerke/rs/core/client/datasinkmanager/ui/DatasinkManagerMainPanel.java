@@ -14,16 +14,14 @@ import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 @Singleton
 public class DatasinkManagerMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public DatasinkManagerMainPanel(
-		DatasinkTreeManagerDao datasourceTreeManager
-		){
-	
-		super(datasourceTreeManager);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "datasink:admin:view:toolbar";
-	}
+   @Inject
+   public DatasinkManagerMainPanel(DatasinkTreeManagerDao datasourceTreeManager) {
+
+      super(datasourceTreeManager);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "datasink:admin:view:toolbar";
+   }
 }

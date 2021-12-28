@@ -19,40 +19,37 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class UserRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	private final EventBus eventBus;
-	
-	@Inject
-	public UserRemoveEventHandler(
-		Provider<EntityManager> entityManagerProvider,
-		EventBus eventBus) {
-		this.entityManagerProvider = entityManagerProvider;
-		this.eventBus = eventBus;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
+   private final EventBus eventBus;
 
+   @Inject
+   public UserRemoveEventHandler(Provider<EntityManager> entityManagerProvider, EventBus eventBus) {
+      this.entityManagerProvider = entityManagerProvider;
+      this.eventBus = eventBus;
+   }
 
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      User user = (User) event.getObject();
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		User user = (User) event.getObject();
-		
-		EntityManager em = entityManagerProvider.get();
-		
-		Query query = em.createQuery("FROM " + SecuredAbstractNode.class.getName() + " WHERE " + SecuredAbstractNode__.owner + " = :owner");
-		query.setParameter("owner", user);
-		List<SecuredAbstractNode> nodes = query.getResultList();
-		if(null != nodes && ! nodes.isEmpty()){
-			for(SecuredAbstractNode node : nodes){
-				node.setOwner(null);
-				
-				eventBus.fireEvent(new MergeEntityEvent(node));
-				
-				node = em.merge(node);
-				
-				eventBus.fireEvent(new AfterMergeEntityEvent(node));
-			}
-				
-		}
-	}
+      EntityManager em = entityManagerProvider.get();
+
+      Query query = em.createQuery(
+            "FROM " + SecuredAbstractNode.class.getName() + " WHERE " + SecuredAbstractNode__.owner + " = :owner");
+      query.setParameter("owner", user);
+      List<SecuredAbstractNode> nodes = query.getResultList();
+      if (null != nodes && !nodes.isEmpty()) {
+         for (SecuredAbstractNode node : nodes) {
+            node.setOwner(null);
+
+            eventBus.fireEvent(new MergeEntityEvent(node));
+
+            node = em.merge(node);
+
+            eventBus.fireEvent(new AfterMergeEntityEvent(node));
+         }
+
+      }
+   }
 
 }

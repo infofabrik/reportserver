@@ -21,95 +21,90 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.scheduler.service.scheduler.entities.Outcome;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.history"
-)
-@Table(name="SCHED_HIST_ACTION_ENTRY")
+@GenerateDto(dtoPackage = "net.datenwerke.scheduler.client.scheduler.dto.history")
+@Table(name = "SCHED_HIST_ACTION_ENTRY")
 @Entity
 public class ActionEntry {
-	
-	@ExposeToClient
-	private Outcome outcome = Outcome.EXECUTING;
-	
-	@JoinTable(name="SCHED_ACTION_ENT_2_PROP")
-	@EnclosedEntity
-	@OneToMany(cascade=CascadeType.ALL)
-	private Set<HistoryEntryProperty> historyProperties = new HashSet<HistoryEntryProperty>();
-	
-	@ExposeToClient
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String errorDescription;
 
-	@ExposeToClient
-	private String actionName;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   private Outcome outcome = Outcome.EXECUTING;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @JoinTable(name = "SCHED_ACTION_ENT_2_PROP")
+   @EnclosedEntity
+   @OneToMany(cascade = CascadeType.ALL)
+   private Set<HistoryEntryProperty> historyProperties = new HashSet<HistoryEntryProperty>();
 
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String errorDescription;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient
+   private String actionName;
 
-	public void setOutcome(Outcome outcome) {
-		this.outcome = outcome;
-	}
+   @Version
+   private Long version;
 
-	public Outcome getOutcome() {
-		return outcome;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setHistoryProperties(Set<HistoryEntryProperty> historyProperties) {
-		this.historyProperties = historyProperties;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void addHistoryProperty(String key, String value) {
-		HistoryEntryProperty property = new HistoryEntryProperty(key, value);
-		this.historyProperties.add(property);
-	}
-	
-	public void addHistoryProperty(HistoryEntryProperty historyProperty) {
-		this.historyProperties.add(historyProperty);
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public Set<HistoryEntryProperty> getHistoryProperties() {
-		return historyProperties;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	
-	
-	public void setErrorDescription(String description) {
-		this.errorDescription = description;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public String getErrorDescription() {
-		return errorDescription;
-	}
+   public void setOutcome(Outcome outcome) {
+      this.outcome = outcome;
+   }
 
-	public void setActionName(String actionName) {
-		this.actionName = actionName;
-	}
+   public Outcome getOutcome() {
+      return outcome;
+   }
 
-	public String getActionName() {
-		return actionName;
-	}
+   public void setHistoryProperties(Set<HistoryEntryProperty> historyProperties) {
+      this.historyProperties = historyProperties;
+   }
 
-	
-	
+   public void addHistoryProperty(String key, String value) {
+      HistoryEntryProperty property = new HistoryEntryProperty(key, value);
+      this.historyProperties.add(property);
+   }
+
+   public void addHistoryProperty(HistoryEntryProperty historyProperty) {
+      this.historyProperties.add(historyProperty);
+   }
+
+   public Set<HistoryEntryProperty> getHistoryProperties() {
+      return historyProperties;
+   }
+
+   public void setErrorDescription(String description) {
+      this.errorDescription = description;
+   }
+
+   public String getErrorDescription() {
+      return errorDescription;
+   }
+
+   public void setActionName(String actionName) {
+      this.actionName = actionName;
+   }
+
+   public String getActionName() {
+      return actionName;
+   }
+
 }

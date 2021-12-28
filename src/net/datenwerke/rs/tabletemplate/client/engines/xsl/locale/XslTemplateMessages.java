@@ -5,8 +5,8 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface XslTemplateMessages extends Messages {
 
-	public static XslTemplateMessages INSTANCE = GWT.create(XslTemplateMessages.class);
-	
-	String templateTypeDescription();
+   public static XslTemplateMessages INSTANCE = GWT.create(XslTemplateMessages.class);
+
+   String templateTypeDescription();
 
 }

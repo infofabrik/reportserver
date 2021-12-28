@@ -8,38 +8,36 @@ import net.datenwerke.rs.theme.client.icon.CssIconContainer;
 
 public class CssIconNavModelData<M> extends NavigationModelData<M> implements CssIconContainer {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	public CssIconNavModelData(int id, String name, ImageResource icon,
-			M component) {
-		super(id, name, icon, component);
-	}
+   public CssIconNavModelData(int id, String name, ImageResource icon, M component) {
+      super(id, name, icon, component);
+   }
 
-	public CssIconNavModelData(String name, ImageResource icon, M component) {
-		super(name, icon, component);
-	}
+   public CssIconNavModelData(String name, ImageResource icon, M component) {
+      super(name, icon, component);
+   }
 
-	public CssIconNavModelData(String name, M component) {
-		super(name, component);
-	}
+   public CssIconNavModelData(String name, M component) {
+      super(name, component);
+   }
 
-	@Override
-	public SafeHtml getCssIcon() {
-		return null;
-	}
-	
-	@Override
-	public SafeHtml getCssIcon(int size) {
-		return null;
-	}
-	
-	@Override
-	public Element getCssElement() {
-		return null;
-	}
+   @Override
+   public SafeHtml getCssIcon() {
+      return null;
+   }
 
-	
+   @Override
+   public SafeHtml getCssIcon(int size) {
+      return null;
+   }
+
+   @Override
+   public Element getCssElement() {
+      return null;
+   }
+
 }

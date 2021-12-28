@@ -9,20 +9,17 @@ import net.datenwerke.gf.client.upload.dto.UploadResponse;
 import net.datenwerke.gf.client.upload.rpc.FileUploadRpcServiceAsync;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 
-public class FileUploadServiceDao extends Dao{
-	
-	FileUploadRpcServiceAsync rpcService;
-	
-	@Inject
-	public FileUploadServiceDao(
-			FileUploadRpcServiceAsync fileUploadRpcServiceAsync
-	) {
-		this.rpcService = fileUploadRpcServiceAsync;
-	}
-	
-	
-	public Request uploadInterimFile(FileToUpload file, AsyncCallback<UploadResponse> callback){
-		return rpcService.uploadInterimFile(file, callback);
-	}
+public class FileUploadServiceDao extends Dao {
+
+   FileUploadRpcServiceAsync rpcService;
+
+   @Inject
+   public FileUploadServiceDao(FileUploadRpcServiceAsync fileUploadRpcServiceAsync) {
+      this.rpcService = fileUploadRpcServiceAsync;
+   }
+
+   public Request uploadInterimFile(FileToUpload file, AsyncCallback<UploadResponse> callback) {
+      return rpcService.uploadInterimFile(file, callback);
+   }
 
 }

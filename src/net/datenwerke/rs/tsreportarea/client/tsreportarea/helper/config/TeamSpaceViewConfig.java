@@ -5,16 +5,15 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 
 public class TeamSpaceViewConfig implements ReportViewConfiguration {
 
-	private final TeamSpaceDto teamSpace;
+   private final TeamSpaceDto teamSpace;
 
-	public TeamSpaceViewConfig(TeamSpaceDto teamSpace) {
-		super();
-		this.teamSpace = teamSpace;
-	}
+   public TeamSpaceViewConfig(TeamSpaceDto teamSpace) {
+      super();
+      this.teamSpace = teamSpace;
+   }
 
-	public TeamSpaceDto getTeamSpace() {
-		return teamSpace;
-	}
+   public TeamSpaceDto getTeamSpace() {
+      return teamSpace;
+   }
 
-	
 }

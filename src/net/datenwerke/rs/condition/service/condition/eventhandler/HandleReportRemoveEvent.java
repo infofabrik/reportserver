@@ -13,22 +13,22 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class HandleReportRemoveEvent implements EventHandler<RemoveEntityEvent> {
 
-	private final ConditionService conditionService;
-	
-	@Inject
-	public HandleReportRemoveEvent(ConditionService conditionService) {
-		this.conditionService = conditionService;
-	}
+   private final ConditionService conditionService;
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		TableReport report = (TableReport) event.getObject();
-		
-		List<ReportCondition> condition = conditionService.getReportConditionsFor(report);
-		if(null != condition && ! condition.isEmpty()){
-			StringBuilder error = new StringBuilder("Report " + report.getId() + " is used as part of a condition.");
-			throw new NeedForcefulDeleteException(error.toString());
-		}
-	}
+   @Inject
+   public HandleReportRemoveEvent(ConditionService conditionService) {
+      this.conditionService = conditionService;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      TableReport report = (TableReport) event.getObject();
+
+      List<ReportCondition> condition = conditionService.getReportConditionsFor(report);
+      if (null != condition && !condition.isEmpty()) {
+         StringBuilder error = new StringBuilder("Report " + report.getId() + " is used as part of a condition.");
+         throw new NeedForcefulDeleteException(error.toString());
+      }
+   }
 
 }

@@ -10,82 +10,80 @@ import com.sencha.gxt.widget.core.client.event.BlurEvent;
 
 public class CodeMirror {
 
-	protected Object jsobject;
-	protected CodeMirrorTextArea codeMirrorTextArea;
+   protected Object jsobject;
+   protected CodeMirrorTextArea codeMirrorTextArea;
 
-	protected static Map cmmap = new HashMap();
+   protected static Map cmmap = new HashMap();
 
-	protected CodeMirror(Object jsobject) {
-		super();
-		this.jsobject = jsobject;
-	}
+   protected CodeMirror(Object jsobject) {
+      super();
+      this.jsobject = jsobject;
+   }
 
-	public static CodeMirror fromJsObject(Object jsobject){
-		if(cmmap.containsKey(jsobject)){
-			return (CodeMirror) cmmap.get(jsobject);
-		}
+   public static CodeMirror fromJsObject(Object jsobject) {
+      if (cmmap.containsKey(jsobject)) {
+         return (CodeMirror) cmmap.get(jsobject);
+      }
 
-		return new CodeMirror(jsobject);
-	}
+      return new CodeMirror(jsobject);
+   }
 
+   private static void fireOnBlurTextEditor(Object editor) {
+      if (cmmap.containsKey(editor)) {
+         if (cmmap.get(editor) instanceof CodeMirror) {
+            CodeMirror cmui = (CodeMirror) cmmap.get(editor);
+            if (null != cmui.getCodeMirrorTextArea()) {
+               cmui.fireBlurAndChange();
+            }
+         }
+      }
+   }
 
+   private static void fireKeyEvent(Object editor, NativeEvent event) {
+      if (cmmap.containsKey(editor)) {
+         if (cmmap.get(editor) instanceof CodeMirror) {
+            CodeMirror cmui = (CodeMirror) cmmap.get(editor);
+            if (null != cmui.getCodeMirrorTextArea())
+               DomEvent.fireNativeEvent(event, cmui.getCodeMirrorTextArea());
+         }
+      }
+   }
 
-	private static void fireOnBlurTextEditor(Object editor){
-		if(cmmap.containsKey(editor)){
-			if(cmmap.get(editor) instanceof CodeMirror){
-				CodeMirror cmui = (CodeMirror) cmmap.get(editor);
-				if(null != cmui.getCodeMirrorTextArea()){
-					cmui.fireBlurAndChange();
-				}
-			}
-		}
-	}
+   public void fireBlurAndChange() {
+      ValueChangeEvent.fire(getCodeMirrorTextArea(), getCodeMirrorTextArea().getCurrentValue());
+      getCodeMirrorTextArea().fireEvent(new BlurEvent());
+   }
 
-	private static void fireKeyEvent(Object editor, NativeEvent event){
-		if(cmmap.containsKey(editor)){
-			if(cmmap.get(editor) instanceof CodeMirror){
-				CodeMirror cmui = (CodeMirror) cmmap.get(editor);
-				if(null != cmui.getCodeMirrorTextArea())
-					DomEvent.fireNativeEvent(event, cmui.getCodeMirrorTextArea());
-			}
-		}
-	}
-
-	public void fireBlurAndChange() {
-		ValueChangeEvent.fire(getCodeMirrorTextArea(), getCodeMirrorTextArea().getCurrentValue());
-		getCodeMirrorTextArea().fireEvent(new BlurEvent());
-	}
-
-	public native void setValue(String text) /*-{
+   public native void setValue(String text) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		jsobject.setValue(text);
 //		this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::fireBlurAndChange()();
 	}-*/;
 
-	public native String getValue() /*-{
+   public native String getValue() /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		var value = jsobject.getValue();
 		return value;
 	}-*/;
 
-	public native void appendText(String text) /*-{
+   public native void appendText(String text) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		jsobject.replaceRange(text, jsobject.getCursor());
 	}-*/;
 
-	public native void appendText(String text, Object pos) /*-{
+   public native void appendText(String text, Object pos) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		jsobject.replaceRange(text, pos);
 	}-*/;
 
-	public native int getCurrentLine() /*-{
+   public native int getCurrentLine() /*-{
 	    var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		var choords = jsobject.cursorCoords(true);
 		var result = jsobject.coordsChar(choords);
 		return result.line;
 	}-*/;
 
-	public native String getCurrentTokenValue() /*-{
+   public native String getCurrentTokenValue() /*-{
 	    var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 
 		var choords = jsobject.cursorCoords(true);
@@ -95,35 +93,32 @@ public class CodeMirror {
 		return token.string;
 	}-*/;
 
-
-	public native String getLine(int n) /*-{
+   public native String getLine(int n) /*-{
 	    var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		return jsobject.getLine(n);
 	}-*/;
 
-	public native void setLine(int n, String text) /*-{
+   public native void setLine(int n, String text) /*-{
 	    var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		return jsobject.setLine(n, text);
 	}-*/;
 
-
-	public native Object getCursorPos() /*-{
+   public native Object getCursorPos() /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		jsobject.getCursor();
 	}-*/;
 
-
-	public native String getOption(String option) /*-{
+   public native String getOption(String option) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		return jsobject.getOption(option);
 	}-*/;
 
-	public native void setOption(String option, String value) /*-{
+   public native void setOption(String option, String value) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		jsobject.setOption(option, value);
 	}-*/;
 
-	public native void setSize(int width, int height) /*-{
+   public native void setSize(int width, int height) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 
 		var valW = "width: " + width + "px;";
@@ -133,27 +128,27 @@ public class CodeMirror {
 
 		jsobject.refresh();
 	}-*/;
-	
-	public native void scrollTo(int position) /*-{
+
+   public native void scrollTo(int position) /*-{
 		var jsobject = this.@net.datenwerke.gxtdto.client.codemirror.CodeMirror::jsobject;
 		
 		jsobject.getScrollerElement().scrollTop = 1000000;
 	}-*/;
 
-	public static CodeMirror fromTextArea(final CodeMirrorTextArea codeMirrorTextArea, final CodeMirrorConfig config){
-		String id = codeMirrorTextArea.getTextAreaId();
-		CodeMirror mirror = fromTextArea(id, config);
+   public static CodeMirror fromTextArea(final CodeMirrorTextArea codeMirrorTextArea, final CodeMirrorConfig config) {
+      String id = codeMirrorTextArea.getTextAreaId();
+      CodeMirror mirror = fromTextArea(id, config);
 
-		if(codeMirrorTextArea instanceof CodeMirrorTextArea){
-			mirror.codeMirrorTextArea = (CodeMirrorTextArea) codeMirrorTextArea;
-		}
+      if (codeMirrorTextArea instanceof CodeMirrorTextArea) {
+         mirror.codeMirrorTextArea = (CodeMirrorTextArea) codeMirrorTextArea;
+      }
 
-		cmmap.put(mirror.jsobject, mirror);
+      cmmap.put(mirror.jsobject, mirror);
 
-		return mirror;
-	}
+      return mirror;
+   }
 
-	private static native CodeMirror fromTextArea(String textAreaId, CodeMirrorConfig config) /*-{
+   private static native CodeMirror fromTextArea(String textAreaId, CodeMirrorConfig config) /*-{
 		var area = $doc.getElementById(textAreaId); 
 
 		var codeMirrorOptions = { 
@@ -171,7 +166,7 @@ public class CodeMirror {
 		return @net.datenwerke.gxtdto.client.codemirror.CodeMirror::new(Ljava/lang/Object;)(cm);
 	}-*/;
 
-	public CodeMirrorTextArea getCodeMirrorTextArea() {
-		return codeMirrorTextArea;
-	}
+   public CodeMirrorTextArea getCodeMirrorTextArea() {
+      return codeMirrorTextArea;
+   }
 }

@@ -8,9 +8,9 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralRefer
  */
 public class TsDiskGeneralReferenceDtoDec extends TsDiskGeneralReferenceDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public TsDiskGeneralReferenceDtoDec() {
-	}
+   public TsDiskGeneralReferenceDtoDec() {
+   }
 
 }

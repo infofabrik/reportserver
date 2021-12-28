@@ -17,58 +17,53 @@ import net.datenwerke.security.ext.client.usermanager.ui.UserMainPanel;
  * Provides the user manager tree with all goodies.
  *
  */
-public class FullTreeProvider implements Provider<UITree>{
+public class FullTreeProvider implements Provider<UITree> {
 
-	private final BasicTreeProvider basicTreeProvider;
-	private final UserManagerTreeManagerDao userManagerTreeHandler;
-	private final UserMainPanel mainPanel;
+   private final BasicTreeProvider basicTreeProvider;
+   private final UserManagerTreeManagerDao userManagerTreeHandler;
+   private final UserMainPanel mainPanel;
 
-	private ManagerHelperTree managerHelperTree;
-	
-	@Inject
-	public FullTreeProvider(
-			BasicTreeProvider basicTreeProvider,
-			UserManagerTreeManagerDao userManagerTreeHandler,
-			UserMainPanel mainPanel 
-		){
-		
-		this.basicTreeProvider = basicTreeProvider;
-		this.userManagerTreeHandler = userManagerTreeHandler;
-		this.mainPanel = mainPanel;
-	}
-	
+   private ManagerHelperTree managerHelperTree;
 
+   @Inject
+   public FullTreeProvider(BasicTreeProvider basicTreeProvider, UserManagerTreeManagerDao userManagerTreeHandler,
+         UserMainPanel mainPanel) {
 
-	private ManagerHelperTree getTree(){
-		if(null == managerHelperTree){
-			managerHelperTree = basicTreeProvider.get();
-		}
-		return managerHelperTree;
-	}
-	
-	public UITree get() {
-		/* build tree */
-		final ManagerHelperTree tree = getTree();
-		tree.getStore().enableDtoAwareness(true);
-		
-		/* dnd */
-		UITreeDragDropConfiguration dndConfig = new UITreeDragDropConfiguration();
-		dndConfig.addDropTarget(OrganisationalUnitDto.class, GroupDto.class, UserDto.class, OrganisationalUnitDto.class);
-		tree.enableDragDrop(userManagerTreeHandler, dndConfig);
-		tree.enableClipboardProvider();
-		
-		/* set selections */
-		tree.setSelectionProvider(mainPanel);
-		
-		/* double click */
-		tree.enableDoubleClickAction();
-		
-		/* history location */
-		tree.setHistoryLocation(UserManagerUIModule.USERMANAGER_FAV_HISTORY_TOKEN);
-		
-		/* tree menu */
-		tree.configureMenuProvider(UserManagerUIModule.ADMIN_TREE_MENU_NAME);
-		
-		return tree;
-	}
+      this.basicTreeProvider = basicTreeProvider;
+      this.userManagerTreeHandler = userManagerTreeHandler;
+      this.mainPanel = mainPanel;
+   }
+
+   private ManagerHelperTree getTree() {
+      if (null == managerHelperTree) {
+         managerHelperTree = basicTreeProvider.get();
+      }
+      return managerHelperTree;
+   }
+
+   public UITree get() {
+      /* build tree */
+      final ManagerHelperTree tree = getTree();
+      tree.getStore().enableDtoAwareness(true);
+
+      /* dnd */
+      UITreeDragDropConfiguration dndConfig = new UITreeDragDropConfiguration();
+      dndConfig.addDropTarget(OrganisationalUnitDto.class, GroupDto.class, UserDto.class, OrganisationalUnitDto.class);
+      tree.enableDragDrop(userManagerTreeHandler, dndConfig);
+      tree.enableClipboardProvider();
+
+      /* set selections */
+      tree.setSelectionProvider(mainPanel);
+
+      /* double click */
+      tree.enableDoubleClickAction();
+
+      /* history location */
+      tree.setHistoryLocation(UserManagerUIModule.USERMANAGER_FAV_HISTORY_TOKEN);
+
+      /* tree menu */
+      tree.configureMenuProvider(UserManagerUIModule.ADMIN_TREE_MENU_NAME);
+
+      return tree;
+   }
 }

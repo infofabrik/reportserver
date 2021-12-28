@@ -4,12 +4,12 @@ import java.util.HashMap;
 
 public interface HookableContainer {
 
-	void setContainerName(String name);
+   void setContainerName(String name);
 
-	HashMap<String, String> getHookConfig();
+   HashMap<String, String> getHookConfig();
 
-	void setHookConfig(HashMap<String, String> hookConfig);
+   void setHookConfig(HashMap<String, String> hookConfig);
 
-	String getContainerName();
+   String getContainerName();
 
 }

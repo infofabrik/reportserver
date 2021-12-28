@@ -10,28 +10,28 @@ import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 public class RsHeaderAppearance extends Css3HeaderAppearance {
 
-	private Css3HeaderStyle style;
+   private Css3HeaderStyle style;
 
-	public RsHeaderAppearance() {
-		this(GWT.<Css3HeaderResources>create(Css3HeaderResources.class));
-	}
+   public RsHeaderAppearance() {
+      this(GWT.<Css3HeaderResources>create(Css3HeaderResources.class));
+   }
 
-	public RsHeaderAppearance(Css3HeaderResources resources) {
-		super(resources);
-		
-		this.style = resources.style();
-	}
+   public RsHeaderAppearance(Css3HeaderResources resources) {
+      super(resources);
 
-	@Override
-	public void setIcon(XElement parent, ImageResource icon) {
-		XElement iconWrap = parent.getFirstChildElement().cast();
-		iconWrap.removeChildren();
-		if (icon != null) {
-			if(icon instanceof CssIconImageResource)
-				iconWrap.appendChild(((CssIconImageResource)icon).getCssElement());
-			else
-				iconWrap.appendChild(IconHelper.getElement(icon));
-		}
-		parent.setClassName(style.headerHasIcon(), icon != null);
-	}
+      this.style = resources.style();
+   }
+
+   @Override
+   public void setIcon(XElement parent, ImageResource icon) {
+      XElement iconWrap = parent.getFirstChildElement().cast();
+      iconWrap.removeChildren();
+      if (icon != null) {
+         if (icon instanceof CssIconImageResource)
+            iconWrap.appendChild(((CssIconImageResource) icon).getCssElement());
+         else
+            iconWrap.appendChild(IconHelper.getElement(icon));
+      }
+      parent.setClassName(style.headerHasIcon(), icon != null);
+   }
 }

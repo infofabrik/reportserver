@@ -4,7 +4,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 
 public interface SFFCTsTeamSpaceSelector extends SimpleFormFieldConfiguration {
-	
-	public TeamSpaceDto getTeamSpace();
+
+   public TeamSpaceDto getTeamSpace();
 
 }

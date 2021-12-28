@@ -47,10 +47,7 @@ public class TerminalSession implements Serializable {
    private boolean checkRights = true;
 
    @Inject
-   public TerminalSession(
-         Provider<AutocompleteHelper> autoHelperProvider, 
-         HookHandlerService hookHandlerService
-         ) {
+   public TerminalSession(Provider<AutocompleteHelper> autoHelperProvider, HookHandlerService hookHandlerService) {
 
       /* store objects */
       this.autoHelperProvider = autoHelperProvider;
@@ -91,7 +88,7 @@ public class TerminalSession implements Serializable {
 
       final AutocompleteHelper autoHelper = autoHelperProvider.get();
       autoHelper.init(parser, cursorPosition);
-      
+
       hookHandlerService.getHookers(TerminalCommandHook.class)
             .forEach(commandHooker -> commandHooker.addAutoCompletEntries(autoHelper, TerminalSession.this));
 

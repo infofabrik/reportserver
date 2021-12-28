@@ -116,834 +116,846 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class ScheduledReportListPanel extends DwBorderContainer {
 
-	private static final int GRID_PAGE_SIZE = 25;
+   private static final int GRID_PAGE_SIZE = 25;
 
-	private static final String MAIN_TOOLBAR_NAME = "schedulerlist:main:toolbar";
-	
-	private final HookHandlerService hookHandler;
-	private final LoginService loginService;
-	private final SchedulerDao schedulerDao;
-	private final SchedulerUiService schedulerService;
-	private final Provider<DwHookableToolbar> toolbarProvider;
-	private final KeyValueGridHelper gridHelper;
-	
-	private final Provider<ScheduleDialog> scheduleDialogProvider;
-	
-	private final Collection<ScheduledReportToolbarListFilter> tbFilters;
-	private final Collection<ScheduledReportListFilter> filters;
-	
-	private DwContentPanel listPanel;
-	private DwNorthSouthContainer listPanelNsContainer;
-	
-	private DwContentPanel detailPanel;
-	private DwNorthSouthContainer detailPanelNsContainer;
-	
-	private BorderLayoutData listPanelLayoutData;
-	
-	private JobFilterConfigurationDto jobFilterConfig = new ReportServerJobFilterDto();
-	private List<JobFilterCriteriaDto> addCriterions = new ArrayList<JobFilterCriteriaDto>();
-	
-	private ListStore<ReportScheduleJobListInformation> listStore;
-	private PagingLoader<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>> loader;
-	private Grid<ReportScheduleJobListInformation> grid;
-	private DwHookableToolbar mainToolbar;
-	private PagingToolBar pagingToolbar;
+   private static final String MAIN_TOOLBAR_NAME = "schedulerlist:main:toolbar";
 
-	private DwHookableToolbar detailToolbar;
+   private final HookHandlerService hookHandler;
+   private final LoginService loginService;
+   private final SchedulerDao schedulerDao;
+   private final SchedulerUiService schedulerService;
+   private final Provider<DwHookableToolbar> toolbarProvider;
+   private final KeyValueGridHelper gridHelper;
 
-	private DwToggleButton archiveBtn;
+   private final Provider<ScheduleDialog> scheduleDialogProvider;
 
-	private static ReportScheduleJobListInformationPA reportScheduleInfoPa = GWT.create(ReportScheduleJobListInformationPA.class);
-	private static KeyValuePropertyPA keyvpPa = GWT.create(KeyValuePropertyPA.class);
-	
-	private ListStore<ExecutionLogEntryDto> detailScheduleInfoStore = new ListStore<ExecutionLogEntryDto>(new BasicObjectModelKeyProvider<ExecutionLogEntryDto>());
-	
-	private boolean initialRequestDone = false;
-	
-	private final boolean displayExecutorColumn;
-	private final boolean displayJobColumn;
-	private final boolean displayScheduledByColumn;
+   private final Collection<ScheduledReportToolbarListFilter> tbFilters;
+   private final Collection<ScheduledReportListFilter> filters;
 
-	private final HistoryUiService historyService;
+   private DwContentPanel listPanel;
+   private DwNorthSouthContainer listPanelNsContainer;
 
-	private final ReportManagerTreeLoaderDao reportTreeLoader;
+   private DwContentPanel detailPanel;
+   private DwNorthSouthContainer detailPanelNsContainer;
 
-	private final ToolbarService toolbarService;
+   private BorderLayoutData listPanelLayoutData;
 
-	private final SecurityUIService securityService;
+   private JobFilterConfigurationDto jobFilterConfig = new ReportServerJobFilterDto();
+   private List<JobFilterCriteriaDto> addCriterions = new ArrayList<JobFilterCriteriaDto>();
 
-	private String name;
+   private ListStore<ReportScheduleJobListInformation> listStore;
+   private PagingLoader<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>> loader;
+   private Grid<ReportScheduleJobListInformation> grid;
+   private DwHookableToolbar mainToolbar;
+   private PagingToolBar pagingToolbar;
 
-	private FormatUiHelper formatUiHelper;
+   private DwHookableToolbar detailToolbar;
 
-	
-	@Inject
-	public ScheduledReportListPanel(
-		HookHandlerService hookHandler,
-		LoginService loginService,
-		SchedulerDao schedulerDao,
-		SchedulerUiService schedulerService,
-		Provider<DwHookableToolbar> toolbarProvider,
-		KeyValueGridHelper gridHelper,
-		HistoryUiService historyService,
-		ReportManagerTreeLoaderDao reportTreeLoader,
-		ToolbarService toolbarService,
-		SecurityUIService securityService,
-		FormatUiHelper formatUiHelper,
-		Provider<ScheduleDialog> scheduleDialogProvider,
-		
-		@Assisted String name,
-		@Assisted("displayExecutorColumn") boolean displayExecutorColumn,
-		@Assisted("displayScheduledByColumn") boolean displayScheduledByColumn
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.loginService = loginService;
-		this.schedulerDao = schedulerDao;
-		this.schedulerService = schedulerService;
-		this.toolbarProvider = toolbarProvider;
-		this.gridHelper = gridHelper;
-		this.historyService = historyService;
-		this.reportTreeLoader = reportTreeLoader;
-		this.toolbarService = toolbarService;
-		this.securityService = securityService;
-		this.formatUiHelper = formatUiHelper;
-		this.scheduleDialogProvider = scheduleDialogProvider;
-		
-		this.displayJobColumn = true;
-		this.displayExecutorColumn = displayExecutorColumn;
-		this.displayScheduledByColumn = displayScheduledByColumn;
-		this.name = name;
-		
-		tbFilters = new ArrayList<ScheduledReportToolbarListFilter>();
-		for(ScheduledReportToolbarListFilter filter : hookHandler.getHookers(ScheduledReportToolbarListFilter.class))
-			if(filter.appliesTo(name))
-				tbFilters.add(filter);
-		
-		filters = new ArrayList<ScheduledReportListFilter>();
-		for(ScheduledReportListFilter filter : hookHandler.getHookers(ScheduledReportListFilter.class))
-			if(filter.appliesTo(name))
-				filters.add(filter);
-		
-		/* init */
-		initializeUI();
-	}
+   private DwToggleButton archiveBtn;
 
-	private void initializeUI() {
-		addClassName("rs-schedule-view");
-		
-		/* create store */
-		createStore();
-		
-		/* create toolbar and add it */
-		mainToolbar = toolbarProvider.get();
-		mainToolbar.setContainerName(MAIN_TOOLBAR_NAME);
-		initToolbar();
+   private static ReportScheduleJobListInformationPA reportScheduleInfoPa = GWT
+         .create(ReportScheduleJobListInformationPA.class);
+   private static KeyValuePropertyPA keyvpPa = GWT.create(KeyValuePropertyPA.class);
 
-		/* create panels */
-		createListPanel();
-		createDetailPanel();
-		
-		/* paging */
-		addPagingToolbar();
-		
-		/* layoutdata */
-		listPanelLayoutData = new BorderLayoutData(0.6f);
-		listPanelLayoutData.setMargins(new Margins(0, 1, 0, 0));
-		listPanelLayoutData.setSplit(true);
-		listPanelLayoutData.setMaxSize(Integer.MAX_VALUE);
-		
-		/* add panels to main panel */
-		String userPropSplit = loginService.getCurrentUser().getUserPropertyValue(SchedulerUIModule.USER_PROPERTY_VIEW_VERTICAL_SPLIT);
-		if(null == userPropSplit || "false".equals(userPropSplit))
-			setWestWidget(listPanel, listPanelLayoutData);
-		else
-			setNorthWidget(listPanel, listPanelLayoutData);
-		
-		setCenterWidget(detailPanel);
-	}
-	
-	
-	
-	public void load(){
-		/* load */
-		loader.load();
-	}
-	
-	private void initToolbar() {
-	   hookHandler.getHookers(ScheduledReportListToolbarHook.class)
-	      .forEach(hooker -> hooker.statusBarToolbarHook_addLeft(mainToolbar, this));
-		
-		mainToolbar.addBaseHookersLeft();
-		
-		/* filters */
-		if(! filters.isEmpty()){
-			final DwContentPanel filterPanel = DwContentPanel.newInlineInstance();
-			final VerticalLayoutContainer container = new VerticalLayoutContainer();
-			filterPanel.setWidget(container);
-			
-			for (Iterator<ScheduledReportListFilter> iterator = filters.iterator(); iterator.hasNext();) {
-				Iterable<Widget> widgets = iterator.next().getFilter(this);
-				if(null != widgets)
-				   widgets.forEach(container::add);
-			}
+   private ListStore<ExecutionLogEntryDto> detailScheduleInfoStore = new ListStore<ExecutionLogEntryDto>(
+         new BasicObjectModelKeyProvider<ExecutionLogEntryDto>());
 
-			
-			final DwTextButton filterBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.filter(), BaseIcon.FILTER);
-			mainToolbar.add(filterBtn, new BoxLayoutData(new Margins(0, 5, 0, 0)));
-			
-			filterBtn.addSelectHandler(event -> {
-				FloatingWrapper wrapper = new FloatingWrapper(filterPanel);
-				wrapper.setBorders(true);
-				wrapper.show(filterBtn);
-			});
-		}
-		
-		final DwTextButton newBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.newJob(), BaseIcon.REPORT);
+   private boolean initialRequestDone = false;
+
+   private final boolean displayExecutorColumn;
+   private final boolean displayJobColumn;
+   private final boolean displayScheduledByColumn;
+
+   private final HistoryUiService historyService;
+
+   private final ReportManagerTreeLoaderDao reportTreeLoader;
+
+   private final ToolbarService toolbarService;
+
+   private final SecurityUIService securityService;
+
+   private String name;
+
+   private FormatUiHelper formatUiHelper;
+
+   @Inject
+   public ScheduledReportListPanel(HookHandlerService hookHandler, LoginService loginService, SchedulerDao schedulerDao,
+         SchedulerUiService schedulerService, Provider<DwHookableToolbar> toolbarProvider,
+         KeyValueGridHelper gridHelper, HistoryUiService historyService, ReportManagerTreeLoaderDao reportTreeLoader,
+         ToolbarService toolbarService, SecurityUIService securityService, FormatUiHelper formatUiHelper,
+         Provider<ScheduleDialog> scheduleDialogProvider,
+
+         @Assisted String name, @Assisted("displayExecutorColumn") boolean displayExecutorColumn,
+         @Assisted("displayScheduledByColumn") boolean displayScheduledByColumn) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.loginService = loginService;
+      this.schedulerDao = schedulerDao;
+      this.schedulerService = schedulerService;
+      this.toolbarProvider = toolbarProvider;
+      this.gridHelper = gridHelper;
+      this.historyService = historyService;
+      this.reportTreeLoader = reportTreeLoader;
+      this.toolbarService = toolbarService;
+      this.securityService = securityService;
+      this.formatUiHelper = formatUiHelper;
+      this.scheduleDialogProvider = scheduleDialogProvider;
+
+      this.displayJobColumn = true;
+      this.displayExecutorColumn = displayExecutorColumn;
+      this.displayScheduledByColumn = displayScheduledByColumn;
+      this.name = name;
+
+      tbFilters = new ArrayList<ScheduledReportToolbarListFilter>();
+      for (ScheduledReportToolbarListFilter filter : hookHandler.getHookers(ScheduledReportToolbarListFilter.class))
+         if (filter.appliesTo(name))
+            tbFilters.add(filter);
+
+      filters = new ArrayList<ScheduledReportListFilter>();
+      for (ScheduledReportListFilter filter : hookHandler.getHookers(ScheduledReportListFilter.class))
+         if (filter.appliesTo(name))
+            filters.add(filter);
+
+      /* init */
+      initializeUI();
+   }
+
+   private void initializeUI() {
+      addClassName("rs-schedule-view");
+
+      /* create store */
+      createStore();
+
+      /* create toolbar and add it */
+      mainToolbar = toolbarProvider.get();
+      mainToolbar.setContainerName(MAIN_TOOLBAR_NAME);
+      initToolbar();
+
+      /* create panels */
+      createListPanel();
+      createDetailPanel();
+
+      /* paging */
+      addPagingToolbar();
+
+      /* layoutdata */
+      listPanelLayoutData = new BorderLayoutData(0.6f);
+      listPanelLayoutData.setMargins(new Margins(0, 1, 0, 0));
+      listPanelLayoutData.setSplit(true);
+      listPanelLayoutData.setMaxSize(Integer.MAX_VALUE);
+
+      /* add panels to main panel */
+      String userPropSplit = loginService.getCurrentUser()
+            .getUserPropertyValue(SchedulerUIModule.USER_PROPERTY_VIEW_VERTICAL_SPLIT);
+      if (null == userPropSplit || "false".equals(userPropSplit))
+         setWestWidget(listPanel, listPanelLayoutData);
+      else
+         setNorthWidget(listPanel, listPanelLayoutData);
+
+      setCenterWidget(detailPanel);
+   }
+
+   public void load() {
+      /* load */
+      loader.load();
+   }
+
+   private void initToolbar() {
+      hookHandler.getHookers(ScheduledReportListToolbarHook.class)
+            .forEach(hooker -> hooker.statusBarToolbarHook_addLeft(mainToolbar, this));
+
+      mainToolbar.addBaseHookersLeft();
+
+      /* filters */
+      if (!filters.isEmpty()) {
+         final DwContentPanel filterPanel = DwContentPanel.newInlineInstance();
+         final VerticalLayoutContainer container = new VerticalLayoutContainer();
+         filterPanel.setWidget(container);
+
+         for (Iterator<ScheduledReportListFilter> iterator = filters.iterator(); iterator.hasNext();) {
+            Iterable<Widget> widgets = iterator.next().getFilter(this);
+            if (null != widgets)
+               widgets.forEach(container::add);
+         }
+
+         final DwTextButton filterBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.filter(),
+               BaseIcon.FILTER);
+         mainToolbar.add(filterBtn, new BoxLayoutData(new Margins(0, 5, 0, 0)));
+
+         filterBtn.addSelectHandler(event -> {
+            FloatingWrapper wrapper = new FloatingWrapper(filterPanel);
+            wrapper.setBorders(true);
+            wrapper.show(filterBtn);
+         });
+      }
+
+      final DwTextButton newBtn = toolbarService.createUnstyledToolbarItem(SchedulerMessages.INSTANCE.newJob(),
+            BaseIcon.REPORT);
       mainToolbar.add(newBtn, new BoxLayoutData(new Margins(0, 5, 0, 0)));
-      
-      newBtn.addSelectHandler( event -> {
+
+      newBtn.addSelectHandler(event -> {
          ScheduleDialog dialog = scheduleDialogProvider.get();
-         
+
          dialog.displayDialog(Optional.empty(), Collections.emptyList(), new ArrayList<>(), new DialogCallback() {
             @Override
             public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
                dialog.mask(BaseMessages.INSTANCE.storingMsg());
-               schedulerDao.schedule(configDto, new NotamCallback<Void>(SchedulerMessages.INSTANCE.scheduled()){
+               schedulerDao.schedule(configDto, new NotamCallback<Void>(SchedulerMessages.INSTANCE.scheduled()) {
                   @Override
                   public void doOnSuccess(Void result) {
                      dialog.hide();
                   }
+
                   @Override
                   public void doOnFailure(Throwable caught) {
                      super.doOnFailure(caught);
                      dialog.unmask();
                   }
-               });                  
+               });
             }
          });
       });
 
-		
-		mainToolbar.add(new FillToolItem());
-		
-		hookHandler.getHookers(ScheduledReportListToolbarHook.class)
-		   .forEach(hooker -> hooker.statusBarToolbarHook_addRight(mainToolbar, this));
-		
-		mainToolbar.addBaseHookersRight();
-		
-		/* additional filters */
-		for (Iterator<ScheduledReportToolbarListFilter> iterator = tbFilters.iterator(); iterator.hasNext();) {
-			boolean addSep = iterator.next().addToToolbar(this, mainToolbar);
-			if(iterator.hasNext() && addSep)
-				mainToolbar.add(new SeparatorToolItem());
-		}
+      mainToolbar.add(new FillToolItem());
 
-		mainToolbar.add(new SeparatorToolItem());
-		
-		archiveBtn = new DwToggleButton(SchedulerMessages.INSTANCE.archive());
-		archiveBtn.setIcon(BaseIcon.ARCHIVE);
-		archiveBtn.setToolTip(SchedulerMessages.INSTANCE.displayArchived());
-		mainToolbar.add(archiveBtn);
-		
-		archiveBtn.addSelectHandler(event -> reload());
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	private void createStore() {
-		/* init filter */
-		jobFilterConfig.setActive(true);
-		
-		/* create proxy */
-		RpcProxy<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>>() {   
+      hookHandler.getHookers(ScheduledReportListToolbarHook.class)
+            .forEach(hooker -> hooker.statusBarToolbarHook_addRight(mainToolbar, this));
 
-			@Override
-			public void load(
-					PagingLoadConfig loadConfig,
-					final AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>> callback) {
-				if(loadConfig instanceof PagingLoadConfig){
-					PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
-					schedulerService.transformLoadConfig(plc, jobFilterConfig);
-					schedulerDao.getReportJobList(jobFilterConfig, addCriterions, new AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>>() {
-						@Override
-						public void onSuccess(
-								PagingLoadResult<ReportScheduleJobListInformation> result) {
-							initialRequestDone = true;
-							callback.onSuccess(result);
-						}
-						public void onFailure(Throwable caught) {
-							initialRequestDone = true;
-							callback.onFailure(caught);
-						};
-					});
-				}
-			}   
-		};   
-		
-		/* create loader and bind it */
-		loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>>(proxy);
-		if(loader.getSortInfo().isEmpty()){
-			SortInfo sortInfo = new SortInfoBean();
-			sortInfo.setSortDir(SortDir.DESC);
-			sortInfo.setSortField("jobId");
-			loader.addSortInfo(sortInfo);
-		}
-		
-		loader.setRemoteSort(true);
-		resetConfig();
-		
-		listStore = new ListStore<ReportScheduleJobListInformation>(reportScheduleInfoPa.dtoId());
-		loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, ReportScheduleJobListInformation, PagingLoadResult<ReportScheduleJobListInformation>>(listStore));
-	}
-	
-	private void addPagingToolbar() {
-		pagingToolbar = new DwPagingToolBar(GRID_PAGE_SIZE);
-		
-		pagingToolbar.bind(loader);
-		
-		listPanelNsContainer.setSouthWidget(pagingToolbar);
-	}
+      mainToolbar.addBaseHookersRight();
 
-	private void createDetailPanel() {
-		detailPanel = new DwContentPanel();
-		detailPanel.addClassName("rs-schedule-view-detail");
-		detailPanel.setHeading(SchedulerMessages.INSTANCE.detailPanelTitle());
-		
-		detailPanelNsContainer = new DwNorthSouthContainer();
-		detailPanel.setWidget(detailPanelNsContainer);
-		
-		detailToolbar = toolbarProvider.get();
-		detailToolbar.setContainerName(MAIN_TOOLBAR_NAME);
-		detailPanelNsContainer.setNorthWidget(detailToolbar);
-		
-		ToolBar dummyToolbar = new DwToolBar();
-		DwTextButton dummyBtn = new DwTextButton(" ", IconHelper.getImageResource(BaseResources.INSTANCE.emptyImage().getSafeUri(),16,16));
-		dummyToolbar.add(new FillToolItem());
-		dummyToolbar.add(dummyBtn);
-		detailPanelNsContainer.setSouthWidget(dummyToolbar);
-	}
+      /* additional filters */
+      for (Iterator<ScheduledReportToolbarListFilter> iterator = tbFilters.iterator(); iterator.hasNext();) {
+         boolean addSep = iterator.next().addToToolbar(this, mainToolbar);
+         if (iterator.hasNext() && addSep)
+            mainToolbar.add(new SeparatorToolItem());
+      }
 
-	private void createListPanel() {
-		listPanel = new DwContentPanel();
-		listPanel.addClassName("rs-schedule-view-list");
-		listPanel.setHeading(SchedulerMessages.INSTANCE.listPanelHeading());
-		
-		listPanelNsContainer = new DwNorthSouthContainer();
-		listPanel.setWidget(listPanelNsContainer);
-		
-		listPanelNsContainer.setNorthWidget(mainToolbar);
-		
-		/* create grid */
-		grid = new Grid<ReportScheduleJobListInformation>(listStore, schedulerService.createReportScheduleListColumnModel(displayJobColumn, displayExecutorColumn, displayScheduledByColumn));
-		grid.setLoader(loader);
-		grid.setLoadMask(true);
-		grid.getView().setAutoExpandColumn(grid.getColumnModel().findColumnConfig(reportScheduleInfoPa.reportName().getPath()));
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		grid.getSelectionModel().addSelectionChangedHandler(new SelectionChangedHandler<ReportScheduleJobListInformation>() {
-			@Override
-			public void onSelectionChanged(
-					SelectionChangedEvent<ReportScheduleJobListInformation> event) {
-				if(event.getSelection().isEmpty())
-					return;
-				
-				final ReportScheduleJobListInformation selected = event.getSelection().get(0);
-				if(null == selected)
-					return;
-				
-				displayDetails(selected);
-			}
-		});
-		listPanelNsContainer.setWidget(grid);
-		
-		/* context menu */
-		Menu cMenu = new DwMenu();
-		cMenu.add(historyService.getJumpToMenuItem(new JumpToObjectCallback(){
-			private Long reportId;
-			
-			@Override
-			public void getDtoTarget(final JumpToObjectResultCallback callback) {
-				ReportScheduleJobListInformation data = grid.getSelectionModel().getSelectedItem();
-				if(null == data)
-					return;
-				reportId = data.getReportId();
-				if(null == reportId)
-					return;
-				
-				reportTreeLoader.loadNodeById(reportId, new RsAsyncCallback<AbstractNodeDto>(){
-					@Override
-					public void onSuccess(AbstractNodeDto result) {
-						if(null != result)
-							callback.setResult(result);
-					}
-				});
-			}
+      mainToolbar.add(new SeparatorToolItem());
 
-			@Override
-			public boolean haveToUpdate() {
-				ReportScheduleJobListInformation data = grid.getSelectionModel().getSelectedItem();
-				if(null == data || null == reportId)
-					return true;
-				
-				return ! reportId.equals(data.getReportId());
-			}			
-		}));
+      archiveBtn = new DwToggleButton(SchedulerMessages.INSTANCE.archive());
+      archiveBtn.setIcon(BaseIcon.ARCHIVE);
+      archiveBtn.setToolTip(SchedulerMessages.INSTANCE.displayArchived());
+      mainToolbar.add(archiveBtn);
 
-		grid.setContextMenu(cMenu);
-	}
-	
-	protected void displayDetails(final ReportScheduleJobListInformation selected) {
-		mask(BaseMessages.INSTANCE.loadingMsg());
-		schedulerDao.loadFullScheduleInformation(selected, new RsAsyncCallback<ReportScheduleJobInformation>(){
-			@Override
-			public void onSuccess(ReportScheduleJobInformation result) {
-				unmask();
-				displayDetail(selected, result);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				unmask();
-				detailPanelNsContainer.clear();
-				detailToolbar.clear();
-			}
+      archiveBtn.addSelectHandler(event -> reload());
+   }
 
-		});
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void reload() {
-		if(! initialRequestDone)
-			return;
+   private void createStore() {
+      /* init filter */
+      jobFilterConfig.setActive(true);
 
-		listStore.clear();
-		
-		resetConfig();
-		
-		detailPanel.clear();
-		detailToolbar.clear();
-		
-		pagingToolbar.refresh();
-	}
+      /* create proxy */
+      RpcProxy<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>>() {
 
-	private void resetConfig() {
-		jobFilterConfig = new ReportServerJobFilterDto();
-		addCriterions = new ArrayList<JobFilterCriteriaDto>();
-		
-		jobFilterConfig.setActive(null == archiveBtn || ! archiveBtn.getValue());
-		jobFilterConfig.setInActive(null != archiveBtn && archiveBtn.getValue());
-		
-		for(ScheduledReportToolbarListFilter filter : tbFilters)
-			filter.configure(this, jobFilterConfig, addCriterions);
-		for(ScheduledReportListFilter filter : filters)
-			filter.configure(this, jobFilterConfig, addCriterions);
-	}
+         @Override
+         public void load(PagingLoadConfig loadConfig,
+               final AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>> callback) {
+            if (loadConfig instanceof PagingLoadConfig) {
+               PagingLoadConfig plc = (PagingLoadConfig) loadConfig;
+               schedulerService.transformLoadConfig(plc, jobFilterConfig);
+               schedulerDao.getReportJobList(jobFilterConfig, addCriterions,
+                     new AsyncCallback<PagingLoadResult<ReportScheduleJobListInformation>>() {
+                        @Override
+                        public void onSuccess(PagingLoadResult<ReportScheduleJobListInformation> result) {
+                           initialRequestDone = true;
+                           callback.onSuccess(result);
+                        }
 
-	private void displayDetail(ReportScheduleJobListInformation selected, ReportScheduleJobInformation result) {
-		detailPanelNsContainer.clear();
-		detailToolbar.clear();
-		
-		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		wrapper.setScrollMode(ScrollMode.AUTOY);
-		
-		detailPanelNsContainer.setNorthWidget(detailToolbar);
-		
-		DwContentPanel propertiesPanel = new DwContentPanel();
-		propertiesPanel.setLightHeader();
-		propertiesPanel.setHeading(SchedulerMessages.INSTANCE.propertiesLabel());
-		wrapper.add(propertiesPanel, new VerticalLayoutData(1,-1, new Margins(5)));
-		
-		Component grid = getDetailGrid(selected, result);
-		propertiesPanel.add(grid);
-		
-		DwContentPanel nextSchedulePanel = new DwContentPanel();
-		nextSchedulePanel.setLightHeader();
-		nextSchedulePanel.setHeading(SchedulerMessages.INSTANCE.scheduleListLabel());
-		wrapper.add(nextSchedulePanel, new VerticalLayoutData(1,-1, new Margins(5)));
-		
-		Component nextScheduleGrid = getCurrentScheduleGrid(selected, result);
-		nextSchedulePanel.add(nextScheduleGrid);
-		
-		for(ScheduledReportListDetailToolbarHook hooker : hookHandler.getHookers(ScheduledReportListDetailToolbarHook.class))
-			hooker.statusBarToolbarHook_addLeft(detailToolbar, selected, result, this);
-		
-		detailToolbar.addBaseHookersLeft();
-		
-		detailToolbar.add(new FillToolItem());
-		
-		for(ScheduledReportListDetailToolbarHook hooker : hookHandler.getHookers(ScheduledReportListDetailToolbarHook.class))
-			hooker.statusBarToolbarHook_addRight(detailToolbar, selected, result, this);
-		
-		detailToolbar.addBaseHookersRight();
-		
-		detailPanelNsContainer.add(wrapper);
-		
-		detailPanel.setWidget(detailPanelNsContainer);
-		
-		detailPanel.forceLayout();
-	}
-	
-	public Widget createLabel(String text) {
-		Label label = new Label(text);
-		label.addStyleName("schedule-detail-label");
-		
-		return label;
-	}
-	
-	private String formatDate(Date date){
-		try {
-			return formatUiHelper.getShortDateTimeFormat().format(date);
-		}catch(IllegalArgumentException e){
-			return "?";
-		}
-	}
+                        public void onFailure(Throwable caught) {
+                           initialRequestDone = true;
+                           callback.onFailure(caught);
+                        };
+                     });
+            }
+         }
+      };
 
-	private Grid<ExecutionLogEntryDto> getCurrentScheduleGrid(final ReportScheduleJobListInformation selected, ReportScheduleJobInformation result) {
-		setDataInDetailStore(result);
-		
-		List<ColumnConfig<ExecutionLogEntryDto,?>> colConfig = new ArrayList<ColumnConfig<ExecutionLogEntryDto,?>>();
-		
-		ColumnConfig<ExecutionLogEntryDto,ExecutionLogEntryDto> iconColumn = new ColumnConfig<ExecutionLogEntryDto,ExecutionLogEntryDto>(new IdentityValueProvider<ExecutionLogEntryDto>("__icon"), 50);
-		iconColumn.setMenuDisabled(true);
-		iconColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
+      /* create loader and bind it */
+      loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<ReportScheduleJobListInformation>>(proxy);
+      if (loader.getSortInfo().isEmpty()) {
+         SortInfo sortInfo = new SortInfoBean();
+         sortInfo.setSortDir(SortDir.DESC);
+         sortInfo.setSortField("jobId");
+         loader.addSortInfo(sortInfo);
+      }
 
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					ExecutionLogEntryDto model, SafeHtmlBuilder sb) {
-				if(model instanceof DatePropertyModel)
-					sb.append(BaseIcon.HOURGLASS_O.toSafeHtml());
-				if(model instanceof ExecutionLogEntryDto){
-					ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
-					if(OutcomeDto.SUCCESS == entry.getOutcome())
-						sb.append(BaseIcon.CHECK.toSafeHtml());
-					else if(OutcomeDto.FAILURE == entry.getOutcome())
-						sb.append(BaseIcon.ERROR.toSafeHtml());
-					else if(OutcomeDto.VETO == entry.getOutcome() || OutcomeDto.ACTION_VETO == entry.getOutcome())
-						sb.append(BaseIcon.FLAG.toSafeHtml());
-					else if(OutcomeDto.EXECUTING== entry.getOutcome())
-						sb.append(BaseIcon.ROTATE_RIGHT.toSafeHtml());
-				}
-			}
-		});
-		colConfig.add(iconColumn);
-		
-		ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> dateColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(new IdentityValueProvider<ExecutionLogEntryDto>("__date"), 120, SchedulerMessages.INSTANCE.gridSchedule());
-		dateColumn.setMenuDisabled(true);
-		dateColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					ExecutionLogEntryDto model, SafeHtmlBuilder sb) {
-				if(model instanceof DatePropertyModel)
-					sb.appendEscaped(formatDate(((DatePropertyModel)model).getDate()));
-				if(model instanceof ExecutionLogEntryDto){
-					ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
-					if(null != entry.getScheduledStart())
-						sb.appendEscaped(formatDate(entry.getScheduledStart()));
-				}
-			}
-		});
-		colConfig.add(dateColumn);
-		
-		ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> startColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(new IdentityValueProvider<ExecutionLogEntryDto>("__start"), 120, SchedulerMessages.INSTANCE.gridStarted());
-		startColumn.setMenuDisabled(true);
-		startColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					ExecutionLogEntryDto model, SafeHtmlBuilder sb) {
-				if(model instanceof DatePropertyModel)
-					return;
-				if(model instanceof ExecutionLogEntryDto){
-					ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
-					if(null != entry.getStart())
-						sb.appendEscaped(formatDate(entry.getStart()));
-				}
-			}
-		});
-		colConfig.add(startColumn);
-		
-		ColumnConfig<ExecutionLogEntryDto,ExecutionLogEntryDto> infoColumn = new ColumnConfig<ExecutionLogEntryDto,ExecutionLogEntryDto>(new IdentityValueProvider<ExecutionLogEntryDto>("__info"), 200, SchedulerMessages.INSTANCE.gridInfoLabel());
-		infoColumn.setMenuDisabled(true);
-		infoColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					ExecutionLogEntryDto value, SafeHtmlBuilder sb) {
-				if(null == value.getOutcome())
-					return;
-				switch(value.getOutcome()){
-				case FAILURE:
-					sb.appendEscaped(null != value.getBadErrorDescription() ? value.getBadErrorDescription() : "");
-					break;
-				case VETO:
-				case ACTION_VETO:
-					sb.appendEscaped(null != value.getVetoExplanation() ? value.getVetoExplanation() : "");
-					break;
-				case EXECUTING:
-					sb.appendEscaped(SchedulerMessages.INSTANCE.executing());
-					break;
-				case SUCCESS:
-					break;
-				}
-			}
-		});
-		colConfig.add(infoColumn);
-		
-		final Grid<ExecutionLogEntryDto> grid = new Grid<ExecutionLogEntryDto>(detailScheduleInfoStore, new ColumnModel<ExecutionLogEntryDto>(colConfig));
-		grid.getView().setAutoExpandColumn(infoColumn);
+      loader.setRemoteSort(true);
+      resetConfig();
 
-		grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-			@Override
-			public void onRowDoubleClick(RowDoubleClickEvent event) {
-				ExecutionLogEntryDto data = detailScheduleInfoStore.get(event.getRowIndex());
-				if(data instanceof DatePropertyModel)
-					return;
-				
-				schedulerDao.loadFullDetailsFor(selected.getJobId(), (ExecutionLogEntryDto)data, new RsAsyncCallback<ExecutionLogEntryDto>(){
-					@Override
-					public void onSuccess(ExecutionLogEntryDto result) {
-						displayDetailsFor(selected, result);
-					}
-				});
-			}
-		});
-		
-		
-		return grid;
-	}
+      listStore = new ListStore<ReportScheduleJobListInformation>(reportScheduleInfoPa.dtoId());
+      loader.addLoadHandler(
+            new LoadResultListStoreBinding<PagingLoadConfig, ReportScheduleJobListInformation, PagingLoadResult<ReportScheduleJobListInformation>>(
+                  listStore));
+   }
 
-	protected void displayDetailsFor(ReportScheduleJobListInformation selected, ExecutionLogEntryDto data) {
-		WestPropertiesDialog dialog = new WestPropertiesDialog();
-		dialog.setHeading(SchedulerMessages.INSTANCE.scheduleEntryDetailHeader(selected.getReportName(), selected.getReportId(), selected.getJobId()));
-		
-		Component mainCard = getDetailCardFor(data);
-		dialog.addCard(SchedulerMessages.INSTANCE.detailDialogMainCardHeader(), BaseIcon.EXCLAMATION, mainCard);
-		
-		for(ActionEntryDto action : data.getActionEntries()){
-			for(ActionLogEntryDetailHook hooker : hookHandler.getHookers(ActionLogEntryDetailHook.class)){
-				if(hooker.consumes(action)){
-					Widget actionCard = hooker.getCard(action, this); 
-						
-					dialog.addCard(action.getActionName(), BaseIcon.FUTBOL_O, actionCard);
-					break;
-				}
-			}
-		}
-	
-		dialog.show();
-	}
+   private void addPagingToolbar() {
+      pagingToolbar = new DwPagingToolBar(GRID_PAGE_SIZE);
 
-	protected Component getDetailCardFor(ExecutionLogEntryDto data) {
-		VerticalLayoutContainer container = new VerticalLayoutContainer();
-		
-		DwContentPanel executionLogEntryPanel = new DwContentPanel();
-		executionLogEntryPanel.setLightDarkStyle();
-		executionLogEntryPanel.setHeading(SchedulerMessages.INSTANCE.executionLogEntryLabel());
-		
-		VerticalLayoutContainer executionLogEntryWrapper = new VerticalLayoutContainer();
-		executionLogEntryPanel.add(executionLogEntryWrapper);
+      pagingToolbar.bind(loader);
 
-		container.add(executionLogEntryPanel, new VerticalLayoutData(1, -1, new Margins(5)));
-		
-		ListStore<KeyValueProperty> entryKeyValueStore = new ListStore<KeyValueProperty>(keyvpPa.id());
-		entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduled(), 
-				null != data.getScheduledStart() ?
-						formatDate(data.getScheduledStart()) :
-						""));
-		entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.started(), 
-				null != data.getStart() ?
-						formatDate(data.getStart()) :
-						""));
-		entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.ended(), 
-				null != data.getEnd() ?
-						formatDate(data.getEnd()) :
-						""));
-		switch(data.getOutcome()){
-		case SUCCESS:
-			entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.success() ));
-			break;
-		case FAILURE:
-			entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.failure() ));
-			break;
-		case VETO:
-		case ACTION_VETO:
-			entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.veto() ));
-			entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.vetoDescriptionLabel(), data.getVetoExplanation() ));
-			break;
-		case EXECUTING:
-			entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.executing() ));
-			break;
-		}
-		
-		Grid<KeyValueProperty> entryGrid = gridHelper.create(entryKeyValueStore);
-		executionLogEntryWrapper.add(entryGrid, new VerticalLayoutData(1,-1));
-		if(null != data.getBadErrorDescription() && ! "".equals(data.getBadErrorDescription())){
-			TextArea area = new TextArea();
-			area.setWidth(400);
-			area.setHeight(200);
-			area.setValue(data.getBadErrorDescription());
-			
-			executionLogEntryWrapper.add(createLabel(SchedulerMessages.INSTANCE.errorDescriptionLabel()), new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(5,0,0,0)));
-			executionLogEntryWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
-		}
-		
-		if (OutcomeDto.VETO == data.getOutcome()){
-			TextArea area = new TextArea();
-			area.setWidth(400);
-			area.setHeight(200);
-			area.setValue(data.getVetoExplanation());
-			
-			executionLogEntryWrapper.add(createLabel(SchedulerMessages.INSTANCE.vetoDescriptionLabel()), new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(5,0,0,0)));
-			executionLogEntryWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1,-1));
-		}
-		
-		
-		JobEntryDto job = data.getJobEntry();
-		if(null != job){
-			ListStore<KeyValueProperty> jobKeyValueStore = new ListStore<KeyValueProperty>(keyvpPa.id());
-			switch(job.getOutcome()){
-			case SUCCESS:
-				jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.success() ));
-				break;
-			case FAILURE:
-				jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.failure() ));
-				break;
-			case VETO:
-				jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.veto() ));
-				break;
-			case EXECUTING:
-				jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.executing() ));
-				break;
-			case ACTION_VETO:
-				break;
-			}
-			
-			
-			DwContentPanel jobDataPanel = new DwContentPanel();
-			jobDataPanel.setLightDarkStyle();
-			jobDataPanel.setHeading(SchedulerMessages.INSTANCE.jobDataLabel());
-			VerticalLayoutContainer jobDataWrapper = new VerticalLayoutContainer();
-			jobDataPanel.add(jobDataWrapper);
-			
-			Grid<KeyValueProperty> grid = gridHelper.create(jobKeyValueStore);
-			container.add(jobDataPanel, new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(5)));
-			jobDataWrapper.add(grid, new VerticalLayoutData(1,-1));
-			
-			if(OutcomeDto.FAILURE == job.getOutcome()){
-				TextArea area = new TextArea();
-				area.setWidth(400);
-				area.setHeight(200);
-				area.setValue(job.getErrorDescription());
-				
-				jobDataWrapper.add(createLabel(SchedulerMessages.INSTANCE.errorDescriptionLabel()));
-				jobDataWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1,-1, new Margins(5)));
-			} 
-		}
-		
-		return container;
-	}
+      listPanelNsContainer.setSouthWidget(pagingToolbar);
+   }
 
-	public void setDataInDetailStore(final ReportScheduleJobInformation result) {
-		detailScheduleInfoStore.clear();
-		
-		result.getLastExecutedEntries()
-		   .forEach(detailScheduleInfoStore::add);
-		
-		result.getNextPlannedEntries()
-		   .forEach(date -> detailScheduleInfoStore.add(new DatePropertyModel(date)));
-	}
-	
-	private Grid<KeyValueProperty> getDetailGrid( final ReportScheduleJobListInformation selected, final ReportScheduleJobInformation result) {
-		ListStore<KeyValueProperty> store = new ListStore<KeyValueProperty>(keyvpPa.id());
-		if(null != result.getScheduleDefinition().getReport()){
-			ReportDto report = result.getScheduleDefinition().getReport();
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.report(), report.getName()));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.gridIdLabel(), report.getId().toString()));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobId(), selected.getJobId().toString()));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobTitle(), selected.getJobTitle()));
-			String description = null == selected.getJobDescription() ? SchedulerMessages.INSTANCE.noDescription() : Format.ellipse(selected.getJobDescription(), 270);
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobDescription(), description));
-			if (!selected.isExecutorDeleted()) 
-				store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.executor(), selected.getExecutorName()));
-			else
-				store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.executor(), SchedulerMessages.INSTANCE.deletedExecutor()));
-			if (!selected.isScheduledByDeleted()) 
-				store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduledBy(), selected.getScheduledByName()));
-			else
-				store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduledBy(), SchedulerMessages.INSTANCE.deletedScheduledBy()));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfSuccessfulExecutions(), String.valueOf(result.getNrOfSuccessfulExecutions())));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfFailedExecutions(), String.valueOf(result.getNrOfFailedExecutions())));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfVetoedExecutions(), String.valueOf(result.getNrOfVetoedExecutions())));
-			store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobExecutionStatus(), String.valueOf(result.getExecutionStatus())){
-				@Override
-				public void onRowDoubleClick(RowDoubleClickEvent event) {
-					UserDto user = loginService.getCurrentUser();
-					if(! result.isOwner(user) && ! securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class))
-						return;
-					
-					if(! result.getExecutionStatus().equals(JobExecutionStatusDto.BAD_FAILURE))
-						return;
-					
-						
-					MenuItem item = new DwMenuItem(SchedulerMessages.INSTANCE.clearBadFailure(),BaseIcon.CHECK);
-					item.addSelectionHandler(new SelectionHandler<Item>() {
-						
-						@Override
-						public void onSelection(SelectionEvent<Item> event) {
-							schedulerDao.clearErrorStatus(selected.getJobId(), new RsAsyncCallback<Void>(){
-								@Override
-								public void onSuccess(Void result) {
-									displayDetails(selected);
-								}
-							});
-						}
-					});
-					
-					FloatingWrapper wrapper = new FloatingWrapper(item);
-					wrapper.showAt(event.getEvent().getClientX(), event.getEvent().getClientY());
-				}
-			});
-		}
-		
-		Grid<KeyValueProperty> grid = gridHelper.create(store);
-		
-		return grid;
-	}
-	
-	public JobFilterConfigurationDto getJobFilterConfig() {
-		return jobFilterConfig;
-	}
-	
-	public boolean isDisplayExecutorColumn() {
-		return displayExecutorColumn;
-	}
+   private void createDetailPanel() {
+      detailPanel = new DwContentPanel();
+      detailPanel.addClassName("rs-schedule-view-detail");
+      detailPanel.setHeading(SchedulerMessages.INSTANCE.detailPanelTitle());
 
-	public boolean isDisplayJobColumn() {
-		return displayJobColumn;
-	}
+      detailPanelNsContainer = new DwNorthSouthContainer();
+      detailPanel.setWidget(detailPanelNsContainer);
 
-	class DatePropertyModel extends ExecutionLogEntryDto{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = 1L;
-		
-		private Date date;
-		
-		public DatePropertyModel(Date date){
-			setDate(date);
-		}
+      detailToolbar = toolbarProvider.get();
+      detailToolbar.setContainerName(MAIN_TOOLBAR_NAME);
+      detailPanelNsContainer.setNorthWidget(detailToolbar);
 
-		public void setDate(Date date) {
-			this.date = date;
-		}
+      ToolBar dummyToolbar = new DwToolBar();
+      DwTextButton dummyBtn = new DwTextButton(" ",
+            IconHelper.getImageResource(BaseResources.INSTANCE.emptyImage().getSafeUri(), 16, 16));
+      dummyToolbar.add(new FillToolItem());
+      dummyToolbar.add(dummyBtn);
+      detailPanelNsContainer.setSouthWidget(dummyToolbar);
+   }
 
-		public Date getDate() {
-			return date;
-		}
-		
-		
-	}
+   private void createListPanel() {
+      listPanel = new DwContentPanel();
+      listPanel.addClassName("rs-schedule-view-list");
+      listPanel.setHeading(SchedulerMessages.INSTANCE.listPanelHeading());
 
+      listPanelNsContainer = new DwNorthSouthContainer();
+      listPanel.setWidget(listPanelNsContainer);
+
+      listPanelNsContainer.setNorthWidget(mainToolbar);
+
+      /* create grid */
+      grid = new Grid<ReportScheduleJobListInformation>(listStore, schedulerService
+            .createReportScheduleListColumnModel(displayJobColumn, displayExecutorColumn, displayScheduledByColumn));
+      grid.setLoader(loader);
+      grid.setLoadMask(true);
+      grid.getView()
+            .setAutoExpandColumn(grid.getColumnModel().findColumnConfig(reportScheduleInfoPa.reportName().getPath()));
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+      grid.getSelectionModel()
+            .addSelectionChangedHandler(new SelectionChangedHandler<ReportScheduleJobListInformation>() {
+               @Override
+               public void onSelectionChanged(SelectionChangedEvent<ReportScheduleJobListInformation> event) {
+                  if (event.getSelection().isEmpty())
+                     return;
+
+                  final ReportScheduleJobListInformation selected = event.getSelection().get(0);
+                  if (null == selected)
+                     return;
+
+                  displayDetails(selected);
+               }
+            });
+      listPanelNsContainer.setWidget(grid);
+
+      /* context menu */
+      Menu cMenu = new DwMenu();
+      cMenu.add(historyService.getJumpToMenuItem(new JumpToObjectCallback() {
+         private Long reportId;
+
+         @Override
+         public void getDtoTarget(final JumpToObjectResultCallback callback) {
+            ReportScheduleJobListInformation data = grid.getSelectionModel().getSelectedItem();
+            if (null == data)
+               return;
+            reportId = data.getReportId();
+            if (null == reportId)
+               return;
+
+            reportTreeLoader.loadNodeById(reportId, new RsAsyncCallback<AbstractNodeDto>() {
+               @Override
+               public void onSuccess(AbstractNodeDto result) {
+                  if (null != result)
+                     callback.setResult(result);
+               }
+            });
+         }
+
+         @Override
+         public boolean haveToUpdate() {
+            ReportScheduleJobListInformation data = grid.getSelectionModel().getSelectedItem();
+            if (null == data || null == reportId)
+               return true;
+
+            return !reportId.equals(data.getReportId());
+         }
+      }));
+
+      grid.setContextMenu(cMenu);
+   }
+
+   protected void displayDetails(final ReportScheduleJobListInformation selected) {
+      mask(BaseMessages.INSTANCE.loadingMsg());
+      schedulerDao.loadFullScheduleInformation(selected, new RsAsyncCallback<ReportScheduleJobInformation>() {
+         @Override
+         public void onSuccess(ReportScheduleJobInformation result) {
+            unmask();
+            displayDetail(selected, result);
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            unmask();
+            detailPanelNsContainer.clear();
+            detailToolbar.clear();
+         }
+
+      });
+   }
+
+   public void reload() {
+      if (!initialRequestDone)
+         return;
+
+      listStore.clear();
+
+      resetConfig();
+
+      detailPanel.clear();
+      detailToolbar.clear();
+
+      pagingToolbar.refresh();
+   }
+
+   private void resetConfig() {
+      jobFilterConfig = new ReportServerJobFilterDto();
+      addCriterions = new ArrayList<JobFilterCriteriaDto>();
+
+      jobFilterConfig.setActive(null == archiveBtn || !archiveBtn.getValue());
+      jobFilterConfig.setInActive(null != archiveBtn && archiveBtn.getValue());
+
+      for (ScheduledReportToolbarListFilter filter : tbFilters)
+         filter.configure(this, jobFilterConfig, addCriterions);
+      for (ScheduledReportListFilter filter : filters)
+         filter.configure(this, jobFilterConfig, addCriterions);
+   }
+
+   private void displayDetail(ReportScheduleJobListInformation selected, ReportScheduleJobInformation result) {
+      detailPanelNsContainer.clear();
+      detailToolbar.clear();
+
+      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+      wrapper.setScrollMode(ScrollMode.AUTOY);
+
+      detailPanelNsContainer.setNorthWidget(detailToolbar);
+
+      DwContentPanel propertiesPanel = new DwContentPanel();
+      propertiesPanel.setLightHeader();
+      propertiesPanel.setHeading(SchedulerMessages.INSTANCE.propertiesLabel());
+      wrapper.add(propertiesPanel, new VerticalLayoutData(1, -1, new Margins(5)));
+
+      Component grid = getDetailGrid(selected, result);
+      propertiesPanel.add(grid);
+
+      DwContentPanel nextSchedulePanel = new DwContentPanel();
+      nextSchedulePanel.setLightHeader();
+      nextSchedulePanel.setHeading(SchedulerMessages.INSTANCE.scheduleListLabel());
+      wrapper.add(nextSchedulePanel, new VerticalLayoutData(1, -1, new Margins(5)));
+
+      Component nextScheduleGrid = getCurrentScheduleGrid(selected, result);
+      nextSchedulePanel.add(nextScheduleGrid);
+
+      for (ScheduledReportListDetailToolbarHook hooker : hookHandler
+            .getHookers(ScheduledReportListDetailToolbarHook.class))
+         hooker.statusBarToolbarHook_addLeft(detailToolbar, selected, result, this);
+
+      detailToolbar.addBaseHookersLeft();
+
+      detailToolbar.add(new FillToolItem());
+
+      for (ScheduledReportListDetailToolbarHook hooker : hookHandler
+            .getHookers(ScheduledReportListDetailToolbarHook.class))
+         hooker.statusBarToolbarHook_addRight(detailToolbar, selected, result, this);
+
+      detailToolbar.addBaseHookersRight();
+
+      detailPanelNsContainer.add(wrapper);
+
+      detailPanel.setWidget(detailPanelNsContainer);
+
+      detailPanel.forceLayout();
+   }
+
+   public Widget createLabel(String text) {
+      Label label = new Label(text);
+      label.addStyleName("schedule-detail-label");
+
+      return label;
+   }
+
+   private String formatDate(Date date) {
+      try {
+         return formatUiHelper.getShortDateTimeFormat().format(date);
+      } catch (IllegalArgumentException e) {
+         return "?";
+      }
+   }
+
+   private Grid<ExecutionLogEntryDto> getCurrentScheduleGrid(final ReportScheduleJobListInformation selected,
+         ReportScheduleJobInformation result) {
+      setDataInDetailStore(result);
+
+      List<ColumnConfig<ExecutionLogEntryDto, ?>> colConfig = new ArrayList<ColumnConfig<ExecutionLogEntryDto, ?>>();
+
+      ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> iconColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(
+            new IdentityValueProvider<ExecutionLogEntryDto>("__icon"), 50);
+      iconColumn.setMenuDisabled(true);
+      iconColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
+
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ExecutionLogEntryDto model,
+               SafeHtmlBuilder sb) {
+            if (model instanceof DatePropertyModel)
+               sb.append(BaseIcon.HOURGLASS_O.toSafeHtml());
+            if (model instanceof ExecutionLogEntryDto) {
+               ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
+               if (OutcomeDto.SUCCESS == entry.getOutcome())
+                  sb.append(BaseIcon.CHECK.toSafeHtml());
+               else if (OutcomeDto.FAILURE == entry.getOutcome())
+                  sb.append(BaseIcon.ERROR.toSafeHtml());
+               else if (OutcomeDto.VETO == entry.getOutcome() || OutcomeDto.ACTION_VETO == entry.getOutcome())
+                  sb.append(BaseIcon.FLAG.toSafeHtml());
+               else if (OutcomeDto.EXECUTING == entry.getOutcome())
+                  sb.append(BaseIcon.ROTATE_RIGHT.toSafeHtml());
+            }
+         }
+      });
+      colConfig.add(iconColumn);
+
+      ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> dateColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(
+            new IdentityValueProvider<ExecutionLogEntryDto>("__date"), 120, SchedulerMessages.INSTANCE.gridSchedule());
+      dateColumn.setMenuDisabled(true);
+      dateColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ExecutionLogEntryDto model,
+               SafeHtmlBuilder sb) {
+            if (model instanceof DatePropertyModel)
+               sb.appendEscaped(formatDate(((DatePropertyModel) model).getDate()));
+            if (model instanceof ExecutionLogEntryDto) {
+               ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
+               if (null != entry.getScheduledStart())
+                  sb.appendEscaped(formatDate(entry.getScheduledStart()));
+            }
+         }
+      });
+      colConfig.add(dateColumn);
+
+      ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> startColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(
+            new IdentityValueProvider<ExecutionLogEntryDto>("__start"), 120, SchedulerMessages.INSTANCE.gridStarted());
+      startColumn.setMenuDisabled(true);
+      startColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ExecutionLogEntryDto model,
+               SafeHtmlBuilder sb) {
+            if (model instanceof DatePropertyModel)
+               return;
+            if (model instanceof ExecutionLogEntryDto) {
+               ExecutionLogEntryDto entry = (ExecutionLogEntryDto) model;
+               if (null != entry.getStart())
+                  sb.appendEscaped(formatDate(entry.getStart()));
+            }
+         }
+      });
+      colConfig.add(startColumn);
+
+      ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto> infoColumn = new ColumnConfig<ExecutionLogEntryDto, ExecutionLogEntryDto>(
+            new IdentityValueProvider<ExecutionLogEntryDto>("__info"), 200, SchedulerMessages.INSTANCE.gridInfoLabel());
+      infoColumn.setMenuDisabled(true);
+      infoColumn.setCell(new AbstractCell<ExecutionLogEntryDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ExecutionLogEntryDto value,
+               SafeHtmlBuilder sb) {
+            if (null == value.getOutcome())
+               return;
+            switch (value.getOutcome()) {
+            case FAILURE:
+               sb.appendEscaped(null != value.getBadErrorDescription() ? value.getBadErrorDescription() : "");
+               break;
+            case VETO:
+            case ACTION_VETO:
+               sb.appendEscaped(null != value.getVetoExplanation() ? value.getVetoExplanation() : "");
+               break;
+            case EXECUTING:
+               sb.appendEscaped(SchedulerMessages.INSTANCE.executing());
+               break;
+            case SUCCESS:
+               break;
+            }
+         }
+      });
+      colConfig.add(infoColumn);
+
+      final Grid<ExecutionLogEntryDto> grid = new Grid<ExecutionLogEntryDto>(detailScheduleInfoStore,
+            new ColumnModel<ExecutionLogEntryDto>(colConfig));
+      grid.getView().setAutoExpandColumn(infoColumn);
+
+      grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+         @Override
+         public void onRowDoubleClick(RowDoubleClickEvent event) {
+            ExecutionLogEntryDto data = detailScheduleInfoStore.get(event.getRowIndex());
+            if (data instanceof DatePropertyModel)
+               return;
+
+            schedulerDao.loadFullDetailsFor(selected.getJobId(), (ExecutionLogEntryDto) data,
+                  new RsAsyncCallback<ExecutionLogEntryDto>() {
+                     @Override
+                     public void onSuccess(ExecutionLogEntryDto result) {
+                        displayDetailsFor(selected, result);
+                     }
+                  });
+         }
+      });
+
+      return grid;
+   }
+
+   protected void displayDetailsFor(ReportScheduleJobListInformation selected, ExecutionLogEntryDto data) {
+      WestPropertiesDialog dialog = new WestPropertiesDialog();
+      dialog.setHeading(SchedulerMessages.INSTANCE.scheduleEntryDetailHeader(selected.getReportName(),
+            selected.getReportId(), selected.getJobId()));
+
+      Component mainCard = getDetailCardFor(data);
+      dialog.addCard(SchedulerMessages.INSTANCE.detailDialogMainCardHeader(), BaseIcon.EXCLAMATION, mainCard);
+
+      for (ActionEntryDto action : data.getActionEntries()) {
+         for (ActionLogEntryDetailHook hooker : hookHandler.getHookers(ActionLogEntryDetailHook.class)) {
+            if (hooker.consumes(action)) {
+               Widget actionCard = hooker.getCard(action, this);
+
+               dialog.addCard(action.getActionName(), BaseIcon.FUTBOL_O, actionCard);
+               break;
+            }
+         }
+      }
+
+      dialog.show();
+   }
+
+   protected Component getDetailCardFor(ExecutionLogEntryDto data) {
+      VerticalLayoutContainer container = new VerticalLayoutContainer();
+
+      DwContentPanel executionLogEntryPanel = new DwContentPanel();
+      executionLogEntryPanel.setLightDarkStyle();
+      executionLogEntryPanel.setHeading(SchedulerMessages.INSTANCE.executionLogEntryLabel());
+
+      VerticalLayoutContainer executionLogEntryWrapper = new VerticalLayoutContainer();
+      executionLogEntryPanel.add(executionLogEntryWrapper);
+
+      container.add(executionLogEntryPanel, new VerticalLayoutData(1, -1, new Margins(5)));
+
+      ListStore<KeyValueProperty> entryKeyValueStore = new ListStore<KeyValueProperty>(keyvpPa.id());
+      entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduled(),
+            null != data.getScheduledStart() ? formatDate(data.getScheduledStart()) : ""));
+      entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.started(),
+            null != data.getStart() ? formatDate(data.getStart()) : ""));
+      entryKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.ended(),
+            null != data.getEnd() ? formatDate(data.getEnd()) : ""));
+      switch (data.getOutcome()) {
+      case SUCCESS:
+         entryKeyValueStore.add(
+               new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.success()));
+         break;
+      case FAILURE:
+         entryKeyValueStore.add(
+               new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.failure()));
+         break;
+      case VETO:
+      case ACTION_VETO:
+         entryKeyValueStore
+               .add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.veto()));
+         entryKeyValueStore
+               .add(new KeyValueProperty(SchedulerMessages.INSTANCE.vetoDescriptionLabel(), data.getVetoExplanation()));
+         break;
+      case EXECUTING:
+         entryKeyValueStore.add(
+               new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.executing()));
+         break;
+      }
+
+      Grid<KeyValueProperty> entryGrid = gridHelper.create(entryKeyValueStore);
+      executionLogEntryWrapper.add(entryGrid, new VerticalLayoutData(1, -1));
+      if (null != data.getBadErrorDescription() && !"".equals(data.getBadErrorDescription())) {
+         TextArea area = new TextArea();
+         area.setWidth(400);
+         area.setHeight(200);
+         area.setValue(data.getBadErrorDescription());
+
+         executionLogEntryWrapper.add(createLabel(SchedulerMessages.INSTANCE.errorDescriptionLabel()),
+               new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(5, 0, 0, 0)));
+         executionLogEntryWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+      }
+
+      if (OutcomeDto.VETO == data.getOutcome()) {
+         TextArea area = new TextArea();
+         area.setWidth(400);
+         area.setHeight(200);
+         area.setValue(data.getVetoExplanation());
+
+         executionLogEntryWrapper.add(createLabel(SchedulerMessages.INSTANCE.vetoDescriptionLabel()),
+               new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(5, 0, 0, 0)));
+         executionLogEntryWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+      }
+
+      JobEntryDto job = data.getJobEntry();
+      if (null != job) {
+         ListStore<KeyValueProperty> jobKeyValueStore = new ListStore<KeyValueProperty>(keyvpPa.id());
+         switch (job.getOutcome()) {
+         case SUCCESS:
+            jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(),
+                  SchedulerMessages.INSTANCE.success()));
+            break;
+         case FAILURE:
+            jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(),
+                  SchedulerMessages.INSTANCE.failure()));
+            break;
+         case VETO:
+            jobKeyValueStore.add(
+                  new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(), SchedulerMessages.INSTANCE.veto()));
+            break;
+         case EXECUTING:
+            jobKeyValueStore.add(new KeyValueProperty(SchedulerMessages.INSTANCE.outcomeLabel(),
+                  SchedulerMessages.INSTANCE.executing()));
+            break;
+         case ACTION_VETO:
+            break;
+         }
+
+         DwContentPanel jobDataPanel = new DwContentPanel();
+         jobDataPanel.setLightDarkStyle();
+         jobDataPanel.setHeading(SchedulerMessages.INSTANCE.jobDataLabel());
+         VerticalLayoutContainer jobDataWrapper = new VerticalLayoutContainer();
+         jobDataPanel.add(jobDataWrapper);
+
+         Grid<KeyValueProperty> grid = gridHelper.create(jobKeyValueStore);
+         container.add(jobDataPanel, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(5)));
+         jobDataWrapper.add(grid, new VerticalLayoutData(1, -1));
+
+         if (OutcomeDto.FAILURE == job.getOutcome()) {
+            TextArea area = new TextArea();
+            area.setWidth(400);
+            area.setHeight(200);
+            area.setValue(job.getErrorDescription());
+
+            jobDataWrapper.add(createLabel(SchedulerMessages.INSTANCE.errorDescriptionLabel()));
+            jobDataWrapper.add(area, new VerticalLayoutContainer.VerticalLayoutData(1, -1, new Margins(5)));
+         }
+      }
+
+      return container;
+   }
+
+   public void setDataInDetailStore(final ReportScheduleJobInformation result) {
+      detailScheduleInfoStore.clear();
+
+      result.getLastExecutedEntries().forEach(detailScheduleInfoStore::add);
+
+      result.getNextPlannedEntries().forEach(date -> detailScheduleInfoStore.add(new DatePropertyModel(date)));
+   }
+
+   private Grid<KeyValueProperty> getDetailGrid(final ReportScheduleJobListInformation selected,
+         final ReportScheduleJobInformation result) {
+      ListStore<KeyValueProperty> store = new ListStore<KeyValueProperty>(keyvpPa.id());
+      if (null != result.getScheduleDefinition().getReport()) {
+         ReportDto report = result.getScheduleDefinition().getReport();
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.report(), report.getName()));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.gridIdLabel(), report.getId().toString()));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobId(), selected.getJobId().toString()));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobTitle(), selected.getJobTitle()));
+         String description = null == selected.getJobDescription() ? SchedulerMessages.INSTANCE.noDescription()
+               : Format.ellipse(selected.getJobDescription(), 270);
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobDescription(), description));
+         if (!selected.isExecutorDeleted())
+            store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.executor(), selected.getExecutorName()));
+         else
+            store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.executor(),
+                  SchedulerMessages.INSTANCE.deletedExecutor()));
+         if (!selected.isScheduledByDeleted())
+            store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduledBy(), selected.getScheduledByName()));
+         else
+            store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.scheduledBy(),
+                  SchedulerMessages.INSTANCE.deletedScheduledBy()));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfSuccessfulExecutions(),
+               String.valueOf(result.getNrOfSuccessfulExecutions())));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfFailedExecutions(),
+               String.valueOf(result.getNrOfFailedExecutions())));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.nrOfVetoedExecutions(),
+               String.valueOf(result.getNrOfVetoedExecutions())));
+         store.add(new KeyValueProperty(SchedulerMessages.INSTANCE.jobExecutionStatus(),
+               String.valueOf(result.getExecutionStatus())) {
+            @Override
+            public void onRowDoubleClick(RowDoubleClickEvent event) {
+               UserDto user = loginService.getCurrentUser();
+               if (!result.isOwner(user)
+                     && !securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class))
+                  return;
+
+               if (!result.getExecutionStatus().equals(JobExecutionStatusDto.BAD_FAILURE))
+                  return;
+
+               MenuItem item = new DwMenuItem(SchedulerMessages.INSTANCE.clearBadFailure(), BaseIcon.CHECK);
+               item.addSelectionHandler(new SelectionHandler<Item>() {
+
+                  @Override
+                  public void onSelection(SelectionEvent<Item> event) {
+                     schedulerDao.clearErrorStatus(selected.getJobId(), new RsAsyncCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                           displayDetails(selected);
+                        }
+                     });
+                  }
+               });
+
+               FloatingWrapper wrapper = new FloatingWrapper(item);
+               wrapper.showAt(event.getEvent().getClientX(), event.getEvent().getClientY());
+            }
+         });
+      }
+
+      Grid<KeyValueProperty> grid = gridHelper.create(store);
+
+      return grid;
+   }
+
+   public JobFilterConfigurationDto getJobFilterConfig() {
+      return jobFilterConfig;
+   }
+
+   public boolean isDisplayExecutorColumn() {
+      return displayExecutorColumn;
+   }
+
+   public boolean isDisplayJobColumn() {
+      return displayJobColumn;
+   }
+
+   class DatePropertyModel extends ExecutionLogEntryDto {
+      /**
+       * 
+       */
+      private static final long serialVersionUID = 1L;
+
+      private Date date;
+
+      public DatePropertyModel(Date date) {
+         setDate(date);
+      }
+
+      public void setDate(Date date) {
+         this.date = date;
+      }
+
+      public Date getDate() {
+         return date;
+      }
+
+   }
 
 }

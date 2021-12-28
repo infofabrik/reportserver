@@ -29,15 +29,11 @@ public class DiffconfigfilesCommand extends SubCommandContainerImpl {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(
-         messageClass = ConfigMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandDiffConfigFiles_description")
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandDiffConfigFiles_description")
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       return super.execute(parser, session);
    }
-
 
    @Override
    public String getBaseCommand() {

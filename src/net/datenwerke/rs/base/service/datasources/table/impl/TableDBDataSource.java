@@ -47,484 +47,486 @@ import net.datenwerke.rs.utils.eventbus.EventBus;
  */
 public class TableDBDataSource implements TableDataSource {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	@Inject
-	private static ManagedQueryFactory queryFactory;
-	
-	@Inject
-	private static EventBus eventBus;
-	
-	@Inject
-	private static StatementManagerService statementManagerService;
-	
-	@Inject
-	private static HookHandlerService hookHandler;
-	
-	private final Connection connection;
-	private final ManagedQuery mQuery;
-	private final DatasourceContainerProvider datasourceContainerProvider;
-	private final DatabaseHelper dbHelper;
-	private final String uuid = UUID.randomUUID().toString();
-	
-	private PreparedStatement stmt;
-	
-	private ResultSet resultSet;
-	
-	private boolean open = false;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private TableDefinition plainTableDefinition;
+   @Inject
+   private static ManagedQueryFactory queryFactory;
 
-	private ManagedQuery plainMQuery;
-	
-	private ParameterSet parameters;
-	
-	private TableDatasourceConfig config;
+   @Inject
+   private static EventBus eventBus;
 
-	private ResultSetObjectHandler resultSetHandler;
+   @Inject
+   private static StatementManagerService statementManagerService;
 
-	private Map<Integer, Integer> indexMap;
+   @Inject
+   private static HookHandlerService hookHandler;
 
+   private final Connection connection;
+   private final ManagedQuery mQuery;
+   private final DatasourceContainerProvider datasourceContainerProvider;
+   private final DatabaseHelper dbHelper;
+   private final String uuid = UUID.randomUUID().toString();
 
-	public TableDBDataSource(
-		Connection connection, 
-		String query,
-		DatasourceContainerProvider datasourceContainerProvider, 
-		DatabaseHelper dbHelper){
+   private PreparedStatement stmt;
 
-		if(null == query || "".equals(query.trim()))
-			throw new IllegalArgumentException("Query may not be empty");
-		
-		//this is necessary if the sql has a comment at the end in order to separate the comment from the next sql
-		query += "\n"; 
-		
-		this.connection = connection;
-		this.datasourceContainerProvider = datasourceContainerProvider;
-		this.dbHelper = dbHelper;
-		this.mQuery = queryFactory.create(query, dbHelper, this);
-		this.plainMQuery = queryFactory.create(query, dbHelper, this);
-	}
-	
-	@Override
-	public void applyConfig(TableDatasourceConfig config) {
-		this.config = config;
-	}
-	
-	@Override
-	public DatasourceContainerProvider getDatasourceContainerProvider() {
-		return datasourceContainerProvider;
-	}
-	
-	@Override
-	public TableDefinition getPlainTableDefinition(){
-		return plainTableDefinition;
-	}
+   private ResultSet resultSet;
 
-	public Connection getConnection() {
-		return connection;
-	}
+   private boolean open = false;
 
-	public ManagedQuery getManagedQuery() {
-		return mQuery;
-	}
-	
-	@Override
-	public void addQueryComment(String comment) {
-		plainMQuery.addQueryComment(comment);
-		mQuery.addQueryComment(comment);
-	}
+   private TableDefinition plainTableDefinition;
 
-	@Override
-	public Object getFieldValue(int pos) throws ReportExecutorException {
-		if(! open){
-			/* next opens and selects the first row as we are currently not open */
-			if(! next())
-				throw new IndexOutOfBoundsException();
-		}
-		
-		try {
-			return resultSetHandler.getObject(indexMap.get(pos));
-		} catch (SQLException e) {
-			DatabaseConnectionException dce = new DatabaseConnectionException("Could not ascertain object at position: " + pos); //$NON-NLS-1$
-			dce.initCause(e);
-			throw dce;
-		}
-	}
+   private ManagedQuery plainMQuery;
 
-	@Override
-	public TableDefinition getTableDefinition() throws ReportExecutorException {
-		if(! open)
-			open();
-		
-		/* get metadata and build table definition */
-		TableDefinition td = null;
-		try {
-			ResultSetMetaData metaData = resultSet.getMetaData();
-			if(null == mQuery.getColumns() || mQuery.isCountRows())
-				td = TableDefinition.fromResultSetMetaData(metaData);
-			else 
-				td = TableDefinition.fromResultSetMetaData(metaData, mQuery.getColumns());
+   private ParameterSet parameters;
 
-			
-			/*
-			 * Incorporates aliases into the tableDefinition. 
-			 * We can't just use the column list from the managed query, 
-			 * as this is incorrect in some cases -> select count(*) from (...)
-			 */
-			if(null != mQuery.getColumns() && !mQuery.getColumns().isEmpty()){
-				
-				ArrayList<String> originalColumnNames = new ArrayList<String>();
-				
-				/* build a map, mapping unique column names to aliases*/
-				HashMap<String, String> uniqueNameToAliasMap = new HashMap<String, String>();
-				for(int i = 0; i < mQuery.getColumns().size(); i++){
-					// see also uniqeColumnNamem in QueryBuilder
-					String uniqueName = QueryBuilder.uniqueColumnPrefix + i;
-					String aliasName = uniqueName;
+   private TableDatasourceConfig config;
 
-					Column col = mQuery.getColumns().get(i);
-					
-					/* filter hidden columns */
-					if(col.isHidden())
-						continue;
+   private ResultSetObjectHandler resultSetHandler;
 
-					if(null != col.getAlias() && !col.getAlias().isEmpty())
-						aliasName = col.getAlias();
-					else if(null != col.getDefaultAlias() && !col.getDefaultAlias().isEmpty())
-						aliasName = col.getDefaultAlias();
-					else
-						aliasName = col.getName();
-					
-					originalColumnNames.add(col.getName());
+   private Map<Integer, Integer> indexMap;
 
-					uniqueNameToAliasMap.put(uniqueName.toLowerCase(), aliasName);
-				}
+   public TableDBDataSource(Connection connection, String query,
+         DatasourceContainerProvider datasourceContainerProvider, DatabaseHelper dbHelper) {
 
-				/* replace those column Names present in the map with their respective aliases */
-				ArrayList<String> columnNames = new ArrayList<String>();
-				for(String colName : td.getColumnNames()){
-					if(!uniqueNameToAliasMap.containsKey(colName.toLowerCase()))
-						columnNames.add(colName);
-					else
-						columnNames.add(uniqueNameToAliasMap.get(colName.toLowerCase()));
-				}
+      if (null == query || "".equals(query.trim()))
+         throw new IllegalArgumentException("Query may not be empty");
 
-				td.setColumnNames(columnNames);
-				td.setOriginalColumnNames(originalColumnNames);
-			}
+      // this is necessary if the sql has a comment at the end in order to separate
+      // the comment from the next sql
+      query += "\n";
 
-		} catch (SQLException e) {
-			DatabaseConnectionException dce = new DatabaseConnectionException("Could not obtain metadata."); //$NON-NLS-1$
-			dce.initCause(e);
-			throw dce;
-		}
-		
-		return td;
-	}
+      this.connection = connection;
+      this.datasourceContainerProvider = datasourceContainerProvider;
+      this.dbHelper = dbHelper;
+      this.mQuery = queryFactory.create(query, dbHelper, this);
+      this.plainMQuery = queryFactory.create(query, dbHelper, this);
+   }
 
-	@Override
-	public boolean next() throws ReportExecutorException {
-		if(! open )
-			open();
-		try {
-			/* isclosed does not work for all drivers (in c3p0) */
+   @Override
+   public void applyConfig(TableDatasourceConfig config) {
+      this.config = config;
+   }
+
+   @Override
+   public DatasourceContainerProvider getDatasourceContainerProvider() {
+      return datasourceContainerProvider;
+   }
+
+   @Override
+   public TableDefinition getPlainTableDefinition() {
+      return plainTableDefinition;
+   }
+
+   public Connection getConnection() {
+      return connection;
+   }
+
+   public ManagedQuery getManagedQuery() {
+      return mQuery;
+   }
+
+   @Override
+   public void addQueryComment(String comment) {
+      plainMQuery.addQueryComment(comment);
+      mQuery.addQueryComment(comment);
+   }
+
+   @Override
+   public Object getFieldValue(int pos) throws ReportExecutorException {
+      if (!open) {
+         /* next opens and selects the first row as we are currently not open */
+         if (!next())
+            throw new IndexOutOfBoundsException();
+      }
+
+      try {
+         return resultSetHandler.getObject(indexMap.get(pos));
+      } catch (SQLException e) {
+         DatabaseConnectionException dce = new DatabaseConnectionException(
+               "Could not ascertain object at position: " + pos); //$NON-NLS-1$
+         dce.initCause(e);
+         throw dce;
+      }
+   }
+
+   @Override
+   public TableDefinition getTableDefinition() throws ReportExecutorException {
+      if (!open)
+         open();
+
+      /* get metadata and build table definition */
+      TableDefinition td = null;
+      try {
+         ResultSetMetaData metaData = resultSet.getMetaData();
+         if (null == mQuery.getColumns() || mQuery.isCountRows())
+            td = TableDefinition.fromResultSetMetaData(metaData);
+         else
+            td = TableDefinition.fromResultSetMetaData(metaData, mQuery.getColumns());
+
+         /*
+          * Incorporates aliases into the tableDefinition. We can't just use the column
+          * list from the managed query, as this is incorrect in some cases -> select
+          * count(*) from (...)
+          */
+         if (null != mQuery.getColumns() && !mQuery.getColumns().isEmpty()) {
+
+            ArrayList<String> originalColumnNames = new ArrayList<String>();
+
+            /* build a map, mapping unique column names to aliases */
+            HashMap<String, String> uniqueNameToAliasMap = new HashMap<String, String>();
+            for (int i = 0; i < mQuery.getColumns().size(); i++) {
+               // see also uniqeColumnNamem in QueryBuilder
+               String uniqueName = QueryBuilder.uniqueColumnPrefix + i;
+               String aliasName = uniqueName;
+
+               Column col = mQuery.getColumns().get(i);
+
+               /* filter hidden columns */
+               if (col.isHidden())
+                  continue;
+
+               if (null != col.getAlias() && !col.getAlias().isEmpty())
+                  aliasName = col.getAlias();
+               else if (null != col.getDefaultAlias() && !col.getDefaultAlias().isEmpty())
+                  aliasName = col.getDefaultAlias();
+               else
+                  aliasName = col.getName();
+
+               originalColumnNames.add(col.getName());
+
+               uniqueNameToAliasMap.put(uniqueName.toLowerCase(), aliasName);
+            }
+
+            /*
+             * replace those column Names present in the map with their respective aliases
+             */
+            ArrayList<String> columnNames = new ArrayList<String>();
+            for (String colName : td.getColumnNames()) {
+               if (!uniqueNameToAliasMap.containsKey(colName.toLowerCase()))
+                  columnNames.add(colName);
+               else
+                  columnNames.add(uniqueNameToAliasMap.get(colName.toLowerCase()));
+            }
+
+            td.setColumnNames(columnNames);
+            td.setOriginalColumnNames(originalColumnNames);
+         }
+
+      } catch (SQLException e) {
+         DatabaseConnectionException dce = new DatabaseConnectionException("Could not obtain metadata."); //$NON-NLS-1$
+         dce.initCause(e);
+         throw dce;
+      }
+
+      return td;
+   }
+
+   @Override
+   public boolean next() throws ReportExecutorException {
+      if (!open)
+         open();
+      try {
+         /* isclosed does not work for all drivers (in c3p0) */
 //			if(resultSet.isClosed())
 //				return false;
 
-			return resultSet.next();
-		} catch (SQLException e) {
-			DatabaseConnectionException dce = new DatabaseConnectionException("Could not increment cursor on resultset."); //$NON-NLS-1$
-			dce.initCause(e);
-			throw dce;
-		}
-	}
-	
-	@Override
-	public void open() throws ReportExecutorException {
-		open(null);
-	}
-	
-	@Override
-	public void open(String executorToken) throws ReportExecutorException {
-		if(open)
-			throw new IllegalStateException("DataSource already open");
-		
-		/* set flag */
-		open = true;
+         return resultSet.next();
+      } catch (SQLException e) {
+         DatabaseConnectionException dce = new DatabaseConnectionException("Could not increment cursor on resultset."); //$NON-NLS-1$
+         dce.initCause(e);
+         throw dce;
+      }
+   }
 
-		if(null == executorToken)
-			executorToken = UUID.randomUUID().toString();
-		
-		for(TableDbDatasourceOpenedHook hookers : hookHandler.getHookers(TableDbDatasourceOpenedHook.class)){
-			hookers.datasourceOpenend(this, executorToken);
-		}
-		
-		/* handle plain */
-		try {
-			plainMQuery.setLimit(0);
-			plainMQuery.setIgnoreAnyColumnConfiguration(true);
-			PreparedStatement getColumnsStmt = plainMQuery.prepareStatement(connection);
-			getColumnsStmt.setMaxRows(0);
-			
-			statementManagerService.registerStatement(executorToken, getColumnsStmt, connection);
-			ResultSetMetaData metaData = getColumnsStmt.executeQuery().getMetaData();
-			
-			this.plainTableDefinition = TableDefinition.fromResultSetMetaData(metaData);
-			mQuery.setPlainColumnNames(plainTableDefinition.getColumnNames());
-		} catch (SQLException e) {
-			throw new ReportExecutorException(DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
-		} finally {
-			statementManagerService.unregisterStatement(executorToken);
-		}
-		
-		/* open connection and get resultset */
-		if(null == stmt){
-			try {
-				stmt = mQuery.prepareStatement(connection);
-				
-				/* configure statement */
-				if(null != config){
-					if(null != config.getQueryTimeout()){
-						try{
-							stmt.setQueryTimeout(config.getQueryTimeout());
-						} catch(Exception e){
-							logger.info( "Could not set query timeout", e);
-						}
-					}
-				}
-			} catch (SQLException e) {
-				throw new ReportExecutorException(DatasourcesMessages.INSTANCE.exceptionCouldNotOpenDatasource(e.getLocalizedMessage()), e); 
-			}
-		} 
-		try {
-			eventBus.fireEvent(new OpenTableDatasourceEvent(stmt, uuid));
-			statementManagerService.registerStatement(executorToken, stmt, connection);
-			
-			resultSet = stmt.executeQuery();
-			resultSetHandler = dbHelper.createResultSetHandler(resultSet, connection);
-			
-			/* prepare indexMap */
-			int hiddenOffset = 0;
-			int index = 1;
-			if(null == mQuery.getColumns() || mQuery.isCountRows() || mQuery.isDistinct() || mQuery.hasAggregateColumns()){
-				indexMap = new IdentityMap();
-			} else {
-				indexMap = new HashMap<Integer, Integer>();
-				
-				for(int i = 0; i < mQuery.getColumns().size(); i++){
-					if(mQuery.getColumns().get(i).isHidden()){
-						hiddenOffset++;
-					} else {
-						indexMap.put(index, index+hiddenOffset);
-						index++;
-					}
-				}
-			}
-		} catch (SQLException e) {
-			throw new ReportExecutorException(DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
-		}finally{
-			statementManagerService.unregisterStatement(executorToken);
-		}
-	}
-	
-	@Override
-	public void close() {
-		try{
-			if(open && null != stmt){
-				try {
-					/* isclosed does not work for all drivers (in c3p0) */
+   @Override
+   public void open() throws ReportExecutorException {
+      open(null);
+   }
+
+   @Override
+   public void open(String executorToken) throws ReportExecutorException {
+      if (open)
+         throw new IllegalStateException("DataSource already open");
+
+      /* set flag */
+      open = true;
+
+      if (null == executorToken)
+         executorToken = UUID.randomUUID().toString();
+
+      for (TableDbDatasourceOpenedHook hookers : hookHandler.getHookers(TableDbDatasourceOpenedHook.class)) {
+         hookers.datasourceOpenend(this, executorToken);
+      }
+
+      /* handle plain */
+      try {
+         plainMQuery.setLimit(0);
+         plainMQuery.setIgnoreAnyColumnConfiguration(true);
+         PreparedStatement getColumnsStmt = plainMQuery.prepareStatement(connection);
+         getColumnsStmt.setMaxRows(0);
+
+         statementManagerService.registerStatement(executorToken, getColumnsStmt, connection);
+         ResultSetMetaData metaData = getColumnsStmt.executeQuery().getMetaData();
+
+         this.plainTableDefinition = TableDefinition.fromResultSetMetaData(metaData);
+         mQuery.setPlainColumnNames(plainTableDefinition.getColumnNames());
+      } catch (SQLException e) {
+         throw new ReportExecutorException(
+               DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
+      } finally {
+         statementManagerService.unregisterStatement(executorToken);
+      }
+
+      /* open connection and get resultset */
+      if (null == stmt) {
+         try {
+            stmt = mQuery.prepareStatement(connection);
+
+            /* configure statement */
+            if (null != config) {
+               if (null != config.getQueryTimeout()) {
+                  try {
+                     stmt.setQueryTimeout(config.getQueryTimeout());
+                  } catch (Exception e) {
+                     logger.info("Could not set query timeout", e);
+                  }
+               }
+            }
+         } catch (SQLException e) {
+            throw new ReportExecutorException(
+                  DatasourcesMessages.INSTANCE.exceptionCouldNotOpenDatasource(e.getLocalizedMessage()), e);
+         }
+      }
+      try {
+         eventBus.fireEvent(new OpenTableDatasourceEvent(stmt, uuid));
+         statementManagerService.registerStatement(executorToken, stmt, connection);
+
+         resultSet = stmt.executeQuery();
+         resultSetHandler = dbHelper.createResultSetHandler(resultSet, connection);
+
+         /* prepare indexMap */
+         int hiddenOffset = 0;
+         int index = 1;
+         if (null == mQuery.getColumns() || mQuery.isCountRows() || mQuery.isDistinct()
+               || mQuery.hasAggregateColumns()) {
+            indexMap = new IdentityMap();
+         } else {
+            indexMap = new HashMap<Integer, Integer>();
+
+            for (int i = 0; i < mQuery.getColumns().size(); i++) {
+               if (mQuery.getColumns().get(i).isHidden()) {
+                  hiddenOffset++;
+               } else {
+                  indexMap.put(index, index + hiddenOffset);
+                  index++;
+               }
+            }
+         }
+      } catch (SQLException e) {
+         throw new ReportExecutorException(
+               DatasourcesMessages.INSTANCE.exceptionCouldNotExecuteStmt(e.getLocalizedMessage()), e);
+      } finally {
+         statementManagerService.unregisterStatement(executorToken);
+      }
+   }
+
+   @Override
+   public void close() {
+      try {
+         if (open && null != stmt) {
+            try {
+               /* isclosed does not work for all drivers (in c3p0) */
 //					if(! stmt.isClosed())
-						stmt.close();
-				} catch (SQLException e) {
-					DatabaseConnectionException dce = new DatabaseConnectionException("Could not close statement."); //$NON-NLS-1$
-					dce.initCause(e);
-					throw dce;
-				} 
-				
-				try {
-					if(! connection.isClosed())
-						connection.close();
-				} catch (SQLException e) {
-					DatabaseConnectionException dce = new DatabaseConnectionException("Could not close connection."); //$NON-NLS-1$
-					dce.initCause(e);
-					throw dce;
-				}
-			}else if (! open){
-				try{
-					if(! connection.isClosed())
-						connection.close();
-				} catch (SQLException e) {
-					DatabaseConnectionException dce = new DatabaseConnectionException("Could not close connection."); //$NON-NLS-1$
-					dce.initCause(e);
-					throw dce;
-				}
-			}
-		} finally {
-			/* remove flag */
-			open = false;
-		
-			eventBus.fireEvent(new CloseTableDatasourceEvent(uuid));
-		}
-	}
+               stmt.close();
+            } catch (SQLException e) {
+               DatabaseConnectionException dce = new DatabaseConnectionException("Could not close statement."); //$NON-NLS-1$
+               dce.initCause(e);
+               throw dce;
+            }
 
-	@Override
-	public boolean isOpen() {
-		return open;
-	}
+            try {
+               if (!connection.isClosed())
+                  connection.close();
+            } catch (SQLException e) {
+               DatabaseConnectionException dce = new DatabaseConnectionException("Could not close connection."); //$NON-NLS-1$
+               dce.initCause(e);
+               throw dce;
+            }
+         } else if (!open) {
+            try {
+               if (!connection.isClosed())
+                  connection.close();
+            } catch (SQLException e) {
+               DatabaseConnectionException dce = new DatabaseConnectionException("Could not close connection."); //$NON-NLS-1$
+               dce.initCause(e);
+               throw dce;
+            }
+         }
+      } finally {
+         /* remove flag */
+         open = false;
 
-	@Override
-	public void applyParameters(ParameterSet parameters) {
-		if(isOpen())
-			throw new IllegalStateException("We are already open. Cannot change the query now"); //$NON-NLS-1$
-	
-		/* execute juel and jasper parameters */
-		if(null != parameters){
-			mQuery.applyParameterSet(parameters);
-			plainMQuery.applyParameterSet(parameters);
-		}
-		
-		this.parameters = parameters;
-	}
-	
-	@Override
-	public ParameterSet getParameters() {
-		return parameters;
-	}
-	
-	@Override
-	public void applyColumnConfiguration(List<Column> columnList){
-		if(null != columnList){
-			if(columnList.isEmpty()){
-				columnList = null;
-			}else{
-				int visibleColumns = 0;
-				for(Column c : columnList){
-					if(null == c.isHidden() || ! c.isHidden())
-						visibleColumns++;
-				}
-				
-				if(0 == visibleColumns)
-					throw new ReportExecutorRuntimeException("No visible columns");
-			}
-		}
-		
-		mQuery.applyColumnConfiguration(columnList);
-	}
-	
-	@Override
-	public void addAdditionalColumnSpecs(
-			List<AdditionalColumnSpec> additionalColumns) {
-	
-		mQuery.setAdditionalColumnSpecs(additionalColumns);
-	}
+         eventBus.fireEvent(new CloseTableDatasourceEvent(uuid));
+      }
+   }
 
-	@Override	
-	public void limit(int limit) {
-		if(isOpen())
-			throw new IllegalStateException("We are already open. Cannot change the query now"); //$NON-NLS-1$
-		mQuery.setLimit(limit);
-	}
+   @Override
+   public boolean isOpen() {
+      return open;
+   }
 
-	@Override
-	public void countRows() {
-		mQuery.setCountRows(true);
-	}
+   @Override
+   public void applyParameters(ParameterSet parameters) {
+      if (isOpen())
+         throw new IllegalStateException("We are already open. Cannot change the query now"); //$NON-NLS-1$
 
-	@Override
-	public void distinct(boolean enableDistinct) {
-		mQuery.distinct(true);
-		
-	}
-	
-	@Override
-	public void paged(int offset, int length) {
-		mQuery.paged(offset, length);
-	}
+      /* execute juel and jasper parameters */
+      if (null != parameters) {
+         mQuery.applyParameterSet(parameters);
+         plainMQuery.applyParameterSet(parameters);
+      }
 
-	@Override
-	public void setPreFilter(FilterBlock rootBlock) {
-		mQuery.preFilter(rootBlock);
-	}
+      this.parameters = parameters;
+   }
 
-	@Override
-	public void setIgnoreAnyColumnConfiguration(boolean ignore) {
-		mQuery.setIgnoreAnyColumnConfiguration(ignore);
-	}
-	
-	class IdentityMap implements Map<Integer,Integer>{
+   @Override
+   public ParameterSet getParameters() {
+      return parameters;
+   }
 
-		@Override
-		public int size() {
-			return Integer.MAX_VALUE;
-		}
+   @Override
+   public void applyColumnConfiguration(List<Column> columnList) {
+      if (null != columnList) {
+         if (columnList.isEmpty()) {
+            columnList = null;
+         } else {
+            int visibleColumns = 0;
+            for (Column c : columnList) {
+               if (null == c.isHidden() || !c.isHidden())
+                  visibleColumns++;
+            }
 
-		@Override
-		public boolean isEmpty() {
-			return false;
-		}
+            if (0 == visibleColumns)
+               throw new ReportExecutorRuntimeException("No visible columns");
+         }
+      }
 
-		@Override
-		public boolean containsKey(Object key) {
-			if(key instanceof Integer)
-				return true;
-			return false;
-		}
+      mQuery.applyColumnConfiguration(columnList);
+   }
 
-		@Override
-		public boolean containsValue(Object value) {
-			if(value instanceof Integer)
-				return true;
-			return false;
-		}
+   @Override
+   public void addAdditionalColumnSpecs(List<AdditionalColumnSpec> additionalColumns) {
 
-		@Override
-		public Integer get(Object key) {
-			if(key instanceof Integer)
-				return (Integer) key;
-			return null;
-		}
+      mQuery.setAdditionalColumnSpecs(additionalColumns);
+   }
 
-		@Override
-		public Integer put(Integer key, Integer value) {
-			return key;
-		}
+   @Override
+   public void limit(int limit) {
+      if (isOpen())
+         throw new IllegalStateException("We are already open. Cannot change the query now"); //$NON-NLS-1$
+      mQuery.setLimit(limit);
+   }
 
-		@Override
-		public Integer remove(Object key) {
-			return null;
-		}
+   @Override
+   public void countRows() {
+      mQuery.setCountRows(true);
+   }
 
-		@Override
-		public void putAll(Map<? extends Integer, ? extends Integer> m) {
-			
-		}
+   @Override
+   public void distinct(boolean enableDistinct) {
+      mQuery.distinct(true);
 
-		@Override
-		public void clear() {
-			
-		}
+   }
 
-		@Override
-		public Set<Integer> keySet() {
-			return null;
-		}
+   @Override
+   public void paged(int offset, int length) {
+      mQuery.paged(offset, length);
+   }
 
-		@Override
-		public Collection<Integer> values() {
-			return null;
-		}
+   @Override
+   public void setPreFilter(FilterBlock rootBlock) {
+      mQuery.preFilter(rootBlock);
+   }
 
-		@Override
-		public Set<java.util.Map.Entry<Integer, Integer>> entrySet() {
-			return null;
-		}
-		
-	}
+   @Override
+   public void setIgnoreAnyColumnConfiguration(boolean ignore) {
+      mQuery.setIgnoreAnyColumnConfiguration(ignore);
+   }
 
-	@Override
-	public void cancelStatement() {
-		// TODO Auto-generated method stub
-		
-	}
-	
+   class IdentityMap implements Map<Integer, Integer> {
+
+      @Override
+      public int size() {
+         return Integer.MAX_VALUE;
+      }
+
+      @Override
+      public boolean isEmpty() {
+         return false;
+      }
+
+      @Override
+      public boolean containsKey(Object key) {
+         if (key instanceof Integer)
+            return true;
+         return false;
+      }
+
+      @Override
+      public boolean containsValue(Object value) {
+         if (value instanceof Integer)
+            return true;
+         return false;
+      }
+
+      @Override
+      public Integer get(Object key) {
+         if (key instanceof Integer)
+            return (Integer) key;
+         return null;
+      }
+
+      @Override
+      public Integer put(Integer key, Integer value) {
+         return key;
+      }
+
+      @Override
+      public Integer remove(Object key) {
+         return null;
+      }
+
+      @Override
+      public void putAll(Map<? extends Integer, ? extends Integer> m) {
+
+      }
+
+      @Override
+      public void clear() {
+
+      }
+
+      @Override
+      public Set<Integer> keySet() {
+         return null;
+      }
+
+      @Override
+      public Collection<Integer> values() {
+         return null;
+      }
+
+      @Override
+      public Set<java.util.Map.Entry<Integer, Integer>> entrySet() {
+         return null;
+      }
+
+   }
+
+   @Override
+   public void cancelStatement() {
+      // TODO Auto-generated method stub
+
+   }
+
 }

@@ -85,31 +85,32 @@ public class ScheduleAsLocalFileSystemEmailNotificationHooker extends SchedulerE
       }
    }
 
-   private void sendmail(ScheduleAsLocalFileSystemFileAction action, ReportExecuteJob job, Exception e) throws MessagingException{
-      if(config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_DISABLED, false))
+   private void sendmail(ScheduleAsLocalFileSystemFileAction action, ReportExecuteJob job, Exception e)
+         throws MessagingException {
+      if (config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_DISABLED, false))
          return;
-      
-      List<User> recipients = ((ReportExecuteJob)job).getRecipients();
-      if(null == recipients || recipients.isEmpty())
+
+      List<User> recipients = ((ReportExecuteJob) job).getRecipients();
+      if (null == recipients || recipients.isEmpty())
          return;
-      
+
       Map<String, Object> datamap = new HashMap<String, Object>();
-      
+
       datamap.put(PROPERTY_REPORT, new ReportForJuel(action.getReport()));
       datamap.put(PROPERTY_JOB, new ReportJobForJuel(job));
       UserForJuel executor = UserForJuel.createInstance(job.getExecutor());
       datamap.put("user", executor);
       datamap.put(PROPERTY_EXECUTOR, executor);
       datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
-      
-      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()), 
+
+      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
             config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false)));
 
       datamap.put(PROPERTY_FOLDER, action.getFolder());
       datamap.put(PROPERTY_NAME, action.getFilename());
       datamap.put(PROPERTY_FILENAME, action.getFilename());
-      
-      if(null != e){
+
+      if (null != e) {
          datamap.put(PROPERTY_EXCEPTION, e);
          ByteArrayOutputStream bos = new ByteArrayOutputStream();
          PrintWriter pw = new PrintWriter(bos);
@@ -117,32 +118,29 @@ public class ScheduleAsLocalFileSystemEmailNotificationHooker extends SchedulerE
          pw.close();
          datamap.put(PROPERTY_EXCEPTIONST, bos.toString());
       }
-      
+
       String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
-      
+
       HashMap<String, HashMap<String, String>> msgs = remoteMessageService.getMessages(currentLanguage);
       datamap.put("msgs", msgs);
-      
-      String subjectTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_SUBJECT_SUCCESS, 
+
+      String subjectTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_SUBJECT_SUCCESS,
             msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpMsgSubject"));
       String messageTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_TEXT_SUCCESS,
             msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpMsgText"));
-      
-      
+
       MailTemplate mailTemplate = new MailTemplate();
       mailTemplate.setHtml(config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false));
       mailTemplate.setSubjectTemplate(subjectTemplate);
       mailTemplate.setMessageTemplate(messageTemplate);
       mailTemplate.setDataMap(datamap);
-      
+
       SimpleMail simpleMail = mailService.newTemplateMail(mailTemplate);
-      simpleMail.setRecipients(javax.mail.Message.RecipientType.BCC, 
-            mailService.getEmailList(recipients)
-               .stream()
-               .toArray(Address[]::new));
-   
+      simpleMail.setRecipients(javax.mail.Message.RecipientType.BCC,
+            mailService.getEmailList(recipients).stream().toArray(Address[]::new));
+
       mailService.sendMail(simpleMail);
-      
+
    }
 
 }

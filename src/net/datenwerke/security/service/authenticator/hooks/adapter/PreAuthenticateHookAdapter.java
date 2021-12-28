@@ -9,10 +9,8 @@ import net.datenwerke.security.service.authenticator.hooks.PreAuthenticateHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class PreAuthenticateHookAdapter implements PreAuthenticateHook {
 
-	@Override
-	public void authenticating(net.datenwerke.security.client.login.AuthToken[] tokens)  {
-	}
-
-
+   @Override
+   public void authenticating(net.datenwerke.security.client.login.AuthToken[] tokens) {
+   }
 
 }

@@ -25,39 +25,32 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class OneDriveUiStartup {
-   
+
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 45;
-   
+
    @Inject
-   public OneDriveUiStartup(
-         final Provider<ExportToOneDriveHooker> exportToOneDriveHooker,
-         final Provider<FileExportToOneDriveHooker> fileExportToDatasinkHooker,
-         final HookHandlerService hookHandler, 
-         final WaitOnEventUIService waitOnEventService, 
-         final OneDriveDao dao,
+   public OneDriveUiStartup(final Provider<ExportToOneDriveHooker> exportToOneDriveHooker,
+         final Provider<FileExportToOneDriveHooker> fileExportToDatasinkHooker, final HookHandlerService hookHandler,
+         final WaitOnEventUIService waitOnEventService, final OneDriveDao dao,
          final Provider<OneDriveDatasinkConfigProviderHooker> oneDriveTreeConfiguratorProvider,
          final OneDriveDatasinkTesterToolbarConfigurator oneDriveTestToolbarConfigurator,
          final OneDriveDatasinkOAuthToolbarConfigurator oneDriveOauthToolbarConfigurator,
          final Provider<OneDriveExportSnippetProvider> oneDriveExportSnippetProvider,
          final OneDriveUiService oneDriveUiService,
-         final Provider<OneDriveSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final Provider<OneDriveSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
       hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, oneDriveTreeConfiguratorProvider.get(),
             PRIO);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToOneDriveHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToOneDriveHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, oneDriveTestToolbarConfigurator,
-            PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, oneDriveTestToolbarConfigurator, PRIO);
 
       /* Oauth */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, oneDriveOauthToolbarConfigurator);
@@ -68,7 +61,7 @@ public class OneDriveUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-               ((OneDriveUiServiceImpl)oneDriveUiService).setEnabledConfigs(result);
+               ((OneDriveUiServiceImpl) oneDriveUiService).setEnabledConfigs(result);
                if (result.get(StorageType.ONEDRIVE) && result.get(StorageType.ONEDRIVE_SCHEDULING))
                   hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, oneDriveExportSnippetProvider,
                         PRIO);

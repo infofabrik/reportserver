@@ -18,57 +18,54 @@ package net.datenwerke.rs.legacysaiku.server.rest.objects.resultset;
 import java.util.List;
 
 public class QueryResult {
-	
-	private List<Cell[]> cellset;
-	private Integer runtime;
-	private String error;
-	private Integer height;
-	private Integer width;
-	
 
-	public QueryResult(List<Cell[]> cellset, int runtime, int width, int height) {
-		this.cellset = cellset;
-		this.runtime = runtime;
-		this.height = height;
-		this.width = width;
-	}
-	
-	public QueryResult(String error) {
-		this.error = error;
-	}
+   private List<Cell[]> cellset;
+   private Integer runtime;
+   private String error;
+   private Integer height;
+   private Integer width;
 
-	public List<Cell[]> getCellset() {
-		return cellset;
-	}
+   public QueryResult(List<Cell[]> cellset, int runtime, int width, int height) {
+      this.cellset = cellset;
+      this.runtime = runtime;
+      this.height = height;
+      this.width = width;
+   }
 
-	public Integer getRuntime() {
-		return runtime;
-	}
+   public QueryResult(String error) {
+      this.error = error;
+   }
 
-	public String getError() {
-		return error;
-	}
+   public List<Cell[]> getCellset() {
+      return cellset;
+   }
 
-	public Integer getHeight() {
-		return height;
-	}
+   public Integer getRuntime() {
+      return runtime;
+   }
 
-	public Integer getWidth() {
-		return width;
-	}
-	
-	public void setRuntime(Integer runtime) {
-		this.runtime = runtime;
-	}
+   public String getError() {
+      return error;
+   }
 
-	public void setHeight(Integer height) {
-		this.height = height;
-	}
+   public Integer getHeight() {
+      return height;
+   }
 
-	public void setWidth(Integer width) {
-		this.width = width;
-	}
+   public Integer getWidth() {
+      return width;
+   }
 
+   public void setRuntime(Integer runtime) {
+      this.runtime = runtime;
+   }
 
+   public void setHeight(Integer height) {
+      this.height = height;
+   }
+
+   public void setWidth(Integer width) {
+      this.width = width;
+   }
 
 }

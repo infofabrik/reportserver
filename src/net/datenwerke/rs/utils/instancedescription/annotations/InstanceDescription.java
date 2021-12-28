@@ -13,12 +13,15 @@ import net.datenwerke.rs.utils.localization.Messages;
 @Inherited
 public @interface InstanceDescription {
 
-	Class<? extends Messages> msgLocation();
-	String objNameKey() default "";
-	
-	String title() default "";
-	String description() default "";
-	String[] fields() default {};
-	
-	String icon() default "file";
+   Class<? extends Messages> msgLocation();
+
+   String objNameKey() default "";
+
+   String title() default "";
+
+   String description() default "";
+
+   String[] fields() default {};
+
+   String icon() default "file";
 }

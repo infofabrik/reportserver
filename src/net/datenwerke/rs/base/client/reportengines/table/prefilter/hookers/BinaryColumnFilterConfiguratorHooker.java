@@ -33,150 +33,147 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidge
 import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidgets.PreFilterView.InstantiatePreFilterCallback;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class BinaryColumnFilterConfiguratorHooker implements
-		PreFilterConfiguratorHook {
+public class BinaryColumnFilterConfiguratorHooker implements PreFilterConfiguratorHook {
 
-	private static final PreFilterMessages messages = GWT.create(PreFilterMessages.class);
-	
-	private final TableReportUtilityDao tableReportUtilityDao;
-	
-	private ColumnSelector selectorA;
-	private ColumnSelector selectorB;
+   private static final PreFilterMessages messages = GWT.create(PreFilterMessages.class);
 
-	private SingleSelectionField<ColumnDto> columnASelector;
-	private SingleSelectionField<ColumnDto> columnBSelector;
-	
-	@Inject
-	public BinaryColumnFilterConfiguratorHooker(
-		TableReportUtilityDao tableReportUtilityDao	
-		){
-	
-		/* store objects */
-		this.tableReportUtilityDao = tableReportUtilityDao;
-	}
-	
-	@Override
-	public String getHeadline() {
-		return messages.binaryColumnFilterHeadline();
-	}
+   private final TableReportUtilityDao tableReportUtilityDao;
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.BALANCE_SCALE.toImageResource();
-	}
+   private ColumnSelector selectorA;
+   private ColumnSelector selectorB;
 
-	@Override
-	public void instantiateFilter(TableReportDto report, String executeToken, final PreFilterView.InstantiatePreFilterCallback callback) {
-		displayDialog(report, new BinaryColumnFilterDtoDec(), executeToken, callback, null);
-	}
+   private SingleSelectionField<ColumnDto> columnASelector;
+   private SingleSelectionField<ColumnDto> columnBSelector;
 
-	private void displayDialog(TableReportDto report,
-			final BinaryColumnFilterDtoDec filter,
-			String executeToken, 
-			final InstantiatePreFilterCallback callback, final EditPreFilterCallback editCallback) {
+   @Inject
+   public BinaryColumnFilterConfiguratorHooker(TableReportUtilityDao tableReportUtilityDao) {
 
-		if(null == selectorA)
-			selectorA = new ColumnSelector(tableReportUtilityDao, report, executeToken);
-		if(null == selectorB)
-			selectorB = new ColumnSelector(tableReportUtilityDao, report, executeToken);
-		
-		final DwWindow dialog = new DwWindow();
-		dialog.setHeading(messages.binaryColumnFilterHeadline());
-		dialog.setHeaderIcon(BaseIcon.BALANCE_SCALE);
-		dialog.setSize(350, 180);
-		dialog.setClosable(false);
-		dialog.setOnEsc(false);
-		
-		FormPanel form = new FormPanel();
-		form.setBorders(false);
-		
-		DwFlowContainer fieldWrapper = new DwFlowContainer();
-		form.add(fieldWrapper, new MarginData(10));
-		
-		if(null == columnASelector)
-			columnASelector = new SingleSelectionField<ColumnDto>(selectorA);
-		if(null == columnBSelector)
-			columnBSelector = new SingleSelectionField<ColumnDto>(selectorB);
-		
-		columnASelector.setValue(filter.getColumnA());
-		columnBSelector.setValue(filter.getColumnB());
-		
-		final SimpleComboBox<String> combo = new SimpleComboBox<String>(new StringLabelProvider<String>());
-		combo.setForceSelection(true);
-		combo.setTriggerAction(TriggerAction.ALL);
+      /* store objects */
+      this.tableReportUtilityDao = tableReportUtilityDao;
+   }
 
-		for(BinaryOperatorDto operator : BinaryOperatorDto.values()){
-			combo.add(BinaryColumnFilterDtoDec.getOperatorSymbol(operator));
-		}
-		
-		if(null != filter.getOperator())
-			combo.setValue(BinaryColumnFilterDtoDec.getOperatorSymbol(filter.getOperator()));
-		
-		fieldWrapper.add(new FieldLabel(columnASelector, messages.binaryColumnFilterColumnALabel()));
-		fieldWrapper.add(new FieldLabel(columnBSelector, messages.binaryColumnFilterColumnBLabel()));
-		fieldWrapper.add(new FieldLabel(combo, messages.binaryColumnFilterOperatorLabel()));
-		
-		dialog.add(form);
-		
-		DwTextButton cancelButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
-		cancelButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(null != callback)
-					callback.filterInstantiated(null);
-				else
-					editCallback.editDone();
-				dialog.hide();
-			}
-		});
-		dialog.addButton(cancelButton);
-		
-		DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
-		okButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				ColumnDtoDec colA = (ColumnDtoDec) columnASelector.getValue();
-				ColumnDtoDec colB = (ColumnDtoDec) columnBSelector.getValue();
-				
-				if(null == colA)
-					return;
-				if(null == colB)
-					return;
-				BinaryOperatorDto operator = BinaryColumnFilterDtoDec.getOperatorForSymbol(combo.getValue());
-				if(null == operator)
-					return;
-				
-				filter.setColumnA(colA.cloneColumnForSelection());
-				filter.setColumnB(colB.cloneColumnForSelection());
-				filter.setOperator(operator);
-				
-				if(null != callback)
-					callback.filterInstantiated(filter);
-				else
-					editCallback.editDone();
-				dialog.hide();
-			}
-		});
-		dialog.addButton(okButton);
-		
-		dialog.show();
-		
-	}
+   @Override
+   public String getHeadline() {
+      return messages.binaryColumnFilterHeadline();
+   }
 
-	@Override
-	public boolean consumes(FilterSpecDto item) {
-		return item instanceof BinaryColumnFilterDto;
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.BALANCE_SCALE.toImageResource();
+   }
 
-	@Override
-	public void displayFilter(TableReportDto report, FilterSpecDto filter, String executeToken, final EditPreFilterCallback callback) {
-		displayDialog(report, (BinaryColumnFilterDtoDec) filter, executeToken, null, callback);
-	}
-	
-	@Override
-	public void filterInstantiated(TableReportDto report, FilterSpecDto filter,
-			String executeToken, EditPreFilterCallback callback) {
-		callback.editDone();
-	}
+   @Override
+   public void instantiateFilter(TableReportDto report, String executeToken,
+         final PreFilterView.InstantiatePreFilterCallback callback) {
+      displayDialog(report, new BinaryColumnFilterDtoDec(), executeToken, callback, null);
+   }
+
+   private void displayDialog(TableReportDto report, final BinaryColumnFilterDtoDec filter, String executeToken,
+         final InstantiatePreFilterCallback callback, final EditPreFilterCallback editCallback) {
+
+      if (null == selectorA)
+         selectorA = new ColumnSelector(tableReportUtilityDao, report, executeToken);
+      if (null == selectorB)
+         selectorB = new ColumnSelector(tableReportUtilityDao, report, executeToken);
+
+      final DwWindow dialog = new DwWindow();
+      dialog.setHeading(messages.binaryColumnFilterHeadline());
+      dialog.setHeaderIcon(BaseIcon.BALANCE_SCALE);
+      dialog.setSize(350, 180);
+      dialog.setClosable(false);
+      dialog.setOnEsc(false);
+
+      FormPanel form = new FormPanel();
+      form.setBorders(false);
+
+      DwFlowContainer fieldWrapper = new DwFlowContainer();
+      form.add(fieldWrapper, new MarginData(10));
+
+      if (null == columnASelector)
+         columnASelector = new SingleSelectionField<ColumnDto>(selectorA);
+      if (null == columnBSelector)
+         columnBSelector = new SingleSelectionField<ColumnDto>(selectorB);
+
+      columnASelector.setValue(filter.getColumnA());
+      columnBSelector.setValue(filter.getColumnB());
+
+      final SimpleComboBox<String> combo = new SimpleComboBox<String>(new StringLabelProvider<String>());
+      combo.setForceSelection(true);
+      combo.setTriggerAction(TriggerAction.ALL);
+
+      for (BinaryOperatorDto operator : BinaryOperatorDto.values()) {
+         combo.add(BinaryColumnFilterDtoDec.getOperatorSymbol(operator));
+      }
+
+      if (null != filter.getOperator())
+         combo.setValue(BinaryColumnFilterDtoDec.getOperatorSymbol(filter.getOperator()));
+
+      fieldWrapper.add(new FieldLabel(columnASelector, messages.binaryColumnFilterColumnALabel()));
+      fieldWrapper.add(new FieldLabel(columnBSelector, messages.binaryColumnFilterColumnBLabel()));
+      fieldWrapper.add(new FieldLabel(combo, messages.binaryColumnFilterOperatorLabel()));
+
+      dialog.add(form);
+
+      DwTextButton cancelButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      cancelButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (null != callback)
+               callback.filterInstantiated(null);
+            else
+               editCallback.editDone();
+            dialog.hide();
+         }
+      });
+      dialog.addButton(cancelButton);
+
+      DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
+      okButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            ColumnDtoDec colA = (ColumnDtoDec) columnASelector.getValue();
+            ColumnDtoDec colB = (ColumnDtoDec) columnBSelector.getValue();
+
+            if (null == colA)
+               return;
+            if (null == colB)
+               return;
+            BinaryOperatorDto operator = BinaryColumnFilterDtoDec.getOperatorForSymbol(combo.getValue());
+            if (null == operator)
+               return;
+
+            filter.setColumnA(colA.cloneColumnForSelection());
+            filter.setColumnB(colB.cloneColumnForSelection());
+            filter.setOperator(operator);
+
+            if (null != callback)
+               callback.filterInstantiated(filter);
+            else
+               editCallback.editDone();
+            dialog.hide();
+         }
+      });
+      dialog.addButton(okButton);
+
+      dialog.show();
+
+   }
+
+   @Override
+   public boolean consumes(FilterSpecDto item) {
+      return item instanceof BinaryColumnFilterDto;
+   }
+
+   @Override
+   public void displayFilter(TableReportDto report, FilterSpecDto filter, String executeToken,
+         final EditPreFilterCallback callback) {
+      displayDialog(report, (BinaryColumnFilterDtoDec) filter, executeToken, null, callback);
+   }
+
+   @Override
+   public void filterInstantiated(TableReportDto report, FilterSpecDto filter, String executeToken,
+         EditPreFilterCallback callback) {
+      callback.editDone();
+   }
 
 }

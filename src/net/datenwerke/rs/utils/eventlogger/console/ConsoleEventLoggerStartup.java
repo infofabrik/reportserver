@@ -7,13 +7,11 @@ import net.datenwerke.rs.utils.eventlogger.eventbus.LoggedEvent;
 
 public class ConsoleEventLoggerStartup {
 
-	@Inject
-	public ConsoleEventLoggerStartup(
-		EventBus eventBus,
-		
-		ConsoleEventHandler eventHandler
-		){
-		
-		eventBus.attachEventHandler(LoggedEvent.class, eventHandler);
-	}
+   @Inject
+   public ConsoleEventLoggerStartup(EventBus eventBus,
+
+         ConsoleEventHandler eventHandler) {
+
+      eventBus.attachEventHandler(LoggedEvent.class, eventHandler);
+   }
 }

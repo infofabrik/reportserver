@@ -10,21 +10,17 @@ import net.datenwerke.gf.client.treedb.selection.TreeSelectionPopup;
 
 public class DwGwtTreeDbUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(DwGwtTreeDbUiStartup.class).asEagerSingleton();
-		
-		/* bind service */
-		bind(TreeDBUIService.class).to(TreeDBUIServiceImpl.class).in(Singleton.class);
+   @Override
+   protected void configure() {
+      bind(DwGwtTreeDbUiStartup.class).asEagerSingleton();
 
-		install(new GinFactoryModuleBuilder().build(UiTreeFactory.class));
-		
-		/* static injection */
-		requestStaticInjection(
-			InfoMenuItem.class,
-			TreeSelectionPopup.class,
-			SingleTreeSelectionField.class
-		);
-	}
+      /* bind service */
+      bind(TreeDBUIService.class).to(TreeDBUIServiceImpl.class).in(Singleton.class);
+
+      install(new GinFactoryModuleBuilder().build(UiTreeFactory.class));
+
+      /* static injection */
+      requestStaticInjection(InfoMenuItem.class, TreeSelectionPopup.class, SingleTreeSelectionField.class);
+   }
 
 }

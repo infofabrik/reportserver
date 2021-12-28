@@ -5,43 +5,42 @@ import java.util.Collections;
 
 import nu.xom.Element;
 
-
 /**
  * 
  *
  */
 public class ReferenceItemProperty extends ItemProperty {
 
-	protected final String referenceId;
-	protected final Class<?> exporterType;
-	protected final boolean optional;
-	
-	public ReferenceItemProperty(String name, Class<?> type, String referenceId, Class<?> exporterType, boolean isOptional, Element el) {
-		super(name, type, el);
-		
-		/* store object */
-		this.referenceId = referenceId;
-		this.exporterType = exporterType;
-		this.optional = isOptional;
-	}
+   protected final String referenceId;
+   protected final Class<?> exporterType;
+   protected final boolean optional;
 
-	public String getReferenceId() {
-		return referenceId;
-	}
+   public ReferenceItemProperty(String name, Class<?> type, String referenceId, Class<?> exporterType,
+         boolean isOptional, Element el) {
+      super(name, type, el);
 
-	public Class<?> getExporterType() {
-		return exporterType;
-	}
-	
-	public Collection<String> getReferencedIds() {
-		if(! isOptional())
-			return Collections.singleton(referenceId);
-		return Collections.emptySet();
-	}
+      /* store object */
+      this.referenceId = referenceId;
+      this.exporterType = exporterType;
+      this.optional = isOptional;
+   }
 
-	public boolean isOptional() {
-		return optional;
-	}
-	
-	
+   public String getReferenceId() {
+      return referenceId;
+   }
+
+   public Class<?> getExporterType() {
+      return exporterType;
+   }
+
+   public Collection<String> getReferencedIds() {
+      if (!isOptional())
+         return Collections.singleton(referenceId);
+      return Collections.emptySet();
+   }
+
+   public boolean isOptional() {
+      return optional;
+   }
+
 }

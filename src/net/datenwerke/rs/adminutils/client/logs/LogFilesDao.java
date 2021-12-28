@@ -9,19 +9,19 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.rs.adminutils.client.logs.rpc.LogFilesRpcServiceAsync;
 
 public class LogFilesDao extends Dao {
-	private final LogFilesRpcServiceAsync rpcService;
+   private final LogFilesRpcServiceAsync rpcService;
 
-	@Inject
-	public LogFilesDao(LogFilesRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public LogFilesDao(LogFilesRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void readLastLines(String filePath, RsAsyncCallback<List<String>> callback) {
-		rpcService.readLastLines(filePath, transformAndKeepCallback(callback));
-	}
-	
-	public void emailFile(String filename, RsAsyncCallback<Void> callback) {
-		rpcService.emailFile(filename, transformAndKeepCallback(callback));
-	}
+   public void readLastLines(String filePath, RsAsyncCallback<List<String>> callback) {
+      rpcService.readLastLines(filePath, transformAndKeepCallback(callback));
+   }
+
+   public void emailFile(String filename, RsAsyncCallback<Void> callback) {
+      rpcService.emailFile(filename, transformAndKeepCallback(callback));
+   }
 
 }

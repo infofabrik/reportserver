@@ -6,7 +6,6 @@ import net.datenwerke.rs.enterprise.client.EnterpriseInformationDto;
 
 public interface EnterpriseCheckRpcServiceAsync {
 
-	void getEnterpriseInfos(AsyncCallback<EnterpriseInformationDto> transformAndKeepCallback);
-
+   void getEnterpriseInfos(AsyncCallback<EnterpriseInformationDto> transformAndKeepCallback);
 
 }

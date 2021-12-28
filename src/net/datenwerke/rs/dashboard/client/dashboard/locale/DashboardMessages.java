@@ -5,138 +5,166 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface DashboardMessages extends Messages {
 
-	public static final DashboardMessages INSTANCE = GWT.create(DashboardMessages.class);
+   public static final DashboardMessages INSTANCE = GWT.create(DashboardMessages.class);
 
-	String clientModuleName();
-	
-	String graphDadgetTitle();
-	String graphDadgetDescription();
+   String clientModuleName();
 
-	String addDadget();
+   String graphDadgetTitle();
 
-	String tools();
+   String graphDadgetDescription();
 
-	String createDashboard();
-	String removeDashboard();
-	String editDashboard();
+   String addDadget();
 
-	String removeDashboardConfirmTitle();
-	String removeDashboardConfirmMsg();
+   String tools();
 
-	String nameLabel();
-	String descriptionLabel();
-	String layoutLabel();
+   String createDashboard();
 
-	String singleColLayout();
-	String twoColLayut();
-	String twoColLayout1to2();
-	String towColLayout2to1();
-	String threeColLayout();
+   String removeDashboard();
 
-	String singleColLayoutDesc();
-	String twoColLayoutDesc();
-	String twoColLayout1to2Desc();
-	String twoColLayout2to1Desc();
-	String threeColLayoutDesc();
+   String editDashboard();
 
-	String urlDadgetTitle();
-	String urlDadgetDescription();
+   String removeDashboardConfirmTitle();
 
-	String reportDadgetTitle();
-	String reportDadgetDescription();
+   String removeDashboardConfirmMsg();
 
-	String urlDadgetHeader(String url);
+   String nameLabel();
 
-	String removeDadgetConfirmTitle();
-	String removeDadgetConfirmMsg();
+   String descriptionLabel();
 
-	String configDadgetTitle();
+   String layoutLabel();
 
-	String urlLabel();
+   String singleColLayout();
 
-	String reportSelectionLocation();
+   String twoColLayut();
 
-	String reportTeamspaceLocation();
-	String reportAdminLocation();
+   String twoColLayout1to2();
 
-	String selectReportLabel();
+   String towColLayout2to1();
 
-	String selectTeamSpace();
+   String threeColLayout();
 
-	String reportDadgetFormatPreview();
-	String reportDadgetFormatHtml();
-	String reportDadgetFormatFull();
+   String singleColLayoutDesc();
 
-	String reportDadgetFormat();
+   String twoColLayoutDesc();
 
-	String reportSelection();
+   String twoColLayout1to2Desc();
 
-	String favoriteListTitle();
-	String favoriteListDescription();
+   String twoColLayout2to1Desc();
 
-	String addToFavorites();
+   String threeColLayoutDesc();
 
-	String staticHtmlDadgetTitle();
-	String staticHtmlDadgetDescription();
+   String urlDadgetTitle();
 
-	String staticHtmlDadgetHtmlLabel();
-	String staticHtmlDadgetTitleLabel();
+   String urlDadgetDescription();
 
-	String securityTargetDescription();
+   String reportDadgetTitle();
 
-	String mainPanelHeading();
+   String reportDadgetDescription();
 
-	String dadget();
+   String urlDadgetHeader(String url);
 
-	String insert();
+   String removeDadgetConfirmTitle();
 
-	String adminLabel();
+   String removeDadgetConfirmMsg();
 
-	String editFolder();
+   String configDadgetTitle();
 
-	String dashboardAdminRightsLabel();
+   String urlLabel();
 
-	String editDadgetNode();
+   String reportSelectionLocation();
 
-	String libraryDadgetTitle();
-	String libraryDadgetDescription();
+   String reportTeamspaceLocation();
 
-	String editDashboardNode();
+   String reportAdminLocation();
 
-	String dashboard();
+   String selectReportLabel();
 
-	String createReferenceDashboard();
+   String selectTeamSpace();
 
-	String editDashboardOrder();
+   String reportDadgetFormatPreview();
 
-	String reportDadgetFormatImage();
+   String reportDadgetFormatHtml();
 
-	String reloadIntervalLabel();
+   String reportDadgetFormatFull();
 
-	String singlePageLabel();
+   String reportDadgetFormat();
 
-	String heightLabel();
+   String reportSelection();
 
-	String parameterDescription();
+   String favoriteListTitle();
 
-	String parameterTitle();
+   String favoriteListDescription();
 
-	String resetReferenceDashboard();
+   String addToFavorites();
 
-	String editParameterBtnLabel();
+   String staticHtmlDadgetTitle();
 
-	String storeDashboardPromptTitle();
+   String staticHtmlDadgetDescription();
 
-	String storeToConfigure();
+   String staticHtmlDadgetHtmlLabel();
 
-	String defaultDashboardLabel();
+   String staticHtmlDadgetTitleLabel();
 
-	String importConfigFailureNoParent();
-	String importerName();
-	String importMainPropertiesDescription();
-	String importMainPropertiesHeadline();
-	String importWhereTo();
+   String securityTargetDescription();
 
-	String showExecuteIcon();
+   String mainPanelHeading();
+
+   String dadget();
+
+   String insert();
+
+   String adminLabel();
+
+   String editFolder();
+
+   String dashboardAdminRightsLabel();
+
+   String editDadgetNode();
+
+   String libraryDadgetTitle();
+
+   String libraryDadgetDescription();
+
+   String editDashboardNode();
+
+   String dashboard();
+
+   String createReferenceDashboard();
+
+   String editDashboardOrder();
+
+   String reportDadgetFormatImage();
+
+   String reloadIntervalLabel();
+
+   String singlePageLabel();
+
+   String heightLabel();
+
+   String parameterDescription();
+
+   String parameterTitle();
+
+   String resetReferenceDashboard();
+
+   String editParameterBtnLabel();
+
+   String storeDashboardPromptTitle();
+
+   String storeToConfigure();
+
+   String defaultDashboardLabel();
+
+   String importConfigFailureNoParent();
+
+   String importerName();
+
+   String importMainPropertiesDescription();
+
+   String importMainPropertiesHeadline();
+
+   String importWhereTo();
+
+   String showExecuteIcon();
 
 }

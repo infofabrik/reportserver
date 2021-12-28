@@ -16,8 +16,7 @@ public class ExportButtonHook extends QuickExportHookerBase {
    private final DatasinkManagerExportDao dsDao;
 
    @Inject
-   public ExportButtonHook(DatasinkManagerExportDao dsDao, ToolbarService toolbarUtils,
-         UtilsUIService utilsUiService) {
+   public ExportButtonHook(DatasinkManagerExportDao dsDao, ToolbarService toolbarUtils, UtilsUIService utilsUiService) {
       super(toolbarUtils, utilsUiService);
 
       /* store objects */

@@ -10,24 +10,23 @@ import net.datenwerke.gf.service.lifecycle.hooks.ContextHook;
 
 public class CloseTaskAndConnectionsHooker implements ContextHook {
 
-	private final DwAsyncService asyncService;
-	private final DbPoolService dbPoolService;
+   private final DwAsyncService asyncService;
+   private final DbPoolService dbPoolService;
 
-	
-	@Inject
-	public CloseTaskAndConnectionsHooker(DwAsyncService asyncService, DbPoolService dbPoolService) {
-		this.asyncService = asyncService;
-		this.dbPoolService = dbPoolService;
-	}
+   @Inject
+   public CloseTaskAndConnectionsHooker(DwAsyncService asyncService, DbPoolService dbPoolService) {
+      this.asyncService = asyncService;
+      this.dbPoolService = dbPoolService;
+   }
 
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
-	}
+   @Override
+   public void contextInitialized(ServletContextEvent servletContextEvent) {
+   }
 
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		asyncService.shutdownAllNow();
-		dbPoolService.shutdownAll();
-	}
+   @Override
+   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+      asyncService.shutdownAllNow();
+      dbPoolService.shutdownAll();
+   }
 
 }

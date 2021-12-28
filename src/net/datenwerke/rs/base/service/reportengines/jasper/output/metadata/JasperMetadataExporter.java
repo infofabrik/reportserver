@@ -8,5 +8,4 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.ReportMetadataExpor
  */
 public interface JasperMetadataExporter extends ReportMetadataExporter {
 
-	
 }

@@ -7,9 +7,8 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface BirtDatasourceService {
 
-	Collection<BirtReportDatasourceConfig> getDatasourceConfigsWith(
-			Report report);
+   Collection<BirtReportDatasourceConfig> getDatasourceConfigsWith(Report report);
 
-	BirtReportDatasourceConfig merge(BirtReportDatasourceConfig config);
+   BirtReportDatasourceConfig merge(BirtReportDatasourceConfig config);
 
 }

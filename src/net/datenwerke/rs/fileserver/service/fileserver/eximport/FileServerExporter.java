@@ -8,22 +8,21 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class FileServerExporter extends TreeNodeExporter {
 
-	public static final String EXPORTER_ID = "FileServerExporter";
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
-	
-	@Override
-	protected Class<? extends AbstractNode<?>> getTreeType() {
-		return AbstractFileServerNode.class;
-	}
-	
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[]{FileServerFolder.class, FileServerFile.class};
-	}
+   public static final String EXPORTER_ID = "FileServerExporter";
 
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
+
+   @Override
+   protected Class<? extends AbstractNode<?>> getTreeType() {
+      return AbstractFileServerNode.class;
+   }
+
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { FileServerFolder.class, FileServerFile.class };
+   }
 
 }

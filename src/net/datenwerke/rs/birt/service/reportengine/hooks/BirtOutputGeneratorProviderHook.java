@@ -9,5 +9,5 @@ import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator
 @HookConfig
 public interface BirtOutputGeneratorProviderHook extends ReportOutputGeneratorProvider<BirtOutputGenerator> {
 
-	public Collection<BirtOutputGenerator> provideGenerators();
+   public Collection<BirtOutputGenerator> provideGenerators();
 }

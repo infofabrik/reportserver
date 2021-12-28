@@ -12,39 +12,37 @@ import net.datenwerke.rs.base.service.datasources.statementmanager.hooks.Stateme
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class StatementCancellationHookAdapter implements StatementCancellationHook {
 
-	@Override
-	public boolean cancelStatement(Statement statement, Connection connection, String statementId){
-		return cancelStatement(statement);
-	}
+   @Override
+   public boolean cancelStatement(Statement statement, Connection connection, String statementId) {
+      return cancelStatement(statement);
+   }
 
-	/* to be removed on RS 3.1 */
-	@Deprecated
-	public boolean cancelStatement(Statement statement)  {
-		return false;
-	}
+   /* to be removed on RS 3.1 */
+   @Deprecated
+   public boolean cancelStatement(Statement statement) {
+      return false;
+   }
 
-	@Override
-	public boolean consumes(Statement statement, Connection connection)  {
-		return consumes(statement);
-	}
+   @Override
+   public boolean consumes(Statement statement, Connection connection) {
+      return consumes(statement);
+   }
 
-	/* to be removed on RS 3.1 */
-	@Deprecated
-	protected boolean consumes(Statement statement) {
-		return false;
-	}
+   /* to be removed on RS 3.1 */
+   @Deprecated
+   protected boolean consumes(Statement statement) {
+      return false;
+   }
 
-	@Override
-	public boolean overridesDefaultMechanism(Statement statement, Connection connection)  {
-		return overridesDefaultMechanism(statement);
-	}
+   @Override
+   public boolean overridesDefaultMechanism(Statement statement, Connection connection) {
+      return overridesDefaultMechanism(statement);
+   }
 
-	/* to be removed on RS 3.1 */
-	@Deprecated
-	protected boolean overridesDefaultMechanism(Statement statement) {
-		return false;
-	}
-
-
+   /* to be removed on RS 3.1 */
+   @Deprecated
+   protected boolean overridesDefaultMechanism(Statement statement) {
+      return false;
+   }
 
 }

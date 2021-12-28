@@ -18,41 +18,38 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public interface ParameterConfigurator<D extends ParameterDefinitionDto, I extends ParameterInstanceDto> {
 
-	public enum ParameterType {
-		Normal,
-		Separator,
-		Container
-	}
-	
-	public ParameterType getType();
-	
-	public ParameterDefinitionDto getNewDto(ReportDto report);
+   public enum ParameterType {
+      Normal, Separator, Container
+   }
 
-	public String getName();
+   public ParameterType getType();
 
-	public Widget getEditComponentForDefinition(D definition, ReportDto report);
-	
-	public void updateDefinitionOnSubmit(D definition, Widget component);
-	
-	public Widget getEditComponentForInstance(I instance, D definition, Collection<ParameterInstanceDto> relevantInstances, boolean initial, int labelWidth, String executeReportToken, ReportDto report);
+   public ParameterDefinitionDto getNewDto(ReportDto report);
 
-	public ImageResource getIcon();
+   public String getName();
 
-	public boolean canHandle(ParameterProposalDto proposal);
+   public Widget getEditComponentForDefinition(D definition, ReportDto report);
 
-	public ParameterDefinitionDto getNewDto(ParameterProposalDto proposal, ReportDto report);
+   public void updateDefinitionOnSubmit(D definition, Widget component);
 
-	public void dependeeInstanceChanged(I instance,
-			D aDefinition,
-			Collection<ParameterInstanceDto> relevantInstances);
+   public Widget getEditComponentForInstance(I instance, D definition,
+         Collection<ParameterInstanceDto> relevantInstances, boolean initial, int labelWidth, String executeReportToken,
+         ReportDto report);
 
-	public boolean consumes(Class<? extends ParameterDefinitionDto> type);
+   public ImageResource getIcon();
 
-	boolean canDependOnParameters();
+   public boolean canHandle(ParameterProposalDto proposal);
 
-	public List<String> validateParameter(D definition,
-			I instance, Widget widget);
+   public ParameterDefinitionDto getNewDto(ParameterProposalDto proposal, ReportDto report);
 
-	public boolean isAvailable();
+   public void dependeeInstanceChanged(I instance, D aDefinition, Collection<ParameterInstanceDto> relevantInstances);
+
+   public boolean consumes(Class<? extends ParameterDefinitionDto> type);
+
+   boolean canDependOnParameters();
+
+   public List<String> validateParameter(D definition, I instance, Widget widget);
+
+   public boolean isAvailable();
 
 }

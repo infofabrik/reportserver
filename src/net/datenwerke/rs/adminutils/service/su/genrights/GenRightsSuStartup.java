@@ -6,12 +6,10 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsSuStartup {
 
-	@Inject
-	public GenRightsSuStartup(
-		SecurityService securityService	
-		){
-		
-		/* register security targets */
-		securityService.registerSecurityTarget(SuSecurityTarget.class);
-	}
+   @Inject
+   public GenRightsSuStartup(SecurityService securityService) {
+
+      /* register security targets */
+      securityService.registerSecurityTarget(SuSecurityTarget.class);
+   }
 }

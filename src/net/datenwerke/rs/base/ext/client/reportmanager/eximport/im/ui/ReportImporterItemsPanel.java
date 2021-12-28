@@ -32,79 +32,78 @@ import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;
 
 public class ReportImporterItemsPanel extends ImporterItemsPanel<ReportManagerImportConfigDto> {
 
-	private final ReportManagerImportDao rmImportDao;
-	
-	@Inject
-	public ReportImporterItemsPanel(ReportManagerImportDao rmImportDao) {
-		super();
-		
-		/* store objects */
-		this.rmImportDao = rmImportDao;
-		
-		/* load data */
-		loadData();
-	}
+   private final ReportManagerImportDao rmImportDao;
 
+   @Inject
+   public ReportImporterItemsPanel(ReportManagerImportDao rmImportDao) {
+      super();
 
-	private void loadData() {
-		rmImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>(){
-			@Override
-			public void onSuccess(List<ImportTreeModel> roots) {
-				buildTree(roots);
-			}
-		});
-	}
-	
-	protected void configureTree() {
-		super.configureTree();
-		
-		tree.setIconProvider(new IconProvider<ImportTreeModel>() {
-			@Override
-			public ImageResource getIcon(ImportTreeModel model) {
-				if(TableReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_DL.toImageResource();
-				if(TableReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_DL.toImageResource();
-				
-				if(JasperReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_JASPER.toImageResource();
-				if(JasperReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_JASPER.toImageResource();
-				
-				if(BirtReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_BIRT.toImageResource();
-				if(BirtReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_BIRT.toImageResource();
-				
-				if(CrystalReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_CRYSTAL.toImageResource();
-				if(CrystalReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_CRYSTAL.toImageResource();
-				
-				if(GridEditorReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_GE.toImageResource();
-				if(GridEditorReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_GE.toImageResource();
-				
-				if(JxlsReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_JXLS.toImageResource();
-				if(JxlsReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.REPORT_JXLS.toImageResource();
-				
-				if(ScriptReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.SCRIPT.toImageResource();
-				if(ScriptReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.SCRIPT.toImageResource();
-				
-				if (SaikuReportDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.CUBE.toImageResource();
-				if (SaikuReportVariantDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.FILE.toImageResource();
-				
-				if(ReportFolderDto.class.getName().equals(model.getType()))
-					return BaseIcon.FOLDER_O.toImageResource();
-				return null;
-			}
-		});
-	}
+      /* store objects */
+      this.rmImportDao = rmImportDao;
+
+      /* load data */
+      loadData();
+   }
+
+   private void loadData() {
+      rmImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>() {
+         @Override
+         public void onSuccess(List<ImportTreeModel> roots) {
+            buildTree(roots);
+         }
+      });
+   }
+
+   protected void configureTree() {
+      super.configureTree();
+
+      tree.setIconProvider(new IconProvider<ImportTreeModel>() {
+         @Override
+         public ImageResource getIcon(ImportTreeModel model) {
+            if (TableReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_DL.toImageResource();
+            if (TableReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_DL.toImageResource();
+
+            if (JasperReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_JASPER.toImageResource();
+            if (JasperReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_JASPER.toImageResource();
+
+            if (BirtReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_BIRT.toImageResource();
+            if (BirtReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_BIRT.toImageResource();
+
+            if (CrystalReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_CRYSTAL.toImageResource();
+            if (CrystalReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_CRYSTAL.toImageResource();
+
+            if (GridEditorReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_GE.toImageResource();
+            if (GridEditorReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_GE.toImageResource();
+
+            if (JxlsReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_JXLS.toImageResource();
+            if (JxlsReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.REPORT_JXLS.toImageResource();
+
+            if (ScriptReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.SCRIPT.toImageResource();
+            if (ScriptReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.SCRIPT.toImageResource();
+
+            if (SaikuReportDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.CUBE.toImageResource();
+            if (SaikuReportVariantDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.FILE.toImageResource();
+
+            if (ReportFolderDto.class.getName().equals(model.getType()))
+               return BaseIcon.FOLDER_O.toImageResource();
+            return null;
+         }
+      });
+   }
 }

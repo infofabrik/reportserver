@@ -5,8 +5,8 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface UserVariableParameterMessages extends Messages {
 
-	public final static UserVariableParameterMessages INSTANCE = GWT.create(UserVariableParameterMessages.class);
-	
-	String userVariable();
-	
+   public final static UserVariableParameterMessages INSTANCE = GWT.create(UserVariableParameterMessages.class);
+
+   String userVariable();
+
 }

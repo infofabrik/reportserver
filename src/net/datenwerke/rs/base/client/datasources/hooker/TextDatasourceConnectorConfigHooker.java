@@ -11,43 +11,43 @@ import net.datenwerke.rs.base.client.datasources.dto.pa.TextDatasourceConnectorD
 import net.datenwerke.rs.base.client.datasources.hooks.DatasourceConnectorConfiguratorHook;
 import net.datenwerke.rs.base.client.datasources.locale.BaseDatasourceMessages;
 
-public class TextDatasourceConnectorConfigHooker implements
-		DatasourceConnectorConfiguratorHook {
+public class TextDatasourceConnectorConfigHooker implements DatasourceConnectorConfiguratorHook {
 
-	@Override
-	public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.addField(String.class, TextDatasourceConnectorDtoPA.INSTANCE.data(), BaseDatasourceMessages.INSTANCE.dataLabel(), new SFFCTextArea(){ 
+   @Override
+   public Widget configureForm(FormatBasedDatasourceDefinitionDto datasource) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-			public int getHeight() {
-				return 300;
-			}
+      form.addField(String.class, TextDatasourceConnectorDtoPA.INSTANCE.data(),
+            BaseDatasourceMessages.INSTANCE.dataLabel(), new SFFCTextArea() {
 
-			public int getWidth() {
-				return 400;
-			}
-			
-		});
-		
-		form.bind(datasource.getConnector());
-		
-		return form;
-	}
+               public int getHeight() {
+                  return 300;
+               }
 
-	@Override
-	public DatasourceConnectorDto instantiateConnector() {
-		return new TextDatasourceConnectorDto();
-	}
+               public int getWidth() {
+                  return 400;
+               }
 
-	@Override
-	public String getConnectorName() {
-		return BaseDatasourceMessages.INSTANCE.textConnectorName();
-	}
+            });
 
-	@Override
-	public boolean consumes(DatasourceConnectorDto connector) {
-		return connector instanceof TextDatasourceConnectorDto;
-	}
+      form.bind(datasource.getConnector());
+
+      return form;
+   }
+
+   @Override
+   public DatasourceConnectorDto instantiateConnector() {
+      return new TextDatasourceConnectorDto();
+   }
+
+   @Override
+   public String getConnectorName() {
+      return BaseDatasourceMessages.INSTANCE.textConnectorName();
+   }
+
+   @Override
+   public boolean consumes(DatasourceConnectorDto connector) {
+      return connector instanceof TextDatasourceConnectorDto;
+   }
 
 }

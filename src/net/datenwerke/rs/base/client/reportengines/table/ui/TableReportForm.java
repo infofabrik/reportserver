@@ -288,10 +288,7 @@ public class TableReportForm extends AbstractReportForm {
             tableReportDao.loadColumnDefinition(report, container, query, null, new RsAsyncCallback<List<ColumnDto>>() {
                @Override
                public void onSuccess(List<ColumnDto> result) {
-                  callback.onSuccess(result
-                        .stream()
-                        .map(ColumnDto::getName)
-                        .collect(toList()));
+                  callback.onSuccess(result.stream().map(ColumnDto::getName).collect(toList()));
                }
 
                @Override
@@ -373,10 +370,7 @@ public class TableReportForm extends AbstractReportForm {
                   null, new RsAsyncCallback<List<ColumnDto>>() {
                      @Override
                      public void onSuccess(List<ColumnDto> result) {
-                        callback.onSuccess(result
-                              .stream()
-                              .map(ColumnDto::getName)
-                              .collect(toList()));
+                        callback.onSuccess(result.stream().map(ColumnDto::getName).collect(toList()));
                      }
 
                      @Override

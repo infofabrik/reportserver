@@ -27,10 +27,7 @@ public class SftpDatasinkTesterToolbarConfigurator implements MainPanelViewToolb
    private final SftpDao sftpDao;
 
    @Inject
-   public SftpDatasinkTesterToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         SftpDao sftpDao
-         ) {
+   public SftpDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, SftpDao sftpDao) {
       this.toolbarUtils = toolbarUtils;
       this.sftpDao = sftpDao;
    }

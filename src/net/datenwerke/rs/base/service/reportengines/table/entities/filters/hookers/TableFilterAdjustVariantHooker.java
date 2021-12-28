@@ -25,119 +25,119 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.VariantToBeEditedHook;
 
 public class TableFilterAdjustVariantHooker implements VariantToBeEditedHook {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	private final TableReportUtils tableReportUtils;
+   private final Provider<EntityManager> entityManagerProvider;
+   private final TableReportUtils tableReportUtils;
 
-	@Inject
-	public TableFilterAdjustVariantHooker(Provider<EntityManager> entityManagerProvider,
-			TableReportUtils tableReportUtils) {
-		this.entityManagerProvider = entityManagerProvider;
-		this.tableReportUtils = tableReportUtils;
-	}
+   @Inject
+   public TableFilterAdjustVariantHooker(Provider<EntityManager> entityManagerProvider,
+         TableReportUtils tableReportUtils) {
+      this.entityManagerProvider = entityManagerProvider;
+      this.tableReportUtils = tableReportUtils;
+   }
 
-	@Override
-	public void variantToBeEdited(Report referenceVariant, ReportDto reportDto, String executorToken)
-			throws ServerCallFailedException {
-		if (!(referenceVariant instanceof TableReportVariant))
-			return;
+   @Override
+   public void variantToBeEdited(Report referenceVariant, ReportDto reportDto, String executorToken)
+         throws ServerCallFailedException {
+      if (!(referenceVariant instanceof TableReportVariant))
+         return;
 
-		Set<Long> filterBlocksInDb = getAllFilterBlocks((TableReportVariant) referenceVariant);
-		Set<Long> filterBlocksInUserVariant = getAllFilterBlocks((TableReportDto) reportDto);
+      Set<Long> filterBlocksInDb = getAllFilterBlocks((TableReportVariant) referenceVariant);
+      Set<Long> filterBlocksInUserVariant = getAllFilterBlocks((TableReportDto) reportDto);
 
-		Set<Long> deletedFilterBlockIds = Sets.difference(filterBlocksInDb, filterBlocksInUserVariant).immutableCopy();
-		Set<FilterBlock> deletedFilterBlocks = getFilterBlocks(deletedFilterBlockIds);
+      Set<Long> deletedFilterBlockIds = Sets.difference(filterBlocksInDb, filterBlocksInUserVariant).immutableCopy();
+      Set<FilterBlock> deletedFilterBlocks = getFilterBlocks(deletedFilterBlockIds);
 
-		Iterator<FilterBlock> it = deletedFilterBlocks.iterator();
-		while (it.hasNext()) {
-			FilterBlock toDelete = it.next();
-			tableReportUtils.remove(toDelete);
-		}
+      Iterator<FilterBlock> it = deletedFilterBlocks.iterator();
+      while (it.hasNext()) {
+         FilterBlock toDelete = it.next();
+         tableReportUtils.remove(toDelete);
+      }
 
-		/* Call flush because of 
-		 * https://developer.jboss.org/wiki/HibernateFAQ-AdvancedProblems?_sscc=t#jive_content_id_Hibernate_is_violating_a_unique_constraint
-		 * (RS-3645) */
-		if (! deletedFilterBlocks.isEmpty()) {
-			EntityManager em = entityManagerProvider.get();
-			em.flush();
-		}
+      /*
+       * Call flush because of
+       * https://developer.jboss.org/wiki/HibernateFAQ-AdvancedProblems?_sscc=t#
+       * jive_content_id_Hibernate_is_violating_a_unique_constraint (RS-3645)
+       */
+      if (!deletedFilterBlocks.isEmpty()) {
+         EntityManager em = entityManagerProvider.get();
+         em.flush();
+      }
 
-	}
+   }
 
-	private Set<FilterBlock> getFilterBlocks(Set<Long> filterBlockIds) throws ServerCallFailedException {
-		Set<FilterBlock> filterBlocks = new HashSet<>();
+   private Set<FilterBlock> getFilterBlocks(Set<Long> filterBlockIds) throws ServerCallFailedException {
+      Set<FilterBlock> filterBlocks = new HashSet<>();
 
-		EntityManager em = entityManagerProvider.get();
+      EntityManager em = entityManagerProvider.get();
 
-		Iterator<Long> it = filterBlockIds.iterator();
-		while (it.hasNext()) {
-			Long filterBlockId = it.next();
+      Iterator<Long> it = filterBlockIds.iterator();
+      while (it.hasNext()) {
+         Long filterBlockId = it.next();
 
-			FilterBlock filterBlock = em.find(FilterBlock.class, filterBlockId);
-			if (null != filterBlock)
-				filterBlocks.add(filterBlock);
-			else
-				throw new ServerCallFailedException("No filter block found for id: " + filterBlockId);
-		}
+         FilterBlock filterBlock = em.find(FilterBlock.class, filterBlockId);
+         if (null != filterBlock)
+            filterBlocks.add(filterBlock);
+         else
+            throw new ServerCallFailedException("No filter block found for id: " + filterBlockId);
+      }
 
-		return filterBlocks;
-	}
+      return filterBlocks;
+   }
 
-	private Set<Long> getAllFilterBlocks(TableReport report) {
-		Set<Long> filterBlocks = new HashSet<>();
+   private Set<Long> getAllFilterBlocks(TableReport report) {
+      Set<Long> filterBlocks = new HashSet<>();
 
-		PreFilter prefilter = report.getPreFilter();
-		FilterBlock rootBlock = prefilter.getRootBlock();
+      PreFilter prefilter = report.getPreFilter();
+      FilterBlock rootBlock = prefilter.getRootBlock();
 
-		filterBlocks = doGetAllFilterBlocks(rootBlock);
+      filterBlocks = doGetAllFilterBlocks(rootBlock);
 
-		return filterBlocks;
-	}
+      return filterBlocks;
+   }
 
-	private Set<Long> doGetAllFilterBlocks(FilterBlock filterBlock) {
-		Set<Long> filterBlocks = new HashSet<>();
-		filterBlocks.add(filterBlock.getId());
+   private Set<Long> doGetAllFilterBlocks(FilterBlock filterBlock) {
+      Set<Long> filterBlocks = new HashSet<>();
+      filterBlocks.add(filterBlock.getId());
 
-		if (filterBlock.getChildBlocks().isEmpty()) 
-			return filterBlocks;
-		
+      if (filterBlock.getChildBlocks().isEmpty())
+         return filterBlocks;
 
-		Iterator<FilterBlock> childrenFilterBlockIt = filterBlock.getChildBlocks().iterator();
-		while (childrenFilterBlockIt.hasNext()) {
-			FilterBlock nextFilterBlock = childrenFilterBlockIt.next();
-			filterBlocks.addAll(doGetAllFilterBlocks(nextFilterBlock));
-		}
+      Iterator<FilterBlock> childrenFilterBlockIt = filterBlock.getChildBlocks().iterator();
+      while (childrenFilterBlockIt.hasNext()) {
+         FilterBlock nextFilterBlock = childrenFilterBlockIt.next();
+         filterBlocks.addAll(doGetAllFilterBlocks(nextFilterBlock));
+      }
 
-		return filterBlocks;
-	}
+      return filterBlocks;
+   }
 
-	private Set<Long> getAllFilterBlocks(TableReportDto report) {
-		Set<Long> filterBlocks = new HashSet<>();
+   private Set<Long> getAllFilterBlocks(TableReportDto report) {
+      Set<Long> filterBlocks = new HashSet<>();
 
-		PreFilterDto prefilter = report.getPreFilter();
-		FilterBlockDto rootBlock = prefilter.getRootBlock();
+      PreFilterDto prefilter = report.getPreFilter();
+      FilterBlockDto rootBlock = prefilter.getRootBlock();
 
-		filterBlocks = doGetAllFilterBlocks(rootBlock);
+      filterBlocks = doGetAllFilterBlocks(rootBlock);
 
-		return filterBlocks;
-	}
+      return filterBlocks;
+   }
 
-	private Set<Long> doGetAllFilterBlocks(FilterBlockDto filterBlock) {
+   private Set<Long> doGetAllFilterBlocks(FilterBlockDto filterBlock) {
 
-		Set<Long> filterBlocks = new HashSet<>();
-		filterBlocks.add((Long) filterBlock.getDtoId());
+      Set<Long> filterBlocks = new HashSet<>();
+      filterBlocks.add((Long) filterBlock.getDtoId());
 
-		if (filterBlock.getChildBlocks().isEmpty()) 
-			return filterBlocks;
-		
+      if (filterBlock.getChildBlocks().isEmpty())
+         return filterBlocks;
 
-		Iterator<FilterBlockDto> childrenFilterBlockIt = filterBlock.getChildBlocks().iterator();
-		while (childrenFilterBlockIt.hasNext()) {
-			FilterBlockDto nextFilterBlock = childrenFilterBlockIt.next();
-			filterBlocks.addAll(doGetAllFilterBlocks(nextFilterBlock));
-		}
+      Iterator<FilterBlockDto> childrenFilterBlockIt = filterBlock.getChildBlocks().iterator();
+      while (childrenFilterBlockIt.hasNext()) {
+         FilterBlockDto nextFilterBlock = childrenFilterBlockIt.next();
+         filterBlocks.addAll(doGetAllFilterBlocks(nextFilterBlock));
+      }
 
-		return filterBlocks;
+      return filterBlocks;
 
-	}
+   }
 
 }

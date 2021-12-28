@@ -4,6 +4,6 @@ import net.datenwerke.eximport.im.ImportSupervisor;
 
 public interface BasicObjectImporterFactory {
 
-	public BasicObjectImporter create(ImportSupervisor importSupervisor,  ImportableElement element);
-	
+   public BasicObjectImporter create(ImportSupervisor importSupervisor, ImportableElement element);
+
 }

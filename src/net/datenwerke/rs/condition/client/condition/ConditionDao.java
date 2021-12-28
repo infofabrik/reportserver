@@ -14,27 +14,25 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ConditionDao extends Dao {
 
-	private final ConditionRpcServiceAsync rpcService;
+   private final ConditionRpcServiceAsync rpcService;
 
-	@Inject
-	public ConditionDao(ConditionRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void getConditions(ReportDto report, AsyncCallback<List<Condition>> callback){
-		rpcService.getConditions(report, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public ConditionDao(ConditionRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void getReplacementsFor(Condition condition,
-			AsyncCallback<List<String>> callback){
-		if(condition instanceof ReportConditionDto)
-			rpcService.getReplacementsFor((ReportConditionDto) condition, transformAndKeepCallback(callback));
-		else if(condition instanceof SimpleCondition)
-			callback.onSuccess(((SimpleCondition)condition).getReplacements());
-	}
+   public void getConditions(ReportDto report, AsyncCallback<List<Condition>> callback) {
+      rpcService.getConditions(report, transformAndKeepCallback(callback));
+   }
 
-	public void executeCondition(ScheduleConditionDto scheduleCondition,
-			AsyncCallback<Boolean> callback){
-		rpcService.executeCondition(scheduleCondition, transformAndKeepCallback(callback));
-	}
+   public void getReplacementsFor(Condition condition, AsyncCallback<List<String>> callback) {
+      if (condition instanceof ReportConditionDto)
+         rpcService.getReplacementsFor((ReportConditionDto) condition, transformAndKeepCallback(callback));
+      else if (condition instanceof SimpleCondition)
+         callback.onSuccess(((SimpleCondition) condition).getReplacements());
+   }
+
+   public void executeCondition(ScheduleConditionDto scheduleCondition, AsyncCallback<Boolean> callback) {
+      rpcService.executeCondition(scheduleCondition, transformAndKeepCallback(callback));
+   }
 }

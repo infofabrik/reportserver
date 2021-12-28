@@ -14,35 +14,33 @@ import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserM
 
 public class NodeACLView extends BasicACLView<SecuredAbstractNodeDto> {
 
-	@Inject
-	public NodeACLView(
-		@UserManagerTreeBasicSingleton UITree userManagerTree) {
-		super(userManagerTree);
-	}
+   @Inject
+   public NodeACLView(@UserManagerTreeBasicSingleton UITree userManagerTree) {
+      super(userManagerTree);
+   }
 
+   protected AceDto createNewACE() {
+      return new HierarchicalAceDto();
+   }
 
-	protected AceDto createNewACE() {
-		return new HierarchicalAceDto();
-	}
-	
-	protected void doInitialize(AsyncCallback<SecurityViewInformation> callback) {
-		/* load neccessary information */
-		securityDao.loadSecurityViewInformation(target, callback);
-	}
+   protected void doInitialize(AsyncCallback<SecurityViewInformation> callback) {
+      /* load neccessary information */
+      securityDao.loadSecurityViewInformation(target, callback);
+   }
 
-	protected void doRemoveACEs(final List<AceDto> aces, AsyncCallback<Void> callback) {
-		securityDao.removeACEs(target, aces, callback);
-	}
-	
-	protected void doAddAce(AsyncCallback<AceDto> callback) {
-		securityDao.addACE(target, callback);
-	}
-	
-	protected void doAceMoved(AceDto ace, int index, AsyncCallback<AceDto> callback) {
-		securityDao.aceMoved(target, ace, index, callback);
-	}
+   protected void doRemoveACEs(final List<AceDto> aces, AsyncCallback<Void> callback) {
+      securityDao.removeACEs(target, aces, callback);
+   }
 
-	protected void doEditACE(AceDto ace, AsyncCallback<AceDto> callback) {
-		securityDao.editACE(target, ace, callback);
-	}
+   protected void doAddAce(AsyncCallback<AceDto> callback) {
+      securityDao.addACE(target, callback);
+   }
+
+   protected void doAceMoved(AceDto ace, int index, AsyncCallback<AceDto> callback) {
+      securityDao.aceMoved(target, ace, index, callback);
+   }
+
+   protected void doEditACE(AceDto ace, AsyncCallback<AceDto> callback) {
+      securityDao.editACE(target, ace, callback);
+   }
 }

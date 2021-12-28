@@ -18,57 +18,61 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
 
 public class DeleteMenuItem extends TreeMenuItem {
-	
-	public DeleteMenuItem(final TreeDbManagerDao treeManager){
-		super();
-		
-		setIcon(BaseIcon.DELETE);
-		setText(BaseMessages.INSTANCE.remove());
-		addMenuSelectionListener(new TreeMenuSelectionEvent() {
-			
-			public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-				/* confirm delete */
-				ConfirmMessageBox cmb = new DwConfirmMessageBox(
-						BaseMessages.INSTANCE.confirmDeleteTitle(), 
-						BaseMessages.INSTANCE.confirmDeleteMsg(node.toDisplayTitle()));
-				
-				cmb.addDialogHideHandler(new DialogHideHandler() {
-					
-					@Override
-					public void onDialogHide(DialogHideEvent event) {
-						if (event.getHideButton() == PredefinedButton.YES) {
-							/* delete */
-							treeManager.deleteNodeAndAskForMoreForce(node, new RsAsyncCallback<Boolean>() { 
-								@Override
-								public void onSuccess(Boolean result) {
-									if(Boolean.TRUE.equals(result)){
-										tree.getStore().remove(node);
-										Info.display(BaseMessages.INSTANCE.changesApplied(), TreedbMessages.INSTANCE.deleted());
-									}
-								}
-							});
-							
-							/* select parent */
-							final AbstractNodeDto parent = tree.getStore().getParent(node);
-							if(null != parent) {
-								/* https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504 */
-								tree.releaseMouseDownFlag();
-								tree.getSelectionModel().select(parent, false);
-							}
-						}	
-					}
-				});
-				
-				cmb.show();
-			}
-		});
-	}
-	
-	@Override
-	public void toBeDisplayed(AbstractNodeDto selectedItem) {
-		disable();
-		
-		if(! (selectedItem instanceof SecuredAbstractNodeDtoDec) || ! ((SecuredAbstractNodeDtoDec)selectedItem).isAccessRightsLoaded()|| ((SecuredAbstractNodeDtoDec)selectedItem).hasAccessRight(DeleteDto.class))
-			enable();
-	}
+
+   public DeleteMenuItem(final TreeDbManagerDao treeManager) {
+      super();
+
+      setIcon(BaseIcon.DELETE);
+      setText(BaseMessages.INSTANCE.remove());
+      addMenuSelectionListener(new TreeMenuSelectionEvent() {
+
+         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
+            /* confirm delete */
+            ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(),
+                  BaseMessages.INSTANCE.confirmDeleteMsg(node.toDisplayTitle()));
+
+            cmb.addDialogHideHandler(new DialogHideHandler() {
+
+               @Override
+               public void onDialogHide(DialogHideEvent event) {
+                  if (event.getHideButton() == PredefinedButton.YES) {
+                     /* delete */
+                     treeManager.deleteNodeAndAskForMoreForce(node, new RsAsyncCallback<Boolean>() {
+                        @Override
+                        public void onSuccess(Boolean result) {
+                           if (Boolean.TRUE.equals(result)) {
+                              tree.getStore().remove(node);
+                              Info.display(BaseMessages.INSTANCE.changesApplied(), TreedbMessages.INSTANCE.deleted());
+                           }
+                        }
+                     });
+
+                     /* select parent */
+                     final AbstractNodeDto parent = tree.getStore().getParent(node);
+                     if (null != parent) {
+                        /*
+                         * https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-
+                         * TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504
+                         */
+                        tree.releaseMouseDownFlag();
+                        tree.getSelectionModel().select(parent, false);
+                     }
+                  }
+               }
+            });
+
+            cmb.show();
+         }
+      });
+   }
+
+   @Override
+   public void toBeDisplayed(AbstractNodeDto selectedItem) {
+      disable();
+
+      if (!(selectedItem instanceof SecuredAbstractNodeDtoDec)
+            || !((SecuredAbstractNodeDtoDec) selectedItem).isAccessRightsLoaded()
+            || ((SecuredAbstractNodeDtoDec) selectedItem).hasAccessRight(DeleteDto.class))
+         enable();
+   }
 }

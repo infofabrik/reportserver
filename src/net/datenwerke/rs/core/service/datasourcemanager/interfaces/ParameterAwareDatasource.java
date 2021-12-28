@@ -4,5 +4,5 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 
 public interface ParameterAwareDatasource {
 
-	public boolean usesParameter(DatasourceDefinitionConfig config, String key);
+   public boolean usesParameter(DatasourceDefinitionConfig config, String key);
 }

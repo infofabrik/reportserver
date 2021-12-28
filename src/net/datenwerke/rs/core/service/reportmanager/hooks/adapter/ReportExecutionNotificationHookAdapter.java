@@ -14,25 +14,26 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class ReportExecutionNotificationHookAdapter implements ReportExecutionNotificationHook {
 
-	@Override
-	public void notifyOfReportExecution(Report report, ParameterSet parameterSet, User user, String outputFormat, net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs)  {
-	}
+   @Override
+   public void notifyOfReportExecution(Report report, ParameterSet parameterSet, User user, String outputFormat,
+         net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs) {
+   }
 
+   @Override
+   public void notifyOfReportsSuccessfulExecution(CompiledReport compiledReport, Report report,
+         ParameterSet parameterSet, User user, String outputFormat,
+         net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs) {
+   }
 
-	@Override
-	public void notifyOfReportsSuccessfulExecution(CompiledReport compiledReport, Report report, ParameterSet parameterSet, User user, String outputFormat, net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs)  {
-	}
+   @Override
+   public void notifyOfReportsUnsuccessfulExecution(ReportExecutorException e, Report report, ParameterSet parameterSet,
+         User user, String outputFormat,
+         net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs) {
+   }
 
-
-	@Override
-	public void notifyOfReportsUnsuccessfulExecution(ReportExecutorException e, Report report, ParameterSet parameterSet, User user, String outputFormat, net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs)  {
-	}
-
-
-	@Override
-	public void doVetoReportExecution(Report report, ParameterSet parameterSet, User user, String outputFormat, net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs)  {
-	}
-
-
+   @Override
+   public void doVetoReportExecution(Report report, ParameterSet parameterSet, User user, String outputFormat,
+         net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig[] configs) {
+   }
 
 }

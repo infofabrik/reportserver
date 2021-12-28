@@ -7,51 +7,50 @@ import net.datenwerke.gxtdto.client.model.DwModel;
 
 public class DownloadProperties implements Serializable, DwModel {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3230462892424038936L;
-	
-	
-	private String id;
-	private String handler;
-	private HashMap<String, String> metadata = new HashMap<String, String>();
-	
-	public DownloadProperties(){
-	}
-	
-	public DownloadProperties(String id, String handler) {
-		this.id = id;
-		this.handler = handler;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3230462892424038936L;
 
-	public String getHandler() {
-		return handler;
-	}
+   private String id;
+   private String handler;
+   private HashMap<String, String> metadata = new HashMap<String, String>();
 
-	public void setHandler(String handler) {
-		this.handler = handler;
-	}
+   public DownloadProperties() {
+   }
 
-	public String getId() {
-		return id;
-	}
+   public DownloadProperties(String id, String handler) {
+      this.id = id;
+      this.handler = handler;
+   }
 
-	public void setId(String id) {
-		this.id = id;
-	}
+   public String getHandler() {
+      return handler;
+   }
 
-	public HashMap<String, String> getMetadata() {
-		return metadata;
-	}
+   public void setHandler(String handler) {
+      this.handler = handler;
+   }
 
-	public void setMetadata(HashMap<String, String> metadata) {
-		if(null==metadata)
-			metadata = new HashMap<String, String>();
-		this.metadata = metadata;
-	}
+   public String getId() {
+      return id;
+   }
 
-	public void addMetadata(String key, String value){
-		this.metadata.put(key,value);
-	}
+   public void setId(String id) {
+      this.id = id;
+   }
+
+   public HashMap<String, String> getMetadata() {
+      return metadata;
+   }
+
+   public void setMetadata(HashMap<String, String> metadata) {
+      if (null == metadata)
+         metadata = new HashMap<String, String>();
+      this.metadata = metadata;
+   }
+
+   public void addMetadata(String key, String value) {
+      this.metadata.put(key, value);
+   }
 }

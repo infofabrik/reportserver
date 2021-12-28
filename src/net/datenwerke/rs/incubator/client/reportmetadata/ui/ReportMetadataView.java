@@ -62,300 +62,303 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class ReportMetadataView extends MainPanelView {
 
-	public static final String VIEW_ID = "ReportMetadataView";
-	
-	private static ReportMetadataDtoPA metaPa = GWT.create(ReportMetadataDtoPA.class);
-	
-	private final ReportMetadataDao metadataDao;
-	
-	private ListStore<ReportMetadataDto> metadataStore;
-	private List<ReportMetadataDto> removedProperties = new ArrayList<ReportMetadataDto>();
-	private List<ReportMetadataDto> addedProperties = new ArrayList<ReportMetadataDto>();
+   public static final String VIEW_ID = "ReportMetadataView";
 
-	private Grid<ReportMetadataDto> grid;
-	
-	@Inject
-	public ReportMetadataView(
-		ReportMetadataDao propertiesDao
-		){
-		
-		/* store objects */
-		this.metadataDao = propertiesDao;
-	}
-	
-	@Override
-	public String getViewId() {
-		return VIEW_ID;
-	}
-	
-	@Override
-	public boolean isSticky() {
-		return true;
-	}
-	
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.EDIT.toImageResource();
-	}
-	
-	@Override
-	public String getComponentHeader() {
-		return ReportMetadataMessages.INSTANCE.header();
-	}
+   private static ReportMetadataDtoPA metaPa = GWT.create(ReportMetadataDtoPA.class);
 
-	@Override
-	public Widget getViewComponent(AbstractNodeDto selectedNode) {
-		NorthSouthContainer nsContainer = new NorthSouthContainer();
-		
-		/* prepare store */
-		metadataStore = new ListStore<ReportMetadataDto>(new DtoIdModelKeyProvider());
-		metadataStore.addSortInfo(new StoreSortInfo<ReportMetadataDto>(ReportMetadataDtoPA.INSTANCE.name(), SortDir.ASC));
-		updateStore(getReport());
-		
-		/* create grid */
-		createGrid();
-		nsContainer.setWidget(grid);
-		
-		/* create toolbar */
-		ToolBar toolbar = createToolbar();
-		nsContainer.setNorthWidget(toolbar);
-		
-		DwContentPanel main = new DwContentPanel();
-		main.setLightHeader();
-		main.setHeading(ReportMetadataMessages.INSTANCE.header());
-		main.add(nsContainer);
-		main.setInfoText(ReportMetadataMessages.INSTANCE.description());
-		
-		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		wrapper.add(main, new VerticalLayoutData(1,1, new Margins(10)));
-		
-		return wrapper;
-	}
-	
-	private ToolBar createToolbar() {
-		ToolBar toolbar = new DwToolBar();
-		
-		DwSplitButton addBtn = new DwSplitButton(BaseMessages.INSTANCE.add());
-		addBtn.setIcon(BaseIcon.COG_ADD);
+   private final ReportMetadataDao metadataDao;
 
-		final Menu addBtnMenu = new DwMenu();
-		addBtnMenu.setMaxHeight(300);
-		addBtn.setMenu(addBtnMenu);
-		metadataDao.getPropertyKeys(new RsAsyncCallback<List<String>>(){
-			@Override
-			public void onSuccess(List<String> result) {
-				for(final String entry : result){
-					MenuItem item = new DwMenuItem(entry);
-					addBtnMenu.add(item);
-					item.addSelectionHandler(new SelectionHandler<Item>() {
-						@Override
-						public void onSelection(SelectionEvent<Item> event) {
-							addProperty(entry);
-						}
-					});
-				}
-			}
-		});
-		
-		addBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				addProperty(null);
-			}
-		});
-		toolbar.add(addBtn);
-		
-		toolbar.add(new SeparatorToolItem());
-		
-		DwSplitButton removeButton = new DwSplitButton(BaseMessages.INSTANCE.remove());
-		removeButton.setIcon(BaseIcon.DELETE);
-		removeButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				List<ReportMetadataDto> selectedItems = grid.getSelectionModel().getSelectedItems();
-				
-				for(ReportMetadataDto r : selectedItems){
-					if(addedProperties.remove(r))
-						metadataStore.remove(r);
-					else {
-						removedProperties.add(r);
-						metadataStore.update(r);
-					}
-				}
-			}
-		});
-		toolbar.add(removeButton);
-		
-		MenuItem removeAllButton = new DwMenuItem(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
-		removeAllButton.addSelectionHandler(new SelectionHandler<Item>() {
+   private ListStore<ReportMetadataDto> metadataStore;
+   private List<ReportMetadataDto> removedProperties = new ArrayList<ReportMetadataDto>();
+   private List<ReportMetadataDto> addedProperties = new ArrayList<ReportMetadataDto>();
 
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(), BaseMessages.INSTANCE.confirmDeleteAllMsg());
-				cmb.addDialogHideHandler(new DialogHideHandler() {
-					@Override
-					public void onDialogHide(DialogHideEvent event) {
-						if (event.getHideButton() == PredefinedButton.YES) {
-							for(ReportMetadataDto r : grid.getStore().getAll()){
-								if(addedProperties.remove(r))
-									metadataStore.remove(r);
-								else {
-									removedProperties.add(r);
-									metadataStore.update(r);
-								}
-							}
-						}
-					}
-				});
-				cmb.show();
-			}
-		});
-		
-		Menu remMenu = new DwMenu();
-		remMenu.add(removeAllButton);
-		removeButton.setMenu(remMenu);
-		
-		toolbar.add(new FillToolItem());
-		
-		DwTextButton resetBtn = new DwTextButton(BaseMessages.INSTANCE.revert(),BaseIcon.ROTATE_LEFT);
-		resetBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				metadataStore.rejectChanges();
-				for(ReportMetadataDto p : addedProperties)
-					metadataStore.remove(p);
-				addedProperties.clear();
-				removedProperties.clear();
-				
-				for(ReportMetadataDto r : grid.getStore().getAll())
-					metadataStore.update(r);
-			}
-		});
-		toolbar.add(resetBtn);
-		
-		DwTextButton storeBtn = new DwTextButton(BaseMessages.INSTANCE.save(),BaseIcon.ACCEPT);
-		toolbar.add(storeBtn);
-		storeBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				mask(BaseMessages.INSTANCE.storingMsg());
-				
-				List<ReportMetadataDto> rP = new ArrayList<ReportMetadataDto>(removedProperties);
-				List<ReportMetadataDto> aP = new ArrayList<ReportMetadataDto>(addedProperties);
-				
-				addedProperties.clear();
-				removedProperties.clear();
-				
-				for(ReportMetadataDto p : rP)
-					metadataStore.remove(p);
-				
-				Collection<Store<ReportMetadataDto>.Record> modifiedRecords = metadataStore.getModifiedRecords();
-				List<ReportMetadataDto> mP = new ArrayList<ReportMetadataDto>();
-				for(Store<ReportMetadataDto>.Record r : modifiedRecords){
-					r.commit(true);
-					mP.add(r.getModel());
-				}
-				
-				metadataDao.updateProperties(getReport(), aP, mP, rP, new RsAsyncCallback<ReportDto>(){
-					@Override
-					public void onSuccess(ReportDto result) {
-						super.onSuccess(result);
-						unmask();
-						metadataStore.clear();
-						updateStore(result);
-					}
-					@Override
-					public void onFailure(Throwable caught) {
-						super.onFailure(caught);
-						unmask();
-					}
-				});
-			}
-		});
-		
-		return toolbar;
-	}
+   private Grid<ReportMetadataDto> grid;
 
-	protected void addProperty(String name) {
-		ReportMetadataDto property = new ReportMetadataDto();
-		
-		name = getUniqueName(name);
-		
-		property.setName(name);
-		addedProperties.add(property);
-		metadataStore.add(property);
-	}
-	
-	protected String getUniqueName(String name) {
-		if(null == name)
-			name = "unnamed";
-		String c = name;
-		int i = 0;
-		while(hasPropertyWith(name))
-			name = c + (++i);
-		return name;
-	}
+   @Inject
+   public ReportMetadataView(ReportMetadataDao propertiesDao) {
 
-	protected boolean hasPropertyWith(String name) {
-		for(ReportMetadataDto p : metadataStore.getAll())
-			if(name.equals(p.getName()))
-				return true;
-		return false;
-	}
+      /* store objects */
+      this.metadataDao = propertiesDao;
+   }
 
-	protected void updateStore(ReportDto report) {
-		for(ReportMetadataDto prop : report.getReportMetadata())
-			metadataStore.add(prop);
-	}
+   @Override
+   public String getViewId() {
+      return VIEW_ID;
+   }
 
-	protected ReportDto getReport(){
-		AbstractNodeDto node = getSelectedNode();
-		assert node instanceof ReportDto;
-		
-		return (ReportDto) node;
-	}
+   @Override
+   public boolean isSticky() {
+      return true;
+   }
 
-	private void createGrid() {
-		/* configure columns */
-		List<ColumnConfig<ReportMetadataDto,?>> columns = new ArrayList<ColumnConfig<ReportMetadataDto,?>>();
-	
-		/* icon column */
-		ColumnConfig<ReportMetadataDto,ReportMetadataDto> icConfig = new ColumnConfig<ReportMetadataDto,ReportMetadataDto>(new IdentityValueProvider<ReportMetadataDto>(), 40); 
-		icConfig.setMenuDisabled(true);
-		icConfig.setCell(new AbstractCell<ReportMetadataDto>(){
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context, ReportMetadataDto value,
-					SafeHtmlBuilder sb) {
-				if(removedProperties.contains(value))
-					sb.append(BaseIcon.DELETE.toSafeHtml());
-				else if(addedProperties.contains(value))
-					sb.append(BaseIcon.ADD.toSafeHtml());
-			}
-		});
-		columns.add(icConfig);
-		
-		/* name column */
-		ColumnConfig<ReportMetadataDto,String> nameConfig = new ColumnConfig<ReportMetadataDto,String>(metaPa.name(), 200, ReportMetadataMessages.INSTANCE.gridNameHeader()); 
-		nameConfig.setMenuDisabled(true);
-		
-		columns.add(nameConfig);
-		
-		/* value */
-		ColumnConfig<ReportMetadataDto,String> valueConfig = new ColumnConfig<ReportMetadataDto,String>(metaPa.value(), 300, ReportMetadataMessages.INSTANCE.gridValueHeader()); 
-		valueConfig.setMenuDisabled(true);
-		
-		columns.add(valueConfig);
-		
-		/* create grid */
-		grid = new Grid<ReportMetadataDto>(metadataStore, new ColumnModel<ReportMetadataDto>(columns));
-		grid.getView().setAutoExpandColumn(valueConfig);
-		grid.setSelectionModel(new GridSelectionModel<ReportMetadataDto>());
-		grid.getView().setShowDirtyCells(true);
-		
-		GridEditing<ReportMetadataDto> editing = new GridInlineEditing<ReportMetadataDto>(grid);
-		
-		editing.addEditor(nameConfig, new TextField());
-		editing.addEditor(valueConfig, new TextField());
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.EDIT.toImageResource();
+   }
+
+   @Override
+   public String getComponentHeader() {
+      return ReportMetadataMessages.INSTANCE.header();
+   }
+
+   @Override
+   public Widget getViewComponent(AbstractNodeDto selectedNode) {
+      NorthSouthContainer nsContainer = new NorthSouthContainer();
+
+      /* prepare store */
+      metadataStore = new ListStore<ReportMetadataDto>(new DtoIdModelKeyProvider());
+      metadataStore.addSortInfo(new StoreSortInfo<ReportMetadataDto>(ReportMetadataDtoPA.INSTANCE.name(), SortDir.ASC));
+      updateStore(getReport());
+
+      /* create grid */
+      createGrid();
+      nsContainer.setWidget(grid);
+
+      /* create toolbar */
+      ToolBar toolbar = createToolbar();
+      nsContainer.setNorthWidget(toolbar);
+
+      DwContentPanel main = new DwContentPanel();
+      main.setLightHeader();
+      main.setHeading(ReportMetadataMessages.INSTANCE.header());
+      main.add(nsContainer);
+      main.setInfoText(ReportMetadataMessages.INSTANCE.description());
+
+      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+      wrapper.add(main, new VerticalLayoutData(1, 1, new Margins(10)));
+
+      return wrapper;
+   }
+
+   private ToolBar createToolbar() {
+      ToolBar toolbar = new DwToolBar();
+
+      DwSplitButton addBtn = new DwSplitButton(BaseMessages.INSTANCE.add());
+      addBtn.setIcon(BaseIcon.COG_ADD);
+
+      final Menu addBtnMenu = new DwMenu();
+      addBtnMenu.setMaxHeight(300);
+      addBtn.setMenu(addBtnMenu);
+      metadataDao.getPropertyKeys(new RsAsyncCallback<List<String>>() {
+         @Override
+         public void onSuccess(List<String> result) {
+            for (final String entry : result) {
+               MenuItem item = new DwMenuItem(entry);
+               addBtnMenu.add(item);
+               item.addSelectionHandler(new SelectionHandler<Item>() {
+                  @Override
+                  public void onSelection(SelectionEvent<Item> event) {
+                     addProperty(entry);
+                  }
+               });
+            }
+         }
+      });
+
+      addBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            addProperty(null);
+         }
+      });
+      toolbar.add(addBtn);
+
+      toolbar.add(new SeparatorToolItem());
+
+      DwSplitButton removeButton = new DwSplitButton(BaseMessages.INSTANCE.remove());
+      removeButton.setIcon(BaseIcon.DELETE);
+      removeButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            List<ReportMetadataDto> selectedItems = grid.getSelectionModel().getSelectedItems();
+
+            for (ReportMetadataDto r : selectedItems) {
+               if (addedProperties.remove(r))
+                  metadataStore.remove(r);
+               else {
+                  removedProperties.add(r);
+                  metadataStore.update(r);
+               }
+            }
+         }
+      });
+      toolbar.add(removeButton);
+
+      MenuItem removeAllButton = new DwMenuItem(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
+      removeAllButton.addSelectionHandler(new SelectionHandler<Item>() {
+
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(),
+                  BaseMessages.INSTANCE.confirmDeleteAllMsg());
+            cmb.addDialogHideHandler(new DialogHideHandler() {
+               @Override
+               public void onDialogHide(DialogHideEvent event) {
+                  if (event.getHideButton() == PredefinedButton.YES) {
+                     for (ReportMetadataDto r : grid.getStore().getAll()) {
+                        if (addedProperties.remove(r))
+                           metadataStore.remove(r);
+                        else {
+                           removedProperties.add(r);
+                           metadataStore.update(r);
+                        }
+                     }
+                  }
+               }
+            });
+            cmb.show();
+         }
+      });
+
+      Menu remMenu = new DwMenu();
+      remMenu.add(removeAllButton);
+      removeButton.setMenu(remMenu);
+
+      toolbar.add(new FillToolItem());
+
+      DwTextButton resetBtn = new DwTextButton(BaseMessages.INSTANCE.revert(), BaseIcon.ROTATE_LEFT);
+      resetBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            metadataStore.rejectChanges();
+            for (ReportMetadataDto p : addedProperties)
+               metadataStore.remove(p);
+            addedProperties.clear();
+            removedProperties.clear();
+
+            for (ReportMetadataDto r : grid.getStore().getAll())
+               metadataStore.update(r);
+         }
+      });
+      toolbar.add(resetBtn);
+
+      DwTextButton storeBtn = new DwTextButton(BaseMessages.INSTANCE.save(), BaseIcon.ACCEPT);
+      toolbar.add(storeBtn);
+      storeBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            mask(BaseMessages.INSTANCE.storingMsg());
+
+            List<ReportMetadataDto> rP = new ArrayList<ReportMetadataDto>(removedProperties);
+            List<ReportMetadataDto> aP = new ArrayList<ReportMetadataDto>(addedProperties);
+
+            addedProperties.clear();
+            removedProperties.clear();
+
+            for (ReportMetadataDto p : rP)
+               metadataStore.remove(p);
+
+            Collection<Store<ReportMetadataDto>.Record> modifiedRecords = metadataStore.getModifiedRecords();
+            List<ReportMetadataDto> mP = new ArrayList<ReportMetadataDto>();
+            for (Store<ReportMetadataDto>.Record r : modifiedRecords) {
+               r.commit(true);
+               mP.add(r.getModel());
+            }
+
+            metadataDao.updateProperties(getReport(), aP, mP, rP, new RsAsyncCallback<ReportDto>() {
+               @Override
+               public void onSuccess(ReportDto result) {
+                  super.onSuccess(result);
+                  unmask();
+                  metadataStore.clear();
+                  updateStore(result);
+               }
+
+               @Override
+               public void onFailure(Throwable caught) {
+                  super.onFailure(caught);
+                  unmask();
+               }
+            });
+         }
+      });
+
+      return toolbar;
+   }
+
+   protected void addProperty(String name) {
+      ReportMetadataDto property = new ReportMetadataDto();
+
+      name = getUniqueName(name);
+
+      property.setName(name);
+      addedProperties.add(property);
+      metadataStore.add(property);
+   }
+
+   protected String getUniqueName(String name) {
+      if (null == name)
+         name = "unnamed";
+      String c = name;
+      int i = 0;
+      while (hasPropertyWith(name))
+         name = c + (++i);
+      return name;
+   }
+
+   protected boolean hasPropertyWith(String name) {
+      for (ReportMetadataDto p : metadataStore.getAll())
+         if (name.equals(p.getName()))
+            return true;
+      return false;
+   }
+
+   protected void updateStore(ReportDto report) {
+      for (ReportMetadataDto prop : report.getReportMetadata())
+         metadataStore.add(prop);
+   }
+
+   protected ReportDto getReport() {
+      AbstractNodeDto node = getSelectedNode();
+      assert node instanceof ReportDto;
+
+      return (ReportDto) node;
+   }
+
+   private void createGrid() {
+      /* configure columns */
+      List<ColumnConfig<ReportMetadataDto, ?>> columns = new ArrayList<ColumnConfig<ReportMetadataDto, ?>>();
+
+      /* icon column */
+      ColumnConfig<ReportMetadataDto, ReportMetadataDto> icConfig = new ColumnConfig<ReportMetadataDto, ReportMetadataDto>(
+            new IdentityValueProvider<ReportMetadataDto>(), 40);
+      icConfig.setMenuDisabled(true);
+      icConfig.setCell(new AbstractCell<ReportMetadataDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ReportMetadataDto value,
+               SafeHtmlBuilder sb) {
+            if (removedProperties.contains(value))
+               sb.append(BaseIcon.DELETE.toSafeHtml());
+            else if (addedProperties.contains(value))
+               sb.append(BaseIcon.ADD.toSafeHtml());
+         }
+      });
+      columns.add(icConfig);
+
+      /* name column */
+      ColumnConfig<ReportMetadataDto, String> nameConfig = new ColumnConfig<ReportMetadataDto, String>(metaPa.name(),
+            200, ReportMetadataMessages.INSTANCE.gridNameHeader());
+      nameConfig.setMenuDisabled(true);
+
+      columns.add(nameConfig);
+
+      /* value */
+      ColumnConfig<ReportMetadataDto, String> valueConfig = new ColumnConfig<ReportMetadataDto, String>(metaPa.value(),
+            300, ReportMetadataMessages.INSTANCE.gridValueHeader());
+      valueConfig.setMenuDisabled(true);
+
+      columns.add(valueConfig);
+
+      /* create grid */
+      grid = new Grid<ReportMetadataDto>(metadataStore, new ColumnModel<ReportMetadataDto>(columns));
+      grid.getView().setAutoExpandColumn(valueConfig);
+      grid.setSelectionModel(new GridSelectionModel<ReportMetadataDto>());
+      grid.getView().setShowDirtyCells(true);
+
+      GridEditing<ReportMetadataDto> editing = new GridInlineEditing<ReportMetadataDto>(grid);
+
+      editing.addEditor(nameConfig, new TextField());
+      editing.addEditor(valueConfig, new TextField());
+   }
 
 }

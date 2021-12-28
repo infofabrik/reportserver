@@ -39,14 +39,11 @@ public class CatCommand implements TerminalCommandHook {
       final Object object = session.getObjectResolver().getObject(argument, Read.class);
 
       if (null != object) {
-         return hookHandler.getHookers(CatCommandHandlerHook.class)
-            .stream()
-            .filter(hook -> hook.consumes(object, parser))
-            .map(hook -> hook.cat(object, parser))
-            .findAny()
-            .orElseGet(() -> new CommandResult(TerminalMessages.INSTANCE.cannotCatObject()));
+         return hookHandler.getHookers(CatCommandHandlerHook.class).stream()
+               .filter(hook -> hook.consumes(object, parser)).map(hook -> hook.cat(object, parser)).findAny()
+               .orElseGet(() -> new CommandResult(TerminalMessages.INSTANCE.cannotCatObject()));
       }
-         
+
       return new CommandResult(TerminalMessages.INSTANCE.cannotCatObject());
    }
 

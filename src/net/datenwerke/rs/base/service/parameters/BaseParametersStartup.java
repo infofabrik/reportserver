@@ -13,20 +13,19 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class BaseParametersStartup {
 
-	@Inject
-	public BaseParametersStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		
-		Provider<BaseParameterProviderHooker> parameterProvider,
-		
-		HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler
-		
-		){
-		
-		hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class, handleDatasourceRemoveEventHandler);
-		
-	}
+   @Inject
+   public BaseParametersStartup(HookHandlerService hookHandler, EventBus eventBus,
+
+         Provider<BaseParameterProviderHooker> parameterProvider,
+
+         HandleDatasourceRemoveEventHandler handleDatasourceRemoveEventHandler
+
+   ) {
+
+      hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class,
+            handleDatasourceRemoveEventHandler);
+
+   }
 }

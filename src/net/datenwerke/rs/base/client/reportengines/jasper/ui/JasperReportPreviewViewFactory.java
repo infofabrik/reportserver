@@ -12,27 +12,27 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPre
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
-public class JasperReportPreviewViewFactory extends PreviewViewFactory{
+public class JasperReportPreviewViewFactory extends PreviewViewFactory {
 
-	private ReportExecutorUIService reportExecutorUIService;
-	
-	@Inject
-	public JasperReportPreviewViewFactory(ReportExecutorUIService reportExecutorUIService) {
-		this.reportExecutorUIService = reportExecutorUIService;
-	}
-	
-	@Override
-	public ReportExecutorMainPanelView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		AbstractReportPreviewView view = reportExecutorUIService.getPdfPreviewView();
-		view.setReport(report);
-		
-		return view;
-	}
+   private ReportExecutorUIService reportExecutorUIService;
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return (report instanceof JasperReportDto);
-	}
-	
-	
+   @Inject
+   public JasperReportPreviewViewFactory(ReportExecutorUIService reportExecutorUIService) {
+      this.reportExecutorUIService = reportExecutorUIService;
+   }
+
+   @Override
+   public ReportExecutorMainPanelView newInstance(ReportDto report,
+         Collection<? extends ReportViewConfiguration> configs) {
+      AbstractReportPreviewView view = reportExecutorUIService.getPdfPreviewView();
+      view.setReport(report);
+
+      return view;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      return (report instanceof JasperReportDto);
+   }
+
 }

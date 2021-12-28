@@ -16,37 +16,32 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpImportConfigurationProviderHookImplForTrees;
 
-public class HttpFileServerImportConfigurationHooker extends
-	HttpImportConfigurationProviderHookImplForTrees<AbstractFileServerNode, AbstractFileServerNodeDto> {
+public class HttpFileServerImportConfigurationHooker
+      extends HttpImportConfigurationProviderHookImplForTrees<AbstractFileServerNode, AbstractFileServerNodeDto> {
 
-	@Inject
-	public HttpFileServerImportConfigurationHooker(
-		DtoService dtoService,
-		Provider<HttpImportService> httpImportServiceProvider, 
-		SecurityService securityService
-		){
-		super(dtoService, httpImportServiceProvider, securityService);
-		
-	}
-	
-	@Override
-	public boolean consumes(String id) {
-		return FileServerImporter.IMPORTER_ID.equals(id);
-	}
+   @Inject
+   public HttpFileServerImportConfigurationHooker(DtoService dtoService,
+         Provider<HttpImportService> httpImportServiceProvider, SecurityService securityService) {
+      super(dtoService, httpImportServiceProvider, securityService);
 
-	@Override
-	protected void doConfigureNodeConfig(
-			TreeNodeImportItemConfig realConfigNode, ImportTreeModel model,
-			TreeImportConfigDto<AbstractFileServerNodeDto> treeConfig) {
-	}
+   }
 
-	@Override
-	public void validate(ImportConfigDto config)
-			throws IllegalImportConfigException {
-		TreeImportConfigDto<AbstractFileServerNodeDto> treeConfig = (TreeImportConfigDto<AbstractFileServerNodeDto>) config;
-		if(null != treeConfig.getParent() && ! (treeConfig.getParent() instanceof FileServerFolderDto))
-			throw new IllegalImportConfigException("Illegal file import destination. Has to be a folder, but was: " + treeConfig.getParent().getClass());
-	}
+   @Override
+   public boolean consumes(String id) {
+      return FileServerImporter.IMPORTER_ID.equals(id);
+   }
 
-	
+   @Override
+   protected void doConfigureNodeConfig(TreeNodeImportItemConfig realConfigNode, ImportTreeModel model,
+         TreeImportConfigDto<AbstractFileServerNodeDto> treeConfig) {
+   }
+
+   @Override
+   public void validate(ImportConfigDto config) throws IllegalImportConfigException {
+      TreeImportConfigDto<AbstractFileServerNodeDto> treeConfig = (TreeImportConfigDto<AbstractFileServerNodeDto>) config;
+      if (null != treeConfig.getParent() && !(treeConfig.getParent() instanceof FileServerFolderDto))
+         throw new IllegalImportConfigException(
+               "Illegal file import destination. Has to be a folder, but was: " + treeConfig.getParent().getClass());
+   }
+
 }

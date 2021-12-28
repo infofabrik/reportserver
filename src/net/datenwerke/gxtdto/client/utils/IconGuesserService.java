@@ -6,8 +6,8 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class IconGuesserService {
 
-	public ImageResource guessIcon(String name){
-		return BaseIcon.fromFileExtension(name).toImageResource();
-	}
-	
+   public ImageResource guessIcon(String name) {
+      return BaseIcon.fromFileExtension(name).toImageResource();
+   }
+
 }

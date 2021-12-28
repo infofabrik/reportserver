@@ -9,17 +9,13 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
 
 public class ComputedColumnsUiStartup {
 
-	@Inject
-	public ComputedColumnsUiStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ComputedColumnsViewFactory> viewFactory
-		){
-		
-		hookHandler.attachHooker(
-				ReportViewHook.class,
-				new ReportViewHook(viewFactory),
-				HookHandlerService.PRIORITY_MEDIUM - 10);
-	
-	}
+   @Inject
+   public ComputedColumnsUiStartup(HookHandlerService hookHandler,
+
+         Provider<ComputedColumnsViewFactory> viewFactory) {
+
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(viewFactory),
+            HookHandlerService.PRIORITY_MEDIUM - 10);
+
+   }
 }

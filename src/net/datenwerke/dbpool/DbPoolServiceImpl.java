@@ -11,96 +11,91 @@ import javax.sql.DataSource;
 import net.datenwerke.dbpool.config.ConnectionConfig;
 import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 
-public abstract class DbPoolServiceImpl<C> implements DbPoolService<C>{
-	
-	
-	@Override
-	public DataSource getDataSource(ConnectionPoolConfig config) {
-		return new RsDbPoolDataSource(config);
-	}
-	
-	
-	
-	@Override
-	public DataSource getDataSource(ConnectionPoolConfig poolConfig, ConnectionConfig connConfig) {
-		return new RsDbPoolDataSource(poolConfig, connConfig);
-	}
-	
-	
-	class RsDbPoolDataSource implements DataSource {
-		
-		private PrintWriter logWriter;
-		private int loginTimeout;
-		private ConnectionPoolConfig connectionPoolConfig;
-		private ConnectionConfig connectionConfig;
-		
-		public RsDbPoolDataSource() {
-		}
+public abstract class DbPoolServiceImpl<C> implements DbPoolService<C> {
 
-		public RsDbPoolDataSource(ConnectionPoolConfig connectionPoolConfig) {
-			this.connectionPoolConfig = connectionPoolConfig;
-		}
+   @Override
+   public DataSource getDataSource(ConnectionPoolConfig config) {
+      return new RsDbPoolDataSource(config);
+   }
 
-		public RsDbPoolDataSource(ConnectionPoolConfig connectionPoolConfig, ConnectionConfig connectionConfig) {
-			this.connectionPoolConfig = connectionPoolConfig;
-			this.connectionConfig = connectionConfig;
-		}
+   @Override
+   public DataSource getDataSource(ConnectionPoolConfig poolConfig, ConnectionConfig connConfig) {
+      return new RsDbPoolDataSource(poolConfig, connConfig);
+   }
 
-		@Override
-		public int getLoginTimeout() {
-			return loginTimeout;
-		}
+   class RsDbPoolDataSource implements DataSource {
 
-		@Override
-		public void setLoginTimeout(int loginTimeout) {
-			this.loginTimeout = loginTimeout;
-		}
+      private PrintWriter logWriter;
+      private int loginTimeout;
+      private ConnectionPoolConfig connectionPoolConfig;
+      private ConnectionConfig connectionConfig;
 
+      public RsDbPoolDataSource() {
+      }
 
-		@Override
-		public PrintWriter getLogWriter() throws SQLException {
-			return logWriter;
-		}
-		
-		@Override
-		public void setLogWriter(PrintWriter logWriter) throws SQLException {
-			this.logWriter = logWriter;
-		}
-		
-		@Override
-		public Logger getParentLogger() throws SQLFeatureNotSupportedException {
-			return null;
-		}
+      public RsDbPoolDataSource(ConnectionPoolConfig connectionPoolConfig) {
+         this.connectionPoolConfig = connectionPoolConfig;
+      }
 
-		@Override
-		public boolean isWrapperFor(Class<?> iface) throws SQLException {
-			return false;
-		}
+      public RsDbPoolDataSource(ConnectionPoolConfig connectionPoolConfig, ConnectionConfig connectionConfig) {
+         this.connectionPoolConfig = connectionPoolConfig;
+         this.connectionConfig = connectionConfig;
+      }
 
-		@Override
-		public <T> T unwrap(Class<T> iface) throws SQLException {
-			return null;
-		}
+      @Override
+      public int getLoginTimeout() {
+         return loginTimeout;
+      }
 
-		@Override
-		public Connection getConnection() throws SQLException {
-			try {
-				if(null != connectionPoolConfig && null != connectionConfig)
-					return DbPoolServiceImpl.this.getConnection(connectionPoolConfig).get();
-				else if(null != connectionPoolConfig)
-					return DbPoolServiceImpl.this.getConnection(connectionPoolConfig, connectionConfig).get();
+      @Override
+      public void setLoginTimeout(int loginTimeout) {
+         this.loginTimeout = loginTimeout;
+      }
 
-			} catch (Exception e) {
-				throw new SQLException("Failed to acquire connection from pool", e);
-			}
-			return null;
-		}
+      @Override
+      public PrintWriter getLogWriter() throws SQLException {
+         return logWriter;
+      }
 
-		@Override
-		public Connection getConnection(String username, String password) throws SQLException {
-			return null;
-		}
+      @Override
+      public void setLogWriter(PrintWriter logWriter) throws SQLException {
+         this.logWriter = logWriter;
+      }
 
-	}
+      @Override
+      public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+         return null;
+      }
+
+      @Override
+      public boolean isWrapperFor(Class<?> iface) throws SQLException {
+         return false;
+      }
+
+      @Override
+      public <T> T unwrap(Class<T> iface) throws SQLException {
+         return null;
+      }
+
+      @Override
+      public Connection getConnection() throws SQLException {
+         try {
+            if (null != connectionPoolConfig && null != connectionConfig)
+               return DbPoolServiceImpl.this.getConnection(connectionPoolConfig).get();
+            else if (null != connectionPoolConfig)
+               return DbPoolServiceImpl.this.getConnection(connectionPoolConfig, connectionConfig).get();
+
+         } catch (Exception e) {
+            throw new SQLException("Failed to acquire connection from pool", e);
+         }
+         return null;
+      }
+
+      @Override
+      public Connection getConnection(String username, String password) throws SQLException {
+         return null;
+      }
+
+   }
 
 }

@@ -17,7 +17,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.resultcache.ResultCacheService;
 import net.datenwerke.rs.saikupivot.service.SaikuDatasourceQueryTransformerMarker;
 
-
 /**
  * Transforms DataSourceDefitions into QRDataSources
  *
@@ -25,37 +24,37 @@ import net.datenwerke.rs.saikupivot.service.SaikuDatasourceQueryTransformerMarke
 @Singleton
 public class Csv2QueryTransformer extends Csv2XTransformer<SaikuDatasourceQueryTransformerMarker> {
 
-	@Inject
-	public Csv2QueryTransformer(
-			DbPoolService dbPoolService,
-			DBHelperService dbHelperService, 
-			TempTableService tempTableService, 
-			TableModelDbHelper tableModelDbHelper, 
-			ResultCacheService resultCacheService
-			){
-		super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
-	}
+   @Inject
+   public Csv2QueryTransformer(DbPoolService dbPoolService, DBHelperService dbHelperService,
+         TempTableService tempTableService, TableModelDbHelper tableModelDbHelper,
+         ResultCacheService resultCacheService) {
+      super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
+   }
 
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof CsvDatasource && dst.isAssignableFrom(SaikuDatasourceQueryTransformerMarker.class));
-	}
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof CsvDatasource
+            && dst.isAssignableFrom(SaikuDatasourceQueryTransformerMarker.class));
+   }
 
-	@Override
-	protected SaikuDatasourceQueryTransformerMarker transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet, Class<TableDataSource> targetType) {
-		TempTableResult tempTableResult = (TempTableResult) r;
+   @Override
+   protected SaikuDatasourceQueryTransformerMarker transformResult(Object r,
+         DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet,
+         Class<TableDataSource> targetType) {
+      TempTableResult tempTableResult = (TempTableResult) r;
 
-		String query = tempTableResult.getFinalQuery();
-		
-		String queryWrapper = ((CsvDatasourceConfig)datasourceContainerProvider.getDatasourceContainer().getDatasourceConfig()).getQueryWrapper();
-		if(null == queryWrapper || "".equals(queryWrapper.trim()))
-			queryWrapper = query;
-		
-		parameterSet.addVariable("query", query);
-		for(String alias : tempTableResult.getTableHelper().getTableAliases())
-			parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
-		
-		return new SaikuDatasourceQueryTransformerMarker(queryWrapper);
-	}
+      String query = tempTableResult.getFinalQuery();
+
+      String queryWrapper = ((CsvDatasourceConfig) datasourceContainerProvider.getDatasourceContainer()
+            .getDatasourceConfig()).getQueryWrapper();
+      if (null == queryWrapper || "".equals(queryWrapper.trim()))
+         queryWrapper = query;
+
+      parameterSet.addVariable("query", query);
+      for (String alias : tempTableResult.getTableHelper().getTableAliases())
+         parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
+
+      return new SaikuDatasourceQueryTransformerMarker(queryWrapper);
+   }
 }

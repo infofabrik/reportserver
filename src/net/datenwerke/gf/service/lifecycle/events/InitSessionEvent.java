@@ -7,15 +7,14 @@ import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
 
 public class InitSessionEvent extends DwLoggedEvent {
 
-	@Override
-	public String getLoggedAction() {
-		return "INIT_SESSION";
-	}
-	
-	@Override
-	public void setAuthenticatorServiceProvider(
-			Provider<AuthenticatorService> authenticatorServiceProvider) {
-		// we may not access the session!
-	}
+   @Override
+   public String getLoggedAction() {
+      return "INIT_SESSION";
+   }
+
+   @Override
+   public void setAuthenticatorServiceProvider(Provider<AuthenticatorService> authenticatorServiceProvider) {
+      // we may not access the session!
+   }
 
 }

@@ -10,18 +10,16 @@ import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 
 public class DatasourceTesterDao extends Dao {
 
-	
-	private final DatasourceTesterRPCServiceAsync rpcService;
+   private final DatasourceTesterRPCServiceAsync rpcService;
 
-	@Inject
-	public DatasourceTesterDao(DatasourceTesterRPCServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	
-	public Request testConnection(DatabaseDatasourceDto databaseDto, AsyncCallback<Boolean> callback){
-		return rpcService.testConnection(databaseDto, transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public DatasourceTesterDao(DatasourceTesterRPCServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
+
+   public Request testConnection(DatabaseDatasourceDto databaseDto, AsyncCallback<Boolean> callback) {
+      return rpcService.testConnection(databaseDto, transformAndKeepCallback(callback));
+   }
+
 }

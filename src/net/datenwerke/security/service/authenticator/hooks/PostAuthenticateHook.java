@@ -7,6 +7,6 @@ import net.datenwerke.security.service.authenticator.AuthenticationResult;
 @HookConfig
 public interface PostAuthenticateHook extends Hook {
 
-	public void authenticated(AuthenticationResult authRes);
+   public void authenticated(AuthenticationResult authRes);
 
 }

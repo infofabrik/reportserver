@@ -27,92 +27,80 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
  *
  */
 @Entity
-@Table(name="TABLE_REPORT_VARIANT")
+@Table(name = "TABLE_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto", 
-	createDecorator=true
-)
-@ExImportConfig(
-	excludeFields={
-		"datasourceContainer",
-		"metadataDatasourceContainer",
-		"parameterDefinitions"
-	}
-)
-@InstanceDescription(
-	msgLocation=ReportEnginesMessages.class,
-	objNameKey="tableReportVariantTypeName",
-	icon = "table"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
+@ExImportConfig(excludeFields = { "datasourceContainer", "metadataDatasourceContainer", "parameterDefinitions" })
+@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "tableReportVariantTypeName", icon = "table")
 public class TableReportVariant extends TableReport implements ReportVariant {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1314238195723702665L;
 
-	public TableReport getBaseReport() {
-		AbstractReportManagerNode parent = getParent();
-		if(parent instanceof HibernateProxy)
-			parent = (AbstractReportManagerNode) ((HibernateProxy)parent).getHibernateLazyInitializer().getImplementation();
-		return (TableReport) parent;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1314238195723702665L;
 
-	public void setBaseReport(Report baseReport) {
-		throw new IllegalStateException("Should not be called on Server");
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return getBaseReport().getDatasourceContainer();
-	}
-	
-	@Override
-	public DatasourceContainer getMetadataDatasourceContainer() {
-		return getBaseReport().getMetadataDatasourceContainer();
-	}
-	
-	@Override
-	public boolean isAllowCubification() {
-		return getBaseReport().isAllowCubification();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setMetadataDatasourceContainer(DatasourceContainer datasource) {
-		throw new NotImplementedException("not implemented");
-	}
+   public TableReport getBaseReport() {
+      AbstractReportManagerNode parent = getParent();
+      if (parent instanceof HibernateProxy)
+         parent = (AbstractReportManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+               .getImplementation();
+      return (TableReport) parent;
+   }
 
-	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return getBaseReport().getParameterDefinitions();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException("not implemented");
-	}
+   public void setBaseReport(Report baseReport) {
+      throw new IllegalStateException("Should not be called on Server");
+   }
 
-	/**
-	 */
-	@ClonePostProcessor
-	public void guideCloningProcess(Object report){
-		super.setParameterDefinitions(null);
-		super.setMetadataDatasourceContainer(null);
-		super.setDatasourceContainer(null);
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @IgnoreMergeBackDto
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return getBaseReport().getDatasourceContainer();
+   }
+
+   @Override
+   public DatasourceContainer getMetadataDatasourceContainer() {
+      return getBaseReport().getMetadataDatasourceContainer();
+   }
+
+   @Override
+   public boolean isAllowCubification() {
+      return getBaseReport().isAllowCubification();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setMetadataDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public List<ParameterDefinition> getParameterDefinitions() {
+      return getBaseReport().getParameterDefinitions();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setParameterDefinitions(List<ParameterDefinition> parameters) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   /**
+    */
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      super.setParameterDefinitions(null);
+      super.setMetadataDatasourceContainer(null);
+      super.setDatasourceContainer(null);
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

@@ -11,31 +11,31 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.apache.commons.configuration2.io.FileHandler;
 
 public class ConfigDirConfigStore extends AbstractConfigStore {
-	
-	private final static String CONFIG_FOLDER = "config";
 
-	private ConfigDirService configDirService;
+   private final static String CONFIG_FOLDER = "config";
 
-	@Inject
-	public ConfigDirConfigStore(ConfigDirService configDirService) {
-		this.configDirService = configDirService;
-	}
-	
-	@Override
-	public HierarchicalConfiguration loadConfig(String identifier) throws ConfigurationException {
-		if(!configDirService.isEnabled())
-			return null;
-		
-		File cfg = new File(configDirService.getConfigDir(), CONFIG_FOLDER + "/" + identifier);
-		if(cfg.exists()){
-		    BasicConfigurationBuilder<XMLConfiguration> builder = createBaseConfig();
-		    XMLConfiguration config = builder.getConfiguration();
-            FileHandler fileHandler = new FileHandler(config);
-            fileHandler.load(cfg);
-			return config;
-		}
-		
-		return null;
-	}
+   private ConfigDirService configDirService;
+
+   @Inject
+   public ConfigDirConfigStore(ConfigDirService configDirService) {
+      this.configDirService = configDirService;
+   }
+
+   @Override
+   public HierarchicalConfiguration loadConfig(String identifier) throws ConfigurationException {
+      if (!configDirService.isEnabled())
+         return null;
+
+      File cfg = new File(configDirService.getConfigDir(), CONFIG_FOLDER + "/" + identifier);
+      if (cfg.exists()) {
+         BasicConfigurationBuilder<XMLConfiguration> builder = createBaseConfig();
+         XMLConfiguration config = builder.getConfiguration();
+         FileHandler fileHandler = new FileHandler(config);
+         fileHandler.load(cfg);
+         return config;
+      }
+
+      return null;
+   }
 
 }

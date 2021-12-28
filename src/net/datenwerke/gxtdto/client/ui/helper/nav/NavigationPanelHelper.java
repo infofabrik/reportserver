@@ -16,54 +16,57 @@ import com.sencha.gxt.widget.core.client.tree.TreeSelectionModel;
 @Singleton
 public class NavigationPanelHelper {
 
-	public <M> Tree<NavigationModelData<M>, String> createNavigationTreePanel(TreeStore<NavigationModelData<M>> navigationStore, final NavItemSelectionCallback<M> callback) {
-		//TODO: Theme
-		//return createNavigationTreePanel(navigationStore, callback, (RepserTreeMenuAppearance) GWT.create(RepserTreeMenuAppearance.class));
-		return createNavigationTreePanel(navigationStore, callback, (TreeAppearance) GWT.create(TreeAppearance.class));
-	}
-	
-	public <M> Tree<NavigationModelData<M>, String> createNavigationTreePanel(TreeStore<NavigationModelData<M>> navigationStore, final NavItemSelectionCallback<M> callback, TreeAppearance appearance) {
-		Tree<NavigationModelData<M>, String> navigationTree = new Tree<NavigationModelData<M>, String>(navigationStore, new ValueProvider<NavigationModelData<M>, String>() {
-			@Override
-			public String getValue(NavigationModelData<M> object) {
-				return object.getName();
-			}
+   public <M> Tree<NavigationModelData<M>, String> createNavigationTreePanel(
+         TreeStore<NavigationModelData<M>> navigationStore, final NavItemSelectionCallback<M> callback) {
+      // TODO: Theme
+      // return createNavigationTreePanel(navigationStore, callback,
+      // (RepserTreeMenuAppearance) GWT.create(RepserTreeMenuAppearance.class));
+      return createNavigationTreePanel(navigationStore, callback, (TreeAppearance) GWT.create(TreeAppearance.class));
+   }
 
-			@Override
-			public void setValue(NavigationModelData<M> object,
-					String value) {
-			}
+   public <M> Tree<NavigationModelData<M>, String> createNavigationTreePanel(
+         TreeStore<NavigationModelData<M>> navigationStore, final NavItemSelectionCallback<M> callback,
+         TreeAppearance appearance) {
+      Tree<NavigationModelData<M>, String> navigationTree = new Tree<NavigationModelData<M>, String>(navigationStore,
+            new ValueProvider<NavigationModelData<M>, String>() {
+               @Override
+               public String getValue(NavigationModelData<M> object) {
+                  return object.getName();
+               }
 
-			@Override
-			public String getPath() {
-				return "name";
-			}
-		}, appearance);
+               @Override
+               public void setValue(NavigationModelData<M> object, String value) {
+               }
 
-		/* icons */
-		navigationTree.setIconProvider(new IconProvider<NavigationModelData<M>>() {
-			@Override
-			public ImageResource getIcon(NavigationModelData<M> model) {
-				return model.getIcon();
-			}
-		});
+               @Override
+               public String getPath() {
+                  return "name";
+               }
+            }, appearance);
 
-		TreeSelectionModel<NavigationModelData<M>> sModel = new TreeSelectionModel<NavigationModelData<M>>();
-		sModel.setSelectionMode(SelectionMode.SINGLE);
-		sModel.addSelectionChangedHandler(new SelectionChangedHandler<NavigationModelData<M>>() {
-			@Override
-			public void onSelectionChanged(
-					SelectionChangedEvent<NavigationModelData<M>> event) {
-				if(null != event.getSelection())
-					if(event.getSelection().isEmpty())
-						callback.selected(null);
-					else
-						callback.selected(event.getSelection().get(0).getModel());
-			}
-		});
-		navigationTree.setSelectionModel(sModel);
+      /* icons */
+      navigationTree.setIconProvider(new IconProvider<NavigationModelData<M>>() {
+         @Override
+         public ImageResource getIcon(NavigationModelData<M> model) {
+            return model.getIcon();
+         }
+      });
 
-		return navigationTree;
-	}
-	
+      TreeSelectionModel<NavigationModelData<M>> sModel = new TreeSelectionModel<NavigationModelData<M>>();
+      sModel.setSelectionMode(SelectionMode.SINGLE);
+      sModel.addSelectionChangedHandler(new SelectionChangedHandler<NavigationModelData<M>>() {
+         @Override
+         public void onSelectionChanged(SelectionChangedEvent<NavigationModelData<M>> event) {
+            if (null != event.getSelection())
+               if (event.getSelection().isEmpty())
+                  callback.selected(null);
+               else
+                  callback.selected(event.getSelection().get(0).getModel());
+         }
+      });
+      navigationTree.setSelectionModel(sModel);
+
+      return navigationTree;
+   }
+
 }

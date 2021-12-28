@@ -27,10 +27,7 @@ public class ClientConfigRpcServiceImpl extends SecuredRemoteServiceServlet impl
    private final HookHandlerService hookHandler;
 
    @Inject
-   public ClientConfigRpcServiceImpl(
-         ConfigService configService, 
-         HookHandlerService hookHandler
-         ) {
+   public ClientConfigRpcServiceImpl(ConfigService configService, HookHandlerService hookHandler) {
       this.configService = configService;
       this.hookHandler = hookHandler;
    }

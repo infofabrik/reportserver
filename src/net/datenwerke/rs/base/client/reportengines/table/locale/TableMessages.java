@@ -5,28 +5,26 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface TableMessages extends Messages {
 
-	public final static TableMessages INSTANCE = GWT.create(TableMessages.class);
-	
-	String reportTypeName();
+   public final static TableMessages INSTANCE = GWT.create(TableMessages.class);
 
-	String rowPreviewHeader();
+   String reportTypeName();
 
-	String columnWidth();
+   String rowPreviewHeader();
 
-	String setColumnWidthMsg();
+   String columnWidth();
 
-	String allColumnWidth();
+   String setColumnWidthMsg();
 
-	String optimalColumnWidth();
+   String allColumnWidth();
 
-	String cubifyLabel();
+   String optimalColumnWidth();
 
-	String cubifyExplanation();
+   String cubifyLabel();
 
-	String cubeConfigAspectHeader();
+   String cubifyExplanation();
 
-	String selectMeasures();
+   String cubeConfigAspectHeader();
 
-
+   String selectMeasures();
 
 }

@@ -17,117 +17,111 @@ import com.sencha.gxt.dnd.core.client.DndDropEvent;
 import com.sencha.gxt.dnd.core.client.TreeDragSource;
 import com.sencha.gxt.widget.core.client.tree.Tree;
 
-
-
 /**
  * <code>DragSource</code> implementation for TreePanel.
  * 
- * Just like the default gxt TreePanelDragSource but does not add
- * the mousedown listener in IE
+ * Just like the default gxt TreePanelDragSource but does not add the mousedown
+ * listener in IE
  */
 
 public class RsTreePanelDragSource<M> extends TreeDragSource<M> {
-	
-	protected Tree<M, String> tree;
-	protected TreeSource treeSource = TreeSource.BOTH;
 
-	public RsTreePanelDragSource(Tree<M,String> tree) {
-		super(tree);
-		this.tree = tree;
-		setStatusText("{0} items selected");
+   protected Tree<M, String> tree;
+   protected TreeSource treeSource = TreeSource.BOTH;
 
-		if(!GXT.isIE()){
-			tree.addDomHandler(new MouseDownHandler() {
-				
-				@Override
-				public void onMouseDown(MouseDownEvent event) {
-					RsTreePanelDragSource.this.tree.focus();
-				}
-			}, MouseDownEvent.getType());
-		}
-	}
+   public RsTreePanelDragSource(Tree<M, String> tree) {
+      super(tree);
+      this.tree = tree;
+      setStatusText("{0} items selected");
 
-	/**
-	 * Returns the type of items that can be dragged.
-	 * 
-	 * @return the tree source type
-	 */
-	public TreeSource getTreeSource() {
-		return treeSource;
-	}
+      if (!GXT.isIE()) {
+         tree.addDomHandler(new MouseDownHandler() {
 
+            @Override
+            public void onMouseDown(MouseDownEvent event) {
+               RsTreePanelDragSource.this.tree.focus();
+            }
+         }, MouseDownEvent.getType());
+      }
+   }
 
-	/**
-	 * Sets which tree items can be dragged (defaults to BOTH).
-	 * 
-	 * @param treeSource the tree source type
-	 */
-	public void setTreeSource(TreeSource treeSource) {
-		this.treeSource = treeSource;
-	}
+   /**
+    * Returns the type of items that can be dragged.
+    * 
+    * @return the tree source type
+    */
+   public TreeSource getTreeSource() {
+      return treeSource;
+   }
 
+   /**
+    * Sets which tree items can be dragged (defaults to BOTH).
+    * 
+    * @param treeSource the tree source type
+    */
+   public void setTreeSource(TreeSource treeSource) {
+      this.treeSource = treeSource;
+   }
 
-	@Override
-	protected void onDragDrop(DndDropEvent event) {
-		if (event.getOperation() == Operation.MOVE) {
-			List<TreeNode<M>> sel = (List<TreeNode<M>>) event.getData();
-		    for (TreeNode<M> s : sel)
-				tree.getStore().remove(s.getData());
-		}
-	}
-	
-	@Override
-	protected void onDragStart(DndDragStartEvent event) {
-		Element startTarget = event.getDragStartEvent().getStartElement().<Element> cast();
-	    Tree.TreeNode<M> start = tree.findNode(startTarget);
-		if (start == null) {
-			event.setCancelled(true);
-			return;
-		}
-		
-		M m = start.getModel();
-		if (!tree.getView().isSelectableTarget(m, startTarget)) {
-			event.setCancelled(true);
-			return;
-		}
+   @Override
+   protected void onDragDrop(DndDropEvent event) {
+      if (event.getOperation() == Operation.MOVE) {
+         List<TreeNode<M>> sel = (List<TreeNode<M>>) event.getData();
+         for (TreeNode<M> s : sel)
+            tree.getStore().remove(s.getData());
+      }
+   }
 
-		boolean leaf = treeSource == TreeSource.LEAF || treeSource == TreeSource.BOTH;
-		boolean node = treeSource == TreeSource.NODE || treeSource == TreeSource.BOTH;
+   @Override
+   protected void onDragStart(DndDragStartEvent event) {
+      Element startTarget = event.getDragStartEvent().getStartElement().<Element>cast();
+      Tree.TreeNode<M> start = tree.findNode(startTarget);
+      if (start == null) {
+         event.setCancelled(true);
+         return;
+      }
 
-		List<M> sel = getWidget().getSelectionModel().getSelectedItems();
+      M m = start.getModel();
+      if (!tree.getView().isSelectableTarget(m, startTarget)) {
+         event.setCancelled(true);
+         return;
+      }
 
-	    if (sel.size() == 0) {
-	      event.setCancelled(true);
-	      return;
-	    }
-		
-		if (sel.size() > 0) {
-			boolean ok = true;
-			for (M mi : sel) {
-				if ((leaf && tree.isLeaf(mi)) || (node && !tree.isLeaf(mi))) {
-					continue;
-				}
-				ok = false;
-				break;
-			}
-			if (ok) {
-				List models = new ArrayList();
-				for (M mi : sel)
-					models.add(tree.getStore().getSubTree(mi));
+      boolean leaf = treeSource == TreeSource.LEAF || treeSource == TreeSource.BOTH;
+      boolean node = treeSource == TreeSource.NODE || treeSource == TreeSource.BOTH;
 
-				event.setData(models);
-				event.setCancelled(false);
-				event.getStatusProxy().update(SafeHtmlUtils.fromTrustedString(Format.substitute(getStatusText(), sel.size())));
+      List<M> sel = getWidget().getSelectionModel().getSelectedItems();
 
-			} else {
-				event.setCancelled(true);
-			}
-		} else {
-			event.setCancelled(true);
-		}
-	}
-	
+      if (sel.size() == 0) {
+         event.setCancelled(true);
+         return;
+      }
 
+      if (sel.size() > 0) {
+         boolean ok = true;
+         for (M mi : sel) {
+            if ((leaf && tree.isLeaf(mi)) || (node && !tree.isLeaf(mi))) {
+               continue;
+            }
+            ok = false;
+            break;
+         }
+         if (ok) {
+            List models = new ArrayList();
+            for (M mi : sel)
+               models.add(tree.getStore().getSubTree(mi));
 
+            event.setData(models);
+            event.setCancelled(false);
+            event.getStatusProxy()
+                  .update(SafeHtmlUtils.fromTrustedString(Format.substitute(getStatusText(), sel.size())));
+
+         } else {
+            event.setCancelled(true);
+         }
+      } else {
+         event.setCancelled(true);
+      }
+   }
 
 }

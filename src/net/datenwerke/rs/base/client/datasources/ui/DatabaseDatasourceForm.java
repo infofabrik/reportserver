@@ -60,17 +60,16 @@ public class DatabaseDatasourceForm extends SimpleFormView {
       form.setFieldWidth(250);
       form.addField(List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(),
             DatasourcesMessages.INSTANCE.database(), new SFFCStaticDropdownList<String>() {
-         public Map<String, String> getValues() {
-            return baseDatasourceService.getDatabaseHelpers()
-               .stream()
-               .collect(Collectors.toMap(databaseHelper -> {
-                  String name = databaseHelper.getName();
-                  if (!databaseHelper.isJdbcDriverAvailable())
-                     name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();
-                  return name;
-               }, DatabaseHelperDto::getDescriptor));
-         }
-      });
+               public Map<String, String> getValues() {
+                  return baseDatasourceService.getDatabaseHelpers().stream()
+                        .collect(Collectors.toMap(databaseHelper -> {
+                           String name = databaseHelper.getName();
+                           if (!databaseHelper.isJdbcDriverAvailable())
+                              name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();
+                           return name;
+                        }, DatabaseHelperDto::getDescriptor));
+               }
+            });
 
       form.setFieldWidth(250);
       form.beginFloatRow();

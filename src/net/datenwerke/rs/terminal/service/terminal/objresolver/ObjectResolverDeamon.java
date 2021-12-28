@@ -121,11 +121,8 @@ public class ObjectResolverDeamon implements TerminalSessionDeamonHook {
 
       Collection<VFSLocation> locations = new HashSet<>();
 
-      locations.addAll(objects
-         .stream()
-         .map(object -> vfs.getLocationFor(object))
-         .collect(toSet()));
-      
+      locations.addAll(objects.stream().map(object -> vfs.getLocationFor(object)).collect(toSet()));
+
       return locations;
    }
 

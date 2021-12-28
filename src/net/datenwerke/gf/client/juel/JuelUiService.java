@@ -8,7 +8,6 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 @ImplementedBy(JuelUiServiceImpl.class)
 public interface JuelUiService {
 
-	void evaluateExpression(String expression,
-			RsAsyncCallback<JuelResultDto> callback);
+   void evaluateExpression(String expression, RsAsyncCallback<JuelResultDto> callback);
 
 }

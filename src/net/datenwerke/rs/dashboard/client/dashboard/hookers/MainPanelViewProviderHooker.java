@@ -19,51 +19,47 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final Provider<FolderForm> folderFormProvider;
-	
-	private final Provider<SecurityView> securityViewProvider;
+   private final Provider<FolderForm> folderFormProvider;
 
-	private final Provider<DadgetNodeForm> dadgetNodeFormProvider;
+   private final Provider<SecurityView> securityViewProvider;
 
-	private final  Provider<DashboardNodeForm> dashboardNodeFormProvider;
-	
-	
-	@Inject
-	public MainPanelViewProviderHooker(
-			Provider<FolderForm> folderFormProvider,
-			Provider<DadgetNodeForm> dadgetNodeFormProvider,
-			Provider<DashboardNodeForm> dashboardNodeFormProvider,
-			
-			Provider<SecurityView> securityViewProvider
-		){
+   private final Provider<DadgetNodeForm> dadgetNodeFormProvider;
 
-		/* store objects */
-		this.folderFormProvider = folderFormProvider;
-		this.dadgetNodeFormProvider = dadgetNodeFormProvider;
-		this.dashboardNodeFormProvider = dashboardNodeFormProvider;
-		this.securityViewProvider = securityViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof DashboardFolderDto)
-			return getViewForFolder();
-		if(node instanceof DadgetNodeDto)
-			return getViewForDadgetNode();
-		if(node instanceof DashboardNodeDto)
-			return getViewForDashboardNode();
-		return null;
-	}
+   private final Provider<DashboardNodeForm> dashboardNodeFormProvider;
 
-	private List<MainPanelView> getViewForDashboardNode() {
-		return Arrays.asList(dashboardNodeFormProvider.get(), securityViewProvider.get());
-	}
+   @Inject
+   public MainPanelViewProviderHooker(Provider<FolderForm> folderFormProvider,
+         Provider<DadgetNodeForm> dadgetNodeFormProvider, Provider<DashboardNodeForm> dashboardNodeFormProvider,
 
-	private List<MainPanelView> getViewForDadgetNode() {
-		return Arrays.asList(dadgetNodeFormProvider.get(), securityViewProvider.get());
-	}
+         Provider<SecurityView> securityViewProvider) {
 
-	private List<MainPanelView> getViewForFolder() {
-		return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
-	}
+      /* store objects */
+      this.folderFormProvider = folderFormProvider;
+      this.dadgetNodeFormProvider = dadgetNodeFormProvider;
+      this.dashboardNodeFormProvider = dashboardNodeFormProvider;
+      this.securityViewProvider = securityViewProvider;
+   }
+
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof DashboardFolderDto)
+         return getViewForFolder();
+      if (node instanceof DadgetNodeDto)
+         return getViewForDadgetNode();
+      if (node instanceof DashboardNodeDto)
+         return getViewForDashboardNode();
+      return null;
+   }
+
+   private List<MainPanelView> getViewForDashboardNode() {
+      return Arrays.asList(dashboardNodeFormProvider.get(), securityViewProvider.get());
+   }
+
+   private List<MainPanelView> getViewForDadgetNode() {
+      return Arrays.asList(dadgetNodeFormProvider.get(), securityViewProvider.get());
+   }
+
+   private List<MainPanelView> getViewForFolder() {
+      return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
+   }
 
 }

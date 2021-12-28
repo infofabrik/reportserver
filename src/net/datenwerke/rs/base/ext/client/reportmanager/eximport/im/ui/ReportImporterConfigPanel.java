@@ -7,16 +7,15 @@ import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterConfigPanel;
 
 public class ReportImporterConfigPanel extends ImporterConfigPanel<ReportManagerImportConfigDto> {
 
-	@Inject
-	public ReportImporterConfigPanel(
-		ReportImporterItemsPanel itemsPanel,
-		ReportImporterMainPropertiesPanel mainPropertiesPanel) {
-		super(itemsPanel, mainPropertiesPanel);
-	}
+   @Inject
+   public ReportImporterConfigPanel(ReportImporterItemsPanel itemsPanel,
+         ReportImporterMainPropertiesPanel mainPropertiesPanel) {
+      super(itemsPanel, mainPropertiesPanel);
+   }
 
-	@Override
-	protected ReportManagerImportConfigDto createConfigObject() {
-		return new ReportManagerImportConfigDto();
-	}
+   @Override
+   protected ReportManagerImportConfigDto createConfigObject() {
+      return new ReportManagerImportConfigDto();
+   }
 
 }

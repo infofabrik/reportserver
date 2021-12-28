@@ -23,44 +23,40 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
 
 public class MenuOpenHooker implements TsFavoriteMenuHook {
 
-	
-	private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
-	
-	
-	private final TsDiskTreeManagerDao treeManagerDao;
-	private final TeamSpaceUIService teamSpaceService;
-	
-	@Inject
-	public MenuOpenHooker(
-		TsDiskTreeManagerDao treeManagerDao,
-		TeamSpaceUIService teamSpaceService
-		){
-	
-		/* store objects */
-		this.treeManagerDao = treeManagerDao;
-		this.teamSpaceService = teamSpaceService;
-	}
-	
-	@Override
-	public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector, final TsDiskMainComponent mainComponent) {
-		if(null == items || items.isEmpty() || items.size() > 1)
-			return false;
-		if(! teamSpaceService.isGuest(mainComponent.getCurrentSpace()))
-			return false;
+   private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
 
-		/* open */
-		MenuItem openItem = new DwMenuItem(BaseMessages.INSTANCE.open(), BaseIcon.ROTATE_RIGHT);
-		openItem.addSelectionHandler(new SelectionHandler<Item>() {
-			
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				mainComponent.itemOpened(items.get(0));
-			}
-		});
+   private final TsDiskTreeManagerDao treeManagerDao;
+   private final TeamSpaceUIService teamSpaceService;
 
-		menu.add(openItem);
-		
-		return true;
-	}
+   @Inject
+   public MenuOpenHooker(TsDiskTreeManagerDao treeManagerDao, TeamSpaceUIService teamSpaceService) {
+
+      /* store objects */
+      this.treeManagerDao = treeManagerDao;
+      this.teamSpaceService = teamSpaceService;
+   }
+
+   @Override
+   public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector,
+         final TsDiskMainComponent mainComponent) {
+      if (null == items || items.isEmpty() || items.size() > 1)
+         return false;
+      if (!teamSpaceService.isGuest(mainComponent.getCurrentSpace()))
+         return false;
+
+      /* open */
+      MenuItem openItem = new DwMenuItem(BaseMessages.INSTANCE.open(), BaseIcon.ROTATE_RIGHT);
+      openItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            mainComponent.itemOpened(items.get(0));
+         }
+      });
+
+      menu.add(openItem);
+
+      return true;
+   }
 
 }

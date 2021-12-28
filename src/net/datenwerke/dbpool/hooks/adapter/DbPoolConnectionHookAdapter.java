@@ -11,23 +11,20 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class DbPoolConnectionHookAdapter implements DbPoolConnectionHook {
 
-	@Override
-	public void onAcquire(Connection connection)  {
-	}
+   @Override
+   public void onAcquire(Connection connection) {
+   }
 
+   @Override
+   public void onCheckIn(Connection connection) {
+   }
 
-	@Override
-	public void onCheckIn(Connection connection)  {
-	}
+   @Override
+   public void onCheckOut(Connection connection) {
+   }
 
-
-	@Override
-	public void onCheckOut(Connection connection)  {
-	}
-
-
-	@Override
-	public void onDestroy(Connection connection)  {
-	}
+   @Override
+   public void onDestroy(Connection connection) {
+   }
 
 }

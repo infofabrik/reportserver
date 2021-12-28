@@ -3,39 +3,42 @@ package net.datenwerke.rs.license.client.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface LicenseMessages extends Messages{
+public interface LicenseMessages extends Messages {
 
-	public final LicenseMessages INSTANCE = GWT.create(LicenseMessages.class);
-	
-	public String viewNavigationTitle();
-	
-	public String dialogTitle();
+   public final LicenseMessages INSTANCE = GWT.create(LicenseMessages.class);
 
-	public String installationDateLabel();
-	public String serverIdLabel();
+   public String viewNavigationTitle();
 
-	public String informationPanelHeader();
+   public String dialogTitle();
 
-	public String currentLicenseLabel();
+   public String installationDateLabel();
 
-	public String licenseExpirationDate();
+   public String serverIdLabel();
 
-	public String noExpirationDateMsg();
+   public String informationPanelHeader();
 
-	public String purchaseEnterpriseLabel();
-	public String purchaseEnterpriseText();
+   public String currentLicenseLabel();
 
-	public String updateLicenseInfoBtnLabel();
-	public String updateLicenseInfoFieldLabel();
+   public String licenseExpirationDate();
 
-	public String licenseeLabel();
+   public String noExpirationDateMsg();
 
-	public String licenseExpiredLabel();
+   public String purchaseEnterpriseLabel();
 
-	public String upgradesAvailableUntilLabel();
+   public String purchaseEnterpriseText();
 
-	public String versionLabel();
+   public String updateLicenseInfoBtnLabel();
 
-	public String permissionModuleDescription();
+   public String updateLicenseInfoFieldLabel();
+
+   public String licenseeLabel();
+
+   public String licenseExpiredLabel();
+
+   public String upgradesAvailableUntilLabel();
+
+   public String versionLabel();
+
+   public String permissionModuleDescription();
 
 }

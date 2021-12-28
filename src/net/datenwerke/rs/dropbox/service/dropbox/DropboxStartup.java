@@ -13,14 +13,14 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 
 public class DropboxStartup {
 
-	@Inject
-	public DropboxStartup(HookHandlerService hookHandler,
-			Provider<DropboxDatasinkProviderHooker> dropboxDatasinkProviderHooker,
-			Provider<ScheduleAsDropboxFileEmailNotificationHooker> emailDropboxNotificationHooker,
-			Provider<ScheduleConfigAsDropboxDatasinkHooker> scheduleAsDropboxConfigHooker) {
-		hookHandler.attachHooker(DatasinkProviderHook.class, dropboxDatasinkProviderHooker);
-		hookHandler.attachHooker(SchedulerExecutionHook.class, emailDropboxNotificationHooker);
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsDropboxConfigHooker);
-	}
+   @Inject
+   public DropboxStartup(HookHandlerService hookHandler,
+         Provider<DropboxDatasinkProviderHooker> dropboxDatasinkProviderHooker,
+         Provider<ScheduleAsDropboxFileEmailNotificationHooker> emailDropboxNotificationHooker,
+         Provider<ScheduleConfigAsDropboxDatasinkHooker> scheduleAsDropboxConfigHooker) {
+      hookHandler.attachHooker(DatasinkProviderHook.class, dropboxDatasinkProviderHooker);
+      hookHandler.attachHooker(SchedulerExecutionHook.class, emailDropboxNotificationHooker);
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsDropboxConfigHooker);
+   }
 
 }

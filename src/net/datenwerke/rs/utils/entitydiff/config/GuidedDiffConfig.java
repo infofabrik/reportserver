@@ -9,47 +9,47 @@ import net.datenwerke.rs.utils.entitydiff.annotations.EntityDiffGuide;
 
 public class GuidedDiffConfig implements EntityDiffConfig {
 
-	private final EntityDiffGuide guide;
-	private final String guideName;
-	
-	private final Map<Class<?>, List<String>> whitelist;
-	private final Map<Class<?>, List<String>> blacklist;
+   private final EntityDiffGuide guide;
+   private final String guideName;
 
-	public GuidedDiffConfig(Class<?> type, EntityDiffGuide guide, String guideName) {
-		this.guide = guide;
-		this.guideName = guideName;
-		
-		whitelist = new HashMap<Class<?>, List<String>>();
-		if(guide.whitelist().length > 0)
-			whitelist.put(type, Arrays.asList(guide.whitelist()));
-		
-		blacklist = new HashMap<Class<?>, List<String>>();
-		if(guide.blacklist().length > 0)
-			blacklist.put(type, Arrays.asList(guide.blacklist()));
-	}
+   private final Map<Class<?>, List<String>> whitelist;
+   private final Map<Class<?>, List<String>> blacklist;
 
-	@Override
-	public boolean ignoreId() {
-		return guide.ignoreId();
-	}
+   public GuidedDiffConfig(Class<?> type, EntityDiffGuide guide, String guideName) {
+      this.guide = guide;
+      this.guideName = guideName;
 
-	@Override
-	public boolean ignoreVersion() {
-		return guide.ignoreVersion();
-	}
+      whitelist = new HashMap<Class<?>, List<String>>();
+      if (guide.whitelist().length > 0)
+         whitelist.put(type, Arrays.asList(guide.whitelist()));
 
-	@Override
-	public Map<Class<?>, List<String>> getFieldsToCompareWhiteList() {
-		return this.whitelist;
-	}
+      blacklist = new HashMap<Class<?>, List<String>>();
+      if (guide.blacklist().length > 0)
+         blacklist.put(type, Arrays.asList(guide.blacklist()));
+   }
 
-	@Override
-	public Map<Class<?>, List<String>> getFieldsToCompareBlackList() {
-		return this.blacklist;
-	}
+   @Override
+   public boolean ignoreId() {
+      return guide.ignoreId();
+   }
 
-	public String getGuideName() {
-		return guideName;
-	}
+   @Override
+   public boolean ignoreVersion() {
+      return guide.ignoreVersion();
+   }
+
+   @Override
+   public Map<Class<?>, List<String>> getFieldsToCompareWhiteList() {
+      return this.whitelist;
+   }
+
+   @Override
+   public Map<Class<?>, List<String>> getFieldsToCompareBlackList() {
+      return this.blacklist;
+   }
+
+   public String getGuideName() {
+      return guideName;
+   }
 
 }

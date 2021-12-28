@@ -20,66 +20,61 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class DatabaseDatasourceConfigProviderHooker implements
-		DatasourceDefinitionConfigProviderHook {
+public class DatabaseDatasourceConfigProviderHooker implements DatasourceDefinitionConfigProviderHook {
 
-	private final Provider<DatabaseDatasourceConfigConfigurator> dsdDatabaseConfigurator;
-	private final Provider<DatabaseDatasourceForm> formProvider;
-	
-	@Inject
-	public DatabaseDatasourceConfigProviderHooker(
-		Provider<DatabaseDatasourceConfigConfigurator> dsdDatabaseConfigurator,
-		Provider<DatabaseDatasourceForm> formProvider
-		){
-		
-		/* store objects */
-		this.dsdDatabaseConfigurator = dsdDatabaseConfigurator;
-		this.formProvider = formProvider;
-	}
-	
-	@Override
-	public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
-		Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map =
-			new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
-				
-		map.put(DatabaseDatasourceDto.class, dsdDatabaseConfigurator);
-		
-		return map;
-	}
+   private final Provider<DatabaseDatasourceConfigConfigurator> dsdDatabaseConfigurator;
+   private final Provider<DatabaseDatasourceForm> formProvider;
 
-	@Override
-	public boolean consumes(DatasourceDefinitionDto dsd) {
-		return DatabaseDatasourceDto.class.equals(dsd.getClass());
-	}
+   @Inject
+   public DatabaseDatasourceConfigProviderHooker(Provider<DatabaseDatasourceConfigConfigurator> dsdDatabaseConfigurator,
+         Provider<DatabaseDatasourceForm> formProvider) {
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(
-			DatasourceDefinitionDto dsd) {
-		return Collections.singleton(formProvider.get());
-	}
+      /* store objects */
+      this.dsdDatabaseConfigurator = dsdDatabaseConfigurator;
+      this.formProvider = formProvider;
+   }
 
-	@Override
-	public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
-		return DatabaseDatasourceDto.class;
-	}
+   @Override
+   public Map<? extends Class<? extends DatasourceDefinitionDto>, ? extends Provider<? extends DatasourceDefinitionConfigConfigurator>> getConfigs() {
+      Map<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>> map = new HashMap<Class<? extends DatasourceDefinitionDto>, Provider<? extends DatasourceDefinitionConfigConfigurator>>();
 
-	@Override
-	public String getDatasourceName() {
-		return BaseDatasourceMessages.INSTANCE.databaseTypeName();
-	}
+      map.put(DatabaseDatasourceDto.class, dsdDatabaseConfigurator);
 
-	@Override
-	public AbstractDatasourceManagerNodeDto instantiateDatasource() {
-		return new DatabaseDatasourceDto();
-	}
-	
-	@Override
-	public ImageResource getDatasourceIcon() {
-		return BaseIcon.DATABASE.toImageResource();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+      return map;
+   }
+
+   @Override
+   public boolean consumes(DatasourceDefinitionDto dsd) {
+      return DatabaseDatasourceDto.class.equals(dsd.getClass());
+   }
+
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasourceDefinitionDto dsd) {
+      return Collections.singleton(formProvider.get());
+   }
+
+   @Override
+   public Class<? extends AbstractDatasourceManagerNodeDto> getDatasourceClass() {
+      return DatabaseDatasourceDto.class;
+   }
+
+   @Override
+   public String getDatasourceName() {
+      return BaseDatasourceMessages.INSTANCE.databaseTypeName();
+   }
+
+   @Override
+   public AbstractDatasourceManagerNodeDto instantiateDatasource() {
+      return new DatabaseDatasourceDto();
+   }
+
+   @Override
+   public ImageResource getDatasourceIcon() {
+      return BaseIcon.DATABASE.toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

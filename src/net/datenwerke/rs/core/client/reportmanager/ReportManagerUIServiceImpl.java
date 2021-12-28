@@ -32,127 +32,127 @@ import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
  */
 public class ReportManagerUIServiceImpl implements ReportManagerUIService {
 
-	private static ReportDtoPA reportPa = GWT.create(ReportDtoPA.class);
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ReportManagerUIServiceImpl(
-		HookHandlerService hookHandler	
-		) {
-		
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public List<ColumnConfig<ReportDto,?>> getColumnConfigForReportGrid(){
-		return getColumnConfigForReportGrid(false, true);
-	}
-	
-	@Override
-	public List<ColumnConfig<ReportDto,?>> getColumnConfigForReportGrid(boolean includeVariants, boolean icon){
-		List<ColumnConfig<ReportDto,?>> columns = new ArrayList<ColumnConfig<ReportDto,?>>();
+   private static ReportDtoPA reportPa = GWT.create(ReportDtoPA.class);
 
-		if(icon){
-			/* icon */
-			ColumnConfig<ReportDto,ReportDto> iconColumn = new ColumnConfig<ReportDto,ReportDto>(new IdentityValueProvider<ReportDto>("__icon"), 25);
-			iconColumn.setMenuDisabled(true);
-			iconColumn.setSortable(false);
-			iconColumn.setCell(new AbstractCell<ReportDto>() {
+   private final HookHandlerService hookHandler;
 
-				@Override
-				public void render(
-						com.google.gwt.cell.client.Cell.Context context,
-						ReportDto value, SafeHtmlBuilder sb) {
-					ImageResource icon= getIconFor(value);
-					if(icon instanceof CssIconImageResource)
-						sb.append(((CssIconImageResource)icon).getCssIcon());
-					else
-						sb.append(AbstractImagePrototype.create(icon).getSafeHtml());
-				}
-			});
-			columns.add(iconColumn);
-		}
-		
-		ColumnConfig<ReportDto, Long> ccId = new ColumnConfig<ReportDto,Long>(reportPa.id(), 50, ReportmanagerMessages.INSTANCE.ID());
-		ccId.setMenuDisabled(true);
-		columns.add(ccId);
+   @Inject
+   public ReportManagerUIServiceImpl(HookHandlerService hookHandler) {
 
-		ColumnConfig<ReportDto, String> ccName = new ColumnConfig<ReportDto, String>(reportPa.name(), 170, BaseMessages.INSTANCE.name()); 
-		ccName.setMenuDisabled(true);
-		columns.add(ccName);
-		
-		if(includeVariants){
-			ColumnConfig<ReportDto, ReportDto> ccIsVariant = new ColumnConfig<ReportDto, ReportDto>(new IdentityValueProvider<ReportDto>("__variantIcon"), 60, ReportmanagerMessages.INSTANCE.isVariant());
-			ccIsVariant.setMenuDisabled(true);
-			ccIsVariant.setCell(new AbstractCell<ReportDto>() {
-				@Override
-				public void render(
-						com.google.gwt.cell.client.Cell.Context context,
-						ReportDto value, SafeHtmlBuilder sb) {
-					if(value instanceof ReportVariantDto)
-						sb.append(BaseIcon.CHECK_CIRCLE_O.toSafeHtml());
-				}
-			});
-			ccIsVariant.setSortable(false);
-			columns.add(ccIsVariant);
-			
-			ColumnConfig<ReportDto, String> ccParent = new ColumnConfig<ReportDto, String>(reportPa.parentReportName(), 110, ReportmanagerMessages.INSTANCE.parentReportName()); 
-			ccParent.setMenuDisabled(true);
-			columns.add(ccParent);
-		}
+      this.hookHandler = hookHandler;
+   }
 
-		ColumnConfig<ReportDto, Date> ccLastModified = new ColumnConfig<ReportDto, Date>(reportPa.lastUpdated(), 150, ReportmanagerMessages.INSTANCE.lastModified()); 
-		ccLastModified.setMenuDisabled(true);
-		ccLastModified.setCell(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM)));
-		columns.add(ccLastModified);
-		
-		return columns;
-	}
+   @Override
+   public List<ColumnConfig<ReportDto, ?>> getColumnConfigForReportGrid() {
+      return getColumnConfigForReportGrid(false, true);
+   }
 
-	@Override
-	public ImageResource getIconFor(ReportDto report) {
-		for(ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(iconProvider.consumes(report))
-				return iconProvider.getReportIcon();
+   @Override
+   public List<ColumnConfig<ReportDto, ?>> getColumnConfigForReportGrid(boolean includeVariants, boolean icon) {
+      List<ColumnConfig<ReportDto, ?>> columns = new ArrayList<ColumnConfig<ReportDto, ?>>();
 
-		return BaseIcon.NEWSPAPER_O.toImageResource();
-	}
+      if (icon) {
+         /* icon */
+         ColumnConfig<ReportDto, ReportDto> iconColumn = new ColumnConfig<ReportDto, ReportDto>(
+               new IdentityValueProvider<ReportDto>("__icon"), 25);
+         iconColumn.setMenuDisabled(true);
+         iconColumn.setSortable(false);
+         iconColumn.setCell(new AbstractCell<ReportDto>() {
 
-	@Override
-	public ImageResource getLinkIconFor(ReportDto report) {
-		for(ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(iconProvider.consumes(report))
-				return iconProvider.getReportLinkIcon();
-		
-		return BaseIcon.NEWSPAPER_LINK.toImageResource();
-	}
+            @Override
+            public void render(com.google.gwt.cell.client.Cell.Context context, ReportDto value, SafeHtmlBuilder sb) {
+               ImageResource icon = getIconFor(value);
+               if (icon instanceof CssIconImageResource)
+                  sb.append(((CssIconImageResource) icon).getCssIcon());
+               else
+                  sb.append(AbstractImagePrototype.create(icon).getSafeHtml());
+            }
+         });
+         columns.add(iconColumn);
+      }
 
-	@Override
-	public ImageResource getLargeIconFor(ReportDto report) {
-		for(ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(iconProvider.consumes(report))
-				return iconProvider.getReportIconLarge();
+      ColumnConfig<ReportDto, Long> ccId = new ColumnConfig<ReportDto, Long>(reportPa.id(), 50,
+            ReportmanagerMessages.INSTANCE.ID());
+      ccId.setMenuDisabled(true);
+      columns.add(ccId);
 
-		return BaseIcon.NEWSPAPER_O.toImageResource(1);
-	}
+      ColumnConfig<ReportDto, String> ccName = new ColumnConfig<ReportDto, String>(reportPa.name(), 170,
+            BaseMessages.INSTANCE.name());
+      ccName.setMenuDisabled(true);
+      columns.add(ccName);
 
-	@Override
-	public ImageResource getLargeLinkIconFor(ReportDto report) {
-		for(ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(iconProvider.consumes(report))
-				return iconProvider.getReportLinkIcon();
+      if (includeVariants) {
+         ColumnConfig<ReportDto, ReportDto> ccIsVariant = new ColumnConfig<ReportDto, ReportDto>(
+               new IdentityValueProvider<ReportDto>("__variantIcon"), 60, ReportmanagerMessages.INSTANCE.isVariant());
+         ccIsVariant.setMenuDisabled(true);
+         ccIsVariant.setCell(new AbstractCell<ReportDto>() {
+            @Override
+            public void render(com.google.gwt.cell.client.Cell.Context context, ReportDto value, SafeHtmlBuilder sb) {
+               if (value instanceof ReportVariantDto)
+                  sb.append(BaseIcon.CHECK_CIRCLE_O.toSafeHtml());
+            }
+         });
+         ccIsVariant.setSortable(false);
+         columns.add(ccIsVariant);
 
-		return BaseIcon.NEWSPAPER_LINK.toImageResource(1);
-	}
-	
-	@Override
-	public boolean supportsVariants(ReportDto report) {
-		for(ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(config.consumes(report))
-				return null != config.instantiateReportVariant();
+         ColumnConfig<ReportDto, String> ccParent = new ColumnConfig<ReportDto, String>(reportPa.parentReportName(),
+               110, ReportmanagerMessages.INSTANCE.parentReportName());
+         ccParent.setMenuDisabled(true);
+         columns.add(ccParent);
+      }
 
-		return true;
-	}
+      ColumnConfig<ReportDto, Date> ccLastModified = new ColumnConfig<ReportDto, Date>(reportPa.lastUpdated(), 150,
+            ReportmanagerMessages.INSTANCE.lastModified());
+      ccLastModified.setMenuDisabled(true);
+      ccLastModified.setCell(new DateCell(DateTimeFormat.getFormat(PredefinedFormat.DATE_TIME_MEDIUM)));
+      columns.add(ccLastModified);
+
+      return columns;
+   }
+
+   @Override
+   public ImageResource getIconFor(ReportDto report) {
+      for (ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (iconProvider.consumes(report))
+            return iconProvider.getReportIcon();
+
+      return BaseIcon.NEWSPAPER_O.toImageResource();
+   }
+
+   @Override
+   public ImageResource getLinkIconFor(ReportDto report) {
+      for (ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (iconProvider.consumes(report))
+            return iconProvider.getReportLinkIcon();
+
+      return BaseIcon.NEWSPAPER_LINK.toImageResource();
+   }
+
+   @Override
+   public ImageResource getLargeIconFor(ReportDto report) {
+      for (ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (iconProvider.consumes(report))
+            return iconProvider.getReportIconLarge();
+
+      return BaseIcon.NEWSPAPER_O.toImageResource(1);
+   }
+
+   @Override
+   public ImageResource getLargeLinkIconFor(ReportDto report) {
+      for (ReportTypeConfigHook iconProvider : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (iconProvider.consumes(report))
+            return iconProvider.getReportLinkIcon();
+
+      return BaseIcon.NEWSPAPER_LINK.toImageResource(1);
+   }
+
+   @Override
+   public boolean supportsVariants(ReportDto report) {
+      for (ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (config.consumes(report))
+            return null != config.instantiateReportVariant();
+
+      return true;
+   }
 
 }

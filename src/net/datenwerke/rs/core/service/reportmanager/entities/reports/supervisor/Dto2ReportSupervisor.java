@@ -11,29 +11,29 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public class Dto2ReportSupervisor implements Dto2PosoSupervisor<ReportDto, Report> {
 
-	@Override
-	public void enclosedObjectsRemovedFromCollection(ReportDto dto,
-			Report poso, Collection<?> objectCollection, String fieldname) {
-		if(null == objectCollection)
-			return;
-		
-		for(Object o : objectCollection){
-			if(o instanceof ParameterInstance || o instanceof ParameterDefinition<?>)
-				throw new IllegalArgumentException("Definition or instances should not be removed through merges");
-		}
-	}
+   @Override
+   public void enclosedObjectsRemovedFromCollection(ReportDto dto, Report poso, Collection<?> objectCollection,
+         String fieldname) {
+      if (null == objectCollection)
+         return;
 
-	@Override
-	public void referencedObjectRemoved(ReportDto dto, Report poso,
-			Object removedProperty, Object replacement, String fieldname) {
-		
-	}
+      for (Object o : objectCollection) {
+         if (o instanceof ParameterInstance || o instanceof ParameterDefinition<?>)
+            throw new IllegalArgumentException("Definition or instances should not be removed through merges");
+      }
+   }
 
-	@Override
-	public void enclosedObjectRemoved(ReportDto dto, Report poso,
-			Object removedProperty, Object replacement, String fieldname) {
-		if(removedProperty instanceof DatasourceContainer)
-			throw new IllegalArgumentException("Datasourcecontainers should not be allowed to be reomved");
-	}
+   @Override
+   public void referencedObjectRemoved(ReportDto dto, Report poso, Object removedProperty, Object replacement,
+         String fieldname) {
+
+   }
+
+   @Override
+   public void enclosedObjectRemoved(ReportDto dto, Report poso, Object removedProperty, Object replacement,
+         String fieldname) {
+      if (removedProperty instanceof DatasourceContainer)
+         throw new IllegalArgumentException("Datasourcecontainers should not be allowed to be reomved");
+   }
 
 }

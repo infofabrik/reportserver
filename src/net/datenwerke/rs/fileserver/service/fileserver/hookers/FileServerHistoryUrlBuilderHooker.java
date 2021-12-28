@@ -14,51 +14,51 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class FileServerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-	private final FileserverMessages messages = LocalizationServiceImpl.getMessages(FileserverMessages.class);
-	
-	private final static String HISTORY_BUILDER_NAME = "FileServerManager";
+   private final FileserverMessages messages = LocalizationServiceImpl.getMessages(FileserverMessages.class);
 
-	private final SecurityService securityService;
+   private final static String HISTORY_BUILDER_NAME = "FileServerManager";
 
-	@Inject
-	public FileServerHistoryUrlBuilderHooker(SecurityService securityService){
-		this.securityService = securityService;
-		
-	}
-	
-	@Override
-	public boolean consumes(Object o) {
-		if(! (o instanceof AbstractFileServerNode))
-			return false;
-		
-         if (securityService.checkRights(FileServerManagerAdminViewSecurityTarget.class, Read.class))
-            return true;
-         else {
-            if (!(o instanceof SecurityTarget))
-               return false;
-            else
-               return securityService.checkRights((SecurityTarget) o, Read.class);
-         }
-	}
+   private final SecurityService securityService;
 
-	@Override
-	protected String getTokenName() {
-		return FileServerUiModule.FILESERVER_HISTORY_TOKEN;
-	}
+   @Inject
+   public FileServerHistoryUrlBuilderHooker(SecurityService securityService) {
+      this.securityService = securityService;
 
-	@Override
-	protected String getBuilderId() {
-		return HISTORY_BUILDER_NAME;
-	}
+   }
 
-	@Override
-	protected String getNameFor(Object o) {
-		return messages.historyUrlBuilderName();
-	}
+   @Override
+   public boolean consumes(Object o) {
+      if (!(o instanceof AbstractFileServerNode))
+         return false;
 
-	@Override
-	protected String getIconFor(Object o) {
-		return messages.historyUrlBuilderIcon();
-	}
+      if (securityService.checkRights(FileServerManagerAdminViewSecurityTarget.class, Read.class))
+         return true;
+      else {
+         if (!(o instanceof SecurityTarget))
+            return false;
+         else
+            return securityService.checkRights((SecurityTarget) o, Read.class);
+      }
+   }
+
+   @Override
+   protected String getTokenName() {
+      return FileServerUiModule.FILESERVER_HISTORY_TOKEN;
+   }
+
+   @Override
+   protected String getBuilderId() {
+      return HISTORY_BUILDER_NAME;
+   }
+
+   @Override
+   protected String getNameFor(Object o) {
+      return messages.historyUrlBuilderName();
+   }
+
+   @Override
+   protected String getIconFor(Object o) {
+      return messages.historyUrlBuilderIcon();
+   }
 
 }

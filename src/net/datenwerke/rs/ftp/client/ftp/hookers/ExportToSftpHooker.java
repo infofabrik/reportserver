@@ -33,15 +33,12 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
 
    private final Provider<UITree> treeProvider;
    private final Provider<SftpDao> datasinkDaoProvider;
-   
+
    private final Provider<DatasinkUIService> datasinkUiServiceProvider;
 
    @Inject
-   public ExportToSftpHooker(
-         @DatasinkTreeSftp Provider<UITree> treeProvider,
-         Provider<SftpDao> datasinkDaoProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider
-         ) {
+   public ExportToSftpHooker(@DatasinkTreeSftp Provider<UITree> treeProvider, Provider<SftpDao> datasinkDaoProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.datasinkUiServiceProvider = datasinkUiServiceProvider;
@@ -69,26 +66,21 @@ public class ExportToSftpHooker implements ExportExternalEntryProviderHook {
 
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            SftpDatasinkDto.class,
-            report.getName(), treeProvider, datasinkDaoProvider, report, 
-            Optional.of(info),
-            new AsyncCallback<Map<String,Object>>() {
-               
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(SftpDatasinkDto.class, report.getName(), treeProvider,
+            datasinkDaoProvider, report, Optional.of(info), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
-                  final ExportTypeSelection formatType = (ExportTypeSelection) result.get(DatasinkUIModule.REPORT_FORMAT_KEY);
-                  datasinkDaoProvider.get().exportReportIntoDatasink(
-                        report, 
-                        info.getExecuteReportToken(),
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        formatType.getOutputFormat(), 
-                        formatType.getExportConfiguration(),
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
-                        (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY), 
+               public void onSuccess(Map<String, Object> result) {
+                  final ExportTypeSelection formatType = (ExportTypeSelection) result
+                        .get(DatasinkUIModule.REPORT_FORMAT_KEY);
+                  datasinkDaoProvider.get().exportReportIntoDatasink(report, info.getExecuteReportToken(),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), formatType.getOutputFormat(),
+                        formatType.getExportConfiguration(), (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
+                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

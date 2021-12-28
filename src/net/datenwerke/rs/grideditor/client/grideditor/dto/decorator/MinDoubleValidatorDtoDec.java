@@ -12,28 +12,27 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MinDoubleValidatorDto;
  */
 public class MinDoubleValidatorDtoDec extends MinDoubleValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MinDoubleValidatorDtoDec() {
+      super();
+   }
 
-	public MinDoubleValidatorDtoDec() {
-		super();
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MinNumberValidator<Double> validator = new MinNumberValidator<Double>(getNumber());
+      validator.setMessages(new MinNumberMessages() {
+         @Override
+         public String numberMinText(double min) {
+            return getErrorMsg();
+         }
 
-	@Override
-	public Validator<?> getValidator() {
-		MinNumberValidator<Double> validator = new MinNumberValidator<Double>(getNumber());
-		validator.setMessages(new MinNumberMessages() {
-			@Override
-			public String numberMinText(double min) {
-				return getErrorMsg();
-			}
-			
-			@Override
-			public String numberMinText(String formattedValue) {
-				return getErrorMsg();
-			}
-		});
-		return validator;
-	}
+         @Override
+         public String numberMinText(String formattedValue) {
+            return getErrorMsg();
+         }
+      });
+      return validator;
+   }
 
 }

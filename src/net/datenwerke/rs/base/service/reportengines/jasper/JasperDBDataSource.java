@@ -14,27 +14,29 @@ import net.sf.jasperreports.engine.JRField;
  */
 public class JasperDBDataSource implements JRDataSource {
 
-	private Connection connection;
-	
-	public JasperDBDataSource(Connection connection) {
-		super();
-		this.connection = connection;
-	}
+   private Connection connection;
 
-	public Connection getConnection() {
-		return connection;
-	}
+   public JasperDBDataSource(Connection connection) {
+      super();
+      this.connection = connection;
+   }
 
-	public void setConnection(Connection connection) {
-		this.connection = connection;
-	}
+   public Connection getConnection() {
+      return connection;
+   }
 
-	public Object getFieldValue(JRField jrField) throws JRException {
-		throw new NotImplementedException("This object cannot be used like other JRDataSource objects. Sorry for the inconvenience."); //$NON-NLS-1$
-	}
+   public void setConnection(Connection connection) {
+      this.connection = connection;
+   }
 
-	public boolean next() throws JRException {
-		throw new NotImplementedException("This object cannot be used like other JRDataSource objects. Sorry for the inconvenience."); //$NON-NLS-1$
-	}
+   public Object getFieldValue(JRField jrField) throws JRException {
+      throw new NotImplementedException(
+            "This object cannot be used like other JRDataSource objects. Sorry for the inconvenience."); //$NON-NLS-1$
+   }
+
+   public boolean next() throws JRException {
+      throw new NotImplementedException(
+            "This object cannot be used like other JRDataSource objects. Sorry for the inconvenience."); //$NON-NLS-1$
+   }
 
 }

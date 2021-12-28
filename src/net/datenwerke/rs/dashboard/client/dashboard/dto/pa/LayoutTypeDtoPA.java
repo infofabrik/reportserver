@@ -13,6 +13,4 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto;
 @CorrespondingPoso(net.datenwerke.rs.dashboard.service.dashboard.entities.LayoutType.class)
 public interface LayoutTypeDtoPA extends PropertyAccess<LayoutTypeDto> {
 
-
-
 }

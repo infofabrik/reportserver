@@ -12,25 +12,23 @@ import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 
 public class HandleReportForceRemoveEvent implements EventHandler<ForceRemoveEntityEvent> {
 
+   private final TsDiskService diskService;
 
-	private final TsDiskService diskService;
-	
-	@Inject
-	public HandleReportForceRemoveEvent(TsDiskService diskService) {
-		this.diskService = diskService;
-	}
+   @Inject
+   public HandleReportForceRemoveEvent(TsDiskService diskService) {
+      this.diskService = diskService;
+   }
 
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		Report report = (Report) event.getObject();
-		
-		List<TsDiskReportReference> references = diskService.getReferencesTo(report);
-		if(null != references && ! references.isEmpty()){
-			for(TsDiskReportReference ref : references){
-				diskService.remove(ref);
-			}
-		}
-	}
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      Report report = (Report) event.getObject();
 
+      List<TsDiskReportReference> references = diskService.getReferencesTo(report);
+      if (null != references && !references.isEmpty()) {
+         for (TsDiskReportReference ref : references) {
+            diskService.remove(ref);
+         }
+      }
+   }
 
 }

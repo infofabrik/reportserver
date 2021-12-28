@@ -79,10 +79,8 @@ public class ImportServiceImpl implements ImportService {
    }
 
    protected List<Importer> getImporters() {
-      return hookHandler.getHookers(ImporterProviderHook.class)
-         .stream()
-         .map(ImporterProviderHook::getObject)
-         .collect(toList());
+      return hookHandler.getHookers(ImporterProviderHook.class).stream().map(ImporterProviderHook::getObject)
+            .collect(toList());
    }
 
    /*

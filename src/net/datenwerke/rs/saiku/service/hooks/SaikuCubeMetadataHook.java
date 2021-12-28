@@ -9,6 +9,6 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface SaikuCubeMetadataHook extends Hook {
 
-	public void adapt(SaikuCubeMetadata metadata, Cube cube);
+   public void adapt(SaikuCubeMetadata metadata, Cube cube);
 
 }

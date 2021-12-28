@@ -90,8 +90,9 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
    /**
     * Executes a given report.
     */
-   public CompiledReport execute(final OutputStream os, final Report report, final ParameterSet parameterSet, final User user,
-         final String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException, ExpectedException {
+   public CompiledReport execute(final OutputStream os, final Report report, final ParameterSet parameterSet,
+         final User user, final String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException, ExpectedException {
 
       /* Use supplied uuid or create own */
       String uuid = UUID.randomUUID().toString();
@@ -121,12 +122,12 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
          /* handle config */
          if (null == configs)
             configs = new ReportExecutionConfig[0];
-         
+
          final ReportExecutionConfig[] finalConfigs = configs;
-         Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler.getHookers(ReportEngineTakeOverExecutionHook.class)
-            .stream()
-            .filter(engineHooker -> engineHooker.takesOver(this, report, parameterSet, user, outputFormat, finalConfigs))
-            .findAny();
+         Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler
+               .getHookers(ReportEngineTakeOverExecutionHook.class).stream().filter(engineHooker -> engineHooker
+                     .takesOver(this, report, parameterSet, user, outputFormat, finalConfigs))
+               .findAny();
          if (takeOverHook.isPresent())
             return takeOverHook.get().executeReport(this, os, report, parameterSet, user, outputFormat, configs);
 
@@ -137,7 +138,7 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
          ps.addAll(report.getParameterInstances());
          ps.addVariable("_RS_REX_TOKEN", executorToken);
 
-         if (null != parameterSet) 
+         if (null != parameterSet)
             ps.add(parameterSet);
 
          CompiledReport result = doExecute(os, report, user, ps, outputFormat, configs);
@@ -152,15 +153,15 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
    public CompiledReport executeDry(final OutputStream os, final Report report, final ParameterSet parameterSet,
          final User user, final String outputFormat, final ReportExecutionConfig[] configs)
          throws ReportExecutorException, ExpectedException {
-      
-      Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler.getHookers(ReportEngineTakeOverExecutionHook.class)
-         .stream()
-         .filter(engineHooker -> engineHooker.takesOver(this, report, parameterSet, user, outputFormat, configs))
-         .findAny();
-      
+
+      Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler
+            .getHookers(ReportEngineTakeOverExecutionHook.class).stream()
+            .filter(engineHooker -> engineHooker.takesOver(this, report, parameterSet, user, outputFormat, configs))
+            .findAny();
+
       if (takeOverHook.isPresent())
          return takeOverHook.get().executeReportDry(this, report, parameterSet, user, outputFormat, configs);
-      
+
       return outputGeneratorManager.getOutputGenerator(outputFormat).getFormatInfo();
    }
 
@@ -187,12 +188,9 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
    public <C extends ReportExecutionConfig> C getConfig(final Class<C> type, final ReportExecutionConfig... configs) {
       if (null == configs || configs.length == 0)
          return null;
-      
-      return Arrays.stream(configs)
-         .filter(config -> type.isAssignableFrom(config.getClass()))
-         .map(config-> (C)config)
-         .findAny()
-         .orElse(null);
+
+      return Arrays.stream(configs).filter(config -> type.isAssignableFrom(config.getClass())).map(config -> (C) config)
+            .findAny().orElse(null);
    }
 
    public CompiledReportMetadata exportMetadata(Report report, ParameterSet additionalParameters, User user,
@@ -219,7 +217,7 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
 
       exporter.beginParameterSection();
       report.getParameterInstances()
-         .forEach(instance -> exporter.visitParameter(instance, instance.getDefinition(), user));
+            .forEach(instance -> exporter.visitParameter(instance, instance.getDefinition(), user));
    }
 
    protected void exportAdditionalMetadata(Report report, User user, ParameterSet ps, E exporter) {

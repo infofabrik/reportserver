@@ -5,13 +5,13 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 
 public class EqualQueryCondition extends CompareOpQueryCondition {
 
-	public EqualQueryCondition(Column column, Object data, QueryBuilder queryBuilder) {
-		super(column, data, queryBuilder);
-	}
+   public EqualQueryCondition(Column column, Object data, QueryBuilder queryBuilder) {
+      super(column, data, queryBuilder);
+   }
 
-	@Override
-	protected String getCompareOpSymbol() {
-		return "=";
-	}
-	
+   @Override
+   protected String getCompareOpSymbol() {
+      return "=";
+   }
+
 }

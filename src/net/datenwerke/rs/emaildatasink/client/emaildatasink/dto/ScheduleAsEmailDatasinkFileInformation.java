@@ -49,10 +49,10 @@ public class ScheduleAsEmailDatasinkFileInformation implements AdditionalSchedul
 
    public boolean isCompressed() {
       return compressed;
-  }
-  
-  public void setCompressed(boolean compressed) {
+   }
+
+   public void setCompressed(boolean compressed) {
       this.compressed = compressed;
-  }
+   }
 
 }

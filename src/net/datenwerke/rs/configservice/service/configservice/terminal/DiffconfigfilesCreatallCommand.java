@@ -27,35 +27,24 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
    private static final String BASE_COMMAND = "createall";
 
    @Inject
-   public DiffconfigfilesCreatallCommand(
-         HistoryService historyService,
-         FileServerService fileServerService,
-         ConfigService configService,
-         SecurityService securityService) {
+   public DiffconfigfilesCreatallCommand(HistoryService historyService, FileServerService fileServerService,
+         ConfigService configService, SecurityService securityService) {
       super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
-   @CliHelpMessage(
-         messageClass = ConfigMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandDiffConfigFiles_sub_createall_description",
-         nonOptArgs = {
-               @NonOptArgument(
-                     name="folder", 
-                     description="commandDiffConfigFiles_sub_createall_folderArgument", 
-                     mandatory = true)
-           })
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandDiffConfigFiles_sub_createall_description", nonOptArgs = {
+         @NonOptArgument(name = "folder", description = "commandDiffConfigFiles_sub_createall_folderArgument", mandatory = true) })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       HistoryLink linkToDstFolder = null;
       VirtualFileSystemDeamon vfs = session.getFileSystem();
       String dstAbsolutPath = getDstAbsolutPath(parser, vfs);
       AbstractFileServerNode dstFolder = getDstFolder(dstAbsolutPath);
-      
+
       FileServerFolder root = (FileServerFolder) fileServerService.getRoots().get(0);
-      securityService.assertRights((SecurityTarget)root, Read.class);
-      securityService.assertRights((SecurityTarget)dstFolder, Read.class, Write.class);
-   
+      securityService.assertRights((SecurityTarget) root, Read.class);
+      securityService.assertRights((SecurityTarget) dstFolder, Read.class, Write.class);
+
       try {
          createTmpConfigFolderAndSetFolderNameAndPath();
          configService.extractBasicConfigFilesTo(tmpDirName);
@@ -76,15 +65,13 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
       if (dstAbsolutPath.startsWith("/fileserver/")) {
          dstAbsolutPath = dstAbsolutPath.replace("/fileserver/", "");
       } else {
-         throw new IllegalArgumentException(dstAbsolutPath
-               + " is not within the fileserver filesystem. Choose a folder present in the fileserver");
+         throw new IllegalArgumentException(
+               dstAbsolutPath + " is not within the fileserver filesystem. Choose a folder present in the fileserver");
       }
       AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(dstAbsolutPath, false);
       if (null == dstFolder)
-         throw new IllegalArgumentException(
-               "No folder with path: "
-                     + dstAbsolutPath
-                     + " exists. Please ensure your folder is already present in the file server system.");
+         throw new IllegalArgumentException("No folder with path: " + dstAbsolutPath
+               + " exists. Please ensure your folder is already present in the file server system.");
       return dstFolder;
    }
 

@@ -13,12 +13,9 @@ import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileS
  */
 public class FileServerManagerTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public FileServerManagerTreePanel(
-		HookHandlerService hookHandler,
-		@FileServerManagerAdminViewTree UITree tree
-		){
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public FileServerManagerTreePanel(HookHandlerService hookHandler, @FileServerManagerAdminViewTree UITree tree) {
+      super(hookHandler, tree);
+   }
+
 }

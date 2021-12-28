@@ -36,11 +36,12 @@ public class DatasinkServiceImpl implements DatasinkService {
    private final Provider<ConfigService> configServiceProvider;
    private final DtoService dtoService;
    private final ZipUtilsService zipUtilsService;
-   
+
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
    @Inject
-   public DatasinkServiceImpl(Provider<ConfigService> configServiceProvider, DtoService dtoService, ZipUtilsService zipUtilsService) {
+   public DatasinkServiceImpl(Provider<ConfigService> configServiceProvider, DtoService dtoService,
+         ZipUtilsService zipUtilsService) {
       this.configServiceProvider = configServiceProvider;
       this.dtoService = dtoService;
       this.zipUtilsService = zipUtilsService;
@@ -92,7 +93,7 @@ public class DatasinkServiceImpl implements DatasinkService {
    public Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService) {
       return basicDatasinkService.getDefaultDatasink();
    }
-   
+
    @Override
    public void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto,
          BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed)
@@ -164,6 +165,5 @@ public class DatasinkServiceImpl implements DatasinkService {
 
       });
    }
-   
 
 }

@@ -12,45 +12,44 @@ import net.datenwerke.rs.base.ext.client.parameters.fileselection.dto.SelectedPa
  */
 public class FileSelectionParameterInstanceDtoDec extends FileSelectionParameterInstanceDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   private ArrayList<SelectedFileWrapper> tempSelection = new ArrayList<SelectedFileWrapper>();
+   private boolean tempSelection_m = false;
 
-	private ArrayList<SelectedFileWrapper> tempSelection = new ArrayList<SelectedFileWrapper>();
-	private boolean tempSelection_m = false;
-	
-	public FileSelectionParameterInstanceDtoDec() {
-		super();
-	}
+   public FileSelectionParameterInstanceDtoDec() {
+      super();
+   }
 
-	public void setTempSelection(ArrayList<SelectedFileWrapper> tempSelection) {
-		this.tempSelection = tempSelection;
-		this.tempSelection_m = true;
-	}
-	
-	public ArrayList<SelectedFileWrapper> getTempSelection() {
-		return tempSelection;
-	}
+   public void setTempSelection(ArrayList<SelectedFileWrapper> tempSelection) {
+      this.tempSelection = tempSelection;
+      this.tempSelection_m = true;
+   }
 
-	public boolean isTempSelectionModified(){
-		return tempSelection_m;
-	}
-	
-	public SelectedParameterFileDto getSelectedFileById(Long id) {
-		for(SelectedParameterFileDto file : getSelectedFiles())
-			if(id.equals(file.getId()))
-				return file;
-		return null;
-	}
+   public ArrayList<SelectedFileWrapper> getTempSelection() {
+      return tempSelection;
+   }
 
-	@Override
-	public void clearModified() {
-		super.clearModified();
-		this.tempSelection_m = false;
-	}
-	
-	@Override
-	public boolean isModified() {
-		return super.isIdModified() || this.tempSelection_m;
-	}
+   public boolean isTempSelectionModified() {
+      return tempSelection_m;
+   }
+
+   public SelectedParameterFileDto getSelectedFileById(Long id) {
+      for (SelectedParameterFileDto file : getSelectedFiles())
+         if (id.equals(file.getId()))
+            return file;
+      return null;
+   }
+
+   @Override
+   public void clearModified() {
+      super.clearModified();
+      this.tempSelection_m = false;
+   }
+
+   @Override
+   public boolean isModified() {
+      return super.isIdModified() || this.tempSelection_m;
+   }
 
 }

@@ -16,24 +16,25 @@ import net.datenwerke.rs.birt.service.utils.BirtUtilServiceImpl;
 
 public class BirtModule extends AbstractModule {
 
-	public final static String BIRT_LIBRARY_BASE_FOLDER_ID_PROPERETY_NAME = "birt.library.folder.id";
-	public final static String BIRT_LIBRARY_BASE_FOLDER_PATH_PROPERETY_NAME = "birt.library.folder.path";
-	
-	@Override
-	protected void configure() {
-		bind(BirtReportService.class).to(BirtReportServiceImpl.class).in(Singleton.class);
-		
-		install(new BirtDatasourceModule());
-		
-		/* bind metadata exporter */
-		Multibinder<BirtMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(), BirtMetadataExporter.class);
-		metadataExporterBinder.addBinding().to(BirtPlainMetadataExporter.class);
-	
-		bind(BirtUtilService.class).to(BirtUtilServiceImpl.class);
-	
-		install(new FactoryModuleBuilder().build(BirtEngineEnvironmentFactory.class));
-		
-		bind(BirtStartup.class).asEagerSingleton();
-	}
-	
+   public final static String BIRT_LIBRARY_BASE_FOLDER_ID_PROPERETY_NAME = "birt.library.folder.id";
+   public final static String BIRT_LIBRARY_BASE_FOLDER_PATH_PROPERETY_NAME = "birt.library.folder.path";
+
+   @Override
+   protected void configure() {
+      bind(BirtReportService.class).to(BirtReportServiceImpl.class).in(Singleton.class);
+
+      install(new BirtDatasourceModule());
+
+      /* bind metadata exporter */
+      Multibinder<BirtMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(),
+            BirtMetadataExporter.class);
+      metadataExporterBinder.addBinding().to(BirtPlainMetadataExporter.class);
+
+      bind(BirtUtilService.class).to(BirtUtilServiceImpl.class);
+
+      install(new FactoryModuleBuilder().build(BirtEngineEnvironmentFactory.class));
+
+      bind(BirtStartup.class).asEagerSingleton();
+   }
+
 }

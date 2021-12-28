@@ -15,56 +15,53 @@ import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.dto.FtpsDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.ui.FtpsDatasinkForm;
 
-public class FtpsDatasinkConfigProviderHooker implements
-DatasinkDefinitionConfigProviderHook {
-    
-    private final Provider<FtpsDatasinkForm> formProvider;
-    
-    public final static String ACTIVE_MODE = "active-ftps";
-    public final static String PASSIVE_MODE = "passive-ftps";
-    
-    @Inject
-    public FtpsDatasinkConfigProviderHooker(
-        Provider<FtpsDatasinkForm> formProvider
-        ){
-        
-        /* store objects */
-        this.formProvider = formProvider;
-    }
+public class FtpsDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
-    @Override
-    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-        return getDatasinkClass().equals(datasinkDefinition.getClass());
-    }
+   private final Provider<FtpsDatasinkForm> formProvider;
 
-    @Override
-    public Collection<? extends MainPanelView> getAdminViews(DatasinkDefinitionDto datasinkDefinition) {
-        return Collections.singleton(formProvider.get());
-    }
+   public final static String ACTIVE_MODE = "active-ftps";
+   public final static String PASSIVE_MODE = "passive-ftps";
 
-    @Override
-    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-        return FtpUiModule.FTPS_TYPE;
-    }
+   @Inject
+   public FtpsDatasinkConfigProviderHooker(Provider<FtpsDatasinkForm> formProvider) {
 
-    @Override
-    public String getDatasinkName() {
-        return FtpUiModule.FTPS_NAME;
-    }
+      /* store objects */
+      this.formProvider = formProvider;
+   }
 
-    @Override
-    public AbstractDatasinkManagerNodeDto instantiateDatasink() {
-        return new FtpsDatasinkDto();
-    }
+   @Override
+   public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
+   }
 
-    @Override
-    public ImageResource getDatasinkIcon() {
-        return FtpUiModule.FTPS_ICON.toImageResource();
-    }
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasinkDefinitionDto datasinkDefinition) {
+      return Collections.singleton(formProvider.get());
+   }
 
-    @Override
-    public boolean isAvailable() {
-        return true;
-    }
+   @Override
+   public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
+      return FtpUiModule.FTPS_TYPE;
+   }
+
+   @Override
+   public String getDatasinkName() {
+      return FtpUiModule.FTPS_NAME;
+   }
+
+   @Override
+   public AbstractDatasinkManagerNodeDto instantiateDatasink() {
+      return new FtpsDatasinkDto();
+   }
+
+   @Override
+   public ImageResource getDatasinkIcon() {
+      return FtpUiModule.FTPS_ICON.toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 
 }

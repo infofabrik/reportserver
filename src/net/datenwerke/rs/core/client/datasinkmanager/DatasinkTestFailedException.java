@@ -4,20 +4,20 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 public class DatasinkTestFailedException extends ServerCallFailedException {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7944828583793017460L;
-	
-	public DatasinkTestFailedException(){
-		super("Failed to connect");
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7944828583793017460L;
 
-	public DatasinkTestFailedException(String msg){
-		super(msg);
-	}
-	
-	public DatasinkTestFailedException(String msg, Exception e){
-		super(msg, e);
-	}
+   public DatasinkTestFailedException() {
+      super("Failed to connect");
+   }
+
+   public DatasinkTestFailedException(String msg) {
+      super(msg);
+   }
+
+   public DatasinkTestFailedException(String msg, Exception e) {
+      super(msg, e);
+   }
 }

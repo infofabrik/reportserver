@@ -9,12 +9,10 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportVarian
  */
 public class ScriptReportVariantDtoDec extends ScriptReportVariantDto implements ReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public ScriptReportVariantDtoDec() {
-		super();
-	}
-
+   public ScriptReportVariantDtoDec() {
+      super();
+   }
 
 }

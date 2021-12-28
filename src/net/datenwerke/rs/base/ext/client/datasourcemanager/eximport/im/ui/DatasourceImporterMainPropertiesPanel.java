@@ -14,69 +14,67 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.Data
 import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfiguredException;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
 
-public class DatasourceImporterMainPropertiesPanel extends
-		ImporterMainPropertiesPanel<DatasourceManagerImportConfigDto> {
+public class DatasourceImporterMainPropertiesPanel
+      extends ImporterMainPropertiesPanel<DatasourceManagerImportConfigDto> {
 
-	private final Provider<UITree> treeProvider;
-	
-	protected String parentKey;
-	protected String defaultDatasource;
-	
-	@Inject
-	public DatasourceImporterMainPropertiesPanel(
-		@DatasourceTreeFolders Provider<UITree> treeProvider
-		) {
+   private final Provider<UITree> treeProvider;
 
-		/* store objects */
-		this.treeProvider = treeProvider;
-		
-		/* init */
-		initializeUI();
-	}
+   protected String parentKey;
+   protected String defaultDatasource;
 
-	@Override
-	public void populateConfig(DatasourceManagerImportConfigDto config) throws NotProperlyConfiguredException {
-		super.populateConfig(config);
-		
-		DatasourceFolderDto parent = (DatasourceFolderDto) form.getValue(parentKey);
-		config.setParent(parent);
-		
-		DatasourceContainerDto dsContainer = (DatasourceContainerDto) form.getValue(defaultDatasource);
-		if(null != dsContainer)
-			config.setDefaultDatasource(dsContainer.getDatasource());
-	}
-	
-	@Override
-	public void validateConfig(DatasourceManagerImportConfigDto config)
-			throws NotProperlyConfiguredException {
-		if(null == config.getParent() && ! config.getConfigs().isEmpty())
-			throw new NotProperlyConfiguredException(DatasourcesMessages.INSTANCE.importConfigFailureNoParent());
-	}
+   @Inject
+   public DatasourceImporterMainPropertiesPanel(@DatasourceTreeFolders Provider<UITree> treeProvider) {
 
-	@Override
-	protected void configureForm() {
-		super.configureForm();
+      /* store objects */
+      this.treeProvider = treeProvider;
 
-		parentKey = form.addField(DatasourceFolderDto.class, DatasourcesMessages.INSTANCE.importWhereTo(), new SFFCGenericTreeNode(){
-			@Override
-			public UITree getTreeForPopup() {
-				return treeProvider.get();
-			}
-		});
-		
-		defaultDatasource = form.addField(DatasourceContainerDto.class, DatasourcesMessages.INSTANCE.defaultDatasource(), new SFFCDatasourceSuppressConfig(){}); 
-	}
-	
+      /* init */
+      initializeUI();
+   }
 
+   @Override
+   public void populateConfig(DatasourceManagerImportConfigDto config) throws NotProperlyConfiguredException {
+      super.populateConfig(config);
 
-	@Override
-	protected String getDescription() {
-		return DatasourcesMessages.INSTANCE.importMainPropertiesDescription();
-	}
+      DatasourceFolderDto parent = (DatasourceFolderDto) form.getValue(parentKey);
+      config.setParent(parent);
 
-	@Override
-	protected String getHeadline() {
-		return DatasourcesMessages.INSTANCE.importMainPropertiesHeadline();
-	}
-	
+      DatasourceContainerDto dsContainer = (DatasourceContainerDto) form.getValue(defaultDatasource);
+      if (null != dsContainer)
+         config.setDefaultDatasource(dsContainer.getDatasource());
+   }
+
+   @Override
+   public void validateConfig(DatasourceManagerImportConfigDto config) throws NotProperlyConfiguredException {
+      if (null == config.getParent() && !config.getConfigs().isEmpty())
+         throw new NotProperlyConfiguredException(DatasourcesMessages.INSTANCE.importConfigFailureNoParent());
+   }
+
+   @Override
+   protected void configureForm() {
+      super.configureForm();
+
+      parentKey = form.addField(DatasourceFolderDto.class, DatasourcesMessages.INSTANCE.importWhereTo(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            });
+
+      defaultDatasource = form.addField(DatasourceContainerDto.class, DatasourcesMessages.INSTANCE.defaultDatasource(),
+            new SFFCDatasourceSuppressConfig() {
+            });
+   }
+
+   @Override
+   protected String getDescription() {
+      return DatasourcesMessages.INSTANCE.importMainPropertiesDescription();
+   }
+
+   @Override
+   protected String getHeadline() {
+      return DatasourcesMessages.INSTANCE.importMainPropertiesHeadline();
+   }
+
 }

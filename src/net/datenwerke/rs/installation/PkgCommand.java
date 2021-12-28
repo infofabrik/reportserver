@@ -13,35 +13,35 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class PkgCommand extends SubCommandContainerImpl {
-	
-	private static final String BASE_COMMAND = "pkg";
-	private PkgInstallSubCommand installSubCommand;
-	private PkgListSubCommand listSubCommand;
 
-	@Inject
-	public PkgCommand(PkgInstallSubCommand installSubCommand, PkgListSubCommand listSubCommand) {
-		this.installSubCommand = installSubCommand;
-		this.listSubCommand = listSubCommand;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private static final String BASE_COMMAND = "pkg";
+   private PkgInstallSubCommand installSubCommand;
+   private PkgListSubCommand listSubCommand;
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   @Inject
+   public PkgCommand(PkgInstallSubCommand installSubCommand, PkgListSubCommand listSubCommand) {
+      this.installSubCommand = installSubCommand;
+      this.listSubCommand = listSubCommand;
+   }
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		return (List)Arrays.asList(installSubCommand, listSubCommand);
-	}
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      return (List) Arrays.asList(installSubCommand, listSubCommand);
+   }
 
 }

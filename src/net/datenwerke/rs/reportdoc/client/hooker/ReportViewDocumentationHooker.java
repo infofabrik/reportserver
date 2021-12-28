@@ -24,58 +24,58 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  * 
  *
  */
-public class ReportViewDocumentationHooker implements
-		ReportExecutorViewToolbarHook {
+public class ReportViewDocumentationHooker implements ReportExecutorViewToolbarHook {
 
-	private final ToolbarService toolbarService;
-	private final ReportDocumentationUiService reportDocService;
-	
-	@Inject
-	public ReportViewDocumentationHooker(
-		ToolbarService toolbarService,
-		ReportDocumentationUiService reportDocService
-		){
-		
-		this.toolbarService = toolbarService;
-		this.reportDocService = reportDocService;
-	}
-	
-	@Override
-	public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		return false;
-	}
+   private final ToolbarService toolbarService;
+   private final ReportDocumentationUiService reportDocService;
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, final ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		DwTextButton berichtsdokuBtn = toolbarService.createSmallButtonLeft(ReportDocumentationMessages.INSTANCE.berichtsdokuHelpText(), BaseIcon.BOOK);
-		berichtsdokuBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(! report.isModified())
-					reportDocService.openDocumentationForopen(report);
-				else {
-					ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportDocumentationMessages.INSTANCE.reportChangedInfoHeader(), ReportDocumentationMessages.INSTANCE.reportChangedInfoMessage());
-					cmb.addDialogHideHandler(new DialogHideHandler() {
-						@Override
-						public void onDialogHide(DialogHideEvent event) {
-							if (event.getHideButton() == PredefinedButton.YES) 
-								reportDocService.openDocumentationForopen(report);
-						}
-					});
-						
-					cmb.show();
-				}
-			}
-		});
-		toolbar.add(berichtsdokuBtn);
-		
-		return true;
-	}
+   @Inject
+   public ReportViewDocumentationHooker(ToolbarService toolbarService, ReportDocumentationUiService reportDocService) {
 
-	@Override
-	public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report,
-			ReportExecutorInformation info) {
-		
-	}
-	
+      this.toolbarService = toolbarService;
+      this.reportDocService = reportDocService;
+   }
+
+   @Override
+   public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      return false;
+   }
+
+   @Override
+   public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, final ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      DwTextButton berichtsdokuBtn = toolbarService
+            .createSmallButtonLeft(ReportDocumentationMessages.INSTANCE.berichtsdokuHelpText(), BaseIcon.BOOK);
+      berichtsdokuBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (!report.isModified())
+               reportDocService.openDocumentationForopen(report);
+            else {
+               ConfirmMessageBox cmb = new DwConfirmMessageBox(
+                     ReportDocumentationMessages.INSTANCE.reportChangedInfoHeader(),
+                     ReportDocumentationMessages.INSTANCE.reportChangedInfoMessage());
+               cmb.addDialogHideHandler(new DialogHideHandler() {
+                  @Override
+                  public void onDialogHide(DialogHideEvent event) {
+                     if (event.getHideButton() == PredefinedButton.YES)
+                        reportDocService.openDocumentationForopen(report);
+                  }
+               });
+
+               cmb.show();
+            }
+         }
+      });
+      toolbar.add(berichtsdokuBtn);
+
+      return true;
+   }
+
+   @Override
+   public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
+
+   }
+
 }

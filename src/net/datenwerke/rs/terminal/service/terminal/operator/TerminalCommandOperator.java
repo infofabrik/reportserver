@@ -9,8 +9,9 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public interface TerminalCommandOperator extends Hook {
 
-	Integer consumes(String command, CommandParser parser, ExecuteCommandConfig config);
+   Integer consumes(String command, CommandParser parser, ExecuteCommandConfig config);
 
-	CommandResult execute(String command, CommandParser parser, ExecuteCommandConfig config, TerminalSession session) throws TerminalException;
+   CommandResult execute(String command, CommandParser parser, ExecuteCommandConfig config, TerminalSession session)
+         throws TerminalException;
 
 }

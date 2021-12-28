@@ -9,26 +9,26 @@ import net.datenwerke.rs.passwordpolicy.client.accountinhibition.rpc.AccountInhi
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public class AccountInhibitionServiceDao extends Dao {
-	
-	private final AccountInhibitionRpcServiceAsync rpcService;
 
-	@Inject
-	public AccountInhibitionServiceDao(
-			AccountInhibitionRpcServiceAsync accountInhibitionRpcServiceAsync
-			) {
-		super();
-		rpcService = accountInhibitionRpcServiceAsync;
-	}
-	
-	public void getInhibitionState(UserDto user, AsyncCallback<InhibitionState> callback){
-		rpcService.getInhibitionState(user, transformAndKeepCallback(callback));
-	}
+   private final AccountInhibitionRpcServiceAsync rpcService;
 
-	public void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionConfiguration, AsyncCallback<Void> callback) {
-		rpcService.applyAccountInhibitionConfiguration(accountInhibitionConfiguration, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public AccountInhibitionServiceDao(AccountInhibitionRpcServiceAsync accountInhibitionRpcServiceAsync) {
+      super();
+      rpcService = accountInhibitionRpcServiceAsync;
+   }
 
-	public void getAccountInhibitionConfiguration(UserDto user, AsyncCallback<AccountInhibitionConfiguration> callback){
-		rpcService.getAccountInhibitionConfiguration(user, transformAndKeepCallback(callback));
-	}
+   public void getInhibitionState(UserDto user, AsyncCallback<InhibitionState> callback) {
+      rpcService.getInhibitionState(user, transformAndKeepCallback(callback));
+   }
+
+   public void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionConfiguration,
+         AsyncCallback<Void> callback) {
+      rpcService.applyAccountInhibitionConfiguration(accountInhibitionConfiguration,
+            transformAndKeepCallback(callback));
+   }
+
+   public void getAccountInhibitionConfiguration(UserDto user, AsyncCallback<AccountInhibitionConfiguration> callback) {
+      rpcService.getAccountInhibitionConfiguration(user, transformAndKeepCallback(callback));
+   }
 }

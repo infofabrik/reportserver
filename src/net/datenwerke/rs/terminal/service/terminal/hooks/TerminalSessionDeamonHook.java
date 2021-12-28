@@ -6,8 +6,8 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 
 public interface TerminalSessionDeamonHook extends Hook {
 
-	void init(TerminalSession terminalSession);
+   void init(TerminalSession terminalSession);
 
-	void autocomplete(AutocompleteHelper autoHelper);
+   void autocomplete(AutocompleteHelper autoHelper);
 
 }

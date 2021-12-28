@@ -11,9 +11,9 @@ import java.lang.annotation.Target;
  * 
  *
  */
-@Target({TYPE})
+@Target({ TYPE })
 @Retention(RUNTIME)
 @Documented
 public @interface GenericSecurityTarget {
-	public String alias() default "";
+   public String alias() default "";
 }

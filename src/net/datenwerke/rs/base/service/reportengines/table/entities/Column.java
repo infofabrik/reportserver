@@ -47,18 +47,10 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @Table(name = "COLUMN")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", 
-      dto2PosoPostProcessors = ColumnDtoPost.class, poso2DtoPostProcessors = ColumnDtoPost.class, createDecorator = true)
-@EntityDiffGuides(
-      guides = {
-            @EntityDiffGuide(
-                  name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, 
-                  ignoreId = true, 
-                  ignoreVersion = true, 
-                  blacklist = {
-                     "position" 
-                        }) })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", dto2PosoPostProcessors = ColumnDtoPost.class, poso2DtoPostProcessors = ColumnDtoPost.class, createDecorator = true)
+@EntityDiffGuides(guides = {
+      @EntityDiffGuide(name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, ignoreId = true, ignoreVersion = true, blacklist = {
+            "position" }) })
 public class Column implements Serializable {
 
    /**
@@ -524,22 +516,20 @@ public class Column implements Serializable {
 
       return false;
    }
-   
-   public Map<String,Object> getFilterAsMap() {
+
+   public Map<String, Object> getFilterAsMap() {
       if (!hasFilters())
          return Collections.emptyMap();
-      
+
       Map<String, Object> asMap = new HashMap<>();
-      
+
       // include filters
-      if (!getFilter().getIncludeValues().isEmpty()) 
+      if (!getFilter().getIncludeValues().isEmpty())
          asMap.put("include", getFilter().getIncludeValues());
 
       // include range
       if (!getFilter().getIncludeRanges().isEmpty()) {
-         Object val = 
-               getFilter().getIncludeRanges()
-               .stream()
+         Object val = getFilter().getIncludeRanges().stream()
                .map(filterRange -> Arrays.asList(filterRange.getRangeFrom(), filterRange.getRangeTo()))
                .collect(toList());
          asMap.put("include_range", val);

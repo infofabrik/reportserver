@@ -10,10 +10,10 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 @ImplementedBy(DummyScriptingServiceImpl.class)
 public interface SimpleScriptingService {
 
-	public ScriptResult executeScript(String join, TerminalSession session,
-			Map<String, Object> objectMap, String arguments) throws Exception;
+   public ScriptResult executeScript(String join, TerminalSession session, Map<String, Object> objectMap,
+         String arguments) throws Exception;
 
-	public ScriptResult executeScript(FileServerFile script, TerminalSession session, Map<String, Object> objectMap,
-			String arguments) throws Exception;
+   public ScriptResult executeScript(FileServerFile script, TerminalSession session, Map<String, Object> objectMap,
+         String arguments) throws Exception;
 
 }

@@ -11,9 +11,10 @@ import net.datenwerke.rs.birt.client.utils.dto.BirtParameterProposalDto;
 
 @RemoteServiceRelativePath("birtutils")
 public interface BirtUtilsRpcService extends RemoteService {
-	
-	public List<BirtParameterProposalDto> proposeParametersFor(BirtReportDto report);
 
-	public BirtReportDto addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos) throws ExpectedException; 
+   public List<BirtParameterProposalDto> proposeParametersFor(BirtReportDto report);
+
+   public BirtReportDto addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos)
+         throws ExpectedException;
 
 }

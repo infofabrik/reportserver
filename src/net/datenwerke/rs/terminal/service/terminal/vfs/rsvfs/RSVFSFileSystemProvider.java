@@ -155,7 +155,7 @@ public class RSVFSFileSystemProvider extends FileSystemProvider {
          throw new IOException(e);
       }
    }
-   
+
    @Override
    public void delete(Path path) throws IOException {
       if (!(path instanceof RSVFSPath)) {
@@ -205,7 +205,7 @@ public class RSVFSFileSystemProvider extends FileSystemProvider {
    @Override
    public void checkAccess(Path path, AccessMode... modes) throws IOException {
    }
-   
+
    /*
     * Adapted from
     * org.apache.sshd.sftp.client.fs.SftpFileSystemProvider.toSftpPath(Path),
@@ -223,7 +223,7 @@ public class RSVFSFileSystemProvider extends FileSystemProvider {
    public <V extends FileAttributeView> V getFileAttributeView(Path path, Class<V> type, LinkOption... options) {
       throw new UnsupportedOperationException();
    }
-   
+
    @Override
    public <A extends BasicFileAttributes> A readAttributes(Path path, Class<A> type, LinkOption... options)
          throws IOException {
@@ -250,7 +250,5 @@ public class RSVFSFileSystemProvider extends FileSystemProvider {
       // TODO Auto-generated method stub
 
    }
-   
-   
 
 }

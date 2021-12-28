@@ -29,45 +29,35 @@ import net.datenwerke.rs.scp.client.scp.hookers.ScpUsernamePasswordAuthenticator
 public class ScpUiStartup {
 
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 30;
-   
+
    @Inject
-   public ScpUiStartup(
-         final HookHandlerService hookHandler, 
-         final Provider<ExportToScpHooker> exportToScpHooker,
+   public ScpUiStartup(final HookHandlerService hookHandler, final Provider<ExportToScpHooker> exportToScpHooker,
          final Provider<FileExportToScpHooker> fileExportToDatasinkHooker,
          final Provider<ScpDatasinkConfigProviderHooker> scpTreeConfiguratorProvider,
          final WaitOnEventUIService waitOnEventService,
-         final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, 
-         final ScpDao dao,
+         final Provider<ScpExportSnippetProvider> scpExportSnippetProvider, final ScpDao dao,
          final ScpDatasinkTesterToolbarConfigurator scpTestToolbarConfigurator,
          final ScpUsernamePasswordAuthenticatorHooker scpUsernamePasswordAuthenticator,
-         final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator,
-         final ScpUiService scpUiService,
-         final Provider<ScpSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final ScpPublicKeyAuthenticatorHooker scpPublicKeyAuthenticator, final ScpUiService scpUiService,
+         final Provider<ScpSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(),
-            PRIO);
-      
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, scpTreeConfiguratorProvider.get(), PRIO);
+
       /* Authenticators */
-      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpUsernamePasswordAuthenticator, 
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpUsernamePasswordAuthenticator,
             HookHandlerService.PRIORITY_MEDIUM);
-      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpPublicKeyAuthenticator, 
+      hookHandler.attachHooker(DatasinkAuthenticatorConfiguratorHook.class, scpPublicKeyAuthenticator,
             HookHandlerService.PRIORITY_MEDIUM + 10);
-      
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToScpHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, scpTestToolbarConfigurator,
-            PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, scpTestToolbarConfigurator, PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -76,10 +66,9 @@ public class ScpUiStartup {
 
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-               ((ScpUiServiceImpl)scpUiService).setEnabledConfigs(result);
+               ((ScpUiServiceImpl) scpUiService).setEnabledConfigs(result);
                if (result.get(StorageType.SCP) && result.get(StorageType.SCP_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider,
-                        PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider, PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, scpExportSnippetProvider);
             }

@@ -12,20 +12,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStrin
  */
 public class SimpleFormModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* startup */
-		bind(SimpleFormStartup.class).asEagerSingleton();
-		
-		/* static injection */
-		requestStaticInjection(
-			SimpleForm.class, 
-			ChainedCallbackWrapper.class,
-			
-			SFFCStringValidatorBigDecimal.class,
-			SFFCStringValidatorDouble.class,
-			SFFCStringValidatorFloat.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* startup */
+      bind(SimpleFormStartup.class).asEagerSingleton();
+
+      /* static injection */
+      requestStaticInjection(SimpleForm.class, ChainedCallbackWrapper.class,
+
+            SFFCStringValidatorBigDecimal.class, SFFCStringValidatorDouble.class, SFFCStringValidatorFloat.class);
+   }
 
 }

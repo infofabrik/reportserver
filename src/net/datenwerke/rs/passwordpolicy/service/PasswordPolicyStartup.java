@@ -11,23 +11,20 @@ import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
 import net.datenwerke.security.service.usermanager.hooks.UserDtoPostProcessorHook;
 
 public class PasswordPolicyStartup {
-	
-	@Inject
-	public PasswordPolicyStartup(
-		HookHandlerService hookHandlerService, 
-		PasswordPolicy passwordPolicy, 
-		UserDtoSetStatusPostProcessor setStatusPostProcessor,
-		BsiPasswordPolicyService passwordPolicyService
-		) {
-		
-		hookHandlerService.attachHooker(PostAuthenticateHook.class, passwordPolicy.getPostAuthenticateHooker());
-		hookHandlerService.attachHooker(ChangePasswordHook.class, passwordPolicy.getChangePasswordHooker());
-		hookHandlerService.attachHooker(PasswordSetHook.class, passwordPolicy.getPasswordSetHooker());
-		
-		hookHandlerService.attachHooker(UserDtoPostProcessorHook.class, setStatusPostProcessor);
-		
-		if(passwordPolicyService instanceof ReloadConfigNotificationHook)
-			hookHandlerService.attachHooker(ReloadConfigNotificationHook.class, (ReloadConfigNotificationHook)passwordPolicyService);
-	}
+
+   @Inject
+   public PasswordPolicyStartup(HookHandlerService hookHandlerService, PasswordPolicy passwordPolicy,
+         UserDtoSetStatusPostProcessor setStatusPostProcessor, BsiPasswordPolicyService passwordPolicyService) {
+
+      hookHandlerService.attachHooker(PostAuthenticateHook.class, passwordPolicy.getPostAuthenticateHooker());
+      hookHandlerService.attachHooker(ChangePasswordHook.class, passwordPolicy.getChangePasswordHooker());
+      hookHandlerService.attachHooker(PasswordSetHook.class, passwordPolicy.getPasswordSetHooker());
+
+      hookHandlerService.attachHooker(UserDtoPostProcessorHook.class, setStatusPostProcessor);
+
+      if (passwordPolicyService instanceof ReloadConfigNotificationHook)
+         hookHandlerService.attachHooker(ReloadConfigNotificationHook.class,
+               (ReloadConfigNotificationHook) passwordPolicyService);
+   }
 
 }

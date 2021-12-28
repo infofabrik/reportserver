@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.TimeUnitsDto
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.TimeUnits.class)
 public interface TimeUnitsDtoPA extends PropertyAccess<TimeUnitsDto> {
 
-
-
 }

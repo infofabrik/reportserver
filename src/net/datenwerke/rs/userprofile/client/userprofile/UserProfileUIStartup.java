@@ -12,13 +12,10 @@ import net.datenwerke.rs.userprofile.client.userprofile.hookers.HomepageProfileH
  */
 public class UserProfileUIStartup {
 
-	@Inject
-	public UserProfileUIStartup(
-		final HookHandlerService hookHandler,
-		HomepageProfileHooker profileHooker	
-		){
-		
-		/* attach hooks */
-		hookHandler.attachHooker(HomepageHeaderContentHook.class, profileHooker, HookHandlerService.PRIORITY_HIGH);
-	}
+   @Inject
+   public UserProfileUIStartup(final HookHandlerService hookHandler, HomepageProfileHooker profileHooker) {
+
+      /* attach hooks */
+      hookHandler.attachHooker(HomepageHeaderContentHook.class, profileHooker, HookHandlerService.PRIORITY_HIGH);
+   }
 }

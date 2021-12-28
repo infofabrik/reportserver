@@ -18,26 +18,22 @@ public class C3p0ConnectionHook implements ConnectionCustomizer {
 
    @Override
    public void onAcquire(final Connection c, String parentDataSourceIdentityToken) throws Exception {
-      hookHandler.getHookers(DbPoolConnectionHook.class)
-         .forEach(hooker -> hooker.onAcquire(c));
+      hookHandler.getHookers(DbPoolConnectionHook.class).forEach(hooker -> hooker.onAcquire(c));
    }
 
    @Override
    public void onDestroy(final Connection c, String parentDataSourceIdentityToken) throws Exception {
-      hookHandler.getHookers(DbPoolConnectionHook.class)
-         .forEach(hooker -> hooker.onDestroy(c));
+      hookHandler.getHookers(DbPoolConnectionHook.class).forEach(hooker -> hooker.onDestroy(c));
    }
 
    @Override
    public void onCheckOut(final Connection c, String parentDataSourceIdentityToken) throws Exception {
-      hookHandler.getHookers(DbPoolConnectionHook.class)
-         .forEach(hooker -> hooker.onCheckOut(c));
+      hookHandler.getHookers(DbPoolConnectionHook.class).forEach(hooker -> hooker.onCheckOut(c));
    }
 
    @Override
    public void onCheckIn(final Connection c, String parentDataSourceIdentityToken) throws Exception {
-      hookHandler.getHookers(DbPoolConnectionHook.class)
-         .forEach(hooker -> hooker.onCheckIn(c));
+      hookHandler.getHookers(DbPoolConnectionHook.class).forEach(hooker -> hooker.onCheckIn(c));
    }
-   
+
 }

@@ -8,9 +8,8 @@ import net.datenwerke.scheduler.client.scheduler.dto.history.ActionEntryDto;
 
 public interface ActionLogEntryDetailHook extends Hook {
 
-	boolean consumes(ActionEntryDto action);
+   boolean consumes(ActionEntryDto action);
 
-	Widget getCard(ActionEntryDto action,
-			ScheduledReportListPanel scheduledReportListPanel);
+   Widget getCard(ActionEntryDto action, ScheduledReportListPanel scheduledReportListPanel);
 
 }

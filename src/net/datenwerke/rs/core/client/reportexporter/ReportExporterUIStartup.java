@@ -9,15 +9,10 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class ReportExporterUIStartup {
 
-	@Inject
-	public ReportExporterUIStartup(
-		HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final UtilsUIService utilsService,
-		final ReportExporterUIService exporterService,
-		final ReportExporterDao reportExporterDao,
-		final DispatcherService dispatcherService
-		){
-		
-	}
+   @Inject
+   public ReportExporterUIStartup(HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final UtilsUIService utilsService, final ReportExporterUIService exporterService,
+         final ReportExporterDao reportExporterDao, final DispatcherService dispatcherService) {
+
+   }
 }

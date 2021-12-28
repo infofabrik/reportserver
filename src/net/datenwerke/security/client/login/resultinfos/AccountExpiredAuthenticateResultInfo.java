@@ -6,29 +6,28 @@ import net.datenwerke.security.client.login.AuthenticateResultInfo;
 
 public class AccountExpiredAuthenticateResultInfo extends AuthenticateResultInfo {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3828289383438268043L;
-	
-	private Date expiredSince;
-	
-	public AccountExpiredAuthenticateResultInfo() {
-		super();
-	}
-	
-	public AccountExpiredAuthenticateResultInfo(Date expiredSince){
-		super();
-		setExpiredSince(expiredSince);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -3828289383438268043L;
 
-	public Date getExpiredSince() {
-		return expiredSince;
-	}
+   private Date expiredSince;
 
-	public void setExpiredSince(Date expiredSince) {
-		this.expiredSince = expiredSince;
-	}
-	
-	
+   public AccountExpiredAuthenticateResultInfo() {
+      super();
+   }
+
+   public AccountExpiredAuthenticateResultInfo(Date expiredSince) {
+      super();
+      setExpiredSince(expiredSince);
+   }
+
+   public Date getExpiredSince() {
+      return expiredSince;
+   }
+
+   public void setExpiredSince(Date expiredSince) {
+      this.expiredSince = expiredSince;
+   }
+
 }

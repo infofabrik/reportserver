@@ -8,37 +8,37 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultExtension;
 @GenerateDto(dtoPackage = "net.datenwerke.rs.reportdoc.client.dto")
 public class DeployAnalyzeCommandResultExtension extends CommandResultExtension {
 
-	@ExposeToClient
-	private Report leftReport;
+   @ExposeToClient
+   private Report leftReport;
 
-	@ExposeToClient
-	private Report rightReport;
-	
-	@ExposeToClient
-	private boolean ignoreCase;
-	
-	public void setLeftReport(Report leftReport) {
-		this.leftReport = leftReport;
-	}
+   @ExposeToClient
+   private Report rightReport;
 
-	public Report getLeftReport() {
-		return leftReport;
-	}
+   @ExposeToClient
+   private boolean ignoreCase;
 
-	public void setRightReport(Report rightReport) {
-		this.rightReport = rightReport;
-	}
+   public void setLeftReport(Report leftReport) {
+      this.leftReport = leftReport;
+   }
 
-	public Report getRightReport() {
-		return rightReport;
-	}
+   public Report getLeftReport() {
+      return leftReport;
+   }
 
-	public void setIgnoreCase(boolean ignoreCase) {
-		this.ignoreCase = ignoreCase;
-	}
-	
-	public boolean isIgnoreCase() {
-		return ignoreCase;
-	}
-	
+   public void setRightReport(Report rightReport) {
+      this.rightReport = rightReport;
+   }
+
+   public Report getRightReport() {
+      return rightReport;
+   }
+
+   public void setIgnoreCase(boolean ignoreCase) {
+      this.ignoreCase = ignoreCase;
+   }
+
+   public boolean isIgnoreCase() {
+      return ignoreCase;
+   }
+
 }

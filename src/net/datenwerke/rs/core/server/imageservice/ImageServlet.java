@@ -24,50 +24,45 @@ import net.datenwerke.security.service.treedb.actions.UpdateAction;
  *
  */
 @Singleton
-public class ImageServlet extends SecuredHttpServlet{
+public class ImageServlet extends SecuredHttpServlet {
 
-	private static final long serialVersionUID = -1966524992884670842L;
+   private static final long serialVersionUID = -1966524992884670842L;
 
-	private final Provider<ReportService> reportManagerService;
-	private final Provider<SecurityService> securityServiceProvider;
-	
+   private final Provider<ReportService> reportManagerService;
+   private final Provider<SecurityService> securityServiceProvider;
 
-	@Inject
-	public ImageServlet(
-		Provider<ReportService> reportManagerService,
-		Provider<SecurityService> securityServiceProvider
-		) {
+   @Inject
+   public ImageServlet(Provider<ReportService> reportManagerService,
+         Provider<SecurityService> securityServiceProvider) {
 
-		this.reportManagerService = reportManagerService;
-		this.securityServiceProvider = securityServiceProvider;
-	}
+      this.reportManagerService = reportManagerService;
+      this.securityServiceProvider = securityServiceProvider;
+   }
 
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      long reportId = Long.parseLong(req.getParameter("reportId")); //$NON-NLS-1$
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		long reportId = Long.parseLong(req.getParameter("reportId")); //$NON-NLS-1$
-		
-		/* load Report */
-		Report report = reportManagerService.get().getReportById(reportId);
+      /* load Report */
+      Report report = reportManagerService.get().getReportById(reportId);
 
-		/* validate request */
-		validateRequest(report);
-		
-		PreviewImage previewImage = report.getPreviewImage();
-		
-		byte[] image = previewImage.getContent();
-		
-		resp.setContentType("image/png"); //$NON-NLS-1$
-		OutputStream os = resp.getOutputStream();
-		os.write(image);
+      /* validate request */
+      validateRequest(report);
 
-		os.close();
-	}
+      PreviewImage previewImage = report.getPreviewImage();
 
+      byte[] image = previewImage.getContent();
 
-	private void validateRequest(Report report) {
-		securityServiceProvider.get().assertActions(report, UpdateAction.class);
-	}
+      resp.setContentType("image/png"); //$NON-NLS-1$
+      OutputStream os = resp.getOutputStream();
+      os.write(image);
+
+      os.close();
+   }
+
+   private void validateRequest(Report report) {
+      securityServiceProvider.get().assertActions(report, UpdateAction.class);
+   }
 
 }

@@ -17,41 +17,37 @@ import net.datenwerke.treedb.client.treedb.dto.decorator.AbstractNodeDtoDec;
 
 public class ReportManagerTreeLoaderDao extends TreeDbLoaderDao {
 
-	
-	@Inject
-	public ReportManagerTreeLoaderDao(
-		ReportManagerTreeLoaderAsync treeHandler, TreeDbFtoConverter treeDbFtoConverter	
-		){
-		super(treeHandler, treeDbFtoConverter);
-	}
-	
+   @Inject
+   public ReportManagerTreeLoaderDao(ReportManagerTreeLoaderAsync treeHandler, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeHandler, treeDbFtoConverter);
+   }
 
-	public void getReportsInCatalog(ReportFolderDto folder, boolean showVariants, AsyncCallback<List<ReportDto>> callback){
-		final AsyncCallback handledCallback = transformListCallback(callback);
-		((ReportManagerTreeLoaderAsync)treeLoader).getReportsInCatalog(folder, showVariants, new AsyncCallback<String[][]>() {
+   public void getReportsInCatalog(ReportFolderDto folder, boolean showVariants,
+         AsyncCallback<List<ReportDto>> callback) {
+      final AsyncCallback handledCallback = transformListCallback(callback);
+      ((ReportManagerTreeLoaderAsync) treeLoader).getReportsInCatalog(folder, showVariants,
+            new AsyncCallback<String[][]>() {
 
-			@Override
-			public void onFailure(Throwable caught) {
-				handledCallback.onFailure(caught);
-			}
+               @Override
+               public void onFailure(Throwable caught) {
+                  handledCallback.onFailure(caught);
+               }
 
-			@Override
-			public void onSuccess(String[][] result) {
-				List<AbstractNodeDto> nodes = new ArrayList<AbstractNodeDto>();
-				
-				for(String[] fto : result){
-					AbstractNodeDtoDec dto = treeDbFtoConverter.convert(fto);
-					nodes.add(dto);
-				}
-				
-				handledCallback.onSuccess(nodes);
-			}
-		});
-	}
+               @Override
+               public void onSuccess(String[][] result) {
+                  List<AbstractNodeDto> nodes = new ArrayList<AbstractNodeDto>();
 
+                  for (String[] fto : result) {
+                     AbstractNodeDtoDec dto = treeDbFtoConverter.convert(fto);
+                     nodes.add(dto);
+                  }
 
-	public void getReportsInCatalog(boolean showVariants,
-			RsAsyncCallback<List<ReportDto>> rsAsyncCallback) {
-		getReportsInCatalog(null, showVariants, rsAsyncCallback);
-	}
+                  handledCallback.onSuccess(nodes);
+               }
+            });
+   }
+
+   public void getReportsInCatalog(boolean showVariants, RsAsyncCallback<List<ReportDto>> rsAsyncCallback) {
+      getReportsInCatalog(null, showVariants, rsAsyncCallback);
+   }
 }

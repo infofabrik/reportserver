@@ -13,53 +13,52 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SearchAreaModule extends ClientTempModuleImpl {
 
-	private final Provider<SearchAreaMainWidget> mainWidgetProvider;
-	private SearchAreaMainWidget mainWidget;
-	
-	@Inject
-	public SearchAreaModule(
-			Provider<SearchAreaMainWidget> mainWidgetProvider) {
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
+   private final Provider<SearchAreaMainWidget> mainWidgetProvider;
+   private SearchAreaMainWidget mainWidget;
 
-	@Override
-	public String getModuleName() {
-		return SearchMessages.INSTANCE.searchAreaModule();
-	}
+   @Inject
+   public SearchAreaModule(Provider<SearchAreaMainWidget> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.SEARCH.toImageResource();
-	}
+   @Override
+   public String getModuleName() {
+      return SearchMessages.INSTANCE.searchAreaModule();
+   }
 
-	@Override
-	public SearchAreaMainWidget getMainWidget() {
-		if(null == mainWidget){
-			mainWidget = mainWidgetProvider.get();
-			mainWidget.setModule(this);
-		}
-		return mainWidget;
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.SEARCH.toImageResource();
+   }
 
-	public void addSearchComponent(String search, Component displayComponent) {
-		getMainWidget().addSearchComponent(search, displayComponent);
-	}
+   @Override
+   public SearchAreaMainWidget getMainWidget() {
+      if (null == mainWidget) {
+         mainWidget = mainWidgetProvider.get();
+         mainWidget.setModule(this);
+      }
+      return mainWidget;
+   }
 
-	public void closeCurrent() {
-		getMainWidget().close();
-	}
-	
-	public void removeModule(){
-		viewport.removeTempModule(this);
-	}
-	
-	@Override
-	public void onMouseOver(MouseEvent be) {
-		
-	}
-	
-	@Override
-	public boolean isRecyclable() {
-		return false;
-	}
+   public void addSearchComponent(String search, Component displayComponent) {
+      getMainWidget().addSearchComponent(search, displayComponent);
+   }
+
+   public void closeCurrent() {
+      getMainWidget().close();
+   }
+
+   public void removeModule() {
+      viewport.removeTempModule(this);
+   }
+
+   @Override
+   public void onMouseOver(MouseEvent be) {
+
+   }
+
+   @Override
+   public boolean isRecyclable() {
+      return false;
+   }
 }

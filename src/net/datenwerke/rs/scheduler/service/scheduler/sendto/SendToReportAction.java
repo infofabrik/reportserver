@@ -86,9 +86,8 @@ public class SendToReportAction extends AbstractAction {
       if (null == configValues || configValues.isEmpty())
          return null;
 
-      return configValues
-         .stream()
-         .collect(toMap(SendToReportActionValue::getValueId, SendToReportActionValue::getTheValue));
+      return configValues.stream()
+            .collect(toMap(SendToReportActionValue::getValueId, SendToReportActionValue::getTheValue));
    }
 
    public Logger getLogger() {
@@ -106,18 +105,17 @@ public class SendToReportAction extends AbstractAction {
          try {
             authenticatorServiceProvider.get().setAuthenticatedInThread(reportJob.getExecutor().getId());
 
-            Optional<SendToTargetProviderHook> sendToHooker = hookHandlerService.getHookers(SendToTargetProviderHook.class)
-               .stream()
-               .filter(hooker -> sendToId.equals(hooker.getId()))
-               .findAny();
-            
+            Optional<SendToTargetProviderHook> sendToHooker = hookHandlerService
+                  .getHookers(SendToTargetProviderHook.class).stream().filter(hooker -> sendToId.equals(hooker.getId()))
+                  .findAny();
+
             if (sendToHooker.isPresent()) {
                sendToHooker.get().scheduledSendTo(reportJob.getExecutedReport(), reportJob.getReport(), reportJob,
                      reportJob.getOutputFormat(), getValueMap());
                return;
             } else
                throw new ActionExecutionException("Could not find target handler for id: " + sendToId);
-            
+
          } finally {
             authenticatorServiceProvider.get().logoffUserInThread();
          }

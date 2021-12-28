@@ -12,19 +12,18 @@ import net.datenwerke.rs.eximport.client.eximport.im.ui.ImportMainPanel;
 
 public interface ImporterConfiguratorHook extends Hook {
 
-	ImageResource getImporterIcon();
-	
-	String getImporterName();
-	
-	Collection<String> getSupportedExporters();
-	
-	Widget initConfigPanel(ImportMainPanel importMainPanel);
-	
-	ImportConfigDto getConfiguration() throws NotProperlyConfiguredException;
-	
-	String getImporterId();
-	
-	void reset();
-	
+   ImageResource getImporterIcon();
+
+   String getImporterName();
+
+   Collection<String> getSupportedExporters();
+
+   Widget initConfigPanel(ImportMainPanel importMainPanel);
+
+   ImportConfigDto getConfiguration() throws NotProperlyConfiguredException;
+
+   String getImporterId();
+
+   void reset();
 
 }

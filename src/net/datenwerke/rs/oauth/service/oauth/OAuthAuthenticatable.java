@@ -9,15 +9,15 @@ import com.github.scribejava.core.oauth.AuthorizationUrlBuilder;
 public interface OAuthAuthenticatable {
 
    Long getId();
-   
+
    void setRefreshToken(String refreshToken);
 
    String getAppKey();
 
    String getSecretKey();
-   
+
    DefaultApi20 getOAuthApi();
-   
+
    String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder);
 
 }

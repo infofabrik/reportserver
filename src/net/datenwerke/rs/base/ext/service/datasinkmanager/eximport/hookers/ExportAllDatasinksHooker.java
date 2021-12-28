@@ -24,9 +24,8 @@ public class ExportAllDatasinksHooker implements ExportAllHook {
       specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
       config.addSpecificExporterConfigs(specConfig);
 
-      dsService.getAllNodes()
-         .forEach(node -> config.addItemConfig(new TreeNodeExportItemConfig(node)));
-      
+      dsService.getAllNodes().forEach(node -> config.addItemConfig(new TreeNodeExportItemConfig(node)));
+
    }
 
 }

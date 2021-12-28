@@ -4,6 +4,6 @@ import net.datenwerke.security.client.login.AuthenticateResultInfo;
 
 public class AccountMissingRightsForAuthenticateResultInfo extends AuthenticateResultInfo {
 
-	private static final long serialVersionUID = 6940329215704100812L;
+   private static final long serialVersionUID = 6940329215704100812L;
 
 }

@@ -16,13 +16,13 @@ import org.bouncycastle.openssl.PEMParser;
 import org.bouncycastle.openssl.jcajce.JcaPEMKeyConverter;
 
 public class UrlKeyPairProvider extends AbstractKeyPairProvider {
-	
-	private URL[] ulrs;
 
-	public UrlKeyPairProvider(URL... ulrs) {
-		this.ulrs = ulrs;
-		
-	}
+   private URL[] ulrs;
+
+   public UrlKeyPairProvider(URL... ulrs) {
+      this.ulrs = ulrs;
+
+   }
 
    @Override
    public Iterable<KeyPair> loadKeys(SessionContext session) throws IOException, GeneralSecurityException {

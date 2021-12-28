@@ -18,55 +18,55 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.locale.ScriptReportMes
 
 public class ScriptReportForm extends AbstractReportSimpleForm {
 
-	private final Provider<UITree> fileTreeProvider;
-	
-	@Inject
-	public ScriptReportForm(
-		@FileServerTreeBasic Provider<UITree> fileTreeProvider	
-		){
-			this.fileTreeProvider = fileTreeProvider;
-		
-	}
-	
-	@Override
-	protected void configureSimpleForm(SimpleForm form) {
-		super.configureSimpleForm(form);
-		
-		form.setHeading(ScriptReportMessages.INSTANCE.editReport()  + " ("+getSelectedNode().getId()+")"); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		form.setFieldWidth(200);
-		
-		form.addField(FileServerFileDto.class, ScriptReportDtoPA.INSTANCE.script(), ScriptReportMessages.INSTANCE.script(), new SFFCGenericTreeNode() {
-			
-			@Override
-			public UITree getTreeForPopup() {
-				return fileTreeProvider.get();
-			}
-		});
-		
-		form.setFieldWidth(1);
-		
-		form.addField(String.class, ScriptReportDtoPA.INSTANCE.arguments(), ScriptReportMessages.INSTANCE.arguments(), new SFFCTextAreaImpl(){
-			@Override
-			public int getHeight() {
-				return 75;
-			}
-		});
-		
-		form.addField(List.class, ScriptReportDtoPA.INSTANCE.exportFormats(), ScriptReportMessages.INSTANCE.exportFormats(), new SFFCTextFieldList(){
+   private final Provider<UITree> fileTreeProvider;
 
-			@Override
-			public String getSeparator() {
-				return ",";
-			}
-			
-		});
-	}
-	
-	@Override
-	protected boolean isDisplayConfigFieldsForDatasource() {
-		return true;
-	}
-	
+   @Inject
+   public ScriptReportForm(@FileServerTreeBasic Provider<UITree> fileTreeProvider) {
+      this.fileTreeProvider = fileTreeProvider;
+
+   }
+
+   @Override
+   protected void configureSimpleForm(SimpleForm form) {
+      super.configureSimpleForm(form);
+
+      form.setHeading(ScriptReportMessages.INSTANCE.editReport() + " (" + getSelectedNode().getId() + ")"); //$NON-NLS-1$ //$NON-NLS-2$
+
+      form.setFieldWidth(200);
+
+      form.addField(FileServerFileDto.class, ScriptReportDtoPA.INSTANCE.script(),
+            ScriptReportMessages.INSTANCE.script(), new SFFCGenericTreeNode() {
+
+               @Override
+               public UITree getTreeForPopup() {
+                  return fileTreeProvider.get();
+               }
+            });
+
+      form.setFieldWidth(1);
+
+      form.addField(String.class, ScriptReportDtoPA.INSTANCE.arguments(), ScriptReportMessages.INSTANCE.arguments(),
+            new SFFCTextAreaImpl() {
+               @Override
+               public int getHeight() {
+                  return 75;
+               }
+            });
+
+      form.addField(List.class, ScriptReportDtoPA.INSTANCE.exportFormats(),
+            ScriptReportMessages.INSTANCE.exportFormats(), new SFFCTextFieldList() {
+
+               @Override
+               public String getSeparator() {
+                  return ",";
+               }
+
+            });
+   }
+
+   @Override
+   protected boolean isDisplayConfigFieldsForDatasource() {
+      return true;
+   }
 
 }

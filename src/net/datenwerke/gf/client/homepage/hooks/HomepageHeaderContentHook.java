@@ -11,5 +11,5 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
  */
 public interface HomepageHeaderContentHook extends Hook {
 
-	public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container);
+   public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container);
 }

@@ -6,18 +6,16 @@ import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariab
 
 public class UserVariableExporter extends GenericEntityExporter {
 
-	private static final String EXPORTER_ID = "UserVariableExporter";
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
-	
-	
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[]{UserVariableDefinition.class, UserVariableInstance.class};
-	}
+   private static final String EXPORTER_ID = "UserVariableExporter";
 
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
+
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { UserVariableDefinition.class, UserVariableInstance.class };
+   }
 
 }

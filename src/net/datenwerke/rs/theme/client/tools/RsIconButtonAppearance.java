@@ -5,17 +5,16 @@ import com.sencha.gxt.theme.neptune.client.base.button.Css3IconButtonAppearance;
 
 public class RsIconButtonAppearance extends Css3IconButtonAppearance {
 
+   public RsIconButtonAppearance() {
+      super();
+   }
 
-	public RsIconButtonAppearance() {
-		super();
-	}
+   public RsIconButtonAppearance(Css3ToolButtonResources resources) {
+      super(resources);
+   }
 
-	public RsIconButtonAppearance(Css3ToolButtonResources resources) {
-		super(resources);
-	}
-
-	@Override
-	public void render(SafeHtmlBuilder sb) {
-		sb.appendHtmlConstant("<i></i>");
-	}
+   @Override
+   public void render(SafeHtmlBuilder sb) {
+      sb.appendHtmlConstant("<i></i>");
+   }
 }

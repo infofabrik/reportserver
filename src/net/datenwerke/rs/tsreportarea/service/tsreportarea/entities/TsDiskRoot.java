@@ -20,62 +20,52 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
  *
  */
 @Entity
-@Table(name="TS_DISK_ROOT")
+@Table(name = "TS_DISK_ROOT")
 @Audited
-@TreeDBAllowedChildren({
-	TsDiskFolder.class,
-	TsDiskReportReference.class,
-	TsDiskGeneralReference.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tsreportarea.client.tsreportarea.dto"
-)
+@TreeDBAllowedChildren({ TsDiskFolder.class, TsDiskReportReference.class, TsDiskGeneralReference.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tsreportarea.client.tsreportarea.dto")
 public class TsDiskRoot extends AbstractTsDiskNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5537404632434918329L;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Column(length = 128)
-	private String name = "Root";
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -5537404632434918329L;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-    private String description;
-	
-	@ExposeToClient
-	@OneToOne
-	private TeamSpace teamSpace;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   private String name = "Root";
 
-	public void setTeamSpace(TeamSpace teamSpace) {
-		this.teamSpace = teamSpace;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-	public TeamSpace getTeamSpace() {
-		return teamSpace;
-	}
-	
-	
-    public String getName() {
-        return name;
-    }
+   @ExposeToClient
+   @OneToOne
+   private TeamSpace teamSpace;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public void setTeamSpace(TeamSpace teamSpace) {
+      this.teamSpace = teamSpace;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public TeamSpace getTeamSpace() {
+      return teamSpace;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
 
 }

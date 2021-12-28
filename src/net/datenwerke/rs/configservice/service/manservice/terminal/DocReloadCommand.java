@@ -14,40 +14,34 @@ import net.datenwerke.rs.utils.man.ManPageService;
 
 public class DocReloadCommand implements DocSubCommandHook {
 
-	public static final String BASE_COMMAND = "reload";
-	
-	private final ManPageService manPageService;
-	
-	@Inject
-	public DocReloadCommand(
-		ManPageService manPageService 
-		) {
-		this.manPageService = manPageService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "reload";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ManMessages.class,
-		name = BASE_COMMAND,
-		description = "commandDoc_sub_reload_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		manPageService.clearCache();
-		
-		return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
-	}
+   private final ManPageService manPageService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public DocReloadCommand(ManPageService manPageService) {
+      this.manPageService = manPageService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ManMessages.class, name = BASE_COMMAND, description = "commandDoc_sub_reload_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      manPageService.clearCache();
+
+      return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 }

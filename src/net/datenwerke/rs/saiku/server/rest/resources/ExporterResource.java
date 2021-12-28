@@ -15,7 +15,6 @@
  */
 package net.datenwerke.rs.saiku.server.rest.resources;
 
-
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
@@ -45,9 +44,10 @@ import org.saiku.web.svg.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 /**
- * QueryServlet contains all the methods required when manipulating an OLAP Query.
+ * QueryServlet contains all the methods required when manipulating an OLAP
+ * Query.
+ * 
  * @author Paul Stoellberger
  *
  */
@@ -55,7 +55,7 @@ import org.slf4j.LoggerFactory;
 @XmlAccessorType(XmlAccessType.NONE)
 public class ExporterResource {
 
-	private static final Logger log = LoggerFactory.getLogger(ExporterResource.class);
+   private static final Logger log = LoggerFactory.getLogger(ExporterResource.class);
 
 //	private ISaikuRepository repository;
 //
@@ -69,348 +69,354 @@ public class ExporterResource {
 //		this.repository = repository;
 //	}
 
+   /**
+    * Export query to excel file format.
+    * 
+    * @param file           The file
+    * @param formatter      The cellset formatter
+    * @param name           The name
+    * @param servletRequest The servlet request.
+    * @return A response containing an excel file.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/saiku/xls")
+   public Response exportExcel(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @QueryParam("name") String name, @Context HttpServletRequest servletRequest) {
+      // try {
+      // Response f = repository.getResource(file);
+      // String fileContent = new String( (byte[]) f.getEntity());
+      // String queryName = UUID.randomUUID().toString();
+      // //fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
+      //// queryResource.createQuery(queryName, null, null, null, fileContent,
+      // queryName, null);
+      //// queryResource.execute(queryName, formatter, 0);
+      // Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
+      // ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null,
+      // null);
+      // if (parameters != null) {
+      // tq.getParameters().putAll(parameters);
+      // }
+      // if (StringUtils.isNotBlank(formatter)) {
+      // HashMap<String, Object> p = new HashMap<>();
+      // p.put("saiku.olap.result.formatter", formatter);
+      // if (tq.getProperties() == null) {
+      // tq.setProperties(p);
+      // } else {
+      // tq.getProperties().putAll(p);
+      // }
+      // }
+      // query2Resource.execute(tq);
+      // return query2Resource.getQueryExcelExport(queryName, formatter, name);
+      // } catch (Exception e) {
+      // log.error("Error exporting XLS for file: " + file, e);
+      // return
+      // Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      // }
+      // }
+      //
+      // /**
+      // * Export the query to a CSV file format.
+      // * @summary Export to CSV.
+      // * @param file The file
+      // * @param formatter The cellset formatter
+      // * @param servletRequest The servlet request
+      // * @return A response containing a CSV file.
+      // */
+      // @GET
+      // @Produces({"application/json" })
+      // @Path("/saiku/csv")
+      // public Response exportCsv(@QueryParam("file") String file,
+      // @QueryParam("formatter") String formatter,
+      // @Context HttpServletRequest servletRequest)
+      // {
+      // try {
+      // Response f = repository.getResource(file);
+      // String fileContent = new String( (byte[]) f.getEntity());
+      // //fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
+      // String queryName = UUID.randomUUID().toString();
+      //// query2Resource.createQuery(null, null, null, null, fileContent, queryName,
+      // null);
+      //// query2Resource.execute(queryName,formatter, 0);
+      // Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
+      // ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null,
+      // null);
+      // if (parameters != null) {
+      // tq.getParameters().putAll(parameters);
+      // }
+      //
+      // if (StringUtils.isNotBlank(formatter)) {
+      // HashMap<String, Object> p = new HashMap<>();
+      // p.put("saiku.olap.result.formatter", formatter);
+      // if (tq.getProperties() == null) {
+      // tq.setProperties(p);
+      // } else {
+      // tq.getProperties().putAll(p);
+      // }
+      // }
+      // query2Resource.execute(tq);
+      // return query2Resource.getQueryCsvExport(queryName);
+      // } catch (Exception e) {
+      // log.error("Error exporting CSV for file: " + file, e);
+      // return
+      // Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      // }
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Export query to excel file format.
-	 * @param file The file
-	 * @param formatter The cellset formatter
-	 * @param name The name
-	 * @param servletRequest The servlet request.
-	 * @return A response containing an excel file.
-	 */
-	@GET
-	@Produces({"application/json" })
-	@Path("/saiku/xls")
-	public Response exportExcel(@QueryParam("file") String file, 
-			@QueryParam("formatter") String formatter,@QueryParam("name") String name,
-			@Context HttpServletRequest servletRequest) 
-	{
-		//		try {
-		//			Response f = repository.getResource(file);
-		//			String fileContent = new String( (byte[]) f.getEntity());
-		//			String queryName = UUID.randomUUID().toString();			
-		//			//fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
-		////			queryResource.createQuery(queryName,  null,  null, null, fileContent, queryName, null);
-		////			queryResource.execute(queryName, formatter, 0);
-		//			Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
-		//			ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null, null);
-		//			if (parameters != null) {
-		//				tq.getParameters().putAll(parameters);
-		//			}
-		//		  if (StringUtils.isNotBlank(formatter)) {
-		//			HashMap<String, Object> p = new HashMap<>();
-		//			p.put("saiku.olap.result.formatter", formatter);
-		//			if (tq.getProperties() == null) {
-		//			  tq.setProperties(p);
-		//			} else {
-		//			  tq.getProperties().putAll(p);
-		//			}
-		//		  }
-		//			query2Resource.execute(tq);
-		//			return query2Resource.getQueryExcelExport(queryName, formatter, name);
-		//		} catch (Exception e) {
-		//			log.error("Error exporting XLS for file: " + file, e);
-		//			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		//		}
-		//	}
-		//
-		//  /**
-		//   * Export the query to a CSV file format.
-		//   * @summary Export to CSV.
-		//   * @param file The file
-		//   * @param formatter The cellset formatter
-		//   * @param servletRequest The servlet request
-		//   * @return A response containing a CSV file.
-		//   */
-		//	@GET
-		//	@Produces({"application/json" })
-		//	@Path("/saiku/csv")
-		//	public Response exportCsv(@QueryParam("file") String file, 
-		//			@QueryParam("formatter") String formatter,
-		//			@Context HttpServletRequest servletRequest) 
-		//	{
-		//		try {
-		//			Response f = repository.getResource(file);
-		//			String fileContent = new String( (byte[]) f.getEntity());
-		//			//fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
-		//			String queryName = UUID.randomUUID().toString();
-		////			query2Resource.createQuery(null,  null,  null, null, fileContent, queryName, null);
-		////			query2Resource.execute(queryName,formatter, 0);
-		//			Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
-		//			ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null, null);
-		//			if (parameters != null) {
-		//				tq.getParameters().putAll(parameters);
-		//			}
-		//
-		//		  if (StringUtils.isNotBlank(formatter)) {
-		//			HashMap<String, Object> p = new HashMap<>();
-		//			p.put("saiku.olap.result.formatter", formatter);
-		//			if (tq.getProperties() == null) {
-		//			  tq.setProperties(p);
-		//			} else {
-		//			  tq.getProperties().putAll(p);
-		//			}
-		//		  }
-		//			query2Resource.execute(tq);
-		//			return query2Resource.getQueryCsvExport(queryName);
-		//		} catch (Exception e) {
-		//			log.error("Error exporting CSV for file: " + file, e);
-		//			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		//		}
-		throw new RuntimeException("Not implemented.");
-	}
+   /**
+    * Export the query response to JSON.
+    * 
+    * @param file           The file
+    * @param formatter      The cellset formatter
+    * @param servletRequest The servlet request
+    * @return A response containing a JSON query response.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/saiku/json")
+   public Response exportJson(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @Context HttpServletRequest servletRequest) {
+      // try {
+      // Response f = repository.getResource(file);
+      // String fileContent = new String( (byte[]) f.getEntity());
+      // fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
+      // String queryName = UUID.randomUUID().toString();
+      //// query2Resource.createQuery(null, null, null, null, fileContent, queryName,
+      // null);
+      //// QueryResult qr = query2Resource.execute(queryName, formatter, 0);
+      // Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
+      // ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null,
+      // null);
+      // if (parameters != null) {
+      // tq.getParameters().putAll(parameters);
+      // }
+      // if (StringUtils.isNotBlank(formatter)) {
+      // HashMap<String, Object> p = new HashMap<>();
+      // p.put("saiku.olap.result.formatter", formatter);
+      // if (tq.getProperties() == null) {
+      // tq.setProperties(p);
+      // } else {
+      // tq.getProperties().putAll(p);
+      // }
+      // }
+      // QueryResult qr = query2Resource.execute(tq);
+      // return Response.ok().entity(qr).build();
+      // } catch (Exception e) {
+      // log.error("Error exporting JSON for file: " + file, e);
+      // return
+      // Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      // }
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Export the query response to JSON.
-	 * @param file The file
-	 * @param formatter The cellset formatter
-	 * @param servletRequest The servlet request
-	 * @return A response containing a JSON query response.
-	 */
-	@GET
-	@Produces({"application/json" })
-	@Path("/saiku/json")
-	public Response exportJson(@QueryParam("file") String file, 
-			@QueryParam("formatter") String formatter,
-			@Context HttpServletRequest servletRequest) 
-	{
-		//		try {
-		//			Response f = repository.getResource(file);
-		//			String fileContent = new String( (byte[]) f.getEntity());
-		//			fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
-		//			String queryName = UUID.randomUUID().toString();
-		////			query2Resource.createQuery(null,  null,  null, null, fileContent, queryName, null);
-		////			QueryResult qr = query2Resource.execute(queryName, formatter, 0);
-		//			Map<String, String> parameters = ServletUtil.getParameters(servletRequest);
-		//			ThinQuery tq = query2Resource.createQuery(queryName, fileContent, null, null);
-		//			if (parameters != null) {
-		//				tq.getParameters().putAll(parameters);
-		//			}
-		//		  if (StringUtils.isNotBlank(formatter)) {
-		//			HashMap<String, Object> p = new HashMap<>();
-		//			p.put("saiku.olap.result.formatter", formatter);
-		//			if (tq.getProperties() == null) {
-		//			  tq.setProperties(p);
-		//			} else {
-		//			  tq.getProperties().putAll(p);
-		//			}
-		//		  }
-		//			QueryResult qr = query2Resource.execute(tq);
-		//			return Response.ok().entity(qr).build();
-		//		} catch (Exception e) {
-		//			log.error("Error exporting JSON for file: " + file, e);
-		//			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		//		}
-		throw new RuntimeException("Not implemented.");
-	}
+   /**
+    * Export the current resultset to an HTML file.
+    * 
+    * @param file           The file
+    * @param formatter      The formatter
+    * @param css            The css
+    * @param tableonly      Table only, or include chart
+    * @param wrapcontent    Wrap content
+    * @param servletRequest The servlet reaquest.
+    * @return A reponse containing the HTML export.
+    */
+   @GET
+   @Produces({ "text/html" })
+   @Path("/saiku/html")
+   public Response exportHtml(@QueryParam("file") String file, @QueryParam("formatter") String formatter,
+         @QueryParam("css") @DefaultValue("false") Boolean css,
+         @QueryParam("tableonly") @DefaultValue("false") Boolean tableonly,
+         @QueryParam("wrapcontent") @DefaultValue("true") Boolean wrapcontent,
+         @Context HttpServletRequest servletRequest) {
+      // try {
+      // Response f = repository.getResource(file);
+      // String fileContent = new String( (byte[]) f.getEntity());
+      // fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
+      // String queryName = UUID.randomUUID().toString();
+      // query2Resource.createQuery(queryName, fileContent, null, null);
+      // return query2Resource.exportHtml(queryName, formatter, css, tableonly,
+      // wrapcontent);
+      // } catch (Exception e) {
+      // log.error("Error exporting JSON for file: " + file, e);
+      // return
+      // Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      // }
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Export the current resultset to an HTML file.
-	 * @param file The file
-	 * @param formatter The formatter
-	 * @param css The css
-	 * @param tableonly Table only, or include chart
-	 * @param wrapcontent Wrap content
-	 * @param servletRequest The servlet reaquest.
-	 * @return A reponse containing the HTML export.
-	 */
-	@GET
-	@Produces({"text/html" })
-	@Path("/saiku/html")
-	public Response exportHtml(@QueryParam("file") String file,
-			@QueryParam("formatter") String formatter,
-			@QueryParam("css") @DefaultValue("false") Boolean css,
-			@QueryParam("tableonly") @DefaultValue("false") Boolean tableonly,
-			@QueryParam("wrapcontent") @DefaultValue("true") Boolean wrapcontent,
-			@Context HttpServletRequest servletRequest)
-	{
-		//	try {
-		//	  Response f = repository.getResource(file);
-		//	  String fileContent = new String( (byte[]) f.getEntity());
-		//	  fileContent = ServletUtil.replaceParameters(servletRequest, fileContent);
-		//	  String queryName = UUID.randomUUID().toString();
-		//	  query2Resource.createQuery(queryName, fileContent, null, null);
-		//	  return query2Resource.exportHtml(queryName, formatter, css, tableonly, wrapcontent);
-		//	} catch (Exception e) {
-		//	  log.error("Error exporting JSON for file: " + file, e);
-		//	  return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		//	}
-		throw new RuntimeException("Not implemented.");
-	}
+   /**
+    * Export chart to a file.
+    * 
+    * @param type The export type (png, svg, jpeg)
+    * @param svg  The SVG
+    * @param size The size
+    * @param name The name
+    * @return A reponse containing the chart export.
+    */
+   @POST
+   @Produces({ "image/*" })
+   @Path("/saiku/chart")
+   public Response exportChart(@FormParam("type") @DefaultValue("png") String type, @FormParam("svg") String svg,
+         @FormParam("size") Integer size, @FormParam("name") String name) {
+      // try {
+      // final String imageType = type.toUpperCase();
+      // Converter converter = Converter.byType("PDF");
+      // if (converter == null)
+      // {
+      // throw new Exception("Image convert is null");
+      // }
+      //
+      //
+      // // resp.setContentType(converter.getContentType());
+      // // resp.setHeader("Content-disposition", "attachment; filename=chart." +
+      // converter.getExtension());
+      // // final Integer size = req.getParameter("size") != null?
+      // Integer.parseInt(req.getParameter("size")) : null;
+      // // final String svgDocument = req.getParameter("svg");
+      // // if (svgDocument == null)
+      // // {
+      // // resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'svg'
+      // parameter");
+      // // return;
+      // // }
+      // if (StringUtils.isBlank(svg)) {
+      // throw new Exception("Missing 'svg' parameter");
+      // }
+      // final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
+      // final ByteArrayOutputStream out = new ByteArrayOutputStream();
+      // converter.convert(in, out, size);
+      // out.flush();
+      // byte[] doc = out.toByteArray();
+      // byte[] b = null;
+      // if(getVersion()!=null && !getVersion().contains("EE")) {
+      // ByteArrayOutputStream baos = new ByteArrayOutputStream();
+      //
+      // PdfReader reader = new PdfReader(doc);
+      // PdfStamper pdfStamper = new PdfStamper(reader,
+      // baos);
+      //
+      // URL dir_url =
+      // ExporterResource.class.getResource("/org/saiku/web/svg/watermark.png");
+      // Image image = Image.getInstance(dir_url);
+      //
+      //
+      // for (int i = 1; i <= reader.getNumberOfPages(); i++) {
+      //
+      // PdfContentByte content = pdfStamper.getOverContent(i);
+      //
+      //
+      // image.setAbsolutePosition(450f, 280f);
+      // /*image.setAbsolutePosition(reader.getPageSize(1).getWidth() -
+      // image.getScaledWidth(), reader.getPageSize
+      // (1).getHeight() - image.getScaledHeight());*/
+      // //image.setAlignment(Image.MIDDLE);
+      // content.addImage(image);
+      // }
+      // pdfStamper.close();
+      // b = baos.toByteArray();
+      // }
+      // else{
+      // b = doc;
+      // }
+      //
+      //
+      // if(!type.equals("pdf")) {
+      //
+      // PDDocument document = PDDocument.load(new ByteArrayInputStream(b),
+      // (String)null);
+      //
+      // PDPageTree pdPages = document.getDocumentCatalog().getPages();
+      // PDPage page = pdPages.get(0);
+      // BufferedImage o = new PDFRenderer(document).renderImage(0);
+      // ByteArrayOutputStream imgb = new ByteArrayOutputStream();
+      // String ct = "";
+      // String ext = "";
+      // if(type.equals("png")){
+      // ct = "image/png";
+      // ext = "png";
+      // }
+      // else if(type.equals("jpg")){
+      // ct = "image/jpg";
+      // ext = "jpg";
+      // }
+      // ImageIO.write(o, type, imgb);
+      // byte[] outfile = imgb.toByteArray();
+      // if(name == null || name.equals("")){
+      // name = "chart";
+      // }
+      // return Response.ok(outfile).type(ct).header(
+      // "content-disposition",
+      // "attachment; filename = "+name+"." + ext).header(
+      // "content-length", outfile.length).build();
+      // }
+      // else{
+      // if(name == null || name.equals("")){
+      // name = "chart";
+      // }
+      // return Response.ok(b).type(converter.getContentType()).header(
+      // "content-disposition",
+      // "attachment; filename = "+name+"." + converter.getExtension()).header(
+      // "content-length", b.length).build();
+      // }
+      // } catch (Exception e) {
+      // log.error("Error exporting Chart to " + type, e);
+      // return
+      // Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      // }
 
-	/**
-	 * Export chart to a file.
-	 * @param type The export type (png, svg, jpeg)
-	 * @param svg The SVG
-	 * @param size The size
-	 * @param name The name
-	 * @return A reponse containing the chart export.
-	 */
-	@POST
-	@Produces({"image/*" })
-	@Path("/saiku/chart")
-	public Response exportChart(
-			@FormParam("type") @DefaultValue("png")  String type,
-			@FormParam("svg") String svg,
-			@FormParam("size") Integer size,
-			@FormParam("name") String name)
-	{
-		//		try {
-		//			final String imageType = type.toUpperCase();
-		//			Converter converter = Converter.byType("PDF");
-		//			if (converter == null)
-		//			{
-		//				throw new Exception("Image convert is null");
-		//			}
-		//
-		//
-		//			//		       resp.setContentType(converter.getContentType());
-		//			//		       resp.setHeader("Content-disposition", "attachment; filename=chart." + converter.getExtension());
-		//			//		       final Integer size = req.getParameter("size") != null? Integer.parseInt(req.getParameter("size")) : null;
-		//			//		       final String svgDocument = req.getParameter("svg");
-		//			//		       if (svgDocument == null)
-		//			//		       {
-		//			//		           resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Missing 'svg' parameter");
-		//			//		           return;
-		//			//		       }
-		//			if (StringUtils.isBlank(svg)) {
-		//				throw new Exception("Missing 'svg' parameter");
-		//			}
-		//			final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
-		//			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-		//			converter.convert(in, out, size);
-		//			out.flush();
-		//			byte[] doc = out.toByteArray();
-		//		  byte[] b = null;
-		//		  if(getVersion()!=null && !getVersion().contains("EE")) {
-		//			ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		//
-		//			PdfReader reader = new PdfReader(doc);
-		//			PdfStamper pdfStamper = new PdfStamper(reader,
-		//				baos);
-		//
-		//			URL dir_url = ExporterResource.class.getResource("/org/saiku/web/svg/watermark.png");
-		//			Image image = Image.getInstance(dir_url);
-		//
-		//
-		//			for (int i = 1; i <= reader.getNumberOfPages(); i++) {
-		//
-		//			  PdfContentByte content = pdfStamper.getOverContent(i);
-		//
-		//
-		//			  image.setAbsolutePosition(450f, 280f);
-		//			/*image.setAbsolutePosition(reader.getPageSize(1).getWidth() - image.getScaledWidth(), reader.getPageSize
-		//				(1).getHeight() - image.getScaledHeight());*/
-		//			  //image.setAlignment(Image.MIDDLE);
-		//			  content.addImage(image);
-		//			}
-		//			pdfStamper.close();
-		//			b = baos.toByteArray();
-		//		  }
-		//		  else{
-		//			b = doc;
-		//		  }
-		//
-		//
-		//		  if(!type.equals("pdf")) {
-		//
-		//			PDDocument document = PDDocument.load(new ByteArrayInputStream(b), (String)null);
-		//
-		//			PDPageTree pdPages = document.getDocumentCatalog().getPages();
-		//			PDPage page = pdPages.get(0);
-		//			BufferedImage o = new PDFRenderer(document).renderImage(0);
-		//			ByteArrayOutputStream imgb = new ByteArrayOutputStream();
-		//			String ct = "";
-		//			String ext = "";
-		//			if(type.equals("png")){
-		//			  ct = "image/png";
-		//			  ext = "png";
-		//			}
-		//			else if(type.equals("jpg")){
-		//			  ct = "image/jpg";
-		//			  ext = "jpg";
-		//			}
-		//			ImageIO.write(o, type, imgb);
-		//			byte[] outfile = imgb.toByteArray();
-		//			if(name == null || name.equals("")){
-		//			  name = "chart";
-		//			}
-		//			return Response.ok(outfile).type(ct).header(
-		//				"content-disposition",
-		//				"attachment; filename = "+name+"." + ext).header(
-		//				"content-length", outfile.length).build();
-		//		  }
-		//		  else{
-		//            if(name == null || name.equals("")){
-		//              name = "chart";
-		//            }
-		//			return Response.ok(b).type(converter.getContentType()).header(
-		//				"content-disposition",
-		//				"attachment; filename = "+name+"." + converter.getExtension()).header(
-		//				"content-length", b.length).build();
-		//		  }
-		//		} catch (Exception e) {
-		//			log.error("Error exporting Chart to  " + type, e);
-		//			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		//		}
+      try {
+         Converter converter = Converter.byType("PDF");
+         if (converter == null) {
+            throw new Exception("Image convert is null");
+         }
 
-		try {
-			Converter converter = Converter.byType("PDF");
-			if (converter == null)
-			{
-				throw new Exception("Image convert is null");
-			}
+         if (StringUtils.isBlank(svg)) {
+            throw new Exception("Missing 'svg' parameter");
+         }
+         final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
+         final ByteArrayOutputStream out = new ByteArrayOutputStream();
+         converter.convert(in, out, size);
+         out.flush();
+         byte[] doc = out.toByteArray();
+         byte[] b = doc;
 
-			if (StringUtils.isBlank(svg)) {
-				throw new Exception("Missing 'svg' parameter");
-			}
-			final InputStream in = new ByteArrayInputStream(svg.getBytes("UTF-8"));
-			final ByteArrayOutputStream out = new ByteArrayOutputStream();
-			converter.convert(in, out, size);
-			out.flush();
-			byte[] doc = out.toByteArray();
-			byte[] b = doc;
+         if (!type.equals("pdf")) {
+            PDDocument document = PDDocument.load(new ByteArrayInputStream(b), (String) null);
 
-			if(!type.equals("pdf")) {
-				PDDocument document = PDDocument.load(new ByteArrayInputStream(b), (String)null);
-
-				PDPageTree pdPages = document.getDocumentCatalog().getPages();
-				PDPage page = pdPages.get(0);
-				BufferedImage o = new PDFRenderer(document).renderImage(0);
-				ByteArrayOutputStream imgb = new ByteArrayOutputStream();
-				String ct = "";
-				String ext = "";
-				if(type.equals("png")){
-					ct = "image/png";
-					ext = "png";
-				}
-				else if(type.equals("jpg")){
-					ct = "image/jpg";
-					ext = "jpg";
-				}
-				ImageIO.write(o, type, imgb);
-				byte[] outfile = imgb.toByteArray();
-				if(name == null || name.equals("")){
-					name = "chart";
-				}
-				return Response.ok(outfile).type(ct).header(
-						"content-disposition",
-						"attachment; filename = "+name+"." + ext).header(
-								"content-length", outfile.length).build();
-			}
-			else{
-				if(name == null || name.equals("")){
-					name = "chart";
-				}
-				return Response.ok(b).type(converter.getContentType()).header(
-						"content-disposition",
-						"attachment; filename = "+name+"." + converter.getExtension()).header(
-								"content-length", b.length).build();
-			}
-		} catch (Exception e) {
-			log.error("Error exporting Chart to  " + type, e);
-			return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
-		}
-	}
+            PDPageTree pdPages = document.getDocumentCatalog().getPages();
+            PDPage page = pdPages.get(0);
+            BufferedImage o = new PDFRenderer(document).renderImage(0);
+            ByteArrayOutputStream imgb = new ByteArrayOutputStream();
+            String ct = "";
+            String ext = "";
+            if (type.equals("png")) {
+               ct = "image/png";
+               ext = "png";
+            } else if (type.equals("jpg")) {
+               ct = "image/jpg";
+               ext = "jpg";
+            }
+            ImageIO.write(o, type, imgb);
+            byte[] outfile = imgb.toByteArray();
+            if (name == null || name.equals("")) {
+               name = "chart";
+            }
+            return Response.ok(outfile).type(ct)
+                  .header("content-disposition", "attachment; filename = " + name + "." + ext)
+                  .header("content-length", outfile.length).build();
+         } else {
+            if (name == null || name.equals("")) {
+               name = "chart";
+            }
+            return Response.ok(b).type(converter.getContentType())
+                  .header("content-disposition", "attachment; filename = " + name + "." + converter.getExtension())
+                  .header("content-length", b.length).build();
+         }
+      } catch (Exception e) {
+         log.error("Error exporting Chart to  " + type, e);
+         return Response.serverError().entity(e.getMessage()).status(Status.INTERNAL_SERVER_ERROR).build();
+      }
+   }
 
 }

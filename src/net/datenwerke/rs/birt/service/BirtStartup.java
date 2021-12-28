@@ -20,31 +20,28 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class BirtStartup {
-	
-	@Inject
-	public BirtStartup(
-			HookHandlerService hookHandlerService,
-			BirtReportUploadHooker birtReportUploadHooker, 
-			BirtReportEngineProviderHooker birtReportEngineProviderHooker, 
-			
-			Provider<BaseBirtOutputGeneratorProvider> baseOutputGenerators,
-			
-			Provider<BirtCommand> birtCommand,
-			Provider<BirtShutdownCommand> birtShutdownCommand
-			
-	){
-		hookHandlerService.attachHooker(FileUploadHandlerHook.class ,birtReportUploadHooker);
-		hookHandlerService.attachHooker(ReportEngineProviderHook.class, birtReportEngineProviderHooker);
-		
-		hookHandlerService.attachHooker(ReportTypeProviderHook.class, new BirtReportTypeProviderHooker());
-		hookHandlerService.attachHooker(DatasourceProviderHook.class, new BirtReportDatasourceProviderHooker());
-		
-		hookHandlerService.attachHooker(TerminalCommandHook.class, birtCommand);
-		hookHandlerService.attachHooker(BirtSubCommandHook.class, birtShutdownCommand);
-		
-		/* base exporters */
-		hookHandlerService.attachHooker(BirtOutputGeneratorProviderHook.class, baseOutputGenerators, HookHandlerService.PRIORITY_LOW);
-	}
 
+   @Inject
+   public BirtStartup(HookHandlerService hookHandlerService, BirtReportUploadHooker birtReportUploadHooker,
+         BirtReportEngineProviderHooker birtReportEngineProviderHooker,
+
+         Provider<BaseBirtOutputGeneratorProvider> baseOutputGenerators,
+
+         Provider<BirtCommand> birtCommand, Provider<BirtShutdownCommand> birtShutdownCommand
+
+   ) {
+      hookHandlerService.attachHooker(FileUploadHandlerHook.class, birtReportUploadHooker);
+      hookHandlerService.attachHooker(ReportEngineProviderHook.class, birtReportEngineProviderHooker);
+
+      hookHandlerService.attachHooker(ReportTypeProviderHook.class, new BirtReportTypeProviderHooker());
+      hookHandlerService.attachHooker(DatasourceProviderHook.class, new BirtReportDatasourceProviderHooker());
+
+      hookHandlerService.attachHooker(TerminalCommandHook.class, birtCommand);
+      hookHandlerService.attachHooker(BirtSubCommandHook.class, birtShutdownCommand);
+
+      /* base exporters */
+      hookHandlerService.attachHooker(BirtOutputGeneratorProviderHook.class, baseOutputGenerators,
+            HookHandlerService.PRIORITY_LOW);
+   }
 
 }

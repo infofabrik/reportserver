@@ -10,29 +10,27 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.NumberTypeDto;
  */
 public class ColumnFormatNumberDtoDec extends ColumnFormatNumberDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFormatNumberDtoDec() {
+      super();
+      init();
+   }
 
-	public ColumnFormatNumberDtoDec() {
-		super();
-		init();
-	}
+   private void init() {
+      setNumberOfDecimalPlaces(2);
+      setType(NumberTypeDto.DEFAULT);
+   }
 
-	private void init() {
-		setNumberOfDecimalPlaces(2);
-		setType(NumberTypeDto.DEFAULT);
-	}
+   @Override
+   public ColumnFormatDto cloneFormat() {
+      ColumnFormatNumberDtoDec clone = new ColumnFormatNumberDtoDec();
 
-	@Override
-	public ColumnFormatDto cloneFormat() {
-		ColumnFormatNumberDtoDec clone = new ColumnFormatNumberDtoDec();
-		
-		clone.setThousandSeparator(isThousandSeparator());
-		clone.setNumberOfDecimalPlaces(getNumberOfDecimalPlaces());
-		clone.setType(getType());
-		
-		return clone;
-	}
+      clone.setThousandSeparator(isThousandSeparator());
+      clone.setNumberOfDecimalPlaces(getNumberOfDecimalPlaces());
+      clone.setType(getType());
 
+      return clone;
+   }
 
 }

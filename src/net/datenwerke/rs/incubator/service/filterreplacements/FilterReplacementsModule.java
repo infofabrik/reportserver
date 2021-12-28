@@ -8,13 +8,13 @@ import net.datenwerke.rs.incubator.service.filterreplacements.analytics.Analytic
 
 public class FilterReplacementsModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		bind(FilterReplacementsStartup.class).asEagerSingleton();
-		
-		/* create factory */
-		install(new FactoryModuleBuilder().build(AggWrapperFactory.class));
-		install(new FactoryModuleBuilder().build(AnalyticalFunctionWrapperFactory.class));
-	}
+   @Override
+   protected void configure() {
+      bind(FilterReplacementsStartup.class).asEagerSingleton();
+
+      /* create factory */
+      install(new FactoryModuleBuilder().build(AggWrapperFactory.class));
+      install(new FactoryModuleBuilder().build(AnalyticalFunctionWrapperFactory.class));
+   }
 
 }

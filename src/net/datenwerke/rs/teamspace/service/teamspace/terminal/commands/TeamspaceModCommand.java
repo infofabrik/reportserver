@@ -18,41 +18,32 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class TeamspaceModCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "teamspacemod";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public TeamspaceModCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "teamspacemod";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = TeamSpaceMessages.class,
-		name = BASE_COMMAND,
-		description = "commandTeamspacemod_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<TeamspaceModSubCommandHook> list =  hookHandler.getHookers(TeamspaceModSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public TeamspaceModCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = TeamSpaceMessages.class, name = BASE_COMMAND, description = "commandTeamspacemod_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<TeamspaceModSubCommandHook> list = hookHandler.getHookers(TeamspaceModSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

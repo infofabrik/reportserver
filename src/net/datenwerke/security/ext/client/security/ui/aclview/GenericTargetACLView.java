@@ -13,34 +13,33 @@ import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserM
 
 public class GenericTargetACLView extends BasicACLView<GenericTargetIdentifier> {
 
-	@Inject
-	public GenericTargetACLView(
-		@UserManagerTreeBasicSingleton UITree userManagerTree) {
-		super(userManagerTree);
-	}
-	
-	protected boolean isIncludeInheritedACEs() {
-		return false;
-	}
+   @Inject
+   public GenericTargetACLView(@UserManagerTreeBasicSingleton UITree userManagerTree) {
+      super(userManagerTree);
+   }
 
-	protected void doInitialize(AsyncCallback<SecurityViewInformation> callback) {
-		/* load neccessary information */
-		securityDao.loadGenericSecurityViewInformation(target, callback);
-	}
+   protected boolean isIncludeInheritedACEs() {
+      return false;
+   }
 
-	protected void doRemoveACEs(final List<AceDto> aces, AsyncCallback<Void> callback) {
-		securityDao.removeACEs(target, aces, callback);
-	}
-	
-	protected void doAddAce(AsyncCallback<AceDto> callback) {
-		securityDao.addACE(target, callback);
-	}
-	
-	protected void doAceMoved(AceDto ace, int index, AsyncCallback<AceDto> callback) {
-		securityDao.aceMoved(target, ace, index, callback);
-	}
+   protected void doInitialize(AsyncCallback<SecurityViewInformation> callback) {
+      /* load neccessary information */
+      securityDao.loadGenericSecurityViewInformation(target, callback);
+   }
 
-	protected void doEditACE(AceDto ace, AsyncCallback<AceDto> callback) {
-		securityDao.editACE(target, ace, callback);
-	}
+   protected void doRemoveACEs(final List<AceDto> aces, AsyncCallback<Void> callback) {
+      securityDao.removeACEs(target, aces, callback);
+   }
+
+   protected void doAddAce(AsyncCallback<AceDto> callback) {
+      securityDao.addACE(target, callback);
+   }
+
+   protected void doAceMoved(AceDto ace, int index, AsyncCallback<AceDto> callback) {
+      securityDao.aceMoved(target, ace, index, callback);
+   }
+
+   protected void doEditACE(AceDto ace, AsyncCallback<AceDto> callback) {
+      securityDao.editACE(target, ace, callback);
+   }
 }

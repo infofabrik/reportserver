@@ -13,6 +13,4 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ServerSidePropert
 @CorrespondingPoso(net.datenwerke.rs.core.service.reportmanager.entities.reports.interfaces.ServerSideProperty.class)
 public interface ServerSidePropertyDtoPA extends PropertyAccess<ServerSidePropertyDto> {
 
-
-
 }

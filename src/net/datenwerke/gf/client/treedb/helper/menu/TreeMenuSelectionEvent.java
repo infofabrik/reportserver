@@ -5,5 +5,5 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface TreeMenuSelectionEvent {
 
-	public void menuItemSelected(UITree tree, AbstractNodeDto node);
+   public void menuItemSelected(UITree tree, AbstractNodeDto node);
 }

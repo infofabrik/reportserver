@@ -82,15 +82,10 @@ public class DatasourceSelectionField implements HasValueChangeHandlers<Datasour
    private boolean shouldShowDefaultAdditionalConfig = false;
 
    @Inject
-   public DatasourceSelectionField(
-         ClipboardUiService clipboardService, 
-         DatasourceUIService datasourceService,
-         @Assisted boolean displayOptionalAdditionalConfigFields,
-         @Assisted Container container, 
-         @Assisted UITree datasourceTree, 
-         @Assisted DatasourceDao generalPropertiesDao,
-         @Assisted Class<? extends DatasourceDefinitionDto>... types
-         ) {
+   public DatasourceSelectionField(ClipboardUiService clipboardService, DatasourceUIService datasourceService,
+         @Assisted boolean displayOptionalAdditionalConfigFields, @Assisted Container container,
+         @Assisted UITree datasourceTree, @Assisted DatasourceDao generalPropertiesDao,
+         @Assisted Class<? extends DatasourceDefinitionDto>... types) {
 
       /* store objects */
       this.clipboardService = clipboardService;

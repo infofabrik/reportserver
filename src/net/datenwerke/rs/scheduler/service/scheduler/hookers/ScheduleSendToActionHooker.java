@@ -16,48 +16,45 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedE
 
 public class ScheduleSendToActionHooker implements ScheduleConfigProviderHook {
 
-	private final Provider<SendToReportAction> sendToActionProvider;
-	
-	@Inject
-	public ScheduleSendToActionHooker(
-		Provider<SendToReportAction> sendToActionProvider
-		) {
-		
-		/* store objects */
-		this.sendToActionProvider = sendToActionProvider;
-	}
+   private final Provider<SendToReportAction> sendToActionProvider;
 
-	
-	@Override
-	public void adaptJob(ReportExecuteJob job,
-			ReportScheduleDefinition scheduleDTO)
-			throws InvalidConfigurationException {
-		for(ReportScheduleDefinitionSendToConfig config: scheduleDTO.getSendToConfigs()){
-			/* create action */
-			SendToReportAction sendToAction = sendToActionProvider.get();
-			sendToAction.setSendToId(config.getId());
-			sendToAction.setConfigValues(config.getValues());
-			try {
-				job.addAction(sendToAction);
-			} catch (ActionNotSupportedException e) {
-				throw new InvalidConfigurationException(e);
-			}
-		}
-	}
+   @Inject
+   public ScheduleSendToActionHooker(Provider<SendToReportAction> sendToActionProvider) {
 
-	@Override
-	public void adaptScheduleDefinition(ReportScheduleDefinition rsd, ReportExecuteJob job) {
-		List<AbstractAction> actions = job.getActions();
-		if(null == actions)
-			return;
-		
-		for(AbstractAction action : actions){
-			if(! (action instanceof SendToReportAction))
-				continue;
-			
-			SendToReportAction sendToAction = (SendToReportAction) action;
-			rsd.addSendToConfigs(new ReportScheduleDefinitionSendToConfig(sendToAction.getSendToId(), sendToAction.getValueMap()));
-		}
-	}
+      /* store objects */
+      this.sendToActionProvider = sendToActionProvider;
+   }
+
+   @Override
+   public void adaptJob(ReportExecuteJob job, ReportScheduleDefinition scheduleDTO)
+         throws InvalidConfigurationException {
+      for (ReportScheduleDefinitionSendToConfig config : scheduleDTO.getSendToConfigs()) {
+         /* create action */
+         SendToReportAction sendToAction = sendToActionProvider.get();
+         sendToAction.setSendToId(config.getId());
+         sendToAction.setConfigValues(config.getValues());
+         try {
+            job.addAction(sendToAction);
+         } catch (ActionNotSupportedException e) {
+            throw new InvalidConfigurationException(e);
+         }
+      }
+   }
+
+   @Override
+   public void adaptScheduleDefinition(ReportScheduleDefinition rsd, ReportExecuteJob job) {
+      List<AbstractAction> actions = job.getActions();
+      if (null == actions)
+         return;
+
+      for (AbstractAction action : actions) {
+         if (!(action instanceof SendToReportAction))
+            continue;
+
+         SendToReportAction sendToAction = (SendToReportAction) action;
+         rsd.addSendToConfigs(
+               new ReportScheduleDefinitionSendToConfig(sendToAction.getSendToId(), sendToAction.getValueMap()));
+      }
+   }
 
 }

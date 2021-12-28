@@ -10,85 +10,82 @@ import net.datenwerke.gf.client.history.HistoryLocation;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.gf.client.history.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.gf.client.history.dto")
 public class HistoryLink {
 
-	@ExposeToClient(disableHtmlEncode=true)
-	private String historyToken;
-	
-	@ExposeToClient
-	private String objectCaption;
-	
-	@ExposeToClient
-	private String historyLinkBuilderId;
-	
-	@ExposeToClient
-	private String historyLinkBuilderName;
-	
-	@ExposeToClient
-	private String historyLinkBuilderIcon;
-	
-	public HistoryLink() {
-	}
+   @ExposeToClient(disableHtmlEncode = true)
+   private String historyToken;
 
-	public HistoryLink(String objectCaption, String historyToken,
-			String historyLinkBuilderId) {
-		super();
-		this.objectCaption = objectCaption;
-		this.historyToken = historyToken;
-		this.historyLinkBuilderId = historyLinkBuilderId;
-		this.historyLinkBuilderName = historyLinkBuilderId;
-	}
+   @ExposeToClient
+   private String objectCaption;
 
-	public String getHistoryToken() {
-		return historyToken;
-	}
+   @ExposeToClient
+   private String historyLinkBuilderId;
 
-	public void setHistoryToken(String historyToken) {
-		this.historyToken = historyToken;
-	}
+   @ExposeToClient
+   private String historyLinkBuilderName;
 
-	public String getObjectCaption() {
-		return objectCaption;
-	}
+   @ExposeToClient
+   private String historyLinkBuilderIcon;
 
-	public void setObjectCaption(String objectCaption) {
-		this.objectCaption = objectCaption;
-	}
+   public HistoryLink() {
+   }
 
-	public String getHistoryLinkBuilderId() {
-		return historyLinkBuilderId;
-	}
+   public HistoryLink(String objectCaption, String historyToken, String historyLinkBuilderId) {
+      super();
+      this.objectCaption = objectCaption;
+      this.historyToken = historyToken;
+      this.historyLinkBuilderId = historyLinkBuilderId;
+      this.historyLinkBuilderName = historyLinkBuilderId;
+   }
 
-	public void setHistoryLinkBuilderId(String historyLinkBuilderId) {
-		this.historyLinkBuilderId = historyLinkBuilderId;
-	}
+   public String getHistoryToken() {
+      return historyToken;
+   }
 
-	public String getLink() {
-		if(null == historyToken)
-			return null;
-		if(historyToken.endsWith(HistoryLocation.SEP_LOC_PARAM))
-			return historyToken + "nonce" + HistoryLocation.SEP_PARAM_KEY_VALUE + new Random().nextInt();
-		return historyToken + HistoryLocation.SEP_PARAMS + "nonce" + HistoryLocation.SEP_PARAM_KEY_VALUE + new Random().nextInt();
-	}
+   public void setHistoryToken(String historyToken) {
+      this.historyToken = historyToken;
+   }
 
-	public void setHistoryLinkBuilderName(String historyLinkBuilderName) {
-		this.historyLinkBuilderName = historyLinkBuilderName;
-	}
+   public String getObjectCaption() {
+      return objectCaption;
+   }
 
-	public String getHistoryLinkBuilderName() {
-		return historyLinkBuilderName;
-	}
+   public void setObjectCaption(String objectCaption) {
+      this.objectCaption = objectCaption;
+   }
 
-	public void setHistoryLinkBuilderIcon(String historyLinkBuilderIcon) {
-		this.historyLinkBuilderIcon = historyLinkBuilderIcon;
-	}
+   public String getHistoryLinkBuilderId() {
+      return historyLinkBuilderId;
+   }
 
-	public String getHistoryLinkBuilderIcon() {
-		return historyLinkBuilderIcon;
-	}
-	
-	
+   public void setHistoryLinkBuilderId(String historyLinkBuilderId) {
+      this.historyLinkBuilderId = historyLinkBuilderId;
+   }
+
+   public String getLink() {
+      if (null == historyToken)
+         return null;
+      if (historyToken.endsWith(HistoryLocation.SEP_LOC_PARAM))
+         return historyToken + "nonce" + HistoryLocation.SEP_PARAM_KEY_VALUE + new Random().nextInt();
+      return historyToken + HistoryLocation.SEP_PARAMS + "nonce" + HistoryLocation.SEP_PARAM_KEY_VALUE
+            + new Random().nextInt();
+   }
+
+   public void setHistoryLinkBuilderName(String historyLinkBuilderName) {
+      this.historyLinkBuilderName = historyLinkBuilderName;
+   }
+
+   public String getHistoryLinkBuilderName() {
+      return historyLinkBuilderName;
+   }
+
+   public void setHistoryLinkBuilderIcon(String historyLinkBuilderIcon) {
+      this.historyLinkBuilderIcon = historyLinkBuilderIcon;
+   }
+
+   public String getHistoryLinkBuilderIcon() {
+      return historyLinkBuilderIcon;
+   }
+
 }

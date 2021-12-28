@@ -10,15 +10,15 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
  */
 public interface SystemConsoleViewDomainHook extends Hook {
 
-	/**
-	 * The text used in the navigation panel.
-	 */
-	public String getNavigationText();
-	
-	/**
-	 * The icon used in the navigation panel
-	 */
-	public ImageResource getNavigationIcon();
-	
-	public Widget getMainWidget();
+   /**
+    * The text used in the navigation panel.
+    */
+   public String getNavigationText();
+
+   /**
+    * The icon used in the navigation panel
+    */
+   public ImageResource getNavigationIcon();
+
+   public Widget getMainWidget();
 }

@@ -12,22 +12,24 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterInstanceCreat
 
 public class FileSelectionParameterInstanceCreatedFromDtoHooker implements ParameterInstanceCreatedFromDtoHook {
 
-	private FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper;
+   private FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper;
 
-	@Inject
-	public FileSelectionParameterInstanceCreatedFromDtoHooker(FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper) {
-		this.fileSelectionParameterDtoHelper = fileSelectionParameterDtoHelper;
-	}
-	
-	@Override
-	public boolean consumes(ParameterInstanceDto parameterInstanceDto) {
-		return (parameterInstanceDto instanceof FileSelectionParameterInstanceDto);
-	}
+   @Inject
+   public FileSelectionParameterInstanceCreatedFromDtoHooker(
+         FileSelectionParameterDtoHelper fileSelectionParameterDtoHelper) {
+      this.fileSelectionParameterDtoHelper = fileSelectionParameterDtoHelper;
+   }
 
-	@Override
-	public void posoCreated(ParameterInstanceDto parameterInstanceDto, ParameterInstance parameterInstance) {
-		
-		fileSelectionParameterDtoHelper.fixInstanceFromDto((FileSelectionParameterInstance)parameterInstance, (FileSelectionParameterInstanceDtoDec)parameterInstanceDto);
-	}
+   @Override
+   public boolean consumes(ParameterInstanceDto parameterInstanceDto) {
+      return (parameterInstanceDto instanceof FileSelectionParameterInstanceDto);
+   }
+
+   @Override
+   public void posoCreated(ParameterInstanceDto parameterInstanceDto, ParameterInstance parameterInstance) {
+
+      fileSelectionParameterDtoHelper.fixInstanceFromDto((FileSelectionParameterInstance) parameterInstance,
+            (FileSelectionParameterInstanceDtoDec) parameterInstanceDto);
+   }
 
 }

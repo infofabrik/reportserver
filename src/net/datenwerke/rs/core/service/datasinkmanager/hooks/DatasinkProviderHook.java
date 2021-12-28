@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 
 public interface DatasinkProviderHook extends Hook {
 
-	Collection<? extends Class<? extends DatasinkDefinition>> getDatasinks();
+   Collection<? extends Class<? extends DatasinkDefinition>> getDatasinks();
 
 }

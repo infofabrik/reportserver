@@ -44,11 +44,9 @@ public class AliasCommand implements TerminalCommandHook, ReloadConfigNotificati
          final XMLConfiguration config = (XMLConfiguration) configService.getConfig(AliasCmdModule.CONFIG_FILE);
          aliasTable.clear();
 
-         aliasTable.putAll(config.configurationsAt(ENTRY_PROPERTY)
-            .stream()
-            .collect(toMap(sub -> sub.getString(ENTRY_PROPERTY_ALIAS),
-                     sub -> sub.getString(ENTRY_PROPERTY_COMMAND))));
-         
+         aliasTable.putAll(config.configurationsAt(ENTRY_PROPERTY).stream().collect(
+               toMap(sub -> sub.getString(ENTRY_PROPERTY_ALIAS), sub -> sub.getString(ENTRY_PROPERTY_COMMAND))));
+
       } catch (Exception e) {
          logger.info("Error updating alias command configuration", e);
       }

@@ -17,46 +17,39 @@ import com.google.inject.Singleton;
 @Singleton
 public class DBHelperServiceImpl implements DBHelperService {
 
-	final private Provider<Set<DatabaseHelper>> helperProvider;
-	
-	@Inject
-	public DBHelperServiceImpl(
-		Provider<Set<DatabaseHelper>> helperProvider
-		){
-		this.helperProvider = helperProvider;
-	}
-	
-	public DatabaseHelper getDatabaseHelper(final String descriptor) {
-		if(null == descriptor)
-			return null;
-		
-		return helperProvider.get()
-			.stream()
-			.filter(helper -> descriptor.toLowerCase().equals(helper.getDescriptor().toLowerCase()))
-			.findAny()
-			.orElse(null);
-	}
+   final private Provider<Set<DatabaseHelper>> helperProvider;
 
-	public Set<DatabaseHelper> getDatabaseHelpers() {
-		return helperProvider.get();
-	}
+   @Inject
+   public DBHelperServiceImpl(Provider<Set<DatabaseHelper>> helperProvider) {
+      this.helperProvider = helperProvider;
+   }
 
-	@Override
-	public DatabaseHelper getDatabaseHelper(final Connection conn) {
-		if(null == conn)
-			return null;
-		
-		try {
-			return helperProvider.get()
-				.stream()
-				.filter(rethrowPredicate(
-						helper -> conn.getMetaData().getDatabaseProductName().toLowerCase().startsWith((helper.getName().toLowerCase()))))
-				.findAny()
-				.orElse(null);
-		} catch (SQLException e) {
-		}
-		
-		return null;
-	}
+   public DatabaseHelper getDatabaseHelper(final String descriptor) {
+      if (null == descriptor)
+         return null;
+
+      return helperProvider.get().stream()
+            .filter(helper -> descriptor.toLowerCase().equals(helper.getDescriptor().toLowerCase())).findAny()
+            .orElse(null);
+   }
+
+   public Set<DatabaseHelper> getDatabaseHelpers() {
+      return helperProvider.get();
+   }
+
+   @Override
+   public DatabaseHelper getDatabaseHelper(final Connection conn) {
+      if (null == conn)
+         return null;
+
+      try {
+         return helperProvider.get().stream().filter(rethrowPredicate(helper -> conn.getMetaData()
+               .getDatabaseProductName().toLowerCase().startsWith((helper.getName().toLowerCase())))).findAny()
+               .orElse(null);
+      } catch (SQLException e) {
+      }
+
+      return null;
+   }
 
 }

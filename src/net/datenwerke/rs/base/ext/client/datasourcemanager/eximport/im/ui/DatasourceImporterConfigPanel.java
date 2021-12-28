@@ -7,16 +7,15 @@ import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterConfigPanel;
 
 public class DatasourceImporterConfigPanel extends ImporterConfigPanel<DatasourceManagerImportConfigDto> {
 
-	@Inject
-	public DatasourceImporterConfigPanel(
-		DatasourceImporterItemsPanel itemsPanel,
-		DatasourceImporterMainPropertiesPanel mainPropertiesPanel) {
-		super(itemsPanel, mainPropertiesPanel);
-	}
+   @Inject
+   public DatasourceImporterConfigPanel(DatasourceImporterItemsPanel itemsPanel,
+         DatasourceImporterMainPropertiesPanel mainPropertiesPanel) {
+      super(itemsPanel, mainPropertiesPanel);
+   }
 
-	@Override
-	protected DatasourceManagerImportConfigDto createConfigObject() {
-		return new DatasourceManagerImportConfigDto();
-	}
+   @Override
+   protected DatasourceManagerImportConfigDto createConfigObject() {
+      return new DatasourceManagerImportConfigDto();
+   }
 
 }

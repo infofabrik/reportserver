@@ -1,6 +1,5 @@
 package net.datenwerke.rs.legacysaiku.client.saiku;
 
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -19,39 +18,39 @@ import net.datenwerke.rs.legacysaiku.client.saiku.ui.SaikuReportPreviewViewFacto
 import net.datenwerke.security.client.security.SecurityUIService;
 
 public class SaikuUiStartup {
-	
-	@Inject
-	public SaikuUiStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
-		
-		SaikuReportPreviewViewFactory saikuReportPreviewViewFactory,
-		
-		Provider<Saiku2Excel> saiku2Excel,
-		Provider<Saiku2PDF> saiku2PDF,
-		Provider<Saiku2CSV> saiku2CSV, 
-		Provider<Saiku2HTML> saiku2HTML,
-		Provider<Saiku2ChartHTML> saiku2ChartHTML
-		
-		
-		) {
-		
-		hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(saikuReportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
-		
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2Excel));
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2PDF), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2CSV), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2HTML), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2ChartHTML), HookHandlerService.PRIORITY_LOW);
-		
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+
+   @Inject
+   public SaikuUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
+
+         SaikuReportPreviewViewFactory saikuReportPreviewViewFactory,
+
+         Provider<Saiku2Excel> saiku2Excel, Provider<Saiku2PDF> saiku2PDF, Provider<Saiku2CSV> saiku2CSV,
+         Provider<Saiku2HTML> saiku2HTML, Provider<Saiku2ChartHTML> saiku2ChartHTML
+
+   ) {
+
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(saikuReportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2Excel));
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2PDF),
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2CSV),
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(saiku2HTML),
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class,
+            new ReportExporterExportReportHook(saiku2ChartHTML), HookHandlerService.PRIORITY_LOW);
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 
 }

@@ -10,21 +10,20 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  */
 public abstract class FilterSpecDtoDec extends FilterSpecDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public FilterSpecDtoDec() {
+      super();
+   }
 
-	public FilterSpecDtoDec() {
-		super();
-	}
+   public String toDisplayTitle() {
+      return "Filter";
+   }
 
-	public String toDisplayTitle(){
-		return "Filter";
-	}
+   public boolean isStillValid(TableReportDto report) {
+      return true;
+   }
 
-	public boolean isStillValid(TableReportDto report) {
-		return true;
-	}
-	
-	public abstract FilterSpecDto cloneFilter();
+   public abstract FilterSpecDto cloneFilter();
 
 }

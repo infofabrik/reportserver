@@ -5,5 +5,4 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface UserProfileCardProviderHook extends Hook, RpcPropertiesDialogCard {
 
-	
 }

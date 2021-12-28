@@ -11,45 +11,37 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.man.ManPageService;
 
-
 public class ManCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "man";
-	
-	private final ManPageService manpageService;
-	
-	@Inject
-	public ManCommand(ManPageService manpageService) {
-		this.manpageService = manpageService;
-	}
+   public static final String BASE_COMMAND = "man";
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final ManPageService manpageService;
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ManMessages.class,
-		name = BASE_COMMAND,
-		description = "commandMan_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		String arg = parser.getArgumentString();
-		
-		String manPage = manpageService.getManPageFailsafe("man/" + arg);
-		if(null == manPage)
-			return new CommandResult("Could not find manpage for: " + arg);
-		
-		return new CommandResult(manPage);
-	}
+   @Inject
+   public ManCommand(ManPageService manpageService) {
+      this.manpageService = manpageService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = ManMessages.class, name = BASE_COMMAND, description = "commandMan_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      String arg = parser.getArgumentString();
 
+      String manPage = manpageService.getManPageFailsafe("man/" + arg);
+      if (null == manPage)
+         return new CommandResult("Could not find manpage for: " + arg);
 
+      return new CommandResult(manPage);
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

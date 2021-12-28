@@ -7,5 +7,5 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 @HookConfig
 public interface StatementModificationHook extends Hook {
 
-	public String modifyStatement(String stmt, QueryBuilder queryBuilder);
+   public String modifyStatement(String stmt, QueryBuilder queryBuilder);
 }

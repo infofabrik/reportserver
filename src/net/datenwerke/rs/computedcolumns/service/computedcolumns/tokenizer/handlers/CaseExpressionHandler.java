@@ -8,17 +8,17 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class CaseExpressionHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
-		
-		strToken = strToken.toLowerCase().trim();
-		return "case".equals(strToken) ? new CaseExpressionToken(CaseType.CASE, greedy) :
-			   "when".equals(strToken) ? new CaseExpressionToken(CaseType.WHEN, greedy) :
-			   "then".equals(strToken) ? new CaseExpressionToken(CaseType.THEN, greedy) :
-	   		   "else".equals(strToken) ? new CaseExpressionToken(CaseType.ELSE, greedy) :
-		   	   "end".equals(strToken) ? new CaseExpressionToken(CaseType.END, greedy) :
-			   null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
+
+      strToken = strToken.toLowerCase().trim();
+      return "case".equals(strToken) ? new CaseExpressionToken(CaseType.CASE, greedy)
+            : "when".equals(strToken) ? new CaseExpressionToken(CaseType.WHEN, greedy)
+                  : "then".equals(strToken) ? new CaseExpressionToken(CaseType.THEN, greedy)
+                        : "else".equals(strToken) ? new CaseExpressionToken(CaseType.ELSE, greedy)
+                              : "end".equals(strToken) ? new CaseExpressionToken(CaseType.END, greedy) : null;
+   }
 
 }

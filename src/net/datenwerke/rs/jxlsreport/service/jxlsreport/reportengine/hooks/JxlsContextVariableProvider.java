@@ -10,16 +10,16 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public class JxlsContextVariableProvider implements Hook {
 
-	public void adaptContext(Context context) {
-		
-	}
+   public void adaptContext(Context context) {
 
-	public void adaptLegacyContext(Map<String, Object> beans) {
-		
-	}
+   }
 
-	public void finishedExport() {
-		
-	}
+   public void adaptLegacyContext(Map<String, Object> beans) {
+
+   }
+
+   public void finishedExport() {
+
+   }
 
 }

@@ -13,11 +13,9 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.gener
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class JxlsOutputGeneratorProviderHookAdapter implements JxlsOutputGeneratorProviderHook {
 
-	@Override
-	public Collection<JxlsOutputGenerator> provideGenerators()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<JxlsOutputGenerator> provideGenerators() {
+      return new HashSet();
+   }
 
 }

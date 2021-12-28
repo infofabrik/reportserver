@@ -20,65 +20,56 @@ import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterConfiguration;
 
+public class SchedulerListSubCommand implements SchedulerSubCommandHook {
 
-public class SchedulerListSubCommand implements SchedulerSubCommandHook{
+   public static final String BASE_COMMAND = "list";
 
-	public static final String BASE_COMMAND = "list";
-	
-	private final SchedulerService schedulerService;
+   private final SchedulerService schedulerService;
 
-	@Inject
-	public SchedulerListSubCommand(
-		SchedulerService schedulerService
-		){
-		
-		/* store objects */
-		this.schedulerService = schedulerService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Inject
+   public SchedulerListSubCommand(SchedulerService schedulerService) {
 
-	@Override
-	@CliHelpMessage(
-		messageClass = SchedulerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandScheduler_sub_list_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		JobFilterConfiguration filter = new JobFilterConfiguration();
-		
-		if(parser.hasOption("i")){
-			filter.setActive(false);
-			filter.setInActive(true);
-		} else {
-			filter.setActive(true);
-			filter.setInActive(false);
-		}
-		
-		RSTableModel table = new RSTableModel();
-		table.setTableDefinition(new TableDefinition(Arrays.asList(new String[]{"id", "type", "next firetime"})));
-		for (AbstractJob job : schedulerService.getJobsBy(filter)){
-			table.addDataRow(new RSStringTableRow(
-				String.valueOf(job.getId()), 
-				job.getClass().getSimpleName(),
-				null != job.getTrigger().getNextScheduledFireTime() ?
-						DateFormat.getDateTimeInstance().format(job.getTrigger().getNextScheduledFireTime()) : ""
-			));
-		}
-		
-		return new CommandResult(table);
-	}
+      /* store objects */
+      this.schedulerService = schedulerService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = SchedulerMessages.class, name = BASE_COMMAND, description = "commandScheduler_sub_list_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      JobFilterConfiguration filter = new JobFilterConfiguration();
+
+      if (parser.hasOption("i")) {
+         filter.setActive(false);
+         filter.setInActive(true);
+      } else {
+         filter.setActive(true);
+         filter.setInActive(false);
+      }
+
+      RSTableModel table = new RSTableModel();
+      table.setTableDefinition(new TableDefinition(Arrays.asList(new String[] { "id", "type", "next firetime" })));
+      for (AbstractJob job : schedulerService.getJobsBy(filter)) {
+         table.addDataRow(new RSStringTableRow(String.valueOf(job.getId()), job.getClass().getSimpleName(),
+               null != job.getTrigger().getNextScheduledFireTime()
+                     ? DateFormat.getDateTimeInstance().format(job.getTrigger().getNextScheduledFireTime())
+                     : ""));
+      }
+
+      return new CommandResult(table);
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

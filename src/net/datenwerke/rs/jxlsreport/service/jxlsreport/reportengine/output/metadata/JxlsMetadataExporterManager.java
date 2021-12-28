@@ -9,10 +9,10 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetadataExporterManager;
 
 public class JxlsMetadataExporterManager extends AbstractReportMetadataExporterManager<JxlsMetadataExporter> {
-	
-	@Inject
-	public JxlsMetadataExporterManager(Provider<Set<JxlsMetadataExporter>> exporters) {
-		super(exporters);
-	}
+
+   @Inject
+   public JxlsMetadataExporterManager(Provider<Set<JxlsMetadataExporter>> exporters) {
+      super(exporters);
+   }
 
 }

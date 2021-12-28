@@ -6,9 +6,9 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class SecurityAllowEverythingModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(SecurityService.class).to(SecurityAllowEverythingService.class);
-	}
+   @Override
+   protected void configure() {
+      bind(SecurityService.class).to(SecurityAllowEverythingService.class);
+   }
 
 }

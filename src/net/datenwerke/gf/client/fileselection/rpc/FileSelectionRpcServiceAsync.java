@@ -9,7 +9,6 @@ import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 
 public interface FileSelectionRpcServiceAsync {
 
-	void submit(ArrayList<SelectedFileWrapper> data,
-			FileSelectionConfig config, AsyncCallback<Void> callback);
+   void submit(ArrayList<SelectedFileWrapper> data, FileSelectionConfig config, AsyncCallback<Void> callback);
 
 }

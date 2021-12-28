@@ -35,11 +35,11 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private DropboxService dropboxService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -56,17 +56,17 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-   
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-   
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -103,7 +103,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
          throw new ActionExecutionException("folder is empty");
 
    }
-   
+
    private void sendViaDropboxDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {
@@ -117,34 +117,34 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
                datasinkService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, dropboxService,
                      new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filenameScheduling;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filenameScheduling;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-               });
+                     });
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, dropboxService,
                   new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filenameScheduling;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filenameScheduling;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-            });
+                  });
          }
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to Dropbox", e);

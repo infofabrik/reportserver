@@ -17,62 +17,55 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 
 public class ExecutePackagedScriptsTask implements DbInstallationTask {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private FileServerService fileServerService;
+   private FileServerService fileServerService;
 
+   private Provider<PackagedScriptHelper> packagedScriptHelper;
 
-	private Provider<PackagedScriptHelper> packagedScriptHelper;
+   @Inject
+   public ExecutePackagedScriptsTask(FileServerService fileServerService,
+         Provider<PackagedScriptHelper> packagedScriptHelper) {
 
-	@Inject
-	public ExecutePackagedScriptsTask(
-			FileServerService fileServerService,
-			Provider<PackagedScriptHelper> packagedScriptHelper
-			) {
+      this.fileServerService = fileServerService;
+      this.packagedScriptHelper = packagedScriptHelper;
+   }
 
-		this.fileServerService = fileServerService;
-		this.packagedScriptHelper = packagedScriptHelper;
-	}
+   @Override
+   public void executeOnStartup() {
 
-	@Override
-	public void executeOnStartup() {
-		
-	}
-	
-	@Override
-	public void executeOnFirstRun() {
-		PackagedScriptHelper helper = packagedScriptHelper.get();
-		File pkgDir = helper.getPackageDirectory();
+   }
 
+   @Override
+   public void executeOnFirstRun() {
+      PackagedScriptHelper helper = packagedScriptHelper.get();
+      File pkgDir = helper.getPackageDirectory();
 
-		logger.info("Executing package scripts from: " + pkgDir.getAbsolutePath());
+      logger.info("Executing package scripts from: " + pkgDir.getAbsolutePath());
 
-		if(pkgDir.exists() && pkgDir.isDirectory()){
-			List<File> packagedScripts = helper.listPackages();
+      if (pkgDir.exists() && pkgDir.isDirectory()) {
+         List<File> packagedScripts = helper.listPackages();
 
-			for(File packagedScript : packagedScripts){
-				if(helper.validateZip(packagedScript, true)){
+         for (File packagedScript : packagedScripts) {
+            if (helper.validateZip(packagedScript, true)) {
 
-					logger.info( "Executing package: " + packagedScript.getAbsolutePath());
-					FileServerFolder targetDir = null;
-					try {
-						targetDir = helper.extractPackageTemporarily(new FileInputStream(packagedScript));
+               logger.info("Executing package: " + packagedScript.getAbsolutePath());
+               FileServerFolder targetDir = null;
+               try {
+                  targetDir = helper.extractPackageTemporarily(new FileInputStream(packagedScript));
 
-						helper.executePackage(targetDir);
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-					} catch (IOException e) {
-						e.printStackTrace();
-					} finally {
-						if(null != targetDir)
-							fileServerService.forceRemove(targetDir);
-					}
-				}
-			}
-		}
-	}
-
-
-
+                  helper.executePackage(targetDir);
+               } catch (FileNotFoundException e) {
+                  e.printStackTrace();
+               } catch (IOException e) {
+                  e.printStackTrace();
+               } finally {
+                  if (null != targetDir)
+                     fileServerService.forceRemove(targetDir);
+               }
+            }
+         }
+      }
+   }
 
 }

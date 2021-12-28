@@ -5,6 +5,6 @@ import com.google.inject.Inject;
 
 public class EventBusHelper {
 
-	@Inject
-	public static EventBus EVENT_BUS; 
+   @Inject
+   public static EventBus EVENT_BUS;
 }

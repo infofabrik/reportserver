@@ -8,10 +8,10 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface OlapConnectionPropertiesHook extends Hook {
 
-	String adaptUrl(String url);
+   String adaptUrl(String url);
 
-	void adaptProperties(Properties props);
+   void adaptProperties(Properties props);
 
-	String adaptDriver(String driver);
+   String adaptDriver(String driver);
 
 }

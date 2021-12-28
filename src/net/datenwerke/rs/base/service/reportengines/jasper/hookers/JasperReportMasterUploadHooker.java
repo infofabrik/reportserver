@@ -18,76 +18,71 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.treedb.actions.UpdateAction;
 
 public class JasperReportMasterUploadHooker implements FileUploadHandlerHook {
-	
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final Provider<SecurityService> securityServiceProvider;
-	private final Provider<ReportService> reportServiceProvider;
-	private final Provider<JasperUtilsService> jasperReportManagerProvider;
 
-	@Inject
-	public JasperReportMasterUploadHooker(
-			Provider<AuthenticatorService> authenticatorServiceProvider, 
-			Provider<SecurityService> securityServiceProvider, 
-			Provider<ReportService> reportServiceProvider,
-			Provider<JasperUtilsService> jasperReportManagerProvider
-	) {
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.securityServiceProvider = securityServiceProvider;
-		this.reportServiceProvider = reportServiceProvider;
-		this.jasperReportManagerProvider  =jasperReportManagerProvider;
-	}
-	
-	@Override
-	public boolean consumes(String handler) {
-		return JasperUiModule.MASTER_UPLOAD_HANDLER_ID.equals(handler);
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final Provider<SecurityService> securityServiceProvider;
+   private final Provider<ReportService> reportServiceProvider;
+   private final Provider<JasperUtilsService> jasperReportManagerProvider;
 
-	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		Map<String, String> metadataMap = uploadedFile.getMetadata();
-		
-		long reportId = Long.valueOf(metadataMap.get(JasperUiModule.META_REPORT_ID));
-		String reportName = uploadedFile.getFileName();
-		String reportContents = new String(uploadedFile.getFileBytes());
+   @Inject
+   public JasperReportMasterUploadHooker(Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<SecurityService> securityServiceProvider, Provider<ReportService> reportServiceProvider,
+         Provider<JasperUtilsService> jasperReportManagerProvider) {
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
+      this.reportServiceProvider = reportServiceProvider;
+      this.jasperReportManagerProvider = jasperReportManagerProvider;
+   }
 
+   @Override
+   public boolean consumes(String handler) {
+      return JasperUiModule.MASTER_UPLOAD_HANDLER_ID.equals(handler);
+   }
 
-		if(null == reportName || null == reportContents || reportContents.isEmpty() || reportName.isEmpty())
-			return null;
+   @Override
+   public String uploadOccured(UploadedFile uploadedFile) {
+      Map<String, String> metadataMap = uploadedFile.getMetadata();
 
-		if(!reportName.endsWith(".jrxml"))
-			throw new RuntimeException("Expects .jrxml file");
+      long reportId = Long.valueOf(metadataMap.get(JasperUiModule.META_REPORT_ID));
+      String reportName = uploadedFile.getFileName();
+      String reportContents = new String(uploadedFile.getFileBytes());
 
-		SecurityService securityService = securityServiceProvider.get();
-		securityService.assertUserLoggedIn();
+      if (null == reportName || null == reportContents || reportContents.isEmpty() || reportName.isEmpty())
+         return null;
 
-		ReportService reportService = reportServiceProvider.get();
-		AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
+      if (!reportName.endsWith(".jrxml"))
+         throw new RuntimeException("Expects .jrxml file");
 
-		securityService.assertActions(rmn, UpdateAction.class);
+      SecurityService securityService = securityServiceProvider.get();
+      securityService.assertUserLoggedIn();
 
-		if(rmn instanceof JasperReport){
-			JasperReport jasperReport = (JasperReport) rmn;
+      ReportService reportService = reportServiceProvider.get();
+      AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
 
-			JasperReportJRXMLFile oldFile = jasperReport.getMasterFile();
+      securityService.assertActions(rmn, UpdateAction.class);
 
-			JasperReportJRXMLFile reportFile = new JasperReportJRXMLFile();
-			reportFile.setName(reportName);
-			reportFile.setContent(reportContents);
+      if (rmn instanceof JasperReport) {
+         JasperReport jasperReport = (JasperReport) rmn;
 
-			jasperReport.setMasterFile(reportFile);
+         JasperReportJRXMLFile oldFile = jasperReport.getMasterFile();
 
-			/* delete old file */
-			if(null != oldFile){
-				JasperUtilsService service = jasperReportManagerProvider.get();
-				service.removeJRXMLFile(oldFile);
-			}
+         JasperReportJRXMLFile reportFile = new JasperReportJRXMLFile();
+         reportFile.setName(reportName);
+         reportFile.setContent(reportContents);
 
-			/* merge new file */
-			reportService.merge(jasperReport);
-		}
-		
-		return null;
-	}
+         jasperReport.setMasterFile(reportFile);
 
+         /* delete old file */
+         if (null != oldFile) {
+            JasperUtilsService service = jasperReportManagerProvider.get();
+            service.removeJRXMLFile(oldFile);
+         }
+
+         /* merge new file */
+         reportService.merge(jasperReport);
+      }
+
+      return null;
+   }
 
 }

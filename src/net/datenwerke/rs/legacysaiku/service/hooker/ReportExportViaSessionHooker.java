@@ -17,46 +17,47 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 
 public class ReportExportViaSessionHooker implements ReportExportViaSessionHook {
 
-	private Provider<SaikuSessionContainer> saikuSessionContainer;
+   private Provider<SaikuSessionContainer> saikuSessionContainer;
 
-	@Inject
-	public ReportExportViaSessionHooker(Provider<SaikuSessionContainer> saikuSessionContainer) {
-		this.saikuSessionContainer = saikuSessionContainer;
-	}
+   @Inject
+   public ReportExportViaSessionHooker(Provider<SaikuSessionContainer> saikuSessionContainer) {
+      this.saikuSessionContainer = saikuSessionContainer;
+   }
 
-	@Override
-	public void adjustReport(Report adjustedReport, ReportExecutionConfig... configs) {
-		RECReportExecutorToken executorToken = getConfig(RECReportExecutorToken.class, configs);
-		if(null != executorToken && adjustedReport instanceof SaikuReportVariant){
-			SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
-			IQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
-			if(null != query){
-				String xml = query.toXml();
-				((SaikuReportVariant) adjustedReport).setQueryXml(xml);
-			}
-			if(null != origReport)
-				((SaikuReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
-		} else if(null != executorToken && adjustedReport instanceof TableReportVariant && ((TableReport)adjustedReport).isCubeFlag()){
-			SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
-			IQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
-			if(null != query){
-				String xml = query.toXml();
-				((TableReportVariant) adjustedReport).setCubeXml(xml);
-			}
-			if(null != origReport)
-				((TableReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
-		}
-	}
-	
-	private <C extends ReportExecutionConfig> C getConfig(Class<C> type, ReportExecutionConfig... configs){
-		if(null == configs || configs.length == 0)
-			return null;
-		
-		for(ReportExecutionConfig config : configs)
-			if(type.isAssignableFrom(config.getClass()))
-				return (C) config;
-			
-		return null;
-	}
+   @Override
+   public void adjustReport(Report adjustedReport, ReportExecutionConfig... configs) {
+      RECReportExecutorToken executorToken = getConfig(RECReportExecutorToken.class, configs);
+      if (null != executorToken && adjustedReport instanceof SaikuReportVariant) {
+         SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
+         IQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
+         if (null != query) {
+            String xml = query.toXml();
+            ((SaikuReportVariant) adjustedReport).setQueryXml(xml);
+         }
+         if (null != origReport)
+            ((SaikuReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
+      } else if (null != executorToken && adjustedReport instanceof TableReportVariant
+            && ((TableReport) adjustedReport).isCubeFlag()) {
+         SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
+         IQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
+         if (null != query) {
+            String xml = query.toXml();
+            ((TableReportVariant) adjustedReport).setCubeXml(xml);
+         }
+         if (null != origReport)
+            ((TableReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
+      }
+   }
+
+   private <C extends ReportExecutionConfig> C getConfig(Class<C> type, ReportExecutionConfig... configs) {
+      if (null == configs || configs.length == 0)
+         return null;
+
+      for (ReportExecutionConfig config : configs)
+         if (type.isAssignableFrom(config.getClass()))
+            return (C) config;
+
+      return null;
+   }
 
 }

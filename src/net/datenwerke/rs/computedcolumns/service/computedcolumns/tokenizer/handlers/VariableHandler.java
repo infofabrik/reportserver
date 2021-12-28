@@ -7,24 +7,25 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handlers.tokens.VariableExpressionToken;
 import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks.ExpressionTokenHandlerHook;
 
-public class VariableHandler implements ExpressionTokenHandlerHook{
+public class VariableHandler implements ExpressionTokenHandlerHook {
 
-	private Collection<String> variables;
+   private Collection<String> variables;
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
-		strToken = strToken.trim();
-		
-		for(String variable : variables)
-			if(strToken.equalsIgnoreCase(variable))
-				return new VariableExpressionToken(variable, greedy);
-			
-		return null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
+      strToken = strToken.trim();
 
-	public void initVariables(Collection<String> variables) {
-		this.variables  = variables;
-	}
+      for (String variable : variables)
+         if (strToken.equalsIgnoreCase(variable))
+            return new VariableExpressionToken(variable, greedy);
+
+      return null;
+   }
+
+   public void initVariables(Collection<String> variables) {
+      this.variables = variables;
+   }
 
 }

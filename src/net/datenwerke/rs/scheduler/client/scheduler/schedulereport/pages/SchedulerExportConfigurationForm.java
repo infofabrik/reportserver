@@ -55,14 +55,12 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    private Collection<ReportViewConfiguration> configs;
 
    private SimpleMultiForm form;
-   
+
    private ReportDto report;
 
    @Inject
-   public SchedulerExportConfigurationForm(
-         HookHandlerService hookHandler,
-         @Assisted Collection<ReportViewConfiguration> configs,
-         @Assisted ArrayList<SendToClientConfig> sendToConfigs,
+   public SchedulerExportConfigurationForm(HookHandlerService hookHandler,
+         @Assisted Collection<ReportViewConfiguration> configs, @Assisted ArrayList<SendToClientConfig> sendToConfigs,
          @Nullable @Assisted ReportScheduleDefinition definition) {
       super();
 
@@ -80,11 +78,11 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
       setBodyBorder(false);
       setHeaderVisible(false);
       enableScrollContainer();
-      
+
       formMap.clear();
       sendToForms.clear();
       sendToActivationForms.clear();
-      
+
       form = SimpleMultiForm.createInlineInstance();
       form.addClassName("rs-scheduler-export-action-form");
 
@@ -238,18 +236,16 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    @Override
    public void onPageChange(final int pageNr, final Widget page) {
       if (page instanceof JobReportConfigurationForm) {
-         final ReportDto report = ((JobReportConfigurationForm)page).getReport();
-         
+         final ReportDto report = ((JobReportConfigurationForm) page).getReport();
+
          if (report != this.report)
             initForm(report);
-         
+
          this.report = report;
       }
 
-      snippetProviders
-         .stream()
-         .filter(hooker -> hooker.appliesFor(report, configs))
-         .forEach(hooker -> hooker.onWizardPageChange(pageNr, page, formMap.get(hooker), definition, report));
+      snippetProviders.stream().filter(hooker -> hooker.appliesFor(report, configs))
+            .forEach(hooker -> hooker.onWizardPageChange(pageNr, page, formMap.get(hooker), definition, report));
    }
 
 }

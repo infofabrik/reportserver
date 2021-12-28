@@ -36,240 +36,227 @@ import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
  *
  */
 @Entity
-@Table(name="USER")
+@Table(name = "USER")
 @Audited
 @Indexed
-@InstanceDescription(
-		msgLocation=UserManagerMessages.class,
-		objNameKey="userTypeName",
+@InstanceDescription(msgLocation = UserManagerMessages.class, objNameKey = "userTypeName",
 
-		title = "${lastname}, ${firstname}",
-		fields = {
-			"firstname",
-			"lastname"
-		},
-		icon = "user"
-		)
-@GenerateDto(
-		dtoPackage="net.datenwerke.security.client.usermanager.dto",
-		createDecorator=true,
-		poso2DtoPostProcessors=User2DtoPostProcessor.class,
-		displayTitle="getLastname() + \", \" + getFirstname()",
-		typeDescriptionMsg=net.datenwerke.security.client.locale.UserManagerMessages.class, typeDescriptionKey="user",
-		icon="user",
-		additionalFields = {
-			@AdditionalField(name="hasPassword", type=Boolean.class),
-		}
-		)
+      title = "${lastname}, ${firstname}", fields = { "firstname", "lastname" }, icon = "user")
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.usermanager.dto", createDecorator = true, poso2DtoPostProcessors = User2DtoPostProcessor.class, displayTitle = "getLastname() + \", \" + getFirstname()", typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, typeDescriptionKey = "user", icon = "user", additionalFields = {
+      @AdditionalField(name = "hasPassword", type = Boolean.class), })
 public class User extends AbstractUserManagerNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3056683014040311065L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3056683014040311065L;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Transient
-	private boolean active = true;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Transient
+   private boolean active = true;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	private Sex sex;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   private Sex sex;
 
-	@ExposeToClient
-	private Boolean superUser = false;
+   @ExposeToClient
+   private Boolean superUser = false;
 
-	@JoinTable(name="USER_2_PROPERTY")
-	@ExposeToClient
-	@OneToMany(fetch=FetchType.EAGER, cascade=CascadeType.ALL)
-	@EnclosedEntity
-	private Set<UserProperty> properties = new HashSet<UserProperty>();
+   @JoinTable(name = "USER_2_PROPERTY")
+   @ExposeToClient
+   @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+   @EnclosedEntity
+   private Set<UserProperty> properties = new HashSet<UserProperty>();
 
-	@ExposeToClient
-	@Column(length = 40)
-	private String title;
+   @ExposeToClient
+   @Column(length = 40)
+   private String title;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	@Field
-	private String firstname;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   @Field
+   private String firstname;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	@Field
-	private String lastname;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   @Field
+   private String lastname;
 
-	@ExposeToClient
-	@Column(length = 320)
-	@Field
-	private String email;
+   @ExposeToClient
+   @Column(length = 320)
+   @Field
+   private String email;
 
-	@ExposeToClient
-	@Column(length = 128)
-	@Field
-	private String username;
+   @ExposeToClient
+   @Column(length = 128)
+   @Field
+   private String username;
 
-	@ExposeToClient(exposeValueToClient=false,mergeDtoValueBack=false)
-	@Column(length = 40)
-	private String password;
+   @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = false)
+   @Column(length = 40)
+   private String password;
 
-	@ExposeToClient
-	@ManyToMany(mappedBy="users")
-	@EntityClonerIgnore
-	private Set<Group> groups = new HashSet<Group>();
+   @ExposeToClient
+   @ManyToMany(mappedBy = "users")
+   @EntityClonerIgnore
+   private Set<Group> groups = new HashSet<Group>();
 
-	public String getFirstname() {
-		return firstname;
-	}
+   public String getFirstname() {
+      return firstname;
+   }
 
-	public void setFirstname(String firstname) {
-		this.firstname = firstname;
-	}
+   public void setFirstname(String firstname) {
+      this.firstname = firstname;
+   }
 
-	public String getLastname() {
-		return lastname;
-	}
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
+   public String getLastname() {
+      return lastname;
+   }
 
-	public String getUsername() {
-		return username;
-	}
-	public void setUsername(String username) {
-		this.username = username;
-	}
+   public void setLastname(String lastname) {
+      this.lastname = lastname;
+   }
 
-	public String getPassword() {
-		return password;
-	}
+   public String getUsername() {
+      return username;
+   }
 
-	/**
-	 * Usually you would not want to call this directly. Use {@link UserManagerService#setPassword(User, String)} instead
-	 * 
-	 * @param password
-	 * @param passwordHasher
-	 */
-	public void setPassword(String password, PasswordHasher passwordHasher) {
-		String hashedPassword = passwordHasher.hashPassword(password);
+   public void setUsername(String username) {
+      this.username = username;
+   }
 
-		this.password = hashedPassword;
-	}
+   public String getPassword() {
+      return password;
+   }
 
-	/**
-	 * Returns the groups where this user is a member directly.
-	 */
-	public Set<Group> getGroups() {
-		return groups;
-	}
+   /**
+    * Usually you would not want to call this directly. Use
+    * {@link UserManagerService#setPassword(User, String)} instead
+    * 
+    * @param password
+    * @param passwordHasher
+    */
+   public void setPassword(String password, PasswordHasher passwordHasher) {
+      String hashedPassword = passwordHasher.hashPassword(password);
 
-	public void setGroups(Set<Group> groups) {
-		this.groups = groups;
-	}
+      this.password = hashedPassword;
+   }
 
-	public void addToGroup(Group group){
-		groups.add(group);
-		group.addUser(this, true);
-	}
+   /**
+    * Returns the groups where this user is a member directly.
+    */
+   public Set<Group> getGroups() {
+      return groups;
+   }
 
-	void addToGroup(Group group, boolean doNotInformGroup){
-		groups.add(group);
-	}
+   public void setGroups(Set<Group> groups) {
+      this.groups = groups;
+   }
 
-	public String getEmail() {
-		return email;
-	}
+   public void addToGroup(Group group) {
+      groups.add(group);
+      group.addUser(this, true);
+   }
 
-	public void setEmail(String email) {
-		this.email = email;
-	}
+   void addToGroup(Group group, boolean doNotInformGroup) {
+      groups.add(group);
+   }
 
-	public Sex getSex() {
-		return sex;
-	}
+   public String getEmail() {
+      return email;
+   }
 
-	public void setSex(Sex sex) {
-		this.sex = sex;
-	}
+   public void setEmail(String email) {
+      this.email = email;
+   }
 
-	public String getTitle() {
-		return title;
-	}
+   public Sex getSex() {
+      return sex;
+   }
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+   public void setSex(Sex sex) {
+      this.sex = sex;
+   }
 
-	public void setSuperUser(Boolean superUser) {
-		if(null == superUser)
-			superUser = false;
-		this.superUser = superUser;
-	}
+   public String getTitle() {
+      return title;
+   }
 
-	public Boolean isSuperUser() {
-		return superUser;
-	}
+   public void setTitle(String title) {
+      this.title = title;
+   }
 
-	public boolean isActive() {
-		return active;
-	}
+   public void setSuperUser(Boolean superUser) {
+      if (null == superUser)
+         superUser = false;
+      this.superUser = superUser;
+   }
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
+   public Boolean isSuperUser() {
+      return superUser;
+   }
 
-	/**
-	 * Usually you would not want to call this directly. Use {@link UserPropertiesService} instead
-	 * 
-	 * @param properties
-	 */
-	public void setProperties(Set<UserProperty> properties) {
-		this.properties = properties;
-	}
+   public boolean isActive() {
+      return active;
+   }
 
-	/**
-	 * Usually you would not want to call this directly. Use {@link UserPropertiesService} instead
-	 * 
-	 */
-	public Set<UserProperty> getProperties() {
-		return properties;
-	}
+   public void setActive(boolean active) {
+      this.active = active;
+   }
 
-	@Override
-	public String toString() {
-		String fn = getFirstname();
-		return new StringBuilder(null == fn ? "" : fn).append(" ").append(getLastname()).toString();
-	}
+   /**
+    * Usually you would not want to call this directly. Use
+    * {@link UserPropertiesService} instead
+    * 
+    * @param properties
+    */
+   public void setProperties(Set<UserProperty> properties) {
+      this.properties = properties;
+   }
 
-	/**
-	 * 
-	 * @see UserManagerService#getReferencedGroups(User)
-	 * @param uService
-	 */
-	@Deprecated
-	public Collection<Group> getReferencedGroups(UserManagerService uService){
-		return uService.getReferencedGroups(this);
-	}
+   /**
+    * Usually you would not want to call this directly. Use
+    * {@link UserPropertiesService} instead
+    * 
+    */
+   public Set<UserProperty> getProperties() {
+      return properties;
+   }
 
+   @Override
+   public String toString() {
+      String fn = getFirstname();
+      return new StringBuilder(null == fn ? "" : fn).append(" ").append(getLastname()).toString();
+   }
 
-	@Override
-	public String getName() {
-		return String.valueOf(lastname) + " " + String.valueOf(firstname);
-	}
+   /**
+    * 
+    * @see UserManagerService#getReferencedGroups(User)
+    * @param uService
+    */
+   @Deprecated
+   public Collection<Group> getReferencedGroups(UserManagerService uService) {
+      return uService.getReferencedGroups(this);
+   }
 
-	public UserProperty getProperty(String key) {
-		Set<UserProperty> props = getProperties();
-		if(null != props){
-			for(UserProperty prop : props){
-				if(key.equals(prop.getKey()))
-					return prop;
-			}
-		}
-		return null;
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Override
+   public String getName() {
+      return String.valueOf(lastname) + " " + String.valueOf(firstname);
+   }
+
+   public UserProperty getProperty(String key) {
+      Set<UserProperty> props = getProperties();
+      if (null != props) {
+         for (UserProperty prop : props) {
+            if (key.equals(prop.getKey()))
+               return prop;
+         }
+      }
+      return null;
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 
 }

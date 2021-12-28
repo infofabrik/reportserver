@@ -23,83 +23,81 @@ import net.datenwerke.rs.core.client.reportexporter.exporter.generic.Export2PDF;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class JsViewerReportPreviewView extends AbstractReportPreviewView {
-	
-	private DwBorderContainer wrapper;
-	private ReportExporterUIService exporterUIService;
-	
-	@Inject
-	public JsViewerReportPreviewView(
-			ReportExecutorDao rexService, 
-			HookHandlerService hookHandler, 
-			ReportExporterUIService exporterUIService) {
-		
-		super(rexService, hookHandler);
-		this.exporterUIService = exporterUIService;
 
-		wrapper = new DwBorderContainer();
-		wrapper.setBorders(false);
-	}
-	
-	@Override
-	protected void doLoadReport(DwModel reportExecutionResult) {
-		if(((SuccessIndicatorBaseModel)reportExecutionResult).isSuccess()){
-			wrapper.clear();
+   private DwBorderContainer wrapper;
+   private ReportExporterUIService exporterUIService;
 
-			DwContentPanel frame = new DwContentPanel();
-			frame.setBodyBorder(false);
-			frame.setHeaderVisible(false);
-			Frame iFrame = frame.setUrl("resources/pdf.js/web/viewer.html?file=" + URL.encodeQueryString(exporterUIService.getExportServletPath() + "&tid=" + getExecuteReportToken() + "&isJsViewer=true"));
-			iFrame.getElement().setPropertyString("scrolling", "no");
-			iFrame.getElement().addClassName("rs-report-preview");
-			
-			
-			wrapper.add(frame, new MarginData(0));
-		}
-	}
-	
+   @Inject
+   public JsViewerReportPreviewView(ReportExecutorDao rexService, HookHandlerService hookHandler,
+         ReportExporterUIService exporterUIService) {
 
-	@Override
-	protected void cancelExecution(String executeToken) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Request execute(ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
-		/* Find exporter */
-		ReportExporter exporter = null;
-		List<ReportExporter> exporters = exporterUIService.getAvailableExporters(report);
-		for(ReportExporter rex : exporters){
-			if(rex instanceof Export2PDF){
-				exporter = rex;
-				break;
-			}
-		}
-		
-		if(null == exporter)
-			throw new RuntimeException("No PDFExporter for " + report.getClass().getName());
-		
-		return exporter.prepareExportForPreview(report, getExecuteReportToken(), new AsyncCallback<Void>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				callback.onFailure(caught);	
-			}
-			@Override
-			public void onSuccess(Void result) {
-				SuccessIndicatorBaseModel model = new SuccessIndicatorBaseModel();
-				model.setSuccess(true);
-				callback.onSuccess(model);
-			}
-		});
-	}
+      super(rexService, hookHandler);
+      this.exporterUIService = exporterUIService;
 
-	@Override
-	public Widget doGetViewComponent() {
-		return wrapper;
-	}
+      wrapper = new DwBorderContainer();
+      wrapper.setBorders(false);
+   }
 
-	@Override
-	protected boolean isCreateStatusBar() {
-		return false;
-	}
+   @Override
+   protected void doLoadReport(DwModel reportExecutionResult) {
+      if (((SuccessIndicatorBaseModel) reportExecutionResult).isSuccess()) {
+         wrapper.clear();
+
+         DwContentPanel frame = new DwContentPanel();
+         frame.setBodyBorder(false);
+         frame.setHeaderVisible(false);
+         Frame iFrame = frame.setUrl("resources/pdf.js/web/viewer.html?file=" + URL.encodeQueryString(
+               exporterUIService.getExportServletPath() + "&tid=" + getExecuteReportToken() + "&isJsViewer=true"));
+         iFrame.getElement().setPropertyString("scrolling", "no");
+         iFrame.getElement().addClassName("rs-report-preview");
+
+         wrapper.add(frame, new MarginData(0));
+      }
+   }
+
+   @Override
+   protected void cancelExecution(String executeToken) {
+      // TODO Auto-generated method stub
+
+   }
+
+   @Override
+   public Request execute(ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
+      /* Find exporter */
+      ReportExporter exporter = null;
+      List<ReportExporter> exporters = exporterUIService.getAvailableExporters(report);
+      for (ReportExporter rex : exporters) {
+         if (rex instanceof Export2PDF) {
+            exporter = rex;
+            break;
+         }
+      }
+
+      if (null == exporter)
+         throw new RuntimeException("No PDFExporter for " + report.getClass().getName());
+
+      return exporter.prepareExportForPreview(report, getExecuteReportToken(), new AsyncCallback<Void>() {
+         @Override
+         public void onFailure(Throwable caught) {
+            callback.onFailure(caught);
+         }
+
+         @Override
+         public void onSuccess(Void result) {
+            SuccessIndicatorBaseModel model = new SuccessIndicatorBaseModel();
+            model.setSuccess(true);
+            callback.onSuccess(model);
+         }
+      });
+   }
+
+   @Override
+   public Widget doGetViewComponent() {
+      return wrapper;
+   }
+
+   @Override
+   protected boolean isCreateStatusBar() {
+      return false;
+   }
 }

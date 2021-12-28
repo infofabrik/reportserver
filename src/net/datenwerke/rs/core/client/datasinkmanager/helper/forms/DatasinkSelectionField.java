@@ -56,15 +56,10 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
    private Class<? extends DatasinkDefinitionDto>[] types;
 
    @Inject
-   public DatasinkSelectionField(
-         ClipboardUiService clipboardService, 
-         DatasinkUIService datasinkService,
-         @Assisted Provider<? extends HasDefaultDatasink> datasinkDaoProvider,
-         @Assisted BaseIcon defaultDatasinkIcon,
-         @Assisted Container container,
-         @Assisted UITree datasinkTree,
-         @Assisted Class<? extends DatasinkDefinitionDto>... types
-         ) {
+   public DatasinkSelectionField(ClipboardUiService clipboardService, DatasinkUIService datasinkService,
+         @Assisted Provider<? extends HasDefaultDatasink> datasinkDaoProvider, @Assisted BaseIcon defaultDatasinkIcon,
+         @Assisted Container container, @Assisted UITree datasinkTree,
+         @Assisted Class<? extends DatasinkDefinitionDto>... types) {
 
       /* store objects */
       this.datasinkService = datasinkService;
@@ -133,13 +128,13 @@ public class DatasinkSelectionField implements HasValueChangeHandlers<DatasinkCo
       container.add(dsFieldLabel);
 
    }
-   
+
    private void showFailureMessageBox() {
       MessageBox msg = new MessageBox(DatasinksMessages.INSTANCE.useDefaultFailureTitle(),
             DatasinksMessages.INSTANCE.useDefaultFailureMessage());
       msg.show();
    }
-   
+
    private void addDisplayDefaultDatasinkButton() {
       dsField.setTwinTriggerIcon(defaultDatasinkIcon);
       dsField.setHideTwinTrigger(false);

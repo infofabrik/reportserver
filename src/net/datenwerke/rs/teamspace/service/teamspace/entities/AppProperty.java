@@ -20,60 +20,58 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  *
  */
 @Entity
-@Table(name="TEAMSPACE_APP_PROPERTY")
+@Table(name = "TEAMSPACE_APP_PROPERTY")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.teamspace.client.teamspace.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.teamspace.client.teamspace.dto")
 public class AppProperty {
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@ExposeToClient
-	@Column(length=32)
-	private String name;
-	
-	@ExposeToClient
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String value;
 
-	public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient
+   @Column(length = 32)
+   private String name;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String value;
 
-	public String getName() {
-		return name;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public String getValue() {
-		return value;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getValue() {
+      return value;
+   }
+
+   public void setValue(String value) {
+      this.value = value;
+   }
+
 }

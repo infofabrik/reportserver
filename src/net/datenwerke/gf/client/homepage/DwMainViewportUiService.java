@@ -6,18 +6,17 @@ import net.datenwerke.gf.client.dispatcher.Dispatchable;
 import net.datenwerke.gf.client.homepage.modules.ClientMainModule;
 import net.datenwerke.gf.client.homepage.modules.ClientTempModule;
 
+public interface DwMainViewportUiService extends Dispatchable {
 
-public interface DwMainViewportUiService extends Dispatchable{
+   void showModule(ClientMainModule module);
 
-	void showModule(ClientMainModule module);
-	
-	void addTempModule(ClientTempModule module);
+   void addTempModule(ClientTempModule module);
 
-	void removeTempModule(ClientTempModule module);
+   void removeTempModule(ClientTempModule module);
 
-	Collection<ClientTempModule> getTempModules();
+   Collection<ClientTempModule> getTempModules();
 
-	void setLoadingMask();
+   void setLoadingMask();
 
-	void unmask();
+   void unmask();
 }

@@ -42,227 +42,221 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class TeamSpaceManagerPanel extends DwContentPanel {
 
-	private final TeamSpaceDao teamSpaceDao;
-	private final TeamSpaceUIService teamSpaceService;
-	private final EditTeamSpaceDialogCreator editTeamSpaceDialogCreator;
-	private final ToolbarService toolbarService;
-	
-	private ListStore<TeamSpaceDto> teamSpaceStore;
+   private final TeamSpaceDao teamSpaceDao;
+   private final TeamSpaceUIService teamSpaceService;
+   private final EditTeamSpaceDialogCreator editTeamSpaceDialogCreator;
+   private final ToolbarService toolbarService;
 
-	private Grid<TeamSpaceDto> grid;
+   private ListStore<TeamSpaceDto> teamSpaceStore;
 
+   private Grid<TeamSpaceDto> grid;
 
+   @Inject
+   public TeamSpaceManagerPanel(EditTeamSpaceDialogCreator editTeamSpaceDialogCreator, TeamSpaceDao teamSpaceDao,
+         TeamSpaceUIService teamSpaceService, ToolbarService toolbarService) {
 
-	@Inject
-	public TeamSpaceManagerPanel(
-		EditTeamSpaceDialogCreator editTeamSpaceDialogCreator,
-		TeamSpaceDao teamSpaceDao,
-		TeamSpaceUIService teamSpaceService,
-		ToolbarService toolbarService
-		) {
+      this.editTeamSpaceDialogCreator = editTeamSpaceDialogCreator;
+      this.teamSpaceDao = teamSpaceDao;
+      this.teamSpaceService = teamSpaceService;
+      this.toolbarService = toolbarService;
 
-		this.editTeamSpaceDialogCreator = editTeamSpaceDialogCreator;
-		this.teamSpaceDao = teamSpaceDao;
-		this.teamSpaceService = teamSpaceService;
-		this.toolbarService = toolbarService;
-		
-		
-		init();
-	}
+      init();
+   }
 
-	private void init() {
-		setHeading(TeamSpaceMessages.INSTANCE.adminButton());
-		setHeaderIcon(BaseIcon.GROUP_EDIT);
-		
-		/* init store */
-		initStore();
-		
-		/* init grid */
-		grid = loadGrid();
-		
-		/* init toolbar */
-		DwToolBar toolbar = initToolbar();
-		
-		/* init wrapper */
-		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		add(wrapper);
-		
-		/* add components */
-		wrapper.add(toolbar, new VerticalLayoutData(1,-1));
-		wrapper.add(grid, new VerticalLayoutData(1,1));
-		
-		/* load data */
-		mask(BaseMessages.INSTANCE.loadingMsg());
-		teamSpaceDao.loadAllTeamSpaces(new RsAsyncCallback<ListLoadResult<TeamSpaceDto>>(){
-			@Override
-			public void onSuccess(ListLoadResult<TeamSpaceDto> result) {
-				unmask();
-				teamSpaceStore.addAll(result.getData());
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				new DetailErrorDialog(caught).show();
-				unmask();
-			}
-		});
-	}
+   private void init() {
+      setHeading(TeamSpaceMessages.INSTANCE.adminButton());
+      setHeaderIcon(BaseIcon.GROUP_EDIT);
 
-	private void initStore() {
-		/* create store */
-		teamSpaceStore = new ListStore<TeamSpaceDto>(TeamSpaceDtoPA.INSTANCE.dtoId());
-		teamSpaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(TeamSpaceDtoPA.INSTANCE.name(), SortDir.ASC));
-	}
-	
-	
-	private DwToolBar initToolbar() {
-		DwToolBar toolbar = new DwToolBar();
-		
-		/* add new */
-		DwTextButton addButton = new DwTextButton(TeamSpaceMessages.INSTANCE.createSpaceText(), BaseIcon.GROUP_ADD);
-		addButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				teamSpaceService.displayAddSpaceDialog(new TeamSpaceOperationSuccessHandler() {
-					@Override
-					public void onSuccess(TeamSpaceDto teamSpace) {
-						teamSpaceStore.add(teamSpace);
-						teamSpaceService.notifyOfAddition(teamSpace);
-					}
-				});
-			}
-		});
-		toolbar.add(addButton);
-		
-		/* remove */
-		DwRemoveButton removeButton = new DwRemoveButton(){
-			@Override
-			protected boolean canRemoveSingle() {
-				return null != grid.getSelectionModel().getSelectedItem();
-			}
-			
-			@Override
-			public String getRemoveConfirmMessage() {
-				TeamSpaceDto selected = grid.getSelectionModel().getSelectedItem();
-				if(null != selected)
-					return TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmMessage(selected.getName() + " (" + selected.getId() + ")" );
-				throw new IllegalStateException();
-			}
-			
-			@Override
-			protected void onRemove() {
-				final TeamSpaceDto selected = grid.getSelectionModel().getSelectedItem();
-				if(null != selected){
-					teamSpaceDao.removeTeamSpace(selected, new NotamCallback<Void>(TeamSpaceMessages.INSTANCE.teamSpaceRemoved()){
-						@Override
-						public void doOnSuccess(Void result) {
-							teamSpaceStore.remove(selected);
-							teamSpaceService.notifyOfDeletion(selected);
-						}
-					});
-				}
-			}
-		};
-		removeButton.setProtectAll(true);
-		removeButton.setProtectSingleItem(true);
-		removeButton.setMenu(null); // no remove all
-		
-		toolbar.add(removeButton);
-		
-		/* edit */
-		toolbar.add(new SeparatorToolItem());
-		DwTextButton editButton = new DwTextButton(BaseMessages.INSTANCE.edit(), BaseIcon.GROUP_EDIT);
-		editButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				TeamSpaceDto selectedItem = grid.getSelectionModel().getSelectedItem();
-				
-				if(null != selectedItem)
-					showEditDialog(selectedItem);
-			}
-		});
-		toolbar.add(editButton);
-		
-		/* go to */
-		toolbar.add(new SeparatorToolItem());
-		DwTextButton gotoButton = new DwTextButton(BaseMessages.INSTANCE.gotoLabel(), BaseIcon.EXTERNAL_LINK);
-		gotoButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				TeamSpaceDto selectedItem = grid.getSelectionModel().getSelectedItem();
-				
-				if(null != selectedItem){
-					teamSpaceService.gotoTeamSpace(selectedItem);
-				}
-			}
-		});
-		toolbar.add(gotoButton);
-		
-		/* filter */
-		toolbar.add(new SeparatorToolItem());
-		
-		/* toolbar */
-		StoreFilterField<TeamSpaceDto> textFilter = new StoreFilterField<TeamSpaceDto>(){
-			@Override
-			protected boolean doSelect(Store<TeamSpaceDto> store, TeamSpaceDto parent, TeamSpaceDto item,
-					String filter) {
-				if(null == filter)
-					return true;
-				
-				filter = filter.toLowerCase();
-				
-				return (null != item.getName() && item.getName().toLowerCase().contains(filter)) || 
-					   (null != item.getDescription() && item.getDescription().toLowerCase().contains(filter));
-			}
-			
-		   
-	    };  
-	    textFilter.bind(teamSpaceStore);
+      /* init store */
+      initStore();
 
-	    /* add items to toolbar */
-	    toolbarService.addPlainToolbarItem(toolbar, BaseIcon.SEARCH);
-	    toolbar.add(textFilter);
-		
-		
-		return toolbar;
-	}
+      /* init grid */
+      grid = loadGrid();
 
+      /* init toolbar */
+      DwToolBar toolbar = initToolbar();
 
-	protected void showEditDialog(TeamSpaceDto selectedItem) {
-		editTeamSpaceDialogCreator.displayDialog(selectedItem, new TeamSpaceOperationSuccessHandler() {
-			@Override
-			public void onSuccess(TeamSpaceDto teamSpace) {
-				teamSpaceStore.update(teamSpace);
-				teamSpaceService.notifyOfUpdate(teamSpace);
-			}
-		});
-	}
+      /* init wrapper */
+      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+      add(wrapper);
 
-	private Grid<TeamSpaceDto> loadGrid() {
-		/* create columns */
-		List<ColumnConfig<TeamSpaceDto, ?>> columns = new ArrayList<ColumnConfig<TeamSpaceDto, ?>>();
-		
-		ColumnConfig<TeamSpaceDto, Long> idColumn = new ColumnConfig<TeamSpaceDto, Long>(TeamSpaceDtoPA.INSTANCE.id(), 80, BaseMessages.INSTANCE.id());
-		columns.add(idColumn);
-		
-		ColumnConfig<TeamSpaceDto, String> nameColumn = new ColumnConfig<TeamSpaceDto, String>(TeamSpaceDtoPA.INSTANCE.name(), 150, BaseMessages.INSTANCE.propertyName());
-		columns.add(nameColumn);
-		
-		ColumnConfig<TeamSpaceDto, String> descriptionColumn = new ColumnConfig<TeamSpaceDto, String>(TeamSpaceDtoPA.INSTANCE.description(), 300, BaseMessages.INSTANCE.propertyDescription());
-		columns.add(descriptionColumn);
-		
-		/* create grid */
-		final Grid<TeamSpaceDto> grid = new Grid<TeamSpaceDto>(teamSpaceStore, new ColumnModel<TeamSpaceDto>(columns));
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		
-		grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-			@Override
-			public void onRowDoubleClick(RowDoubleClickEvent event) {
-				TeamSpaceDto ts = teamSpaceStore.get(event.getRowIndex());
-				if(null != ts)
-					showEditDialog(ts);
-			}
-		});
-		
-		return grid;
-	}
+      /* add components */
+      wrapper.add(toolbar, new VerticalLayoutData(1, -1));
+      wrapper.add(grid, new VerticalLayoutData(1, 1));
+
+      /* load data */
+      mask(BaseMessages.INSTANCE.loadingMsg());
+      teamSpaceDao.loadAllTeamSpaces(new RsAsyncCallback<ListLoadResult<TeamSpaceDto>>() {
+         @Override
+         public void onSuccess(ListLoadResult<TeamSpaceDto> result) {
+            unmask();
+            teamSpaceStore.addAll(result.getData());
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            new DetailErrorDialog(caught).show();
+            unmask();
+         }
+      });
+   }
+
+   private void initStore() {
+      /* create store */
+      teamSpaceStore = new ListStore<TeamSpaceDto>(TeamSpaceDtoPA.INSTANCE.dtoId());
+      teamSpaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(TeamSpaceDtoPA.INSTANCE.name(), SortDir.ASC));
+   }
+
+   private DwToolBar initToolbar() {
+      DwToolBar toolbar = new DwToolBar();
+
+      /* add new */
+      DwTextButton addButton = new DwTextButton(TeamSpaceMessages.INSTANCE.createSpaceText(), BaseIcon.GROUP_ADD);
+      addButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            teamSpaceService.displayAddSpaceDialog(new TeamSpaceOperationSuccessHandler() {
+               @Override
+               public void onSuccess(TeamSpaceDto teamSpace) {
+                  teamSpaceStore.add(teamSpace);
+                  teamSpaceService.notifyOfAddition(teamSpace);
+               }
+            });
+         }
+      });
+      toolbar.add(addButton);
+
+      /* remove */
+      DwRemoveButton removeButton = new DwRemoveButton() {
+         @Override
+         protected boolean canRemoveSingle() {
+            return null != grid.getSelectionModel().getSelectedItem();
+         }
+
+         @Override
+         public String getRemoveConfirmMessage() {
+            TeamSpaceDto selected = grid.getSelectionModel().getSelectedItem();
+            if (null != selected)
+               return TeamSpaceMessages.INSTANCE
+                     .deleteTeamSpaceConfirmMessage(selected.getName() + " (" + selected.getId() + ")");
+            throw new IllegalStateException();
+         }
+
+         @Override
+         protected void onRemove() {
+            final TeamSpaceDto selected = grid.getSelectionModel().getSelectedItem();
+            if (null != selected) {
+               teamSpaceDao.removeTeamSpace(selected,
+                     new NotamCallback<Void>(TeamSpaceMessages.INSTANCE.teamSpaceRemoved()) {
+                        @Override
+                        public void doOnSuccess(Void result) {
+                           teamSpaceStore.remove(selected);
+                           teamSpaceService.notifyOfDeletion(selected);
+                        }
+                     });
+            }
+         }
+      };
+      removeButton.setProtectAll(true);
+      removeButton.setProtectSingleItem(true);
+      removeButton.setMenu(null); // no remove all
+
+      toolbar.add(removeButton);
+
+      /* edit */
+      toolbar.add(new SeparatorToolItem());
+      DwTextButton editButton = new DwTextButton(BaseMessages.INSTANCE.edit(), BaseIcon.GROUP_EDIT);
+      editButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            TeamSpaceDto selectedItem = grid.getSelectionModel().getSelectedItem();
+
+            if (null != selectedItem)
+               showEditDialog(selectedItem);
+         }
+      });
+      toolbar.add(editButton);
+
+      /* go to */
+      toolbar.add(new SeparatorToolItem());
+      DwTextButton gotoButton = new DwTextButton(BaseMessages.INSTANCE.gotoLabel(), BaseIcon.EXTERNAL_LINK);
+      gotoButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            TeamSpaceDto selectedItem = grid.getSelectionModel().getSelectedItem();
+
+            if (null != selectedItem) {
+               teamSpaceService.gotoTeamSpace(selectedItem);
+            }
+         }
+      });
+      toolbar.add(gotoButton);
+
+      /* filter */
+      toolbar.add(new SeparatorToolItem());
+
+      /* toolbar */
+      StoreFilterField<TeamSpaceDto> textFilter = new StoreFilterField<TeamSpaceDto>() {
+         @Override
+         protected boolean doSelect(Store<TeamSpaceDto> store, TeamSpaceDto parent, TeamSpaceDto item, String filter) {
+            if (null == filter)
+               return true;
+
+            filter = filter.toLowerCase();
+
+            return (null != item.getName() && item.getName().toLowerCase().contains(filter))
+                  || (null != item.getDescription() && item.getDescription().toLowerCase().contains(filter));
+         }
+
+      };
+      textFilter.bind(teamSpaceStore);
+
+      /* add items to toolbar */
+      toolbarService.addPlainToolbarItem(toolbar, BaseIcon.SEARCH);
+      toolbar.add(textFilter);
+
+      return toolbar;
+   }
+
+   protected void showEditDialog(TeamSpaceDto selectedItem) {
+      editTeamSpaceDialogCreator.displayDialog(selectedItem, new TeamSpaceOperationSuccessHandler() {
+         @Override
+         public void onSuccess(TeamSpaceDto teamSpace) {
+            teamSpaceStore.update(teamSpace);
+            teamSpaceService.notifyOfUpdate(teamSpace);
+         }
+      });
+   }
+
+   private Grid<TeamSpaceDto> loadGrid() {
+      /* create columns */
+      List<ColumnConfig<TeamSpaceDto, ?>> columns = new ArrayList<ColumnConfig<TeamSpaceDto, ?>>();
+
+      ColumnConfig<TeamSpaceDto, Long> idColumn = new ColumnConfig<TeamSpaceDto, Long>(TeamSpaceDtoPA.INSTANCE.id(), 80,
+            BaseMessages.INSTANCE.id());
+      columns.add(idColumn);
+
+      ColumnConfig<TeamSpaceDto, String> nameColumn = new ColumnConfig<TeamSpaceDto, String>(
+            TeamSpaceDtoPA.INSTANCE.name(), 150, BaseMessages.INSTANCE.propertyName());
+      columns.add(nameColumn);
+
+      ColumnConfig<TeamSpaceDto, String> descriptionColumn = new ColumnConfig<TeamSpaceDto, String>(
+            TeamSpaceDtoPA.INSTANCE.description(), 300, BaseMessages.INSTANCE.propertyDescription());
+      columns.add(descriptionColumn);
+
+      /* create grid */
+      final Grid<TeamSpaceDto> grid = new Grid<TeamSpaceDto>(teamSpaceStore, new ColumnModel<TeamSpaceDto>(columns));
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+      grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+         @Override
+         public void onRowDoubleClick(RowDoubleClickEvent event) {
+            TeamSpaceDto ts = teamSpaceStore.get(event.getRowIndex());
+            if (null != ts)
+               showEditDialog(ts);
+         }
+      });
+
+      return grid;
+   }
 }

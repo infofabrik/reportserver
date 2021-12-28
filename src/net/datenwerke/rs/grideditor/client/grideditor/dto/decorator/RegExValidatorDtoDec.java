@@ -12,16 +12,15 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.RegExValidatorDto;
  */
 public class RegExValidatorDtoDec extends RegExValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public RegExValidatorDtoDec() {
+      super();
+   }
 
-	public RegExValidatorDtoDec() {
-		super();
-	}
-
-	@Override
-	public Validator<String> getValidator() {
-		String msg = getErrorMsg();
-		return new RegExValidator(getRegex(), null != msg ? msg : BaseMessages.INSTANCE.error());
-	}
+   @Override
+   public Validator<String> getValidator() {
+      String msg = getErrorMsg();
+      return new RegExValidator(getRegex(), null != msg ? msg : BaseMessages.INSTANCE.error());
+   }
 }

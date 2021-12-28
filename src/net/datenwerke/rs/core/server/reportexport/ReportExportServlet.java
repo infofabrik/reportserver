@@ -105,21 +105,13 @@ public class ReportExportServlet extends SecuredHttpServlet {
    protected final Provider<HttpUtils> httpUtilsProvider;
 
    @Inject
-   public ReportExportServlet(
-         Provider<AuthenticatorService> authenticatorService,
-         Provider<HookHandlerService> hookHandlerProvider, 
-         Provider<SecurityService> securityServiceProvider,
-         Provider<ReportExecutorService> reportExecutor, 
-         Provider<ReportService> reportService,
-         Provider<ReportServerService> reportServerService, 
-         Provider<RsErrorHelper> errorHelperProvider,
-         ParameterSetFactory parameterSetFactory, 
-         Provider<TempFileService> tempFileService,
-         Provider<ExceptionServices> exceptionServices, 
-         Provider<ConfigService> configService,
-         Provider<ReportSessionCache> sessionCacheProvider, 
-         Provider<HttpUtils> httpUtilsProvider
-         ) {
+   public ReportExportServlet(Provider<AuthenticatorService> authenticatorService,
+         Provider<HookHandlerService> hookHandlerProvider, Provider<SecurityService> securityServiceProvider,
+         Provider<ReportExecutorService> reportExecutor, Provider<ReportService> reportService,
+         Provider<ReportServerService> reportServerService, Provider<RsErrorHelper> errorHelperProvider,
+         ParameterSetFactory parameterSetFactory, Provider<TempFileService> tempFileService,
+         Provider<ExceptionServices> exceptionServices, Provider<ConfigService> configService,
+         Provider<ReportSessionCache> sessionCacheProvider, Provider<HttpUtils> httpUtilsProvider) {
 
       super();
       this.authenticatorServiceProvider = authenticatorService;
@@ -293,16 +285,14 @@ public class ReportExportServlet extends SecuredHttpServlet {
       Report report = getReportFromRequest(req);
       String suggestedFileName = req.getParameter(PARAMETER_SUGGESTED_FILENAME);
       ReportExecutionConfig[] configs = getConfigsFromRequest(report, req);
-      
+
       exportReport(reportId, report, outputFormat, suggestedFileName, null, req, resp, null, configs);
    }
 
    private ReportExecutionConfig[] getConfigsFromRequest(final Report report, final HttpServletRequest req) {
-      return hookHandlerProvider.get()
-         .getHookers(ReportExecutionConfigFromPropertyMapHook.class)
-         .stream()
-         .flatMap(configProvider -> configProvider.parse(report, req, req.getParameterMap()).stream())
-         .toArray(ReportExecutionConfig[]::new);
+      return hookHandlerProvider.get().getHookers(ReportExecutionConfigFromPropertyMapHook.class).stream()
+            .flatMap(configProvider -> configProvider.parse(report, req, req.getParameterMap()).stream())
+            .toArray(ReportExecutionConfig[]::new);
    }
 
    private boolean isDownload(HttpServletRequest req) {
@@ -545,11 +535,8 @@ public class ReportExportServlet extends SecuredHttpServlet {
    }
 
    private String getReportExecutorToken(final ReportExecutionConfig[] reportExecutorConfigs) {
-      return StreamUtil.streamOfNullable(reportExecutorConfigs)
-            .filter(cfg -> cfg instanceof RECReportExecutorToken)
-            .map(cfg -> ((RECReportExecutorToken) cfg).getToken())
-            .findAny()
-            .orElse(null);
+      return StreamUtil.streamOfNullable(reportExecutorConfigs).filter(cfg -> cfg instanceof RECReportExecutorToken)
+            .map(cfg -> ((RECReportExecutorToken) cfg).getToken()).findAny().orElse(null);
    }
 
    protected boolean supportsStreaming(Report report, ParameterSet backLinkSet, String outputFormat,
@@ -661,10 +648,9 @@ public class ReportExportServlet extends SecuredHttpServlet {
 
       final Report report = reportService.get().getUnmanagedReportById(reportId);
 
-      hookHandlerProvider.get()
-         .getHookers(ConfigureReportViaHttpRequestHook.class)
-         .forEach(adjuster -> adjuster.adjustReport(report, req));
-      
+      hookHandlerProvider.get().getHookers(ConfigureReportViaHttpRequestHook.class)
+            .forEach(adjuster -> adjuster.adjustReport(report, req));
+
       return report;
    }
 

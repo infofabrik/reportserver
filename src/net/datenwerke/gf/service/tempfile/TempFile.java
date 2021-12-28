@@ -10,94 +10,92 @@ import java.util.UUID;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 public class TempFile {
-	
-	private String webId;
-	private Path path;
-	private Collection<User> permittedUsers;
-	
-	private String mimeType;
-	private String downloadName;
-	
-	private Date created;
-	private Date lastAccessed;
-	
-	
-	public TempFile(Path path) {
-		this(path, UUID.randomUUID().toString());
-	}
-	
-	public TempFile(Path path, String webId) {
-		this(path, webId, null);
-	}
 
-	public TempFile(Path path, User permittedUser) {
-		this(path, UUID.randomUUID().toString(), Collections.singleton(permittedUser));
-	}
-	
-	public TempFile(Path path, Collection<User> permittedUsers) {
-		this(path, UUID.randomUUID().toString(), permittedUsers);
-	}
+   private String webId;
+   private Path path;
+   private Collection<User> permittedUsers;
 
-	public TempFile(Path path, String webId, Collection<User> permittedUsers) {
-		this.path = path;
-		this.webId = webId;
-		this.permittedUsers = permittedUsers;
-		
-		this.created = new Date();
-	}
+   private String mimeType;
+   private String downloadName;
 
+   private Date created;
+   private Date lastAccessed;
 
-	public String getWebId() {
-		return webId;
-	}
+   public TempFile(Path path) {
+      this(path, UUID.randomUUID().toString());
+   }
 
-	public Path getPath() {
-		return path;
-	}
+   public TempFile(Path path, String webId) {
+      this(path, webId, null);
+   }
 
-	public Collection<User> getPermittedUsers() {
-		if(null == permittedUsers)
-			permittedUsers = new ArrayList<User>();
-		return permittedUsers;
-	}
+   public TempFile(Path path, User permittedUser) {
+      this(path, UUID.randomUUID().toString(), Collections.singleton(permittedUser));
+   }
 
-	public boolean isPermittedUser(User user){
-		if(null == permittedUsers || permittedUsers.isEmpty())
-			return true;
-		
-		return permittedUsers.contains(user);
-	}
-	
-	public String getMimeType() {
-		return mimeType;
-	}
+   public TempFile(Path path, Collection<User> permittedUsers) {
+      this(path, UUID.randomUUID().toString(), permittedUsers);
+   }
 
-	public void setMimeType(String mimeType) {
-		this.mimeType = mimeType;
-	}
+   public TempFile(Path path, String webId, Collection<User> permittedUsers) {
+      this.path = path;
+      this.webId = webId;
+      this.permittedUsers = permittedUsers;
 
-	public String getDownloadName() {
-		return downloadName;
-	}
+      this.created = new Date();
+   }
 
-	public void setDownloadName(String downloadName) {
-		this.downloadName = downloadName;
-	}
+   public String getWebId() {
+      return webId;
+   }
 
-	public Date getCreated() {
-		return created;
-	}
+   public Path getPath() {
+      return path;
+   }
 
-	public Date getLastAccessed() {
-		return lastAccessed;
-	}
+   public Collection<User> getPermittedUsers() {
+      if (null == permittedUsers)
+         permittedUsers = new ArrayList<User>();
+      return permittedUsers;
+   }
 
-	public void setLastAccessed(Date lastAccessed) {
-		this.lastAccessed = lastAccessed;
-	}
-	
-	public void setLastAccessed() {
-		this.lastAccessed = new Date();
-	}
-	
+   public boolean isPermittedUser(User user) {
+      if (null == permittedUsers || permittedUsers.isEmpty())
+         return true;
+
+      return permittedUsers.contains(user);
+   }
+
+   public String getMimeType() {
+      return mimeType;
+   }
+
+   public void setMimeType(String mimeType) {
+      this.mimeType = mimeType;
+   }
+
+   public String getDownloadName() {
+      return downloadName;
+   }
+
+   public void setDownloadName(String downloadName) {
+      this.downloadName = downloadName;
+   }
+
+   public Date getCreated() {
+      return created;
+   }
+
+   public Date getLastAccessed() {
+      return lastAccessed;
+   }
+
+   public void setLastAccessed(Date lastAccessed) {
+      this.lastAccessed = lastAccessed;
+   }
+
+   public void setLastAccessed() {
+      this.lastAccessed = new Date();
+   }
+
 }

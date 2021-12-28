@@ -13,26 +13,20 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class SearchStartup {
 
-	
-	
-	@Inject
-	public SearchStartup(
-			HookHandlerService hookHandlerService,
-			LocateCommand locateCommand,
-			UpdateDBCommand locateUpdateDBCommand,
-			final SearchService searchService,
-			Provider<EntitySearchProvider> entitySearchProvider
-	) {
-		
-		hookHandlerService.attachHooker(TerminalCommandHook.class, locateCommand);
-		hookHandlerService.attachHooker(TerminalCommandHook.class, locateUpdateDBCommand);
-		hookHandlerService.attachHooker(SearchProvider.class, entitySearchProvider);
-		
-		hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
-			@Override
-			public void initialize() {
-				searchService.rebuildIndex();
-			}
-		});
-	}
+   @Inject
+   public SearchStartup(HookHandlerService hookHandlerService, LocateCommand locateCommand,
+         UpdateDBCommand locateUpdateDBCommand, final SearchService searchService,
+         Provider<EntitySearchProvider> entitySearchProvider) {
+
+      hookHandlerService.attachHooker(TerminalCommandHook.class, locateCommand);
+      hookHandlerService.attachHooker(TerminalCommandHook.class, locateUpdateDBCommand);
+      hookHandlerService.attachHooker(SearchProvider.class, entitySearchProvider);
+
+      hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
+         @Override
+         public void initialize() {
+            searchService.rebuildIndex();
+         }
+      });
+   }
 }

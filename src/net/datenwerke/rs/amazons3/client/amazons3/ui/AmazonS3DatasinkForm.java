@@ -43,8 +43,8 @@ public class AmazonS3DatasinkForm extends SimpleFormView {
       form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.appKey(), BaseMessages.INSTANCE.appKey());
 
       /* secret key */
-      String secretKey = form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.secretKey(), BaseMessages.INSTANCE.secretKey(),
-            new SFFCPasswordField() {
+      String secretKey = form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.secretKey(),
+            BaseMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
                @Override
                public Boolean isPasswordSet() {
                   return ((AmazonS3DatasinkDto) getSelectedNode()).isHasSecretKey();
@@ -55,16 +55,17 @@ public class AmazonS3DatasinkForm extends SimpleFormView {
       clearPwMenu.add(clearPwItem);
       clearPwItem.addSelectionHandler(event -> ((AmazonS3DatasinkDto) getSelectedNode()).setAppKey(null));
       form.addFieldMenu(secretKey, clearPwMenu);
-      
+
       /* bucket name */
-      form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.bucketName(), BaseMessages.INSTANCE.amazonS3BucketName());
-      
+      form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.bucketName(),
+            BaseMessages.INSTANCE.amazonS3BucketName());
+
       /* region */
       form.addField(String.class, AmazonS3DatasinkDtoPA.INSTANCE.regionName(), BaseMessages.INSTANCE.amazonS3Region());
 
       /* storage type */
-      form.addField(List.class, AmazonS3DatasinkDtoPA.INSTANCE.storageClass(), BaseMessages.INSTANCE.amazonS3StorageClass(),
-            new SFFCStaticDropdownList<String>() {
+      form.addField(List.class, AmazonS3DatasinkDtoPA.INSTANCE.storageClass(),
+            BaseMessages.INSTANCE.amazonS3StorageClass(), new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
 
@@ -86,7 +87,5 @@ public class AmazonS3DatasinkForm extends SimpleFormView {
                }
             });
    }
-   
-   
 
 }

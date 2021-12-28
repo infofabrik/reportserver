@@ -26,86 +26,82 @@ import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionCon
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class DatasinkManagerTreeConfigurationHooker implements
-		TreeConfiguratorHook {
+public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
-	private final HookHandlerService hookHandler;
-	private final DatasinkTreeManagerDao treeHandler;
-	
-	@Inject
-	public DatasinkManagerTreeConfigurationHooker(
-		HookHandlerService hookHandler,
-		DatasinkTreeManagerDao treeHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.treeHandler = treeHandler;
-	}
-	
-	@Override
-	public boolean consumes(ManagerHelperTree tree) {
-		return DatasinkUIModule.class.equals(tree.getGuarantor());
-	}
+   private final HookHandlerService hookHandler;
+   private final DatasinkTreeManagerDao treeHandler;
 
-	@Override
-	public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-		iconProvider.addMappings(
-				hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class)
-					.stream()
-					.map(config -> new IconMapping(config.getDatasinkClass(),  config.getDatasinkIcon()))
-					.toArray(IconMapping[]::new));
-	}
+   @Inject
+   public DatasinkManagerTreeConfigurationHooker(HookHandlerService hookHandler, DatasinkTreeManagerDao treeHandler) {
 
-	@Override
-	public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
-		/* Folder */
-		Menu folderMenu = menuProvider.createOrGetMenuFor(DatasinkFolderDto.class);
-		MenuItem insertItem = generateInsertMenu();
-		folderMenu.add(insertItem);
-		folderMenu.add(new DeleteMenuItem(treeHandler));
-		folderMenu.add(new SeparatorMenuItem());
-		folderMenu.add(new ReloadMenuItem());
-		
-		/* Specific datasinks */
-		for(DatasinkDefinitionConfigProviderHook config : hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class)){
-			Menu dsMenu = menuProvider.createOrGetMenuFor(config.getDatasinkClass());
-			insertItem = generateInsertMenu();
-			insertItem.disable();
-			dsMenu.add(insertItem);
-			dsMenu.add(new DuplicateMenuItem(treeHandler));
-			dsMenu.add(new DeleteMenuItem(treeHandler));
-		}
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.treeHandler = treeHandler;
+   }
 
-	private MenuItem generateInsertMenu(){
-		final Menu insertMenu = new DwMenu();
-		InsertMenuItem folderInsert = new InsertMenuItem(new DatasinkFolderDto(), BaseMessages.INSTANCE.folder(), treeHandler);
-		folderInsert.setIcon(BaseIcon.FOLDER_O);
-		insertMenu.add(folderInsert);
-		
-		/* Specific datasinks */
-		hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class).forEach( config -> {
-			InsertMenuItem item = new InsertMenuItem(config.instantiateDatasink(), config.getDatasinkName(), treeHandler);
-			item.setIcon(config.getDatasinkIcon());
-			insertMenu.add(item);
-			
-			item.setAvailableCallback(config::isAvailable);
-		});
-		
-		MenuItem insertItem = new DwMenuItem(BaseMessages.INSTANCE.insert(), BaseIcon.FILE_O);
-		insertItem.setSubMenu(insertMenu);
-		
-		return insertItem;
-	}
+   @Override
+   public boolean consumes(ManagerHelperTree tree) {
+      return DatasinkUIModule.class.equals(tree.getGuarantor());
+   }
 
-	@Override
-	public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
-		// ignore double clicks
-	}
-	
-	@Override
-	public void configureFolderTypes(ManagerHelperTree tree) {
-		tree.addFolderTypes(DatasinkFolderDto.class);
-	}
+   @Override
+   public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
+      iconProvider.addMappings(hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class).stream()
+            .map(config -> new IconMapping(config.getDatasinkClass(), config.getDatasinkIcon()))
+            .toArray(IconMapping[]::new));
+   }
+
+   @Override
+   public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
+      /* Folder */
+      Menu folderMenu = menuProvider.createOrGetMenuFor(DatasinkFolderDto.class);
+      MenuItem insertItem = generateInsertMenu();
+      folderMenu.add(insertItem);
+      folderMenu.add(new DeleteMenuItem(treeHandler));
+      folderMenu.add(new SeparatorMenuItem());
+      folderMenu.add(new ReloadMenuItem());
+
+      /* Specific datasinks */
+      for (DatasinkDefinitionConfigProviderHook config : hookHandler
+            .getHookers(DatasinkDefinitionConfigProviderHook.class)) {
+         Menu dsMenu = menuProvider.createOrGetMenuFor(config.getDatasinkClass());
+         insertItem = generateInsertMenu();
+         insertItem.disable();
+         dsMenu.add(insertItem);
+         dsMenu.add(new DuplicateMenuItem(treeHandler));
+         dsMenu.add(new DeleteMenuItem(treeHandler));
+      }
+   }
+
+   private MenuItem generateInsertMenu() {
+      final Menu insertMenu = new DwMenu();
+      InsertMenuItem folderInsert = new InsertMenuItem(new DatasinkFolderDto(), BaseMessages.INSTANCE.folder(),
+            treeHandler);
+      folderInsert.setIcon(BaseIcon.FOLDER_O);
+      insertMenu.add(folderInsert);
+
+      /* Specific datasinks */
+      hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class).forEach(config -> {
+         InsertMenuItem item = new InsertMenuItem(config.instantiateDatasink(), config.getDatasinkName(), treeHandler);
+         item.setIcon(config.getDatasinkIcon());
+         insertMenu.add(item);
+
+         item.setAvailableCallback(config::isAvailable);
+      });
+
+      MenuItem insertItem = new DwMenuItem(BaseMessages.INSTANCE.insert(), BaseIcon.FILE_O);
+      insertItem.setSubMenu(insertMenu);
+
+      return insertItem;
+   }
+
+   @Override
+   public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
+      // ignore double clicks
+   }
+
+   @Override
+   public void configureFolderTypes(ManagerHelperTree tree) {
+      tree.addFolderTypes(DatasinkFolderDto.class);
+   }
 }

@@ -8,10 +8,10 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.listviews.TsDiskLis
 
 public interface TsFavoriteListViewHook extends Hook {
 
-	ImageResource getViewIcon();
+   ImageResource getViewIcon();
 
-	TsDiskListView getListView(TsDiskMainComponent tsFavoriteMainComponent);
+   TsDiskListView getListView(TsDiskMainComponent tsFavoriteMainComponent);
 
-	String getViewId();
+   String getViewId();
 
 }

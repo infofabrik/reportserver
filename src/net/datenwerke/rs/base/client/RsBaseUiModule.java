@@ -7,10 +7,10 @@ import net.datenwerke.rs.base.client.reportengines.BaseReportEngineUiModule;
 
 public class RsBaseUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		install(new DatasourceExtensionUiModule());
-		install(new BaseReportEngineUiModule());
-	}
+   @Override
+   protected void configure() {
+      install(new DatasourceExtensionUiModule());
+      install(new BaseReportEngineUiModule());
+   }
 
 }

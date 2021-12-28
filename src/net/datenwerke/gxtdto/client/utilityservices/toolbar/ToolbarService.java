@@ -16,36 +16,41 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface ToolbarService {
 
-	public DwTextButton createSmallButtonLeft(BaseIcon icon);
-	public DwTextButton createSmallButtonLeft(String text, BaseIcon icon);
-	public DwTextButton createSmallButtonLeft(String text, ImageResource icon);
-	
-	public DwTextButton createLargeButtonLeft(String text, ImageResource icon);
-	public DwTextButton createLargeButtonTop(String text, ImageResource icon);
-	public DwTextButton createLargeButtonTop(String text, ImageResource icon, String tooltip);
+   public DwTextButton createSmallButtonLeft(BaseIcon icon);
 
-	public <D extends TextButton> D configureButton(D button, String text, ImageResource icon);
-	public <D extends TextButton> D configureButton(D button, String text, BaseIcon icon);
-	
-	public void addPlainToolbarItem(ToolBar toolbar, ImageResource icon);
+   public DwTextButton createSmallButtonLeft(String text, BaseIcon icon);
 
-	DwTextButton createPlainToolbarItem(ImageResource icon);
+   public DwTextButton createSmallButtonLeft(String text, ImageResource icon);
 
-	DwTextButton createPlainToolbarItem(String name, ImageResource icon);
+   public DwTextButton createLargeButtonLeft(String text, ImageResource icon);
 
-	public Component createText(String views);
+   public DwTextButton createLargeButtonTop(String text, ImageResource icon);
 
-	public DwTextButton createLargeButtonTop(String label, BaseIcon icon);
+   public DwTextButton createLargeButtonTop(String text, ImageResource icon, String tooltip);
 
-	DwTextButton createUnstyledToolbarItem(String name, ImageResource icon);
-	DwTextButton createUnstyledToolbarItem(String name, BaseIcon icon);
+   public <D extends TextButton> D configureButton(D button, String text, ImageResource icon);
 
-	public void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon);
+   public <D extends TextButton> D configureButton(D button, String text, BaseIcon icon);
 
-	Widget createPlainToolbarItem(BaseIcon icon);
-	
-	void addSearchBar(ToolBar toolbar, final SelectionHandler<SearchResultEntryDto> selectionHandler, 
-	      RpcProxy<SearchLoadConfig, SearchResultListDto> proxy);
-	
-	
+   public void addPlainToolbarItem(ToolBar toolbar, ImageResource icon);
+
+   DwTextButton createPlainToolbarItem(ImageResource icon);
+
+   DwTextButton createPlainToolbarItem(String name, ImageResource icon);
+
+   public Component createText(String views);
+
+   public DwTextButton createLargeButtonTop(String label, BaseIcon icon);
+
+   DwTextButton createUnstyledToolbarItem(String name, ImageResource icon);
+
+   DwTextButton createUnstyledToolbarItem(String name, BaseIcon icon);
+
+   public void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon);
+
+   Widget createPlainToolbarItem(BaseIcon icon);
+
+   void addSearchBar(ToolBar toolbar, final SelectionHandler<SearchResultEntryDto> selectionHandler,
+         RpcProxy<SearchLoadConfig, SearchResultListDto> proxy);
+
 }

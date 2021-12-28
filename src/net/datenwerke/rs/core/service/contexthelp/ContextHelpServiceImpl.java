@@ -14,38 +14,35 @@ import net.datenwerke.rs.utils.man.ManPageService;
 
 public class ContextHelpServiceImpl implements ContextHelpService {
 
-	private final ManPageService manPageService;
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ContextHelpServiceImpl(
-		ManPageService manPageService,
-		HookHandlerService hookHandler) {
-		super();
-		
-		this.manPageService = manPageService;
-		this.hookHandler = hookHandler;
-	}
+   private final ManPageService manPageService;
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public String getContextHelp(ContextHelpInfo info) {
-		String manpage = manPageService.getManPageFailsafe("context/" + info.getId());
-		
-		VelocityContext context = new VelocityContext();
-		
-		StringWriter out = new StringWriter();
-		Velocity.evaluate(context, out, "", manpage);
-		
-		
-		String result = out.toString();
-		
-		for(ContextHelpAdapterHook adapter : hookHandler.getHookers(ContextHelpAdapterHook.class)){
-			String adapted = adapter.adaptContextHelp(result, info);
-			if(null != adapted)
-				result = adapted;
-		}
-		
-		return result;
-	}
+   @Inject
+   public ContextHelpServiceImpl(ManPageService manPageService, HookHandlerService hookHandler) {
+      super();
+
+      this.manPageService = manPageService;
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public String getContextHelp(ContextHelpInfo info) {
+      String manpage = manPageService.getManPageFailsafe("context/" + info.getId());
+
+      VelocityContext context = new VelocityContext();
+
+      StringWriter out = new StringWriter();
+      Velocity.evaluate(context, out, "", manpage);
+
+      String result = out.toString();
+
+      for (ContextHelpAdapterHook adapter : hookHandler.getHookers(ContextHelpAdapterHook.class)) {
+         String adapted = adapter.adaptContextHelp(result, info);
+         if (null != adapted)
+            result = adapted;
+      }
+
+      return result;
+   }
 
 }

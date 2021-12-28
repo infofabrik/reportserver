@@ -9,14 +9,11 @@ import net.datenwerke.rs.incubator.service.jaspertotable.hookers.JasperTableExec
 
 public class JasperToTableStartup {
 
-	@Inject
-	public JasperToTableStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<JasperTableExecutorHook> jasperTableExecutor
-		){
-		
-		
-		hookHandler.attachHooker(ReportEngineTakeOverExecutionHook.class, jasperTableExecutor);
-	}
+   @Inject
+   public JasperToTableStartup(HookHandlerService hookHandler,
+
+         Provider<JasperTableExecutorHook> jasperTableExecutor) {
+
+      hookHandler.attachHooker(ReportEngineTakeOverExecutionHook.class, jasperTableExecutor);
+   }
 }

@@ -11,10 +11,7 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 public class AliasCmdStartup {
 
    @Inject
-   public AliasCmdStartup( 
-         HookHandlerService hookHandler,
-         final AliasCommand aliasCommand
-         ) {
+   public AliasCmdStartup(HookHandlerService hookHandler, final AliasCommand aliasCommand) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);
       hookHandler.attachHooker(ReloadConfigNotificationHook.class, aliasCommand, HookHandlerService.PRIORITY_LOWER);

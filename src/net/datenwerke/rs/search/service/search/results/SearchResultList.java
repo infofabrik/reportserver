@@ -11,76 +11,70 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.search.client.search.dto",
-	dtoImplementInterfaces=PagingLoadResult.class,
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.search.client.search.dto", dtoImplementInterfaces = PagingLoadResult.class, createDecorator = true)
 public class SearchResultList implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5280168035307157321L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -5280168035307157321L;
 
-	@ExposeToClient
-	@EnclosedEntity
-	private List<SearchResultEntry> data;
-	
-	@ExposeToClient
-	private int offset;
-	
-	@ExposeToClient
-	private int totalLength;
-	
-	@ExposeToClient
-	@EnclosedEntity
-	private Set<SearchResultTag> tags = new HashSet<SearchResultTag>();
+   @ExposeToClient
+   @EnclosedEntity
+   private List<SearchResultEntry> data;
 
-	public SearchResultList(){
-	}
-	
-	public SearchResultList(List<SearchResultEntry> resultList,
-			int nrOfResults) {
-		this.data = resultList;
-		this.totalLength = nrOfResults;
-	}
+   @ExposeToClient
+   private int offset;
 
-	public List<SearchResultEntry> getData() {
-		return data;
-	}
+   @ExposeToClient
+   private int totalLength;
 
-	public void setData(List<SearchResultEntry> data) {
-		this.data = data;
-	}
+   @ExposeToClient
+   @EnclosedEntity
+   private Set<SearchResultTag> tags = new HashSet<SearchResultTag>();
 
-	public int getOffset() {
-		return offset;
-	}
+   public SearchResultList() {
+   }
 
-	public void setOffset(int offset) {
-		this.offset = offset;
-	}
+   public SearchResultList(List<SearchResultEntry> resultList, int nrOfResults) {
+      this.data = resultList;
+      this.totalLength = nrOfResults;
+   }
 
-	public int getTotalLength() {
-		return totalLength;
-	}
+   public List<SearchResultEntry> getData() {
+      return data;
+   }
 
-	public void setTotalLength(int totalLength) {
-		this.totalLength = totalLength;
-	}
+   public void setData(List<SearchResultEntry> data) {
+      this.data = data;
+   }
 
-	public void setTags(Set<SearchResultTag> tags) {
-		this.tags = tags;
-	}
+   public int getOffset() {
+      return offset;
+   }
 
-	public Set<SearchResultTag> getTags() {
-		return tags;
-	}
+   public void setOffset(int offset) {
+      this.offset = offset;
+   }
 
-	public void addTag(SearchResultTag tag){
-		tags.add(tag);
-	}
-	
+   public int getTotalLength() {
+      return totalLength;
+   }
+
+   public void setTotalLength(int totalLength) {
+      this.totalLength = totalLength;
+   }
+
+   public void setTags(Set<SearchResultTag> tags) {
+      this.tags = tags;
+   }
+
+   public Set<SearchResultTag> getTags() {
+      return tags;
+   }
+
+   public void addTag(SearchResultTag tag) {
+      tags.add(tag);
+   }
+
 }

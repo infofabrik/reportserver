@@ -10,26 +10,23 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterSetReplacemen
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetReplacementProvider;
 import net.datenwerke.rs.globalconstants.service.globalconstants.GlobalConstantParameterReplacementProvider;
 
-public class ParameterSetReplacementProviderHooker implements
-		ParameterSetReplacementProviderHook {
+public class ParameterSetReplacementProviderHooker implements ParameterSetReplacementProviderHook {
 
-	private final GlobalConstantParameterReplacementProvider globalConstantProvider;
-	
-	@Inject
-	public ParameterSetReplacementProviderHooker(
-		GlobalConstantParameterReplacementProvider globalConstantProvider
-		){
-		
-		this.globalConstantProvider = globalConstantProvider;
-	}
-	
-	@Override
-	public Collection<? extends ParameterSetReplacementProvider> getProviders() {
-		Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
-		
-		providers.add(globalConstantProvider);
-		
-		return providers;
-	}
+   private final GlobalConstantParameterReplacementProvider globalConstantProvider;
+
+   @Inject
+   public ParameterSetReplacementProviderHooker(GlobalConstantParameterReplacementProvider globalConstantProvider) {
+
+      this.globalConstantProvider = globalConstantProvider;
+   }
+
+   @Override
+   public Collection<? extends ParameterSetReplacementProvider> getProviders() {
+      Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
+
+      providers.add(globalConstantProvider);
+
+      return providers;
+   }
 
 }

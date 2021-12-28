@@ -17,24 +17,22 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.hookers.Paramet
 
 public class GlobalConstantsStartup {
 
-	@Inject
-	public GlobalConstantsStartup(
-		HookHandlerService hookHandler,
-		Provider<ParameterSetReplacementProviderHooker> replacementProvider,
-		
-		Provider<GlobalConstantExporter> exporterProvider,
-		Provider<GlobalConstantImporter> importerProvider,
-		
-		Provider<ExportAllGlobalConstantsHooker> exportAllGlobalConstants,
-		Provider<ImportAllGlobalConstantsHooker> importAllGlobalConstants
-		
-		){
-		
-		hookHandler.attachHooker(ParameterSetReplacementProviderHook.class, replacementProvider);
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(ExportAllHook.class, exportAllGlobalConstants);
-		hookHandler.attachHooker(ImportAllHook.class, importAllGlobalConstants);
-	}
+   @Inject
+   public GlobalConstantsStartup(HookHandlerService hookHandler,
+         Provider<ParameterSetReplacementProviderHooker> replacementProvider,
+
+         Provider<GlobalConstantExporter> exporterProvider, Provider<GlobalConstantImporter> importerProvider,
+
+         Provider<ExportAllGlobalConstantsHooker> exportAllGlobalConstants,
+         Provider<ImportAllGlobalConstantsHooker> importAllGlobalConstants
+
+   ) {
+
+      hookHandler.attachHooker(ParameterSetReplacementProviderHook.class, replacementProvider);
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(ExportAllHook.class, exportAllGlobalConstants);
+      hookHandler.attachHooker(ImportAllHook.class, importAllGlobalConstants);
+   }
 }

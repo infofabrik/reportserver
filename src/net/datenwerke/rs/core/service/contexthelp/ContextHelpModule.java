@@ -4,9 +4,9 @@ import com.google.inject.AbstractModule;
 
 public class ContextHelpModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(ContextHelpService.class).to(ContextHelpServiceImpl.class);
-	}
+   @Override
+   protected void configure() {
+      bind(ContextHelpService.class).to(ContextHelpServiceImpl.class);
+   }
 
 }

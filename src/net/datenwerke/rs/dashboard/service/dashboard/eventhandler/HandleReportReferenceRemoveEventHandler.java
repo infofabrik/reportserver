@@ -11,25 +11,24 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleReportReferenceRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleReportReferenceRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final DadgetService dadgetService;
+   private final DadgetService dadgetService;
 
-	@Inject
-	public HandleReportReferenceRemoveEventHandler(DadgetService dadgetService) {
-		this.dadgetService = dadgetService;
-	}
+   @Inject
+   public HandleReportReferenceRemoveEventHandler(DadgetService dadgetService) {
+      this.dadgetService = dadgetService;
+   }
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		TsDiskReportReference node = (TsDiskReportReference) event.getObject();
-		
-		Collection<ReportDadget> container = dadgetService.getReportDadgetsWith(node);
-		if(null != container && ! container.isEmpty()){
-			String error = "Report is referenced in dadgets"; 
-			throw new NeedForcefulDeleteException(error);
-		}
-	}
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      TsDiskReportReference node = (TsDiskReportReference) event.getObject();
+
+      Collection<ReportDadget> container = dadgetService.getReportDadgetsWith(node);
+      if (null != container && !container.isEmpty()) {
+         String error = "Report is referenced in dadgets";
+         throw new NeedForcefulDeleteException(error);
+      }
+   }
 
 }

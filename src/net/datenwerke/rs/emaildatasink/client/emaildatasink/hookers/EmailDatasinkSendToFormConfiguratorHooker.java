@@ -61,7 +61,7 @@ public class EmailDatasinkSendToFormConfiguratorHooker implements DatasinkSendTo
 
       return Optional.of(values);
    }
-   
+
    @Override
    public String getWindowTitle() {
       return EmailDatasinkUiModule.NAME;
@@ -71,7 +71,7 @@ public class EmailDatasinkSendToFormConfiguratorHooker implements DatasinkSendTo
    public BaseIcon getIcon() {
       return EmailDatasinkUiModule.ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return 715;
@@ -81,5 +81,5 @@ public class EmailDatasinkSendToFormConfiguratorHooker implements DatasinkSendTo
    public boolean isFolderedDatasink() {
       return false;
    }
-   
+
 }

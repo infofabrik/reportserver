@@ -5,11 +5,11 @@ import java.util.Map;
 
 public interface EntityDiffConfig {
 
-	boolean ignoreId();
-	
-	boolean ignoreVersion();
-	
-	Map<Class<?>, List<String>> getFieldsToCompareWhiteList();
-	
-	Map<Class<?>, List<String>> getFieldsToCompareBlackList();
+   boolean ignoreId();
+
+   boolean ignoreVersion();
+
+   Map<Class<?>, List<String>> getFieldsToCompareWhiteList();
+
+   Map<Class<?>, List<String>> getFieldsToCompareBlackList();
 }

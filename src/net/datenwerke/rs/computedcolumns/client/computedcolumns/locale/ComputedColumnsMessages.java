@@ -5,29 +5,34 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface ComputedColumnsMessages extends Messages {
 
-	public static final ComputedColumnsMessages INSTANCE = GWT.create(ComputedColumnsMessages.class);
-	
-	String computedColumnsHeading();
+   public static final ComputedColumnsMessages INSTANCE = GWT.create(ComputedColumnsMessages.class);
 
-	String removeAllConfirmHeading();
-	String removeAllConfirmText();
-	
-	String addColumn();
-	
-	String expressionLabel();
-	String editColumnHeading();
-	String validateData();
-	
-	String newName();
-	String newDescription();
-	String expressionNotEmpty();
-	
-	String duplicateColumnLabel();
-	
-	String selectColBtnLabel();
+   String computedColumnsHeading();
 
-	String importColumnConflictTitle();
-	String importColumnConflictMsg(String name);
-	
-	
+   String removeAllConfirmHeading();
+
+   String removeAllConfirmText();
+
+   String addColumn();
+
+   String expressionLabel();
+
+   String editColumnHeading();
+
+   String validateData();
+
+   String newName();
+
+   String newDescription();
+
+   String expressionNotEmpty();
+
+   String duplicateColumnLabel();
+
+   String selectColBtnLabel();
+
+   String importColumnConflictTitle();
+
+   String importColumnConflictMsg(String name);
+
 }

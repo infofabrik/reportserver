@@ -26,111 +26,106 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
  *
  */
 @Entity
-@Table(name="USERVAR_DEF")
+@Table(name = "USERVAR_DEF")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.uservariables.client.uservariables.dto",
-	abstractDto=true
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.uservariables.client.uservariables.dto", abstractDto = true)
 abstract public class UserVariableDefinition implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3957144231292503668L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3957144231292503668L;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	private String name;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL
-	)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-    private String description;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   private String name;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-    
-    public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   @Version
+   private Long version;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public String getDescription() {
-		return description;
-	}
+   public Long getId() {
+      return id;
+   }
 
-    
-    @Transient
-	public final UserVariableInstance createVariableInstance(){
-    	UserVariableInstance instance = doCreateVariableInstance();
-		instance.setDefinition(this);
-		return instance;
-	}
-	
-	@Transient
-	protected abstract UserVariableInstance doCreateVariableInstance();
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	/**
-	 * Tests on equality of id field.
-	 */
-	@Override
-    public boolean equals(Object obj) {
-    	/* returns true if objects have the same id */
-    	if(! (obj instanceof UserVariableDefinition))
-    		return false;
-    	
-    	/* cast object */
-    	UserVariableDefinition pd = (UserVariableDefinition) obj;
-    	
-    	/* test id */
-    	if(null == getId() && null != pd.getId())
-    		return false;
-    	if(null != getId() && ! getId().equals(pd.getId()))
-    		return false;
-    	
-    	return true;
-    }
-    
-    @Override
-    public int hashCode() {
-    	if(null != getId())
-    		return getId().hashCode();
-    	
-    	return super.hashCode();
-    }
+   public Long getVersion() {
+      return version;
+   }
 
-    @Transient
-	abstract public Class<?> getType();
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Transient
+   public final UserVariableInstance createVariableInstance() {
+      UserVariableInstance instance = doCreateVariableInstance();
+      instance.setDefinition(this);
+      return instance;
+   }
+
+   @Transient
+   protected abstract UserVariableInstance doCreateVariableInstance();
+
+   /**
+    * Tests on equality of id field.
+    */
+   @Override
+   public boolean equals(Object obj) {
+      /* returns true if objects have the same id */
+      if (!(obj instanceof UserVariableDefinition))
+         return false;
+
+      /* cast object */
+      UserVariableDefinition pd = (UserVariableDefinition) obj;
+
+      /* test id */
+      if (null == getId() && null != pd.getId())
+         return false;
+      if (null != getId() && !getId().equals(pd.getId()))
+         return false;
+
+      return true;
+   }
+
+   @Override
+   public int hashCode() {
+      if (null != getId())
+         return getId().hashCode();
+
+      return super.hashCode();
+   }
+
+   @Transient
+   abstract public Class<?> getType();
 
 }

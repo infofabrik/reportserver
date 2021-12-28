@@ -10,6 +10,7 @@ import net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigD
 @RemoteServiceRelativePath("datenwerke/jaspertotable")
 public interface JasperToTableRpcService extends RemoteService {
 
-	public JasperToTableConfigDto getConfig(JasperReportDto report) throws ServerCallFailedException;
-	public void setConfig(JasperReportDto report, JasperToTableConfigDto config) throws ServerCallFailedException;
+   public JasperToTableConfigDto getConfig(JasperReportDto report) throws ServerCallFailedException;
+
+   public void setConfig(JasperReportDto report, JasperToTableConfigDto config) throws ServerCallFailedException;
 }

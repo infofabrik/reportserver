@@ -6,9 +6,9 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 
 public class Jxls2Excel extends Export2Excel {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof JxlsReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof JxlsReportDto;
+   }
 
 }

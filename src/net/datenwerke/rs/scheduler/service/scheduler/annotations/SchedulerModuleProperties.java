@@ -9,7 +9,7 @@ import com.google.inject.BindingAnnotation;
 
 @BindingAnnotation
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.PARAMETER})
+@Target({ ElementType.FIELD, ElementType.METHOD, ElementType.CONSTRUCTOR, ElementType.PARAMETER })
 public @interface SchedulerModuleProperties {
 
 }

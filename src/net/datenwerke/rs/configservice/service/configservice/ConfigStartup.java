@@ -34,14 +34,11 @@ public class ConfigStartup {
    public static final String LIB_DIR = "lib";
 
    @Inject
-   public ConfigStartup(
-         HookHandlerService hookHandlerService,
+   public ConfigStartup(HookHandlerService hookHandlerService,
 
-         Provider<FileServerConfigStore> fileServerConfigStore,
-         Provider<ConfigDirConfigStore> configDirConfigStore,
+         Provider<FileServerConfigStore> fileServerConfigStore, Provider<ConfigDirConfigStore> configDirConfigStore,
 
-         Provider<ConfigCommand> configCommand,
-         Provider<ConfigReloadCommand> configReloadCommand,
+         Provider<ConfigCommand> configCommand, Provider<ConfigReloadCommand> configReloadCommand,
          Provider<ConfigEchoCommand> configEchoCommand,
 
          Provider<DiffconfigfilesCommand> diffconfigfilesCommand,
@@ -49,8 +46,7 @@ public class ConfigStartup {
          Provider<DiffconfigfilesCreatallCommand> diffconfigfilesCreateallCommand,
          Provider<DiffconfigfilesCreatemissingCommand> diffconfigfilesCreatemissingCommand,
 
-         final Provider<ConfigService> configService,
-         final Provider<ConfigDirService> configDirService,
+         final Provider<ConfigService> configService, final Provider<ConfigDirService> configDirService,
          final FileserverImportHelper importHelper,
 
          ConfigDirApplicationPropertiesProvider configDirApplicationPropertiesProvider) {

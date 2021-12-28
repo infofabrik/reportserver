@@ -6,5 +6,5 @@ import net.datenwerke.security.service.crypto.CryptoCredentials;
 
 @HookConfig
 public interface UserCryptoCredentialHook extends Hook {
-	public CryptoCredentials getUserCryptoCredentials(String email);
+   public CryptoCredentials getUserCryptoCredentials(String email);
 }

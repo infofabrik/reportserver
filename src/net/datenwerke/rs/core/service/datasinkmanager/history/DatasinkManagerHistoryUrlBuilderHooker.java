@@ -14,52 +14,50 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class DatasinkManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-	private final DatasinkManagerMessages messages = LocalizationServiceImpl.getMessages(DatasinkManagerMessages.class);
+   private final DatasinkManagerMessages messages = LocalizationServiceImpl.getMessages(DatasinkManagerMessages.class);
 
-	private final static String HISTORY_BUILDER_NAME = "Datasinkmanager";
-	
-	private final SecurityService securityService;
-	
-	@Inject
-	public DatasinkManagerHistoryUrlBuilderHooker(
-		SecurityService securityService	
-		){
-		this.securityService = securityService;
-	}
-	
-    @Override
-    public boolean consumes(Object o) {
-       if (!(o instanceof AbstractDatasinkManagerNode))
-          return false;
+   private final static String HISTORY_BUILDER_NAME = "Datasinkmanager";
 
-       if (securityService.checkRights(DatasinkManagerAdminViewSecurityTarget.class, Read.class))
-          return true;
-       else {
-          if (!(o instanceof SecurityTarget))
-             return false;
-          else
-             return securityService.checkRights((SecurityTarget) o, Read.class);
-       }
-    }
+   private final SecurityService securityService;
 
-	@Override
-	protected String getTokenName() {
-		return DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN;
-	}
+   @Inject
+   public DatasinkManagerHistoryUrlBuilderHooker(SecurityService securityService) {
+      this.securityService = securityService;
+   }
 
-	@Override
-	protected String getBuilderId() {
-		return HISTORY_BUILDER_NAME;
-	}
+   @Override
+   public boolean consumes(Object o) {
+      if (!(o instanceof AbstractDatasinkManagerNode))
+         return false;
 
-	@Override
-	protected String getNameFor(Object o) {
-		return messages.historyUrlBuilderName();
-	}
+      if (securityService.checkRights(DatasinkManagerAdminViewSecurityTarget.class, Read.class))
+         return true;
+      else {
+         if (!(o instanceof SecurityTarget))
+            return false;
+         else
+            return securityService.checkRights((SecurityTarget) o, Read.class);
+      }
+   }
 
-	@Override
-	protected String getIconFor(Object o) {
-		return messages.historyUrlBuilderIcon();
-	}
+   @Override
+   protected String getTokenName() {
+      return DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN;
+   }
+
+   @Override
+   protected String getBuilderId() {
+      return HISTORY_BUILDER_NAME;
+   }
+
+   @Override
+   protected String getNameFor(Object o) {
+      return messages.historyUrlBuilderName();
+   }
+
+   @Override
+   protected String getIconFor(Object o) {
+      return messages.historyUrlBuilderIcon();
+   }
 
 }

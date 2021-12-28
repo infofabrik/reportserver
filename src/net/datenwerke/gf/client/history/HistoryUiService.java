@@ -6,41 +6,41 @@ import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
-public interface HistoryUiService extends ValueChangeHandler<String>{
-	
-	public interface JumpToObjectResultCallback{
-		void setResult(Dto dto);
-	}
-	
-	public interface JumpToObjectCallback{
-		void getDtoTarget(JumpToObjectResultCallback callback);
+public interface HistoryUiService extends ValueChangeHandler<String> {
 
-		boolean haveToUpdate();
-	}
-	
-	public abstract class JumpToObjectCallbackImpl implements JumpToObjectCallback{
-		private Dto lastSelection;
-		
-		@Override
-		final public boolean haveToUpdate() {
-			return null == getDtoTarget() || lastSelection != getDtoTarget();
-		}
-		
-		@Override
-		final public void getDtoTarget(JumpToObjectResultCallback callback) {
-			lastSelection = getDtoTarget();
-			callback.setResult(lastSelection);
-		}
-		
-		public abstract Dto getDtoTarget();
-	}
-	
-	public void addHistoryCallback(String location, HistoryCallback callback);
+   public interface JumpToObjectResultCallback {
+      void setResult(Dto dto);
+   }
 
-	public MenuItem getJumpToMenuItem(JumpToObjectCallback jumpToObjectCallback);
+   public interface JumpToObjectCallback {
+      void getDtoTarget(JumpToObjectResultCallback callback);
 
-	void fire(HistoryLinkDto link);
+      boolean haveToUpdate();
+   }
 
-	public void jumpTo(Dto node);
+   public abstract class JumpToObjectCallbackImpl implements JumpToObjectCallback {
+      private Dto lastSelection;
+
+      @Override
+      final public boolean haveToUpdate() {
+         return null == getDtoTarget() || lastSelection != getDtoTarget();
+      }
+
+      @Override
+      final public void getDtoTarget(JumpToObjectResultCallback callback) {
+         lastSelection = getDtoTarget();
+         callback.setResult(lastSelection);
+      }
+
+      public abstract Dto getDtoTarget();
+   }
+
+   public void addHistoryCallback(String location, HistoryCallback callback);
+
+   public MenuItem getJumpToMenuItem(JumpToObjectCallback jumpToObjectCallback);
+
+   void fire(HistoryLinkDto link);
+
+   public void jumpTo(Dto node);
 
 }

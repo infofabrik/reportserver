@@ -18,58 +18,53 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class ImportAllCommand implements ImportSubCommandHook {
 
-	public static final String BASE_COMMAND = "all";
-	
-	private final ImportService importService;
-	private final HookHandlerService hookHandler;
+   public static final String BASE_COMMAND = "all";
 
-	@Inject
-	public ImportAllCommand(
-		ImportService importService,
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.importService = importService;
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final ImportService importService;
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		String args = parser.getArgumentString();
-		final FileServerFile file = (FileServerFile) session.getObjectResolver().getObject(args.trim(), Read.class);
-		
-		ImportConfig config;
-		try {
-			config = new ImportConfig(new ExportDataProviderImpl(file.getData()));
-		} catch(Exception e){
-			throw new IllegalArgumentException(e);
-		}
-		
-		for(ImportAllHook exporter : hookHandler.getHookers(ImportAllHook.class)){
-			exporter.configure(config);
-		}
-		
-		importService.importData(config);
-		
-		return new CommandResult();
-	}
+   @Inject
+   public ImportAllCommand(ImportService importService, HookHandlerService hookHandler) {
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper,
-			TerminalSession session) {
-		
-	}
+      /* store objects */
+      this.importService = importService;
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      String args = parser.getArgumentString();
+      final FileServerFile file = (FileServerFile) session.getObjectResolver().getObject(args.trim(), Read.class);
+
+      ImportConfig config;
+      try {
+         config = new ImportConfig(new ExportDataProviderImpl(file.getData()));
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
+
+      for (ImportAllHook exporter : hookHandler.getHookers(ImportAllHook.class)) {
+         exporter.configure(config);
+      }
+
+      importService.importData(config);
+
+      return new CommandResult();
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+
+   }
 
 }

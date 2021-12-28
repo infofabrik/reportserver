@@ -47,20 +47,15 @@ public class ExportAllCommand implements ExportSubCommandHook {
    }
 
    @Override
-   @CliHelpMessage(
-         messageClass = ExImportMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandExport_sub_all_description"
-         )
+   @CliHelpMessage(messageClass = ExImportMessages.class, name = BASE_COMMAND, description = "commandExport_sub_all_description")
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       final ExportConfig config = new ExportConfig();
 
-      hookHandler.getHookers(ExportAllHook.class)
-         .forEach(exporter -> {
-            logger.info("configure exporter: " + exporter.getClass());
-            exporter.configure(config);
-         });
-      
+      hookHandler.getHookers(ExportAllHook.class).forEach(exporter -> {
+         logger.info("configure exporter: " + exporter.getClass());
+         exporter.configure(config);
+      });
+
       CommandResult result = new CommandResult(exportService.exportIndent(config));
       result.setDisplayMode(DisplayMode.WINDOW);
 

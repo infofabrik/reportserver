@@ -5,7 +5,7 @@ import net.datenwerke.rs.terminal.client.terminal.ui.TerminalWindow;
 
 public interface ClientCommandHook extends Hook {
 
-	public boolean consumes(String command);
-	
-	public boolean execute(String command, TerminalWindow terminal);
+   public boolean consumes(String command);
+
+   public boolean execute(String command, TerminalWindow terminal);
 }

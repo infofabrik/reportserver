@@ -22,20 +22,18 @@ public class DatasourceTesterServiceImpl implements DatasourceTesterService {
    private final DBHelperService dbHelperService;
    private final SimpleDataSupplier simpleDataSupplyer;
    private final Provider<HookHandlerService> hookHandlerServiceProvider;
-   
+
    @Inject
-   public DatasourceTesterServiceImpl(
-         DBHelperService dbHelperService,
-         SimpleDataSupplier simpleDataSupplyer,
-         Provider<HookHandlerService> hookHandlerServiceProvider
-         ) {
+   public DatasourceTesterServiceImpl(DBHelperService dbHelperService, SimpleDataSupplier simpleDataSupplyer,
+         Provider<HookHandlerService> hookHandlerServiceProvider) {
       this.dbHelperService = dbHelperService;
       this.simpleDataSupplyer = simpleDataSupplyer;
       this.hookHandlerServiceProvider = hookHandlerServiceProvider;
    }
 
    @Override
-   public boolean testConnection(DatabaseDatasource datasource) throws ConnectionTestFailedException, ReportExecutorException {
+   public boolean testConnection(DatabaseDatasource datasource)
+         throws ConnectionTestFailedException, ReportExecutorException {
       /* get db helper */
       final DatabaseHelper dbHelper = dbHelperService.getDatabaseHelper(datasource.getDatabaseDescriptor());
       if (null == dbHelper)
@@ -43,10 +41,8 @@ public class DatasourceTesterServiceImpl implements DatasourceTesterService {
 
       /* check if anybody wants to take over */
       Optional<DatabaseConnectionTesterHook> takesOver = hookHandlerServiceProvider.get()
-            .getHookers(DatabaseConnectionTesterHook.class)
-            .stream()
-            .filter(tester -> tester.consumes(datasource, dbHelper))
-            .findAny();
+            .getHookers(DatabaseConnectionTesterHook.class).stream()
+            .filter(tester -> tester.consumes(datasource, dbHelper)).findAny();
 
       if (takesOver.isPresent())
          return takesOver.get().testConnection(datasource, dbHelper);

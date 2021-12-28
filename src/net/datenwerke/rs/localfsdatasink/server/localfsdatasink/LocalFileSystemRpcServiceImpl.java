@@ -66,18 +66,11 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public LocalFileSystemRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService,
-         DtoService dtoService, 
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         LocalFileSystemService localFileSystemService,
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public LocalFileSystemRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService,
+         DtoService dtoService, ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, LocalFileSystemService localFileSystemService,
+         ExceptionServices exceptionServices, ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -93,16 +86,15 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
 
    @Transactional(rollbackOn = { Exception.class })
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
-         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, boolean compressed) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof LocalFileSystemDatasinkDto))
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
+      if (!(datasinkDto instanceof LocalFileSystemDatasinkDto))
          throw new IllegalArgumentException("Not a local filesystem datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
-      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService
-            .loadPoso(datasinkDto);
+      LocalFileSystemDatasink localFileSystemDatasink = (LocalFileSystemDatasink) dtoService.loadPoso(datasinkDto);
 
       /* get a clean and unmanaged report from the database */
       Report referenceReport = reportDtoService.getReferenceReport(reportDto);
@@ -230,8 +222,8 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, localFileSystemService, filename,
-            folder, compressed);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, localFileSystemService,
+            filename, folder, compressed);
    }
 
 }

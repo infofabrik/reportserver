@@ -35,19 +35,14 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderHook {
 
-
    private final Provider<UITree> treeProvider;
    private final Provider<EmailDatasinkDao> datasinkDaoProvider;
    private final Provider<DatasinkUIService> datasinkUiServiceProvider;
-   
+
    @Inject
-   public ExportToEmailDatasinkHooker(
-         HookHandlerService hookHandler,
-         LoginService loginService,
-         @DatasinkTreeEmail Provider<UITree> treeProvider,
-         Provider<EmailDatasinkDao> datasinkDaoProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider
-         ) {
+   public ExportToEmailDatasinkHooker(HookHandlerService hookHandler, LoginService loginService,
+         @DatasinkTreeEmail Provider<UITree> treeProvider, Provider<EmailDatasinkDao> datasinkDaoProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.datasinkUiServiceProvider = datasinkUiServiceProvider;
@@ -76,28 +71,23 @@ public class ExportToEmailDatasinkHooker implements ExportExternalEntryProviderH
 
    protected void displayExportDialog(final ReportDto report, final ReportExecutorInformation info,
          Collection<ReportViewConfiguration> configs) {
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            EmailDatasinkDto.class,
-            report.getName(), treeProvider, datasinkDaoProvider, report, 
-            Optional.of(info),
-            new AsyncCallback<Map<String,Object>>() {
-               
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(EmailDatasinkDto.class, report.getName(),
+            treeProvider, datasinkDaoProvider, report, Optional.of(info), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
-                  final ExportTypeSelection formatType = (ExportTypeSelection) result.get(DatasinkUIModule.REPORT_FORMAT_KEY);
-                  datasinkDaoProvider.get().exportReportIntoDatasink(
-                        report, 
-                        info.getExecuteReportToken(),
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        formatType.getOutputFormat(), 
-                        formatType.getExportConfiguration(),
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
+               public void onSuccess(Map<String, Object> result) {
+                  final ExportTypeSelection formatType = (ExportTypeSelection) result
+                        .get(DatasinkUIModule.REPORT_FORMAT_KEY);
+                  datasinkDaoProvider.get().exportReportIntoDatasink(report, info.getExecuteReportToken(),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), formatType.getOutputFormat(),
+                        formatType.getExportConfiguration(), (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
                         (String) result.get(EmailDatasinkUiModule.DATASINK_SUBJECT),
                         (String) result.get(EmailDatasinkUiModule.DATASINK_MESSSAGE),
                         (List<StrippedDownUser>) result.get(EmailDatasinkUiModule.DATASINK_RCPTLIST),
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY), 
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

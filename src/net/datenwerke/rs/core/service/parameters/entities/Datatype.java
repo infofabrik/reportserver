@@ -8,12 +8,5 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  */
 @GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.parameters.dto")
 public enum Datatype {
-   String, 
-   Integer, 
-   Long, 
-   BigDecimal, 
-   Float, 
-   Double, 
-   Date, 
-   Boolean
+   String, Integer, Long, BigDecimal, Float, Double, Date, Boolean
 }

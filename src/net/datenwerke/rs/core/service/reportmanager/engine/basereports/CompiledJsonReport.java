@@ -6,40 +6,39 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
  * 
  *
  */
-public class CompiledJsonReport implements CompiledReport{
+public class CompiledJsonReport implements CompiledReport {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 485512409594043368L;
-	
-	final private String report;
-	
-	public CompiledJsonReport(String report) {
-		this.report = report;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 485512409594043368L;
 
-	public String getReport() {
-		return report;
-	}
+   final private String report;
 
-	public String getFileExtension() {
-		return "json"; //$NON-NLS-1$
-	}
+   public CompiledJsonReport(String report) {
+      this.report = report;
+   }
 
-	public String getMimeType() {
-		return "application/json"; //$NON-NLS-1$
-	}
+   public String getReport() {
+      return report;
+   }
 
-	@Override
-	public boolean hasData() {
-		return report != null;
-	}
+   public String getFileExtension() {
+      return "json"; //$NON-NLS-1$
+   }
 
-	@Override
-	public boolean isStringReport() {
-		return true;
-	}
-	
+   public String getMimeType() {
+      return "application/json"; //$NON-NLS-1$
+   }
+
+   @Override
+   public boolean hasData() {
+      return report != null;
+   }
+
+   @Override
+   public boolean isStringReport() {
+      return true;
+   }
+
 }

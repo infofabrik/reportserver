@@ -24,9 +24,7 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.SaikuOutputGener
 public class SaikuStartup {
 
    @Inject
-   public SaikuStartup(
-         HookHandlerService hookHandler, 
-         MondrianDatasourceProviderHooker mondrianDatasourceProvider,
+   public SaikuStartup(HookHandlerService hookHandler, MondrianDatasourceProviderHooker mondrianDatasourceProvider,
          SaikuReportEngineProviderHooker saikuReportEngineProviderHooker,
          ReportExportViaSessionHooker reportExportViaSessionHooker,
 
@@ -37,8 +35,7 @@ public class SaikuStartup {
 
          Provider<BaseSaikuOutputGeneratorProvider> baseOutputGenerators,
 
-         SaikuJuelParameterAdapter juelParameterAdapter
-         ) {
+         SaikuJuelParameterAdapter juelParameterAdapter) {
 
       hookHandler.attachHooker(ReportEngineProviderHook.class, saikuReportEngineProviderHooker);
       hookHandler.attachHooker(DatasourceProviderHook.class, mondrianDatasourceProvider);

@@ -27,10 +27,8 @@ public class DatasourceBundleTesterToolbarConfigurator implements MainPanelViewT
    private final ToolbarService toolbarUtils;
 
    @Inject
-   public DatasourceBundleTesterToolbarConfigurator(
-         ToolbarService toolbarUtils,
-         DatasourceBundleDao datasourceBundleDao
-         ) {
+   public DatasourceBundleTesterToolbarConfigurator(ToolbarService toolbarUtils,
+         DatasourceBundleDao datasourceBundleDao) {
 
       this.toolbarUtils = toolbarUtils;
       this.datasourceBundleDao = datasourceBundleDao;
@@ -52,7 +50,8 @@ public class DatasourceBundleTesterToolbarConfigurator implements MainPanelViewT
                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
                messages.testingTitle(), messages.testingProgressMessage()) {
          };
-         Request request = datasourceBundleDao.testConnection(bundleDto, new TimeoutCallback<Boolean>(120000, callback));
+         Request request = datasourceBundleDao.testConnection(bundleDto,
+               new TimeoutCallback<Boolean>(120000, callback));
          callback.setRequest(request);
       });
 

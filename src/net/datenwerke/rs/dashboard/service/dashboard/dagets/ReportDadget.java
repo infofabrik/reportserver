@@ -19,74 +19,66 @@ import net.datenwerke.rs.dashboard.service.dashboard.dagets.post.ReportDadget2Dt
 import net.datenwerke.rs.dashboard.service.dashboard.entities.Dadget;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 
-
 @Entity
-@Table(name="DADGET_REPORT")
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	createDecorator=true,
-	poso2DtoPostProcessors=ReportDadget2DtoPost.class,
-	dtoImplementInterfaces=ReportContainerDadget.class,
-	additionalFields=@AdditionalField(name="reportForDisplay",type=ReportDto.class)
-)
+@Table(name = "DADGET_REPORT")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", createDecorator = true, poso2DtoPostProcessors = ReportDadget2DtoPost.class, dtoImplementInterfaces = ReportContainerDadget.class, additionalFields = @AdditionalField(name = "reportForDisplay", type = ReportDto.class))
 public class ReportDadget extends Dadget {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3154364200782237989L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3154364200782237989L;
 
-	@ExposeToClient(inheritDtoView=true)
-	@ManyToOne(fetch=FetchType.LAZY)
-	private Report report;
-	
-	@ExposeToClient(inheritDtoView=true)
-	@ManyToOne(fetch=FetchType.LAZY)
-	private TsDiskReportReference reportReference;
-	
-	@ExposeToClient(
-			view=DtoView.MINIMAL
-			)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String config;
-	
-	@ExposeToClient
-	private boolean showExecuteButton;
-	
-	public void setReport(Report report) {
-		this.report = report;
-		if(null != report)
-			setReportReference(null);
-	}
+   @ExposeToClient(inheritDtoView = true)
+   @ManyToOne(fetch = FetchType.LAZY)
+   private Report report;
 
-	public Report getReport() {
-		return report;
-	}
+   @ExposeToClient(inheritDtoView = true)
+   @ManyToOne(fetch = FetchType.LAZY)
+   private TsDiskReportReference reportReference;
 
-	public void setReportReference(TsDiskReportReference reportReference) {
-		this.reportReference = reportReference;
-		if(null != reportReference)
-			report = null;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String config;
 
-	public TsDiskReportReference getReportReference() {
-		return reportReference;
-	}
+   @ExposeToClient
+   private boolean showExecuteButton;
 
-	public String getConfig() {
-		return config;
-	}
+   public void setReport(Report report) {
+      this.report = report;
+      if (null != report)
+         setReportReference(null);
+   }
 
-	public void setConfig(String config) {
-		this.config = config;
-	}
-	
-	public void setShowExecuteButton(boolean showExecuteButton) {
-		this.showExecuteButton = showExecuteButton;
-	}
-	public boolean isShowExecuteButton() {
-		return showExecuteButton;
-	}
+   public Report getReport() {
+      return report;
+   }
+
+   public void setReportReference(TsDiskReportReference reportReference) {
+      this.reportReference = reportReference;
+      if (null != reportReference)
+         report = null;
+   }
+
+   public TsDiskReportReference getReportReference() {
+      return reportReference;
+   }
+
+   public String getConfig() {
+      return config;
+   }
+
+   public void setConfig(String config) {
+      this.config = config;
+   }
+
+   public void setShowExecuteButton(boolean showExecuteButton) {
+      this.showExecuteButton = showExecuteButton;
+   }
+
+   public boolean isShowExecuteButton() {
+      return showExecuteButton;
+   }
 
 }

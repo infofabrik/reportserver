@@ -19,83 +19,81 @@ import net.datenwerke.rs.saiku.client.saiku.ui.SaikuReportForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class SaikuReportConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<SaikuReportForm> adminFormProvider;
-	
-	@Inject
-	public SaikuReportConfigHooker(
-			Provider<SaikuReportForm> adminFormProvider
-	) {
-		this.adminFormProvider = adminFormProvider;
-	}
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof SaikuReportDto;
-	}
+   private final Provider<SaikuReportForm> adminFormProvider;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   @Inject
+   public SaikuReportConfigHooker(Provider<SaikuReportForm> adminFormProvider) {
+      this.adminFormProvider = adminFormProvider;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return SaikuReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof SaikuReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_SAIKU.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_SAIKU.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return SaikuReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_SAIKU_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_SAIKU.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_SAIKU_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_SAIKU.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return SaikuMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_SAIKU_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return SaikuReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_SAIKU_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return SaikuMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return SaikuReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new SaikuReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new SaikuReportVariantDtoDec();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new SaikuReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new SaikuReportVariantDtoDec();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

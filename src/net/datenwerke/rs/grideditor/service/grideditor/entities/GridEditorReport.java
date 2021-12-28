@@ -18,79 +18,66 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 
 @Entity
-@Table(name="GRID_EDT_REPORT")
+@Table(name = "GRID_EDT_REPORT")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	GridEditorReportVariant.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.grideditor.client.grideditor.dto",
-	createDecorator=true,
-	typeDescriptionMsg=net.datenwerke.rs.grideditor.client.grideditor.locale.GridEditorMessages.class,
-	typeDescriptionKey="reportTypeName"
-)
-@InstanceDescription(
-	msgLocation=GridEditorMessages.class,
-	objNameKey="reportTypeName",
-	icon = "edit"
-)
+@TreeDBAllowedChildren({ GridEditorReportVariant.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", createDecorator = true, typeDescriptionMsg = net.datenwerke.rs.grideditor.client.grideditor.locale.GridEditorMessages.class, typeDescriptionKey = "reportTypeName")
+@InstanceDescription(msgLocation = GridEditorMessages.class, objNameKey = "reportTypeName", icon = "edit")
 public class GridEditorReport extends Report {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -791479978558860812L;
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -791479978558860812L;
-	
-	@ExposeToClient
-	@ManyToOne
-	private FileServerFile script;
-	
-	@ExposeToClient
-	private String arguments;
-	
-	public void setArguments(String arguments) {
-		this.arguments = arguments;
-	}
+   @ExposeToClient
+   @ManyToOne
+   private FileServerFile script;
 
-	public String getArguments() {
-		return arguments;
-	}
+   @ExposeToClient
+   private String arguments;
 
-	public void setScript(FileServerFile script) {
-		this.script = script;
-	}
+   public void setArguments(String arguments) {
+      this.arguments = arguments;
+   }
 
-	public FileServerFile getScript() {
-		return script;
-	}
+   public String getArguments() {
+      return arguments;
+   }
 
-	@Override
-	protected Report createVariant(Report report) {
-		if(! (report instanceof GridEditorReport))
-			throw new IllegalArgumentException("Expected GridEditorReport");
-		
-		GridEditorReportVariant variant = new GridEditorReportVariant();
-		
-		/* copy parameter instances */
-		initVariant(variant, report);
-		
-		return variant;
-		
-	}
+   public void setScript(FileServerFile script) {
+      this.script = script;
+   }
 
-	@Override
-	public void replaceWith(Report aReport, Injector injector) {
-		if(! (aReport instanceof GridEditorReport))
-			throw new IllegalArgumentException("Expected GridEditorReport");
-		
-		super.replaceWith(aReport, injector);
-		
-		GridEditorReport report = (GridEditorReport) aReport;
-		
-		/* set any fields from this report */
-	}
+   public FileServerFile getScript() {
+      return script;
+   }
+
+   @Override
+   protected Report createVariant(Report report) {
+      if (!(report instanceof GridEditorReport))
+         throw new IllegalArgumentException("Expected GridEditorReport");
+
+      GridEditorReportVariant variant = new GridEditorReportVariant();
+
+      /* copy parameter instances */
+      initVariant(variant, report);
+
+      return variant;
+
+   }
+
+   @Override
+   public void replaceWith(Report aReport, Injector injector) {
+      if (!(aReport instanceof GridEditorReport))
+         throw new IllegalArgumentException("Expected GridEditorReport");
+
+      super.replaceWith(aReport, injector);
+
+      GridEditorReport report = (GridEditorReport) aReport;
+
+      /* set any fields from this report */
+   }
 
 }

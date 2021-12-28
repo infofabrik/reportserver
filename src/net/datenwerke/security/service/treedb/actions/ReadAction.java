@@ -9,10 +9,10 @@ import net.datenwerke.security.service.security.rights.Right;
 
 public class ReadAction extends SecurityActionImpl {
 
-	public Collection<Right> getRights() {
-		Collection<Right> rights = new ArrayList<Right>();
-		rights.add(new Read());
-		return rights;
-	}
+   public Collection<Right> getRights() {
+      Collection<Right> rights = new ArrayList<Right>();
+      rights.add(new Read());
+      return rights;
+   }
 
 }

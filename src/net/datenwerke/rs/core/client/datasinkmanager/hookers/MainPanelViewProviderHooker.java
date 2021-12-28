@@ -21,51 +21,44 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final HookHandlerService hookHandler;
-	private final Provider<FolderForm> folderFormProvider;
-	
-	private final Provider<SecurityView> securityViewProvider;
-	
-	
-	@Inject
-	public MainPanelViewProviderHooker(
-			HookHandlerService hookHandler,
-			Provider<FolderForm> folderFormProvider,
-			
-			Provider<SecurityView> securityViewProvider
-		){
+   private final HookHandlerService hookHandler;
+   private final Provider<FolderForm> folderFormProvider;
 
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.folderFormProvider = folderFormProvider;
-		this.securityViewProvider = securityViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof DatasinkFolderDto)
-			return getViewForDatasinkFolder();
-		if(node instanceof DatasinkDefinitionDto)
-			return getViewForDatasinks((DatasinkDefinitionDto) node);
-		return null;
-	}
+   private final Provider<SecurityView> securityViewProvider;
 
-	private List<MainPanelView> getViewForDatasinks(final DatasinkDefinitionDto datasinkDefinition) {
-		final List<MainPanelView> views = new ArrayList<>();
-		
-		views.addAll(
-			hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class)
-				.stream()
-				.filter(config -> config.consumes(datasinkDefinition))
-				.flatMap(config -> config.getAdminViews(datasinkDefinition).stream())
-				.collect(toList()));
-		
-		views.add(securityViewProvider.get());
-		
-		return views;
-	}
+   @Inject
+   public MainPanelViewProviderHooker(HookHandlerService hookHandler, Provider<FolderForm> folderFormProvider,
 
-	private List<MainPanelView> getViewForDatasinkFolder() {
-		return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
-	}
+         Provider<SecurityView> securityViewProvider) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.folderFormProvider = folderFormProvider;
+      this.securityViewProvider = securityViewProvider;
+   }
+
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof DatasinkFolderDto)
+         return getViewForDatasinkFolder();
+      if (node instanceof DatasinkDefinitionDto)
+         return getViewForDatasinks((DatasinkDefinitionDto) node);
+      return null;
+   }
+
+   private List<MainPanelView> getViewForDatasinks(final DatasinkDefinitionDto datasinkDefinition) {
+      final List<MainPanelView> views = new ArrayList<>();
+
+      views.addAll(hookHandler.getHookers(DatasinkDefinitionConfigProviderHook.class).stream()
+            .filter(config -> config.consumes(datasinkDefinition))
+            .flatMap(config -> config.getAdminViews(datasinkDefinition).stream()).collect(toList()));
+
+      views.add(securityViewProvider.get());
+
+      return views;
+   }
+
+   private List<MainPanelView> getViewForDatasinkFolder() {
+      return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
+   }
 
 }

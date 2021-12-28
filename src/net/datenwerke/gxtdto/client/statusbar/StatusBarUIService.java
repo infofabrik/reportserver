@@ -5,21 +5,23 @@ import com.sencha.gxt.widget.core.client.container.Viewport;
 
 public interface StatusBarUIService {
 
-	public Widget getStatusBarWidget();
-	
-	void addRight(String text, String icon);
+   public Widget getStatusBarWidget();
 
-	void addLeft(String text, String icon);
+   void addRight(String text, String icon);
 
-	void addRight(Widget comp);
+   void addLeft(String text, String icon);
 
-	void addLeft(Widget comp);
+   void addRight(Widget comp);
 
-	void removeRight(Widget comp);
-	void removeLeft(Widget comp);
+   void addLeft(Widget comp);
 
-	public void setContainer(Viewport container);
+   void removeRight(Widget comp);
 
-	public void clearLeft();
-	public void clearRight();
+   void removeLeft(Widget comp);
+
+   public void setContainer(Viewport container);
+
+   public void clearLeft();
+
+   public void clearRight();
 }

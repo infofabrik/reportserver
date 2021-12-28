@@ -18,17 +18,14 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public class FtpServiceImpl implements FtpService {
 
    private final Provider<DatasinkService> datasinkServiceProvider;
-   
+
    private final Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider;
-   
+
    private final Provider<FtpSenderService> ftpSenderServiceProvider;
 
    @Inject
-   public FtpServiceImpl(
-		   @DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
-		   Provider<DatasinkService> datasinkServiceProvider,
-		   Provider<FtpSenderService> ftpSenderServiceProvider
-		   ) {
+   public FtpServiceImpl(@DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider, Provider<FtpSenderService> ftpSenderServiceProvider) {
       this.defaultFtpDatasinkProvider = defaultFtpDatasinkProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.ftpSenderServiceProvider = ftpSenderServiceProvider;
@@ -41,12 +38,12 @@ public class FtpServiceImpl implements FtpService {
          throw new IllegalStateException("ftp is disabled");
       if (!(datasink instanceof FtpDatasink))
          throw new IllegalStateException("Not an FTP datasink");
-      
+
       FtpDatasink ftpDatasink = (FtpDatasink) datasink;
-      
-      try  {
+
+      try {
          ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTP, report, ftpDatasink, config);
-      } catch(IOException e) {
+      } catch (IOException e) {
          throw new DatasinkExportException("An error occurred during datasink export", e);
       }
    }

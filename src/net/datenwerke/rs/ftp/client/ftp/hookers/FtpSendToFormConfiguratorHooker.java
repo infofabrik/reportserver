@@ -33,7 +33,7 @@ public class FtpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return FtpUiModule.FTP_NAME;
@@ -43,7 +43,7 @@ public class FtpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public BaseIcon getIcon() {
       return FtpUiModule.FTP_ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;
@@ -53,5 +53,5 @@ public class FtpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

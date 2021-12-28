@@ -19,48 +19,44 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @Singleton
 public class I18nToolsRpcServiceImpl extends SecuredRemoteServiceServlet implements I18nToolsRpcService {
 
-	private static final long serialVersionUID = -4361640926787911944L;
-	private I18nToolsService i18nToolsService;
-	private Provider<AuthenticatorService> authenticatorService;
-	private UserManagerService userManagerService;
-	private DtoService dtoService;
-	
-	
-	@Inject
-	public I18nToolsRpcServiceImpl(
-			I18nToolsService i18nToolsService, 
-			UserManagerService userManagerService,
-			Provider<AuthenticatorService> authenticatorService, 
-			DtoService dtoService) {
-		
-		this.i18nToolsService = i18nToolsService;
-		this.userManagerService = userManagerService;
-		this.authenticatorService = authenticatorService;
-		this.dtoService = dtoService;
-	}
-	
-	@Override
-	public String getDecimalSeparator() {
-		User currentUser = authenticatorService.get().getCurrentUser();
-		String sep = i18nToolsService.getUserDecimalSeparator(currentUser);
-		if(null != sep)
-			return sep;
-		
-		return i18nToolsService.getSystemDecimalSeparator();
-	}
-	
-	@Override
-	@Transactional(rollbackOn=Exception.class)
-	public void setDecimalSeparator(String separatorChar) {
-		User currentUser = authenticatorService.get().getCurrentUser();
-		i18nToolsService.setUserDecimalSeparator(currentUser, separatorChar);
-		
-		userManagerService.merge(currentUser);
-	}
-	
-	@Override
-	@SecurityChecked(loginRequired=false)
-	public FormatPatternsDto getFormatPatterns() {
-		return (FormatPatternsDto) dtoService.createDto(i18nToolsService.getFormatPatterns());
-	}
+   private static final long serialVersionUID = -4361640926787911944L;
+   private I18nToolsService i18nToolsService;
+   private Provider<AuthenticatorService> authenticatorService;
+   private UserManagerService userManagerService;
+   private DtoService dtoService;
+
+   @Inject
+   public I18nToolsRpcServiceImpl(I18nToolsService i18nToolsService, UserManagerService userManagerService,
+         Provider<AuthenticatorService> authenticatorService, DtoService dtoService) {
+
+      this.i18nToolsService = i18nToolsService;
+      this.userManagerService = userManagerService;
+      this.authenticatorService = authenticatorService;
+      this.dtoService = dtoService;
+   }
+
+   @Override
+   public String getDecimalSeparator() {
+      User currentUser = authenticatorService.get().getCurrentUser();
+      String sep = i18nToolsService.getUserDecimalSeparator(currentUser);
+      if (null != sep)
+         return sep;
+
+      return i18nToolsService.getSystemDecimalSeparator();
+   }
+
+   @Override
+   @Transactional(rollbackOn = Exception.class)
+   public void setDecimalSeparator(String separatorChar) {
+      User currentUser = authenticatorService.get().getCurrentUser();
+      i18nToolsService.setUserDecimalSeparator(currentUser, separatorChar);
+
+      userManagerService.merge(currentUser);
+   }
+
+   @Override
+   @SecurityChecked(loginRequired = false)
+   public FormatPatternsDto getFormatPatterns() {
+      return (FormatPatternsDto) dtoService.createDto(i18nToolsService.getFormatPatterns());
+   }
 }

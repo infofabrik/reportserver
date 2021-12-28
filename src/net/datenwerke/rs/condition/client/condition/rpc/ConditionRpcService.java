@@ -13,11 +13,11 @@ import net.datenwerke.rs.condition.client.condition.dto.ScheduleConditionDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 @RemoteServiceRelativePath("conditions")
-public interface ConditionRpcService extends RemoteService{
+public interface ConditionRpcService extends RemoteService {
 
-	List<Condition> getConditions(ReportDto report) throws ServerCallFailedException, ExpectedException;
-	
-	List<String> getReplacementsFor(ReportConditionDto condition) throws ServerCallFailedException, ExpectedException;
-	
-	boolean executeCondition(ScheduleConditionDto scheduleCondition) throws ServerCallFailedException, ExpectedException;
+   List<Condition> getConditions(ReportDto report) throws ServerCallFailedException, ExpectedException;
+
+   List<String> getReplacementsFor(ReportConditionDto condition) throws ServerCallFailedException, ExpectedException;
+
+   boolean executeCondition(ScheduleConditionDto scheduleCondition) throws ServerCallFailedException, ExpectedException;
 }

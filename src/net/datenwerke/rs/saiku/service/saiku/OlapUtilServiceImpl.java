@@ -101,13 +101,9 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    private final Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService;
 
    @Inject
-   public OlapUtilServiceImpl(
-         HookHandlerService hookHandlerService, 
-         JdbcService jdbcService,
-         Provider<ParameterSetFactory> parameterSetFactory, 
-         Provider<AuthenticatorService> authenticatorService,
-         Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService
-         ) {
+   public OlapUtilServiceImpl(HookHandlerService hookHandlerService, JdbcService jdbcService,
+         Provider<ParameterSetFactory> parameterSetFactory, Provider<AuthenticatorService> authenticatorService,
+         Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService) {
       this.hookHandlerService = hookHandlerService;
       this.jdbcService = jdbcService;
       this.parameterSetFactory = parameterSetFactory;
@@ -126,13 +122,11 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    @Override
    public Cube getCube(final SaikuReport report) throws ClassNotFoundException, IOException, SQLException {
-      Optional<Cube> cachedCube = hookHandlerService.getHookers(OlapCubeCacheHook.class)
-         .stream()
-         .map(cache -> cache.getCubeFromCache(report))
-         .findAny(); // only one cache
+      Optional<Cube> cachedCube = hookHandlerService.getHookers(OlapCubeCacheHook.class).stream()
+            .map(cache -> cache.getCubeFromCache(report)).findAny(); // only one cache
       if (cachedCube.isPresent())
          return cachedCube.get();
-      
+
       DatasourceContainer dsc = report.getDatasourceContainer();
       MondrianDatasource datasource = (MondrianDatasource) dsc.getDatasource();
       MondrianDatasourceConfig datasourceConfig = (MondrianDatasourceConfig) dsc.getDatasourceConfig();
@@ -141,11 +135,9 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
       final Cube cube = olapConnection.getOlapSchema().getCubes().get(datasourceConfig.getCubeName());
 
-      hookHandlerService.getHookers(OlapCubeCacheHook.class)
-         .stream()
-         .findAny() // only one cache
-         .ifPresent(cache -> cache.putCubeInCache(report, cube, olapConnection));
-      
+      hookHandlerService.getHookers(OlapCubeCacheHook.class).stream().findAny() // only one cache
+            .ifPresent(cache -> cache.putCubeInCache(report, cube, olapConnection));
+
       return cube;
    }
 
@@ -155,45 +147,39 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       if (datasource.isMondrian3())
          return oldOlapUtilService.get().getCubes(datasource, report);
 
-      return getOlapConnection(datasource, report, false).getOlapSchema().getCubes()
-         .stream()
-         .map(Cube::getName)
-         .collect(toList());
+      return getOlapConnection(datasource, report, false).getOlapSchema().getCubes().stream().map(Cube::getName)
+            .collect(toList());
    }
 
    @Override
    public List<Dimension> getAllDimensions(final Cube cube) {
-      return cube.getDimensions()
-         .stream()
-         .filter(dim -> !dim.getName().equals("Measures") && !dim.getUniqueName().equals("[Measures]"))
-         .collect(toList());
+      return cube.getDimensions().stream()
+            .filter(dim -> !dim.getName().equals("Measures") && !dim.getUniqueName().equals("[Measures]"))
+            .collect(toList());
    }
 
    @Override
    public List<SaikuHierarchy> getAllDimensionHierarchies(Cube cube, String dimensionName) {
       SaikuDimension dim = getDimension(cube, dimensionName);
-      if (dim == null) 
+      if (dim == null)
          throw new SaikuServiceException("Cannot find dimension ( " + dimensionName + ") for cube ( " + cube + " )");
-      
+
       return dim.getHierarchies();
    }
 
    @Override
    public SaikuDimension getDimension(Cube cube, String dimensionName) {
       Dimension dim = cube.getDimensions().get(dimensionName);
-      if (dim != null) 
+      if (dim != null)
          return ObjectUtil.convert(dim);
-      
+
       return null;
    }
 
    @Override
    public List<Member> getAllMeasures(final Cube cube) throws OlapException {
-      List<Member> measures = cube.getMeasures()
-         .stream()
-         .filter(Measure::isVisible)
-         .collect(toList());
-      
+      List<Member> measures = cube.getMeasures().stream().filter(Measure::isVisible).collect(toList());
+
       if (0 == measures.size()) {
          Hierarchy hierarchy = cube.getDimensions().get("Measures").getDefaultHierarchy();
          measures = hierarchy.getRootMembers();
@@ -358,12 +344,11 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       OlapConnection connection = (OlapConnection) DriverManager.getConnection(url, props);
 
       /* allow hook to adapt connection */
-      Optional<OlapConnectionHook> olapConnHook = hookHandlerService.getHookers(OlapConnectionHook.class)
-         .stream()
-         .findAny();
+      Optional<OlapConnectionHook> olapConnHook = hookHandlerService.getHookers(OlapConnectionHook.class).stream()
+            .findAny();
       if (olapConnHook.isPresent())
          connection = olapConnHook.get().postprocessConnection(mondrianDatasource, connection);
-         
+
       return connection.unwrap(OlapConnection.class);
    }
 
@@ -572,7 +557,7 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       if (h != null) {
          return h;
       }
-      
+
       for (Hierarchy hierarchy : cube.getHierarchies()) {
          if (hierarchy.getUniqueName().equals(name)) {
             return hierarchy;
@@ -598,11 +583,8 @@ public class OlapUtilServiceImpl implements OlapUtilService {
             final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
             final Cube reportCube = getCube((SaikuReport) report);
-            Arrays.stream(rolapSchema.getCubes())
-               .filter(cube -> reportCube.getName().equals(cube.getName()))
-               .map(mondrian.olap.Cube::getSchema)
-               .findAny()
-               .ifPresent(cacheControl::flushSchema);
+            Arrays.stream(rolapSchema.getCubes()).filter(cube -> reportCube.getName().equals(cube.getName()))
+                  .map(mondrian.olap.Cube::getSchema).findAny().ifPresent(cacheControl::flushSchema);
 
          } catch (Exception e) {
             throw new RuntimeException(e);
@@ -626,10 +608,8 @@ public class OlapUtilServiceImpl implements OlapUtilService {
          final RolapSchema rolapSchema = rolapConnection.getSchema();
          final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
-         Arrays.stream(rolapSchema.getCubes())
-            .map(mondrian.olap.Cube::getSchema)
-            .forEach(cacheControl::flushSchema);
-         
+         Arrays.stream(rolapSchema.getCubes()).map(mondrian.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
+
       } catch (MondrianSchemaException e) {
          // the cache cannot be flush with $!{params} causing an invalid syntax
       } catch (Exception e) {
@@ -639,19 +619,19 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    @Override
    public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
-      
-      if (datasource.isMondrian3()) 
+
+      if (datasource.isMondrian3())
          return oldOlapUtilService.get().testConnection(datasource);
-      
+
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
          con.unwrap(mondrian.rolap.RolapConnection.class).getSchema();
-         
+
       } catch (Exception e) {
          throw new ConnectionTestFailedException(
                "Connection test failed in datasource \"" + datasource.getName() + "\": " + e.getMessage(), e);
       }
-      
+
       return true;
    }
 

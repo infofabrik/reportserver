@@ -8,8 +8,8 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 
 public interface ObjectResolverHook extends Hook {
 
-	boolean consumes(String locationStr, TerminalSession terminalSession);
+   boolean consumes(String locationStr, TerminalSession terminalSession);
 
-	Collection<Object> getObjects(String locationStr, TerminalSession terminalSession) throws ObjectResolverException;
+   Collection<Object> getObjects(String locationStr, TerminalSession terminalSession) throws ObjectResolverException;
 
 }

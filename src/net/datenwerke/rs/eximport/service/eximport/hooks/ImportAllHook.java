@@ -5,5 +5,5 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ImportAllHook extends Hook {
 
-	public void configure(ImportConfig config);
+   public void configure(ImportConfig config);
 }

@@ -4,9 +4,8 @@ import com.google.inject.Inject;
 
 public class HistoryStartup {
 
-	@Inject
-	public HistoryStartup() {
+   @Inject
+   public HistoryStartup() {
 
-	
-	}
+   }
 }

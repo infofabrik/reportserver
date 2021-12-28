@@ -10,18 +10,16 @@ import net.datenwerke.gf.base.server.gwtstacktrace.annotations.GWTInitClientExce
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 
 @Singleton
-@SecurityChecked(
-	bypassInheritedMethods = true
-)
+@SecurityChecked(bypassInheritedMethods = true)
 @GWTInitClientException
-public class SecuredRemoteServiceServlet extends DwRemoteServiceServlet implements RemoteRequest{
+public class SecuredRemoteServiceServlet extends DwRemoteServiceServlet implements RemoteRequest {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5531482963721209584L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5531482963721209584L;
 
-	public HttpServletRequest getRequest() {
-	    return super.getThreadLocalRequest();
-	}
+   public HttpServletRequest getRequest() {
+      return super.getThreadLocalRequest();
+   }
 }

@@ -14,46 +14,46 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwComboBox<M> extends ComboBox<M> {
 
-	public DwComboBox(ComboBoxCell<M> cell) {
-		super(cell);
+   public DwComboBox(ComboBoxCell<M> cell) {
+      super(cell);
 
-		adaptListContainer();
-	}
+      adaptListContainer();
+   }
 
-	public DwComboBox(ListStore<M> store, LabelProvider<? super M> labelProvider) {
-		super(store, labelProvider);
+   public DwComboBox(ListStore<M> store, LabelProvider<? super M> labelProvider) {
+      super(store, labelProvider);
 
-		adaptListContainer();
-	}
+      adaptListContainer();
+   }
 
-	public DwComboBox(ListStore<M> store, LabelProvider<? super M> labelProvider, ListView<M, ?> listView) {
-		super(store, labelProvider, listView);
-		
-		adaptListContainer();
-	}
+   public DwComboBox(ListStore<M> store, LabelProvider<? super M> labelProvider, ListView<M, ?> listView) {
+      super(store, labelProvider, listView);
 
-	protected void adaptListContainer() {
-		VerticalLayoutContainer listContainer = getListContainer(getCell());
-		listContainer.setBorders(false);
-	}
+      adaptListContainer();
+   }
 
-	/* resort to violator pattern */
-	protected native VerticalLayoutContainer getListContainer(ComboBoxCell cbc) /*-{
+   protected void adaptListContainer() {
+      VerticalLayoutContainer listContainer = getListContainer(getCell());
+      listContainer.setBorders(false);
+   }
+
+   /* resort to violator pattern */
+   protected native VerticalLayoutContainer getListContainer(ComboBoxCell cbc) /*-{
 	  return cbc.@com.sencha.gxt.cell.core.client.form.ComboBoxCell::listContainer;
 	}-*/;
 
-	public void plainAppearance() {
-		((RsTriggerFieldAppearance)getCell().getAppearance()).setPlainAppearance(true);
-		addValueChangeHandler(new ValueChangeHandler<M>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<M> event) {
-				((RsTriggerFieldAppearance)getCell().getAppearance()).updatePlainValue(getElement());
-			}
-		});
-	}
+   public void plainAppearance() {
+      ((RsTriggerFieldAppearance) getCell().getAppearance()).setPlainAppearance(true);
+      addValueChangeHandler(new ValueChangeHandler<M>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<M> event) {
+            ((RsTriggerFieldAppearance) getCell().getAppearance()).updatePlainValue(getElement());
+         }
+      });
+   }
 
-	public void setTriggerIcon(BaseIcon icon){
-		((RsTriggerFieldAppearance)getCell().getAppearance()).setTriggerIcon(icon);
-	}
-	
+   public void setTriggerIcon(BaseIcon icon) {
+      ((RsTriggerFieldAppearance) getCell().getAppearance()).setTriggerIcon(icon);
+   }
+
 }

@@ -9,21 +9,21 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class DashboardManagerExporter extends TreeNodeExporter {
 
-	private static final String EXPORTER_ID = "DashboardManagerExporter";
+   private static final String EXPORTER_ID = "DashboardManagerExporter";
 
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
 
-	@Override
-	protected Class<? extends AbstractNode<?>> getTreeType() {
-		return AbstractDashboardManagerNode.class;
-	}
+   @Override
+   protected Class<? extends AbstractNode<?>> getTreeType() {
+      return AbstractDashboardManagerNode.class;
+   }
 
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[] { DashboardFolder.class, DashboardNode.class, DadgetNode.class };
-	}
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { DashboardFolder.class, DashboardNode.class, DadgetNode.class };
+   }
 
 }

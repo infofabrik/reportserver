@@ -25,57 +25,55 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 
 public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
 
-	
-	@Inject
-	public SaikuChartHTMLOutputGenerator(HookHandlerService hookHandler) {
-		super(hookHandler);
-	}
+   @Inject
+   public SaikuChartHTMLOutputGenerator(HookHandlerService hookHandler) {
+      super(hookHandler);
+   }
 
-	@Override
-	public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet,
-			CellSet cellset, List<SaikuDimensionSelection> filters,
-			String outputFormat, ReportExecutionConfig... configs)
-			throws ReportExecutorException {
-		
-		RECSaikuChart config = getConfig(RECSaikuChart.class, configs);
-		String type = "bar";
-		if(null != config){
-			type = config.getType();
-		}
-		
-		QueryResult queryResult = RestUtil.convert(cellDataSet);
+   @Override
+   public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset,
+         List<SaikuDimensionSelection> filters, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException {
 
-		ObjectMapper om = new ObjectMapper();
-		String json;
-		try {
-			json = om.writeValueAsString(queryResult);
-		} catch (Exception e) {
-			throw new ReportExecutorException(e);
-		} 
-		
-		try {
-			String tplfile = "resources/legacysaiku/charttemplate.html";
-			URL resource = getClass().getClassLoader().getResource("reportserver.properties");
-			URI tpluri = resource.toURI().resolve("../../" + tplfile);
-			
-			String tpl = IOUtils.toString(tpluri.toURL().openStream());
-			tpl = tpl.replace("/*##DATA##*/", json);
-			tpl = tpl.replace("/*##TYPE##*/", type);
-			
-			return new CompiledHTMLSaikuReport(tpl);
-		} catch (Exception e) {
-			throw new ReportExecutorException(e);
-		}
-	}
+      RECSaikuChart config = getConfig(RECSaikuChart.class, configs);
+      String type = "bar";
+      if (null != config) {
+         type = config.getType();
+      }
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{SaikuModule.OUTPUT_FORMAT_CHART_HTML};
-	}
+      QueryResult queryResult = RestUtil.convert(cellDataSet);
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledHTMLSaikuReport();
-	}
+      ObjectMapper om = new ObjectMapper();
+      String json;
+      try {
+         json = om.writeValueAsString(queryResult);
+      } catch (Exception e) {
+         throw new ReportExecutorException(e);
+      }
+
+      try {
+         String tplfile = "resources/legacysaiku/charttemplate.html";
+         URL resource = getClass().getClassLoader().getResource("reportserver.properties");
+         URI tpluri = resource.toURI().resolve("../../" + tplfile);
+
+         String tpl = IOUtils.toString(tpluri.toURL().openStream());
+         tpl = tpl.replace("/*##DATA##*/", json);
+         tpl = tpl.replace("/*##TYPE##*/", type);
+
+         return new CompiledHTMLSaikuReport(tpl);
+      } catch (Exception e) {
+         throw new ReportExecutorException(e);
+      }
+   }
+
+   @Override
+   public String[] getFormats() {
+      return new String[] { SaikuModule.OUTPUT_FORMAT_CHART_HTML };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledHTMLSaikuReport();
+   }
 
 }

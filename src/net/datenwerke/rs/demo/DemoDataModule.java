@@ -4,9 +4,9 @@ import com.google.inject.AbstractModule;
 
 public class DemoDataModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(DemoDataStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(DemoDataStartup.class).asEagerSingleton();
+   }
 
 }

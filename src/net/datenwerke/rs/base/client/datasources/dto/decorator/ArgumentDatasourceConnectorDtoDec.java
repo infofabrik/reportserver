@@ -26,66 +26,64 @@ import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSe
  */
 public class ArgumentDatasourceConnectorDtoDec extends ArgumentDatasourceConnectorDto {
 
-	private static final long serialVersionUID = 709218674495577623L;
-	private static final String TEXT_AREA_WIDGET_DATAMAP_KEY = "TEXT_AREA_WIDGET_DATAMAP";
-	private static final String CONNECTOR_CFG_KEY = "ARGUMENT_DATASRC_CNCTR_CFG";
-	
-	public ArgumentDatasourceConnectorDtoDec() {
-		super();
-	}
+   private static final long serialVersionUID = 709218674495577623L;
+   private static final String TEXT_AREA_WIDGET_DATAMAP_KEY = "TEXT_AREA_WIDGET_DATAMAP";
+   private static final String CONNECTOR_CFG_KEY = "ARGUMENT_DATASRC_CNCTR_CFG";
 
-	@Override
-	public void addConnectorSpecificFormFields(List<Widget> widgets,
-			DatasourceDefinitionConfigDto config,
-			DatasourceDefinitionDto datasourceDefinitionDto,
-			final DatasourceSelectionField datasourceSelectionField, 
-			CsvDatasourceConfigConfigurator configConfigurator) {
-		
+   public ArgumentDatasourceConnectorDtoDec() {
+      super();
+   }
 
-		TextArea textArea = (TextArea) SimpleForm.createFormlessField(String.class, new SFFCTextAreaImpl());
-		List<DatasourceConnectorConfigDto> connectorConfig = ((FormatBasedDatasourceConfigDto) config).getConnectorConfig();
-		for(DatasourceConnectorConfigDto ccfg : connectorConfig){
-			if(CONNECTOR_CFG_KEY.equals(ccfg.getKey())){
-				textArea.setValue(ccfg.getValue());
-			}
-		}
-		
-		((HasValueChangeHandlers<String>)textArea).addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				datasourceSelectionField.updateDatasourceConfig();
-			}
-		});
+   @Override
+   public void addConnectorSpecificFormFields(List<Widget> widgets, DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField,
+         CsvDatasourceConfigConfigurator configConfigurator) {
 
-		configConfigurator.getDatamap().put(TEXT_AREA_WIDGET_DATAMAP_KEY, textArea);
-		widgets.add(new FieldLabel(textArea, BaseDatasourceMessages.INSTANCE.dataLabel()));
-	}
+      TextArea textArea = (TextArea) SimpleForm.createFormlessField(String.class, new SFFCTextAreaImpl());
+      List<DatasourceConnectorConfigDto> connectorConfig = ((FormatBasedDatasourceConfigDto) config)
+            .getConnectorConfig();
+      for (DatasourceConnectorConfigDto ccfg : connectorConfig) {
+         if (CONNECTOR_CFG_KEY.equals(ccfg.getKey())) {
+            textArea.setValue(ccfg.getValue());
+         }
+      }
 
+      ((HasValueChangeHandlers<String>) textArea).addValueChangeHandler(new ValueChangeHandler<String>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<String> event) {
+            datasourceSelectionField.updateDatasourceConfig();
+         }
+      });
 
-	@Override
-	public void inheritConnectorSpecificChanges(
-			DatasourceDefinitionConfigDto config,
-			DatasourceDefinitionDto datasourceDefinitionDto,
-			CsvDatasourceConfigConfigurator csvDatasourceConfigConfigurator) {
-		if(config instanceof FormatBasedDatasourceConfigDto){
-			if(csvDatasourceConfigConfigurator.getDatamap().containsKey(TEXT_AREA_WIDGET_DATAMAP_KEY)){
-				TextArea textArea = (TextArea) csvDatasourceConfigConfigurator.getDatamap().get(TEXT_AREA_WIDGET_DATAMAP_KEY);
-				List<DatasourceConnectorConfigDto> connectorConfig = ((FormatBasedDatasourceConfigDto) config).getConnectorConfig();
-				boolean found = false;
-				for(DatasourceConnectorConfigDto ccfg : connectorConfig){
-					if(CONNECTOR_CFG_KEY.equals(ccfg.getKey())){
-						ccfg.setValue(textArea.getCurrentValue());
-						found = true;
-					}
-				}
-				if(!found){
-					DatasourceConnectorConfigDto ccfg = new DatasourceConnectorConfigDto();
-					ccfg.setKey(CONNECTOR_CFG_KEY);
-					ccfg.setValue(textArea.getCurrentValue());
-					connectorConfig.add(ccfg);
-				}
-			}
-		}
-	}
+      configConfigurator.getDatamap().put(TEXT_AREA_WIDGET_DATAMAP_KEY, textArea);
+      widgets.add(new FieldLabel(textArea, BaseDatasourceMessages.INSTANCE.dataLabel()));
+   }
+
+   @Override
+   public void inheritConnectorSpecificChanges(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto,
+         CsvDatasourceConfigConfigurator csvDatasourceConfigConfigurator) {
+      if (config instanceof FormatBasedDatasourceConfigDto) {
+         if (csvDatasourceConfigConfigurator.getDatamap().containsKey(TEXT_AREA_WIDGET_DATAMAP_KEY)) {
+            TextArea textArea = (TextArea) csvDatasourceConfigConfigurator.getDatamap()
+                  .get(TEXT_AREA_WIDGET_DATAMAP_KEY);
+            List<DatasourceConnectorConfigDto> connectorConfig = ((FormatBasedDatasourceConfigDto) config)
+                  .getConnectorConfig();
+            boolean found = false;
+            for (DatasourceConnectorConfigDto ccfg : connectorConfig) {
+               if (CONNECTOR_CFG_KEY.equals(ccfg.getKey())) {
+                  ccfg.setValue(textArea.getCurrentValue());
+                  found = true;
+               }
+            }
+            if (!found) {
+               DatasourceConnectorConfigDto ccfg = new DatasourceConnectorConfigDto();
+               ccfg.setKey(CONNECTOR_CFG_KEY);
+               ccfg.setValue(textArea.getCurrentValue());
+               connectorConfig.add(ccfg);
+            }
+         }
+      }
+   }
 
 }

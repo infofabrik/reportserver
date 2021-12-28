@@ -99,664 +99,664 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 @Singleton
 public class TeamSpaceMainComponent extends VerticalLayoutContainer {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-teamspace";
-	
-	private static TeamSpaceDtoPA tsPA = GWT.create(TeamSpaceDtoPA.class);
-	
-	
-	@FormatterFactories(@FormatterFactory(factory=NullSafeFormatter.class,methods=@FormatterFactoryMethod(name="nullsafe")))
-	public interface TeamSpaceTemplates extends XTemplates {
-		@XTemplate("<div class=\"rs-lview-title\">{entry.toDisplayTitle:nullsafe}</div>" + 
-			    "<div class=\"rs-lview-desc\">{entry.description:nullsafe}&nbsp;</div>"
-				)
-	    public SafeHtml render(TeamSpaceDto entry); 
-	}
-	
-	private final EditTeamSpaceDialogCreator editTeamSpaceDialogCreator;
-	private final HookHandlerService hookHandler;
-	private final TeamSpaceDao tsDao;
-	private final ToolbarService toolbarService;
-	private final TeamSpaceUIService teamSpaceService;
-	
-	private DwToolBar appToolbar;
-	private DwCardContainer mainComponent;
-	private DwComboBox<TeamSpaceDto> teamSpaceSelector;
-	
-	private TeamSpaceDto currentSpace; 
-	private Map<TeamSpaceApp, Boolean> renderedApps = new HashMap<TeamSpaceApp, Boolean>();
-	private ListStore<TeamSpaceDto> spaceStore;
-	private Map<Long, LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp>> teamspaceToAppMap = new HashMap<Long, LinkedHashMap<TeamSpaceAppProviderHook,TeamSpaceApp>>();
-	
-	private Map<TeamSpaceAppProviderHook, TeamSpaceApp> currentAppMap = new HashMap<TeamSpaceAppProviderHook, TeamSpaceApp>();
-	
-	@Inject
-	public TeamSpaceMainComponent(
-		EditTeamSpaceDialogCreator editTeamSpaceDialogCreator,
-		HookHandlerService hookHandler,
-		TeamSpaceDao tsDao,
-		ToolbarService toolbarService,
-		TeamSpaceUIService teamSpaceService, 
-		final EventBus eventBus
-		){
-		
-		/* store objects */
-		this.editTeamSpaceDialogCreator = editTeamSpaceDialogCreator;
-		this.hookHandler = hookHandler;
-		this.tsDao = tsDao;
-		this.toolbarService = toolbarService;
-		this.teamSpaceService = teamSpaceService;
-		
-		/* attach event bus listener */
-		eventBus.addHandler(SubmoduleDisplayRequest.TYPE, new SubmoduleDisplayRequestHandler() {
-			
-			@Override
-			public void onSubmoduleDisplayRequest(SubmoduleDisplayRequest event) {
-				buildCompleteAppMap();
-				for(Long tsid : teamspaceToAppMap.keySet()){
-					LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp> appMap = teamspaceToAppMap.get(tsid);
-					for(final TeamSpaceApp tsapp : appMap.values()){
-						if(tsapp.getAppComponent() == event.getSubmodule()){
-							final TeamSpaceDto findModel = teamSpaceSelector.getStore().findModelWithKey(String.valueOf(tsid));
-							
-							DelayedTask dt = new DelayedTask() {
-								
-								@Override
-								public void onExecute() {
-									teamSpaceSelector.select(findModel);
-									teamSpaceSelector.setValue(findModel);
-									showApp(tsapp);
-								}
-							};
-							
-							dt.delay(200);
-							
-							eventBus.fireEvent(new SubmoduleDisplayRequest(TeamSpaceMainComponent.this, null));
-						}
-					}
-				}
-			}
-		});
-		
-		/* init */
-		initializeUI();
-	}
-	
-	private void initializeUI(){
-		getElement().addClassName(CSS_NAME);
-		
-		/* initialize store */
-		initializeModelStore();
-		
-		/* create top toolbar component */
-		appToolbar = new DwToolBar();
-		appToolbar.addClassName("rs-teamspace-tb");
-		
-		/* crete main component */
-		mainComponent = new DwCardContainer();
-		
-		/* init space selector component */
-		initSpaceSelector();
-		
-		/* add containers */
-		add(appToolbar, new VerticalLayoutData(1,48,new Margins(0,0,5,0)));
-		
-		add(mainComponent, new VerticalLayoutData(1,1));
-	}
-	
-	/**
-	 * Creates the combo box which allows the user to select the current space
-	 */
-	private void initSpaceSelector() {
-		final TeamSpaceTemplates template = GWT.create(TeamSpaceTemplates.class);
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-teamspace";
 
-		ListView<TeamSpaceDto, TeamSpaceDto> view = new ListView<TeamSpaceDto, TeamSpaceDto>(spaceStore, new IdentityValueProvider<TeamSpaceDto>());
-		
-		view.setCell(new AbstractCell<TeamSpaceDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					TeamSpaceDto value, SafeHtmlBuilder sb) {
-				sb.append(template.render(value));
-			}
-		});
-		
-		
-		teamSpaceSelector = new DwComboBox<TeamSpaceDto>(new ComboBoxCell<TeamSpaceDto>(spaceStore, new DisplayTitleLabelProvider<TeamSpaceDto>(), view));
-		teamSpaceSelector.plainAppearance();
-		teamSpaceSelector.setTriggerIcon(BaseIcon.CARET_DOWN);
-		
-		/* configure box */
-		teamSpaceSelector.setForceSelection(true);
-		teamSpaceSelector.setAllowBlank(false);
-		teamSpaceSelector.setEditable(false);
-		teamSpaceSelector.setWidth(900);
-		teamSpaceSelector.setMinListWidth(900);
-		teamSpaceSelector.setTypeAhead(true);
-		teamSpaceSelector.setTriggerAction(TriggerAction.ALL);
-		
-		teamSpaceSelector.addSelectionHandler(new SelectionHandler<TeamSpaceDto>() {
-			@Override
-			public void onSelection(SelectionEvent<TeamSpaceDto> event) {
-				if(null == event.getSelectedItem())
-					return;
-				loadSpace(event.getSelectedItem());
-			}
-		});
-	}
+   private static TeamSpaceDtoPA tsPA = GWT.create(TeamSpaceDtoPA.class);
 
-	/**
-	 * Initializes the store that holds the BaseModel counterparts to the TeamSpaceDtos
-	 */
-	private void initializeModelStore() {
-		RpcProxy<ListLoadConfig, ListLoadResult<TeamSpaceDto>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<TeamSpaceDto>>() {
-			@Override
-			public void load(ListLoadConfig loadConfig, final AsyncCallback<ListLoadResult<TeamSpaceDto>> callback) {
-				tsDao.loadTeamSpaces(callback);	
-			}
-		};
-		ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> loader = new ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>>(proxy);
-		spaceStore = new ListStore<TeamSpaceDto>(tsPA.dtoId());
-		spaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(tsPA.name(), SortDir.ASC));
-		
-		loader.addLoadHandler(new LoadResultListStoreBinding<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>>(spaceStore));
-		loader.load();
-	}
+   @FormatterFactories(@FormatterFactory(factory = NullSafeFormatter.class, methods = @FormatterFactoryMethod(name = "nullsafe")))
+   public interface TeamSpaceTemplates extends XTemplates {
+      @XTemplate("<div class=\"rs-lview-title\">{entry.toDisplayTitle:nullsafe}</div>"
+            + "<div class=\"rs-lview-desc\">{entry.description:nullsafe}&nbsp;</div>")
+      public SafeHtml render(TeamSpaceDto entry);
+   }
 
-	public void notifyOfSelection() {
-		if(null == currentSpace)
-			loadPrimaryTeamSpace();
-		
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				forceComponentLayout();
-			}
-		});
-	}
-	
-	private void forceComponentLayout() {
-		appToolbar.forceLayout();
-		mainComponent.forceLayout();
-	}
-	
-	public void delayedForceComponentLayout() {
-		Timer timer = new Timer() {
-			public void run() {
-				forceComponentLayout();
-			}
-		};
-		timer.schedule(500);
-	}
-	
-	/**
-	 * Loads the primary team space that is displayed at startup.
-	 */
-	private void loadPrimaryTeamSpace(){
-		mainComponent.mask(TeamSpaceMessages.INSTANCE.loadPrimarySpaceMessage());
-		tsDao.getPrimarySpace(new RsAsyncCallback<TeamSpaceDto>(){
-			@Override
-			public void onSuccess(TeamSpaceDto result) {
-				mainComponent.unmask();
-				
-				if(null == result) {
-					appToolbar.clear();
-					mainComponent.clear();
-					displayCreateInitialSpaceDialog();
-				} else
-					loadSpace(result);
-			}
-		});
-	}
+   private final EditTeamSpaceDialogCreator editTeamSpaceDialogCreator;
+   private final HookHandlerService hookHandler;
+   private final TeamSpaceDao tsDao;
+   private final ToolbarService toolbarService;
+   private final TeamSpaceUIService teamSpaceService;
 
-	public void loadSpace(TeamSpaceDto teamSpace) {
-		this.currentSpace = teamSpace;
-		if(null == teamSpace)
-			return;
-		if(null != spaceStore.findModel(teamSpace))
-			spaceStore.update(teamSpace);
-		else
-			spaceStore.add(currentSpace);
-		initCurrentSpace();
-	}
-	
-	/**
-	 * initializes a space 
-	 */
-	protected void initCurrentSpace() {
-		appToolbar.clear();
-		mainComponent.clear();
-		renderedApps.clear();
-		
-		initApps();
-		addSpaceConfigurationToToolbar();
-		
-		forceComponentLayout();
+   private DwToolBar appToolbar;
+   private DwCardContainer mainComponent;
+   private DwComboBox<TeamSpaceDto> teamSpaceSelector;
 
-		appToolbar.setVisible(true);
-	}
-	
-	private void buildCompleteAppMap(){
-		for(TeamSpaceDto ts: spaceStore.getAll())
-			buildAppMapforTs(ts);
-	}
-	
-	private Map<TeamSpaceAppProviderHook, TeamSpaceApp> buildAppMapforTs(TeamSpaceDto space){
-		List<TeamSpaceAppProviderHook> appProviders = hookHandler.getHookers(TeamSpaceAppProviderHook.class);
-		
-		if(!teamspaceToAppMap.containsKey(space.getId()))
-			teamspaceToAppMap.put(space.getId(), new LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp>());
+   private TeamSpaceDto currentSpace;
+   private Map<TeamSpaceApp, Boolean> renderedApps = new HashMap<TeamSpaceApp, Boolean>();
+   private ListStore<TeamSpaceDto> spaceStore;
+   private Map<Long, LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp>> teamspaceToAppMap = new HashMap<Long, LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp>>();
 
-		Map<TeamSpaceAppProviderHook, TeamSpaceApp> appMap = teamspaceToAppMap.get(space.getId());
-		for(TeamSpaceAppProviderHook appProvider : appProviders){
-			if(appMap.containsKey(appProvider)){
-				if(! ((TeamSpaceDtoDec)space).isAppInstalled(appMap.get(appProvider))){
-					appMap.remove(appProvider);
-				}
-			}else{
-				TeamSpaceApp app = appProvider.getObject();
-				if(((TeamSpaceDtoDec)space).isAppInstalled(app)){
-					appMap.put(appProvider, app);
-				}
-			}
-		}
-		
-		return appMap;
-	}
+   private Map<TeamSpaceAppProviderHook, TeamSpaceApp> currentAppMap = new HashMap<TeamSpaceAppProviderHook, TeamSpaceApp>();
 
-	private void initApps() {
-		if( ((TeamSpaceDtoDec)currentSpace).getInstalledApps().size() == 0) {
-			Widget comp = new HeadDescMainWrapper(TeamSpaceMessages.INSTANCE.noAppInstalled(), 
-				TeamSpaceMessages.INSTANCE.noAppInstalledMsg(), 
-				new Label());
-			mainComponent.add(comp);
-			
-			mainComponent.setActiveWidget(comp);
-		} else {
-			
-			/* Refresh the appMap */
-			currentAppMap  = buildAppMapforTs(currentSpace);
-			
-			boolean bFirst = true;
-			for(final TeamSpaceApp app : currentAppMap.values()){
-				
-				/* create toolbar button */
-				DwTextButton btn = toolbarService.createSmallButtonLeft(app.getName(), app.getIcon());
-				//appToolbar.add(btn); // only a single app, no need for a button
-				
-				/* show on selection */
-				btn.addSelectHandler(new SelectHandler() {
-					
-					@Override
-					public void onSelect(SelectEvent event) {
-						showApp(app);
-					}
-				});
-				
-				/* if first app .. load it */
-				if(bFirst){
-					bFirst = false;
-					showApp(app);
-				}
-			}
-		}
-	}
-	
-	public Collection<TeamSpaceApp> getCurrentApps(){
-		return currentAppMap.values();
-	}
+   @Inject
+   public TeamSpaceMainComponent(EditTeamSpaceDialogCreator editTeamSpaceDialogCreator, HookHandlerService hookHandler,
+         TeamSpaceDao tsDao, ToolbarService toolbarService, TeamSpaceUIService teamSpaceService,
+         final EventBus eventBus) {
 
-	private void refreshInTeamspaceAppMap(TeamSpaceDto teamSpace, TeamSpaceAppProviderHook provider, TeamSpaceApp app){
-		
-	}
-	
-	protected void showApp(TeamSpaceApp app) {
-		if(! Boolean.TRUE.equals(renderedApps.get(app))){
-			mainComponent.add(app.getAppComponent());
-			renderedApps.put(app, Boolean.TRUE);
-		}
-		mainComponent.setActiveWidget(app.getAppComponent());
-		app.displaySpace(currentSpace);
-		mainComponent.forceLayout();
-	}
+      /* store objects */
+      this.editTeamSpaceDialogCreator = editTeamSpaceDialogCreator;
+      this.hookHandler = hookHandler;
+      this.tsDao = tsDao;
+      this.toolbarService = toolbarService;
+      this.teamSpaceService = teamSpaceService;
 
-	/**
-	 * Adds possibilities for space configuration.
-	 * 
-	 * <p>These include, changing the current space, editing
-	 * properties, adding new spaces, etc.</p>
-	 */
-	private void addSpaceConfigurationToToolbar() {
-		/* set the current space in space selector */
-		teamSpaceSelector.disableEvents();
-		teamSpaceSelector.setValue(spaceStore.findModel(currentSpace));
-		teamSpaceSelector.enableEvents();
+      /* attach event bus listener */
+      eventBus.addHandler(SubmoduleDisplayRequest.TYPE, new SubmoduleDisplayRequestHandler() {
 
-		appToolbar.add(teamSpaceSelector);
-		appToolbar.add(new FillToolItem());
-		
-		/* create manage spaces button */ 
-		if(teamSpaceService.isManager(currentSpace) || teamSpaceService.hasTeamSpaceCreateRight() ){
-			DwTextButton manageSpacesBtn = initManageSpacesBtn();
-			appToolbar.add(manageSpacesBtn);
-		}
+         @Override
+         public void onSubmoduleDisplayRequest(SubmoduleDisplayRequest event) {
+            buildCompleteAppMap();
+            for (Long tsid : teamspaceToAppMap.keySet()) {
+               LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp> appMap = teamspaceToAppMap.get(tsid);
+               for (final TeamSpaceApp tsapp : appMap.values()) {
+                  if (tsapp.getAppComponent() == event.getSubmodule()) {
+                     final TeamSpaceDto findModel = teamSpaceSelector.getStore().findModelWithKey(String.valueOf(tsid));
 
-		/* create admin button */
-		if(teamSpaceService.isGlobalTsAdmin()){
-			DwTextButton adminTeamSpaceBtn = initAdminTeamSpaceBtn();
-			appToolbar.add(adminTeamSpaceBtn);
-		}
-	}
-	
-	
-	private DwTextButton initAdminTeamSpaceBtn() {
-		DwTextButton btn = new DwTextButton(BaseIcon.USER_SECRET);
-		btn.setToolTip(TeamSpaceMessages.INSTANCE.adminButton());
-		
-		btn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				displayAdminSelectSpaceDialog();
-			}
-		});
-		
-		return btn;
-	}
+                     DelayedTask dt = new DelayedTask() {
 
-	private DwTextButton initManageSpacesBtn() {
-		Menu manageSpaceMenu = new DwMenu();
-		DwTextButton manageSpacesBtn = toolbarService.createSmallButtonLeft(TeamSpaceMessages.INSTANCE.manageSpacesText(), BaseIcon.GROUP_PROPERTIES);
-		manageSpacesBtn.setMenu(manageSpaceMenu);
-		manageSpacesBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
-		
-		/* config */
-		if(teamSpaceService.isManager(currentSpace)){
-			MenuItem configItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.configureCurrentSpaceText(), BaseIcon.COG);
-			configItem.addSelectionHandler(new SelectionHandler<Item>() {
-				
-				@Override
-				public void onSelection(SelectionEvent<Item> event) {
-					displayConfigureCurrentSpaceDialog();
-				}
-			});
-			manageSpaceMenu.add(configItem);
-			manageSpaceMenu.add(new SeparatorMenuItem());
-		}
-		
-		/* add */
-		if(teamSpaceService.hasTeamSpaceCreateRight()){
-			MenuItem addItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.createSpaceText(), BaseIcon.GROUP_ADD);
-			addItem.addSelectionHandler(new SelectionHandler<Item>() {
-				@Override
-				public void onSelection(SelectionEvent<Item> event) {
-					displayAddSpaceDialog();
-				}
-			});
-			manageSpaceMenu.add(addItem);
-		}
+                        @Override
+                        public void onExecute() {
+                           teamSpaceSelector.select(findModel);
+                           teamSpaceSelector.setValue(findModel);
+                           showApp(tsapp);
+                        }
+                     };
 
-		/* remove */
-		if(teamSpaceService.isAdmin(currentSpace) && teamSpaceService.hasTeamSpaceRemoveRight() ){
-			MenuItem removeItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.removeCurrentSpaceText(), BaseIcon.DELETE);
-			removeItem.addSelectionHandler(new SelectionHandler<Item>() {
+                     dt.delay(200);
 
-				@Override
-				public void onSelection(SelectionEvent<Item> event) {
-					displayRemoveSpaceDialog();
-				}
-			});
-			manageSpaceMenu.add(removeItem);
-		}
-		
-		return manageSpacesBtn;
-	}
+                     eventBus.fireEvent(new SubmoduleDisplayRequest(TeamSpaceMainComponent.this, null));
+                  }
+               }
+            }
+         }
+      });
 
+      /* init */
+      initializeUI();
+   }
 
-	protected void displayRemoveSpaceDialog() {
-		ConfirmMessageBox cmb = new DwConfirmMessageBox(TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmTitle(), TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmMessage(currentSpace.getName()));
-		cmb.addDialogHideHandler(new DialogHideHandler() {
-			@Override
-			public void onDialogHide(DialogHideEvent event) {
-				if (event.getHideButton() == PredefinedButton.YES){
-					ConfirmMessageBox cmb = new DwConfirmMessageBox(TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmTitle(), TeamSpaceMessages.INSTANCE.removeCurrentSpaceConfirmText(currentSpace.getName()));
-					
-					cmb.addDialogHideHandler(new DialogHideHandler() {
-						@Override
-						public void onDialogHide(DialogHideEvent event) {
-							if (event.getHideButton() == PredefinedButton.YES)
-								removeCurrentSpace();
-						}
-					});
-					
-					cmb.show();
-				}
-			}
-		});
-		cmb.show();
-	}
+   private void initializeUI() {
+      getElement().addClassName(CSS_NAME);
 
-	protected void removeFromStore(TeamSpaceDto space) {
-		spaceStore.remove(space);
-	}
+      /* initialize store */
+      initializeModelStore();
 
-	protected void removeCurrentSpace() {
-		tsDao.removeTeamSpace(currentSpace, new NotamCallback<Void>(TeamSpaceMessages.INSTANCE.teamSpaceRemoved()){
-			@Override
-			public void doOnSuccess(Void result) {
-				removeFromStore(currentSpace);
-				currentSpace = null;
-				loadPrimaryTeamSpace();
-			}
-		});
-	}
+      /* create top toolbar component */
+      appToolbar = new DwToolBar();
+      appToolbar.addClassName("rs-teamspace-tb");
 
+      /* crete main component */
+      mainComponent = new DwCardContainer();
 
-	protected void displayConfigureCurrentSpaceDialog() {
-		editTeamSpaceDialogCreator.displayDialog(currentSpace, new TeamSpaceOperationSuccessHandler() {
-			@Override
-			public void onSuccess(TeamSpaceDto teamSpace) {
-				loadSpace(teamSpace);
-			}
-		});
-	}
+      /* init space selector component */
+      initSpaceSelector();
 
-	protected void displayCreateInitialSpaceDialog() {
-		boolean admin = teamSpaceService.isGlobalTsAdmin();
-		boolean create = teamSpaceService.hasTeamSpaceCreateRight();
-		
-		if(! admin && ! create){
-			new DwAlertMessageBox(BaseMessages.INSTANCE.error(), TeamSpaceMessages.INSTANCE.noAccess()).show();
-			return;
-		}
-		
-		final DwWindow window = new DwWindow();
-		window.setModal(true);
-		window.setWidth(300);
-		window.setHeight(130);
-		window.setHeaderIcon(BaseIcon.COG);
-		
-		window.add(new Label(TeamSpaceMessages.INSTANCE.noSpaceExists()), new MarginData(10));
-		
-		DwTextButton no = new DwTextButton(BaseMessages.INSTANCE.cancel());
-		no.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				window.hide();
-			}
-		});
-		window.addButton(no);
-		
-		/* ok button */
-		if(create){
-			DwTextButton yes = new DwTextButton(TeamSpaceMessages.INSTANCE.createNewSpace());
-			yes.addSelectHandler(new SelectHandler() {
-				@Override
-				public void onSelect(SelectEvent event) {
-					window.hide();
-					displayAddSpaceDialog();
-				}
-			});
-			window.addButton(yes);
-		}
-		
-		if(admin){
-			DwTextButton adminBtn = new DwTextButton(TeamSpaceMessages.INSTANCE.adminButton());
-			adminBtn.addSelectHandler(new SelectHandler() {
-				
-				@Override
-				public void onSelect(SelectEvent event) {
-					window.hide();
-					displayAdminSelectSpaceDialog();
-				}
-			});
-			window.addButton(adminBtn);
-		}
-		
-		window.show();
-	}
+      /* add containers */
+      add(appToolbar, new VerticalLayoutData(1, 48, new Margins(0, 0, 5, 0)));
 
-	protected void displayAddSpaceDialog() {
-		teamSpaceService.displayAddSpaceDialog(new TeamSpaceOperationSuccessHandler() {
-			@Override
-			public void onSuccess(TeamSpaceDto teamSpace) {
-				loadSpace(teamSpace);				
-			}
-		});
-	}
-	
-	protected void displayAdminSelectSpaceDialog() {
-		/* create window */
-		final DwWindow window = new DwWindow();
-		window.setHeading(TeamSpaceMessages.INSTANCE.adminButton());
-		window.setSize(640, 480);
-		window.setHeaderIcon(BaseIcon.USER_SECRET);
+      add(mainComponent, new VerticalLayoutData(1, 1));
+   }
 
-		/* create store */
-		final ListStore<TeamSpaceDto> adminSpaceStore = new ListStore<TeamSpaceDto>(tsPA.dtoId());
-		adminSpaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(tsPA.name(), SortDir.ASC));
-		
-		/* create columns */
-		List<ColumnConfig<TeamSpaceDto, ?>> columns = new ArrayList<ColumnConfig<TeamSpaceDto, ?>>();
-		
-		/* icon */
-		ColumnConfig<TeamSpaceDto,TeamSpaceDto> iconColumn = new ColumnConfig<TeamSpaceDto, TeamSpaceDto>(new IdentityValueProvider<TeamSpaceDto>(), 25);
-		iconColumn.setCell(new AbstractCell<TeamSpaceDto>() {
+   /**
+    * Creates the combo box which allows the user to select the current space
+    */
+   private void initSpaceSelector() {
+      final TeamSpaceTemplates template = GWT.create(TeamSpaceTemplates.class);
 
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					TeamSpaceDto value, SafeHtmlBuilder sb) {
-				sb.append(BaseIcon.GROUP_EDIT.toSafeHtml());
-			}
-		});
-		columns.add(iconColumn);
-		
-		ColumnConfig<TeamSpaceDto, Long> idColumn = new ColumnConfig<TeamSpaceDto, Long>(tsPA.id(), 60, BaseMessages.INSTANCE.id());
-		columns.add(idColumn);
-		
-		ColumnConfig<TeamSpaceDto, String> nameColumn = new ColumnConfig<TeamSpaceDto, String>(tsPA.name(), 150, BaseMessages.INSTANCE.propertyName());
-		columns.add(nameColumn);
-		
-		ColumnConfig<TeamSpaceDto, String> descriptionColumn = new ColumnConfig<TeamSpaceDto, String>(tsPA.description(), 300, BaseMessages.INSTANCE.propertyDescription());
-		columns.add(descriptionColumn);
-		
-		/* create grid */
-		final Grid<TeamSpaceDto> grid = new Grid<TeamSpaceDto>(adminSpaceStore, new ColumnModel<TeamSpaceDto>(columns));
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		grid.mask(BaseMessages.INSTANCE.loadingMsg());
-		window.add(grid);
-		
-		grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
-			@Override
-			public void onRowDoubleClick(RowDoubleClickEvent event) {
-				TeamSpaceDto ts = adminSpaceStore.get(event.getRowIndex());
-				if(null != ts){
-					window.mask(BaseMessages.INSTANCE.loadingMsg());
-					tsDao.reloadTeamSpace(ts, new RsAsyncCallback<TeamSpaceDto>(){
-						@Override
-						public void onSuccess(TeamSpaceDto result) {
-							window.hide();
-							loadSpace(result);
-						}
-					});
-				}
-			}
-		});
-		
-		tsDao.loadAllTeamSpaces(new RsAsyncCallback<ListLoadResult<TeamSpaceDto>>(){
-			@Override
-			public void onSuccess(ListLoadResult<TeamSpaceDto> result) {
-				adminSpaceStore.addAll(result.getData());
-				grid.unmask();
-			}
-		});
-				
-		/* add buttons */
-		window.addCancelButton();
-		
-		DwTextButton submit = new DwTextButton(BaseMessages.INSTANCE.ok());
-		submit.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				TeamSpaceDto ts = grid.getSelectionModel().getSelectedItem();
-				if(null != ts){
-					window.mask(BaseMessages.INSTANCE.loadingMsg());
-					tsDao.reloadTeamSpace(ts, new RsAsyncCallback<TeamSpaceDto>(){
-						@Override
-						public void onSuccess(TeamSpaceDto result) {
-							window.hide();
-							loadSpace(result);
-						}
-					});
-				}
-			}
-		});
-		window.addButton(submit);
+      ListView<TeamSpaceDto, TeamSpaceDto> view = new ListView<TeamSpaceDto, TeamSpaceDto>(spaceStore,
+            new IdentityValueProvider<TeamSpaceDto>());
 
-		/* display window */
-		window.show();
-	}
+      view.setCell(new AbstractCell<TeamSpaceDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, TeamSpaceDto value, SafeHtmlBuilder sb) {
+            sb.append(template.render(value));
+         }
+      });
 
-	public void notifyOfDeletion(TeamSpaceDto deleted) {
-		
-		int indexDeleted = getIndexOfTeamspace(deleted.getId());
-		if (-1 != indexDeleted) {
-			TeamSpaceDto toDelete = spaceStore.get(indexDeleted);
-			removeFromStore(toDelete);
-		}
-			
-		if (deleted.equals(currentSpace)) {
-			currentSpace = null;
-			loadPrimaryTeamSpace();
-			
-		}
-		
-	}
+      teamSpaceSelector = new DwComboBox<TeamSpaceDto>(
+            new ComboBoxCell<TeamSpaceDto>(spaceStore, new DisplayTitleLabelProvider<TeamSpaceDto>(), view));
+      teamSpaceSelector.plainAppearance();
+      teamSpaceSelector.setTriggerIcon(BaseIcon.CARET_DOWN);
 
-	private int getIndexOfTeamspace(long teamSpaceId) {
-		
-		for (int i=0; i<= spaceStore.size()-1; i++) {
-			TeamSpaceDto teamSpaceDto = spaceStore.get(i);
-			if (teamSpaceDto.getId() == teamSpaceId) {
-				return i;
-			}
-		}
-		
-		return -1;
-	}
+      /* configure box */
+      teamSpaceSelector.setForceSelection(true);
+      teamSpaceSelector.setAllowBlank(false);
+      teamSpaceSelector.setEditable(false);
+      teamSpaceSelector.setWidth(900);
+      teamSpaceSelector.setMinListWidth(900);
+      teamSpaceSelector.setTypeAhead(true);
+      teamSpaceSelector.setTriggerAction(TriggerAction.ALL);
 
-	public void notifyOfAddition(TeamSpaceDto added) {
-		spaceStore.add(added);
-	}
+      teamSpaceSelector.addSelectionHandler(new SelectionHandler<TeamSpaceDto>() {
+         @Override
+         public void onSelection(SelectionEvent<TeamSpaceDto> event) {
+            if (null == event.getSelectedItem())
+               return;
+            loadSpace(event.getSelectedItem());
+         }
+      });
+   }
 
-	public void notifyOfUpdate(TeamSpaceDto updated) {
-		int indexUpdated = getIndexOfTeamspace(updated.getId());
-		if (-1 != indexUpdated) {
-			TeamSpaceDto toUpdate = spaceStore.get(indexUpdated);
-			toUpdate.setName(updated.getName());
-			toUpdate.setDescription(updated.getDescription());
-			spaceStore.update(toUpdate);
-		}
-	}
-	
+   /**
+    * Initializes the store that holds the BaseModel counterparts to the
+    * TeamSpaceDtos
+    */
+   private void initializeModelStore() {
+      RpcProxy<ListLoadConfig, ListLoadResult<TeamSpaceDto>> proxy = new RpcProxy<ListLoadConfig, ListLoadResult<TeamSpaceDto>>() {
+         @Override
+         public void load(ListLoadConfig loadConfig, final AsyncCallback<ListLoadResult<TeamSpaceDto>> callback) {
+            tsDao.loadTeamSpaces(callback);
+         }
+      };
+      ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> loader = new ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>>(
+            proxy);
+      spaceStore = new ListStore<TeamSpaceDto>(tsPA.dtoId());
+      spaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(tsPA.name(), SortDir.ASC));
+
+      loader.addLoadHandler(
+            new LoadResultListStoreBinding<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>>(spaceStore));
+      loader.load();
+   }
+
+   public void notifyOfSelection() {
+      if (null == currentSpace)
+         loadPrimaryTeamSpace();
+
+      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+         @Override
+         public void execute() {
+            forceComponentLayout();
+         }
+      });
+   }
+
+   private void forceComponentLayout() {
+      appToolbar.forceLayout();
+      mainComponent.forceLayout();
+   }
+
+   public void delayedForceComponentLayout() {
+      Timer timer = new Timer() {
+         public void run() {
+            forceComponentLayout();
+         }
+      };
+      timer.schedule(500);
+   }
+
+   /**
+    * Loads the primary team space that is displayed at startup.
+    */
+   private void loadPrimaryTeamSpace() {
+      mainComponent.mask(TeamSpaceMessages.INSTANCE.loadPrimarySpaceMessage());
+      tsDao.getPrimarySpace(new RsAsyncCallback<TeamSpaceDto>() {
+         @Override
+         public void onSuccess(TeamSpaceDto result) {
+            mainComponent.unmask();
+
+            if (null == result) {
+               appToolbar.clear();
+               mainComponent.clear();
+               displayCreateInitialSpaceDialog();
+            } else
+               loadSpace(result);
+         }
+      });
+   }
+
+   public void loadSpace(TeamSpaceDto teamSpace) {
+      this.currentSpace = teamSpace;
+      if (null == teamSpace)
+         return;
+      if (null != spaceStore.findModel(teamSpace))
+         spaceStore.update(teamSpace);
+      else
+         spaceStore.add(currentSpace);
+      initCurrentSpace();
+   }
+
+   /**
+    * initializes a space
+    */
+   protected void initCurrentSpace() {
+      appToolbar.clear();
+      mainComponent.clear();
+      renderedApps.clear();
+
+      initApps();
+      addSpaceConfigurationToToolbar();
+
+      forceComponentLayout();
+
+      appToolbar.setVisible(true);
+   }
+
+   private void buildCompleteAppMap() {
+      for (TeamSpaceDto ts : spaceStore.getAll())
+         buildAppMapforTs(ts);
+   }
+
+   private Map<TeamSpaceAppProviderHook, TeamSpaceApp> buildAppMapforTs(TeamSpaceDto space) {
+      List<TeamSpaceAppProviderHook> appProviders = hookHandler.getHookers(TeamSpaceAppProviderHook.class);
+
+      if (!teamspaceToAppMap.containsKey(space.getId()))
+         teamspaceToAppMap.put(space.getId(), new LinkedHashMap<TeamSpaceAppProviderHook, TeamSpaceApp>());
+
+      Map<TeamSpaceAppProviderHook, TeamSpaceApp> appMap = teamspaceToAppMap.get(space.getId());
+      for (TeamSpaceAppProviderHook appProvider : appProviders) {
+         if (appMap.containsKey(appProvider)) {
+            if (!((TeamSpaceDtoDec) space).isAppInstalled(appMap.get(appProvider))) {
+               appMap.remove(appProvider);
+            }
+         } else {
+            TeamSpaceApp app = appProvider.getObject();
+            if (((TeamSpaceDtoDec) space).isAppInstalled(app)) {
+               appMap.put(appProvider, app);
+            }
+         }
+      }
+
+      return appMap;
+   }
+
+   private void initApps() {
+      if (((TeamSpaceDtoDec) currentSpace).getInstalledApps().size() == 0) {
+         Widget comp = new HeadDescMainWrapper(TeamSpaceMessages.INSTANCE.noAppInstalled(),
+               TeamSpaceMessages.INSTANCE.noAppInstalledMsg(), new Label());
+         mainComponent.add(comp);
+
+         mainComponent.setActiveWidget(comp);
+      } else {
+
+         /* Refresh the appMap */
+         currentAppMap = buildAppMapforTs(currentSpace);
+
+         boolean bFirst = true;
+         for (final TeamSpaceApp app : currentAppMap.values()) {
+
+            /* create toolbar button */
+            DwTextButton btn = toolbarService.createSmallButtonLeft(app.getName(), app.getIcon());
+            // appToolbar.add(btn); // only a single app, no need for a button
+
+            /* show on selection */
+            btn.addSelectHandler(new SelectHandler() {
+
+               @Override
+               public void onSelect(SelectEvent event) {
+                  showApp(app);
+               }
+            });
+
+            /* if first app .. load it */
+            if (bFirst) {
+               bFirst = false;
+               showApp(app);
+            }
+         }
+      }
+   }
+
+   public Collection<TeamSpaceApp> getCurrentApps() {
+      return currentAppMap.values();
+   }
+
+   private void refreshInTeamspaceAppMap(TeamSpaceDto teamSpace, TeamSpaceAppProviderHook provider, TeamSpaceApp app) {
+
+   }
+
+   protected void showApp(TeamSpaceApp app) {
+      if (!Boolean.TRUE.equals(renderedApps.get(app))) {
+         mainComponent.add(app.getAppComponent());
+         renderedApps.put(app, Boolean.TRUE);
+      }
+      mainComponent.setActiveWidget(app.getAppComponent());
+      app.displaySpace(currentSpace);
+      mainComponent.forceLayout();
+   }
+
+   /**
+    * Adds possibilities for space configuration.
+    * 
+    * <p>
+    * These include, changing the current space, editing properties, adding new
+    * spaces, etc.
+    * </p>
+    */
+   private void addSpaceConfigurationToToolbar() {
+      /* set the current space in space selector */
+      teamSpaceSelector.disableEvents();
+      teamSpaceSelector.setValue(spaceStore.findModel(currentSpace));
+      teamSpaceSelector.enableEvents();
+
+      appToolbar.add(teamSpaceSelector);
+      appToolbar.add(new FillToolItem());
+
+      /* create manage spaces button */
+      if (teamSpaceService.isManager(currentSpace) || teamSpaceService.hasTeamSpaceCreateRight()) {
+         DwTextButton manageSpacesBtn = initManageSpacesBtn();
+         appToolbar.add(manageSpacesBtn);
+      }
+
+      /* create admin button */
+      if (teamSpaceService.isGlobalTsAdmin()) {
+         DwTextButton adminTeamSpaceBtn = initAdminTeamSpaceBtn();
+         appToolbar.add(adminTeamSpaceBtn);
+      }
+   }
+
+   private DwTextButton initAdminTeamSpaceBtn() {
+      DwTextButton btn = new DwTextButton(BaseIcon.USER_SECRET);
+      btn.setToolTip(TeamSpaceMessages.INSTANCE.adminButton());
+
+      btn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            displayAdminSelectSpaceDialog();
+         }
+      });
+
+      return btn;
+   }
+
+   private DwTextButton initManageSpacesBtn() {
+      Menu manageSpaceMenu = new DwMenu();
+      DwTextButton manageSpacesBtn = toolbarService.createSmallButtonLeft(TeamSpaceMessages.INSTANCE.manageSpacesText(),
+            BaseIcon.GROUP_PROPERTIES);
+      manageSpacesBtn.setMenu(manageSpaceMenu);
+      manageSpacesBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
+
+      /* config */
+      if (teamSpaceService.isManager(currentSpace)) {
+         MenuItem configItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.configureCurrentSpaceText(), BaseIcon.COG);
+         configItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+            @Override
+            public void onSelection(SelectionEvent<Item> event) {
+               displayConfigureCurrentSpaceDialog();
+            }
+         });
+         manageSpaceMenu.add(configItem);
+         manageSpaceMenu.add(new SeparatorMenuItem());
+      }
+
+      /* add */
+      if (teamSpaceService.hasTeamSpaceCreateRight()) {
+         MenuItem addItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.createSpaceText(), BaseIcon.GROUP_ADD);
+         addItem.addSelectionHandler(new SelectionHandler<Item>() {
+            @Override
+            public void onSelection(SelectionEvent<Item> event) {
+               displayAddSpaceDialog();
+            }
+         });
+         manageSpaceMenu.add(addItem);
+      }
+
+      /* remove */
+      if (teamSpaceService.isAdmin(currentSpace) && teamSpaceService.hasTeamSpaceRemoveRight()) {
+         MenuItem removeItem = new DwMenuItem(TeamSpaceMessages.INSTANCE.removeCurrentSpaceText(), BaseIcon.DELETE);
+         removeItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+            @Override
+            public void onSelection(SelectionEvent<Item> event) {
+               displayRemoveSpaceDialog();
+            }
+         });
+         manageSpaceMenu.add(removeItem);
+      }
+
+      return manageSpacesBtn;
+   }
+
+   protected void displayRemoveSpaceDialog() {
+      ConfirmMessageBox cmb = new DwConfirmMessageBox(TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmTitle(),
+            TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmMessage(currentSpace.getName()));
+      cmb.addDialogHideHandler(new DialogHideHandler() {
+         @Override
+         public void onDialogHide(DialogHideEvent event) {
+            if (event.getHideButton() == PredefinedButton.YES) {
+               ConfirmMessageBox cmb = new DwConfirmMessageBox(TeamSpaceMessages.INSTANCE.deleteTeamSpaceConfirmTitle(),
+                     TeamSpaceMessages.INSTANCE.removeCurrentSpaceConfirmText(currentSpace.getName()));
+
+               cmb.addDialogHideHandler(new DialogHideHandler() {
+                  @Override
+                  public void onDialogHide(DialogHideEvent event) {
+                     if (event.getHideButton() == PredefinedButton.YES)
+                        removeCurrentSpace();
+                  }
+               });
+
+               cmb.show();
+            }
+         }
+      });
+      cmb.show();
+   }
+
+   protected void removeFromStore(TeamSpaceDto space) {
+      spaceStore.remove(space);
+   }
+
+   protected void removeCurrentSpace() {
+      tsDao.removeTeamSpace(currentSpace, new NotamCallback<Void>(TeamSpaceMessages.INSTANCE.teamSpaceRemoved()) {
+         @Override
+         public void doOnSuccess(Void result) {
+            removeFromStore(currentSpace);
+            currentSpace = null;
+            loadPrimaryTeamSpace();
+         }
+      });
+   }
+
+   protected void displayConfigureCurrentSpaceDialog() {
+      editTeamSpaceDialogCreator.displayDialog(currentSpace, new TeamSpaceOperationSuccessHandler() {
+         @Override
+         public void onSuccess(TeamSpaceDto teamSpace) {
+            loadSpace(teamSpace);
+         }
+      });
+   }
+
+   protected void displayCreateInitialSpaceDialog() {
+      boolean admin = teamSpaceService.isGlobalTsAdmin();
+      boolean create = teamSpaceService.hasTeamSpaceCreateRight();
+
+      if (!admin && !create) {
+         new DwAlertMessageBox(BaseMessages.INSTANCE.error(), TeamSpaceMessages.INSTANCE.noAccess()).show();
+         return;
+      }
+
+      final DwWindow window = new DwWindow();
+      window.setModal(true);
+      window.setWidth(300);
+      window.setHeight(130);
+      window.setHeaderIcon(BaseIcon.COG);
+
+      window.add(new Label(TeamSpaceMessages.INSTANCE.noSpaceExists()), new MarginData(10));
+
+      DwTextButton no = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      no.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+         }
+      });
+      window.addButton(no);
+
+      /* ok button */
+      if (create) {
+         DwTextButton yes = new DwTextButton(TeamSpaceMessages.INSTANCE.createNewSpace());
+         yes.addSelectHandler(new SelectHandler() {
+            @Override
+            public void onSelect(SelectEvent event) {
+               window.hide();
+               displayAddSpaceDialog();
+            }
+         });
+         window.addButton(yes);
+      }
+
+      if (admin) {
+         DwTextButton adminBtn = new DwTextButton(TeamSpaceMessages.INSTANCE.adminButton());
+         adminBtn.addSelectHandler(new SelectHandler() {
+
+            @Override
+            public void onSelect(SelectEvent event) {
+               window.hide();
+               displayAdminSelectSpaceDialog();
+            }
+         });
+         window.addButton(adminBtn);
+      }
+
+      window.show();
+   }
+
+   protected void displayAddSpaceDialog() {
+      teamSpaceService.displayAddSpaceDialog(new TeamSpaceOperationSuccessHandler() {
+         @Override
+         public void onSuccess(TeamSpaceDto teamSpace) {
+            loadSpace(teamSpace);
+         }
+      });
+   }
+
+   protected void displayAdminSelectSpaceDialog() {
+      /* create window */
+      final DwWindow window = new DwWindow();
+      window.setHeading(TeamSpaceMessages.INSTANCE.adminButton());
+      window.setSize(640, 480);
+      window.setHeaderIcon(BaseIcon.USER_SECRET);
+
+      /* create store */
+      final ListStore<TeamSpaceDto> adminSpaceStore = new ListStore<TeamSpaceDto>(tsPA.dtoId());
+      adminSpaceStore.addSortInfo(new StoreSortInfo<TeamSpaceDto>(tsPA.name(), SortDir.ASC));
+
+      /* create columns */
+      List<ColumnConfig<TeamSpaceDto, ?>> columns = new ArrayList<ColumnConfig<TeamSpaceDto, ?>>();
+
+      /* icon */
+      ColumnConfig<TeamSpaceDto, TeamSpaceDto> iconColumn = new ColumnConfig<TeamSpaceDto, TeamSpaceDto>(
+            new IdentityValueProvider<TeamSpaceDto>(), 25);
+      iconColumn.setCell(new AbstractCell<TeamSpaceDto>() {
+
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, TeamSpaceDto value, SafeHtmlBuilder sb) {
+            sb.append(BaseIcon.GROUP_EDIT.toSafeHtml());
+         }
+      });
+      columns.add(iconColumn);
+
+      ColumnConfig<TeamSpaceDto, Long> idColumn = new ColumnConfig<TeamSpaceDto, Long>(tsPA.id(), 60,
+            BaseMessages.INSTANCE.id());
+      columns.add(idColumn);
+
+      ColumnConfig<TeamSpaceDto, String> nameColumn = new ColumnConfig<TeamSpaceDto, String>(tsPA.name(), 150,
+            BaseMessages.INSTANCE.propertyName());
+      columns.add(nameColumn);
+
+      ColumnConfig<TeamSpaceDto, String> descriptionColumn = new ColumnConfig<TeamSpaceDto, String>(tsPA.description(),
+            300, BaseMessages.INSTANCE.propertyDescription());
+      columns.add(descriptionColumn);
+
+      /* create grid */
+      final Grid<TeamSpaceDto> grid = new Grid<TeamSpaceDto>(adminSpaceStore, new ColumnModel<TeamSpaceDto>(columns));
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+      grid.mask(BaseMessages.INSTANCE.loadingMsg());
+      window.add(grid);
+
+      grid.addRowDoubleClickHandler(new RowDoubleClickHandler() {
+         @Override
+         public void onRowDoubleClick(RowDoubleClickEvent event) {
+            TeamSpaceDto ts = adminSpaceStore.get(event.getRowIndex());
+            if (null != ts) {
+               window.mask(BaseMessages.INSTANCE.loadingMsg());
+               tsDao.reloadTeamSpace(ts, new RsAsyncCallback<TeamSpaceDto>() {
+                  @Override
+                  public void onSuccess(TeamSpaceDto result) {
+                     window.hide();
+                     loadSpace(result);
+                  }
+               });
+            }
+         }
+      });
+
+      tsDao.loadAllTeamSpaces(new RsAsyncCallback<ListLoadResult<TeamSpaceDto>>() {
+         @Override
+         public void onSuccess(ListLoadResult<TeamSpaceDto> result) {
+            adminSpaceStore.addAll(result.getData());
+            grid.unmask();
+         }
+      });
+
+      /* add buttons */
+      window.addCancelButton();
+
+      DwTextButton submit = new DwTextButton(BaseMessages.INSTANCE.ok());
+      submit.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            TeamSpaceDto ts = grid.getSelectionModel().getSelectedItem();
+            if (null != ts) {
+               window.mask(BaseMessages.INSTANCE.loadingMsg());
+               tsDao.reloadTeamSpace(ts, new RsAsyncCallback<TeamSpaceDto>() {
+                  @Override
+                  public void onSuccess(TeamSpaceDto result) {
+                     window.hide();
+                     loadSpace(result);
+                  }
+               });
+            }
+         }
+      });
+      window.addButton(submit);
+
+      /* display window */
+      window.show();
+   }
+
+   public void notifyOfDeletion(TeamSpaceDto deleted) {
+
+      int indexDeleted = getIndexOfTeamspace(deleted.getId());
+      if (-1 != indexDeleted) {
+         TeamSpaceDto toDelete = spaceStore.get(indexDeleted);
+         removeFromStore(toDelete);
+      }
+
+      if (deleted.equals(currentSpace)) {
+         currentSpace = null;
+         loadPrimaryTeamSpace();
+
+      }
+
+   }
+
+   private int getIndexOfTeamspace(long teamSpaceId) {
+
+      for (int i = 0; i <= spaceStore.size() - 1; i++) {
+         TeamSpaceDto teamSpaceDto = spaceStore.get(i);
+         if (teamSpaceDto.getId() == teamSpaceId) {
+            return i;
+         }
+      }
+
+      return -1;
+   }
+
+   public void notifyOfAddition(TeamSpaceDto added) {
+      spaceStore.add(added);
+   }
+
+   public void notifyOfUpdate(TeamSpaceDto updated) {
+      int indexUpdated = getIndexOfTeamspace(updated.getId());
+      if (-1 != indexUpdated) {
+         TeamSpaceDto toUpdate = spaceStore.get(indexUpdated);
+         toUpdate.setName(updated.getName());
+         toUpdate.setDescription(updated.getDescription());
+         spaceStore.update(toUpdate);
+      }
+   }
+
 }

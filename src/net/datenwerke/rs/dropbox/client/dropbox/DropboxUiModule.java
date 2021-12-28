@@ -11,7 +11,7 @@ import net.datenwerke.rs.dropbox.client.dropbox.provider.annotations.DatasinkTre
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DropboxUiModule extends AbstractGinModule {
-   
+
    public final static String NAME = "Dropbox";
    public final static BaseIcon ICON = BaseIcon.DROPBOX;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = DropboxDatasinkDto.class;
@@ -19,7 +19,7 @@ public class DropboxUiModule extends AbstractGinModule {
    @Override
    protected void configure() {
       bind(DropboxUiService.class).to(DropboxUiServiceImpl.class).in(Singleton.class);
-      
+
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeDropbox.class).toProvider(DropboxTreeProvider.class);
       bind(DropboxUiStartup.class).asEagerSingleton();

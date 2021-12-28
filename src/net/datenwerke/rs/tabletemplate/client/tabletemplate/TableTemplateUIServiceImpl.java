@@ -12,18 +12,16 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTempl
 
 public class TableTemplateUIServiceImpl implements TableTemplateUIService {
 
-	@FormatterFactories(@FormatterFactory(factory=NullSafeFormatter.class,methods=@FormatterFactoryMethod(name="nullsafe")))
-	public interface TableTemplateTemplates extends XTemplates {
-		@XTemplate("<div class=\"rt-ticket-grid-desc\">" +
-		    	"<div class=\"title\">{name:nullsafe}</div>" +
-		    	"<div class=\"description\">{description:nullsafe}</div>" +
-		    "</div>")
-	    public SafeHtml descriptionTemplate(TableReportTemplateDto dto); 
-	}
+   @FormatterFactories(@FormatterFactory(factory = NullSafeFormatter.class, methods = @FormatterFactoryMethod(name = "nullsafe")))
+   public interface TableTemplateTemplates extends XTemplates {
+      @XTemplate("<div class=\"rt-ticket-grid-desc\">" + "<div class=\"title\">{name:nullsafe}</div>"
+            + "<div class=\"description\">{description:nullsafe}</div>" + "</div>")
+      public SafeHtml descriptionTemplate(TableReportTemplateDto dto);
+   }
 
-	@Override
-	public TableTemplateTemplates getDescriptionTemplate() {
-		return GWT.create(TableTemplateTemplates.class);
-	}
-	
+   @Override
+   public TableTemplateTemplates getDescriptionTemplate() {
+      return GWT.create(TableTemplateTemplates.class);
+   }
+
 }

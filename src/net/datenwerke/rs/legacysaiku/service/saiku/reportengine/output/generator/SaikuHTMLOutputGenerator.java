@@ -22,63 +22,59 @@ import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.Co
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
 
 public class SaikuHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
-	
-	
-	@Inject
-	public SaikuHTMLOutputGenerator(HookHandlerService hookHandler) {
-		super(hookHandler);
-	}
 
-	@Override
-	public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet,
-			CellSet cellset, List<SaikuDimensionSelection> filters,
-			String outputFormat, ReportExecutionConfig... configs)
-			throws ReportExecutorException {
-		
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		
-		pw.println("<table style=\"border: 1px solid grey\">");
-		for(AbstractBaseCell[] r : cellDataSet.getCellSetHeaders()){
-			pw.print("<tr>");
-			for(AbstractBaseCell c : r){
-				pw.print("<th>" + c + "</th>");
-			}
-			pw.print("</tr>");
-		}
+   @Inject
+   public SaikuHTMLOutputGenerator(HookHandlerService hookHandler) {
+      super(hookHandler);
+   }
 
-		for(AbstractBaseCell[] r : cellDataSet.getCellSetBody()){
-			pw.println("<tr>");
-			for(AbstractBaseCell c : r){
-				if(c instanceof MemberCell){
-					MemberCell m = (MemberCell) c;
-					pw.print("<td>" +m.getFormattedValue() + "</td>");
+   @Override
+   public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset,
+         List<SaikuDimensionSelection> filters, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException {
 
-					
-				}else if(c instanceof DataCell){
-					DataCell d = (DataCell) c;
-					
-					pw.print("<td>" +c.getFormattedValue() + " " + "</td>");
-				}
-				
-			}
-			pw.println("</tr>");
-		}
-		
-		
-		pw.println("</table>");
+      StringWriter sw = new StringWriter();
+      PrintWriter pw = new PrintWriter(sw);
 
-		return new CompiledHTMLSaikuReport(sw.getBuffer().toString() );
-	}
+      pw.println("<table style=\"border: 1px solid grey\">");
+      for (AbstractBaseCell[] r : cellDataSet.getCellSetHeaders()) {
+         pw.print("<tr>");
+         for (AbstractBaseCell c : r) {
+            pw.print("<th>" + c + "</th>");
+         }
+         pw.print("</tr>");
+      }
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_HTML};
-	}
+      for (AbstractBaseCell[] r : cellDataSet.getCellSetBody()) {
+         pw.println("<tr>");
+         for (AbstractBaseCell c : r) {
+            if (c instanceof MemberCell) {
+               MemberCell m = (MemberCell) c;
+               pw.print("<td>" + m.getFormattedValue() + "</td>");
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledHTMLSaikuReport();
-	}
+            } else if (c instanceof DataCell) {
+               DataCell d = (DataCell) c;
+
+               pw.print("<td>" + c.getFormattedValue() + " " + "</td>");
+            }
+
+         }
+         pw.println("</tr>");
+      }
+
+      pw.println("</table>");
+
+      return new CompiledHTMLSaikuReport(sw.getBuffer().toString());
+   }
+
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_HTML };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledHTMLSaikuReport();
+   }
 
 }

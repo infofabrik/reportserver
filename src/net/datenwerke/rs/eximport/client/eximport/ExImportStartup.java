@@ -10,20 +10,20 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class ExImportStartup {
 
-	@Inject
-	public ExImportStartup(
-		HookHandlerService hookHandler,
-			
-		final ExportSecurityTargetDomainHooker exportSecurityTargetDomain,
-		final ImportSecurityTargetDomainHooker importSecurityTargetDomain
-		){
-		
-		/* attach to load rights */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(exportSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, exportSecurityTargetDomain);
+   @Inject
+   public ExImportStartup(HookHandlerService hookHandler,
 
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(importSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, importSecurityTargetDomain);
+         final ExportSecurityTargetDomainHooker exportSecurityTargetDomain,
+         final ImportSecurityTargetDomainHooker importSecurityTargetDomain) {
 
-	}
+      /* attach to load rights */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(exportSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, exportSecurityTargetDomain);
+
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(importSecurityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, importSecurityTargetDomain);
+
+   }
 }

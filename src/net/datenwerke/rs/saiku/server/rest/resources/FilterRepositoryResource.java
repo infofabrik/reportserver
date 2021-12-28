@@ -25,10 +25,10 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-
-
 /**
- * QueryServlet contains all the methods required when manipulating an OLAP Query.
+ * QueryServlet contains all the methods required when manipulating an OLAP
+ * Query.
+ * 
  * @author Paul Stoellberger
  *
  */
@@ -57,7 +57,6 @@ public class FilterRepositoryResource {
 //		sessionService = ss;
 //	}
 
-
 //	private Map<String, SaikuFilter> getFiltersInternal() throws Exception {
 //		return getFiltersInternal(null);
 //	}
@@ -74,20 +73,17 @@ public class FilterRepositoryResource {
 //	  return null;
 //	}
 
-
-
-
-  /**
-   * Get filternames as JSON.
-   * @param queryName The query name.
-   * @return A response containing the filter names.
-   */
-	@GET
-	@Produces({"application/json" })
-	@Path("/names/")
+   /**
+    * Get filternames as JSON.
+    * 
+    * @param queryName The query name.
+    * @return A response containing the filter names.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/names/")
 //    @ReturnType("java.lang.List<String>")
-    public Response getSavedFilterNames(@QueryParam("queryname") String queryName)
-	{
+   public Response getSavedFilterNames(@QueryParam("queryname") String queryName) {
 //		try {
 //			Map<String, SaikuFilter> allFilters = getFiltersInternal(queryName);
 //			List<String> filternames = new ArrayList<>(allFilters.keySet());
@@ -99,22 +95,19 @@ public class FilterRepositoryResource {
 //			String error = ExceptionUtils.getRootCauseMessage(e);
 //			return Response.serverError().entity(error).build();
 //		}
-		throw new RuntimeException("Not implemented.");
-	}
+      throw new RuntimeException("Not implemented.");
+   }
 
-
-  /**
-   * Get Saved Filters as JSON.
-   * @param queryName The query name.
-   * @param filterName The filter name.
-   * @return A response containing the JSON.
-   */
-	@GET
-	@Produces({"application/json" })
-	public Response getSavedFilters(
-			@QueryParam("query") String queryName,
-			@QueryParam("filtername") String filterName) 
-	{
+   /**
+    * Get Saved Filters as JSON.
+    * 
+    * @param queryName  The query name.
+    * @param filterName The filter name.
+    * @return A response containing the JSON.
+    */
+   @GET
+   @Produces({ "application/json" })
+   public Response getSavedFilters(@QueryParam("query") String queryName, @QueryParam("filtername") String filterName) {
 //		try {
 //			Map<String, SaikuFilter> allFilters = new HashMap<>();
 //			if (StringUtils.isNotBlank(queryName)) {
@@ -135,21 +128,20 @@ public class FilterRepositoryResource {
 //			String error = ExceptionUtils.getRootCauseMessage(e);
 //			return Response.serverError().entity(error).build();
 //		}
-		throw new RuntimeException("Not implemented.");
-	}
+      throw new RuntimeException("Not implemented.");
+   }
 
-  /**
-   * Save filter
-   * @param filterJSON The Filter JSON object.
-   * @return A response containing the filter.
-   */
-	@POST
-	@Produces({"application/json" })
-	@Path("/{filtername}")
+   /**
+    * Save filter
+    * 
+    * @param filterJSON The Filter JSON object.
+    * @return A response containing the filter.
+    */
+   @POST
+   @Produces({ "application/json" })
+   @Path("/{filtername}")
 //    @ReturnType("org.saiku.olap.dto.filter.SaikuFilter")
-    public Response saveFilter(
-			@FormParam ("filter") String filterJSON)
-	{
+   public Response saveFilter(@FormParam("filter") String filterJSON) {
 //		try {
 //			
 //			ObjectMapper mapper = new ObjectMapper();
@@ -166,11 +158,9 @@ public class FilterRepositoryResource {
 //			String error = ExceptionUtils.getRootCauseMessage(e);
 //			return Response.serverError().entity(error).build();
 //		}
-		throw new RuntimeException("Not implemented.");
-	}
+      throw new RuntimeException("Not implemented.");
+   }
 
-
-	
 //	private byte[] getCsv(Map<String, SaikuFilter> filters, String delimiter, String memberdelimiter) {
 //		try {
 //
@@ -196,10 +186,5 @@ public class FilterRepositoryResource {
 //			throw new SaikuServiceException("Error creating csv export for filters"); //$NON-NLS-1$
 //		}
 //	}
-
-	
-	
-
-
 
 }

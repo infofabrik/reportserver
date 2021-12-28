@@ -31,131 +31,124 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 @Singleton
 public class HistoryUiServiceImpl implements HistoryUiService {
 
-	private final LoginService loginService;
-	
-	private Map<String, List<HistoryCallback>> observer = new HashMap<String, List<HistoryCallback>>();
+   private final LoginService loginService;
 
-	private final HistoryDao historyDao;
-	
-	
-	@Inject
-	public HistoryUiServiceImpl(
-		LoginService loginService,
-		HistoryDao historyDao
-		) 
-		{
-		
-		this.loginService = loginService;
-		this.historyDao = historyDao;
-		
-		/* register */
-		History.addValueChangeHandler(this);
-	}
-	
-	@Override
-	public void onValueChange(ValueChangeEvent<String> event) {
-		/* swallow event if not logged in */
-		if(! loginService.isAuthenticated())
-			return;
-		
-		/* notify observers */
-		HistoryLocation location = HistoryLocation.fromString(event.getValue());
-		
-		if(observer.containsKey(location.getLocation())){
-			for(HistoryCallback cb : observer.get(location.getLocation())){
-				cb.locationChanged(location);
-			}
-		}
-	}
+   private Map<String, List<HistoryCallback>> observer = new HashMap<String, List<HistoryCallback>>();
 
-	
-	@Override
-	public void addHistoryCallback(String location, HistoryCallback callback) {
-		if(! observer.containsKey(location)){
-			observer.put(location, new ArrayList<HistoryCallback>());
-		}
-		
-		observer.get(location).add(callback);
-	}
+   private final HistoryDao historyDao;
 
-	@Override
-	public MenuItem getJumpToMenuItem(final JumpToObjectCallback jumpToObjectCallback) {
-		final MenuItem item = new DwMenuItem(HistoryMessages.INSTANCE.jumpTo(), BaseIcon.EXTERNAL_LINK);
-		
-		final Menu subMenu = new DwMenu();
-		item.setSubMenu(subMenu);
-		
-		final MenuItem loading = new DwMenuItem(BaseMessages.INSTANCE.loadingMsg(), BaseIcon.REFRESH);
-		subMenu.add(loading);
-		
-		subMenu.addShowHandler(new ShowHandler() {
-			@Override
-			public void onShow(ShowEvent event) {
-				if(jumpToObjectCallback.haveToUpdate()){
-					subMenu.clear();
-					subMenu.setWidth(400);
-					subMenu.add(loading);
-					
-					jumpToObjectCallback.getDtoTarget(new JumpToObjectResultCallback() {
-						@Override
-						public void setResult(Dto dto) {
-							if(null == dto)
-								return;
-							historyDao.getLinksFor(dto, new RsAsyncCallback<List<HistoryLinkDto>>(){
-								@Override
-								public void onSuccess(List<HistoryLinkDto> result) {
-									subMenu.remove(loading);
-									for(final HistoryLinkDto link : result){
-										MenuItem item = new DwMenuItem(link.getHistoryLinkBuilderName());
-										item.addSelectionHandler(new SelectionHandler<Item>() {
-											@Override
-											public void onSelection(SelectionEvent<Item> event) {
-												fire(link);
-											}
-										});
-										subMenu.add(item);
-									}
+   @Inject
+   public HistoryUiServiceImpl(LoginService loginService, HistoryDao historyDao) {
 
-									item.expandMenu();
-								}
-							});
-													
-						}
-					});
-				}
-			}
-		});
-		
-		return item;
-	}
-	
-	@Override
-	public void fire(HistoryLinkDto link) {
-		if(link.getHistoryToken().equals(History.getToken()))
-			History.fireCurrentHistoryState();
-		else
-			History.newItem(link.getHistoryToken(), true);
-	}
+      this.loginService = loginService;
+      this.historyDao = historyDao;
 
-	@Override
-	public void jumpTo(Dto dto) {
-		if(null == dto)
-			return;
-		
-		final ProgressMessageBox box = new ProgressMessageBox(BaseMessages.INSTANCE.loadingMsg());
-		box.show();
-		
-		historyDao.getLinksFor(dto, new RsAsyncCallback<List<HistoryLinkDto>>(){
-			@Override
-			public void onSuccess(List<HistoryLinkDto> result) {
-				if(null == result || result.isEmpty())
-					return;
-				
-				box.hide();
-				fire(result.get(0));
-			}
-		});
-	}
-	
-	
+      /* register */
+      History.addValueChangeHandler(this);
+   }
+
+   @Override
+   public void onValueChange(ValueChangeEvent<String> event) {
+      /* swallow event if not logged in */
+      if (!loginService.isAuthenticated())
+         return;
+
+      /* notify observers */
+      HistoryLocation location = HistoryLocation.fromString(event.getValue());
+
+      if (observer.containsKey(location.getLocation())) {
+         for (HistoryCallback cb : observer.get(location.getLocation())) {
+            cb.locationChanged(location);
+         }
+      }
+   }
+
+   @Override
+   public void addHistoryCallback(String location, HistoryCallback callback) {
+      if (!observer.containsKey(location)) {
+         observer.put(location, new ArrayList<HistoryCallback>());
+      }
+
+      observer.get(location).add(callback);
+   }
+
+   @Override
+   public MenuItem getJumpToMenuItem(final JumpToObjectCallback jumpToObjectCallback) {
+      final MenuItem item = new DwMenuItem(HistoryMessages.INSTANCE.jumpTo(), BaseIcon.EXTERNAL_LINK);
+
+      final Menu subMenu = new DwMenu();
+      item.setSubMenu(subMenu);
+
+      final MenuItem loading = new DwMenuItem(BaseMessages.INSTANCE.loadingMsg(), BaseIcon.REFRESH);
+      subMenu.add(loading);
+
+      subMenu.addShowHandler(new ShowHandler() {
+         @Override
+         public void onShow(ShowEvent event) {
+            if (jumpToObjectCallback.haveToUpdate()) {
+               subMenu.clear();
+               subMenu.setWidth(400);
+               subMenu.add(loading);
+
+               jumpToObjectCallback.getDtoTarget(new JumpToObjectResultCallback() {
+                  @Override
+                  public void setResult(Dto dto) {
+                     if (null == dto)
+                        return;
+                     historyDao.getLinksFor(dto, new RsAsyncCallback<List<HistoryLinkDto>>() {
+                        @Override
+                        public void onSuccess(List<HistoryLinkDto> result) {
+                           subMenu.remove(loading);
+                           for (final HistoryLinkDto link : result) {
+                              MenuItem item = new DwMenuItem(link.getHistoryLinkBuilderName());
+                              item.addSelectionHandler(new SelectionHandler<Item>() {
+                                 @Override
+                                 public void onSelection(SelectionEvent<Item> event) {
+                                    fire(link);
+                                 }
+                              });
+                              subMenu.add(item);
+                           }
+
+                           item.expandMenu();
+                        }
+                     });
+
+                  }
+               });
+            }
+         }
+      });
+
+      return item;
+   }
+
+   @Override
+   public void fire(HistoryLinkDto link) {
+      if (link.getHistoryToken().equals(History.getToken()))
+         History.fireCurrentHistoryState();
+      else
+         History.newItem(link.getHistoryToken(), true);
+   }
+
+   @Override
+   public void jumpTo(Dto dto) {
+      if (null == dto)
+         return;
+
+      final ProgressMessageBox box = new ProgressMessageBox(BaseMessages.INSTANCE.loadingMsg());
+      box.show();
+
+      historyDao.getLinksFor(dto, new RsAsyncCallback<List<HistoryLinkDto>>() {
+         @Override
+         public void onSuccess(List<HistoryLinkDto> result) {
+            if (null == result || result.isEmpty())
+               return;
+
+            box.hide();
+            fire(result.get(0));
+         }
+      });
+   }
+
 }

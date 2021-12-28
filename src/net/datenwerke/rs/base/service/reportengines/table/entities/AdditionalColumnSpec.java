@@ -10,24 +10,21 @@ import org.hibernate.envers.Audited;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Entity
-@Table(name="ADD_COLUMN_SPEC")
+@Table(name = "ADD_COLUMN_SPEC")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator=true
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
 public class AdditionalColumnSpec extends Column {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6279783353593597698L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6279783353593597698L;
 
-	public boolean hasSameName(AdditionalColumnSpec obj) {
-		if(null == obj || null == getName())
-			return false;
-		return getName().equals(obj.getName());
-	}
+   public boolean hasSameName(AdditionalColumnSpec obj) {
+      if (null == obj || null == getName())
+         return false;
+      return getName().equals(obj.getName());
+   }
 
 }

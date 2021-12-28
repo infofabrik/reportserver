@@ -82,22 +82,13 @@ public class ReportExportRpcServiceImpl extends SecuredRemoteServiceServlet impl
    private final ZipUtilsService zipUtilsService;
 
    @Inject
-   public ReportExportRpcServiceImpl(
-         Provider<AuthenticatorService> authenticatorServiceProvider,
-         ReportDtoService reportDtoService, 
-         DtoService dtoService, 
-         ReportExecutorService reportExecutorService,
-         SecurityService securityService, 
-         MailService mailService, 
-         UserManagerService userManagerService,
-         HookHandlerService hookHandlerService, 
-         ReportService reportService, EventBus eventBus,
-         FileNameService fileNameService, 
-         Provider<ReportSessionCache> sessionCacheProvider,
-         Provider<ConfigService> configServiceProvider,
-         ReportServerService reportServerService, 
-         ZipUtilsService zipUtilsService
-         ) {
+   public ReportExportRpcServiceImpl(Provider<AuthenticatorService> authenticatorServiceProvider,
+         ReportDtoService reportDtoService, DtoService dtoService, ReportExecutorService reportExecutorService,
+         SecurityService securityService, MailService mailService, UserManagerService userManagerService,
+         HookHandlerService hookHandlerService, ReportService reportService, EventBus eventBus,
+         FileNameService fileNameService, Provider<ReportSessionCache> sessionCacheProvider,
+         Provider<ConfigService> configServiceProvider, ReportServerService reportServerService,
+         ZipUtilsService zipUtilsService) {
 
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.reportDtoService = reportDtoService;

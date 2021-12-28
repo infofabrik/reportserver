@@ -9,7 +9,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceMan
 @RemoteServiceRelativePath("datasourcemanager_export")
 public interface DatasourceManagerExportRpcService extends RemoteService {
 
-	public void quickExport(AbstractDatasourceManagerNodeDto dto) throws ServerCallFailedException;
-	
-	public String loadResult() throws ServerCallFailedException;
+   public void quickExport(AbstractDatasourceManagerNodeDto dto) throws ServerCallFailedException;
+
+   public String loadResult() throws ServerCallFailedException;
 }

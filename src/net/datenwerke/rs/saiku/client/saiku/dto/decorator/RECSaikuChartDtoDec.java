@@ -9,12 +9,10 @@ import net.datenwerke.rs.saiku.client.saiku.dto.RECSaikuChartDto;
  */
 public class RECSaikuChartDtoDec extends RECSaikuChartDto implements ReportExecutionConfigDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public RECSaikuChartDtoDec() {
-		super();
-	}
-
+   public RECSaikuChartDtoDec() {
+      super();
+   }
 
 }

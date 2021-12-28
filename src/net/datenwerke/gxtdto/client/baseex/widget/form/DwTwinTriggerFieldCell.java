@@ -8,18 +8,18 @@ import com.sencha.gxt.core.client.dom.XElement;
 
 public class DwTwinTriggerFieldCell<T> extends TwinTriggerFieldCell<T> {
 
-	@Override
-	protected void onClick(com.google.gwt.cell.client.Cell.Context context,
-			XElement parent, NativeEvent event, T value, ValueUpdater<T> updater) {
-		Element target = event.getEventTarget().cast();
+   @Override
+   protected void onClick(com.google.gwt.cell.client.Cell.Context context, XElement parent, NativeEvent event, T value,
+         ValueUpdater<T> updater) {
+      Element target = event.getEventTarget().cast();
 
-		if (!isReadOnly() && getAppearance().twinTriggerIsOrHasChild(parent, target)) {
-			onTwinTriggerClick(context, parent, event, value, updater);
-			return; // no trigger click if twin was clicked!
-		}
+      if (!isReadOnly() && getAppearance().twinTriggerIsOrHasChild(parent, target)) {
+         onTwinTriggerClick(context, parent, event, value, updater);
+         return; // no trigger click if twin was clicked!
+      }
 
-		if (!isReadOnly() && getAppearance().triggerIsOrHasChild(parent, target)) {
-			onTriggerClick(context, parent, event, value, updater);
-		}
-	}
+      if (!isReadOnly() && getAppearance().triggerIsOrHasChild(parent, target)) {
+         onTriggerClick(context, parent, event, value, updater);
+      }
+   }
 }

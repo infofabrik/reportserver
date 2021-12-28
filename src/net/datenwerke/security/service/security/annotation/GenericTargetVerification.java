@@ -16,17 +16,17 @@ import net.datenwerke.security.service.security.GenericSecurityTargetMarker;
  * 
  *
  */
-@Retention(RetentionPolicy.RUNTIME) 
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface GenericTargetVerification {
 
-	/**
-	 * The generic target that should be checked.
-	 */
-	public Class<? extends GenericSecurityTargetMarker> target();
+   /**
+    * The generic target that should be checked.
+    */
+   public Class<? extends GenericSecurityTargetMarker> target();
 
-	/**
-	 * The list of rights to be verifyed.
-	 */
-	public RightsVerification[] verify() default {};
+   /**
+    * The list of rights to be verifyed.
+    */
+   public RightsVerification[] verify() default {};
 }

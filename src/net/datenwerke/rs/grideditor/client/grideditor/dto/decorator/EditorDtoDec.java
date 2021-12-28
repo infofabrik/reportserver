@@ -13,16 +13,15 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
  */
 abstract public class EditorDtoDec extends EditorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public EditorDtoDec() {
+      super();
+   }
 
-	public EditorDtoDec() {
-		super();
-	}
+   public abstract Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing);
 
-	public abstract Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing);
-
-	public boolean isRowEditable(){
-		return true;
-	}
+   public boolean isRowEditable() {
+      return true;
+   }
 }

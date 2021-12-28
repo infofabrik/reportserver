@@ -33,12 +33,8 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
    private final UtilsUIService utilsUiService;
 
    @Inject
-   public DropboxDatasinkOAuthToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         DropboxDao dropboxDao,
-         OAuthDao oAuthDao,
-         UtilsUIService utilsUiService
-         ) {
+   public DropboxDatasinkOAuthToolbarConfigurator(ToolbarService toolbarUtils, DropboxDao dropboxDao, OAuthDao oAuthDao,
+         UtilsUIService utilsUiService) {
       this.toolbarUtils = toolbarUtils;
       this.oAuthDao = oAuthDao;
       this.utilsUiService = utilsUiService;
@@ -66,7 +62,7 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
       oAuthDao.generateAuthenticationUrl(dropboxDatasinkDto, new RsAsyncCallback<OAuthAuthenticationUriInfo>() {
          @Override
          public void onSuccess(OAuthAuthenticationUriInfo result) {
-            
+
             final DwWindow window = new DwWindow();
             window.setHeading(BaseMessages.INSTANCE.datasinkOauth2AuthenticationSetup());
             window.setSize(600, 190);
@@ -85,7 +81,8 @@ public class DropboxDatasinkOAuthToolbarConfigurator implements MainPanelViewToo
             hlc.add(textRedirectUri);
 
             DwTextButton authenticationBtn = new DwTextButton(BaseMessages.INSTANCE.oauthStart());
-            authenticationBtn.addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
+            authenticationBtn
+                  .addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
 
             window.addButton(authenticationBtn);
 

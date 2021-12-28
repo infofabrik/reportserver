@@ -4,5 +4,5 @@ import com.sencha.gxt.widget.core.client.Component;
 
 public interface MainPanelAwareView {
 
-	public void makeAwareOfMainPanel(Component mainPanel);
+   public void makeAwareOfMainPanel(Component mainPanel);
 }

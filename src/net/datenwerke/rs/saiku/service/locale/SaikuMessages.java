@@ -5,12 +5,14 @@ import net.datenwerke.rs.utils.localization.Messages;
 
 public interface SaikuMessages extends Messages {
 
-	public final static SaikuMessages INSTANCE = LocalizationServiceImpl.getMessages(SaikuMessages.class);
-	
-	String reportTypeName();
-	String undefinedMeasureGroup();
-	String errorClearCacheXMLA();
-	
-	String mondrianDatasourceTypeName();
+   public final static SaikuMessages INSTANCE = LocalizationServiceImpl.getMessages(SaikuMessages.class);
+
+   String reportTypeName();
+
+   String undefinedMeasureGroup();
+
+   String errorClearCacheXMLA();
+
+   String mondrianDatasourceTypeName();
 
 }

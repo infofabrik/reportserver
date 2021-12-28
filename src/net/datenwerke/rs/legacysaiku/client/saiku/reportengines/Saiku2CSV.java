@@ -12,20 +12,20 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class Saiku2CSV extends Export2CSV {
 
-	@Inject
-	public Saiku2CSV(ReportExporterDao exporterDao,ClientConfigXmlService jsonService) {
-		super(exporterDao, jsonService);
-	}
+   @Inject
+   public Saiku2CSV(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
+      super(exporterDao, jsonService);
+   }
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		if (report instanceof SaikuReportDto) {
-		    DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-		    return ((MondrianDatasourceDto)datasourceContainer.getDatasource()).isMondrian3();
-			
-		}
-		
-		return false;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      if (report instanceof SaikuReportDto) {
+         DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
+         return ((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+
+      }
+
+      return false;
+   }
 
 }

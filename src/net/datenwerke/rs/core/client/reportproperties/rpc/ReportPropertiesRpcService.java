@@ -12,12 +12,13 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportStringPrope
 @RemoteServiceRelativePath("reportproperties")
 public interface ReportPropertiesRpcService extends RemoteService {
 
-	public List<String> getPropertyKeys(ReportDto report) throws ServerCallFailedException;
+   public List<String> getPropertyKeys(ReportDto report) throws ServerCallFailedException;
 
-	public List<String> getSupportedPropertyKeys(ReportDto reportDto) throws ServerCallFailedException;
+   public List<String> getSupportedPropertyKeys(ReportDto reportDto) throws ServerCallFailedException;
 
-	public ReportDto updateProperties(ReportDto report, List<ReportStringPropertyDto> addedProperties,
-			List<ReportStringPropertyDto> modifiedProperties, List<ReportStringPropertyDto> removedProperties) throws ServerCallFailedException;
-	
-	public List<ReportStringPropertyDto> getInheritedProperties(ReportDto report) throws ServerCallFailedException;
+   public ReportDto updateProperties(ReportDto report, List<ReportStringPropertyDto> addedProperties,
+         List<ReportStringPropertyDto> modifiedProperties, List<ReportStringPropertyDto> removedProperties)
+         throws ServerCallFailedException;
+
+   public List<ReportStringPropertyDto> getInheritedProperties(ReportDto report) throws ServerCallFailedException;
 }

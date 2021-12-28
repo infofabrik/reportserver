@@ -33,7 +33,7 @@ public class OneDriveSendToFormConfiguratorHooker implements DatasinkSendToFormC
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return OneDriveUiModule.NAME;
@@ -43,7 +43,7 @@ public class OneDriveSendToFormConfiguratorHooker implements DatasinkSendToFormC
    public BaseIcon getIcon() {
       return OneDriveUiModule.ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;
@@ -53,5 +53,5 @@ public class OneDriveSendToFormConfiguratorHooker implements DatasinkSendToFormC
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

@@ -13,38 +13,41 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 
 public abstract class AbstractReportSimpleForm extends SimpleFormView {
 
-	@Override
-	protected void configureSimpleForm(SimpleForm form){
-		form.beginRow();
-		
-		/* name */
-		form.beginColumn(2,new MarginData(0,5,0,0));
-		form.addField(String.class, ReportDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
-		form.endColumn();
-		
-		/* key */
-		form.beginColumn(1,new MarginData(0,0,0,0));
-		form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key());
-		form.endColumn();
-		
-		form.endRow();
-		
-		/* description */
-		form.setFieldWidth(1);
-		form.addField(String.class, ReportDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
+   @Override
+   protected void configureSimpleForm(SimpleForm form) {
+      form.beginRow();
 
-		form.setFieldWidth(-1);
-		
-		/* datasource */
-		if(! isDisplayConfigFieldsForDatasource())
-			form.addField(DatasourceContainerDto.class, ReportDtoPA.INSTANCE.datasourceContainer(), ReportmanagerMessages.INSTANCE.datasource(), new SFFCDatasourceSuppressConfig(){});
-		else 
-			form.addField(DatasourceContainerDto.class, ReportDtoPA.INSTANCE.datasourceContainer(), ReportmanagerMessages.INSTANCE.datasource());
-	}
-	
-	protected boolean isDisplayConfigFieldsForDatasource() {
-		return true;
-	}
+      /* name */
+      form.beginColumn(2, new MarginData(0, 5, 0, 0));
+      form.addField(String.class, ReportDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+      form.endColumn();
 
+      /* key */
+      form.beginColumn(1, new MarginData(0, 0, 0, 0));
+      form.addField(String.class, ReportDtoPA.INSTANCE.key(), ReportmanagerMessages.INSTANCE.key());
+      form.endColumn();
+
+      form.endRow();
+
+      /* description */
+      form.setFieldWidth(1);
+      form.addField(String.class, ReportDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(),
+            new SFFCTextAreaImpl());
+
+      form.setFieldWidth(-1);
+
+      /* datasource */
+      if (!isDisplayConfigFieldsForDatasource())
+         form.addField(DatasourceContainerDto.class, ReportDtoPA.INSTANCE.datasourceContainer(),
+               ReportmanagerMessages.INSTANCE.datasource(), new SFFCDatasourceSuppressConfig() {
+               });
+      else
+         form.addField(DatasourceContainerDto.class, ReportDtoPA.INSTANCE.datasourceContainer(),
+               ReportmanagerMessages.INSTANCE.datasource());
+   }
+
+   protected boolean isDisplayConfigFieldsForDatasource() {
+      return true;
+   }
 
 }

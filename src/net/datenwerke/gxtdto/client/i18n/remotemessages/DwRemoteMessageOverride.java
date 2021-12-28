@@ -8,9 +8,9 @@ import java.lang.annotation.Target;
 
 import com.google.gwt.i18n.client.Messages;
 
-@Retention(RetentionPolicy.RUNTIME) 
-@Target({ElementType.TYPE})
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.TYPE })
 @Inherited
 public @interface DwRemoteMessageOverride {
-	public Class<? extends Messages> value();
+   public Class<? extends Messages> value();
 }

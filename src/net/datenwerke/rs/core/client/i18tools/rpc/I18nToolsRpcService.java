@@ -8,8 +8,9 @@ import net.datenwerke.rs.core.client.i18tools.dto.FormatPatternsDto;
 @RemoteServiceRelativePath("i18ntools")
 public interface I18nToolsRpcService extends RemoteService {
 
-	
-	public String getDecimalSeparator();
-	public void setDecimalSeparator(String separatorChar);
-	FormatPatternsDto getFormatPatterns();
+   public String getDecimalSeparator();
+
+   public void setDecimalSeparator(String separatorChar);
+
+   FormatPatternsDto getFormatPatterns();
 }

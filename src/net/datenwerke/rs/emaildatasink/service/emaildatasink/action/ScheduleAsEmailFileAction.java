@@ -43,11 +43,11 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private EmailDatasinkService emailDatasinkService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -55,17 +55,17 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @EnclosedEntity
    @OneToOne
    private EmailDatasink emailDatasink;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-   
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-   
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -95,9 +95,10 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(emailDatasinkService) || !datasinkService.isSchedulingEnabled(emailDatasinkService))
+      if (!datasinkService.isEnabled(emailDatasinkService)
+            || !datasinkService.isSchedulingEnabled(emailDatasinkService))
          throw new ActionExecutionException("email scheduling is disabled");
-      
+
       report = rJob.getReport();
 
       SimpleJuel juel = simpleJuelProvider.get();
@@ -106,7 +107,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
       juel.addReplacement(PROPERTY_MESSAGE, getMessage());
 
       filename = null == name ? "" : juel.parse(name);
-      
+
       sendViaEmailDatasink(rJob, juel, filename);
 
       if (null == name || name.trim().isEmpty())
@@ -116,7 +117,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
          throw new ActionExecutionException("email datasink is empty");
 
    }
-   
+
    private void sendViaEmailDatasink(ReportExecuteJob rJob, SimpleJuel juel, String filename)
          throws ActionExecutionException {
       try {
@@ -159,8 +160,8 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), emailDatasink, emailDatasinkService,
-                  new DatasinkEmailConfig() {
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), emailDatasink,
+                  emailDatasinkService, new DatasinkEmailConfig() {
 
                      @Override
                      public String getFilename() {

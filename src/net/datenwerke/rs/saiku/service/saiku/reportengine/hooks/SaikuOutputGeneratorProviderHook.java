@@ -8,6 +8,6 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.Saiku
 
 @HookConfig
 public interface SaikuOutputGeneratorProviderHook extends ReportOutputGeneratorProvider<SaikuOutputGenerator> {
-	
-	public Collection<SaikuOutputGenerator> provideGenerators();
+
+   public Collection<SaikuOutputGenerator> provideGenerators();
 }

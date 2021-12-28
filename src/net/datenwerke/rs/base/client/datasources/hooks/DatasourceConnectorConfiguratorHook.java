@@ -8,11 +8,12 @@ import net.datenwerke.rs.base.client.datasources.dto.FormatBasedDatasourceDefini
 
 public interface DatasourceConnectorConfiguratorHook extends Hook {
 
-	Widget configureForm(FormatBasedDatasourceDefinitionDto datasource);
+   Widget configureForm(FormatBasedDatasourceDefinitionDto datasource);
 
-	DatasourceConnectorDto instantiateConnector();
-	String getConnectorName();
-	
-	boolean consumes(DatasourceConnectorDto connector);
+   DatasourceConnectorDto instantiateConnector();
+
+   String getConnectorName();
+
+   boolean consumes(DatasourceConnectorDto connector);
 
 }

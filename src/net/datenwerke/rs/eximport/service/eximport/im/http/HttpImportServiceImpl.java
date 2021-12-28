@@ -37,143 +37,136 @@ import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportPostP
 @SessionScoped
 public class HttpImportServiceImpl implements HttpImportService {
 
-	protected final DtoService dtoService;
-	protected final ExportDataAnalyzerService analizerService;
-	protected final ExportService exportService;
-	protected final HookHandlerService hookHandler;
-	protected final Provider<HttpImportConfiguration> configurationProvider;
-	protected final TempFileService tempFileService;
-	protected HttpImportConfiguration currentConfiguration;
-	
-	@Inject
-	public HttpImportServiceImpl(
-		DtoService dtoService,
-		ExportDataAnalyzerService analizerService,
-		ExportService exportService,
-		HookHandlerService hookHandler,
-		Provider<HttpImportConfiguration> configurationProvider,
-		TempFileService tempFileService
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.analizerService = analizerService;
-		this.exportService = exportService;
-		this.hookHandler = hookHandler;
-		this.configurationProvider = configurationProvider;
-		this.tempFileService = tempFileService;
-	}
-	
-	@Override
-	public HttpImportConfiguration createNewConfig(){
-		currentConfiguration = configurationProvider.get();
-		return currentConfiguration;
-	}
-	
-	@Override
-	public boolean hasCurrentConfig(){
-		return null != currentConfiguration;
-	}
+   protected final DtoService dtoService;
+   protected final ExportDataAnalyzerService analizerService;
+   protected final ExportService exportService;
+   protected final HookHandlerService hookHandler;
+   protected final Provider<HttpImportConfiguration> configurationProvider;
+   protected final TempFileService tempFileService;
+   protected HttpImportConfiguration currentConfiguration;
 
-	@Override
-	public HttpImportConfiguration getCurrentConfig(){
-		return currentConfiguration;
-	}
-	
-	@Override
-	public void invalidateCurrentConfig(){
-		currentConfiguration = null;
-	}
+   @Inject
+   public HttpImportServiceImpl(DtoService dtoService, ExportDataAnalyzerService analizerService,
+         ExportService exportService, HookHandlerService hookHandler,
+         Provider<HttpImportConfiguration> configurationProvider, TempFileService tempFileService) {
 
-	@Override
-	public void setData(String xmldata) throws InvalidImportDocumentException {
-		if(! hasCurrentConfig())
-			throw new IllegalArgumentException("Do not have config");
-		
-		final Path xmlFile;
-		try {
-			xmlFile = tempFileService.createTempFile();
-			Files.write(xmlFile, xmldata.getBytes(StandardCharsets.UTF_8));
-			
-			currentConfiguration.setImportData(new ExportDataProviderImpl(xmldata.getBytes(StandardCharsets.UTF_8)));
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-	}
+      /* store objects */
+      this.dtoService = dtoService;
+      this.analizerService = analizerService;
+      this.exportService = exportService;
+      this.hookHandler = hookHandler;
+      this.configurationProvider = configurationProvider;
+      this.tempFileService = tempFileService;
+   }
 
-	@Override
-	public Collection<String> getInvolvedExporterIds() {
-		if(! hasCurrentConfig())
-			throw new IllegalArgumentException("Do not have config");
-		
-		try{
-			Collection<Class<?>> exporters = analizerService.getExporterClasses(getCurrentConfig().getImportData());
-			return exportService.getExporterIds(exporters);
-		} catch(Exception e){
-			throw new IllegalArgumentException("Could not load exporters", e);
-		}
-	}
+   @Override
+   public HttpImportConfiguration createNewConfig() {
+      currentConfiguration = configurationProvider.get();
+      return currentConfiguration;
+   }
 
-	@Override
-	public void resetImportConfig() {
-		if(! hasCurrentConfig())
-			throw new IllegalArgumentException("Do not have config");
-			
-		ImportConfig importConfig = new ImportConfig(currentConfiguration.getImportData());
-		getCurrentConfig().setImportConfig(importConfig);
-	}
-	
+   @Override
+   public boolean hasCurrentConfig() {
+      return null != currentConfiguration;
+   }
 
-	@Override
-	public void addItemConfig(ImportItemConfig nodeConfig) {
-		if(! hasCurrentConfig())
-			throw new IllegalArgumentException("Do not have config");
-		
-		ImportConfig importConfig = currentConfiguration.getImportConfig();
-		if(null == importConfig)
-			throw new IllegalArgumentException("Storing of configs was not propertly started.");
-		
-		importConfig.addItemConfig(nodeConfig);
-	}
+   @Override
+   public HttpImportConfiguration getCurrentConfig() {
+      return currentConfiguration;
+   }
 
-	@Override
-	public void configureImport(Map<String, ImportConfigDto> configMap) {
-		Collection<HttpImportConfigurationProviderHook> configProviders = hookHandler.getHookers(HttpImportConfigurationProviderHook.class);
-		
-		for(Entry<String, ImportConfigDto> entry : configMap.entrySet()){
-			for(HttpImportConfigurationProviderHook provider : configProviders){
-				if(provider.consumes(entry.getKey())){
-					provider.validate(entry.getValue());
-					provider.configureImport(entry.getValue());
-					break;
-				}
-			}
-		}
-	}
+   @Override
+   public void invalidateCurrentConfig() {
+      currentConfiguration = null;
+   }
 
-	@Override
-	public List<ExportedItem> getExportedItemsFor(
-			Class<? extends Exporter> exporterType) throws ClassNotFoundException {
-		if(! hasCurrentConfig())
-			throw new IllegalArgumentException("Do not have config");
-		
-		return analizerService.getExportedItemsFor(currentConfiguration.getImportData(), exporterType);
-	}
+   @Override
+   public void setData(String xmldata) throws InvalidImportDocumentException {
+      if (!hasCurrentConfig())
+         throw new IllegalArgumentException("Do not have config");
 
-	@Override
-	public void runPostProcess(Map<String, ImportPostProcessConfigDto> configMap,
-			ImportResult result) {
-		Collection<HttpImportPostProcessProviderHook> postProcessProviders = hookHandler.getHookers(HttpImportPostProcessProviderHook.class);
-		
-		for(Entry<String, ImportPostProcessConfigDto> entry : configMap.entrySet()){
-			for(HttpImportPostProcessProviderHook provider : postProcessProviders){
-				if(provider.consumes(entry.getKey())){
-					provider.postProcess(entry.getValue(), result);
-					break;
-				}
-			}
-		}
-	}
+      final Path xmlFile;
+      try {
+         xmlFile = tempFileService.createTempFile();
+         Files.write(xmlFile, xmldata.getBytes(StandardCharsets.UTF_8));
 
-	
+         currentConfiguration.setImportData(new ExportDataProviderImpl(xmldata.getBytes(StandardCharsets.UTF_8)));
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+   }
+
+   @Override
+   public Collection<String> getInvolvedExporterIds() {
+      if (!hasCurrentConfig())
+         throw new IllegalArgumentException("Do not have config");
+
+      try {
+         Collection<Class<?>> exporters = analizerService.getExporterClasses(getCurrentConfig().getImportData());
+         return exportService.getExporterIds(exporters);
+      } catch (Exception e) {
+         throw new IllegalArgumentException("Could not load exporters", e);
+      }
+   }
+
+   @Override
+   public void resetImportConfig() {
+      if (!hasCurrentConfig())
+         throw new IllegalArgumentException("Do not have config");
+
+      ImportConfig importConfig = new ImportConfig(currentConfiguration.getImportData());
+      getCurrentConfig().setImportConfig(importConfig);
+   }
+
+   @Override
+   public void addItemConfig(ImportItemConfig nodeConfig) {
+      if (!hasCurrentConfig())
+         throw new IllegalArgumentException("Do not have config");
+
+      ImportConfig importConfig = currentConfiguration.getImportConfig();
+      if (null == importConfig)
+         throw new IllegalArgumentException("Storing of configs was not propertly started.");
+
+      importConfig.addItemConfig(nodeConfig);
+   }
+
+   @Override
+   public void configureImport(Map<String, ImportConfigDto> configMap) {
+      Collection<HttpImportConfigurationProviderHook> configProviders = hookHandler
+            .getHookers(HttpImportConfigurationProviderHook.class);
+
+      for (Entry<String, ImportConfigDto> entry : configMap.entrySet()) {
+         for (HttpImportConfigurationProviderHook provider : configProviders) {
+            if (provider.consumes(entry.getKey())) {
+               provider.validate(entry.getValue());
+               provider.configureImport(entry.getValue());
+               break;
+            }
+         }
+      }
+   }
+
+   @Override
+   public List<ExportedItem> getExportedItemsFor(Class<? extends Exporter> exporterType) throws ClassNotFoundException {
+      if (!hasCurrentConfig())
+         throw new IllegalArgumentException("Do not have config");
+
+      return analizerService.getExportedItemsFor(currentConfiguration.getImportData(), exporterType);
+   }
+
+   @Override
+   public void runPostProcess(Map<String, ImportPostProcessConfigDto> configMap, ImportResult result) {
+      Collection<HttpImportPostProcessProviderHook> postProcessProviders = hookHandler
+            .getHookers(HttpImportPostProcessProviderHook.class);
+
+      for (Entry<String, ImportPostProcessConfigDto> entry : configMap.entrySet()) {
+         for (HttpImportPostProcessProviderHook provider : postProcessProviders) {
+            if (provider.consumes(entry.getKey())) {
+               provider.postProcess(entry.getValue(), result);
+               break;
+            }
+         }
+      }
+   }
+
 }

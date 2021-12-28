@@ -7,17 +7,15 @@ import net.datenwerke.rs.base.client.datasources.statementmanager.rpc.StatementM
 
 public class StatementManagerDao {
 
-	private final StatementManagerRpcServiceAsync rpcService;
+   private final StatementManagerRpcServiceAsync rpcService;
 
-	@Inject
-	public StatementManagerDao(StatementManagerRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	
-	public void cancelStatement(String statementIdentifier){
-		rpcService.cancelStatement(statementIdentifier, new NotamCallback<Void>(null));
-	}
-	
-	
+   @Inject
+   public StatementManagerDao(StatementManagerRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void cancelStatement(String statementIdentifier) {
+      rpcService.cancelStatement(statementIdentifier, new NotamCallback<Void>(null));
+   }
+
 }

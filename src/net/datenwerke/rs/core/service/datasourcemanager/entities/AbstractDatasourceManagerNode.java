@@ -22,37 +22,29 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
  *
  */
 @Entity
-@Table(name="DATASOURCE_MNGR_NODE")
+@Table(name = "DATASOURCE_MNGR_NODE")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@TreeDBTree(
-	rootTypes=DatasourceFolder.class,
-	manager=DatasourceService.class
-)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.datasourcemanager.dto",
-	abstractDto=true,
-	whitelist={
-		DatasourceFolderDto.class,DatasourceDefinitionDto.class,DatasourceDefinitionConfigDto.class,
-		AbstractReportManagerNodeDto.class
-	}
-)
+@Inheritance(strategy = InheritanceType.JOINED)
+@TreeDBTree(rootTypes = DatasourceFolder.class, manager = DatasourceService.class)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasourcemanager.dto", abstractDto = true, whitelist = {
+      DatasourceFolderDto.class, DatasourceDefinitionDto.class, DatasourceDefinitionConfigDto.class,
+      AbstractReportManagerNodeDto.class })
 abstract public class AbstractDatasourceManagerNode extends SecuredAbstractNode<AbstractDatasourceManagerNode> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1307633830087406644L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1307633830087406644L;
 
-	public abstract String getName();
-	
-	@Override
-	public String getNodeName() {
-		return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
-	}
+   public abstract String getName();
 
-	@Override
-	public String getRootNodeName() {
-		return "datasources";
-	}
+   @Override
+   public String getNodeName() {
+      return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
+   }
+
+   @Override
+   public String getRootNodeName() {
+      return "datasources";
+   }
 }

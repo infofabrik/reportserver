@@ -24,38 +24,30 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 
 public class EmailDatasinkUiStartup {
-   
+
    private static final int PRIO = HookHandlerService.PRIORITY_LOW;
 
    @Inject
-   public EmailDatasinkUiStartup(
-         final Provider<ExportToEmailDatasinkHooker> exportToEmailHooker,
-         final Provider<FileExportToEmailHooker> fileExportToDatasinkHooker,
-         final HookHandlerService hookHandler,
+   public EmailDatasinkUiStartup(final Provider<ExportToEmailDatasinkHooker> exportToEmailHooker,
+         final Provider<FileExportToEmailHooker> fileExportToDatasinkHooker, final HookHandlerService hookHandler,
          final Provider<EmailDatasinkConfigProviderHooker> emailTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, 
-         final EmailDatasinkDao dao,
+         final WaitOnEventUIService waitOnEventService, final EmailDatasinkDao dao,
          final EmailDatasinkTesterToolbarConfigurator emailTestToolbarConfigurator,
          final Provider<EmailDatasinkExportSnippetProvider> emailExportSnippetProvider,
          final EmailDatasinkUiService emailUiService,
-         final Provider<EmailDatasinkSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final Provider<EmailDatasinkSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, emailTreeConfiguratorProvider.get(),
-            PRIO);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, emailTreeConfiguratorProvider.get(), PRIO);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToEmailHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToEmailHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       /* test datasinks */
-      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, emailTestToolbarConfigurator,
-            PRIO);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, emailTestToolbarConfigurator, PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
@@ -63,10 +55,9 @@ public class EmailDatasinkUiStartup {
          dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
             public void onSuccess(final Map<StorageType, Boolean> result) {
-               ((EmailDatasinkUiServiceImpl)emailUiService).setEnabledConfigs(result);
+               ((EmailDatasinkUiServiceImpl) emailUiService).setEnabledConfigs(result);
                if (result.get(StorageType.EMAIL) && result.get(StorageType.EMAIL_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider,
-                        PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider, PRIO);
                else
                   hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, emailExportSnippetProvider);
             }
@@ -79,6 +70,5 @@ public class EmailDatasinkUiStartup {
 
       });
    }
-   
 
 }

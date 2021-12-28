@@ -12,11 +12,8 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 @RemoteServiceRelativePath("grideditor")
 public interface GridEditorRpcService extends RemoteService {
 
-	void commitChanges(ReportDto report, String executeToken,
-			List<GridEditorRecordDto> modified,
-			List<GridEditorRecordDto> modifiedOriginals,
-			List<GridEditorRecordDto> deletedRecords,
-			List<GridEditorRecordDto> newRecords) throws ServerCallFailedException;
+   void commitChanges(ReportDto report, String executeToken, List<GridEditorRecordDto> modified,
+         List<GridEditorRecordDto> modifiedOriginals, List<GridEditorRecordDto> deletedRecords,
+         List<GridEditorRecordDto> newRecords) throws ServerCallFailedException;
 
-	
 }

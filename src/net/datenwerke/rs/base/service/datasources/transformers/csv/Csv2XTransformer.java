@@ -36,103 +36,101 @@ import net.datenwerke.rs.resultcache.ResultCacheService;
 
 public abstract class Csv2XTransformer<X> implements DataSourceDefinitionTransformer<X> {
 
-	protected static final String TABLE_ALIAS = "_RS_TMP_TABLENAME";
-	
-	protected DBHelperService dbHelperService;
-	protected DbPoolService dbPoolService;
-	protected TempTableService tempTableService;
-	protected TableModelDbHelper tableModelDbHelper;
-	protected ResultCacheService resultCacheService;
-	protected LoadingCache<ResultCacheKeyDatasource, CacheableResult> cacheAccessor;
+   protected static final String TABLE_ALIAS = "_RS_TMP_TABLENAME";
 
-	@Inject
-	public Csv2XTransformer(
-			DbPoolService dbPoolService,
-			DBHelperService dbHelperService, 
-			TempTableService tempTableService, 
-			TableModelDbHelper tableModelDbHelper, 
-			ResultCacheService resultCacheService
-			){
-		this.dbPoolService = dbPoolService;
-		this.dbHelperService = dbHelperService;
-		this.tempTableService = tempTableService;
-		this.tableModelDbHelper = tableModelDbHelper;
-		this.resultCacheService = resultCacheService;
-		
-		initCache();
-	}
+   protected DBHelperService dbHelperService;
+   protected DbPoolService dbPoolService;
+   protected TempTableService tempTableService;
+   protected TableModelDbHelper tableModelDbHelper;
+   protected ResultCacheService resultCacheService;
+   protected LoadingCache<ResultCacheKeyDatasource, CacheableResult> cacheAccessor;
 
-	
-	protected void initCache() {
-		cacheAccessor = CacheBuilder.newBuilder()
-			.maximumSize(0)
-			.build(new CacheLoader<ResultCacheKeyDatasource, CacheableResult>(){
+   @Inject
+   public Csv2XTransformer(DbPoolService dbPoolService, DBHelperService dbHelperService,
+         TempTableService tempTableService, TableModelDbHelper tableModelDbHelper,
+         ResultCacheService resultCacheService) {
+      this.dbPoolService = dbPoolService;
+      this.dbHelperService = dbHelperService;
+      this.tempTableService = tempTableService;
+      this.tableModelDbHelper = tableModelDbHelper;
+      this.resultCacheService = resultCacheService;
 
-				@Override
-				public CacheableResult load(ResultCacheKeyDatasource key) throws Exception {
-					CacheableResult cachedResult = resultCacheService.getCachedResult(key);
-					
-					if(null != cachedResult)
-						return cachedResult;
-					
-					TempTableResult tempTableResult = createTempTable((CsvDatasource)key.getDatasource(), (CsvDatasourceConfig)key.getConfig());
+      initCache();
+   }
 
-					if(null == tempTableResult.getTimeout())
-						tempTableResult.setTimeout(((CsvDatasource)key.getDatasource()).getDatabaseCache() * 60 * 1000L);
+   protected void initCache() {
+      cacheAccessor = CacheBuilder.newBuilder().maximumSize(0)
+            .build(new CacheLoader<ResultCacheKeyDatasource, CacheableResult>() {
 
-					resultCacheService.addToResultCache(key, tempTableResult);
+               @Override
+               public CacheableResult load(ResultCacheKeyDatasource key) throws Exception {
+                  CacheableResult cachedResult = resultCacheService.getCachedResult(key);
 
-					return tempTableResult;
-				}
-				
-			});
-	}
+                  if (null != cachedResult)
+                     return cachedResult;
 
+                  TempTableResult tempTableResult = createTempTable((CsvDatasource) key.getDatasource(),
+                        (CsvDatasourceConfig) key.getConfig());
 
-	@Override
-	public X transform(DatasourceContainerProvider containerProvider, Class<?> dst, ParameterSet parameters) throws UnsupportedDriverException, DatabaseConnectionException {
-		/* get correct datasource definition and config */
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		CsvDatasource ds = (CsvDatasource) container.getDatasource();
-		CsvDatasourceConfig dsConfig = (CsvDatasourceConfig) container.getDatasourceConfig();
+                  if (null == tempTableResult.getTimeout())
+                     tempTableResult.setTimeout(((CsvDatasource) key.getDatasource()).getDatabaseCache() * 60 * 1000L);
 
-		/* check cache or create object */
-		ResultCacheKeyDatasource key = new ResultCacheKeyDatasource(ds, dsConfig);
-		try {
-			CacheableResult result = cacheAccessor.get(key);
-			
-			return transformResult(result, containerProvider, parameters, TableDataSource.class);
-		} catch (ExecutionException e) {
-			throw new IllegalStateException(e);
-		} 
-	}
-	
-	
-	private TempTableResult createTempTable(CsvDatasource ds, CsvDatasourceConfig dsConfig){
-		ConnectionPoolConfig cpc = tempTableService.getConnectionConfig();
-		String helperId = String.valueOf(ds.getId())  + "_" + String.valueOf(dsConfig.getId()) + "_" + String.valueOf(dsConfig.getOldTransientId());
-		TempTableHelper tempTableHelper = tempTableService.getHelper(helperId);
-		try{
-			String tableName = tempTableHelper.getTableName(cpc, TABLE_ALIAS);
-			
-			try{
-				CsvToTableModelHelper csvToTableModelHelper = new CsvToTableModelHelper();
-				csvToTableModelHelper.setPreferences(ds.getQuote().charAt(0), ds.getSeparator().charAt(0), "\n");
-				CsvCellProcessorGuesser guessDatatypes = csvToTableModelHelper.guessDatatypes(ds.getDataStream(dsConfig), 100);
-				RSTableModel rsTableModel = csvToTableModelHelper.processCSV(ds.getDataStream(dsConfig), guessDatatypes);
-				
-				tableModelDbHelper.writeRsTableModel(rsTableModel, cpc, tableName);
-				String query = "select * from ${" + TABLE_ALIAS + "}";
-				
-				return new TempTableResult(tempTableHelper, cpc, query);
-				
-			}catch(IOError | IOException | DatabaseException | SQLException | InterruptedException | ExecutionException e){
-				throw new RuntimeException(e);
-			}
-		} finally {
-			tempTableHelper.writeOperationCompleted();
-		}
-	}
+                  resultCacheService.addToResultCache(key, tempTableResult);
 
-	protected abstract X transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet, Class<TableDataSource> targetType);
+                  return tempTableResult;
+               }
+
+            });
+   }
+
+   @Override
+   public X transform(DatasourceContainerProvider containerProvider, Class<?> dst, ParameterSet parameters)
+         throws UnsupportedDriverException, DatabaseConnectionException {
+      /* get correct datasource definition and config */
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      CsvDatasource ds = (CsvDatasource) container.getDatasource();
+      CsvDatasourceConfig dsConfig = (CsvDatasourceConfig) container.getDatasourceConfig();
+
+      /* check cache or create object */
+      ResultCacheKeyDatasource key = new ResultCacheKeyDatasource(ds, dsConfig);
+      try {
+         CacheableResult result = cacheAccessor.get(key);
+
+         return transformResult(result, containerProvider, parameters, TableDataSource.class);
+      } catch (ExecutionException e) {
+         throw new IllegalStateException(e);
+      }
+   }
+
+   private TempTableResult createTempTable(CsvDatasource ds, CsvDatasourceConfig dsConfig) {
+      ConnectionPoolConfig cpc = tempTableService.getConnectionConfig();
+      String helperId = String.valueOf(ds.getId()) + "_" + String.valueOf(dsConfig.getId()) + "_"
+            + String.valueOf(dsConfig.getOldTransientId());
+      TempTableHelper tempTableHelper = tempTableService.getHelper(helperId);
+      try {
+         String tableName = tempTableHelper.getTableName(cpc, TABLE_ALIAS);
+
+         try {
+            CsvToTableModelHelper csvToTableModelHelper = new CsvToTableModelHelper();
+            csvToTableModelHelper.setPreferences(ds.getQuote().charAt(0), ds.getSeparator().charAt(0), "\n");
+            CsvCellProcessorGuesser guessDatatypes = csvToTableModelHelper.guessDatatypes(ds.getDataStream(dsConfig),
+                  100);
+            RSTableModel rsTableModel = csvToTableModelHelper.processCSV(ds.getDataStream(dsConfig), guessDatatypes);
+
+            tableModelDbHelper.writeRsTableModel(rsTableModel, cpc, tableName);
+            String query = "select * from ${" + TABLE_ALIAS + "}";
+
+            return new TempTableResult(tempTableHelper, cpc, query);
+
+         } catch (IOError | IOException | DatabaseException | SQLException | InterruptedException
+               | ExecutionException e) {
+            throw new RuntimeException(e);
+         }
+      } finally {
+         tempTableHelper.writeOperationCompleted();
+      }
+   }
+
+   protected abstract X transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider,
+         ParameterSet parameterSet, Class<TableDataSource> targetType);
 }

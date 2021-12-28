@@ -4,22 +4,22 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public class WhiteSpaceToken implements ExpressionToken {
 
-	public WhiteSpaceToken() {
-		super();
-	}
+   public WhiteSpaceToken() {
+      super();
+   }
 
-	@Override
-	public int hashCode() {
-		return WhiteSpaceToken.class.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof WhiteSpaceToken;
-	}
-	
-	@Override
-	public boolean isGreedy() {
-		return true;
-	}
+   @Override
+   public int hashCode() {
+      return WhiteSpaceToken.class.hashCode();
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      return obj instanceof WhiteSpaceToken;
+   }
+
+   @Override
+   public boolean isGreedy() {
+      return true;
+   }
 }

@@ -13,125 +13,125 @@ import net.datenwerke.gxtdto.client.eventbus.events.ObjectChangedEvent;
 import net.datenwerke.gxtdto.client.eventbus.handlers.ObjectChangedEventHandler;
 import net.datenwerke.gxtdto.client.eventbus.handlers.has.HasObjectChangedEventHandler;
 
-@SuppressWarnings({"rawtypes", "unchecked"})
-public class HasValueFieldBinding implements ObjectChangedEventHandler, ValueChangeHandler{
+@SuppressWarnings({ "rawtypes", "unchecked" })
+public class HasValueFieldBinding implements ObjectChangedEventHandler, ValueChangeHandler {
 
-	private final HasValueChangeHandlers field;
-	
-	private HandlerRegistration addObjectChangedHandler;
-	private HandlerRegistration addValueChangeHandler;
+   private final HasValueChangeHandlers field;
 
-	private ValueProvider vp;
+   private HandlerRegistration addObjectChangedHandler;
+   private HandlerRegistration addValueChangeHandler;
 
-	private Object model;
+   private ValueProvider vp;
 
-	private boolean inFieldUpdate;
+   private Object model;
 
-	private Converter converter;
+   private boolean inFieldUpdate;
 
-	public HasValueFieldBinding(final HasValueChangeHandlers field) {
-		this.field = field;
-	}
-	
-	public HasValueFieldBinding(HasValueChangeHandlers field, Object model, ValueProvider vp) {
-		this.field = field;
-		bind(model, vp);
-	}
+   private Converter converter;
 
-	public HasValueFieldBinding(HasValueChangeHandlers field, Object model, ValueProvider vp, Converter converter) {
-		this.field = field;
-		this.converter = converter;
-		bind(model, vp);
-	}
+   public HasValueFieldBinding(final HasValueChangeHandlers field) {
+      this.field = field;
+   }
 
-	public void bind(final Object model, final ValueProvider vp){
-		this.model = model;
-		this.vp = vp;
-		if(null == vp)
-			throw new IllegalArgumentException();
-		
-		addValueChangeHandler = getField().addValueChangeHandler(this);
-		
-		if(model instanceof HasObjectChangedEventHandler && getField() instanceof HasValue){
-			addObjectChangedHandler = ((HasObjectChangedEventHandler)model).addObjectChangedHandler(this);
-			
-			// initial set
-			updateField();
-		}
-	}
-	
-	public void unbind(){
-		if(null != addObjectChangedHandler)
-			addObjectChangedHandler.removeHandler();
-		addValueChangeHandler.removeHandler();
-		
-		model = null;
-		vp = null;
-		addObjectChangedHandler = null;
-		addValueChangeHandler = null;
-	}
-	
-	/**
-	 * Updates the model's value with the field value.
-	 */
-	public void updateModel() {
-		if(! isBinded())
-			return;
-		if(getField() instanceof HasValue)
-			updateModel(((HasValue)getField()).getValue());
-	}
+   public HasValueFieldBinding(HasValueChangeHandlers field, Object model, ValueProvider vp) {
+      this.field = field;
+      bind(model, vp);
+   }
 
-	protected void updateModel(Object value) {
-		vp.setValue(model, convertFieldValue(value));
-	}
+   public HasValueFieldBinding(HasValueChangeHandlers field, Object model, ValueProvider vp, Converter converter) {
+      this.field = field;
+      this.converter = converter;
+      bind(model, vp);
+   }
 
-	protected Object convertModelValue(Object object) {
-		if(null == converter)
-			return object;
-		return converter.convertModelValue(object);
-	}
+   public void bind(final Object model, final ValueProvider vp) {
+      this.model = model;
+      this.vp = vp;
+      if (null == vp)
+         throw new IllegalArgumentException();
 
-	protected Object convertFieldValue(Object value) {
-		if(null == converter)
-			return value;
-		return converter.convertFieldValue(value);
-	}
+      addValueChangeHandler = getField().addValueChangeHandler(this);
 
-	public HasValueChangeHandlers getField() {
-		return field;
-	}
+      if (model instanceof HasObjectChangedEventHandler && getField() instanceof HasValue) {
+         addObjectChangedHandler = ((HasObjectChangedEventHandler) model).addObjectChangedHandler(this);
 
-	@Override
-	public void onObjectChangedEvent(ObjectChangedEvent event) {
-		if(! isBinded())
-			return;
-		if(null == event.getValueProvider() || ! Util.equalWithNull(event.getValueProvider().getPath(), vp.getPath()))
-			return;
-		updateField();
-	}
+         // initial set
+         updateField();
+      }
+   }
 
-	public void updateField() {
-		if(! isBinded())
-			return;
-		
-		boolean oldInFieldUpdate = inFieldUpdate;
-		inFieldUpdate = true;
-		
-		if(getField() instanceof HasValue)
-			((HasValue)getField()).setValue(convertModelValue(vp.getValue(model)), true);
-		
-		inFieldUpdate = oldInFieldUpdate;
-	}
+   public void unbind() {
+      if (null != addObjectChangedHandler)
+         addObjectChangedHandler.removeHandler();
+      addValueChangeHandler.removeHandler();
 
-	@Override
-	public void onValueChange(ValueChangeEvent event) {
-		if(! isBinded())
-			return;
-		if(! inFieldUpdate)
-			updateModel(event.getValue());
-	}
+      model = null;
+      vp = null;
+      addObjectChangedHandler = null;
+      addValueChangeHandler = null;
+   }
 
-	private boolean isBinded() {
-		return null != addValueChangeHandler;
-	}
+   /**
+    * Updates the model's value with the field value.
+    */
+   public void updateModel() {
+      if (!isBinded())
+         return;
+      if (getField() instanceof HasValue)
+         updateModel(((HasValue) getField()).getValue());
+   }
+
+   protected void updateModel(Object value) {
+      vp.setValue(model, convertFieldValue(value));
+   }
+
+   protected Object convertModelValue(Object object) {
+      if (null == converter)
+         return object;
+      return converter.convertModelValue(object);
+   }
+
+   protected Object convertFieldValue(Object value) {
+      if (null == converter)
+         return value;
+      return converter.convertFieldValue(value);
+   }
+
+   public HasValueChangeHandlers getField() {
+      return field;
+   }
+
+   @Override
+   public void onObjectChangedEvent(ObjectChangedEvent event) {
+      if (!isBinded())
+         return;
+      if (null == event.getValueProvider() || !Util.equalWithNull(event.getValueProvider().getPath(), vp.getPath()))
+         return;
+      updateField();
+   }
+
+   public void updateField() {
+      if (!isBinded())
+         return;
+
+      boolean oldInFieldUpdate = inFieldUpdate;
+      inFieldUpdate = true;
+
+      if (getField() instanceof HasValue)
+         ((HasValue) getField()).setValue(convertModelValue(vp.getValue(model)), true);
+
+      inFieldUpdate = oldInFieldUpdate;
+   }
+
+   @Override
+   public void onValueChange(ValueChangeEvent event) {
+      if (!isBinded())
+         return;
+      if (!inFieldUpdate)
+         updateModel(event.getValue());
+   }
+
+   private boolean isBinded() {
+      return null != addValueChangeHandler;
+   }
 }

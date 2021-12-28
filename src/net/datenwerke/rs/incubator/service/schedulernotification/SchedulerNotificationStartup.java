@@ -13,22 +13,20 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerInfoHook;
 
 public class SchedulerNotificationStartup {
 
-	@Inject
-	public SchedulerNotificationStartup(
-		final HookHandlerService hookHandler,
-		final ConfigService configService,
-		final Provider<SchedulerNotificationHooker> notificationHooker
-		) {
+   @Inject
+   public SchedulerNotificationStartup(final HookHandlerService hookHandler, final ConfigService configService,
+         final Provider<SchedulerNotificationHooker> notificationHooker) {
 
-		hookHandler.attachHooker(LateInitHook.class, new LateInitHook() {
-			
-			@Override
-			public void initialize() {
-				if(configService.getConfigFailsafe(SchedulerModule.CONFIG_FILE).getBoolean(SchedulerNotificationModule.NOTIFICATION_ENABLE_PROPERTY,true)){
-					hookHandler.attachHooker(SchedulerExecutionHook.class, notificationHooker);
-					hookHandler.attachHooker(SchedulerInfoHook.class, notificationHooker);
-				}
-			}
-		});
-	}
+      hookHandler.attachHooker(LateInitHook.class, new LateInitHook() {
+
+         @Override
+         public void initialize() {
+            if (configService.getConfigFailsafe(SchedulerModule.CONFIG_FILE)
+                  .getBoolean(SchedulerNotificationModule.NOTIFICATION_ENABLE_PROPERTY, true)) {
+               hookHandler.attachHooker(SchedulerExecutionHook.class, notificationHooker);
+               hookHandler.attachHooker(SchedulerInfoHook.class, notificationHooker);
+            }
+         }
+      });
+   }
 }

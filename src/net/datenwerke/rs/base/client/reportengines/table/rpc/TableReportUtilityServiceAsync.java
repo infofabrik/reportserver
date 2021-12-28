@@ -21,28 +21,23 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface TableReportUtilityServiceAsync {
 
-	Request getReturnedColumns(TableReportDto tableReport, String executeToken, 
-			AsyncCallback<ListLoadResult<ColumnDto>> callback);
+   Request getReturnedColumns(TableReportDto tableReport, String executeToken,
+         AsyncCallback<ListLoadResult<ColumnDto>> callback);
 
-	Request getSpecialParameter(TableReportDto tableReport, String executeToken, AsyncCallback<Map<String, List<String>>> callback);
+   Request getSpecialParameter(TableReportDto tableReport, String executeToken,
+         AsyncCallback<Map<String, List<String>>> callback);
 
-	Request getReportInformation(TableReportDto tableReport, String executeToken,
-			AsyncCallback<TableReportInformation> callback);
+   Request getReportInformation(TableReportDto tableReport, String executeToken,
+         AsyncCallback<TableReportInformation> callback);
 
-	Request getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,
-			TableReportDto report, ColumnDto column, FilterType type,
-			boolean useFilters, boolean countResults, 
-			String executeToken, 
-			AsyncCallback<PagingLoadResult<StringBaseModel>> callback);
+   Request getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig, TableReportDto report, ColumnDto column,
+         FilterType type, boolean useFilters, boolean countResults, String executeToken,
+         AsyncCallback<PagingLoadResult<StringBaseModel>> callback);
 
-	void loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query, String executeToken, 
-			AsyncCallback<List<ColumnDto>> transformAndKeepCallback);
+   void loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query, String executeToken,
+         AsyncCallback<List<ColumnDto>> transformAndKeepCallback);
 
-	void loadData(
-			ReportDto report,
-			DatasourceContainerDto containerDto,
-			PagingLoadConfig loadConfig,
-			String query,
-			AsyncCallback<PagingLoadResult<ListStringBaseModel>> transformAndKeepCallback);
+   void loadData(ReportDto report, DatasourceContainerDto containerDto, PagingLoadConfig loadConfig, String query,
+         AsyncCallback<PagingLoadResult<ListStringBaseModel>> transformAndKeepCallback);
 
 }

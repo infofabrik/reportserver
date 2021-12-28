@@ -50,16 +50,11 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    private final Map<Long, Long> lastRequests = new HashMap<Long, Long>();
 
    @Inject
-   public AuthenticatorServiceImpl(
-         Provider<Set<ReportServerPAM>> pams,
-         Provider<RequestUserCache> requestUserCacheProvider, 
-         Provider<UserManagerService> userManagerServiceProvider,
-         HookHandlerService hookHandlerService, 
-         Provider<CurrentUser> currentUserProvider,
-         Provider<HttpServletRequest> servletRequestProvider, 
-         EventBus eventBus,
-         Provider<ReportServerService> reportServerServiceProvider
-         ) {
+   public AuthenticatorServiceImpl(Provider<Set<ReportServerPAM>> pams,
+         Provider<RequestUserCache> requestUserCacheProvider, Provider<UserManagerService> userManagerServiceProvider,
+         HookHandlerService hookHandlerService, Provider<CurrentUser> currentUserProvider,
+         Provider<HttpServletRequest> servletRequestProvider, EventBus eventBus,
+         Provider<ReportServerService> reportServerServiceProvider) {
       /* store objects */
       this.pams = pams;
       this.requestUserCacheProvider = requestUserCacheProvider;
@@ -73,22 +68,17 @@ public class AuthenticatorServiceImpl implements AuthenticatorService {
    }
 
    public Set<String> getRequiredClientModules() {
-      return pams.get()
-         .stream()
-         .map(ReportServerPAM::getClientModuleName)
-         .filter(modName -> null != modName)
-         .collect(toSet());
+      return pams.get().stream().map(ReportServerPAM::getClientModuleName).filter(modName -> null != modName)
+            .collect(toSet());
    }
 
    public AuthenticationResult authenticate(final AuthToken[] tokens) {
-      hookHandlerService.getHookers(PreAuthenticateHook.class)
-         .forEach(hook -> hook.authenticating(tokens));
+      hookHandlerService.getHookers(PreAuthenticateHook.class).forEach(hook -> hook.authenticating(tokens));
 
       AuthenticationResult authRes = evaluateTokens(tokens);
 
       // call this after for collecting updated session data
-      hookHandlerService.getHookers(PostAuthenticateHook.class)
-         .forEach(hook -> hook.authenticated(authRes));
+      hookHandlerService.getHookers(PostAuthenticateHook.class).forEach(hook -> hook.authenticated(authRes));
 
       if (authRes.isAllowed() && null != authRes.getUser()) {
 

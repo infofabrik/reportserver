@@ -32,87 +32,85 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
  *
  */
 @Entity
-@Table(name="JASPER_REPORT_JRXML")
+@Table(name = "JASPER_REPORT_JRXML")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.jasper.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto")
 public class JasperReportJRXMLFile implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4955608283709254297L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4955608283709254297L;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   private String name;
 
-	@Basic(fetch=FetchType.LAZY)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String content;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @Basic(fetch = FetchType.LAZY)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String content;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @Version
+   private Long version;
 
-	public static JasperReportJRXMLFile fromInputFile(File file) throws IOException{
-		String content = FileUtils.readFileToString(file);
-		JasperReportJRXMLFile jrxml = new JasperReportJRXMLFile();
-		jrxml.setContent(content);
-		
-		return jrxml;
-	}
-	
-	public static JasperReportJRXMLFile fromInputStream(InputStream is) throws IOException{
-		InputStreamReader isr = new InputStreamReader(is);
-	    BufferedReader br = new BufferedReader(isr);
-	    String line;
-	    String content = ""; //$NON-NLS-1$
-	    while ((line = br.readLine()) != null)
-	    	content += line + "\n"; //$NON-NLS-1$
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	    JasperReportJRXMLFile jrxml = new JasperReportJRXMLFile();
-		jrxml.setContent(content);
-		
-		return jrxml;
-	}
-	
-	
-	public String getName() {
-		return name;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public String getContent() {
-		return content;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setContent(String content) {
-		this.content = content;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public static JasperReportJRXMLFile fromInputFile(File file) throws IOException {
+      String content = FileUtils.readFileToString(file);
+      JasperReportJRXMLFile jrxml = new JasperReportJRXMLFile();
+      jrxml.setContent(content);
+
+      return jrxml;
+   }
+
+   public static JasperReportJRXMLFile fromInputStream(InputStream is) throws IOException {
+      InputStreamReader isr = new InputStreamReader(is);
+      BufferedReader br = new BufferedReader(isr);
+      String line;
+      String content = ""; //$NON-NLS-1$
+      while ((line = br.readLine()) != null)
+         content += line + "\n"; //$NON-NLS-1$
+
+      JasperReportJRXMLFile jrxml = new JasperReportJRXMLFile();
+      jrxml.setContent(content);
+
+      return jrxml;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getContent() {
+      return content;
+   }
+
+   public void setContent(String content) {
+      this.content = content;
+   }
 
 }

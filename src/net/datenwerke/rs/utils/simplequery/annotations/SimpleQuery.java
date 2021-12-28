@@ -7,24 +7,25 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 @Documented
-@Retention(RetentionPolicy.RUNTIME) 
-@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
+@Target({ ElementType.METHOD })
 public @interface SimpleQuery {
 
-	Class<?> from() default Void.class;
-	
-	Predicate[] where() default {};
-	
-	OrderBy[] orderBy() default {};
-	
-	String select() default "";
-	
-	boolean distinct() default false;
-	
-	int limit() default -1;
-	int offset() default -1;
-	
-	Join[] join() default {};
+   Class<?> from() default Void.class;
 
-	boolean throwNoResultException() default false;
+   Predicate[] where() default {};
+
+   OrderBy[] orderBy() default {};
+
+   String select() default "";
+
+   boolean distinct() default false;
+
+   int limit() default -1;
+
+   int offset() default -1;
+
+   Join[] join() default {};
+
+   boolean throwNoResultException() default false;
 }

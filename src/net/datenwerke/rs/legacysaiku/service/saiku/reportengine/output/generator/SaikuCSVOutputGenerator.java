@@ -20,41 +20,38 @@ import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.object.Co
 
 public class SaikuCSVOutputGenerator extends SaikuOutputGeneratorImpl {
 
-	@Inject
-	public SaikuCSVOutputGenerator(HookHandlerService hookHandler) {
-		super(hookHandler);
-		// TODO Auto-generated constructor stub
-	}
+   @Inject
+   public SaikuCSVOutputGenerator(HookHandlerService hookHandler) {
+      super(hookHandler);
+      // TODO Auto-generated constructor stub
+   }
 
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_CSV };
+   }
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_CSV};
-	}
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledCSVSaikuReport();
+   }
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledCSVSaikuReport();
-	}
+   @Override
+   public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset,
+         List<SaikuDimensionSelection> filters, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException {
 
+      RECCsv config = getConfig(RECCsv.class, configs);
+      String delimiter = ";";
+      String quotationMark = "\"";
+      if (null != config) {
+         delimiter = null == config.getSeparator() ? "" : config.getSeparator();
+         quotationMark = null == config.getQuote() ? "" : config.getQuote();
+      }
 
-	@Override
-	public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet,
-			CellSet cellset, List<SaikuDimensionSelection> filters,
-			String outputFormat, ReportExecutionConfig... configs)
-			throws ReportExecutorException {
+      byte[] csv = CsvExporter.exportCsv(cellset, delimiter, quotationMark, getCellSetFormatter());
 
-		RECCsv config = getConfig(RECCsv.class, configs);
-		String delimiter = ";";
-		String quotationMark = "\"";
-		if(null != config){
-			delimiter = null == config.getSeparator() ? "" : config.getSeparator();
-			quotationMark = null == config.getQuote() ? "" : config.getQuote();
-		}
-		
-		byte[] csv = CsvExporter.exportCsv(cellset, delimiter, quotationMark, getCellSetFormatter());
-
-		return new CompiledCSVSaikuReport(new String(csv));
-	}
+      return new CompiledCSVSaikuReport(new String(csv));
+   }
 
 }

@@ -42,200 +42,196 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class TeamSpaceFileSelectorSource extends FileSelectorSourceImpl {
 
-	public static final String TEAMSPACE_FILE_TYPE = "teamspace_disk_type";
-	
-	private boolean enableNameEditing = true;
-	private boolean enableDownload = true;
-	private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
+   public static final String TEAMSPACE_FILE_TYPE = "teamspace_disk_type";
 
-	private HandlerRegistration addAttachHandler;
-	
-	@Override
-	public void configureToolbar(FileSelectionWidget fileSelectionWidget,
-			ToolBar toolbar) {
-		DwTextButton btn = new DwTextButton(TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText(), BaseIcon.NEWSPAPER_O);
-		toolbar.add(btn);
-		btn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				displayTeamSpaceFileSelection();
-			}
-		});
-	}
+   private boolean enableNameEditing = true;
+   private boolean enableDownload = true;
+   private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
 
-	@Override
-	public void configureGrid(FileSelectionWidget fileSelectionWidget,
-			Grid<SelectedFileWrapper> grid) {
-		// TODO Auto-generated method stub
+   private HandlerRegistration addAttachHandler;
 
-	}
+   @Override
+   public void configureToolbar(FileSelectionWidget fileSelectionWidget, ToolBar toolbar) {
+      DwTextButton btn = new DwTextButton(TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText(), BaseIcon.NEWSPAPER_O);
+      toolbar.add(btn);
+      btn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            displayTeamSpaceFileSelection();
+         }
+      });
+   }
 
-	@Override
-	public boolean consumes(SelectedFileWrapper value) {
-		return null != value && value.getOriginalDto() instanceof AbstractTsDiskNodeDto;
-	}
+   @Override
+   public void configureGrid(FileSelectionWidget fileSelectionWidget, Grid<SelectedFileWrapper> grid) {
+      // TODO Auto-generated method stub
 
-	@Override
-	public ImageResource getIconFor(SelectedFileWrapper value) {
-		return BaseIcon.FILE.toImageResource();
-	}
+   }
 
-	@Override
-	public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
-		return false;
-	}
+   @Override
+   public boolean consumes(SelectedFileWrapper value) {
+      return null != value && value.getOriginalDto() instanceof AbstractTsDiskNodeDto;
+   }
 
-	@Override
-	public boolean isDownloadEnabled(SelectedFileWrapper item) {
-		return false;
-	}
+   @Override
+   public ImageResource getIconFor(SelectedFileWrapper value) {
+      return BaseIcon.FILE.toImageResource();
+   }
 
-	@Override
-	public DownloadProperties getDownloadPropertiesFor(
-			SelectedFileWrapper selectedItem) {
-		return null;
-	}
+   @Override
+   public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
+      return false;
+   }
 
-	@Override
-	public String getTypeDescription(SelectedFileWrapper value) {
-		if(null != value.getOriginalDto()){
-			if(value.getOriginalDto() instanceof TsDiskFolderDto)
-				return TsFavoriteMessages.INSTANCE.folderDescription();
-			if(value.getOriginalDto() instanceof TsDiskReportReferenceDto)
-				return TsFavoriteMessages.INSTANCE.reportDescription();
-			if(value.getOriginalDto() instanceof TsDiskGeneralReferenceDto)
-				return TsFavoriteMessages.INSTANCE.referenceDescription();
-		}
-		return "";
-	}
+   @Override
+   public boolean isDownloadEnabled(SelectedFileWrapper item) {
+      return false;
+   }
 
-	public boolean isEnableNameEditing() {
-		return enableNameEditing;
-	}
+   @Override
+   public DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem) {
+      return null;
+   }
 
-	public void setEnableNameEditing(boolean enableNameEditing) {
-		this.enableNameEditing = enableNameEditing;
-	}
+   @Override
+   public String getTypeDescription(SelectedFileWrapper value) {
+      if (null != value.getOriginalDto()) {
+         if (value.getOriginalDto() instanceof TsDiskFolderDto)
+            return TsFavoriteMessages.INSTANCE.folderDescription();
+         if (value.getOriginalDto() instanceof TsDiskReportReferenceDto)
+            return TsFavoriteMessages.INSTANCE.reportDescription();
+         if (value.getOriginalDto() instanceof TsDiskGeneralReferenceDto)
+            return TsFavoriteMessages.INSTANCE.referenceDescription();
+      }
+      return "";
+   }
 
-	public boolean isEnableDownload() {
-		return enableDownload;
-	}
+   public boolean isEnableNameEditing() {
+      return enableNameEditing;
+   }
 
-	public void setEnableDownload(boolean enableDownload) {
-		this.enableDownload = enableDownload;
-	}
+   public void setEnableNameEditing(boolean enableNameEditing) {
+      this.enableNameEditing = enableNameEditing;
+   }
 
-	protected void displayTeamSpaceFileSelection() {
-		if(fileSelectionWidget.getRemainingFileSpace() < 1){
-			fileSelectionWidget.displayMaxFilesReachedMessage();
-			return;
-		}
-		
-		final DwWindow selectionDialog = new DwWindow();
-		selectionDialog.setHeading(TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText());
-		selectionDialog.setWidth(400);
-		selectionDialog.setHeight(200);
-		selectionDialog.setModal(true);
-		selectionDialog.getButtonBar().clear();
+   public boolean isEnableDownload() {
+      return enableDownload;
+   }
 
-		final SimpleForm form = SimpleForm.getInlineInstance();
-		
-		final String teamSpaceKey = form.addField(TeamSpaceDto.class, TsFavoriteMessages.INSTANCE.selectTeamspaceLabel());
-		
-		final String fileKey = form.addField(AbstractTsDiskNodeDto.class, TsFavoriteMessages.INSTANCE.selectFileFromTeamSpace(), new SFFCTsTeamSpaceSelector(){
-			@Override
-			public TeamSpaceDto getTeamSpace() {
-				return (TeamSpaceDto) form.getValue(teamSpaceKey);
-			}
-		}, new SFFCTreeNodeSelectionFilter(){
-			@Override
-			public SelectionFilter getFilter() {
-				return selectionFilter;
-			}
-		});
-		
-		form.loadFields();
-		
-		VerticalLayoutContainer container = new VerticalLayoutContainer();
-		selectionDialog.add(container, new MarginData(15));
-		container.add(form, new VerticalLayoutData(1,-1));
-		selectionDialog.add(container);
-		
-		
-		addAttachHandler = form.addAttachHandler(new Handler() {
-			
-			@Override
-			public void onAttachOrDetach(AttachEvent event) {
-				addAttachHandler.removeHandler();
-				
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					
-					@Override
-					public void execute() {
-						Widget field = form.getField(teamSpaceKey);
-						if(field instanceof SingleSelectionField){
-							((SingleSelectionField)field).displaySelectionPopup();
-							((SingleSelectionField) field).addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
-								@Override
-								public void onValueChange(
-										ValueChangeEvent<AbstractNodeDto> event) {
-									form.setValue(fileKey, null);
-									Widget f = form.getField(fileKey);
-									if(f instanceof SingleTreeSelectionField){
-										((SingleTreeSelectionField)f).fireEvent(new TriggerClickEvent());
-									}
-								}
-							});
-						}
-					}
-				});
-			}
-		});
-		
-		/* Cancel */
-		DwTextButton cnlButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
-		cnlButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				selectionDialog.hide();
-			}
-		});
-		selectionDialog.addButton(cnlButton);
-		
-		/* ok Button */
-		DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.submit());
-		okButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				AbstractTsDiskNodeDto file = (AbstractTsDiskNodeDto) form.getValue(fileKey);
-				if(null != file){
-					add(file);
-					
-					selectionDialog.hide();
-				} 
-			}
-		});
-		selectionDialog.addButton(okButton);
-		
-		selectionDialog.show();
-	}
+   public void setEnableDownload(boolean enableDownload) {
+      this.enableDownload = enableDownload;
+   }
 
-	protected void add(AbstractTsDiskNodeDto file) {
-		SelectedFileWrapper sfw = new SelectedFileWrapper();
-		sfw.setId(String.valueOf(file.getId()));
-		sfw.setName(file.toDisplayTitle());
-		sfw.setType(TEAMSPACE_FILE_TYPE);
-		sfw.setOriginalDto(file);
-		
-		fileSelectionWidget.add(sfw);
-	}
-	
-	public SelectionFilter getSelectionFilter() {
-		return selectionFilter;
-	}
-	
-	public void setSelectionFilter(SelectionFilter selectionFilter) {
-		this.selectionFilter = selectionFilter;
-	}
-	
+   protected void displayTeamSpaceFileSelection() {
+      if (fileSelectionWidget.getRemainingFileSpace() < 1) {
+         fileSelectionWidget.displayMaxFilesReachedMessage();
+         return;
+      }
+
+      final DwWindow selectionDialog = new DwWindow();
+      selectionDialog.setHeading(TsFavoriteMessages.INSTANCE.selectFromTeamSpaceText());
+      selectionDialog.setWidth(400);
+      selectionDialog.setHeight(200);
+      selectionDialog.setModal(true);
+      selectionDialog.getButtonBar().clear();
+
+      final SimpleForm form = SimpleForm.getInlineInstance();
+
+      final String teamSpaceKey = form.addField(TeamSpaceDto.class, TsFavoriteMessages.INSTANCE.selectTeamspaceLabel());
+
+      final String fileKey = form.addField(AbstractTsDiskNodeDto.class,
+            TsFavoriteMessages.INSTANCE.selectFileFromTeamSpace(), new SFFCTsTeamSpaceSelector() {
+               @Override
+               public TeamSpaceDto getTeamSpace() {
+                  return (TeamSpaceDto) form.getValue(teamSpaceKey);
+               }
+            }, new SFFCTreeNodeSelectionFilter() {
+               @Override
+               public SelectionFilter getFilter() {
+                  return selectionFilter;
+               }
+            });
+
+      form.loadFields();
+
+      VerticalLayoutContainer container = new VerticalLayoutContainer();
+      selectionDialog.add(container, new MarginData(15));
+      container.add(form, new VerticalLayoutData(1, -1));
+      selectionDialog.add(container);
+
+      addAttachHandler = form.addAttachHandler(new Handler() {
+
+         @Override
+         public void onAttachOrDetach(AttachEvent event) {
+            addAttachHandler.removeHandler();
+
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+
+               @Override
+               public void execute() {
+                  Widget field = form.getField(teamSpaceKey);
+                  if (field instanceof SingleSelectionField) {
+                     ((SingleSelectionField) field).displaySelectionPopup();
+                     ((SingleSelectionField) field).addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
+                        @Override
+                        public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
+                           form.setValue(fileKey, null);
+                           Widget f = form.getField(fileKey);
+                           if (f instanceof SingleTreeSelectionField) {
+                              ((SingleTreeSelectionField) f).fireEvent(new TriggerClickEvent());
+                           }
+                        }
+                     });
+                  }
+               }
+            });
+         }
+      });
+
+      /* Cancel */
+      DwTextButton cnlButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      cnlButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            selectionDialog.hide();
+         }
+      });
+      selectionDialog.addButton(cnlButton);
+
+      /* ok Button */
+      DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.submit());
+      okButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            AbstractTsDiskNodeDto file = (AbstractTsDiskNodeDto) form.getValue(fileKey);
+            if (null != file) {
+               add(file);
+
+               selectionDialog.hide();
+            }
+         }
+      });
+      selectionDialog.addButton(okButton);
+
+      selectionDialog.show();
+   }
+
+   protected void add(AbstractTsDiskNodeDto file) {
+      SelectedFileWrapper sfw = new SelectedFileWrapper();
+      sfw.setId(String.valueOf(file.getId()));
+      sfw.setName(file.toDisplayTitle());
+      sfw.setType(TEAMSPACE_FILE_TYPE);
+      sfw.setOriginalDto(file);
+
+      fileSelectionWidget.add(sfw);
+   }
+
+   public SelectionFilter getSelectionFilter() {
+      return selectionFilter;
+   }
+
+   public void setSelectionFilter(SelectionFilter selectionFilter) {
+      this.selectionFilter = selectionFilter;
+   }
+
 }

@@ -109,7 +109,7 @@ public class GoogleDriveExportSnippetProvider implements ScheduleExportSnippetPr
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

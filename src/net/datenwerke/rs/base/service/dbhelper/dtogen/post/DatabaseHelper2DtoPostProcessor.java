@@ -6,23 +6,23 @@ import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 
 public class DatabaseHelper2DtoPostProcessor implements Poso2DtoPostProcessor<DatabaseHelper, DatabaseHelperDto> {
 
-	@Override
-	public void dtoCreated(DatabaseHelper poso, DatabaseHelperDto dto) {
-		checkJdbcDriver(poso,dto);
-	}
+   @Override
+   public void dtoCreated(DatabaseHelper poso, DatabaseHelperDto dto) {
+      checkJdbcDriver(poso, dto);
+   }
 
-	@Override
-	public void dtoInstantiated(DatabaseHelper poso, DatabaseHelperDto dto) {
-		checkJdbcDriver(poso,dto);
-	}
+   @Override
+   public void dtoInstantiated(DatabaseHelper poso, DatabaseHelperDto dto) {
+      checkJdbcDriver(poso, dto);
+   }
 
-	protected void checkJdbcDriver(DatabaseHelper poso, DatabaseHelperDto dto) {
-		try{
-			Class.forName(poso.getDriver());
-			dto.setJdbcDriverAvailable(true);
-		} catch(Throwable e){
-			dto.setJdbcDriverAvailable(false);
-		}
-	}
+   protected void checkJdbcDriver(DatabaseHelper poso, DatabaseHelperDto dto) {
+      try {
+         Class.forName(poso.getDriver());
+         dto.setJdbcDriverAvailable(true);
+      } catch (Throwable e) {
+         dto.setJdbcDriverAvailable(false);
+      }
+   }
 
 }

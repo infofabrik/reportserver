@@ -16,27 +16,28 @@ import net.datenwerke.rs.uservariables.service.uservariables.annotations.UserVar
 import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariableDefinition;
 import net.datenwerke.rs.uservariables.service.uservariables.hooks.UserVariableProviderHook;
 
-public class UserVariableStumpModule extends AbstractModule{
+public class UserVariableStumpModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(UserVariableService.class).to(UserVariableServiceImpl.class).in(Scopes.SINGLETON);
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(UserVariableService.class).to(UserVariableServiceImpl.class).in(Scopes.SINGLETON);
 
-		requestStaticInjection(			// should not be here
-				UserVariableParameterInstance.class
-				);
+      requestStaticInjection( // should not be here
+            UserVariableParameterInstance.class);
 
-	}
+   }
 
-	@Provides @UserVariableTypes @Inject
-	public Set<UserVariableDefinition> provideUserVariableTypes(HookHandlerService hookHandler){
-		Set<UserVariableDefinition> definitions = new HashSet<UserVariableDefinition>();
+   @Provides
+   @UserVariableTypes
+   @Inject
+   public Set<UserVariableDefinition> provideUserVariableTypes(HookHandlerService hookHandler) {
+      Set<UserVariableDefinition> definitions = new HashSet<UserVariableDefinition>();
 
-		for(UserVariableProviderHook hooker : hookHandler.getHookers(UserVariableProviderHook.class))
-			definitions.addAll(hooker.getVariables());
+      for (UserVariableProviderHook hooker : hookHandler.getHookers(UserVariableProviderHook.class))
+         definitions.addAll(hooker.getVariables());
 
-				return definitions;
-	}
+      return definitions;
+   }
 
 }

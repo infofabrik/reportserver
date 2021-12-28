@@ -35,91 +35,87 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  *
  */
 public class TsReportReferenceProvider extends TreeNodeDtoProvider {
-	
-	private final TsDiskTreeLoaderDao treeLoaderDao;
-	private final TreeDBUIService treeDBUIService;
-	private final UiTreeFactory uiTreeFactory;
-	private final TsDiskUIService tsDiskUIService;
-	
-	@Inject
-	public TsReportReferenceProvider(
-		ClipboardUiService clipboardService,
-		TsDiskTreeLoaderDao treeLoaderDao, 
-		TreeDBUIService treeDBUIService,
-		UiTreeFactory uiTreeFactory,
-		TsDiskUIService tsDiskUIService) {
-		super(clipboardService);
-		
-		this.treeLoaderDao = treeLoaderDao;
-		this.treeDBUIService = treeDBUIService;
-		this.uiTreeFactory = uiTreeFactory;
-		this.tsDiskUIService = tsDiskUIService;
-	}
 
-	@Override
-	public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
-		if(configs.length == 0 || !( configs[0] instanceof SFFCTsTeamSpaceSelector))
-			return false;
-		
-		while(type != null){
-			if(type.equals(TsDiskReportReferenceDto.class))
-				return true;
-			type = type.getSuperclass();
-		}
-		return false;
-	}
+   private final TsDiskTreeLoaderDao treeLoaderDao;
+   private final TreeDBUIService treeDBUIService;
+   private final UiTreeFactory uiTreeFactory;
+   private final TsDiskUIService tsDiskUIService;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Widget createFormField() {
-		final SFFCTsTeamSpaceSelector config = (SFFCTsTeamSpaceSelector) configs[0];
-		
-		final SingleTreeSelectionField ssf = new SingleTreeSelectionField(TsDiskReportReferenceDto.class);
-		ssf.setIgnoreTriggerClick(true);
-		ssf.addTriggerClickHandler(new TriggerClickHandler() {
-			
-			private TeamSpaceDto theTeamSpace;
-			
-			@Override
-			public void onTriggerClick(TriggerClickEvent event) {
-				TeamSpaceDto teamSpace = config.getTeamSpace();
-				if(null == ssf.getTreePanel() || null == theTeamSpace || ! theTeamSpace.equals(teamSpace)){
-					theTeamSpace = teamSpace;
-					if(null == theTeamSpace){
-						new DwAlertMessageBox (TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedTitle(), TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedMsg()).show();
-					} else {
-						treeLoaderDao.setState(theTeamSpace);
+   @Inject
+   public TsReportReferenceProvider(ClipboardUiService clipboardService, TsDiskTreeLoaderDao treeLoaderDao,
+         TreeDBUIService treeDBUIService, UiTreeFactory uiTreeFactory, TsDiskUIService tsDiskUIService) {
+      super(clipboardService);
 
-						Set<Dto2PosoMapper> filters = new HashSet<Dto2PosoMapper>();
-						filters.add(new TsDiskRootDto2PosoMap());
-						filters.add(new TsDiskFolderDto2PosoMap());
-						EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class, treeLoaderDao, false, filters);
+      this.treeLoaderDao = treeLoaderDao;
+      this.treeDBUIService = treeDBUIService;
+      this.uiTreeFactory = uiTreeFactory;
+      this.tsDiskUIService = tsDiskUIService;
+   }
 
-						ssf.setTreePanel(uiTreeFactory.create(treeStore));
-						ssf.getTreePanel().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      if (configs.length == 0 || !(configs[0] instanceof SFFCTsTeamSpaceSelector))
+         return false;
 
-						ssf.getTreePanel().setIconProvider(tsDiskUIService.getIconProvider());
-						
-						ssf.triggerClicked();
-					}
-				} else if(theTeamSpace.equals(teamSpace))
-					ssf.triggerClicked();
-					
-			}
-		});
-		
-		ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
-				ValueChangeEvent.fire(TsReportReferenceProvider.this, event.getValue());
-			}
-		});
-		
-		ssf.setName(name);
-		
-		return ssf;
-	}
+      while (type != null) {
+         if (type.equals(TsDiskReportReferenceDto.class))
+            return true;
+         type = type.getSuperclass();
+      }
+      return false;
+   }
 
-	
-	
+   @SuppressWarnings("unchecked")
+   @Override
+   public Widget createFormField() {
+      final SFFCTsTeamSpaceSelector config = (SFFCTsTeamSpaceSelector) configs[0];
+
+      final SingleTreeSelectionField ssf = new SingleTreeSelectionField(TsDiskReportReferenceDto.class);
+      ssf.setIgnoreTriggerClick(true);
+      ssf.addTriggerClickHandler(new TriggerClickHandler() {
+
+         private TeamSpaceDto theTeamSpace;
+
+         @Override
+         public void onTriggerClick(TriggerClickEvent event) {
+            TeamSpaceDto teamSpace = config.getTeamSpace();
+            if (null == ssf.getTreePanel() || null == theTeamSpace || !theTeamSpace.equals(teamSpace)) {
+               theTeamSpace = teamSpace;
+               if (null == theTeamSpace) {
+                  new DwAlertMessageBox(TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedTitle(),
+                        TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedMsg()).show();
+               } else {
+                  treeLoaderDao.setState(theTeamSpace);
+
+                  Set<Dto2PosoMapper> filters = new HashSet<Dto2PosoMapper>();
+                  filters.add(new TsDiskRootDto2PosoMap());
+                  filters.add(new TsDiskFolderDto2PosoMap());
+                  EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class,
+                        treeLoaderDao, false, filters);
+
+                  ssf.setTreePanel(uiTreeFactory.create(treeStore));
+                  ssf.getTreePanel().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+                  ssf.getTreePanel().setIconProvider(tsDiskUIService.getIconProvider());
+
+                  ssf.triggerClicked();
+               }
+            } else if (theTeamSpace.equals(teamSpace))
+               ssf.triggerClicked();
+
+         }
+      });
+
+      ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
+            ValueChangeEvent.fire(TsReportReferenceProvider.this, event.getValue());
+         }
+      });
+
+      ssf.setName(name);
+
+      return ssf;
+   }
+
 }

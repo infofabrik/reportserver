@@ -46,10 +46,7 @@ public class JxlsOutputGeneratorImpl implements JxlsOutputGenerator {
    private final DwAsyncService asyncService;
 
    @Inject
-   public JxlsOutputGeneratorImpl(
-         HookHandlerService hookHandler, 
-         DwAsyncService asyncService
-         ) {
+   public JxlsOutputGeneratorImpl(HookHandlerService hookHandler, DwAsyncService asyncService) {
       this.hookHandler = hookHandler;
       this.asyncService = asyncService;
    }

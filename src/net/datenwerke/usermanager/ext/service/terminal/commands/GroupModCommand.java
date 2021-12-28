@@ -18,41 +18,32 @@ import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 
 public class GroupModCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "groupmod";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public GroupModCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "groupmod";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = UserManagerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandGroupmod_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<GroupModSubCommandHook> list =  hookHandler.getHookers(GroupModSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public GroupModCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = UserManagerMessages.class, name = BASE_COMMAND, description = "commandGroupmod_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<GroupModSubCommandHook> list = hookHandler.getHookers(GroupModSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

@@ -8,11 +8,11 @@ import javax.mail.MessagingException;
 
 public interface LogFilesService {
 
-	String getLogDirectory();
+   String getLogDirectory();
 
-	List<String> readLastLines(String filename) throws IOException;
-	
-	void emailLogFiles(List<Path> files, String filter) throws MessagingException, IOException;
-	
-	void checkLogFiles(List<Path> files) throws IOException;
+   List<String> readLastLines(String filename) throws IOException;
+
+   void emailLogFiles(List<Path> files, String filter) throws MessagingException, IOException;
+
+   void checkLogFiles(List<Path> files) throws IOException;
 }

@@ -6,47 +6,44 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public class ShowFieldsAction implements SimpleFormAction {
 
-	
-	private final String[] toHide;
-	private final String[] toShow;
+   private final String[] toHide;
+   private final String[] toShow;
 
-	public ShowFieldsAction(String[] toHide, String[] toShow){
-		this.toHide = toHide;
-		this.toShow = toShow;
-	}
+   public ShowFieldsAction(String[] toHide, String[] toShow) {
+      this.toHide = toHide;
+      this.toShow = toShow;
+   }
 
+   public void onSuccess(SimpleForm form) {
+      hideFields(form, toHide);
+      showFields(form, toShow);
+   }
 
-	public void onSuccess(SimpleForm form) {
-		hideFields(form, toHide);
-		showFields(form, toShow);
-	}
-	
-	public void onFailure(SimpleForm form) {
-	}
+   public void onFailure(SimpleForm form) {
+   }
 
-	protected void hideFields(SimpleForm form, String... allFields) {
-		for(String key : allFields){
-			Widget field = form.getDisplayedField(key);
-			if(null == field)
-				continue;
-			
-			field.setVisible(false);
-		}
-		
-		form.updateFormLayout();
-	}
-	
-	protected void showFields(SimpleForm form, String... allFields) {
-		for(String key : allFields){
-			Widget field = form.getDisplayedField(key);
-			if(null == field)
-				continue;
+   protected void hideFields(SimpleForm form, String... allFields) {
+      for (String key : allFields) {
+         Widget field = form.getDisplayedField(key);
+         if (null == field)
+            continue;
 
-			field.setVisible(true);
-		}
-		
-		form.updateFormLayout();
-	}
-	
+         field.setVisible(false);
+      }
+
+      form.updateFormLayout();
+   }
+
+   protected void showFields(SimpleForm form, String... allFields) {
+      for (String key : allFields) {
+         Widget field = form.getDisplayedField(key);
+         if (null == field)
+            continue;
+
+         field.setVisible(true);
+      }
+
+      form.updateFormLayout();
+   }
 
 }

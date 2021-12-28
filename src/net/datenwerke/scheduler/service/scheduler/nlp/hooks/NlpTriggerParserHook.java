@@ -5,5 +5,5 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger;
 
 public interface NlpTriggerParserHook extends Hook {
 
-	AbstractTrigger parseExpression(String expression);
+   AbstractTrigger parseExpression(String expression);
 }

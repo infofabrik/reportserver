@@ -66,18 +66,10 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public SambaRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         SambaService sambaService,
-         ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public SambaRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, SambaService sambaService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -96,9 +88,9 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
-      if (! (datasinkDto instanceof SambaDatasinkDto))
+      if (!(datasinkDto instanceof SambaDatasinkDto))
          throw new IllegalArgumentException("Not a samba datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(datasinkDto);
@@ -126,39 +118,39 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), sambaDatasink, sambaService,
                      new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-               });
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), sambaDatasink, sambaService,
                   new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-            });
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to Samba server: " + e.getMessage(), e);
@@ -169,12 +161,10 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
          final List<ReportExecutionConfigDto> configs) throws ExpectedException {
       return Stream.concat(
-            configs
-               .stream()
-               .map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
+            configs.stream().map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
             Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
    }
-   
+
    @Override
    public Map<StorageType, Boolean> getSambaEnabledConfigs() throws ServerCallFailedException {
       return datasinkServiceProvider.get().getEnabledConfigs(sambaService);
@@ -183,10 +173,10 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    @Override
    public boolean testSambaDatasink(SambaDatasinkDto sambaDatasinkDto) throws ServerCallFailedException {
       SambaDatasink sambaDatasink = (SambaDatasink) dtoService.loadPoso(sambaDatasinkDto);
-      
+
       /* check rights */
       securityService.assertRights(sambaDatasink, Read.class, Execute.class);
-      
+
       try {
          datasinkServiceProvider.get().testDatasink(sambaDatasink, sambaService, new DatasinkFilenameFolderConfig() {
 
@@ -201,15 +191,15 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
             }
 
          });
-      } catch(Exception e){
-         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(),e);
+      } catch (Exception e) {
+         DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
          throw ex;
       }
-      
+
       return true;
    }
-   
+
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
@@ -223,15 +213,15 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sambaService, filename,
-             folder, compressed);
-      
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sambaService, filename, folder,
+            compressed);
+
    }
 }

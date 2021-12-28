@@ -21,101 +21,93 @@ import net.datenwerke.security.service.security.rights.Right;
  *
  */
 @Entity
-@Table(name="ACE_ACCESS_MAP")
+@Table(name = "ACE_ACCESS_MAP")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto",
-	proxyableDto=false,
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto", proxyableDto = false, createDecorator = true)
 public class AceAccessMap implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1905865857100779466L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1905865857100779466L;
 
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue
-	private Long id;
-    
-	@Version
-	private Integer version;
-	
-	@ExposeToClient
-	private Long access = 0L;
-	
-	@ExposeToClient
-	@Column(length=32)
-	private String securee;
-	
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue
+   private Long id;
 
-    public Long getId() {
-        return id;
-    }
+   @Version
+   private Integer version;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
-    public Integer getVersion() {
-        return version;
-    }
+   @ExposeToClient
+   private Long access = 0L;
 
-    @SuppressWarnings("unused")
-	private void setVersion(Integer version) {
-        this.version = version;
-    }
-	
-	public Long getAccess() {
-		return access;
-	}
+   @ExposeToClient
+   @Column(length = 32)
+   private String securee;
 
-	public void setAccess(long access) {
-		this.access = access;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	@Transient
-	public void addAccessRight(Right right){
-		this.access |= right.getBitField();
-	}
-	
-	@Transient
-	public void addAccessRight(long right){
-		this.access |= right;
-	}
-	
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	@Transient 
-	public void setUniversalAccess(){
-		for(int i = 0; i < 64; i++)
-			this.access |= 1<<i;
-	}
-	
-	@Transient 
-	public boolean hasAccessRight(long right){
-		return (this.access & right) == right;
-	}
-	
-	@Transient
-	public boolean hasAccessRight(Right right){
-		return hasAccessRight(right.getBitField());
-	}
+   public Integer getVersion() {
+      return version;
+   }
 
-	@Transient
-	public void clearAccess() {
-		setAccess(0);
-	}
-	
-	public String getSecuree() {
-		return securee;
-	}
+   @SuppressWarnings("unused")
+   private void setVersion(Integer version) {
+      this.version = version;
+   }
 
-	public void setSecuree(String securee) {
-		this.securee = securee;
-	}
+   public Long getAccess() {
+      return access;
+   }
 
-	
-	
-    
+   public void setAccess(long access) {
+      this.access = access;
+   }
+
+   @Transient
+   public void addAccessRight(Right right) {
+      this.access |= right.getBitField();
+   }
+
+   @Transient
+   public void addAccessRight(long right) {
+      this.access |= right;
+   }
+
+   @Transient
+   public void setUniversalAccess() {
+      for (int i = 0; i < 64; i++)
+         this.access |= 1 << i;
+   }
+
+   @Transient
+   public boolean hasAccessRight(long right) {
+      return (this.access & right) == right;
+   }
+
+   @Transient
+   public boolean hasAccessRight(Right right) {
+      return hasAccessRight(right.getBitField());
+   }
+
+   @Transient
+   public void clearAccess() {
+      setAccess(0);
+   }
+
+   public String getSecuree() {
+      return securee;
+   }
+
+   public void setSecuree(String securee) {
+      this.securee = securee;
+   }
+
 }

@@ -4,9 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ManagerHelperSearchUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(ManagerHelperSearchUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(ManagerHelperSearchUiStartup.class).asEagerSingleton();
+   }
 
 }

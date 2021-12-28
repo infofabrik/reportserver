@@ -26,21 +26,23 @@ public class FtpDao extends Dao implements HasDefaultDatasink {
       this.rpcService = rpcService;
    }
 
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
-            transformAndKeepCallback(callback));
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         AsyncCallback<Void> callback) {
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder,
+            compressed, transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto   file, DatasinkDefinitionDto datasinkDto, String name,
-         String folder, boolean compressed,AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder,compressed ,transformAndKeepCallback(callback));
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
       rpcService.getStorageEnabledConfigs(transformAndKeepCallback(callback));
    }
-   
+
    public void getAllStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
       rpcService.getAllStorageEnabledConfigs(transformAndKeepCallback(callback));
    }

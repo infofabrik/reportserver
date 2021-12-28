@@ -14,22 +14,22 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  */
 public class IncludeValuesFilterAspect extends AbstractSingleFilterAspect {
 
-	public IncludeValuesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
-		super(FilterMessages.INSTANCE.includeTitle(), report, column, FilterType.Include, executeToken); //$NON-NLS-1$
-	}
+   public IncludeValuesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
+      super(FilterMessages.INSTANCE.includeTitle(), report, column, FilterType.Include, executeToken); // $NON-NLS-1$
+   }
 
-	@Override
-	protected List<String> getValues(FilterDto filter) {
-		return filter.getIncludeValues();
-	}
-	
-	@Override
-	protected SelectionPanel<StringBaseModel> createSelectionPanel(ColumnDto column) {
-		return new SingleSelectionPanel(this, column);
-	}
+   @Override
+   protected List<String> getValues(FilterDto filter) {
+      return filter.getIncludeValues();
+   }
 
-	@Override
-	protected void setValues(FilterDto filter, List<String> newValues) {
-		filter.setIncludeValues(newValues);
-	}
+   @Override
+   protected SelectionPanel<StringBaseModel> createSelectionPanel(ColumnDto column) {
+      return new SingleSelectionPanel(this, column);
+   }
+
+   @Override
+   protected void setValues(FilterDto filter, List<String> newValues) {
+      filter.setIncludeValues(newValues);
+   }
 }

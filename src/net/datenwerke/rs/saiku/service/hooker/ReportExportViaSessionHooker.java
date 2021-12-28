@@ -18,49 +18,50 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 
 public class ReportExportViaSessionHooker implements ReportExportViaSessionHook {
 
-	private Provider<SaikuSessionContainer> saikuSessionContainer;
-	private ThinQueryService tqService;
+   private Provider<SaikuSessionContainer> saikuSessionContainer;
+   private ThinQueryService tqService;
 
-	@Inject
-	public ReportExportViaSessionHooker(Provider<SaikuSessionContainer> saikuSessionContainer,
-			ThinQueryService tqService) {
-		this.saikuSessionContainer = saikuSessionContainer;
-		this.tqService = tqService;
-	}
+   @Inject
+   public ReportExportViaSessionHooker(Provider<SaikuSessionContainer> saikuSessionContainer,
+         ThinQueryService tqService) {
+      this.saikuSessionContainer = saikuSessionContainer;
+      this.tqService = tqService;
+   }
 
-	@Override
-	public void adjustReport(Report adjustedReport, ReportExecutionConfig... configs) {
-		RECReportExecutorToken executorToken = getConfig(RECReportExecutorToken.class, configs);
-		if(null != executorToken && adjustedReport instanceof SaikuReportVariant){
-			SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
-			ThinQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
-			if(null != query){
-				String xml = tqService.toJSONString(query);
-				((SaikuReportVariant) adjustedReport).setQueryXml(xml);
-			}
-			if(null != origReport)
-				((SaikuReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
-		} else if(null != executorToken && adjustedReport instanceof TableReportVariant && ((TableReport)adjustedReport).isCubeFlag()){
-			SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
-			ThinQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
-			if(null != query){
-				String xml = tqService.toJSONString(query);
-				((TableReportVariant) adjustedReport).setCubeXml(xml);
-			}
-			if(null != origReport)
-				((TableReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
-		}
-	}
-	
-	private <C extends ReportExecutionConfig> C getConfig(Class<C> type, ReportExecutionConfig... configs){
-		if(null == configs || configs.length == 0)
-			return null;
-		
-		for(ReportExecutionConfig config : configs)
-			if(type.isAssignableFrom(config.getClass()))
-				return (C) config;
-			
-		return null;
-	}
+   @Override
+   public void adjustReport(Report adjustedReport, ReportExecutionConfig... configs) {
+      RECReportExecutorToken executorToken = getConfig(RECReportExecutorToken.class, configs);
+      if (null != executorToken && adjustedReport instanceof SaikuReportVariant) {
+         SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
+         ThinQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
+         if (null != query) {
+            String xml = tqService.toJSONString(query);
+            ((SaikuReportVariant) adjustedReport).setQueryXml(xml);
+         }
+         if (null != origReport)
+            ((SaikuReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
+      } else if (null != executorToken && adjustedReport instanceof TableReportVariant
+            && ((TableReport) adjustedReport).isCubeFlag()) {
+         SaikuReport origReport = saikuSessionContainer.get().getReport(executorToken.getToken());
+         ThinQuery query = saikuSessionContainer.get().getQueryForReport(origReport);
+         if (null != query) {
+            String xml = tqService.toJSONString(query);
+            ((TableReportVariant) adjustedReport).setCubeXml(xml);
+         }
+         if (null != origReport)
+            ((TableReportVariant) adjustedReport).setHideParents(origReport.isHideParents());
+      }
+   }
+
+   private <C extends ReportExecutionConfig> C getConfig(Class<C> type, ReportExecutionConfig... configs) {
+      if (null == configs || configs.length == 0)
+         return null;
+
+      for (ReportExecutionConfig config : configs)
+         if (type.isAssignableFrom(config.getClass()))
+            return (C) config;
+
+      return null;
+   }
 
 }

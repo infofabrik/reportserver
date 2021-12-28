@@ -15,61 +15,68 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface SchedulerService {
 
-	
-	public void start() throws SchedulerStartupException;
+   public void start() throws SchedulerStartupException;
 
-	public boolean isActive();
-	public boolean isShutdown();
-	public void shutdown();
-	public List<Runnable> shutdownNow();
-	boolean isTerminated();
-	
-	public void enable();
-	public void disable();
-	public boolean isEnabled();
+   public boolean isActive();
 
-	JobStore getJobStore();
+   public boolean isShutdown();
 
-	public void schedule(AbstractJob job, AbstractTrigger trigger);
-	public void unschedule(AbstractJob job);
-	public void remove(AbstractJob job);
+   public void shutdown();
 
-	public AbstractJob getJobById(Long object);
+   public List<Runnable> shutdownNow();
 
-	public void schedule(AbstractJob job, AbstractTrigger trigger, AbstractJob previous);
+   boolean isTerminated();
 
-	public void merge(AbstractJob job);
+   public void enable();
 
-	public SchedulerDaemon getDeamon();
-	
-	public List<AbstractJob> getJobsBy(JobFilterConfiguration filterConfig);
+   public void disable();
 
-	void forceRemove(AbstractJob job);
+   public boolean isEnabled();
 
-	boolean isWatchdogActive();
+   JobStore getJobStore();
 
-	void restart() throws SchedulerStartupException;
+   public void schedule(AbstractJob job, AbstractTrigger trigger);
 
-	void shutdownWatchdog();
+   public void unschedule(AbstractJob job);
 
-	public boolean isOrderdShutdown();
+   public void remove(AbstractJob job);
 
-	void clearErrorState(AbstractJob job);
+   public AbstractJob getJobById(Long object);
 
-	void restartWatchdog();
+   public void schedule(AbstractJob job, AbstractTrigger trigger, AbstractJob previous);
 
-	void startWatchdog();
+   public void merge(AbstractJob job);
 
-	List<ReportScheduleJobListInformation> getReportJobList(Report report);
-	
-	void assertJobExecutorChangeAllowed(User previousExecutor, User newExecutor) throws ViolatedSecurityException;
-	
-	void assertJobChangeAllowed(ReportExecuteJob job) throws ViolatedSecurityException;
+   public SchedulerDaemon getDeamon();
 
-	List<ReportScheduleJobListInformation> getOwnReportJobList(Report report);
+   public List<AbstractJob> getJobsBy(JobFilterConfiguration filterConfig);
 
-	List<ReportScheduleJobListInformation> getReportJobListFromCurrentUser(Report report);
+   void forceRemove(AbstractJob job);
 
-	List<ReportScheduleJobListInformation> getReportJobListToCurrentUser(Report report);
-	
+   boolean isWatchdogActive();
+
+   void restart() throws SchedulerStartupException;
+
+   void shutdownWatchdog();
+
+   public boolean isOrderdShutdown();
+
+   void clearErrorState(AbstractJob job);
+
+   void restartWatchdog();
+
+   void startWatchdog();
+
+   List<ReportScheduleJobListInformation> getReportJobList(Report report);
+
+   void assertJobExecutorChangeAllowed(User previousExecutor, User newExecutor) throws ViolatedSecurityException;
+
+   void assertJobChangeAllowed(ReportExecuteJob job) throws ViolatedSecurityException;
+
+   List<ReportScheduleJobListInformation> getOwnReportJobList(Report report);
+
+   List<ReportScheduleJobListInformation> getReportJobListFromCurrentUser(Report report);
+
+   List<ReportScheduleJobListInformation> getReportJobListToCurrentUser(Report report);
+
 }

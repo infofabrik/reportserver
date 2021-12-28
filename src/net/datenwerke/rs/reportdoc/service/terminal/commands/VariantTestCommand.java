@@ -23,94 +23,84 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class VariantTestCommand implements TerminalCommandHook {
-	public static final String BASE_COMMAND = "variantTest";
-	private final SimpleDatasourceBundleService bundleService;
+   public static final String BASE_COMMAND = "variantTest";
+   private final SimpleDatasourceBundleService bundleService;
 
-	@Inject
-	public VariantTestCommand(SimpleDatasourceBundleService datasourceBundleService) {
-		this.bundleService = datasourceBundleService;
-	}
+   @Inject
+   public VariantTestCommand(SimpleDatasourceBundleService datasourceBundleService) {
+      this.bundleService = datasourceBundleService;
+   }
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-	@CliHelpMessage(
-			messageClass = ReportDocumentationMessages.class, 
-			name = BASE_COMMAND, 
-			description = "commandVariantTest_description", 
-			nonOptArgs = {
-					@NonOptArgument(
-							name = "datasource", 
-							description = "commandVariantTest_description_arg_datasource", 
-							varArgs = true),
-					@NonOptArgument(
-							name = "report", 
-							description = "commandVariantTest_description_arg_report", 
-							mandatory = true) 
-					})
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		CommandResult result = new CommandResult(ReportDocumentationMessages.INSTANCE.creatingPdf());
-		List<String> arguments = parser.getNonOptionArguments();
-		String reportQuery = null;
-		List<String> datasourceQueries = new ArrayList<>();
-		if (arguments.isEmpty())
-			throw new IllegalArgumentException("Please enter arguments");
-		if (1 == arguments.size()) 
-			reportQuery = arguments.get(0);
-		else if (arguments.size() > 1) {
-			reportQuery = arguments.get(arguments.size() - 1);
-			for (String arg: arguments) 
-				if (arguments.get(arguments.size()-1) != arg)
-					datasourceQueries.add(arg);
-		}
-		
-		Collection<Object> resolvedReports = session.getObjectResolver().getObjects(reportQuery, Read.class, Execute.class);
+   @CliHelpMessage(messageClass = ReportDocumentationMessages.class, name = BASE_COMMAND, description = "commandVariantTest_description", nonOptArgs = {
+         @NonOptArgument(name = "datasource", description = "commandVariantTest_description_arg_datasource", varArgs = true),
+         @NonOptArgument(name = "report", description = "commandVariantTest_description_arg_report", mandatory = true) })
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      CommandResult result = new CommandResult(ReportDocumentationMessages.INSTANCE.creatingPdf());
+      List<String> arguments = parser.getNonOptionArguments();
+      String reportQuery = null;
+      List<String> datasourceQueries = new ArrayList<>();
+      if (arguments.isEmpty())
+         throw new IllegalArgumentException("Please enter arguments");
+      if (1 == arguments.size())
+         reportQuery = arguments.get(0);
+      else if (arguments.size() > 1) {
+         reportQuery = arguments.get(arguments.size() - 1);
+         for (String arg : arguments)
+            if (arguments.get(arguments.size() - 1) != arg)
+               datasourceQueries.add(arg);
+      }
 
-		if (null == resolvedReports || 1 != resolvedReports.size())
-			throw new IllegalArgumentException("Report resolver query must resolve to exactly one report entity");
+      Collection<Object> resolvedReports = session.getObjectResolver().getObjects(reportQuery, Read.class,
+            Execute.class);
 
-		Object repObj = resolvedReports.iterator().next();
-		if (!(repObj instanceof Report))
-			throw new IllegalArgumentException("Report resolver query must resolve to exactly one report entity");
+      if (null == resolvedReports || 1 != resolvedReports.size())
+         throw new IllegalArgumentException("Report resolver query must resolve to exactly one report entity");
 
-		Report report = (Report) repObj;
-		
-		Collection<Object> resolvedDatasources = new ArrayList<>();
-		List<DatasourceDefinition> datasources = new ArrayList<>();
-		for (String datasourceQuery: datasourceQueries) {
-			resolvedDatasources = session.getObjectResolver().getObjects(datasourceQuery, Read.class);
-			
-			if (null == resolvedDatasources || resolvedDatasources.isEmpty())
-				throw new IllegalArgumentException("No valid datasources found: " + datasourceQuery);
+      Object repObj = resolvedReports.iterator().next();
+      if (!(repObj instanceof Report))
+         throw new IllegalArgumentException("Report resolver query must resolve to exactly one report entity");
 
-			Set<DatasourceDefinition> allDataSources = bundleService.getAllDatasources(report,
-					bundleService.getAvailableBundleKeys());
+      Report report = (Report) repObj;
 
-			for (Object resolvedDatasource: resolvedDatasources) {
-				if (!(resolvedDatasource instanceof DatasourceDefinition))
-					throw new IllegalArgumentException("Not a DatasourceDefinition object");
-				
-				DatasourceDefinition datasource = (DatasourceDefinition) resolvedDatasource;
-				datasources.add(datasource);
-			}
-			
-			if( ! allDataSources.containsAll(datasources) ) 
-				throw new IllegalArgumentException("The given datasources are not valid for this report");
-		}
+      Collection<Object> resolvedDatasources = new ArrayList<>();
+      List<DatasourceDefinition> datasources = new ArrayList<>();
+      for (String datasourceQuery : datasourceQueries) {
+         resolvedDatasources = session.getObjectResolver().getObjects(datasourceQuery, Read.class);
 
-		VariantTestCommandResultExtension ext = new VariantTestCommandResultExtension();
-		ext.setReport(report);
-		ext.setDatasources(datasources);
-		result.addExtension(ext);
-		return result;
-	}
+         if (null == resolvedDatasources || resolvedDatasources.isEmpty())
+            throw new IllegalArgumentException("No valid datasources found: " + datasourceQuery);
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+         Set<DatasourceDefinition> allDataSources = bundleService.getAllDatasources(report,
+               bundleService.getAvailableBundleKeys());
+
+         for (Object resolvedDatasource : resolvedDatasources) {
+            if (!(resolvedDatasource instanceof DatasourceDefinition))
+               throw new IllegalArgumentException("Not a DatasourceDefinition object");
+
+            DatasourceDefinition datasource = (DatasourceDefinition) resolvedDatasource;
+            datasources.add(datasource);
+         }
+
+         if (!allDataSources.containsAll(datasources))
+            throw new IllegalArgumentException("The given datasources are not valid for this report");
+      }
+
+      VariantTestCommandResultExtension ext = new VariantTestCommandResultExtension();
+      ext.setReport(report);
+      ext.setDatasources(datasources);
+      result.addExtension(ext);
+      return result;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

@@ -6,15 +6,14 @@ import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 
 public class OU2DtoPostProcessor implements Poso2DtoPostProcessor<OrganisationalUnit, OrganisationalUnitDto> {
 
+   @Override
+   public void dtoCreated(OrganisationalUnit ou, OrganisationalUnitDto ouDto) {
+      ouDto.setIsUserRoot(null == ou.getParent());
+   }
 
-	@Override
-	public void dtoCreated(OrganisationalUnit ou, OrganisationalUnitDto ouDto) {
-		ouDto.setIsUserRoot(null == ou.getParent());
-	}
+   @Override
+   public void dtoInstantiated(OrganisationalUnit arg0, OrganisationalUnitDto arg1) {
 
-	@Override
-	public void dtoInstantiated(OrganisationalUnit arg0, OrganisationalUnitDto arg1) {
-		
-	}
+   }
 
 }

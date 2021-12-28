@@ -17,84 +17,84 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface VirtualFileSystemManagerHook extends Hook, Serializable {
 
-	void init(TerminalSession terminalSession);
-	
-	TerminalSession getSession();
+   void init(TerminalSession terminalSession);
 
-	public String getFileSystemName();
-	
-	boolean handlesFilesystem(String filesystemName) throws VFSException;
+   TerminalSession getSession();
 
-	Object getObjectId(Object obj) throws VFSException;
+   public String getFileSystemName();
 
-	String prettyPrintPathway(String pathway);
+   boolean handlesFilesystem(String filesystemName) throws VFSException;
 
-	VFSLocation getLocation(VFSLocation momentaryLocation, String pathway) throws VFSException;
+   Object getObjectId(Object obj) throws VFSException;
 
-	Object getParent(VFSLocation location) throws VFSException;
+   String prettyPrintPathway(String pathway);
 
-	Collection<VFSObjectInfo> getFileSystemObjectInfos();
+   VFSLocation getLocation(VFSLocation momentaryLocation, String pathway) throws VFSException;
 
-	/**
-	 * Should not be called directly
-	 * 
-	 * @param location
-	 */
-	VFSLocationInfo getLocationInfo(VFSLocation location);
+   Object getParent(VFSLocation location) throws VFSException;
 
-	boolean isFolder(VFSLocation vfsLocation);
+   Collection<VFSObjectInfo> getFileSystemObjectInfos();
 
-	Object getObjectIn(VFSLocation vfsLocation, VFSObjectInfo objectInfo);
+   /**
+    * Should not be called directly
+    * 
+    * @param location
+    */
+   VFSLocationInfo getLocationInfo(VFSLocation location);
 
-	boolean supportedByFileSystem(Object obj);
+   boolean isFolder(VFSLocation vfsLocation);
 
-	VFSLocation getLocationFor(Object obj);
+   Object getObjectIn(VFSLocation vfsLocation, VFSObjectInfo objectInfo);
 
-	VFSLocation createFolder(VFSLocation location, String folder);
+   boolean supportedByFileSystem(Object obj);
 
-	List<VFSLocation> moveFilesTo(VFSLocation source, VFSLocation target);
+   VFSLocation getLocationFor(Object obj);
 
-	List<VFSLocation> copyFilesTo(VFSLocation source, VFSLocation target, boolean deep) throws VFSException;
+   VFSLocation createFolder(VFSLocation location, String folder);
 
-	void remove(VFSLocation location, boolean force);
+   List<VFSLocation> moveFilesTo(VFSLocation source, VFSLocation target);
 
-	Provider<? extends TreeDBManager> getTreeDBManagerProvider();
+   List<VFSLocation> copyFilesTo(VFSLocation source, VFSLocation target, boolean deep) throws VFSException;
 
-	void setReadOnly(boolean readOnly);
+   void remove(VFSLocation location, boolean force);
 
-	boolean isReadOnly();
+   Provider<? extends TreeDBManager> getTreeDBManagerProvider();
 
-	boolean isObjectAncestorOf(Object object, VFSLocation baseLocation);
+   void setReadOnly(boolean readOnly);
 
-	Object getObjectFor(VFSLocation vfsLocation);
+   boolean isReadOnly();
 
-	boolean hasContent(VFSLocation vfsLocation);
+   boolean isObjectAncestorOf(Object object, VFSLocation baseLocation);
 
-	byte[] getContent(VFSLocation vfsLocation);
+   Object getObjectFor(VFSLocation vfsLocation);
 
-	void setContent(VFSLocation vfsLocation, byte[] content);
+   boolean hasContent(VFSLocation vfsLocation);
 
-	String getContentType(VFSLocation vfsLocation);
+   byte[] getContent(VFSLocation vfsLocation);
 
-	String translatePathWay(VFSLocation location);
+   void setContent(VFSLocation vfsLocation, byte[] content);
 
-	Date getLastModified(VFSLocation vfsLocation);
+   String getContentType(VFSLocation vfsLocation);
 
-	boolean exists(VFSLocation vfsLocation);
+   String translatePathWay(VFSLocation location);
 
-	long getSize(VFSLocation vfsLocation);
+   Date getLastModified(VFSLocation vfsLocation);
 
-	boolean canWriteIntoLocation(VFSLocation vfsLocation);
+   boolean exists(VFSLocation vfsLocation);
 
-	boolean isLocationDeletable(VFSLocation vfsLocation);
+   long getSize(VFSLocation vfsLocation);
 
-	void delete(VFSLocation vfsLocation);
+   boolean canWriteIntoLocation(VFSLocation vfsLocation);
 
-	VFSLocation create(VFSLocation vfsLocation) throws VFSException;
+   boolean isLocationDeletable(VFSLocation vfsLocation);
 
-	void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData) throws VFSException;
-	
-	VFSLocation rename(VFSLocation vfsLocation, String name);
-	
-	String getNameFor(VFSLocation loc);
+   void delete(VFSLocation vfsLocation);
+
+   VFSLocation create(VFSLocation vfsLocation) throws VFSException;
+
+   void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData) throws VFSException;
+
+   VFSLocation rename(VFSLocation vfsLocation, String name);
+
+   String getNameFor(VFSLocation loc);
 }

@@ -9,7 +9,7 @@ import net.datenwerke.security.client.usermanager.dto.AbstractUserManagerNodeDto
 @RemoteServiceRelativePath("usermanager_export")
 public interface UserManagerExportRpcService extends RemoteService {
 
-	public void quickExport(AbstractUserManagerNodeDto dto) throws ServerCallFailedException;
-	
-	public String loadResult() throws ServerCallFailedException;
+   public void quickExport(AbstractUserManagerNodeDto dto) throws ServerCallFailedException;
+
+   public String loadResult() throws ServerCallFailedException;
 }

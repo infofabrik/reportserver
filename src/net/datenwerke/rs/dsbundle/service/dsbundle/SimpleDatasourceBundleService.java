@@ -15,7 +15,7 @@ public interface SimpleDatasourceBundleService {
    List<String> getAvailableBundleKeys();
 
    Set<DatasourceDefinition> getAllDatasources(DatasourceContainerProvider container, List<String> keys);
-   
+
    Set<DatasourceDefinition> getAllDatasources(DatabaseBundle datasource, List<String> keys);
 
 }

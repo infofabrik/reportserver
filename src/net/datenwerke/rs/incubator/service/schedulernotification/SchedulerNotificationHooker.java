@@ -73,14 +73,9 @@ public class SchedulerNotificationHooker implements SchedulerExecutionHook, Sche
    private RemoteMessageService remoteMessageService;
 
    @Inject
-   public SchedulerNotificationHooker(
-         @SchedulerModuleProperties Configuration config, 
-         Provider<EntityManager> emp,
-         Injector injector, 
-         MailService mailService, 
-         ExceptionServices exceptionServices,
-         RemoteMessageService remoteMessageService
-         ) {
+   public SchedulerNotificationHooker(@SchedulerModuleProperties Configuration config, Provider<EntityManager> emp,
+         Injector injector, MailService mailService, ExceptionServices exceptionServices,
+         RemoteMessageService remoteMessageService) {
 
       this.config = config;
       this.entityManagerProvider = emp;
@@ -141,10 +136,10 @@ public class SchedulerNotificationHooker implements SchedulerExecutionHook, Sche
          datamap.put("stacktrace", String.valueOf((null != e) ? exceptionServices.exceptionToString(e) : ""));
 
          if (null != ((ReportExecuteJob) job).getRecipients()) {
-            datamap.put("recipients", (((ReportExecuteJob) job).getRecipients())
-               .stream()
-               .map(rec -> rec.getFirstname() + " " + rec.getLastname() + " <" + rec.getEmail() + ">")
-               .collect(joining("\r\n")) + "\r\n");
+            datamap.put("recipients",
+                  (((ReportExecuteJob) job).getRecipients()).stream()
+                        .map(rec -> rec.getFirstname() + " " + rec.getLastname() + " <" + rec.getEmail() + ">")
+                        .collect(joining("\r\n")) + "\r\n");
          }
 
          String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
@@ -207,16 +202,15 @@ public class SchedulerNotificationHooker implements SchedulerExecutionHook, Sche
 
          datamap.put("reportName", String.valueOf(
                null == ((ReportExecuteJob) job).getReport() ? "null" : ((ReportExecuteJob) job).getReport().getName()));
-         
+
          if (null != job.getTrigger()) {
-            datamap.put("nextDates", job.getTrigger().getNextScheduleTimes(3)
-               .stream()
-               .map(date -> SimpleDateFormat.getDateTimeInstance().format(date))
-               .collect(joining("\r\n")) + "\r\n");
-         } else 
+            datamap.put("nextDates",
+                  job.getTrigger().getNextScheduleTimes(3).stream()
+                        .map(date -> SimpleDateFormat.getDateTimeInstance().format(date)).collect(joining("\r\n"))
+                        + "\r\n");
+         } else
             datamap.put("nextDates", "");
-         
-         
+
          User user = ((ReportExecuteJob) job).getExecutor();
          if (null != user) {
             String name = user.getFirstname() + " " + user.getLastname() + " <" + user.getEmail() + ">";
@@ -313,12 +307,11 @@ public class SchedulerNotificationHooker implements SchedulerExecutionHook, Sche
       messageTemplate.setDataMap(datamap);
 
       SimpleMail message = mailService.newTemplateMail(messageTemplate);
-      message.setRecipients(javax.mail.Message.RecipientType.BCC, recipients
-         .stream()
-         .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-         .map(LambdaExceptionUtil.rethrowFunction(user -> new InternetAddress(user.getEmail())))
-         .toArray(Address[]::new));
-      
+      message.setRecipients(javax.mail.Message.RecipientType.BCC,
+            recipients.stream().filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
+                  .map(LambdaExceptionUtil.rethrowFunction(user -> new InternetAddress(user.getEmail())))
+                  .toArray(Address[]::new));
+
       mailService.sendMail(message);
    }
 

@@ -4,30 +4,28 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface CryptoMessages extends Messages {
 
-	String cryptoAdminModuleDescription();
+   String cryptoAdminModuleDescription();
 
-	String cryptoAdminModuleTitle();
+   String cryptoAdminModuleTitle();
 
-	String cryptoModuleTitle();
+   String cryptoModuleTitle();
 
-	String cryptoAdminPanelTitle();
+   String cryptoAdminPanelTitle();
 
-	String createCA();
-	
-	String caCreated();
+   String createCA();
 
-	String downloadTomcatKeystores();
+   String caCreated();
 
-	String downloadCaCert();
+   String downloadTomcatKeystores();
 
-	String cryptoAdminPanelDescription();
+   String downloadCaCert();
 
-	String grantCertificateLabel();
+   String cryptoAdminPanelDescription();
 
-	String grantCertificateSuccessTitle();
+   String grantCertificateLabel();
 
-	String grantCertificateSuccessMessage();
-	
-	
-	
+   String grantCertificateSuccessTitle();
+
+   String grantCertificateSuccessMessage();
+
 }

@@ -9,32 +9,31 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ReportExecutorRpcServiceAsync {
 
-	void createNewVariant(ReportDto reportVariantDto, String executeToken, String title, String description, AsyncCallback<ReportDto> callback);
+   void createNewVariant(ReportDto reportVariantDto, String executeToken, String title, String description,
+         AsyncCallback<ReportDto> callback);
 
-	void editVariant(ReportDto reportVariantDto, String executeToken, String title,
-			String description, AsyncCallback<ReportDto> callback);
+   void editVariant(ReportDto reportVariantDto, String executeToken, String title, String description,
+         AsyncCallback<ReportDto> callback);
 
-	void deleteVariant(ReportDto reportVariantDto, AsyncCallback<Void> callback);
+   void deleteVariant(ReportDto reportVariantDto, AsyncCallback<Void> callback);
 
-	Request storePNGInSession(String executorToken, ReportDto report, AsyncCallback<DwModel> callback);
+   Request storePNGInSession(String executorToken, ReportDto report, AsyncCallback<DwModel> callback);
 
-	Request executeAs(String format, String executeToken, ReportDto report, DwModel config,
-			AsyncCallback<DwModel> callback);
-	
-	void loadFullReportForExecution(ReportDto report,
-			AsyncCallback<ReportDto> callback);
+   Request executeAs(String format, String executeToken, ReportDto report, DwModel config,
+         AsyncCallback<DwModel> callback);
 
-	void loadReportForExecutionFrom(HistoryLocation location,
-			AsyncCallback<ReportDto> callback);
+   void loadFullReportForExecution(ReportDto report, AsyncCallback<ReportDto> callback);
 
-	void getPreviewMode(AsyncCallback<String> callback);
+   void loadReportForExecutionFrom(HistoryLocation location, AsyncCallback<ReportDto> callback);
 
-	void setPreviewModeUserProperty(String value, AsyncCallback<Void> callback);
+   void getPreviewMode(AsyncCallback<String> callback);
 
-	void loadFullReportUnmanaged(ReportDto report, AsyncCallback<ReportDto> callback);
-	
-	void getDefaultColumnWidth(AsyncCallback<Integer> callback);
-	
-	void getMaxColumnWidth(AsyncCallback<Integer> callback);
+   void setPreviewModeUserProperty(String value, AsyncCallback<Void> callback);
+
+   void loadFullReportUnmanaged(ReportDto report, AsyncCallback<ReportDto> callback);
+
+   void getDefaultColumnWidth(AsyncCallback<Integer> callback);
+
+   void getMaxColumnWidth(AsyncCallback<Integer> callback);
 
 }

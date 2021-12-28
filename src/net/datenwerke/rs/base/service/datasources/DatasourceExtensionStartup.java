@@ -34,58 +34,49 @@ import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
 public class DatasourceExtensionStartup {
 
-	@Inject
-	public DatasourceExtensionStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		Provider<BaseDatasourceProviderHooker> databaseProvider,
-		StandardConnectionHook connectionHooker,
-		QueryCommentAdderHooker commentAdder,
-		HandleCsvDatasourceMergeEvents csvDatasourceMergeHandler,
-		
-		Birt2TableTransformer birt2TableTransformer,
-		Birt2ConnectionTransformer birt2ConnectionTransformer,
-		Birt2JdbcDatasourceTransformer birt2JdbcDatasourceTransformer,
-		
-		Csv2InputStreamTransformer csv2InputStreamTransformer,
-		Csv2JasperTransformer csv2JasperTransformer,
-		Csv2TableTransformer csv2TableTransformer,
-		Csv2ConnectionTransformer csv2ConnectionTransformer,
-		Csv2JdcbDatasourceTransformer csv2JdbcDatasourceTransformer,
-		Csv2QueryTransformer csv2QueryTransformer,
-		Csv2TempTableResultTransformer csv2TempTableResultTransformer,
-		
-		Database2JasperTransformer database2JasperTransformer, 
-		Database2JdbcConnectionTransformer database2JdbcConnectionTransformer, 
-		Database2JdbcDatasourceTransformer database2JdbcDatasourceTransformer, 
-		Database2TableTransformer database2TableTransformer,
-		
-		Provider<MonetDbStatementCancler> monetDbCancler
-		){
-		
-		hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
-		hookHandler.attachHooker(TableDbDatasourceOpenedHook.class, commentAdder);
-		hookHandler.attachHooker(DbPoolConnectionHook.class, connectionHooker);
-		
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2TableTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2ConnectionTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2JdbcDatasourceTransformer);
-		
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2InputStreamTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2JasperTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2TableTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2ConnectionTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2JdbcDatasourceTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2QueryTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2TempTableResultTransformer);
-		
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JasperTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JdbcConnectionTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JdbcDatasourceTransformer);
-		hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2TableTransformer);
-		
-		eventBus.attachObjectEventHandler(MergeEntityEvent.class, CsvDatasource.class, csvDatasourceMergeHandler);
-		
-		hookHandler.attachHooker(StatementCancellationHook.class, monetDbCancler);
-	}
+   @Inject
+   public DatasourceExtensionStartup(HookHandlerService hookHandler, EventBus eventBus,
+         Provider<BaseDatasourceProviderHooker> databaseProvider, StandardConnectionHook connectionHooker,
+         QueryCommentAdderHooker commentAdder, HandleCsvDatasourceMergeEvents csvDatasourceMergeHandler,
+
+         Birt2TableTransformer birt2TableTransformer, Birt2ConnectionTransformer birt2ConnectionTransformer,
+         Birt2JdbcDatasourceTransformer birt2JdbcDatasourceTransformer,
+
+         Csv2InputStreamTransformer csv2InputStreamTransformer, Csv2JasperTransformer csv2JasperTransformer,
+         Csv2TableTransformer csv2TableTransformer, Csv2ConnectionTransformer csv2ConnectionTransformer,
+         Csv2JdcbDatasourceTransformer csv2JdbcDatasourceTransformer, Csv2QueryTransformer csv2QueryTransformer,
+         Csv2TempTableResultTransformer csv2TempTableResultTransformer,
+
+         Database2JasperTransformer database2JasperTransformer,
+         Database2JdbcConnectionTransformer database2JdbcConnectionTransformer,
+         Database2JdbcDatasourceTransformer database2JdbcDatasourceTransformer,
+         Database2TableTransformer database2TableTransformer,
+
+         Provider<MonetDbStatementCancler> monetDbCancler) {
+
+      hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
+      hookHandler.attachHooker(TableDbDatasourceOpenedHook.class, commentAdder);
+      hookHandler.attachHooker(DbPoolConnectionHook.class, connectionHooker);
+
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2TableTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2ConnectionTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, birt2JdbcDatasourceTransformer);
+
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2InputStreamTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2JasperTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2TableTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2ConnectionTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2JdbcDatasourceTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2QueryTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, csv2TempTableResultTransformer);
+
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JasperTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JdbcConnectionTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2JdbcDatasourceTransformer);
+      hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2TableTransformer);
+
+      eventBus.attachObjectEventHandler(MergeEntityEvent.class, CsvDatasource.class, csvDatasourceMergeHandler);
+
+      hookHandler.attachHooker(StatementCancellationHook.class, monetDbCancler);
+   }
 }

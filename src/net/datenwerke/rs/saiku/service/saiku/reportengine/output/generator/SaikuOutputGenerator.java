@@ -14,10 +14,11 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-
 public interface SaikuOutputGenerator extends ReportOutputGenerator {
-	
-	public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset, List<ThinHierarchy> filters, ICellSetFormatter formatter, String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException;
 
-	public void initialize(SaikuReport report, User user);
+   public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset, List<ThinHierarchy> filters,
+         ICellSetFormatter formatter, String outputFormat, ReportExecutionConfig... configs)
+         throws ReportExecutorException;
+
+   public void initialize(SaikuReport report, User user);
 }

@@ -10,38 +10,37 @@ import net.datenwerke.rs.eximport.client.eximport.im.ui.ImportMainPanel;
 import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class ImportAdminModule implements AdminModule{
-	
-	private final Provider<ImportMainPanel> importMainPanelProvider;
-	private ImportMainPanel importMainPanel;
+public class ImportAdminModule implements AdminModule {
 
-	@Inject
-	public ImportAdminModule(
-		Provider<ImportMainPanel> importMainPanelProvider) {
-		
-		/* store objects */
-		this.importMainPanelProvider = importMainPanelProvider;
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return ExImportMessages.INSTANCE.importAdminModuleText();
-	}
+   private final Provider<ImportMainPanel> importMainPanelProvider;
+   private ImportMainPanel importMainPanel;
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.DOWNLOAD.toImageResource();
-	}
+   @Inject
+   public ImportAdminModule(Provider<ImportMainPanel> importMainPanelProvider) {
 
-	@Override
-	public Widget getMainWidget() {
-		if(null == importMainPanel)
-			importMainPanel = importMainPanelProvider.get();
-		return importMainPanel;
-	}
+      /* store objects */
+      this.importMainPanelProvider = importMainPanelProvider;
+   }
 
-	@Override
-	public void notifyOfSelection() {
-	}
+   @Override
+   public String getNavigationText() {
+      return ExImportMessages.INSTANCE.importAdminModuleText();
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.DOWNLOAD.toImageResource();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      if (null == importMainPanel)
+         importMainPanel = importMainPanelProvider.get();
+      return importMainPanel;
+   }
+
+   @Override
+   public void notifyOfSelection() {
+   }
 
 }

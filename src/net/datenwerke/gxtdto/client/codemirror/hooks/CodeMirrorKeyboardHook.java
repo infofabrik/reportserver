@@ -7,8 +7,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface CodeMirrorKeyboardHook extends Hook {
 
-	public boolean consumes(CodeMirrorTextArea codeMirrorTextArea);
+   public boolean consumes(CodeMirrorTextArea codeMirrorTextArea);
 
-	public void handleKeyEvent(KeyPressEvent event, CodeMirrorTextArea codeMirrorTextArea);
+   public void handleKeyEvent(KeyPressEvent event, CodeMirrorTextArea codeMirrorTextArea);
 
 }

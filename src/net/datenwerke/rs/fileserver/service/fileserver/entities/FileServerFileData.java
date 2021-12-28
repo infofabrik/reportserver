@@ -20,57 +20,57 @@ import org.hibernate.envers.Audited;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 
 @Entity
-@Table(name="FILE_SERVER_FILE_DATA")
+@Table(name = "FILE_SERVER_FILE_DATA")
 @Audited
 @Cacheable(false)
-@Cache(usage=CacheConcurrencyStrategy.NONE)
-public class FileServerFileData implements Serializable{
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+public class FileServerFileData implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4963004254625766627L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4963004254625766627L;
 
-	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	private byte[] data;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+   @Lob
+   @Basic(fetch = FetchType.LAZY)
+   private byte[] data;
 
-	public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getId() {
-		return id;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setData(byte[] data) {
-		this.data = data;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public byte[] getData() {
-		return data;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public long getSize() {
-		if(null == data)
-			return 0;
-		return data.length;
-	}
-	
-	
+   public void setData(byte[] data) {
+      this.data = data;
+   }
+
+   public byte[] getData() {
+      return data;
+   }
+
+   public long getSize() {
+      if (null == data)
+         return 0;
+      return data.length;
+   }
+
 }

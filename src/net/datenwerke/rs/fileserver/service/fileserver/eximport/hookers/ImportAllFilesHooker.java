@@ -7,13 +7,11 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerExporter;
 import net.datenwerke.treedb.ext.service.eximport.helper.ImportAllNodesHooker;
 
-public class ImportAllFilesHooker extends ImportAllNodesHooker<AbstractFileServerNode>{
+public class ImportAllFilesHooker extends ImportAllNodesHooker<AbstractFileServerNode> {
 
-	@Inject
-	public ImportAllFilesHooker(
-		FileServerService treeDbManager
-		) {
-		super(treeDbManager, FileServerExporter.class);
-	}
+   @Inject
+   public ImportAllFilesHooker(FileServerService treeDbManager) {
+      super(treeDbManager, FileServerExporter.class);
+   }
 
 }

@@ -26,10 +26,11 @@ public interface ConfigService {
    String getConfigAsXml(String identifier);
 
    String getConfigAsXmlFailsafe(String identifier);
-   
+
    /**
-    * Extracts a copy of the basic configuration files to a given sub-directory of root. If the specified folder
-    * is not already present it will be created
+    * Extracts a copy of the basic configuration files to a given sub-directory of
+    * root. If the specified folder is not already present it will be created
+    * 
     * @param folderName name of the folder in which files should be copied
     * @return the folder where the configuration files were copied to
     */

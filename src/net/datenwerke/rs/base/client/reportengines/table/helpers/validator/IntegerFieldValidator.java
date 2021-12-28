@@ -13,27 +13,29 @@ import net.datenwerke.rs.base.client.reportengines.table.columnfilter.locale.Fil
 
 public class IntegerFieldValidator implements Validator<String> {
 
-	@Override
-	public List<EditorError> validate(Editor<String> editor, String value) {
-		if(null == value)
-			return null;
-		
-		try{
-			if(value.contains("$") && value.contains("{") && value.contains("}"))
-				return null;
-			if(! value.contains("*") && ! value.contains("?") )
-				NumberFormat.getDecimalFormat().parse(value);
-			if(! value.matches("^[0-9*?\\-]*$")){
-				List<EditorError> list = new ArrayList<EditorError>();
-				list.add(new DefaultEditorError(editor, FilterMessages.INSTANCE.validationErrorNoIntegerFormatInvalidCharacter(value), value));
-				return list;
-			}
-		} catch(NumberFormatException e){
-			List<EditorError> list = new ArrayList<EditorError>();
-			list.add(new DefaultEditorError(editor, FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
-			return list;
-		}
-		
-		return null;
-	}
+   @Override
+   public List<EditorError> validate(Editor<String> editor, String value) {
+      if (null == value)
+         return null;
+
+      try {
+         if (value.contains("$") && value.contains("{") && value.contains("}"))
+            return null;
+         if (!value.contains("*") && !value.contains("?"))
+            NumberFormat.getDecimalFormat().parse(value);
+         if (!value.matches("^[0-9*?\\-]*$")) {
+            List<EditorError> list = new ArrayList<EditorError>();
+            list.add(new DefaultEditorError(editor,
+                  FilterMessages.INSTANCE.validationErrorNoIntegerFormatInvalidCharacter(value), value));
+            return list;
+         }
+      } catch (NumberFormatException e) {
+         List<EditorError> list = new ArrayList<EditorError>();
+         list.add(new DefaultEditorError(editor,
+               FilterMessages.INSTANCE.validationErrorNoNumberFormatInvalidCharacter(value), value));
+         return list;
+      }
+
+      return null;
+   }
 }

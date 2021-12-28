@@ -13,39 +13,35 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 
 public class BirtShutdownCommand implements BirtSubCommandHook {
 
-	public static final String BASE_COMMAND = "shutdown";
-	
-	private final BirtReportService birtService;
-	
-	@Inject
-	public BirtShutdownCommand(BirtReportService birtService){
-		this.birtService = birtService;
-		
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "shutdown";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = BirtEngineMessages.class,
-		name = BASE_COMMAND,
-		description = "commandBirt_sub_shutdown_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		birtService.shutdown();
-		
-		return new CommandResult(BirtEngineMessages.INSTANCE.shutdownComplete());
-	}
+   private final BirtReportService birtService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public BirtShutdownCommand(BirtReportService birtService) {
+      this.birtService = birtService;
+
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = BirtEngineMessages.class, name = BASE_COMMAND, description = "commandBirt_sub_shutdown_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      birtService.shutdown();
+
+      return new CommandResult(BirtEngineMessages.INSTANCE.shutdownComplete());
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 }

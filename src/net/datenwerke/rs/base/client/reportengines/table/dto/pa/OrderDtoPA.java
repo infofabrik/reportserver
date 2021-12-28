@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.OrderDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.Order.class)
 public interface OrderDtoPA extends PropertyAccess<OrderDto> {
 
-
-
 }

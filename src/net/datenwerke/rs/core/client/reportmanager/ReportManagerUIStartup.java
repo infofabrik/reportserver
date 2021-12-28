@@ -39,94 +39,92 @@ import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHo
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class ReportManagerUIStartup  {
+public class ReportManagerUIStartup {
 
-	@Inject
-	public ReportManagerUIStartup(
-		final WaitOnEventUIService waitOnEventService,
-		
-		final HookHandlerService hookHandler,
-		final Provider<ReportManagerAdminModule> adminModuleProvider,
-		
-		final ReportManagerUIService reportManagerUIService,
-		ReportManagerTreeManagerDao reportManagerTreeHandler,
-		
-		MainPanelViewProviderHooker mainPanelViewProvider,
+   @Inject
+   public ReportManagerUIStartup(final WaitOnEventUIService waitOnEventService,
 
-		ReportManagerViewSecurityTargetDomainHooker securityTargetDomain,
-		
-		final SecurityUIService securityService,
-		
-		final FolderObjectInfo folderObjectInfo,
-		
-		final ReportManagerTreeConfigurationHooker treeConfigurator,
-		
-		Provider<ReportSelectorSimpleFormProvider> reportSelectionSsfProvider,
-		
-		ReportCatalogOnDemandRepositoryProvider catalogOnDemandRepositoryProvider,
-		
-		@ReportManagerAdminViewTree Provider<UITree> reportManagerTree,
-		HistoryUiService historyService,
-		EventBus eventBus,
-		Provider<ReportManagerPanel> reportManagerAdminPanel
-		){
-		
-		/* config tree */
-		hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-		
-		/* attach object infos */
-		hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, folderObjectInfo);
-		
-		/* attach views */
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-			
-		/* simple form */
-		hookHandler.attachHooker(FormFieldProviderHook.class, reportSelectionSsfProvider);
-		
-		/* attach repository provider */
-		hookHandler.attachHooker(ReportSelectionRepositoryProviderHook.class, catalogOnDemandRepositoryProvider, HookHandlerService.PRIORITY_HIGH);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		/* test if user has rights to see report manager admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-			if(securityService.hasRight(ReportManagerGenericTargetIdentifier.class, ReadDto.class))
-				hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),  HookHandlerService.PRIORITY_HIGH + 30);
+         final HookHandlerService hookHandler, final Provider<ReportManagerAdminModule> adminModuleProvider,
 
-			waitOnEventService.signalProcessingDone(ticket);
-		});
-		
-		/* configureHistory */
-		historyService.addHistoryCallback(ReportManagerUIModule.REPORTMANAGER_FAV_HISTORY_TOKEN,
-				new TreeDBHistoryCallback(reportManagerTree, eventBus, reportManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID){
-			@Override
-			protected void doHandleEvent(final ArrayList<Long> nodes, final UITree tree, final TreeStore<AbstractNodeDto> store) {
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						int i = nodes.size() - 1;
-						boolean showVariants = false;
-						while(i >= 0){
-							AbstractNodeDto item = store.findModelWithKey(String.valueOf(nodes.get(i--)));
-							if(null != item){
-								tree.getSelectionModel().select(item, false);
-								tree.scrollIntoView(item);
-								break;
-							} else {
-								showVariants = true;
-							}
-						}
-						
-						if(showVariants && tree instanceof ManagerHelperTree)
-							((ManagerHelperTree)tree).showTabOnSelection(ReportVariantsView.VIEW_ID);
-					}
-				});
-			}
-		});
-		
-	}
+         final ReportManagerUIService reportManagerUIService, ReportManagerTreeManagerDao reportManagerTreeHandler,
 
+         MainPanelViewProviderHooker mainPanelViewProvider,
+
+         ReportManagerViewSecurityTargetDomainHooker securityTargetDomain,
+
+         final SecurityUIService securityService,
+
+         final FolderObjectInfo folderObjectInfo,
+
+         final ReportManagerTreeConfigurationHooker treeConfigurator,
+
+         Provider<ReportSelectorSimpleFormProvider> reportSelectionSsfProvider,
+
+         ReportCatalogOnDemandRepositoryProvider catalogOnDemandRepositoryProvider,
+
+         @ReportManagerAdminViewTree Provider<UITree> reportManagerTree, HistoryUiService historyService,
+         EventBus eventBus, Provider<ReportManagerPanel> reportManagerAdminPanel) {
+
+      /* config tree */
+      hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+
+      /* attach object infos */
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, folderObjectInfo);
+
+      /* attach views */
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+
+      /* simple form */
+      hookHandler.attachHooker(FormFieldProviderHook.class, reportSelectionSsfProvider);
+
+      /* attach repository provider */
+      hookHandler.attachHooker(ReportSelectionRepositoryProviderHook.class, catalogOnDemandRepositoryProvider,
+            HookHandlerService.PRIORITY_HIGH);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* test if user has rights to see report manager admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
+         if (securityService.hasRight(ReportManagerGenericTargetIdentifier.class, ReadDto.class))
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
+                  HookHandlerService.PRIORITY_HIGH + 30);
+
+         waitOnEventService.signalProcessingDone(ticket);
+      });
+
+      /* configureHistory */
+      historyService.addHistoryCallback(ReportManagerUIModule.REPORTMANAGER_FAV_HISTORY_TOKEN,
+            new TreeDBHistoryCallback(reportManagerTree, eventBus, reportManagerAdminPanel,
+                  AdministrationUIModule.ADMIN_PANEL_ID) {
+               @Override
+               protected void doHandleEvent(final ArrayList<Long> nodes, final UITree tree,
+                     final TreeStore<AbstractNodeDto> store) {
+                  Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                     @Override
+                     public void execute() {
+                        int i = nodes.size() - 1;
+                        boolean showVariants = false;
+                        while (i >= 0) {
+                           AbstractNodeDto item = store.findModelWithKey(String.valueOf(nodes.get(i--)));
+                           if (null != item) {
+                              tree.getSelectionModel().select(item, false);
+                              tree.scrollIntoView(item);
+                              break;
+                           } else {
+                              showVariants = true;
+                           }
+                        }
+
+                        if (showVariants && tree instanceof ManagerHelperTree)
+                           ((ManagerHelperTree) tree).showTabOnSelection(ReportVariantsView.VIEW_ID);
+                     }
+                  });
+               }
+            });
+
+   }
 
 }

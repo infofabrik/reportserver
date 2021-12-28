@@ -35,80 +35,68 @@ import net.datenwerke.security.service.security.rights.Read;
 @Singleton
 public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements SaikuRpcService {
 
-	private static final long serialVersionUID = -4933426943425132953L;
-	
-	private final Provider<SecurityService> securityServiceProvider;
-	private final Provider<SaikuSessionContainer> sessionContainer;
-	private final ReportDtoService reportDtoService;
-	private final DtoService dtoService;
-	private final OlapUtilService olapService;
-	private final EntityUtils entityUtils;
-	
-	@Inject
-	public SaikuRpcServiceImpl(
-			Provider<SecurityService> securityServiceProvider,
-			Provider<AuthenticatorService> authenticatorServiceProvider,
-			Provider<SaikuSessionContainer> sessionContainer, 
-			OlapUtilService olapService,
-			ReportDtoService reportDtoService,
-			DtoService dtoService,
-			EntityUtils entityUtils
-			) {
-		this.securityServiceProvider = securityServiceProvider;
-		this.sessionContainer = sessionContainer;
-		this.olapService = olapService;
-		this.reportDtoService = reportDtoService;
-		this.dtoService = dtoService;
-		this.entityUtils = entityUtils;
-	}
+   private static final long serialVersionUID = -4933426943425132953L;
 
-	@SecurityChecked
-	@Override
-	public void stashReport(String token, @Named("node") SaikuReportDto reportDto) throws ServerCallFailedException, ExpectedException {
-		Report report = reportDtoService.getReport(reportDto);
-		
-		securityServiceProvider.get().assertRights(report, Execute.class);
-		
-		/* create variant */
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		report = report.createTemporaryVariant(adjustedReport);
-		
-		if(report instanceof SaikuReport){
-			/*
-			* We load data we know we need before putting it into the session.
-			*/
-			try {
-				entityUtils.deepHibernateUnproxy(report);
-				sessionContainer.get().putReport(token, (SaikuReport) report);
-			} catch (Exception e) {
-				throw new ServerCallFailedException(e);
-			}
-		}else{
-			throw new IllegalArgumentException("invalid report type: was: " + report.getClass() + " expected SaikuReport");
-		}
-	}
+   private final Provider<SecurityService> securityServiceProvider;
+   private final Provider<SaikuSessionContainer> sessionContainer;
+   private final ReportDtoService reportDtoService;
+   private final DtoService dtoService;
+   private final OlapUtilService olapService;
+   private final EntityUtils entityUtils;
 
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "node",
-					isDto = true,
-					verify = @RightsVerification(rights=Read.class)
-				)
-			}
-		)
-	@Override
-	public ListLoadResult<String> loadCubesFor(
-			@Named("node") MondrianDatasourceDto datasourceDto, @Named("report") SaikuReportDto saikuReportDto)
-			throws ServerCallFailedException {
-		MondrianDatasource datasource = (MondrianDatasource) dtoService.loadPoso(datasourceDto);
-		SaikuReport saikuReport = (SaikuReport) dtoService.loadPoso(saikuReportDto);
-		try {
-			List<String> cubes = olapService.getCubes(datasource, saikuReport);
-			return new ListLoadResultBean<String>(cubes);
-		} catch (Exception e) {
-			throw new ServerCallFailedException(e);
-		}
-	}
-	
+   @Inject
+   public SaikuRpcServiceImpl(Provider<SecurityService> securityServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, Provider<SaikuSessionContainer> sessionContainer,
+         OlapUtilService olapService, ReportDtoService reportDtoService, DtoService dtoService,
+         EntityUtils entityUtils) {
+      this.securityServiceProvider = securityServiceProvider;
+      this.sessionContainer = sessionContainer;
+      this.olapService = olapService;
+      this.reportDtoService = reportDtoService;
+      this.dtoService = dtoService;
+      this.entityUtils = entityUtils;
+   }
+
+   @SecurityChecked
+   @Override
+   public void stashReport(String token, @Named("node") SaikuReportDto reportDto)
+         throws ServerCallFailedException, ExpectedException {
+      Report report = reportDtoService.getReport(reportDto);
+
+      securityServiceProvider.get().assertRights(report, Execute.class);
+
+      /* create variant */
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      report = report.createTemporaryVariant(adjustedReport);
+
+      if (report instanceof SaikuReport) {
+         /*
+          * We load data we know we need before putting it into the session.
+          */
+         try {
+            entityUtils.deepHibernateUnproxy(report);
+            sessionContainer.get().putReport(token, (SaikuReport) report);
+         } catch (Exception e) {
+            throw new ServerCallFailedException(e);
+         }
+      } else {
+         throw new IllegalArgumentException("invalid report type: was: " + report.getClass() + " expected SaikuReport");
+      }
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Read.class)) })
+   @Override
+   public ListLoadResult<String> loadCubesFor(@Named("node") MondrianDatasourceDto datasourceDto,
+         @Named("report") SaikuReportDto saikuReportDto) throws ServerCallFailedException {
+      MondrianDatasource datasource = (MondrianDatasource) dtoService.loadPoso(datasourceDto);
+      SaikuReport saikuReport = (SaikuReport) dtoService.loadPoso(saikuReportDto);
+      try {
+         List<String> cubes = olapService.getCubes(datasource, saikuReport);
+         return new ListLoadResultBean<String>(cubes);
+      } catch (Exception e) {
+         throw new ServerCallFailedException(e);
+      }
+   }
+
 }

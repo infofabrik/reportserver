@@ -12,31 +12,29 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
  */
 public class DatasourceManagerImporter extends TreeNodeImporter {
 
-	public static final String IMPORTER_ID = "DatasourceManagerImporter";
-	
-	private final DatasourceService datasourceService;
-	
-	@Inject
-	public DatasourceManagerImporter(
-		DatasourceService datasourceService
-		){
-		
-		/* store objects */
-		this.datasourceService = datasourceService;
-	}
-	
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{DatasourceManagerExporter.class};
-	}
+   public static final String IMPORTER_ID = "DatasourceManagerImporter";
 
-	@Override
-	protected TreeDBManager getTreeDBManager() {
-		return datasourceService;
-	}
+   private final DatasourceService datasourceService;
 
-	@Override
-	public String getId() {
-		return IMPORTER_ID;
-	}
+   @Inject
+   public DatasourceManagerImporter(DatasourceService datasourceService) {
+
+      /* store objects */
+      this.datasourceService = datasourceService;
+   }
+
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { DatasourceManagerExporter.class };
+   }
+
+   @Override
+   protected TreeDBManager getTreeDBManager() {
+      return datasourceService;
+   }
+
+   @Override
+   public String getId() {
+      return IMPORTER_ID;
+   }
 }

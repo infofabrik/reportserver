@@ -6,5 +6,5 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DadgetPanel;
 
 public interface LibrarySpeficDrawer {
 
-	public void drawForLibrary(LibraryDadgetDto libraryDadget, DadgetDto dadgetToDraw, final DadgetPanel panel);
+   public void drawForLibrary(LibraryDadgetDto libraryDadget, DadgetDto dadgetToDraw, final DadgetPanel panel);
 }

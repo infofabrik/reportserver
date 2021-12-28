@@ -16,44 +16,34 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-
 public class LocalizationCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "localization";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public LocalizationCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "localization";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = LocalizationMessages.class,
-		name = BASE_COMMAND,
-		description = "commandLocalization_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<LocalizationSubCommandHook> list =  hookHandler.getHookers(LocalizationSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public LocalizationCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = LocalizationMessages.class, name = BASE_COMMAND, description = "commandLocalization_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<LocalizationSubCommandHook> list = hookHandler.getHookers(LocalizationSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

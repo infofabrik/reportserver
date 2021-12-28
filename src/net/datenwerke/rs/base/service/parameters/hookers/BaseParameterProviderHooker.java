@@ -15,19 +15,18 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterProviderHook;
 
 public class BaseParameterProviderHooker implements ParameterProviderHook {
 
+   @Override
+   public Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions() {
+      Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
 
-	@Override
-	public Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions() {
-		Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
-		
-		definitions.add(BlatextParameterDefinition.class);
-		definitions.add(TextParameterDefinition.class);
-		definitions.add(DateTimeParameterDefinition.class);
-		definitions.add(DatasourceParameterDefinition.class);
-		definitions.add(HeadlineParameterDefinition.class);
-		definitions.add(SeparatorParameterDefinition.class);
-		
-		return definitions;
-	}
+      definitions.add(BlatextParameterDefinition.class);
+      definitions.add(TextParameterDefinition.class);
+      definitions.add(DateTimeParameterDefinition.class);
+      definitions.add(DatasourceParameterDefinition.class);
+      definitions.add(HeadlineParameterDefinition.class);
+      definitions.add(SeparatorParameterDefinition.class);
+
+      return definitions;
+   }
 
 }

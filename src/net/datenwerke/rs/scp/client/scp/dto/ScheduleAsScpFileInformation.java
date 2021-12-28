@@ -4,46 +4,46 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.AdditionalScheduleInform
 
 public class ScheduleAsScpFileInformation implements AdditionalScheduleInformation {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8159187693834655263L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8159187693834655263L;
 
-	private ScpDatasinkDto scpDatasinkDto;
-	private String name;
-	private String folder;
-    private boolean compressed;
+   private ScpDatasinkDto scpDatasinkDto;
+   private String name;
+   private String folder;
+   private boolean compressed;
 
-	public ScpDatasinkDto getScpDatasinkDto() {
-		return scpDatasinkDto;
-	}
+   public ScpDatasinkDto getScpDatasinkDto() {
+      return scpDatasinkDto;
+   }
 
-	public void setScpDatasinkDto(ScpDatasinkDto scpDatasinkDto) {
-		this.scpDatasinkDto = scpDatasinkDto;
-	}
+   public void setScpDatasinkDto(ScpDatasinkDto scpDatasinkDto) {
+      this.scpDatasinkDto = scpDatasinkDto;
+   }
 
-	public String getName() {
-		return name;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getFolder() {
-		return folder;
-	}
+   public String getFolder() {
+      return folder;
+   }
 
-	public void setFolder(String folder) {
-		this.folder = folder;
-	}
-	
-    public boolean isCompressed() {
-       return compressed;
-    }
+   public void setFolder(String folder) {
+      this.folder = folder;
+   }
 
-    public void setCompressed(boolean compressed) {
-       this.compressed = compressed;
-    }
+   public boolean isCompressed() {
+      return compressed;
+   }
+
+   public void setCompressed(boolean compressed) {
+      this.compressed = compressed;
+   }
 
 }

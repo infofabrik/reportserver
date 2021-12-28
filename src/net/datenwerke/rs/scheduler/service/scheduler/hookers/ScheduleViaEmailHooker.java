@@ -14,58 +14,52 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedE
 
 public class ScheduleViaEmailHooker implements ScheduleConfigProviderHook {
 
-	private final Provider<MailReportAction> mailReportActionProvider;
-	
-	@Inject
-	public ScheduleViaEmailHooker(
-		Provider<MailReportAction> mailReportActionProvider
-		) {
-		
-		/* store objects */
-		this.mailReportActionProvider = mailReportActionProvider;
-	}
+   private final Provider<MailReportAction> mailReportActionProvider;
 
-	@Override
-	public void adaptJob(ReportExecuteJob job,
-			ReportScheduleDefinition scheduleDTO)
-			throws InvalidConfigurationException {
-		EmailInformation emailInfo = scheduleDTO.getAdditionalInfo(EmailInformation.class);
-		if(null == emailInfo)
-			return;
-		
-		if(scheduleDTO.getRecipients().isEmpty())
-			throw new InvalidConfigurationException(SchedulerMessages.INSTANCE.errorNoRecipients());
-		if(null == emailInfo.getSubject() || "".equals(emailInfo.getSubject()))
-			throw new InvalidConfigurationException(SchedulerMessages.INSTANCE.errorNoSubject());
-		
-		/* create mail action */
-		MailReportAction mailAction = mailReportActionProvider.get();
-		mailAction.setSubject(emailInfo.getSubject());
-		mailAction.setMessage(emailInfo.getMessage());
-		mailAction.setCompressed(emailInfo.isCompressed());
-		try {
-			job.addAction(mailAction);
-		} catch (ActionNotSupportedException e) {
-			throw new InvalidConfigurationException(e);
-		}
-	}
+   @Inject
+   public ScheduleViaEmailHooker(Provider<MailReportAction> mailReportActionProvider) {
 
+      /* store objects */
+      this.mailReportActionProvider = mailReportActionProvider;
+   }
 
+   @Override
+   public void adaptJob(ReportExecuteJob job, ReportScheduleDefinition scheduleDTO)
+         throws InvalidConfigurationException {
+      EmailInformation emailInfo = scheduleDTO.getAdditionalInfo(EmailInformation.class);
+      if (null == emailInfo)
+         return;
 
-	@Override
-	public void adaptScheduleDefinition(ReportScheduleDefinition rsd,
-			ReportExecuteJob job) {
-		MailReportAction action = job.getAction(MailReportAction.class);
-		if(null == action)
-			return;
-		
-		EmailInformation info = new EmailInformation();
-		
-		info.setSubject(action.getSubject());
-		info.setMessage(action.getMessage());
-		info.setCompressed(action.isCompressed());
-		
-		rsd.addAdditionalInfo(info);
-	}
+      if (scheduleDTO.getRecipients().isEmpty())
+         throw new InvalidConfigurationException(SchedulerMessages.INSTANCE.errorNoRecipients());
+      if (null == emailInfo.getSubject() || "".equals(emailInfo.getSubject()))
+         throw new InvalidConfigurationException(SchedulerMessages.INSTANCE.errorNoSubject());
+
+      /* create mail action */
+      MailReportAction mailAction = mailReportActionProvider.get();
+      mailAction.setSubject(emailInfo.getSubject());
+      mailAction.setMessage(emailInfo.getMessage());
+      mailAction.setCompressed(emailInfo.isCompressed());
+      try {
+         job.addAction(mailAction);
+      } catch (ActionNotSupportedException e) {
+         throw new InvalidConfigurationException(e);
+      }
+   }
+
+   @Override
+   public void adaptScheduleDefinition(ReportScheduleDefinition rsd, ReportExecuteJob job) {
+      MailReportAction action = job.getAction(MailReportAction.class);
+      if (null == action)
+         return;
+
+      EmailInformation info = new EmailInformation();
+
+      info.setSubject(action.getSubject());
+      info.setMessage(action.getMessage());
+      info.setCompressed(action.isCompressed());
+
+      rsd.addAdditionalInfo(info);
+   }
 
 }

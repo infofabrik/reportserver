@@ -5,9 +5,9 @@ import com.google.gwt.safehtml.shared.SafeHtml;
 
 public interface CssIconContainer {
 
-	SafeHtml getCssIcon();
-	
-	Element getCssElement();
+   SafeHtml getCssIcon();
 
-	SafeHtml getCssIcon(int size);
+   Element getCssElement();
+
+   SafeHtml getCssIcon(int size);
 }

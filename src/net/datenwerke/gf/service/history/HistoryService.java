@@ -16,7 +16,7 @@ public interface HistoryService {
     * @return A list of links
     */
    List<HistoryLink> buildLinksFor(Object o);
-   
-   List<HistoryLink> buildLinksForList(List<? extends Object> objects); 
+
+   List<HistoryLink> buildLinksForList(List<? extends Object> objects);
 
 }

@@ -5,44 +5,44 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogE
 
 public class RetryJobExecution implements VetoJobExecution {
 
-	private final String explanation;
-	private RetryTimeUnit unit = null;
-	private int amount = 0;
-	
-	public RetryJobExecution(String explanation) {
-		super();
-		this.explanation = explanation;
-	}
-	
-	public RetryJobExecution(String explanation, RetryTimeUnit unit, int amount) {
-		super();
-		this.explanation = explanation;
-		this.unit = unit;
-		this.amount = amount;
-	}
+   private final String explanation;
+   private RetryTimeUnit unit = null;
+   private int amount = 0;
 
-	@Override
-	public VetoJobExecutionMode getMode() {
-		return VetoJobExecutionMode.RETRY;
-	}
+   public RetryJobExecution(String explanation) {
+      super();
+      this.explanation = explanation;
+   }
 
-	@Override
-	public String getExplanation() {
-		return explanation;
-	}
+   public RetryJobExecution(String explanation, RetryTimeUnit unit, int amount) {
+      super();
+      this.explanation = explanation;
+      this.unit = unit;
+      this.amount = amount;
+   }
 
-	@Override
-	public void updateTrigger(AbstractJob job, ExecutionLogEntry logEntry) {
-	}
+   @Override
+   public VetoJobExecutionMode getMode() {
+      return VetoJobExecutionMode.RETRY;
+   }
 
-	@Override
-	public RetryTimeUnit getRetryUnit() {
-		return unit;
-	}
+   @Override
+   public String getExplanation() {
+      return explanation;
+   }
 
-	@Override
-	public int getRetryAmount() {
-		return amount;
-	}
+   @Override
+   public void updateTrigger(AbstractJob job, ExecutionLogEntry logEntry) {
+   }
+
+   @Override
+   public RetryTimeUnit getRetryUnit() {
+      return unit;
+   }
+
+   @Override
+   public int getRetryAmount() {
+      return amount;
+   }
 
 }

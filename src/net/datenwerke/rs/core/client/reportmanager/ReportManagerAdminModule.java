@@ -16,35 +16,32 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ReportManagerAdminModule implements AdminModule {
 
-	
-	final private Provider<ReportManagerPanel> reportManagerPanelProvider;
-	
-	@Inject
-	public ReportManagerAdminModule(
-		Provider<ReportManagerPanel> reportManagerPanel
-		){
-		
-		/* store objects */
-		this.reportManagerPanelProvider = reportManagerPanel;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.FILE.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return ReportmanagerMessages.INSTANCE.reportManagement();
-	}
+   final private Provider<ReportManagerPanel> reportManagerPanelProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return reportManagerPanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-		
-	}
+   @Inject
+   public ReportManagerAdminModule(Provider<ReportManagerPanel> reportManagerPanel) {
+
+      /* store objects */
+      this.reportManagerPanelProvider = reportManagerPanel;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.FILE.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return ReportmanagerMessages.INSTANCE.reportManagement();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return reportManagerPanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+
+   }
 }

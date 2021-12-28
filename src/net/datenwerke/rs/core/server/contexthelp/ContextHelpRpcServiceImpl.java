@@ -12,24 +12,22 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class ContextHelpRpcServiceImpl extends SecuredRemoteServiceServlet implements ContextHelpRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8970533441561658684L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8970533441561658684L;
 
-	private final ContextHelpService contextHelpService;
-	
-	@Inject
-	public ContextHelpRpcServiceImpl(ContextHelpService contextHelpService) {
-		super();
-		this.contextHelpService = contextHelpService;
-	}
+   private final ContextHelpService contextHelpService;
 
+   @Inject
+   public ContextHelpRpcServiceImpl(ContextHelpService contextHelpService) {
+      super();
+      this.contextHelpService = contextHelpService;
+   }
 
-
-	@Override
-	public String getContextHelp(ContextHelpInfo info) throws ServerCallFailedException {
-		return contextHelpService.getContextHelp(info);
-	}
+   @Override
+   public String getContextHelp(ContextHelpInfo info) throws ServerCallFailedException {
+      return contextHelpService.getContextHelp(info);
+   }
 
 }

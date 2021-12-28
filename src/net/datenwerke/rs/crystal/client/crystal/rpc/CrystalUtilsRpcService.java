@@ -10,12 +10,14 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalParameterProposalDto;
 import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 
 @RemoteServiceRelativePath("crystalutils")
-public interface CrystalUtilsRpcService extends RemoteService{
-	
-	public List<CrystalParameterProposalDto> proposeParametersFor(CrystalReportDto report) throws ServerCallFailedException;
+public interface CrystalUtilsRpcService extends RemoteService {
 
-	public CrystalReportDto addParametersFor(CrystalReportDto report, List<CrystalParameterProposalDto> proposalDtos) throws ServerCallFailedException;
+   public List<CrystalParameterProposalDto> proposeParametersFor(CrystalReportDto report)
+         throws ServerCallFailedException;
 
-	Boolean hasCrystalLibraries() throws ServerCallFailedException;
+   public CrystalReportDto addParametersFor(CrystalReportDto report, List<CrystalParameterProposalDto> proposalDtos)
+         throws ServerCallFailedException;
+
+   Boolean hasCrystalLibraries() throws ServerCallFailedException;
 
 }

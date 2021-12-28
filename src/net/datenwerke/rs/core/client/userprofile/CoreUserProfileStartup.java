@@ -8,14 +8,11 @@ import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardPro
 
 public class CoreUserProfileStartup {
 
-	@Inject
-	public CoreUserProfileStartup(
-		HookHandlerService hookHandler,
-		Provider<UserProfileViewContainerHooker> viewContainer
-		) {
+   @Inject
+   public CoreUserProfileStartup(HookHandlerService hookHandler,
+         Provider<UserProfileViewContainerHooker> viewContainer) {
 
-		
-		/* user profile */
-		hookHandler.attachHooker(UserProfileCardProviderHook.class, viewContainer);
-	}
+      /* user profile */
+      hookHandler.attachHooker(UserProfileCardProviderHook.class, viewContainer);
+   }
 }

@@ -13,33 +13,33 @@ import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
 import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
 
 public class SFFCStringValidatorBoolean implements SFFCStringValidator {
-	
-	@Inject
-	protected static I18nToolsUIService i18nTools;
-	private boolean allowBlank;
-	
-	public Validator<String> getValidator() {
-		return new Validator<String>() {
 
-			@Override
-			public List<EditorError> validate(Editor<String> editor, String value) {
-				
-				if(allowBlank && (null == value || value.isEmpty()))
-					return null;
-				
-				if(value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")){
-					return null;						
-				}
-				List<EditorError> list = new ArrayList<EditorError>();
-				list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidBoolean(), value));
-				return list;
-			}
-		};
-	}
+   @Inject
+   protected static I18nToolsUIService i18nTools;
+   private boolean allowBlank;
 
-	@Override
-	public void setAllowBlank(boolean allowBlank) {
-		this.allowBlank = allowBlank;
-	}
+   public Validator<String> getValidator() {
+      return new Validator<String>() {
+
+         @Override
+         public List<EditorError> validate(Editor<String> editor, String value) {
+
+            if (allowBlank && (null == value || value.isEmpty()))
+               return null;
+
+            if (value.equalsIgnoreCase("false") || value.equalsIgnoreCase("true")) {
+               return null;
+            }
+            List<EditorError> list = new ArrayList<EditorError>();
+            list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidBoolean(), value));
+            return list;
+         }
+      };
+   }
+
+   @Override
+   public void setAllowBlank(boolean allowBlank) {
+      this.allowBlank = allowBlank;
+   }
 
 }

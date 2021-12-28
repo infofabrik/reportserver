@@ -24,43 +24,33 @@ import net.datenwerke.treedb.ext.service.eximport.http.HttpTreeImportService;
  *
  */
 @Singleton
-public class DatasourceManagerImportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements DatasourceManagerImportRpcService {
+public class DatasourceManagerImportRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements DatasourceManagerImportRpcService {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7633633174743769046L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7633633174743769046L;
-	
-	private final Provider<HttpTreeImportService> httpImportServiceProvider;
-	
-	@Inject
-	public DatasourceManagerImportRpcServiceImpl(
-		Provider<HttpTreeImportService> httpImportServiceProvider
-		) {
-		
-		/* store objects */
-		this.httpImportServiceProvider = httpImportServiceProvider;
-	}
+   private final Provider<HttpTreeImportService> httpImportServiceProvider;
 
+   @Inject
+   public DatasourceManagerImportRpcServiceImpl(Provider<HttpTreeImportService> httpImportServiceProvider) {
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = { 
-				@GenericTargetVerification(
-					target = ImportSecurityTarget.class, 
-					verify = @RightsVerification(rights = Execute.class)) 
-			})
-	@Transactional(rollbackOn={Exception.class})
-	public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
-		HttpTreeImportService httpImportService = httpImportServiceProvider.get();
+      /* store objects */
+      this.httpImportServiceProvider = httpImportServiceProvider;
+   }
 
-		List<ImportTreeModel> tree = httpImportService.loadTreeDto(DatasourceManagerExporter.class);
-		
-		return tree;
-	}
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
+      HttpTreeImportService httpImportService = httpImportServiceProvider.get();
 
+      List<ImportTreeModel> tree = httpImportService.loadTreeDto(DatasourceManagerExporter.class);
 
+      return tree;
+   }
 
 }

@@ -19,49 +19,37 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.service.eximport.http.HttpTreeImportService;
 
-
 /**
  * 
  *
  */
 @Singleton
-public class FileServerImportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements FileServerImportRpcService {
+public class FileServerImportRpcServiceImpl extends SecuredRemoteServiceServlet implements FileServerImportRpcService {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1712740311735493626L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1712740311735493626L;
-	
-	private final Provider<HttpTreeImportService> httpImportServiceProvider;
-	
-	@Inject
-	public FileServerImportRpcServiceImpl(
-		Provider<HttpTreeImportService> httpImportServiceProvider
-		) {
-		
-		/* store objects */
-		this.httpImportServiceProvider = httpImportServiceProvider;
-	}
+   private final Provider<HttpTreeImportService> httpImportServiceProvider;
 
+   @Inject
+   public FileServerImportRpcServiceImpl(Provider<HttpTreeImportService> httpImportServiceProvider) {
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = { 
-				@GenericTargetVerification(
-					target = ImportSecurityTarget.class, 
-					verify = @RightsVerification(rights = Execute.class)) 
-			})
-	@Transactional(rollbackOn={Exception.class})
-	public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
-		HttpTreeImportService httpImportService = httpImportServiceProvider.get();
+      /* store objects */
+      this.httpImportServiceProvider = httpImportServiceProvider;
+   }
 
-		List<ImportTreeModel> tree = httpImportService.loadTreeDto(FileServerExporter.class);
-		
-		return tree;
-	}
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
+      HttpTreeImportService httpImportService = httpImportServiceProvider.get();
 
+      List<ImportTreeModel> tree = httpImportService.loadTreeDto(FileServerExporter.class);
 
+      return tree;
+   }
 
 }

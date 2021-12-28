@@ -13,6 +13,4 @@ import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultModifierDto;
 @CorrespondingPoso(net.datenwerke.rs.terminal.service.terminal.obj.CommandResultModifier.class)
 public interface CommandResultModifierDtoPA extends PropertyAccess<CommandResultModifierDto> {
 
-
-
 }

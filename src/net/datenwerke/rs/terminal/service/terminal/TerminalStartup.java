@@ -21,37 +21,30 @@ import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOpera
 
 public class TerminalStartup {
 
-	@Inject
-	public TerminalStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<DescCommand> descCommandProvider,
-		Provider<ElizaCommand> elizaCommandProvider,
-		Provider<HelloWorldCommand> helloWorldCommandProvider,
-		Provider<EnvCommand> envCommandProvider,
-		Provider<HqlTerminalCommand> hqlCommandProvider,
-		Provider<MeminfoCommand> meminfoCommandProvider,
-		Provider<EchoCommand> echoCommandProvider,
-		Provider<CatCommand> catCommandProvider,
-		
-		Provider<InBackgroundOperator> inBgOperator,
-		Provider<PipeOperator> pipeOperator,
-		
-		Provider<SplitTableResultHijacker> splitTableResultHijacker
-		){
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, descCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, elizaCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, helloWorldCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, envCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, hqlCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, meminfoCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, echoCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, catCommandProvider);
-		
-		hookHandler.attachHooker(TerminalCommandOperator.class, inBgOperator);
-		hookHandler.attachHooker(TerminalCommandOperator.class, pipeOperator);
-		
-		hookHandler.attachHooker(TerminalSessionHijackHook.class, splitTableResultHijacker);
-	}
+   @Inject
+   public TerminalStartup(HookHandlerService hookHandler,
+
+         Provider<DescCommand> descCommandProvider, Provider<ElizaCommand> elizaCommandProvider,
+         Provider<HelloWorldCommand> helloWorldCommandProvider, Provider<EnvCommand> envCommandProvider,
+         Provider<HqlTerminalCommand> hqlCommandProvider, Provider<MeminfoCommand> meminfoCommandProvider,
+         Provider<EchoCommand> echoCommandProvider, Provider<CatCommand> catCommandProvider,
+
+         Provider<InBackgroundOperator> inBgOperator, Provider<PipeOperator> pipeOperator,
+
+         Provider<SplitTableResultHijacker> splitTableResultHijacker) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, descCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, elizaCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, helloWorldCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, envCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, hqlCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, meminfoCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, echoCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, catCommandProvider);
+
+      hookHandler.attachHooker(TerminalCommandOperator.class, inBgOperator);
+      hookHandler.attachHooker(TerminalCommandOperator.class, pipeOperator);
+
+      hookHandler.attachHooker(TerminalSessionHijackHook.class, splitTableResultHijacker);
+   }
 }

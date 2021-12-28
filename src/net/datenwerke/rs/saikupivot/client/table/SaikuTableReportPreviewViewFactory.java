@@ -13,27 +13,26 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactor
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class SaikuTableReportPreviewViewFactory extends PreviewViewFactory {
-	
-	private final Provider<SaikuTableReportPreviewView> brpvProvider;
 
-	@Inject
-	public SaikuTableReportPreviewViewFactory(
-			Provider<SaikuTableReportPreviewView> brpvProvider 
-	) {
-		this.brpvProvider = brpvProvider;
-	}
-	
-	@Override
-	public ReportExecutorMainPanelView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		AbstractReportPreviewView view = brpvProvider.get();
-		view.setReport(report);
-		
-		return view;
-	}
+   private final Provider<SaikuTableReportPreviewView> brpvProvider;
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return (report instanceof TableReportDto) && ((TableReportDto)report).isCubeFlag();
-	}
+   @Inject
+   public SaikuTableReportPreviewViewFactory(Provider<SaikuTableReportPreviewView> brpvProvider) {
+      this.brpvProvider = brpvProvider;
+   }
+
+   @Override
+   public ReportExecutorMainPanelView newInstance(ReportDto report,
+         Collection<? extends ReportViewConfiguration> configs) {
+      AbstractReportPreviewView view = brpvProvider.get();
+      view.setReport(report);
+
+      return view;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      return (report instanceof TableReportDto) && ((TableReportDto) report).isCubeFlag();
+   }
 
 }

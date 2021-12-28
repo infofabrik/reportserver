@@ -13,13 +13,10 @@ import net.datenwerke.rs.core.client.reportmanager.provider.annotations.ReportMa
  */
 public class ReportManagerTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public ReportManagerTreePanel(
-		HookHandlerService hookHandler,
-		@ReportManagerAdminViewTree UITree tree
-		){
-		
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public ReportManagerTreePanel(HookHandlerService hookHandler, @ReportManagerAdminViewTree UITree tree) {
+
+      super(hookHandler, tree);
+   }
+
 }

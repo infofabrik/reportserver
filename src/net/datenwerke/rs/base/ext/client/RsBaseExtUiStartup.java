@@ -27,56 +27,54 @@ import net.datenwerke.security.client.security.dto.ReadDto;
 
 public class RsBaseExtUiStartup implements ParameterProviderHook {
 
-	@SuppressWarnings("unchecked")
-	private final List<Provider<? extends ParameterConfigurator>> parameters;
-	
-	@Inject
-	public RsBaseExtUiStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
+   @SuppressWarnings("unchecked")
+   private final List<Provider<? extends ParameterConfigurator>> parameters;
 
-		final DashboardManagerUIImporterHooker dashboardImporterHooker,
-		final DatasourceManagerUIImporterHooker datasourceImporterHooker,
-		final ReportManagerUIImporterHooker reportmanagerImporterHooker,
-		final DatasinkManagerUIImporterHooker datasinkImporterHooker,
+   @Inject
+   public RsBaseExtUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
 
-		final Provider<ReportDadgetExporter> reportDadgetExporterProvider,
-		
-		Provider<FileSelectionParameterConfigurator> fileSelectionParameter
-		){
-		
-		/* store parameters */
-		parameters = new ArrayList<Provider<? extends ParameterConfigurator>>();
-		parameters.add(fileSelectionParameter);
-		hookHandler.attachHooker(ParameterProviderHook.class, this);
-		
-		/* attach importer */
-		hookHandler.attachHooker(ImporterConfiguratorHook.class, dashboardImporterHooker);
-		hookHandler.attachHooker(ImporterConfiguratorHook.class, datasourceImporterHooker);
-		hookHandler.attachHooker(ImporterConfiguratorHook.class, reportmanagerImporterHooker);
-		hookHandler.attachHooker(ImporterConfiguratorHook.class, datasinkImporterHooker);
+         final DashboardManagerUIImporterHooker dashboardImporterHooker,
+         final DatasourceManagerUIImporterHooker datasourceImporterHooker,
+         final ReportManagerUIImporterHooker reportmanagerImporterHooker,
+         final DatasinkManagerUIImporterHooker datasinkImporterHooker,
 
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)){
-					hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
-				}
+         final Provider<ReportDadgetExporter> reportDadgetExporterProvider,
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+         Provider<FileSelectionParameterConfigurator> fileSelectionParameter) {
 
-	@Override
-	public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
-	List<ParameterConfigurator> configurations = new ArrayList<ParameterConfigurator>();
-		
-		for(Provider<? extends ParameterConfigurator> provider : parameters)
-			configurations.add(provider.get());
-		
-		return configurations;
-	}
+      /* store parameters */
+      parameters = new ArrayList<Provider<? extends ParameterConfigurator>>();
+      parameters.add(fileSelectionParameter);
+      hookHandler.attachHooker(ParameterProviderHook.class, this);
+
+      /* attach importer */
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, dashboardImporterHooker);
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, datasourceImporterHooker);
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, reportmanagerImporterHooker);
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, datasinkImporterHooker);
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)) {
+                     hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
+                  }
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
+
+   @Override
+   public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
+      List<ParameterConfigurator> configurations = new ArrayList<ParameterConfigurator>();
+
+      for (Provider<? extends ParameterConfigurator> provider : parameters)
+         configurations.add(provider.get());
+
+      return configurations;
+   }
 }

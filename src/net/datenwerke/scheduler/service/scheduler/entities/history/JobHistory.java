@@ -21,62 +21,60 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.history"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.scheduler.client.scheduler.dto.history")
 @Entity
-@Table(name="SCHEDULER_JOB_HISTORY")
+@Table(name = "SCHEDULER_JOB_HISTORY")
 public class JobHistory {
 
-	@ExposeToClient(view=DtoView.LIST)
-	@JoinColumn(name="JOB_HISTORY")
-	@EnclosedEntity
-	@OneToMany(cascade=CascadeType.ALL)
-	@OrderBy("start")
-	private List<ExecutionLogEntry> executionLogEntries = new ArrayList<ExecutionLogEntry>();
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+   @ExposeToClient(view = DtoView.LIST)
+   @JoinColumn(name = "JOB_HISTORY")
+   @EnclosedEntity
+   @OneToMany(cascade = CascadeType.ALL)
+   @OrderBy("start")
+   private List<ExecutionLogEntry> executionLogEntries = new ArrayList<ExecutionLogEntry>();
 
-	public List<ExecutionLogEntry> getExecutionLogEntries() {
-		return executionLogEntries;
-	}
+   @Version
+   private Long version;
 
-	public void setExecutionLogEntries(List<ExecutionLogEntry> executionLogEntries) {
-		this.executionLogEntries = executionLogEntries;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getVersion() {
-		return version;
-	}
+   public List<ExecutionLogEntry> getExecutionLogEntries() {
+      return executionLogEntries;
+   }
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public void setExecutionLogEntries(List<ExecutionLogEntry> executionLogEntries) {
+      this.executionLogEntries = executionLogEntries;
+   }
 
-	public Long getId() {
-		return id;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void addExecutionLogEntry(ExecutionLogEntry entry){
-		this.executionLogEntries.add(entry);
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public Collection<? extends ExecutionLogEntry> getExecutionLogEntriesInScheduledStartOrder() {
-		List<ExecutionLogEntry> entries = new ArrayList<ExecutionLogEntry>(executionLogEntries);
-		
-		Collections.sort(entries);
-		
-		return entries;
-	}
-	
-	
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public void addExecutionLogEntry(ExecutionLogEntry entry) {
+      this.executionLogEntries.add(entry);
+   }
+
+   public Collection<? extends ExecutionLogEntry> getExecutionLogEntriesInScheduledStartOrder() {
+      List<ExecutionLogEntry> entries = new ArrayList<ExecutionLogEntry>(executionLogEntries);
+
+      Collections.sort(entries);
+
+      return entries;
+   }
+
 }

@@ -10,34 +10,31 @@ import net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterI
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public class UserVariableInstance2DtoPostProcessor implements
-		Poso2DtoPostProcessor<UserVariableParameterInstance, UserVariableParameterInstanceDto> {
+public class UserVariableInstance2DtoPostProcessor
+      implements Poso2DtoPostProcessor<UserVariableParameterInstance, UserVariableParameterInstanceDto> {
 
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	
-	@Inject
-	public UserVariableInstance2DtoPostProcessor(
-		Provider<AuthenticatorService> authenticatorServiceProvider	
-		){
-		
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-	}
-	
-	@Override
-	public void dtoCreated(UserVariableParameterInstance poso,
-			UserVariableParameterInstanceDto dto) {
-		try{
-			User currentUser = authenticatorServiceProvider.get().getCurrentUser();
-			Object value = poso.getSelectedValue(currentUser);
-			if(null != value)
-				((UserVariableParameterInstanceDtoDec)dto).setValue(value.toString());
-		} catch(Exception e){}
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
-	@Override
-	public void dtoInstantiated(UserVariableParameterInstance poso,
-			UserVariableParameterInstanceDto dto) {
-		
-	}
+   @Inject
+   public UserVariableInstance2DtoPostProcessor(Provider<AuthenticatorService> authenticatorServiceProvider) {
+
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+   }
+
+   @Override
+   public void dtoCreated(UserVariableParameterInstance poso, UserVariableParameterInstanceDto dto) {
+      try {
+         User currentUser = authenticatorServiceProvider.get().getCurrentUser();
+         Object value = poso.getSelectedValue(currentUser);
+         if (null != value)
+            ((UserVariableParameterInstanceDtoDec) dto).setValue(value.toString());
+      } catch (Exception e) {
+      }
+   }
+
+   @Override
+   public void dtoInstantiated(UserVariableParameterInstance poso, UserVariableParameterInstanceDto dto) {
+
+   }
 
 }

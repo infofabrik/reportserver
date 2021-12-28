@@ -10,25 +10,23 @@ import net.datenwerke.security.service.security.rights.Right;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.teamspace.client.teamspace.security.rights"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.teamspace.client.teamspace.security.rights")
 public class TeamSpaceAdministrator implements Right {
 
-	private final TeamSpaceMessages messages = LocalizationServiceImpl.getMessages(TeamSpaceMessages.class);
-	
-	@Override
-	public String getDescription() {
-		return messages.rightTeamSpaceAdminDescription();
-	}
+   private final TeamSpaceMessages messages = LocalizationServiceImpl.getMessages(TeamSpaceMessages.class);
 
-	@Override
-	public long getBitField() {
-		return TeamSpaceRightsDefinition.RIGHT_ADMINISTRATOR;
-	}
+   @Override
+   public String getDescription() {
+      return messages.rightTeamSpaceAdminDescription();
+   }
 
-	@Override
-	public String getAbbreviation() {
-		return messages.rightTeamSpaceAdminAbbreviation();
-	}
+   @Override
+   public long getBitField() {
+      return TeamSpaceRightsDefinition.RIGHT_ADMINISTRATOR;
+   }
+
+   @Override
+   public String getAbbreviation() {
+      return messages.rightTeamSpaceAdminAbbreviation();
+   }
 }

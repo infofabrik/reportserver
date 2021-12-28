@@ -43,7 +43,7 @@ public class GoogleDriveSendToFormConfiguratorHooker implements DatasinkSendToFo
    public BaseIcon getIcon() {
       return GoogleDriveUiModule.ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;
@@ -53,5 +53,5 @@ public class GoogleDriveSendToFormConfiguratorHooker implements DatasinkSendToFo
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

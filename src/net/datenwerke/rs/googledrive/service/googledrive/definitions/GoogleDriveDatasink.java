@@ -162,10 +162,8 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
       Map<String, String> additionalParameters = new HashMap<>();
       additionalParameters.put("access_type", "offline");
       additionalParameters.put("prompt", "consent");
-      return authorizationUrlBuilder
-            .scope("https://www.googleapis.com/auth/drive.file")
-            .additionalParams(additionalParameters)
-            .build();
+      return authorizationUrlBuilder.scope("https://www.googleapis.com/auth/drive.file")
+            .additionalParams(additionalParameters).build();
    }
 
 }

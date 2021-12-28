@@ -21,12 +21,12 @@ public class DatasinkModule extends AbstractReportServerModule {
    public static final String PROPERTY_DEFAULT_DATASINK_NAME = "defaultDatasinkName";
    public static final String PROPERTY_DEFAULT_DISABLED = "[@disabled]";
    public static final String PROPERTY_DEFAULT_SCHEDULING_ENABLED = "[@supportsScheduling]";
-   
+
    @Override
    protected void configure() {
       bind(DatasinkTreeService.class).to(DatasinkTreeServiceImpl.class).in(Scopes.SINGLETON);
       bind(DatasinkService.class).to(DatasinkServiceImpl.class);
-      
+
       /* startup */
       bind(DatasinkStartup.class).asEagerSingleton();
    }
@@ -39,10 +39,8 @@ public class DatasinkModule extends AbstractReportServerModule {
    @ReportServerDatasinkDefinitions
    @Inject
    public Set<Class<? extends DatasinkDefinition>> provideDatasinkDefinitions(HookHandlerService hookHandler) {
-      return hookHandler.getHookers(DatasinkProviderHook.class)
-            .stream()
-            .flatMap(dsProvider -> dsProvider.getDatasinks().stream())
-            .collect(toSet());
+      return hookHandler.getHookers(DatasinkProviderHook.class).stream()
+            .flatMap(dsProvider -> dsProvider.getDatasinks().stream()).collect(toSet());
    }
 
 }

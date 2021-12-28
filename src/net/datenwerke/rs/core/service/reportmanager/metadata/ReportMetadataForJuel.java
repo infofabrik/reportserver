@@ -4,44 +4,43 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetad
 
 public class ReportMetadataForJuel {
 
-	private String name = "unnamed";
-	
-	private String value;
-	
-	private Long id;
+   private String name = "unnamed";
 
-	public String getName() {
-		return name;
-	}
+   private String value;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   private Long id;
 
-	public String getValue() {
-		return value;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public Long getId() {
-		return id;
-	}
+   public String getValue() {
+      return value;
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public void setValue(String value) {
+      this.value = value;
+   }
 
-	public static ReportMetadataForJuel fromReportMetadata(ReportMetadata m){
-		ReportMetadataForJuel rmfj = new ReportMetadataForJuel();
-		rmfj.setName(m.getName());
-		rmfj.setId(m.getId());
-		rmfj.setValue(m.getValue());
-		
-		return rmfj;
-	}
-	
-	
+   public Long getId() {
+      return id;
+   }
+
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public static ReportMetadataForJuel fromReportMetadata(ReportMetadata m) {
+      ReportMetadataForJuel rmfj = new ReportMetadataForJuel();
+      rmfj.setName(m.getName());
+      rmfj.setId(m.getId());
+      rmfj.setValue(m.getValue());
+
+      return rmfj;
+   }
+
 }

@@ -12,61 +12,57 @@ import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserM
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
 import net.datenwerke.usermanager.ext.client.eximport.im.dto.UserManagerImportConfigDto;
 
+public class UserManagerImporterMainPropertiesPanel extends ImporterMainPropertiesPanel<UserManagerImportConfigDto> {
 
-public class UserManagerImporterMainPropertiesPanel extends
-		ImporterMainPropertiesPanel<UserManagerImportConfigDto> {
+   private final Provider<UITree> treeProvider;
 
-	private final Provider<UITree> treeProvider;
-	
-	protected String parentKey;
-	protected String defaultDatasource;
-	
-	@Inject
-	public UserManagerImporterMainPropertiesPanel(
-		@UserManagerTreeFolders Provider<UITree> treeProvider
-		) {
+   protected String parentKey;
+   protected String defaultDatasource;
 
-		/* store objects */
-		this.treeProvider = treeProvider;
-		
-		/* init */
-		initializeUI();
-	}
+   @Inject
+   public UserManagerImporterMainPropertiesPanel(@UserManagerTreeFolders Provider<UITree> treeProvider) {
 
-	@Override
-	public void populateConfig(UserManagerImportConfigDto config) throws NotProperlyConfiguredException {
-		super.populateConfig(config);
-		
-		OrganisationalUnitDto parent = (OrganisationalUnitDto) form.getValue(parentKey);
-		config.setParent(parent);
-	}
-	
-	@Override
-	public void validateConfig(UserManagerImportConfigDto config)
-			throws NotProperlyConfiguredException {
-		if(null == config.getParent() && ! config.getConfigs().isEmpty())
-			throw new NotProperlyConfiguredException(UsermanagerMessages.INSTANCE.importConfigFailureNoParent());
-	}
+      /* store objects */
+      this.treeProvider = treeProvider;
 
-	@Override
-	protected void configureForm() {
-		super.configureForm();
+      /* init */
+      initializeUI();
+   }
 
-		parentKey = form.addField(OrganisationalUnitDto.class, UsermanagerMessages.INSTANCE.importWhereTo(), new SFFCGenericTreeNode(){
-			@Override
-			public UITree getTreeForPopup() {
-				return treeProvider.get();
-			}
-		});
-	}
+   @Override
+   public void populateConfig(UserManagerImportConfigDto config) throws NotProperlyConfiguredException {
+      super.populateConfig(config);
 
-	@Override
-	protected String getDescription() {
-		return UsermanagerMessages.INSTANCE.importMainPropertiesDescription();
-	}
+      OrganisationalUnitDto parent = (OrganisationalUnitDto) form.getValue(parentKey);
+      config.setParent(parent);
+   }
 
-	@Override
-	protected String getHeadline() {
-		return UsermanagerMessages.INSTANCE.importMainPropertiesHeadline();
-	}
+   @Override
+   public void validateConfig(UserManagerImportConfigDto config) throws NotProperlyConfiguredException {
+      if (null == config.getParent() && !config.getConfigs().isEmpty())
+         throw new NotProperlyConfiguredException(UsermanagerMessages.INSTANCE.importConfigFailureNoParent());
+   }
+
+   @Override
+   protected void configureForm() {
+      super.configureForm();
+
+      parentKey = form.addField(OrganisationalUnitDto.class, UsermanagerMessages.INSTANCE.importWhereTo(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            });
+   }
+
+   @Override
+   protected String getDescription() {
+      return UsermanagerMessages.INSTANCE.importMainPropertiesDescription();
+   }
+
+   @Override
+   protected String getHeadline() {
+      return UsermanagerMessages.INSTANCE.importMainPropertiesHeadline();
+   }
 }

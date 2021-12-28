@@ -20,85 +20,81 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRun
 
 public class BirtXLSOutputGenerator extends BirtOutputGeneratorImpl {
 
-	public static final String CONFIG_FILE = "exportfilemd/excelexport.cf";
+   public static final String CONFIG_FILE = "exportfilemd/excelexport.cf";
 
-	public static final String XLS_EXPORT_FORMAT_PROPERTY = "xls.format";
+   public static final String XLS_EXPORT_FORMAT_PROPERTY = "xls.format";
 
-	private final ConfigService configService; 
-	
-	@Inject
-	public BirtXLSOutputGenerator(
-		ConfigService configService
-		) {
-		super();
-		
-		/* store objects */
-		this.configService = configService;
-	}
-	
-	@Override
-	public CompiledRSBirtReport exportReport(
-			Object oRunAndRenderTask, String outputFormat,
-			ReportExecutionConfig... configs) {
+   private final ConfigService configService;
 
-		try {
-			IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
-			EXCELRenderOption options = new EXCELRenderOption();
+   @Inject
+   public BirtXLSOutputGenerator(ConfigService configService) {
+      super();
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			options.setOutputStream(bos);
-			
-			String excelFormat = getExportFormat();
-			
-			if("xls".equals(excelFormat)){
-				options.setOutputFormat("xls");
-				options.setOfficeVersion("office2003");
-			} else {
-				options.setOutputFormat("xlsx");
-				options.setOfficeVersion("office2007");
-			}
+      /* store objects */
+      this.configService = configService;
+   }
 
-			/* adapt render options */
-			RenderOption renderOptions = adapt(options);
-			
-			/* render */
-			runAndRenderTask.setRenderOption(renderOptions);
-			runAndRenderTask.run();
-		
-			
-			/* create return object */
-			CompiledRSBirtReport cbReport;
-			
-			if("xls".equals(excelFormat)){
-				cbReport = new CompiledXLSBirtReport();
-				((CompiledXLSBirtReport)cbReport).setReport(bos.toByteArray());
-			} else {
-				cbReport = new CompiledXLSXBirtReport();
-				((CompiledXLSXBirtReport)cbReport).setReport(bos.toByteArray());
-			}
+   @Override
+   public CompiledRSBirtReport exportReport(Object oRunAndRenderTask, String outputFormat,
+         ReportExecutionConfig... configs) {
 
-			/* return compiled report */
-			return cbReport;
+      try {
+         IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
+         EXCELRenderOption options = new EXCELRenderOption();
 
-		} catch (EngineException e) {
-			ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
-			rere.initCause(e);
-			throw rere;
-		}
-	}
-	
-	protected String getExportFormat(){
-		return configService.getConfigFailsafe(CONFIG_FILE).getString(XLS_EXPORT_FORMAT_PROPERTY, "xlsx");
-	}	
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         options.setOutputStream(bos);
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_EXCEL};
-	}
-	
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledXLSBirtReport();
-	}
+         String excelFormat = getExportFormat();
+
+         if ("xls".equals(excelFormat)) {
+            options.setOutputFormat("xls");
+            options.setOfficeVersion("office2003");
+         } else {
+            options.setOutputFormat("xlsx");
+            options.setOfficeVersion("office2007");
+         }
+
+         /* adapt render options */
+         RenderOption renderOptions = adapt(options);
+
+         /* render */
+         runAndRenderTask.setRenderOption(renderOptions);
+         runAndRenderTask.run();
+
+         /* create return object */
+         CompiledRSBirtReport cbReport;
+
+         if ("xls".equals(excelFormat)) {
+            cbReport = new CompiledXLSBirtReport();
+            ((CompiledXLSBirtReport) cbReport).setReport(bos.toByteArray());
+         } else {
+            cbReport = new CompiledXLSXBirtReport();
+            ((CompiledXLSXBirtReport) cbReport).setReport(bos.toByteArray());
+         }
+
+         /* return compiled report */
+         return cbReport;
+
+      } catch (EngineException e) {
+         ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
+         rere.initCause(e);
+         throw rere;
+      }
+   }
+
+   protected String getExportFormat() {
+      return configService.getConfigFailsafe(CONFIG_FILE).getString(XLS_EXPORT_FORMAT_PROPERTY, "xlsx");
+   }
+
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_EXCEL };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledXLSBirtReport();
+   }
 
 }

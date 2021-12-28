@@ -27,79 +27,75 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final HookHandlerService hookHandler;
-	
-	private final Provider<BasicReportVariantForm> basicReportVariantFormProvider;
-	private Provider<TableReportVariantForm> tableReportVariantFormProvider;
-	private final Provider<SaikuReportVariantForm> saikuReportVariantFormProvider;
-	private final Provider<FolderForm> folderFormProvider;
-	private final Provider<ParameterView> parameterTabItemProvider;
-	private final Provider<ReportVariantsView> varientsViewProvider;
-	private final Provider<SecurityView> securityViewProvider;
+   private final HookHandlerService hookHandler;
 
-	
-	@Inject
-	public MainPanelViewProviderHooker(
-			HookHandlerService hookHandler,
-			Provider<SaikuReportVariantForm> saikuReportVariantFormProvider, 
-			Provider<TableReportVariantForm> tableReportVariantFormProvider, 
-			Provider<BasicReportVariantForm> basicReportVariantFormProvider, 
-			Provider<FolderForm> folderFormProvider,
-			Provider<ParameterView> parameterTabItemProvider,
-			Provider<ReportVariantsView> varientsViewProvider,
-			Provider<SecurityView> securityViewProvider
-		){
+   private final Provider<BasicReportVariantForm> basicReportVariantFormProvider;
+   private Provider<TableReportVariantForm> tableReportVariantFormProvider;
+   private final Provider<SaikuReportVariantForm> saikuReportVariantFormProvider;
+   private final Provider<FolderForm> folderFormProvider;
+   private final Provider<ParameterView> parameterTabItemProvider;
+   private final Provider<ReportVariantsView> varientsViewProvider;
+   private final Provider<SecurityView> securityViewProvider;
 
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.saikuReportVariantFormProvider = saikuReportVariantFormProvider;
-		this.tableReportVariantFormProvider = tableReportVariantFormProvider;
-		this.basicReportVariantFormProvider = basicReportVariantFormProvider;
-		this.folderFormProvider = folderFormProvider;
-		this.parameterTabItemProvider = parameterTabItemProvider;
-		this.varientsViewProvider = varientsViewProvider;
-		this.securityViewProvider = securityViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof ReportFolderDto)
-			return getViewForReportFolder();
-		if(node instanceof SaikuReportVariantDtoDec)
-			return getViewForSaikuReportVariant();
-		if(node instanceof TableReportVariantDtoDec && ((TableReportVariantDtoDec) node).isCubeFlag())
-			return getViewForTableReportVariant();
-		if(node instanceof ReportVariantDto)
-			return getViewForReportVariant();
-		if(node instanceof ReportDto)
-			return getViewForReport((ReportDto)node);
-		return null;
-	}
+   @Inject
+   public MainPanelViewProviderHooker(HookHandlerService hookHandler,
+         Provider<SaikuReportVariantForm> saikuReportVariantFormProvider,
+         Provider<TableReportVariantForm> tableReportVariantFormProvider,
+         Provider<BasicReportVariantForm> basicReportVariantFormProvider, Provider<FolderForm> folderFormProvider,
+         Provider<ParameterView> parameterTabItemProvider, Provider<ReportVariantsView> varientsViewProvider,
+         Provider<SecurityView> securityViewProvider) {
 
-	private List<MainPanelView> getViewForReport(ReportDto report) {
-		List<MainPanelView> views = new ArrayList<MainPanelView>();
-		for(ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
-			if(config.consumes(report))
-				views.addAll(config.getAdminViews(report));
-		
-		views.addAll(Arrays.asList(parameterTabItemProvider.get(), varientsViewProvider.get(), securityViewProvider.get()));
-		return views;
-		
-	}
-	
-	private List<MainPanelView> getViewForSaikuReportVariant() {
-		return Arrays.asList(new MainPanelView[]{saikuReportVariantFormProvider.get()});
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.saikuReportVariantFormProvider = saikuReportVariantFormProvider;
+      this.tableReportVariantFormProvider = tableReportVariantFormProvider;
+      this.basicReportVariantFormProvider = basicReportVariantFormProvider;
+      this.folderFormProvider = folderFormProvider;
+      this.parameterTabItemProvider = parameterTabItemProvider;
+      this.varientsViewProvider = varientsViewProvider;
+      this.securityViewProvider = securityViewProvider;
+   }
 
-	private List<MainPanelView> getViewForTableReportVariant() {
-		return Arrays.asList(new MainPanelView[]{tableReportVariantFormProvider.get()});
-	}
-	
-	private List<MainPanelView> getViewForReportVariant() {
-		return Arrays.asList(new MainPanelView[]{basicReportVariantFormProvider.get()});
-	}
-	
-	private List<MainPanelView> getViewForReportFolder() {
-		return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
-	}
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof ReportFolderDto)
+         return getViewForReportFolder();
+      if (node instanceof SaikuReportVariantDtoDec)
+         return getViewForSaikuReportVariant();
+      if (node instanceof TableReportVariantDtoDec && ((TableReportVariantDtoDec) node).isCubeFlag())
+         return getViewForTableReportVariant();
+      if (node instanceof ReportVariantDto)
+         return getViewForReportVariant();
+      if (node instanceof ReportDto)
+         return getViewForReport((ReportDto) node);
+      return null;
+   }
+
+   private List<MainPanelView> getViewForReport(ReportDto report) {
+      List<MainPanelView> views = new ArrayList<MainPanelView>();
+      for (ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
+         if (config.consumes(report))
+            views.addAll(config.getAdminViews(report));
+
+      views.addAll(
+            Arrays.asList(parameterTabItemProvider.get(), varientsViewProvider.get(), securityViewProvider.get()));
+      return views;
+
+   }
+
+   private List<MainPanelView> getViewForSaikuReportVariant() {
+      return Arrays.asList(new MainPanelView[] { saikuReportVariantFormProvider.get() });
+   }
+
+   private List<MainPanelView> getViewForTableReportVariant() {
+      return Arrays.asList(new MainPanelView[] { tableReportVariantFormProvider.get() });
+   }
+
+   private List<MainPanelView> getViewForReportVariant() {
+      return Arrays.asList(new MainPanelView[] { basicReportVariantFormProvider.get() });
+   }
+
+   private List<MainPanelView> getViewForReportFolder() {
+      return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
+   }
 
 }

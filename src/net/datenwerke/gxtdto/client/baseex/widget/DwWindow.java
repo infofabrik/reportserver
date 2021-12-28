@@ -122,7 +122,8 @@ public class DwWindow extends Window {
    }
 
    public DwTextButton addCancelButton() {
-      return addCancelButton(() -> {});
+      return addCancelButton(() -> {
+      });
    }
 
    public DwTextButton addCancelButton(final OnButtonClickHandler handler) {

@@ -13,28 +13,28 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public class LoginDao extends Dao {
 
-	private final LoginHandlerAsync rpcService;
+   private final LoginHandlerAsync rpcService;
 
-	@Inject
-	public LoginDao(LoginHandlerAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	public void isAuthenticated(AsyncCallback<UserDto> callback){
-		rpcService.isAuthenticated(transformDtoCallback(callback));
-	}
+   @Inject
+   public LoginDao(LoginHandlerAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public void logoff(AsyncCallback<String> callback){
-		rpcService.logoff(transformAndKeepCallback(callback));
-	}
+   public void isAuthenticated(AsyncCallback<UserDto> callback) {
+      rpcService.isAuthenticated(transformDtoCallback(callback));
+   }
 
-	public void authenticate(AuthToken[] tokens, AsyncCallback<AuthenticateResultDto> callback){
-		rpcService.authenticate(tokens, transformDtoCallback(callback));
-	}
+   public void logoff(AsyncCallback<String> callback) {
+      rpcService.logoff(transformAndKeepCallback(callback));
+   }
 
-	public void getRequiredClientModules(AsyncCallback<Set<String>> callback){
-		rpcService.getRequiredClientModules(transformAndKeepCallback(callback));
-	}
-	
+   public void authenticate(AuthToken[] tokens, AsyncCallback<AuthenticateResultDto> callback) {
+      rpcService.authenticate(tokens, transformDtoCallback(callback));
+   }
+
+   public void getRequiredClientModules(AsyncCallback<Set<String>> callback) {
+      rpcService.getRequiredClientModules(transformAndKeepCallback(callback));
+   }
+
 }

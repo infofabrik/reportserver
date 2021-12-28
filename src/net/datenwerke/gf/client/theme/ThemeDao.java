@@ -8,18 +8,16 @@ import net.datenwerke.gf.client.theme.rpc.ThemeRpcServiceAsync;
 import net.datenwerke.gxtdto.client.dtomanager.Dao;
 
 public class ThemeDao extends Dao {
-	
-	private final ThemeRpcServiceAsync rpcService;
 
-	@Inject
-	public ThemeDao(ThemeRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void loadUiTheme(AsyncCallback<ThemeUiConfig> callback){
-		rpcService.loadUiConfig(callback);
-	}
-	
-	
+   private final ThemeRpcServiceAsync rpcService;
+
+   @Inject
+   public ThemeDao(ThemeRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void loadUiTheme(AsyncCallback<ThemeUiConfig> callback) {
+      rpcService.loadUiConfig(callback);
+   }
 
 }

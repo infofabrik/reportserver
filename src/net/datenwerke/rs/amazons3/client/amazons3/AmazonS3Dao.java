@@ -32,10 +32,11 @@ public class AmazonS3Dao extends Dao implements HasDefaultDatasink {
       rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder,
             compressed, transformAndKeepCallback(callback));
    }
-   
+
    public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
          String folder, boolean compressed, AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed, transformAndKeepCallback(callback));
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {

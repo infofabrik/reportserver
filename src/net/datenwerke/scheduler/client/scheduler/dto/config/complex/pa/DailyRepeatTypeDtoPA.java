@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.DailyRepeatT
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.DailyRepeatType.class)
 public interface DailyRepeatTypeDtoPA extends PropertyAccess<DailyRepeatTypeDto> {
 
-
-
 }

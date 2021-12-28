@@ -6,9 +6,9 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class Jasper2RTF extends Export2RTF {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof JasperReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof JasperReportDto;
+   }
 
 }

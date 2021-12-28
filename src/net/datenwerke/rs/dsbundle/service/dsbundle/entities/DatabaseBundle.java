@@ -20,69 +20,63 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
-@Table(name="DB_BUNDLE_DATASOURCE")
+@Table(name = "DB_BUNDLE_DATASOURCE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dsbundle.client.dsbundle.dto"
-)
-@InstanceDescription(
-	msgLocation = DatasourceBundleMessages.class,
-	objNameKey = "databaseBundleTypeName",
-	icon = "database"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dsbundle.client.dsbundle.dto")
+@InstanceDescription(msgLocation = DatasourceBundleMessages.class, objNameKey = "databaseBundleTypeName", icon = "database")
 @Indexed
 public class DatabaseBundle extends DatabaseDatasource {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5705061680418219522L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5705061680418219522L;
 
-	@ExposeToClient
-	@OneToMany(cascade=CascadeType.ALL)
-	@EnclosedEntity
-	@JoinTable(name="DB_BUNDLE_2_ENTRY")
-	private Set<DatabaseBundleEntry> bundleEntries = new HashSet<DatabaseBundleEntry>();
-	
-	@ExposeToClient
-	private String keySource;
-	
-	@ExposeToClient
-	private String keySourceParamName;
-	
-	@ExposeToClient
-	private String mappingSource;
+   @ExposeToClient
+   @OneToMany(cascade = CascadeType.ALL)
+   @EnclosedEntity
+   @JoinTable(name = "DB_BUNDLE_2_ENTRY")
+   private Set<DatabaseBundleEntry> bundleEntries = new HashSet<DatabaseBundleEntry>();
 
-	public Set<DatabaseBundleEntry> getBundleEntries() {
-		return bundleEntries;
-	}
+   @ExposeToClient
+   private String keySource;
 
-	public void setBundleEntries(Set<DatabaseBundleEntry> bundleEntries) {
-		this.bundleEntries = bundleEntries;
-	}
+   @ExposeToClient
+   private String keySourceParamName;
 
-	public String getKeySource() {
-		return keySource;
-	}
+   @ExposeToClient
+   private String mappingSource;
 
-	public void setKeySource(String keySource) {
-		this.keySource = keySource;
-	}
+   public Set<DatabaseBundleEntry> getBundleEntries() {
+      return bundleEntries;
+   }
 
-	public String getMappingSource() {
-		return mappingSource;
-	}
+   public void setBundleEntries(Set<DatabaseBundleEntry> bundleEntries) {
+      this.bundleEntries = bundleEntries;
+   }
 
-	public void setMappingSource(String mappingSource) {
-		this.mappingSource = mappingSource;
-	}
+   public String getKeySource() {
+      return keySource;
+   }
 
-	public String getKeySourceParamName() {
-		return keySourceParamName;
-	}
+   public void setKeySource(String keySource) {
+      this.keySource = keySource;
+   }
 
-	public void setKeySourceParamName(String keySourceParamName) {
-		this.keySourceParamName = keySourceParamName;
-	}
-	
+   public String getMappingSource() {
+      return mappingSource;
+   }
+
+   public void setMappingSource(String mappingSource) {
+      this.mappingSource = mappingSource;
+   }
+
+   public String getKeySourceParamName() {
+      return keySourceParamName;
+   }
+
+   public void setKeySourceParamName(String keySourceParamName) {
+      this.keySourceParamName = keySourceParamName;
+   }
+
 }

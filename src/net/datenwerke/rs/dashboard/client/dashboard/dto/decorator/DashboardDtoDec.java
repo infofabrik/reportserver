@@ -16,29 +16,27 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.LayoutTypeDto;
  */
 public class DashboardDtoDec extends DashboardDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	
-	private Map<String, ParameterInstanceDto> temporaryInstanceMap;
+   private Map<String, ParameterInstanceDto> temporaryInstanceMap;
 
-	public DashboardDtoDec() {
-		super();
-		setLayout(LayoutTypeDto.TWO_COLUMN_EQUI);
-	}
+   public DashboardDtoDec() {
+      super();
+      setLayout(LayoutTypeDto.TWO_COLUMN_EQUI);
+   }
 
-	public void updateDadget(DadgetDto old, DadgetDto newDadget) {
-		List<DadgetDto> dadgets = getDadgets();
-		Collections.replaceAll(dadgets, old, newDadget);
-		setDadgets(dadgets);
-	}
+   public void updateDadget(DadgetDto old, DadgetDto newDadget) {
+      List<DadgetDto> dadgets = getDadgets();
+      Collections.replaceAll(dadgets, old, newDadget);
+      setDadgets(dadgets);
+   }
 
-	public Map<String, ParameterInstanceDto> getTemporaryInstanceMap() {
-		return temporaryInstanceMap;
-	}
+   public Map<String, ParameterInstanceDto> getTemporaryInstanceMap() {
+      return temporaryInstanceMap;
+   }
 
-	public void setTemporaryInstanceMap(Map<String, ParameterInstanceDto> temporaryInstanceMap) {
-		this.temporaryInstanceMap = temporaryInstanceMap;
-	}
-
+   public void setTemporaryInstanceMap(Map<String, ParameterInstanceDto> temporaryInstanceMap) {
+      this.temporaryInstanceMap = temporaryInstanceMap;
+   }
 
 }

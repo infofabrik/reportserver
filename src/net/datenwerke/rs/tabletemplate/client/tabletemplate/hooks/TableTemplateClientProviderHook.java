@@ -6,21 +6,23 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface TableTemplateClientProviderHook extends Hook {
 
-	public interface ContentTypeConfig{
-		public boolean isDisplay();
-		public String getDefaultContentType();
-		public String getDefaultFileExtension();
-	}
-	
-	public String getType();
-	
-	public String getName();
-	
-	public String getDescription();
-	
-	public ImageResource getIconLarge();
-	
-	public ImageResource getIconSmall();
+   public interface ContentTypeConfig {
+      public boolean isDisplay();
 
-	public ContentTypeConfig getContentTypeConfig();
+      public String getDefaultContentType();
+
+      public String getDefaultFileExtension();
+   }
+
+   public String getType();
+
+   public String getName();
+
+   public String getDescription();
+
+   public ImageResource getIconLarge();
+
+   public ImageResource getIconSmall();
+
+   public ContentTypeConfig getContentTypeConfig();
 }

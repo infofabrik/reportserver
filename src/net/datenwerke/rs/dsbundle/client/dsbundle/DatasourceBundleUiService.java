@@ -4,7 +4,7 @@ import java.util.List;
 
 public interface DatasourceBundleUiService {
 
-	public void setAvailableBundleKeys(List<String> result);
-	
-	public List<String> getAvailableBundleKeys();
+   public void setAvailableBundleKeys(List<String> result);
+
+   public List<String> getAvailableBundleKeys();
 }

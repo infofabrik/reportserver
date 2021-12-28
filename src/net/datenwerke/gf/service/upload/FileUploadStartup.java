@@ -9,14 +9,11 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class FileUploadStartup {
 
-	@Inject
-	public FileUploadStartup(
-		Provider<InterimFileUploadHandler> interimFileUploadHandler,
-		
-		HookHandlerService hookHandlerService
-		){
-		
-		
-		hookHandlerService.attachHooker(FileUploadHandlerHook.class, interimFileUploadHandler);
-	}
+   @Inject
+   public FileUploadStartup(Provider<InterimFileUploadHandler> interimFileUploadHandler,
+
+         HookHandlerService hookHandlerService) {
+
+      hookHandlerService.attachHooker(FileUploadHandlerHook.class, interimFileUploadHandler);
+   }
 }

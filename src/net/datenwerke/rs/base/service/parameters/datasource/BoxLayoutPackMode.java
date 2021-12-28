@@ -6,10 +6,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.parameters.datasource.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.parameters.datasource.dto")
 public enum BoxLayoutPackMode {
-	Columns,
-	Packages
+   Columns, Packages
 }

@@ -11,19 +11,17 @@ import net.datenwerke.security.service.security.rights.Right;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
 public interface Securee {
 
-	@ExposeMethodToClient
-	public String getSecureeId();
-	
-	@ExposeMethodToClient
-	public String getName();
-	
-	@EnclosedEntity
-	@ExposeMethodToClient
-	public List<Right> getRights();
-	
+   @ExposeMethodToClient
+   public String getSecureeId();
+
+   @ExposeMethodToClient
+   public String getName();
+
+   @EnclosedEntity
+   @ExposeMethodToClient
+   public List<Right> getRights();
+
 }

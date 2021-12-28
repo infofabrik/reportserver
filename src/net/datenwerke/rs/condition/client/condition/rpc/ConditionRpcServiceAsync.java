@@ -11,12 +11,10 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ConditionRpcServiceAsync {
 
-	void getConditions(ReportDto report, AsyncCallback<List<Condition>> callback);
+   void getConditions(ReportDto report, AsyncCallback<List<Condition>> callback);
 
-	void getReplacementsFor(ReportConditionDto condition,
-			AsyncCallback<List<String>> callback);
+   void getReplacementsFor(ReportConditionDto condition, AsyncCallback<List<String>> callback);
 
-	void executeCondition(ScheduleConditionDto scheduleCondition,
-			AsyncCallback<Boolean> callback);
+   void executeCondition(ScheduleConditionDto scheduleCondition, AsyncCallback<Boolean> callback);
 
 }

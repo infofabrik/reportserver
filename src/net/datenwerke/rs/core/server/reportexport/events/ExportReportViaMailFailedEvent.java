@@ -9,61 +9,56 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class ExportReportViaMailFailedEvent implements Event {
 
-	
-	private ReportDto reportDto;
-	private String executorToken; 
-	private String format;
-	private List<ReportExecutionConfigDto> configs; 
-	private String subject;
-	private String message ;
-	private List<StrippedDownUser> recipients;
-	
-	public ExportReportViaMailFailedEvent(){
-		
-	}
+   private ReportDto reportDto;
+   private String executorToken;
+   private String format;
+   private List<ReportExecutionConfigDto> configs;
+   private String subject;
+   private String message;
+   private List<StrippedDownUser> recipients;
 
-	public ExportReportViaMailFailedEvent(ReportDto reportDto,
-			String executorToken, String format,
-			List<ReportExecutionConfigDto> configs, String subject,
-			String message, List<StrippedDownUser> recipients) {
-		super();
-		this.reportDto = reportDto;
-		this.executorToken = executorToken;
-		this.format = format;
-		this.configs = configs;
-		this.subject = subject;
-		this.message = message;
-		this.recipients = recipients;
-	}
+   public ExportReportViaMailFailedEvent() {
 
-	public ReportDto getReportDto() {
-		return reportDto;
-	}
+   }
 
-	public String getExecutorToken() {
-		return executorToken;
-	}
+   public ExportReportViaMailFailedEvent(ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs, String subject, String message, List<StrippedDownUser> recipients) {
+      super();
+      this.reportDto = reportDto;
+      this.executorToken = executorToken;
+      this.format = format;
+      this.configs = configs;
+      this.subject = subject;
+      this.message = message;
+      this.recipients = recipients;
+   }
 
-	public String getFormat() {
-		return format;
-	}
+   public ReportDto getReportDto() {
+      return reportDto;
+   }
 
-	public List<ReportExecutionConfigDto> getConfigs() {
-		return configs;
-	}
+   public String getExecutorToken() {
+      return executorToken;
+   }
 
-	public String getSubject() {
-		return subject;
-	}
+   public String getFormat() {
+      return format;
+   }
 
-	public String getMessage() {
-		return message;
-	}
+   public List<ReportExecutionConfigDto> getConfigs() {
+      return configs;
+   }
 
-	public List<StrippedDownUser> getRecipients() {
-		return recipients;
-	}
-	
-	
+   public String getSubject() {
+      return subject;
+   }
+
+   public String getMessage() {
+      return message;
+   }
+
+   public List<StrippedDownUser> getRecipients() {
+      return recipients;
+   }
 
 }

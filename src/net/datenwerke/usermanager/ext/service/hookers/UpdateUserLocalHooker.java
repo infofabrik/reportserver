@@ -14,33 +14,31 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class UpdateUserLocalHooker implements LocaleChangedNotificationHook {
 
-	private final Provider<AuthenticatorService> authenticationServiceProvider;
-	private final UserPropertiesService userPropertiesService;
-	private final UserManagerService userManagerService;
-	
-	@Inject
-	public UpdateUserLocalHooker(
-			Provider<AuthenticatorService> authenticationServiceProvider,
-			UserPropertiesService userPropertiesService,
-			UserManagerService userManagerService) {
-		super();
-		this.authenticationServiceProvider = authenticationServiceProvider;
-		this.userPropertiesService = userPropertiesService;
-		this.userManagerService = userManagerService;
-	}
+   private final Provider<AuthenticatorService> authenticationServiceProvider;
+   private final UserPropertiesService userPropertiesService;
+   private final UserManagerService userManagerService;
 
+   @Inject
+   public UpdateUserLocalHooker(Provider<AuthenticatorService> authenticationServiceProvider,
+         UserPropertiesService userPropertiesService, UserManagerService userManagerService) {
+      super();
+      this.authenticationServiceProvider = authenticationServiceProvider;
+      this.userPropertiesService = userPropertiesService;
+      this.userManagerService = userManagerService;
+   }
 
-
-	@Override
-	public void localeChanged(Locale locale) {
-		try{
-			AuthenticatorService authService = authenticationServiceProvider.get();
-			User user = authService.getCurrentUser();
-			if(null != user){
-				userPropertiesService.setPropertyValue(user, UserManagerModule.USER_PROPERTY_USER_LOCALE, null != locale ? locale.toLanguageTag() : "");
-				userManagerService.merge(user);
-			}
-		} catch(Exception e){}
-	}
+   @Override
+   public void localeChanged(Locale locale) {
+      try {
+         AuthenticatorService authService = authenticationServiceProvider.get();
+         User user = authService.getCurrentUser();
+         if (null != user) {
+            userPropertiesService.setPropertyValue(user, UserManagerModule.USER_PROPERTY_USER_LOCALE,
+                  null != locale ? locale.toLanguageTag() : "");
+            userManagerService.merge(user);
+         }
+      } catch (Exception e) {
+      }
+   }
 
 }

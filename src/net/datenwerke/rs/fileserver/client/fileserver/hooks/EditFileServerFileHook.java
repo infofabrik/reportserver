@@ -6,8 +6,8 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 
 public interface EditFileServerFileHook extends Hook {
 
-	boolean consumes(FileServerFileDto file);
+   boolean consumes(FileServerFileDto file);
 
-	MainPanelView getView(FileServerFileDto file);
+   MainPanelView getView(FileServerFileDto file);
 
 }

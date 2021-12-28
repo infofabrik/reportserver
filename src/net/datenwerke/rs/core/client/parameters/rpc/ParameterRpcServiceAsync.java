@@ -11,23 +11,18 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface ParameterRpcServiceAsync {
 
-	void addParameter(ParameterDefinitionDto parameter, AbstractNodeDto correspondingNode,
-			AsyncCallback<ReportDto> callback);
+   void addParameter(ParameterDefinitionDto parameter, AbstractNodeDto correspondingNode,
+         AsyncCallback<ReportDto> callback);
 
-	void updateParameter(ParameterDefinitionDto parameter,
-			AsyncCallback<ReportDto> callback);
+   void updateParameter(ParameterDefinitionDto parameter, AsyncCallback<ReportDto> callback);
 
-	void removeParameters(Collection<ParameterDefinitionDto> parameters,
-			AsyncCallback<ReportDto> callback);
+   void removeParameters(Collection<ParameterDefinitionDto> parameters, AsyncCallback<ReportDto> callback);
 
-	void movedParameter(ParameterDefinitionDto parameter, int to,
-			AsyncCallback<ReportDto> callback);
+   void movedParameter(ParameterDefinitionDto parameter, int to, AsyncCallback<ReportDto> callback);
 
-	void updateParameterInstances(
-			Collection<ParameterDefinitionDto> parameters,
-			AsyncCallback<ReportDto> callback);
+   void updateParameterInstances(Collection<ParameterDefinitionDto> parameters, AsyncCallback<ReportDto> callback);
 
-	void duplicateParameters(List<ParameterDefinitionDto> params,
-			AbstractNodeDto correspondingNode, AsyncCallback<ReportDto> callback);
+   void duplicateParameters(List<ParameterDefinitionDto> params, AbstractNodeDto correspondingNode,
+         AsyncCallback<ReportDto> callback);
 
 }

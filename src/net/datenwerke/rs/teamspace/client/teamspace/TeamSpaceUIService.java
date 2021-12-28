@@ -8,51 +8,50 @@ import net.datenwerke.gxtdto.client.stores.LoadableListStore;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceRoleDto;
 
-
 /**
  * 
  *
  */
 public interface TeamSpaceUIService {
 
-	public interface TeamSpaceOperationSuccessHandler{
-		public void onSuccess(TeamSpaceDto teamSpace);
-	}
-	
-	/**
-	 * Tells if the current user is an admin
-	 */
-	public boolean isGlobalTsAdmin();
+   public interface TeamSpaceOperationSuccessHandler {
+      public void onSuccess(TeamSpaceDto teamSpace);
+   }
 
-	public boolean hasTeamSpaceCreateRight();
+   /**
+    * Tells if the current user is an admin
+    */
+   public boolean isGlobalTsAdmin();
 
-	boolean isAdmin(TeamSpaceDto teamSpace);
+   public boolean hasTeamSpaceCreateRight();
 
-	boolean isManager(TeamSpaceDto teamSpace);
+   boolean isAdmin(TeamSpaceDto teamSpace);
 
-	boolean isUser(TeamSpaceDto teamSpace);
+   boolean isManager(TeamSpaceDto teamSpace);
 
-	boolean isGuest(TeamSpaceDto teamSpace);
+   boolean isUser(TeamSpaceDto teamSpace);
 
-	TeamSpaceRoleDto getRole(TeamSpaceDto teamSpace);
+   boolean isGuest(TeamSpaceDto teamSpace);
 
-	LoadableListStore<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>> getAllTeamSpacesStore();
+   TeamSpaceRoleDto getRole(TeamSpaceDto teamSpace);
 
-	LoadableListStore<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>> getTeamSpacesStore();
+   LoadableListStore<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>> getAllTeamSpacesStore();
 
-	ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> getTeamSpacesLoader();
+   LoadableListStore<ListLoadConfig, TeamSpaceDto, ListLoadResult<TeamSpaceDto>> getTeamSpacesStore();
 
-	ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> getAllTeamSpacesLoader();
+   ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> getTeamSpacesLoader();
 
-	boolean hasTeamSpaceRemoveRight();
-	
-	public void gotoTeamSpace(TeamSpaceDto selectedItem);
+   ListLoader<ListLoadConfig, ListLoadResult<TeamSpaceDto>> getAllTeamSpacesLoader();
 
-	void displayAddSpaceDialog(TeamSpaceOperationSuccessHandler successHandler);
+   boolean hasTeamSpaceRemoveRight();
 
-	public void notifyOfDeletion(TeamSpaceDto deleted);
+   public void gotoTeamSpace(TeamSpaceDto selectedItem);
 
-	public void notifyOfAddition(TeamSpaceDto added);
+   void displayAddSpaceDialog(TeamSpaceOperationSuccessHandler successHandler);
 
-	public void notifyOfUpdate(TeamSpaceDto updated);
+   public void notifyOfDeletion(TeamSpaceDto deleted);
+
+   public void notifyOfAddition(TeamSpaceDto added);
+
+   public void notifyOfUpdate(TeamSpaceDto updated);
 }

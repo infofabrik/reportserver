@@ -16,33 +16,30 @@ import net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnector
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.datasources.dto",
-	abstractDto=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto", abstractDto = true)
 @MappedSuperclass
 public abstract class FormatBasedDatasourceDefinition extends DatasourceDefinition {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1595308818017167937L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1595308818017167937L;
 
-	@EnclosedEntity
-	@OneToOne(cascade=CascadeType.ALL)
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Audited
-	private DatasourceConnector connector;
+   @EnclosedEntity
+   @OneToOne(cascade = CascadeType.ALL)
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Audited
+   private DatasourceConnector connector;
 
-	public void setConnector(DatasourceConnector connector) {
-		this.connector = connector;
-	}
+   public void setConnector(DatasourceConnector connector) {
+      this.connector = connector;
+   }
 
-	public DatasourceConnector getConnector() {
-		return connector;
-	}
+   public DatasourceConnector getConnector() {
+      return connector;
+   }
 
-	public InputStream getDataStream(FormatBasedDatasourceConfig dsConfig) throws IOException{
-		return getConnector().getDataStream(dsConfig);
-	}
+   public InputStream getDataStream(FormatBasedDatasourceConfig dsConfig) throws IOException {
+      return getConnector().getDataStream(dsConfig);
+   }
 }

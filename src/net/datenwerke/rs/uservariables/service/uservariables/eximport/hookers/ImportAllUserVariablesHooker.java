@@ -11,25 +11,24 @@ import net.datenwerke.rs.uservariables.service.uservariables.eximport.UserVariab
 
 public class ImportAllUserVariablesHooker implements ImportAllHook {
 
-	private final ExportDataAnalyzerService analizerService;
-	
-	@Inject
-	public ImportAllUserVariablesHooker(
-		ExportDataAnalyzerService analizerService
-		) {
-		this.analizerService = analizerService;
-	}
+   private final ExportDataAnalyzerService analizerService;
 
-	@Override
-	public void configure(ImportConfig config) {
-		try {
-			for(ExportedItem item : analizerService.getExportedItemsFor(config.getExportDataProvider(), UserVariableExporter.class)){
-				EntityImportItemConfig itemConfig = new EntityImportItemConfig(item.getId());
-				config.addItemConfig(itemConfig);
-			}
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+   @Inject
+   public ImportAllUserVariablesHooker(ExportDataAnalyzerService analizerService) {
+      this.analizerService = analizerService;
+   }
+
+   @Override
+   public void configure(ImportConfig config) {
+      try {
+         for (ExportedItem item : analizerService.getExportedItemsFor(config.getExportDataProvider(),
+               UserVariableExporter.class)) {
+            EntityImportItemConfig itemConfig = new EntityImportItemConfig(item.getId());
+            config.addItemConfig(itemConfig);
+         }
+      } catch (ClassNotFoundException e) {
+         throw new IllegalArgumentException(e);
+      }
+   }
 
 }

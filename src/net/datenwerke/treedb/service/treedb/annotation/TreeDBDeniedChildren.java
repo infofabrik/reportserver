@@ -10,5 +10,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Inherited
 public @interface TreeDBDeniedChildren {
-	public Class<?>[] value();
+   public Class<?>[] value();
 }

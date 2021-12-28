@@ -81,9 +81,7 @@ public class BaseReportEngineUiStartup {
       hookHandler.attachHooker(ReportTypeConfigHook.class, jasperReportConfigHooker, 30);
 
       /* attach hooks */
-      hookHandler.attachHooker(
-            ReportViewHook.class, 
-            new ReportViewHook(htmlReportFactory),
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(htmlReportFactory),
             HookHandlerService.PRIORITY_LOW);
 
       /* cubify */

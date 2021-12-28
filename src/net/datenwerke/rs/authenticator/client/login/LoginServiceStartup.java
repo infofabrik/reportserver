@@ -31,87 +31,82 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public class LoginServiceStartup {
 
-	@Inject
-	public LoginServiceStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		HomepageLogoutHook logoutBtnHook,
-		final LoginDao loginDao,
-		Provider<UserPasswordClientPAM> userPasswordClientPamProvider, 
-		
-		Provider<AccountInhibitionPostAuthenticateClientHook> accountInhibitionPostAuthenticateClientHook,
-		
-		final LoginService loginService
-		){
+   @Inject
+   public LoginServiceStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         HomepageLogoutHook logoutBtnHook, final LoginDao loginDao,
+         Provider<UserPasswordClientPAM> userPasswordClientPamProvider,
 
+         Provider<AccountInhibitionPostAuthenticateClientHook> accountInhibitionPostAuthenticateClientHook,
 
-		hookHandler.attachHooker(PostAuthenticateClientHook.class, accountInhibitionPostAuthenticateClientHook);
-		
-		hookHandler.attachHooker(ClientPAMHook.class, new ClientPAMHook(userPasswordClientPamProvider));
-		
-		
-		/* attach hooks */
-		hookHandler.attachHooker(HomepageHeaderContentHook.class, logoutBtnHook);
-		hookHandler.attachHooker(AsyncCallbackSuccessHook.class, SessionTimeoutWatchdog.getAsyncCallbackSuccessHook());
-		hookHandler.attachHooker(ViolatedSecurityHook.class, new ViolatedSecurityHook() {
+         final LoginService loginService) {
 
-			@Override
-			public void violationOccured(final ViolatedSecurityExceptionDto caught, final List<ViolatedSecurityHook> chain) {
-				loginDao.isAuthenticated(new AsyncCallback<UserDto>(){
-					@Override
-					public void onFailure(Throwable caught) {
-						goToLoginPage();
-					}
-					
-					@Override
-					public void onSuccess(UserDto result) {
-						if(null != result){
-							if(chain.size() > 0){
-								ViolatedSecurityHook next = chain.remove(0);
-								next.violationOccured(caught, chain);
-							}
-						}else{
-							goToLoginPage();
-						}
-					}
-					
-					private void goToLoginPage(){
-						loginService.logoff();
-					}
-				});
-			}
-		});
-		
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_BEFORE_STARTUP, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				loginDao.getRequiredClientModules(new RsAsyncCallback<Set<String>>() {
-					@Override
-					public void onSuccess(Set<String> result) {
-						
-						for(ClientPAMHook h : hookHandler.getHookers(ClientPAMHook.class)){
-							ClientPAM pam = h.getObject().get();
-							if(!result.contains(pam.getModuleName())){
-								hookHandler.detachHooker(ClientPAMHook.class, h);
-							}
-						}
-						
-						waitOnEventService.signalProcessingDone(ticket);
-					}
-				});
-			}
-		});
-	
-		
-		/* low level history listener */
-		History.addValueChangeHandler(new ValueChangeHandler<String>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				if(! loginService.isAuthenticated())
-					loginService.fireHistoryEventOnLogin(event);
-			}
-		});
-	}
+      hookHandler.attachHooker(PostAuthenticateClientHook.class, accountInhibitionPostAuthenticateClientHook);
+
+      hookHandler.attachHooker(ClientPAMHook.class, new ClientPAMHook(userPasswordClientPamProvider));
+
+      /* attach hooks */
+      hookHandler.attachHooker(HomepageHeaderContentHook.class, logoutBtnHook);
+      hookHandler.attachHooker(AsyncCallbackSuccessHook.class, SessionTimeoutWatchdog.getAsyncCallbackSuccessHook());
+      hookHandler.attachHooker(ViolatedSecurityHook.class, new ViolatedSecurityHook() {
+
+         @Override
+         public void violationOccured(final ViolatedSecurityExceptionDto caught,
+               final List<ViolatedSecurityHook> chain) {
+            loginDao.isAuthenticated(new AsyncCallback<UserDto>() {
+               @Override
+               public void onFailure(Throwable caught) {
+                  goToLoginPage();
+               }
+
+               @Override
+               public void onSuccess(UserDto result) {
+                  if (null != result) {
+                     if (chain.size() > 0) {
+                        ViolatedSecurityHook next = chain.remove(0);
+                        next.violationOccured(caught, chain);
+                     }
+                  } else {
+                     goToLoginPage();
+                  }
+               }
+
+               private void goToLoginPage() {
+                  loginService.logoff();
+               }
+            });
+         }
+      });
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_BEFORE_STARTUP,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  loginDao.getRequiredClientModules(new RsAsyncCallback<Set<String>>() {
+                     @Override
+                     public void onSuccess(Set<String> result) {
+
+                        for (ClientPAMHook h : hookHandler.getHookers(ClientPAMHook.class)) {
+                           ClientPAM pam = h.getObject().get();
+                           if (!result.contains(pam.getModuleName())) {
+                              hookHandler.detachHooker(ClientPAMHook.class, h);
+                           }
+                        }
+
+                        waitOnEventService.signalProcessingDone(ticket);
+                     }
+                  });
+               }
+            });
+
+      /* low level history listener */
+      History.addValueChangeHandler(new ValueChangeHandler<String>() {
+
+         @Override
+         public void onValueChange(ValueChangeEvent<String> event) {
+            if (!loginService.isAuthenticated())
+               loginService.fireHistoryEventOnLogin(event);
+         }
+      });
+   }
 }

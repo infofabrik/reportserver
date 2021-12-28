@@ -17,42 +17,38 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
  *
  */
 @Entity
-@Table(name="HEADLINE_PARAM_DEF")
+@Table(name = "HEADLINE_PARAM_DEF")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.parameters.headline.dto",
-	displayTitle="RsMessages.INSTANCE.headlineParameterText()",
-	additionalImports=RsMessages.class
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.parameters.headline.dto", displayTitle = "RsMessages.INSTANCE.headlineParameterText()", additionalImports = RsMessages.class)
 public class HeadlineParameterDefinition extends ParameterDefinition<HeadlineParameterInstance> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3960732034147394530L;
-	
-	@ExposeToClient
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String value = ""; //$NON-NLS-1$
-	
-	public void setValue(String value) {
-		this.value = value;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3960732034147394530L;
 
-	public String getValue() {
-		if(null == value || "".equals(value))
-			return getName();
-		return value;
-	}
-	
-	@Override
-	protected HeadlineParameterInstance doCreateParameterInstance() {
-		return new HeadlineParameterInstance();
-	}
+   @ExposeToClient
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String value = ""; //$NON-NLS-1$
 
-	@Override
-    public boolean isSeparator() {
-        return true;
-    }
+   public void setValue(String value) {
+      this.value = value;
+   }
+
+   public String getValue() {
+      if (null == value || "".equals(value))
+         return getName();
+      return value;
+   }
+
+   @Override
+   protected HeadlineParameterInstance doCreateParameterInstance() {
+      return new HeadlineParameterInstance();
+   }
+
+   @Override
+   public boolean isSeparator() {
+      return true;
+   }
 }

@@ -10,30 +10,30 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
 public class SftpSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
-	
-	@Inject
-	public SftpSecurityTargetDomainHooker() {
-		// TODO Auto-generated constructor stub
-	}
 
-	@Override
-	public String genericSecurityViewDomainHook_getName() {
-		return RemoteAccessMessages.INSTANCE.sftpPermission();
-	}
+   @Inject
+   public SftpSecurityTargetDomainHooker() {
+      // TODO Auto-generated constructor stub
+   }
 
-	@Override
-	public String genericSecurityViewDomainHook_getDescription() {
-		return RemoteAccessMessages.INSTANCE.sftpPermissionPermissionModuleDescription();
-	}
+   @Override
+   public String genericSecurityViewDomainHook_getName() {
+      return RemoteAccessMessages.INSTANCE.sftpPermission();
+   }
 
-	@Override
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.SITEMAP.toImageResource();
-	}
+   @Override
+   public String genericSecurityViewDomainHook_getDescription() {
+      return RemoteAccessMessages.INSTANCE.sftpPermissionPermissionModuleDescription();
+   }
 
-	@Override
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new SftpGenericTargetIdentifier();
-	}
+   @Override
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.SITEMAP.toImageResource();
+   }
+
+   @Override
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new SftpGenericTargetIdentifier();
+   }
 
 }

@@ -21,54 +21,54 @@ import net.datenwerke.security.service.usermanager.entities.User;
  */
 public class RSTableSimpleBeanOutputGenerator extends TableOutputGeneratorImpl {
 
-	private RSSimpleTableBean bean;
-	private int fieldInRow = 0;
-	
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_SIMPLE_BEAN};
-	}
-	
-	@Override
-	public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report, TableReport orgReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user, ReportExecutionConfig... configs) throws IOException {
-		super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
-		
-		bean = new RSSimpleTableBean();
-		bean.setDefinition(td, report);
-	}
+   private RSSimpleTableBean bean;
+   private int fieldInRow = 0;
 
-	@Override
-	public void nextRow() {
-		bean.nextRow();
-		fieldInRow = 0;
-	}
-	
-	@Override
-	public void addField(Object field, CellFormatter formatter){
-		bean.addField(getValueOf(field));
-		fieldInRow++;
-	}
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_SIMPLE_BEAN };
+   }
 
-	@Override
-	public CompiledReport getTableObject() {
-		return bean;
-	}
-	
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new RSSimpleTableBean();
-	}
+   @Override
+   public void initialize(OutputStream os, TableDefinition td, boolean withSubtotals, TableReport report,
+         TableReport orgReport, CellFormatter[] cellFormatters, ParameterSet parameters, User user,
+         ReportExecutionConfig... configs) throws IOException {
+      super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
-	@Override
-	public boolean isCatchAll() {
-		return false;
-	}
-	
-	@Override
-	public void close() {
-		bean.close();
-	}
-	
+      bean = new RSSimpleTableBean();
+      bean.setDefinition(td, report);
+   }
 
+   @Override
+   public void nextRow() {
+      bean.nextRow();
+      fieldInRow = 0;
+   }
+
+   @Override
+   public void addField(Object field, CellFormatter formatter) {
+      bean.addField(getValueOf(field));
+      fieldInRow++;
+   }
+
+   @Override
+   public CompiledReport getTableObject() {
+      return bean;
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new RSSimpleTableBean();
+   }
+
+   @Override
+   public boolean isCatchAll() {
+      return false;
+   }
+
+   @Override
+   public void close() {
+      bean.close();
+   }
 
 }

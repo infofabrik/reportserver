@@ -8,8 +8,8 @@ import net.datenwerke.treedb.client.treedb.TreeDbLoaderDao;
 
 public class FileServerTreeLoaderDao extends TreeDbLoaderDao {
 
-	@Inject
-	public FileServerTreeLoaderDao(FileServerTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter){
-		super(treeLoader, treeDbFtoConverter);
-	}
+   @Inject
+   public FileServerTreeLoaderDao(FileServerTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeLoader, treeDbFtoConverter);
+   }
 }

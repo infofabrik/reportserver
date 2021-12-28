@@ -20,19 +20,13 @@ public class HistoryServiceImpl implements HistoryService {
 
    @Override
    public List<HistoryLink> buildLinksFor(final Object o) {
-      return hookHandler.getHookers(HistoryUrlBuilderHook.class)
-         .stream()
-         .filter(hooker -> hooker.consumes(o))
-         .flatMap(hooker -> hooker.buildLinksFor(o).stream())
-         .collect(toList());
+      return hookHandler.getHookers(HistoryUrlBuilderHook.class).stream().filter(hooker -> hooker.consumes(o))
+            .flatMap(hooker -> hooker.buildLinksFor(o).stream()).collect(toList());
    }
 
    @Override
    public List<HistoryLink> buildLinksForList(List<? extends Object> objects) {
-      return objects
-         .stream()
-         .flatMap((Object object) -> buildLinksFor(object).stream())
-         .collect(toList());
+      return objects.stream().flatMap((Object object) -> buildLinksFor(object).stream()).collect(toList());
    }
 
 }

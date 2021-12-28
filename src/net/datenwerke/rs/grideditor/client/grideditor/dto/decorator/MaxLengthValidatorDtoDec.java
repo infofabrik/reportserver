@@ -12,23 +12,21 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.MaxLengthValidatorDto;
  */
 public class MaxLengthValidatorDtoDec extends MaxLengthValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public MaxLengthValidatorDtoDec() {
+      super();
+   }
 
-	public MaxLengthValidatorDtoDec() {
-		super();
-	}
-
-
-	@Override
-	public Validator<?> getValidator() {
-		MaxLengthValidator validator = new MaxLengthValidator(getLength());
-		validator.setMessages(new MaxLengthMessages() {
-			@Override
-			public String maxLengthText(int length) {
-				return getErrorMsg();
-			}
-		});
-		return validator;
-	}
+   @Override
+   public Validator<?> getValidator() {
+      MaxLengthValidator validator = new MaxLengthValidator(getLength());
+      validator.setMessages(new MaxLengthMessages() {
+         @Override
+         public String maxLengthText(int length) {
+            return getErrorMsg();
+         }
+      });
+      return validator;
+   }
 }

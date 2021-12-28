@@ -7,9 +7,10 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.UnsupportedDriver
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface DataSourceDefinitionTransformer<T> extends Hook {
-	
-	T transform(DatasourceContainerProvider datasourceContainerProvider, Class<?> dst, ParameterSet parameters) throws UnsupportedDriverException, DatabaseConnectionException;
 
-	boolean consumes(DatasourceContainerProvider datasourceContainerProvider, Class<?> dst);
+   T transform(DatasourceContainerProvider datasourceContainerProvider, Class<?> dst, ParameterSet parameters)
+         throws UnsupportedDriverException, DatabaseConnectionException;
+
+   boolean consumes(DatasourceContainerProvider datasourceContainerProvider, Class<?> dst);
 
 }

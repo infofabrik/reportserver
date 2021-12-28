@@ -19,63 +19,59 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 @Entity
-@Table(name="FILESEL_PARAM_INST")
+@Table(name = "FILESEL_PARAM_INST")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.ext.client.parameters.fileselection.dto",
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.ext.client.parameters.fileselection.dto", createDecorator = true)
 public class FileSelectionParameterInstance extends ParameterInstance<FileSelectionParameterDefinition> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5397643575398899447L;
-	
-	@JoinTable(name="FILESEL_PARAM_IN_2_FILE")
-	@ExposeToClient
-	@OneToMany(cascade=CascadeType.ALL, orphanRemoval=true)
-	@EnclosedEntity
-	private List<SelectedParameterFile> selectedFiles = new ArrayList<SelectedParameterFile>();
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5397643575398899447L;
 
-	@Override
-	public List getSelectedValue(User user) {
-		return new ArrayList<SelectedParameterFile>(selectedFiles);
-	}
+   @JoinTable(name = "FILESEL_PARAM_IN_2_FILE")
+   @ExposeToClient
+   @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+   @EnclosedEntity
+   private List<SelectedParameterFile> selectedFiles = new ArrayList<SelectedParameterFile>();
 
-	@Override
-	public List<SelectedParameterFile> getDefaultValue(User user, ParameterSet parameterSet) {
-		return new ArrayList<SelectedParameterFile>();
-	}
+   @Override
+   public List getSelectedValue(User user) {
+      return new ArrayList<SelectedParameterFile>(selectedFiles);
+   }
 
-	@Override
-	protected Class getType() {
-		return Object.class;
-	}
+   @Override
+   public List<SelectedParameterFile> getDefaultValue(User user, ParameterSet parameterSet) {
+      return new ArrayList<SelectedParameterFile>();
+   }
 
-	public List<SelectedParameterFile> getSelectedFiles() {
-		return selectedFiles;
-	}
+   @Override
+   protected Class getType() {
+      return Object.class;
+   }
 
-	public void setSelectedFiles(List<SelectedParameterFile> selectedFiles) {
-		this.selectedFiles.clear();
-		if(null != selectedFiles)
-			this.selectedFiles.addAll(selectedFiles);
-	}
-	
-	public void addSelectedFile(SelectedParameterFile file){
-		selectedFiles.add(file);
-	}
+   public List<SelectedParameterFile> getSelectedFiles() {
+      return selectedFiles;
+   }
 
-	public UploadedParameterFile getUploadedFileById(Long id) {
-		if(null == id)
-			return null;
-		for(SelectedParameterFile file : selectedFiles){
-			if(null != file.getUploadedFile() && id.equals(file.getUploadedFile().getId()))
-				return file.getUploadedFile();
-		}
-		return null;
-	}
+   public void setSelectedFiles(List<SelectedParameterFile> selectedFiles) {
+      this.selectedFiles.clear();
+      if (null != selectedFiles)
+         this.selectedFiles.addAll(selectedFiles);
+   }
 
+   public void addSelectedFile(SelectedParameterFile file) {
+      selectedFiles.add(file);
+   }
+
+   public UploadedParameterFile getUploadedFileById(Long id) {
+      if (null == id)
+         return null;
+      for (SelectedParameterFile file : selectedFiles) {
+         if (null != file.getUploadedFile() && id.equals(file.getUploadedFile().getId()))
+            return file.getUploadedFile();
+      }
+      return null;
+   }
 
 }

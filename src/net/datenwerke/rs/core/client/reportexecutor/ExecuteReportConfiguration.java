@@ -4,13 +4,13 @@ import net.datenwerke.rs.core.client.reportexecutor.variantstorer.VariantStorerC
 
 public interface ExecuteReportConfiguration {
 
-	public VariantStorerConfig getVariantStorerConfig();
-	
-	public String getViewId();
-	
-	public boolean handleError(Throwable t);
+   public VariantStorerConfig getVariantStorerConfig();
 
-	public boolean acceptView(String viewId);
-	
-	String getUrlParameters();
+   public String getViewId();
+
+   public boolean handleError(Throwable t);
+
+   public boolean acceptView(String viewId);
+
+   String getUrlParameters();
 }

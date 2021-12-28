@@ -21,51 +21,52 @@ import net.datenwerke.security.client.login.hooks.AuthenticatorWindowExtraOption
 
 public class DatasourceBundleUiStartup {
 
-	@Inject
-	public DatasourceBundleUiStartup(
-		final WaitOnEventUIService waitOnEventService,
-		final HookHandlerService hookHandler,
-		Provider<DatabaseBundleConfigProviderHooker> configProvider,
-		final AuthenticatorWindowExtraOptionHooker authenticatorWindowExtraOptionHooker,
-		
-		final DatasourceBundleDao dsBundleDao,
-		final DatasourceBundleUiService dsBundleService,
-		
-		final EnterpriseUiService enterpriseService,
-		
-		final DatasourceBundleTesterToolbarConfigurator bundleTesterConfigurator
-		
-		){
-		
-		hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, configProvider, 60);
-		
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, bundleTesterConfigurator);
-		
-		waitOnEventService.callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_BEFORE_LOGIN, new SynchronousCallbackOnEventTrigger() {
-			@Override
-			public void execute(final WaitOnEventTicket ticket) {
-				hookHandler.detachHooker(AuthenticatorWindowExtraOptionHook.class, authenticatorWindowExtraOptionHooker);
-				
-				if(! enterpriseService.isEnterprise())
-					waitOnEventService.signalProcessingDone(ticket);
-				else {
-					dsBundleDao.getAvailableBundleKeys(new RsAsyncCallback<List<String>>(){
-						public void onSuccess(List<String> result) {
-							dsBundleService.setAvailableBundleKeys(result);
-							
-							if(null != result && ! result.isEmpty())
-								hookHandler.attachHooker(AuthenticatorWindowExtraOptionHook.class, authenticatorWindowExtraOptionHooker);
-							
-							waitOnEventService.signalProcessingDone(ticket);
-						};
-						@Override
-						public void onFailure(Throwable caught) {
-							waitOnEventService.signalProcessingDone(ticket);
-						}
-					});
-				}
-								
-			}
-		});
-	}
+   @Inject
+   public DatasourceBundleUiStartup(final WaitOnEventUIService waitOnEventService, final HookHandlerService hookHandler,
+         Provider<DatabaseBundleConfigProviderHooker> configProvider,
+         final AuthenticatorWindowExtraOptionHooker authenticatorWindowExtraOptionHooker,
+
+         final DatasourceBundleDao dsBundleDao, final DatasourceBundleUiService dsBundleService,
+
+         final EnterpriseUiService enterpriseService,
+
+         final DatasourceBundleTesterToolbarConfigurator bundleTesterConfigurator
+
+   ) {
+
+      hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, configProvider, 60);
+
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, bundleTesterConfigurator);
+
+      waitOnEventService.callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_BEFORE_LOGIN,
+            new SynchronousCallbackOnEventTrigger() {
+               @Override
+               public void execute(final WaitOnEventTicket ticket) {
+                  hookHandler.detachHooker(AuthenticatorWindowExtraOptionHook.class,
+                        authenticatorWindowExtraOptionHooker);
+
+                  if (!enterpriseService.isEnterprise())
+                     waitOnEventService.signalProcessingDone(ticket);
+                  else {
+                     dsBundleDao.getAvailableBundleKeys(new RsAsyncCallback<List<String>>() {
+                        public void onSuccess(List<String> result) {
+                           dsBundleService.setAvailableBundleKeys(result);
+
+                           if (null != result && !result.isEmpty())
+                              hookHandler.attachHooker(AuthenticatorWindowExtraOptionHook.class,
+                                    authenticatorWindowExtraOptionHooker);
+
+                           waitOnEventService.signalProcessingDone(ticket);
+                        };
+
+                        @Override
+                        public void onFailure(Throwable caught) {
+                           waitOnEventService.signalProcessingDone(ticket);
+                        }
+                     });
+                  }
+
+               }
+            });
+   }
 }

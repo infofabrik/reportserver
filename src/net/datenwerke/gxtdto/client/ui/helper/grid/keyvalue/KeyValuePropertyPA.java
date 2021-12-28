@@ -6,11 +6,12 @@ import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
 public interface KeyValuePropertyPA extends PropertyAccess<KeyValueProperty> {
-	
-	@Path("key")
-	public ModelKeyProvider<KeyValueProperty> id();
 
-	/* Properties */
-	public ValueProvider<KeyValueProperty,String> key();
-	public ValueProvider<KeyValueProperty,String> value();
+   @Path("key")
+   public ModelKeyProvider<KeyValueProperty> id();
+
+   /* Properties */
+   public ValueProvider<KeyValueProperty, String> key();
+
+   public ValueProvider<KeyValueProperty, String> value();
 }

@@ -20,75 +20,72 @@ import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
 @Entity
-@Table(name="JXLS_REPORT_VARIANT")
+@Table(name = "JXLS_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", 
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", createDecorator = true)
 public class JxlsReportVariant extends JxlsReport implements ReportVariant {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5745075422591319002L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5745075422591319002L;
 
-	@Override
-	public JxlsReportFile getReportFile() {
-		return getBaseReport().getReportFile();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setReportFile(JxlsReportFile reportFile) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	public JxlsReport getBaseReport() {
-		AbstractReportManagerNode parent = getParent();
-		if(parent instanceof HibernateProxy)
-			parent = (AbstractReportManagerNode) ((HibernateProxy)parent).getHibernateLazyInitializer().getImplementation();
-		return (JxlsReport) parent;
-	}
+   @Override
+   public JxlsReportFile getReportFile() {
+      return getBaseReport().getReportFile();
+   }
 
-	public void setBaseReport(Report baseReport) {
-		throw new IllegalStateException("should not be called on server");
-	}
+   @IgnoreMergeBackDto
+   @Override
+   public void setReportFile(JxlsReportFile reportFile) {
+      throw new NotImplementedException("not implemented");
+   }
 
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return getBaseReport().getDatasourceContainer();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return getBaseReport().getParameterDefinitions();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	/**
-	 */
-	@ClonePostProcessor
-	public void guideCloningProcess(Object report){
-		super.setParameterDefinitions(null);
-		super.setDatasourceContainer(null);
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   public JxlsReport getBaseReport() {
+      AbstractReportManagerNode parent = getParent();
+      if (parent instanceof HibernateProxy)
+         parent = (AbstractReportManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+               .getImplementation();
+      return (JxlsReport) parent;
+   }
+
+   public void setBaseReport(Report baseReport) {
+      throw new IllegalStateException("should not be called on server");
+   }
+
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return getBaseReport().getDatasourceContainer();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public List<ParameterDefinition> getParameterDefinitions() {
+      return getBaseReport().getParameterDefinitions();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setParameterDefinitions(List<ParameterDefinition> parameters) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   /**
+    */
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      super.setParameterDefinitions(null);
+      super.setDatasourceContainer(null);
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

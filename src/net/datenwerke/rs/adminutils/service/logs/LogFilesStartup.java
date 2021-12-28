@@ -10,13 +10,13 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class LogFilesStartup {
 
-	@Inject
-	public LogFilesStartup(HookHandlerService hookHandler, 
-			
-			Provider<ListLogFilesCommand> listLogFilesCommandProvider,
-			Provider<ViewLogFileCommand> viewLogFileCommandProvider) {
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, listLogFilesCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, viewLogFileCommandProvider);
-	}
+   @Inject
+   public LogFilesStartup(HookHandlerService hookHandler,
+
+         Provider<ListLogFilesCommand> listLogFilesCommandProvider,
+         Provider<ViewLogFileCommand> viewLogFileCommandProvider) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, listLogFilesCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, viewLogFileCommandProvider);
+   }
 }

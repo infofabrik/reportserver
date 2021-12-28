@@ -9,13 +9,13 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportStringPrope
 
 public interface ReportPropertiesRpcServiceAsync {
 
-	void getPropertyKeys(ReportDto reportDto, AsyncCallback<List<String>> callback);
+   void getPropertyKeys(ReportDto reportDto, AsyncCallback<List<String>> callback);
 
-	void getSupportedPropertyKeys(ReportDto reportDto, AsyncCallback<List<String>> callback);
+   void getSupportedPropertyKeys(ReportDto reportDto, AsyncCallback<List<String>> callback);
 
-	void updateProperties(ReportDto report, List<ReportStringPropertyDto> addedProperties,
-			List<ReportStringPropertyDto> modifiedProperties, List<ReportStringPropertyDto> removedProperties,
-			AsyncCallback<ReportDto> callback);
-	
-	void getInheritedProperties(ReportDto report, AsyncCallback<List<ReportStringPropertyDto>> callback);
+   void updateProperties(ReportDto report, List<ReportStringPropertyDto> addedProperties,
+         List<ReportStringPropertyDto> modifiedProperties, List<ReportStringPropertyDto> removedProperties,
+         AsyncCallback<ReportDto> callback);
+
+   void getInheritedProperties(ReportDto report, AsyncCallback<List<ReportStringPropertyDto>> callback);
 }

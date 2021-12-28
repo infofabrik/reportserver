@@ -27,118 +27,104 @@ import net.datenwerke.usermanager.ext.client.properties.rpc.UserPropertiesRpcSer
  *
  */
 @Singleton
-public class UserPropertiesRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements UserPropertiesRpcService {
+public class UserPropertiesRpcServiceImpl extends SecuredRemoteServiceServlet implements UserPropertiesRpcService {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private final DtoService dtoService;
-	private final UserManagerService userService;
-	private final UserPropertiesService userPropertiesService;
-	
-	
-	@Inject
-	public UserPropertiesRpcServiceImpl(
-		DtoService dtoService,
-		UserManagerService userService,
-		UserPropertiesService userPropertiesService
-		) {
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.userService = userService;
-		this.userPropertiesService = userPropertiesService;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	@SecurityChecked(
-		argumentVerification = {
-			@ArgumentVerification(
-				name = "user",
-				isDto = true,
-				verify = @RightsVerification(rights=Write.class)
-			)
-		}
-	)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public UserDto updateProperties(@Named("user") UserDto userDto,
-			List<UserPropertyDto> addedProperties,
-			List<UserPropertyDto> modifiedProperties, List<UserPropertyDto> removedProperties) throws ServerCallFailedException {
-		User user = (User) dtoService.loadPoso(userDto);
-		
-		/* remove */
-		for(UserPropertyDto propDto : removedProperties){
-			UserProperty property = (UserProperty) dtoService.loadPoso(propDto);
-			
-			if(null == userPropertiesService.getProperty(user, property.getKey()))
-				throw new ServerCallFailedException("User does not have property");
-			
-			userPropertiesService.removeProperty(user, property);
-		}
-		
-		/* add */
-		for(UserPropertyDto propertyDto : addedProperties){
-			UserProperty property = new UserProperty();
-			if ( null != propertyDto.getValue() ) 
-				property.setValue(propertyDto.getValue().trim());
-			if(null == propertyDto.getKey())
-				property.setKey(getUniqueKey(user));
-			if( null != propertyDto.getKey())
-				property.setKey(propertyDto.getKey().trim());
-			userPropertiesService.setProperty(user, property);
-		}
-		
-		modifiedProperties.removeAll(removedProperties);
-		modifiedProperties.removeAll(addedProperties);
-		
-		/* modified */
-		
-		for(UserPropertyDto propertyDto : modifiedProperties){
-			UserProperty property = (UserProperty) dtoService.loadPoso(propertyDto);
-				
-			if(null == userPropertiesService.getProperty(user, property.getKey()))
-				throw new ServerCallFailedException("User does not have property");
-			
-			if( null != propertyDto.getKey())
-				propertyDto.setKey(propertyDto.getKey().trim());
-			if ( null != propertyDto.getValue() ) 
-				propertyDto.setValue(propertyDto.getValue().trim());
-			if(null == propertyDto.getKey())
-				propertyDto.setKey(getUniqueKey(user));
-			/* merge data and store user */
-			dtoService.mergePoso(propertyDto, property);
-		}
-		
-		userService.merge(user);
-		
-		return (UserDto) dtoService.createDtoFullAccess(user);
-	}
-	
-	protected String getUniqueKey(User user) {
-		String name = "unnamed";
-		int i = 0;
-		while(hasProperty(user, name))
-			name = "unnamed_" + (++i);
-		
-		return name;
-	}
+   private final DtoService dtoService;
+   private final UserManagerService userService;
+   private final UserPropertiesService userPropertiesService;
 
-	protected boolean hasProperty(User user, String name) {
-		for(UserProperty p : user.getProperties())
-			if(name.equals(p.getKey()))
-				return true;
-		return false;
-	}
-	
+   @Inject
+   public UserPropertiesRpcServiceImpl(DtoService dtoService, UserManagerService userService,
+         UserPropertiesService userPropertiesService) {
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public List<String> getPropertyKeys() throws ServerCallFailedException {
-		return userPropertiesService.getPropertyKeys();
-	}
+      /* store objects */
+      this.dtoService = dtoService;
+      this.userService = userService;
+      this.userPropertiesService = userPropertiesService;
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "user", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public UserDto updateProperties(@Named("user") UserDto userDto, List<UserPropertyDto> addedProperties,
+         List<UserPropertyDto> modifiedProperties, List<UserPropertyDto> removedProperties)
+         throws ServerCallFailedException {
+      User user = (User) dtoService.loadPoso(userDto);
+
+      /* remove */
+      for (UserPropertyDto propDto : removedProperties) {
+         UserProperty property = (UserProperty) dtoService.loadPoso(propDto);
+
+         if (null == userPropertiesService.getProperty(user, property.getKey()))
+            throw new ServerCallFailedException("User does not have property");
+
+         userPropertiesService.removeProperty(user, property);
+      }
+
+      /* add */
+      for (UserPropertyDto propertyDto : addedProperties) {
+         UserProperty property = new UserProperty();
+         if (null != propertyDto.getValue())
+            property.setValue(propertyDto.getValue().trim());
+         if (null == propertyDto.getKey())
+            property.setKey(getUniqueKey(user));
+         if (null != propertyDto.getKey())
+            property.setKey(propertyDto.getKey().trim());
+         userPropertiesService.setProperty(user, property);
+      }
+
+      modifiedProperties.removeAll(removedProperties);
+      modifiedProperties.removeAll(addedProperties);
+
+      /* modified */
+
+      for (UserPropertyDto propertyDto : modifiedProperties) {
+         UserProperty property = (UserProperty) dtoService.loadPoso(propertyDto);
+
+         if (null == userPropertiesService.getProperty(user, property.getKey()))
+            throw new ServerCallFailedException("User does not have property");
+
+         if (null != propertyDto.getKey())
+            propertyDto.setKey(propertyDto.getKey().trim());
+         if (null != propertyDto.getValue())
+            propertyDto.setValue(propertyDto.getValue().trim());
+         if (null == propertyDto.getKey())
+            propertyDto.setKey(getUniqueKey(user));
+         /* merge data and store user */
+         dtoService.mergePoso(propertyDto, property);
+      }
+
+      userService.merge(user);
+
+      return (UserDto) dtoService.createDtoFullAccess(user);
+   }
+
+   protected String getUniqueKey(User user) {
+      String name = "unnamed";
+      int i = 0;
+      while (hasProperty(user, name))
+         name = "unnamed_" + (++i);
+
+      return name;
+   }
+
+   protected boolean hasProperty(User user, String name) {
+      for (UserProperty p : user.getProperties())
+         if (name.equals(p.getKey()))
+            return true;
+      return false;
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public List<String> getPropertyKeys() throws ServerCallFailedException {
+      return userPropertiesService.getPropertyKeys();
+   }
 
 }

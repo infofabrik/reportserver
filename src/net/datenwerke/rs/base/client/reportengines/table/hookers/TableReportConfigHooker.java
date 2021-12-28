@@ -20,84 +20,82 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class TableReportConfigHooker implements ReportTypeConfigHook {
 
-	private final Provider<TableReportForm> adminViewProvider;
-	
-	@Inject
-	public TableReportConfigHooker(
-		Provider<TableReportForm> adminViewProvider
-		) {
+   private final Provider<TableReportForm> adminViewProvider;
 
-		/* store objects */
-		this.adminViewProvider = adminViewProvider;
-	}
+   @Inject
+   public TableReportConfigHooker(Provider<TableReportForm> adminViewProvider) {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof TableReportDto;
-	}
-	
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return TableReportDto.class;
-	}
+      /* store objects */
+      this.adminViewProvider = adminViewProvider;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return TableReportVariantDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_DL.toImageResource();
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return TableReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_DL.toImageResource();
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return TableReportVariantDto.class;
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_DL.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_DL.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_DL.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_DL.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_DL_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_DL.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_DL_LINK.toImageResource(1);
-	}
-	
-	@Override
-	public ReportDto instantiateReport() {
-		return new TableReportDtoDec();
-	}
-	
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new TableReportVariantDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_DL.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return TableMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_DL_LINK.toImageResource();
+   }
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminViewProvider.get());
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_DL_LINK.toImageResource(1);
+   }
 
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public ReportDto instantiateReport() {
+      return new TableReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new TableReportVariantDtoDec();
+   }
+
+   @Override
+   public String getReportName() {
+      return TableMessages.INSTANCE.reportTypeName();
+   }
+
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminViewProvider.get());
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

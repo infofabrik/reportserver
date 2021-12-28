@@ -7,5 +7,6 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public interface PipedTerminalCommandHook extends TerminalCommandHook {
 
-	CommandResult execute(CommandResult lastResult, CommandParser parser, TerminalSession session) throws TerminalException;
+   CommandResult execute(CommandResult lastResult, CommandParser parser, TerminalSession session)
+         throws TerminalException;
 }

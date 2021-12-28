@@ -14,16 +14,14 @@ import net.datenwerke.security.ext.client.usermanager.UserManagerTreeManagerDao;
 @Singleton
 public class UserMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public UserMainPanel(
-		UserManagerTreeManagerDao userManagerTreeHandler
-		){
-	
-		super(userManagerTreeHandler);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "usermanager:admin:view:toolbar";
-	}
+   @Inject
+   public UserMainPanel(UserManagerTreeManagerDao userManagerTreeHandler) {
+
+      super(userManagerTreeHandler);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "usermanager:admin:view:toolbar";
+   }
 }

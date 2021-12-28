@@ -8,14 +8,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class ArithmeticOperatorHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		return "+".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.PLUS) :
-			   "-".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.MINUS) :
-			   "*".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.TIMES) :
-			   "/".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.DIVIDES) :
-			   "^".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.POWER) :
-			   null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      return "+".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.PLUS)
+            : "-".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.MINUS)
+                  : "*".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.TIMES)
+                        : "/".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.DIVIDES)
+                              : "^".equals(strToken) ? new ArithmeticOperatorExpressionToken(OperatorType.POWER) : null;
+   }
 
 }

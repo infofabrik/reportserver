@@ -16,69 +16,64 @@ import net.datenwerke.rs.eximport.client.eximport.im.hooks.ImporterConfiguratorH
 import net.datenwerke.rs.eximport.client.eximport.im.ui.ImportMainPanel;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-
 /**
  * 
  *
  */
 public class DashboardManagerUIImporterHooker implements ImporterConfiguratorHook {
 
-	private static final String SUPPORTED_EXPORTER_ID = "DashboardManagerExporter";
-	private static final String IMPORTER_ID = "DashboardManagerImporter";
-	
-	private final Provider<DashboardManagerImporterConfigPanel> configPanelProvider;
-	
-	private DashboardManagerImporterConfigPanel configPanel;
-	
-	@Inject
-	public DashboardManagerUIImporterHooker(
-		Provider<DashboardManagerImporterConfigPanel> configPanelProvider	
-		){
-	
-		/* store objects */
-		this.configPanelProvider = configPanelProvider;
-	}
-	
+   private static final String SUPPORTED_EXPORTER_ID = "DashboardManagerExporter";
+   private static final String IMPORTER_ID = "DashboardManagerImporter";
 
-	@Override
-	public String getImporterId() {
-		return IMPORTER_ID;
-	}
-	
-	@Override
-	public ImageResource getImporterIcon() {
-		return BaseIcon.DASHBOARD.toImageResource();
-	}
+   private final Provider<DashboardManagerImporterConfigPanel> configPanelProvider;
 
-	@Override
-	public String getImporterName() {
-		return DashboardMessages.INSTANCE.importerName();
-	}
+   private DashboardManagerImporterConfigPanel configPanel;
 
-	@Override
-	public Collection<String> getSupportedExporters() {
-		return Collections.singletonList(SUPPORTED_EXPORTER_ID);
-	}
+   @Inject
+   public DashboardManagerUIImporterHooker(Provider<DashboardManagerImporterConfigPanel> configPanelProvider) {
 
-	@Override
-	public Widget initConfigPanel(ImportMainPanel importMainPanel) {
-		configPanel = configPanelProvider.get();
-		return configPanel;
-	}
+      /* store objects */
+      this.configPanelProvider = configPanelProvider;
+   }
 
-	@Override
-	public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
-		if(null == configPanel)
-			return null;
-		return configPanel.getConfiguration();
-	}
+   @Override
+   public String getImporterId() {
+      return IMPORTER_ID;
+   }
 
-	
-	@Override
-	public void reset() {
-		if(null != configPanel)
-			configPanel.resetConfig();
+   @Override
+   public ImageResource getImporterIcon() {
+      return BaseIcon.DASHBOARD.toImageResource();
+   }
 
-	}
+   @Override
+   public String getImporterName() {
+      return DashboardMessages.INSTANCE.importerName();
+   }
+
+   @Override
+   public Collection<String> getSupportedExporters() {
+      return Collections.singletonList(SUPPORTED_EXPORTER_ID);
+   }
+
+   @Override
+   public Widget initConfigPanel(ImportMainPanel importMainPanel) {
+      configPanel = configPanelProvider.get();
+      return configPanel;
+   }
+
+   @Override
+   public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
+      if (null == configPanel)
+         return null;
+      return configPanel.getConfiguration();
+   }
+
+   @Override
+   public void reset() {
+      if (null != configPanel)
+         configPanel.resetConfig();
+
+   }
 
 }

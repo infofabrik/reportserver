@@ -10,9 +10,8 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 @HookConfig
 public interface OlapCubeCacheHook extends Hook {
 
-	public Cube getCubeFromCache(SaikuReport report);
+   public Cube getCubeFromCache(SaikuReport report);
 
-	public void putCubeInCache(SaikuReport report, Cube cube, OlapConnection olapConnection);
-	
+   public void putCubeInCache(SaikuReport report, Cube cube, OlapConnection olapConnection);
 
 }

@@ -26,118 +26,115 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Audited
 @Entity
-@Table(name="DADGET")
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	createDecorator=true,
-	abstractDto=true
-)
+@Table(name = "DADGET")
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", createDecorator = true, abstractDto = true)
 public abstract class Dadget implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9148252532248599659L;
-	
-	@ExposeToClient
-	private int n = 1;
-	
-	@ExposeToClient
-	private int col = 1;
-	
-	@ExposeToClient
-	private int height = 250;
-	
-	@ExposeToClient
-	private long reloadInterval = -1; 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -9148252532248599659L;
 
-	@ExposeToClient
-	private DadgetContainer container = DadgetContainer.CENTER;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@JoinTable(name="DADGET_REPORT_2_PARAM_INST")
-	@ExposeToClient
-	@EnclosedEntity
-    @OneToMany(cascade={CascadeType.ALL}, orphanRemoval=true)
-	@NotAudited
-	private Set<ParameterInstance> parameterInstances = new HashSet<ParameterInstance>();
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   private int n = 1;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-	
-	final public void setN(int n) {
-		this.n = n;
-	}
+   @ExposeToClient
+   private int col = 1;
 
-	final public int getN() {
-		return n;
-	}
+   @ExposeToClient
+   private int height = 250;
 
-	public void setCol(int column) {
-		this.col = column;
-	}
+   @ExposeToClient
+   private long reloadInterval = -1;
 
-	public int getCol() {
-		return col;
-	}
-	
-	public long getReloadInterval() {
-		return reloadInterval;
-	}
-	
-	public void setReloadInterval(long reloadInterval) {
-		this.reloadInterval = reloadInterval;
-	}
+   @ExposeToClient
+   private DadgetContainer container = DadgetContainer.CENTER;
 
-	public void init() {
-		
-	}
+   @Version
+   private Long version;
 
-	public void setHeight(int height) {
-		this.height = height;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public int getHeight() {
-		return height;
-	}
-	
-	public DadgetContainer getContainer() {
-		return container;
-	}
-	
-	public void setContainer(DadgetContainer container) {
-		this.container = container;
-	}
+   @JoinTable(name = "DADGET_REPORT_2_PARAM_INST")
+   @ExposeToClient
+   @EnclosedEntity
+   @OneToMany(cascade = { CascadeType.ALL }, orphanRemoval = true)
+   @NotAudited
+   private Set<ParameterInstance> parameterInstances = new HashSet<ParameterInstance>();
 
-	public Set<ParameterInstance> getParameterInstances() {
-		return parameterInstances;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setParameterInstances(Set<ParameterInstance> parameterInstances) {
-		if(null == parameterInstances)
-			parameterInstances = new HashSet<ParameterInstance>();
-			
-		this.parameterInstances.clear();
-		this.parameterInstances.addAll(parameterInstances);
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   final public void setN(int n) {
+      this.n = n;
+   }
+
+   final public int getN() {
+      return n;
+   }
+
+   public void setCol(int column) {
+      this.col = column;
+   }
+
+   public int getCol() {
+      return col;
+   }
+
+   public long getReloadInterval() {
+      return reloadInterval;
+   }
+
+   public void setReloadInterval(long reloadInterval) {
+      this.reloadInterval = reloadInterval;
+   }
+
+   public void init() {
+
+   }
+
+   public void setHeight(int height) {
+      this.height = height;
+   }
+
+   public int getHeight() {
+      return height;
+   }
+
+   public DadgetContainer getContainer() {
+      return container;
+   }
+
+   public void setContainer(DadgetContainer container) {
+      this.container = container;
+   }
+
+   public Set<ParameterInstance> getParameterInstances() {
+      return parameterInstances;
+   }
+
+   public void setParameterInstances(Set<ParameterInstance> parameterInstances) {
+      if (null == parameterInstances)
+         parameterInstances = new HashSet<ParameterInstance>();
+
+      this.parameterInstances.clear();
+      this.parameterInstances.addAll(parameterInstances);
+   }
 }

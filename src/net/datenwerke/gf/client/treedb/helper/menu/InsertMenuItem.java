@@ -18,98 +18,101 @@ import net.datenwerke.treedb.client.treedb.dto.decorator.AbstractNodeDtoDec;
 import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
 
 public class InsertMenuItem extends TreeMenuItem {
-	
-	private AvailabilityCallback availableCallback = AvailabilityCallback.TRUE_INSTANCE;
 
-	public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager){
-		this(dummyNode, text, treeManager, (BaseIcon) null);
-	}
-	
-	public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager, BaseIcon icon){
-		this(dummyNode, text, treeManager, null == icon ? (ImageResource) null: icon.toImageResource());
-		if(null != icon)
-			setIcon(icon);
-	}
-	
-	public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager, ImageResource icon){
-		super();
-		
-		if(null != icon)
-			setIcon(icon);
-		
-		setText(text);
-		
-		addMenuSelectionListener(new TreeMenuSelectionEvent() {
-			@SuppressWarnings("unchecked")
-			public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-				treeManager.insertNode(dummyNode, node, new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.inserted()) {
-					private HandlerRegistration addExpandHandler;
+   private AvailabilityCallback availableCallback = AvailabilityCallback.TRUE_INSTANCE;
 
-					@Override
-					public void doOnSuccess(final AbstractNodeDto insertedNode) {
-						/* tell new parent that it has now children */
-						((AbstractNodeDtoDec)node).setHasChildren(true);
+   public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager) {
+      this(dummyNode, text, treeManager, (BaseIcon) null);
+   }
 
-						/* https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504 */
-						tree.releaseMouseDownFlag();
-						
-						/* if not expanded .. expand node */
-						if(! tree.isExpanded(node)){
-							if(null != addExpandHandler)
-								addExpandHandler.removeHandler();
-							
-							addExpandHandler = tree.addExpandHandler(new ExpandItemHandler<AbstractNodeDto>() {
-								@Override
-								public void onExpand(ExpandItemEvent<AbstractNodeDto> event) {
-									if(null != addExpandHandler)
-										addExpandHandler.removeHandler();
-									Scheduler.get().scheduleDeferred(new Command(){
-										@Override
-										public void execute() {
-											tree.getSelectionModel().select(insertedNode, false);
-										}
-									});
-								}
-							});
-							tree.setLeaf(node, false);
-							tree.setExpanded(node, true);
-						} else {
-							/* the node should have been inserted directly .. select node */
-							Scheduler.get().scheduleDeferred(new Command(){
-								@Override
-								public void execute() {
-									if(tree.isExpanded(node) )
-										tree.getSelectionModel().select(insertedNode, false);								
-								}
-							});
-						}
-					}
-					
-				});
+   public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager,
+         BaseIcon icon) {
+      this(dummyNode, text, treeManager, null == icon ? (ImageResource) null : icon.toImageResource());
+      if (null != icon)
+         setIcon(icon);
+   }
 
-			}
-		});
-	}
+   public InsertMenuItem(final AbstractNodeDto dummyNode, String text, final TreeDbManagerDao treeManager,
+         ImageResource icon) {
+      super();
 
-	@Override
-	public void toBeDisplayed(AbstractNodeDto selectedItem) {
-		disable();
-		
-		if(! availableCallback.isAvailable())
-			return;
-		
-		if(! (selectedItem instanceof SecuredAbstractNodeDtoDec) || 
-		   ! ((SecuredAbstractNodeDtoDec)selectedItem).isAccessRightsLoaded() || 
-		   (
-			    ((SecuredAbstractNodeDtoDec)selectedItem).hasAccessRight(WriteDto.class) &&
-			    ((SecuredAbstractNodeDtoDec)selectedItem).hasInheritedAccessRight(WriteDto.class)
-		   )
-		) {
-			enable();
-		}
-	}
+      if (null != icon)
+         setIcon(icon);
 
-	public void setAvailableCallback(AvailabilityCallback availableCallback) {
-		this.availableCallback = availableCallback;
-	}
+      setText(text);
+
+      addMenuSelectionListener(new TreeMenuSelectionEvent() {
+         @SuppressWarnings("unchecked")
+         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
+            treeManager.insertNode(dummyNode, node,
+                  new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.inserted()) {
+                     private HandlerRegistration addExpandHandler;
+
+                     @Override
+                     public void doOnSuccess(final AbstractNodeDto insertedNode) {
+                        /* tell new parent that it has now children */
+                        ((AbstractNodeDtoDec) node).setHasChildren(true);
+
+                        /*
+                         * https://www.sencha.com/forum/showthread.php?308983-GXT-3.1.4.-
+                         * TreeSelectionModel-RightClick-sets-mousdown-flag&p=1128504#post1128504
+                         */
+                        tree.releaseMouseDownFlag();
+
+                        /* if not expanded .. expand node */
+                        if (!tree.isExpanded(node)) {
+                           if (null != addExpandHandler)
+                              addExpandHandler.removeHandler();
+
+                           addExpandHandler = tree.addExpandHandler(new ExpandItemHandler<AbstractNodeDto>() {
+                              @Override
+                              public void onExpand(ExpandItemEvent<AbstractNodeDto> event) {
+                                 if (null != addExpandHandler)
+                                    addExpandHandler.removeHandler();
+                                 Scheduler.get().scheduleDeferred(new Command() {
+                                    @Override
+                                    public void execute() {
+                                       tree.getSelectionModel().select(insertedNode, false);
+                                    }
+                                 });
+                              }
+                           });
+                           tree.setLeaf(node, false);
+                           tree.setExpanded(node, true);
+                        } else {
+                           /* the node should have been inserted directly .. select node */
+                           Scheduler.get().scheduleDeferred(new Command() {
+                              @Override
+                              public void execute() {
+                                 if (tree.isExpanded(node))
+                                    tree.getSelectionModel().select(insertedNode, false);
+                              }
+                           });
+                        }
+                     }
+
+                  });
+
+         }
+      });
+   }
+
+   @Override
+   public void toBeDisplayed(AbstractNodeDto selectedItem) {
+      disable();
+
+      if (!availableCallback.isAvailable())
+         return;
+
+      if (!(selectedItem instanceof SecuredAbstractNodeDtoDec)
+            || !((SecuredAbstractNodeDtoDec) selectedItem).isAccessRightsLoaded()
+            || (((SecuredAbstractNodeDtoDec) selectedItem).hasAccessRight(WriteDto.class)
+                  && ((SecuredAbstractNodeDtoDec) selectedItem).hasInheritedAccessRight(WriteDto.class))) {
+         enable();
+      }
+   }
+
+   public void setAvailableCallback(AvailabilityCallback availableCallback) {
+      this.availableCallback = availableCallback;
+   }
 }

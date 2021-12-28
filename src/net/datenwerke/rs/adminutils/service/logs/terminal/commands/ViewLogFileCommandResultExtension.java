@@ -6,31 +6,29 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultExtension;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.adminutils.client.logs.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.adminutils.client.logs.dto")
 public class ViewLogFileCommandResultExtension extends CommandResultExtension {
 
-	@ExposeToClient(disableHtmlEncode=true)
-	private List<String> data;
-	
-	@ExposeToClient(disableHtmlEncode=true)
-	private String filename;
+   @ExposeToClient(disableHtmlEncode = true)
+   private List<String> data;
 
-	public void setData(List<String> data) {
-		this.data = data;
-	}
+   @ExposeToClient(disableHtmlEncode = true)
+   private String filename;
 
-	public List<String> getData() {
-		return data;
-	}
-	
-	public void setFilename(String filename) {
-		this.filename = filename;
-	}
+   public void setData(List<String> data) {
+      this.data = data;
+   }
 
-	public String getFilename() {
-		return filename;
-	}
+   public List<String> getData() {
+      return data;
+   }
+
+   public void setFilename(String filename) {
+      this.filename = filename;
+   }
+
+   public String getFilename() {
+      return filename;
+   }
 
 }

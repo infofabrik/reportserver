@@ -5,7 +5,8 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator;
 
 public interface BirtOutputGenerator extends ReportOutputGenerator {
-	
-	public CompiledRSBirtReport exportReport(Object runAndRenderTask, String outputFormat, ReportExecutionConfig... configs);
+
+   public CompiledRSBirtReport exportReport(Object runAndRenderTask, String outputFormat,
+         ReportExecutionConfig... configs);
 
 }

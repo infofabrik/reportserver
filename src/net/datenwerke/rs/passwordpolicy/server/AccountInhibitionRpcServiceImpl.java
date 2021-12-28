@@ -45,12 +45,8 @@ public class AccountInhibitionRpcServiceImpl extends SecuredRemoteServiceServlet
    private final BsiPasswordPolicyService bsiPasswordPolicyService;
 
    @Inject
-   public AccountInhibitionRpcServiceImpl(
-         SecurityService securityService, 
-         UserManagerService userManagerService,
-         BsiPasswordPolicy bsiPasswordPolicy, 
-         BsiPasswordPolicyService bsiPasswordPolicyService
-         ) {
+   public AccountInhibitionRpcServiceImpl(SecurityService securityService, UserManagerService userManagerService,
+         BsiPasswordPolicy bsiPasswordPolicy, BsiPasswordPolicyService bsiPasswordPolicyService) {
 
       this.securityService = securityService;
       this.userManagerService = userManagerService;

@@ -9,16 +9,15 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.rpc.General
 
 public class GeneralInfoDao extends Dao {
 
-	private final GeneralInfoRpcServiceAsync rpcService;
+   private final GeneralInfoRpcServiceAsync rpcService;
 
-	@Inject
-	public GeneralInfoDao(
-			GeneralInfoRpcServiceAsync rpcService) {
-			this.rpcService = rpcService;
-	}
-	
-	public void loadGeneralInfo(RsAsyncCallback<GeneralInfoDto> callback){
-		rpcService.loadGeneralInfo(transformAndKeepCallback(callback));
-	}
+   @Inject
+   public GeneralInfoDao(GeneralInfoRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void loadGeneralInfo(RsAsyncCallback<GeneralInfoDto> callback) {
+      rpcService.loadGeneralInfo(transformAndKeepCallback(callback));
+   }
 
 }

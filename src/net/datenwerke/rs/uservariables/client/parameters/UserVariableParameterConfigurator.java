@@ -34,71 +34,75 @@ import net.datenwerke.rs.uservariables.client.uservariables.dto.pa.UserVariableD
  * 
  *
  */
-public class UserVariableParameterConfigurator extends ParameterConfiguratorImpl<UserVariableParameterDefinitionDto, UserVariableParameterInstanceDto> {
+public class UserVariableParameterConfigurator
+      extends ParameterConfiguratorImpl<UserVariableParameterDefinitionDto, UserVariableParameterInstanceDto> {
 
-	private static UserVariableDefinitionDtoPA uvDefPa = GWT.create(UserVariableDefinitionDtoPA.class);
-	
-	private final UserVariablesUIService userVariableService;
+   private static UserVariableDefinitionDtoPA uvDefPa = GWT.create(UserVariableDefinitionDtoPA.class);
 
-	@Inject
-	public UserVariableParameterConfigurator(
-		UserVariablesUIService userVariableService	
-		){
-		this.userVariableService = userVariableService;
-	}
+   private final UserVariablesUIService userVariableService;
 
-	public ImageResource getIcon() {
-		return BaseIcon.USER_VARIABLE.toImageResource();
-	}
+   @Inject
+   public UserVariableParameterConfigurator(UserVariablesUIService userVariableService) {
+      this.userVariableService = userVariableService;
+   }
 
-	public String getName() {
-		return UserVariableParameterMessages.INSTANCE.userVariable(); //$NON-NLS-1$
-	}
+   public ImageResource getIcon() {
+      return BaseIcon.USER_VARIABLE.toImageResource();
+   }
 
-	@Override
-	protected UserVariableParameterDefinitionDto doGetNewDto() {
-		return new UserVariableParameterDefinitionDto();
-	}
-	
-	@Override
-	public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
-		return UserVariableParameterDefinitionDto.class.equals(type);
-	}
+   public String getName() {
+      return UserVariableParameterMessages.INSTANCE.userVariable(); // $NON-NLS-1$
+   }
 
-	@Override
-	public Widget getEditComponentForDefinition(UserVariableParameterDefinitionDto definition, ReportDto report) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.addField(UserVariableDefinitionDto.class, UserVariableParameterDefinitionDtoPA.INSTANCE.userVariableDefinition(), UserVariableParameterMessages.INSTANCE.userVariable(), new SFFCBaseModel<UserVariableDefinitionDto>(){ 
+   @Override
+   protected UserVariableParameterDefinitionDto doGetNewDto() {
+      return new UserVariableParameterDefinitionDto();
+   }
 
-			@Override
-			public ListStore<UserVariableDefinitionDto> getAllItemsStore() {
-				return userVariableService.getDefinedVariableDefinitionsStore();
-			}
+   @Override
+   public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
+      return UserVariableParameterDefinitionDto.class.equals(type);
+   }
 
-			@Override
-			public HashMap<ValueProvider<UserVariableDefinitionDto, String>, String> getDisplayProperties() {
-				HashMap<ValueProvider<UserVariableDefinitionDto, String>, String> properties = new HashMap<ValueProvider<UserVariableDefinitionDto, String>, String>();
-				properties.put(uvDefPa.name(), BaseMessages.INSTANCE.name());
-				return properties;
-			}
+   @Override
+   public Widget getEditComponentForDefinition(UserVariableParameterDefinitionDto definition, ReportDto report) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-			@Override
-			public boolean isMultiSelect() {
-				return false;
-			}
-		});
-		
-		/* perform binding */
-		form.bind(definition);
-		
-		return form;
-	}
+      form.addField(UserVariableDefinitionDto.class,
+            UserVariableParameterDefinitionDtoPA.INSTANCE.userVariableDefinition(),
+            UserVariableParameterMessages.INSTANCE.userVariable(), new SFFCBaseModel<UserVariableDefinitionDto>() {
 
-	@Override
-	public Widget doGetEditComponentForInstance(UserVariableParameterInstanceDto instance, Collection<ParameterInstanceDto> relevantInstances, UserVariableParameterDefinitionDto definition, boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
-		HTML text = new HTML(BaseMessages.INSTANCE.value() + " " + ((UserVariableParameterInstanceDtoDec)instance).getValue()); //$NON-NLS-1$
-		return new ParameterFieldWrapperForFrontend(definition, instance, new WidgetComponent(text), labelWidth);
-	}
+               @Override
+               public ListStore<UserVariableDefinitionDto> getAllItemsStore() {
+                  return userVariableService.getDefinedVariableDefinitionsStore();
+               }
+
+               @Override
+               public HashMap<ValueProvider<UserVariableDefinitionDto, String>, String> getDisplayProperties() {
+                  HashMap<ValueProvider<UserVariableDefinitionDto, String>, String> properties = new HashMap<ValueProvider<UserVariableDefinitionDto, String>, String>();
+                  properties.put(uvDefPa.name(), BaseMessages.INSTANCE.name());
+                  return properties;
+               }
+
+               @Override
+               public boolean isMultiSelect() {
+                  return false;
+               }
+            });
+
+      /* perform binding */
+      form.bind(definition);
+
+      return form;
+   }
+
+   @Override
+   public Widget doGetEditComponentForInstance(UserVariableParameterInstanceDto instance,
+         Collection<ParameterInstanceDto> relevantInstances, UserVariableParameterDefinitionDto definition,
+         boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
+      HTML text = new HTML(
+            BaseMessages.INSTANCE.value() + " " + ((UserVariableParameterInstanceDtoDec) instance).getValue()); //$NON-NLS-1$
+      return new ParameterFieldWrapperForFrontend(definition, instance, new WidgetComponent(text), labelWidth);
+   }
 
 }

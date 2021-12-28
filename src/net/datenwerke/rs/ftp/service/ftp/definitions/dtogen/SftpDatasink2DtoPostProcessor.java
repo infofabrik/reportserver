@@ -4,22 +4,21 @@ import net.datenwerke.dtoservices.dtogenerator.poso2dtogenerator.interfaces.Poso
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 
-public class SftpDatasink2DtoPostProcessor implements Poso2DtoPostProcessor<SftpDatasink,SftpDatasinkDto> {
+public class SftpDatasink2DtoPostProcessor implements Poso2DtoPostProcessor<SftpDatasink, SftpDatasinkDto> {
 
-	@Override
-	public void dtoCreated(SftpDatasink poso, SftpDatasinkDto dto) {
-		if(null != poso.getPassword() && ! "".equals(poso.getPassword().trim()))
-			dto.setHasPassword(true);
-		
-		if(null != poso.getPrivateKeyPassphrase() && ! "".equals(poso.getPrivateKeyPassphrase().trim()))
+   @Override
+   public void dtoCreated(SftpDatasink poso, SftpDatasinkDto dto) {
+      if (null != poso.getPassword() && !"".equals(poso.getPassword().trim()))
+         dto.setHasPassword(true);
+
+      if (null != poso.getPrivateKeyPassphrase() && !"".equals(poso.getPrivateKeyPassphrase().trim()))
          dto.setHasPrivateKeyPassphrase(true);
-	}
+   }
 
-	@Override
-	public void dtoInstantiated(SftpDatasink poso, SftpDatasinkDto dto) {
-		// TODO Auto-generated method stub
-		
-	}
+   @Override
+   public void dtoInstantiated(SftpDatasink poso, SftpDatasinkDto dto) {
+      // TODO Auto-generated method stub
+
+   }
 
 }
-

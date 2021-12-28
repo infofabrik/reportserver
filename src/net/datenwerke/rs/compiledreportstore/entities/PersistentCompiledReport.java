@@ -19,76 +19,77 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 @Entity
-@Table(name="COMPILED_REPORT")
+@Table(name = "COMPILED_REPORT")
 public class PersistentCompiledReport {
 
-	@Lob
-	@Basic(fetch=FetchType.LAZY)
-	private byte[] serializedReport;
-	
-	@ManyToOne
-	private Report report;
-	
-	private Date createdOn = new Date();
-	
-	@Version
-	private Long version;
+   @Lob
+   @Basic(fetch = FetchType.LAZY)
+   private byte[] serializedReport;
 
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
+   @ManyToOne
+   private Report report;
 
-	public void setId(Long id){
-		this.id = id;
-	}
+   private Date createdOn = new Date();
 
-	public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setCreatedOn(Date createdOn) {
-		this.createdOn = createdOn;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public Date getCreatedOn() {
-		return createdOn;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setReport(Report report) {
-		this.report = report;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public Report getReport() {
-		return report;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setSerializedReport(byte[] serializedReport) {
-		this.serializedReport = serializedReport;
-	}
+   public void setCreatedOn(Date createdOn) {
+      this.createdOn = createdOn;
+   }
 
-	public byte[] getSerializedReport() {
-		return serializedReport;
-	}
+   public Date getCreatedOn() {
+      return createdOn;
+   }
 
-	public CompiledReport getCompiledReport() {
-		if(null == serializedReport)
-			return null;
-		
-		try {
-			ByteArrayInputStream in = new ByteArrayInputStream(serializedReport);
-			ObjectInputStream oIn = new ObjectInputStream(in);
-			
-			return (CompiledReport) oIn.readObject();
-		} catch (Exception e) {
-		}
-		
-		return null;
-	}
+   public void setReport(Report report) {
+      this.report = report;
+   }
+
+   public Report getReport() {
+      return report;
+   }
+
+   public void setSerializedReport(byte[] serializedReport) {
+      this.serializedReport = serializedReport;
+   }
+
+   public byte[] getSerializedReport() {
+      return serializedReport;
+   }
+
+   public CompiledReport getCompiledReport() {
+      if (null == serializedReport)
+         return null;
+
+      try {
+         ByteArrayInputStream in = new ByteArrayInputStream(serializedReport);
+         ObjectInputStream oIn = new ObjectInputStream(in);
+
+         return (CompiledReport) oIn.readObject();
+      } catch (Exception e) {
+      }
+
+      return null;
+   }
 }

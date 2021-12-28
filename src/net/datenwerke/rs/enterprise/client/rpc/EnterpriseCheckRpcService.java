@@ -9,6 +9,6 @@ import net.datenwerke.rs.enterprise.client.EnterpriseInformationDto;
 @RemoteServiceRelativePath("enterprisecheck")
 public interface EnterpriseCheckRpcService extends RemoteService {
 
-	EnterpriseInformationDto getEnterpriseInfos() throws ServerCallFailedException;
+   EnterpriseInformationDto getEnterpriseInfos() throws ServerCallFailedException;
 
 }

@@ -218,11 +218,11 @@ public interface BaseMessages extends Messages {
    String secretKey();
 
    String datasinkOauth2AuthenticationSetup();
-   
+
    String oauthNote1();
-   
+
    String oauthNote2();
-   
+
    String oauthStart();
 
    String tenantId();
@@ -230,7 +230,7 @@ public interface BaseMessages extends Messages {
    String baseRoot();
 
    String amazonS3BucketName();
-   
+
    String amazonS3Region();
 
    String amazonS3StorageClass();

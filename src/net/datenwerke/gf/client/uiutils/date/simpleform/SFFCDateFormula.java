@@ -4,15 +4,13 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCDateFormula extends SimpleFormFieldConfiguration {
 
-	public enum Mode {
-		Date,
-		Time,
-		DateTime
-	}
-	
-	public Mode getMode();
-	
-	public String getDatePattern();
-	public String getTimePattern();
-}
+   public enum Mode {
+      Date, Time, DateTime
+   }
 
+   public Mode getMode();
+
+   public String getDatePattern();
+
+   public String getTimePattern();
+}

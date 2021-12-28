@@ -6,7 +6,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.reportengines.table.hooks.TableOutputGeneratorProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.output.AbstractReportOutputGeneratorManager;
 
-
 /**
  * Manages the output generators for table reports.
  * 
@@ -19,11 +18,10 @@ import net.datenwerke.rs.core.service.reportmanager.output.AbstractReportOutputG
  *
  */
 public class TableOutputGeneratorManager extends AbstractReportOutputGeneratorManager<TableOutputGenerator> {
-	
-	@Inject
-	public TableOutputGeneratorManager(
-			HookHandlerService hookHandler) {
-		super(hookHandler, TableOutputGeneratorProviderHook.class);
-	}
+
+   @Inject
+   public TableOutputGeneratorManager(HookHandlerService hookHandler) {
+      super(hookHandler, TableOutputGeneratorProviderHook.class);
+   }
 
 }

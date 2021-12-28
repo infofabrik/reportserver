@@ -6,9 +6,8 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceMan
 
 public interface DatasourceManagerExportRpcServiceAsync {
 
-	void quickExport(AbstractDatasourceManagerNodeDto dto,
-			AsyncCallback<Void> callback);
+   void quickExport(AbstractDatasourceManagerNodeDto dto, AsyncCallback<Void> callback);
 
-	void loadResult(AsyncCallback<String> callback);
+   void loadResult(AsyncCallback<String> callback);
 
 }

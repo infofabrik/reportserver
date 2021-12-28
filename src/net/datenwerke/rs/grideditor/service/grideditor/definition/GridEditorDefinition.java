@@ -11,10 +11,11 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface GridEditorDefinition {
 
-	public GridEditorData getData(GridEditorReport report, User user, ParameterSet parameters, ReportExecutionConfig[] configs) throws ReportExecutorException;
+   public GridEditorData getData(GridEditorReport report, User user, ParameterSet parameters,
+         ReportExecutionConfig[] configs) throws ReportExecutorException;
 
-	public void commitChanges(GridEditorReport referenceReport, User user, ParameterSet ps,
-			List<GridEditorRecordDto> modified, List<GridEditorRecordDto> modifiedOriginals,
-			List<GridEditorRecordDto> deletedRecords, List<GridEditorRecordDto> newRecords);
-	
+   public void commitChanges(GridEditorReport referenceReport, User user, ParameterSet ps,
+         List<GridEditorRecordDto> modified, List<GridEditorRecordDto> modifiedOriginals,
+         List<GridEditorRecordDto> deletedRecords, List<GridEditorRecordDto> newRecords);
+
 }

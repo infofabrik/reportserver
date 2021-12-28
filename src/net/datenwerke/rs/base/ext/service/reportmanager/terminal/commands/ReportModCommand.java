@@ -16,44 +16,34 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-
 public class ReportModCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "reportmod";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ReportModCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "reportmod";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ReportManagerExtMessages.class,
-		name = BASE_COMMAND,
-		description = "commandReportmod_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<ReportModSubCommandHook> list =  hookHandler.getHookers(ReportModSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public ReportModCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = ReportManagerExtMessages.class, name = BASE_COMMAND, description = "commandReportmod_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<ReportModSubCommandHook> list = hookHandler.getHookers(ReportModSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

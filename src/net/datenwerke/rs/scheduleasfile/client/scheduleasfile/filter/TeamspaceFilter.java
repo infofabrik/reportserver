@@ -19,45 +19,45 @@ import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurati
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterCriteriaDto;
 
 public class TeamspaceFilter implements ScheduledReportListFilter {
-	
-	private FormFieldProviderHook hook;
-	private Widget field;
-	
-	@Override
-	public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel) {
-		hook = SimpleForm.getResponsibleHooker(TeamSpaceDto.class);
-		field = hook.createFormField();
-		
-		hook.addValueChangeHandler(new ValueChangeHandler() {
-			@Override
-			public void onValueChange(ValueChangeEvent event) {
-				scheduledReportListPanel.reload();
-			}
-		});
-		
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
-		FieldLabel status = new FieldLabel(field, ScheduleAsFileMessages.INSTANCE.teamspace() );
-		status.setLabelWidth(120);
-		widgets.add(status);
-		
-		return widgets;
-	}
 
-	@Override
-	public void configure(ScheduledReportListPanel scheduledReportListPanel,
-			JobFilterConfigurationDto jobFilterConfig, List<JobFilterCriteriaDto> addCriterions) {
-		if(null != hook && null != hook.getValue(field)){
-			TeamSpaceDto ts = (TeamSpaceDto) hook.getValue(field);
-			
-			TeamSpaceReportJobFilterDto addCrit = new TeamSpaceReportJobFilterDto();
-			addCrit.setTeamspaceId(ts.getId());
-			addCriterions.add(addCrit);
-		}
-	}
+   private FormFieldProviderHook hook;
+   private Widget field;
 
-	@Override
-	public boolean appliesTo(String panelName) {
-		return true;
-	}
+   @Override
+   public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel) {
+      hook = SimpleForm.getResponsibleHooker(TeamSpaceDto.class);
+      field = hook.createFormField();
+
+      hook.addValueChangeHandler(new ValueChangeHandler() {
+         @Override
+         public void onValueChange(ValueChangeEvent event) {
+            scheduledReportListPanel.reload();
+         }
+      });
+
+      ArrayList<Widget> widgets = new ArrayList<Widget>();
+      FieldLabel status = new FieldLabel(field, ScheduleAsFileMessages.INSTANCE.teamspace());
+      status.setLabelWidth(120);
+      widgets.add(status);
+
+      return widgets;
+   }
+
+   @Override
+   public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto jobFilterConfig,
+         List<JobFilterCriteriaDto> addCriterions) {
+      if (null != hook && null != hook.getValue(field)) {
+         TeamSpaceDto ts = (TeamSpaceDto) hook.getValue(field);
+
+         TeamSpaceReportJobFilterDto addCrit = new TeamSpaceReportJobFilterDto();
+         addCrit.setTeamspaceId(ts.getId());
+         addCriterions.add(addCrit);
+      }
+   }
+
+   @Override
+   public boolean appliesTo(String panelName) {
+      return true;
+   }
 
 }

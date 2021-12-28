@@ -21,101 +21,102 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.decorator.FilterDto
  * 
  *
  */
-public class LikeFilterComponent extends DwTabPanel{
-	
-	private List<AbstractFilterAspect> filterAspects;
+public class LikeFilterComponent extends DwTabPanel {
 
-	private final ColumnDto column;
-	
-	public LikeFilterComponent(final TableReportDto report, final ColumnDto column, String executeToken, boolean forceConsistency, boolean showConsistency) {
-		super();
-		
-		this.column = column;
-		
-		/* configure window properties */
-		setHeight(500);
-		
-		/* create all filter aspects */
-		filterAspects = new ArrayList<AbstractFilterAspect>();
-		filterAspects.add(new IncludeValuesFilterAspect(report, column, executeToken));
-		filterAspects.add(new IncludeRangesFilterAspect(report, column, executeToken));
-		filterAspects.add(new ExcludeValuesFilterAspect(report, column, executeToken));
-		filterAspects.add(new ExcludeRangesFilterAspect(report, column, executeToken));
-		
-		setForceConsistency(forceConsistency);
-		if(! showConsistency)
-			hideForceConsistency();
-		
-		/* load data */
-		loadData();
-		
-		for(final AbstractFilterAspect filterAspect : filterAspects){
-			TabItemConfig filterAspectTab = new TabItemConfig(filterAspect.getTitleString());
-			this.add(filterAspect.getComponent(), filterAspectTab);
-		}
+   private List<AbstractFilterAspect> filterAspects;
 
-		addSelectionHandler(new SelectionHandler<Widget>() {
-			@Override
-			public void onSelection(SelectionEvent<Widget> event) {
-				AbstractFilterAspect aspect = filterAspects.get(getWidgetIndex(getActiveWidget()));
-				aspect.onSelection();
-				if(event.getSelectedItem() instanceof HasLayout)
-					((HasLayout)event.getSelectedItem()).forceLayout();
-			}
-		});
-		
-		/* tell first aspect its selected */
-		filterAspects.get(0).onSelection();
-	}
-	
-	private void loadData() {
-		if(null == column.getFilter())
-			createLikeFilter(column);
-		else 
-			loadLikeFilter(column.getFilter());
-	}
-	
-	public boolean validate() {
-		try{
-			for(AbstractFilterAspect filter : filterAspects){
-				filter.validate();
-			}
-			for(AbstractFilterAspect filter : filterAspects){
-				filter.cleanup();
-				filter.tryParseText();
-			}
-		} catch (RuntimeException e) {
-			new DwAlertMessageBox(FilterMessages.INSTANCE.textViewInvalidMessage(), e.getMessage()).show();
-			return false;
-		}
-		
-		return true;
-	}
-	
-	public void cleanup(){
-		for(AbstractFilterAspect filter : filterAspects){
-			filter.cleanup();
-		}
-	}
+   private final ColumnDto column;
 
-	private void createLikeFilter(ColumnDto column){
-		FilterDto filter = new FilterDtoDec(); 
-		column.setFilter(filter);
-	}
-	
-	private void loadLikeFilter(FilterDto filter){
-		for(AbstractFilterAspect filterAspect : filterAspects)
-			filterAspect.loadConfiguration(filter);
-	}
+   public LikeFilterComponent(final TableReportDto report, final ColumnDto column, String executeToken,
+         boolean forceConsistency, boolean showConsistency) {
+      super();
 
-	public void setForceConsistency(boolean force) {
-		for(AbstractFilterAspect aspect : filterAspects)
-			aspect.setForceConsistency(force);
-	}
+      this.column = column;
 
-	public void hideForceConsistency() {
-		for(AbstractFilterAspect aspect : filterAspects)
-			aspect.hideForceConsistency();		
-	}
+      /* configure window properties */
+      setHeight(500);
+
+      /* create all filter aspects */
+      filterAspects = new ArrayList<AbstractFilterAspect>();
+      filterAspects.add(new IncludeValuesFilterAspect(report, column, executeToken));
+      filterAspects.add(new IncludeRangesFilterAspect(report, column, executeToken));
+      filterAspects.add(new ExcludeValuesFilterAspect(report, column, executeToken));
+      filterAspects.add(new ExcludeRangesFilterAspect(report, column, executeToken));
+
+      setForceConsistency(forceConsistency);
+      if (!showConsistency)
+         hideForceConsistency();
+
+      /* load data */
+      loadData();
+
+      for (final AbstractFilterAspect filterAspect : filterAspects) {
+         TabItemConfig filterAspectTab = new TabItemConfig(filterAspect.getTitleString());
+         this.add(filterAspect.getComponent(), filterAspectTab);
+      }
+
+      addSelectionHandler(new SelectionHandler<Widget>() {
+         @Override
+         public void onSelection(SelectionEvent<Widget> event) {
+            AbstractFilterAspect aspect = filterAspects.get(getWidgetIndex(getActiveWidget()));
+            aspect.onSelection();
+            if (event.getSelectedItem() instanceof HasLayout)
+               ((HasLayout) event.getSelectedItem()).forceLayout();
+         }
+      });
+
+      /* tell first aspect its selected */
+      filterAspects.get(0).onSelection();
+   }
+
+   private void loadData() {
+      if (null == column.getFilter())
+         createLikeFilter(column);
+      else
+         loadLikeFilter(column.getFilter());
+   }
+
+   public boolean validate() {
+      try {
+         for (AbstractFilterAspect filter : filterAspects) {
+            filter.validate();
+         }
+         for (AbstractFilterAspect filter : filterAspects) {
+            filter.cleanup();
+            filter.tryParseText();
+         }
+      } catch (RuntimeException e) {
+         new DwAlertMessageBox(FilterMessages.INSTANCE.textViewInvalidMessage(), e.getMessage()).show();
+         return false;
+      }
+
+      return true;
+   }
+
+   public void cleanup() {
+      for (AbstractFilterAspect filter : filterAspects) {
+         filter.cleanup();
+      }
+   }
+
+   private void createLikeFilter(ColumnDto column) {
+      FilterDto filter = new FilterDtoDec();
+      column.setFilter(filter);
+   }
+
+   private void loadLikeFilter(FilterDto filter) {
+      for (AbstractFilterAspect filterAspect : filterAspects)
+         filterAspect.loadConfiguration(filter);
+   }
+
+   public void setForceConsistency(boolean force) {
+      for (AbstractFilterAspect aspect : filterAspects)
+         aspect.setForceConsistency(force);
+   }
+
+   public void hideForceConsistency() {
+      for (AbstractFilterAspect aspect : filterAspects)
+         aspect.hideForceConsistency();
+   }
 
 }

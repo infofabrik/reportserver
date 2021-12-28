@@ -33,46 +33,43 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
  */
 public class TeamSpaceStartup {
 
-	@Inject
-	public TeamSpaceStartup(
-		HookHandlerService hookHandler,
-		SecurityService securityService,
-		EventBus eventBus,
-		
-		UserNodeRemoveEventHandler userNodeRemoveEventHandler,
-		UserNodeForceRemoveEventHandler userNodeForceRemoveEventHandler,
-		
-		Provider<TeamspaceModCommand> teamspaceModProvider,
-		
-		Provider<TeamSpaceExporter> exporterProvider,
-		Provider<TeamSpaceImporter> importerProvider,
-		Provider<ExportAllTeamspacesHooker> exportAllTeamspaces,
-		Provider<ImportAllTeamspacesHooker> importAllTeamspaces,
-		
-		Provider<AddMembersSubCommand> addMembersToTeamspaceProvider,
-		Provider<SetRoleSubCommand> setRoleInTeamspaceProvider,
-		final Provider<TeamSpaceService> teamSpaceServiceProvider
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class, userNodeRemoveEventHandler);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, AbstractUserManagerNode.class, userNodeForceRemoveEventHandler);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, teamspaceModProvider);
-		hookHandler.attachHooker(TeamspaceModSubCommandHook.class, addMembersToTeamspaceProvider);
-		hookHandler.attachHooker(TeamspaceModSubCommandHook.class, setRoleInTeamspaceProvider);
-		
-		/* eximport */
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(ExportAllHook.class, exportAllTeamspaces);
-		hookHandler.attachHooker(ImportAllHook.class, importAllTeamspaces);
-		
-		registerSecurityTargets(securityService);
-		
-	}
-	
-	private void registerSecurityTargets(SecurityService securityService) {
-		/* register security target */
-		securityService.registerSecurityTarget(TeamSpaceSecurityTarget.class, new TeamSpaceSecuree());
-	}
+   @Inject
+   public TeamSpaceStartup(HookHandlerService hookHandler, SecurityService securityService, EventBus eventBus,
+
+         UserNodeRemoveEventHandler userNodeRemoveEventHandler,
+         UserNodeForceRemoveEventHandler userNodeForceRemoveEventHandler,
+
+         Provider<TeamspaceModCommand> teamspaceModProvider,
+
+         Provider<TeamSpaceExporter> exporterProvider, Provider<TeamSpaceImporter> importerProvider,
+         Provider<ExportAllTeamspacesHooker> exportAllTeamspaces,
+         Provider<ImportAllTeamspacesHooker> importAllTeamspaces,
+
+         Provider<AddMembersSubCommand> addMembersToTeamspaceProvider,
+         Provider<SetRoleSubCommand> setRoleInTeamspaceProvider,
+         final Provider<TeamSpaceService> teamSpaceServiceProvider) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class,
+            userNodeRemoveEventHandler);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, AbstractUserManagerNode.class,
+            userNodeForceRemoveEventHandler);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, teamspaceModProvider);
+      hookHandler.attachHooker(TeamspaceModSubCommandHook.class, addMembersToTeamspaceProvider);
+      hookHandler.attachHooker(TeamspaceModSubCommandHook.class, setRoleInTeamspaceProvider);
+
+      /* eximport */
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(ExportAllHook.class, exportAllTeamspaces);
+      hookHandler.attachHooker(ImportAllHook.class, importAllTeamspaces);
+
+      registerSecurityTargets(securityService);
+
+   }
+
+   private void registerSecurityTargets(SecurityService securityService) {
+      /* register security target */
+      securityService.registerSecurityTarget(TeamSpaceSecurityTarget.class, new TeamSpaceSecuree());
+   }
 }

@@ -41,85 +41,80 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class RsBaseExtStartup {
 
-	@Inject
-	public RsBaseExtStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<DashboardManagerExporter> dashboardExporterProvider,
-		Provider<DashboardManagerImporter> dashboardImporterProvider,
-		Provider<HttpDashboardManagerImportConfigurationHooker> dashboardHttpImportConfigHookerProvider,
+   @Inject
+   public RsBaseExtStartup(HookHandlerService hookHandler,
 
-		Provider<DatasourceManagerExporter> datasourceExporterProvider,
-		Provider<DatasourceManagerImporter> datasourceImporterProvider,
-		Provider<HttpDatasourceManagerImportConfigurationHooker> datasourceHttpImportConfigHookerProvider,
+         Provider<DashboardManagerExporter> dashboardExporterProvider,
+         Provider<DashboardManagerImporter> dashboardImporterProvider,
+         Provider<HttpDashboardManagerImportConfigurationHooker> dashboardHttpImportConfigHookerProvider,
 
-		Provider<ReportManagerExporter> exporterProvider,
-		Provider<ReportManagerImporter> importerProvider,
-		Provider<HttpReportManagerImportConfigurationHooker> httpImportConfigHookerProvider,
-		Provider<ParameterInstanceExporter> parameterInstanceExporter,
-		
-		Provider<GenericRightsExporter> genericRightsExporterProvider,
-		Provider<GenericRightsImporter> genericRIghtsImporterProvider,
-		
-		Provider<ExportAllDatasourcesHooker> exportAllDatasources,
-		Provider<ImportAllDatasourcesHooker> importAllDatasources,
-		
-		Provider<DatasinkManagerExporter> datasinkManagerExporter,
-      Provider<DatasinkManagerImporter> datasinkImporterProvider,
-      Provider<HttpDatasinkManagerImportConfigurationHooker> datasinkHttpImportConfigHookerProvider,
-      
-      Provider<ExportAllDatasinksHooker> exportAllDatasinks,
-		
-		Provider<ExportAllReportsHooker> exportAllReports,
-		Provider<ImportAllReportsHooker> importAllReports,
-		
-		Provider<ExportAllGenericRightsHooker> exportAllGenericRights,
-		Provider<ImportAllGenericRightsHooker> importAllGenericRights,
+         Provider<DatasourceManagerExporter> datasourceExporterProvider,
+         Provider<DatasourceManagerImporter> datasourceImporterProvider,
+         Provider<HttpDatasourceManagerImportConfigurationHooker> datasourceHttpImportConfigHookerProvider,
 
-		Provider<ReportModCommand> reportModCommand,
-		Provider<SetUuidCommand> setUUIDCommand,
-		Provider<SetPropertyCommand> setPropertyCommand,
-		Provider<RemovePropertyCommand> removePropertyCommand,
-		Provider<ListPropertyCommand> listPropertyCommand
-		
-		){
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(dashboardExporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(dashboardImporterProvider));
-		hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, dashboardHttpImportConfigHookerProvider);
+         Provider<ReportManagerExporter> exporterProvider, Provider<ReportManagerImporter> importerProvider,
+         Provider<HttpReportManagerImportConfigurationHooker> httpImportConfigHookerProvider,
+         Provider<ParameterInstanceExporter> parameterInstanceExporter,
 
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasourceExporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasourceImporterProvider));
-		hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasourceHttpImportConfigHookerProvider);
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImportConfigHookerProvider);
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(parameterInstanceExporter));
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(genericRightsExporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(genericRIghtsImporterProvider));
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasinkManagerExporter));
+         Provider<GenericRightsExporter> genericRightsExporterProvider,
+         Provider<GenericRightsImporter> genericRIghtsImporterProvider,
+
+         Provider<ExportAllDatasourcesHooker> exportAllDatasources,
+         Provider<ImportAllDatasourcesHooker> importAllDatasources,
+
+         Provider<DatasinkManagerExporter> datasinkManagerExporter,
+         Provider<DatasinkManagerImporter> datasinkImporterProvider,
+         Provider<HttpDatasinkManagerImportConfigurationHooker> datasinkHttpImportConfigHookerProvider,
+
+         Provider<ExportAllDatasinksHooker> exportAllDatasinks,
+
+         Provider<ExportAllReportsHooker> exportAllReports, Provider<ImportAllReportsHooker> importAllReports,
+
+         Provider<ExportAllGenericRightsHooker> exportAllGenericRights,
+         Provider<ImportAllGenericRightsHooker> importAllGenericRights,
+
+         Provider<ReportModCommand> reportModCommand, Provider<SetUuidCommand> setUUIDCommand,
+         Provider<SetPropertyCommand> setPropertyCommand, Provider<RemovePropertyCommand> removePropertyCommand,
+         Provider<ListPropertyCommand> listPropertyCommand
+
+   ) {
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(dashboardExporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(dashboardImporterProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, dashboardHttpImportConfigHookerProvider);
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasourceExporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasourceImporterProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasourceHttpImportConfigHookerProvider);
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImportConfigHookerProvider);
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(parameterInstanceExporter));
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(genericRightsExporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(genericRIghtsImporterProvider));
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(datasinkManagerExporter));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(datasinkImporterProvider));
       hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, datasinkHttpImportConfigHookerProvider);
-		
-		hookHandler.attachHooker(ExportAllHook.class, exportAllReports);
-		hookHandler.attachHooker(ImportAllHook.class, importAllReports);
-		
-		hookHandler.attachHooker(ExportAllHook.class, exportAllDatasources);
-		hookHandler.attachHooker(ImportAllHook.class, importAllDatasources);
-		
-		hookHandler.attachHooker(ExportAllHook.class, exportAllDatasinks);
-		
-		hookHandler.attachHooker(ExportAllHook.class, exportAllGenericRights);
-		hookHandler.attachHooker(ImportAllHook.class, importAllGenericRights);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, reportModCommand);
-		
-		hookHandler.attachHooker(ReportModSubCommandHook.class, setUUIDCommand);
-		hookHandler.attachHooker(ReportModSubCommandHook.class, setPropertyCommand);
-		hookHandler.attachHooker(ReportModSubCommandHook.class, removePropertyCommand);
-		hookHandler.attachHooker(ReportModSubCommandHook.class, listPropertyCommand);
-	}
+
+      hookHandler.attachHooker(ExportAllHook.class, exportAllReports);
+      hookHandler.attachHooker(ImportAllHook.class, importAllReports);
+
+      hookHandler.attachHooker(ExportAllHook.class, exportAllDatasources);
+      hookHandler.attachHooker(ImportAllHook.class, importAllDatasources);
+
+      hookHandler.attachHooker(ExportAllHook.class, exportAllDatasinks);
+
+      hookHandler.attachHooker(ExportAllHook.class, exportAllGenericRights);
+      hookHandler.attachHooker(ImportAllHook.class, importAllGenericRights);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, reportModCommand);
+
+      hookHandler.attachHooker(ReportModSubCommandHook.class, setUUIDCommand);
+      hookHandler.attachHooker(ReportModSubCommandHook.class, setPropertyCommand);
+      hookHandler.attachHooker(ReportModSubCommandHook.class, removePropertyCommand);
+      hookHandler.attachHooker(ReportModSubCommandHook.class, listPropertyCommand);
+   }
 }

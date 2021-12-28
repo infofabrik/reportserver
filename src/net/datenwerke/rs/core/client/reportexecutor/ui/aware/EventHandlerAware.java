@@ -4,5 +4,5 @@ import net.datenwerke.rs.core.client.reportexecutor.events.ExecutorEventHandler;
 
 public interface EventHandlerAware {
 
-	public void makeAwareOfEventHandler(ExecutorEventHandler eventHandler);
+   public void makeAwareOfEventHandler(ExecutorEventHandler eventHandler);
 }

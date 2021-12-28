@@ -8,13 +8,10 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorDataDto;
  */
 public class GridEditorDataDtoDec extends GridEditorDataDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public GridEditorDataDtoDec() {
-		super();
-	}
-	
-	
+   public GridEditorDataDtoDec() {
+      super();
+   }
 
 }

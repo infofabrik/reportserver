@@ -39,101 +39,96 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReportVariant;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-
 public class SaikuReportEngine extends ReportEngine<Connection, SaikuOutputGenerator, SaikuMetadataExporter> {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private final SaikuReportService saikuReportService;
-	private final OlapUtilService olapUtilService;
-	private final OlapQueryService olapQueryService;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public SaikuReportEngine(
-			SaikuReportService saikuReportService,
-			SaikuOutputGeneratorManager outputGeneratorManager,
-			SaikuMetadataExporterManager metadataExporterManager, 
-			DatasourceTransformationService datasourceTransformationService,
-			
-			OlapQueryService olapQueryService, 
-			OlapUtilService olapUtilService
-	) {
-		super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
+   private final SaikuReportService saikuReportService;
+   private final OlapUtilService olapUtilService;
+   private final OlapQueryService olapQueryService;
 
-		this.saikuReportService = saikuReportService;
-		this.olapQueryService = olapQueryService;
-		this.olapUtilService = olapUtilService;
-	}
+   @Inject
+   public SaikuReportEngine(SaikuReportService saikuReportService, SaikuOutputGeneratorManager outputGeneratorManager,
+         SaikuMetadataExporterManager metadataExporterManager,
+         DatasourceTransformationService datasourceTransformationService,
 
-	@Override
-	protected CompiledReport doExecute(OutputStream os, Report report,
-			User user, ParameterSet parameters, String outputFormat,
-			ReportExecutionConfig... configs) throws ReportExecutorException {
+         OlapQueryService olapQueryService, OlapUtilService olapUtilService) {
+      super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
 
-		SaikuOutputGenerator outputGenerator = outputGeneratorManager.getOutputGenerator(outputFormat);
-		if(null == outputGenerator)
-			throw new IllegalArgumentException("Could not find output generator for format: " + outputFormat + ". This is very strange and probably a bug in ReportServer."); //$NON-NLS-1$ //$NON-NLS-2$
-		
-		outputGenerator.initialize((SaikuReport) report);
-		
-		try {
-			IQuery query = createQuery((SaikuReport) report);
-			
-			CellDataSet cds = olapQueryService.execute(query, outputGenerator.getCellSetFormatter());
-			CellSet cs = query.getCellset();
-			
-			List<SaikuDimensionSelection> filters = new ArrayList<SaikuDimensionSelection>();
-			if (query.getType().equals(QueryType.QM)) {
-				filters = olapQueryService.getAxisSelection(query, "FILTER");
-			}
-			
-			CompiledRSSaikuReport compiledReport = outputGenerator.exportReport(cds, cs, filters, outputFormat, configs);
-			if(null != os) {
-				Object reportdata = compiledReport.getReport();
-				if(reportdata instanceof byte[]){
-					IOUtils.write((byte[]) compiledReport.getReport(), os);
-				}else if(reportdata instanceof String){
-					IOUtils.write((String)compiledReport.getReport(), os);
-				}
-				IOUtils.closeQuietly(os);
-			}
-			
-			return compiledReport;
-			
-		} catch (Exception e) {
-			throw new ReportExecutorRuntimeException("Failed to execute report ", e);
-		}
-	}
-	
-	
-	private IQuery createQuery(SaikuReport report) throws Exception {
-		Cube cube = olapUtilService.getCube(report);
-		
-		String connectionName = report.getUuid();
-		String queryName = UUID.randomUUID().toString();
-		
-		if((report instanceof SaikuReportVariant) && null != ((SaikuReport) report).getQueryXml() && !((SaikuReport) report).getQueryXml().isEmpty()) {
-			return olapQueryService.createNewOlapQuery(queryName, report, connectionName, cube, ((SaikuReport) report).getQueryXml());
-		} else {
-			return olapQueryService.createNewOlapQuery(queryName, report, connectionName, cube);
-		}
-	}
-	
+      this.saikuReportService = saikuReportService;
+      this.olapQueryService = olapQueryService;
+      this.olapUtilService = olapUtilService;
+   }
 
-	@Override
-	public boolean consumes(Report report) {
-		if (! (report instanceof SaikuReport ))
-			return false;
-		
-		DatasourceContainer datasourceContainer = ((SaikuReport)report).getDatasourceContainer();
-		
-		return ((MondrianDatasource)datasourceContainer.getDatasource()).isMondrian3();
-	}
+   @Override
+   protected CompiledReport doExecute(OutputStream os, Report report, User user, ParameterSet parameters,
+         String outputFormat, ReportExecutionConfig... configs) throws ReportExecutorException {
 
-	@Override
-	public boolean supportsStreaming(Report report, ParameterSet parameterSet, User user, String outputFormat, ReportExecutionConfig... configs){
-		return true;
-	}
-	
+      SaikuOutputGenerator outputGenerator = outputGeneratorManager.getOutputGenerator(outputFormat);
+      if (null == outputGenerator)
+         throw new IllegalArgumentException("Could not find output generator for format: " + outputFormat //$NON-NLS-1$
+               + ". This is very strange and probably a bug in ReportServer."); //$NON-NLS-1$
+
+      outputGenerator.initialize((SaikuReport) report);
+
+      try {
+         IQuery query = createQuery((SaikuReport) report);
+
+         CellDataSet cds = olapQueryService.execute(query, outputGenerator.getCellSetFormatter());
+         CellSet cs = query.getCellset();
+
+         List<SaikuDimensionSelection> filters = new ArrayList<SaikuDimensionSelection>();
+         if (query.getType().equals(QueryType.QM)) {
+            filters = olapQueryService.getAxisSelection(query, "FILTER");
+         }
+
+         CompiledRSSaikuReport compiledReport = outputGenerator.exportReport(cds, cs, filters, outputFormat, configs);
+         if (null != os) {
+            Object reportdata = compiledReport.getReport();
+            if (reportdata instanceof byte[]) {
+               IOUtils.write((byte[]) compiledReport.getReport(), os);
+            } else if (reportdata instanceof String) {
+               IOUtils.write((String) compiledReport.getReport(), os);
+            }
+            IOUtils.closeQuietly(os);
+         }
+
+         return compiledReport;
+
+      } catch (Exception e) {
+         throw new ReportExecutorRuntimeException("Failed to execute report ", e);
+      }
+   }
+
+   private IQuery createQuery(SaikuReport report) throws Exception {
+      Cube cube = olapUtilService.getCube(report);
+
+      String connectionName = report.getUuid();
+      String queryName = UUID.randomUUID().toString();
+
+      if ((report instanceof SaikuReportVariant) && null != ((SaikuReport) report).getQueryXml()
+            && !((SaikuReport) report).getQueryXml().isEmpty()) {
+         return olapQueryService.createNewOlapQuery(queryName, report, connectionName, cube,
+               ((SaikuReport) report).getQueryXml());
+      } else {
+         return olapQueryService.createNewOlapQuery(queryName, report, connectionName, cube);
+      }
+   }
+
+   @Override
+   public boolean consumes(Report report) {
+      if (!(report instanceof SaikuReport))
+         return false;
+
+      DatasourceContainer datasourceContainer = ((SaikuReport) report).getDatasourceContainer();
+
+      return ((MondrianDatasource) datasourceContainer.getDatasource()).isMondrian3();
+   }
+
+   @Override
+   public boolean supportsStreaming(Report report, ParameterSet parameterSet, User user, String outputFormat,
+         ReportExecutionConfig... configs) {
+      return true;
+   }
 
 }

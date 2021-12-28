@@ -29,111 +29,101 @@ import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 
 public class AddMembersSubCommand implements TeamspaceModSubCommandHook {
 
-public static final String BASE_COMMAND = "addmembers";
-	
-	private final TeamSpaceService teamspaceService;
+   public static final String BASE_COMMAND = "addmembers";
 
-	@Inject
-	public AddMembersSubCommand(
-		TeamSpaceService teamspaceService
-		){
-		
-		/* store objects */
-		this.teamspaceService = teamspaceService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final TeamSpaceService teamspaceService;
 
-	@Override
-	@CliHelpMessage(
-		messageClass = TeamSpaceMessages.class,
-		name = BASE_COMMAND,
-		description = "commandTeamspacemod_sub_memberadd_description",
-		args = {
-			@Argument(flag="c", valueName="clear", description="commandTeamspacemod_sub_memberadd_cflag")
-		},
-		nonOptArgs = {
-			@NonOptArgument(name="teamspace", description="commandTeamspacemod_sub_memberadd_arg_teamspaceid", mandatory=true),
-			@NonOptArgument(name="members", description="commandTeamspacemod_sub_memberadd_arg_members", varArgs=true)
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> arguments = parser.getNonOptionArguments();
-		if(1 > arguments.size())
-			throw new IllegalArgumentException();
-		
-		ObjectResolverDeamon objectResolver = session.getObjectResolver();
+   @Inject
+   public AddMembersSubCommand(TeamSpaceService teamspaceService) {
 
-		/* locate teamspace */
-		String teamspaceLocator = arguments.remove(0);
-		Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
-		if(teamspaceCandidates.size() != 1)
-			throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
-		if(! (teamspaceCandidates.iterator().next() instanceof TeamSpace))
-			throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
-		TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
-			
-		/* check rights */
-		if(! teamspaceService.isManager(teamspace))
-			throw new ViolatedSecurityException();
-		
-		/* get users */
-		Set<AbstractUserManagerNode> memberList = new HashSet<>();
-		for(String locationStr : arguments){
-			Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
-			if(objectList.isEmpty())
-				throw new IllegalArgumentException("No users or groups selected: " + locationStr);
-			
-			for(Object obj : objectList){
-				if(! (obj instanceof AbstractUserManagerNode))
-					throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
-				
-				if (obj instanceof OrganisationalUnit)
-					throw new IllegalArgumentException("Cannot add an OU to a TeamSpace");
-				
-				memberList.add((AbstractUserManagerNode) obj);
-			}
-		}
-		
-		boolean removeMembers = parser.hasOption("c");
-		
-		if(removeMembers && memberList.isEmpty()){
-			Iterator<TeamSpaceMember> it = teamspace.getMembers().iterator();
-			while(it.hasNext()){
-				teamspaceService.remove(it.next());
-				it.remove();
-			}
-		}
-		
-		/* add/remove members */
-		for(AbstractUserManagerNode member : memberList){
-			if (!removeMembers) {
-				/* add members */
-				if(! teamspace.isDirectMember(member))
-					teamspace.addMember(new TeamSpaceMember(member));
-			} else {
-				/* remove members */
-				if (teamspace.isDirectMember(member))
-					teamspace.removeMember(member);
-			}
-					
-		}
-		
-		teamspaceService.merge(teamspace);
-		
-		return new CommandResult();
-	}
+      /* store objects */
+      this.teamspaceService = teamspaceService;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = TeamSpaceMessages.class, name = BASE_COMMAND, description = "commandTeamspacemod_sub_memberadd_description", args = {
+         @Argument(flag = "c", valueName = "clear", description = "commandTeamspacemod_sub_memberadd_cflag") }, nonOptArgs = {
+               @NonOptArgument(name = "teamspace", description = "commandTeamspacemod_sub_memberadd_arg_teamspaceid", mandatory = true),
+               @NonOptArgument(name = "members", description = "commandTeamspacemod_sub_memberadd_arg_members", varArgs = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> arguments = parser.getNonOptionArguments();
+      if (1 > arguments.size())
+         throw new IllegalArgumentException();
+
+      ObjectResolverDeamon objectResolver = session.getObjectResolver();
+
+      /* locate teamspace */
+      String teamspaceLocator = arguments.remove(0);
+      Collection<Object> teamspaceCandidates = objectResolver.getObjects(teamspaceLocator, Read.class);
+      if (teamspaceCandidates.size() != 1)
+         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+      if (!(teamspaceCandidates.iterator().next() instanceof TeamSpace))
+         throw new IllegalArgumentException("Could not find teamspace single teamspace: " + teamspaceLocator);
+      TeamSpace teamspace = (TeamSpace) teamspaceCandidates.iterator().next();
+
+      /* check rights */
+      if (!teamspaceService.isManager(teamspace))
+         throw new ViolatedSecurityException();
+
+      /* get users */
+      Set<AbstractUserManagerNode> memberList = new HashSet<>();
+      for (String locationStr : arguments) {
+         Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class);
+         if (objectList.isEmpty())
+            throw new IllegalArgumentException("No users or groups selected: " + locationStr);
+
+         for (Object obj : objectList) {
+            if (!(obj instanceof AbstractUserManagerNode))
+               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+
+            if (obj instanceof OrganisationalUnit)
+               throw new IllegalArgumentException("Cannot add an OU to a TeamSpace");
+
+            memberList.add((AbstractUserManagerNode) obj);
+         }
+      }
+
+      boolean removeMembers = parser.hasOption("c");
+
+      if (removeMembers && memberList.isEmpty()) {
+         Iterator<TeamSpaceMember> it = teamspace.getMembers().iterator();
+         while (it.hasNext()) {
+            teamspaceService.remove(it.next());
+            it.remove();
+         }
+      }
+
+      /* add/remove members */
+      for (AbstractUserManagerNode member : memberList) {
+         if (!removeMembers) {
+            /* add members */
+            if (!teamspace.isDirectMember(member))
+               teamspace.addMember(new TeamSpaceMember(member));
+         } else {
+            /* remove members */
+            if (teamspace.isDirectMember(member))
+               teamspace.removeMember(member);
+         }
+
+      }
+
+      teamspaceService.merge(teamspace);
+
+      return new CommandResult();
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

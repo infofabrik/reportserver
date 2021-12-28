@@ -5,12 +5,11 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 
 @GenericTargetIdentifierMapper(DashboardAdminSecurityTarget.class)
-public class DashboardAdminGenericTargetIdentifier implements GenericTargetIdentifier{
+public class DashboardAdminGenericTargetIdentifier implements GenericTargetIdentifier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7570274216654109692L;
-
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7570274216654109692L;
 
 }

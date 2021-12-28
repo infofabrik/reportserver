@@ -17,35 +17,35 @@ import net.datenwerke.security.service.security.exceptions.ViolatedSecurityExcep
  *
  */
 public class SecurityModule extends AbstractModule {
-	
-	public static final String CONFIG_FILE = "security/misc.cf";
-	public static final String ERROR_MESSAGE_LEVEL_PROPERTY = "errorMessages.hideViolatedSecurityExceptionDetails";
 
-	@Override
-	protected void configure() {
-		/* bind services */
-		bind(SecurityService.class).to(SecurityServiceImpl.class).in(Singleton.class);
-		
-		/* bind security interceptor */
-		SecurityCheckInterceptor securityCheckedInterceptor = new SecurityCheckInterceptor();
-		requestInjection(securityCheckedInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(SecurityChecked.class), securityCheckedInterceptor);
-		bindInterceptor(Matchers.annotatedWith(SecurityChecked.class), Matchers.not(Matchers.annotatedWith(SecurityChecked.class)).and(GuiceMatchers.publicMethod()), securityCheckedInterceptor);
-		
-		/* bind update owner interceptor */
-		UpdateOwnerInformationInterceptor updateOwnerInterceptor = new UpdateOwnerInformationInterceptor();
-		requestInjection(updateOwnerInterceptor);
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(UpdateOwner.class), updateOwnerInterceptor);
-		
-		/* startup */
-		bind(SecurityStartup.class).asEagerSingleton();
-		
-		/* submodules */
-		install(new GenRightsSecurityModule());
-		
-		requestStaticInjection(
-			ViolatedSecurityException.class	
-		);
-	}
+   public static final String CONFIG_FILE = "security/misc.cf";
+   public static final String ERROR_MESSAGE_LEVEL_PROPERTY = "errorMessages.hideViolatedSecurityExceptionDetails";
+
+   @Override
+   protected void configure() {
+      /* bind services */
+      bind(SecurityService.class).to(SecurityServiceImpl.class).in(Singleton.class);
+
+      /* bind security interceptor */
+      SecurityCheckInterceptor securityCheckedInterceptor = new SecurityCheckInterceptor();
+      requestInjection(securityCheckedInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(SecurityChecked.class), securityCheckedInterceptor);
+      bindInterceptor(Matchers.annotatedWith(SecurityChecked.class),
+            Matchers.not(Matchers.annotatedWith(SecurityChecked.class)).and(GuiceMatchers.publicMethod()),
+            securityCheckedInterceptor);
+
+      /* bind update owner interceptor */
+      UpdateOwnerInformationInterceptor updateOwnerInterceptor = new UpdateOwnerInformationInterceptor();
+      requestInjection(updateOwnerInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(UpdateOwner.class), updateOwnerInterceptor);
+
+      /* startup */
+      bind(SecurityStartup.class).asEagerSingleton();
+
+      /* submodules */
+      install(new GenRightsSecurityModule());
+
+      requestStaticInjection(ViolatedSecurityException.class);
+   }
 
 }

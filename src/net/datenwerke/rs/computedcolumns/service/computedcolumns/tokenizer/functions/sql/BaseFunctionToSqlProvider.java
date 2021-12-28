@@ -9,15 +9,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class BaseFunctionToSqlProvider implements FunctionToSqlProviderHook {
 
-	@Override
-	public boolean consumes(FunctionExpressionToken token) {
-		return token.getFunction() instanceof BaseFunctionProvider;
-	}
+   @Override
+   public boolean consumes(FunctionExpressionToken token) {
+      return token.getFunction() instanceof BaseFunctionProvider;
+   }
 
-	@Override
-	public String handleToken(FunctionExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		return token.getName().toUpperCase();
-	}
+   @Override
+   public String handleToken(FunctionExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      return token.getName().toUpperCase();
+   }
 
 }

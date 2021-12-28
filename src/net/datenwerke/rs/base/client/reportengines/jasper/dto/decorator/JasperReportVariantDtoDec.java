@@ -11,18 +11,17 @@ import net.datenwerke.rs.core.client.parameters.dto.ParameterDefinitionDto;
  */
 public class JasperReportVariantDtoDec extends JasperReportVariantDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public JasperReportVariantDtoDec() {
-		super();
-	}
+   public JasperReportVariantDtoDec() {
+      super();
+   }
 
-	@Override
-	public List<ParameterDefinitionDto> getParameterDefinitions() {
-		if(null == getBaseReport())
-			return null;
-		return getBaseReport().getParameterDefinitions();
-	}
-
+   @Override
+   public List<ParameterDefinitionDto> getParameterDefinitions() {
+      if (null == getBaseReport())
+         return null;
+      return getBaseReport().getParameterDefinitions();
+   }
 
 }

@@ -14,39 +14,36 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class PkgListSubCommand implements SubCommand {
 
-	private static final String BASE_COMMAND = "list";
-	
-	private Provider<PackagedScriptHelper> packageScriptHelper;
-	
-	@Inject
-	public PkgListSubCommand(Provider<PackagedScriptHelper> packageScriptHelper) {
-		this.packageScriptHelper = packageScriptHelper;
-	}
+   private static final String BASE_COMMAND = "list";
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private Provider<PackagedScriptHelper> packageScriptHelper;
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session)	throws TerminalException {
-		final CommandResult cr = new CommandResult();
-		packageScriptHelper.get().listPackages()
-			.stream()
-			.map(File::getName)
-			.forEach(n -> cr.addResultLine());
-		
-		return cr;
-	}
+   @Inject
+   public PkgListSubCommand(Provider<PackagedScriptHelper> packageScriptHelper) {
+      this.packageScriptHelper = packageScriptHelper;
+   }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      final CommandResult cr = new CommandResult();
+      packageScriptHelper.get().listPackages().stream().map(File::getName).forEach(n -> cr.addResultLine());
+
+      return cr;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
 }

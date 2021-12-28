@@ -16,124 +16,116 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualContentProvi
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Write;
 
-public class MasterJrxmlContentProvider extends
-		VirtualContentProviderImpl {
+public class MasterJrxmlContentProvider extends VirtualContentProviderImpl {
 
-	public static final String VIRTUAL_NAME = "master";
-	private static final String VIRTUAL_FILE_NAME = "master.jrxml";
-	
-	private final JasperUtilsService jasperReportsService;
-	private final ReportService reportService;
+   public static final String VIRTUAL_NAME = "master";
+   private static final String VIRTUAL_FILE_NAME = "master.jrxml";
 
-	
-	@Inject
-	public MasterJrxmlContentProvider(
-		SecurityService securityService,
-		JasperUtilsService jasperReportsService,
-		ReportService reportService
-		) {
-		super(securityService);
-		this.jasperReportsService = jasperReportsService;
-		this.reportService = reportService;
-	}
+   private final JasperUtilsService jasperReportsService;
+   private final ReportService reportService;
 
-	@Override
-	public String getName() {
-		return VIRTUAL_NAME;
-	}
+   @Inject
+   public MasterJrxmlContentProvider(SecurityService securityService, JasperUtilsService jasperReportsService,
+         ReportService reportService) {
+      super(securityService);
+      this.jasperReportsService = jasperReportsService;
+      this.reportService = reportService;
+   }
 
-	@Override
-	protected void addVirtualChildInfos(VFSLocationInfo info) {
-		info.addChildInfo(new VFSObjectInfo(getClass(), VIRTUAL_FILE_NAME, VIRTUAL_FILE_NAME, false));
-	}
+   @Override
+   public String getName() {
+      return VIRTUAL_NAME;
+   }
 
-	@Override
-	protected boolean doHasContent(VFSLocation vfsLocation) {
-		return true;
-	}
+   @Override
+   protected void addVirtualChildInfos(VFSLocationInfo info) {
+      info.addChildInfo(new VFSObjectInfo(getClass(), VIRTUAL_FILE_NAME, VIRTUAL_FILE_NAME, false));
+   }
 
-	@Override
-	protected byte[] doGetContent(VFSLocation vfsLocation) throws VFSException {
-		VFSLocation parent = vfsLocation.getVirtualParentLocation();
-		
-		JasperReport node = (JasperReport) parent.getObject();
+   @Override
+   protected boolean doHasContent(VFSLocation vfsLocation) {
+      return true;
+   }
 
-		return null != node.getMasterFile() ? node.getMasterFile().getContent().getBytes() : null;
-	}
+   @Override
+   protected byte[] doGetContent(VFSLocation vfsLocation) throws VFSException {
+      VFSLocation parent = vfsLocation.getVirtualParentLocation();
 
-	@Override
-	protected void doSetContent(VFSLocation vfsLocation, byte[] content) {
-	}
+      JasperReport node = (JasperReport) parent.getObject();
 
-	@Override
-	protected String doGetContentType(VFSLocation vfsLocation) {
-		return "application/xml";
-	}
+      return null != node.getMasterFile() ? node.getMasterFile().getContent().getBytes() : null;
+   }
 
-	@Override
-	public boolean enhanceNonVirtual(VFSLocation location) throws VFSException {
-		Object obj = location.getObject();
-		return null != obj && obj instanceof JasperReport && ! (obj instanceof ReportVariant);
-	}
+   @Override
+   protected void doSetContent(VFSLocation vfsLocation, byte[] content) {
+   }
 
-	@Override
-	protected boolean doesExist(VFSLocation vfsLocation) {
-		return VIRTUAL_FILE_NAME.equals(vfsLocation.getPathHelper().getLastPathway());
-	}
-	
-	@Override
-	protected boolean doCanWrite(VFSLocation location) {
-		return VIRTUAL_FILE_NAME.equals(location.getPathHelper().getLastPathway());
-	}
-	
-	@Override
-	protected boolean doIsLocationDeletable(VFSLocation location) {
-		return VIRTUAL_FILE_NAME.equals(location.getPathHelper().getLastPathway());
-	}
-	
-	@Override
-	public void delete(VFSLocation location) throws VFSException {
-		JasperReport report = (JasperReport) location.getVirtualBaseLocation().getObject();
-		
-		JasperReportJRXMLFile master = report.getMasterFile();
-		if(null != master)
-			jasperReportsService.removeJRXMLFile(report.getMasterFile());
-	}
-	
-	@Override
-	public void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData)
-			throws VFSException {
-		if(! doesExist(vfsLocation))
-			throw new LocationDoesNotExistException(vfsLocation.getAbsolutePath());
-		
-		final JasperReport report = (JasperReport) vfsLocation.getVirtualParentLocation().getObject();
+   @Override
+   protected String doGetContentType(VFSLocation vfsLocation) {
+      return "application/xml";
+   }
 
-		if(! securityService.checkRights(report, Write.class))
-			throw new VFSException("Insufficient rights");
-		
-		if(null == report.getMasterFile()){
-			JasperReportJRXMLFile master = new JasperReportJRXMLFile();
-			report.setMasterFile(master);
-			jasperReportsService.persist(master);
-		}
-		
-		String jrxml = new String(uploadData);
-		
-		report.getMasterFile().setContent(jrxml);
+   @Override
+   public boolean enhanceNonVirtual(VFSLocation location) throws VFSException {
+      Object obj = location.getObject();
+      return null != obj && obj instanceof JasperReport && !(obj instanceof ReportVariant);
+   }
 
-		reportService.merge(report);
-	}
-	
-	@Override
-	public Object getObjectFor(VFSLocation vfsLocation) throws VFSException {
-		if(! doesExist(vfsLocation))
-			throw new LocationDoesNotExistException(vfsLocation.getAbsolutePath());
-		
-		JasperReport report = (JasperReport) vfsLocation.getVirtualBaseLocation().getObject();
-		
-		return report.getMasterFile();
-	}
+   @Override
+   protected boolean doesExist(VFSLocation vfsLocation) {
+      return VIRTUAL_FILE_NAME.equals(vfsLocation.getPathHelper().getLastPathway());
+   }
 
-	
-	
+   @Override
+   protected boolean doCanWrite(VFSLocation location) {
+      return VIRTUAL_FILE_NAME.equals(location.getPathHelper().getLastPathway());
+   }
+
+   @Override
+   protected boolean doIsLocationDeletable(VFSLocation location) {
+      return VIRTUAL_FILE_NAME.equals(location.getPathHelper().getLastPathway());
+   }
+
+   @Override
+   public void delete(VFSLocation location) throws VFSException {
+      JasperReport report = (JasperReport) location.getVirtualBaseLocation().getObject();
+
+      JasperReportJRXMLFile master = report.getMasterFile();
+      if (null != master)
+         jasperReportsService.removeJRXMLFile(report.getMasterFile());
+   }
+
+   @Override
+   public void writeIntoLocation(VFSLocation vfsLocation, byte[] uploadData) throws VFSException {
+      if (!doesExist(vfsLocation))
+         throw new LocationDoesNotExistException(vfsLocation.getAbsolutePath());
+
+      final JasperReport report = (JasperReport) vfsLocation.getVirtualParentLocation().getObject();
+
+      if (!securityService.checkRights(report, Write.class))
+         throw new VFSException("Insufficient rights");
+
+      if (null == report.getMasterFile()) {
+         JasperReportJRXMLFile master = new JasperReportJRXMLFile();
+         report.setMasterFile(master);
+         jasperReportsService.persist(master);
+      }
+
+      String jrxml = new String(uploadData);
+
+      report.getMasterFile().setContent(jrxml);
+
+      reportService.merge(report);
+   }
+
+   @Override
+   public Object getObjectFor(VFSLocation vfsLocation) throws VFSException {
+      if (!doesExist(vfsLocation))
+         throw new LocationDoesNotExistException(vfsLocation.getAbsolutePath());
+
+      JasperReport report = (JasperReport) vfsLocation.getVirtualBaseLocation().getObject();
+
+      return report.getMasterFile();
+   }
+
 }

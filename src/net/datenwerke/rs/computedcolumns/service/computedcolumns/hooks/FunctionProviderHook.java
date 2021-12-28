@@ -5,6 +5,6 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public interface FunctionProviderHook extends Hook {
 
-	boolean consumes(String strToken, ExpressionTokenizer expressionTokenizer);
+   boolean consumes(String strToken, ExpressionTokenizer expressionTokenizer);
 
 }

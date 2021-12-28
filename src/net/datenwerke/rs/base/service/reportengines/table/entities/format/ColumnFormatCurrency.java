@@ -16,45 +16,42 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.format.enums.
 import net.datenwerke.rs.base.service.reportengines.table.entities.format.enums.NumberType;
 
 @Entity
-@Table(name="COLUMN_FORMAT_CURRENCY")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Table(name = "COLUMN_FORMAT_CURRENCY")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
 public class ColumnFormatCurrency extends ColumnFormatNumber {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8924716725557026930L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8924716725557026930L;
 
-	@ExposeToClient
-	private CurrencyType currencyType = CurrencyType.EURO;
+   @ExposeToClient
+   private CurrencyType currencyType = CurrencyType.EURO;
 
-	public void setCurrencyType(CurrencyType currencyType) {
-		this.currencyType = currencyType;
-	}
+   public void setCurrencyType(CurrencyType currencyType) {
+      this.currencyType = currencyType;
+   }
 
-	public CurrencyType getCurrencyType() {
-		return currencyType;
-	}
+   public CurrencyType getCurrencyType() {
+      return currencyType;
+   }
 
-	@Override
-	public void setType(NumberType type) {
-		/* do not allow to change the type from default to something else */
-	}
+   @Override
+   public void setType(NumberType type) {
+      /* do not allow to change the type from default to something else */
+   }
 
-	@Override
-	public NumberFormat getNumberFormat() {
-		NumberFormat format = DecimalFormat.getCurrencyInstance(getCurrencyType().getLocale());
-		((DecimalFormat)format).setCurrency(getCurrencyType().getCurrency());
-		return format;
-	}
-	
-	@Override
-	public String getPattern() {
-		return getDecimalPattern() + " \u00A4" ;
-	}
+   @Override
+   public NumberFormat getNumberFormat() {
+      NumberFormat format = DecimalFormat.getCurrencyInstance(getCurrencyType().getLocale());
+      ((DecimalFormat) format).setCurrency(getCurrencyType().getCurrency());
+      return format;
+   }
+
+   @Override
+   public String getPattern() {
+      return getDecimalPattern() + " \u00A4";
+   }
 }

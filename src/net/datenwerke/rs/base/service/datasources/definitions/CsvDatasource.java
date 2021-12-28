@@ -16,60 +16,58 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.CacheableDataso
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 
 @Entity
-@Table(name="CSV_DATASOURCE")
+@Table(name = "CSV_DATASOURCE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.datasources.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.datasources.dto")
 @Indexed
 public class CsvDatasource extends FormatBasedDatasourceDefinition implements CacheableDatasource {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3362289890273571147L;
-	
-	@ExposeToClient
-	private String separator = ";";
-	
-	@ExposeToClient
-	private String quote = "\"";
-	
-	@ExposeToClient
-	private int databaseCache = -1;
-	
-	@Override @Transient
-	public DatasourceDefinitionConfig createConfigObject() {
-		return new DatasourceDefinitionConfig();
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -3362289890273571147L;
 
-	public void setQuote(String quote) {
-		this.quote = quote;
-	}
+   @ExposeToClient
+   private String separator = ";";
 
-	public String getQuote() {
-		return null == quote || "".equals(quote.trim()) ? "\"" : quote.trim();
-	}
+   @ExposeToClient
+   private String quote = "\"";
 
-	public void setSeparator(String separator) {
-		this.separator = separator;
-	}
+   @ExposeToClient
+   private int databaseCache = -1;
 
-	public String getSeparator() {
-		return null == separator || "".equals(separator.trim()) ? ";" : separator.trim();
-	}
+   @Override
+   @Transient
+   public DatasourceDefinitionConfig createConfigObject() {
+      return new DatasourceDefinitionConfig();
+   }
 
-	public String getDataAsString(FormatBasedDatasourceConfig dsConfig) throws IOException {
-		return IOUtils.toString(getDataStream(dsConfig));
-	}
+   public void setQuote(String quote) {
+      this.quote = quote;
+   }
 
-	public int getDatabaseCache() {
-		return databaseCache;
-	}
+   public String getQuote() {
+      return null == quote || "".equals(quote.trim()) ? "\"" : quote.trim();
+   }
 
-	public void setDatabaseCache(int databaseCache) {
-		this.databaseCache = databaseCache;
-	}
-	
+   public void setSeparator(String separator) {
+      this.separator = separator;
+   }
+
+   public String getSeparator() {
+      return null == separator || "".equals(separator.trim()) ? ";" : separator.trim();
+   }
+
+   public String getDataAsString(FormatBasedDatasourceConfig dsConfig) throws IOException {
+      return IOUtils.toString(getDataStream(dsConfig));
+   }
+
+   public int getDatabaseCache() {
+      return databaseCache;
+   }
+
+   public void setDatabaseCache(int databaseCache) {
+      this.databaseCache = databaseCache;
+   }
 
 }

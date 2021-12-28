@@ -5,14 +5,14 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("crypto")
 public interface CryptoRpcService extends RemoteService {
-	
-	public String getHmacPassphrase();
 
-	public String getSalt();
+   public String getHmacPassphrase();
 
-	public int getKeyLength();
-	
-	public String getUserSalt(String username);
+   public String getSalt();
 
-	public String getUserSalt();
+   public int getKeyLength();
+
+   public String getUserSalt(String username);
+
+   public String getUserSalt();
 }

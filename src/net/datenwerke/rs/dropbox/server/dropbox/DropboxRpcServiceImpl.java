@@ -65,18 +65,10 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public DropboxRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         DropboxService dropboxService, 
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public DropboxRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, DropboxService dropboxService, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -94,9 +86,9 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException {
-      if (! (datasinkDto instanceof DropboxDatasinkDto))
+      if (!(datasinkDto instanceof DropboxDatasinkDto))
          throw new IllegalArgumentException("Not a dropbox datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       DropboxDatasink dropboxDatasink = (DropboxDatasink) dtoService.loadPoso(datasinkDto);
@@ -125,39 +117,39 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), dropboxDatasink, dropboxService,
                      new DatasinkFilenameFolderConfig() {
 
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
+                        @Override
+                        public String getFilename() {
+                           return filename;
+                        }
 
-                  @Override
-                  public String getFolder() {
-                     return folder;
-                  }
+                        @Override
+                        public String getFolder() {
+                           return folder;
+                        }
 
-               });
+                     });
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), dropboxDatasink, dropboxService,
                   new DatasinkFilenameFolderConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
 
-               @Override
-               public String getFolder() {
-                  return folder;
-               }
+                     @Override
+                     public String getFolder() {
+                        return folder;
+                     }
 
-            });
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Dropbox: " + e.getMessage(), e);
@@ -185,19 +177,20 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(dropboxDatasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(dropboxDatasink, dropboxService, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().testDatasink(dropboxDatasink, dropboxService,
+               new DatasinkFilenameFolderConfig() {
 
-            @Override
-            public String getFilename() {
-               return "reportserver-dropbox-test.txt";
-            }
+                  @Override
+                  public String getFilename() {
+                     return "reportserver-dropbox-test.txt";
+                  }
 
-            @Override
-            public String getFolder() {
-               return dropboxDatasink.getFolder();
-            }
+                  @Override
+                  public String getFolder() {
+                     return dropboxDatasink.getFolder();
+                  }
 
-         });
+               });
       } catch (Exception e) {
          DatasinkTestFailedException ex = new DatasinkTestFailedException(e.getMessage(), e);
          ex.setStackTraceAsString(exceptionServices.exceptionToString(e));
@@ -206,7 +199,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
 
       return true;
    }
-   
+
    @Override
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
@@ -220,10 +213,10 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
 
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
-   
+
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);

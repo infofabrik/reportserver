@@ -8,10 +8,10 @@ import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
  */
 public class JasperReportDtoDec extends JasperReportDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public JasperReportDtoDec() {
-		super();
-	}
+   public JasperReportDtoDec() {
+      super();
+   }
 
 }

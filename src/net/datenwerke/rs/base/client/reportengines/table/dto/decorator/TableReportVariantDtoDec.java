@@ -12,18 +12,17 @@ import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantD
  */
 public class TableReportVariantDtoDec extends TableReportVariantDto implements ReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public TableReportVariantDtoDec() {
+      super();
+   }
 
-	public TableReportVariantDtoDec() {
-		super();
-	}
-
-	@Override
-	public List<ParameterDefinitionDto> getParameterDefinitions() {
-		if(null != getBaseReport())
-			return getBaseReport().getParameterDefinitions();
-		return null;
-	}
+   @Override
+   public List<ParameterDefinitionDto> getParameterDefinitions() {
+      if (null != getBaseReport())
+         return getBaseReport().getParameterDefinitions();
+      return null;
+   }
 
 }

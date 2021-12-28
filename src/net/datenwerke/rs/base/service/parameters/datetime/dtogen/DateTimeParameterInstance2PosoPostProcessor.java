@@ -14,28 +14,29 @@ import net.datenwerke.rs.base.client.parameters.datetime.dto.decorator.DateTimeP
 import net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterInstance;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
-public class DateTimeParameterInstance2PosoPostProcessor implements Dto2PosoPostProcessor<DateTimeParameterInstanceDto, DateTimeParameterInstance> {
+public class DateTimeParameterInstance2PosoPostProcessor
+      implements Dto2PosoPostProcessor<DateTimeParameterInstanceDto, DateTimeParameterInstance> {
 
-	@Inject
-	private static Provider<LocalizationServiceImpl> localizationService;
-	
-	@Override
-	public void posoCreated(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
+   @Inject
+   private static Provider<LocalizationServiceImpl> localizationService;
 
-		if(dto instanceof DateTimeParameterInstanceDtoDec) {
-			DateTimeParameterInstanceDtoDec dec = (DateTimeParameterInstanceDtoDec) dto;
-			String strval = dec.getStrValue();
-			if(null != strval) {
-				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
-				try {
-					Date date = sdf.parse(strval);
-					poso.setValue(date);
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
+   @Override
+   public void posoCreated(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
+
+      if (dto instanceof DateTimeParameterInstanceDtoDec) {
+         DateTimeParameterInstanceDtoDec dec = (DateTimeParameterInstanceDtoDec) dto;
+         String strval = dec.getStrValue();
+         if (null != strval) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
+            try {
+               Date date = sdf.parse(strval);
+               poso.setValue(date);
+            } catch (ParseException e) {
+               // TODO Auto-generated catch block
+               e.printStackTrace();
+            }
+         }
+      }
 //		String timezone = localizationService.get().getUserTimezone();
 //		TimeZone clientTZ = TimeZone.getTimeZone(timezone);
 //		TimeZone serverTZ = TimeZone.getDefault();
@@ -63,33 +64,30 @@ public class DateTimeParameterInstance2PosoPostProcessor implements Dto2PosoPost
 //		System.out.println(sdf.format(serverdate));
 //
 //		poso.setValue(serverdate);
-	}
+   }
 
-	@Override
-	public void posoCreatedUnmanaged(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
-		// TODO Auto-generated method stub
-		
-	}
+   @Override
+   public void posoCreatedUnmanaged(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
+      // TODO Auto-generated method stub
 
-	@Override
-	public void posoInstantiated(DateTimeParameterInstance poso) {
-		// TODO Auto-generated method stub
-		
-	}
+   }
 
-	@Override
-	public void posoMerged(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
-		// TODO Auto-generated method stub
-		
-	}
+   @Override
+   public void posoInstantiated(DateTimeParameterInstance poso) {
+      // TODO Auto-generated method stub
 
-	@Override
-	public void posoLoaded(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
-		// TODO Auto-generated method stub
-		
-	}
+   }
 
+   @Override
+   public void posoMerged(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
+      // TODO Auto-generated method stub
 
+   }
 
+   @Override
+   public void posoLoaded(DateTimeParameterInstanceDto dto, DateTimeParameterInstance poso) {
+      // TODO Auto-generated method stub
+
+   }
 
 }

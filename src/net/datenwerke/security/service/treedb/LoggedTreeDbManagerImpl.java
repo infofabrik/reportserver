@@ -13,36 +13,36 @@ import net.datenwerke.treedb.service.treedb.TreeDBManagerImpl;
 
 public abstract class LoggedTreeDbManagerImpl<A extends AbstractNode<A>> extends TreeDBManagerImpl<A> {
 
-	@Inject
-	protected EventBus eventBus; 
-	
-	public void move(A node, A newParent) {
-		eventBus.fireEvent(new MoveNodeEvent(node, newParent));
-		super.move(node, newParent);
-	}
-	
-	public void move(A node, A newParent, int index) {
-		eventBus.fireEvent(new MoveNodeEvent(node, newParent, index));
-		super.move(node, newParent, index);
-	}
-	
-	@FirePersistEntityEvents
-	public void persist(A node) {
-		super.persist(node);
-	}
-	
-	@FireMergeEntityEvents
-	public A merge(A node) {
-		return super.merge(node);
-	}
-	
-	@FireRemoveEntityEvents
-	public void remove(A node) {
-		super.remove(node);
-	}
-	
-	@FireForceRemoveEntityEvents
-	public void forceRemove(A node) {
-		super.forceRemove(node);
-	}
+   @Inject
+   protected EventBus eventBus;
+
+   public void move(A node, A newParent) {
+      eventBus.fireEvent(new MoveNodeEvent(node, newParent));
+      super.move(node, newParent);
+   }
+
+   public void move(A node, A newParent, int index) {
+      eventBus.fireEvent(new MoveNodeEvent(node, newParent, index));
+      super.move(node, newParent, index);
+   }
+
+   @FirePersistEntityEvents
+   public void persist(A node) {
+      super.persist(node);
+   }
+
+   @FireMergeEntityEvents
+   public A merge(A node) {
+      return super.merge(node);
+   }
+
+   @FireRemoveEntityEvents
+   public void remove(A node) {
+      super.remove(node);
+   }
+
+   @FireForceRemoveEntityEvents
+   public void forceRemove(A node) {
+      super.forceRemove(node);
+   }
 }

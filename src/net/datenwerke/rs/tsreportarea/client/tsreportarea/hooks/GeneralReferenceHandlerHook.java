@@ -6,8 +6,8 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
 
 public interface GeneralReferenceHandlerHook extends Hook {
 
-	boolean consumes(TsDiskGeneralReferenceDto item);
+   boolean consumes(TsDiskGeneralReferenceDto item);
 
-	void handle(TsDiskGeneralReferenceDto item, TsDiskMainComponent mainComponent);
+   void handle(TsDiskGeneralReferenceDto item, TsDiskMainComponent mainComponent);
 
 }

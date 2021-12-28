@@ -38,142 +38,147 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class CubeExportHooker implements ReportExecutorViewToolbarHook {
 
-	private final ToolbarService toolbarService;
-	private final EnterpriseUiService enterpriseService;
-	private final ReportExecutorUIService reportExecutorService;
-	private final SaikuPivotDao saikuPivotDao;
+   private final ToolbarService toolbarService;
+   private final EnterpriseUiService enterpriseService;
+   private final ReportExecutorUIService reportExecutorService;
+   private final SaikuPivotDao saikuPivotDao;
 
-	@Inject
-	public CubeExportHooker(ToolbarService toolbarService, EnterpriseUiService enterpriseService, 
-			ReportExecutorUIService reportExecutorService, SaikuPivotDao saikuPivotDao) {
-		super();
-		this.toolbarService = toolbarService;
-		this.enterpriseService = enterpriseService;
-		this.reportExecutorService = reportExecutorService;
-		this.saikuPivotDao = saikuPivotDao;
-	}
+   @Inject
+   public CubeExportHooker(ToolbarService toolbarService, EnterpriseUiService enterpriseService,
+         ReportExecutorUIService reportExecutorService, SaikuPivotDao saikuPivotDao) {
+      super();
+      this.toolbarService = toolbarService;
+      this.enterpriseService = enterpriseService;
+      this.reportExecutorService = reportExecutorService;
+      this.saikuPivotDao = saikuPivotDao;
+   }
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, ReportDto report,
-			ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
-		if (!(report instanceof TableReportDto))
-			return false;
+   @Override
+   public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, ReportDto report,
+         ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
+      if (!(report instanceof TableReportDto))
+         return false;
 
-		final TableReportDto tableReport = (TableReportDto) report;
-		if (! enterpriseService.isEnterprise() || ! tableReport.isCubeFlag())
-			return false;
+      final TableReportDto tableReport = (TableReportDto) report;
+      if (!enterpriseService.isEnterprise() || !tableReport.isCubeFlag())
+         return false;
 
-		DwTextButton exportBtn = toolbarService.createSmallButtonLeft(SaikuMessages.INSTANCE.exportCube(),
-				BaseIcon.EXPORT);
-		exportBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
-		toolbar.add(exportBtn);
+      DwTextButton exportBtn = toolbarService.createSmallButtonLeft(SaikuMessages.INSTANCE.exportCube(),
+            BaseIcon.EXPORT);
+      exportBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
+      toolbar.add(exportBtn);
 
-		final Menu menu = new Menu();
+      final Menu menu = new Menu();
 
-		exportBtn.setMenu(menu);
-		
-		MenuItem mondrian3Item = new DwMenuItem("Mondrian 3");
-		menu.add(mondrian3Item);
-		mondrian3Item.addSelectionHandler(new SelectionHandler<Item>() {
+      exportBtn.setMenu(menu);
 
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				startProgress();
-				saikuPivotDao.cubeExportMondrian3(reportExecutorService.createExecuteReportToken(tableReport), tableReport, new RsAsyncCallback<String>(){
-					@Override
-					public void onSuccess(String result) {
-						displayQuickExportResult(result);
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						new DetailErrorDialog(caught).show();
-					}
-				});
-			}
-		});
+      MenuItem mondrian3Item = new DwMenuItem("Mondrian 3");
+      menu.add(mondrian3Item);
+      mondrian3Item.addSelectionHandler(new SelectionHandler<Item>() {
 
-		MenuItem mondrian4Item = new DwMenuItem("Mondrian 4");
-		menu.add(mondrian4Item);
-		mondrian4Item.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            startProgress();
+            saikuPivotDao.cubeExportMondrian3(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
+                  new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        displayQuickExportResult(result);
+                     }
 
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				startProgress();
-				saikuPivotDao.cubeExport(reportExecutorService.createExecuteReportToken(tableReport), tableReport, new RsAsyncCallback<String>(){
-					@Override
-					public void onSuccess(String result) {
-						displayQuickExportResult(result);
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						new DetailErrorDialog(caught).show();
-					}
-				});
-			}
-		});
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        new DetailErrorDialog(caught).show();
+                     }
+                  });
+         }
+      });
 
-		return false;
-	}
-	
-	protected void startProgress() {
-		try{
-			InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(), ExImportMessages.INSTANCE.exportWait());
-			infoConfig.setWidth(350);
-			infoConfig.setDisplay(3500);
-			Info.display(infoConfig);
-		}catch(Exception e){}
-		
-	}
-	
-	protected void displayQuickExportResult(String result) {
-		final DwWindow window = new DwWindow();
-		window.setSize(640, 480);
-		
-		SimpleForm form = SimpleForm.getInlineLabelessInstance();
-		window.add(form);
-		
-		String key = form.addField(String.class, new SFFCTextArea() {
-			
-			@Override
-			public int getWidth() {
-				return 580;
-			}
-			
-			@Override
-			public int getHeight() {
-				return 400;
-			}
-		}, new SFFCStringNoHtmlDecode(){});
-		form.setValue(key, result);
-		
-		form.loadFields();
-		
-		DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
-		closeBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				window.hide();
-			}
-		});
-		window.addButton(closeBtn);
-		
-		window.show();
-	}
+      MenuItem mondrian4Item = new DwMenuItem("Mondrian 4");
+      menu.add(mondrian4Item);
+      mondrian4Item.addSelectionHandler(new SelectionHandler<Item>() {
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report,
-			ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		// TODO Auto-generated method stub
-		return false;
-	}
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            startProgress();
+            saikuPivotDao.cubeExport(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
+                  new RsAsyncCallback<String>() {
+                     @Override
+                     public void onSuccess(String result) {
+                        displayQuickExportResult(result);
+                     }
 
-	@Override
-	public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
-		// TODO Auto-generated method stub
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        new DetailErrorDialog(caught).show();
+                     }
+                  });
+         }
+      });
 
-	}
+      return false;
+   }
+
+   protected void startProgress() {
+      try {
+         InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
+               ExImportMessages.INSTANCE.exportWait());
+         infoConfig.setWidth(350);
+         infoConfig.setDisplay(3500);
+         Info.display(infoConfig);
+      } catch (Exception e) {
+      }
+
+   }
+
+   protected void displayQuickExportResult(String result) {
+      final DwWindow window = new DwWindow();
+      window.setSize(640, 480);
+
+      SimpleForm form = SimpleForm.getInlineLabelessInstance();
+      window.add(form);
+
+      String key = form.addField(String.class, new SFFCTextArea() {
+
+         @Override
+         public int getWidth() {
+            return 580;
+         }
+
+         @Override
+         public int getHeight() {
+            return 400;
+         }
+      }, new SFFCStringNoHtmlDecode() {
+      });
+      form.setValue(key, result);
+
+      form.loadFields();
+
+      DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
+      closeBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+         }
+      });
+      window.addButton(closeBtn);
+
+      window.show();
+   }
+
+   @Override
+   public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      // TODO Auto-generated method stub
+      return false;
+   }
+
+   @Override
+   public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
+      // TODO Auto-generated method stub
+
+   }
 
 }

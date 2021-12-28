@@ -10,17 +10,15 @@ import net.datenwerke.rs.condition.client.condition.dto.ReportConditionDto;
  */
 public class ReportConditionDtoDec extends ReportConditionDto implements Condition, IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ReportConditionDtoDec() {
+      super();
+   }
 
-	public ReportConditionDtoDec() {
-		super();
-	}
-
-	@Override
-	public boolean hasExpression() {
-		return true;
-	}
-
+   @Override
+   public boolean hasExpression() {
+      return true;
+   }
 
 }

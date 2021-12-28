@@ -19,48 +19,49 @@ import net.datenwerke.security.service.usermanager.entities.UserProperty;
 
 public class CheckBlockedUserOnLoginHooker implements PostAuthenticateHook {
 
-	private final SecurityService securityService;
+   private final SecurityService securityService;
 
-	@Inject
-	public CheckBlockedUserOnLoginHooker(SecurityService securityService) {
-		this.securityService = securityService;
-	}
-	
-	@Override
-	public void authenticated(AuthenticationResult authRes) {
-		User user = authRes.getUser();
-		if(null != user) {
-			if(user.isSuperUser())
-				return;
-			
-			if(! securityService.checkRights(user, AccessRsSecurityTarget.class, SecurityServiceSecuree.class, Execute.class)){
-				authRes.setAllowed(false);
-				authRes.addInfo(new AccountMissingRightsForAuthenticateResultInfo());
-				return;
-			}
-			
-			UserProperty property = user.getProperty(ReportServerModule.USER_PROPERTY_ACCOUNT_INHIBITED);
-			if(null != property && property.getValueAsBoolean()){
-				authRes.setAllowed(false);
-				authRes.addInfo(new AccountInhibitionAuthenticateResultInfo());
-				return;
-			}
-			
-			/* Check if account has expired */
-			UserProperty expProperty = user.getProperty(ReportServerModule.USER_PROPERTY_ACCOUNT_EXPIRATION_DATE);
-			
-			try{
-				if(null != expProperty){
-					Date date = null != expProperty.getValue() ? new Date(Long.parseLong(expProperty.getValue())) : null;
-					if(null != date && date.before(new Date())){
-						authRes.setAllowed(false);
-						authRes.addInfo(new AccountExpiredAuthenticateResultInfo(new Date(date.getTime() )));
-						return;
-					}
-				}
-			} catch(Exception e){
-			}
-		}
-	}
+   @Inject
+   public CheckBlockedUserOnLoginHooker(SecurityService securityService) {
+      this.securityService = securityService;
+   }
+
+   @Override
+   public void authenticated(AuthenticationResult authRes) {
+      User user = authRes.getUser();
+      if (null != user) {
+         if (user.isSuperUser())
+            return;
+
+         if (!securityService.checkRights(user, AccessRsSecurityTarget.class, SecurityServiceSecuree.class,
+               Execute.class)) {
+            authRes.setAllowed(false);
+            authRes.addInfo(new AccountMissingRightsForAuthenticateResultInfo());
+            return;
+         }
+
+         UserProperty property = user.getProperty(ReportServerModule.USER_PROPERTY_ACCOUNT_INHIBITED);
+         if (null != property && property.getValueAsBoolean()) {
+            authRes.setAllowed(false);
+            authRes.addInfo(new AccountInhibitionAuthenticateResultInfo());
+            return;
+         }
+
+         /* Check if account has expired */
+         UserProperty expProperty = user.getProperty(ReportServerModule.USER_PROPERTY_ACCOUNT_EXPIRATION_DATE);
+
+         try {
+            if (null != expProperty) {
+               Date date = null != expProperty.getValue() ? new Date(Long.parseLong(expProperty.getValue())) : null;
+               if (null != date && date.before(new Date())) {
+                  authRes.setAllowed(false);
+                  authRes.addInfo(new AccountExpiredAuthenticateResultInfo(new Date(date.getTime())));
+                  return;
+               }
+            }
+         } catch (Exception e) {
+         }
+      }
+   }
 
 }

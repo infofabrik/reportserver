@@ -19,83 +19,81 @@ import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class BirtReportConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<BirtReportForm> adminFormProvider;
-	
-	@Inject
-	public BirtReportConfigHooker(
-			Provider<BirtReportForm> adminFormProvider
-	) {
-		this.adminFormProvider = adminFormProvider;
-	}
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof BirtReportDto;
-	}
+   private final Provider<BirtReportForm> adminFormProvider;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   @Inject
+   public BirtReportConfigHooker(Provider<BirtReportForm> adminFormProvider) {
+      this.adminFormProvider = adminFormProvider;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return BirtReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof BirtReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_BIRT.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_BIRT.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return BirtReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_BIRT_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_BIRT.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_BIRT_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_BIRT.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return BirtMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_BIRT_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return BirtReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_BIRT_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return BirtMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return BirtReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new BirtReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new BirtReportVariantDtoDec();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource(1);
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new BirtReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new BirtReportVariantDtoDec();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

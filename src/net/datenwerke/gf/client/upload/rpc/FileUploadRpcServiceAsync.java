@@ -6,12 +6,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gf.client.upload.dto.UploadResponse;
 
-
 public interface FileUploadRpcServiceAsync {
 
-	Request uploadInterimFile(FileToUpload file, 
-			AsyncCallback<UploadResponse> callback);
-
-	
+   Request uploadInterimFile(FileToUpload file, AsyncCallback<UploadResponse> callback);
 
 }

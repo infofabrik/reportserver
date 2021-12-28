@@ -8,6 +8,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface AnalyticalFunctionWrapperFactory {
 
-	public AnalyticalFunctionWrapper create(Column column, ParameterSet parameters,
-			DatasourceContainerProvider datasourceContainerProvider, QueryBuilder queryBuilder, ManagedQuery query);
+   public AnalyticalFunctionWrapper create(Column column, ParameterSet parameters,
+         DatasourceContainerProvider datasourceContainerProvider, QueryBuilder queryBuilder, ManagedQuery query);
 }

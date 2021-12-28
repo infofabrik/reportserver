@@ -15,40 +15,39 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.Saiku
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuPDFOutputGenerator;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuXLSOutputGenerator;
 
-public class BaseSaikuOutputGeneratorProvider implements SaikuOutputGeneratorProviderHook{
+public class BaseSaikuOutputGeneratorProvider implements SaikuOutputGeneratorProviderHook {
 
-	private final Provider<SaikuPDFOutputGenerator> saikuPDFOutputGenerator; 
-	private final Provider<SaikuCSVOutputGenerator> saikuCSVOutputGenerator; 
-	private final Provider<SaikuXLSOutputGenerator> saikuXLSOutputGenerator;
-	private final Provider<SaikuHTMLOutputGenerator> saikuHTMLOutputGenerator;
-	private final Provider<SaikuChartHTMLOutputGenerator> saikuChartHTMLOutputGenerator;
-	
-	@Inject
-	public BaseSaikuOutputGeneratorProvider(
-			Provider<SaikuPDFOutputGenerator> saikuPDFOutputGenerator,
-			Provider<SaikuCSVOutputGenerator> saikuCSVOutputGenerator,
-			Provider<SaikuXLSOutputGenerator> saikuXLSOutputGenerator,
-			Provider<SaikuHTMLOutputGenerator> saikuHTMLOutputGenerator,
-			Provider<SaikuChartHTMLOutputGenerator> saikuChartHTMLOutputGenerator) {
-		super();
-		this.saikuPDFOutputGenerator = saikuPDFOutputGenerator;
-		this.saikuCSVOutputGenerator = saikuCSVOutputGenerator;
-		this.saikuXLSOutputGenerator = saikuXLSOutputGenerator;
-		this.saikuHTMLOutputGenerator = saikuHTMLOutputGenerator;
-		this.saikuChartHTMLOutputGenerator = saikuChartHTMLOutputGenerator;
-	}
+   private final Provider<SaikuPDFOutputGenerator> saikuPDFOutputGenerator;
+   private final Provider<SaikuCSVOutputGenerator> saikuCSVOutputGenerator;
+   private final Provider<SaikuXLSOutputGenerator> saikuXLSOutputGenerator;
+   private final Provider<SaikuHTMLOutputGenerator> saikuHTMLOutputGenerator;
+   private final Provider<SaikuChartHTMLOutputGenerator> saikuChartHTMLOutputGenerator;
 
-	@Override
-	public Collection<SaikuOutputGenerator> provideGenerators() {
-		List<SaikuOutputGenerator> generators = new ArrayList<SaikuOutputGenerator>();
-		
-		generators.add(saikuPDFOutputGenerator.get());
-		generators.add(saikuCSVOutputGenerator.get());
-		generators.add(saikuXLSOutputGenerator.get());
-		generators.add(saikuHTMLOutputGenerator.get());
-		generators.add(saikuChartHTMLOutputGenerator.get());
-		
-		return generators;
-	}
+   @Inject
+   public BaseSaikuOutputGeneratorProvider(Provider<SaikuPDFOutputGenerator> saikuPDFOutputGenerator,
+         Provider<SaikuCSVOutputGenerator> saikuCSVOutputGenerator,
+         Provider<SaikuXLSOutputGenerator> saikuXLSOutputGenerator,
+         Provider<SaikuHTMLOutputGenerator> saikuHTMLOutputGenerator,
+         Provider<SaikuChartHTMLOutputGenerator> saikuChartHTMLOutputGenerator) {
+      super();
+      this.saikuPDFOutputGenerator = saikuPDFOutputGenerator;
+      this.saikuCSVOutputGenerator = saikuCSVOutputGenerator;
+      this.saikuXLSOutputGenerator = saikuXLSOutputGenerator;
+      this.saikuHTMLOutputGenerator = saikuHTMLOutputGenerator;
+      this.saikuChartHTMLOutputGenerator = saikuChartHTMLOutputGenerator;
+   }
+
+   @Override
+   public Collection<SaikuOutputGenerator> provideGenerators() {
+      List<SaikuOutputGenerator> generators = new ArrayList<SaikuOutputGenerator>();
+
+      generators.add(saikuPDFOutputGenerator.get());
+      generators.add(saikuCSVOutputGenerator.get());
+      generators.add(saikuXLSOutputGenerator.get());
+      generators.add(saikuHTMLOutputGenerator.get());
+      generators.add(saikuChartHTMLOutputGenerator.get());
+
+      return generators;
+   }
 
 }

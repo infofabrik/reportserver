@@ -15,53 +15,49 @@ import net.datenwerke.rs.ftp.client.ftp.FtpUiModule;
 import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.ui.SftpDatasinkForm;
 
-public class SftpDatasinkConfigProviderHooker implements
-		DatasinkDefinitionConfigProviderHook {
+public class SftpDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
-	private final Provider<SftpDatasinkForm> formProvider;
-	
-	@Inject
-	public SftpDatasinkConfigProviderHooker(
-		Provider<SftpDatasinkForm> formProvider
-		){
-		
-		/* store objects */
-		this.formProvider = formProvider;
-	}
-	
-	@Override
-	public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-		return getDatasinkClass().equals(datasinkDefinition.getClass());
-	}
+   private final Provider<SftpDatasinkForm> formProvider;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(
-			DatasinkDefinitionDto datasinkDefinition) {
-		return Collections.singleton(formProvider.get());
-	}
+   @Inject
+   public SftpDatasinkConfigProviderHooker(Provider<SftpDatasinkForm> formProvider) {
 
-	@Override
-	public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-		return FtpUiModule.SFTP_TYPE;
-	}
+      /* store objects */
+      this.formProvider = formProvider;
+   }
 
-	@Override
-	public String getDatasinkName() {
-		return FtpUiModule.SFTP_NAME;
-	}
+   @Override
+   public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
+   }
 
-	@Override
-	public AbstractDatasinkManagerNodeDto instantiateDatasink() {
-		return new SftpDatasinkDto();
-	}
-	
-	@Override
-	public ImageResource getDatasinkIcon() {
-		return FtpUiModule.SFTP_ICON.toImageResource();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasinkDefinitionDto datasinkDefinition) {
+      return Collections.singleton(formProvider.get());
+   }
+
+   @Override
+   public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
+      return FtpUiModule.SFTP_TYPE;
+   }
+
+   @Override
+   public String getDatasinkName() {
+      return FtpUiModule.SFTP_NAME;
+   }
+
+   @Override
+   public AbstractDatasinkManagerNodeDto instantiateDatasink() {
+      return new SftpDatasinkDto();
+   }
+
+   @Override
+   public ImageResource getDatasinkIcon() {
+      return FtpUiModule.SFTP_ICON.toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

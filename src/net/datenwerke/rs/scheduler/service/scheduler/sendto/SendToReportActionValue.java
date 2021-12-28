@@ -15,66 +15,66 @@ import org.hibernate.annotations.Type;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 
 @Entity
-@Table(name="SCHED_ACTION_SEND_TO_V")
+@Table(name = "SCHED_ACTION_SEND_TO_V")
 public class SendToReportActionValue implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4819351779360554765L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4819351779360554765L;
 
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	private String valueId;
-	
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String theValue;
+   @Version
+   private Long version;
 
-	public SendToReportActionValue(){}
-	
-	public SendToReportActionValue(String key, String value) {
-		this.valueId = key;
-		this.theValue = value;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public Long getVersion() {
-		return version;
-	}
+   private String valueId;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String theValue;
 
-	public Long getId() {
-		return id;
-	}
+   public SendToReportActionValue() {
+   }
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   public SendToReportActionValue(String key, String value) {
+      this.valueId = key;
+      this.theValue = value;
+   }
 
-	public String getValueId() {
-		return valueId;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setValueId(String valueId) {
-		this.valueId = valueId;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public String getTheValue() {
-		return theValue;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setTheValue(String theValue) {
-		this.theValue = theValue;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	
-	
+   public String getValueId() {
+      return valueId;
+   }
+
+   public void setValueId(String valueId) {
+      this.valueId = valueId;
+   }
+
+   public String getTheValue() {
+      return theValue;
+   }
+
+   public void setTheValue(String theValue) {
+      this.theValue = theValue;
+   }
+
 }

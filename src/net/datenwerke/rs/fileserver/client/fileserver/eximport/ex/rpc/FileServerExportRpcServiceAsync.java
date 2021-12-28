@@ -6,8 +6,8 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 
 public interface FileServerExportRpcServiceAsync {
 
-	void quickExport(AbstractFileServerNodeDto dto, AsyncCallback<Void> callback);
+   void quickExport(AbstractFileServerNodeDto dto, AsyncCallback<Void> callback);
 
-	void loadResult(AsyncCallback<String> callback);
+   void loadResult(AsyncCallback<String> callback);
 
 }

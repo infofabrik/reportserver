@@ -5,20 +5,20 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface JasperMessages extends Messages {
 
-	public final static JasperMessages INSTANCE = GWT.create(JasperMessages.class);
-	
-	String parameterProposalBtn();
+   public final static JasperMessages INSTANCE = GWT.create(JasperMessages.class);
 
-	String noProposalsFoundTitle();
+   String parameterProposalBtn();
 
-	String noProposalsFoundText();
+   String noProposalsFoundTitle();
 
-	String name();
+   String noProposalsFoundText();
 
-	String key();
+   String name();
 
-	String proposal();
+   String key();
 
-	String windowTitle();
+   String proposal();
+
+   String windowTitle();
 
 }

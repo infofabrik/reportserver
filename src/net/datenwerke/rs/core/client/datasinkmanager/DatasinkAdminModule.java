@@ -16,34 +16,32 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class DatasinkAdminModule implements AdminModule {
 
-	final private Provider<DatasinkManagerPanel> datasinkManagerPanelProvider;
-	
-	@Inject
-	public DatasinkAdminModule(
-		Provider<DatasinkManagerPanel> datasinkManagerPanel
-		){
-		
-		/* store objects */
-		this.datasinkManagerPanelProvider = datasinkManagerPanel;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.SERVER.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return DatasinksMessages.INSTANCE.datasinks();
-	}
+   final private Provider<DatasinkManagerPanel> datasinkManagerPanelProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return datasinkManagerPanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-		// ignore
-	}
+   @Inject
+   public DatasinkAdminModule(Provider<DatasinkManagerPanel> datasinkManagerPanel) {
+
+      /* store objects */
+      this.datasinkManagerPanelProvider = datasinkManagerPanel;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.SERVER.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return DatasinksMessages.INSTANCE.datasinks();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return datasinkManagerPanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+      // ignore
+   }
 }

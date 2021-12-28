@@ -27,43 +27,36 @@ import net.datenwerke.usermanager.ext.service.terminal.commands.IdCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.SetUserPropertySubCommand;
 import net.datenwerke.usermanager.ext.service.terminal.commands.UserModCommand;
 
-
 public class UserManagerExtStartup {
 
-	@Inject
-	public UserManagerExtStartup(
-		HookHandlerService hookHandler,
-		Provider<UserManagerExporter> exporterProvider,
-		Provider<UserManagerImporter> importerProvider,
-		Provider<HttpUserManagerImportConfigurationHooker> httpImportConfigHookerProvider,
-		Provider<ExportAllUsersHooker> exportAllUsers,
-		Provider<ImportAllUsersHooker> importAllUsers,
-		
-		Provider<UpdateUserLocalHooker> updateUserLocaleHooker,
-		
-		Provider<UserManagerHistoryUrlBuilderHooker> userManagerUrlBuilder,
-		
-		Provider<UserModCommand> userModCommandProvider,
-		Provider<SetUserPropertySubCommand> setUserPropertyCommandProvider,
-		Provider<GroupModCommand> groupModProvider,
-		Provider<AddMembersSubCommand> addMembersToGroupProvider,
-		Provider<IdCommand> idCommandProvider
-		){
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImportConfigHookerProvider);
-		hookHandler.attachHooker(ExportAllHook.class, exportAllUsers);
-		hookHandler.attachHooker(ImportAllHook.class, importAllUsers);
-		
-		hookHandler.attachHooker(LocaleChangedNotificationHook.class, updateUserLocaleHooker);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, userModCommandProvider);
-		hookHandler.attachHooker(UserModSubCommandHook.class, setUserPropertyCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, groupModProvider);
-		hookHandler.attachHooker(GroupModSubCommandHook.class, addMembersToGroupProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, idCommandProvider);
-		
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, userManagerUrlBuilder);
-	}
+   @Inject
+   public UserManagerExtStartup(HookHandlerService hookHandler, Provider<UserManagerExporter> exporterProvider,
+         Provider<UserManagerImporter> importerProvider,
+         Provider<HttpUserManagerImportConfigurationHooker> httpImportConfigHookerProvider,
+         Provider<ExportAllUsersHooker> exportAllUsers, Provider<ImportAllUsersHooker> importAllUsers,
+
+         Provider<UpdateUserLocalHooker> updateUserLocaleHooker,
+
+         Provider<UserManagerHistoryUrlBuilderHooker> userManagerUrlBuilder,
+
+         Provider<UserModCommand> userModCommandProvider,
+         Provider<SetUserPropertySubCommand> setUserPropertyCommandProvider, Provider<GroupModCommand> groupModProvider,
+         Provider<AddMembersSubCommand> addMembersToGroupProvider, Provider<IdCommand> idCommandProvider) {
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImportConfigHookerProvider);
+      hookHandler.attachHooker(ExportAllHook.class, exportAllUsers);
+      hookHandler.attachHooker(ImportAllHook.class, importAllUsers);
+
+      hookHandler.attachHooker(LocaleChangedNotificationHook.class, updateUserLocaleHooker);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, userModCommandProvider);
+      hookHandler.attachHooker(UserModSubCommandHook.class, setUserPropertyCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, groupModProvider);
+      hookHandler.attachHooker(GroupModSubCommandHook.class, addMembersToGroupProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, idCommandProvider);
+
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, userManagerUrlBuilder);
+   }
 }

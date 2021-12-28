@@ -14,35 +14,34 @@ import net.datenwerke.security.service.eventlogger.annotations.FirePersistEntity
 
 public class FileSelectionParameterServiceImpl implements FileSelectionParameterService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public FileSelectionParameterServiceImpl(
-			Provider<EntityManager> entityManagerProvider) {
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@Override
-	@FirePersistEntityEvents
-	public void persist(UploadedParameterFile file) {
-		entityManagerProvider.get().persist(file);
-	}
-	
-	@Override
-	@FirePersistEntityEvents
-	public void persist(SelectedParameterFile file) {
-		entityManagerProvider.get().persist(file);
-	}
-	
-	@Override
-	@SimpleQuery(from=FileSelectionParameterInstance.class,join=@Join(joinAttribute=FileSelectionParameterInstance__.selectedFiles, where=@Predicate(value="file")))
-	public FileSelectionParameterInstance getParameterInstanceWithFile(@Named("file") SelectedParameterFile file){
-		return null; // magic
-	}
-	
-	@Override
-	@QueryById
-	public SelectedParameterFile getSelectedFileById(Long id) {
-		return null; // magic
-	}
+   @Inject
+   public FileSelectionParameterServiceImpl(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
+
+   @Override
+   @FirePersistEntityEvents
+   public void persist(UploadedParameterFile file) {
+      entityManagerProvider.get().persist(file);
+   }
+
+   @Override
+   @FirePersistEntityEvents
+   public void persist(SelectedParameterFile file) {
+      entityManagerProvider.get().persist(file);
+   }
+
+   @Override
+   @SimpleQuery(from = FileSelectionParameterInstance.class, join = @Join(joinAttribute = FileSelectionParameterInstance__.selectedFiles, where = @Predicate(value = "file")))
+   public FileSelectionParameterInstance getParameterInstanceWithFile(@Named("file") SelectedParameterFile file) {
+      return null; // magic
+   }
+
+   @Override
+   @QueryById
+   public SelectedParameterFile getSelectedFileById(Long id) {
+      return null; // magic
+   }
 }

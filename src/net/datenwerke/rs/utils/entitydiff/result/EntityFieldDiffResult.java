@@ -4,21 +4,21 @@ import java.lang.reflect.Field;
 
 public class EntityFieldDiffResult extends FieldDiffResult {
 
-	protected final EntityDiffResult diffResult;
-	
-	public EntityFieldDiffResult(Field field, Object valueA, Object valueB, EntityDiffResult diffResult) {
-		super(field, valueA, valueB);
-		
-		this.diffResult = diffResult;
-	}
+   protected final EntityDiffResult diffResult;
 
-	public EntityDiffResult getDiffResult() {
-		return diffResult;
-	}
+   public EntityFieldDiffResult(Field field, Object valueA, Object valueB, EntityDiffResult diffResult) {
+      super(field, valueA, valueB);
 
-	@Override
-	public boolean isEqual() {
-		return diffResult.isEqual();
-	}
+      this.diffResult = diffResult;
+   }
+
+   public EntityDiffResult getDiffResult() {
+      return diffResult;
+   }
+
+   @Override
+   public boolean isEqual() {
+      return diffResult.isEqual();
+   }
 
 }

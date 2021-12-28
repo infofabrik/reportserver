@@ -9,12 +9,9 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class XsltCommandStartup {
 
-	@Inject
-	public XsltCommandStartup(
-		HookHandlerService hookHandler,
-		Provider<XsltCommand> xsltProvider
-		){
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, xsltProvider);
-	}
+   @Inject
+   public XsltCommandStartup(HookHandlerService hookHandler, Provider<XsltCommand> xsltProvider) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, xsltProvider);
+   }
 }

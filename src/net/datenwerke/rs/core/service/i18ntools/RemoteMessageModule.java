@@ -6,9 +6,9 @@ import net.datenwerke.gf.service.localization.RemoteMessageService;
 
 public class RemoteMessageModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(RemoteMessageService.class).to(RemoteMessageServiceImpl.class);
-	}
+   @Override
+   protected void configure() {
+      bind(RemoteMessageService.class).to(RemoteMessageServiceImpl.class);
+   }
 
 }

@@ -32,11 +32,8 @@ public class DatasourceTesterRPCServiceImpl extends SecuredRemoteServiceServlet 
    private final DatasourceTesterService datasourceTesterService;
 
    @Inject
-   public DatasourceTesterRPCServiceImpl(
-         DtoService dtoService, 
-         ExceptionServices exceptionServices,
-         DatasourceTesterService datasourceTesterService
-         ) {
+   public DatasourceTesterRPCServiceImpl(DtoService dtoService, ExceptionServices exceptionServices,
+         DatasourceTesterService datasourceTesterService) {
 
       /* store objects */
       this.dtoService = dtoService;
@@ -45,14 +42,8 @@ public class DatasourceTesterRPCServiceImpl extends SecuredRemoteServiceServlet 
    }
 
    @SecurityChecked(argumentVerification = {
-         @ArgumentVerification(
-               name = "datasource", 
-               isDto = true, 
-               verify = @RightsVerification(
-                     rights = { 
-                           Read.class,
-                           Execute.class 
-                           })) })
+         @ArgumentVerification(name = "datasource", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Execute.class })) })
    @Transactional(rollbackOn = { Exception.class })
    @Override
    public boolean testConnection(@Named("datasource") DatabaseDatasourceDto databaseDto)

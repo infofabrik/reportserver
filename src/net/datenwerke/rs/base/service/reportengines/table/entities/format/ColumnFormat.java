@@ -17,46 +17,41 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Entity
-@Table(name="COLUMN_FORMAT")
-@Inheritance(strategy=InheritanceType.JOINED)
+@Table(name = "COLUMN_FORMAT")
+@Inheritance(strategy = InheritanceType.JOINED)
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator=true,
-	abstractDto=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true, abstractDto = true)
 public abstract class ColumnFormat implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1787362070179868777L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1787362070179868777L;
 
-	@ExposeToClient(
-		id=true
-	)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@Version
-	private Long version;
-	
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @Version
+   private Long version;
 
-	public Long getVersion() {
-		return version;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public abstract String format(Object value);
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public abstract String format(Object value);
 
 }

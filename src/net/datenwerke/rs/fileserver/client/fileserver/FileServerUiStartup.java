@@ -37,64 +37,61 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class FileServerUiStartup {
 
-	
-	@Inject
-	public FileServerUiStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
-		
-		Provider<EditTerminalCommandProcessor> commandProcessor,
-		
-		Provider<FileServerUiImporterHooker> importerHooker,
-		
-		Provider<EditFileFromSelectionWidgetHooker> editFileinSelectionWidget,
-		
-		final Provider<FileServerAdminModule> adminModuleProvider,
-		final FileServerManagerTreeConfigurationHooker treeConfigurator,
-		final MainPanelViewProviderHooker mainPanelViewProvider,
-		
-		final Provider<EditTextFileView> editTextFileProvider,
-		
-		final FileServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
-		
-		@FileServerManagerAdminViewTree Provider<UITree> fileManagerTree,
-		HistoryUiService historyService,
-		EventBus eventBus,
-		Provider<FileServerManagerPanel> fileManagerAdminPanel
-		){
-		
-		/* attach ex/importer */
-		hookHandler.attachHooker(ImporterConfiguratorHook.class, importerHooker);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		/* attach views */
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-		hookHandler.attachHooker(EditFileServerFileHook.class, editTextFileProvider);
-		
-		/* misc */
-		hookHandler.attachHooker(AddSelectionFieldMenuItemHook.class, editFileinSelectionWidget);
-		
-		/* terminal commands */
-		hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
-		
-		/* config tree */
-		hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-		
-		/* test if user has rights to see datasource manager admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, new SynchronousCallbackOnEventTrigger(){
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(FileServerManagerGenericTargetIdentifier.class, ReadDto.class)){
-					hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 40);
-				}
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-		
-		historyService.addHistoryCallback(FileServerUiModule.FILESERVER_HISTORY_TOKEN,
-				new TreeDBHistoryCallback(fileManagerTree, eventBus, fileManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
-	}
+   @Inject
+   public FileServerUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
+
+         Provider<EditTerminalCommandProcessor> commandProcessor,
+
+         Provider<FileServerUiImporterHooker> importerHooker,
+
+         Provider<EditFileFromSelectionWidgetHooker> editFileinSelectionWidget,
+
+         final Provider<FileServerAdminModule> adminModuleProvider,
+         final FileServerManagerTreeConfigurationHooker treeConfigurator,
+         final MainPanelViewProviderHooker mainPanelViewProvider,
+
+         final Provider<EditTextFileView> editTextFileProvider,
+
+         final FileServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
+
+         @FileServerManagerAdminViewTree Provider<UITree> fileManagerTree, HistoryUiService historyService,
+         EventBus eventBus, Provider<FileServerManagerPanel> fileManagerAdminPanel) {
+
+      /* attach ex/importer */
+      hookHandler.attachHooker(ImporterConfiguratorHook.class, importerHooker);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* attach views */
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+      hookHandler.attachHooker(EditFileServerFileHook.class, editTextFileProvider);
+
+      /* misc */
+      hookHandler.attachHooker(AddSelectionFieldMenuItemHook.class, editFileinSelectionWidget);
+
+      /* terminal commands */
+      hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
+
+      /* config tree */
+      hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+
+      /* test if user has rights to see datasource manager admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(FileServerManagerGenericTargetIdentifier.class, ReadDto.class)) {
+                     hookHandler.attachHooker(AdminModuleProviderHook.class,
+                           new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 40);
+                  }
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+
+      historyService.addHistoryCallback(FileServerUiModule.FILESERVER_HISTORY_TOKEN, new TreeDBHistoryCallback(
+            fileManagerTree, eventBus, fileManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
+   }
 }

@@ -18,43 +18,43 @@ import net.datenwerke.security.ext.client.usermanager.rpc.UserManagerRpcServiceA
 
 public class UserManagerDao extends Dao {
 
-	private final UserManagerRpcServiceAsync rpcService;
+   private final UserManagerRpcServiceAsync rpcService;
 
-	@Inject
-	public UserManagerDao(UserManagerRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	public void getStrippedDownUsers(AsyncCallback<ListLoadResult<StrippedDownUser>> callback){
-		rpcService.getStrippedDownUsers(transformAndKeepCallback(callback));
-	}
+   @Inject
+   public UserManagerDao(UserManagerRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public void getStrippedDownGroups(AsyncCallback<ListLoadResult<StrippedDownGroup>> callback){
-		rpcService.getStrippedDownGroups(transformAndKeepCallback(callback));
-	}
-	
-	public void changeActiveUserData(UserDto userDto, AsyncCallback<UserDto> callback){
-		rpcService.changeActiveUserData(userDto, transformDtoCallback(callback));
-	}
+   public void getStrippedDownUsers(AsyncCallback<ListLoadResult<StrippedDownUser>> callback) {
+      rpcService.getStrippedDownUsers(transformAndKeepCallback(callback));
+   }
 
-	public void getStrippedDownUsers(Collection<Long> ids,
-			AsyncCallback<List<StrippedDownUser>> callback){
-		rpcService.getStrippedDownUsers(ids, transformAndKeepCallback(callback));
-	}
-	
-	public void fillStrippedDownUsersInfo(Collection<StrippedDownUser> users, AsyncCallback<List<StrippedDownUser>> callback) {
-		List<Long> ids = new ArrayList<>();
-		for (StrippedDownUser user: users) {
-			ids.add(user.getId());
-		}
-		
-		rpcService.getStrippedDownUsers(ids, transformAndKeepCallback(callback));
-	}
-	
-	public void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
-			AsyncCallback<GroupDto> callback){
-		rpcService.updateGroupMembership(group, userIds, groupIds, ouIds, transformAndKeepCallback(callback));
-	}
-	
+   public void getStrippedDownGroups(AsyncCallback<ListLoadResult<StrippedDownGroup>> callback) {
+      rpcService.getStrippedDownGroups(transformAndKeepCallback(callback));
+   }
+
+   public void changeActiveUserData(UserDto userDto, AsyncCallback<UserDto> callback) {
+      rpcService.changeActiveUserData(userDto, transformDtoCallback(callback));
+   }
+
+   public void getStrippedDownUsers(Collection<Long> ids, AsyncCallback<List<StrippedDownUser>> callback) {
+      rpcService.getStrippedDownUsers(ids, transformAndKeepCallback(callback));
+   }
+
+   public void fillStrippedDownUsersInfo(Collection<StrippedDownUser> users,
+         AsyncCallback<List<StrippedDownUser>> callback) {
+      List<Long> ids = new ArrayList<>();
+      for (StrippedDownUser user : users) {
+         ids.add(user.getId());
+      }
+
+      rpcService.getStrippedDownUsers(ids, transformAndKeepCallback(callback));
+   }
+
+   public void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
+         AsyncCallback<GroupDto> callback) {
+      rpcService.updateGroupMembership(group, userIds, groupIds, ouIds, transformAndKeepCallback(callback));
+   }
+
 }

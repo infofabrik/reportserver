@@ -13,21 +13,21 @@ import net.datenwerke.rs.core.client.reportmanager.interfaces.ReportAware;
  */
 abstract public class ParameterDefinitionDtoDec extends ParameterDefinitionDto implements IdedDto, ReportAware {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   @Transient
+   transient private ReportDto report;
 
-	@Transient transient private ReportDto report;
-	
-	public ParameterDefinitionDtoDec() {
-		super();
-	}
+   public ParameterDefinitionDtoDec() {
+      super();
+   }
 
-	public ReportDto getReport() {
-		return report;
-	}
-	
-	public void setReport(ReportDto report) {
-		this.report = report;
-	}
+   public ReportDto getReport() {
+      return report;
+   }
+
+   public void setReport(ReportDto report) {
+      this.report = report;
+   }
 
 }

@@ -13,36 +13,30 @@ import net.datenwerke.rs.authenticator.client.login.locale.LoginMessages;
  *
  */
 public class HomepageLogoutHook implements HomepageHeaderContentHook {
-	
-	private final LoginService loginService;
-	
-	@Inject
-	public HomepageLogoutHook(
-		LoginService loginService
-		){
-		
-		/* store objects */
-		this.loginService = loginService;
-	}
-	
-	@Override
-	public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container) {
-		return new DwMainViewportTopBarElement() {
-			
-			@Override
-			public void onClick() {
-				loginService.logoff();
-			}
-			
-			@Override
-			public String getName() {
-				return LoginMessages.INSTANCE.logout();
-			}
-		};
-	}
-	
 
+   private final LoginService loginService;
 
+   @Inject
+   public HomepageLogoutHook(LoginService loginService) {
 
-	
+      /* store objects */
+      this.loginService = loginService;
+   }
+
+   @Override
+   public DwMainViewportTopBarElement homepageHeaderContentHook_addTopRight(HBoxLayoutContainer container) {
+      return new DwMainViewportTopBarElement() {
+
+         @Override
+         public void onClick() {
+            loginService.logoff();
+         }
+
+         @Override
+         public String getName() {
+            return LoginMessages.INSTANCE.logout();
+         }
+      };
+   }
+
 }

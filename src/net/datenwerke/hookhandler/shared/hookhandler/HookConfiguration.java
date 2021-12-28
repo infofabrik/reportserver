@@ -4,24 +4,24 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public class HookConfiguration {
 
-	private final Class<? extends Hook> hook;
-	
-	private boolean isSingleton = false;
+   private final Class<? extends Hook> hook;
 
-	public HookConfiguration(Class<? extends Hook> hook){
-		this.hook = hook;
-	}
+   private boolean isSingleton = false;
 
-	public boolean isSingleton() {
-		return isSingleton;
-	}
+   public HookConfiguration(Class<? extends Hook> hook) {
+      this.hook = hook;
+   }
 
-	public void setSingleton(boolean isSingleton) {
-		this.isSingleton = isSingleton;
-	}
+   public boolean isSingleton() {
+      return isSingleton;
+   }
 
-	public Class<? extends Hook> getHook() {
-		return hook;
-	}
-	
+   public void setSingleton(boolean isSingleton) {
+      this.isSingleton = isSingleton;
+   }
+
+   public Class<? extends Hook> getHook() {
+      return hook;
+   }
+
 }

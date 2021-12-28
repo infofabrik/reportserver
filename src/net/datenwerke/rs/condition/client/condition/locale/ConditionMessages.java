@@ -5,49 +5,62 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface ConditionMessages extends Messages {
 
-	public final static ConditionMessages INSTANCE = GWT.create(ConditionMessages.class);
-	
-	String expressionLabel();
+   public final static ConditionMessages INSTANCE = GWT.create(ConditionMessages.class);
 
-	String addPredefinedConditionLabel();
-	String removeConditionLabel();
-	String removeAllConditionLabel();
+   String expressionLabel();
 
-	String conditionPageHeadline();
-	String conditionPageDescription();
+   String addPredefinedConditionLabel();
 
-	String editConditionHeader(String name);
+   String removeConditionLabel();
 
-	String testConditionLabel();
-	
-	String removeAllConfirmHeading();
-	String removeAllConfirmText();
-	
-	String addReplacementLabel();
-	
-	String schedulerPageHeadline();
-	String schedulerPageDescription();
-	
-	String failureStrategyLabel();
-	
-	String skipLabel();
-	String retryLabel();
-	
-	String minutesLabel();
-	String hoursLabel();
-	String daysLabel();
-	String weeksLabel();
-	String monthsLabel();
-	String yearsLabel();
-	
-	String failureRetryUnitLabel();
-	String failureRetryAmount();
+   String removeAllConditionLabel();
 
-	String addConditionHeader();
+   String conditionPageHeadline();
 
-	String conditionHolds();
-	String conditionFails();
-	
-	String addConditionLabel();
-	
+   String conditionPageDescription();
+
+   String editConditionHeader(String name);
+
+   String testConditionLabel();
+
+   String removeAllConfirmHeading();
+
+   String removeAllConfirmText();
+
+   String addReplacementLabel();
+
+   String schedulerPageHeadline();
+
+   String schedulerPageDescription();
+
+   String failureStrategyLabel();
+
+   String skipLabel();
+
+   String retryLabel();
+
+   String minutesLabel();
+
+   String hoursLabel();
+
+   String daysLabel();
+
+   String weeksLabel();
+
+   String monthsLabel();
+
+   String yearsLabel();
+
+   String failureRetryUnitLabel();
+
+   String failureRetryAmount();
+
+   String addConditionHeader();
+
+   String conditionHolds();
+
+   String conditionFails();
+
+   String addConditionLabel();
+
 }

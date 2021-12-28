@@ -9,7 +9,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ExportExternalEntryProviderHook extends Hook {
 
-	void getMenuEntry(Menu menu, ReportDto report,
-			ReportExecutorInformation info, ReportExecutorMainPanel mainPanel);
+   void getMenuEntry(Menu menu, ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel);
 
 }

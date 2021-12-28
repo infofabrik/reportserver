@@ -5,9 +5,9 @@ import net.datenwerke.rs.utils.localization.Messages;
 
 public interface DropboxDatasinkMessages extends Messages {
 
-	public final static DropboxDatasinkMessages INSTANCE = LocalizationServiceImpl
-			.getMessages(DropboxDatasinkMessages.class);
+   public final static DropboxDatasinkMessages INSTANCE = LocalizationServiceImpl
+         .getMessages(DropboxDatasinkMessages.class);
 
-	String dropboxDatasinkTypeName();
+   String dropboxDatasinkTypeName();
 
 }

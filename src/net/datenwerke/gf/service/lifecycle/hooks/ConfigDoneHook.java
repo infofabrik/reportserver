@@ -4,5 +4,5 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ConfigDoneHook extends Hook {
 
-	public void configDone();
+   public void configDone();
 }

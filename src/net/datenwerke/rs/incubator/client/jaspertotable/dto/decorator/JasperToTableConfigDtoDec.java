@@ -8,10 +8,10 @@ import net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigD
  */
 public class JasperToTableConfigDtoDec extends JasperToTableConfigDto {
 
-	private static final long serialVersionUID = 1L;
-	
-	public JasperToTableConfigDtoDec() {
-		super();
-	}
+   private static final long serialVersionUID = 1L;
+
+   public JasperToTableConfigDtoDec() {
+      super();
+   }
 
 }

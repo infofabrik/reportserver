@@ -17,7 +17,7 @@ import net.datenwerke.rs.ftp.client.ftp.dto.SftpDatasinkDto;
 import net.datenwerke.rs.ftp.client.ftp.dto.pa.SftpDatasinkDtoPA;
 
 public class SftpUsernamePasswordAuthenticatorHooker implements DatasinkAuthenticatorConfiguratorHook {
-   
+
    public static final String AUTHENTICATION_TYPE = "username-password-auth";
 
    @Override
@@ -26,7 +26,7 @@ public class SftpUsernamePasswordAuthenticatorHooker implements DatasinkAuthenti
 
       form.setFieldWidth(350);
       form.beginFloatRow();
-      
+
       form.addField(String.class, SftpDatasinkDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
 
       /* password */
@@ -42,7 +42,7 @@ public class SftpUsernamePasswordAuthenticatorHooker implements DatasinkAuthenti
       clearPwMenu.add(clearPwItem);
       clearPwItem.addSelectionHandler(event -> ((SftpDatasinkDto) mainForm.getSelectedNode()).setPassword(null));
       form.addFieldMenu(passwordKey, clearPwMenu);
-      
+
       form.endRow();
 
       form.bind(datasink);

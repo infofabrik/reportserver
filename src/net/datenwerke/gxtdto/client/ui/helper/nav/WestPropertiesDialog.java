@@ -28,142 +28,142 @@ import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyPr
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class WestPropertiesDialog extends DwWindow {
-	
-	public static interface CardConfig{
-		void cardSelected();
-	}
 
-	private TreeStore<NavigationModelData<Widget>> navigationStore;
-	private Tree<NavigationModelData<Widget>, String> navigationTree;
-	
-	private DwContentPanel navigationPanel;
-	private CardLayoutContainer mainContainer;
+   public static interface CardConfig {
+      void cardSelected();
+   }
 
-	private int cardId = 0;
-	private HashSet<Integer> toAdd = new HashSet<Integer>();
-	
-	private HashMap<Integer, CardConfig> configMap = new HashMap<>();
+   private TreeStore<NavigationModelData<Widget>> navigationStore;
+   private Tree<NavigationModelData<Widget>, String> navigationTree;
 
-	public WestPropertiesDialog() {
-		this(840, 620, 230);
-	}
-	
-	public WestPropertiesDialog(int width, int height, int widthNav) {
-		/* create window */
-		final DwWindow window = this;
-		window.setSize(width, height);
-		window.setBodyBorder(true);
-		
-		window.setModal(true);
-		
-		/* create two column layout */
-		DwBorderContainer borderContainer = new DwBorderContainer();
-		setWidget(borderContainer);
-		
-		/* main panel */
-		mainContainer = new CardLayoutContainer();
-		
-		DwContentPanel mainPartWrapper = DwContentPanel.newInlineInstance();
-		mainPartWrapper.addClassName("rs-westprop-main");
-		mainPartWrapper.add(mainContainer);
-		
-		borderContainer.setCenterWidget(mainPartWrapper);
+   private DwContentPanel navigationPanel;
+   private CardLayoutContainer mainContainer;
 
-		navigationPanel = DwContentPanel.newInlineInstance();
-		navigationPanel.addClassName("rs-westprop-nav");
-		borderContainer.setWestWidget(navigationPanel, new BorderLayoutData(widthNav));
+   private int cardId = 0;
+   private HashSet<Integer> toAdd = new HashSet<Integer>();
 
-		navigationStore = new TreeStore<NavigationModelData<Widget>>(new BasicObjectModelKeyProvider<NavigationModelData<Widget>>());
+   private HashMap<Integer, CardConfig> configMap = new HashMap<>();
 
-		/* build tree */
-		final Tree<NavigationModelData<Widget>,String> navigationTree = createNavigationTreePanel();
-		navigationPanel.add(navigationTree);
-	}
-	
-	private Tree<NavigationModelData<Widget>,String> createNavigationTreePanel() {
-		navigationTree = new Tree<NavigationModelData<Widget>, String>(navigationStore, NavigationModelData.nameValueProvider);
+   public WestPropertiesDialog() {
+      this(840, 620, 230);
+   }
 
-		/* icons */
-		navigationTree.setIconProvider(new IconProvider<NavigationModelData<Widget>>() {
-			@Override
-			public ImageResource getIcon(NavigationModelData<Widget> model) {
-				return model.getIcon();
-			}
-		});
+   public WestPropertiesDialog(int width, int height, int widthNav) {
+      /* create window */
+      final DwWindow window = this;
+      window.setSize(width, height);
+      window.setBodyBorder(true);
 
-		/* selection model */
-		TreeSelectionModel<NavigationModelData<Widget>> sModel = new TreeSelectionModel<NavigationModelData<Widget>>();
-		sModel.setSelectionMode(SelectionMode.SINGLE);
-		sModel.addSelectionChangedHandler(new SelectionChangedHandler<NavigationModelData<Widget>>() {
-			@Override
-			public void onSelectionChanged(
-					SelectionChangedEvent<NavigationModelData<Widget>> event) {
-				if(null == event.getSelection() || event.getSelection().isEmpty())
-					return;
-				
-				NavigationModelData<Widget> data = event.getSelection().get(0);
-				int id = data.getId();
-				if(toAdd.contains(id)){
-					mainContainer.add(data.getModel());
-					toAdd.remove(id);
-				}
-				
-				mainContainer.setActiveWidget(data.getModel());
-				mainContainer.forceLayout();
-				
-				CardConfig cardConfig = configMap.get(data.getId());
-				if(null != cardConfig){
-					cardConfig.cardSelected();
-				}
-			}
-		});
-		navigationTree.setSelectionModel(sModel);
+      window.setModal(true);
 
-		return navigationTree;
-	}
+      /* create two column layout */
+      DwBorderContainer borderContainer = new DwBorderContainer();
+      setWidget(borderContainer);
 
-	public void addCard(String name, BaseIcon icon, Widget component){
-		addCard(name, icon, component, null);
-	}
-	
-	public void addCard(String name, BaseIcon icon, Widget component, CardConfig config) {
-		addCard(name, icon.toImageResource(), component, config);
-	}
+      /* main panel */
+      mainContainer = new CardLayoutContainer();
 
-	public void addCard(String name, ImageResource icon, Widget component, CardConfig config) {
-		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		
-		FlowLayoutContainer sWrapper = new DwFlowContainer();
-		sWrapper.add(component, new MarginData(10));
-		sWrapper.setScrollMode(ScrollMode.AUTOY);
-		wrapper.add(sWrapper, new VerticalLayoutData(1, 1));
-		
-		int id = cardId++;
-		navigationStore.add(new NavigationModelData<Widget>(id, name, icon, wrapper));
-		
-		if(null != config)
-			configMap.put(id,  config);
-		
-		/* add first, and queue rest */
-		if(id == 0)
-			mainContainer.add(wrapper);
-		else
-			toAdd.add(id);
-	}
+      DwContentPanel mainPartWrapper = DwContentPanel.newInlineInstance();
+      mainPartWrapper.addClassName("rs-westprop-main");
+      mainPartWrapper.add(mainContainer);
 
-	
-	@Override
-	public void show() {
-		super.show();
-		
-		navigationTree.getSelectionModel().select(navigationStore.getAll().get(0), false);
-	}
+      borderContainer.setCenterWidget(mainPartWrapper);
 
-	protected CardConfig getSelectedCard(){
-		NavigationModelData<Widget> data = navigationTree.getSelectionModel().getSelectedItem();
-		if(null == data)
-			return null;
-		
-		return configMap.get(data.getId());
-	}
+      navigationPanel = DwContentPanel.newInlineInstance();
+      navigationPanel.addClassName("rs-westprop-nav");
+      borderContainer.setWestWidget(navigationPanel, new BorderLayoutData(widthNav));
+
+      navigationStore = new TreeStore<NavigationModelData<Widget>>(
+            new BasicObjectModelKeyProvider<NavigationModelData<Widget>>());
+
+      /* build tree */
+      final Tree<NavigationModelData<Widget>, String> navigationTree = createNavigationTreePanel();
+      navigationPanel.add(navigationTree);
+   }
+
+   private Tree<NavigationModelData<Widget>, String> createNavigationTreePanel() {
+      navigationTree = new Tree<NavigationModelData<Widget>, String>(navigationStore,
+            NavigationModelData.nameValueProvider);
+
+      /* icons */
+      navigationTree.setIconProvider(new IconProvider<NavigationModelData<Widget>>() {
+         @Override
+         public ImageResource getIcon(NavigationModelData<Widget> model) {
+            return model.getIcon();
+         }
+      });
+
+      /* selection model */
+      TreeSelectionModel<NavigationModelData<Widget>> sModel = new TreeSelectionModel<NavigationModelData<Widget>>();
+      sModel.setSelectionMode(SelectionMode.SINGLE);
+      sModel.addSelectionChangedHandler(new SelectionChangedHandler<NavigationModelData<Widget>>() {
+         @Override
+         public void onSelectionChanged(SelectionChangedEvent<NavigationModelData<Widget>> event) {
+            if (null == event.getSelection() || event.getSelection().isEmpty())
+               return;
+
+            NavigationModelData<Widget> data = event.getSelection().get(0);
+            int id = data.getId();
+            if (toAdd.contains(id)) {
+               mainContainer.add(data.getModel());
+               toAdd.remove(id);
+            }
+
+            mainContainer.setActiveWidget(data.getModel());
+            mainContainer.forceLayout();
+
+            CardConfig cardConfig = configMap.get(data.getId());
+            if (null != cardConfig) {
+               cardConfig.cardSelected();
+            }
+         }
+      });
+      navigationTree.setSelectionModel(sModel);
+
+      return navigationTree;
+   }
+
+   public void addCard(String name, BaseIcon icon, Widget component) {
+      addCard(name, icon, component, null);
+   }
+
+   public void addCard(String name, BaseIcon icon, Widget component, CardConfig config) {
+      addCard(name, icon.toImageResource(), component, config);
+   }
+
+   public void addCard(String name, ImageResource icon, Widget component, CardConfig config) {
+      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+
+      FlowLayoutContainer sWrapper = new DwFlowContainer();
+      sWrapper.add(component, new MarginData(10));
+      sWrapper.setScrollMode(ScrollMode.AUTOY);
+      wrapper.add(sWrapper, new VerticalLayoutData(1, 1));
+
+      int id = cardId++;
+      navigationStore.add(new NavigationModelData<Widget>(id, name, icon, wrapper));
+
+      if (null != config)
+         configMap.put(id, config);
+
+      /* add first, and queue rest */
+      if (id == 0)
+         mainContainer.add(wrapper);
+      else
+         toAdd.add(id);
+   }
+
+   @Override
+   public void show() {
+      super.show();
+
+      navigationTree.getSelectionModel().select(navigationStore.getAll().get(0), false);
+   }
+
+   protected CardConfig getSelectedCard() {
+      NavigationModelData<Widget> data = navigationTree.getSelectionModel().getSelectedItem();
+      if (null == data)
+         return null;
+
+      return configMap.get(data.getId());
+   }
 }

@@ -32,103 +32,98 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessa
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class TsDiskProvider extends TreeNodeDtoProvider {
-	
-	private final TsDiskTreeLoaderDao treeLoaderDao;
-	private final TreeDBUIService treeDBUIService;
-	private final UiTreeFactory uiTreeFactory;
-	private final TsDiskUIService tsDiskUIService;
-	
-	@Inject
-	public TsDiskProvider(
-		ClipboardUiService clipboardService,
-		TsDiskTreeLoaderDao treeLoaderDao, 
-		TreeDBUIService treeDBUIService,
-		UiTreeFactory uiTreeFactory,
-		TsDiskUIService tsDiskUIService) {
-		super(clipboardService);
-		
-		this.treeLoaderDao = treeLoaderDao;
-		this.treeDBUIService = treeDBUIService;
-		this.uiTreeFactory = uiTreeFactory;
-		this.tsDiskUIService = tsDiskUIService;
-		
-	}
 
-	@Override
-	public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
-		if(configs.length == 0 || !( configs[0] instanceof SFFCTsTeamSpaceSelector))
-			return false;
-		
-		while(type != null){
-			if(type.equals(AbstractTsDiskNodeDto.class))
-				return true;
-			type = type.getSuperclass();
-		}
-		return false;
-	}
+   private final TsDiskTreeLoaderDao treeLoaderDao;
+   private final TreeDBUIService treeDBUIService;
+   private final UiTreeFactory uiTreeFactory;
+   private final TsDiskUIService tsDiskUIService;
 
-	@SuppressWarnings("unchecked")
-	@Override
-	public Widget createFormField() {
-		final SFFCTsTeamSpaceSelector config = (SFFCTsTeamSpaceSelector) configs[0];
-		
-		final SelectionFilter filter = getSelectionFilter(configs);
-		
-		final SingleTreeSelectionField ssf = new SingleTreeSelectionField(AbstractTsDiskNodeDto.class);
-		ssf.setIgnoreTriggerClick(true);
-		ssf.addTriggerClickHandler(new TriggerClickHandler() {
-			
-			private TeamSpaceDto theTeamSpace;
-			
-			@Override
-			public void onTriggerClick(TriggerClickEvent event) {
-				TeamSpaceDto teamSpace = config.getTeamSpace();
-				if(null == ssf.getTreePanel() || null == theTeamSpace || ! theTeamSpace.equals(teamSpace)){
-					theTeamSpace = teamSpace;
-					if(null == theTeamSpace){
-						new DwAlertMessageBox (TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedTitle(), TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedMsg()).show();
-					} else {
-						treeLoaderDao.setState(theTeamSpace);
+   @Inject
+   public TsDiskProvider(ClipboardUiService clipboardService, TsDiskTreeLoaderDao treeLoaderDao,
+         TreeDBUIService treeDBUIService, UiTreeFactory uiTreeFactory, TsDiskUIService tsDiskUIService) {
+      super(clipboardService);
 
-						Set<Dto2PosoMapper> filters = new HashSet<Dto2PosoMapper>();
-						filters.add(new AbstractTsDiskNodeDto2PosoMap());
-						EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class, treeLoaderDao, false, filters);
+      this.treeLoaderDao = treeLoaderDao;
+      this.treeDBUIService = treeDBUIService;
+      this.uiTreeFactory = uiTreeFactory;
+      this.tsDiskUIService = tsDiskUIService;
 
-						ssf.setSelectionFilter(filter);
-						
-						UITree tree = uiTreeFactory.create(treeStore);
-						tree.setIconProvider(tsDiskUIService.getIconProvider());
-						ssf.setTreePanel(tree);
-						ssf.getTreePanel().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-						
-						ssf.triggerClicked();
-					}
-				} else if(theTeamSpace.equals(teamSpace))
-					ssf.triggerClicked();
-					
-			}
-		});
-		
-		ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
-				ValueChangeEvent.fire(TsDiskProvider.this, event.getValue());
-			}
-		});
-		
-		ssf.setName(name);
-		
-		return ssf;
-	}
+   }
 
-	private SelectionFilter getSelectionFilter(
-			SimpleFormFieldConfiguration[] configs) {
-		for(SimpleFormFieldConfiguration c : configs)
-			if(c instanceof SFFCTreeNodeSelectionFilter)
-				return ((SFFCTreeNodeSelectionFilter)c).getFilter();
-		return SelectionFilter.DUMMY_FILTER;
-	}
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      if (configs.length == 0 || !(configs[0] instanceof SFFCTsTeamSpaceSelector))
+         return false;
 
-	
-	
+      while (type != null) {
+         if (type.equals(AbstractTsDiskNodeDto.class))
+            return true;
+         type = type.getSuperclass();
+      }
+      return false;
+   }
+
+   @SuppressWarnings("unchecked")
+   @Override
+   public Widget createFormField() {
+      final SFFCTsTeamSpaceSelector config = (SFFCTsTeamSpaceSelector) configs[0];
+
+      final SelectionFilter filter = getSelectionFilter(configs);
+
+      final SingleTreeSelectionField ssf = new SingleTreeSelectionField(AbstractTsDiskNodeDto.class);
+      ssf.setIgnoreTriggerClick(true);
+      ssf.addTriggerClickHandler(new TriggerClickHandler() {
+
+         private TeamSpaceDto theTeamSpace;
+
+         @Override
+         public void onTriggerClick(TriggerClickEvent event) {
+            TeamSpaceDto teamSpace = config.getTeamSpace();
+            if (null == ssf.getTreePanel() || null == theTeamSpace || !theTeamSpace.equals(teamSpace)) {
+               theTeamSpace = teamSpace;
+               if (null == theTeamSpace) {
+                  new DwAlertMessageBox(TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedTitle(),
+                        TsFavoriteMessages.INSTANCE.noTeamSpaceSelectedMsg()).show();
+               } else {
+                  treeLoaderDao.setState(theTeamSpace);
+
+                  Set<Dto2PosoMapper> filters = new HashSet<Dto2PosoMapper>();
+                  filters.add(new AbstractTsDiskNodeDto2PosoMap());
+                  EnhancedTreeStore treeStore = treeDBUIService.getUITreeStore(AbstractTsDiskNodeDto.class,
+                        treeLoaderDao, false, filters);
+
+                  ssf.setSelectionFilter(filter);
+
+                  UITree tree = uiTreeFactory.create(treeStore);
+                  tree.setIconProvider(tsDiskUIService.getIconProvider());
+                  ssf.setTreePanel(tree);
+                  ssf.getTreePanel().getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+
+                  ssf.triggerClicked();
+               }
+            } else if (theTeamSpace.equals(teamSpace))
+               ssf.triggerClicked();
+
+         }
+      });
+
+      ssf.addValueChangeHandler(new ValueChangeHandler<AbstractNodeDto>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<AbstractNodeDto> event) {
+            ValueChangeEvent.fire(TsDiskProvider.this, event.getValue());
+         }
+      });
+
+      ssf.setName(name);
+
+      return ssf;
+   }
+
+   private SelectionFilter getSelectionFilter(SimpleFormFieldConfiguration[] configs) {
+      for (SimpleFormFieldConfiguration c : configs)
+         if (c instanceof SFFCTreeNodeSelectionFilter)
+            return ((SFFCTreeNodeSelectionFilter) c).getFilter();
+      return SelectionFilter.DUMMY_FILTER;
+   }
+
 }

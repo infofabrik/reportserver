@@ -33,11 +33,10 @@ public class HandleDatasourceForceRemoveEventHandler implements EventHandler<For
       final List<DatasourceContainer> containers = query.getResultList();
 
       if (null != containers && !containers.isEmpty()) {
-         containers
-            .forEach(container -> {
-               container.setDatasource(null);
-               datasourceService.merge(container);
-            });
+         containers.forEach(container -> {
+            container.setDatasource(null);
+            datasourceService.merge(container);
+         });
       }
    }
 

@@ -16,116 +16,118 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 
 public class DaoAsyncCallback<D> extends HandledAsyncCallback<D> {
 
-	private AsyncCallback<D> callback;
-	private Dao dao;
-	
-	private boolean preRegisterDtos = true;
-	private boolean postRegisterDtos = false;
-	
-	private Collection<Dto> dtosToDetach;
-	private boolean ignoreExpectedExceptions = false;
-	private boolean ignoreAllExceptions = false;
+   private AsyncCallback<D> callback;
+   private Dao dao;
 
-	public DaoAsyncCallback(AsyncCallback<D> callback, Dao dao) {
-		super(null);
-		this.callback = callback;
-		this.dao = dao;
-	}
-	
-	@Override
-	public void doOnSuccess(D result) {
-		/* detach if necessary */
-		if(null != dtosToDetach)
-			dao.detachDtos(dtosToDetach);
-		
-		/* register and run original callback*/
-		if(preRegisterDtos)
-			result = registerDtos(result);
+   private boolean preRegisterDtos = true;
+   private boolean postRegisterDtos = false;
 
-		callback.onSuccess(result);
-		
-		if(postRegisterDtos)
-			registerDtos(result);
-	};
+   private Collection<Dto> dtosToDetach;
+   private boolean ignoreExpectedExceptions = false;
+   private boolean ignoreAllExceptions = false;
 
-	@Override
-	public void onFailure(Throwable caught) {
-		if(ignoreAllExceptions || (ignoreExpectedExceptions && caught instanceof ExpectedException)){
-			doOnFailure(caught);
-			return;
-		}
-		
-		super.onFailure(caught);
-	}
+   public DaoAsyncCallback(AsyncCallback<D> callback, Dao dao) {
+      super(null);
+      this.callback = callback;
+      this.dao = dao;
+   }
 
-	@Override
-	public void doOnFailure(Throwable caught) {
-		callback.onFailure(caught);
-	}
-	
-	private D registerDtos(D result) {
-		/* register dto and call callback */
-		if(result instanceof Dto){
-			D proxy = (D) dao.registerDto((Dto)result);
-			return proxy;
-		} else if(result instanceof ListLoadResult){
-		  Collection data = ((ListLoadResult)result).getData();
-		  if(null != data && ! data.isEmpty()){
-			  D proxies = (D) dao.registerDtos((Collection<Dto>)data);
-			  return (D) new ListLoadResultBean<Dto>((List<Dto>) proxies);
-		  }
-		} else if(result instanceof Collection && ! ((Collection)result).isEmpty() && ((Collection)result).iterator().next() instanceof Dto){
-			D proxies = (D) dao.registerDtos((Collection<Dto>)result);
-			return proxies;
-		} else if(result instanceof DtoContainer){
-			dao.registerDtoContainer((DtoContainer) result);
-		} else if(result instanceof Collection && ! ((Collection)result).isEmpty() && ((Collection)result).iterator().next() instanceof DtoContainer){
-			dao.registerDtoContainer((Collection<DtoContainer>) result);
-		}
-		
-		return result;
-	}
+   @Override
+   public void doOnSuccess(D result) {
+      /* detach if necessary */
+      if (null != dtosToDetach)
+         dao.detachDtos(dtosToDetach);
 
-	public void setPostRegisterDtos(){
-		preRegisterDtos = false;
-		postRegisterDtos = true;
-	}
-	
-	public void setPreRegisterDtos(){
-		preRegisterDtos = true;
-		postRegisterDtos = false;
-	}
-	
-	public void doNotRegisterDtos(){
-		preRegisterDtos = false;
-		postRegisterDtos = false;
-	}
-	
-	public void addDtoToDetach(Dto dto){
-		if(null == dtosToDetach)
-			dtosToDetach = new HashSet<Dto>();
-		dtosToDetach.add(dto);
-	}
-	
-	public void addDtosToDetach(Collection<? extends Dto> dtos){
-		if(null == dtosToDetach)
-			dtosToDetach = new HashSet<Dto>();
-		dtosToDetach.addAll(dtos);
-	}
-	
-	public void setDtosToDetach(Collection<Dto> dtos){
-		dtosToDetach = dtos;
-	}
+      /* register and run original callback */
+      if (preRegisterDtos)
+         result = registerDtos(result);
 
-	public void ignoreExpectedExceptions(boolean b) {
-		this.ignoreExpectedExceptions  = b;
-	}
+      callback.onSuccess(result);
 
-	public boolean isIgnoreAllExceptions() {
-		return ignoreAllExceptions;
-	}
+      if (postRegisterDtos)
+         registerDtos(result);
+   };
 
-	public void setIgnoreAllExceptions(boolean ignoreAllExceptions) {
-		this.ignoreAllExceptions = ignoreAllExceptions;
-	}
+   @Override
+   public void onFailure(Throwable caught) {
+      if (ignoreAllExceptions || (ignoreExpectedExceptions && caught instanceof ExpectedException)) {
+         doOnFailure(caught);
+         return;
+      }
+
+      super.onFailure(caught);
+   }
+
+   @Override
+   public void doOnFailure(Throwable caught) {
+      callback.onFailure(caught);
+   }
+
+   private D registerDtos(D result) {
+      /* register dto and call callback */
+      if (result instanceof Dto) {
+         D proxy = (D) dao.registerDto((Dto) result);
+         return proxy;
+      } else if (result instanceof ListLoadResult) {
+         Collection data = ((ListLoadResult) result).getData();
+         if (null != data && !data.isEmpty()) {
+            D proxies = (D) dao.registerDtos((Collection<Dto>) data);
+            return (D) new ListLoadResultBean<Dto>((List<Dto>) proxies);
+         }
+      } else if (result instanceof Collection && !((Collection) result).isEmpty()
+            && ((Collection) result).iterator().next() instanceof Dto) {
+         D proxies = (D) dao.registerDtos((Collection<Dto>) result);
+         return proxies;
+      } else if (result instanceof DtoContainer) {
+         dao.registerDtoContainer((DtoContainer) result);
+      } else if (result instanceof Collection && !((Collection) result).isEmpty()
+            && ((Collection) result).iterator().next() instanceof DtoContainer) {
+         dao.registerDtoContainer((Collection<DtoContainer>) result);
+      }
+
+      return result;
+   }
+
+   public void setPostRegisterDtos() {
+      preRegisterDtos = false;
+      postRegisterDtos = true;
+   }
+
+   public void setPreRegisterDtos() {
+      preRegisterDtos = true;
+      postRegisterDtos = false;
+   }
+
+   public void doNotRegisterDtos() {
+      preRegisterDtos = false;
+      postRegisterDtos = false;
+   }
+
+   public void addDtoToDetach(Dto dto) {
+      if (null == dtosToDetach)
+         dtosToDetach = new HashSet<Dto>();
+      dtosToDetach.add(dto);
+   }
+
+   public void addDtosToDetach(Collection<? extends Dto> dtos) {
+      if (null == dtosToDetach)
+         dtosToDetach = new HashSet<Dto>();
+      dtosToDetach.addAll(dtos);
+   }
+
+   public void setDtosToDetach(Collection<Dto> dtos) {
+      dtosToDetach = dtos;
+   }
+
+   public void ignoreExpectedExceptions(boolean b) {
+      this.ignoreExpectedExceptions = b;
+   }
+
+   public boolean isIgnoreAllExceptions() {
+      return ignoreAllExceptions;
+   }
+
+   public void setIgnoreAllExceptions(boolean ignoreAllExceptions) {
+      this.ignoreAllExceptions = ignoreAllExceptions;
+   }
 }

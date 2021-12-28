@@ -11,35 +11,31 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface FormFieldProviderHook extends Hook, HasValueChangeHandlers {
 
-	public boolean consumes(Class<?> type, SimpleFormFieldConfiguration... configs);
-	
-	/**
-	 * Used to construct fields from a text based (e.g., json) config.
-	 */
-	boolean consumes(String type, SimpleFormFieldJson config);
+   public boolean consumes(Class<?> type, SimpleFormFieldConfiguration... configs);
 
-	void init(String name, SimpleForm form);
-	
-	Widget createFormField();
-	
-	void addFieldBindings(Object model, ValueProvider vp, Widget field);
-	
-	void removeFieldBindings(Object model, Widget field);
+   /**
+    * Used to construct fields from a text based (e.g., json) config.
+    */
+   boolean consumes(String type, SimpleFormFieldJson config);
 
-	Object getValue(Widget field);
-	
-	String getStringValue(Widget field);
-	
-	Widget reload(Widget field);
+   void init(String name, SimpleForm form);
 
-	void setValue(Widget field, Object value);
+   Widget createFormField();
 
-	boolean isDecorateable();
-	
-	void installBlankValidation(Widget field);
+   void addFieldBindings(Object model, ValueProvider vp, Widget field);
 
-	
+   void removeFieldBindings(Object model, Widget field);
 
-	
-	
+   Object getValue(Widget field);
+
+   String getStringValue(Widget field);
+
+   Widget reload(Widget field);
+
+   void setValue(Widget field, Object value);
+
+   boolean isDecorateable();
+
+   void installBlankValidation(Widget field);
+
 }

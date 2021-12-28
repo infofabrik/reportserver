@@ -10,7 +10,7 @@ import net.datenwerke.rs.core.client.urlview.UrlViewUiModule;
 import net.datenwerke.rs.core.client.userprofile.CoreUserProfileModule;
 
 public class RsCoreUiModule extends AbstractGinModule {
-   
+
    public final static String EMAIL_ENCRYPTION_MIXED = "allow_mixed";
    public final static String EMAIL_ENCRYPTION_STRICT = "strict";
 

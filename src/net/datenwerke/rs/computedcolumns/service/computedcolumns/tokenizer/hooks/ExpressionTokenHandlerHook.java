@@ -6,6 +6,6 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public interface ExpressionTokenHandlerHook extends Hook {
 
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar);
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar);
 
 }

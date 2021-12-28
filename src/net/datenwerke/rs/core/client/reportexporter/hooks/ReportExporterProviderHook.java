@@ -8,5 +8,5 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface ReportExporterProviderHook extends Hook {
 
-	public List<ReportExporter> getExporters(ReportDto report);
+   public List<ReportExporter> getExporters(ReportDto report);
 }

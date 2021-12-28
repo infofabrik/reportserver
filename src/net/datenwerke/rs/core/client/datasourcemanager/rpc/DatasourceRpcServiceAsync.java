@@ -6,6 +6,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 
 public interface DatasourceRpcServiceAsync {
 
-	void getDefaultDatasource(AsyncCallback<DatasourceDefinitionDto> callback);
+   void getDefaultDatasource(AsyncCallback<DatasourceDefinitionDto> callback);
 
 }

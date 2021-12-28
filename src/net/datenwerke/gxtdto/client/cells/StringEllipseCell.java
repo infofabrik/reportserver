@@ -6,16 +6,16 @@ import com.sencha.gxt.core.client.util.Format;
 
 public class StringEllipseCell extends AbstractCell<String> {
 
-	private final int len;
+   private final int len;
 
-	public StringEllipseCell(int len){
-		this.len = len;
-	}
-	
-	@Override
-	public void render(Context context, String value, SafeHtmlBuilder sb) {
-		if(null != value)
-			sb.appendEscaped(Format.ellipse(value, len));
-	}
+   public StringEllipseCell(int len) {
+      this.len = len;
+   }
+
+   @Override
+   public void render(Context context, String value, SafeHtmlBuilder sb) {
+      if (null != value)
+         sb.appendEscaped(Format.ellipse(value, len));
+   }
 
 }

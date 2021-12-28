@@ -5,33 +5,32 @@ import net.datenwerke.rs.condition.client.condition.Condition;
 
 public class ScheduleConditionDto extends RsDto {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	private String expression;
-	private Condition condition;
-	
-	public ScheduleConditionDto() {
-		super();
-	}
+   private String expression;
+   private Condition condition;
 
-	public String getExpression() {
-		return expression;
-	}
+   public ScheduleConditionDto() {
+      super();
+   }
 
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
+   public String getExpression() {
+      return expression;
+   }
 
-	public Condition getCondition() {
-		return condition;
-	}
+   public void setExpression(String expression) {
+      this.expression = expression;
+   }
 
-	public void setCondition(Condition condition) {
-		this.condition = condition;
-	}
+   public Condition getCondition() {
+      return condition;
+   }
 
+   public void setCondition(Condition condition) {
+      this.condition = condition;
+   }
 
 }

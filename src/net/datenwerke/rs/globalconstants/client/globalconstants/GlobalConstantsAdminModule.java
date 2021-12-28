@@ -16,30 +16,30 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class GlobalConstantsAdminModule implements AdminModule {
 
-	private final Provider<GlobalConstantsAdminPanel> mainWidgetProvider;
-	
-	@Inject
-	public GlobalConstantsAdminModule(Provider<GlobalConstantsAdminPanel> mainWidgetProvider){
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
-	
-	@Override
-	public Widget getMainWidget() {
-		return mainWidgetProvider.get();
-	}
+   private final Provider<GlobalConstantsAdminPanel> mainWidgetProvider;
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.EDIT.toImageResource();
-	}
+   @Inject
+   public GlobalConstantsAdminModule(Provider<GlobalConstantsAdminPanel> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
 
-	@Override
-	public String getNavigationText() {
-		return GlobalConstantsMessages.INSTANCE.viewNavigationTitle();
-	}
+   @Override
+   public Widget getMainWidget() {
+      return mainWidgetProvider.get();
+   }
 
-	@Override
-	public void notifyOfSelection() {
-		mainWidgetProvider.get().notifyOfSelection();
-	}
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.EDIT.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return GlobalConstantsMessages.INSTANCE.viewNavigationTitle();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+      mainWidgetProvider.get().notifyOfSelection();
+   }
 }

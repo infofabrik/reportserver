@@ -8,12 +8,11 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public interface AccountInhibitionRpcServiceAsync {
 
-	void getInhibitionState(UserDto user, AsyncCallback<InhibitionState> callback);
+   void getInhibitionState(UserDto user, AsyncCallback<InhibitionState> callback);
 
-	void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionConfiguration, AsyncCallback<Void> callback);
+   void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionConfiguration,
+         AsyncCallback<Void> callback);
 
-	void getAccountInhibitionConfiguration(UserDto user,
-			AsyncCallback<AccountInhibitionConfiguration> callback);
-
+   void getAccountInhibitionConfiguration(UserDto user, AsyncCallback<AccountInhibitionConfiguration> callback);
 
 }

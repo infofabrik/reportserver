@@ -35,11 +35,11 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   
+
    @Transient
    @Inject
    private OneDriveService oneDriveService;
-   
+
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -56,17 +56,17 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
 
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-      
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-      
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
@@ -82,7 +82,7 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (! datasinkService.isEnabled(oneDriveService) || ! datasinkService.isSchedulingEnabled(oneDriveService))
+      if (!datasinkService.isEnabled(oneDriveService) || !datasinkService.isSchedulingEnabled(oneDriveService))
          throw new ActionExecutionException("OneDrive scheduling is disabled");
 
       report = rJob.getReport();
@@ -103,7 +103,7 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
          throw new ActionExecutionException("folder is empty");
 
    }
-   
+
    private void sendViaOneDriveDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {

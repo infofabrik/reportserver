@@ -27,107 +27,109 @@ import net.datenwerke.gxtdto.client.utils.modelkeyprovider.BasicObjectModelKeyPr
 
 public class DynamicGridWindow extends DwWindow {
 
-	public interface DataProvider{
-		void getData(PagingLoadConfig loadConfig,
-				AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback);
+   public interface DataProvider {
+      void getData(PagingLoadConfig loadConfig, AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback);
 
-		void getColumns(AsyncCallback<List<String>> asyncCallback);
-	}
-	
-	private final DataProvider dataProvider;
-	private boolean isConfigured = false;
-	
-	public DynamicGridWindow(DataProvider dataProvider){
-		this.dataProvider = dataProvider;
-		
-		setSize(800, 430);
-	}
+      void getColumns(AsyncCallback<List<String>> asyncCallback);
+   }
 
-	@Override
-	public void show() {
-		if(! isConfigured)
-			init();
-		
-	    super.show();
-	}
+   private final DataProvider dataProvider;
+   private boolean isConfigured = false;
 
-	protected void init() {
-		final VerticalLayoutContainer container = new VerticalLayoutContainer();
-		add(container);
-	
-	    /* get column config */
-	    dataProvider.getColumns(new AsyncCallback<List<String>>() {
+   public DynamicGridWindow(DataProvider dataProvider) {
+      this.dataProvider = dataProvider;
 
-			@Override
-			public void onSuccess(List<String> result) {
-				RpcProxy<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>>() {  
-			      
-					@Override
-					public void load(
-							PagingLoadConfig loadConfig,
-							AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
-						dataProvider.getData((PagingLoadConfig) loadConfig, callback);
-					}  
-			    };
-				
-				/* loader */  
-			    final PagingLoader<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>> loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>>(proxy);  
-			    loader.setRemoteSort(true);  
-				
-				/* create store for results */
-			    ListStore<ListStringBaseModel> store = new ListStore<ListStringBaseModel>(new BasicObjectModelKeyProvider<ListStringBaseModel>());
-			    loader.addLoadHandler(new LoadResultListStoreBinding<PagingLoadConfig, ListStringBaseModel, PagingLoadResult<ListStringBaseModel>>(store));
-				
-			    /* column config */
-			    List<ColumnConfig<ListStringBaseModel, ?>> columns = new ArrayList<ColumnConfig<ListStringBaseModel, ?>>();
-			    int i = 0;
-			    for(String name : result){
-			    	ColumnConfig<ListStringBaseModel, ListStringBaseModel> conf = new ColumnConfig<ListStringBaseModel, ListStringBaseModel>(new IdentityValueProvider<ListStringBaseModel>("col_" + (i++)), 70, name);
-			    	conf.setCell(new AbstractCell<ListStringBaseModel>() {
-						@Override
-						public void render(
-								com.google.gwt.cell.client.Cell.Context context,
-								ListStringBaseModel model, SafeHtmlBuilder sb) {
-							String value = model.getValue().get(context.getColumn());
-							sb.appendEscaped(null == value ? "" : value);
-						}
-					});
-			    	conf.setMenuDisabled(true);
-			    	conf.setSortable(false);
-			    	columns.add(conf);
-			    }
-			    
-			    /* create grid */
-				Grid<ListStringBaseModel> grid = new Grid<ListStringBaseModel>(store, new ColumnModel<ListStringBaseModel>(columns));
-				grid.setStateful(false);
-				grid.setLoadMask(true);
-				grid.setBorders(true);
-				
-				
-				container.add(grid, new VerticalLayoutData(1, 1));
+      setSize(800, 430);
+   }
 
-				loader.load();
-				
-				/* toolbar */
-			    final PagingToolBar toolBar = new PagingToolBar(15);  
-			    toolBar.bind(loader);  
-			    container.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
-			    
-			    forceLayout();
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				hide();
-			}
-		});
-	    
-	    addSpecButton(new OnButtonClickHandler() {
-			
-			@Override
-			public void onClick() {
-				hide();
-			}
-		}, BaseMessages.INSTANCE.ok());
-	}
+   @Override
+   public void show() {
+      if (!isConfigured)
+         init();
+
+      super.show();
+   }
+
+   protected void init() {
+      final VerticalLayoutContainer container = new VerticalLayoutContainer();
+      add(container);
+
+      /* get column config */
+      dataProvider.getColumns(new AsyncCallback<List<String>>() {
+
+         @Override
+         public void onSuccess(List<String> result) {
+            RpcProxy<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>>() {
+
+               @Override
+               public void load(PagingLoadConfig loadConfig,
+                     AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
+                  dataProvider.getData((PagingLoadConfig) loadConfig, callback);
+               }
+            };
+
+            /* loader */
+            final PagingLoader<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>> loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<ListStringBaseModel>>(
+                  proxy);
+            loader.setRemoteSort(true);
+
+            /* create store for results */
+            ListStore<ListStringBaseModel> store = new ListStore<ListStringBaseModel>(
+                  new BasicObjectModelKeyProvider<ListStringBaseModel>());
+            loader.addLoadHandler(
+                  new LoadResultListStoreBinding<PagingLoadConfig, ListStringBaseModel, PagingLoadResult<ListStringBaseModel>>(
+                        store));
+
+            /* column config */
+            List<ColumnConfig<ListStringBaseModel, ?>> columns = new ArrayList<ColumnConfig<ListStringBaseModel, ?>>();
+            int i = 0;
+            for (String name : result) {
+               ColumnConfig<ListStringBaseModel, ListStringBaseModel> conf = new ColumnConfig<ListStringBaseModel, ListStringBaseModel>(
+                     new IdentityValueProvider<ListStringBaseModel>("col_" + (i++)), 70, name);
+               conf.setCell(new AbstractCell<ListStringBaseModel>() {
+                  @Override
+                  public void render(com.google.gwt.cell.client.Cell.Context context, ListStringBaseModel model,
+                        SafeHtmlBuilder sb) {
+                     String value = model.getValue().get(context.getColumn());
+                     sb.appendEscaped(null == value ? "" : value);
+                  }
+               });
+               conf.setMenuDisabled(true);
+               conf.setSortable(false);
+               columns.add(conf);
+            }
+
+            /* create grid */
+            Grid<ListStringBaseModel> grid = new Grid<ListStringBaseModel>(store,
+                  new ColumnModel<ListStringBaseModel>(columns));
+            grid.setStateful(false);
+            grid.setLoadMask(true);
+            grid.setBorders(true);
+
+            container.add(grid, new VerticalLayoutData(1, 1));
+
+            loader.load();
+
+            /* toolbar */
+            final PagingToolBar toolBar = new PagingToolBar(15);
+            toolBar.bind(loader);
+            container.add(toolBar, new VerticalLayoutContainer.VerticalLayoutData(1, -1));
+
+            forceLayout();
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            hide();
+         }
+      });
+
+      addSpecButton(new OnButtonClickHandler() {
+
+         @Override
+         public void onClick() {
+            hide();
+         }
+      }, BaseMessages.INSTANCE.ok());
+   }
 }

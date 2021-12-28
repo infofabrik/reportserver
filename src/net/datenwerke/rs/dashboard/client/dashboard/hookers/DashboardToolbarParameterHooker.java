@@ -48,191 +48,191 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportRefere
 
 public class DashboardToolbarParameterHooker implements DashboardToolbarHook {
 
-	private DwTextButton filterBtn;
-	
-	private final DashboardDao dashboardDao;
+   private DwTextButton filterBtn;
 
-	private DashboardDto dashboard;
-	private DashboardView dashboardView;
+   private final DashboardDao dashboardDao;
 
-	private DwToolBar toolbar;
+   private DashboardDto dashboard;
+   private DashboardView dashboardView;
 
-	private DashboardMainComponent component;
+   private DwToolBar toolbar;
 
-	@Inject
-	public DashboardToolbarParameterHooker(
-		DashboardDao dashboardDao	
-		){
-		this.dashboardDao = dashboardDao;
-	}
-	
-	@Override
-	public void addLeft(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent) {
-		
-	}
+   private DashboardMainComponent component;
 
-	@Override
-	public void addRight(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent) {
-		this.toolbar = toolbar;
-		this.component = dashboardMainComponent;
+   @Inject
+   public DashboardToolbarParameterHooker(DashboardDao dashboardDao) {
+      this.dashboardDao = dashboardDao;
+   }
 
-		filterBtn = new DwTextButton(DashboardMessages.INSTANCE.editParameterBtnLabel(), BaseIcon.FILTER);
-		filterBtn.hide();
-		filterBtn.disable();
-		
-		toolbar.add(filterBtn);
-		toolbar.add(new SeparatorToolItem());
-		
-		filterBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				showParameterSelection();
-			}
-		});
-	}
-	
-	protected void showParameterSelection() {
-		if(null == dashboard)
-			return;
-		
-		final DwWindow dialog = new DwWindow();
-		dialog.setModal(true);
-		dialog.setHeaderIcon(BaseIcon.FILTER);
+   @Override
+   public void addLeft(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent) {
 
-		/* make sure it is not too huge */
-		dialog.addShowHandler(new ShowHandler() {
-			@Override
-			public void onShow(ShowEvent event) {
-				try{
-					int width = dialog.getElement().getWidth(true);
-					int height= dialog.getElement().getHeight(true);
-					if(width > 1200 || height > 1000)
-						dialog.setSize(800, 600);
-				}catch(Exception e){}
-			}
-		});
-		
-		
-		dashboardView.mask(BaseMessages.INSTANCE.loadingMsg());
-		dashboardDao.getDashboardParameterInstances(dashboard, new AsyncCallback<Map<String,ParameterInstanceDto>>() {
+   }
 
-			@Override
-			public void onFailure(Throwable caught) {
-				dashboardView.unmask();
-				new DetailErrorDialog(caught).show();
-			}
+   @Override
+   public void addRight(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent) {
+      this.toolbar = toolbar;
+      this.component = dashboardMainComponent;
 
-			@Override
-			public void onSuccess(Map<String, ParameterInstanceDto> instanceMap) {
-				dashboardView.unmask();
-				
-				final List<ParameterDefinitionDto> definitions = new ArrayList<>();
-				final Set<ParameterInstanceDto> instances = new HashSet<>();
-				
-				for(ParameterInstanceDto inst : instanceMap.values()){
-					definitions.add(inst.getDefinition());
-					instances.add(inst);
-				}
-				
-				ParameterView pv = new ParameterView(definitions, instances);
-				
-				DwFlowContainer wrapper = new DwFlowContainer();
-				wrapper.setScrollMode(ScrollMode.AUTO);
-				dialog.add(wrapper);
-				
-				DwContentPanel panelWrapper = DwContentPanel.newInlineInstance(pv.getParameterContainer());
-				panelWrapper.setLightDarkStyle();
-				
-				wrapper.add(panelWrapper, new MarginData(10));
-				dialog.setHeading(pv.getComponentHeader());
-				
-				dialog.addCancelButton();
-				dialog.addSubmitButton(new OnButtonClickHandler() {
-					
-					@Override
-					public void onClick() {
-						dialog.mask();
-						dashboardDao.setDashboardParameterInstances(dashboard, instances, new AsyncCallback<List<DadgetDto>>() {
+      filterBtn = new DwTextButton(DashboardMessages.INSTANCE.editParameterBtnLabel(), BaseIcon.FILTER);
+      filterBtn.hide();
+      filterBtn.disable();
 
-							@Override
-							public void onFailure(Throwable caught) {
-								dialog.hide();
-							}
+      toolbar.add(filterBtn);
+      toolbar.add(new SeparatorToolItem());
 
-							@Override
-							public void onSuccess(List<DadgetDto> result) {
-								dialog.hide();
-								for(DadgetDto dadget : result){
-									final DadgetPanel dadgetPanel = dashboardView.getPanel(dadget);
-									dadgetPanel.updateDadget(dadget);
-									Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-										@Override
-										public void execute() {
-											dadgetPanel.getView().dadgetConfigured(dadgetPanel, ConfigType.MISC);
-										}
-									});
-								}
-							}
-						});
-					}
-				});
-				dialog.show();
-			}
-		});
-	}
+      filterBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            showParameterSelection();
+         }
+      });
+   }
 
-	@Override
-	public void dashboardDisplayed(DashboardDto dashboard, DashboardView dashboardView) {
-		this.dashboard = dashboard;
-		this.dashboardView = dashboardView;
-		
-		boolean display = false;
-		
-		for(DadgetDto dadget : dashboard.getDadgets()){
-			/* if library dadget get referenced dadget */
-			if(dadget instanceof LibraryDadgetDto){
-				LibraryDadgetDto lDadget = (LibraryDadgetDto) dadget;
-				DadgetNodeDto dadgetNode = lDadget.getDadgetNode();
-				if(null != dadgetNode && null != dadgetNode.getDadget()){
-					dadget = dadgetNode.getDadget();
-				}
-			}
-			
-			/* if report dadget, check if parameters */
-			if(dadget instanceof ReportDadgetDto){
-				ReportDto report = ((ReportDadgetDto) dadget).getReport();
-				if(null != report && ! report.getParameterInstances().isEmpty())
-					display = true;
-				TsDiskReportReferenceDto reference = ((ReportDadgetDto) dadget).getReportReference();
-				if(null != reference && null != reference.getReport() && ! reference.getReport().getParameterInstances().isEmpty())
-					display = true;
-			}
-			
-			if(dadget instanceof ParameterDadgetDto){
-				display = false;
-				break;
-			}
-		}
+   protected void showParameterSelection() {
+      if (null == dashboard)
+         return;
 
-		if(display){
-			filterBtn.show();
-			filterBtn.enable();
-		} else {
-			filterBtn.hide();
-			filterBtn.disable();
-		}
-		
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				component.forceLayout();
-			}
-		});
-	}
-	
-	@Override
-	public void dashboardChanged(DashboardDto dashboard, DashboardView view) {
-		dashboardDisplayed(dashboard, view);
-	}
+      final DwWindow dialog = new DwWindow();
+      dialog.setModal(true);
+      dialog.setHeaderIcon(BaseIcon.FILTER);
+
+      /* make sure it is not too huge */
+      dialog.addShowHandler(new ShowHandler() {
+         @Override
+         public void onShow(ShowEvent event) {
+            try {
+               int width = dialog.getElement().getWidth(true);
+               int height = dialog.getElement().getHeight(true);
+               if (width > 1200 || height > 1000)
+                  dialog.setSize(800, 600);
+            } catch (Exception e) {
+            }
+         }
+      });
+
+      dashboardView.mask(BaseMessages.INSTANCE.loadingMsg());
+      dashboardDao.getDashboardParameterInstances(dashboard, new AsyncCallback<Map<String, ParameterInstanceDto>>() {
+
+         @Override
+         public void onFailure(Throwable caught) {
+            dashboardView.unmask();
+            new DetailErrorDialog(caught).show();
+         }
+
+         @Override
+         public void onSuccess(Map<String, ParameterInstanceDto> instanceMap) {
+            dashboardView.unmask();
+
+            final List<ParameterDefinitionDto> definitions = new ArrayList<>();
+            final Set<ParameterInstanceDto> instances = new HashSet<>();
+
+            for (ParameterInstanceDto inst : instanceMap.values()) {
+               definitions.add(inst.getDefinition());
+               instances.add(inst);
+            }
+
+            ParameterView pv = new ParameterView(definitions, instances);
+
+            DwFlowContainer wrapper = new DwFlowContainer();
+            wrapper.setScrollMode(ScrollMode.AUTO);
+            dialog.add(wrapper);
+
+            DwContentPanel panelWrapper = DwContentPanel.newInlineInstance(pv.getParameterContainer());
+            panelWrapper.setLightDarkStyle();
+
+            wrapper.add(panelWrapper, new MarginData(10));
+            dialog.setHeading(pv.getComponentHeader());
+
+            dialog.addCancelButton();
+            dialog.addSubmitButton(new OnButtonClickHandler() {
+
+               @Override
+               public void onClick() {
+                  dialog.mask();
+                  dashboardDao.setDashboardParameterInstances(dashboard, instances,
+                        new AsyncCallback<List<DadgetDto>>() {
+
+                           @Override
+                           public void onFailure(Throwable caught) {
+                              dialog.hide();
+                           }
+
+                           @Override
+                           public void onSuccess(List<DadgetDto> result) {
+                              dialog.hide();
+                              for (DadgetDto dadget : result) {
+                                 final DadgetPanel dadgetPanel = dashboardView.getPanel(dadget);
+                                 dadgetPanel.updateDadget(dadget);
+                                 Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+                                    @Override
+                                    public void execute() {
+                                       dadgetPanel.getView().dadgetConfigured(dadgetPanel, ConfigType.MISC);
+                                    }
+                                 });
+                              }
+                           }
+                        });
+               }
+            });
+            dialog.show();
+         }
+      });
+   }
+
+   @Override
+   public void dashboardDisplayed(DashboardDto dashboard, DashboardView dashboardView) {
+      this.dashboard = dashboard;
+      this.dashboardView = dashboardView;
+
+      boolean display = false;
+
+      for (DadgetDto dadget : dashboard.getDadgets()) {
+         /* if library dadget get referenced dadget */
+         if (dadget instanceof LibraryDadgetDto) {
+            LibraryDadgetDto lDadget = (LibraryDadgetDto) dadget;
+            DadgetNodeDto dadgetNode = lDadget.getDadgetNode();
+            if (null != dadgetNode && null != dadgetNode.getDadget()) {
+               dadget = dadgetNode.getDadget();
+            }
+         }
+
+         /* if report dadget, check if parameters */
+         if (dadget instanceof ReportDadgetDto) {
+            ReportDto report = ((ReportDadgetDto) dadget).getReport();
+            if (null != report && !report.getParameterInstances().isEmpty())
+               display = true;
+            TsDiskReportReferenceDto reference = ((ReportDadgetDto) dadget).getReportReference();
+            if (null != reference && null != reference.getReport()
+                  && !reference.getReport().getParameterInstances().isEmpty())
+               display = true;
+         }
+
+         if (dadget instanceof ParameterDadgetDto) {
+            display = false;
+            break;
+         }
+      }
+
+      if (display) {
+         filterBtn.show();
+         filterBtn.enable();
+      } else {
+         filterBtn.hide();
+         filterBtn.disable();
+      }
+
+      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+         @Override
+         public void execute() {
+            component.forceLayout();
+         }
+      });
+   }
+
+   @Override
+   public void dashboardChanged(DashboardDto dashboard, DashboardView view) {
+      dashboardDisplayed(dashboard, view);
+   }
 
 }

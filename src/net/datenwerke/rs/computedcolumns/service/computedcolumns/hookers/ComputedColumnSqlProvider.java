@@ -17,50 +17,47 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public class ComputedColumnSqlProvider implements ColumnReferenceSqlProvider {
 
-	private final Provider<ExpressionTokenizer> tokenizerProvider;
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ComputedColumnSqlProvider(
-		Provider<ExpressionTokenizer> tokenizerProvider,
-		HookHandlerService hookHandler
-		) {
-		
-		this.tokenizerProvider = tokenizerProvider;
-		this.hookHandler = hookHandler;
-	}
+   private final Provider<ExpressionTokenizer> tokenizerProvider;
 
-	@Override
-	public boolean consumes(AdditionalColumnSpec col, QueryBuilder queryBuilder) {
-		return col instanceof ComputedColumn;
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public String getSelectSnipped(AdditionalColumnSpec col, QueryBuilder queryBuilder) {
-		String expression = ((ComputedColumn)col).getExpression();
+   @Inject
+   public ComputedColumnSqlProvider(Provider<ExpressionTokenizer> tokenizerProvider, HookHandlerService hookHandler) {
 
-		if(null == expression || "".equals(expression))
-			return "";
-		
-		ExpressionTokenizer tokenizer = tokenizerProvider.get();
-		tokenizer.initFunctions(hookHandler.getHookers(FunctionProviderHook.class));
-		tokenizer.initVariables(queryBuilder.getPlainColumnNames());
-		
-		List<ExpressionToken> tokenlist = tokenizer.tokenize(expression);
-		
-		StringBuilder snippet = new StringBuilder();
-		
-		Iterator<ExpressionToken> tokenIt = tokenlist.iterator();
-		while(tokenIt.hasNext()){
-			ExpressionToken token = tokenIt.next();
-			for(ExpressionTokenToSqlHook toSqlHooker : hookHandler.getHookers(ExpressionTokenToSqlHook.class)){
-				if(toSqlHooker.consumes(token))
-					snippet.append(toSqlHooker.handleToken(token, tokenIt));
-			}
-		}
-		
-		return snippet.toString();
-	}
+      this.tokenizerProvider = tokenizerProvider;
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public boolean consumes(AdditionalColumnSpec col, QueryBuilder queryBuilder) {
+      return col instanceof ComputedColumn;
+   }
+
+   @Override
+   public String getSelectSnipped(AdditionalColumnSpec col, QueryBuilder queryBuilder) {
+      String expression = ((ComputedColumn) col).getExpression();
+
+      if (null == expression || "".equals(expression))
+         return "";
+
+      ExpressionTokenizer tokenizer = tokenizerProvider.get();
+      tokenizer.initFunctions(hookHandler.getHookers(FunctionProviderHook.class));
+      tokenizer.initVariables(queryBuilder.getPlainColumnNames());
+
+      List<ExpressionToken> tokenlist = tokenizer.tokenize(expression);
+
+      StringBuilder snippet = new StringBuilder();
+
+      Iterator<ExpressionToken> tokenIt = tokenlist.iterator();
+      while (tokenIt.hasNext()) {
+         ExpressionToken token = tokenIt.next();
+         for (ExpressionTokenToSqlHook toSqlHooker : hookHandler.getHookers(ExpressionTokenToSqlHook.class)) {
+            if (toSqlHooker.consumes(token))
+               snippet.append(toSqlHooker.handleToken(token, tokenIt));
+         }
+      }
+
+      return snippet.toString();
+   }
 
 }

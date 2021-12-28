@@ -4,5 +4,4 @@ import com.sencha.gxt.widget.core.client.container.AccordionLayoutContainer;
 
 public class DwAccordionLayout extends AccordionLayoutContainer {
 
-
 }

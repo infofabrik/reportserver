@@ -10,16 +10,17 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface ReportExecutorExecuteAsHooker extends Hook {
 
-	public interface ExecuteConfig{
-		public String getFormat();
-		public Collection<ReportExecutionConfig> getConfig();
-	};
-	
-	boolean consumes(ReportDto report, String format);
-	
-	ExecuteConfig getConfig(ReportDto report, User currentUser, String format, DwModel config);
+   public interface ExecuteConfig {
+      public String getFormat();
 
-	DwModel adjustResult(ReportDto reportDto, User currentUser, Collection<ReportExecutionConfig> config, Object res);
+      public Collection<ReportExecutionConfig> getConfig();
+   };
 
-	ReportDto adjustReport(ReportDto report, User currentUser, String format, Collection<ReportExecutionConfig> config);
+   boolean consumes(ReportDto report, String format);
+
+   ExecuteConfig getConfig(ReportDto report, User currentUser, String format, DwModel config);
+
+   DwModel adjustResult(ReportDto reportDto, User currentUser, Collection<ReportExecutionConfig> config, Object res);
+
+   ReportDto adjustReport(ReportDto report, User currentUser, String format, Collection<ReportExecutionConfig> config);
 }

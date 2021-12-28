@@ -12,22 +12,19 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class TempFileStartup {
 
-	@Inject
-	public TempFileStartup(
-		HookHandlerService hookHandler,
-		TempFileMaintenance tempFileMaintenance, 
-		@TempDirLocation final Provider<String> tmpDir
-		){
-		
-		hookHandler.attachHooker(MaintenanceTask.class, tempFileMaintenance);
-		
-		/* synchronize tmpdirs */
-		hookHandler.attachHooker(LateInitHook.class, new LateInitHook() {
-			
-			@Override
-			public void initialize() {
-				System.setProperty("java.io.tmpdir", tmpDir.get());
-			}
-		}, HookHandlerService.PRIORITY_HIGH);
-	}
+   @Inject
+   public TempFileStartup(HookHandlerService hookHandler, TempFileMaintenance tempFileMaintenance,
+         @TempDirLocation final Provider<String> tmpDir) {
+
+      hookHandler.attachHooker(MaintenanceTask.class, tempFileMaintenance);
+
+      /* synchronize tmpdirs */
+      hookHandler.attachHooker(LateInitHook.class, new LateInitHook() {
+
+         @Override
+         public void initialize() {
+            System.setProperty("java.io.tmpdir", tmpDir.get());
+         }
+      }, HookHandlerService.PRIORITY_HIGH);
+   }
 }

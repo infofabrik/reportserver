@@ -6,12 +6,12 @@ import net.datenwerke.gf.client.theme.dto.ThemeUiConfig;
 
 public interface ThemeUiService {
 
-	void setThemeConfig(ThemeUiConfig result);
+   void setThemeConfig(ThemeUiConfig result);
 
-	ThemeUiConfig getThemeConfig();
+   ThemeUiConfig getThemeConfig();
 
-	HTML getHeaderLogo();
+   HTML getHeaderLogo();
 
-	HTML getLoginLogo();
+   HTML getLoginLogo();
 
 }

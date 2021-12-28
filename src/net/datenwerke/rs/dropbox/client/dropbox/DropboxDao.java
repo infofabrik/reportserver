@@ -29,13 +29,14 @@ public class DropboxDao extends Dao implements HasDefaultDatasink {
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
          AsyncCallback<Void> callback) {
-      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder, compressed,
-            transformAndKeepCallback(callback));
+      rpcService.exportReportIntoDatasink(reportDto, executorToken, datasinkDto, format, configs, name, folder,
+            compressed, transformAndKeepCallback(callback));
    }
-   
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto   file, DatasinkDefinitionDto datasinkDto, String name,
-         String folder, boolean compressed,AsyncCallback<Void> callback) {
-      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed ,transformAndKeepCallback(callback));
+
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto file, DatasinkDefinitionDto datasinkDto, String name,
+         String folder, boolean compressed, AsyncCallback<Void> callback) {
+      rpcService.exportFileIntoDatasink(file, datasinkDto, name, folder, compressed,
+            transformAndKeepCallback(callback));
    }
 
    public void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback) {
@@ -45,7 +46,7 @@ public class DropboxDao extends Dao implements HasDefaultDatasink {
    public Request testDropboxDatasink(DropboxDatasinkDto dropboxDatasinkDto, AsyncCallback<Boolean> callback) {
       return rpcService.testDropboxDatasink(dropboxDatasinkDto, transformAndKeepCallback(callback));
    }
-   
+
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));

@@ -30,21 +30,21 @@ import net.datenwerke.rs.ftp.client.ftp.dto.pa.SftpDatasinkDtoPA;
 public class SftpPublicKeyAuthenticatorHooker implements DatasinkAuthenticatorConfiguratorHook {
 
    private final FileUploadUiService fileUploadService;
-   
+
    public static final String AUTHENTICATION_TYPE = "public-key-auth";
-   
+
    @Inject
    public SftpPublicKeyAuthenticatorHooker(FileUploadUiService fileUploadService) {
       this.fileUploadService = fileUploadService;
    }
-   
+
    @Override
    public Widget configureForm(final SimpleFormView mainForm, final DatasinkDefinitionDto datasink) {
       SimpleForm form = SimpleForm.getInlineInstance();
       fileUploadService.prepareForUpload(form);
 
       form.setFieldWidth(760);
-      
+
       form.beginFloatRow();
       form.addField(String.class, SftpDatasinkDtoPA.INSTANCE.username(), BaseMessages.INSTANCE.username());
       form.endRow();

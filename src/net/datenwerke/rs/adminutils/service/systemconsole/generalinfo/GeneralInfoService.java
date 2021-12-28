@@ -2,17 +2,17 @@ package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
 public interface GeneralInfoService {
 
-	String getJavaVersion();
-	
-	String getVmArguments();
+   String getJavaVersion();
 
-	String getApplicationServer();
+   String getVmArguments();
 
-	String getOsVersion();
+   String getApplicationServer();
 
-	String getBrowserName();
-	
-	String getBrowserVersion();
-	
-	String getRsVersion();
+   String getOsVersion();
+
+   String getBrowserName();
+
+   String getBrowserVersion();
+
+   String getRsVersion();
 }

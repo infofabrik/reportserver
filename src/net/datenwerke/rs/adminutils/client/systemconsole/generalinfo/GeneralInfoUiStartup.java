@@ -8,11 +8,12 @@ import net.datenwerke.rs.adminutils.client.systemconsole.hooks.SystemConsoleView
 
 public class GeneralInfoUiStartup {
 
-	@Inject
-	public GeneralInfoUiStartup(final HookHandlerService hookHandler,
-			GeneralInfoSystemConsoleHooker generalTargetDomain) {
-		
-		hookHandler.attachHooker(SystemConsoleViewDomainHook.class, generalTargetDomain,  HookHandlerService.PRIORITY_HIGH);
+   @Inject
+   public GeneralInfoUiStartup(final HookHandlerService hookHandler,
+         GeneralInfoSystemConsoleHooker generalTargetDomain) {
 
-	}
+      hookHandler.attachHooker(SystemConsoleViewDomainHook.class, generalTargetDomain,
+            HookHandlerService.PRIORITY_HIGH);
+
+   }
 }

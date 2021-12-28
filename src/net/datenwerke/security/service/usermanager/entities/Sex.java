@@ -6,10 +6,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.usermanager.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.usermanager.dto")
 public enum Sex {
-	Male,
-	Female
+   Male, Female
 }

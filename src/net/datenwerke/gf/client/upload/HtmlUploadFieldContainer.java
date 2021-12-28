@@ -7,27 +7,26 @@ import com.sencha.gxt.widget.core.client.form.FileUploadField;
 
 public class HtmlUploadFieldContainer extends HtmlLayoutContainer {
 
-	private FileUploadField baseField;
-	private Hidden nameField;
+   private FileUploadField baseField;
+   private Hidden nameField;
 
-	public HtmlUploadFieldContainer(SafeHtml html) {
-		super(html);
-	}
+   public HtmlUploadFieldContainer(SafeHtml html) {
+      super(html);
+   }
 
-	public void setNameField(Hidden xhrNameField) {
-		this.nameField=xhrNameField;
-	}
+   public void setNameField(Hidden xhrNameField) {
+      this.nameField = xhrNameField;
+   }
 
-	public void setBaseField(FileUploadField field) {
-		this.baseField = field;
-	}
-	
-	public String getUploadFileName(){
-		String name = nameField.getValue();
-		if(null == name || "".equals(name.trim()))
-			name = baseField.getValue();
-		return null != name && ! "".equals(name.trim()) ? name : null;
-	}
-	
+   public void setBaseField(FileUploadField field) {
+      this.baseField = field;
+   }
+
+   public String getUploadFileName() {
+      String name = nameField.getValue();
+      if (null == name || "".equals(name.trim()))
+         name = baseField.getValue();
+      return null != name && !"".equals(name.trim()) ? name : null;
+   }
 
 }

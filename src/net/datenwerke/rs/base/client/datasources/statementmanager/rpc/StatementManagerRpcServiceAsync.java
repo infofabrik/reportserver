@@ -4,6 +4,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface StatementManagerRpcServiceAsync {
 
-	void cancelStatement(String statementId, AsyncCallback<Void> callback);
+   void cancelStatement(String statementId, AsyncCallback<Void> callback);
 
 }

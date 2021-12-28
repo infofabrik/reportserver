@@ -13,39 +13,35 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterSetReplacemen
 import net.datenwerke.rs.core.service.reportmanager.metadata.ReportMetadataParameterReplacement;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetReplacementProvider;
 
+public class ParameterSetReplacementProviderHooker implements ParameterSetReplacementProviderHook {
 
-public class ParameterSetReplacementProviderHooker implements
-		ParameterSetReplacementProviderHook {
+   private final UserParameterReplacement userParameterProvider;
+   private final ReportParameterReplacement reportParameterProvider;
+   private final ReportMetadataParameterReplacement reportMetadataParameterReplacement;
+   private final LocaleInfoParameterReplacement localeInfoParameterReplacement;
 
-	private final UserParameterReplacement userParameterProvider;
-	private final ReportParameterReplacement reportParameterProvider;
-	private final ReportMetadataParameterReplacement reportMetadataParameterReplacement;
-	private final LocaleInfoParameterReplacement localeInfoParameterReplacement;
-	
-	@Inject
-	public ParameterSetReplacementProviderHooker(
-		UserParameterReplacement userParameterProvider,
-		ReportParameterReplacement reportParameterProvider,
-		ReportMetadataParameterReplacement reportMetadataParameterReplacement,
-		LocaleInfoParameterReplacement localeInfoParameterReplacement
-		){
-		
-		this.userParameterProvider = userParameterProvider;
-		this.reportParameterProvider = reportParameterProvider;
-		this.reportMetadataParameterReplacement = reportMetadataParameterReplacement;
-		this.localeInfoParameterReplacement = localeInfoParameterReplacement;
-	}
-	
-	@Override
-	public Collection<? extends ParameterSetReplacementProvider> getProviders() {
-		Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
-		
-		providers.add(userParameterProvider);
-		providers.add(reportParameterProvider);
-		providers.add(reportMetadataParameterReplacement);
-		providers.add(localeInfoParameterReplacement);
-		
-		return providers;
-	}
+   @Inject
+   public ParameterSetReplacementProviderHooker(UserParameterReplacement userParameterProvider,
+         ReportParameterReplacement reportParameterProvider,
+         ReportMetadataParameterReplacement reportMetadataParameterReplacement,
+         LocaleInfoParameterReplacement localeInfoParameterReplacement) {
+
+      this.userParameterProvider = userParameterProvider;
+      this.reportParameterProvider = reportParameterProvider;
+      this.reportMetadataParameterReplacement = reportMetadataParameterReplacement;
+      this.localeInfoParameterReplacement = localeInfoParameterReplacement;
+   }
+
+   @Override
+   public Collection<? extends ParameterSetReplacementProvider> getProviders() {
+      Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
+
+      providers.add(userParameterProvider);
+      providers.add(reportParameterProvider);
+      providers.add(reportMetadataParameterReplacement);
+      providers.add(localeInfoParameterReplacement);
+
+      return providers;
+   }
 
 }

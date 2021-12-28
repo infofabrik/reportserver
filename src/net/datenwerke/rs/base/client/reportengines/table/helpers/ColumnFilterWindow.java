@@ -41,130 +41,128 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ColumnFilterWindow extends DwWindow {
 
-	@Inject
-	private static ContextHelpUiService contextHelpService;
-	
-	private LikeFilterComponent filterComponent;
-	private String executeToken;
-	
-	public ColumnFilterWindow(
-			TableReportDto report, ColumnDto column, String executeToken	
-			){
-		this(report, column, executeToken, 
-			"enable".equals(((TableReportDtoDec)report).getEffectiveReportProperty(AvailableReportProperties.PROPERTY_DL_FILTER_DEFAULT_CONSISTENCY.getValue(), "enable")),  
-			"true".equals(((TableReportDtoDec)report).getEffectiveReportProperty(AvailableReportProperties.PROPERTY_DL_FILTER_SHOW_CONSISTENCY.getValue(), "true")));
-	}
-	
-	public ColumnFilterWindow(
-		TableReportDto report, ColumnDto column, String executeToken, boolean forceConsistency, boolean showConsistency	
-		){
-	
-		this.executeToken = executeToken;
-		initUi(report, column, forceConsistency, showConsistency);
-	}
+   @Inject
+   private static ContextHelpUiService contextHelpService;
 
-	private void initUi(TableReportDto report, final ColumnDto column, boolean forceConsistency, boolean showConsistency) {
-		setSize(900, 650);
-		addClassName("rs-column-filter");
-		setModal(true);
-		setOnEsc(false);
-		setClosable(false);
-		setHeaderIcon(BaseIcon.TABLE_EDIT);
-		setHeading(FilterMessages.INSTANCE.filterDialogHeading(column.getName(), null != column.getType() ? SqlTypes.getName(column.getType()) : ""));
-		setBodyBorder(true);
-		setButtonAlign(BoxLayoutPack.START);
+   private LikeFilterComponent filterComponent;
+   private String executeToken;
 
-		if(contextHelpService.isEnabled()){
-			ContextHelpInfo contextHelpInfo = new ContextHelpInfo("dynamiclist/columnfilter");
-			ToolButton infoBtn = contextHelpService.createToolButton(contextHelpInfo);
-			addTool(infoBtn);
-		}
-		
-		/* LikeFilter Component */
-		filterComponent = new LikeFilterComponent(report, column, executeToken, forceConsistency, showConsistency); 
-		add(filterComponent);
+   public ColumnFilterWindow(TableReportDto report, ColumnDto column, String executeToken) {
+      this(report, column, executeToken,
+            "enable".equals(((TableReportDtoDec) report).getEffectiveReportProperty(
+                  AvailableReportProperties.PROPERTY_DL_FILTER_DEFAULT_CONSISTENCY.getValue(), "enable")),
+            "true".equals(((TableReportDtoDec) report).getEffectiveReportProperty(
+                  AvailableReportProperties.PROPERTY_DL_FILTER_SHOW_CONSISTENCY.getValue(), "true")));
+   }
 
-		/* null handling */
-		Label nullHandlingLabel = SeparatorTextLabel.createSmallText(FilterMessages.INSTANCE.nullHandlingLabel());
-		addButton(nullHandlingLabel);
-		addButton(createNullHandlingCombo(column));
-		
-		/* case sensitive */
-		addButton(new SeparatorToolItem());
-		addCaseSensitiveBox(getButtonBar(), column);
-		
-		final UndoManager undoer = new UndoManager(column);
-		
-		/* submit */
-		DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.apply());
-		submitBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(filterComponent.validate()){
-					undoer.clear();
-					hide();
-				}
-			}
-		});
-		
-		
-		DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
-		cancelBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				filterComponent.cleanup();
-				undoer.rollback();
-				hide();
-			}
-		});
-		
-		addButton(new FillToolItem());
-		addButton(cancelBtn);
-		addButton(submitBtn);
-	}
-	
-	private void addCaseSensitiveBox(ToolBar filterDialogToolbar, final ColumnDto column) {
-		final CheckBox box = new CheckBox();
-		filterDialogToolbar.add(box);
-		
-		Label textLabel = SeparatorTextLabel.createSmallText(FilterMessages.INSTANCE.caseSensitiveLabel());
-		textLabel.addDomHandler(new ClickHandler() {
-			
-			@Override
-			public void onClick(ClickEvent event) {
-				if(null == box.getValue() || ! box.getValue())
-					box.setValue(true, true);
-				else
-					box.setValue(false, true);
-			}
-		}, ClickEvent.getType());
-		filterDialogToolbar.add(textLabel);
-		
-		
-		if(null == column.getFilter())
-			column.setFilter(new FilterDtoDec());
-		new HasValueFieldBinding(box, column.getFilter(), FilterDtoPA.INSTANCE.caseSensitive());
-	}
+   public ColumnFilterWindow(TableReportDto report, ColumnDto column, String executeToken, boolean forceConsistency,
+         boolean showConsistency) {
 
-	private SimpleComboBox<Object> createNullHandlingCombo(final ColumnDto column) {
-		final EmptyableSimpleComboBox<NullHandlingDto> combo = new EmptyableSimpleComboBox<NullHandlingDto>();
-		
-		combo.setWidth(180);
-		combo.setTriggerAction(TriggerAction.ALL);
-		
-		combo.addAll(Arrays.asList(NullHandlingDto.values()));
+      this.executeToken = executeToken;
+      initUi(report, column, forceConsistency, showConsistency);
+   }
 
-		combo.createValueBinding(column, ColumnDtoPA.INSTANCE.nullHandling());
-		
+   private void initUi(TableReportDto report, final ColumnDto column, boolean forceConsistency,
+         boolean showConsistency) {
+      setSize(900, 650);
+      addClassName("rs-column-filter");
+      setModal(true);
+      setOnEsc(false);
+      setClosable(false);
+      setHeaderIcon(BaseIcon.TABLE_EDIT);
+      setHeading(FilterMessages.INSTANCE.filterDialogHeading(column.getName(),
+            null != column.getType() ? SqlTypes.getName(column.getType()) : ""));
+      setBodyBorder(true);
+      setButtonAlign(BoxLayoutPack.START);
 
-		return combo;
-	}
+      if (contextHelpService.isEnabled()) {
+         ContextHelpInfo contextHelpInfo = new ContextHelpInfo("dynamiclist/columnfilter");
+         ToolButton infoBtn = contextHelpService.createToolButton(contextHelpInfo);
+         addTool(infoBtn);
+      }
 
-	public void setForceConsistency(boolean force) {
-		filterComponent.setForceConsistency(force);
-	}
+      /* LikeFilter Component */
+      filterComponent = new LikeFilterComponent(report, column, executeToken, forceConsistency, showConsistency);
+      add(filterComponent);
 
-	public void hideForceConsistency() {
-		filterComponent.hideForceConsistency();
-	}
+      /* null handling */
+      Label nullHandlingLabel = SeparatorTextLabel.createSmallText(FilterMessages.INSTANCE.nullHandlingLabel());
+      addButton(nullHandlingLabel);
+      addButton(createNullHandlingCombo(column));
+
+      /* case sensitive */
+      addButton(new SeparatorToolItem());
+      addCaseSensitiveBox(getButtonBar(), column);
+
+      final UndoManager undoer = new UndoManager(column);
+
+      /* submit */
+      DwTextButton submitBtn = new DwTextButton(BaseMessages.INSTANCE.apply());
+      submitBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (filterComponent.validate()) {
+               undoer.clear();
+               hide();
+            }
+         }
+      });
+
+      DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      cancelBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            filterComponent.cleanup();
+            undoer.rollback();
+            hide();
+         }
+      });
+
+      addButton(new FillToolItem());
+      addButton(cancelBtn);
+      addButton(submitBtn);
+   }
+
+   private void addCaseSensitiveBox(ToolBar filterDialogToolbar, final ColumnDto column) {
+      final CheckBox box = new CheckBox();
+      filterDialogToolbar.add(box);
+
+      Label textLabel = SeparatorTextLabel.createSmallText(FilterMessages.INSTANCE.caseSensitiveLabel());
+      textLabel.addDomHandler(new ClickHandler() {
+
+         @Override
+         public void onClick(ClickEvent event) {
+            if (null == box.getValue() || !box.getValue())
+               box.setValue(true, true);
+            else
+               box.setValue(false, true);
+         }
+      }, ClickEvent.getType());
+      filterDialogToolbar.add(textLabel);
+
+      if (null == column.getFilter())
+         column.setFilter(new FilterDtoDec());
+      new HasValueFieldBinding(box, column.getFilter(), FilterDtoPA.INSTANCE.caseSensitive());
+   }
+
+   private SimpleComboBox<Object> createNullHandlingCombo(final ColumnDto column) {
+      final EmptyableSimpleComboBox<NullHandlingDto> combo = new EmptyableSimpleComboBox<NullHandlingDto>();
+
+      combo.setWidth(180);
+      combo.setTriggerAction(TriggerAction.ALL);
+
+      combo.addAll(Arrays.asList(NullHandlingDto.values()));
+
+      combo.createValueBinding(column, ColumnDtoPA.INSTANCE.nullHandling());
+
+      return combo;
+   }
+
+   public void setForceConsistency(boolean force) {
+      filterComponent.setForceConsistency(force);
+   }
+
+   public void hideForceConsistency() {
+      filterComponent.hideForceConsistency();
+   }
 }

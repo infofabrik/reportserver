@@ -8,18 +8,16 @@ import net.datenwerke.security.ext.client.security.ui.SecurityView;
 
 public class SecurityUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(SecurityUIService.class).to(SecurityUIServiceImpl.class).in(Singleton.class);
-		
-		/* startup */
-		bind(SecurityUIStartup.class).asEagerSingleton();
-		
-		/* static injection */
-		requestStaticInjection(
-			SecurityView.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(SecurityUIService.class).to(SecurityUIServiceImpl.class).in(Singleton.class);
+
+      /* startup */
+      bind(SecurityUIStartup.class).asEagerSingleton();
+
+      /* static injection */
+      requestStaticInjection(SecurityView.class);
+   }
 
 }

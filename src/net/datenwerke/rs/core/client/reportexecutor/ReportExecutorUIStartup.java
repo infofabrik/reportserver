@@ -29,58 +29,56 @@ import net.datenwerke.rs.core.client.userprofile.UserProfileViewContentHook;
  */
 public class ReportExecutorUIStartup {
 
-	@Inject
-	public ReportExecutorUIStartup(
-		HookHandlerService hookHandler,
-		
-		HistoryUiService historyService,
-		ReportExecutorHistoryCallback executorHistoryCallbackProvider,
-		
-		ReportViewExportButtonHooker exportButtonHooker,
-		ExportExternalButtonHooker exportViaMailButtonHooker,
-		Provider<ReportViewVariantStorerHooker> variantStorerHooker,
-		
-		Provider<ExportViaMailHooker> exportViaMailHooker,
-		Provider<ReportRefreshExecutionHooker> reportRefreshExecutionHooker,
-		
-		Provider<ExportTypeSelectionProvider> exportTypeSimpleFormProvider, 
-		
-		Provider<ReportPreviewObjectInfo> reportPreviewObjectInfo, 
-		
-		Provider<PdfPreviewUserProfileViewContentHooker> pdfPreviewUserProfileViewHooker, 
-		Provider<LocalDecimalFormatUserProfileViewContentHooker> decimalFormatUserProfileViewHooker,
-		
-		ReportExecutorInlineDispatcher reportExecutorDispatcher
-		){
-		
-		/* simpleform */
-		hookHandler.attachHooker(FormFieldProviderHook.class, exportTypeSimpleFormProvider);
-		
-		/* dispatch */
-		hookHandler.attachHooker(DispatcherTakeOverHook.class, reportExecutorDispatcher);
-		
-		/* attach object info hooks */
-		hookHandler.attachHooker(
-			UrlViewSpecialViewHandler.class,
-			reportPreviewObjectInfo
-			);
-		
-		/* report view toolbar */
-		hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportButtonHooker, HookHandlerService.PRIORITY_HIGH);
-		hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportViaMailButtonHooker, HookHandlerService.PRIORITY_HIGH + 2);
-		hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportViaMailHooker, HookHandlerService.PRIORITY_HIGH);
-		
-		hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, reportRefreshExecutionHooker, HookHandlerService.PRIORITY_HIGH-2);
-		
-		/* hook into user profile view card */
-		hookHandler.attachHooker(UserProfileViewContentHook.class, pdfPreviewUserProfileViewHooker);
-		hookHandler.attachHooker(UserProfileViewContentHook.class, decimalFormatUserProfileViewHooker);
-		
-		/* variant storer */
-		hookHandler.attachHooker(VariantStorerHook.class, variantStorerHooker);
-		hookHandler.getConfig(VariantStorerHook.class).setSingleton(true);
-		
-		/* configureHistory */
-		historyService.addHistoryCallback(ReportExecutorUIModule.REPORT_EXECUTOR_HISTORY_TOKEN, executorHistoryCallbackProvider);
-	}
+   @Inject
+   public ReportExecutorUIStartup(HookHandlerService hookHandler,
+
+         HistoryUiService historyService, ReportExecutorHistoryCallback executorHistoryCallbackProvider,
+
+         ReportViewExportButtonHooker exportButtonHooker, ExportExternalButtonHooker exportViaMailButtonHooker,
+         Provider<ReportViewVariantStorerHooker> variantStorerHooker,
+
+         Provider<ExportViaMailHooker> exportViaMailHooker,
+         Provider<ReportRefreshExecutionHooker> reportRefreshExecutionHooker,
+
+         Provider<ExportTypeSelectionProvider> exportTypeSimpleFormProvider,
+
+         Provider<ReportPreviewObjectInfo> reportPreviewObjectInfo,
+
+         Provider<PdfPreviewUserProfileViewContentHooker> pdfPreviewUserProfileViewHooker,
+         Provider<LocalDecimalFormatUserProfileViewContentHooker> decimalFormatUserProfileViewHooker,
+
+         ReportExecutorInlineDispatcher reportExecutorDispatcher) {
+
+      /* simpleform */
+      hookHandler.attachHooker(FormFieldProviderHook.class, exportTypeSimpleFormProvider);
+
+      /* dispatch */
+      hookHandler.attachHooker(DispatcherTakeOverHook.class, reportExecutorDispatcher);
+
+      /* attach object info hooks */
+      hookHandler.attachHooker(UrlViewSpecialViewHandler.class, reportPreviewObjectInfo);
+
+      /* report view toolbar */
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportButtonHooker,
+            HookHandlerService.PRIORITY_HIGH);
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, exportViaMailButtonHooker,
+            HookHandlerService.PRIORITY_HIGH + 2);
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportViaMailHooker,
+            HookHandlerService.PRIORITY_HIGH);
+
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, reportRefreshExecutionHooker,
+            HookHandlerService.PRIORITY_HIGH - 2);
+
+      /* hook into user profile view card */
+      hookHandler.attachHooker(UserProfileViewContentHook.class, pdfPreviewUserProfileViewHooker);
+      hookHandler.attachHooker(UserProfileViewContentHook.class, decimalFormatUserProfileViewHooker);
+
+      /* variant storer */
+      hookHandler.attachHooker(VariantStorerHook.class, variantStorerHooker);
+      hookHandler.getConfig(VariantStorerHook.class).setSingleton(true);
+
+      /* configureHistory */
+      historyService.addHistoryCallback(ReportExecutorUIModule.REPORT_EXECUTOR_HISTORY_TOKEN,
+            executorHistoryCallbackProvider);
+   }
 }

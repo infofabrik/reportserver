@@ -31,7 +31,7 @@ public class BoxRefreshTokenGeneratorHooker implements OAuthRefreshTokenGenerato
       request.addBodyParameter("grant_type", "authorization_code");
       try (Response response = oauthService.execute(request)) {
          final ObjectNode jsonObject = new ObjectMapper().readValue(response.getBody(), ObjectNode.class);
-         final String refreshTokenField =  "refresh_token";
+         final String refreshTokenField = "refresh_token";
          if (jsonObject.has(refreshTokenField))
             refreshToken = jsonObject.get(refreshTokenField).asText();
          else

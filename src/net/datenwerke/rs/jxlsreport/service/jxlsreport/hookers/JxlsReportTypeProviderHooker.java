@@ -10,13 +10,13 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport;
 
 public class JxlsReportTypeProviderHooker implements ReportTypeProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends Report>> getReportTypes() {
-		Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
-		
-		types.add(JxlsReport.class);
-		
-		return types;
-	}
+   @Override
+   public Collection<? extends Class<? extends Report>> getReportTypes() {
+      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
+
+      types.add(JxlsReport.class);
+
+      return types;
+   }
 
 }

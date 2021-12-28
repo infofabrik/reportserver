@@ -6,5 +6,5 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface UiTreeFactory {
 
-	public UITree create(TreeStore<AbstractNodeDto> store);
+   public UITree create(TreeStore<AbstractNodeDto> store);
 }

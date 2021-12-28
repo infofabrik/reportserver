@@ -9,11 +9,9 @@ import net.datenwerke.rs.utils.filename.hooks.FileNameSanitizerHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class FileNameSanitizerHookAdapter implements FileNameSanitizerHook {
 
-	@Override
-	public String sanitizeFileName(String name)  {
-		return "";
-	}
-
-
+   @Override
+   public String sanitizeFileName(String name) {
+      return "";
+   }
 
 }

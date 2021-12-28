@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.BinaryOperatorDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.filters.BinaryOperator.class)
 public interface BinaryOperatorDtoPA extends PropertyAccess<BinaryOperatorDto> {
 
-
-
 }

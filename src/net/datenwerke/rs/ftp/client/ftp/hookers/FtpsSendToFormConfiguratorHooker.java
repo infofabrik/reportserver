@@ -33,7 +33,7 @@ public class FtpsSendToFormConfiguratorHooker implements DatasinkSendToFormConfi
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return FtpUiModule.FTPS_NAME;
@@ -53,5 +53,5 @@ public class FtpsSendToFormConfiguratorHooker implements DatasinkSendToFormConfi
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

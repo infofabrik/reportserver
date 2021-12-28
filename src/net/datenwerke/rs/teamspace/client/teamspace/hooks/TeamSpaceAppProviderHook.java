@@ -11,8 +11,8 @@ import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceApp;
  */
 public class TeamSpaceAppProviderHook extends ObjectHook<TeamSpaceApp> {
 
-	public TeamSpaceAppProviderHook(Provider<? extends TeamSpaceApp> provider) {
-		super(provider);
-	}
+   public TeamSpaceAppProviderHook(Provider<? extends TeamSpaceApp> provider) {
+      super(provider);
+   }
 
 }

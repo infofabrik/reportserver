@@ -65,18 +65,10 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public AmazonS3RpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService, 
-         DtoService dtoService,
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         AmazonS3Service amazonS3Service, 
-         ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService, 
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public AmazonS3RpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
+         ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, AmazonS3Service amazonS3Service, ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -94,9 +86,9 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
          String format, List<ReportExecutionConfigDto> configs, String name, final String folder, boolean compressed)
          throws ServerCallFailedException {
-      if (! (datasinkDto instanceof AmazonS3DatasinkDto))
+      if (!(datasinkDto instanceof AmazonS3DatasinkDto))
          throw new IllegalArgumentException("Not an amazon s3 datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       AmazonS3Datasink amazonS3Datasink = (AmazonS3Datasink) dtoService.loadPoso(datasinkDto);
@@ -227,7 +219,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, amazonS3Service, filename, folder, compressed);
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, amazonS3Service, filename,
+            folder, compressed);
 
    }
 

@@ -10,10 +10,13 @@ public interface UserManagerMessages extends Messages {
    String historyUrlBuilderName();
 
    String gender();
+
    String genderFemale();
+
    String genderMale();
-   
+
    String commandId_description();
+
    String commandId_arg_username();
 
 }

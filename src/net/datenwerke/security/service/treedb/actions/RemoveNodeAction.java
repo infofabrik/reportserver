@@ -10,10 +10,10 @@ import net.datenwerke.security.service.security.rights.Right;
 
 public class RemoveNodeAction extends SecurityActionImpl {
 
-	public Collection<Right> getRights() {
-		List<Right> list = new ArrayList<Right>();
-		list.add(new Delete());
-		return list;
-	}
+   public Collection<Right> getRights() {
+      List<Right> list = new ArrayList<Right>();
+      list.add(new Delete());
+      return list;
+   }
 
 }

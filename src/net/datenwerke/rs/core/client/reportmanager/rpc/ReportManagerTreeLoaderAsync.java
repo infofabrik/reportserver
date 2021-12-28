@@ -7,6 +7,6 @@ import net.datenwerke.treedb.client.treedb.rpc.RPCTreeLoaderAsync;
 
 public interface ReportManagerTreeLoaderAsync extends RPCTreeLoaderAsync {
 
-	void getReportsInCatalog(ReportFolderDto folder, boolean showVariants, AsyncCallback<String[][]> callback);
+   void getReportsInCatalog(ReportFolderDto folder, boolean showVariants, AsyncCallback<String[][]> callback);
 
 }

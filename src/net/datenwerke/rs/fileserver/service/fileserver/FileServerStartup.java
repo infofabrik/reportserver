@@ -46,101 +46,89 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class FileServerStartup {
 
-	@Inject
-	public FileServerStartup(
-		HookHandlerService hookHandler,
-		SecurityService securityService,
-		
-		Provider<FileServerExporter> exporterProvider,
-		Provider<FileServerImporter> importerProvider,
-		Provider<ExportAllFilesHooker> exportAllFiles,
-		Provider<ImportAllFilesHooker> importAllFiles,
-		
-		Provider<HttpFileServerImportConfigurationHooker> httpImport,
-		
-		Provider<CreateTextFileCommand> createTextFileCommand,
-		Provider<EditTextFileCommand> editTextFileCommand,
-		Provider<ZipCommand> zipCommand, 
-		Provider<UnzipCommand> unzipCommand,
-		
-		Provider<DirModCommand> dirModCommandProvider,		
-		Provider<WebAccessSubCommand> webAccessCommandProvider,
-		
-		Provider<LfsCommand> lfsCommand, 
-		Provider<LfsExportSubCommand> lfsExportCommand,
-		Provider<LfsImportSubCommand> lfsImportCommand,
-		
-		Provider<FileServerHistoryUrlBuilderHooker> urlBuilder,
-		
-		Provider<FileServerFileUploadHooker> fileServerFileUploader,
-		
-		Provider<WriteIntoFileOperator> writeIntoFileOperator, 
-		RsfsUrlStreamHandler rsfsUrlStreamHandler,
-		
-		CatCommandHandlerHooker catCommandHooker
-		){
-		
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(ExportAllHook.class, exportAllFiles);
-		hookHandler.attachHooker(ImportAllHook.class, importAllFiles);
-		hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImport);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, createTextFileCommand);
-		hookHandler.attachHooker(TerminalCommandHook.class, editTextFileCommand);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, zipCommand);
-		hookHandler.attachHooker(TerminalCommandHook.class, unzipCommand);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, dirModCommandProvider);
-		hookHandler.attachHooker(DirModCommandHook.class, webAccessCommandProvider);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, lfsCommand);
-		hookHandler.attachHooker(LfsSubCommandHook.class, lfsExportCommand);
-		hookHandler.attachHooker(LfsSubCommandHook.class, lfsImportCommand);
-		
-		hookHandler.attachHooker(TerminalCommandOperator.class, writeIntoFileOperator);
-		
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilder);
-		
-		hookHandler.attachHooker(CatCommandHandlerHook.class, catCommandHooker);
-		
-		hookHandler.attachHooker(FileUploadHandlerHook.class, fileServerFileUploader);
-		
-		registerSecurityTargets(securityService);
-		
-		
-		/* register streamhandler 
-		 * this is done via reflection as 
-		 *  - setting URlStreamHandlerFactory, is not available from within a webapp context
-		 *  - creating a handler class in the right package only works if the handler class
-		 *    can be placed into the system classloaders classpath 
-		 *  - setting the handler on each instantiation of URL is infeasible
-		 *  http://www.unicon.net/node/776
-		 */    
-		try{
-			Field handlersFields = URL.class.getDeclaredField("handlers");
-			handlersFields.setAccessible(true);
+   @Inject
+   public FileServerStartup(HookHandlerService hookHandler, SecurityService securityService,
 
-			Hashtable<String, URLStreamHandler> handlers = (Hashtable<String, URLStreamHandler>) handlersFields.get(null);
-			handlers.put("rsfs", rsfsUrlStreamHandler);
-		}catch(NoSuchFieldException e){
-			e.printStackTrace();
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
-	
-	
-	/**
-	 * Registers all entities as security targets
-	 * @param securityService 
-	 */
-	private void registerSecurityTargets(SecurityService securityService) {
-		/* secure folder */
-		securityService.registerSecurityTarget(FileServerFolder.class);
-		securityService.registerSecurityTarget(FileServerFile.class);
-	}
+         Provider<FileServerExporter> exporterProvider, Provider<FileServerImporter> importerProvider,
+         Provider<ExportAllFilesHooker> exportAllFiles, Provider<ImportAllFilesHooker> importAllFiles,
+
+         Provider<HttpFileServerImportConfigurationHooker> httpImport,
+
+         Provider<CreateTextFileCommand> createTextFileCommand, Provider<EditTextFileCommand> editTextFileCommand,
+         Provider<ZipCommand> zipCommand, Provider<UnzipCommand> unzipCommand,
+
+         Provider<DirModCommand> dirModCommandProvider, Provider<WebAccessSubCommand> webAccessCommandProvider,
+
+         Provider<LfsCommand> lfsCommand, Provider<LfsExportSubCommand> lfsExportCommand,
+         Provider<LfsImportSubCommand> lfsImportCommand,
+
+         Provider<FileServerHistoryUrlBuilderHooker> urlBuilder,
+
+         Provider<FileServerFileUploadHooker> fileServerFileUploader,
+
+         Provider<WriteIntoFileOperator> writeIntoFileOperator, RsfsUrlStreamHandler rsfsUrlStreamHandler,
+
+         CatCommandHandlerHooker catCommandHooker) {
+
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(ExportAllHook.class, exportAllFiles);
+      hookHandler.attachHooker(ImportAllHook.class, importAllFiles);
+      hookHandler.attachHooker(HttpImportConfigurationProviderHook.class, httpImport);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, createTextFileCommand);
+      hookHandler.attachHooker(TerminalCommandHook.class, editTextFileCommand);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, zipCommand);
+      hookHandler.attachHooker(TerminalCommandHook.class, unzipCommand);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, dirModCommandProvider);
+      hookHandler.attachHooker(DirModCommandHook.class, webAccessCommandProvider);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, lfsCommand);
+      hookHandler.attachHooker(LfsSubCommandHook.class, lfsExportCommand);
+      hookHandler.attachHooker(LfsSubCommandHook.class, lfsImportCommand);
+
+      hookHandler.attachHooker(TerminalCommandOperator.class, writeIntoFileOperator);
+
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilder);
+
+      hookHandler.attachHooker(CatCommandHandlerHook.class, catCommandHooker);
+
+      hookHandler.attachHooker(FileUploadHandlerHook.class, fileServerFileUploader);
+
+      registerSecurityTargets(securityService);
+
+      /*
+       * register streamhandler this is done via reflection as - setting
+       * URlStreamHandlerFactory, is not available from within a webapp context -
+       * creating a handler class in the right package only works if the handler class
+       * can be placed into the system classloaders classpath - setting the handler on
+       * each instantiation of URL is infeasible http://www.unicon.net/node/776
+       */
+      try {
+         Field handlersFields = URL.class.getDeclaredField("handlers");
+         handlersFields.setAccessible(true);
+
+         Hashtable<String, URLStreamHandler> handlers = (Hashtable<String, URLStreamHandler>) handlersFields.get(null);
+         handlers.put("rsfs", rsfsUrlStreamHandler);
+      } catch (NoSuchFieldException e) {
+         e.printStackTrace();
+      } catch (IllegalArgumentException e) {
+         e.printStackTrace();
+      } catch (IllegalAccessException e) {
+         e.printStackTrace();
+      }
+   }
+
+   /**
+    * Registers all entities as security targets
+    * 
+    * @param securityService
+    */
+   private void registerSecurityTargets(SecurityService securityService) {
+      /* secure folder */
+      securityService.registerSecurityTarget(FileServerFolder.class);
+      securityService.registerSecurityTarget(FileServerFile.class);
+   }
 }

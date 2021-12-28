@@ -8,16 +8,14 @@ import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHo
 import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class RemoteAccessUiStartup {
-	
-	@Inject
-	public RemoteAccessUiStartup(
-			HookHandlerService hookHandler, 
-			SftpSecurityTargetDomainHooker securityTargetDomain
-			) {
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-	}
+
+   @Inject
+   public RemoteAccessUiStartup(HookHandlerService hookHandler, SftpSecurityTargetDomainHooker securityTargetDomain) {
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+   }
 
 }

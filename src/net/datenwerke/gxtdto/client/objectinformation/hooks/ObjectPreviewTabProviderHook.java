@@ -8,14 +8,14 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ObjectPreviewTabProviderHook extends Hook {
 
-	public boolean consumes(Object object);
-	
-	public List<PreviewComponent> getInfoComponents(Object object);
+   public boolean consumes(Object object);
 
-	interface PreviewComponent{
-		public Component getInfoComponent(Object object);
-		
-		public String getInfoName();
-	}
-	
+   public List<PreviewComponent> getInfoComponents(Object object);
+
+   interface PreviewComponent {
+      public Component getInfoComponent(Object object);
+
+      public String getInfoName();
+   }
+
 }

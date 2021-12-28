@@ -9,17 +9,14 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 @Singleton
 public class UserManagerPanel extends AbstractTreeManagerPanel {
 
-	@Inject
-	public UserManagerPanel(
-		UserMainPanel mainPanel,
-		UserTreePanel treePanel
-		){
-		
-		super(mainPanel, treePanel);
-	}
+   @Inject
+   public UserManagerPanel(UserMainPanel mainPanel, UserTreePanel treePanel) {
 
-	@Override
-	protected String getHeadingText() {
-		return UsermanagerMessages.INSTANCE.usermanagement();
-	}
+      super(mainPanel, treePanel);
+   }
+
+   @Override
+   protected String getHeadingText() {
+      return UsermanagerMessages.INSTANCE.usermanagement();
+   }
 }

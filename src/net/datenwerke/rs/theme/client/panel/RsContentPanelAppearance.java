@@ -5,8 +5,8 @@ import com.sencha.gxt.widget.core.client.Header.HeaderAppearance;
 
 public class RsContentPanelAppearance extends Css3ContentPanelAppearance {
 
-	@Override
-	public HeaderAppearance getHeaderAppearance() {
-		return new RsHeaderAppearance();
-	}
+   @Override
+   public HeaderAppearance getHeaderAppearance() {
+      return new RsHeaderAppearance();
+   }
 }

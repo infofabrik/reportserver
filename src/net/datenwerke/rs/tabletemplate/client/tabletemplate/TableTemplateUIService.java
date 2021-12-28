@@ -4,6 +4,6 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateUIServi
 
 public interface TableTemplateUIService {
 
-	TableTemplateTemplates getDescriptionTemplate();
+   TableTemplateTemplates getDescriptionTemplate();
 
 }

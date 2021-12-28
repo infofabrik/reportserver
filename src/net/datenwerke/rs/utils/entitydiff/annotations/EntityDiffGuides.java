@@ -12,5 +12,5 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface EntityDiffGuides {
 
-	EntityDiffGuide[] guides() default {};
+   EntityDiffGuide[] guides() default {};
 }

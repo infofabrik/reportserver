@@ -9,13 +9,10 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class FileUploadUiStartup {
 
-	@Inject
-	public FileUploadUiStartup(
-			HookHandlerService hookHandler,
-			Provider<FileUploadProvider> fileUploadProvider	
-		){
-		
-		hookHandler.attachHooker(FormFieldProviderHook.class, fileUploadProvider, HookHandlerService.PRIORITY_LOW);
-		
-	}
+   @Inject
+   public FileUploadUiStartup(HookHandlerService hookHandler, Provider<FileUploadProvider> fileUploadProvider) {
+
+      hookHandler.attachHooker(FormFieldProviderHook.class, fileUploadProvider, HookHandlerService.PRIORITY_LOW);
+
+   }
 }

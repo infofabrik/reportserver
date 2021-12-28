@@ -17,72 +17,67 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedE
 
 public class ScheduleConfigAsFtpFileHooker implements ScheduleConfigProviderHook {
 
-	private final Provider<ScheduleAsFtpFileAction> actionProvider;
-	private final Provider<DtoService> dtoServiceProvider;
-	
-	@Inject
-	public ScheduleConfigAsFtpFileHooker(
-		DtoService dtoService,
-		Provider<ScheduleAsFtpFileAction> actionProvider,
-		Provider<DtoService> dtoServiceProvider
-		) {
-		
-		/* store objects */
-		this.actionProvider = actionProvider;
-		this.dtoServiceProvider = dtoServiceProvider;
-	}
+   private final Provider<ScheduleAsFtpFileAction> actionProvider;
+   private final Provider<DtoService> dtoServiceProvider;
 
-	@Override
-	public void adaptJob(ReportExecuteJob job,
-			ReportScheduleDefinition scheduleDTO)
-			throws InvalidConfigurationException {
-		ScheduleAsFtpFileInformation info = scheduleDTO.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
-		if(null == info)
-			return;
-		
-		if (null == info.getFtpDatasinkDto())
-			throw new InvalidConfigurationException("No FTP datasink specified");
-		if(null == info.getName() || info.getName().trim().isEmpty())
-			throw new InvalidConfigurationException("No name specified");
-		if(null == info.getFolder() || info.getFolder().trim().isEmpty())
-			throw new InvalidConfigurationException("No folder specified");
-		
-		ScheduleAsFtpFileAction action = actionProvider.get();
-		
-		action.setName(info.getName());
-		action.setFolder(info.getFolder());
-	    action.setCompressed(info.isCompressed());
-		action.setFtpDatasink((FtpDatasink)dtoServiceProvider.get().loadPoso(info.getFtpDatasinkDto()));
-		
-		try {
-			job.addAction(action);
-		} catch (ActionNotSupportedException e) {
-			throw new InvalidConfigurationException(e);
-		}
-	}
+   @Inject
+   public ScheduleConfigAsFtpFileHooker(DtoService dtoService, Provider<ScheduleAsFtpFileAction> actionProvider,
+         Provider<DtoService> dtoServiceProvider) {
 
-	@Override
-	public void adaptScheduleDefinition(ReportScheduleDefinition rsd,
-			ReportExecuteJob job) throws ExpectedException {
-		ScheduleAsFtpFileAction action = job.getAction(ScheduleAsFtpFileAction.class);
-		if(null == action)
-			return;
-		
-		ScheduleAsFtpFileInformation info = new ScheduleAsFtpFileInformation();
-		
-		info.setName(action.getName());
-		info.setFolder(action.getFolder());
-	    info.setCompressed(action.isCompressed());
-		info.setFtpDatasinkDto((FtpDatasinkDto)dtoServiceProvider.get().createDto(action.getFtpDatasink()));
-		
-		if (null == info.getFtpDatasinkDto())
-			throw new IllegalArgumentException("No FTP datasink specified");
-		if(null == info.getName() || info.getName().trim().isEmpty())
-			throw new IllegalArgumentException("No name specified");
-		if(null == info.getFolder() || info.getFolder().trim().isEmpty())
-			throw new IllegalArgumentException("No folder specified");
-		
-		rsd.addAdditionalInfo(info);
-	}
+      /* store objects */
+      this.actionProvider = actionProvider;
+      this.dtoServiceProvider = dtoServiceProvider;
+   }
+
+   @Override
+   public void adaptJob(ReportExecuteJob job, ReportScheduleDefinition scheduleDTO)
+         throws InvalidConfigurationException {
+      ScheduleAsFtpFileInformation info = scheduleDTO.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
+      if (null == info)
+         return;
+
+      if (null == info.getFtpDatasinkDto())
+         throw new InvalidConfigurationException("No FTP datasink specified");
+      if (null == info.getName() || info.getName().trim().isEmpty())
+         throw new InvalidConfigurationException("No name specified");
+      if (null == info.getFolder() || info.getFolder().trim().isEmpty())
+         throw new InvalidConfigurationException("No folder specified");
+
+      ScheduleAsFtpFileAction action = actionProvider.get();
+
+      action.setName(info.getName());
+      action.setFolder(info.getFolder());
+      action.setCompressed(info.isCompressed());
+      action.setFtpDatasink((FtpDatasink) dtoServiceProvider.get().loadPoso(info.getFtpDatasinkDto()));
+
+      try {
+         job.addAction(action);
+      } catch (ActionNotSupportedException e) {
+         throw new InvalidConfigurationException(e);
+      }
+   }
+
+   @Override
+   public void adaptScheduleDefinition(ReportScheduleDefinition rsd, ReportExecuteJob job) throws ExpectedException {
+      ScheduleAsFtpFileAction action = job.getAction(ScheduleAsFtpFileAction.class);
+      if (null == action)
+         return;
+
+      ScheduleAsFtpFileInformation info = new ScheduleAsFtpFileInformation();
+
+      info.setName(action.getName());
+      info.setFolder(action.getFolder());
+      info.setCompressed(action.isCompressed());
+      info.setFtpDatasinkDto((FtpDatasinkDto) dtoServiceProvider.get().createDto(action.getFtpDatasink()));
+
+      if (null == info.getFtpDatasinkDto())
+         throw new IllegalArgumentException("No FTP datasink specified");
+      if (null == info.getName() || info.getName().trim().isEmpty())
+         throw new IllegalArgumentException("No name specified");
+      if (null == info.getFolder() || info.getFolder().trim().isEmpty())
+         throw new IllegalArgumentException("No folder specified");
+
+      rsd.addAdditionalInfo(info);
+   }
 
 }

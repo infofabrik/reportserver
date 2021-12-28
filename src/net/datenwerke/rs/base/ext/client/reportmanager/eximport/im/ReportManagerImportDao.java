@@ -11,15 +11,15 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 
 public class ReportManagerImportDao extends Dao {
 
-	private final ReportManagerImportRpcServiceAsync rpcService;
+   private final ReportManagerImportRpcServiceAsync rpcService;
 
-	@Inject
-	public ReportManagerImportDao(ReportManagerImportRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void loadTree(AsyncCallback<List<ImportTreeModel>> callback){
-		rpcService.loadTree(transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public ReportManagerImportDao(ReportManagerImportRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void loadTree(AsyncCallback<List<ImportTreeModel>> callback) {
+      rpcService.loadTree(transformAndKeepCallback(callback));
+   }
+
 }

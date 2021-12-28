@@ -33,7 +33,7 @@ public class SambaSendToFormConfiguratorHooker implements DatasinkSendToFormConf
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return SambaUiModule.NAME;
@@ -53,5 +53,5 @@ public class SambaSendToFormConfiguratorHooker implements DatasinkSendToFormConf
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

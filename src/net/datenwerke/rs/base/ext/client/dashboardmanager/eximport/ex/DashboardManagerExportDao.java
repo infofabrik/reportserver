@@ -9,19 +9,19 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManager
 
 public class DashboardManagerExportDao extends Dao {
 
-	private final DashboardManagerExportRpcServiceAsync rpcService;
+   private final DashboardManagerExportRpcServiceAsync rpcService;
 
-	@Inject
-	public DashboardManagerExportDao(DashboardManagerExportRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void quickExport(AbstractDashboardManagerNodeDto dto, AsyncCallback<Void> callback){
-		rpcService.quickExport(dto, transformAndKeepCallback(callback));
-	}
-	
-	public void loadResult(AsyncCallback<String> callback){
-		rpcService.loadResult(transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public DashboardManagerExportDao(DashboardManagerExportRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void quickExport(AbstractDashboardManagerNodeDto dto, AsyncCallback<Void> callback) {
+      rpcService.quickExport(dto, transformAndKeepCallback(callback));
+   }
+
+   public void loadResult(AsyncCallback<String> callback) {
+      rpcService.loadResult(transformAndKeepCallback(callback));
+   }
+
 }

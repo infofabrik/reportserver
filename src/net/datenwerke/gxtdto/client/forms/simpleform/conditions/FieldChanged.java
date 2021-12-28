@@ -11,12 +11,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
  */
 public class FieldChanged implements SimpleFormCondition {
 
-
-	
-	public boolean isMet(Widget formField,
-			FormFieldProviderHook responsibleHook,
-			SimpleForm form) {
-		return true;
-	}
+   public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+      return true;
+   }
 
 }

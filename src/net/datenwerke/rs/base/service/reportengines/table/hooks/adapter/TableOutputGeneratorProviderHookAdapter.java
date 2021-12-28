@@ -13,11 +13,9 @@ import net.datenwerke.rs.base.service.reportengines.table.output.generator.Table
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class TableOutputGeneratorProviderHookAdapter implements TableOutputGeneratorProviderHook {
 
-	@Override
-	public Collection<TableOutputGenerator> provideGenerators()  {
-		return new HashSet();
-	}
-
-
+   @Override
+   public Collection<TableOutputGenerator> provideGenerators() {
+      return new HashSet();
+   }
 
 }

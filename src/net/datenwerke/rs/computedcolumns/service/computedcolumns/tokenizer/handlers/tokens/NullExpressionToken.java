@@ -4,24 +4,24 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public class NullExpressionToken implements ExpressionToken {
 
-	private final boolean greedy;
+   private final boolean greedy;
 
-	public NullExpressionToken(boolean greedy) {
-		this.greedy = greedy;
-	}
+   public NullExpressionToken(boolean greedy) {
+      this.greedy = greedy;
+   }
 
-	@Override
-	public int hashCode() {
-		return getClass().hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		return obj instanceof NullExpressionToken;
-	}
-	
-	@Override
-	public boolean isGreedy() {
-		return greedy;
-	}
+   @Override
+   public int hashCode() {
+      return getClass().hashCode();
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      return obj instanceof NullExpressionToken;
+   }
+
+   @Override
+   public boolean isGreedy() {
+      return greedy;
+   }
 }

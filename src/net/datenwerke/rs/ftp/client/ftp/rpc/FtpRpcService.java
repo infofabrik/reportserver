@@ -17,8 +17,8 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 @RemoteServiceRelativePath("ftp")
 public interface FtpRpcService extends RemoteService {
 
-   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto, String format,
-         List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+   void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
          throws ServerCallFailedException;
 
    /**
@@ -42,8 +42,8 @@ public interface FtpRpcService extends RemoteService {
    boolean testFtpDataSink(FtpDatasinkDto ftpDatasinkDto) throws ServerCallFailedException;
 
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 
 }

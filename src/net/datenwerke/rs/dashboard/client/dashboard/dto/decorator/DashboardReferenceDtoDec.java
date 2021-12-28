@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.DashboardReferenceDto;
  */
 public class DashboardReferenceDtoDec extends DashboardReferenceDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public DashboardReferenceDtoDec() {
+      super();
+   }
 
-	public DashboardReferenceDtoDec() {
-		super();
-	}
-
-	
 }

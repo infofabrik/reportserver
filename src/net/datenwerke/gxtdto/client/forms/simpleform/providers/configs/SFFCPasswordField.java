@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCPasswordField extends SimpleFormFieldConfiguration {
 
-	public Boolean isPasswordSet();
+   public Boolean isPasswordSet();
 }

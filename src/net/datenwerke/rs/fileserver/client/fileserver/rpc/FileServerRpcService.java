@@ -12,14 +12,16 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
 
 @RemoteServiceRelativePath("fileserver")
-public interface FileServerRpcService extends RemoteService{
+public interface FileServerRpcService extends RemoteService {
 
-	public void updateFile(FileServerFileDto file, String data) throws ServerCallFailedException;
+   public void updateFile(FileServerFileDto file, String data) throws ServerCallFailedException;
 
-	public List<FileServerFileDto> uploadFiles(FileServerFolderDto folder, List<FileToUpload> files)  throws ServerCallFailedException;
-	
-	String loadFileDataAsString(FileServerFileDto file);
+   public List<FileServerFileDto> uploadFiles(FileServerFolderDto folder, List<FileToUpload> files)
+         throws ServerCallFailedException;
 
-	public List<AbstractFileServerNodeDto> uploadAndExtract(FileServerFolderDto folder, FileToUpload fileToUpload) throws ServerCallFailedException;
+   String loadFileDataAsString(FileServerFileDto file);
+
+   public List<AbstractFileServerNodeDto> uploadAndExtract(FileServerFolderDto folder, FileToUpload fileToUpload)
+         throws ServerCallFailedException;
 
 }

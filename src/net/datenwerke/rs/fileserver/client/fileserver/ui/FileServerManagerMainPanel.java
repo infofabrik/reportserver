@@ -14,16 +14,14 @@ import net.datenwerke.rs.fileserver.client.fileserver.FileServerTreeManagerDao;
 @Singleton
 public class FileServerManagerMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public FileServerManagerMainPanel(
-		FileServerTreeManagerDao fileServerTreeManager
-		){
-	
-		super(fileServerTreeManager);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "fileserver:admin:view:toolbar";
-	}
+   @Inject
+   public FileServerManagerMainPanel(FileServerTreeManagerDao fileServerTreeManager) {
+
+      super(fileServerTreeManager);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "fileserver:admin:view:toolbar";
+   }
 }

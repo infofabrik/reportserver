@@ -15,43 +15,37 @@ import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtPDFOutpu
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtPNGOutputGenerator;
 import net.datenwerke.rs.birt.service.reportengine.output.generator.BirtXLSOutputGenerator;
 
-public class BaseBirtOutputGeneratorProvider implements BirtOutputGeneratorProviderHook{
+public class BaseBirtOutputGeneratorProvider implements BirtOutputGeneratorProviderHook {
 
-	private final Provider<BirtHTMLOutputGenerator> html;
-	private final Provider<BirtPDFOutputGenerator> pdf;
-	private final Provider<BirtXLSOutputGenerator> xls;
-	private final Provider<BirtPNGOutputGenerator> png;
-	private final Provider<BirtDOCOutputGenerator> rtf;
-	
-	
-	@Inject
-	public BaseBirtOutputGeneratorProvider(
-			Provider<BirtHTMLOutputGenerator> html,
-			Provider<BirtPDFOutputGenerator> pdf,
-			Provider<BirtXLSOutputGenerator> xls,
-			Provider<BirtPNGOutputGenerator> png,
-			Provider<BirtDOCOutputGenerator> rtf) {
-		super();
-		this.html = html;
-		this.pdf = pdf;
-		this.xls = xls;
-		this.png = png;
-		this.rtf = rtf;
-	}
+   private final Provider<BirtHTMLOutputGenerator> html;
+   private final Provider<BirtPDFOutputGenerator> pdf;
+   private final Provider<BirtXLSOutputGenerator> xls;
+   private final Provider<BirtPNGOutputGenerator> png;
+   private final Provider<BirtDOCOutputGenerator> rtf;
 
+   @Inject
+   public BaseBirtOutputGeneratorProvider(Provider<BirtHTMLOutputGenerator> html, Provider<BirtPDFOutputGenerator> pdf,
+         Provider<BirtXLSOutputGenerator> xls, Provider<BirtPNGOutputGenerator> png,
+         Provider<BirtDOCOutputGenerator> rtf) {
+      super();
+      this.html = html;
+      this.pdf = pdf;
+      this.xls = xls;
+      this.png = png;
+      this.rtf = rtf;
+   }
 
+   @Override
+   public Collection<BirtOutputGenerator> provideGenerators() {
+      List<BirtOutputGenerator> generators = new ArrayList<BirtOutputGenerator>();
 
-	@Override
-	public Collection<BirtOutputGenerator> provideGenerators() {
-		List<BirtOutputGenerator> generators = new ArrayList<BirtOutputGenerator>();
-		
-		generators.add(html.get());
-		generators.add(pdf.get());
-		generators.add(xls.get());
-		generators.add(png.get());
-		generators.add(rtf.get());
-		
-		return generators;
-	}
+      generators.add(html.get());
+      generators.add(pdf.get());
+      generators.add(xls.get());
+      generators.add(png.get());
+      generators.add(rtf.get());
+
+      return generators;
+   }
 
 }

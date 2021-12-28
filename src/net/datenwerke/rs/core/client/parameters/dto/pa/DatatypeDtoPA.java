@@ -13,6 +13,4 @@ import net.datenwerke.rs.core.client.parameters.dto.DatatypeDto;
 @CorrespondingPoso(net.datenwerke.rs.core.service.parameters.entities.Datatype.class)
 public interface DatatypeDtoPA extends PropertyAccess<DatatypeDto> {
 
-
-
 }

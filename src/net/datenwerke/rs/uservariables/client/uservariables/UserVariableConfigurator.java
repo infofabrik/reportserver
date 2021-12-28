@@ -9,19 +9,19 @@ import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableInst
 
 public interface UserVariableConfigurator<D extends UserVariableDefinitionDto, I extends UserVariableInstanceDto> {
 
-	public String getName();
-	
-	public ImageResource getIcon();
-	
-	public UserVariableDefinitionDto createDTOInstance();
-	
-	public Widget getEditComponent(D definition);
-	
-	public Widget getEditComponent(I instance, D definition);
+   public String getName();
 
-	public Object getDisplayValue(I instance, D definition);
+   public ImageResource getIcon();
 
-	public void configureEditWindow(D definition, Window window);
-	
-	public void configureEditWindow(I instance, D definition, Window window);
+   public UserVariableDefinitionDto createDTOInstance();
+
+   public Widget getEditComponent(D definition);
+
+   public Widget getEditComponent(I instance, D definition);
+
+   public Object getDisplayValue(I instance, D definition);
+
+   public void configureEditWindow(D definition, Window window);
+
+   public void configureEditWindow(I instance, D definition, Window window);
 }

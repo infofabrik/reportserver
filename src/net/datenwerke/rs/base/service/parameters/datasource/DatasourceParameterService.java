@@ -9,15 +9,14 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface DatasourceParameterService {
 
-	public List<DatasourceParameterData> getParameterData(
-			DatasourceParameterDefinition parameter, Report report) throws ReportExecutorException;
-	
-	List<DatasourceParameterData> getParameterData(DatasourceParameterDefinition parameter,
-			ParameterSet parameterSet) throws ReportExecutorException;
+   public List<DatasourceParameterData> getParameterData(DatasourceParameterDefinition parameter, Report report)
+         throws ReportExecutorException;
 
-	List<DatasourceParameterDefinition> getParametersWithDatasource(
-			DatasourceDefinition ds);
+   List<DatasourceParameterData> getParameterData(DatasourceParameterDefinition parameter, ParameterSet parameterSet)
+         throws ReportExecutorException;
 
-	public boolean isAllowDatasourceParameterPostProcessing();
+   List<DatasourceParameterDefinition> getParametersWithDatasource(DatasourceDefinition ds);
+
+   public boolean isAllowDatasourceParameterPostProcessing();
 
 }

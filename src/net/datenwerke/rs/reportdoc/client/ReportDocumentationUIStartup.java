@@ -18,27 +18,24 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
  */
 public class ReportDocumentationUIStartup {
 
-	@Inject
-	public ReportDocumentationUIStartup(
-		HookHandlerService hookHandler,
-		ReportViewDocumentationHooker reportViewDocumentationHooker,
-		
-		Provider<ReportDocumentationObjectInfo> repordDocumentationObjectInfo,
-		Provider<DeployAnalyzeTerminalCommandProcessor> commandProcessor,
-		Provider<VariantTestTerminalCommandProcessor> variantTestProcessor
-		
-		){
-		
-		hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, reportViewDocumentationHooker, HookHandlerService.PRIORITY_HIGH);
-		
-		/* terminal commands */
-		hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
-		hookHandler.attachHooker(CommandResultProcessorHook.class, variantTestProcessor);
-		
-		/* attach object info hooks */
-		hookHandler.attachHooker(
-			UrlViewSpecialViewHandler.class,
-			repordDocumentationObjectInfo
-			);
-	}
+   @Inject
+   public ReportDocumentationUIStartup(HookHandlerService hookHandler,
+         ReportViewDocumentationHooker reportViewDocumentationHooker,
+
+         Provider<ReportDocumentationObjectInfo> repordDocumentationObjectInfo,
+         Provider<DeployAnalyzeTerminalCommandProcessor> commandProcessor,
+         Provider<VariantTestTerminalCommandProcessor> variantTestProcessor
+
+   ) {
+
+      hookHandler.attachHooker(ReportExecutorViewToolbarHook.class, reportViewDocumentationHooker,
+            HookHandlerService.PRIORITY_HIGH);
+
+      /* terminal commands */
+      hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
+      hookHandler.attachHooker(CommandResultProcessorHook.class, variantTestProcessor);
+
+      /* attach object info hooks */
+      hookHandler.attachHooker(UrlViewSpecialViewHandler.class, repordDocumentationObjectInfo);
+   }
 }

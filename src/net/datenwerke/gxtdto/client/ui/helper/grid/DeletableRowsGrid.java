@@ -24,84 +24,86 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class DeletableRowsGrid<M> extends Grid<M> {
 
-	public DeletableRowsGrid(ListStore<M> store, ColumnModel<M> cm){
-		super(store, cm);
-		
-        getSelectionModel().setSelectionMode(SelectionMode.MULTI);
+   public DeletableRowsGrid(ListStore<M> store, ColumnModel<M> cm) {
+      super(store, cm);
 
-        /* init context menu */
-        initContextMenu();
+      getSelectionModel().setSelectionMode(SelectionMode.MULTI);
 
-        new ExtendedKeyNav(this){
-			protected void onSelectAll() {
-				getSelectionModel().selectAll();
-			};
-			@Override
-			public void onDelete(NativeEvent evt) {
-				deleteSelection();
-			}
-        };
-	}
+      /* init context menu */
+      initContextMenu();
 
-	protected void initContextMenu() {
-		Menu menu = new DwMenu();
+      new ExtendedKeyNav(this) {
+         protected void onSelectAll() {
+            getSelectionModel().selectAll();
+         };
 
-		MenuItem delete = new DwMenuItem();
-		delete.setText(BaseMessages.INSTANCE.remove());
-		menu.add(delete);
+         @Override
+         public void onDelete(NativeEvent evt) {
+            deleteSelection();
+         }
+      };
+   }
 
-		delete.addSelectionHandler(new SelectionHandler<Item>() {
+   protected void initContextMenu() {
+      Menu menu = new DwMenu();
 
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				deleteSelection();
-			}
-		});
-		
-		MenuItem deleteAll = new DwMenuItem();
-		deleteAll.setText(BaseMessages.INSTANCE.removeAll());
-		menu.add(deleteAll);
+      MenuItem delete = new DwMenuItem();
+      delete.setText(BaseMessages.INSTANCE.remove());
+      menu.add(delete);
 
-		deleteAll.addSelectionHandler(new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				deleteAll();
-			}
-		});
+      delete.addSelectionHandler(new SelectionHandler<Item>() {
 
-		setContextMenu(menu);
-	}
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            deleteSelection();
+         }
+      });
 
-	public void deleteSelection(){
-		List<M> items = this.getSelectionModel().getSelectedItems();
+      MenuItem deleteAll = new DwMenuItem();
+      deleteAll.setText(BaseMessages.INSTANCE.removeAll());
+      menu.add(deleteAll);
 
-		for(M model : items){
-			this.getStore().remove(model);
-			deletedModel(model);
-		}
-	}
+      deleteAll.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            deleteAll();
+         }
+      });
 
-	public void deleteAll(){
-		ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.removeAll(), BaseMessages.INSTANCE.confirmDeleteMsg(""));
-		cmb.addDialogHideHandler(new DialogHideHandler() {
-			@Override
-			public void onDialogHide(DialogHideEvent event) {
-				if (event.getHideButton() == PredefinedButton.YES) {
-					DeletableRowsGrid.this.getStore().clear();
+      setContextMenu(menu);
+   }
 
-					deletedAllModels();
-				}
-	
-			}
-		});
-		cmb.show();
-	}
+   public void deleteSelection() {
+      List<M> items = this.getSelectionModel().getSelectedItems();
 
-	protected void deletedModel(M model) {
+      for (M model : items) {
+         this.getStore().remove(model);
+         deletedModel(model);
+      }
+   }
 
-	}
+   public void deleteAll() {
+      ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.removeAll(),
+            BaseMessages.INSTANCE.confirmDeleteMsg(""));
+      cmb.addDialogHideHandler(new DialogHideHandler() {
+         @Override
+         public void onDialogHide(DialogHideEvent event) {
+            if (event.getHideButton() == PredefinedButton.YES) {
+               DeletableRowsGrid.this.getStore().clear();
 
-	protected void deletedAllModels() {
+               deletedAllModels();
+            }
 
-	}
+         }
+      });
+      cmb.show();
+   }
+
+   protected void deletedModel(M model) {
+
+   }
+
+   protected void deletedAllModels() {
+
+   }
 }

@@ -8,21 +8,21 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
 public class DashboardAdminSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.TACHOMETER.toImageResource();
-	}
 
-	public String genericSecurityViewDomainHook_getName() {
-		return DashboardMessages.INSTANCE.dashboardAdminRightsLabel(); 
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return DashboardMessages.INSTANCE.securityTargetDescription(); 
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.TACHOMETER.toImageResource();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new DashboardAdminGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getName() {
+      return DashboardMessages.INSTANCE.dashboardAdminRightsLabel();
+   }
+
+   public String genericSecurityViewDomainHook_getDescription() {
+      return DashboardMessages.INSTANCE.securityTargetDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new DashboardAdminGenericTargetIdentifier();
+   }
 
 }

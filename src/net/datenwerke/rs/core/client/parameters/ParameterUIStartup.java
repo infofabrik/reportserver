@@ -12,19 +12,13 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
  */
 public class ParameterUIStartup {
 
-	@Inject
-	public ParameterUIStartup(
-		HookHandlerService hookHandler,
-		ParameterViewFactory parameterWidgetFactory
-		){
-		
-		/* attach hooks */
-		hookHandler.attachHooker(
-				ReportViewHook.class,
-				new ReportViewHook(parameterWidgetFactory),
-				HookHandlerService.PRIORITY_HIGH);
-	
-	}
-	
-	
+   @Inject
+   public ParameterUIStartup(HookHandlerService hookHandler, ParameterViewFactory parameterWidgetFactory) {
+
+      /* attach hooks */
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(parameterWidgetFactory),
+            HookHandlerService.PRIORITY_HIGH);
+
+   }
+
 }

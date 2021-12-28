@@ -124,9 +124,8 @@ public class DashboardUiServiceImpl implements DashboardUiService {
                                        if (null != dashboard)
                                           ((DashboardDtoDec) dashboard).updateDadget(oldDadget, result);
 
-                                       Scheduler.get()
-                                             .scheduleDeferred(
-                                                   () -> dadgetPanel.getView().dadgetConfigured(dadgetPanel, ConfigType.MISC));
+                                       Scheduler.get().scheduleDeferred(() -> dadgetPanel.getView()
+                                             .dadgetConfigured(dadgetPanel, ConfigType.MISC));
                                     };
                                  });
                         });

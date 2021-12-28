@@ -33,121 +33,116 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class ReportManagerTreeConfigurationHooker implements
-		TreeConfiguratorHook {
+public class ReportManagerTreeConfigurationHooker implements TreeConfiguratorHook {
 
-	private final HookHandlerService hookHandler;
-	private final ReportManagerTreeManagerDao treeHandler;
-	private final ReportExecutorUIService reportExecutorService;
-	
-	@Inject
-	public ReportManagerTreeConfigurationHooker(
-		HookHandlerService hookHandler,
-		ReportManagerTreeManagerDao treeHandler,
-		ReportExecutorUIService reportExecutorService
-		) {
+   private final HookHandlerService hookHandler;
+   private final ReportManagerTreeManagerDao treeHandler;
+   private final ReportExecutorUIService reportExecutorService;
 
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.treeHandler = treeHandler;
-		this.reportExecutorService = reportExecutorService;
-	}
+   @Inject
+   public ReportManagerTreeConfigurationHooker(HookHandlerService hookHandler, ReportManagerTreeManagerDao treeHandler,
+         ReportExecutorUIService reportExecutorService) {
 
-	@Override
-	public boolean consumes(ManagerHelperTree tree) {
-		return ReportManagerUIModule.class.equals(tree.getGuarantor());
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.treeHandler = treeHandler;
+      this.reportExecutorService = reportExecutorService;
+   }
 
-	@Override
-	public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
-		for(ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
-			iconProvider.addMappings(
-				new IconMapping(config.getReportClass(), config.getReportIcon()),
-				new IconMapping(config.getReportVariantClass(), config.getReportVariantIcon())
-			);
-			
-	}
+   @Override
+   public boolean consumes(ManagerHelperTree tree) {
+      return ReportManagerUIModule.class.equals(tree.getGuarantor());
+   }
 
-	@Override
-	public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
-		/* Folder */
-		Menu folderMenu = menuProvider.createOrGetMenuFor(ReportFolderDto.class);
-		MenuItem insertItem = generateInsertMenu();
-		folderMenu.add(insertItem);
-		folderMenu.add(new DeleteMenuItem(treeHandler));
-		folderMenu.add(new SeparatorMenuItem());
-		folderMenu.add(new InfoMenuItem());
-		folderMenu.add(new ReloadMenuItem());
-		
-		/* Reports */
-		for(ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class)){
-			Menu reportMenu = menuProvider.createOrGetMenuFor(config.getReportClass());
-			insertItem = generateInsertMenu();
-			insertItem.disable();
-			
-			reportMenu.add(generateExecuteReportItem());
-			reportMenu.add(new SeparatorMenuItem());
-			reportMenu.add(insertItem);
-			reportMenu.add(new DuplicateMenuItem(treeHandler));
-			reportMenu.add(new DeleteMenuItem(treeHandler));
-			reportMenu.add(new SeparatorMenuItem());
-			reportMenu.add(new InfoMenuItem());
-		}
-		
-	}
+   @Override
+   public void configureTreeIcons(TreeDBUIIconProvider iconProvider) {
+      for (ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class))
+         iconProvider.addMappings(new IconMapping(config.getReportClass(), config.getReportIcon()),
+               new IconMapping(config.getReportVariantClass(), config.getReportVariantIcon()));
 
-	private MenuItem generateExecuteReportItem() {
-		TreeMenuItem executeReportItem = new TreeMenuItem();
-		executeReportItem.setText(ReportmanagerMessages.INSTANCE.execute());
-		executeReportItem.setIcon(BaseIcon.EXECUTE.toImageResource());
-		
-		executeReportItem.addMenuSelectionListener(new TreeMenuSelectionEvent() {
-			
-			@Override
-			public void menuItemSelected(UITree tree, AbstractNodeDto node) {
-				if(node instanceof ReportDto){
-					reportExecutorService.executeReport((ReportDto)node);
-				}
-			}
-		});
-		
-		return executeReportItem;
-	}
+   }
 
-	private MenuItem generateInsertMenu(){
-		Menu insertMenu = new DwMenu();
-		insertMenu.add(new InsertMenuItem(new ReportFolderDto(), ReportmanagerMessages.INSTANCE.folder(), treeHandler, BaseIcon.FOLDER_O));
-		
-		for(final ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class)){
-			InsertMenuItem item = new InsertMenuItem(config.instantiateReport(), config.getReportName(), treeHandler, config.getReportIcon());
-			insertMenu.add(item);
-			
-			item.setAvailableCallback(new AvailabilityCallback() {
-				@Override
-				public boolean isAvailable() {
-					return config.isAvailable();
-				}
-			});
-		}
-		
-		MenuItem insertItem = new DwMenuItem(ReportmanagerMessages.INSTANCE.insert(), BaseIcon.FILE_O);
-		insertItem.setSubMenu(insertMenu);
-		
-		return insertItem;
-	}
+   @Override
+   public void configureTreeMenu(TreeDBUIMenuProvider menuProvider) {
+      /* Folder */
+      Menu folderMenu = menuProvider.createOrGetMenuFor(ReportFolderDto.class);
+      MenuItem insertItem = generateInsertMenu();
+      folderMenu.add(insertItem);
+      folderMenu.add(new DeleteMenuItem(treeHandler));
+      folderMenu.add(new SeparatorMenuItem());
+      folderMenu.add(new InfoMenuItem());
+      folderMenu.add(new ReloadMenuItem());
 
-	@Override
-	public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
-		if(selectedItem instanceof ReportDto){
-			reportExecutorService.executeReport((ReportDto)selectedItem);
-			event.stopPropagation();
-		}
-	}
-	
-	@Override
-	public void configureFolderTypes(ManagerHelperTree tree) {
-		tree.addFolderTypes(ReportFolderDto.class);
-	}
+      /* Reports */
+      for (ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class)) {
+         Menu reportMenu = menuProvider.createOrGetMenuFor(config.getReportClass());
+         insertItem = generateInsertMenu();
+         insertItem.disable();
 
-	
+         reportMenu.add(generateExecuteReportItem());
+         reportMenu.add(new SeparatorMenuItem());
+         reportMenu.add(insertItem);
+         reportMenu.add(new DuplicateMenuItem(treeHandler));
+         reportMenu.add(new DeleteMenuItem(treeHandler));
+         reportMenu.add(new SeparatorMenuItem());
+         reportMenu.add(new InfoMenuItem());
+      }
+
+   }
+
+   private MenuItem generateExecuteReportItem() {
+      TreeMenuItem executeReportItem = new TreeMenuItem();
+      executeReportItem.setText(ReportmanagerMessages.INSTANCE.execute());
+      executeReportItem.setIcon(BaseIcon.EXECUTE.toImageResource());
+
+      executeReportItem.addMenuSelectionListener(new TreeMenuSelectionEvent() {
+
+         @Override
+         public void menuItemSelected(UITree tree, AbstractNodeDto node) {
+            if (node instanceof ReportDto) {
+               reportExecutorService.executeReport((ReportDto) node);
+            }
+         }
+      });
+
+      return executeReportItem;
+   }
+
+   private MenuItem generateInsertMenu() {
+      Menu insertMenu = new DwMenu();
+      insertMenu.add(new InsertMenuItem(new ReportFolderDto(), ReportmanagerMessages.INSTANCE.folder(), treeHandler,
+            BaseIcon.FOLDER_O));
+
+      for (final ReportTypeConfigHook config : hookHandler.getHookers(ReportTypeConfigHook.class)) {
+         InsertMenuItem item = new InsertMenuItem(config.instantiateReport(), config.getReportName(), treeHandler,
+               config.getReportIcon());
+         insertMenu.add(item);
+
+         item.setAvailableCallback(new AvailabilityCallback() {
+            @Override
+            public boolean isAvailable() {
+               return config.isAvailable();
+            }
+         });
+      }
+
+      MenuItem insertItem = new DwMenuItem(ReportmanagerMessages.INSTANCE.insert(), BaseIcon.FILE_O);
+      insertItem.setSubMenu(insertMenu);
+
+      return insertItem;
+   }
+
+   @Override
+   public void onDoubleClick(AbstractNodeDto selectedItem, DoubleClickEvent event) {
+      if (selectedItem instanceof ReportDto) {
+         reportExecutorService.executeReport((ReportDto) selectedItem);
+         event.stopPropagation();
+      }
+   }
+
+   @Override
+   public void configureFolderTypes(ManagerHelperTree tree) {
+      tree.addFolderTypes(ReportFolderDto.class);
+   }
+
 }

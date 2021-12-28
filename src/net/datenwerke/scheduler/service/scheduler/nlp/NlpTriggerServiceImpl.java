@@ -8,17 +8,17 @@ import net.datenwerke.scheduler.service.scheduler.nlp.hooks.NlpTriggerParserHook
 
 public class NlpTriggerServiceImpl implements NlpTriggerService {
 
-	@Inject
-	private HookHandlerService hookHandlerService;
-	
-	@Override
-	public AbstractTrigger parseExpression(String expression) {
-		for(NlpTriggerParserHook parser : hookHandlerService.getHookers(NlpTriggerParserHook.class)){
-			AbstractTrigger trigger = parser.parseExpression(expression);
-			if(null != trigger)
-				return trigger;
-		}
-		return null;
-	}
+   @Inject
+   private HookHandlerService hookHandlerService;
+
+   @Override
+   public AbstractTrigger parseExpression(String expression) {
+      for (NlpTriggerParserHook parser : hookHandlerService.getHookers(NlpTriggerParserHook.class)) {
+         AbstractTrigger trigger = parser.parseExpression(expression);
+         if (null != trigger)
+            return trigger;
+      }
+      return null;
+   }
 
 }

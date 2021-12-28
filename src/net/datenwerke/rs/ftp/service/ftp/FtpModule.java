@@ -20,7 +20,7 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 
 public class FtpModule extends AbstractModule {
-   
+
    // ftp
    private static final String PROPERTY_FTP_DATASINK = "ftp";
    public static final String PROPERTY_DEFAULT_FTP_DATASINK_ID = PROPERTY_FTP_DATASINK + "."
@@ -50,7 +50,6 @@ public class FtpModule extends AbstractModule {
    public static final String PROPERTY_FTPS_DISABLED = PROPERTY_FTPS_DATASINK + PROPERTY_DEFAULT_DISABLED;
    public static final String PROPERTY_FTPS_SCHEDULING_ENABLED = PROPERTY_FTPS_DATASINK
          + PROPERTY_DEFAULT_SCHEDULING_ENABLED;
-   
 
    @Override
    protected void configure() {
@@ -65,7 +64,7 @@ public class FtpModule extends AbstractModule {
 
       bind(FtpStartup.class).asEagerSingleton();
    }
-   
+
    @Provides
    @Inject
    @DefaultFtpDatasink
@@ -73,7 +72,7 @@ public class FtpModule extends AbstractModule {
       return datasinkService.getDefaultDatasink(FtpDatasink.class, PROPERTY_DEFAULT_FTP_DATASINK_ID,
             PROPERTY_DEFAULT_FTP_DATASINK_NAME);
    }
-   
+
    @Provides
    @Inject
    @DefaultSftpDatasink
@@ -81,7 +80,7 @@ public class FtpModule extends AbstractModule {
       return datasinkService.getDefaultDatasink(SftpDatasink.class, PROPERTY_DEFAULT_SFTP_DATASINK_ID,
             PROPERTY_DEFAULT_SFTP_DATASINK_NAME);
    }
-   
+
    @Provides
    @Inject
    @DefaultFtpsDatasink

@@ -29,53 +29,54 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class TableReportUtilityDao extends Dao {
 
-	private final TableReportUtilityServiceAsync rpcService;
+   private final TableReportUtilityServiceAsync rpcService;
 
-	@Inject
-	public TableReportUtilityDao(TableReportUtilityServiceAsync rpcService){
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	public Request getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,
-			TableReportDto report, ColumnDto column, FilterType type,
-			boolean useFilters, boolean countResults, String executeToken, AsyncCallback<PagingLoadResult<StringBaseModel>> callback){
-		report = unproxy(report);
-		column = unproxy(column);
-		return rpcService.getDistinctValuesPaged(pagingLoadConfig, report, column, type, useFilters, countResults, executeToken, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public TableReportUtilityDao(TableReportUtilityServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public Request getReturnedColumns(TableReportDto tableReport, String executeToken, 
-			AsyncCallback<ListLoadResult<ColumnDto>> callback){
-		tableReport = unproxy(tableReport);
-		return rpcService.getReturnedColumns(tableReport, executeToken, transformAndKeepCallback(callback));
-	}
+   public Request getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig, TableReportDto report,
+         ColumnDto column, FilterType type, boolean useFilters, boolean countResults, String executeToken,
+         AsyncCallback<PagingLoadResult<StringBaseModel>> callback) {
+      report = unproxy(report);
+      column = unproxy(column);
+      return rpcService.getDistinctValuesPaged(pagingLoadConfig, report, column, type, useFilters, countResults,
+            executeToken, transformAndKeepCallback(callback));
+   }
 
-	public Request getReportInformation(TableReportDto tableReport, String executeToken,
-			AsyncCallback<TableReportInformation> callback){
-		tableReport = unproxy(tableReport);
-		DaoAsyncCallback<TableReportInformation> daoCallback = transformAndKeepCallback(callback);
-		daoCallback.ignoreExpectedExceptions(true);
-		return rpcService.getReportInformation(tableReport, executeToken, daoCallback);
-	}
+   public Request getReturnedColumns(TableReportDto tableReport, String executeToken,
+         AsyncCallback<ListLoadResult<ColumnDto>> callback) {
+      tableReport = unproxy(tableReport);
+      return rpcService.getReturnedColumns(tableReport, executeToken, transformAndKeepCallback(callback));
+   }
 
-	public void loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query, String executeToken, 
-			AsyncCallback<List<ColumnDto>> callback) {
-		report = unproxy(report);
-		containerDto = unproxy(containerDto);
-		rpcService.loadColumnDefinition(report, containerDto, query, executeToken, transformAndKeepCallback(callback));
-	}
+   public Request getReportInformation(TableReportDto tableReport, String executeToken,
+         AsyncCallback<TableReportInformation> callback) {
+      tableReport = unproxy(tableReport);
+      DaoAsyncCallback<TableReportInformation> daoCallback = transformAndKeepCallback(callback);
+      daoCallback.ignoreExpectedExceptions(true);
+      return rpcService.getReportInformation(tableReport, executeToken, daoCallback);
+   }
 
-	public void loadData(ReportDto report, DatasourceContainerDto containerDto, 
-			PagingLoadConfig loadConfig, String query,
-			AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
-		report = unproxy(report);
-		containerDto = unproxy(containerDto);
-		rpcService.loadData(report, containerDto, loadConfig, query, transformAndKeepCallback(callback));
-	}
-	
-	public void getSpecialParameter(TableReportDto tableReport, String executeToken, AsyncCallback<Map<String, List<String>>> callback) {
-		rpcService.getSpecialParameter(tableReport, executeToken, transformAndKeepCallback(callback));
-	}
-	
+   public void loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query,
+         String executeToken, AsyncCallback<List<ColumnDto>> callback) {
+      report = unproxy(report);
+      containerDto = unproxy(containerDto);
+      rpcService.loadColumnDefinition(report, containerDto, query, executeToken, transformAndKeepCallback(callback));
+   }
+
+   public void loadData(ReportDto report, DatasourceContainerDto containerDto, PagingLoadConfig loadConfig,
+         String query, AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
+      report = unproxy(report);
+      containerDto = unproxy(containerDto);
+      rpcService.loadData(report, containerDto, loadConfig, query, transformAndKeepCallback(callback));
+   }
+
+   public void getSpecialParameter(TableReportDto tableReport, String executeToken,
+         AsyncCallback<Map<String, List<String>>> callback) {
+      rpcService.getSpecialParameter(tableReport, executeToken, transformAndKeepCallback(callback));
+   }
+
 }

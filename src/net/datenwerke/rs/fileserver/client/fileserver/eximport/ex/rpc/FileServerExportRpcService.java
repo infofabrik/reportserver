@@ -9,7 +9,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNode
 @RemoteServiceRelativePath("fileserver_export")
 public interface FileServerExportRpcService extends RemoteService {
 
-	public void quickExport(AbstractFileServerNodeDto dto) throws ServerCallFailedException;
-	
-	public String loadResult() throws ServerCallFailedException;
+   public void quickExport(AbstractFileServerNodeDto dto) throws ServerCallFailedException;
+
+   public String loadResult() throws ServerCallFailedException;
 }

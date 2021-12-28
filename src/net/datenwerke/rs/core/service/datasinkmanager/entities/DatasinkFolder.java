@@ -27,72 +27,58 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
  *
  */
 @Entity
-@Table(name="DATASINK_FOLDER")
+@Table(name = "DATASINK_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	DatasinkFolder.class,
-	DatasinkDefinition.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.core.client.datasinkmanager.dto",
-	dtoImplementInterfaces=FolderDto.class,
-	typeDescriptionMsg=BaseMessages.class, typeDescriptionKey="folder",
-	icon="folder"
-)
-@InstanceDescription(
-	msgLocation = DatasinkManagerMessages.class,
-	objNameKey = "datasinkFolderTypeName",
-	icon = "folder"
-)
+@TreeDBAllowedChildren({ DatasinkFolder.class, DatasinkDefinition.class })
+@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasinkmanager.dto", dtoImplementInterfaces = FolderDto.class, typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
+@InstanceDescription(msgLocation = DatasinkManagerMessages.class, objNameKey = "datasinkFolderTypeName", icon = "folder")
 public class DatasinkFolder extends AbstractDatasinkManagerNode {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3139118358223220435L;
 
-	@ExposeToClient(
-		displayTitle=true
-	)
-	@Column(length = 128)
-	@Title
-	@Field
-	private String name;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Description
-	@Field
-    private String description;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3139118358223220435L;
 
-	public DatasinkFolder(){
-		
-	}
-	
-    public DatasinkFolder(String folder) {
-		setName(folder);
-	}
+   @ExposeToClient(displayTitle = true)
+   @Column(length = 128)
+   @Title
+   @Field
+   private String name;
 
-	public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Description
+   @Field
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public DatasinkFolder() {
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   }
 
-	public String getDescription() {
-		return description;
-	}
-    
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public DatasinkFolder(String folder) {
+      setName(folder);
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
 }

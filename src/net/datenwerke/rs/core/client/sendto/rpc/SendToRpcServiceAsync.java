@@ -12,9 +12,9 @@ import net.datenwerke.rs.core.client.sendto.SendToClientConfig;
 
 public interface SendToRpcServiceAsync {
 
-	void loadClientConfigsFor(ReportDto report,
-			AsyncCallback<ArrayList<SendToClientConfig>> callback);
+   void loadClientConfigsFor(ReportDto report, AsyncCallback<ArrayList<SendToClientConfig>> callback);
 
-	void sendTo(ReportDto report, String executorToken, String id, String format, List<ReportExecutionConfigDto> formatConfig, Map<String, String> values, AsyncCallback<String> callback);
+   void sendTo(ReportDto report, String executorToken, String id, String format,
+         List<ReportExecutionConfigDto> formatConfig, Map<String, String> values, AsyncCallback<String> callback);
 
 }

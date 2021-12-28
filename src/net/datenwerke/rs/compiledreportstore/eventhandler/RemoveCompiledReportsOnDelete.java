@@ -9,14 +9,14 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class RemoveCompiledReportsOnDelete implements EventHandler<RemoveEntityEvent> {
 
+   @Inject
+   private CompiledReportStoreService service;
 
-	@Inject private CompiledReportStoreService service;
-	
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		Report report = (Report) event.getObject();
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      Report report = (Report) event.getObject();
 
-		service.unsetForReport(report);
-	}
+      service.unsetForReport(report);
+   }
 
 }

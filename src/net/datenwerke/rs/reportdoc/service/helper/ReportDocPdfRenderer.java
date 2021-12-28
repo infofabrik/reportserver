@@ -14,38 +14,38 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledP
 import net.datenwerke.rs.utils.misc.PdfUtils;
 
 public class ReportDocPdfRenderer {
-	
-	private PdfUtils pdfUtils;
 
-	@Inject
-	public ReportDocPdfRenderer(PdfUtils pdfUtils) {
-		this.pdfUtils = pdfUtils;
-	}
+   private PdfUtils pdfUtils;
 
-	public CompiledReport render(Object input)  {
-		ITextRenderer renderer = new ITextRenderer();
-		try {
-			pdfUtils.configureFontResolver(renderer.getFontResolver());
-		} catch (DocumentException e1) {
-			e1.printStackTrace();
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
-		
-		renderer.setDocumentFromString((String) input);
+   @Inject
+   public ReportDocPdfRenderer(PdfUtils pdfUtils) {
+      this.pdfUtils = pdfUtils;
+   }
 
-		ByteArrayOutputStream os = new ByteArrayOutputStream();
-		renderer.layout();
-		try {
-			renderer.createPDF(os);
-			os.close();
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+   public CompiledReport render(Object input) {
+      ITextRenderer renderer = new ITextRenderer();
+      try {
+         pdfUtils.configureFontResolver(renderer.getFontResolver());
+      } catch (DocumentException e1) {
+         e1.printStackTrace();
+      } catch (IOException e1) {
+         e1.printStackTrace();
+      }
 
-		byte[] cReport = os.toByteArray();
+      renderer.setDocumentFromString((String) input);
 
-		return new CompiledPdfReport(cReport);
-	}
+      ByteArrayOutputStream os = new ByteArrayOutputStream();
+      renderer.layout();
+      try {
+         renderer.createPDF(os);
+         os.close();
+      } catch (Exception e) {
+         throw new RuntimeException(e);
+      }
+
+      byte[] cReport = os.toByteArray();
+
+      return new CompiledPdfReport(cReport);
+   }
 
 }

@@ -14,8 +14,7 @@ import net.datenwerke.security.service.usermanager.entities.User;
  */
 public interface ParameterSetReplacementProvider {
 
-	public Map<String, ParameterValue> provideReplacements(User user, Report report);
+   public Map<String, ParameterValue> provideReplacements(User user, Report report);
 
-	public void extendJuel(User user, Report report, ExpressionFactory factory,
-			ELContext context);
+   public void extendJuel(User user, Report report, ExpressionFactory factory, ELContext context);
 }

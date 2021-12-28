@@ -10,20 +10,16 @@ import net.datenwerke.scheduler.service.scheduler.hooks.MonitorActionExecution;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class MonitorActionExecutionAdapter implements MonitorActionExecution {
 
-	@Override
-	public void notifyOfExecution(AbstractAction action)  {
-	}
+   @Override
+   public void notifyOfExecution(AbstractAction action) {
+   }
 
+   @Override
+   public void actionExecutedSuccessfully(AbstractAction action) {
+   }
 
-	@Override
-	public void actionExecutedSuccessfully(AbstractAction action)  {
-	}
-
-
-	@Override
-	public void actionExecutionFailed(AbstractAction action, Exception e)  {
-	}
-
-
+   @Override
+   public void actionExecutionFailed(AbstractAction action, Exception e) {
+   }
 
 }

@@ -11,5 +11,5 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerPr
  */
 public interface SFFCDatasourceMultipleContainerConfig extends SimpleFormFieldConfiguration {
 
-	public DatasourceContainerProviderDto getSpecialDatasourceContainer(DwModel model); 
+   public DatasourceContainerProviderDto getSpecialDatasourceContainer(DwModel model);
 }

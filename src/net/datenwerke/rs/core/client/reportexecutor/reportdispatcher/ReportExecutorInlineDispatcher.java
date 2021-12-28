@@ -59,10 +59,8 @@ public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
    private final ReportExecutorUIService reportExecutorService;
 
    @Inject
-   public ReportExecutorInlineDispatcher(
-         ReportExecutorDao reportExecutorDao,
-         ReportExecutorUIService reportExecutorService
-         ) {
+   public ReportExecutorInlineDispatcher(ReportExecutorDao reportExecutorDao,
+         ReportExecutorUIService reportExecutorService) {
       this.reportExecutorDao = reportExecutorDao;
       this.reportExecutorService = reportExecutorService;
    }
@@ -124,11 +122,9 @@ public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
       final Set<String> views = new HashSet<String>();
       if (hLocation.hasParameter(VIEWS)) {
          String viewParam = hLocation.getParameterValue(VIEWS);
-         
-         views.addAll(Arrays.stream(viewParam.split("\\|"))
-            .map(String::trim)
-            .map(String::toLowerCase)
-            .collect(toSet()));
+
+         views.addAll(
+               Arrays.stream(viewParam.split("\\|")).map(String::trim).map(String::toLowerCase).collect(toSet()));
       }
 
       Component executeReportComponent = reportExecutorService.getExecuteReportComponent(result,
@@ -180,11 +176,9 @@ public class ReportExecutorInlineDispatcher extends DispatcherTakeOverHookImpl {
       final Set<String> views = new HashSet<String>();
       if (hLocation.hasParameter(VIEWS)) {
          String viewParam = hLocation.getParameterValue(VIEWS);
-         
-         views.addAll(Arrays.stream(viewParam.split("\\|"))
-               .map(String::trim)
-               .map(String::toLowerCase)
-               .collect(toSet()));
+
+         views.addAll(
+               Arrays.stream(viewParam.split("\\|")).map(String::trim).map(String::toLowerCase).collect(toSet()));
       }
 
       Component executeReportComponent = reportExecutorService.getExecuteReportComponent(result,

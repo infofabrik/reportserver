@@ -21,37 +21,36 @@ import net.datenwerke.scheduler.service.scheduler.hooks.SchedulerExecutionHook;
 
 public class FtpStartup {
 
-	@Inject
-	public FtpStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<FtpDatasinkProviderHooker> ftpDatasinkProvider,
-		Provider<SftpDatasinkProviderHooker> sftpDatasinkProvider,
-		Provider<FtpsDatasinkProviderHooker> ftpsDatasinkProvider,
-		
-		Provider<ScheduleConfigAsFtpFileHooker> scheduleAsFtpFileConfigHooker, 
-		Provider<ScheduleConfigAsSftpFileHooker> scheduleAsSftpFileConfigHooker, 
-		Provider<ScheduleConfigAsFtpsFileHooker> scheduleAsFtpsFileConfigHooker, 
-		Provider<ScheduleAsFtpFileEmailNotificationHooker> emailFtpNotificationHooker,
-		Provider<ScheduleAsSftpFileEmailNotificationHooker> emailSftpNotificationHooker,
-		Provider<ScheduleAsFtpsFileEmailNotificationHooker> emailFtpsNotificationHooker,
-		
-		Provider<SftpPrivateKeyUploadHooker> sftpPrivateKeyUploadHooker
-		
-	){
-	   hookHandler.attachHooker(FileUploadHandlerHook.class, sftpPrivateKeyUploadHooker);
-	   
-		hookHandler.attachHooker(DatasinkProviderHook.class, ftpDatasinkProvider);
-		hookHandler.attachHooker(DatasinkProviderHook.class, sftpDatasinkProvider);
-		hookHandler.attachHooker(DatasinkProviderHook.class, ftpsDatasinkProvider);
-		
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFtpFileConfigHooker);
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsSftpFileConfigHooker);
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFtpsFileConfigHooker);
-		
-		hookHandler.attachHooker(SchedulerExecutionHook.class, emailFtpNotificationHooker);
-		hookHandler.attachHooker(SchedulerExecutionHook.class, emailSftpNotificationHooker);
-		hookHandler.attachHooker(SchedulerExecutionHook.class, emailFtpsNotificationHooker);
-		
-	}
+   @Inject
+   public FtpStartup(HookHandlerService hookHandler,
+
+         Provider<FtpDatasinkProviderHooker> ftpDatasinkProvider,
+         Provider<SftpDatasinkProviderHooker> sftpDatasinkProvider,
+         Provider<FtpsDatasinkProviderHooker> ftpsDatasinkProvider,
+
+         Provider<ScheduleConfigAsFtpFileHooker> scheduleAsFtpFileConfigHooker,
+         Provider<ScheduleConfigAsSftpFileHooker> scheduleAsSftpFileConfigHooker,
+         Provider<ScheduleConfigAsFtpsFileHooker> scheduleAsFtpsFileConfigHooker,
+         Provider<ScheduleAsFtpFileEmailNotificationHooker> emailFtpNotificationHooker,
+         Provider<ScheduleAsSftpFileEmailNotificationHooker> emailSftpNotificationHooker,
+         Provider<ScheduleAsFtpsFileEmailNotificationHooker> emailFtpsNotificationHooker,
+
+         Provider<SftpPrivateKeyUploadHooker> sftpPrivateKeyUploadHooker
+
+   ) {
+      hookHandler.attachHooker(FileUploadHandlerHook.class, sftpPrivateKeyUploadHooker);
+
+      hookHandler.attachHooker(DatasinkProviderHook.class, ftpDatasinkProvider);
+      hookHandler.attachHooker(DatasinkProviderHook.class, sftpDatasinkProvider);
+      hookHandler.attachHooker(DatasinkProviderHook.class, ftpsDatasinkProvider);
+
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFtpFileConfigHooker);
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsSftpFileConfigHooker);
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, scheduleAsFtpsFileConfigHooker);
+
+      hookHandler.attachHooker(SchedulerExecutionHook.class, emailFtpNotificationHooker);
+      hookHandler.attachHooker(SchedulerExecutionHook.class, emailSftpNotificationHooker);
+      hookHandler.attachHooker(SchedulerExecutionHook.class, emailFtpsNotificationHooker);
+
+   }
 }

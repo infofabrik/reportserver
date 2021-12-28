@@ -18,33 +18,31 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
  * 
  *
  */
-public class SecurityIntegrityValidator implements EventHandler<RemoveEntityEvent>  {
+public class SecurityIntegrityValidator implements EventHandler<RemoveEntityEvent> {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public SecurityIntegrityValidator(
-		Provider<EntityManager> entityManagerProvider	
-		){
-		
-		/* store objects */
-		this.entityManagerProvider = entityManagerProvider;
-	}
-	
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		AbstractUserManagerNode folk = (AbstractUserManagerNode) event.getObject();
-		
-		EntityManager em = entityManagerProvider.get();
+   private final Provider<EntityManager> entityManagerProvider;
 
-		/* delete ace's */
-		for(Ace ace : getAcesByFolk(folk))
-			em.remove(ace);
-	}
+   @Inject
+   public SecurityIntegrityValidator(Provider<EntityManager> entityManagerProvider) {
 
-	@QueryByAttribute(where=Ace__.folk)
-	public List<Ace> getAcesByFolk(AbstractUserManagerNode folk){
-		return null; // by magic
-	}
+      /* store objects */
+      this.entityManagerProvider = entityManagerProvider;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      AbstractUserManagerNode folk = (AbstractUserManagerNode) event.getObject();
+
+      EntityManager em = entityManagerProvider.get();
+
+      /* delete ace's */
+      for (Ace ace : getAcesByFolk(folk))
+         em.remove(ace);
+   }
+
+   @QueryByAttribute(where = Ace__.folk)
+   public List<Ace> getAcesByFolk(AbstractUserManagerNode folk) {
+      return null; // by magic
+   }
 
 }

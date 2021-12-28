@@ -13,9 +13,11 @@ import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 @RemoteServiceRelativePath("rs_basicparameters_datasource")
-public interface DatasourceParameterRPCService extends RemoteService{
+public interface DatasourceParameterRPCService extends RemoteService {
 
-	public ListLoadResult<DatasourceParameterDataDto> loadDatasourceParameterData(DatasourceParameterDefinitionDto queryParameterDTO,  Collection<ParameterInstanceDto> dependsOnParameterDTOs, boolean mergeDefinition, ReportDto reportDto) throws ServerCallFailedException;
-	
-	public boolean allowDatasourceParameterPostProcessing();
+   public ListLoadResult<DatasourceParameterDataDto> loadDatasourceParameterData(
+         DatasourceParameterDefinitionDto queryParameterDTO, Collection<ParameterInstanceDto> dependsOnParameterDTOs,
+         boolean mergeDefinition, ReportDto reportDto) throws ServerCallFailedException;
+
+   public boolean allowDatasourceParameterPostProcessing();
 }

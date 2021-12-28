@@ -102,8 +102,8 @@ public class ScheduleAsSambaFileEmailNotificationHooker extends SchedulerExecuti
       datamap.put("user", executor);
       datamap.put(PROPERTY_EXECUTOR, executor);
       datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
-      
-      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()), 
+
+      datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
             config.getBoolean(PROPERTY_SAMBA_NOTIFICATION_HTML, false)));
 
       datamap.put(PROPERTY_FOLDER, action.getFolder());

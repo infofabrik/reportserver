@@ -9,5 +9,5 @@ import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator
 @HookConfig
 public interface JasperOutputGeneratorProviderHook extends ReportOutputGeneratorProvider<JasperOutputGenerator> {
 
-	public Collection<JasperOutputGenerator> provideGenerators();
+   public Collection<JasperOutputGenerator> provideGenerators();
 }

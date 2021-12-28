@@ -7,15 +7,14 @@ import net.datenwerke.security.service.usermanager.UserManagerService;
 
 public class ChallengeResponseServerPAM extends ChallengeResponsePAM {
 
-	@Inject
-	public ChallengeResponseServerPAM(UserManagerService userManagerService,
-			ChallengeResponseService challengeResponseService) {
-		super(userManagerService, challengeResponseService);
-	}
+   @Inject
+   public ChallengeResponseServerPAM(UserManagerService userManagerService,
+         ChallengeResponseService challengeResponseService) {
+      super(userManagerService, challengeResponseService);
+   }
 
-	
-	@Override
-	public String getClientModuleName() {
-		return null;
-	}
+   @Override
+   public String getClientModuleName() {
+      return null;
+   }
 }

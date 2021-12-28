@@ -13,22 +13,22 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.google.inject.persist.UnitOfWork;
 
-public class RsSftpSubSystemFactory extends SftpSubsystemFactory{
+public class RsSftpSubSystemFactory extends SftpSubsystemFactory {
 
-   
    private final Provider<UnitOfWork> unitOfWorkProvider;
    private final Provider<EntityManager> entityManagerProvider;
-   
+
    @Inject
-   public RsSftpSubSystemFactory(Provider<UnitOfWork> unitOfWorkProvider, Provider<EntityManager> entityManagerProvider) {
+   public RsSftpSubSystemFactory(Provider<UnitOfWork> unitOfWorkProvider,
+         Provider<EntityManager> entityManagerProvider) {
       this.unitOfWorkProvider = unitOfWorkProvider;
       this.entityManagerProvider = entityManagerProvider;
    }
-   
+
    @Override
    public Command createSubsystem(ChannelSession channel) throws IOException {
-       RsSftpSubsystem subsystem = new RsSftpSubsystem(unitOfWorkProvider, entityManagerProvider, this, channel);
-       GenericUtils.forEach(getRegisteredListeners(), subsystem::addSftpEventListener);
-       return subsystem;
+      RsSftpSubsystem subsystem = new RsSftpSubsystem(unitOfWorkProvider, entityManagerProvider, this, channel);
+      GenericUtils.forEach(getRegisteredListeners(), subsystem::addSftpEventListener);
+      return subsystem;
    }
 }

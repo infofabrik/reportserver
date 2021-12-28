@@ -16,38 +16,32 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-public class RevCommand extends SubCommandContainerImpl{
-	
-	public static final String BASE_COMMAND = "rev";
+public class RevCommand extends SubCommandContainerImpl {
 
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public RevCommand(
-			HookHandlerService hookHandler
-	) {
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	@CliHelpMessage(
-			messageClass = VersioningMessages.class,
-			name = BASE_COMMAND,
-			description = "commandRev_description"
-		)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser, session);
-	}
-	
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<RevSubCommandHook> list =  hookHandler.getHookers(RevSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   public static final String BASE_COMMAND = "rev";
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   private final HookHandlerService hookHandler;
+
+   @Inject
+   public RevCommand(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = VersioningMessages.class, name = BASE_COMMAND, description = "commandRev_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<RevSubCommandHook> list = hookHandler.getHookers(RevSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
 }

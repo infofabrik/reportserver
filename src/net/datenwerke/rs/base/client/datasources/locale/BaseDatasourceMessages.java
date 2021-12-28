@@ -5,31 +5,33 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface BaseDatasourceMessages extends Messages {
 
-	public final static BaseDatasourceMessages INSTANCE = GWT.create(BaseDatasourceMessages.class);
-	
-	String databaseTypeName();
+   public final static BaseDatasourceMessages INSTANCE = GWT.create(BaseDatasourceMessages.class);
 
-	String csvDatasourceTypeName();
+   String databaseTypeName();
 
-	String csvQuoteLabel();
-	String csvSeparatorLabel();
+   String csvDatasourceTypeName();
 
-	String dataLabel();
+   String csvQuoteLabel();
 
-	String datasourceConnectorLabel();
+   String csvSeparatorLabel();
 
-	String textConnectorName();
+   String dataLabel();
 
-	String urlLabel();
-	String urlConnectorName();
-	
-	String editDataSource();
+   String datasourceConnectorLabel();
 
-	String argumentConnector();
+   String textConnectorName();
 
-	String csvDatabaseCacheLabel();
+   String urlLabel();
 
-	String csvQueryWrapperLabel();
+   String urlConnectorName();
 
-	String jdbcDriverIsNotAvailable();
+   String editDataSource();
+
+   String argumentConnector();
+
+   String csvDatabaseCacheLabel();
+
+   String csvQueryWrapperLabel();
+
+   String jdbcDriverIsNotAvailable();
 }

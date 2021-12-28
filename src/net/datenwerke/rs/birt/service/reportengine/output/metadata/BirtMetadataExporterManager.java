@@ -9,9 +9,9 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetad
 
 public class BirtMetadataExporterManager extends AbstractReportMetadataExporterManager<BirtMetadataExporter> {
 
-	@Inject
-	public BirtMetadataExporterManager(Provider<Set<BirtMetadataExporter>> exporters) {
-		super(exporters);
-	}
+   @Inject
+   public BirtMetadataExporterManager(Provider<Set<BirtMetadataExporter>> exporters) {
+      super(exporters);
+   }
 
 }

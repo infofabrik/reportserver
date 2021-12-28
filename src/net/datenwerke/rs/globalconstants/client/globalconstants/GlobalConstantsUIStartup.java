@@ -22,31 +22,30 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
  */
 public class GlobalConstantsUIStartup {
 
-	
-	@Inject
-	public GlobalConstantsUIStartup(
-		final WaitOnEventUIService waitOnEventService,
-		final HookHandlerService hookHandler,
-		final GlobalConstantsDao constantsDao,
-		
-		final Provider<GlobalConstantsAdminModule> adminModuleProvider,
-		GlobalConstantsViewSecurityTargetDomainHooker securityTargetDomain,
+   @Inject
+   public GlobalConstantsUIStartup(final WaitOnEventUIService waitOnEventService, final HookHandlerService hookHandler,
+         final GlobalConstantsDao constantsDao,
 
-		final SecurityUIService securityService
-		){
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+         final Provider<GlobalConstantsAdminModule> adminModuleProvider,
+         GlobalConstantsViewSecurityTargetDomainHooker securityTargetDomain,
 
-		/* test if user has rights to see properties view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, new SynchronousCallbackOnEventTrigger(){
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(GlobalConstantsGenericTargetIdentifier.class, ReadDto.class))
-					hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),  HookHandlerService.PRIORITY_HIGH + 100);
-				
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+         final SecurityUIService securityService) {
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* test if user has rights to see properties view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(GlobalConstantsGenericTargetIdentifier.class, ReadDto.class))
+                     hookHandler.attachHooker(AdminModuleProviderHook.class,
+                           new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 100);
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 }

@@ -9,11 +9,9 @@ import net.datenwerke.rs.base.client.reportengines.jasper.dto.JasperReportDto;
 
 public interface JasperUtilsRpcServiceAsync {
 
-	void proposeParametersFor(JasperReportDto jasperReportDto,
-			AsyncCallback<List<JasperParameterProposalDto>> callback);
+   void proposeParametersFor(JasperReportDto jasperReportDto, AsyncCallback<List<JasperParameterProposalDto>> callback);
 
-	void addParametersFor(JasperReportDto jasperReportDto,
-			List<JasperParameterProposalDto> proposalDtos,
-			AsyncCallback<JasperReportDto> callback);
+   void addParametersFor(JasperReportDto jasperReportDto, List<JasperParameterProposalDto> proposalDtos,
+         AsyncCallback<JasperReportDto> callback);
 
 }

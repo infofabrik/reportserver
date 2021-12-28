@@ -19,35 +19,32 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class DatasinkStartup {
 
-	@Inject
-	public DatasinkStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		final Provider<SecurityService> securityServiceProvider,
-		final @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDataSinkDefinitions,
-		
-		Provider<DatasinkManagerHistoryUrlBuilderHooker> datasinkManagerUrlBuilder,
-		HandleDatasinkForceRemoveEventHandler handleDatasinkForceRemoveHandler
-		){
-		
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class, handleDatasinkForceRemoveHandler);
-		
-		/* history */
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasinkManagerUrlBuilder);
-		
-		/* register security targets */
-		hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
-			
-			@Override
-			public void configDone() {
-				/* secure folder */
-				securityServiceProvider.get().registerSecurityTarget(DatasinkFolder.class);
+   @Inject
+   public DatasinkStartup(HookHandlerService hookHandler, EventBus eventBus,
+         final Provider<SecurityService> securityServiceProvider,
+         final @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDataSinkDefinitions,
 
-				
-				/* secure datasink definition entities */
-				for(Class<? extends DatasinkDefinition> dClass : installedDataSinkDefinitions.get())
-					securityServiceProvider.get().registerSecurityTarget(dClass);
-			}
-		});
-	}
+         Provider<DatasinkManagerHistoryUrlBuilderHooker> datasinkManagerUrlBuilder,
+         HandleDatasinkForceRemoveEventHandler handleDatasinkForceRemoveHandler) {
+
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class,
+            handleDatasinkForceRemoveHandler);
+
+      /* history */
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasinkManagerUrlBuilder);
+
+      /* register security targets */
+      hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
+
+         @Override
+         public void configDone() {
+            /* secure folder */
+            securityServiceProvider.get().registerSecurityTarget(DatasinkFolder.class);
+
+            /* secure datasink definition entities */
+            for (Class<? extends DatasinkDefinition> dClass : installedDataSinkDefinitions.get())
+               securityServiceProvider.get().registerSecurityTarget(dClass);
+         }
+      });
+   }
 }

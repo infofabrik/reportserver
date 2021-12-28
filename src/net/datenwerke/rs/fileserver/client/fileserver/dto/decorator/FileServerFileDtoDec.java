@@ -12,21 +12,22 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
  */
 public class FileServerFileDtoDec extends FileServerFileDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public FileServerFileDtoDec() {
-		super();
-	}
+   public FileServerFileDtoDec() {
+      super();
+   }
 
-	@Override
-	public Integer getSize(){
-		Integer size = super.getSize();
-		if(null == size)
-			return 0;
-		return size;
-	}
-	
-	public String getThumbnailUrl() {
-		return GWT.getModuleBaseURL() + FileServerUiModule.FILE_ACCESS_SERVLET + "?id=" + getId() + "&thumbnail=true&nonce=" + Random.nextInt();
-	}
+   @Override
+   public Integer getSize() {
+      Integer size = super.getSize();
+      if (null == size)
+         return 0;
+      return size;
+   }
+
+   public String getThumbnailUrl() {
+      return GWT.getModuleBaseURL() + FileServerUiModule.FILE_ACCESS_SERVLET + "?id=" + getId()
+            + "&thumbnail=true&nonce=" + Random.nextInt();
+   }
 }

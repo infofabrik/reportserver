@@ -27,10 +27,7 @@ public class DatasourceTesterToolbarConfigurator implements MainPanelViewToolbar
    private final ToolbarService toolbarUtils;
 
    @Inject
-   public DatasourceTesterToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         DatasourceTesterDao datasourceTesterDao
-         ) {
+   public DatasourceTesterToolbarConfigurator(ToolbarService toolbarUtils, DatasourceTesterDao datasourceTesterDao) {
 
       this.toolbarUtils = toolbarUtils;
       this.datasourceTesterDao = datasourceTesterDao;

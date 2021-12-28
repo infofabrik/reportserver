@@ -5,9 +5,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ObjectInfoAdditionalInfoProvider extends Hook {
 
-	public boolean consumes(Object object);
+   public boolean consumes(Object object);
 
-	public void addInfoFor(Object object, InfoWindow window);
-	
-	
+   public void addInfoFor(Object object, InfoWindow window);
+
 }

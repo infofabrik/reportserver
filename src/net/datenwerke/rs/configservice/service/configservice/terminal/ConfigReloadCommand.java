@@ -13,40 +13,34 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 
 public class ConfigReloadCommand implements ConfigSubCommandHook {
 
-	public static final String BASE_COMMAND = "reload";
-	
-	private final ConfigService configService;
-	
-	@Inject
-	public ConfigReloadCommand(
-		ConfigService configService 
-		) {
-		this.configService = configService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "reload";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConfigMessages.class,
-		name = BASE_COMMAND,
-		description = "commandConfig_sub_reload_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		configService.clearCache();
-		
-		return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
-	}
+   private final ConfigService configService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public ConfigReloadCommand(ConfigService configService) {
+      this.configService = configService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandConfig_sub_reload_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      configService.clearCache();
+
+      return new CommandResult(ConfigMessages.INSTANCE.configReloaded());
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 }

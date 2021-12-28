@@ -5,6 +5,6 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ExceptionServicesImpl.class)
 public interface ExceptionServices {
 
-	public abstract String exceptionToString(Throwable e);
+   public abstract String exceptionToString(Throwable e);
 
 }

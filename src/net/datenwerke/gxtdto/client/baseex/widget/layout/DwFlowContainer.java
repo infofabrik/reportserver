@@ -6,18 +6,18 @@ import com.sencha.gxt.widget.core.client.container.FlowLayoutContainer;
 
 public class DwFlowContainer extends FlowLayoutContainer {
 
-	private boolean inline;
+   private boolean inline;
 
-	public void setDisplayInline(boolean inline){
-		this.inline = inline;
-	}
-	
-	@Override
-	protected void onInsert(int index, Widget child) {
-		super.onInsert(index, child);
-		
-		if(inline){
-			child.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
-		}
-	}
+   public void setDisplayInline(boolean inline) {
+      this.inline = inline;
+   }
+
+   @Override
+   protected void onInsert(int index, Widget child) {
+      super.onInsert(index, child);
+
+      if (inline) {
+         child.getElement().getStyle().setDisplay(Display.INLINE_BLOCK);
+      }
+   }
 }

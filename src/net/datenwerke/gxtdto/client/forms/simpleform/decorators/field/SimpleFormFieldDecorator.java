@@ -6,13 +6,11 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 
 public interface SimpleFormFieldDecorator {
 
-	String getDecoratorId(); 
-	
-	void configureFieldOnLoad(SimpleForm form, Widget field, String key);
+   String getDecoratorId();
 
-	void configureFieldAfterLayout(SimpleForm simpleForm, Widget widget,
-			String key);
+   void configureFieldOnLoad(SimpleForm form, Widget field, String key);
 
-	Widget adjustFieldForDisplay(SimpleForm simpleForm, Widget formField,
-			String fieldKey);
+   void configureFieldAfterLayout(SimpleForm simpleForm, Widget widget, String key);
+
+   Widget adjustFieldForDisplay(SimpleForm simpleForm, Widget formField, String fieldKey);
 }

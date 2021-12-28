@@ -12,62 +12,58 @@ import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeFolders;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterMainPropertiesPanel;
 
+public class FileServerImporterMainPropertiesPanel extends ImporterMainPropertiesPanel<FileServerImportConfigDto> {
 
-public class FileServerImporterMainPropertiesPanel extends
-		ImporterMainPropertiesPanel<FileServerImportConfigDto> {
+   private final Provider<UITree> treeProvider;
 
-	private final Provider<UITree> treeProvider;
-	
-	protected String parentKey;
-	protected String defaultDatasource;
-	
-	@Inject
-	public FileServerImporterMainPropertiesPanel(
-		@FileServerTreeFolders Provider<UITree> treeProvider
-		) {
+   protected String parentKey;
+   protected String defaultDatasource;
 
-		/* store objects */
-		this.treeProvider = treeProvider;
-		
-		/* init */
-		initializeUI();
-	}
+   @Inject
+   public FileServerImporterMainPropertiesPanel(@FileServerTreeFolders Provider<UITree> treeProvider) {
 
-	@Override
-	public void populateConfig(FileServerImportConfigDto config) throws NotProperlyConfiguredException {
-		super.populateConfig(config);
-		
-		FileServerFolderDto parent = (FileServerFolderDto) form.getValue(parentKey);
-		
-		config.setParent(parent);
-	}
-	
-	@Override
-	public void validateConfig(FileServerImportConfigDto config)
-			throws NotProperlyConfiguredException {
-		if(null == config.getParent() && ! config.getConfigs().isEmpty())
-			throw new NotProperlyConfiguredException(FileServerMessages.INSTANCE.importConfigFailureNoParent());
-	}
+      /* store objects */
+      this.treeProvider = treeProvider;
 
-	@Override
-	protected void configureForm() {
-		super.configureForm();
+      /* init */
+      initializeUI();
+   }
 
-		parentKey = form.addField(FileServerFolderDto.class, FileServerMessages.INSTANCE.importWhereTo(), new SFFCGenericTreeNode(){
-			@Override
-			public UITree getTreeForPopup() {
-				return treeProvider.get();
-			}
-		});
-	}
+   @Override
+   public void populateConfig(FileServerImportConfigDto config) throws NotProperlyConfiguredException {
+      super.populateConfig(config);
 
-	@Override
-	protected String getDescription() {
-		return FileServerMessages.INSTANCE.importMainPropertiesDescription();
-	}
+      FileServerFolderDto parent = (FileServerFolderDto) form.getValue(parentKey);
 
-	@Override
-	protected String getHeadline() {
-		return FileServerMessages.INSTANCE.importMainPropertiesHeadline();
-	}
+      config.setParent(parent);
+   }
+
+   @Override
+   public void validateConfig(FileServerImportConfigDto config) throws NotProperlyConfiguredException {
+      if (null == config.getParent() && !config.getConfigs().isEmpty())
+         throw new NotProperlyConfiguredException(FileServerMessages.INSTANCE.importConfigFailureNoParent());
+   }
+
+   @Override
+   protected void configureForm() {
+      super.configureForm();
+
+      parentKey = form.addField(FileServerFolderDto.class, FileServerMessages.INSTANCE.importWhereTo(),
+            new SFFCGenericTreeNode() {
+               @Override
+               public UITree getTreeForPopup() {
+                  return treeProvider.get();
+               }
+            });
+   }
+
+   @Override
+   protected String getDescription() {
+      return FileServerMessages.INSTANCE.importMainPropertiesDescription();
+   }
+
+   @Override
+   protected String getHeadline() {
+      return FileServerMessages.INSTANCE.importMainPropertiesHeadline();
+   }
 }

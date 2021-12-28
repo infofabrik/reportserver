@@ -31,88 +31,77 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
  *
  */
 @Entity
-@Table(name="TS_DISK_REPORT_REFERENCE")
+@Table(name = "TS_DISK_REPORT_REFERENCE")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tsreportarea.client.tsreportarea.dto",
-	createDecorator=true
-)
-@InstanceDescription(
-	msgLocation=TsDiskMessages.class,
-	objNameKey="tsDiskReportReferenceName"
-)
-public class TsDiskReportReference extends TsDiskGeneralReference{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tsreportarea.client.tsreportarea.dto", createDecorator = true)
+@InstanceDescription(msgLocation = TsDiskMessages.class, objNameKey = "tsDiskReportReferenceName")
+public class TsDiskReportReference extends TsDiskGeneralReference {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6215675034169121006L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6215675034169121006L;
 
-	@ManyToOne
-	@ExposeToClient(
-		view=DtoView.LIST,
-		inheritDtoView=true
-	)
-	private Report report;
-	
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	private Boolean hardlink = false;
-	
-	public void setHardlink(Boolean hardlink) {
-		if(null == hardlink)
-			hardlink = false;
-		this.hardlink = hardlink;
-	}
+   @ManyToOne
+   @ExposeToClient(view = DtoView.LIST, inheritDtoView = true)
+   private Report report;
 
-	public Boolean isHardlink() {
-		return null == hardlink ? false : hardlink;
-	}
+   @ExposeToClient(view = DtoView.LIST)
+   private Boolean hardlink = false;
 
-	public void setReport(Report report) {
-		this.report = report;
-	}
+   public void setHardlink(Boolean hardlink) {
+      if (null == hardlink)
+         hardlink = false;
+      this.hardlink = hardlink;
+   }
 
-	public Report getReport() {
-		return report;
-	}
+   public Boolean isHardlink() {
+      return null == hardlink ? false : hardlink;
+   }
 
-	@Override
-	public Date getReferenceLastUpdated() {
-		if(null == report)
-			return null;
-		return report.getLastUpdated();
-	}
-	
-	@Override
-	public boolean hasData() {
-		return false;
-	}
-	
-	@IconProvider
-	public String getIcon(){
-		if(null != getReport()){
-			Report r = getReport();
-			if(r instanceof TableReport)
-				return BaseIcon.REPORT_DL.toString();
-			if(r instanceof JasperReport)
-				return BaseIcon.REPORT_JASPER.toString();
-			if(r instanceof BirtReport)
-				return BaseIcon.REPORT_BIRT.toString();
-			if(r instanceof CrystalReport)
-				return BaseIcon.REPORT_CRYSTAL.toString();
-			if(r instanceof GridEditorReport)
-				return BaseIcon.REPORT_GE.toString();
-			if(r instanceof JxlsReport)
-				return BaseIcon.REPORT_JXLS.toString();
-			if(r instanceof SaikuReport)
-				return BaseIcon.REPORT_SAIKU.toString();
-			if(r instanceof ScriptReport)
-				return BaseIcon.SCRIPT.toString();
-		}
-		
-		return "file";
-	}
+   public void setReport(Report report) {
+      this.report = report;
+   }
+
+   public Report getReport() {
+      return report;
+   }
+
+   @Override
+   public Date getReferenceLastUpdated() {
+      if (null == report)
+         return null;
+      return report.getLastUpdated();
+   }
+
+   @Override
+   public boolean hasData() {
+      return false;
+   }
+
+   @IconProvider
+   public String getIcon() {
+      if (null != getReport()) {
+         Report r = getReport();
+         if (r instanceof TableReport)
+            return BaseIcon.REPORT_DL.toString();
+         if (r instanceof JasperReport)
+            return BaseIcon.REPORT_JASPER.toString();
+         if (r instanceof BirtReport)
+            return BaseIcon.REPORT_BIRT.toString();
+         if (r instanceof CrystalReport)
+            return BaseIcon.REPORT_CRYSTAL.toString();
+         if (r instanceof GridEditorReport)
+            return BaseIcon.REPORT_GE.toString();
+         if (r instanceof JxlsReport)
+            return BaseIcon.REPORT_JXLS.toString();
+         if (r instanceof SaikuReport)
+            return BaseIcon.REPORT_SAIKU.toString();
+         if (r instanceof ScriptReport)
+            return BaseIcon.SCRIPT.toString();
+      }
+
+      return "file";
+   }
 }

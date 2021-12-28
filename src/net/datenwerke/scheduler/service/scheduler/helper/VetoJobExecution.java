@@ -5,13 +5,13 @@ import net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogE
 
 public interface VetoJobExecution {
 
-	VetoJobExecutionMode getMode();
+   VetoJobExecutionMode getMode();
 
-	String getExplanation();
-	
-	RetryTimeUnit getRetryUnit();
-	
-	int getRetryAmount();
-	
-	void updateTrigger(AbstractJob job, ExecutionLogEntry logEntry);
+   String getExplanation();
+
+   RetryTimeUnit getRetryUnit();
+
+   int getRetryAmount();
+
+   void updateTrigger(AbstractJob job, ExecutionLogEntry logEntry);
 }

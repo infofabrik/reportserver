@@ -34,9 +34,7 @@ public class VersionInfoServlet extends HttpServlet {
    private HookHandlerService hookHandler;
 
    @Inject
-   public VersionInfoServlet(
-         HookHandlerService hookHandler
-         ) {
+   public VersionInfoServlet(HookHandlerService hookHandler) {
       this.hookHandler = hookHandler;
    }
 
@@ -71,11 +69,9 @@ public class VersionInfoServlet extends HttpServlet {
             String date = p.getProperty("buildDate");
             res.put("version.banner", p.getProperty("version") + "<br/>" + date.substring(date.indexOf("-") + 1));
 
-            res.putAll(
-               hookHandler.getHookers(VersionInfoExtensionHook.class)
-                  .stream()
+            res.putAll(hookHandler.getHookers(VersionInfoExtensionHook.class).stream()
                   .collect(toMap(VersionInfoExtensionHook::getKey, vie -> vie.getValue(req.getParameterMap()))));
-            
+
             String json = new ObjectMapper().writeValueAsString(res);
 
             if (req.getParameterMap().containsKey("callback")) {

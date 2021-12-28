@@ -4,5 +4,5 @@ import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 
 public interface ConnectionPoolAware {
 
-	public ConnectionPoolConfig __getReportServerConnectionPoolConfig();
+   public ConnectionPoolConfig __getReportServerConnectionPoolConfig();
 }

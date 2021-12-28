@@ -11,33 +11,31 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class UpdateDBCommand implements TerminalCommandHook {
-	
-	private final static String BASE_COMMAND = "updatedb";
-	
-	private final SearchService searchService;
-	
-	@Inject
-	public UpdateDBCommand(SearchService searchService) {
-		this.searchService = searchService;
-	}
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final static String BASE_COMMAND = "updatedb";
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		CommandResult cr = new CommandResult();
-		cr.addResultLine(searchService.rebuildIndex());
-		return cr;
-	}
+   private final SearchService searchService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
-	
-	
+   @Inject
+   public UpdateDBCommand(SearchService searchService) {
+      this.searchService = searchService;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      CommandResult cr = new CommandResult();
+      cr.addResultLine(searchService.rebuildIndex());
+      return cr;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

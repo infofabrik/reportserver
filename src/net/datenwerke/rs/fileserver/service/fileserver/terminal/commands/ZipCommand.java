@@ -48,22 +48,16 @@ public class ZipCommand implements TerminalCommandHook, PipedTerminalCommandHook
    }
 
    @Override
-   @CliHelpMessage(
-         messageClass = FileserverMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandZip_description",
-         nonOptArgs = {
-               @NonOptArgument(name="outputFile", description="commandZip_outputfile", mandatory=true),
-               @NonOptArgument(name="inputList", description="commandZip_inputlist", mandatory=true)
-         }
-   )
+   @CliHelpMessage(messageClass = FileserverMessages.class, name = BASE_COMMAND, description = "commandZip_description", nonOptArgs = {
+         @NonOptArgument(name = "outputFile", description = "commandZip_outputfile", mandatory = true),
+         @NonOptArgument(name = "inputList", description = "commandZip_inputlist", mandatory = true) })
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> arguments = parser.getNonOptionArguments();
       if (arguments.size() < 2)
          throw new TerminalException("Please enter an output file and one or more input files/directories.");
-      
-      Collection<Object> objects = session.getObjectResolver()
-            .getObjects(arguments.subList(1, arguments.size()), Read.class);
+
+      Collection<Object> objects = session.getObjectResolver().getObjects(arguments.subList(1, arguments.size()),
+            Read.class);
 
       VFSLocation currentLocation = session.getFileSystem().getCurrentLocation();
       Object clObject;
@@ -81,20 +75,18 @@ public class ZipCommand implements TerminalCommandHook, PipedTerminalCommandHook
 
       Map<String, Object> zipObjects = new HashMap<>();
       for (Object o : objects) {
-         if (o instanceof FileServerFile) 
+         if (o instanceof FileServerFile)
             addFile((FileServerFile) o, currentFolder, zipObjects);
-         
-         if (o instanceof FileServerFolder) 
+
+         if (o instanceof FileServerFolder)
             addFolder((FileServerFolder) o, currentFolder, zipObjects);
       }
 
       try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
          zipUtilsService.createZip(zipObjects, bos);
 
-         FileServerFile fileAtLocation = fileServerService.createFileAtLocation(
-               session.getFileSystem().getCurrentPath() + "/" +arguments.get(0) 
-                + ( arguments.get(0).endsWith(".zip") ? "": ".zip" )
-               );
+         FileServerFile fileAtLocation = fileServerService.createFileAtLocation(session.getFileSystem().getCurrentPath()
+               + "/" + arguments.get(0) + (arguments.get(0).endsWith(".zip") ? "" : ".zip"));
          fileAtLocation.setContentType("application/zip");
          fileAtLocation.setData(bos.toByteArray());
          fileServerService.merge(fileAtLocation);

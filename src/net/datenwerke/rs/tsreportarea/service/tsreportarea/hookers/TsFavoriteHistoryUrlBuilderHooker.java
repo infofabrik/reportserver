@@ -15,69 +15,66 @@ import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 public class TsFavoriteHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-	private final TsDiskMessages messages = LocalizationServiceImpl.getMessages(TsDiskMessages.class);
-	
-	private final static String HISTORY_BUILDER_NAME = "TsFavoritesUrlBuilder";
-	
-	private final TsDiskService favoriteService;
-	private final TeamSpaceService teamSpaceService;
-	
-	@Inject
-	public TsFavoriteHistoryUrlBuilderHooker(
-		TsDiskService favoriteService,
-		TeamSpaceService teamSpaceService
-		){
-		
-		/* store object */
-		this.favoriteService = favoriteService;
-		this.teamSpaceService = teamSpaceService;
-	}
-	
-	@Override
-	public boolean consumes(Object o) {
-		if(! (o instanceof AbstractTsDiskNode))
-			return false;
-		
-		AbstractTsDiskNode node = (AbstractTsDiskNode) o;
-		TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
-		
-		return teamSpaceService.mayAccess(teamSpace);
-	}
-	
-	@Override
-	protected void adjustLocation(Object o, HistoryLocation location) {
-		AbstractTsDiskNode node = (AbstractTsDiskNode) o;
+   private final TsDiskMessages messages = LocalizationServiceImpl.getMessages(TsDiskMessages.class);
 
-		TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
-		location.addParameter("ts", teamSpace.getId().toString());
-		
-		if(! (node instanceof TsDiskRoot)){
-			location.addParameter("sel", node.getId().toString());
-			location.addParameter("id", node.getParent().getId().toString());
-		}
-	}
+   private final static String HISTORY_BUILDER_NAME = "TsFavoritesUrlBuilder";
 
-	@Override
-	protected String getTokenName() {
-		return TsDiskUIModule.TEAMSPACE_SELECT_ITEM_HISTORY_TOKEN;
-	}
+   private final TsDiskService favoriteService;
+   private final TeamSpaceService teamSpaceService;
 
-	@Override
-	protected String getBuilderId() {
-		return HISTORY_BUILDER_NAME;
-	}
+   @Inject
+   public TsFavoriteHistoryUrlBuilderHooker(TsDiskService favoriteService, TeamSpaceService teamSpaceService) {
 
-	@Override
-	protected String getNameFor(Object o) {
-		AbstractTsDiskNode node = (AbstractTsDiskNode) o;
-		TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
-		
-		return messages.historyUrlBuilderName(teamSpace.getName());
-	}
+      /* store object */
+      this.favoriteService = favoriteService;
+      this.teamSpaceService = teamSpaceService;
+   }
 
-	@Override
-	protected String getIconFor(Object o) {
-		return "file";
-	}
+   @Override
+   public boolean consumes(Object o) {
+      if (!(o instanceof AbstractTsDiskNode))
+         return false;
+
+      AbstractTsDiskNode node = (AbstractTsDiskNode) o;
+      TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
+
+      return teamSpaceService.mayAccess(teamSpace);
+   }
+
+   @Override
+   protected void adjustLocation(Object o, HistoryLocation location) {
+      AbstractTsDiskNode node = (AbstractTsDiskNode) o;
+
+      TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
+      location.addParameter("ts", teamSpace.getId().toString());
+
+      if (!(node instanceof TsDiskRoot)) {
+         location.addParameter("sel", node.getId().toString());
+         location.addParameter("id", node.getParent().getId().toString());
+      }
+   }
+
+   @Override
+   protected String getTokenName() {
+      return TsDiskUIModule.TEAMSPACE_SELECT_ITEM_HISTORY_TOKEN;
+   }
+
+   @Override
+   protected String getBuilderId() {
+      return HISTORY_BUILDER_NAME;
+   }
+
+   @Override
+   protected String getNameFor(Object o) {
+      AbstractTsDiskNode node = (AbstractTsDiskNode) o;
+      TeamSpace teamSpace = favoriteService.getTeamSpaceFor(node);
+
+      return messages.historyUrlBuilderName(teamSpace.getName());
+   }
+
+   @Override
+   protected String getIconFor(Object o) {
+      return "file";
+   }
 
 }

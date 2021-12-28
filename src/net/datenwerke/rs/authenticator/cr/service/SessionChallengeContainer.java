@@ -7,17 +7,17 @@ import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContain
 @SessionScoped
 public class SessionChallengeContainer {
 
-	private ChallengeResponseContainer container;
+   private ChallengeResponseContainer container;
 
-	public ChallengeResponseContainer getContainer() {
-		return container;
-	}
+   public ChallengeResponseContainer getContainer() {
+      return container;
+   }
 
-	public void setContainer(ChallengeResponseContainer container) {
-		this.container = container;
-	}
+   public void setContainer(ChallengeResponseContainer container) {
+      this.container = container;
+   }
 
-	public void clear() {
-		this.container = null;
-	}
+   public void clear() {
+      this.container = null;
+   }
 }

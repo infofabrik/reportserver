@@ -12,15 +12,15 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface EntityDiffGuide {
 
-	boolean defaultGuide() default false;
-	
-	String name() default "";
-	
-	String[] whitelist() default{};
-	
-	String[] blacklist() default{};
-	
-	boolean ignoreVersion() default true;
-	
-	boolean ignoreId() default true;
+   boolean defaultGuide() default false;
+
+   String name() default "";
+
+   String[] whitelist() default {};
+
+   String[] blacklist() default {};
+
+   boolean ignoreVersion() default true;
+
+   boolean ignoreId() default true;
 }

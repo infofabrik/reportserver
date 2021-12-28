@@ -13,12 +13,9 @@ import net.datenwerke.rs.dashboard.client.dashboard.provider.annotations.Dashboa
  */
 public class DashboardManagerTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public DashboardManagerTreePanel(
-		HookHandlerService hookHandler,
-		@DashboardManagerAdminViewTree UITree tree
-		){
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public DashboardManagerTreePanel(HookHandlerService hookHandler, @DashboardManagerAdminViewTree UITree tree) {
+      super(hookHandler, tree);
+   }
+
 }

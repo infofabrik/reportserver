@@ -7,69 +7,68 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public class PreviewModel extends Dto {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6799539859715703002L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6799539859715703002L;
 
-	private List<String> columnNames = new ArrayList<String>();
-	private List<String[]> rows = new ArrayList<String[]>();
-	
-	private List<String[]> rawRows = new ArrayList<String[]>();
-	
-	private int size;
-	
-	public PreviewModel(){
-		super();
-	}
+   private List<String> columnNames = new ArrayList<String>();
+   private List<String[]> rows = new ArrayList<String[]>();
 
-	public List<String[]> getRows() {
-		return rows;
-	}
+   private List<String[]> rawRows = new ArrayList<String[]>();
 
-	public void setRows(List<String[]> rows) {
-		this.rows = rows;
-	}
-	
-	public void addRow(String[] sRow) {
-		rows.add(sRow);
-	}
-	
-	public List<String[]> getRawRows() {
-		return rawRows;
-	}
+   private int size;
 
-	public void setRawRows(List<String[]> rows) {
-		this.rawRows = rows;
-	}
-	
-	public void addRawRow(String[] row) {
-		rawRows.add(row);
-	}
-	
-	public String getRawData(int i, int j) {
-		return rawRows.get(i)[j];
-	}
+   public PreviewModel() {
+      super();
+   }
 
-	public int getSize() {
-		return size;
-	}
+   public List<String[]> getRows() {
+      return rows;
+   }
 
-	public void setSize(int size) {
-		this.size = size;
-	}
+   public void setRows(List<String[]> rows) {
+      this.rows = rows;
+   }
 
-	public void setColumnNames(List<String> columnNames) {
-		this.columnNames = columnNames;
-	}
+   public void addRow(String[] sRow) {
+      rows.add(sRow);
+   }
 
-	public List<String> getColumnNames() {
-		return columnNames;
-	}
+   public List<String[]> getRawRows() {
+      return rawRows;
+   }
 
-	public String getColumnName(int i) {
-		return columnNames.get(i);
-	}
+   public void setRawRows(List<String[]> rows) {
+      this.rawRows = rows;
+   }
 
-	
+   public void addRawRow(String[] row) {
+      rawRows.add(row);
+   }
+
+   public String getRawData(int i, int j) {
+      return rawRows.get(i)[j];
+   }
+
+   public int getSize() {
+      return size;
+   }
+
+   public void setSize(int size) {
+      this.size = size;
+   }
+
+   public void setColumnNames(List<String> columnNames) {
+      this.columnNames = columnNames;
+   }
+
+   public List<String> getColumnNames() {
+      return columnNames;
+   }
+
+   public String getColumnName(int i) {
+      return columnNames.get(i);
+   }
+
 }

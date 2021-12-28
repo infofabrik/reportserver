@@ -10,20 +10,19 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class JasperReportModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		requestStaticInjection(
-			JasperReport.class
-		);
-		
-		/* bind metadata exporter */
-		Multibinder<JasperMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(), JasperMetadataExporter.class);
-		metadataExporterBinder.addBinding().to(JasperPlainExporter.class);
-		
-		/* submodules */
-		install(new JasperUtilsModule());
-		
-		bind(JasperReportStartup.class).asEagerSingleton();
-	}
-	
+   @Override
+   protected void configure() {
+      requestStaticInjection(JasperReport.class);
+
+      /* bind metadata exporter */
+      Multibinder<JasperMetadataExporter> metadataExporterBinder = Multibinder.newSetBinder(binder(),
+            JasperMetadataExporter.class);
+      metadataExporterBinder.addBinding().to(JasperPlainExporter.class);
+
+      /* submodules */
+      install(new JasperUtilsModule());
+
+      bind(JasperReportStartup.class).asEagerSingleton();
+   }
+
 }

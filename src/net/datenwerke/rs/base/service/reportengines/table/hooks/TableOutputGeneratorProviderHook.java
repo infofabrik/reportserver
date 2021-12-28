@@ -9,5 +9,5 @@ import net.datenwerke.rs.core.service.reportmanager.output.ReportOutputGenerator
 @HookConfig
 public interface TableOutputGeneratorProviderHook extends ReportOutputGeneratorProvider<TableOutputGenerator> {
 
-	public Collection<TableOutputGenerator> provideGenerators();
+   public Collection<TableOutputGenerator> provideGenerators();
 }

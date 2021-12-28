@@ -14,61 +14,60 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ReportExecuteAreaModule extends ClientTempModuleImpl {
 
-	private final Provider<ReportExecuteAreaMainWidget> mainWidgetProvider;
-	private ReportExecuteAreaMainWidget mainWidget;
-	
-	@Inject
-	public ReportExecuteAreaModule(
-			Provider<ReportExecuteAreaMainWidget> mainWidgetProvider) {
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
+   private final Provider<ReportExecuteAreaMainWidget> mainWidgetProvider;
+   private ReportExecuteAreaMainWidget mainWidget;
 
-	@Override
-	public String getModuleName() {
-		return ReportexecutorMessages.INSTANCE.executeAreaModule();
-	}
+   @Inject
+   public ReportExecuteAreaModule(Provider<ReportExecuteAreaMainWidget> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.REPORT.toImageResource();
-	}
+   @Override
+   public String getModuleName() {
+      return ReportexecutorMessages.INSTANCE.executeAreaModule();
+   }
 
-	@Override
-	public ReportExecuteAreaMainWidget getMainWidget() {
-		if(null == mainWidget){
-			mainWidget = mainWidgetProvider.get();
-			mainWidget.setModule(this);
-		}
-		return mainWidget;
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.REPORT.toImageResource();
+   }
 
-	public void addExecutionComponent(ReportDto report, Component displayComponent, String urlParameters) {
-		getMainWidget().addExecutionComponent(report, displayComponent, urlParameters);
-	}
+   @Override
+   public ReportExecuteAreaMainWidget getMainWidget() {
+      if (null == mainWidget) {
+         mainWidget = mainWidgetProvider.get();
+         mainWidget.setModule(this);
+      }
+      return mainWidget;
+   }
 
-	public void closeCurrent() {
-		getMainWidget().closeCurrent();
-	}
-	
-	public void removeModule(){
-		viewport.removeTempModule(this);
-	}
-	
-	@Override
-	public void onMouseOver(MouseEvent be) {
+   public void addExecutionComponent(ReportDto report, Component displayComponent, String urlParameters) {
+      getMainWidget().addExecutionComponent(report, displayComponent, urlParameters);
+   }
 
-	}
+   public void closeCurrent() {
+      getMainWidget().closeCurrent();
+   }
 
-	public void markCurrentChanged() {
-		getMainWidget().markCurrentChanged();
-	}
+   public void removeModule() {
+      viewport.removeTempModule(this);
+   }
 
-	public void forceCloseCurrent() {
-		getMainWidget().forceCloseCurrent();
-	}
-	
-	@Override
-	public boolean isRecyclable() {
-		return true;
-	}
+   @Override
+   public void onMouseOver(MouseEvent be) {
+
+   }
+
+   public void markCurrentChanged() {
+      getMainWidget().markCurrentChanged();
+   }
+
+   public void forceCloseCurrent() {
+      getMainWidget().forceCloseCurrent();
+   }
+
+   @Override
+   public boolean isRecyclable() {
+      return true;
+   }
 }

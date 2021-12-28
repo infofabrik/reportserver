@@ -3,29 +3,28 @@ package net.datenwerke.rs.grideditor.client.grideditor.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface GridEditorMessages extends Messages{
+public interface GridEditorMessages extends Messages {
 
-	public final static GridEditorMessages INSTANCE = GWT.create(GridEditorMessages.class);
-	
-	String reportTypeName();
+   public final static GridEditorMessages INSTANCE = GWT.create(GridEditorMessages.class);
 
-	String editReport();
+   String reportTypeName();
 
-	String script();
-	
-	String arguments();
+   String editReport();
 
-	String setNull();
+   String script();
 
-	String discardChangesTitle();
+   String arguments();
 
-	String discardChangesMsg();
+   String setNull();
 
-	String clearFilters();
+   String discardChangesTitle();
 
-	String editRecordHeading();
+   String discardChangesMsg();
 
-	String rollbackRecord();
+   String clearFilters();
 
+   String editRecordHeading();
+
+   String rollbackRecord();
 
 }

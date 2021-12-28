@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.FavoriteListDadgetDto;
  */
 public class FavoriteListDadgetDtoDec extends FavoriteListDadgetDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public FavoriteListDadgetDtoDec() {
-		super();
-	}
-
+   public FavoriteListDadgetDtoDec() {
+      super();
+   }
 
 }

@@ -4,9 +4,9 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFCReadOnlyImpl;
 
 public interface SFFCReadOnly extends SimpleFormFieldConfiguration {
-	
-	public static SFFCReadOnly TRUE = new SFFCReadOnlyImpl(true);
-	public static SFFCReadOnly FALSE = new SFFCReadOnlyImpl(false);
 
-	public boolean isReadOnly();
+   public static SFFCReadOnly TRUE = new SFFCReadOnlyImpl(true);
+   public static SFFCReadOnly FALSE = new SFFCReadOnlyImpl(false);
+
+   public boolean isReadOnly();
 }

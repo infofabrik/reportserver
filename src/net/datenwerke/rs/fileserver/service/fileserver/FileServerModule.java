@@ -11,15 +11,16 @@ import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfsModule;
 
 public class FileServerModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(FileServerService.class).to(FileServerServiceImpl.class).in(Singleton.class);
-		bind(FileServerStartup.class).asEagerSingleton();
+   @Override
+   protected void configure() {
+      bind(FileServerService.class).to(FileServerServiceImpl.class).in(Singleton.class);
+      bind(FileServerStartup.class).asEagerSingleton();
 
-		install(new FactoryModuleBuilder().implement(BasepathZipExtractConfig.class, BasepathZipExtractConfig.class).build(BasepathZipExtractConfigFactory.class));
-		
-		install(new FileServerVfsModule());
-		install(new GenRightsFileServerManagerModule());
-	}
+      install(new FactoryModuleBuilder().implement(BasepathZipExtractConfig.class, BasepathZipExtractConfig.class)
+            .build(BasepathZipExtractConfigFactory.class));
+
+      install(new FileServerVfsModule());
+      install(new GenRightsFileServerManagerModule());
+   }
 
 }

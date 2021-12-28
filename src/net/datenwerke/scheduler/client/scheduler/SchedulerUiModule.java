@@ -4,8 +4,8 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class SchedulerUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-	}
+   @Override
+   protected void configure() {
+   }
 
 }

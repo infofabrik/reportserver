@@ -12,26 +12,25 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  * 
  *
  */
-public class IncludeRangesFilterAspect extends AbstractRangeFilterAspect{
-	
-	public IncludeRangesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
-		super(FilterMessages.INSTANCE.includeRangesTitle(), report, column, FilterType.Include, executeToken); 
-	}
-	
-	@Override
-	protected List<FilterRangeDto> getValues(FilterDto filter) {
-		return filter.getIncludeRanges();
-	}
-	
-	@Override
-	protected SelectionPanel<FilterRangeDto> createSelectionPanel(ColumnDto column) {
-		return new RangeSelectionPanel(this, column);
-	}
+public class IncludeRangesFilterAspect extends AbstractRangeFilterAspect {
 
-	@Override
-	protected void setValues(FilterDto filter, List<FilterRangeDto> newValues) {
-		filter.setIncludeRanges(newValues);
-	}
+   public IncludeRangesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
+      super(FilterMessages.INSTANCE.includeRangesTitle(), report, column, FilterType.Include, executeToken);
+   }
 
-	
+   @Override
+   protected List<FilterRangeDto> getValues(FilterDto filter) {
+      return filter.getIncludeRanges();
+   }
+
+   @Override
+   protected SelectionPanel<FilterRangeDto> createSelectionPanel(ColumnDto column) {
+      return new RangeSelectionPanel(this, column);
+   }
+
+   @Override
+   protected void setValues(FilterDto filter, List<FilterRangeDto> newValues) {
+      filter.setIncludeRanges(newValues);
+   }
+
 }

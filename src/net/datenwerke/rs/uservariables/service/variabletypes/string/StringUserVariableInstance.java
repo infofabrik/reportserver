@@ -14,32 +14,29 @@ import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariab
  *
  */
 @Entity
-@Table(name="STR_USERVARIABLE_INST")
+@Table(name = "STR_USERVARIABLE_INST")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.uservariables.client.variabletypes.string.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.uservariables.client.variabletypes.string.dto")
 public class StringUserVariableInstance extends UserVariableInstance {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2419315182953436034L;
-	
-	
-	@ExposeToClient
-	private String value;
-	
-	public void setValue(String value) {
-		this.value = value;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2419315182953436034L;
 
-	public String getValue() {
-		return value;
-	}
+   @ExposeToClient
+   private String value;
 
-	@Override
-	public Object getVariableValue() {
-		return getValue();
-	}
+   public void setValue(String value) {
+      this.value = value;
+   }
+
+   public String getValue() {
+      return value;
+   }
+
+   @Override
+   public Object getVariableValue() {
+      return getValue();
+   }
 }

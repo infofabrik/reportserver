@@ -27,10 +27,8 @@ public class MondrianDatasourceConfigProviderHooker implements DatasourceDefinit
    private final Provider<MondrianDatasourceForm> formProvider;
 
    @Inject
-   public MondrianDatasourceConfigProviderHooker(
-         Provider<MondrianDatasourceConfigConfigurator> configurator,
-         Provider<MondrianDatasourceForm> formProvider
-         ) {
+   public MondrianDatasourceConfigProviderHooker(Provider<MondrianDatasourceConfigConfigurator> configurator,
+         Provider<MondrianDatasourceForm> formProvider) {
 
       this.configurator = configurator;
       this.formProvider = formProvider;

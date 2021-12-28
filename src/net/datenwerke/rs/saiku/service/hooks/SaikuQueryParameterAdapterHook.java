@@ -9,6 +9,6 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 @HookConfig
 public interface SaikuQueryParameterAdapterHook extends Hook {
 
-	public void adaptParameters(Map<String,String> parameters, SaikuReport report);
+   public void adaptParameters(Map<String, String> parameters, SaikuReport report);
 
 }

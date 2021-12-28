@@ -33,132 +33,117 @@ import net.datenwerke.security.service.treedb.actions.UpdateAction;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 @Singleton
-public class JasperReportRpcServiceImpl extends SecuredRemoteServiceServlet implements
-		JasperReportRpcService {
+public class JasperReportRpcServiceImpl extends SecuredRemoteServiceServlet implements JasperReportRpcService {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1673736127397766517L;
-	
-	private final DtoService dtoService;
-	private final JasperUtilsService jasperUtils;
-	private final ReportService reportManager;
-	private final SecurityService securityService;
-	
-	@Inject
-	public JasperReportRpcServiceImpl(
-		DtoService dtoService, 
-		JasperUtilsService jasperUtils,
-		ReportService reportManager,
-		SecurityService securityService
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.jasperUtils = jasperUtils;
-		this.reportManager = reportManager;
-		this.securityService = securityService;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1673736127397766517L;
 
-	@Transactional(rollbackOn={Exception.class})
-	public AbstractNodeDto updateJRXMLFile(@Named("file")JasperReportJRXMLFileDto file) throws ServerCallFailedException {
-		/* get real file */
-		JasperReportJRXMLFile realFile = jasperUtils.getJRXMLFileById(file.getId());
-		
-		/* validate rights */
-		Report report = jasperUtils.getReportWithJRXMLFile(realFile);
-		if(! securityService.checkActions(report, UpdateAction.class))
-			throw new ViolatedSecurityExceptionDto();
-		
-		/* copy parameters */
-		dtoService.mergePoso(file, realFile);
-		
-		/* merge file */
-		jasperUtils.merge(realFile);
-		
-		/* get corresponding report */
-		report = jasperUtils.getReportWithJRXMLFile(realFile);
-		
-		/* return report dto */
-		return (AbstractNodeDto) dtoService.createDto(report);
-	}
+   private final DtoService dtoService;
+   private final JasperUtilsService jasperUtils;
+   private final ReportService reportManager;
+   private final SecurityService securityService;
 
-	@Transactional(rollbackOn={Exception.class})
-	public AbstractNodeDto removeJRXMLFile(@Named("file")JasperReportJRXMLFileDto file) throws ServerCallFailedException {
-		/* get real file */
-		JasperReportJRXMLFile realFile = jasperUtils.getJRXMLFileById(file.getId());
+   @Inject
+   public JasperReportRpcServiceImpl(DtoService dtoService, JasperUtilsService jasperUtils, ReportService reportManager,
+         SecurityService securityService) {
 
-		/* validate rights */
-		Report report = jasperUtils.getReportWithJRXMLFile(realFile);
-		if(! securityService.checkActions(report, UpdateAction.class))
-			throw new ViolatedSecurityExceptionDto();
-		
-		/* remove file */
-		report = jasperUtils.removeJRXMLFile(realFile);
-		
-		/* return report dto */
-		return (AbstractNodeDto) dtoService.createDto(report);
-	}
-	
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "report",
-					isDto = true,
-					verify = @RightsVerification(rights=Write.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	@Override
-	public AbstractNodeDto removeAllSubReports(@Named("report")JasperReportDto reportDto) throws ServerCallFailedException{
-		JasperReport report = (JasperReport) reportManager.getReportById(reportDto.getId());
-		
-		Iterator<JasperReportJRXMLFile> fileIterator = report.getSubFiles().iterator();
-		while(fileIterator.hasNext()){
-			JasperReportJRXMLFile current = fileIterator.next();
-			fileIterator.remove();
-			jasperUtils.removeJRXMLFile(current);
-		}
-		
-		reportManager.merge(report);
-		
-		/* return report dto */
-		return (AbstractNodeDto) dtoService.createDto(report);
-	}
+      /* store objects */
+      this.dtoService = dtoService;
+      this.jasperUtils = jasperUtils;
+      this.reportManager = reportManager;
+      this.securityService = securityService;
+   }
 
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "report",
-					isDto = true,
-					verify = @RightsVerification(rights=Write.class)
-				)
-			}
-		)
-	@Transactional(rollbackOn={Exception.class})
-	@Override
-	public JasperReportDto uploadJRXMLFiles(@Named("report")JasperReportDto reportDto, List<FileToUpload> files) throws ServerCallFailedException {
-		JasperReport report = (JasperReport) dtoService.loadPoso(reportDto);
-		
-		for(FileToUpload file : files){
-			String strData = file.getB64Data().substring(file.getB64Data().indexOf(";base64,") + 8);
-			String mimeType = file.getB64Data().substring(5, file.getB64Data().indexOf(";base64,"));
-			
-			JasperReportJRXMLFile jrxmlFile = new JasperReportJRXMLFile();
-			jrxmlFile.setName(file.getName().contains(".") ? file.getName().substring(0, file.getName().indexOf(".")) : file.getName());
-			jrxmlFile.setContent(new String(Base64.decodeBase64(strData.getBytes())));
-			
-			report.addSubfile(jrxmlFile);
-			
-			jasperUtils.persist(jrxmlFile);
-		}
-		
-		reportManager.merge(report);
-		
-		return (JasperReportDto) dtoService.createDto(report);
-	}
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto updateJRXMLFile(@Named("file") JasperReportJRXMLFileDto file)
+         throws ServerCallFailedException {
+      /* get real file */
+      JasperReportJRXMLFile realFile = jasperUtils.getJRXMLFileById(file.getId());
+
+      /* validate rights */
+      Report report = jasperUtils.getReportWithJRXMLFile(realFile);
+      if (!securityService.checkActions(report, UpdateAction.class))
+         throw new ViolatedSecurityExceptionDto();
+
+      /* copy parameters */
+      dtoService.mergePoso(file, realFile);
+
+      /* merge file */
+      jasperUtils.merge(realFile);
+
+      /* get corresponding report */
+      report = jasperUtils.getReportWithJRXMLFile(realFile);
+
+      /* return report dto */
+      return (AbstractNodeDto) dtoService.createDto(report);
+   }
+
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto removeJRXMLFile(@Named("file") JasperReportJRXMLFileDto file)
+         throws ServerCallFailedException {
+      /* get real file */
+      JasperReportJRXMLFile realFile = jasperUtils.getJRXMLFileById(file.getId());
+
+      /* validate rights */
+      Report report = jasperUtils.getReportWithJRXMLFile(realFile);
+      if (!securityService.checkActions(report, UpdateAction.class))
+         throw new ViolatedSecurityExceptionDto();
+
+      /* remove file */
+      report = jasperUtils.removeJRXMLFile(realFile);
+
+      /* return report dto */
+      return (AbstractNodeDto) dtoService.createDto(report);
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   @Override
+   public AbstractNodeDto removeAllSubReports(@Named("report") JasperReportDto reportDto)
+         throws ServerCallFailedException {
+      JasperReport report = (JasperReport) reportManager.getReportById(reportDto.getId());
+
+      Iterator<JasperReportJRXMLFile> fileIterator = report.getSubFiles().iterator();
+      while (fileIterator.hasNext()) {
+         JasperReportJRXMLFile current = fileIterator.next();
+         fileIterator.remove();
+         jasperUtils.removeJRXMLFile(current);
+      }
+
+      reportManager.merge(report);
+
+      /* return report dto */
+      return (AbstractNodeDto) dtoService.createDto(report);
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   @Override
+   public JasperReportDto uploadJRXMLFiles(@Named("report") JasperReportDto reportDto, List<FileToUpload> files)
+         throws ServerCallFailedException {
+      JasperReport report = (JasperReport) dtoService.loadPoso(reportDto);
+
+      for (FileToUpload file : files) {
+         String strData = file.getB64Data().substring(file.getB64Data().indexOf(";base64,") + 8);
+         String mimeType = file.getB64Data().substring(5, file.getB64Data().indexOf(";base64,"));
+
+         JasperReportJRXMLFile jrxmlFile = new JasperReportJRXMLFile();
+         jrxmlFile.setName(file.getName().contains(".") ? file.getName().substring(0, file.getName().indexOf("."))
+               : file.getName());
+         jrxmlFile.setContent(new String(Base64.decodeBase64(strData.getBytes())));
+
+         report.addSubfile(jrxmlFile);
+
+         jasperUtils.persist(jrxmlFile);
+      }
+
+      reportManager.merge(report);
+
+      return (JasperReportDto) dtoService.createDto(report);
+   }
 
 }

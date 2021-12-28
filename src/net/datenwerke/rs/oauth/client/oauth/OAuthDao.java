@@ -16,7 +16,8 @@ public class OAuthDao extends Dao {
       this.rpcService = rpcService;
    }
 
-   public void generateAuthenticationUrl(DatasinkDefinitionDto oAuth2Datasink, AsyncCallback<OAuthAuthenticationUriInfo> callback) {
+   public void generateAuthenticationUrl(DatasinkDefinitionDto oAuth2Datasink,
+         AsyncCallback<OAuthAuthenticationUriInfo> callback) {
       rpcService.generateAuthenticationUrl(oAuth2Datasink, transformAndKeepCallback(callback));
    }
 }

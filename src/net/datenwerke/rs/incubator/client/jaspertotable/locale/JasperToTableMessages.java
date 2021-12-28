@@ -5,13 +5,14 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface JasperToTableMessages extends Messages {
 
-	public final static JasperToTableMessages INSTANCE = GWT.create(JasperToTableMessages.class);
-	
-	String editJasperToTableBtnText();
+   public final static JasperToTableMessages INSTANCE = GWT.create(JasperToTableMessages.class);
 
-	String allowJasperToTableLabel();
-	String datasourceLabel();
+   String editJasperToTableBtnText();
 
-	String exportDescription();
+   String allowJasperToTableLabel();
+
+   String datasourceLabel();
+
+   String exportDescription();
 
 }

@@ -16,27 +16,25 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class UrlViewRpcServiceImpl extends SecuredRemoteServiceServlet implements UrlViewRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3819431223215867342L;
-	
-	private final Provider<Map<String,Map<String, List<String[]>>>> configProvider;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3819431223215867342L;
 
-	@Inject
-	public UrlViewRpcServiceImpl(
-		@UrlViewConfig Provider<Map<String,Map<String, List<String[]>>>> configProvider
-		){
-			this.configProvider = configProvider;
-		
-	}
+   private final Provider<Map<String, Map<String, List<String[]>>>> configProvider;
 
-	@Override
-	public Map<String,Map<String, List<String[]>>> loadViewConfiguration() throws ServerCallFailedException {
-		try{
-			return configProvider.get();
-		}catch(IllegalArgumentException e){
-			return new HashMap<String, Map<String,List<String[]>>>();
-		}
-	}
+   @Inject
+   public UrlViewRpcServiceImpl(@UrlViewConfig Provider<Map<String, Map<String, List<String[]>>>> configProvider) {
+      this.configProvider = configProvider;
+
+   }
+
+   @Override
+   public Map<String, Map<String, List<String[]>>> loadViewConfiguration() throws ServerCallFailedException {
+      try {
+         return configProvider.get();
+      } catch (IllegalArgumentException e) {
+         return new HashMap<String, Map<String, List<String[]>>>();
+      }
+   }
 }

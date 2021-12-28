@@ -12,24 +12,25 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleDatasourceRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleDatasourceRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	@Inject private ReportService reportService;
-	
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
-		
-		List<Report> reports = reportService.getReportsByDatasource(ds);
-		if(null != reports && ! reports.isEmpty()){
-			Iterator<Report> it = reports.iterator();
-			StringBuilder error = new StringBuilder("Datasource " + ds.getId() + " is used in reports. Report Ids: " + it.next().getId());
-			while(it.hasNext())
-				error.append(", ").append(it.next().getId());
-			
-			throw new NeedForcefulDeleteException(error.toString());
-		}
-	}
+   @Inject
+   private ReportService reportService;
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
+
+      List<Report> reports = reportService.getReportsByDatasource(ds);
+      if (null != reports && !reports.isEmpty()) {
+         Iterator<Report> it = reports.iterator();
+         StringBuilder error = new StringBuilder(
+               "Datasource " + ds.getId() + " is used in reports. Report Ids: " + it.next().getId());
+         while (it.hasNext())
+            error.append(", ").append(it.next().getId());
+
+         throw new NeedForcefulDeleteException(error.toString());
+      }
+   }
 
 }

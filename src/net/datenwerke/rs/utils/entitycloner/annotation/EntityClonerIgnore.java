@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
  *
  */
 @Documented
-@Target({ElementType.FIELD, ElementType.METHOD})
+@Target({ ElementType.FIELD, ElementType.METHOD })
 @Retention(RUNTIME)
 public @interface EntityClonerIgnore {
 

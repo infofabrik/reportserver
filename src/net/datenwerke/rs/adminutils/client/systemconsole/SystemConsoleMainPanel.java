@@ -13,35 +13,34 @@ import net.datenwerke.rs.adminutils.client.systemconsole.hooks.SystemConsoleView
 @Singleton
 public class SystemConsoleMainPanel extends DwBorderContainer {
 
-	@Inject
-	public SystemConsoleMainPanel(
-		){
-		initializeUI();
-	}
+   @Inject
+   public SystemConsoleMainPanel() {
+      initializeUI();
+   }
 
-	private void initializeUI() {
-		/* set layout */
-		BorderLayoutData westData = new BorderLayoutData(200);
-		westData.setSplit(true);
-		westData.setCollapsible(true);
-		westData.setMargins(new Margins(0,15,0,0));
+   private void initializeUI() {
+      /* set layout */
+      BorderLayoutData westData = new BorderLayoutData(200);
+      westData.setSplit(true);
+      westData.setCollapsible(true);
+      westData.setMargins(new Margins(0, 15, 0, 0));
 
-		setCenterWidget(DwContentPanel.newInlineInstance());
-	}
-	
-	public void displaySpecificConsoleItem(final SystemConsoleViewDomainHook domain){
-		/* clear panel */
-		clear();
-		
-		VerticalLayoutContainer container = new VerticalLayoutContainer();
-		add(container);
-		
-		/* add module's widget */
-		Widget widget = domain.getMainWidget();
-		setCenterWidget(widget);
-		
-		/* redo layout */
-		forceLayout();
-	}
+      setCenterWidget(DwContentPanel.newInlineInstance());
+   }
+
+   public void displaySpecificConsoleItem(final SystemConsoleViewDomainHook domain) {
+      /* clear panel */
+      clear();
+
+      VerticalLayoutContainer container = new VerticalLayoutContainer();
+      add(container);
+
+      /* add module's widget */
+      Widget widget = domain.getMainWidget();
+      setCenterWidget(widget);
+
+      /* redo layout */
+      forceLayout();
+   }
 
 }

@@ -19,14 +19,12 @@ import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 public class DropboxDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
    private final Provider<DropboxDatasinkForm> formProvider;
-   
+
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public DropboxDatasinkConfigProviderHooker(
-         Provider<DropboxDatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider
-         ) {
+   public DropboxDatasinkConfigProviderHooker(Provider<DropboxDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
       /* store objects */
       this.formProvider = formProvider;

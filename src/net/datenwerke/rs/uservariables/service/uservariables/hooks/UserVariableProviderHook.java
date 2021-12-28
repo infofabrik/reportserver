@@ -7,6 +7,6 @@ import net.datenwerke.rs.uservariables.service.uservariables.entities.UserVariab
 
 public interface UserVariableProviderHook extends Hook {
 
-	Collection<? extends UserVariableDefinition> getVariables();
+   Collection<? extends UserVariableDefinition> getVariables();
 
 }

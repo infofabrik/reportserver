@@ -10,17 +10,17 @@ import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
 public class HandleBirtDatasourceMergeEvents implements EventHandler<MergeEntityEvent> {
 
-	private ResultCacheService resultCacheService;
+   private ResultCacheService resultCacheService;
 
-	@Inject
-	public HandleBirtDatasourceMergeEvents(ResultCacheService resultCacheService) {
-		this.resultCacheService = resultCacheService;
-	}
+   @Inject
+   public HandleBirtDatasourceMergeEvents(ResultCacheService resultCacheService) {
+      this.resultCacheService = resultCacheService;
+   }
 
-	@Override
-	public void handle(MergeEntityEvent event) {
-		BirtReportDatasourceDefinition ds = (BirtReportDatasourceDefinition) event.getObject();
-		resultCacheService.removeFromResultCache(new ResultCacheKeyDatasource(ds));
-	}
+   @Override
+   public void handle(MergeEntityEvent event) {
+      BirtReportDatasourceDefinition ds = (BirtReportDatasourceDefinition) event.getObject();
+      resultCacheService.removeFromResultCache(new ResultCacheKeyDatasource(ds));
+   }
 
 }

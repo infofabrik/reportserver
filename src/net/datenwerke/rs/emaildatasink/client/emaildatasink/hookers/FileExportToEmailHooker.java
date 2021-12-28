@@ -39,13 +39,9 @@ public class FileExportToEmailHooker implements FileExportExternalEntryProviderH
    private final Provider<EmailDatasinkDao> datasinkDaoProvider;
 
    @Inject
-   public FileExportToEmailHooker(
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<EmailDatasinkUiService> emailUiService, 
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         @DatasinkTreeEmail Provider<UITree> treeProvider, 
-         Provider<EmailDatasinkDao> datasinkDaoProvider
-         ) {
+   public FileExportToEmailHooker(Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<EmailDatasinkUiService> emailUiService, Provider<DatasinkUIService> datasinkUiServiceProvider,
+         @DatasinkTreeEmail Provider<UITree> treeProvider, Provider<EmailDatasinkDao> datasinkDaoProvider) {
       this.enterpriseServiceProvider = enterpriseServiceProvider;
       this.emailUiService = emailUiService;
       this.datasinkUiServiceProvider = datasinkUiServiceProvider;

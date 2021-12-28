@@ -19,33 +19,34 @@ import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.Datasi
  */
 public class DatasinkUIModule extends AbstractGinModule {
 
-	public static final String DATASINK_FAV_HISTORY_TOKEN = "datasinkmgr";
-	
-	public static final String PROPERTY_CONTAINER = "Datasink_PropertyContainer";
+   public static final String DATASINK_FAV_HISTORY_TOKEN = "datasinkmgr";
 
-	public static final String ADMIN_TREE_MENU_NAME = "datasink:admin:tree:menu";
-	
-	public static final String DATASINK_KEY = "datasink_key";
-	public static final String DATASINK_FILENAME = "datasink_filename";
-	public static final String DATASINK_FOLDER = "datasink_folder";
-	public static final String DATASINK_COMPRESSED_KEY = "compressed_key";
+   public static final String PROPERTY_CONTAINER = "Datasink_PropertyContainer";
 
-    public static final String REPORT_FORMAT_KEY = "datasink_report_format_key";
-	
-	@Override
-	protected void configure() {
-		/* bind trees */
-		bind(UITree.class).annotatedWith(DatasinkTreeBasic.class).toProvider(BasicTreeProvider.class);
-		bind(UITree.class).annotatedWith(DatasinkManagerAdminViewTree.class).toProvider(FullTreeProvider.class).in(Singleton.class);
-		bind(UITree.class).annotatedWith(DatasinkTreeFolders.class).toProvider(FolderTreeProvider.class);
-		
-		/* bind service */
-		bind(DatasinkUIService.class).to(DatasinkUIServiceImpl.class).in(Singleton.class);
-		
-		install(new GinFactoryModuleBuilder().build(DatasinkSelectionFieldFactory.class));
-		
-		/* bind startup */
-		bind(DatasinkUIStartup.class).asEagerSingleton();
-	}
+   public static final String ADMIN_TREE_MENU_NAME = "datasink:admin:tree:menu";
+
+   public static final String DATASINK_KEY = "datasink_key";
+   public static final String DATASINK_FILENAME = "datasink_filename";
+   public static final String DATASINK_FOLDER = "datasink_folder";
+   public static final String DATASINK_COMPRESSED_KEY = "compressed_key";
+
+   public static final String REPORT_FORMAT_KEY = "datasink_report_format_key";
+
+   @Override
+   protected void configure() {
+      /* bind trees */
+      bind(UITree.class).annotatedWith(DatasinkTreeBasic.class).toProvider(BasicTreeProvider.class);
+      bind(UITree.class).annotatedWith(DatasinkManagerAdminViewTree.class).toProvider(FullTreeProvider.class)
+            .in(Singleton.class);
+      bind(UITree.class).annotatedWith(DatasinkTreeFolders.class).toProvider(FolderTreeProvider.class);
+
+      /* bind service */
+      bind(DatasinkUIService.class).to(DatasinkUIServiceImpl.class).in(Singleton.class);
+
+      install(new GinFactoryModuleBuilder().build(DatasinkSelectionFieldFactory.class));
+
+      /* bind startup */
+      bind(DatasinkUIStartup.class).asEagerSingleton();
+   }
 
 }

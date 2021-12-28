@@ -10,35 +10,35 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public abstract class SaikuOutputGeneratorImpl implements SaikuOutputGenerator {
 
-	protected final HookHandlerService hookHandler;
-	protected SaikuReport report;
-	
-	@Override
-	public void initialize(SaikuReport report) {
-		this.report = report;
-		
-	}
-	
-	public SaikuOutputGeneratorImpl(HookHandlerService hookHandler){
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public boolean isCatchAll() {
-		return false;
-	}
-	
-	@Override
-	public ICellSetFormatter getCellSetFormatter() {
-		if(report.isHideParents())
-			return new FlattenedCellSetFormatter();
-		return new CellSetFormatter();
-	}
+   protected final HookHandlerService hookHandler;
+   protected SaikuReport report;
 
-	protected <R extends ReportExecutionConfig> R getConfig(Class<? extends R> type, ReportExecutionConfig... configs){
-		for(ReportExecutionConfig config : configs)
-			if(type.isAssignableFrom(config.getClass()))
-				return (R) config;
-		return null;
-	}
+   @Override
+   public void initialize(SaikuReport report) {
+      this.report = report;
+
+   }
+
+   public SaikuOutputGeneratorImpl(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public boolean isCatchAll() {
+      return false;
+   }
+
+   @Override
+   public ICellSetFormatter getCellSetFormatter() {
+      if (report.isHideParents())
+         return new FlattenedCellSetFormatter();
+      return new CellSetFormatter();
+   }
+
+   protected <R extends ReportExecutionConfig> R getConfig(Class<? extends R> type, ReportExecutionConfig... configs) {
+      for (ReportExecutionConfig config : configs)
+         if (type.isAssignableFrom(config.getClass()))
+            return (R) config;
+      return null;
+   }
 }

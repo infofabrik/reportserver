@@ -47,12 +47,10 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
    private final Provider<UITree> treeProvider;
    private final Provider<EmailDatasinkDao> datasinkDaoProvider;
-   
+
    @Inject
-   public EmailDatasinkExportSnippetProvider(
-         @DatasinkTreeEmail Provider<UITree> treeProvider,
-         Provider<EmailDatasinkDao> datasinkDaoProvider
-         ) {
+   public EmailDatasinkExportSnippetProvider(@DatasinkTreeEmail Provider<UITree> treeProvider,
+         Provider<EmailDatasinkDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
    }
@@ -71,32 +69,32 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
       xform.setFieldWidth(260);
       xform.beginFloatRow();
 
-      emailKey = xform.addField(DatasinkSelectionField.class, EmailDatasinkUiModule.NAME,
-            new SFFCGenericTreeNode() {
-               @Override
-               public UITree getTreeForPopup() {
-                  return treeProvider.get();
-               }
-            }, new SFFCAllowBlank() {
-               @Override
-               public boolean allowBlank() {
-                  return false;
-               }
-            }, new SFFCShowTwinButton() {
-               @Override
-               public boolean showTwinButton() {
-                  return true;
-               }
-            }, new SFFCDatasinkDao() {
-               @Override
-               public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
-                  return datasinkDaoProvider;
-               }
-               @Override
-               public BaseIcon getIcon() {
-                  return EmailDatasinkUiModule.ICON;
-               }
-            });
+      emailKey = xform.addField(DatasinkSelectionField.class, EmailDatasinkUiModule.NAME, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return treeProvider.get();
+         }
+      }, new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      }, new SFFCShowTwinButton() {
+         @Override
+         public boolean showTwinButton() {
+            return true;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+
+         @Override
+         public BaseIcon getIcon() {
+            return EmailDatasinkUiModule.ICON;
+         }
+      });
 
       xform.endRow();
       xform.setFieldWidth(530);
@@ -119,7 +117,7 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
       xform.setLabelAlign(LabelAlign.TOP);
       messageKey = xform.addField(String.class, SchedulerMessages.INSTANCE.message(), new SFFCTextAreaImpl());
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
@@ -164,11 +162,11 @@ public class EmailDatasinkExportSnippetProvider implements ScheduleExportSnippet
    }
 
    @Override
-   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {      
+   public void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
       form.loadFields();
-      
+
       final SingleTreeSelectionField emailField = extractSingleTreeSelectionField(form.getField(emailKey));
-      
+
       if (null != definition) {
          form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsEmailDatasinkFileInformation info = definition

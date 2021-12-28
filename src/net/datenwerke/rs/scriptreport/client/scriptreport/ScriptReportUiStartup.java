@@ -26,57 +26,55 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.ui.ScriptReportPreview
 import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 
-public class ScriptReportUiStartup  implements ParameterProviderHook {
+public class ScriptReportUiStartup implements ParameterProviderHook {
 
-	@SuppressWarnings("unchecked")
-	private final List<Provider<? extends ParameterConfigurator>> parameters;
+   @SuppressWarnings("unchecked")
+   private final List<Provider<? extends ParameterConfigurator>> parameters;
 
-	@Inject
-	public ScriptReportUiStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
-		
-		ScriptReportConfigHooker reportConfigHooker, 
-		ScriptReportPreviewViewFactory reportPreviewViewFactory,
-		
-		Provider<ScriptParameterConfigurator> scriptParameter,
-		
-		Provider<ScriptReportExporter> exporterProvider,
-		
-		final Provider<ScriptReportDadgetExporter> reportDadgetExporterProvider
-		){
-		
-		/* store parameters */
-		parameters = new ArrayList<Provider<? extends ParameterConfigurator>>();
-		parameters.add(scriptParameter);
-		hookHandler.attachHooker(ParameterProviderHook.class, this);
-		
-		hookHandler.attachHooker(ReportTypeConfigHook.class, reportConfigHooker,90);
-		hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(reportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
-		
-		hookHandler.attachHooker(ReportExporterProviderHook.class, exporterProvider);
-		
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)){
-					hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
-				}
+   @Inject
+   public ScriptReportUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
-	
-	@Override
-	public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
-		List<ParameterConfigurator> configurations = new ArrayList<ParameterConfigurator>();
-		
-		for(Provider<? extends ParameterConfigurator> provider : parameters)
-			configurations.add(provider.get());
-		
-		return configurations;
-	}
+         ScriptReportConfigHooker reportConfigHooker, ScriptReportPreviewViewFactory reportPreviewViewFactory,
+
+         Provider<ScriptParameterConfigurator> scriptParameter,
+
+         Provider<ScriptReportExporter> exporterProvider,
+
+         final Provider<ScriptReportDadgetExporter> reportDadgetExporterProvider) {
+
+      /* store parameters */
+      parameters = new ArrayList<Provider<? extends ParameterConfigurator>>();
+      parameters.add(scriptParameter);
+      hookHandler.attachHooker(ParameterProviderHook.class, this);
+
+      hookHandler.attachHooker(ReportTypeConfigHook.class, reportConfigHooker, 90);
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(reportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(ReportExporterProviderHook.class, exporterProvider);
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)) {
+                     hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
+                  }
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
+
+   @Override
+   public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators() {
+      List<ParameterConfigurator> configurations = new ArrayList<ParameterConfigurator>();
+
+      for (Provider<? extends ParameterConfigurator> provider : parameters)
+         configurations.add(provider.get());
+
+      return configurations;
+   }
 }

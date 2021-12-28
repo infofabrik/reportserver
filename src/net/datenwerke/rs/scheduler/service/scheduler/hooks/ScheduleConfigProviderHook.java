@@ -8,9 +8,8 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 
 public interface ScheduleConfigProviderHook extends Hook {
 
-	void adaptJob(ReportExecuteJob job, ReportScheduleDefinition scheduleDTO) throws InvalidConfigurationException;
+   void adaptJob(ReportExecuteJob job, ReportScheduleDefinition scheduleDTO) throws InvalidConfigurationException;
 
-	void adaptScheduleDefinition(ReportScheduleDefinition rsd,
-			ReportExecuteJob job) throws ExpectedException;
+   void adaptScheduleDefinition(ReportScheduleDefinition rsd, ReportExecuteJob job) throws ExpectedException;
 
 }

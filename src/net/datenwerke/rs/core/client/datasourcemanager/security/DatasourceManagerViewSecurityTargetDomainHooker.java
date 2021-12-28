@@ -7,23 +7,22 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.client.security.hooks.GenericSecurityViewDomainHook;
 
-public class DatasourceManagerViewSecurityTargetDomainHooker implements
-		GenericSecurityViewDomainHook {
-	
-	public ImageResource genericSecurityViewDomainHook_getIcon() {
-		return BaseIcon.DATABASE.toImageResource();
-	}
+public class DatasourceManagerViewSecurityTargetDomainHooker implements GenericSecurityViewDomainHook {
 
-	public String genericSecurityViewDomainHook_getName() {
-		return DatasourcesMessages.INSTANCE.datasources();
-	}
-	
-	public String genericSecurityViewDomainHook_getDescription() {
-		return DatasourcesMessages.INSTANCE.dataSourcePermissionModuleDescription();
-	}
+   public ImageResource genericSecurityViewDomainHook_getIcon() {
+      return BaseIcon.DATABASE.toImageResource();
+   }
 
-	public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
-		return new DatasourceManagerGenericTargetIdentifier();
-	}
+   public String genericSecurityViewDomainHook_getName() {
+      return DatasourcesMessages.INSTANCE.datasources();
+   }
+
+   public String genericSecurityViewDomainHook_getDescription() {
+      return DatasourcesMessages.INSTANCE.dataSourcePermissionModuleDescription();
+   }
+
+   public GenericTargetIdentifier genericSecurityViewDomainHook_getTargetId() {
+      return new DatasourceManagerGenericTargetIdentifier();
+   }
 
 }

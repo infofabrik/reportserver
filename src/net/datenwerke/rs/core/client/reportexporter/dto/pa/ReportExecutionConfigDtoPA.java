@@ -13,6 +13,4 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 @CorrespondingPoso(net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig.class)
 public interface ReportExecutionConfigDtoPA extends PropertyAccess<ReportExecutionConfigDto> {
 
-
-
 }

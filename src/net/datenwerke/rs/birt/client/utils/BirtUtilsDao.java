@@ -12,19 +12,21 @@ import net.datenwerke.rs.birt.client.utils.rpc.BirtUtilsRpcServiceAsync;
 
 public class BirtUtilsDao extends Dao {
 
-	private final BirtUtilsRpcServiceAsync rpcSerice;
+   private final BirtUtilsRpcServiceAsync rpcSerice;
 
-	@Inject
-	public BirtUtilsDao(BirtUtilsRpcServiceAsync rpcSerice) {
-		this.rpcSerice = rpcSerice;
-	}
-	
-	public void proposeParametersFor(BirtReportDto report, RsAsyncCallback<List<BirtParameterProposalDto>> callback) {
-		rpcSerice.proposeParametersFor(report, transformAndKeepCallback(callback));
-	}
+   @Inject
+   public BirtUtilsDao(BirtUtilsRpcServiceAsync rpcSerice) {
+      this.rpcSerice = rpcSerice;
+   }
 
-	public void addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos, RsAsyncCallback<BirtReportDto> rsAsyncCallback) {
-		rpcSerice.addParametersFor(report, (List<BirtParameterProposalDto>) unproxy(proposalDtos), transformDtoCallback(rsAsyncCallback));
-	}
+   public void proposeParametersFor(BirtReportDto report, RsAsyncCallback<List<BirtParameterProposalDto>> callback) {
+      rpcSerice.proposeParametersFor(report, transformAndKeepCallback(callback));
+   }
+
+   public void addParametersFor(BirtReportDto report, List<BirtParameterProposalDto> proposalDtos,
+         RsAsyncCallback<BirtReportDto> rsAsyncCallback) {
+      rpcSerice.addParametersFor(report, (List<BirtParameterProposalDto>) unproxy(proposalDtos),
+            transformDtoCallback(rsAsyncCallback));
+   }
 
 }

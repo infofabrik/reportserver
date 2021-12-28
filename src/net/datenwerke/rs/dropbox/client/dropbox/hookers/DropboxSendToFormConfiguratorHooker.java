@@ -34,7 +34,7 @@ public class DropboxSendToFormConfiguratorHooker implements DatasinkSendToFormCo
    public Optional<Map<String, Object>> getAdditionalFieldsValues(SimpleForm form) {
       return Optional.empty();
    }
-   
+
    @Override
    public String getWindowTitle() {
       return DropboxUiModule.NAME;
@@ -44,7 +44,7 @@ public class DropboxSendToFormConfiguratorHooker implements DatasinkSendToFormCo
    public BaseIcon getIcon() {
       return DropboxUiModule.ICON;
    }
-   
+
    @Override
    public int getWindowHeight() {
       return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;
@@ -54,5 +54,5 @@ public class DropboxSendToFormConfiguratorHooker implements DatasinkSendToFormCo
    public boolean isFolderedDatasink() {
       return true;
    }
-   
+
 }

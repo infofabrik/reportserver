@@ -21,80 +21,77 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ReportSelectionField extends DwTriggerField<ReportContainerDto> {
 
-	@Inject
-	public static Provider<ReportSelectionDialog> dialogProvider;
-	private ReportSelectionDialog dialog;
-	private RepositoryProviderConfig[] repositoryConfigs;
-	
-	public ReportSelectionField() {
-		super(new TriggerFieldCell<ReportContainerDto>(), new PropertyEditor<ReportContainerDto>() {
-			@Override
-			public String render(ReportContainerDto object) {
-				return object.toDisplayTitle();
-			}
+   @Inject
+   public static Provider<ReportSelectionDialog> dialogProvider;
+   private ReportSelectionDialog dialog;
+   private RepositoryProviderConfig[] repositoryConfigs;
 
-			@Override
-			public ReportContainerDto parse(CharSequence text)
-					throws ParseException {
-				return null;
-			}
-		});
-		
-		/* build ui */
-		initializeUI();
-	}
+   public ReportSelectionField() {
+      super(new TriggerFieldCell<ReportContainerDto>(), new PropertyEditor<ReportContainerDto>() {
+         @Override
+         public String render(ReportContainerDto object) {
+            return object.toDisplayTitle();
+         }
 
-	protected void initializeUI() {
-		/* configure triggerField */
-		setEditable(false);
-		setTriggerIcon(BaseIcon.HAND_POINTER_O);
-		
-		/* listener */
-		addTriggerClickHandler(new TriggerClickHandler() {
-			@Override
-			public void onTriggerClick(TriggerClickEvent event) {
-				triggerClicked();
-			}
-		});
-	}
+         @Override
+         public ReportContainerDto parse(CharSequence text) throws ParseException {
+            return null;
+         }
+      });
 
-	protected void triggerClicked() {
-		if(null == dialog){
-			dialog = dialogProvider.get();
-			dialog.initSubmitButton();
-			
-			dialog.initRepositories(Optional.empty(), repositoryConfigs);
-			
-			dialog.setEventHandler(new ReportSelectionDialogEventHandler() {
-				
-				@Override
-				public boolean handleSubmit(ReportContainerDto container) {
-					setValue(container, true);
-					return true;
-				}
-				
-				@Override
-				public void handleDoubleClick(ReportContainerDto dto,
-						ReportSelectionRepositoryProviderHook hooker, NativeEvent event,
-						Object... info) {
-					setValue(dto, true);
-					dialog.hide();
-				}
+      /* build ui */
+      initializeUI();
+   }
 
-				@Override
-				public Menu getContextMenuFor(ReportContainerDto dto,
-						ReportSelectionRepositoryProviderHook hooker, Object... info) {
-					return null;
-				}
-			});
-		}
-		
-		dialog.show();
-	}
+   protected void initializeUI() {
+      /* configure triggerField */
+      setEditable(false);
+      setTriggerIcon(BaseIcon.HAND_POINTER_O);
 
-	public void setRepositoryConfigs(
-			RepositoryProviderConfig... repositoryConfigs) {
-		this.repositoryConfigs = repositoryConfigs;
-	}
+      /* listener */
+      addTriggerClickHandler(new TriggerClickHandler() {
+         @Override
+         public void onTriggerClick(TriggerClickEvent event) {
+            triggerClicked();
+         }
+      });
+   }
+
+   protected void triggerClicked() {
+      if (null == dialog) {
+         dialog = dialogProvider.get();
+         dialog.initSubmitButton();
+
+         dialog.initRepositories(Optional.empty(), repositoryConfigs);
+
+         dialog.setEventHandler(new ReportSelectionDialogEventHandler() {
+
+            @Override
+            public boolean handleSubmit(ReportContainerDto container) {
+               setValue(container, true);
+               return true;
+            }
+
+            @Override
+            public void handleDoubleClick(ReportContainerDto dto, ReportSelectionRepositoryProviderHook hooker,
+                  NativeEvent event, Object... info) {
+               setValue(dto, true);
+               dialog.hide();
+            }
+
+            @Override
+            public Menu getContextMenuFor(ReportContainerDto dto, ReportSelectionRepositoryProviderHook hooker,
+                  Object... info) {
+               return null;
+            }
+         });
+      }
+
+      dialog.show();
+   }
+
+   public void setRepositoryConfigs(RepositoryProviderConfig... repositoryConfigs) {
+      this.repositoryConfigs = repositoryConfigs;
+   }
 
 }

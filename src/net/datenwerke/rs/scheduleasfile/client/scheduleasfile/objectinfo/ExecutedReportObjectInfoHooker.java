@@ -10,41 +10,40 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.Exec
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 
 public class ExecutedReportObjectInfoHooker extends ObjectInfoKeyInfoProviderImpl<ExecutedReportFileReferenceDto> {
-	
-	@Override
-	public boolean consumes(Object object) {
-		return object instanceof ExecutedReportFileReferenceDto;
-	}
 
-	@Override
-	protected String doGetName(ExecutedReportFileReferenceDto node) {
-		return node.getName();
-	}
+   @Override
+   public boolean consumes(Object object) {
+      return object instanceof ExecutedReportFileReferenceDto;
+   }
 
-	@Override
-	protected String doGetDescription(ExecutedReportFileReferenceDto node) {
-		return node.getDescription();
-	}
+   @Override
+   protected String doGetName(ExecutedReportFileReferenceDto node) {
+      return node.getName();
+   }
 
-	@Override
-	protected String doGetType(ExecutedReportFileReferenceDto node) {
-		return ScheduleAsFileMessages.INSTANCE.executedReportNodeType();
-	}
+   @Override
+   protected String doGetDescription(ExecutedReportFileReferenceDto node) {
+      return node.getDescription();
+   }
 
-	@Override
-	protected Date doGetLastUpdatedOn(ExecutedReportFileReferenceDto node) {
-		return ((ExecutedReportFileReferenceDtoDec)node).getLastUpdated();
-	}
+   @Override
+   protected String doGetType(ExecutedReportFileReferenceDto node) {
+      return ScheduleAsFileMessages.INSTANCE.executedReportNodeType();
+   }
 
-	@Override
-	protected Date doGetCreatedOn(ExecutedReportFileReferenceDto node) {
-		return ((ExecutedReportFileReferenceDtoDec)node).getCreatedOn();
-	}
+   @Override
+   protected Date doGetLastUpdatedOn(ExecutedReportFileReferenceDto node) {
+      return ((ExecutedReportFileReferenceDtoDec) node).getLastUpdated();
+   }
 
-	@Override
-	protected ImageResource doGetIconSmall(ExecutedReportFileReferenceDto node) {
-		return node.toIcon().toImageResource();
-	}
+   @Override
+   protected Date doGetCreatedOn(ExecutedReportFileReferenceDto node) {
+      return ((ExecutedReportFileReferenceDtoDec) node).getCreatedOn();
+   }
 
+   @Override
+   protected ImageResource doGetIconSmall(ExecutedReportFileReferenceDto node) {
+      return node.toIcon().toImageResource();
+   }
 
 }

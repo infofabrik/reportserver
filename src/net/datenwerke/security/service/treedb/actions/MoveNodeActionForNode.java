@@ -11,8 +11,8 @@ import net.datenwerke.security.service.security.rights.Write;
 
 public class MoveNodeActionForNode extends SecurityActionImpl {
 
-	public Collection<Right> getRights() {
-		return Arrays.asList(new Read(), new Write(), new Delete());
-	}
+   public Collection<Right> getRights() {
+      return Arrays.asList(new Read(), new Write(), new Delete());
+   }
 
 }

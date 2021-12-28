@@ -6,14 +6,13 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class NotifyStartup {
 
-	@Inject
-	public NotifyStartup(
-		HookHandlerService hookHandler
+   @Inject
+   public NotifyStartup(HookHandlerService hookHandler
 //		SendMessageOnScheduleHooker messageOnSchedule,
 //		SendMessageOnScheduleFailure messageOnScheduleFailure
-		){
-		
+   ) {
+
 //		hookHandler.attachHooker(ExecuteJobListenerHook.class, messageOnScheduleFailure);
 //		hookHandler.attachHooker(ReportScheduleNotificationHook.class, messageOnSchedule);
-	}
+   }
 }

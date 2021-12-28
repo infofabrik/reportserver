@@ -17,52 +17,51 @@ import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfi
  */
 abstract public class ImporterMainPropertiesPanel<C extends ImportConfigDto> extends DwContentPanel {
 
-	protected SimpleForm form;
-	
-	protected void initializeUI() {
-		/* configure */
-		setHeaderVisible(false);
-		setBodyBorder(false);
-		setBorders(false);
-		
-		/* create form */
-		form = SimpleForm.getInlineInstance();
-		form.setLabelAlign(LabelAlign.TOP);
-		form.setFieldWidth(250);
-		configureForm();
-		form.loadFields();
-		
-		DwContentPanel wrapper = new DwContentPanel();
-		wrapper.setLightDarkStyle();
-		wrapper.setHeading(getHeadline());
-		wrapper.setInfoText(getDescription());
-		wrapper.add(form);
-		
-		VerticalLayoutContainer outerWrapper = new VerticalLayoutContainer();
-		outerWrapper.setScrollMode(ScrollMode.AUTOY);
-		outerWrapper.add(wrapper, new VerticalLayoutData(1,-1,new Margins(10)));
-		
-		add(outerWrapper);
-	}
+   protected SimpleForm form;
 
-	abstract protected String getDescription();
+   protected void initializeUI() {
+      /* configure */
+      setHeaderVisible(false);
+      setBodyBorder(false);
+      setBorders(false);
 
-	abstract protected String getHeadline();
+      /* create form */
+      form = SimpleForm.getInlineInstance();
+      form.setLabelAlign(LabelAlign.TOP);
+      form.setFieldWidth(250);
+      configureForm();
+      form.loadFields();
 
-	protected void configureForm() {
+      DwContentPanel wrapper = new DwContentPanel();
+      wrapper.setLightDarkStyle();
+      wrapper.setHeading(getHeadline());
+      wrapper.setInfoText(getDescription());
+      wrapper.add(form);
 
-	}
+      VerticalLayoutContainer outerWrapper = new VerticalLayoutContainer();
+      outerWrapper.setScrollMode(ScrollMode.AUTOY);
+      outerWrapper.add(wrapper, new VerticalLayoutData(1, -1, new Margins(10)));
 
-	public void populateConfig(C config) throws NotProperlyConfiguredException {
-		
-	}
+      add(outerWrapper);
+   }
 
-	public void validateConfig(C config) throws NotProperlyConfiguredException{
-	}
+   abstract protected String getDescription();
 
-	public void resetConfig() {
-		form.getFormPanel().reset();
-	}
+   abstract protected String getHeadline();
 
-	
+   protected void configureForm() {
+
+   }
+
+   public void populateConfig(C config) throws NotProperlyConfiguredException {
+
+   }
+
+   public void validateConfig(C config) throws NotProperlyConfiguredException {
+   }
+
+   public void resetConfig() {
+      form.getFormPanel().reset();
+   }
+
 }

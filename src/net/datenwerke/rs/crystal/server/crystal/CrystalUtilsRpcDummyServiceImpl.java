@@ -14,32 +14,30 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class CrystalUtilsRpcDummyServiceImpl extends SecuredRemoteServiceServlet implements CrystalUtilsRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1872709659662933367L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1872709659662933367L;
 
-	@Inject
-	public CrystalUtilsRpcDummyServiceImpl() {
-	}
+   @Inject
+   public CrystalUtilsRpcDummyServiceImpl() {
+   }
 
-	@Override
-	public List<CrystalParameterProposalDto> proposeParametersFor(CrystalReportDto report)
-			throws ServerCallFailedException {
-		return null;
-	}
+   @Override
+   public List<CrystalParameterProposalDto> proposeParametersFor(CrystalReportDto report)
+         throws ServerCallFailedException {
+      return null;
+   }
 
-	@Override
-	public CrystalReportDto addParametersFor(CrystalReportDto report, List<CrystalParameterProposalDto> proposalDtos)
-			throws ServerCallFailedException {
-		return null;
-	}
+   @Override
+   public CrystalReportDto addParametersFor(CrystalReportDto report, List<CrystalParameterProposalDto> proposalDtos)
+         throws ServerCallFailedException {
+      return null;
+   }
 
-	@Override
-	public Boolean hasCrystalLibraries() throws ServerCallFailedException {
-		return false;
-	}
-	
-	
+   @Override
+   public Boolean hasCrystalLibraries() throws ServerCallFailedException {
+      return false;
+   }
 
 }

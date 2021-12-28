@@ -8,30 +8,29 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReport
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.decorator.ExecutedReportFileReferenceDtoDec;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.entities.ExecutedReportFileReference;
 
-public class ExecuteReportFileReference2DtoPost implements
-		Poso2DtoPostProcessor<ExecutedReportFileReference, ExecutedReportFileReferenceDto> {
+public class ExecuteReportFileReference2DtoPost
+      implements Poso2DtoPostProcessor<ExecutedReportFileReference, ExecutedReportFileReferenceDto> {
 
-	private final ReportIconHelper iconHelper;
+   private final ReportIconHelper iconHelper;
 
-	@Inject
-	public ExecuteReportFileReference2DtoPost(ReportIconHelper iconHelper) {
-		this.iconHelper = iconHelper;
-	}
+   @Inject
+   public ExecuteReportFileReference2DtoPost(ReportIconHelper iconHelper) {
+      this.iconHelper = iconHelper;
+   }
 
-	@Override
-	public void dtoCreated(ExecutedReportFileReference ref,
-			ExecutedReportFileReferenceDto refDto) {
-		if(null != ref.getOutputFormat()){
-			((ExecutedReportFileReferenceDtoDec)refDto).setIconStr(iconHelper.getSmallIconForOutputFormat(ref.getOutputFormat()));
-			((ExecutedReportFileReferenceDtoDec)refDto).setTypeStr(ref.getOutputFormat().toLowerCase());
-		}
-		
-	}
+   @Override
+   public void dtoCreated(ExecutedReportFileReference ref, ExecutedReportFileReferenceDto refDto) {
+      if (null != ref.getOutputFormat()) {
+         ((ExecutedReportFileReferenceDtoDec) refDto)
+               .setIconStr(iconHelper.getSmallIconForOutputFormat(ref.getOutputFormat()));
+         ((ExecutedReportFileReferenceDtoDec) refDto).setTypeStr(ref.getOutputFormat().toLowerCase());
+      }
 
-	@Override
-	public void dtoInstantiated(ExecutedReportFileReference arg0,
-			ExecutedReportFileReferenceDto arg1) {
-		
-	}
+   }
+
+   @Override
+   public void dtoInstantiated(ExecutedReportFileReference arg0, ExecutedReportFileReferenceDto arg1) {
+
+   }
 
 }

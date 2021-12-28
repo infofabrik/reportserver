@@ -8,75 +8,75 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public class ReportSessionCacheEntry implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	private long id;
-	private String outputFormat;
-	private Report adjustedReport;
-	private ReportExecutionConfig[] executorConfigs;
-	private Throwable error;
-	private BufferedImage image;
-	private boolean cached;
-	
-	public ReportSessionCacheEntry() {
-	}
+   private long id;
+   private String outputFormat;
+   private Report adjustedReport;
+   private ReportExecutionConfig[] executorConfigs;
+   private Throwable error;
+   private BufferedImage image;
+   private boolean cached;
 
-	public long getId() {
-		return id;
-	}
+   public ReportSessionCacheEntry() {
+   }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+   public long getId() {
+      return id;
+   }
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+   public void setId(long id) {
+      this.id = id;
+   }
 
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
+   public String getOutputFormat() {
+      return outputFormat;
+   }
 
-	public Report getAdjustedReport() {
-		return adjustedReport;
-	}
+   public void setOutputFormat(String outputFormat) {
+      this.outputFormat = outputFormat;
+   }
 
-	public void setAdjustedReport(Report adjustedReport) {
-		this.adjustedReport = adjustedReport;
-	}
+   public Report getAdjustedReport() {
+      return adjustedReport;
+   }
 
-	public ReportExecutionConfig[] getExecutorConfigs() {
-		return executorConfigs;
-	}
-	
-	public void setExecutorConfigs(ReportExecutionConfig[] executorConfigs) {
-		this.executorConfigs = executorConfigs;
-	}
+   public void setAdjustedReport(Report adjustedReport) {
+      this.adjustedReport = adjustedReport;
+   }
 
-	public void setError(Throwable error) {
-		this.error = error;
-	}
-	
-	public Throwable getError() {
-		return error;
-	}
-	
-	public BufferedImage getImage() {
-		return image;
-	}
-	
-	public void setImage(BufferedImage image) {
-		this.image = image;
-	}
-	
-	public boolean isCached() {
-		return cached;
-	}
-	
-	public void setCached(boolean cached) {
-		this.cached = cached;
-	}
+   public ReportExecutionConfig[] getExecutorConfigs() {
+      return executorConfigs;
+   }
+
+   public void setExecutorConfigs(ReportExecutionConfig[] executorConfigs) {
+      this.executorConfigs = executorConfigs;
+   }
+
+   public void setError(Throwable error) {
+      this.error = error;
+   }
+
+   public Throwable getError() {
+      return error;
+   }
+
+   public BufferedImage getImage() {
+      return image;
+   }
+
+   public void setImage(BufferedImage image) {
+      this.image = image;
+   }
+
+   public boolean isCached() {
+      return cached;
+   }
+
+   public void setCached(boolean cached) {
+      this.cached = cached;
+   }
 }

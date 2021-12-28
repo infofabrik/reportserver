@@ -9,12 +9,12 @@ import net.datenwerke.gf.client.theme.dto.ThemeUiConfig;
 @ImplementedBy(ThemeServiceImpl.class)
 public interface ThemeService {
 
-	String getTheme();
-	
-	ThemeUiConfig loadUiConfig();
+   String getTheme();
 
-	byte[] getLogo();
+   ThemeUiConfig loadUiConfig();
 
-	Map<String, String> getColorMap();
+   byte[] getLogo();
+
+   Map<String, String> getColorMap();
 
 }

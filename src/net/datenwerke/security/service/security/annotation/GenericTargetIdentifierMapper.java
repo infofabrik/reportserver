@@ -8,12 +8,13 @@ import java.lang.annotation.Target;
 import net.datenwerke.security.service.security.GenericSecurityTargetMarker;
 
 /**
- * Can be used to to map "transport" GeneruciSecurityTargetMarkers from client to server.
+ * Can be used to to map "transport" GeneruciSecurityTargetMarkers from client
+ * to server.
  * 
  *
  */
-@Retention(RetentionPolicy.RUNTIME) 
+@Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface GenericTargetIdentifierMapper {
-	Class<? extends GenericSecurityTargetMarker> value();
+   Class<? extends GenericSecurityTargetMarker> value();
 }

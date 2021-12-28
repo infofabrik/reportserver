@@ -7,10 +7,11 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.base.client.reportengines.table.ui.TableReportPreviewView;
 
-public interface TableReportPreviewCellEnhancerHook extends Hook{
+public interface TableReportPreviewCellEnhancerHook extends Hook {
 
-	public boolean consumes(TableReportDto report, ColumnDto column, String value, String rawValue, String[] rowValues);
+   public boolean consumes(TableReportDto report, ColumnDto column, String value, String rawValue, String[] rowValues);
 
-	public boolean enhanceMenu(TableReportPreviewView tableReportPreviewView, Menu menu, TableReportDto report, ColumnDto column, String rawValue, String value, String[] rowValues);
+   public boolean enhanceMenu(TableReportPreviewView tableReportPreviewView, Menu menu, TableReportDto report,
+         ColumnDto column, String rawValue, String value, String[] rowValues);
 
 }

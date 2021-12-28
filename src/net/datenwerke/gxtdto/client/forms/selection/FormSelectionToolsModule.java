@@ -4,11 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class FormSelectionToolsModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		requestStaticInjection(
-			SelectionPopup.class
-		);
-	}
+   @Override
+   protected void configure() {
+      requestStaticInjection(SelectionPopup.class);
+   }
 
 }

@@ -15,34 +15,30 @@ import net.datenwerke.security.service.security.rights.Right;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.teamspace.client.teamspace.security",
-	dtoImplementInterfaces=SecureeDto.class
-)
-public class TeamSpaceSecuree implements Securee{
-	
-	private final TeamSpaceMessages messages = LocalizationServiceImpl.getMessages(TeamSpaceMessages.class);
-	
-	public static final String SECUREE_ID = "TeamSpaceService_Securee"; //$NON-NLS-1$
-	
-	@Override
-	public List<Right> getRights() {
-		List<Right> rights = new ArrayList<Right>();
-		
-		rights.add(new TeamSpaceAdministrator());
-		
-		return rights;
-	}
+@GenerateDto(dtoPackage = "net.datenwerke.rs.teamspace.client.teamspace.security", dtoImplementInterfaces = SecureeDto.class)
+public class TeamSpaceSecuree implements Securee {
 
-	@Override
-	public String getSecureeId() {
-		return SECUREE_ID;
-	}
+   private final TeamSpaceMessages messages = LocalizationServiceImpl.getMessages(TeamSpaceMessages.class);
 
-	@Override
-	public String getName(){
-		return messages.teamSpaceSecureeName(); 
-	}
-	
+   public static final String SECUREE_ID = "TeamSpaceService_Securee"; //$NON-NLS-1$
+
+   @Override
+   public List<Right> getRights() {
+      List<Right> rights = new ArrayList<Right>();
+
+      rights.add(new TeamSpaceAdministrator());
+
+      return rights;
+   }
+
+   @Override
+   public String getSecureeId() {
+      return SECUREE_ID;
+   }
+
+   @Override
+   public String getName() {
+      return messages.teamSpaceSecureeName();
+   }
 
 }

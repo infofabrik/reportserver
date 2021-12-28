@@ -65,18 +65,11 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public GoogleDriveRpcServiceImpl(
-         ReportService reportService, 
-         ReportDtoService reportDtoService,
-         DtoService dtoService, 
-         ReportExecutorService reportExecutorService, 
-         SecurityService securityService,
-         HookHandlerService hookHandlerService, 
-         GoogleDriveService googleDriveService,
-         ExceptionServices exceptionServices, 
-         ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+   public GoogleDriveRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService,
+         DtoService dtoService, ReportExecutorService reportExecutorService, SecurityService securityService,
+         HookHandlerService hookHandlerService, GoogleDriveService googleDriveService,
+         ExceptionServices exceptionServices, ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -91,10 +84,10 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken,
-         DatasinkDefinitionDto datasinkDto, String format, List<ReportExecutionConfigDto> configs,
-         String name, String folder, boolean compressed) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof GoogleDriveDatasinkDto))
+   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
+         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         throws ServerCallFailedException {
+      if (!(datasinkDto instanceof GoogleDriveDatasinkDto))
          throw new IllegalArgumentException("Not a google drive datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
@@ -124,10 +117,10 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), googleDriveDatasink, googleDriveService,
-                     new DatasinkFilenameFolderConfig() {
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), googleDriveDatasink,
+                     googleDriveService, new DatasinkFilenameFolderConfig() {
 
                         @Override
                         public String getFilename() {
@@ -143,8 +136,8 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), googleDriveDatasink, googleDriveService,
-                  new DatasinkFilenameFolderConfig() {
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), googleDriveDatasink,
+                  googleDriveService, new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFilename() {
@@ -223,12 +216,12 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    }
 
    @Override
-   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder,boolean compressed) throws ServerCallFailedException {
+   public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
       datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, googleDriveService, filename,
-             folder, compressed);
+            folder, compressed);
    }
 }

@@ -15,12 +15,15 @@ import net.datenwerke.rs.utils.localization.Messages;
 @Inherited
 public @interface CliHelpMessage {
 
-	Class<? extends Messages> messageClass();
-	String description();
-	
-	String name();
-	String version() default "0.1";
-	
-	Argument[] args() default {};
-	NonOptArgument[] nonOptArgs() default {};
+   Class<? extends Messages> messageClass();
+
+   String description();
+
+   String name();
+
+   String version() default "0.1";
+
+   Argument[] args() default {};
+
+   NonOptArgument[] nonOptArgs() default {};
 }

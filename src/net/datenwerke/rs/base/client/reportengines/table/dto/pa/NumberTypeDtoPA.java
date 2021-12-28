@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.NumberTypeDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.format.enums.NumberType.class)
 public interface NumberTypeDtoPA extends PropertyAccess<NumberTypeDto> {
 
-
-
 }

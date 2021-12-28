@@ -6,40 +6,35 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.grideditor.service.grideditor.locale.GridEditorMessages;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.grideditor.client.grideditor.dto",
-	generateDto2Poso=false,
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", generateDto2Poso = false, createDecorator = true)
 public class MaxDateValidator extends Validator<Date> {
 
-	@ExposeToClient
-	private Date maxDate;
-	
-	public MaxDateValidator(){
-	}
+   @ExposeToClient
+   private Date maxDate;
 
-	public MaxDateValidator(Date maxDate, String errorMsg){
-		setMaxDate(maxDate);
-		setErrorMsg(errorMsg);
-	}
+   public MaxDateValidator() {
+   }
 
-	public Date getMaxDate() {
-		return maxDate;
-	}
+   public MaxDateValidator(Date maxDate, String errorMsg) {
+      setMaxDate(maxDate);
+      setErrorMsg(errorMsg);
+   }
 
-	public void setMaxDate(Date maxDate) {
-		this.maxDate = maxDate;
-	}
+   public Date getMaxDate() {
+      return maxDate;
+   }
 
-	@Override
-	public String validate(Date d) {
-		if(null == d)
-			return null;
-		
-		return d.before(maxDate) ? null :
-			(null == getErrorMsg() ? GridEditorMessages.INSTANCE.validationFailedDefaultMessage() : getErrorMsg());
-	}
-	
-	
+   public void setMaxDate(Date maxDate) {
+      this.maxDate = maxDate;
+   }
+
+   @Override
+   public String validate(Date d) {
+      if (null == d)
+         return null;
+
+      return d.before(maxDate) ? null
+            : (null == getErrorMsg() ? GridEditorMessages.INSTANCE.validationFailedDefaultMessage() : getErrorMsg());
+   }
+
 }

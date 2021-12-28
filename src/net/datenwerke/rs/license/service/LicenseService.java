@@ -7,36 +7,36 @@ import net.datenwerke.rs.license.service.exceptions.LicenseValidationFailedExcep
 
 public interface LicenseService {
 
-	void checkInit();
-	
-	Date getInstallationDate();
+   void checkInit();
 
-	String getServerId();
-	
-	String getRsVersion();
-	
-	void updateLicense(String license) throws LicenseValidationFailedException;
-	
-	String getLicenseType();
+   Date getInstallationDate();
 
-	String getLicenseName();
-	
-	Date getUpgradesUntil();
+   String getServerId();
 
-	Date getLicenseIssueDate();
-	
-	Date getLicenseExpirationDate();
+   String getRsVersion();
 
-	HashMap<String, String> getAdditionalLicenseProperties();
+   void updateLicense(String license) throws LicenseValidationFailedException;
 
-	boolean isEnterprise();
-	
-	boolean isEvaluation();
+   String getLicenseType();
 
-	boolean hasNonCommunityLicense();
+   String getLicenseName();
 
-	boolean isInitialized();
+   Date getUpgradesUntil();
 
-	boolean isCustomLicenseType();
+   Date getLicenseIssueDate();
+
+   Date getLicenseExpirationDate();
+
+   HashMap<String, String> getAdditionalLicenseProperties();
+
+   boolean isEnterprise();
+
+   boolean isEvaluation();
+
+   boolean hasNonCommunityLicense();
+
+   boolean isInitialized();
+
+   boolean isCustomLicenseType();
 
 }

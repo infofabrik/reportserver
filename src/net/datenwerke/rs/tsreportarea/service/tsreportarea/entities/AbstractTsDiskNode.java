@@ -21,47 +21,34 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
  */
 
 @Entity
-@Table(name="TS_DISK_NODE")
+@Table(name = "TS_DISK_NODE")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@TreeDBTree(
-	rootTypes=TsDiskRoot.class,
-	manager=TsDiskService.class,
-	multipleRoots = true
-)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tsreportarea.client.tsreportarea.dto",
-	abstractDto=true,
-	createDecorator=true,
-	poso2DtoPostProcessors=AbstractTsDiskNode2DtoPost.class,
-	whitelist=RsDto.class,
-	additionalFields = {
-		@AdditionalField(name="teamSpaceId", type=Long.class)
-	}
-)
-abstract public class AbstractTsDiskNode extends AbstractNode<AbstractTsDiskNode>  {
+@Inheritance(strategy = InheritanceType.JOINED)
+@TreeDBTree(rootTypes = TsDiskRoot.class, manager = TsDiskService.class, multipleRoots = true)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tsreportarea.client.tsreportarea.dto", abstractDto = true, createDecorator = true, poso2DtoPostProcessors = AbstractTsDiskNode2DtoPost.class, whitelist = RsDto.class, additionalFields = {
+      @AdditionalField(name = "teamSpaceId", type = Long.class) })
+abstract public class AbstractTsDiskNode extends AbstractNode<AbstractTsDiskNode> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 889807740883444464L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 889807740883444464L;
 
-	
-	public abstract String getName();
-	
-	public abstract String getDescription();
-	
-	public abstract void setName(String name);
-	
-	public abstract void setDescription(String name);
-	
-	@Override
-	public String getNodeName() {
-		return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
-	}
+   public abstract String getName();
 
-	@Override
-	public String getRootNodeName() {
-		return "tsreport";
-	}
+   public abstract String getDescription();
+
+   public abstract void setName(String name);
+
+   public abstract void setDescription(String name);
+
+   @Override
+   public String getNodeName() {
+      return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
+   }
+
+   @Override
+   public String getRootNodeName() {
+      return "tsreport";
+   }
 }

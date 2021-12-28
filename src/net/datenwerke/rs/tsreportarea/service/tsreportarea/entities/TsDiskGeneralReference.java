@@ -27,85 +27,70 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
  *
  */
 @Entity
-@Table(name="TS_DISK_GENERAL_REFERENCE")
+@Table(name = "TS_DISK_GENERAL_REFERENCE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tsreportarea.client.tsreportarea.dto",
-	createDecorator=true,
-	abstractDto = true,
-	poso2DtoPostProcessors=GeneralReference2DtoPost.class,
-	additionalFields = {
-		@AdditionalField(name="referenceLastUpdated", type=Date.class)
-	}
-)
-@InstanceDescription(
-	msgLocation=TsDiskMessages.class,
-	objNameKey="tsDiskGeneralReferenceName",
-	icon = "file"
-)
-public abstract class TsDiskGeneralReference extends AbstractTsDiskNode{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tsreportarea.client.tsreportarea.dto", createDecorator = true, abstractDto = true, poso2DtoPostProcessors = GeneralReference2DtoPost.class, additionalFields = {
+      @AdditionalField(name = "referenceLastUpdated", type = Date.class) })
+@InstanceDescription(msgLocation = TsDiskMessages.class, objNameKey = "tsDiskGeneralReferenceName", icon = "file")
+public abstract class TsDiskGeneralReference extends AbstractTsDiskNode {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 2253693289691622558L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2253693289691622558L;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Field
-	@Column(length = 128,nullable=false)
-	@Title
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Field
+   @Column(length = 128, nullable = false)
+   @Title
+   private String name;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@Description
-    private String description;
-	
-    public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @Description
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public String getName() {
+      return name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
-	
-	@Transient
-	abstract public Date getReferenceLastUpdated();
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	@Transient
-	abstract public boolean hasData();
+   public String getDescription() {
+      return description;
+   }
 
-	@Transient
-	public byte[] getData(){
-		return null;
-	}
+   @Transient
+   abstract public Date getReferenceLastUpdated();
 
-	@Transient
-	public String getDataContentType() {
-		return null;
-	}
+   @Transient
+   abstract public boolean hasData();
 
-	@Transient
-	public long getSize() {
-		return 0;
-	}
+   @Transient
+   public byte[] getData() {
+      return null;
+   }
 
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Transient
+   public String getDataContentType() {
+      return null;
+   }
+
+   @Transient
+   public long getSize() {
+      return 0;
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

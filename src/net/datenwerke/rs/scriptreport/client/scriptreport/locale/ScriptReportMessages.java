@@ -3,24 +3,24 @@ package net.datenwerke.rs.scriptreport.client.scriptreport.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface ScriptReportMessages extends Messages{
+public interface ScriptReportMessages extends Messages {
 
-	public final static ScriptReportMessages INSTANCE = GWT.create(ScriptReportMessages.class);
-	
-	String reportTypeName();
+   public final static ScriptReportMessages INSTANCE = GWT.create(ScriptReportMessages.class);
 
-	String editReport();
+   String reportTypeName();
 
-	String script();
+   String editReport();
 
-	String exportFormats();
+   String script();
 
-	String arguments();
+   String exportFormats();
 
-	String scriptParameterName();
-	
-	String scriptParameterText();
+   String arguments();
 
-	String parameterDefaultValue();
+   String scriptParameterName();
+
+   String scriptParameterText();
+
+   String parameterDefaultValue();
 
 }

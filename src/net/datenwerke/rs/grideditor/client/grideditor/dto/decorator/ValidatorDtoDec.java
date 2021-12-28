@@ -10,12 +10,11 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.ValidatorDto;
  */
 abstract public class ValidatorDtoDec extends ValidatorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ValidatorDtoDec() {
+      super();
+   }
 
-	public ValidatorDtoDec() {
-		super();
-	}
-
-	public abstract Validator<?> getValidator();
+   public abstract Validator<?> getValidator();
 }

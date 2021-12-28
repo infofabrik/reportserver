@@ -11,37 +11,37 @@ import net.datenwerke.rs.search.service.search.results.SearchFilter;
 
 public class Dto2SearchFilterPost implements Dto2PosoPostProcessor<SearchFilterDto, SearchFilter> {
 
-	private final DtoService dtoService;
-	
-	@Inject
-	public Dto2SearchFilterPost(DtoService dtoService) {
-		this.dtoService = dtoService;
-	}
+   private final DtoService dtoService;
 
-	@Override
-	public void posoCreated(SearchFilterDto d, SearchFilter poso) {
-		SearchFilterDtoDec dto = (SearchFilterDtoDec) d;
-		Dto base = dto.getBaseType();
-		if(null != base){
-			Object fin = dtoService.createDto(base);
-			poso.setBaseType(fin.getClass());
-		}
-	}
+   @Inject
+   public Dto2SearchFilterPost(DtoService dtoService) {
+      this.dtoService = dtoService;
+   }
 
-	@Override
-	public void posoCreatedUnmanaged(SearchFilterDto arg0, SearchFilter arg1) {
-	}
+   @Override
+   public void posoCreated(SearchFilterDto d, SearchFilter poso) {
+      SearchFilterDtoDec dto = (SearchFilterDtoDec) d;
+      Dto base = dto.getBaseType();
+      if (null != base) {
+         Object fin = dtoService.createDto(base);
+         poso.setBaseType(fin.getClass());
+      }
+   }
 
-	@Override
-	public void posoInstantiated(SearchFilter arg0) {
-	}
+   @Override
+   public void posoCreatedUnmanaged(SearchFilterDto arg0, SearchFilter arg1) {
+   }
 
-	@Override
-	public void posoLoaded(SearchFilterDto arg0, SearchFilter arg1) {
-	}
+   @Override
+   public void posoInstantiated(SearchFilter arg0) {
+   }
 
-	@Override
-	public void posoMerged(SearchFilterDto arg0, SearchFilter arg1) {
-	}
+   @Override
+   public void posoLoaded(SearchFilterDto arg0, SearchFilter arg1) {
+   }
+
+   @Override
+   public void posoMerged(SearchFilterDto arg0, SearchFilter arg1) {
+   }
 
 }

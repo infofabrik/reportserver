@@ -12,15 +12,12 @@ import net.datenwerke.security.service.authenticator.hooks.PAMHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class PAMHookAdapter implements PAMHook {
 
-	@Override
-	public void beforeStaticPamConfig(LinkedHashSet<ReportServerPAM> pams)  {
-	}
+   @Override
+   public void beforeStaticPamConfig(LinkedHashSet<ReportServerPAM> pams) {
+   }
 
-
-	@Override
-	public void afterStaticPamConfig(LinkedHashSet<ReportServerPAM> pams)  {
-	}
-
-
+   @Override
+   public void afterStaticPamConfig(LinkedHashSet<ReportServerPAM> pams) {
+   }
 
 }

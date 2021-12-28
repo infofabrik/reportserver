@@ -33,102 +33,94 @@ import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public class RemoveScheduleEntryHooker implements ScheduledReportListDetailToolbarHook {
-	
-	private final SchedulerDao schedulerDao;
-	private final LoginService loginService;
-	private final ToolbarService toolbarService;
-	private final SecurityUIService securityService;
 
-	@Inject
-	public RemoveScheduleEntryHooker(
-		SchedulerDao schedulerDao,
-		LoginService loginService,
-		SecurityUIService securityService,
-		ToolbarService toolbarService
-		) {
-		
-		/* store objects */
-		this.schedulerDao = schedulerDao;
-		this.loginService = loginService;
-		this.securityService = securityService;
-		this.toolbarService = toolbarService;
-	}
+   private final SchedulerDao schedulerDao;
+   private final LoginService loginService;
+   private final ToolbarService toolbarService;
+   private final SecurityUIService securityService;
 
-	@Override
-	public void statusBarToolbarHook_addLeft(ToolBar toolbar,
-			final ReportScheduleJobListInformation info,
-			ReportScheduleJobInformation detailInfo,
-			final ScheduledReportListPanel reportListPanel) {
-		
-	}
+   @Inject
+   public RemoveScheduleEntryHooker(SchedulerDao schedulerDao, LoginService loginService,
+         SecurityUIService securityService, ToolbarService toolbarService) {
 
-	@Override
-	public void statusBarToolbarHook_addRight(ToolBar toolbar,
-		final	ReportScheduleJobListInformation info,
-			ReportScheduleJobInformation detailInfo,
-			final ScheduledReportListPanel reportListPanel) {
+      /* store objects */
+      this.schedulerDao = schedulerDao;
+      this.loginService = loginService;
+      this.securityService = securityService;
+      this.toolbarService = toolbarService;
+   }
 
-		/* only for selected user */
-		UserDto user = loginService.getCurrentUser();
-		if(! detailInfo.isOwner(user) && ! user.isSuperUser()) {
-			/* If we are in the admin-panel: we check for scheduling-admin rights. */
-			if (reportListPanel.getName().equals(SchedulerAdminModule.ADMIN_FILTER_PANEL)) {
-				if(! securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class)) {
-					return;
-				}
-			} else {
-				/* We are not in the admin panel. */
-				return;
-			}
-		}
-		
-		TextButton removeBtn;
-		if(securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class)){
-			removeBtn = new DwSplitButton(SchedulerMessages.INSTANCE.archiveScheduledJobLabel());
-			((DwSplitButton)removeBtn).setIcon(BaseIcon.ARCHIVE);
-			Menu menu = new DwMenu();
-			removeBtn.setMenu(menu);
-			
-			MenuItem deleteItem = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-			menu.add(deleteItem);
-			deleteItem.addSelectionHandler(new SelectionHandler<Item>() {
-				@Override
-				public void onSelection(SelectionEvent<Item> event) {
-					schedulerDao.remove(info.getJobId(), new RsAsyncCallback<Boolean>(){
-						@Override
-						public void onSuccess(Boolean result) {
-							if(result)
-								reportListPanel.reload();
-							else 
-								new MessageBox(SchedulerMessages.INSTANCE.error(), SchedulerMessages.INSTANCE.couldNotRemoveJob()).show();
-						}
-					});
-				}
-			});
-		} else 
-			removeBtn = toolbarService.createSmallButtonLeft(SchedulerMessages.INSTANCE.archiveScheduledJobLabel(), BaseIcon.ARCHIVE);
-		
-		
-		removeBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				schedulerDao.unschedule(info.getJobId(), new RsAsyncCallback<Boolean>(){
-					@Override
-					public void onSuccess(Boolean result) {
-						if(result)
-							reportListPanel.reload();
-						else 
-							new MessageBox(SchedulerMessages.INSTANCE.error(), SchedulerMessages.INSTANCE.couldNotRemoveJob()).show();
-					}
-				});
-			}
-		});
-		
-		
-		
-		toolbar.add(removeBtn);
-		
-	}
+   @Override
+   public void statusBarToolbarHook_addLeft(ToolBar toolbar, final ReportScheduleJobListInformation info,
+         ReportScheduleJobInformation detailInfo, final ScheduledReportListPanel reportListPanel) {
+
+   }
+
+   @Override
+   public void statusBarToolbarHook_addRight(ToolBar toolbar, final ReportScheduleJobListInformation info,
+         ReportScheduleJobInformation detailInfo, final ScheduledReportListPanel reportListPanel) {
+
+      /* only for selected user */
+      UserDto user = loginService.getCurrentUser();
+      if (!detailInfo.isOwner(user) && !user.isSuperUser()) {
+         /* If we are in the admin-panel: we check for scheduling-admin rights. */
+         if (reportListPanel.getName().equals(SchedulerAdminModule.ADMIN_FILTER_PANEL)) {
+            if (!securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class)) {
+               return;
+            }
+         } else {
+            /* We are not in the admin panel. */
+            return;
+         }
+      }
+
+      TextButton removeBtn;
+      if (securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class)) {
+         removeBtn = new DwSplitButton(SchedulerMessages.INSTANCE.archiveScheduledJobLabel());
+         ((DwSplitButton) removeBtn).setIcon(BaseIcon.ARCHIVE);
+         Menu menu = new DwMenu();
+         removeBtn.setMenu(menu);
+
+         MenuItem deleteItem = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
+         menu.add(deleteItem);
+         deleteItem.addSelectionHandler(new SelectionHandler<Item>() {
+            @Override
+            public void onSelection(SelectionEvent<Item> event) {
+               schedulerDao.remove(info.getJobId(), new RsAsyncCallback<Boolean>() {
+                  @Override
+                  public void onSuccess(Boolean result) {
+                     if (result)
+                        reportListPanel.reload();
+                     else
+                        new MessageBox(SchedulerMessages.INSTANCE.error(),
+                              SchedulerMessages.INSTANCE.couldNotRemoveJob()).show();
+                  }
+               });
+            }
+         });
+      } else
+         removeBtn = toolbarService.createSmallButtonLeft(SchedulerMessages.INSTANCE.archiveScheduledJobLabel(),
+               BaseIcon.ARCHIVE);
+
+      removeBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            schedulerDao.unschedule(info.getJobId(), new RsAsyncCallback<Boolean>() {
+               @Override
+               public void onSuccess(Boolean result) {
+                  if (result)
+                     reportListPanel.reload();
+                  else
+                     new MessageBox(SchedulerMessages.INSTANCE.error(), SchedulerMessages.INSTANCE.couldNotRemoveJob())
+                           .show();
+               }
+            });
+         }
+      });
+
+      toolbar.add(removeBtn);
+
+   }
 
 }

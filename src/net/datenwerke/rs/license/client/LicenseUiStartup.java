@@ -15,29 +15,24 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class LicenseUiStartup {
 
-	@Inject
-	public LicenseUiStartup(
-			final HookHandlerService hookHandler,
-			final WaitOnEventUIService waitOnEventService,
-			final SecurityUIService securityService,
-			final Provider<LicenseAdminModule> adminModuleProvider,
-			
-			final LicenseSecurityTargetDomainHooker securityTargetDomain
-			){
-		
-		
-		/* security */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+   @Inject
+   public LicenseUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService, final Provider<LicenseAdminModule> adminModuleProvider,
 
-		
-		/* attach */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, ticket -> {
-			if (securityService.hasRight(LicenseGenericTargetIdentifier.class, ReadDto.class))
-				hookHandler.attachHooker(AdminModuleProviderHook.class,
-						new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_LOW + 1000);
+         final LicenseSecurityTargetDomainHooker securityTargetDomain) {
 
-			waitOnEventService.signalProcessingDone(ticket);
-		});
-	}
+      /* security */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* attach */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, ticket -> {
+         if (securityService.hasRight(LicenseGenericTargetIdentifier.class, ReadDto.class))
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
+                  HookHandlerService.PRIORITY_LOW + 1000);
+
+         waitOnEventService.signalProcessingDone(ticket);
+      });
+   }
 }

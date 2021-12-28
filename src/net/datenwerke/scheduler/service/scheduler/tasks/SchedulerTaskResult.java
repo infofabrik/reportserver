@@ -4,14 +4,14 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
 public class SchedulerTaskResult {
 
-	private final AbstractJob job;
-	
-	public SchedulerTaskResult(AbstractJob job) {
-		this.job = job;
-	}
+   private final AbstractJob job;
 
-	public AbstractJob getJob() {
-		return job;
-	}
+   public SchedulerTaskResult(AbstractJob job) {
+      this.job = job;
+   }
+
+   public AbstractJob getJob() {
+      return job;
+   }
 
 }

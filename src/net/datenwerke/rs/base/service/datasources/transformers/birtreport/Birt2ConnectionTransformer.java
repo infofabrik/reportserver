@@ -23,45 +23,44 @@ import net.datenwerke.rs.resultcache.ResultCacheService;
 
 public class Birt2ConnectionTransformer extends Birt2XTransformer<Connection> {
 
-	@Inject
-	public Birt2ConnectionTransformer(
-		Provider<BirtToRSTableHelper> birtToTableProvider,
-		DbPoolService dbPoolService,
-		DBHelperService dbHelperService, 
-		TempTableService tempTableService, 
-		TableModelDbHelper tableModelDbHelper, 
-		ResultCacheService resultCacheService) {
-		
-		super(birtToTableProvider, dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
-	}
+   @Inject
+   public Birt2ConnectionTransformer(Provider<BirtToRSTableHelper> birtToTableProvider, DbPoolService dbPoolService,
+         DBHelperService dbHelperService, TempTableService tempTableService, TableModelDbHelper tableModelDbHelper,
+         ResultCacheService resultCacheService) {
 
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof BirtReportDatasourceDefinition && dst.isAssignableFrom(Connection.class));
-	}
-	
+      super(birtToTableProvider, dbPoolService, dbHelperService, tempTableService, tableModelDbHelper,
+            resultCacheService);
+   }
 
-	@Override
-	protected Connection transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet, Class<TableDataSource> targetType) {
-		TempTableResult tempTableResult = (TempTableResult) r;
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof BirtReportDatasourceDefinition
+            && dst.isAssignableFrom(Connection.class));
+   }
 
-		try {
-			String query = tempTableResult.getFinalQuery();
-			
-			String queryWrapper = ((BirtReportDatasourceConfig)datasourceContainerProvider.getDatasourceContainer().getDatasourceConfig()).getQueryWrapper();
-			if(null == queryWrapper || "".equals(queryWrapper.trim()))
-				queryWrapper = query;
-			
-			parameterSet.addVariable("query", query);
-			for(String alias : tempTableResult.getTableHelper().getTableAliases())
-				parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
-			
-			Connection connection = (Connection) dbPoolService.getConnection(tempTableResult.getPoolConfig()).get();
-			return connection;
-		} catch (InterruptedException | ExecutionException | SQLException e) {
-			throw new RuntimeException(e);
-		}
-	}
+   @Override
+   protected Connection transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider,
+         ParameterSet parameterSet, Class<TableDataSource> targetType) {
+      TempTableResult tempTableResult = (TempTableResult) r;
+
+      try {
+         String query = tempTableResult.getFinalQuery();
+
+         String queryWrapper = ((BirtReportDatasourceConfig) datasourceContainerProvider.getDatasourceContainer()
+               .getDatasourceConfig()).getQueryWrapper();
+         if (null == queryWrapper || "".equals(queryWrapper.trim()))
+            queryWrapper = query;
+
+         parameterSet.addVariable("query", query);
+         for (String alias : tempTableResult.getTableHelper().getTableAliases())
+            parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
+
+         Connection connection = (Connection) dbPoolService.getConnection(tempTableResult.getPoolConfig()).get();
+         return connection;
+      } catch (InterruptedException | ExecutionException | SQLException e) {
+         throw new RuntimeException(e);
+      }
+   }
 
 }

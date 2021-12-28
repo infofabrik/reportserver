@@ -6,6 +6,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ConfigureReportViaHistoryLocationHook extends Hook {
 
-	void adjustReport(Report report, HistoryLocation location);
+   void adjustReport(Report report, HistoryLocation location);
 
 }

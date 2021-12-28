@@ -12,106 +12,104 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultList;
 
 public class ScriptResult {
 
-	private Object result;
-	private String stdout;
-	private boolean disabled = false;
+   private Object result;
+   private String stdout;
+   private boolean disabled = false;
 
-	private List<CommandResultExtension> resultExtensions = new ArrayList<CommandResultExtension>();
-	private Exception exception;
-	
-	private String contentType;
-	
-	public ScriptResult() {
-	}
-	
-	public ScriptResult(Exception e) {
-		this.exception = e;
-	}
-	
-	public boolean hasException(){
-		return null != exception;
-	}
-	
-	public Exception getException(){
-		return exception;
-	}
+   private List<CommandResultExtension> resultExtensions = new ArrayList<CommandResultExtension>();
+   private Exception exception;
 
-	public Object getResult() {
-		return result;
-	}
+   private String contentType;
 
-	public void setResult(Object result) {
-		this.result = result;
-	}
+   public ScriptResult() {
+   }
 
-	public void setResultExtension(List<CommandResultExtension> resultExtension) {
-		this.resultExtensions = resultExtension;
-	}
+   public ScriptResult(Exception e) {
+      this.exception = e;
+   }
 
-	
-	public void addResultExtension(CommandResultExtension resultExtension) {
-		this.resultExtensions.add(resultExtension);
-	}
-	
-	public void addResultExtensions(Collection<? extends CommandResultExtension> resultExtensions) {
-		this.resultExtensions.addAll(resultExtensions);
-	}
+   public boolean hasException() {
+      return null != exception;
+   }
 
-	public List<CommandResultExtension> getResultExtensions() {
-		return resultExtensions;
-	}
+   public Exception getException() {
+      return exception;
+   }
 
-	public boolean isDisabled() {
-		return disabled;
-	}
+   public Object getResult() {
+      return result;
+   }
 
-	public void setDisabled(boolean disabled) {
-		this.disabled = disabled;
-	}
-	
-	public String getStdout() {
-		return stdout;
-	}
-	
-	public void setStdout(String stdout) {
-		this.stdout = stdout;
-	}
-	
-	public String getContentType() {
-		return contentType;
-	}
-	
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+   public void setResult(Object result) {
+      this.result = result;
+   }
 
-	public CommandResult asCommandResult() {
-		if(getResult() instanceof CommandResult){
-			CommandResult cr = (CommandResult) getResult();
-			cr.addExtensions(getResultExtensions());
-			
-			return cr;
-		} else {
-			CommandResult cr = new CommandResult();
-			
-			if(null != getResult()){
-				CommandResultList list = new CommandResultList(Arrays.asList(getResult().toString().split("\n")));
-				list.setDenyBreakUp(true);
-				cr.addEntry(list);
-			}
+   public void setResultExtension(List<CommandResultExtension> resultExtension) {
+      this.resultExtensions = resultExtension;
+   }
 
-			cr.addExtensions(getResultExtensions());
-			
-			if(null != stdout && !stdout.isEmpty()){
-				Scanner sc = new Scanner(stdout);
-				while(sc.hasNextLine()){
-					cr.addResultLine(sc.nextLine());
-				}
-			}
-			
-			return cr;
-		}
-	}
+   public void addResultExtension(CommandResultExtension resultExtension) {
+      this.resultExtensions.add(resultExtension);
+   }
 
-	
+   public void addResultExtensions(Collection<? extends CommandResultExtension> resultExtensions) {
+      this.resultExtensions.addAll(resultExtensions);
+   }
+
+   public List<CommandResultExtension> getResultExtensions() {
+      return resultExtensions;
+   }
+
+   public boolean isDisabled() {
+      return disabled;
+   }
+
+   public void setDisabled(boolean disabled) {
+      this.disabled = disabled;
+   }
+
+   public String getStdout() {
+      return stdout;
+   }
+
+   public void setStdout(String stdout) {
+      this.stdout = stdout;
+   }
+
+   public String getContentType() {
+      return contentType;
+   }
+
+   public void setContentType(String contentType) {
+      this.contentType = contentType;
+   }
+
+   public CommandResult asCommandResult() {
+      if (getResult() instanceof CommandResult) {
+         CommandResult cr = (CommandResult) getResult();
+         cr.addExtensions(getResultExtensions());
+
+         return cr;
+      } else {
+         CommandResult cr = new CommandResult();
+
+         if (null != getResult()) {
+            CommandResultList list = new CommandResultList(Arrays.asList(getResult().toString().split("\n")));
+            list.setDenyBreakUp(true);
+            cr.addEntry(list);
+         }
+
+         cr.addExtensions(getResultExtensions());
+
+         if (null != stdout && !stdout.isEmpty()) {
+            Scanner sc = new Scanner(stdout);
+            while (sc.hasNextLine()) {
+               cr.addResultLine(sc.nextLine());
+            }
+         }
+
+         return cr;
+      }
+   }
+
 }

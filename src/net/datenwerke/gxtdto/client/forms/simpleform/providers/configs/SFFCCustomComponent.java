@@ -6,6 +6,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCCustomComponent extends SimpleFormFieldConfiguration {
 
-	public Widget getComponent();
-	
+   public Widget getComponent();
+
 }

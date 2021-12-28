@@ -13,16 +13,14 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class BirtDatasourceStartup {
 
-	@Inject
-	public BirtDatasourceStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		HandleReportRemoveEventHandler handleReportRemoveEvents,
-		HandleBirtDatasourceMergeEvents birtDatasourceMergeHandler
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, handleReportRemoveEvents);
-		
-		eventBus.attachObjectEventHandler(MergeEntityEvent.class, BirtReportDatasourceDefinition.class, birtDatasourceMergeHandler);
-	}
+   @Inject
+   public BirtDatasourceStartup(HookHandlerService hookHandler, EventBus eventBus,
+         HandleReportRemoveEventHandler handleReportRemoveEvents,
+         HandleBirtDatasourceMergeEvents birtDatasourceMergeHandler) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, handleReportRemoveEvents);
+
+      eventBus.attachObjectEventHandler(MergeEntityEvent.class, BirtReportDatasourceDefinition.class,
+            birtDatasourceMergeHandler);
+   }
 }

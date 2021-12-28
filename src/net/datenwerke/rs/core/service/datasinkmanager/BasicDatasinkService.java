@@ -17,6 +17,6 @@ public interface BasicDatasinkService {
 
    void doExportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
          throws DatasinkExportException;
-   
+
    Optional<? extends DatasinkDefinition> getDefaultDatasink();
 }

@@ -13,12 +13,9 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.Data
  */
 public class DatasourceManagerTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public DatasourceManagerTreePanel(
-		HookHandlerService hookHandler,
-		@DatasourceManagerAdminViewTree UITree tree
-		){
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public DatasourceManagerTreePanel(HookHandlerService hookHandler, @DatasourceManagerAdminViewTree UITree tree) {
+      super(hookHandler, tree);
+   }
+
 }

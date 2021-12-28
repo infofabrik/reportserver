@@ -8,8 +8,10 @@ import net.datenwerke.treedb.client.treedb.TreeDbManagerContainer;
 
 public interface ManagerHelperTreeToolbarEnhancerHook extends Hook {
 
-	public void treeNavigationToolbarEnhancerHook_addLeft(ToolBar toolbar, UITree tree, TreeDbManagerContainer treeManagerContainer);
-	
-	public void treeNavigationToolbarEnhancerHook_addRight(ToolBar toolbar, UITree tree, TreeDbManagerContainer treeManagerContainer);
+   public void treeNavigationToolbarEnhancerHook_addLeft(ToolBar toolbar, UITree tree,
+         TreeDbManagerContainer treeManagerContainer);
+
+   public void treeNavigationToolbarEnhancerHook_addRight(ToolBar toolbar, UITree tree,
+         TreeDbManagerContainer treeManagerContainer);
 
 }

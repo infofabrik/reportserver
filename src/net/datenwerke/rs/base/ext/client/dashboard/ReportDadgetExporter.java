@@ -13,21 +13,21 @@ import net.datenwerke.rs.dashboard.client.dashboard.hookers.ReportDadgetDefaultE
 
 public class ReportDadgetExporter extends ReportDadgetDefaultExportHooker {
 
-	@Inject
-	public ReportDadgetExporter(ReportExecutorUIService reportExecutorService,
-			ReportExporterUIService reportExportService,
-			ReportExecutorDao reportExecutorDao,
-			ReportExporterDao reportExporterDao) {
-		super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
-	}
+   @Inject
+   public ReportDadgetExporter(ReportExecutorUIService reportExecutorService,
+         ReportExporterUIService reportExportService, ReportExecutorDao reportExecutorDao,
+         ReportExporterDao reportExporterDao) {
+      super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
+   }
 
-	@Override
-	protected boolean isSupportedReport(ReportDto report) {
-		return report instanceof JasperReportDto || (report instanceof TableReportDto && ! ((TableReportDto)report).isCubeFlag());
-	}
+   @Override
+   protected boolean isSupportedReport(ReportDto report) {
+      return report instanceof JasperReportDto
+            || (report instanceof TableReportDto && !((TableReportDto) report).isCubeFlag());
+   }
 
-	@Override
-	public String getPropertyName() {
-		return "tabJasConfig";
-	}
+   @Override
+   public String getPropertyName() {
+      return "tabJasConfig";
+   }
 }

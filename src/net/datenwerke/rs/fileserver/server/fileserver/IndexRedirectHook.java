@@ -5,12 +5,12 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
-public interface IndexRedirectHook extends Hook{
+public interface IndexRedirectHook extends Hook {
 
-	boolean consumes(HttpServletRequest req, HttpServletResponse resp);
+   boolean consumes(HttpServletRequest req, HttpServletResponse resp);
 
-	void doGet(HttpServletRequest req, HttpServletResponse resp);
+   void doGet(HttpServletRequest req, HttpServletResponse resp);
 
-	boolean isLast();
+   boolean isLast();
 
 }

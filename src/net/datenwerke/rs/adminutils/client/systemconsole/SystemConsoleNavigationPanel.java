@@ -22,48 +22,47 @@ import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMes
  */
 public class SystemConsoleNavigationPanel extends DwContentPanel {
 
-	private final HookHandlerService hookHandler;
-	private final NavigationPanelHelper navPanelHelper;
-	private final SystemConsoleMainPanel mainPanel;
-	
-	@Inject
-	public SystemConsoleNavigationPanel(
-		HookHandlerService hookHandler,
-		NavigationPanelHelper navPanelHelper,
-		SystemConsoleMainPanel mainPanel
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.navPanelHelper = navPanelHelper;
-		this.mainPanel = mainPanel;
-		
-		/* init */
-		initializeUI();
-	}
+   private final HookHandlerService hookHandler;
+   private final NavigationPanelHelper navPanelHelper;
+   private final SystemConsoleMainPanel mainPanel;
 
-	private void initializeUI() {
-		setHeading(SystemConsoleMessages.INSTANCE.systemConsole());
-		
-		/* display modules in tree */
-		TreeStore<NavigationModelData<SystemConsoleViewDomainHook>> store = 
-				new TreeStore<>(new BasicObjectModelKeyProvider<>());
-		
-		/* load data */
-		Collection<SystemConsoleViewDomainHook> domains = hookHandler.getHookers(SystemConsoleViewDomainHook.class);
-		
-		domains.forEach(domain -> store
-				.add(new NavigationModelData<SystemConsoleViewDomainHook>(domain.getNavigationText(), domain.getNavigationIcon(), domain)));
-		
-		/* sort store */
-		store.addSortInfo(new StoreSortInfo<NavigationModelData<SystemConsoleViewDomainHook>>(NavigationModelData.nameValueProvider, SortDir.ASC));
-		
-		/* build tree */
-		final Tree<NavigationModelData<SystemConsoleViewDomainHook>, String> tree = navPanelHelper.createNavigationTreePanel(store, model -> mainPanel.displaySpecificConsoleItem(model));
-		
-		/* add tree */
-		add(tree);
-	}
-	
+   @Inject
+   public SystemConsoleNavigationPanel(HookHandlerService hookHandler, NavigationPanelHelper navPanelHelper,
+         SystemConsoleMainPanel mainPanel) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.navPanelHelper = navPanelHelper;
+      this.mainPanel = mainPanel;
+
+      /* init */
+      initializeUI();
+   }
+
+   private void initializeUI() {
+      setHeading(SystemConsoleMessages.INSTANCE.systemConsole());
+
+      /* display modules in tree */
+      TreeStore<NavigationModelData<SystemConsoleViewDomainHook>> store = new TreeStore<>(
+            new BasicObjectModelKeyProvider<>());
+
+      /* load data */
+      Collection<SystemConsoleViewDomainHook> domains = hookHandler.getHookers(SystemConsoleViewDomainHook.class);
+
+      domains.forEach(
+            domain -> store.add(new NavigationModelData<SystemConsoleViewDomainHook>(domain.getNavigationText(),
+                  domain.getNavigationIcon(), domain)));
+
+      /* sort store */
+      store.addSortInfo(new StoreSortInfo<NavigationModelData<SystemConsoleViewDomainHook>>(
+            NavigationModelData.nameValueProvider, SortDir.ASC));
+
+      /* build tree */
+      final Tree<NavigationModelData<SystemConsoleViewDomainHook>, String> tree = navPanelHelper
+            .createNavigationTreePanel(store, model -> mainPanel.displaySpecificConsoleItem(model));
+
+      /* add tree */
+      add(tree);
+   }
 
 }

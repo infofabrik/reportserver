@@ -10,25 +10,24 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportRefere
  */
 public class TsDiskReportReferenceDtoDec extends TsDiskReportReferenceDto implements ReportContainerDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public TsDiskReportReferenceDtoDec() {
+      super();
+   }
 
-	public TsDiskReportReferenceDtoDec() {
-		super();
-	}
-	
-	@Override
-	public String toTypeDescription() {
-		if(null == getReport())
-			return super.toTypeDescription();
-		return getReport().toTypeDescription();
-	}
-	
-	@Override
-	public BaseIcon toIcon() {
-		if(null == getReport())
-			return super.toIcon();
-		return getReport().toIcon();
-	}
+   @Override
+   public String toTypeDescription() {
+      if (null == getReport())
+         return super.toTypeDescription();
+      return getReport().toTypeDescription();
+   }
+
+   @Override
+   public BaseIcon toIcon() {
+      if (null == getReport())
+         return super.toIcon();
+      return getReport().toIcon();
+   }
 
 }

@@ -8,15 +8,15 @@ import net.datenwerke.rs.enterprise.client.rpc.EnterpriseCheckRpcServiceAsync;
 
 public class EnterpriseCheckDao extends Dao {
 
-	private final EnterpriseCheckRpcServiceAsync rpcService;
+   private final EnterpriseCheckRpcServiceAsync rpcService;
 
-	@Inject
-	public EnterpriseCheckDao(EnterpriseCheckRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
-	
-	public void isEnterprise(RsAsyncCallback<EnterpriseInformationDto> callback){
-		rpcService.getEnterpriseInfos(transformAndKeepCallback(callback));
-	}
+   @Inject
+   public EnterpriseCheckDao(EnterpriseCheckRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
+
+   public void isEnterprise(RsAsyncCallback<EnterpriseInformationDto> callback) {
+      rpcService.getEnterpriseInfos(transformAndKeepCallback(callback));
+   }
 }

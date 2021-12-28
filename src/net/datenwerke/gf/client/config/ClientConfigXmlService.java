@@ -5,11 +5,10 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ClientConfigXmlServiceImpl.class)
 public interface ClientConfigXmlService {
 
-	void setXmlConfig(String xml);
+   void setXmlConfig(String xml);
 
-	boolean getBoolean(String property, boolean defaultValue);
+   boolean getBoolean(String property, boolean defaultValue);
 
-	String getString(String property, String defaultValue);
+   String getString(String property, String defaultValue);
 
-	
 }

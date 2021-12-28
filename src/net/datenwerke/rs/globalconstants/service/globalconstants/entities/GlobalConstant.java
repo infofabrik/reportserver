@@ -19,65 +19,63 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  *
  */
 @Entity
-@Table(name="GLOBAL_CONSTANT")
+@Table(name = "GLOBAL_CONSTANT")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.globalconstants.client.globalconstants.dto"
-)
-public class GlobalConstant implements Serializable{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.globalconstants.client.globalconstants.dto")
+public class GlobalConstant implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1420273313390610869L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1420273313390610869L;
 
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	@ExposeToClient
-	private String name = "undefined";
-	
-	@ExposeToClient
-	private String value = "undefined";
+   @Version
+   private Long version;
 
-	public GlobalConstant(){
-	}
-	
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient
+   private String name = "undefined";
 
-	public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   private String value = "undefined";
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public GlobalConstant() {
+   }
 
-	public String getName() {
-		return name;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public String getValue() {
-		return value;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setValue(String value) {
-		this.value = value;
-	}
-	
-	
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getValue() {
+      return value;
+   }
+
+   public void setValue(String value) {
+      this.value = value;
+   }
+
 }

@@ -11,14 +11,12 @@ import net.datenwerke.rs.incubator.client.jaspertotable.hooker.Jasper2TableExcel
 
 public class JasperToTableUIStartup {
 
-	@Inject
-	public JasperToTableUIStartup(
-		HookHandlerService hookHandler,
-		Provider<Jasper2TableExcel> jasper2TableExcel,
-		Provider<EditJasperToTablePropertiesHooker> editConfigProvider
-		){
-		
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(jasper2TableExcel), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, editConfigProvider);
-	}
+   @Inject
+   public JasperToTableUIStartup(HookHandlerService hookHandler, Provider<Jasper2TableExcel> jasper2TableExcel,
+         Provider<EditJasperToTablePropertiesHooker> editConfigProvider) {
+
+      hookHandler.attachHooker(ReportExporterExportReportHook.class,
+            new ReportExporterExportReportHook(jasper2TableExcel), HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, editConfigProvider);
+   }
 }

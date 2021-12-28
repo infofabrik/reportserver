@@ -10,8 +10,8 @@ import net.datenwerke.security.service.security.rights.Write;
 
 public class UpdateAction extends SecurityActionImpl {
 
-	public Collection<Right> getRights() {
-		return Arrays.asList(new Read(), new Write());
-	}
+   public Collection<Right> getRights() {
+      return Arrays.asList(new Read(), new Write());
+   }
 
 }

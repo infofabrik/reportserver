@@ -11,43 +11,39 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
 
 public class OverlayCommandProcessor implements CommandResultProcessorHook {
 
-	private final OverlayService overlayService;
-	
-	@Inject
-	public OverlayCommandProcessor(OverlayService overlayService) {
-		this.overlayService = overlayService;
-	}
+   private final OverlayService overlayService;
 
+   @Inject
+   public OverlayCommandProcessor(OverlayService overlayService) {
+      this.overlayService = overlayService;
+   }
 
+   @Override
+   public void process(CommandResultDto result) {
+      if (null != result.getExtensions()) {
+         for (CommandResultExtensionDto ext : result.getExtensions()) {
+            if (ext instanceof CreOverlayDto) {
+               CreOverlayDto extension = (CreOverlayDto) ext;
 
-	@Override
-	public void process(CommandResultDto result) {
-		if(null != result.getExtensions()){
-			for(CommandResultExtensionDto ext : result.getExtensions()){
-				if(ext instanceof CreOverlayDto){
-					CreOverlayDto extension = (CreOverlayDto) ext;
-					
-					XElement overlay = null;
-					if(null == extension.getName())
-						overlay = overlayService.overlay(extension.getText());
-					else {
-						if(extension.isRemove()){
-							overlayService.remove(extension.getName());
-							continue;
-						}
-							
-						overlay = overlayService.overlay(extension.getName(), extension.getText());
-					}
-					
-					StringBuilder styles = new StringBuilder();
-					extension.getCssProperties().keySet()
-						.stream()
-						.forEach(key -> 
-							styles.append(key).append(": ").append(extension.getCssProperties().get((String) key)).append("; "));
-					overlay.applyStyles(styles.toString());
-				}
-			}
-		}
-	}
+               XElement overlay = null;
+               if (null == extension.getName())
+                  overlay = overlayService.overlay(extension.getText());
+               else {
+                  if (extension.isRemove()) {
+                     overlayService.remove(extension.getName());
+                     continue;
+                  }
+
+                  overlay = overlayService.overlay(extension.getName(), extension.getText());
+               }
+
+               StringBuilder styles = new StringBuilder();
+               extension.getCssProperties().keySet().stream().forEach(key -> styles.append(key).append(": ")
+                     .append(extension.getCssProperties().get((String) key)).append("; "));
+               overlay.applyStyles(styles.toString());
+            }
+         }
+      }
+   }
 
 }

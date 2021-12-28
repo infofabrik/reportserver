@@ -19,35 +19,27 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hookers.VfsObjectResolver
 
 public class VirtualFileSystemStartup {
 
-	@Inject
-	public VirtualFileSystemStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<VirtualFileSystemDeamon> vfsDeamonProvider,
-		Provider<VfsObjectResolver> objectResolverProvider,
-		
-		
-		Provider<VfsCommandCd> cdCommandProvider,
-		Provider<VfsCommandCp> cpCommandProvider,
-		Provider<VfsCommandLs> lsCommandProvider,
-		Provider<VfsCommandListPath> listPathCommandProvider,
-		Provider<VfsCommandMkdir> mkdirCommandProvider,
-		Provider<VfsCommandMv> mvCommandProvider,
-		Provider<VfsCommandPwd> pwdCommandProvider,
-		Provider<VfsCommandRm> rmCommandProvider
-		){
-		
-		hookHandler.attachHooker(TerminalSessionDeamonHook.class, vfsDeamonProvider);
-		
-		hookHandler.attachHooker(ObjectResolverHook.class, objectResolverProvider, HookHandlerService.PRIORITY_LOWER);
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, cdCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, cpCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, lsCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, listPathCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, mkdirCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, mvCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, pwdCommandProvider);
-		hookHandler.attachHooker(TerminalCommandHook.class, rmCommandProvider);
-	}
+   @Inject
+   public VirtualFileSystemStartup(HookHandlerService hookHandler,
+
+         Provider<VirtualFileSystemDeamon> vfsDeamonProvider, Provider<VfsObjectResolver> objectResolverProvider,
+
+         Provider<VfsCommandCd> cdCommandProvider, Provider<VfsCommandCp> cpCommandProvider,
+         Provider<VfsCommandLs> lsCommandProvider, Provider<VfsCommandListPath> listPathCommandProvider,
+         Provider<VfsCommandMkdir> mkdirCommandProvider, Provider<VfsCommandMv> mvCommandProvider,
+         Provider<VfsCommandPwd> pwdCommandProvider, Provider<VfsCommandRm> rmCommandProvider) {
+
+      hookHandler.attachHooker(TerminalSessionDeamonHook.class, vfsDeamonProvider);
+
+      hookHandler.attachHooker(ObjectResolverHook.class, objectResolverProvider, HookHandlerService.PRIORITY_LOWER);
+
+      hookHandler.attachHooker(TerminalCommandHook.class, cdCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, cpCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, lsCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, listPathCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, mkdirCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, mvCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, pwdCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, rmCommandProvider);
+   }
 }

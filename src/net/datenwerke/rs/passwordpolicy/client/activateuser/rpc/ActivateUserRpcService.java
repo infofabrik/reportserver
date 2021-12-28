@@ -8,8 +8,7 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 @RemoteServiceRelativePath("security_activateuser")
 public interface ActivateUserRpcService extends RemoteService {
-	
-	public void activateAccount(UserDto user, boolean force) throws ExpectedException;
 
+   public void activateAccount(UserDto user, boolean force) throws ExpectedException;
 
 }

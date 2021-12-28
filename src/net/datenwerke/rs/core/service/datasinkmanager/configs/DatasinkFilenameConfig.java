@@ -4,6 +4,7 @@ public interface DatasinkFilenameConfig extends DatasinkConfiguration {
 
    /**
     * The filename to use for the report
+    * 
     * @return fhe filename to use for the export
     */
    String getFilename();

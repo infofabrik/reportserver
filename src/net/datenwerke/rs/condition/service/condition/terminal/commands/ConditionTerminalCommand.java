@@ -18,37 +18,31 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class ConditionTerminalCommand extends SubCommandContainerImpl {
 
-public static final String BASE_COMMAND = "rcondition";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ConditionTerminalCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "rcondition";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConditionMessages.class,
-		name = BASE_COMMAND,
-		description = "commandRcondition_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<ConditionSubCommandHook> list =  hookHandler.getHookers(ConditionSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public ConditionTerminalCommand(HookHandlerService hookHandler) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ConditionMessages.class, name = BASE_COMMAND, description = "commandRcondition_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<ConditionSubCommandHook> list = hookHandler.getHookers(ConditionSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 }

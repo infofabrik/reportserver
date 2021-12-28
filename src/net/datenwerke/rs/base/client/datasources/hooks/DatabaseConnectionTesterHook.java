@@ -7,10 +7,10 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 
 @HookConfig
-public interface DatabaseConnectionTesterHook extends Hook{
+public interface DatabaseConnectionTesterHook extends Hook {
 
-	boolean consumes(DatabaseDatasource datasource, DatabaseHelper dbHelper);
+   boolean consumes(DatabaseDatasource datasource, DatabaseHelper dbHelper);
 
-	boolean testConnection(DatabaseDatasource datasource, DatabaseHelper dbHelper) throws ConnectionTestFailedException;
+   boolean testConnection(DatabaseDatasource datasource, DatabaseHelper dbHelper) throws ConnectionTestFailedException;
 
 }

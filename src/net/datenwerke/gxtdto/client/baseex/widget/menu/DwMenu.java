@@ -6,19 +6,19 @@ import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 
 public class DwMenu extends Menu {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-menu";
-	
-	public DwMenu() {
-		super();
-		initCss();
-	}
-	
-	private void initCss() {
-		getElement().addClassName(getCssName());
-	}
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-menu";
 
-	public String getCssName() {
-		return CSS_NAME;
-	}
+   public DwMenu() {
+      super();
+      initCss();
+   }
+
+   private void initCss() {
+      getElement().addClassName(getCssName());
+   }
+
+   public String getCssName() {
+      return CSS_NAME;
+   }
 }

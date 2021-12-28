@@ -8,14 +8,14 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class Saiku2PDF extends Export2PDF {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		if (report instanceof SaikuReportDto) {
-		    DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-		    return ((MondrianDatasourceDto)datasourceContainer.getDatasource()).isMondrian3();
-		}
-		
-		return false;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      if (report instanceof SaikuReportDto) {
+         DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
+         return ((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+      }
+
+      return false;
+   }
 
 }

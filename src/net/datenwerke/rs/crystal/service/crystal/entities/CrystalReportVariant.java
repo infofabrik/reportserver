@@ -20,64 +20,61 @@ import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
 @Entity
-@Table(name="CRYSTAL_REPORT_VARIANT")
+@Table(name = "CRYSTAL_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.crystal.client.crystal.dto", 
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", createDecorator = true)
 public class CrystalReportVariant extends CrystalReport implements ReportVariant {
 
-	
-	public CrystalReport getBaseReport() {
-		AbstractReportManagerNode parent = getParent();
-		if(parent instanceof HibernateProxy)
-			parent = (AbstractReportManagerNode) ((HibernateProxy)parent).getHibernateLazyInitializer().getImplementation();
-		return (CrystalReport) parent;
-	}
+   public CrystalReport getBaseReport() {
+      AbstractReportManagerNode parent = getParent();
+      if (parent instanceof HibernateProxy)
+         parent = (AbstractReportManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+               .getImplementation();
+      return (CrystalReport) parent;
+   }
 
-	public void setBaseReport(Report baseReport) {
-		throw new IllegalStateException("should not be called on server");
-	}
+   public void setBaseReport(Report baseReport) {
+      throw new IllegalStateException("should not be called on server");
+   }
 
-	@Override
-	public CrystalReportFile getReportFile() {
-		return getBaseReport().getReportFile();
-	}
-	
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return getBaseReport().getDatasourceContainer();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return getBaseReport().getParameterDefinitions();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	/**
-	 */
-	@ClonePostProcessor
-	public void guideCloningProcess(Object report){
-		super.setParameterDefinitions(null);
-		super.setDatasourceContainer(null);
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Override
+   public CrystalReportFile getReportFile() {
+      return getBaseReport().getReportFile();
+   }
+
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return getBaseReport().getDatasourceContainer();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public List<ParameterDefinition> getParameterDefinitions() {
+      return getBaseReport().getParameterDefinitions();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setParameterDefinitions(List<ParameterDefinition> parameters) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   /**
+    */
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      super.setParameterDefinitions(null);
+      super.setDatasourceContainer(null);
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

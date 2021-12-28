@@ -26,7 +26,7 @@ public interface AmazonS3RpcService extends RemoteService {
    boolean testAmazonS3Datasink(AmazonS3DatasinkDto amazonS3DatasinkDto) throws ServerCallFailedException;
 
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder, boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed) throws ServerCallFailedException;
 }

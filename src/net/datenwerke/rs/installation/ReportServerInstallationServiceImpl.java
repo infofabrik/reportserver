@@ -13,39 +13,39 @@ import com.google.inject.persist.Transactional;
  *
  */
 public class ReportServerInstallationServiceImpl {
-	@Inject 
-	private PrepareDbForReportServer prepareDbTask;
-	
-	@Inject 
-	private List<DbInstallationTask> dbInstallTasks;
+   @Inject
+   private PrepareDbForReportServer prepareDbTask;
 
-	@Inject private Provider<EntityManager> emp;
-	
-	@Transactional
-	public void install() {
-		
-		if(!dataIsInstalled(emp)){
-			prepareDatabase(prepareDbTask);
-			runAdditionalDbInstallTasks(dbInstallTasks);
-		}
-		
-		dbInstallTasks.forEach(DbInstallationTask::executeOnStartup);
-	}
+   @Inject
+   private List<DbInstallationTask> dbInstallTasks;
 
-	private boolean dataIsInstalled(
-			Provider<EntityManager> entityManagerProvider) {
-		/* determine if the usertable is empty */
-		EntityManager em = entityManagerProvider.get();
-		Long countUser = (Long) em.createQuery("select count(*) from User").getSingleResult(); //$NON-NLS-1$
-		
-		return (countUser != 0); 
-	}
-	
-	private void runAdditionalDbInstallTasks(final List<DbInstallationTask> dbInstallTasks) {
-		dbInstallTasks.forEach(DbInstallationTask::executeOnFirstRun);
-	}
+   @Inject
+   private Provider<EntityManager> emp;
 
-	private void prepareDatabase(PrepareDbForReportServer prepareDbTask) {
-		prepareDbTask.executeOnFirstRun();
-	}
+   @Transactional
+   public void install() {
+
+      if (!dataIsInstalled(emp)) {
+         prepareDatabase(prepareDbTask);
+         runAdditionalDbInstallTasks(dbInstallTasks);
+      }
+
+      dbInstallTasks.forEach(DbInstallationTask::executeOnStartup);
+   }
+
+   private boolean dataIsInstalled(Provider<EntityManager> entityManagerProvider) {
+      /* determine if the usertable is empty */
+      EntityManager em = entityManagerProvider.get();
+      Long countUser = (Long) em.createQuery("select count(*) from User").getSingleResult(); //$NON-NLS-1$
+
+      return (countUser != 0);
+   }
+
+   private void runAdditionalDbInstallTasks(final List<DbInstallationTask> dbInstallTasks) {
+      dbInstallTasks.forEach(DbInstallationTask::executeOnFirstRun);
+   }
+
+   private void prepareDatabase(PrepareDbForReportServer prepareDbTask) {
+      prepareDbTask.executeOnFirstRun();
+   }
 }

@@ -14,35 +14,33 @@ import net.datenwerke.security.ext.client.usermanager.ui.UserManagerPanel;
  * 
  *
  */
-public class UserManagerAdminModule implements AdminModule{
-	
-	final private Provider<UserManagerPanel> userManagerPanelProvider;
-	
-	@Inject
-	public UserManagerAdminModule(
-		Provider<UserManagerPanel> userManagerPanel	
-		){
-		
-		/* store objects */
-		this.userManagerPanelProvider = userManagerPanel;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.USER.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return UsermanagerMessages.INSTANCE.userManagernavtext();
-	}
+public class UserManagerAdminModule implements AdminModule {
 
-	@Override
-	public Widget getMainWidget() {
-		return userManagerPanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-	}
+   final private Provider<UserManagerPanel> userManagerPanelProvider;
+
+   @Inject
+   public UserManagerAdminModule(Provider<UserManagerPanel> userManagerPanel) {
+
+      /* store objects */
+      this.userManagerPanelProvider = userManagerPanel;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.USER.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return UsermanagerMessages.INSTANCE.userManagernavtext();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return userManagerPanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+   }
 }

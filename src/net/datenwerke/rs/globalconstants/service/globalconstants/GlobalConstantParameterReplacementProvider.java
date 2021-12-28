@@ -16,25 +16,23 @@ import net.datenwerke.security.service.usermanager.entities.User;
  * 
  *
  */
-public class GlobalConstantParameterReplacementProvider extends
-		ParameterSetReplacementProviderImpl {
+public class GlobalConstantParameterReplacementProvider extends ParameterSetReplacementProviderImpl {
 
-	private final GlobalConstantsService globalConstantService;
-	
-	@Inject
-	public GlobalConstantParameterReplacementProvider(
-		GlobalConstantsService globalConstantService	
-		){
-		this.globalConstantService = globalConstantService;
-	}
-	
-	@Override
-	public Map<String, ParameterValue> provideReplacements(User user, Report report) {
-		Map<String, ParameterValue> replacementMap = new HashMap<String, ParameterValue>();
-		
-		for(GlobalConstant constant : globalConstantService.getAllGlobalConstants())
-			replacementMap.put(constant.getName(), new ParameterValueImpl(constant.getName(), constant.getValue(), String.class));
-		
-		return replacementMap;
-	}
+   private final GlobalConstantsService globalConstantService;
+
+   @Inject
+   public GlobalConstantParameterReplacementProvider(GlobalConstantsService globalConstantService) {
+      this.globalConstantService = globalConstantService;
+   }
+
+   @Override
+   public Map<String, ParameterValue> provideReplacements(User user, Report report) {
+      Map<String, ParameterValue> replacementMap = new HashMap<String, ParameterValue>();
+
+      for (GlobalConstant constant : globalConstantService.getAllGlobalConstants())
+         replacementMap.put(constant.getName(),
+               new ParameterValueImpl(constant.getName(), constant.getValue(), String.class));
+
+      return replacementMap;
+   }
 }

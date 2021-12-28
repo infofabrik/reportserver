@@ -11,8 +11,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface NonOptArgument {
 
-	boolean mandatory() default false;
-	String name();
-	String description();
-	boolean varArgs() default false;
+   boolean mandatory() default false;
+
+   String name();
+
+   String description();
+
+   boolean varArgs() default false;
 }

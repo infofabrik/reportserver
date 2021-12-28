@@ -57,11 +57,8 @@ public class ScheduleAsOneDriveFileEmailNotificationHooker extends SchedulerExec
    private RemoteMessageService remoteMessageService;
 
    @Inject
-   public ScheduleAsOneDriveFileEmailNotificationHooker(
-         @SchedulerModuleProperties Configuration config,
-         MailService mailService, 
-         RemoteMessageService remoteMessageService
-         ) {
+   public ScheduleAsOneDriveFileEmailNotificationHooker(@SchedulerModuleProperties Configuration config,
+         MailService mailService, RemoteMessageService remoteMessageService) {
 
       this.config = config;
       this.mailService = mailService;

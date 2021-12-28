@@ -6,8 +6,8 @@ import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseContain
 
 public interface ChallengeResponseRpcServiceAsync {
 
-	void requestChallenge(AsyncCallback<ChallengeResponseContainer> callback);
+   void requestChallenge(AsyncCallback<ChallengeResponseContainer> callback);
 
-	void getHmacPassphrase(AsyncCallback<String> callback);
+   void getHmacPassphrase(AsyncCallback<String> callback);
 
 }

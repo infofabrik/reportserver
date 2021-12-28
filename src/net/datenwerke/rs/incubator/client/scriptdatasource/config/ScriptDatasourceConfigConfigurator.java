@@ -24,169 +24,176 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceC
 import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto;
 import net.datenwerke.rs.incubator.client.scriptdatasource.locale.ScriptDatasourceMessages;
 
-public class ScriptDatasourceConfigConfigurator implements
-DatasourceDefinitionConfigConfigurator {
+public class ScriptDatasourceConfigConfigurator implements DatasourceDefinitionConfigConfigurator {
 
-	private TextArea textField;
-	private CodeMirrorPanel scriptField;
-	private CodeMirrorPanel wrapperField;
+   private TextArea textField;
+   private CodeMirrorPanel scriptField;
+   private CodeMirrorPanel wrapperField;
 
-	public List<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField, final DatasourceContainerProviderDto datasourceContainerProvider) {
-		if(! (config instanceof ScriptDatasourceConfigDto))
-			throw new IllegalArgumentException("Expected " + ScriptDatasourceConfigDto.class.getName()); //$NON-NLS-1$
+   public List<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField,
+         final DatasourceContainerProviderDto datasourceContainerProvider) {
+      if (!(config instanceof ScriptDatasourceConfigDto))
+         throw new IllegalArgumentException("Expected " + ScriptDatasourceConfigDto.class.getName()); //$NON-NLS-1$
 
-		/* script */
-		if(((ScriptDatasourceDto)datasourceDefinitionDto).isDefineAtTarget()){
-			scriptField = (CodeMirrorPanel) SimpleForm.createFormlessField(String.class, new SFFCCodeMirror(){
-				@Override
-				public int getHeight() {
-					return 250;
-				}
-				@Override
-				public ToolBarEnhancer getEnhancer() {
-					return null;
-				}
-				@Override
-				public String getLanguage() {
-					return "text/x-groovy";
-				}
-				@Override
-				public boolean lineNumbersVisible() {
-					return true;
-				}
-	
-				@Override
-				public int getWidth() {
-					return -1;
-				}
-			});
-	
-			if(null != ((ScriptDatasourceConfigDto)config).getScript())
-				scriptField.setValue(((ScriptDatasourceConfigDto)config).getScript());
-	
-			scriptField.addValueChangeHandler(new ValueChangeHandler<String>() {
-				@Override
-				public void onValueChange(ValueChangeEvent<String> event) {
-					datasourceSelectionField.updateDatasourceConfig();
-				}
-			});
-		}
+      /* script */
+      if (((ScriptDatasourceDto) datasourceDefinitionDto).isDefineAtTarget()) {
+         scriptField = (CodeMirrorPanel) SimpleForm.createFormlessField(String.class, new SFFCCodeMirror() {
+            @Override
+            public int getHeight() {
+               return 250;
+            }
 
+            @Override
+            public ToolBarEnhancer getEnhancer() {
+               return null;
+            }
 
+            @Override
+            public String getLanguage() {
+               return "text/x-groovy";
+            }
 
-		wrapperField = (CodeMirrorPanel) SimpleForm.createFormlessField(String.class, new SFFCCodeMirror(){
-			@Override
-			public int getHeight() {
-				return 150;
-			}
-			@Override
-			public ToolBarEnhancer getEnhancer() {
-				return null;
-			}
-			@Override
-			public String getLanguage() {
-				return "text/x-sql";
-			}
-			@Override
-			public boolean lineNumbersVisible() {
-				return true;
-			}
+            @Override
+            public boolean lineNumbersVisible() {
+               return true;
+            }
 
-			@Override
-			public int getWidth() {
-				return -1;
-			}
-		});
+            @Override
+            public int getWidth() {
+               return -1;
+            }
+         });
 
-		if(null != ((ScriptDatasourceConfigDto)config).getQueryWrapper())
-			wrapperField.setValue(((ScriptDatasourceConfigDto)config).getQueryWrapper());
+         if (null != ((ScriptDatasourceConfigDto) config).getScript())
+            scriptField.setValue(((ScriptDatasourceConfigDto) config).getScript());
 
-		wrapperField.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				datasourceSelectionField.updateDatasourceConfig();
-			}
-		});
+         scriptField.addValueChangeHandler(new ValueChangeHandler<String>() {
+            @Override
+            public void onValueChange(ValueChangeEvent<String> event) {
+               datasourceSelectionField.updateDatasourceConfig();
+            }
+         });
+      }
 
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
-		
-		if(((ScriptDatasourceDto)datasourceDefinitionDto).isDefineAtTarget())
-			widgets.add(new FieldLabel(scriptField,ScriptDatasourceMessages.INSTANCE.scriptLabel()));
-		
-		widgets.add(new FieldLabel(wrapperField, ScriptDatasourceMessages.INSTANCE.queryWrapperLabel()));
-		
-		return widgets;
-	}
+      wrapperField = (CodeMirrorPanel) SimpleForm.createFormlessField(String.class, new SFFCCodeMirror() {
+         @Override
+         public int getHeight() {
+            return 150;
+         }
 
-	public void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto) {
-		/* are we rendered */
-		if (((ScriptDatasourceDto)datasourceDefinitionDto).isDefineAtTarget()) {
-			if(null == scriptField)
-				((ScriptDatasourceConfigDto)config).setScript(null);
-			else
-				((ScriptDatasourceConfigDto)config).setScript(scriptField.getCurrentValue());
-		} else {
-			if(null == textField)
-				((ScriptDatasourceConfigDto)config).setArguments(null);
-			else
-				((ScriptDatasourceConfigDto)config).setArguments(textField.getCurrentValue());
-		}
+         @Override
+         public ToolBarEnhancer getEnhancer() {
+            return null;
+         }
 
-		if(null == wrapperField)
-			((ScriptDatasourceConfigDto)config).setQueryWrapper(null);
-		else
-			((ScriptDatasourceConfigDto)config).setQueryWrapper(wrapperField.getValue());
-	}
+         @Override
+         public String getLanguage() {
+            return "text/x-sql";
+         }
 
-	@Override
-	public DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceContainerProviderDto datasourceContainerProvider) {
-		return new ScriptDatasourceConfigDto();
-	}
+         @Override
+         public boolean lineNumbersVisible() {
+            return true;
+         }
 
-	@Override
-	public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceDefinitionConfigDto datasourceConfig) {
-		return null != datasourceConfig && ScriptDatasourceConfigDto.class.equals(datasourceConfig.getClass());
-	}
+         @Override
+         public int getWidth() {
+            return -1;
+         }
+      });
 
-	@Override
-	public boolean isValid(DatasourceContainerDto container) {
-		if(! consumes(container.getDatasource(), container.getDatasourceConfig()))
-			return false;
-		return true;
-	}
+      if (null != ((ScriptDatasourceConfigDto) config).getQueryWrapper())
+         wrapperField.setValue(((ScriptDatasourceConfigDto) config).getQueryWrapper());
 
-	@Override
-	public boolean isReloadOnDatasourceChange() {
-		return false;
-	}
+      wrapperField.addValueChangeHandler(new ValueChangeHandler<String>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<String> event) {
+            datasourceSelectionField.updateDatasourceConfig();
+         }
+      });
 
-	@Override
-	public Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config,
-			DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField,
-			DatasourceContainerProviderDto datasourceContainerProvider) {
-		
-		/* arguments */
-		textField = (TextArea) SimpleForm.createFormlessField(String.class, new SFFCTextAreaImpl(){
-			@Override
-			public int getHeight() {
-				return 80;
-			}
-		});
+      ArrayList<Widget> widgets = new ArrayList<Widget>();
 
-		if(null != ((ScriptDatasourceConfigDto)config).getArguments())
-			textField.setValue(((ScriptDatasourceConfigDto)config).getArguments());
+      if (((ScriptDatasourceDto) datasourceDefinitionDto).isDefineAtTarget())
+         widgets.add(new FieldLabel(scriptField, ScriptDatasourceMessages.INSTANCE.scriptLabel()));
 
-		textField.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				datasourceSelectionField.updateDatasourceConfig();
-			}
-		});
-		
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
-		widgets.add(new FieldLabel(textField,ScriptDatasourceMessages.INSTANCE.argumentsLabel()));
-		
-		return widgets;
-	}
+      widgets.add(new FieldLabel(wrapperField, ScriptDatasourceMessages.INSTANCE.queryWrapperLabel()));
+
+      return widgets;
+   }
+
+   public void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto) {
+      /* are we rendered */
+      if (((ScriptDatasourceDto) datasourceDefinitionDto).isDefineAtTarget()) {
+         if (null == scriptField)
+            ((ScriptDatasourceConfigDto) config).setScript(null);
+         else
+            ((ScriptDatasourceConfigDto) config).setScript(scriptField.getCurrentValue());
+      } else {
+         if (null == textField)
+            ((ScriptDatasourceConfigDto) config).setArguments(null);
+         else
+            ((ScriptDatasourceConfigDto) config).setArguments(textField.getCurrentValue());
+      }
+
+      if (null == wrapperField)
+         ((ScriptDatasourceConfigDto) config).setQueryWrapper(null);
+      else
+         ((ScriptDatasourceConfigDto) config).setQueryWrapper(wrapperField.getValue());
+   }
+
+   @Override
+   public DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceContainerProviderDto datasourceContainerProvider) {
+      return new ScriptDatasourceConfigDto();
+   }
+
+   @Override
+   public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceDefinitionConfigDto datasourceConfig) {
+      return null != datasourceConfig && ScriptDatasourceConfigDto.class.equals(datasourceConfig.getClass());
+   }
+
+   @Override
+   public boolean isValid(DatasourceContainerDto container) {
+      if (!consumes(container.getDatasource(), container.getDatasourceConfig()))
+         return false;
+      return true;
+   }
+
+   @Override
+   public boolean isReloadOnDatasourceChange() {
+      return false;
+   }
+
+   @Override
+   public Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField,
+         DatasourceContainerProviderDto datasourceContainerProvider) {
+
+      /* arguments */
+      textField = (TextArea) SimpleForm.createFormlessField(String.class, new SFFCTextAreaImpl() {
+         @Override
+         public int getHeight() {
+            return 80;
+         }
+      });
+
+      if (null != ((ScriptDatasourceConfigDto) config).getArguments())
+         textField.setValue(((ScriptDatasourceConfigDto) config).getArguments());
+
+      textField.addValueChangeHandler(new ValueChangeHandler<String>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<String> event) {
+            datasourceSelectionField.updateDatasourceConfig();
+         }
+      });
+
+      ArrayList<Widget> widgets = new ArrayList<Widget>();
+      widgets.add(new FieldLabel(textField, ScriptDatasourceMessages.INSTANCE.argumentsLabel()));
+
+      return widgets;
+   }
 
 }

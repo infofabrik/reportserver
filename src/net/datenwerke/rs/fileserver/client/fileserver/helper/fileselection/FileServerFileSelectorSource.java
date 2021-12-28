@@ -30,146 +30,141 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class FileServerFileSelectorSource extends FileSelectorSourceImpl {
 
-	public static final String FILESERVER_FILE_TYPE = "fileserver_file_type";
-	
-	private boolean enableNameEditing = true;
-	private boolean enableDownload = true;
-	private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
+   public static final String FILESERVER_FILE_TYPE = "fileserver_file_type";
 
-	 
-	private final Provider<UITree> fileTreeProvider;
+   private boolean enableNameEditing = true;
+   private boolean enableDownload = true;
+   private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
 
-	private UITree tree;	
-	
-	
-	@Inject
-	public FileServerFileSelectorSource(
-		@FileServerTreeBasic Provider<UITree> fileTreeProvider
-		) {
-		this.fileTreeProvider = fileTreeProvider;
-	}
-	
-	@Override
-	public void configureToolbar(FileSelectionWidget fileSelectionWidget,
-			ToolBar toolbar) {
-		DwTextButton btn = new DwTextButton(FileServerMessages.INSTANCE.selectFileFromFileServerText(), BaseIcon.FLOPPY_O);
-		toolbar.add(btn);
-		btn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				displayTeamSpaceFileSelection();
-			}
-		});
-	}
+   private final Provider<UITree> fileTreeProvider;
 
-	@Override
-	public void configureGrid(FileSelectionWidget fileSelectionWidget,
-			Grid<SelectedFileWrapper> grid) {
-	}
+   private UITree tree;
 
-	@Override
-	public boolean consumes(SelectedFileWrapper value) {
-		return null != value && value.getOriginalDto() instanceof AbstractFileServerNodeDto;
-	}
+   @Inject
+   public FileServerFileSelectorSource(@FileServerTreeBasic Provider<UITree> fileTreeProvider) {
+      this.fileTreeProvider = fileTreeProvider;
+   }
 
-	@Override
-	public ImageResource getIconFor(SelectedFileWrapper value) {
-		return BaseIcon.FILE.toImageResource();
-	}
+   @Override
+   public void configureToolbar(FileSelectionWidget fileSelectionWidget, ToolBar toolbar) {
+      DwTextButton btn = new DwTextButton(FileServerMessages.INSTANCE.selectFileFromFileServerText(),
+            BaseIcon.FLOPPY_O);
+      toolbar.add(btn);
+      btn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            displayTeamSpaceFileSelection();
+         }
+      });
+   }
 
-	@Override
-	public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
-		return false;
-	}
+   @Override
+   public void configureGrid(FileSelectionWidget fileSelectionWidget, Grid<SelectedFileWrapper> grid) {
+   }
 
-	@Override
-	public boolean isDownloadEnabled(SelectedFileWrapper item) {
-		return false;
-	}
+   @Override
+   public boolean consumes(SelectedFileWrapper value) {
+      return null != value && value.getOriginalDto() instanceof AbstractFileServerNodeDto;
+   }
 
-	@Override
-	public DownloadProperties getDownloadPropertiesFor(
-			SelectedFileWrapper selectedItem) {
-		return null;
-	}
+   @Override
+   public ImageResource getIconFor(SelectedFileWrapper value) {
+      return BaseIcon.FILE.toImageResource();
+   }
 
-	@Override
-	public String getTypeDescription(SelectedFileWrapper value) {
-		if(null != value.getOriginalDto()){
-			if(value.getOriginalDto() instanceof FileServerFolderDto)
-				return FileServerMessages.INSTANCE.folderDescription();
-			if(value.getOriginalDto() instanceof FileServerFileDto)
-				return FileServerMessages.INSTANCE.fileDescription();
-		}
-		return "";
-	}
+   @Override
+   public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
+      return false;
+   }
 
-	public boolean isEnableNameEditing() {
-		return enableNameEditing;
-	}
+   @Override
+   public boolean isDownloadEnabled(SelectedFileWrapper item) {
+      return false;
+   }
 
-	public void setEnableNameEditing(boolean enableNameEditing) {
-		this.enableNameEditing = enableNameEditing;
-	}
+   @Override
+   public DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem) {
+      return null;
+   }
 
-	public boolean isEnableDownload() {
-		return enableDownload;
-	}
+   @Override
+   public String getTypeDescription(SelectedFileWrapper value) {
+      if (null != value.getOriginalDto()) {
+         if (value.getOriginalDto() instanceof FileServerFolderDto)
+            return FileServerMessages.INSTANCE.folderDescription();
+         if (value.getOriginalDto() instanceof FileServerFileDto)
+            return FileServerMessages.INSTANCE.fileDescription();
+      }
+      return "";
+   }
 
-	public void setEnableDownload(boolean enableDownload) {
-		this.enableDownload = enableDownload;
-	}
+   public boolean isEnableNameEditing() {
+      return enableNameEditing;
+   }
 
-	protected void displayTeamSpaceFileSelection() {
-		if(fileSelectionWidget.getRemainingFileSpace() < 1){
-			fileSelectionWidget.displayMaxFilesReachedMessage();
-			return;
-		}
-		
-		if(null == tree)
-			tree = fileTreeProvider.get();
-		
-		TreeSelectionPopup popup = new TreeSelectionPopup(tree){
-			@Override
-			protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
-				for(AbstractNodeDto item : selectedItems){
-					FileServerFileSelectorSource.this.add((AbstractFileServerNodeDto)item);
-				}
-			}
-			@Override
-			protected void validateSelectedItems(
-					List<AbstractNodeDto> selectedItems, AsyncCallback<Boolean> itemsValidatedCallback) {
-				
-				if(null == selectedItems || selectedItems.isEmpty())
-					itemsValidatedCallback.onSuccess(true);
-				if(fileSelectionWidget.getRemainingFileSpace()<selectedItems.size()){
-					fileSelectionWidget.displayMaxFilesReachedMessage();
-					itemsValidatedCallback.onSuccess(false);
-				}
-				itemsValidatedCallback.onSuccess(true);
-			}
-		};
-		popup.setSelectionFilter(selectionFilter);
-		popup.setSelectionMode(SelectionMode.MULTI);
-		popup.show();
-	}
+   public void setEnableNameEditing(boolean enableNameEditing) {
+      this.enableNameEditing = enableNameEditing;
+   }
 
-	protected void add(AbstractFileServerNodeDto file) {
-		SelectedFileWrapper sfw = new SelectedFileWrapper();
-		sfw.setId(String.valueOf(file.getId()));
-		sfw.setName(file.toDisplayTitle());
-		sfw.setType(FILESERVER_FILE_TYPE);
-		sfw.setOriginalDto(file);
-		
-		fileSelectionWidget.add(sfw);
-	}
-	
-	public SelectionFilter getSelectionFilter() {
-		return selectionFilter;
-	}
-	
-	public void setSelectionFilter(SelectionFilter selectionFilter) {
-		this.selectionFilter = selectionFilter;
-	}
-	
+   public boolean isEnableDownload() {
+      return enableDownload;
+   }
+
+   public void setEnableDownload(boolean enableDownload) {
+      this.enableDownload = enableDownload;
+   }
+
+   protected void displayTeamSpaceFileSelection() {
+      if (fileSelectionWidget.getRemainingFileSpace() < 1) {
+         fileSelectionWidget.displayMaxFilesReachedMessage();
+         return;
+      }
+
+      if (null == tree)
+         tree = fileTreeProvider.get();
+
+      TreeSelectionPopup popup = new TreeSelectionPopup(tree) {
+         @Override
+         protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
+            for (AbstractNodeDto item : selectedItems) {
+               FileServerFileSelectorSource.this.add((AbstractFileServerNodeDto) item);
+            }
+         }
+
+         @Override
+         protected void validateSelectedItems(List<AbstractNodeDto> selectedItems,
+               AsyncCallback<Boolean> itemsValidatedCallback) {
+
+            if (null == selectedItems || selectedItems.isEmpty())
+               itemsValidatedCallback.onSuccess(true);
+            if (fileSelectionWidget.getRemainingFileSpace() < selectedItems.size()) {
+               fileSelectionWidget.displayMaxFilesReachedMessage();
+               itemsValidatedCallback.onSuccess(false);
+            }
+            itemsValidatedCallback.onSuccess(true);
+         }
+      };
+      popup.setSelectionFilter(selectionFilter);
+      popup.setSelectionMode(SelectionMode.MULTI);
+      popup.show();
+   }
+
+   protected void add(AbstractFileServerNodeDto file) {
+      SelectedFileWrapper sfw = new SelectedFileWrapper();
+      sfw.setId(String.valueOf(file.getId()));
+      sfw.setName(file.toDisplayTitle());
+      sfw.setType(FILESERVER_FILE_TYPE);
+      sfw.setOriginalDto(file);
+
+      fileSelectionWidget.add(sfw);
+   }
+
+   public SelectionFilter getSelectionFilter() {
+      return selectionFilter;
+   }
+
+   public void setSelectionFilter(SelectionFilter selectionFilter) {
+      this.selectionFilter = selectionFilter;
+   }
+
 }

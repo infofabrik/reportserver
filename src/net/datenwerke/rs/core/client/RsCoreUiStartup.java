@@ -12,20 +12,20 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 
 public class RsCoreUiStartup {
 
-	@Inject
-	public RsCoreUiStartup(
-		HookHandlerService hookHandler,
-		
-		AccessRsSecurityTargetDomainHooker securityTargetDomain,
-		
-		final Provider<BasicObjectInfo> baseObjectInfo
-		
-		){
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		hookHandler.attachHooker(ObjectPreviewTabProviderHook.class, baseObjectInfo, HookHandlerService.PRIORITY_LOWER);
-	}
+   @Inject
+   public RsCoreUiStartup(HookHandlerService hookHandler,
+
+         AccessRsSecurityTargetDomainHooker securityTargetDomain,
+
+         final Provider<BasicObjectInfo> baseObjectInfo
+
+   ) {
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      hookHandler.attachHooker(ObjectPreviewTabProviderHook.class, baseObjectInfo, HookHandlerService.PRIORITY_LOWER);
+   }
 }

@@ -32,155 +32,159 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  * 
  *
  */
-public abstract class QuickExportHookerBase implements MainPanelViewToolbarConfiguratorHook{
+public abstract class QuickExportHookerBase implements MainPanelViewToolbarConfiguratorHook {
 
-	private static final String DOWNLOAD_URL = "quickExportDownload";
+   private static final String DOWNLOAD_URL = "quickExportDownload";
 
-	protected final ToolbarService toolbarUtils;
-	protected final UtilsUIService utilsUiService;
-	
-	public QuickExportHookerBase(
-		ToolbarService toolbarUtils,
-		UtilsUIService utilsUiService
-		) {
+   protected final ToolbarService toolbarUtils;
+   protected final UtilsUIService utilsUiService;
 
-		/* store objects */
-		this.toolbarUtils = toolbarUtils;
-		this.utilsUiService = utilsUiService;
-	}
+   public QuickExportHookerBase(ToolbarService toolbarUtils, UtilsUIService utilsUiService) {
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-	}
+      /* store objects */
+      this.toolbarUtils = toolbarUtils;
+      this.utilsUiService = utilsUiService;
+   }
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar, final AbstractNodeDto selectedNode) {
-		if(! viewApplies(view, selectedNode))
-			return;
-		
-		/* add buttons */
-		DwTextButton quickExportBtn = toolbarUtils.createSmallButtonLeft(ExImportMessages.INSTANCE.quickExportText(), BaseIcon.REPORT_DISK);
-		quickExportBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				quickExportClicked(selectedNode);
-			}
-		});
-		toolbar.add(quickExportBtn);
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+   }
 
-	protected void startProgress() {
-		try{
-			InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(), ExImportMessages.INSTANCE.exportWait());
-			infoConfig.setWidth(350);
-			infoConfig.setDisplay(3500);
-			Info.display(infoConfig);
-		}catch(Exception e){}
-		
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         final AbstractNodeDto selectedNode) {
+      if (!viewApplies(view, selectedNode))
+         return;
 
-	abstract protected void quickExportClicked(final AbstractNodeDto selectedNode);
+      /* add buttons */
+      DwTextButton quickExportBtn = toolbarUtils.createSmallButtonLeft(ExImportMessages.INSTANCE.quickExportText(),
+            BaseIcon.REPORT_DISK);
+      quickExportBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            quickExportClicked(selectedNode);
+         }
+      });
+      toolbar.add(quickExportBtn);
+   }
 
-	protected AsyncCallback<Void> getExportCallback() {
-		return new RsAsyncCallback<Void>(){
-			@Override
-			public void onSuccess(Void result) {
-				exportSucceded();
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-			}
-		};
-	}
+   protected void startProgress() {
+      try {
+         InfoConfig infoConfig = new DefaultInfoConfig(ExImportMessages.INSTANCE.quickExportProgressTitle(),
+               ExImportMessages.INSTANCE.exportWait());
+         infoConfig.setWidth(350);
+         infoConfig.setDisplay(3500);
+         Info.display(infoConfig);
+      } catch (Exception e) {
+      }
 
-	protected void exportSucceded() {
-		final DwWindow window = new DwWindow();
-		window.setModal(true);
-		window.setClosable(false);
-		window.setTitle(ExImportMessages.INSTANCE.exportSuccededTitle());
-		window.setHeaderIcon(BaseIcon.EXPORT);
-		
-		DwContentPanel wrapper = DwContentPanel.newInlineInstance();
-		wrapper.add(new Label(ExImportMessages.INSTANCE.exportSuccededMessage()), new MarginData(5));
-		window.add(wrapper);
-		
-		DwTextButton displayBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDisplayDirectLabel());
-		displayBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				window.hide();
-				startProgress();
-				loadAndDisplayResult(getLoadAndDisplayResultCallback());
-			}
-		});
-		window.addButton(displayBtn);
-		
-		DwTextButton downloadBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDownloadLabel());
-		downloadBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				window.hide();	
-				downloadResult();
-			}
-		});
-		window.addButton(downloadBtn);
-		
-		window.show();
-	}
+   }
 
-	protected void downloadResult() {
-		String url = GWT.getModuleBaseURL() + DOWNLOAD_URL;
-		ClientDownloadHelper.triggerDownload(url);
-	}
+   abstract protected void quickExportClicked(final AbstractNodeDto selectedNode);
 
-	abstract protected void loadAndDisplayResult(AsyncCallback<String> loadAndDisplayResultCallback);
+   protected AsyncCallback<Void> getExportCallback() {
+      return new RsAsyncCallback<Void>() {
+         @Override
+         public void onSuccess(Void result) {
+            exportSucceded();
+         }
 
-	protected AsyncCallback<String> getLoadAndDisplayResultCallback() {
-		return new RsAsyncCallback<String>(){
-			@Override
-			public void onSuccess(String result) {
-				displayQuickExportResult(result);
-			}
-		};
-	}
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      };
+   }
 
-	abstract protected boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode);
+   protected void exportSucceded() {
+      final DwWindow window = new DwWindow();
+      window.setModal(true);
+      window.setClosable(false);
+      window.setTitle(ExImportMessages.INSTANCE.exportSuccededTitle());
+      window.setHeaderIcon(BaseIcon.EXPORT);
 
-	protected void displayQuickExportResult(String result) {
-		final DwWindow window = new DwWindow();
-		window.setSize(640, 480);
-		
-		SimpleForm form = SimpleForm.getInlineLabelessInstance();
-		window.add(form);
-		
-		String key = form.addField(String.class, new SFFCTextArea() {
-			
-			@Override
-			public int getWidth() {
-				return 580;
-			}
-			
-			@Override
-			public int getHeight() {
-				return 400;
-			}
-		}, new SFFCStringNoHtmlDecode(){});
-		form.setValue(key, result);
-		
-		form.loadFields();
-		
-		DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
-		closeBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				window.hide();
-			}
-		});
-		window.addButton(closeBtn);
-		
-		window.show();
-	}
+      DwContentPanel wrapper = DwContentPanel.newInlineInstance();
+      wrapper.add(new Label(ExImportMessages.INSTANCE.exportSuccededMessage()), new MarginData(5));
+      window.add(wrapper);
+
+      DwTextButton displayBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDisplayDirectLabel());
+      displayBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+            startProgress();
+            loadAndDisplayResult(getLoadAndDisplayResultCallback());
+         }
+      });
+      window.addButton(displayBtn);
+
+      DwTextButton downloadBtn = new DwTextButton(ExImportMessages.INSTANCE.quickExportDownloadLabel());
+      downloadBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+            downloadResult();
+         }
+      });
+      window.addButton(downloadBtn);
+
+      window.show();
+   }
+
+   protected void downloadResult() {
+      String url = GWT.getModuleBaseURL() + DOWNLOAD_URL;
+      ClientDownloadHelper.triggerDownload(url);
+   }
+
+   abstract protected void loadAndDisplayResult(AsyncCallback<String> loadAndDisplayResultCallback);
+
+   protected AsyncCallback<String> getLoadAndDisplayResultCallback() {
+      return new RsAsyncCallback<String>() {
+         @Override
+         public void onSuccess(String result) {
+            displayQuickExportResult(result);
+         }
+      };
+   }
+
+   abstract protected boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode);
+
+   protected void displayQuickExportResult(String result) {
+      final DwWindow window = new DwWindow();
+      window.setSize(640, 480);
+
+      SimpleForm form = SimpleForm.getInlineLabelessInstance();
+      window.add(form);
+
+      String key = form.addField(String.class, new SFFCTextArea() {
+
+         @Override
+         public int getWidth() {
+            return 580;
+         }
+
+         @Override
+         public int getHeight() {
+            return 400;
+         }
+      }, new SFFCStringNoHtmlDecode() {
+      });
+      form.setValue(key, result);
+
+      form.loadFields();
+
+      DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
+      closeBtn.addSelectHandler(new SelectHandler() {
+
+         @Override
+         public void onSelect(SelectEvent event) {
+            window.hide();
+         }
+      });
+      window.addButton(closeBtn);
+
+      window.show();
+   }
 
 }

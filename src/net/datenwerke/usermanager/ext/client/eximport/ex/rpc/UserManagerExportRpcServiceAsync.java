@@ -6,9 +6,8 @@ import net.datenwerke.security.client.usermanager.dto.AbstractUserManagerNodeDto
 
 public interface UserManagerExportRpcServiceAsync {
 
-	void quickExport(AbstractUserManagerNodeDto dto,
-			AsyncCallback<Void> callback);
+   void quickExport(AbstractUserManagerNodeDto dto, AsyncCallback<Void> callback);
 
-	void loadResult(AsyncCallback<String> callback);
+   void loadResult(AsyncCallback<String> callback);
 
 }

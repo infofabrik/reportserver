@@ -10,9 +10,8 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
  */
 public class Jasper2PDF extends Export2PDF {
 
-	
-	public boolean consumes(ReportDto report) {
-		return report instanceof JasperReportDto;
-	}
-	
+   public boolean consumes(ReportDto report) {
+      return report instanceof JasperReportDto;
+   }
+
 }

@@ -12,34 +12,33 @@ import net.datenwerke.gxtdto.client.forms.locale.FormsMessages;
 
 public class SFFCStringValidatorInteger implements SFFCStringValidator {
 
-	private boolean allowBlank;
+   private boolean allowBlank;
 
-	public Validator<String> getValidator() {
-		return new Validator<String>() {
+   public Validator<String> getValidator() {
+      return new Validator<String>() {
 
-			@Override
-			public List<EditorError> validate(Editor<String> editor, String value) {
-				
-				if(allowBlank && (null == value || value.isEmpty()))
-					return null;
-				
-				try{
-					Integer.parseInt(value);
-					return null;
-				} catch(NumberFormatException e){
-					List<EditorError> list = new ArrayList<EditorError>();
-					list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidInteger(), value));
-					return list;
-				}
-			}
-		};
-	}
+         @Override
+         public List<EditorError> validate(Editor<String> editor, String value) {
 
-	@Override
-	public void setAllowBlank(boolean allowBlank) {
-		this.allowBlank = allowBlank;
-		
-	}
-	
+            if (allowBlank && (null == value || value.isEmpty()))
+               return null;
+
+            try {
+               Integer.parseInt(value);
+               return null;
+            } catch (NumberFormatException e) {
+               List<EditorError> list = new ArrayList<EditorError>();
+               list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidInteger(), value));
+               return list;
+            }
+         }
+      };
+   }
+
+   @Override
+   public void setAllowBlank(boolean allowBlank) {
+      this.allowBlank = allowBlank;
+
+   }
 
 }

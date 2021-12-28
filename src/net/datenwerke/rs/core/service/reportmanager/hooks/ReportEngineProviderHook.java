@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngine;
 
 public interface ReportEngineProviderHook extends Hook {
 
-	Collection<? extends Class<? extends ReportEngine>> getReportEngines();
+   Collection<? extends Class<? extends ReportEngine>> getReportEngines();
 
 }

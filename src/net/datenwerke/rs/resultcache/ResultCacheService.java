@@ -1,16 +1,15 @@
 package net.datenwerke.rs.resultcache;
 
-
 public interface ResultCacheService {
 
-	CacheableResult getCachedResult(ResultCacheKey ds);
-	
-	void addToResultCache(ResultCacheKey datasource, CacheableResult result);
+   CacheableResult getCachedResult(ResultCacheKey ds);
 
-	void removeFromResultCache(ResultCacheKey datasource);
+   void addToResultCache(ResultCacheKey datasource, CacheableResult result);
 
-	void maintainCache();
+   void removeFromResultCache(ResultCacheKey datasource);
 
-	void flush();
+   void maintainCache();
+
+   void flush();
 
 }

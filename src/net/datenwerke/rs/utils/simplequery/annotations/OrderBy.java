@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface OrderBy {
 
-	public enum Direction{
-		ASC,
-		DESC
-	}
-	
-	Direction dir() default Direction.ASC;
-	String attribute();
+   public enum Direction {
+      ASC, DESC
+   }
+
+   Direction dir() default Direction.ASC;
+
+   String attribute();
 }

@@ -5,14 +5,14 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface SuMessages extends Messages {
 
-	public final static SuMessages INSTANCE = GWT.create(SuMessages.class);
-	
-	String suCommandName();
+   public final static SuMessages INSTANCE = GWT.create(SuMessages.class);
 
-	String suPermissionModuleDescription();
+   String suCommandName();
 
-	String suPromptHeader();
+   String suPermissionModuleDescription();
 
-	String userLabel();
-	
+   String suPromptHeader();
+
+   String userLabel();
+
 }

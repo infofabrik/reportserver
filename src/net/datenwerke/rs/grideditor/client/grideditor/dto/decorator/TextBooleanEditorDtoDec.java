@@ -15,33 +15,31 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.TextBooleanEditorDto;
  */
 public class TextBooleanEditorDtoDec extends TextBooleanEditorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public TextBooleanEditorDtoDec() {
+      super();
+   }
 
-	public TextBooleanEditorDtoDec() {
-		super();
-	}
+   @Override
+   public Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing) {
+      CheckBox field = new CheckBox();
+      editing.addEditor(columnConfig, new Converter<String, Boolean>() {
+         @Override
+         public String convertFieldValue(Boolean bool) {
+            if (null == bool)
+               return null;
+            return bool ? getTrueText() : getFalseText();
+         }
 
-	@Override
-	public Field addEditor(ColumnConfig columnConfig,
-			GridEditing<GridEditorRecordDto> editing) {
-		CheckBox field = new CheckBox();
-		editing.addEditor(columnConfig, new Converter<String, Boolean>(){
-			@Override
-			public String convertFieldValue(Boolean bool) {
-				if(null == bool)
-					return null;
-				return bool ? getTrueText() : getFalseText();
-			}
+         @Override
+         public Boolean convertModelValue(String strBool) {
+            if (null == strBool)
+               return null;
+            return getTrueText().equals(strBool);
+         }
 
-			@Override
-			public Boolean convertModelValue(String strBool) {
-				if(null == strBool)
-					return null;
-				return getTrueText().equals(strBool);
-			}
-			
-		}, field);
-		return field;
-	}
+      }, field);
+      return field;
+   }
 }

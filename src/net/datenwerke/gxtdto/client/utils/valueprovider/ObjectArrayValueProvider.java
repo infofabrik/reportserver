@@ -4,26 +4,25 @@ import com.sencha.gxt.core.client.ValueProvider;
 
 public class ObjectArrayValueProvider<T> implements ValueProvider<T[], T> {
 
-	private final int pos;
-	
-	public ObjectArrayValueProvider(int pos) {
-		this.pos = pos;
-	}
+   private final int pos;
 
-	@Override
-	public T getValue(T[] object) {
-		return object[pos];
-	}
+   public ObjectArrayValueProvider(int pos) {
+      this.pos = pos;
+   }
 
-	@Override
-	public void setValue(T[] object, T value) {
-		object[pos] = value;
-	}
+   @Override
+   public T getValue(T[] object) {
+      return object[pos];
+   }
 
-	@Override
-	public String getPath() {
-		return "pos-" + pos;
-	}
+   @Override
+   public void setValue(T[] object, T value) {
+      object[pos] = value;
+   }
 
+   @Override
+   public String getPath() {
+      return "pos-" + pos;
+   }
 
 }

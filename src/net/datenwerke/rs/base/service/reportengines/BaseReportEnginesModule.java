@@ -9,17 +9,15 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 
 public class BaseReportEnginesModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(BaseReportEnginesStartup.class).asEagerSingleton();
-		
-		requestStaticInjection(
-			TableReport.class
-		);
-		
-		install(new TableReportModule());
-		install(new JasperReportModule());
-		install(new JasperUtilsModule());
-	}
+   @Override
+   protected void configure() {
+      bind(BaseReportEnginesStartup.class).asEagerSingleton();
+
+      requestStaticInjection(TableReport.class);
+
+      install(new TableReportModule());
+      install(new JasperReportModule());
+      install(new JasperUtilsModule());
+   }
 
 }

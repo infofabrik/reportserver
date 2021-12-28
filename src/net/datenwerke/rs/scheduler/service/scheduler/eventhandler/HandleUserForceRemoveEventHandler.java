@@ -18,48 +18,52 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class HandleUserForceRemoveEventHandler implements EventHandler<ForceRemoveEntityEvent> {
 
-	private final SchedulerService schedulerService;
-	private final AuthenticatorService authenticatorService;
+   private final SchedulerService schedulerService;
+   private final AuthenticatorService authenticatorService;
 
-	@Inject
-	public HandleUserForceRemoveEventHandler(SchedulerService schedulerService, AuthenticatorService authenticatorService) {
-		this.schedulerService = schedulerService;
-		this.authenticatorService = authenticatorService;
-	}
+   @Inject
+   public HandleUserForceRemoveEventHandler(SchedulerService schedulerService,
+         AuthenticatorService authenticatorService) {
+      this.schedulerService = schedulerService;
+      this.authenticatorService = authenticatorService;
+   }
 
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		User user = (User) event.getObject();
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      User user = (User) event.getObject();
 
-		removeExecutorFromActiveJobs(user, ReportExecuteJob.class);
-		removeExecutorFromActiveJobs(user, ScriptExecuteJob.class);
+      removeExecutorFromActiveJobs(user, ReportExecuteJob.class);
+      removeExecutorFromActiveJobs(user, ScriptExecuteJob.class);
 
-	}
+   }
 
-	private void removeExecutorFromActiveJobs(User user, Class<? extends AbstractJob> jobType) {
-		ReportServerJobFilter filter = new ReportServerJobFilter();
-		filter.setJobType(jobType);
-		filter.setActive(true);
-		filter.setInActive(false);
-		filter.setFromUser(user);
+   private void removeExecutorFromActiveJobs(User user, Class<? extends AbstractJob> jobType) {
+      ReportServerJobFilter filter = new ReportServerJobFilter();
+      filter.setJobType(jobType);
+      filter.setActive(true);
+      filter.setInActive(false);
+      filter.setFromUser(user);
 
-		List<AbstractJob> jobs = schedulerService.getJobsBy(filter);
-		if (null != jobs && !jobs.isEmpty()) {
-			for (AbstractJob job : jobs) {
-				ReportServerJob rsJob = (ReportServerJob) job;
-				try {
-					if (rsJob instanceof ReportExecuteJob)
-						schedulerService.assertJobChangeAllowed((ReportExecuteJob)rsJob);
-					
-					schedulerService.assertJobExecutorChangeAllowed(rsJob.getExecutor(), null);
-				} catch (ViolatedSecurityException e) {
-					throw new ViolatedSecurityException(e.getMessage()+ " JobId: " + rsJob.getId(), e);
-				}
-				rsJob.setExecutor(null);
-				/* Since we unschedule the job, we don't write the current user to the scheduledBy field. */
-				schedulerService.unschedule(job);
-			}
-		}
-	}
+      List<AbstractJob> jobs = schedulerService.getJobsBy(filter);
+      if (null != jobs && !jobs.isEmpty()) {
+         for (AbstractJob job : jobs) {
+            ReportServerJob rsJob = (ReportServerJob) job;
+            try {
+               if (rsJob instanceof ReportExecuteJob)
+                  schedulerService.assertJobChangeAllowed((ReportExecuteJob) rsJob);
+
+               schedulerService.assertJobExecutorChangeAllowed(rsJob.getExecutor(), null);
+            } catch (ViolatedSecurityException e) {
+               throw new ViolatedSecurityException(e.getMessage() + " JobId: " + rsJob.getId(), e);
+            }
+            rsJob.setExecutor(null);
+            /*
+             * Since we unschedule the job, we don't write the current user to the
+             * scheduledBy field.
+             */
+            schedulerService.unschedule(job);
+         }
+      }
+   }
 
 }

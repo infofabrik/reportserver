@@ -18,30 +18,28 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsOu
 
 public class JxlsReportStartup {
 
-	@Inject
-	public JxlsReportStartup(
-		HookHandlerService hookHandlerService,
-			
-		JxlsReportEngineProviderHooker jxlsReportEngineProviderHooker,
-		
-		
-		Provider<BaseJxlsOutputGeneratorProvider> baseOutputGenerators,
-		
-		JxlsReportUploadHooker jxlsReportUploadHooker
-		) {
-		
-		hookHandlerService.attachHooker(ReportTypeProviderHook.class, new JxlsReportTypeProviderHooker());
-		
-		hookHandlerService.attachHooker(ReportEngineProviderHook.class, jxlsReportEngineProviderHooker);
-		
-		hookHandlerService.attachHooker(FileUploadHandlerHook.class, jxlsReportUploadHooker);
-		
-		/* base exporters */
-		hookHandlerService.attachHooker(JxlsOutputGeneratorProviderHook.class, baseOutputGenerators, HookHandlerService.PRIORITY_LOW);
-		
-		/* multi-line and comment support */
-		hookHandlerService.attachHooker(LateInitHook.class, () -> XlsCommentAreaBuilder.MULTI_LINE_SQL_FEATURE = true);
+   @Inject
+   public JxlsReportStartup(HookHandlerService hookHandlerService,
 
-	}
-	
+         JxlsReportEngineProviderHooker jxlsReportEngineProviderHooker,
+
+         Provider<BaseJxlsOutputGeneratorProvider> baseOutputGenerators,
+
+         JxlsReportUploadHooker jxlsReportUploadHooker) {
+
+      hookHandlerService.attachHooker(ReportTypeProviderHook.class, new JxlsReportTypeProviderHooker());
+
+      hookHandlerService.attachHooker(ReportEngineProviderHook.class, jxlsReportEngineProviderHooker);
+
+      hookHandlerService.attachHooker(FileUploadHandlerHook.class, jxlsReportUploadHooker);
+
+      /* base exporters */
+      hookHandlerService.attachHooker(JxlsOutputGeneratorProviderHook.class, baseOutputGenerators,
+            HookHandlerService.PRIORITY_LOW);
+
+      /* multi-line and comment support */
+      hookHandlerService.attachHooker(LateInitHook.class, () -> XlsCommentAreaBuilder.MULTI_LINE_SQL_FEATURE = true);
+
+   }
+
 }

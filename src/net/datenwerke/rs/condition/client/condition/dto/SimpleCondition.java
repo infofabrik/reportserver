@@ -8,63 +8,62 @@ import net.datenwerke.rs.condition.client.condition.Condition;
 
 public class SimpleCondition implements Serializable, Condition {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String key;
-	private boolean hasExpression;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	private String name;
-	private String description;
-	private List<String> replacements = new ArrayList<>();
+   private String key;
+   private boolean hasExpression;
 
-	public String getKey() {
-		return key;
-	}
+   private String name;
+   private String description;
+   private List<String> replacements = new ArrayList<>();
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public boolean hasExpression() {
-		return hasExpression;
-	}
+   public void setKey(String key) {
+      this.key = key;
+   }
 
-	public void setHasExpression(boolean hasExpression) {
-		this.hasExpression = hasExpression;
-	}
+   public boolean hasExpression() {
+      return hasExpression;
+   }
 
-	public String getName() {
-		return name;
-	}
+   public void setHasExpression(boolean hasExpression) {
+      this.hasExpression = hasExpression;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public List<String> getReplacements() {
-		return replacements;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public void setReplacements(List<String> replacements) {
-		this.replacements = replacements;
-	}
-	
-	public void addReplacement(String replacement){
-		if(null == replacements)
-			replacements = new ArrayList<>();
-		replacements.add(replacement);
-	}
-	
-	
+   public List<String> getReplacements() {
+      return replacements;
+   }
+
+   public void setReplacements(List<String> replacements) {
+      this.replacements = replacements;
+   }
+
+   public void addReplacement(String replacement) {
+      if (null == replacements)
+         replacements = new ArrayList<>();
+      replacements.add(replacement);
+   }
+
 }

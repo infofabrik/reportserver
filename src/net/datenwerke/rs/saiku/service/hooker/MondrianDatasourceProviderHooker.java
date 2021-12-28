@@ -9,9 +9,10 @@ import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 
 public class MondrianDatasourceProviderHooker implements DatasourceProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends DatasourceDefinition>> getDatasources() {
-		return (Collection<? extends Class<? extends DatasourceDefinition>>) Arrays.asList(new Class[]{MondrianDatasource.class}); 
-	}
+   @Override
+   public Collection<? extends Class<? extends DatasourceDefinition>> getDatasources() {
+      return (Collection<? extends Class<? extends DatasourceDefinition>>) Arrays
+            .asList(new Class[] { MondrianDatasource.class });
+   }
 
 }

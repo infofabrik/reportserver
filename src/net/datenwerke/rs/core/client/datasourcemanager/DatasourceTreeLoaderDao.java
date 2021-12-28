@@ -12,8 +12,8 @@ import net.datenwerke.treedb.client.treedb.TreeDbLoaderDao;
  */
 public class DatasourceTreeLoaderDao extends TreeDbLoaderDao {
 
-	@Inject
-	public DatasourceTreeLoaderDao(DatasourceTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter){
-		super(treeLoader, null);
-	}
+   @Inject
+   public DatasourceTreeLoaderDao(DatasourceTreeLoaderAsync treeLoader, TreeDbFtoConverter treeDbFtoConverter) {
+      super(treeLoader, null);
+   }
 }

@@ -9,17 +9,15 @@ import net.datenwerke.gxtdto.client.dtomanager.Dao;
 
 public class JuelDao extends Dao {
 
+   private final JuelRpcServiceAsync rpcService;
 
-	private final JuelRpcServiceAsync rpcService;
+   @Inject
+   public JuelDao(JuelRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	@Inject
-	public JuelDao(JuelRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	
-	public void evaluateExpression(String expression, AsyncCallback<JuelResultDto> callback){
-		rpcService.evaluateExpression(expression, callback);
-	}
+   public void evaluateExpression(String expression, AsyncCallback<JuelResultDto> callback) {
+      rpcService.evaluateExpression(expression, callback);
+   }
 
 }

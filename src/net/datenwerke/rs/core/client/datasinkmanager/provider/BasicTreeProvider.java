@@ -12,35 +12,33 @@ import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 
-public class BasicTreeProvider implements Provider<ManagerHelperTree>{
+public class BasicTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final TreeDBUIService treeDBUIService;
-	private final DatasinkTreeLoaderDao datasinkTreeLoader;
-	private final DatasinkTreeManagerDao datasinkTreeManager;
-	private final ManagerHelperTreeFactory treeFactory;
-	
-	@Inject
-	public BasicTreeProvider(
-		TreeDBUIService treeDBUIService,	
-		DatasinkTreeLoaderDao datasinkTreeLoader,
-		DatasinkTreeManagerDao datasinkTreeManager,
-		ManagerHelperTreeFactory treeFactory
-		){
-		
-		this.treeDBUIService = treeDBUIService;
-		this.datasinkTreeLoader = datasinkTreeLoader;
-		this.datasinkTreeManager = datasinkTreeManager;
-		this.treeFactory = treeFactory;
-	}
+   private final TreeDBUIService treeDBUIService;
+   private final DatasinkTreeLoaderDao datasinkTreeLoader;
+   private final DatasinkTreeManagerDao datasinkTreeManager;
+   private final ManagerHelperTreeFactory treeFactory;
 
-	public ManagerHelperTree get() {
-		/* store */
-		EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader, false);
-		
-		/* build tree */
-		final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader, datasinkTreeManager);
-		tree.configureIconProvider();
+   @Inject
+   public BasicTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
 
-		return tree;
-	}
+      this.treeDBUIService = treeDBUIService;
+      this.datasinkTreeLoader = datasinkTreeLoader;
+      this.datasinkTreeManager = datasinkTreeManager;
+      this.treeFactory = treeFactory;
+   }
+
+   public ManagerHelperTree get() {
+      /* store */
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
+            false);
+
+      /* build tree */
+      final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,
+            datasinkTreeManager);
+      tree.configureIconProvider();
+
+      return tree;
+   }
 }

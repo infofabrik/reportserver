@@ -17,79 +17,82 @@ import net.datenwerke.rs.base.client.parameters.datetime.dto.pa.DateTimeParamete
  */
 public class DateTimeParameterInstanceDtoDec extends DateTimeParameterInstanceDto {
 
-	public static class DateFormulaValueProvider implements ValueProvider<DateTimeParameterInstanceDto,DateFormulaContainer>{
+   public static class DateFormulaValueProvider
+         implements ValueProvider<DateTimeParameterInstanceDto, DateFormulaContainer> {
 
-		@Override
-		public DateFormulaContainer getValue(DateTimeParameterInstanceDto object) {
-			return null == object ? null : ((DateTimeParameterInstanceDtoDec)object).getDateFormula();
-		}
+      @Override
+      public DateFormulaContainer getValue(DateTimeParameterInstanceDto object) {
+         return null == object ? null : ((DateTimeParameterInstanceDtoDec) object).getDateFormula();
+      }
 
-		@Override
-		public void setValue(DateTimeParameterInstanceDto object,
-				DateFormulaContainer value) {
-			if(null == object)
-				return;
-			
-			((DateTimeParameterInstanceDtoDec)object).setDateFormula(value);
-		}
+      @Override
+      public void setValue(DateTimeParameterInstanceDto object, DateFormulaContainer value) {
+         if (null == object)
+            return;
 
-		@Override
-		public String getPath() {
-			return "value";
-		}
-	}
+         ((DateTimeParameterInstanceDtoDec) object).setDateFormula(value);
+      }
 
-	private static final long serialVersionUID = 1L;
+      @Override
+      public String getPath() {
+         return "value";
+      }
+   }
 
-	public DateTimeParameterInstanceDtoDec() {
-		super();
-	}
+   private static final long serialVersionUID = 1L;
 
-	public DateFormulaContainer getDateFormula(){
-		return new DateFormulaContainer(getValue(), getFormula());
-	}
-	
-	public void setDateFormula(DateFormulaContainer formulaDate) {
-		
-		/* date formula changed events should only be fired after both fields were updated */
-		boolean wasSilent = isSilenceEvents();
-		silenceEvents(true);
-		
-		String oldFormulaValue = getFormula();
-		String oldStrValue = getStrValue();
-		
-		if(null == formulaDate){
-			setValue(null);
-			setFormula(null);
-		} else {
-			if(null != formulaDate.getFormula()){
-				setValue(null);
-				setFormula(formulaDate.getFormula());
-			} else {
-				setFormula(null);
-				setValue(formulaDate.getDate());
-			}
-		}
-		
-		silenceEvents(wasSilent);
-		this.fireObjectChangedEvent(DateTimeParameterInstanceDtoPA.INSTANCE.strValue(), oldStrValue);
-		this.fireObjectChangedEvent(DateTimeParameterInstanceDtoPA.INSTANCE.formula(), oldFormulaValue);
-	}
-	
-	@Override
-	public void setValue(Date value) {
-		super.setValue(value);
-		if(GWT.isClient()){
-			if(null != value) {
-				setStrValue(DateTimeFormat.getFormat(PredefinedFormat.ISO_8601).format(value));
-			} else {
-				setStrValue(null);
-			}
-		}
-	}
-	
-	public static DateFormulaValueProvider getDateFormulaValueProvider(){
-		return new DateFormulaValueProvider();
-	}
-	
+   public DateTimeParameterInstanceDtoDec() {
+      super();
+   }
+
+   public DateFormulaContainer getDateFormula() {
+      return new DateFormulaContainer(getValue(), getFormula());
+   }
+
+   public void setDateFormula(DateFormulaContainer formulaDate) {
+
+      /*
+       * date formula changed events should only be fired after both fields were
+       * updated
+       */
+      boolean wasSilent = isSilenceEvents();
+      silenceEvents(true);
+
+      String oldFormulaValue = getFormula();
+      String oldStrValue = getStrValue();
+
+      if (null == formulaDate) {
+         setValue(null);
+         setFormula(null);
+      } else {
+         if (null != formulaDate.getFormula()) {
+            setValue(null);
+            setFormula(formulaDate.getFormula());
+         } else {
+            setFormula(null);
+            setValue(formulaDate.getDate());
+         }
+      }
+
+      silenceEvents(wasSilent);
+      this.fireObjectChangedEvent(DateTimeParameterInstanceDtoPA.INSTANCE.strValue(), oldStrValue);
+      this.fireObjectChangedEvent(DateTimeParameterInstanceDtoPA.INSTANCE.formula(), oldFormulaValue);
+   }
+
+   @Override
+   public void setValue(Date value) {
+      super.setValue(value);
+      if (GWT.isClient()) {
+         if (null != value) {
+            setStrValue(DateTimeFormat.getFormat(PredefinedFormat.ISO_8601).format(value));
+         } else {
+            setStrValue(null);
+         }
+      }
+   }
+
+   public static DateFormulaValueProvider getDateFormulaValueProvider() {
+      return new DateFormulaValueProvider();
+   }
+
 }

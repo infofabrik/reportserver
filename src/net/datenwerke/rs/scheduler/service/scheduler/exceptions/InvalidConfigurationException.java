@@ -4,17 +4,17 @@ import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedE
 
 public class InvalidConfigurationException extends Exception {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6706131425574517662L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -6706131425574517662L;
 
-	public InvalidConfigurationException(String msg) {
-		super(msg);
-	}
+   public InvalidConfigurationException(String msg) {
+      super(msg);
+   }
 
-	public InvalidConfigurationException(ActionNotSupportedException e) {
-		super(e);
-	}
+   public InvalidConfigurationException(ActionNotSupportedException e) {
+      super(e);
+   }
 
 }

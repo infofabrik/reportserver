@@ -26,7 +26,7 @@ import org.slf4j.LoggerFactory;
 @Path("/saiku/{username}/org.saiku.datasources")
 public class DataSourceResource {
 
-    private static final Logger log = LoggerFactory.getLogger(DataSourceResource.class);
+   private static final Logger log = LoggerFactory.getLogger(DataSourceResource.class);
 //    private DatasourceService datasourceService;
 //
 //    public void setDatasourceService(DatasourceService ds) {

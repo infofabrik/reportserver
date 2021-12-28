@@ -14,31 +14,28 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.supervisor.
 
 public class Dto2TableReportSupervisor extends Dto2ReportSupervisor {
 
-	private final TableReportUtils trus;
+   private final TableReportUtils trus;
 
-	@Inject
-	public Dto2TableReportSupervisor(
-			TableReportUtils trus
-		){
-		this.trus = trus;
-	}
-	
-	@Override
-	public void enclosedObjectsRemovedFromCollection(ReportDto dto,
-			Report poso, Collection<?> objectCollection, String fieldname) {
-		super.enclosedObjectsRemovedFromCollection(dto, poso, objectCollection,
-				fieldname);
-		
-		if(null == objectCollection)
-			return;
-		
-		for(Object o : objectCollection){
-			if(o instanceof AdditionalColumnSpec)
-				trus.remove((AdditionalColumnSpec)o);
-			else if(o instanceof Column)
-				trus.remove((Column)o);
-			if(o instanceof PreFilter)
-				trus.remove((PreFilter)o);
-		}
-	}
+   @Inject
+   public Dto2TableReportSupervisor(TableReportUtils trus) {
+      this.trus = trus;
+   }
+
+   @Override
+   public void enclosedObjectsRemovedFromCollection(ReportDto dto, Report poso, Collection<?> objectCollection,
+         String fieldname) {
+      super.enclosedObjectsRemovedFromCollection(dto, poso, objectCollection, fieldname);
+
+      if (null == objectCollection)
+         return;
+
+      for (Object o : objectCollection) {
+         if (o instanceof AdditionalColumnSpec)
+            trus.remove((AdditionalColumnSpec) o);
+         else if (o instanceof Column)
+            trus.remove((Column) o);
+         if (o instanceof PreFilter)
+            trus.remove((PreFilter) o);
+      }
+   }
 }

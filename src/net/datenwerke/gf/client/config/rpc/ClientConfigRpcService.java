@@ -9,8 +9,8 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 
 @RemoteServiceRelativePath("clientconfig")
 public interface ClientConfigRpcService extends RemoteService {
-	
-	public String getConfigFile(String configfile) throws ServerCallFailedException;
 
-	HashMap<String, String> getConfigProperties(String identifier);
+   public String getConfigFile(String configfile) throws ServerCallFailedException;
+
+   HashMap<String, String> getConfigProperties(String identifier);
 }

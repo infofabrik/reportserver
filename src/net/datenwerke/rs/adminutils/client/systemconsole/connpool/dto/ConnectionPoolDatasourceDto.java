@@ -8,10 +8,10 @@ public class ConnectionPoolDatasourceDto implements Serializable {
     * 
     */
    private static final long serialVersionUID = -3941724813655907606L;
-   
+
    private long dsId;
    private String dsName;
-   
+
    public ConnectionPoolDatasourceDto() {
    }
 

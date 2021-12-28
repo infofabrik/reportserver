@@ -10,13 +10,13 @@ import net.datenwerke.rs.uservariables.service.parameters.UserVariableParameterD
 
 public class UserVariableParameterProviderHooker implements ParameterProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions() {
-		Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
-		
-		definitions.add(UserVariableParameterDefinition.class);
+   @Override
+   public Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions() {
+      Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
 
-		return definitions;
-	}
+      definitions.add(UserVariableParameterDefinition.class);
+
+      return definitions;
+   }
 
 }

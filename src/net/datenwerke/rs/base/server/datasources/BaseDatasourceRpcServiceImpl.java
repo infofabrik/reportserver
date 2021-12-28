@@ -41,118 +41,110 @@ import net.datenwerke.security.service.security.rights.Write;
 @Singleton
 public class BaseDatasourceRpcServiceImpl extends SecuredRemoteServiceServlet implements BaseDatasourceRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1991463672346224996L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1991463672346224996L;
 
-	final private DtoService dtoService;
-	final private DBHelperService dbHelperService;
-	private final SimpleDataSupplier simpleDataSupplyer;
-	private final EntityClonerService entityCloner;
-	private final SecurityService securityService;
+   final private DtoService dtoService;
+   final private DBHelperService dbHelperService;
+   private final SimpleDataSupplier simpleDataSupplyer;
+   private final EntityClonerService entityCloner;
+   private final SecurityService securityService;
 
-	@Inject
-	public BaseDatasourceRpcServiceImpl(
-		DtoService dtoService,
-		EntityClonerService entityCloner,
-		DBHelperService dbHelperService,
-		SimpleDataSupplier simpleDataSupplyer,
-		SecurityService securityService
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.entityCloner = entityCloner;
-		this.dbHelperService = dbHelperService;
-		this.simpleDataSupplyer = simpleDataSupplyer;
-		this.securityService = securityService;
-	}
-	
+   @Inject
+   public BaseDatasourceRpcServiceImpl(DtoService dtoService, EntityClonerService entityCloner,
+         DBHelperService dbHelperService, SimpleDataSupplier simpleDataSupplyer, SecurityService securityService) {
 
-	/**
-	 * May be called without having to log in.
-	 */
-	@SecurityChecked(loginRequired=false)
-	@Transactional(rollbackOn={Exception.class})
-	@Override
-	public ArrayList<DatabaseHelperDto> getDBHelperList()  throws ServerCallFailedException  {
-		ArrayList<DatabaseHelperDto> helpers = new ArrayList<DatabaseHelperDto>();
-		
-		for(DatabaseHelper dh : dbHelperService.getDatabaseHelpers())
-			helpers.add((DatabaseHelperDto) dtoService.createDto(dh));
-		
-		return helpers;
-	}
+      /* store objects */
+      this.dtoService = dtoService;
+      this.entityCloner = entityCloner;
+      this.dbHelperService = dbHelperService;
+      this.simpleDataSupplyer = simpleDataSupplyer;
+      this.securityService = securityService;
+   }
 
+   /**
+    * May be called without having to log in.
+    */
+   @SecurityChecked(loginRequired = false)
+   @Transactional(rollbackOn = { Exception.class })
+   @Override
+   public ArrayList<DatabaseHelperDto> getDBHelperList() throws ServerCallFailedException {
+      ArrayList<DatabaseHelperDto> helpers = new ArrayList<DatabaseHelperDto>();
 
-	@Override
-	public DatabaseHelperDto dummy(DatabaseHelperDto dto) {
-		return null;
-		
-	}
+      for (DatabaseHelper dh : dbHelperService.getDatabaseHelpers())
+         helpers.add((DatabaseHelperDto) dtoService.createDto(dh));
 
-	@Override
-	public List<String> loadColumnDefinition(@Named("datasource")DatasourceContainerDto containerDto,
-			String query) throws ServerCallFailedException {
-		DatasourceContainer container = (DatasourceContainer) dtoService.loadPoso(containerDto);
-		if(null == container)
-			throw new ServerCallFailedException("No datasource container found");
-		DatasourceDefinition datasource = container.getDatasource();
-		if(null == datasource)
-			throw new ServerCallFailedException("Container does not contain datasource");
-		
-		if(! securityService.checkRights(datasource, Read.class, Write.class, Execute.class))
-			throw new ViolatedSecurityExceptionDto();
-		
-		container = entityCloner.cloneEntity(container);
-		
-		/* update query */
-		DatasourceDefinitionConfig dsConfig = container.getDatasourceConfig();
-		if(! (dsConfig instanceof DatabaseDatasourceConfig))
-			throw new ServerCallFailedException("Expected Database");
-		((DatabaseDatasourceConfig)dsConfig).setQuery(query);
-		
-		try {
-			return simpleDataSupplyer.getColumnNames(new DatasourceContainerProviderImpl(container));
-		} catch (ReportExecutorException e) {
-			throw new ServerCallFailedException(e);
-		}
-	}
+      return helpers;
+   }
 
+   @Override
+   public DatabaseHelperDto dummy(DatabaseHelperDto dto) {
+      return null;
 
-	@Override
-	public PagingLoadResult<ListStringBaseModel> loadData(DatasourceContainerDto containerDto, PagingLoadConfig loadConfig,
-			String query) throws ServerCallFailedException {
-		DatasourceContainer container = (DatasourceContainer) dtoService.loadPoso(containerDto);
-		if(null == container)
-			throw new ServerCallFailedException("No datasource container found");
-		DatasourceDefinition datasource = container.getDatasource();
-		if(null == datasource)
-			throw new ServerCallFailedException("Container does not contain datasource");
-		
-		if(! securityService.checkRights(datasource, Read.class, Write.class, Execute.class))
-			throw new ViolatedSecurityExceptionDto();
-		
-		/* update query */
-		DatasourceDefinitionConfig dsConfig = container.getDatasourceConfig();
-		if(! (dsConfig instanceof DatabaseDatasourceConfig))
-			throw new ServerCallFailedException("Expected Database");
-		((DatabaseDatasourceConfig)dsConfig).setQuery(query);
-		
-		
-		try {
-			RSTableModel tableModel = simpleDataSupplyer.getData(new DatasourceContainerProviderImpl(container), null, loadConfig.getOffset(), loadConfig.getLimit());
-			int count = simpleDataSupplyer.getDataCount(new DatasourceContainerProviderImpl(container));
-			
-			List<ListStringBaseModel> list = new ArrayList<ListStringBaseModel>();
-			for(RSTableRow row : tableModel.getData())
-				list.add(new ListStringBaseModel(row.getRow()));
-			
-			return new PagingLoadResultBean<ListStringBaseModel>(list, count, loadConfig.getOffset());
-		} catch (ReportExecutorException e) {
-			throw new ServerCallFailedException(e);
-		}
-	}
+   }
+
+   @Override
+   public List<String> loadColumnDefinition(@Named("datasource") DatasourceContainerDto containerDto, String query)
+         throws ServerCallFailedException {
+      DatasourceContainer container = (DatasourceContainer) dtoService.loadPoso(containerDto);
+      if (null == container)
+         throw new ServerCallFailedException("No datasource container found");
+      DatasourceDefinition datasource = container.getDatasource();
+      if (null == datasource)
+         throw new ServerCallFailedException("Container does not contain datasource");
+
+      if (!securityService.checkRights(datasource, Read.class, Write.class, Execute.class))
+         throw new ViolatedSecurityExceptionDto();
+
+      container = entityCloner.cloneEntity(container);
+
+      /* update query */
+      DatasourceDefinitionConfig dsConfig = container.getDatasourceConfig();
+      if (!(dsConfig instanceof DatabaseDatasourceConfig))
+         throw new ServerCallFailedException("Expected Database");
+      ((DatabaseDatasourceConfig) dsConfig).setQuery(query);
+
+      try {
+         return simpleDataSupplyer.getColumnNames(new DatasourceContainerProviderImpl(container));
+      } catch (ReportExecutorException e) {
+         throw new ServerCallFailedException(e);
+      }
+   }
+
+   @Override
+   public PagingLoadResult<ListStringBaseModel> loadData(DatasourceContainerDto containerDto,
+         PagingLoadConfig loadConfig, String query) throws ServerCallFailedException {
+      DatasourceContainer container = (DatasourceContainer) dtoService.loadPoso(containerDto);
+      if (null == container)
+         throw new ServerCallFailedException("No datasource container found");
+      DatasourceDefinition datasource = container.getDatasource();
+      if (null == datasource)
+         throw new ServerCallFailedException("Container does not contain datasource");
+
+      if (!securityService.checkRights(datasource, Read.class, Write.class, Execute.class))
+         throw new ViolatedSecurityExceptionDto();
+
+      /* update query */
+      DatasourceDefinitionConfig dsConfig = container.getDatasourceConfig();
+      if (!(dsConfig instanceof DatabaseDatasourceConfig))
+         throw new ServerCallFailedException("Expected Database");
+      ((DatabaseDatasourceConfig) dsConfig).setQuery(query);
+
+      try {
+         RSTableModel tableModel = simpleDataSupplyer.getData(new DatasourceContainerProviderImpl(container), null,
+               loadConfig.getOffset(), loadConfig.getLimit());
+         int count = simpleDataSupplyer.getDataCount(new DatasourceContainerProviderImpl(container));
+
+         List<ListStringBaseModel> list = new ArrayList<ListStringBaseModel>();
+         for (RSTableRow row : tableModel.getData())
+            list.add(new ListStringBaseModel(row.getRow()));
+
+         return new PagingLoadResultBean<ListStringBaseModel>(list, count, loadConfig.getOffset());
+      } catch (ReportExecutorException e) {
+         throw new ServerCallFailedException(e);
+      }
+   }
 
 }

@@ -64,9 +64,8 @@ public class LogSetupHelper {
                   }
                } catch (Exception e) {
                }
-               
-               Arrays.stream(rsRootLogger.getHandlers())
-                  .forEach(rsRootLogger::removeHandler);
+
+               Arrays.stream(rsRootLogger.getHandlers()).forEach(rsRootLogger::removeHandler);
 
                rsRootLogger.addHandler(tomcatRsHandler);
             }
@@ -86,8 +85,7 @@ public class LogSetupHelper {
                    * dots e.g. logback-core-1.2.7.jar, so we remove the version number from
                    * filename. The version can be found in the MANIFEST.MF file.
                    */
-                  cphelper.addUrl(classloader,
-                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
                   cphelper.addUrl(classloader,
                         LogSetupHelper.class.getResource("/resources/optlib/logback-classic.jar"));
                   cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/logback-core.jar"));
@@ -131,8 +129,7 @@ public class LogSetupHelper {
             for (ClassLoader classloader : classloaders) {
                try {
                   /* filename without version, refer to commend above. */
-                  cphelper.addUrl(classloader,
-                        LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
+                  cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
                } catch (Exception e) {
                }
             }

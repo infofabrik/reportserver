@@ -10,14 +10,18 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceRoleDto;
 
 public interface StrippedDownTeamSpaceMemberDtoPa extends PropertyAccess<StrippedDownTeamSpaceMemberDto> {
 
-	@Path("folkId")
-	public ModelKeyProvider<StrippedDownTeamSpaceMemberDto> dtoId();
+   @Path("folkId")
+   public ModelKeyProvider<StrippedDownTeamSpaceMemberDto> dtoId();
 
-	/* Properties */
-	public ValueProvider<StrippedDownTeamSpaceMemberDto,Long> folkId();
-	public ValueProvider<StrippedDownTeamSpaceMemberDto,TeamSpaceRoleDto> role();
-	public ValueProvider<StrippedDownTeamSpaceMemberDto,String> name();
-	public ValueProvider<StrippedDownTeamSpaceMemberDto,String> firstname();
-	public ValueProvider<StrippedDownTeamSpaceMemberDto,String> lastname();
+   /* Properties */
+   public ValueProvider<StrippedDownTeamSpaceMemberDto, Long> folkId();
+
+   public ValueProvider<StrippedDownTeamSpaceMemberDto, TeamSpaceRoleDto> role();
+
+   public ValueProvider<StrippedDownTeamSpaceMemberDto, String> name();
+
+   public ValueProvider<StrippedDownTeamSpaceMemberDto, String> firstname();
+
+   public ValueProvider<StrippedDownTeamSpaceMemberDto, String> lastname();
 
 }

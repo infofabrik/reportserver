@@ -50,11 +50,8 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public SftpExportSnippetProvider(
-         @DatasinkTreeSftp Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<SftpDao> datasinkDaoProvider
-         ) {
+   public SftpExportSnippetProvider(@DatasinkTreeSftp Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<SftpDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -96,6 +93,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
          public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
+
          @Override
          public BaseIcon getIcon() {
             return FtpUiModule.SFTP_ICON;
@@ -118,7 +116,7 @@ public class SftpExportSnippetProvider implements ScheduleExportSnippetProviderH
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

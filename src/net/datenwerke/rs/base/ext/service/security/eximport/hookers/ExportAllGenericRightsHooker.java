@@ -10,21 +10,19 @@ import net.datenwerke.security.service.security.entities.GenericSecurityTargetEn
 
 public class ExportAllGenericRightsHooker implements ExportAllHook {
 
-	private final SecurityService securityService;
-	
-	@Inject
-	public ExportAllGenericRightsHooker(
-		SecurityService securityService
-		) {
-		this.securityService = securityService;
-	}
+   private final SecurityService securityService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		for(Class<?> targetType : securityService.getRegisteredGenericSecurityTargets()){
-			GenericSecurityTargetEntity entity = securityService.loadGenericTarget(targetType);
-			config.addItemConfig(new EntityExportItemConfig(entity));
-		}
-	}
+   @Inject
+   public ExportAllGenericRightsHooker(SecurityService securityService) {
+      this.securityService = securityService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      for (Class<?> targetType : securityService.getRegisteredGenericSecurityTargets()) {
+         GenericSecurityTargetEntity entity = securityService.loadGenericTarget(targetType);
+         config.addItemConfig(new EntityExportItemConfig(entity));
+      }
+   }
 
 }

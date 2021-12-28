@@ -5,18 +5,16 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.entities.Global
 
 public class GlobalConstantExporter extends GenericEntityExporter {
 
-	private static final String EXPORTER_ID = "GlobalConstantExporter";
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
-	
-	
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[]{GlobalConstant.class};
-	}
+   private static final String EXPORTER_ID = "GlobalConstantExporter";
 
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
+
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { GlobalConstant.class };
+   }
 
 }

@@ -9,6 +9,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 
 public interface ExportConfigFormFactory {
 
-	public SchedulerExportConfigurationForm create(Collection<ReportViewConfiguration> configs, ArrayList<SendToClientConfig> sendToConfigs, ReportScheduleDefinition definition);
-	
+   public SchedulerExportConfigurationForm create(Collection<ReportViewConfiguration> configs,
+         ArrayList<SendToClientConfig> sendToConfigs, ReportScheduleDefinition definition);
+
 }

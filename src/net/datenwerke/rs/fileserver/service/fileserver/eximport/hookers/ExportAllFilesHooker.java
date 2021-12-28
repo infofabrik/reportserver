@@ -12,21 +12,21 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class ExportAllFilesHooker implements ExportAllHook {
 
-	private final FileServerService fileService;
-	
-	@Inject
-	public ExportAllFilesHooker(FileServerService fileService) {
-		this.fileService = fileService;
-	}
+   private final FileServerService fileService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
-		specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
-		config.addSpecificExporterConfigs(specConfig);
-		
-		for(AbstractNode<?> node : fileService.getAllNodes())
-			config.addItemConfig(new TreeNodeExportItemConfig(node));
-	}
+   @Inject
+   public ExportAllFilesHooker(FileServerService fileService) {
+      this.fileService = fileService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
+      specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
+      config.addSpecificExporterConfigs(specConfig);
+
+      for (AbstractNode<?> node : fileService.getAllNodes())
+         config.addItemConfig(new TreeNodeExportItemConfig(node));
+   }
 
 }

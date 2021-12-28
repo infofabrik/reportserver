@@ -11,17 +11,15 @@ import net.datenwerke.rs.terminal.client.terminal.helper.DisplayHelper;
  */
 public class CommandResultHtmlDtoDec extends CommandResultHtmlDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public CommandResultHtmlDtoDec() {
+      super();
+   }
 
-	public CommandResultHtmlDtoDec() {
-		super();
-	}
-
-	public void format(DisplayHelper displayHelper, SafeHtmlBuilder builder) {
-		/* double dispatch */
-		displayHelper.format(this,builder);
-	}
-
+   public void format(DisplayHelper displayHelper, SafeHtmlBuilder builder) {
+      /* double dispatch */
+      displayHelper.format(this, builder);
+   }
 
 }

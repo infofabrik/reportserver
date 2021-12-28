@@ -136,13 +136,9 @@ public class ThinQueryServiceImpl implements ThinQueryService {
    private final Provider<AuthenticatorService> authenticatorService;
 
    @Inject
-   public ThinQueryServiceImpl(
-         OlapUtilService olapUtilService, 
-         HookHandlerService hookHandler,
-         Provider<SaikuContextMap> contextProvider, 
-         Provider<ParameterSetFactory> parameterSetFactory,
-         Provider<AuthenticatorService> authenticatorService
-         ) {
+   public ThinQueryServiceImpl(OlapUtilService olapUtilService, HookHandlerService hookHandler,
+         Provider<SaikuContextMap> contextProvider, Provider<ParameterSetFactory> parameterSetFactory,
+         Provider<AuthenticatorService> authenticatorService) {
       this.olapUtilService = olapUtilService;
       this.hookHandler = hookHandler;
       this.contextProvider = contextProvider;

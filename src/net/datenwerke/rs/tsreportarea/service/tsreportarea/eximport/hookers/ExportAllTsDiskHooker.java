@@ -12,26 +12,23 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
 
 public class ExportAllTsDiskHooker implements ExportAllHook {
 
-	private final TsDiskService diskService;
-	private final TeamSpaceService tsService;
-	
-	@Inject
-	public ExportAllTsDiskHooker(
-		TsDiskService diskService,
-		TeamSpaceService tsService) {
-		
-		this.diskService = diskService;
-		this.tsService = tsService;
-	}
+   private final TsDiskService diskService;
+   private final TeamSpaceService tsService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		if(! tsService.isGlobalTsAdmin())
-			throw new ViolatedSecurityException();
-		
-		for(AbstractTsDiskNode node : diskService.getAllNodes())
-			config.addItemConfig(new TreeNodeExportItemConfig(node));
-	}
+   @Inject
+   public ExportAllTsDiskHooker(TsDiskService diskService, TeamSpaceService tsService) {
 
-	
+      this.diskService = diskService;
+      this.tsService = tsService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      if (!tsService.isGlobalTsAdmin())
+         throw new ViolatedSecurityException();
+
+      for (AbstractTsDiskNode node : diskService.getAllNodes())
+         config.addItemConfig(new TreeNodeExportItemConfig(node));
+   }
+
 }

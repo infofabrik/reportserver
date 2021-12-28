@@ -12,30 +12,28 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class PreFilterViewFactory implements ReportViewFactory {
 
-	private final Provider<PreFilterView> filterViewProvider;
-	
-	
-	@Inject
-	public PreFilterViewFactory(
-		Provider<PreFilterView> filterViewProvider
-		) {
-		
-		this.filterViewProvider = filterViewProvider;
-	}
-	
-	public PreFilterView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		PreFilterView fw = filterViewProvider.get();
-		fw.setReport((TableReportDto) report);
-		return fw;
-	}
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof TableReportDto && !report.isConfigurationProtected();
-	}
-	
-	@Override
-	public String getViewId() {
-		return PreFilterView.VIEW_ID;
-	}
+   private final Provider<PreFilterView> filterViewProvider;
+
+   @Inject
+   public PreFilterViewFactory(Provider<PreFilterView> filterViewProvider) {
+
+      this.filterViewProvider = filterViewProvider;
+   }
+
+   public PreFilterView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
+      PreFilterView fw = filterViewProvider.get();
+      fw.setReport((TableReportDto) report);
+      return fw;
+   }
+
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && !report.isConfigurationProtected();
+   }
+
+   @Override
+   public String getViewId() {
+      return PreFilterView.VIEW_ID;
+   }
 
 }

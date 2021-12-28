@@ -3,25 +3,24 @@ package net.datenwerke.rs.crystal.client.crystal.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface CrystalMessages extends Messages{
+public interface CrystalMessages extends Messages {
 
-	public final static CrystalMessages INSTANCE = GWT.create(CrystalMessages.class);
-	
-	String reportTypeName();
+   public final static CrystalMessages INSTANCE = GWT.create(CrystalMessages.class);
 
-	String editReport();
+   String reportTypeName();
 
-	String rptfile();
+   String editReport();
 
-	String fileName();
+   String rptfile();
 
-	String downloadReportToolbarButtonText();
+   String fileName();
 
-	String parameterProposalBtn();
+   String downloadReportToolbarButtonText();
 
-	String noProposalsFoundTitle();
+   String parameterProposalBtn();
 
-	String noProposalsFoundText();
+   String noProposalsFoundTitle();
 
+   String noProposalsFoundText();
 
 }

@@ -21,10 +21,8 @@ public class ScpPrivateKeyUploadHooker implements FileUploadHandlerHook {
    private final Provider<DatasinkTreeService> datasinkServiceProvider;
 
    @Inject
-   public ScpPrivateKeyUploadHooker(
-         Provider<SecurityService> securityServiceProvider,
-         Provider<DatasinkTreeService> datasinkServiceProvider
-         ) {
+   public ScpPrivateKeyUploadHooker(Provider<SecurityService> securityServiceProvider,
+         Provider<DatasinkTreeService> datasinkServiceProvider) {
       this.securityServiceProvider = securityServiceProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }

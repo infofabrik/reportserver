@@ -7,11 +7,11 @@ import net.datenwerke.rs.base.client.parameters.datasource.DatasourceParameterUi
 
 public class RSBasicParametersUIModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		/* bind service */
-		bind(RSParametersUIStartup.class).asEagerSingleton();
-		bind(DatasourceParameterUiService.class).to(DatasourceParameterUiServiceImpl.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      /* bind service */
+      bind(RSParametersUIStartup.class).asEagerSingleton();
+      bind(DatasourceParameterUiService.class).to(DatasourceParameterUiServiceImpl.class).asEagerSingleton();
+   }
 
 }

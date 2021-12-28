@@ -6,13 +6,11 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsExImportStartup {
 
-	@Inject
-	public GenRightsExImportStartup(
-		SecurityService securityService	
-		){
-		
-		/* register security targets */
-		securityService.registerSecurityTarget(ExportSecurityTarget.class);
-		securityService.registerSecurityTarget(ImportSecurityTarget.class);
-	}
+   @Inject
+   public GenRightsExImportStartup(SecurityService securityService) {
+
+      /* register security targets */
+      securityService.registerSecurityTarget(ExportSecurityTarget.class);
+      securityService.registerSecurityTarget(ImportSecurityTarget.class);
+   }
 }

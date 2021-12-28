@@ -15,21 +15,19 @@ import net.datenwerke.security.client.security.dto.ExecuteDto;
 
 public class DatasinkManagerExportUIStartup {
    @Inject
-   public DatasinkManagerExportUIStartup(
-      final HookHandlerService hookHandler,
-      final WaitOnEventUIService waitOnEventService,
-      final SecurityUIService securityService,
-      final ExportButtonHook exportButtonHook
-      ){
+   public DatasinkManagerExportUIStartup(final HookHandlerService hookHandler,
+         final WaitOnEventUIService waitOnEventService, final SecurityUIService securityService,
+         final ExportButtonHook exportButtonHook) {
 
       /* test if user has rights to see report manager admin view */
-      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, new SynchronousCallbackOnEventTrigger(){
-         public void execute(final WaitOnEventTicket ticket) {
-            if(securityService.hasRight(ExportGenericTargetIdentifier.class, ExecuteDto.class))
-               hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, exportButtonHook);
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(ExportGenericTargetIdentifier.class, ExecuteDto.class))
+                     hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, exportButtonHook);
 
-            waitOnEventService.signalProcessingDone(ticket);
-         }
-      });
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
    }
 }

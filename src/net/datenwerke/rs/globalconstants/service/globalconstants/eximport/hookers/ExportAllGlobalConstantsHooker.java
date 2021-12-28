@@ -10,16 +10,16 @@ import net.datenwerke.rs.globalconstants.service.globalconstants.entities.Global
 
 public class ExportAllGlobalConstantsHooker implements ExportAllHook {
 
-	private final GlobalConstantsService service;
-	
-	@Inject
-	public ExportAllGlobalConstantsHooker(GlobalConstantsService service) {
-		this.service = service;
-	}
+   private final GlobalConstantsService service;
 
-	@Override
-	public void configure(ExportConfig config) {
-		for(GlobalConstant constant : service.getAllGlobalConstants())
-			config.addItemConfig(new EntityExportItemConfig(constant));
-	}
+   @Inject
+   public ExportAllGlobalConstantsHooker(GlobalConstantsService service) {
+      this.service = service;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      for (GlobalConstant constant : service.getAllGlobalConstants())
+         config.addItemConfig(new EntityExportItemConfig(constant));
+   }
 }

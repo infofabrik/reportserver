@@ -12,22 +12,21 @@ import net.datenwerke.rs.dashboard.client.dashboard.hookers.ReportDadgetDefaultE
 
 public class BirtReportDadgetExporter extends ReportDadgetDefaultExportHooker {
 
-	@Inject
-	public BirtReportDadgetExporter(ReportExecutorUIService reportExecutorService,
-			ReportExporterUIService reportExportService,
-			ReportExecutorDao reportExecutorDao,
-			ReportExporterDao reportExporterDao) {
-		super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
-	}
+   @Inject
+   public BirtReportDadgetExporter(ReportExecutorUIService reportExecutorService,
+         ReportExporterUIService reportExportService, ReportExecutorDao reportExecutorDao,
+         ReportExporterDao reportExporterDao) {
+      super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
+   }
 
-	@Override
-	protected boolean isSupportedReport(ReportDto report) {
-		return report instanceof BirtReportDto;
-	}
-	
-	@Override
-	public String getPropertyName() {
-		return "birtConfig";
-	}
+   @Override
+   protected boolean isSupportedReport(ReportDto report) {
+      return report instanceof BirtReportDto;
+   }
+
+   @Override
+   public String getPropertyName() {
+      return "birtConfig";
+   }
 
 }

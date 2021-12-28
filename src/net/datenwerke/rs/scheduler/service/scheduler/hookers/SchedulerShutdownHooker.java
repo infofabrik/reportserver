@@ -9,22 +9,22 @@ import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 
 public class SchedulerShutdownHooker implements ContextHook {
 
-	private final SchedulerService schedulerService;
-	
-	@Inject
-	public SchedulerShutdownHooker(SchedulerService schedulerService) {
-		this.schedulerService = schedulerService;
-	}
+   private final SchedulerService schedulerService;
 
-	@Override
-	public void contextInitialized(ServletContextEvent servletContextEvent) {
+   @Inject
+   public SchedulerShutdownHooker(SchedulerService schedulerService) {
+      this.schedulerService = schedulerService;
+   }
 
-	}
+   @Override
+   public void contextInitialized(ServletContextEvent servletContextEvent) {
 
-	@Override
-	public void contextDestroyed(ServletContextEvent servletContextEvent) {
-		schedulerService.shutdown();
-		schedulerService.shutdownWatchdog();
-	}
+   }
+
+   @Override
+   public void contextDestroyed(ServletContextEvent servletContextEvent) {
+      schedulerService.shutdown();
+      schedulerService.shutdownWatchdog();
+   }
 
 }

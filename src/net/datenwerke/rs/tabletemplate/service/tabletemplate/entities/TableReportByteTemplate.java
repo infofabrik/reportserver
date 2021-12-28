@@ -9,38 +9,36 @@ import org.hibernate.envers.Audited;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
 @Entity
-@Table(name="TABLE_REPORT_BYTE_TPL")
+@Table(name = "TABLE_REPORT_BYTE_TPL")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.tabletemplate.client.tabletemplate.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.tabletemplate.client.tabletemplate.dto")
 public class TableReportByteTemplate extends TableReportTemplate {
-	
-	@Lob
-	private byte[] template;
 
-	public void setTemplate(byte[] template) {
-		this.template = template;
-	}
+   @Lob
+   private byte[] template;
 
-	public byte[] getTemplate() {
-		return template;
-	}
-	
-	@Override
-	public void updateData(TableReportTemplate template) {
-		if(! (template instanceof TableReportByteTemplate))
-			throw new IllegalArgumentException("Expected " + TableReportByteTemplate.class);
-		
-		super.updateData(template);
-		
-		setTemplate(((TableReportByteTemplate)template).getTemplate());
-	}
+   public void setTemplate(byte[] template) {
+      this.template = template;
+   }
 
-	@Override
-	protected TableReportTemplate doCreateTemporary() {
-		TableReportByteTemplate template = new TableReportByteTemplate();
-		template.setTemplate(getTemplate());
-		return template;
-	}
+   public byte[] getTemplate() {
+      return template;
+   }
+
+   @Override
+   public void updateData(TableReportTemplate template) {
+      if (!(template instanceof TableReportByteTemplate))
+         throw new IllegalArgumentException("Expected " + TableReportByteTemplate.class);
+
+      super.updateData(template);
+
+      setTemplate(((TableReportByteTemplate) template).getTemplate());
+   }
+
+   @Override
+   protected TableReportTemplate doCreateTemporary() {
+      TableReportByteTemplate template = new TableReportByteTemplate();
+      template.setTemplate(getTemplate());
+      return template;
+   }
 }

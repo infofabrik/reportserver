@@ -13,6 +13,4 @@ import net.datenwerke.security.client.security.dto.AccessTypeDto;
 @CorrespondingPoso(net.datenwerke.security.service.security.entities.AccessType.class)
 public interface AccessTypeDtoPA extends PropertyAccess<AccessTypeDto> {
 
-
-
 }

@@ -7,9 +7,9 @@ import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 
 public interface SubCommandContainer {
 
-	public abstract String getBaseCommand();
-	
-	public List<SubCommand> getSubCommands();
-	
-	public TerminalCommandHook getSubCommand(CommandParser parser, TerminalSession session);
+   public abstract String getBaseCommand();
+
+   public List<SubCommand> getSubCommands();
+
+   public TerminalCommandHook getSubCommand(CommandParser parser, TerminalSession session);
 }

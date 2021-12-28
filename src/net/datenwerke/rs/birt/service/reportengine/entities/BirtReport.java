@@ -25,18 +25,8 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ BirtReportVariant.class })
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", 
-      createDecorator = true, 
-      typeDescriptionMsg = BirtMessages.class, 
-      typeDescriptionKey = "reportTypeName", 
-      icon = "file-image-o"
-      )
-@InstanceDescription(
-      msgLocation = BirtEngineMessages.class, 
-      objNameKey = "birtReportTypeName", 
-      icon = "file-image-o"
-      )
+@GenerateDto(dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", createDecorator = true, typeDescriptionMsg = BirtMessages.class, typeDescriptionKey = "reportTypeName", icon = "file-image-o")
+@InstanceDescription(msgLocation = BirtEngineMessages.class, objNameKey = "birtReportTypeName", icon = "file-image-o")
 public class BirtReport extends Report {
 
    /**

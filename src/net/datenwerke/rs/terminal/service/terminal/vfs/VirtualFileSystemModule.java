@@ -5,15 +5,13 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.TreeBasedVirtualFil
 
 public class VirtualFileSystemModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* startup */
-		bind(VirtualFileSystemStartup.class).asEagerSingleton();
-		
-		/* static injection */
-		requestStaticInjection(
-			TreeBasedVirtualFileSystem.class
-		);
-	}
+   @Override
+   protected void configure() {
+      /* startup */
+      bind(VirtualFileSystemStartup.class).asEagerSingleton();
+
+      /* static injection */
+      requestStaticInjection(TreeBasedVirtualFileSystem.class);
+   }
 
 }

@@ -8,16 +8,15 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorColumnConfig
  */
 public class GridEditorColumnConfigDtoDec extends GridEditorColumnConfigDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public GridEditorColumnConfigDtoDec() {
+      super();
+   }
 
-	public GridEditorColumnConfigDtoDec() {
-		super();
-	}
-
-	@Override
-	public Boolean isPrimaryKey() {
-		return Boolean.TRUE.equals(super.isPrimaryKey());
-	}
+   @Override
+   public Boolean isPrimaryKey() {
+      return Boolean.TRUE.equals(super.isPrimaryKey());
+   }
 
 }

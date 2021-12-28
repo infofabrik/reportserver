@@ -9,12 +9,10 @@ import net.datenwerke.rs.incubator.client.scriptdatasource.hooker.ScriptDatasour
 
 public class ScriptDatasourceUiStartup {
 
-	@Inject
-	public ScriptDatasourceUiStartup(
-		HookHandlerService hookHandler,
-		Provider<ScriptDatasourceConfigProviderHooker> configProvider
-		){
-		
-		hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, configProvider, 50);
-	}
+   @Inject
+   public ScriptDatasourceUiStartup(HookHandlerService hookHandler,
+         Provider<ScriptDatasourceConfigProviderHooker> configProvider) {
+
+      hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, configProvider, 50);
+   }
 }

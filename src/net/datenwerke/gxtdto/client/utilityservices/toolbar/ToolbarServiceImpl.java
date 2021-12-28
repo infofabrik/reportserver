@@ -51,165 +51,162 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ToolbarServiceImpl implements ToolbarService {
 
-	private final Resources resources = GWT.create(Resources.class);
-	
-	interface Resources extends ClientBundle {
-		@Source("toolbar.gss")
-		Style css();
-	}
+   private final Resources resources = GWT.create(Resources.class);
 
-	interface Style extends CssResource {
-		  @ClassName("rs-toolbar-item-plain")
-		  String itemPlain();
-	}
-	
-	public ToolbarServiceImpl(){
-		super();
-		resources.css().ensureInjected();
-	}
-	
-	@Override
-	public DwTextButton createSmallButtonLeft(String text, ImageResource icon){
-		DwTextButton btn = new DwTextButton(text);
-		btn.setIcon(icon);
-		btn.setIconAlign(IconAlign.LEFT);
-		btn.setArrowAlign(ButtonArrowAlign.RIGHT);
-		btn.setScale(ButtonScale.SMALL);
-		return btn;
-	}
-	
-	
-	@Override
-	public DwTextButton createSmallButtonLeft(BaseIcon icon){
-		DwTextButton btn = new DwTextButton(icon);
-		btn.setIconAlign(IconAlign.LEFT);
-		btn.setArrowAlign(ButtonArrowAlign.RIGHT);
-		btn.setScale(ButtonScale.SMALL);
-		return btn;
-	}
-	
-	@Override
-	public DwTextButton createSmallButtonLeft(String text, BaseIcon icon){
-		DwTextButton btn = new DwTextButton(text, icon);
-		btn.setIconAlign(IconAlign.LEFT);
-		btn.setArrowAlign(ButtonArrowAlign.RIGHT);
-		btn.setScale(ButtonScale.SMALL);
-		return btn;
-	}
-	
-	@Override
-	public DwTextButton createLargeButtonLeft(String text, ImageResource icon){
-		DwTextButton btn = new DwTextButton(text);
-		btn.setIcon(icon);
-		btn.setIconAlign(IconAlign.LEFT);
-		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
-		btn.setScale(ButtonScale.LARGE);
-		return btn;
-	}
-	
-	@Override
-	public <D extends TextButton> D configureButton(D button, String text, ImageResource icon) {
-		button.setText(text);
-		button.setIcon(icon);
-		button.setIconAlign(IconAlign.LEFT);
-		button.setArrowAlign(ButtonArrowAlign.RIGHT);
-		return button;
-	}
-	
-	@Override
-	public <D extends TextButton> D configureButton(D button, String text, BaseIcon icon) {
-		button.setText(text);
-		if(button instanceof DwTextButton)
-			((DwTextButton)button).setIcon(icon);
-		if(button instanceof DwSplitButton)
-			((DwSplitButton)button).setIcon(icon);
-		button.setIconAlign(IconAlign.LEFT);
-		button.setArrowAlign(ButtonArrowAlign.RIGHT);
-		return button;
-	}
-	
-	@Override
-	public DwTextButton createLargeButtonTop(String text, ImageResource icon,
-			String tooltip) {
-		DwTextButton btn = createLargeButtonTop(text, icon);
-		btn.setToolTip(tooltip);
-		return btn;
-	}
-	
-	@Override
-	public DwTextButton createLargeButtonTop(String text, ImageResource icon){
-		DwTextButton btn = new DwTextButton(text);
-		btn.setIcon(icon);
-		btn.setIconAlign(IconAlign.TOP);
-		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
-		btn.setScale(ButtonScale.LARGE);
-		return btn;
-	}
-	
-	@Override
-	public DwTextButton createLargeButtonTop(String text, BaseIcon icon){
-		DwTextButton btn;
-		if(null != icon)
-			btn = new DwTextButton(text, icon);
-		else
-			btn = new DwTextButton();
-		btn.setIconAlign(IconAlign.TOP);
-		btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
-		btn.setScale(ButtonScale.LARGE);
-		return btn;
-	}
-	
-	@Override
-	public DwTextButton createPlainToolbarItem(ImageResource icon){
-		return createPlainToolbarItem("", icon);
-	}
-	
-	@Override
-	public Widget createPlainToolbarItem(BaseIcon icon) {
-		return new HTML(icon.toSafeHtml());
-	}
-	
-	
-	@Override
-	public DwTextButton createPlainToolbarItem(String name, ImageResource icon){
-		DwTextButton ib = new DwTextButton(name, icon){ //$NON-NLS-1$
-			@Override
-			public void onBrowserEvent(Event event) {
-				// swallow
-			}
-		};
-	    ib.addStyleName(resources.css().itemPlain());
-	    return ib;
-	}
-	
-	@Override
-	public DwTextButton createUnstyledToolbarItem(String name, ImageResource icon){
-		DwTextButton ib = new DwTextButton(name, icon);
-	    ib.addStyleName(resources.css().itemPlain());
-	    return ib;
-	}
-	
-	@Override
-	public DwTextButton createUnstyledToolbarItem(String name, BaseIcon icon){
-		DwTextButton ib = new DwTextButton(name, icon);
-	    ib.addStyleName(resources.css().itemPlain());
-	    return ib;
-	}
-	
-	@Override
-	public void addPlainToolbarItem(ToolBar toolbar, ImageResource icon){
-	    toolbar.add(createPlainToolbarItem(icon));
-	}
-	
-	@Override
-	public void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon) {
-		toolbar.add(createPlainToolbarItem(icon));
-	}
+   interface Resources extends ClientBundle {
+      @Source("toolbar.gss")
+      Style css();
+   }
 
-	@Override
-	public LabelToolItem createText(String text) {
-		return new LabelToolItem(text);
-	}
+   interface Style extends CssResource {
+      @ClassName("rs-toolbar-item-plain")
+      String itemPlain();
+   }
+
+   public ToolbarServiceImpl() {
+      super();
+      resources.css().ensureInjected();
+   }
+
+   @Override
+   public DwTextButton createSmallButtonLeft(String text, ImageResource icon) {
+      DwTextButton btn = new DwTextButton(text);
+      btn.setIcon(icon);
+      btn.setIconAlign(IconAlign.LEFT);
+      btn.setArrowAlign(ButtonArrowAlign.RIGHT);
+      btn.setScale(ButtonScale.SMALL);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createSmallButtonLeft(BaseIcon icon) {
+      DwTextButton btn = new DwTextButton(icon);
+      btn.setIconAlign(IconAlign.LEFT);
+      btn.setArrowAlign(ButtonArrowAlign.RIGHT);
+      btn.setScale(ButtonScale.SMALL);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createSmallButtonLeft(String text, BaseIcon icon) {
+      DwTextButton btn = new DwTextButton(text, icon);
+      btn.setIconAlign(IconAlign.LEFT);
+      btn.setArrowAlign(ButtonArrowAlign.RIGHT);
+      btn.setScale(ButtonScale.SMALL);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createLargeButtonLeft(String text, ImageResource icon) {
+      DwTextButton btn = new DwTextButton(text);
+      btn.setIcon(icon);
+      btn.setIconAlign(IconAlign.LEFT);
+      btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
+      btn.setScale(ButtonScale.LARGE);
+      return btn;
+   }
+
+   @Override
+   public <D extends TextButton> D configureButton(D button, String text, ImageResource icon) {
+      button.setText(text);
+      button.setIcon(icon);
+      button.setIconAlign(IconAlign.LEFT);
+      button.setArrowAlign(ButtonArrowAlign.RIGHT);
+      return button;
+   }
+
+   @Override
+   public <D extends TextButton> D configureButton(D button, String text, BaseIcon icon) {
+      button.setText(text);
+      if (button instanceof DwTextButton)
+         ((DwTextButton) button).setIcon(icon);
+      if (button instanceof DwSplitButton)
+         ((DwSplitButton) button).setIcon(icon);
+      button.setIconAlign(IconAlign.LEFT);
+      button.setArrowAlign(ButtonArrowAlign.RIGHT);
+      return button;
+   }
+
+   @Override
+   public DwTextButton createLargeButtonTop(String text, ImageResource icon, String tooltip) {
+      DwTextButton btn = createLargeButtonTop(text, icon);
+      btn.setToolTip(tooltip);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createLargeButtonTop(String text, ImageResource icon) {
+      DwTextButton btn = new DwTextButton(text);
+      btn.setIcon(icon);
+      btn.setIconAlign(IconAlign.TOP);
+      btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
+      btn.setScale(ButtonScale.LARGE);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createLargeButtonTop(String text, BaseIcon icon) {
+      DwTextButton btn;
+      if (null != icon)
+         btn = new DwTextButton(text, icon);
+      else
+         btn = new DwTextButton();
+      btn.setIconAlign(IconAlign.TOP);
+      btn.setArrowAlign(ButtonArrowAlign.BOTTOM);
+      btn.setScale(ButtonScale.LARGE);
+      return btn;
+   }
+
+   @Override
+   public DwTextButton createPlainToolbarItem(ImageResource icon) {
+      return createPlainToolbarItem("", icon);
+   }
+
+   @Override
+   public Widget createPlainToolbarItem(BaseIcon icon) {
+      return new HTML(icon.toSafeHtml());
+   }
+
+   @Override
+   public DwTextButton createPlainToolbarItem(String name, ImageResource icon) {
+      DwTextButton ib = new DwTextButton(name, icon) { // $NON-NLS-1$
+         @Override
+         public void onBrowserEvent(Event event) {
+            // swallow
+         }
+      };
+      ib.addStyleName(resources.css().itemPlain());
+      return ib;
+   }
+
+   @Override
+   public DwTextButton createUnstyledToolbarItem(String name, ImageResource icon) {
+      DwTextButton ib = new DwTextButton(name, icon);
+      ib.addStyleName(resources.css().itemPlain());
+      return ib;
+   }
+
+   @Override
+   public DwTextButton createUnstyledToolbarItem(String name, BaseIcon icon) {
+      DwTextButton ib = new DwTextButton(name, icon);
+      ib.addStyleName(resources.css().itemPlain());
+      return ib;
+   }
+
+   @Override
+   public void addPlainToolbarItem(ToolBar toolbar, ImageResource icon) {
+      toolbar.add(createPlainToolbarItem(icon));
+   }
+
+   @Override
+   public void addPlainToolbarItem(ToolBar toolbar, BaseIcon icon) {
+      toolbar.add(createPlainToolbarItem(icon));
+   }
+
+   @Override
+   public LabelToolItem createText(String text) {
+      return new LabelToolItem(text);
+   }
 
    @Override
    public void addSearchBar(ToolBar toolbar, SelectionHandler<SearchResultEntryDto> selectionHandler,
@@ -217,62 +214,68 @@ public class ToolbarServiceImpl implements ToolbarService {
       DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto> reader = new DataReader<PagingLoadResult<SearchResultEntryDto>, SearchResultListDto>() {
          @Override
          public PagingLoadResult<SearchResultEntryDto> read(Object loadConfig, SearchResultListDto data) {
-            if( data.getTotalLength() > 0)
-               return new PagingLoadResultBean<SearchResultEntryDto>(data.getData(), data.getTotalLength(), data.getOffset());
+            if (data.getTotalLength() > 0)
+               return new PagingLoadResultBean<SearchResultEntryDto>(data.getData(), data.getTotalLength(),
+                     data.getOffset());
             List<SearchResultEntryDto> emptyList = new ArrayList<SearchResultEntryDto>();
-            emptyList.add(new EmptySearchResultDto(GlobalSearchMessages.INSTANCE.noResultTitle(), GlobalSearchMessages.INSTANCE.noResultDesc(), BaseIcon.EXCLAMATION.toString()));
+            emptyList.add(new EmptySearchResultDto(GlobalSearchMessages.INSTANCE.noResultTitle(),
+                  GlobalSearchMessages.INSTANCE.noResultDesc(), BaseIcon.EXCLAMATION.toString()));
             return new PagingLoadResultBean<SearchResultEntryDto>(emptyList, data.getTotalLength(), data.getOffset());
          }
       };
 
-      PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>> listLoader = new PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>>(proxy, reader);
+      PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>> listLoader = new PagingLoader<SearchLoadConfig, PagingLoadResult<SearchResultEntryDto>>(
+            proxy, reader);
 
-      ListStore<SearchResultEntryDto> store = new ListStore<SearchResultEntryDto>(SearchResultEntryDtoPA.INSTANCE.dtoId());
-      listLoader.addLoadHandler(new LoadResultListStoreBinding<SearchLoadConfig, SearchResultEntryDto, PagingLoadResult<SearchResultEntryDto>>(store));
+      ListStore<SearchResultEntryDto> store = new ListStore<SearchResultEntryDto>(
+            SearchResultEntryDtoPA.INSTANCE.dtoId());
+      listLoader.addLoadHandler(
+            new LoadResultListStoreBinding<SearchLoadConfig, SearchResultEntryDto, PagingLoadResult<SearchResultEntryDto>>(
+                  store));
 
       final SearchTemplates template = GWT.create(SearchTemplates.class);
-      
-      ListView<SearchResultEntryDto, SearchResultEntryDto> view = new ListView<SearchResultEntryDto, SearchResultEntryDto>(store, new IdentityValueProvider<SearchResultEntryDto>());
+
+      ListView<SearchResultEntryDto, SearchResultEntryDto> view = new ListView<SearchResultEntryDto, SearchResultEntryDto>(
+            store, new IdentityValueProvider<SearchResultEntryDto>());
       view.setCell(new AbstractCell<SearchResultEntryDto>() {
          @Override
-         public void render(com.google.gwt.cell.client.Cell.Context context,
-               SearchResultEntryDto value, SafeHtmlBuilder sb) {
+         public void render(com.google.gwt.cell.client.Cell.Context context, SearchResultEntryDto value,
+               SafeHtmlBuilder sb) {
             sb.append(template.render(value, BaseIcon.from(value.getIconSmall()).getCssName()));
          }
       });
-      
-      final ComboBox<SearchResultEntryDto> combo = new ComboBox<SearchResultEntryDto>(new ComboBoxCell<SearchResultEntryDto>(store, new DisplayTitleLabelProvider<SearchResultEntryDto>(), view){
 
-         /* gxt workarround
-          * http://www.sencha.com/forum/showthread.php?185967
-          * */
-         @Override
-         protected PagingLoadConfig getParams(String query) {
-            SearchLoadConfig config = null;
-            if (loader.isReuseLoadConfig()) {
-               config = (SearchLoadConfig) loader.getLastLoadConfig();
-            } else {
-               config = new SearchLoadConfigBean();
-            }
-            config.setLimit(pageSize);
-            config.setOffset(0);
-            config.setQuery(query);
+      final ComboBox<SearchResultEntryDto> combo = new ComboBox<SearchResultEntryDto>(
+            new ComboBoxCell<SearchResultEntryDto>(store, new DisplayTitleLabelProvider<SearchResultEntryDto>(), view) {
 
-            return config;
-         }
-      });
-       combo.setWidth(150);  
-       combo.setMinListWidth(560);
-       combo.setLoader(listLoader);
-       combo.setHideTrigger(true);  
-       
-       
-       combo.addSelectionHandler(selectionHandler);
-      
-       addPlainToolbarItem(toolbar, BaseIcon.SEARCH);
-       toolbar.add(combo);
-      
+               /*
+                * gxt workarround http://www.sencha.com/forum/showthread.php?185967
+                */
+               @Override
+               protected PagingLoadConfig getParams(String query) {
+                  SearchLoadConfig config = null;
+                  if (loader.isReuseLoadConfig()) {
+                     config = (SearchLoadConfig) loader.getLastLoadConfig();
+                  } else {
+                     config = new SearchLoadConfigBean();
+                  }
+                  config.setLimit(pageSize);
+                  config.setOffset(0);
+                  config.setQuery(query);
+
+                  return config;
+               }
+            });
+      combo.setWidth(150);
+      combo.setMinListWidth(560);
+      combo.setLoader(listLoader);
+      combo.setHideTrigger(true);
+
+      combo.addSelectionHandler(selectionHandler);
+
+      addPlainToolbarItem(toolbar, BaseIcon.SEARCH);
+      toolbar.add(combo);
+
    }
-
 
 }

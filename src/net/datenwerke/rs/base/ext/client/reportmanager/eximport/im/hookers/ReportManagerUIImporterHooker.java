@@ -22,59 +22,57 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ReportManagerUIImporterHooker implements ImporterConfiguratorHook {
 
-	private static final String SUPPORTED_EXPORTER_ID = "ReportManagerExporter";
-	private static final String IMPORTER_ID = "ReportManagerImporter";
-	
-	private final Provider<ReportImporterConfigPanel> configPanelProvider;
-	
-	private ReportImporterConfigPanel configPanel;
-	
-	@Inject
-	public ReportManagerUIImporterHooker(
-		Provider<ReportImporterConfigPanel> configPanelProvider	
-		){
-	
-		/* store objects */
-		this.configPanelProvider = configPanelProvider;
-	}
-	
-	@Override
-	public String getImporterId() {
-		return IMPORTER_ID;
-	}
-	
-	@Override
-	public ImageResource getImporterIcon() {
-		return BaseIcon.REPORT.toImageResource();
-	}
+   private static final String SUPPORTED_EXPORTER_ID = "ReportManagerExporter";
+   private static final String IMPORTER_ID = "ReportManagerImporter";
 
-	@Override
-	public String getImporterName() {
-		return ReportmanagerMessages.INSTANCE.importerName();
-	}
+   private final Provider<ReportImporterConfigPanel> configPanelProvider;
 
-	@Override
-	public Collection<String> getSupportedExporters() {
-		return Collections.singletonList(SUPPORTED_EXPORTER_ID);
-	}
+   private ReportImporterConfigPanel configPanel;
 
-	@Override
-	public Widget initConfigPanel(ImportMainPanel importMainPanel) {
-		configPanel = configPanelProvider.get();
-		return configPanel;
-	}
+   @Inject
+   public ReportManagerUIImporterHooker(Provider<ReportImporterConfigPanel> configPanelProvider) {
 
-	@Override
-	public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
-		if(null == configPanel)
-			return null;
-		return configPanel.getConfiguration();
-	}
+      /* store objects */
+      this.configPanelProvider = configPanelProvider;
+   }
 
-	@Override
-	public void reset() {
-		if(null != configPanel)
-			configPanel.resetConfig();
-	}
+   @Override
+   public String getImporterId() {
+      return IMPORTER_ID;
+   }
+
+   @Override
+   public ImageResource getImporterIcon() {
+      return BaseIcon.REPORT.toImageResource();
+   }
+
+   @Override
+   public String getImporterName() {
+      return ReportmanagerMessages.INSTANCE.importerName();
+   }
+
+   @Override
+   public Collection<String> getSupportedExporters() {
+      return Collections.singletonList(SUPPORTED_EXPORTER_ID);
+   }
+
+   @Override
+   public Widget initConfigPanel(ImportMainPanel importMainPanel) {
+      configPanel = configPanelProvider.get();
+      return configPanel;
+   }
+
+   @Override
+   public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
+      if (null == configPanel)
+         return null;
+      return configPanel.getConfiguration();
+   }
+
+   @Override
+   public void reset() {
+      if (null != configPanel)
+         configPanel.resetConfig();
+   }
 
 }

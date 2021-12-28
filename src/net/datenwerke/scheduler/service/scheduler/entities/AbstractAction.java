@@ -58,9 +58,9 @@ public abstract class AbstractAction {
       try {
 
          monitors.forEach(monitor -> monitor.notifyOfExecution(this));
-         
+
          doExecute(abstractJob);
-         
+
          monitors.forEach(monitor -> monitor.actionExecutedSuccessfully(this));
 
       } catch (RuntimeException e) {

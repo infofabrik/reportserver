@@ -9,7 +9,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface UrlViewServerHook extends Hook {
 
-	Map<String, Map<String, List<String[]>>> provideConfiguration(
-			HierarchicalConfiguration config);
+   Map<String, Map<String, List<String[]>>> provideConfiguration(HierarchicalConfiguration config);
 
 }

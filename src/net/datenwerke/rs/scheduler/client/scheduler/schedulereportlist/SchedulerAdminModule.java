@@ -10,45 +10,43 @@ import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 @Singleton
-public class SchedulerAdminModule implements AdminModule{
+public class SchedulerAdminModule implements AdminModule {
 
-	public static final String ADMIN_FILTER_PANEL = "ADMIN_FILTER_PANEL";
-	
-	private final ScheduledReportListPanelFactory schedulerAdminPanelFactory;
+   public static final String ADMIN_FILTER_PANEL = "ADMIN_FILTER_PANEL";
 
-	private ScheduledReportListPanel schedulerAdminPanel;
+   private final ScheduledReportListPanelFactory schedulerAdminPanelFactory;
 
-	@Inject
-	public SchedulerAdminModule(
-		ScheduledReportListPanelFactory schedulerAdminPanelFactory
-		) {
-		
-		/* store objects */
-		this.schedulerAdminPanelFactory = schedulerAdminPanelFactory;
-	}
-	
-	@Override
-	public Widget getMainWidget() {
-		if(null == this.schedulerAdminPanel){
-			schedulerAdminPanel = schedulerAdminPanelFactory.create(ADMIN_FILTER_PANEL, true, true);
-			schedulerAdminPanel.load();
-		}
-		return schedulerAdminPanel;
-	}
+   private ScheduledReportListPanel schedulerAdminPanel;
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.CLOCK_O.toImageResource();
-	}
+   @Inject
+   public SchedulerAdminModule(ScheduledReportListPanelFactory schedulerAdminPanelFactory) {
 
-	@Override
-	public String getNavigationText() {
-		return SchedulerMessages.INSTANCE.scheduler();
-	}
+      /* store objects */
+      this.schedulerAdminPanelFactory = schedulerAdminPanelFactory;
+   }
 
-	@Override
-	public void notifyOfSelection() {
-		if(null != schedulerAdminPanel)
-			schedulerAdminPanel.reload();
-	}
+   @Override
+   public Widget getMainWidget() {
+      if (null == this.schedulerAdminPanel) {
+         schedulerAdminPanel = schedulerAdminPanelFactory.create(ADMIN_FILTER_PANEL, true, true);
+         schedulerAdminPanel.load();
+      }
+      return schedulerAdminPanel;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.CLOCK_O.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return SchedulerMessages.INSTANCE.scheduler();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+      if (null != schedulerAdminPanel)
+         schedulerAdminPanel.reload();
+   }
 }

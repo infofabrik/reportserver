@@ -19,83 +19,81 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.ui.JxlsReportForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class JxlsReportConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<JxlsReportForm> adminFormProvider;
-	
-	@Inject
-	public JxlsReportConfigHooker(
-			Provider<JxlsReportForm> adminFormProvider
-	) {
-		this.adminFormProvider = adminFormProvider;
-	}
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof JxlsReportDto;
-	}
+   private final Provider<JxlsReportForm> adminFormProvider;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   @Inject
+   public JxlsReportConfigHooker(Provider<JxlsReportForm> adminFormProvider) {
+      this.adminFormProvider = adminFormProvider;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return JxlsReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof JxlsReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_JXLS.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_JXLS.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return JxlsReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_JXLS_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_JXLS.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_JXLS_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_JXLS.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return JxlsReportMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_JXLS_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return JxlsReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_JXLS_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return JxlsReportMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return JxlsReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new JxlsReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new JxlsReportVariantDtoDec();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return true;
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource(1);
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new JxlsReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new JxlsReportVariantDtoDec();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return true;
+   }
 }

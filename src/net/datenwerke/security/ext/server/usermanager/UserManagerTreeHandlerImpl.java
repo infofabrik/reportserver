@@ -48,197 +48,196 @@ import net.datenwerke.treedb.client.treedb.dto.EntireTreeDTO;
  */
 @Singleton
 public class UserManagerTreeHandlerImpl extends TreeDBManagerTreeHandler<AbstractUserManagerNode>
-		implements UserManagerTreeLoader, UserManagerTreeManager {
+      implements UserManagerTreeLoader, UserManagerTreeManager {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7239838179341589474L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7239838179341589474L;
 
-	private final UserManagerService userManager;
-	private final HookHandlerService hookHandlerService;
+   private final UserManagerService userManager;
+   private final HookHandlerService hookHandlerService;
 
-	@Inject
-	public UserManagerTreeHandlerImpl(UserManagerService userManager, DtoService dtoGenerator,
-			SecurityService securityService, EntityClonerService entityClonerService,
-			HookHandlerService hookHandlerService) {
+   @Inject
+   public UserManagerTreeHandlerImpl(UserManagerService userManager, DtoService dtoGenerator,
+         SecurityService securityService, EntityClonerService entityClonerService,
+         HookHandlerService hookHandlerService) {
 
-		super(userManager, dtoGenerator, securityService, entityClonerService);
+      super(userManager, dtoGenerator, securityService, entityClonerService);
 
-		this.userManager = userManager;
-		this.hookHandlerService = hookHandlerService;
-	}
+      this.userManager = userManager;
+      this.hookHandlerService = hookHandlerService;
+   }
 
-	@Override
-	protected void doSetInitialProperties(AbstractUserManagerNode inserted) {
-		if (inserted instanceof User) {
-			((User) inserted).setFirstname(DwSecurityMessages.INSTANCE.firstname());
-			((User) inserted).setLastname(DwSecurityMessages.INSTANCE.lastname());
-			((User) inserted).setUsername(DwSecurityMessages.INSTANCE.username());
-		} else if (inserted instanceof Group) {
-			((Group) inserted).setName(DwSecurityMessages.INSTANCE.unnamed());
-		} else if (inserted instanceof OrganisationalUnit) {
-			((OrganisationalUnit) inserted).setName(DwSecurityMessages.INSTANCE.unnamed());
-		}
-	}
+   @Override
+   protected void doSetInitialProperties(AbstractUserManagerNode inserted) {
+      if (inserted instanceof User) {
+         ((User) inserted).setFirstname(DwSecurityMessages.INSTANCE.firstname());
+         ((User) inserted).setLastname(DwSecurityMessages.INSTANCE.lastname());
+         ((User) inserted).setUsername(DwSecurityMessages.INSTANCE.username());
+      } else if (inserted instanceof Group) {
+         ((Group) inserted).setName(DwSecurityMessages.INSTANCE.unnamed());
+      } else if (inserted instanceof OrganisationalUnit) {
+         ((OrganisationalUnit) inserted).setName(DwSecurityMessages.INSTANCE.unnamed());
+      }
+   }
 
-	@Override
-	protected void doUpdateNode(AbstractNodeDto node, AbstractUserManagerNode realNode) throws ExpectedException {
+   @Override
+   protected void doUpdateNode(AbstractNodeDto node, AbstractUserManagerNode realNode) throws ExpectedException {
 
-		/* if user, set password by hand */
-		if (realNode instanceof User) {
-			// TODO : add more sophisticated password criteria!
-			if (null != ((UserDto) node).getPassword()) {
-				boolean createdPassword = false;
-				if (null == ((User) realNode).getPassword()) 
-					createdPassword = true; // this must come before userManager.setPassword()
-				
-				userManager.setPassword((User) realNode, ((UserDto) node).getPassword());
-				for (PasswordManualSetHook h : hookHandlerService.getHookers(PasswordManualSetHook.class))
-					h.passwordWasManuallySet((User) realNode, createdPassword);
-			}
-			
-		}
-	}
+      /* if user, set password by hand */
+      if (realNode instanceof User) {
+         // TODO : add more sophisticated password criteria!
+         if (null != ((UserDto) node).getPassword()) {
+            boolean createdPassword = false;
+            if (null == ((User) realNode).getPassword())
+               createdPassword = true; // this must come before userManager.setPassword()
 
-	@SecurityChecked(argumentVerification = {
-			@ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Write.class)) })
-	@Override
-	@Transactional(rollbackOn = { Exception.class })
-	public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
-		/* if node is user, test that username has not been used already */
-		if (node instanceof UserDto) {
-			UserDto user = (UserDto) node;
-			if (null != user.getUsername()) {
-				try {
-					User realUser = userManager.getUserByName(user.getUsername());
-					if (null != realUser && !realUser.getId().equals(node.getId()))
-						throw new ExpectedException("Username already exists.");
-				} catch (NoResultException ex) {
-				}
-			}
-		}
+            userManager.setPassword((User) realNode, ((UserDto) node).getPassword());
+            for (PasswordManualSetHook h : hookHandlerService.getHookers(PasswordManualSetHook.class))
+               h.passwordWasManuallySet((User) realNode, createdPassword);
+         }
 
-		return super.updateNode(node, state);
-	}
+      }
+   }
 
-	@Override
-	@Transactional(rollbackOn = { Exception.class })
-	public EntireTreeDTO loadAll(Dto state, Collection<Dto2PosoMapper> wlFilters, Collection<Dto2PosoMapper> blFilters)
-			throws ServerCallFailedException {
-		boolean filter = (null != wlFilters && !wlFilters.isEmpty()) || (null != blFilters && !blFilters.isEmpty());
-		if (filter && null == wlFilters)
-			wlFilters = new HashSet<Dto2PosoMapper>();
-		if (filter && null == blFilters)
-			blFilters = new HashSet<Dto2PosoMapper>();
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public AbstractNodeDto updateNode(@Named("node") AbstractNodeDto node, Dto state) throws ServerCallFailedException {
+      /* if node is user, test that username has not been used already */
+      if (node instanceof UserDto) {
+         UserDto user = (UserDto) node;
+         if (null != user.getUsername()) {
+            try {
+               User realUser = userManager.getUserByName(user.getUsername());
+               if (null != realUser && !realUser.getId().equals(node.getId()))
+                  throw new ExpectedException("Username already exists.");
+            } catch (NoResultException ex) {
+            }
+         }
+      }
 
-		EntireTreeDTO treeDto = new EntireTreeDTO();
+      return super.updateNode(node, state);
+   }
 
-		int nodeCounter = 0;
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public EntireTreeDTO loadAll(Dto state, Collection<Dto2PosoMapper> wlFilters, Collection<Dto2PosoMapper> blFilters)
+         throws ServerCallFailedException {
+      boolean filter = (null != wlFilters && !wlFilters.isEmpty()) || (null != blFilters && !blFilters.isEmpty());
+      if (filter && null == wlFilters)
+         wlFilters = new HashSet<Dto2PosoMapper>();
+      if (filter && null == blFilters)
+         blFilters = new HashSet<Dto2PosoMapper>();
 
-		Collection<AbstractUserManagerNode> roots = getRoots();
+      EntireTreeDTO treeDto = new EntireTreeDTO();
 
-		Set<Class<?>> wlFilterList = new HashSet<Class<?>>();
-		Set<Class<?>> blFilterList = new HashSet<Class<?>>();
-		if (filter) {
-			for (Dto2PosoMapper filterDtoMapper : wlFilters)
-				wlFilterList.add(dtoService.getPosoFromDtoMapper(filterDtoMapper));
-			for (Dto2PosoMapper filterDtoMapper : blFilters)
-				blFilterList.add(dtoService.getPosoFromDtoMapper(filterDtoMapper));
-		}
+      int nodeCounter = 0;
 
-		for (AbstractUserManagerNode root : roots) {
-			if (root instanceof HibernateProxy)
-				root = (AbstractUserManagerNode) ((HibernateProxy) root).getHibernateLazyInitializer()
-						.getImplementation();
+      Collection<AbstractUserManagerNode> roots = getRoots();
 
-			if (!securityService.checkRights((SecurityTarget) root, SecurityServiceSecuree.class, Read.class))
-				continue;
-			AbstractNodeDto rootDto = (AbstractNodeDto) dtoService.createListDto(root);
-			treeDto.addRoot(rootDto);
+      Set<Class<?>> wlFilterList = new HashSet<Class<?>>();
+      Set<Class<?>> blFilterList = new HashSet<Class<?>>();
+      if (filter) {
+         for (Dto2PosoMapper filterDtoMapper : wlFilters)
+            wlFilterList.add(dtoService.getPosoFromDtoMapper(filterDtoMapper));
+         for (Dto2PosoMapper filterDtoMapper : blFilters)
+            blFilterList.add(dtoService.getPosoFromDtoMapper(filterDtoMapper));
+      }
 
-			nodeCounter++;
+      for (AbstractUserManagerNode root : roots) {
+         if (root instanceof HibernateProxy)
+            root = (AbstractUserManagerNode) ((HibernateProxy) root).getHibernateLazyInitializer().getImplementation();
 
-		}
+         if (!securityService.checkRights((SecurityTarget) root, SecurityServiceSecuree.class, Read.class))
+            continue;
+         AbstractNodeDto rootDto = (AbstractNodeDto) dtoService.createListDto(root);
+         treeDto.addRoot(rootDto);
 
-		/* Load all OUs in the tree. */
-		nodeCounter = addAllOus(nodeCounter, treeDto);
+         nodeCounter++;
 
-		if (!filter) {
-			/* Load all elements */
-			nodeCounter = addAllUsers(nodeCounter, treeDto);
-			nodeCounter = addAllGroups(nodeCounter, treeDto);
-		} else {
-			boolean addUsers = false;
-			for (Class<?> wlFilter : wlFilterList) {
-				if (wlFilter.isAssignableFrom(User.class)) {
-					addUsers = true;
-					break;
-				}
-			}
-			if (addUsers)
-				nodeCounter = addAllUsers(nodeCounter, treeDto);
+      }
 
-			boolean addGroups = false;
-			for (Class<?> wlFilter : wlFilterList) {
-				if (wlFilter.isAssignableFrom(Group.class)) {
-					addGroups = true;
-					break;
-				}
-			}
+      /* Load all OUs in the tree. */
+      nodeCounter = addAllOus(nodeCounter, treeDto);
 
-			if (addGroups)
-				nodeCounter = addAllGroups(nodeCounter, treeDto);
-		}
+      if (!filter) {
+         /* Load all elements */
+         nodeCounter = addAllUsers(nodeCounter, treeDto);
+         nodeCounter = addAllGroups(nodeCounter, treeDto);
+      } else {
+         boolean addUsers = false;
+         for (Class<?> wlFilter : wlFilterList) {
+            if (wlFilter.isAssignableFrom(User.class)) {
+               addUsers = true;
+               break;
+            }
+         }
+         if (addUsers)
+            nodeCounter = addAllUsers(nodeCounter, treeDto);
 
-		return treeDto;
-	}
+         boolean addGroups = false;
+         for (Class<?> wlFilter : wlFilterList) {
+            if (wlFilter.isAssignableFrom(Group.class)) {
+               addGroups = true;
+               break;
+            }
+         }
 
-	private int addAllUsers(int nodeCounter, EntireTreeDTO treeDto) {
-		Collection<User> allUsers = userManager.getAllUsers();
-		return addAllNodes(nodeCounter, treeDto, allUsers);
-	}
+         if (addGroups)
+            nodeCounter = addAllGroups(nodeCounter, treeDto);
+      }
 
-	private int addAllGroups(int nodeCounter, EntireTreeDTO treeDto) {
-		Collection<Group> allGroups = userManager.getAllGroups();
-		return addAllNodes(nodeCounter, treeDto, allGroups);
-	}
+      return treeDto;
+   }
 
-	private int addAllOus(int nodeCounter, EntireTreeDTO treeDto) {
-		Collection<OrganisationalUnit> allOus = userManager.getAllOUs();
-		return addAllNodes(nodeCounter, treeDto, allOus);
-	}
+   private int addAllUsers(int nodeCounter, EntireTreeDTO treeDto) {
+      Collection<User> allUsers = userManager.getAllUsers();
+      return addAllNodes(nodeCounter, treeDto, allUsers);
+   }
 
-	private int addAllNodes(int nodeCounter, EntireTreeDTO treeDto,
-			Collection<? extends AbstractUserManagerNode> nodes) {
-		int addedNodes = 0;
+   private int addAllGroups(int nodeCounter, EntireTreeDTO treeDto) {
+      Collection<Group> allGroups = userManager.getAllGroups();
+      return addAllNodes(nodeCounter, treeDto, allGroups);
+   }
 
-		for (AbstractUserManagerNode child : nodes) {
-			if (child instanceof HibernateProxy)
-				child = (AbstractUserManagerNode) ((HibernateProxy) child).getHibernateLazyInitializer()
-						.getImplementation();
+   private int addAllOus(int nodeCounter, EntireTreeDTO treeDto) {
+      Collection<OrganisationalUnit> allOus = userManager.getAllOUs();
+      return addAllNodes(nodeCounter, treeDto, allOus);
+   }
 
-			if (!securityService.checkRights((SecurityTarget) child, SecurityServiceSecuree.class, Read.class))
-				continue;
+   private int addAllNodes(int nodeCounter, EntireTreeDTO treeDto,
+         Collection<? extends AbstractUserManagerNode> nodes) {
+      int addedNodes = 0;
 
-			AbstractUserManagerNode parent = child.getParent();
+      for (AbstractUserManagerNode child : nodes) {
+         if (child instanceof HibernateProxy)
+            child = (AbstractUserManagerNode) ((HibernateProxy) child).getHibernateLazyInitializer()
+                  .getImplementation();
 
-			if (parent instanceof HibernateProxy)
-				parent = (AbstractUserManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
-						.getImplementation();
+         if (!securityService.checkRights((SecurityTarget) child, SecurityServiceSecuree.class, Read.class))
+            continue;
 
-			if (!child.isRoot())
-				if (!securityService.checkRights((SecurityTarget) parent, SecurityServiceSecuree.class, Read.class))
-					continue;
+         AbstractUserManagerNode parent = child.getParent();
 
-			addedNodes++;
+         if (parent instanceof HibernateProxy)
+            parent = (AbstractUserManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+                  .getImplementation();
 
-			AbstractNodeDto childDto = (AbstractNodeDto) dtoService.createListDto(child);
-			AbstractNodeDto parentDto = (AbstractNodeDto) dtoService.createListDto(parent);
+         if (!child.isRoot())
+            if (!securityService.checkRights((SecurityTarget) parent, SecurityServiceSecuree.class, Read.class))
+               continue;
 
-			treeDto.addChild(parentDto, childDto);
-		}
+         addedNodes++;
 
-		return nodeCounter + addedNodes;
-	}
+         AbstractNodeDto childDto = (AbstractNodeDto) dtoService.createListDto(child);
+         AbstractNodeDto parentDto = (AbstractNodeDto) dtoService.createListDto(parent);
+
+         treeDto.addChild(parentDto, childDto);
+      }
+
+      return nodeCounter + addedNodes;
+   }
 }

@@ -32,190 +32,149 @@ import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Execute;
 
 @Singleton
-public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements TerminalRpcService {
+public class TerminalRpcServiceImpl extends SecuredRemoteServiceServlet implements TerminalRpcService {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	class TerminalCommandRollbackException extends RuntimeException{
-		/**
-		 * 
-		 */
-		private static final long serialVersionUID = -3401647716212093896L;
-		
-		private final CommandResultDto result;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-		public TerminalCommandRollbackException(CommandResultDto result) {
-			this.result = result;
-		}
+   class TerminalCommandRollbackException extends RuntimeException {
+      /**
+       * 
+       */
+      private static final long serialVersionUID = -3401647716212093896L;
 
-		public CommandResultDto getResult() {
-			return result;
-		}
-	}
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2096158793766783006L;
-	
-	private final DtoService dtoService;
-	private final TerminalService terminalService;
+      private final CommandResultDto result;
 
-	@Inject
-	public TerminalRpcServiceImpl(
-		DtoService dtoService,
-		TerminalService terminalService
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.terminalService = terminalService;
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	public String initSession() throws ServerCallFailedException {
-		return terminalService.initTerminalSession().getSessionId();
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	public void closeSession(String sessionId) throws ServerCallFailedException {
-		terminalService.closeTerminalSession(sessionId);
-	}
+      public TerminalCommandRollbackException(CommandResultDto result) {
+         this.result = result;
+      }
 
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	public AutocompleteResultDto autocomplete(String sessionId, String command, int cursorPosition) throws ServerCallFailedException, ExpectedException {
-		try {
-			TerminalSession session = terminalService.getTerminalSession(sessionId);
-			
-			AutocompleteResult result = session.autocomplete(command, cursorPosition);
-			return (AutocompleteResultDto) dtoService.createDto(result);
-		} catch (MaxAutocompleteResultsExceededException e) {
-			throw new MaxAutocompleteResultsExceededExceptionDto(e.getNumberOfResults());
-		} catch(SessionNotFoundException e){
-			throw new SessionNotFoundExceptionDto();
-		}
-	}
+      public CommandResultDto getResult() {
+         return result;
+      }
+   }
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-		@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	public AutocompleteResultDto autocomplete(String sessionId, String command,
-			int cursorPosition, boolean forceResult) throws ServerCallFailedException, ExpectedException {
-		try {
-			TerminalSession session = terminalService.getTerminalSession(sessionId);
-			
-			AutocompleteResult result = session.autocomplete(command, cursorPosition, forceResult);
-			return (AutocompleteResultDto) dtoService.createDto(result);
-		} catch (MaxAutocompleteResultsExceededException e) {
-			throw new MaxAutocompleteResultsExceededExceptionDto(e.getNumberOfResults());
-		} catch(SessionNotFoundException e){
-			throw new SessionNotFoundExceptionDto();
-		}
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2096158793766783006L;
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = @GenericTargetVerification(
-				target=TerminalSecurityTarget.class,
-				verify=@RightsVerification(rights=Execute.class)
-			)
-		)
-	public CommandResultDto execute(String sessionId, String command) throws ServerCallFailedException, ExpectedException {
-		try{
-			CommandResultDto result = doExecute(sessionId, command);
-			return result;
-		} catch(TerminalCommandRollbackException e){
-			return e.getResult();
-		}
-	}
+   private final DtoService dtoService;
+   private final TerminalService terminalService;
 
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	protected CommandResultDto doExecute(String sessionId, String command) throws ServerCallFailedException, ExpectedException {
-		
-		try{
-			TerminalSession session = terminalService.getTerminalSession(sessionId);
-			
-			CommandResult result = session.execute(command);
-			CommandResultDto resultDto = (CommandResultDto) dtoService.createDto(result);
-			
-			if(! result.isCommitTransaction())
-				throw new TerminalCommandRollbackException(resultDto);
-			
-			return resultDto;
-		} catch(CommandNotFoundException e){
-			throw new CommandNotFoundExceptionDto();
-		} catch(SessionNotFoundException e){
-			throw new SessionNotFoundExceptionDto();
-		} catch(Exception e){
-			if(e instanceof NullPointerException)
-				logger.warn( e.getMessage(), e);
-			
-			if(e instanceof TerminalCommandRollbackException)
-				throw (TerminalCommandRollbackException)e;
-			else
-				throw new ServerCallFailedException(e);
-		}
-	}
+   @Inject
+   public TerminalRpcServiceImpl(DtoService dtoService, TerminalService terminalService) {
 
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=TerminalSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	public CommandResultDto ctrlCPressed(String sessionId)
-			throws ServerCallFailedException, ExpectedException {
-		try{
-			TerminalSession session = terminalService.getTerminalSession(sessionId);
-			
-			CommandResult result = session.ctrlC();
-			return (CommandResultDto) dtoService.createDto(result);
-		} catch(CommandNotFoundException e){
-			throw new CommandNotFoundExceptionDto();
-		} catch(SessionNotFoundException e){
-			throw new SessionNotFoundExceptionDto();
-		} catch(TerminalException e){
-			throw new ServerCallFailedException(e);
-		}
-	}
-	
+      /* store objects */
+      this.dtoService = dtoService;
+      this.terminalService = terminalService;
+   }
 
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public String initSession() throws ServerCallFailedException {
+      return terminalService.initTerminalSession().getSessionId();
+   }
 
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public void closeSession(String sessionId) throws ServerCallFailedException {
+      terminalService.closeTerminalSession(sessionId);
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public AutocompleteResultDto autocomplete(String sessionId, String command, int cursorPosition)
+         throws ServerCallFailedException, ExpectedException {
+      try {
+         TerminalSession session = terminalService.getTerminalSession(sessionId);
+
+         AutocompleteResult result = session.autocomplete(command, cursorPosition);
+         return (AutocompleteResultDto) dtoService.createDto(result);
+      } catch (MaxAutocompleteResultsExceededException e) {
+         throw new MaxAutocompleteResultsExceededExceptionDto(e.getNumberOfResults());
+      } catch (SessionNotFoundException e) {
+         throw new SessionNotFoundExceptionDto();
+      }
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public AutocompleteResultDto autocomplete(String sessionId, String command, int cursorPosition, boolean forceResult)
+         throws ServerCallFailedException, ExpectedException {
+      try {
+         TerminalSession session = terminalService.getTerminalSession(sessionId);
+
+         AutocompleteResult result = session.autocomplete(command, cursorPosition, forceResult);
+         return (AutocompleteResultDto) dtoService.createDto(result);
+      } catch (MaxAutocompleteResultsExceededException e) {
+         throw new MaxAutocompleteResultsExceededExceptionDto(e.getNumberOfResults());
+      } catch (SessionNotFoundException e) {
+         throw new SessionNotFoundExceptionDto();
+      }
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public CommandResultDto execute(String sessionId, String command)
+         throws ServerCallFailedException, ExpectedException {
+      try {
+         CommandResultDto result = doExecute(sessionId, command);
+         return result;
+      } catch (TerminalCommandRollbackException e) {
+         return e.getResult();
+      }
+   }
+
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   protected CommandResultDto doExecute(String sessionId, String command)
+         throws ServerCallFailedException, ExpectedException {
+
+      try {
+         TerminalSession session = terminalService.getTerminalSession(sessionId);
+
+         CommandResult result = session.execute(command);
+         CommandResultDto resultDto = (CommandResultDto) dtoService.createDto(result);
+
+         if (!result.isCommitTransaction())
+            throw new TerminalCommandRollbackException(resultDto);
+
+         return resultDto;
+      } catch (CommandNotFoundException e) {
+         throw new CommandNotFoundExceptionDto();
+      } catch (SessionNotFoundException e) {
+         throw new SessionNotFoundExceptionDto();
+      } catch (Exception e) {
+         if (e instanceof NullPointerException)
+            logger.warn(e.getMessage(), e);
+
+         if (e instanceof TerminalCommandRollbackException)
+            throw (TerminalCommandRollbackException) e;
+         else
+            throw new ServerCallFailedException(e);
+      }
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = TerminalSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   public CommandResultDto ctrlCPressed(String sessionId) throws ServerCallFailedException, ExpectedException {
+      try {
+         TerminalSession session = terminalService.getTerminalSession(sessionId);
+
+         CommandResult result = session.ctrlC();
+         return (CommandResultDto) dtoService.createDto(result);
+      } catch (CommandNotFoundException e) {
+         throw new CommandNotFoundExceptionDto();
+      } catch (SessionNotFoundException e) {
+         throw new SessionNotFoundExceptionDto();
+      } catch (TerminalException e) {
+         throw new ServerCallFailedException(e);
+      }
+   }
 
 }

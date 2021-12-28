@@ -6,7 +6,7 @@ import net.datenwerke.security.service.usermanager.entities.UserProperty;
 
 public interface UserPropertyChangedHook extends Hook {
 
-	public void beforeUserPropertyChange(User user, UserProperty oldValue, UserProperty newValue);
-	
-	public void afterUserPropertyChange(User user, UserProperty oldValue, UserProperty newValue);	
+   public void beforeUserPropertyChange(User user, UserProperty oldValue, UserProperty newValue);
+
+   public void afterUserPropertyChange(User user, UserProperty oldValue, UserProperty newValue);
 }

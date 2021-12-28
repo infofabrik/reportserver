@@ -49,186 +49,193 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class BirtReportParameterProposerToolbarConfiguratorHooker implements MainPanelViewToolbarConfiguratorHook {
-	
-	private static BirtParameterProposalDtoPA birtPa = GWT.create(BirtParameterProposalDtoPA.class);
-	
-	private ToolbarService toolbarUtils;
-	private BirtUtilsDao birtUtilsDao;
-	private ParameterUIService parameterService;
 
-	@Inject
-	public BirtReportParameterProposerToolbarConfiguratorHooker(
-			ToolbarService toolbarUtils, 
-			BirtUtilsDao birtUtilsDao, 
-			ParameterUIService parameterService) {
-		
-		this.toolbarUtils = toolbarUtils;
-		this.birtUtilsDao = birtUtilsDao;
-		this.parameterService = parameterService;
-	}
+   private static BirtParameterProposalDtoPA birtPa = GWT.create(BirtParameterProposalDtoPA.class);
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(final MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		
-		if(! (selectedNode instanceof BirtReportDto))
-			return;
-		if(! (view instanceof ParameterView))
-			return;
-		
-		final BirtReportDto report = (BirtReportDto) selectedNode;
+   private ToolbarService toolbarUtils;
+   private BirtUtilsDao birtUtilsDao;
+   private ParameterUIService parameterService;
 
+   @Inject
+   public BirtReportParameterProposerToolbarConfiguratorHooker(ToolbarService toolbarUtils, BirtUtilsDao birtUtilsDao,
+         ParameterUIService parameterService) {
 
-		/* add parameter */
-		DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(BirtMessages.INSTANCE.parameterProposalBtn(), BaseIcon.LIGHTBULB);
-		createPreviewBtn.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				birtUtilsDao.proposeParametersFor(report, new RsAsyncCallback<List<BirtParameterProposalDto>>() {
+      this.toolbarUtils = toolbarUtils;
+      this.birtUtilsDao = birtUtilsDao;
+      this.parameterService = parameterService;
+   }
 
-					@Override
-					public void onSuccess(List<BirtParameterProposalDto> result) {
-						if(null != result && ! result.isEmpty()){
-							displayResults((ParameterView) view, report, result);
-						}else{ 
-							new DwAlertMessageBox(BirtMessages.INSTANCE.noProposalsFoundTitle(), BirtMessages.INSTANCE.noProposalsFoundText()).show();
-						}
-					}
-				});
-			}
-		});
-		toolbar.add(createPreviewBtn);
-		
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(final MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(
-			MainPanelView view, ToolBar toolbar, AbstractNodeDto selectedNode) {
-		// TODO Auto-generated method stub
+      if (!(selectedNode instanceof BirtReportDto))
+         return;
+      if (!(view instanceof ParameterView))
+         return;
 
-	}
-	
-	protected void displayResults(final ParameterView view, final BirtReportDto report, List<BirtParameterProposalDto> proposals) {
-		/* create store */
-		final ListStore<BirtParameterProposalDto> proposalStore = new ListStore<BirtParameterProposalDto>(birtPa.dtoId());
-		proposalStore.setAutoCommit(true);
-		for(BirtParameterProposalDto proposal : proposals){
-			for(ParameterConfigurator configurator : parameterService.getAvailableParameterConfigurators()){
-				if(configurator.canHandle(proposal)){
-					proposal.setParameterProposal(configurator.getNewDto(proposal, report));
-					break;
-				}
-			}
-			proposalStore.add(proposal);
-		}
-		
-		/* configure columns */ 
-		List<ColumnConfig<BirtParameterProposalDto,?>> columns = new ArrayList<ColumnConfig<BirtParameterProposalDto,?>>();
-		
-		/* Name column */
-		ColumnConfig<BirtParameterProposalDto,String> nameConfig = new ColumnConfig<BirtParameterProposalDto,String>(birtPa.name(), 200, JasperMessages.INSTANCE.name()); 
-		columns.add(nameConfig);
-		
-		/* Key column */
-		ColumnConfig<BirtParameterProposalDto,String> keyConfig = new ColumnConfig<BirtParameterProposalDto,String>(birtPa.key(), 200, JasperMessages.INSTANCE.key()); 
-		columns.add(keyConfig);
-		
-		/* Proposal column */
-	    final SimpleComboBox<ParameterConfigurator> proposalCombo = new SimpleComboBox<ParameterConfigurator>(new StringLabelProvider<ParameterConfigurator>(){
-	    	@Override
-	    	public String getLabel(ParameterConfigurator item) {
-	    		return item.getName();
-	    	}
-	    });  
-	    proposalCombo.setForceSelection(true);
-	    proposalCombo.setAllowBlank(true);
-	    proposalCombo.setTriggerAction(TriggerAction.ALL);
-	    for(ParameterConfigurator configurator : parameterService.getAvailableParameterConfigurators())
-	    	if(ParameterType.Normal == configurator.getType())
-	    		proposalCombo.add(configurator);
-	  
-		ColumnConfig<BirtParameterProposalDto,ParameterDefinitionDto> proposalConfig = new ColumnConfig<BirtParameterProposalDto,ParameterDefinitionDto>(birtPa.parameterProposal(), 200, JasperMessages.INSTANCE.proposal());
-		proposalConfig.setCell(new AbstractCell<ParameterDefinitionDto>() {
-			@Override
-			public void render(com.google.gwt.cell.client.Cell.Context context,
-					ParameterDefinitionDto model, SafeHtmlBuilder sb) {
-				if(null != model)
-					sb.appendEscaped(parameterService.getConfigurator(model).getName());
-			}
-		});
-		columns.add(proposalConfig);
-		
-		/* create grid */
-		final DeletableRowsGrid<BirtParameterProposalDto> grid = new DeletableRowsGrid<BirtParameterProposalDto>(proposalStore, new ColumnModel<BirtParameterProposalDto>(columns));
-		
-		grid.setSelectionModel(new GridSelectionModel<BirtParameterProposalDto>());
-		grid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
-		grid.getView().setShowDirtyCells(false);
-		grid.setHeight(20);
-		
-		// edit //
-		GridEditing<BirtParameterProposalDto> editing = new GridInlineEditing<BirtParameterProposalDto>(grid);
-		editing.addEditor(nameConfig, new TextField());
-		editing.addEditor(keyConfig, new TextField());
-		
-		editing.addEditor(proposalConfig, new Converter<ParameterDefinitionDto, ParameterConfigurator>() {
-			@Override
-			public ParameterDefinitionDto convertFieldValue(ParameterConfigurator object) {
-				if(null == object)
-		    		  return null;
-		    	  
-				return object.getNewDto(report);
-			}
+      final BirtReportDto report = (BirtReportDto) selectedNode;
 
-			@Override
-			public ParameterConfigurator convertModelValue(ParameterDefinitionDto object) {
-				if(null == object)
-		    		  return null;
-				
-				return parameterService.getConfigurator(object);
-			}
-		}, proposalCombo);
-		
-		/* create toolbar wrapper */
-		ToolbarWrapperPanel wrapper = new ToolbarWrapperPanel(grid){
+      /* add parameter */
+      DwTextButton createPreviewBtn = toolbarUtils.createSmallButtonLeft(BirtMessages.INSTANCE.parameterProposalBtn(),
+            BaseIcon.LIGHTBULB);
+      createPreviewBtn.addSelectHandler(new SelectHandler() {
 
-			@Override
-			protected void removeAllButtonClicked(com.google.gwt.event.logical.shared.SelectionEvent<com.sencha.gxt.widget.core.client.menu.Item> event) {
-				proposalStore.clear();
-			}
-			
-			@Override
-			protected void removeButtonClicked(SelectEvent ce) {
-				for(BirtParameterProposalDto proposal : grid.getSelectionModel().getSelectedItems())
-					proposalStore.remove(proposal);
-			}
-		};
-		wrapper.addRemoveButtons();
-		
-		/* create window */
-		DwWindow window = new SimpleDialogWindow(){
-			@Override
-			protected void submitButtonClicked() {
-				addParametersFor(view, report, proposalStore.getAll());
-				super.submitButtonClicked();
-			}
-		};
-		window.setHeading(JasperMessages.INSTANCE.windowTitle());
-		window.setWidth(800);
-		window.setHeight(600);
-		window.add(wrapper);
-		window.show();
-	}
+         @Override
+         public void onSelect(SelectEvent event) {
+            birtUtilsDao.proposeParametersFor(report, new RsAsyncCallback<List<BirtParameterProposalDto>>() {
 
+               @Override
+               public void onSuccess(List<BirtParameterProposalDto> result) {
+                  if (null != result && !result.isEmpty()) {
+                     displayResults((ParameterView) view, report, result);
+                  } else {
+                     new DwAlertMessageBox(BirtMessages.INSTANCE.noProposalsFoundTitle(),
+                           BirtMessages.INSTANCE.noProposalsFoundText()).show();
+                  }
+               }
+            });
+         }
+      });
+      toolbar.add(createPreviewBtn);
 
-	protected void addParametersFor(final ParameterView view, BirtReportDto report, List<BirtParameterProposalDto> proposalDtos) {
-		birtUtilsDao.addParametersFor(report, proposalDtos, new RsAsyncCallback<BirtReportDto>() {
-			@Override
-			public void onSuccess(BirtReportDto result) {
-				if(null != result)
-					view.updateStore(result);
-			}
-		});
-	}
+   }
+
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      // TODO Auto-generated method stub
+
+   }
+
+   protected void displayResults(final ParameterView view, final BirtReportDto report,
+         List<BirtParameterProposalDto> proposals) {
+      /* create store */
+      final ListStore<BirtParameterProposalDto> proposalStore = new ListStore<BirtParameterProposalDto>(birtPa.dtoId());
+      proposalStore.setAutoCommit(true);
+      for (BirtParameterProposalDto proposal : proposals) {
+         for (ParameterConfigurator configurator : parameterService.getAvailableParameterConfigurators()) {
+            if (configurator.canHandle(proposal)) {
+               proposal.setParameterProposal(configurator.getNewDto(proposal, report));
+               break;
+            }
+         }
+         proposalStore.add(proposal);
+      }
+
+      /* configure columns */
+      List<ColumnConfig<BirtParameterProposalDto, ?>> columns = new ArrayList<ColumnConfig<BirtParameterProposalDto, ?>>();
+
+      /* Name column */
+      ColumnConfig<BirtParameterProposalDto, String> nameConfig = new ColumnConfig<BirtParameterProposalDto, String>(
+            birtPa.name(), 200, JasperMessages.INSTANCE.name());
+      columns.add(nameConfig);
+
+      /* Key column */
+      ColumnConfig<BirtParameterProposalDto, String> keyConfig = new ColumnConfig<BirtParameterProposalDto, String>(
+            birtPa.key(), 200, JasperMessages.INSTANCE.key());
+      columns.add(keyConfig);
+
+      /* Proposal column */
+      final SimpleComboBox<ParameterConfigurator> proposalCombo = new SimpleComboBox<ParameterConfigurator>(
+            new StringLabelProvider<ParameterConfigurator>() {
+               @Override
+               public String getLabel(ParameterConfigurator item) {
+                  return item.getName();
+               }
+            });
+      proposalCombo.setForceSelection(true);
+      proposalCombo.setAllowBlank(true);
+      proposalCombo.setTriggerAction(TriggerAction.ALL);
+      for (ParameterConfigurator configurator : parameterService.getAvailableParameterConfigurators())
+         if (ParameterType.Normal == configurator.getType())
+            proposalCombo.add(configurator);
+
+      ColumnConfig<BirtParameterProposalDto, ParameterDefinitionDto> proposalConfig = new ColumnConfig<BirtParameterProposalDto, ParameterDefinitionDto>(
+            birtPa.parameterProposal(), 200, JasperMessages.INSTANCE.proposal());
+      proposalConfig.setCell(new AbstractCell<ParameterDefinitionDto>() {
+         @Override
+         public void render(com.google.gwt.cell.client.Cell.Context context, ParameterDefinitionDto model,
+               SafeHtmlBuilder sb) {
+            if (null != model)
+               sb.appendEscaped(parameterService.getConfigurator(model).getName());
+         }
+      });
+      columns.add(proposalConfig);
+
+      /* create grid */
+      final DeletableRowsGrid<BirtParameterProposalDto> grid = new DeletableRowsGrid<BirtParameterProposalDto>(
+            proposalStore, new ColumnModel<BirtParameterProposalDto>(columns));
+
+      grid.setSelectionModel(new GridSelectionModel<BirtParameterProposalDto>());
+      grid.getSelectionModel().setSelectionMode(SelectionMode.MULTI);
+      grid.getView().setShowDirtyCells(false);
+      grid.setHeight(20);
+
+      // edit //
+      GridEditing<BirtParameterProposalDto> editing = new GridInlineEditing<BirtParameterProposalDto>(grid);
+      editing.addEditor(nameConfig, new TextField());
+      editing.addEditor(keyConfig, new TextField());
+
+      editing.addEditor(proposalConfig, new Converter<ParameterDefinitionDto, ParameterConfigurator>() {
+         @Override
+         public ParameterDefinitionDto convertFieldValue(ParameterConfigurator object) {
+            if (null == object)
+               return null;
+
+            return object.getNewDto(report);
+         }
+
+         @Override
+         public ParameterConfigurator convertModelValue(ParameterDefinitionDto object) {
+            if (null == object)
+               return null;
+
+            return parameterService.getConfigurator(object);
+         }
+      }, proposalCombo);
+
+      /* create toolbar wrapper */
+      ToolbarWrapperPanel wrapper = new ToolbarWrapperPanel(grid) {
+
+         @Override
+         protected void removeAllButtonClicked(
+               com.google.gwt.event.logical.shared.SelectionEvent<com.sencha.gxt.widget.core.client.menu.Item> event) {
+            proposalStore.clear();
+         }
+
+         @Override
+         protected void removeButtonClicked(SelectEvent ce) {
+            for (BirtParameterProposalDto proposal : grid.getSelectionModel().getSelectedItems())
+               proposalStore.remove(proposal);
+         }
+      };
+      wrapper.addRemoveButtons();
+
+      /* create window */
+      DwWindow window = new SimpleDialogWindow() {
+         @Override
+         protected void submitButtonClicked() {
+            addParametersFor(view, report, proposalStore.getAll());
+            super.submitButtonClicked();
+         }
+      };
+      window.setHeading(JasperMessages.INSTANCE.windowTitle());
+      window.setWidth(800);
+      window.setHeight(600);
+      window.add(wrapper);
+      window.show();
+   }
+
+   protected void addParametersFor(final ParameterView view, BirtReportDto report,
+         List<BirtParameterProposalDto> proposalDtos) {
+      birtUtilsDao.addParametersFor(report, proposalDtos, new RsAsyncCallback<BirtReportDto>() {
+         @Override
+         public void onSuccess(BirtReportDto result) {
+            if (null != result)
+               view.updateStore(result);
+         }
+      });
+   }
 
 }

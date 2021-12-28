@@ -11,5 +11,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ReportExecutionConfigFromPropertyMapHook extends Hook {
 
-	public Collection<ReportExecutionConfig> parse(Report report, HttpServletRequest request, Map<String,String[]> properties);
+   public Collection<ReportExecutionConfig> parse(Report report, HttpServletRequest request,
+         Map<String, String[]> properties);
 }

@@ -9,13 +9,11 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 
 public class DbPoolStartup {
 
-	@Inject
-	public DbPoolStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ConnPoolStatsCommand> connPoolStatsCommandProvider
-		){
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, connPoolStatsCommandProvider);
-	}
+   @Inject
+   public DbPoolStartup(HookHandlerService hookHandler,
+
+         Provider<ConnPoolStatsCommand> connPoolStatsCommandProvider) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, connPoolStatsCommandProvider);
+   }
 }

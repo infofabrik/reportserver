@@ -9,12 +9,10 @@ import net.datenwerke.rs.authenticator.cr.client.pam.ChallengeResponseClientPam;
 
 public class ChallengeResponseUIStartup {
 
-	@Inject
-	public ChallengeResponseUIStartup(
-			Provider<ChallengeResponseClientPam> challengeResponseClientPamProvider, 
-			HookHandlerService hookHandler
-		) {
-		
-		hookHandler.attachHooker(ClientPAMHook.class, new ClientPAMHook(challengeResponseClientPamProvider));
-	}
+   @Inject
+   public ChallengeResponseUIStartup(Provider<ChallengeResponseClientPam> challengeResponseClientPamProvider,
+         HookHandlerService hookHandler) {
+
+      hookHandler.attachHooker(ClientPAMHook.class, new ClientPAMHook(challengeResponseClientPamProvider));
+   }
 }

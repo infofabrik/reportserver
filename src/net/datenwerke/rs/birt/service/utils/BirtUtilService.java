@@ -6,6 +6,6 @@ import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
 
 public interface BirtUtilService {
 
-	List<BirtParameterProposal> extractParameters(BirtReportFile reportFile);
+   List<BirtParameterProposal> extractParameters(BirtReportFile reportFile);
 
 }

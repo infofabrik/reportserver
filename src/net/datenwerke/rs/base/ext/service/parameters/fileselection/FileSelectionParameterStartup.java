@@ -15,22 +15,20 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
 
 public class FileSelectionParameterStartup {
 
-	@Inject
-	public FileSelectionParameterStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<FileSelectionParameterReportFromDtoHooker> reportFromDtoHooker,
-		Provider<FileSelectionParameterInstanceCreatedFromDtoHooker> instanceCreatedHooker, 
-		Provider<FileSelectionParameterAdjustVariantHooker> adjustVariantHooker,
-		
-		Provider<FileSelectionParameterDownloadHooker> downloadHooker
-		) {
+   @Inject
+   public FileSelectionParameterStartup(HookHandlerService hookHandler,
 
-		hookHandler.attachHooker(ReportCreatedFromDtoHook.class, reportFromDtoHooker);
-		hookHandler.attachHooker(ParameterInstanceCreatedFromDtoHook.class, instanceCreatedHooker);
-		
-		hookHandler.attachHooker(VariantCreatorHook.class, adjustVariantHooker);
-		
-		hookHandler.attachHooker(FileDownloadHandlerHook.class, downloadHooker);
-	}
+         Provider<FileSelectionParameterReportFromDtoHooker> reportFromDtoHooker,
+         Provider<FileSelectionParameterInstanceCreatedFromDtoHooker> instanceCreatedHooker,
+         Provider<FileSelectionParameterAdjustVariantHooker> adjustVariantHooker,
+
+         Provider<FileSelectionParameterDownloadHooker> downloadHooker) {
+
+      hookHandler.attachHooker(ReportCreatedFromDtoHook.class, reportFromDtoHooker);
+      hookHandler.attachHooker(ParameterInstanceCreatedFromDtoHook.class, instanceCreatedHooker);
+
+      hookHandler.attachHooker(VariantCreatorHook.class, adjustVariantHooker);
+
+      hookHandler.attachHooker(FileDownloadHandlerHook.class, downloadHooker);
+   }
 }

@@ -29,74 +29,74 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetRepla
  */
 public class ReportManagerModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		/* bind services */
-		bind(ReportService.class).to(ReportServiceImpl.class);
-		bind(ReportDtoService.class).to(ReportDtoServiceImpl.class);
-		bind(ReportExecutorService.class).to(ReportExecutorServiceImpl.class);
-		bind(ReportParameterService.class).to(ReportParameterServiceImpl.class);
-		
-		/* static injection */
-		requestStaticInjection(
-			ParameterDefinition.class,
-			ParameterInstance.class,
-			ParameterSet.class,
-			Report.class
-		);
-		
-		/* startup */
-		bind(ReportManagerStartup.class).asEagerSingleton();
-	}
-	
-	@Provides @ReportEngines @Inject
-	protected Set<Class<? extends ReportEngine>> provideReportEngines(HookHandlerService hookHandler){
-		Set<Class<? extends ReportEngine>> engines = new HashSet<Class<? extends ReportEngine>>();
-		
-		for(ReportEngineProviderHook engineProvider : hookHandler.getHookers(ReportEngineProviderHook.class))
-			engines.addAll(engineProvider.getReportEngines());
+   @Override
+   protected void configure() {
+      /* bind services */
+      bind(ReportService.class).to(ReportServiceImpl.class);
+      bind(ReportDtoService.class).to(ReportDtoServiceImpl.class);
+      bind(ReportExecutorService.class).to(ReportExecutorServiceImpl.class);
+      bind(ReportParameterService.class).to(ReportParameterServiceImpl.class);
 
-		return engines;
-	}
-	
+      /* static injection */
+      requestStaticInjection(ParameterDefinition.class, ParameterInstance.class, ParameterSet.class, Report.class);
 
-	/**
-	 * Register Parameters.
-	 *
-	 */
-	@Inject @Provides @ReportServerParameter
-	public Set<Class<? extends ParameterDefinition>> provideParameters(HookHandlerService hookHandler){
-		Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
-		
-		for(ParameterProviderHook parameterProvider : hookHandler.getHookers(ParameterProviderHook.class))
-			definitions.addAll(parameterProvider.getParameterDefinitions());
-		
-		return definitions;
-	}
-	
-	/**
-	 * Register Report types
-	 * 
-	 */
-	@Provides @ReportServerReportTypes @Inject
-	public Set<Class<? extends Report>> provideReportServerReportTypes(HookHandlerService hookHandler){
-		Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
-		
-		for(ReportTypeProviderHook provider : hookHandler.getHookers(ReportTypeProviderHook.class))
-			types.addAll(provider.getReportTypes());
-		
-		return types;
-	}
+      /* startup */
+      bind(ReportManagerStartup.class).asEagerSingleton();
+   }
 
-	@Provides @Inject
-	public Collection<ParameterSetReplacementProvider> providerReplacementProviders(
-			HookHandlerService hookHandler
-		){
-		Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
-		
-		for(ParameterSetReplacementProviderHook provider : hookHandler.getHookers(ParameterSetReplacementProviderHook.class))
-			providers.addAll(provider.getProviders());
-		
-		return providers;
-	}
+   @Provides
+   @ReportEngines
+   @Inject
+   protected Set<Class<? extends ReportEngine>> provideReportEngines(HookHandlerService hookHandler) {
+      Set<Class<? extends ReportEngine>> engines = new HashSet<Class<? extends ReportEngine>>();
+
+      for (ReportEngineProviderHook engineProvider : hookHandler.getHookers(ReportEngineProviderHook.class))
+         engines.addAll(engineProvider.getReportEngines());
+
+      return engines;
+   }
+
+   /**
+    * Register Parameters.
+    *
+    */
+   @Inject
+   @Provides
+   @ReportServerParameter
+   public Set<Class<? extends ParameterDefinition>> provideParameters(HookHandlerService hookHandler) {
+      Set<Class<? extends ParameterDefinition>> definitions = new HashSet<Class<? extends ParameterDefinition>>();
+
+      for (ParameterProviderHook parameterProvider : hookHandler.getHookers(ParameterProviderHook.class))
+         definitions.addAll(parameterProvider.getParameterDefinitions());
+
+      return definitions;
+   }
+
+   /**
+    * Register Report types
+    * 
+    */
+   @Provides
+   @ReportServerReportTypes
+   @Inject
+   public Set<Class<? extends Report>> provideReportServerReportTypes(HookHandlerService hookHandler) {
+      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
+
+      for (ReportTypeProviderHook provider : hookHandler.getHookers(ReportTypeProviderHook.class))
+         types.addAll(provider.getReportTypes());
+
+      return types;
+   }
+
+   @Provides
+   @Inject
+   public Collection<ParameterSetReplacementProvider> providerReplacementProviders(HookHandlerService hookHandler) {
+      Set<ParameterSetReplacementProvider> providers = new HashSet<ParameterSetReplacementProvider>();
+
+      for (ParameterSetReplacementProviderHook provider : hookHandler
+            .getHookers(ParameterSetReplacementProviderHook.class))
+         providers.addAll(provider.getProviders());
+
+      return providers;
+   }
 }

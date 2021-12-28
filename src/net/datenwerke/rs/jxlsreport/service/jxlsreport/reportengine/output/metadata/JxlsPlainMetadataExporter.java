@@ -2,7 +2,6 @@ package net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.output.meta
 
 import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractPlainMetadataExporter;
 
-public class JxlsPlainMetadataExporter extends AbstractPlainMetadataExporter
-		implements JxlsMetadataExporter {
+public class JxlsPlainMetadataExporter extends AbstractPlainMetadataExporter implements JxlsMetadataExporter {
 
 }

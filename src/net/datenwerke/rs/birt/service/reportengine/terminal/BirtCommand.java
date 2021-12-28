@@ -15,44 +15,34 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommand;
 import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
-
 public class BirtCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "birt";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public BirtCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "birt";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = BirtEngineMessages.class,
-		name = BASE_COMMAND,
-		description = "commandBirt_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<BirtSubCommandHook> list =  hookHandler.getHookers(BirtSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public BirtCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = BirtEngineMessages.class, name = BASE_COMMAND, description = "commandBirt_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<BirtSubCommandHook> list = hookHandler.getHookers(BirtSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

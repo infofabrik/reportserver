@@ -16,57 +16,53 @@ import net.datenwerke.rs.samba.client.samba.SambaUiModule;
 import net.datenwerke.rs.samba.client.samba.dto.SambaDatasinkDto;
 import net.datenwerke.rs.samba.client.samba.ui.SambaDatasinkForm;
 
-public class SambaDatasinkConfigProviderHooker implements
-        DatasinkDefinitionConfigProviderHook {
+public class SambaDatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
-    private final Provider<SambaDatasinkForm> formProvider;
-    
-    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
-    
-    @Inject
-    public SambaDatasinkConfigProviderHooker(
-        Provider<SambaDatasinkForm> formProvider,
-        Provider<EnterpriseUiService> enterpriseServiceProvider
-        ){
-        
-        /* store objects */
-        this.formProvider = formProvider;
-        this.enterpriseServiceProvider = enterpriseServiceProvider;
-    }
-    
-    @Override
-    public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
-        return getDatasinkClass().equals(datasinkDefinition.getClass());
-    }
+   private final Provider<SambaDatasinkForm> formProvider;
 
-    @Override
-    public Collection<? extends MainPanelView> getAdminViews(
-            DatasinkDefinitionDto datasinkDefinition) {
-        return Collections.singleton(formProvider.get());
-    }
+   private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
-    @Override
-    public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
-        return SambaUiModule.TYPE;
-    }
+   @Inject
+   public SambaDatasinkConfigProviderHooker(Provider<SambaDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
-    @Override
-    public String getDatasinkName() {
-        return SambaUiModule.NAME;
-    }
+      /* store objects */
+      this.formProvider = formProvider;
+      this.enterpriseServiceProvider = enterpriseServiceProvider;
+   }
 
-    @Override
-    public AbstractDatasinkManagerNodeDto instantiateDatasink() {
-        return new SambaDatasinkDto();
-    }
-    
-    @Override
-    public ImageResource getDatasinkIcon() {
-        return SambaUiModule.ICON.toImageResource();
-    }
-    
-    @Override
-    public boolean isAvailable() {
-       return enterpriseServiceProvider.get().isEnterprise();
-    }
+   @Override
+   public boolean consumes(DatasinkDefinitionDto datasinkDefinition) {
+      return getDatasinkClass().equals(datasinkDefinition.getClass());
+   }
+
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(DatasinkDefinitionDto datasinkDefinition) {
+      return Collections.singleton(formProvider.get());
+   }
+
+   @Override
+   public Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass() {
+      return SambaUiModule.TYPE;
+   }
+
+   @Override
+   public String getDatasinkName() {
+      return SambaUiModule.NAME;
+   }
+
+   @Override
+   public AbstractDatasinkManagerNodeDto instantiateDatasink() {
+      return new SambaDatasinkDto();
+   }
+
+   @Override
+   public ImageResource getDatasinkIcon() {
+      return SambaUiModule.ICON.toImageResource();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return enterpriseServiceProvider.get().isEnterprise();
+   }
 }

@@ -18,39 +18,35 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManager
 import net.datenwerke.rs.core.client.datasinkmanager.dto.posomap.DatasinkFolderDto2PosoMap;
 import net.datenwerke.rs.ftp.client.ftp.dto.posomap.SftpDatasinkDto2PosoMap;
 
-public class SftpTreeProvider implements Provider<ManagerHelperTree>{
+public class SftpTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final TreeDBUIService treeDBUIService;
-	private final DatasinkTreeLoaderDao datasinkTreeLoader;
-	private final DatasinkTreeManagerDao datasinkTreeManager;
-	private final ManagerHelperTreeFactory treeFactory;
-	
-	@Inject
-	public SftpTreeProvider(
-		TreeDBUIService treeDBUIService,	
-		DatasinkTreeLoaderDao datasinkTreeLoader,
-		DatasinkTreeManagerDao datasinkTreeManager,
-		ManagerHelperTreeFactory treeFactory
-		){
-		
-		this.treeDBUIService = treeDBUIService;
-		this.datasinkTreeLoader = datasinkTreeLoader;
-		this.datasinkTreeManager = datasinkTreeManager;
-		this.treeFactory = treeFactory;
-	}
+   private final TreeDBUIService treeDBUIService;
+   private final DatasinkTreeLoaderDao datasinkTreeLoader;
+   private final DatasinkTreeManagerDao datasinkTreeManager;
+   private final ManagerHelperTreeFactory treeFactory;
 
-	public ManagerHelperTree get() {
-		/* store */
-		List<Dto2PosoMapper> filters = Arrays.asList(
-				new DatasinkFolderDto2PosoMap(),
-				new SftpDatasinkDto2PosoMap());
-				
-		EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader, false, filters);
-		
-		/* build tree */
-		final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader, datasinkTreeManager);
-		tree.configureIconProvider();
+   @Inject
+   public SftpTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
 
-		return tree;
-	}
+      this.treeDBUIService = treeDBUIService;
+      this.datasinkTreeLoader = datasinkTreeLoader;
+      this.datasinkTreeManager = datasinkTreeManager;
+      this.treeFactory = treeFactory;
+   }
+
+   public ManagerHelperTree get() {
+      /* store */
+      List<Dto2PosoMapper> filters = Arrays.asList(new DatasinkFolderDto2PosoMap(), new SftpDatasinkDto2PosoMap());
+
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
+            false, filters);
+
+      /* build tree */
+      final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,
+            datasinkTreeManager);
+      tree.configureIconProvider();
+
+      return tree;
+   }
 }

@@ -36,110 +36,104 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class LogFilesServiceImpl implements LogFilesService {
 
-	private static final int NUMBER_OF_LINES = 500;
+   private static final int NUMBER_OF_LINES = 500;
 
-	private final Provider<ConfigService> configServiceProvider;
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final Provider<MailService> mailServiceProvider;
-	private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
-	private final Provider<RemoteMessageService> remoteMessageServiceProvider;
-	
-	private final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
+   private final Provider<ConfigService> configServiceProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final Provider<MailService> mailServiceProvider;
+   private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
+   private final Provider<RemoteMessageService> remoteMessageServiceProvider;
 
-	@Inject
-	public LogFilesServiceImpl(Provider<ConfigService> configServiceProvider,
-			Provider<AuthenticatorService> authenticatorServiceProvider,
-			Provider<MailService> mailServiceProvider,
-			Provider<MailBuilderFactory> mailBuilderFactoryProvider,
-			Provider<RemoteMessageService> remoteMessageServiceProvider
-			) {
-		this.configServiceProvider = configServiceProvider;
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.mailServiceProvider = mailServiceProvider;
-		this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
-		this.remoteMessageServiceProvider = remoteMessageServiceProvider;
-	}
+   private final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
 
-	@Override
-	public String getLogDirectory() {
-		return configServiceProvider.get().getConfigFailsafe(ReportServerService.CONFIG_FILE).getString("logdir",
-				System.getProperty("catalina.home") + "/logs");
-	}
+   @Inject
+   public LogFilesServiceImpl(Provider<ConfigService> configServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, Provider<MailService> mailServiceProvider,
+         Provider<MailBuilderFactory> mailBuilderFactoryProvider,
+         Provider<RemoteMessageService> remoteMessageServiceProvider) {
+      this.configServiceProvider = configServiceProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.mailServiceProvider = mailServiceProvider;
+      this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
+      this.remoteMessageServiceProvider = remoteMessageServiceProvider;
+   }
 
-	@Override
-	public List<String> readLastLines(String filename) throws IOException {
-		Path logPath = Paths.get(getLogDirectory());
-		Path file = Paths.get(logPath.toAbsolutePath() + "/" + filename);
-		
-		checkLogFiles(Arrays.asList(file));
+   @Override
+   public String getLogDirectory() {
+      return configServiceProvider.get().getConfigFailsafe(ReportServerService.CONFIG_FILE).getString("logdir",
+            System.getProperty("catalina.home") + "/logs");
+   }
 
-		List<String> lines = new ArrayList<>();
+   @Override
+   public List<String> readLastLines(String filename) throws IOException {
+      Path logPath = Paths.get(getLogDirectory());
+      Path file = Paths.get(logPath.toAbsolutePath() + "/" + filename);
 
-		ReversedLinesFileReader object = new ReversedLinesFileReader(file.toFile());
+      checkLogFiles(Arrays.asList(file));
 
-		for (int i = 0; i < NUMBER_OF_LINES; i++) {
-			String line = object.readLine();
-			if (line == null)
-				break;
-			lines.add(line);
-		}
+      List<String> lines = new ArrayList<>();
 
-		Collections.reverse(lines);
+      ReversedLinesFileReader object = new ReversedLinesFileReader(file.toFile());
 
-		return lines;
-	}
+      for (int i = 0; i < NUMBER_OF_LINES; i++) {
+         String line = object.readLine();
+         if (line == null)
+            break;
+         lines.add(line);
+      }
 
-	@Override
-	public void emailLogFiles(List<Path> files, String filter) throws MessagingException, IOException {
-		checkLogFiles(files);
-		
-		final Configuration config = configServiceProvider.get().getConfigFailsafe("security/notifications.cf");
-		
-		User currentUser = authenticatorServiceProvider.get().getCurrentUser();
-		if (null == currentUser.getEmail() || currentUser.getEmail().isEmpty())
-			throw new IllegalArgumentException("Current user has empty email");
-		
-		String defaultSubject = AdminUtilsMessages.INSTANCE.emailLogFilesSubject();
-		String defaultBody = AdminUtilsMessages.INSTANCE.emailLogFilesIntro() + "\n\n" + currentUser.getUsername() + "\n\n"
-				+ AdminUtilsMessages.INSTANCE.emailLogFilesEnd();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
-		String filenameDesc = "ReportServer-logs-" +  sdf.format(new Date()); 
-		String subject = config.getString("logfiles.email.subject", defaultSubject);
-		String body = config.getString("logfiles.email.text", defaultBody); 
-		
-		Map<String,Object> replacements = new HashMap<>();
-		String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
-		replacements.put("msgs", remoteMessageServiceProvider.get().getMessages(currentLanguage));
-		replacements.put("user", UserForJuel.createInstance(currentUser));
-		replacements.put("filter", filter);
-		
-		SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, Arrays.asList(currentUser))
-				.withFileAttachments(files)
-				.withZippedAttachments(filenameDesc + ".zip")
-				.withTemplateReplacements(replacements)
-				.build();
-		
-		mailServiceProvider.get().sendMail(mail);
-	}
+      Collections.reverse(lines);
 
-	@Override
-	public void checkLogFiles(final List<Path> files) throws IOException {
-		
-		Path logPath = Paths.get(getLogDirectory());
-		if (! Files.exists(logPath))
-			throw new IllegalArgumentException("no valid log file directory configured");
-		
-		if (files
-				.stream()
-				.anyMatch(f -> ! Files.exists(f) || Files.isDirectory(f)))
-			throw new IllegalArgumentException("Files passed are not valid log files");
-		
-		try ( Stream<Path> stream = Files.list(logPath) ) {
-			if (! stream.anyMatch(f -> files.contains(f)))
-				throw new IllegalArgumentException("Files passed are not valid log files");
-		}
-		
-	}
-	
+      return lines;
+   }
+
+   @Override
+   public void emailLogFiles(List<Path> files, String filter) throws MessagingException, IOException {
+      checkLogFiles(files);
+
+      final Configuration config = configServiceProvider.get().getConfigFailsafe("security/notifications.cf");
+
+      User currentUser = authenticatorServiceProvider.get().getCurrentUser();
+      if (null == currentUser.getEmail() || currentUser.getEmail().isEmpty())
+         throw new IllegalArgumentException("Current user has empty email");
+
+      String defaultSubject = AdminUtilsMessages.INSTANCE.emailLogFilesSubject();
+      String defaultBody = AdminUtilsMessages.INSTANCE.emailLogFilesIntro() + "\n\n" + currentUser.getUsername()
+            + "\n\n" + AdminUtilsMessages.INSTANCE.emailLogFilesEnd();
+
+      SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+      String filenameDesc = "ReportServer-logs-" + sdf.format(new Date());
+      String subject = config.getString("logfiles.email.subject", defaultSubject);
+      String body = config.getString("logfiles.email.text", defaultBody);
+
+      Map<String, Object> replacements = new HashMap<>();
+      String currentLanguage = LocalizationServiceImpl.getLocale().getLanguage();
+      replacements.put("msgs", remoteMessageServiceProvider.get().getMessages(currentLanguage));
+      replacements.put("user", UserForJuel.createInstance(currentUser));
+      replacements.put("filter", filter);
+
+      SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, Arrays.asList(currentUser))
+            .withFileAttachments(files).withZippedAttachments(filenameDesc + ".zip")
+            .withTemplateReplacements(replacements).build();
+
+      mailServiceProvider.get().sendMail(mail);
+   }
+
+   @Override
+   public void checkLogFiles(final List<Path> files) throws IOException {
+
+      Path logPath = Paths.get(getLogDirectory());
+      if (!Files.exists(logPath))
+         throw new IllegalArgumentException("no valid log file directory configured");
+
+      if (files.stream().anyMatch(f -> !Files.exists(f) || Files.isDirectory(f)))
+         throw new IllegalArgumentException("Files passed are not valid log files");
+
+      try (Stream<Path> stream = Files.list(logPath)) {
+         if (!stream.anyMatch(f -> files.contains(f)))
+            throw new IllegalArgumentException("Files passed are not valid log files");
+      }
+
+   }
+
 }

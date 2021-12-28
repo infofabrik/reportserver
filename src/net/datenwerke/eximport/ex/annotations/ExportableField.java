@@ -9,7 +9,8 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ExportableField {
 
-	boolean exportField() default true;
-	boolean importField() default true;
-	
+   boolean exportField() default true;
+
+   boolean importField() default true;
+
 }

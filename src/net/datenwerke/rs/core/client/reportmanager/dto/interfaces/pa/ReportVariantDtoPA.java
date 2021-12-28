@@ -13,6 +13,4 @@ import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantD
 @CorrespondingPoso(net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant.class)
 public interface ReportVariantDtoPA extends PropertyAccess<ReportVariantDto> {
 
-
-
 }

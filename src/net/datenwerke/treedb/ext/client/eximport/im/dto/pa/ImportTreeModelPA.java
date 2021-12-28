@@ -12,16 +12,19 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 
 public interface ImportTreeModelPA extends PropertyAccess<ImportTreeModel> {
 
-	public static ImportTreeModelPA INSTANCE = GWT.create(ImportTreeModelPA.class);
-	
-	@Path("id")
-	public ModelKeyProvider<ImportTreeModel> dtoId();
+   public static ImportTreeModelPA INSTANCE = GWT.create(ImportTreeModelPA.class);
 
-	/* Properties */
-	public ValueProvider<ImportTreeModel,String> id();
-	public ValueProvider<ImportTreeModel,String> name();
-	public ValueProvider<ImportTreeModel,String> parentId();
-	public ValueProvider<ImportTreeModel,String> type();
-	
-	public ValueProvider<ImportTreeModel,List<ImportTreeModel>> children();
+   @Path("id")
+   public ModelKeyProvider<ImportTreeModel> dtoId();
+
+   /* Properties */
+   public ValueProvider<ImportTreeModel, String> id();
+
+   public ValueProvider<ImportTreeModel, String> name();
+
+   public ValueProvider<ImportTreeModel, String> parentId();
+
+   public ValueProvider<ImportTreeModel, String> type();
+
+   public ValueProvider<ImportTreeModel, List<ImportTreeModel>> children();
 }

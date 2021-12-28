@@ -10,16 +10,18 @@ import net.datenwerke.rs.base.client.reportengines.table.prefilter.propertywidge
 
 public interface PreFilterConfiguratorHook extends Hook {
 
-	String getHeadline();
+   String getHeadline();
 
-	ImageResource getIcon();
+   ImageResource getIcon();
 
-	void instantiateFilter(TableReportDto report, String executeToken, InstantiatePreFilterCallback instantiatePreFilterCallback);
+   void instantiateFilter(TableReportDto report, String executeToken,
+         InstantiatePreFilterCallback instantiatePreFilterCallback);
 
-	boolean consumes(FilterSpecDto filter);
+   boolean consumes(FilterSpecDto filter);
 
-	void displayFilter(TableReportDto report, FilterSpecDto filter,	String executeToken, EditPreFilterCallback callback);
+   void displayFilter(TableReportDto report, FilterSpecDto filter, String executeToken, EditPreFilterCallback callback);
 
-	void filterInstantiated(TableReportDto report, FilterSpecDto filter, String executeToken, final EditPreFilterCallback callback);
+   void filterInstantiated(TableReportDto report, FilterSpecDto filter, String executeToken,
+         final EditPreFilterCallback callback);
 
 }

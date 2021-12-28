@@ -6,9 +6,12 @@ import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
 
 public interface PasswordPolicy {
 
-	public PasswordComplexitySpecification getPasswordComplexitySpecification();
-	public PostAuthenticateHook getPostAuthenticateHooker();
-	public ChangePasswordHook getChangePasswordHooker();
-	public PasswordSetHook getPasswordSetHooker();
-	
+   public PasswordComplexitySpecification getPasswordComplexitySpecification();
+
+   public PostAuthenticateHook getPostAuthenticateHooker();
+
+   public ChangePasswordHook getChangePasswordHooker();
+
+   public PasswordSetHook getPasswordSetHooker();
+
 }

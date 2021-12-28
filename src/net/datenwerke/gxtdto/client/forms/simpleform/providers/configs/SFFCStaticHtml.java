@@ -6,6 +6,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCStaticHtml extends SimpleFormFieldConfiguration {
 
-	public SafeHtml getLabel();
-	
+   public SafeHtml getLabel();
+
 }

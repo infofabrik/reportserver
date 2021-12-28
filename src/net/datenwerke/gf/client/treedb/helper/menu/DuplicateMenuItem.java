@@ -9,34 +9,30 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
 
 public class DuplicateMenuItem extends TreeMenuItem {
-	
-	public DuplicateMenuItem(final TreeDbManagerDao treeManager){
-		super();
-		
-		setText(TreedbMessages.INSTANCE.duplicateText());
-		addMenuSelectionListener(new TreeMenuSelectionEvent() {
-			public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-				treeManager.duplicateNode(node, new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.duplicated()) {});
-			}
-		});
-	}
 
-	@Override
-	public void toBeDisplayed(AbstractNodeDto selectedItem) {
-		disable();
-	
-		/* try to get parent */
-		AbstractNodeDto parent = tree.getParentNode(selectedItem);
-		if(null != parent && 
-				(! (parent instanceof SecuredAbstractNodeDtoDec) || 
-				 ! ((SecuredAbstractNodeDtoDec)parent).isAccessRightsLoaded() || 
-				 ( 	
-				    ((SecuredAbstractNodeDtoDec)parent).hasAccessRight(WriteDto.class) &&
-				    ((SecuredAbstractNodeDtoDec)parent).hasInheritedAccessRight(WriteDto.class)
-				 )	
-				)
-		){
-			enable();
-		}
-	}
+   public DuplicateMenuItem(final TreeDbManagerDao treeManager) {
+      super();
+
+      setText(TreedbMessages.INSTANCE.duplicateText());
+      addMenuSelectionListener(new TreeMenuSelectionEvent() {
+         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
+            treeManager.duplicateNode(node, new NotamCallback<AbstractNodeDto>(TreedbMessages.INSTANCE.duplicated()) {
+            });
+         }
+      });
+   }
+
+   @Override
+   public void toBeDisplayed(AbstractNodeDto selectedItem) {
+      disable();
+
+      /* try to get parent */
+      AbstractNodeDto parent = tree.getParentNode(selectedItem);
+      if (null != parent && (!(parent instanceof SecuredAbstractNodeDtoDec)
+            || !((SecuredAbstractNodeDtoDec) parent).isAccessRightsLoaded()
+            || (((SecuredAbstractNodeDtoDec) parent).hasAccessRight(WriteDto.class)
+                  && ((SecuredAbstractNodeDtoDec) parent).hasInheritedAccessRight(WriteDto.class)))) {
+         enable();
+      }
+   }
 }

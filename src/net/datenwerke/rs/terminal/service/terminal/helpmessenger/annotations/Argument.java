@@ -11,9 +11,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Argument {
 
-	String flag();
-	boolean hasValue() default false;
-	String valueName() default "";
-	boolean mandatory() default false;
-	String description();
+   String flag();
+
+   boolean hasValue() default false;
+
+   String valueName() default "";
+
+   boolean mandatory() default false;
+
+   String description();
 }

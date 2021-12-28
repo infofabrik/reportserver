@@ -9,19 +9,18 @@ import net.datenwerke.rs.license.client.rpc.LicenseRpcServiceAsync;
 
 public class LicenseDao extends Dao {
 
-	private final LicenseRpcServiceAsync rpcService;
+   private final LicenseRpcServiceAsync rpcService;
 
-	@Inject
-	public LicenseDao(
-		LicenseRpcServiceAsync rpcService) {
-			this.rpcService = rpcService;
-	}
-	
-	public void loadLicenseInformation(RsAsyncCallback<LicenseInformationDto> callback){
-		rpcService.loadLicenseInformation(transformAndKeepCallback(callback));
-	}
+   @Inject
+   public LicenseDao(LicenseRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void updateLicense(String license, RsAsyncCallback<Void> callback) {
-		rpcService.updateLicense(license, transformAndKeepCallback(callback));		
-	}
+   public void loadLicenseInformation(RsAsyncCallback<LicenseInformationDto> callback) {
+      rpcService.loadLicenseInformation(transformAndKeepCallback(callback));
+   }
+
+   public void updateLicense(String license, RsAsyncCallback<Void> callback) {
+      rpcService.updateLicense(license, transformAndKeepCallback(callback));
+   }
 }

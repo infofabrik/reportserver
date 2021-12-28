@@ -6,10 +6,10 @@ import com.sencha.gxt.theme.neptune.client.base.field.Css3TextFieldAppearance;
 
 public class RsTextFieldAppearance extends Css3TextFieldAppearance {
 
-	public static final String CSS_FOCUS = "rs-focus";
-	
-	@Override
-	public void onFocus(Element parent, boolean focus) {
-		parent.<XElement>cast().setClassName(CSS_FOCUS, focus);
-	}
+   public static final String CSS_FOCUS = "rs-focus";
+
+   @Override
+   public void onFocus(Element parent, boolean focus) {
+      parent.<XElement>cast().setClassName(CSS_FOCUS, focus);
+   }
 }

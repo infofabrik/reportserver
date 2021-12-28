@@ -7,14 +7,14 @@ import net.datenwerke.rs.utils.eventbus.Event;
 
 public interface LoggedEvent extends Event {
 
-	public abstract Long getLoggedUserId();
+   public abstract Long getLoggedUserId();
 
-	public abstract String getLoggedAction();
-	
-	public abstract Map<String, String> getLoggedProperties();
+   public abstract String getLoggedAction();
 
-	public abstract void aboutToBeLogged();
+   public abstract Map<String, String> getLoggedProperties();
 
-	public abstract Date getDate();
+   public abstract void aboutToBeLogged();
+
+   public abstract Date getDate();
 
 }

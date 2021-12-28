@@ -10,18 +10,19 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class FunctionHandler implements ExpressionTokenHandlerHook {
 
-	private Collection<FunctionProviderHook> functions;
+   private Collection<FunctionProviderHook> functions;
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		for(FunctionProviderHook function : functions)
-			if(function.consumes(strToken, expressionTokenizer))
-				return new FunctionExpressionToken(strToken, function);
-		return null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      for (FunctionProviderHook function : functions)
+         if (function.consumes(strToken, expressionTokenizer))
+            return new FunctionExpressionToken(strToken, function);
+      return null;
+   }
 
-	public void initFunctions(Collection<FunctionProviderHook> functions) {
-		this.functions = functions;
-	}
+   public void initFunctions(Collection<FunctionProviderHook> functions) {
+      this.functions = functions;
+   }
 
 }

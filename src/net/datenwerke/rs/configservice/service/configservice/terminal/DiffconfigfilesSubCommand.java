@@ -30,12 +30,8 @@ public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCom
    protected String tmpDirName;
    protected String tmpDirPath;
 
-   public DiffconfigfilesSubCommand(
-         HistoryService historyService,
-         FileServerService fileServerService,
-         ConfigService configService,
-         SecurityService securityService,
-         String BASE_COMMAND) {
+   public DiffconfigfilesSubCommand(HistoryService historyService, FileServerService fileServerService,
+         ConfigService configService, SecurityService securityService, String BASE_COMMAND) {
       this.historyService = historyService;
       this.fileServerService = fileServerService;
       this.configService = configService;
@@ -62,24 +58,20 @@ public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCom
       if (null == currentConfigFolder)
          throw new IllegalStateException("Config files were not found!");
 
-      List<FileServerFile> expectedConfigFiles = tmpConfigFolder
-            .getSubfolderByName("etc")
+      List<FileServerFile> expectedConfigFiles = tmpConfigFolder.getSubfolderByName("etc")
             .getDescendants(FileServerFile.class);
       List<FileServerFile> actualConfigFiles = currentConfigFolder.getDescendants(FileServerFile.class);
       List<HistoryLink> fileLinksExpectedConfig = historyService.buildLinksForList(expectedConfigFiles);
       List<HistoryLink> fileLinksActualConfig = historyService.buildLinksForList(actualConfigFiles);
 
-      return fileLinksExpectedConfig
-            .stream()
+      return fileLinksExpectedConfig.stream()
             .filter(fileLinkExpectedConfig -> !containsLink(fileLinkExpectedConfig, fileLinksActualConfig))
             .collect(toList());
    }
 
    private boolean containsLink(HistoryLink fileLinkExpectedConfig, List<HistoryLink> fileLinksActualConfig) {
-      Optional<HistoryLink> matchingLink = fileLinksActualConfig
-            .stream()
-            .filter(link -> link.getObjectCaption()
-                  .equals(fileLinkExpectedConfig.getObjectCaption().replace(tmpDirPath, "")))
+      Optional<HistoryLink> matchingLink = fileLinksActualConfig.stream().filter(
+            link -> link.getObjectCaption().equals(fileLinkExpectedConfig.getObjectCaption().replace(tmpDirPath, "")))
             .findAny();
       return matchingLink.isPresent();
    }
@@ -100,7 +92,7 @@ public abstract class DiffconfigfilesSubCommand implements DiffconfigfilesSubCom
       }
       throw new TerminalException("Could not generate an unused name for config files folder");
    }
-   
+
    protected void removeTmpConfigFolder() {
       fileServerService.forceRemove(tmpConfigFolder);
    }

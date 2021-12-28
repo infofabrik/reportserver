@@ -37,13 +37,13 @@ public class ScheduleAsAmazonS3FileInformation implements AdditionalScheduleInfo
    public void setFolder(String folder) {
       this.folder = folder;
    }
-   
+
    public boolean isCompressed() {
       return compressed;
-  }
-  
-  public void setCompressed(boolean compressed) {
+   }
+
+   public void setCompressed(boolean compressed) {
       this.compressed = compressed;
-  }
+   }
 
 }

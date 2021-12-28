@@ -21,48 +21,47 @@ import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;
 
 public class DatasourceImporterItemsPanel extends ImporterItemsPanel<DatasourceManagerImportConfigDto> {
 
-	private final DatasourceManagerImportDao dsImportDao;
-	
-	@Inject
-	public DatasourceImporterItemsPanel(DatasourceManagerImportDao dsImportDao) {
-		super();
-		
-		/* store objects */
-		this.dsImportDao = dsImportDao;
-		
-		/* load data */
-		loadData();
-	}
+   private final DatasourceManagerImportDao dsImportDao;
 
+   @Inject
+   public DatasourceImporterItemsPanel(DatasourceManagerImportDao dsImportDao) {
+      super();
 
-	private void loadData() {
-		dsImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>(){
-			@Override
-			public void onSuccess(List<ImportTreeModel> roots) {
-				buildTree(roots);
-			}
-		});
-	}
-	
-	protected void configureTree() {
-		super.configureTree();
-		tree.setIconProvider(new IconProvider<ImportTreeModel>() {
-			@Override
-			public ImageResource getIcon(ImportTreeModel model) {
-				if(DatabaseDatasourceDto.class.getName().equals(model.getType()))
-					return BaseIcon.DATABASE.toImageResource();
-				if (MondrianDatasourceDto.class.getName().equals(model.getType()))
-					return BaseIcon.CUBES.toImageResource();
-				if (CsvDatasourceDto.class.getName().equals(model.getType()))
-					return BaseIcon.FILE_TEXT_O.toImageResource();
-				if (ScriptDatasourceDto.class.getName().equals(model.getType()))
-					return BaseIcon.FILE_CODE_O.toImageResource();
-				if (DatabaseBundleDto.class.getName().equals(model.getType()))
-					return BaseIcon.RANDOM.toImageResource();
-				if (BirtReportDatasourceDefinitionDto.class.getName().equals(model.getType()))
-					return BaseIcon.FILE.toImageResource();
-				return BaseIcon.FOLDER_O.toImageResource();
-			}
-		});
-	}
+      /* store objects */
+      this.dsImportDao = dsImportDao;
+
+      /* load data */
+      loadData();
+   }
+
+   private void loadData() {
+      dsImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>() {
+         @Override
+         public void onSuccess(List<ImportTreeModel> roots) {
+            buildTree(roots);
+         }
+      });
+   }
+
+   protected void configureTree() {
+      super.configureTree();
+      tree.setIconProvider(new IconProvider<ImportTreeModel>() {
+         @Override
+         public ImageResource getIcon(ImportTreeModel model) {
+            if (DatabaseDatasourceDto.class.getName().equals(model.getType()))
+               return BaseIcon.DATABASE.toImageResource();
+            if (MondrianDatasourceDto.class.getName().equals(model.getType()))
+               return BaseIcon.CUBES.toImageResource();
+            if (CsvDatasourceDto.class.getName().equals(model.getType()))
+               return BaseIcon.FILE_TEXT_O.toImageResource();
+            if (ScriptDatasourceDto.class.getName().equals(model.getType()))
+               return BaseIcon.FILE_CODE_O.toImageResource();
+            if (DatabaseBundleDto.class.getName().equals(model.getType()))
+               return BaseIcon.RANDOM.toImageResource();
+            if (BirtReportDatasourceDefinitionDto.class.getName().equals(model.getType()))
+               return BaseIcon.FILE.toImageResource();
+            return BaseIcon.FOLDER_O.toImageResource();
+         }
+      });
+   }
 }

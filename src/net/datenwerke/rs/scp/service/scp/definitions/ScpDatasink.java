@@ -34,18 +34,10 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "SCP_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.scp.client.scp.dto", 
-      poso2DtoPostProcessors = ScpDatasink2DtoPostProcessor.class, 
-      additionalFields = {
-            @AdditionalField(name = "hasPassword", type = Boolean.class), 
-            @AdditionalField(name = "hasPrivateKeyPassphrase", type = Boolean.class), 
-            }, 
-            icon = "arrow-up")
-   @InstanceDescription(
-         msgLocation = ScpMessages.class, 
-         objNameKey = "scpDatasinkTypeName",
-         icon = "arrow-up")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scp.client.scp.dto", poso2DtoPostProcessors = ScpDatasink2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasPassword", type = Boolean.class),
+      @AdditionalField(name = "hasPrivateKeyPassphrase", type = Boolean.class), }, icon = "arrow-up")
+@InstanceDescription(msgLocation = ScpMessages.class, objNameKey = "scpDatasinkTypeName", icon = "arrow-up")
 @Indexed
 public class ScpDatasink extends DatasinkDefinition implements HostDatasink, FolderedDatasink {
 
@@ -69,20 +61,20 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    @ExposeToClient
    @Field
    private String username;
-   
+
    @ExposeToClient
    private String authenticationType;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    private String password;
-   
+
    @Basic(fetch = FetchType.LAZY)
    @Lob
    private byte[] privateKey;
 
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    private String privateKeyPassphrase;
-   
+
    @ExposeToClient
    @Field
    @Column(length = 1024)
@@ -154,7 +146,7 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
 
       this.password = new String(Hex.encodeHex(encrypted));
    }
-   
+
    public String getAuthenticationType() {
       return authenticationType;
    }
@@ -162,7 +154,7 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    public void setAuthenticationType(String authenticationType) {
       this.authenticationType = authenticationType;
    }
-   
+
    /**
     * Gets the decrypted private key bytes.
     * 

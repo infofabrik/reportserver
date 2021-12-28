@@ -26,52 +26,50 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
 
 public class TSMenuDownloadHooker implements TsFavoriteMenuHook {
 
-private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
-	
-	
-	private final TsDiskTreeManagerDao treeManagerDao;
-	private final TeamSpaceUIService teamSpaceService;
-	private final ClientDownloadHelper clientDownloadHelper;
-	
-	@Inject
-	public TSMenuDownloadHooker(
-		TsDiskTreeManagerDao treeManagerDao,
-		TeamSpaceUIService teamSpaceService, 
-		ClientDownloadHelper clientDownloadHelper
-		){
-	
-		/* store objects */
-		this.treeManagerDao = treeManagerDao;
-		this.teamSpaceService = teamSpaceService;
-		this.clientDownloadHelper = clientDownloadHelper;
-	}
-	
-	@Override
-	public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector, final TsDiskMainComponent mainComponent) {
-		if(null == items || items.isEmpty() || items.size() > 1)
-			return false;
-		if(! teamSpaceService.isGuest(mainComponent.getCurrentSpace()))
-			return false;
+   private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
 
-		final AbstractTsDiskNodeDto item = items.get(0);
-		if(! (item instanceof ExecutedReportFileReferenceDto))
-			return false;
+   private final TsDiskTreeManagerDao treeManagerDao;
+   private final TeamSpaceUIService teamSpaceService;
+   private final ClientDownloadHelper clientDownloadHelper;
 
-		MenuItem downloadItem = new DwMenuItem(BaseMessages.INSTANCE.save(), BaseIcon.DOWNLOAD);
-		downloadItem.addSelectionHandler(new SelectionHandler<Item>() {
-			
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				String id = String.valueOf(item.getId());
-				String url = GWT.getModuleBaseURL() +  ScheduleAsFileUiModule.EXPORT_SERVLET + "?fileId=" + id + "&download=true"; //$NON-NLS-1$
-				
-				clientDownloadHelper.triggerDownload(url);
-			}
-		});
+   @Inject
+   public TSMenuDownloadHooker(TsDiskTreeManagerDao treeManagerDao, TeamSpaceUIService teamSpaceService,
+         ClientDownloadHelper clientDownloadHelper) {
 
-		menu.add(downloadItem);
-		
-		return true;
-	}
+      /* store objects */
+      this.treeManagerDao = treeManagerDao;
+      this.teamSpaceService = teamSpaceService;
+      this.clientDownloadHelper = clientDownloadHelper;
+   }
+
+   @Override
+   public boolean addContextMenuEntries(Menu menu, final List<AbstractTsDiskNodeDto> items, ItemSelector selector,
+         final TsDiskMainComponent mainComponent) {
+      if (null == items || items.isEmpty() || items.size() > 1)
+         return false;
+      if (!teamSpaceService.isGuest(mainComponent.getCurrentSpace()))
+         return false;
+
+      final AbstractTsDiskNodeDto item = items.get(0);
+      if (!(item instanceof ExecutedReportFileReferenceDto))
+         return false;
+
+      MenuItem downloadItem = new DwMenuItem(BaseMessages.INSTANCE.save(), BaseIcon.DOWNLOAD);
+      downloadItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            String id = String.valueOf(item.getId());
+            String url = GWT.getModuleBaseURL() + ScheduleAsFileUiModule.EXPORT_SERVLET + "?fileId=" + id //$NON-NLS-1$
+                  + "&download=true";
+
+            clientDownloadHelper.triggerDownload(url);
+         }
+      });
+
+      menu.add(downloadItem);
+
+      return true;
+   }
 
 }

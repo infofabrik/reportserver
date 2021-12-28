@@ -14,16 +14,14 @@ import net.datenwerke.rs.dashboard.client.dashboard.DashboardTreeManagerDao;
 @Singleton
 public class DashboardManagerMainPanel extends AbstractTreeMainPanel {
 
-	@Inject
-	public DashboardManagerMainPanel(
-		DashboardTreeManagerDao manager
-		){
-	
-		super(manager);
-	}
-	
-	@Override
-	protected String getToolbarName() {
-		return "dashboard:admin:view:toolbar";
-	}
+   @Inject
+   public DashboardManagerMainPanel(DashboardTreeManagerDao manager) {
+
+      super(manager);
+   }
+
+   @Override
+   protected String getToolbarName() {
+      return "dashboard:admin:view:toolbar";
+   }
 }

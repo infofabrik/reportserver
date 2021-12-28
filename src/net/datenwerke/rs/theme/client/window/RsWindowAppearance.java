@@ -7,9 +7,9 @@ import net.datenwerke.rs.theme.client.panel.RsHeaderAppearance;
 
 public class RsWindowAppearance extends Css3WindowAppearance {
 
-	@Override
-	public HeaderAppearance getHeaderAppearance() {
-		return new RsHeaderAppearance();
-	}
+   @Override
+   public HeaderAppearance getHeaderAppearance() {
+      return new RsHeaderAppearance();
+   }
 
 }

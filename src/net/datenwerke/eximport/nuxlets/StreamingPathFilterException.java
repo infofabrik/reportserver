@@ -43,7 +43,6 @@
  */
 package net.datenwerke.eximport.nuxlets;
 
-
 /**
  * An exception indicating a syntax error in the location path of a
  * {@link StreamingPathFilter}.
@@ -54,18 +53,18 @@ package net.datenwerke.eximport.nuxlets;
  */
 public class StreamingPathFilterException extends RuntimeException {
 
-	/**
-	 * Constructs an exception with the given message and underlying root cause.
-	 */
-	StreamingPathFilterException(String message, Throwable cause) {
-		super(message, cause);
-	}
+   /**
+    * Constructs an exception with the given message and underlying root cause.
+    */
+   StreamingPathFilterException(String message, Throwable cause) {
+      super(message, cause);
+   }
 
-	/**
-	 * Constructs an exception with the given message.
-	 */
-	StreamingPathFilterException(String message) {
-		super(message);
-	}
+   /**
+    * Constructs an exception with the given message.
+    */
+   StreamingPathFilterException(String message) {
+      super(message);
+   }
 
 }

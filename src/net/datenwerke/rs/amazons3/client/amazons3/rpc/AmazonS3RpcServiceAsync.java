@@ -24,8 +24,8 @@ public interface AmazonS3RpcServiceAsync {
    Request testAmazonS3Datasink(AmazonS3DatasinkDto amazonS3DatasinkDto, AsyncCallback<Boolean> callback);
 
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto, String filename,
-         String folder, boolean compressed, AsyncCallback<Void> callback);
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
+         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 
 }

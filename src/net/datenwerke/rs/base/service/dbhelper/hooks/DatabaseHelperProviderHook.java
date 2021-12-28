@@ -9,5 +9,5 @@ import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 @HookConfig
 public interface DatabaseHelperProviderHook extends Hook {
 
-	public Collection<DatabaseHelper> provideDatabaseHelpers();
+   public Collection<DatabaseHelper> provideDatabaseHelpers();
 }

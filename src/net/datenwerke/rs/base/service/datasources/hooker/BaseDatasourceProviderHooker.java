@@ -10,9 +10,10 @@ import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProvider
 
 public class BaseDatasourceProviderHooker implements DatasourceProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends DatasourceDefinition>> getDatasources() {
-		return (Collection<? extends Class<? extends DatasourceDefinition>>) Arrays.asList(new Class[]{DatabaseDatasource.class, CsvDatasource.class}); 
-	}
+   @Override
+   public Collection<? extends Class<? extends DatasourceDefinition>> getDatasources() {
+      return (Collection<? extends Class<? extends DatasourceDefinition>>) Arrays
+            .asList(new Class[] { DatabaseDatasource.class, CsvDatasource.class });
+   }
 
 }

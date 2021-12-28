@@ -16,50 +16,49 @@ import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRun
 
 public class BirtPDFOutputGenerator extends BirtOutputGeneratorImpl {
 
-	@Override
-	public CompiledRSBirtReport exportReport(
-			Object oRunAndRenderTask, String outputFormat,
-			ReportExecutionConfig... configs) {
+   @Override
+   public CompiledRSBirtReport exportReport(Object oRunAndRenderTask, String outputFormat,
+         ReportExecutionConfig... configs) {
 
-		try {
-			IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
-			
-			PDFRenderOption options = new PDFRenderOption();
+      try {
+         IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			options.setOutputStream(bos);
-			options.setOutputFormat("pdf");
+         PDFRenderOption options = new PDFRenderOption();
 
-			/* adapt render options */
-			RenderOption renderOptions = adapt(options);
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         options.setOutputStream(bos);
+         options.setOutputFormat("pdf");
 
-			runAndRenderTask.setRenderOption(renderOptions);
-			runAndRenderTask.run();
-		
-			/* create return object */
-			CompiledPDFBirtReport cbReport = new CompiledPDFBirtReport();
+         /* adapt render options */
+         RenderOption renderOptions = adapt(options);
 
-			/* add report to object */
-			cbReport.setReport(bos.toByteArray());
+         runAndRenderTask.setRenderOption(renderOptions);
+         runAndRenderTask.run();
 
-			/* return compiled report */
-			return cbReport;
+         /* create return object */
+         CompiledPDFBirtReport cbReport = new CompiledPDFBirtReport();
 
-		} catch (EngineException e) {
-			ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
-			rere.initCause(e);
-			throw rere;
-		}
-	}
+         /* add report to object */
+         cbReport.setReport(bos.toByteArray());
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_PDF};
-	}
+         /* return compiled report */
+         return cbReport;
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledPDFBirtReport();
-	}
+      } catch (EngineException e) {
+         ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
+         rere.initCause(e);
+         throw rere;
+      }
+   }
+
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_PDF };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledPDFBirtReport();
+   }
 
 }

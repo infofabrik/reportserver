@@ -72,14 +72,9 @@ public class PackagedScriptHelper {
    private BasepathZipExtractConfigFactory zipExtractConfigFactory;
 
    @Inject
-   public PackagedScriptHelper(
-         Provider<ReportDocGroovyHelper> groovyHelperProvider,
-         LicenseService licenseService,
-         TerminalService terminalService,
-         SimpleScriptingService scriptingService,
-         FileServerService fileServerService,
-         BasepathZipExtractConfigFactory zipExtractConfigFactory,
-         ZipUtilsService zipUtilsService,
+   public PackagedScriptHelper(Provider<ReportDocGroovyHelper> groovyHelperProvider, LicenseService licenseService,
+         TerminalService terminalService, SimpleScriptingService scriptingService, FileServerService fileServerService,
+         BasepathZipExtractConfigFactory zipExtractConfigFactory, ZipUtilsService zipUtilsService,
 
          Provider<ServletContext> servletContext) {
 
@@ -142,20 +137,16 @@ public class PackagedScriptHelper {
 
    public String executePackage(FileServerFolder targetDir, String scriptOptions, boolean executeRunScriptCommands,
          boolean executeCopyFilesCommands, Optional<String> copyFilesCustomDstPathPrefix) {
-      final FileServerFile configFile = targetDir.getChildrenOfType(FileServerFile.class)
-            .stream()
-            .filter(f -> f.getName().equals("package.xml"))
-            .findAny()
+      final FileServerFile configFile = targetDir.getChildrenOfType(FileServerFile.class).stream()
+            .filter(f -> f.getName().equals("package.xml")).findAny()
             .orElseThrow(() -> new IllegalArgumentException("Missing package.xml declaration."));
 
       StringBuilder resultBuilder = new StringBuilder();
 
       Parameters params = new Parameters();
-      XMLBuilderParameters xmlParams = params.xml()
-            .setEncoding("UTF-8");
+      XMLBuilderParameters xmlParams = params.xml().setEncoding("UTF-8");
       BasicConfigurationBuilder<XMLConfiguration> builder = new BasicConfigurationBuilder<XMLConfiguration>(
-            XMLConfiguration.class)
-                  .configure(xmlParams);
+            XMLConfiguration.class).configure(xmlParams);
       try {
          XMLConfiguration config = builder.getConfiguration();
          FileHandler handler = new FileHandler(config);
@@ -193,7 +184,7 @@ public class PackagedScriptHelper {
          fs.setLocation(targetLocation);
          VFSLocation srcLocation = fs.getLocation(srcPath);
 
-         String dstPath = customDstPathPrefix.isPresent()? customDstPathPrefix.get(): cfgNode.getString("[@dst]");
+         String dstPath = customDstPathPrefix.isPresent() ? customDstPathPrefix.get() : cfgNode.getString("[@dst]");
          AbstractFileServerNode dstNode = fileServerService.getNodeByPath(dstPath);
          VFSLocation dstLocation = fs.getLocationFor(dstNode);
 
@@ -252,9 +243,8 @@ public class PackagedScriptHelper {
    }
 
    public List<File> listPackages() {
-      return Arrays.asList(
-            getPackageDirectory().listFiles(
-                  (dir, name) -> name.toLowerCase().endsWith(".zip") && validateZip(new File(dir, name), false)));
+      return Arrays.asList(getPackageDirectory()
+            .listFiles((dir, name) -> name.toLowerCase().endsWith(".zip") && validateZip(new File(dir, name), false)));
    }
 
    public boolean validateZip(InputStream is, final boolean requireAutorun) {
@@ -270,11 +260,9 @@ public class PackagedScriptHelper {
             @Override
             public void processContent(ZipEntry entry, byte[] content) {
                Parameters params = new Parameters();
-               XMLBuilderParameters xmlParams = params.xml()
-                     .setEncoding("UTF-8");
+               XMLBuilderParameters xmlParams = params.xml().setEncoding("UTF-8");
                BasicConfigurationBuilder<XMLConfiguration> builder = new BasicConfigurationBuilder<XMLConfiguration>(
-                     XMLConfiguration.class)
-                           .configure(xmlParams);
+                     XMLConfiguration.class).configure(xmlParams);
                try {
                   XMLConfiguration config = builder.getConfiguration();
                   FileHandler handler = new FileHandler(config);

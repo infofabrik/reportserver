@@ -9,9 +9,10 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportMetadataDto
 
 public interface ReportMetadataRpcServiceAsync {
 
-	void updateMetadata(ReportDto reportDto, List<ReportMetadataDto> addedProperties,
-			List<ReportMetadataDto> modifiedProperties, List<ReportMetadataDto> removedProperties, AsyncCallback<ReportDto> callback);
+   void updateMetadata(ReportDto reportDto, List<ReportMetadataDto> addedProperties,
+         List<ReportMetadataDto> modifiedProperties, List<ReportMetadataDto> removedProperties,
+         AsyncCallback<ReportDto> callback);
 
-	void getMetadataKeys(AsyncCallback<List<String>> callback);
+   void getMetadataKeys(AsyncCallback<List<String>> callback);
 
 }

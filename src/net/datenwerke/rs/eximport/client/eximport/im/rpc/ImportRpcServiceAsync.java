@@ -10,16 +10,15 @@ import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportPostProcessConfig
 
 public interface ImportRpcServiceAsync {
 
-	void performImport(Map<String, ImportConfigDto> configMap, Map<String, ImportPostProcessConfigDto> postProcessMap, AsyncCallback<Void> callback);
+   void performImport(Map<String, ImportConfigDto> configMap, Map<String, ImportPostProcessConfigDto> postProcessMap,
+         AsyncCallback<Void> callback);
 
-	void reset(AsyncCallback<Void> callback);
-	
-	void invalidateConfig(AsyncCallback<Void> callback);
+   void reset(AsyncCallback<Void> callback);
 
-	void initViaFile(AsyncCallback<Collection<String>> callback);
+   void invalidateConfig(AsyncCallback<Void> callback);
 
-	void uploadXML(String xmldata, AsyncCallback<Collection<String>> callback);
+   void initViaFile(AsyncCallback<Collection<String>> callback);
 
+   void uploadXML(String xmldata, AsyncCallback<Collection<String>> callback);
 
-	
 }

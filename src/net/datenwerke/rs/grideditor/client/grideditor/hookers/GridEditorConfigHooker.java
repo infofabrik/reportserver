@@ -19,86 +19,84 @@ import net.datenwerke.rs.grideditor.client.grideditor.ui.GridEditorReportForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class GridEditorConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<GridEditorReportForm> adminFormProvider;
-	private EnterpriseUiService enterpriseService;
-	
-	@Inject
-	public GridEditorConfigHooker(
-			Provider<GridEditorReportForm> adminFormProvider,
-			EnterpriseUiService enterpriseService
-	) {
-		this.adminFormProvider = adminFormProvider;
-		this.enterpriseService = enterpriseService;
-	}
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof GridEditorReportDto;
-	}
+   private final Provider<GridEditorReportForm> adminFormProvider;
+   private EnterpriseUiService enterpriseService;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   @Inject
+   public GridEditorConfigHooker(Provider<GridEditorReportForm> adminFormProvider,
+         EnterpriseUiService enterpriseService) {
+      this.adminFormProvider = adminFormProvider;
+      this.enterpriseService = enterpriseService;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return GridEditorReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof GridEditorReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_GE.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_GE.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return GridEditorReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_GE_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_GE.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_GE_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_GE.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return GridEditorMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_GE_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return GridEditorReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_GE_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return GridEditorMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return GridEditorReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new GridEditorReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return null;
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return enterpriseService.isEnterprise();
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource(1);
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new GridEditorReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return null;
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return enterpriseService.isEnterprise();
+   }
 }

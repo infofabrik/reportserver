@@ -7,18 +7,16 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class StringHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		return strToken.matches("\'.*\'") ? 
-				! strToken.endsWith("\\'") ?
-					! strToken.matches("\'.*[^\\\\]\'.*\'") ?
-						new StringExpressionToken(clean(strToken)) : 
-							null : null : null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      return strToken.matches("\'.*\'") ? !strToken.endsWith("\\'")
+            ? !strToken.matches("\'.*[^\\\\]\'.*\'") ? new StringExpressionToken(clean(strToken)) : null
+            : null : null;
+   }
 
-	private String clean(String strToken) {
-		return strToken.substring(1,strToken.length()-1).replace("'", "\\'").replace("\\\\'", "\\'");
-	}
-
+   private String clean(String strToken) {
+      return strToken.substring(1, strToken.length() - 1).replace("'", "\\'").replace("\\\\'", "\\'");
+   }
 
 }

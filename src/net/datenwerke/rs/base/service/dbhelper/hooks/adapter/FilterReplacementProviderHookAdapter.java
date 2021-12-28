@@ -13,10 +13,8 @@ import net.datenwerke.rs.utils.juel.SimpleJuel;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class FilterReplacementProviderHookAdapter implements FilterReplacementProviderHook {
 
-	@Override
-	public void enhance(SimpleJuel juel, Column column, QueryBuilder queryBuilder, ManagedQuery query)  {
-	}
-
-
+   @Override
+   public void enhance(SimpleJuel juel, Column column, QueryBuilder queryBuilder, ManagedQuery query) {
+   }
 
 }

@@ -11,14 +11,14 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHo
 
 public class BaseReportEngineProviderHooker implements ReportEngineProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends ReportEngine>> getReportEngines() {
-		Set<Class<? extends ReportEngine>> engines = new HashSet<Class<? extends ReportEngine>>();		
-		
-		engines.add(JasperReportEngine.class);
-		engines.add(TableReportEngine.class);
-		
-		return engines;
-	}
+   @Override
+   public Collection<? extends Class<? extends ReportEngine>> getReportEngines() {
+      Set<Class<? extends ReportEngine>> engines = new HashSet<Class<? extends ReportEngine>>();
+
+      engines.add(JasperReportEngine.class);
+      engines.add(TableReportEngine.class);
+
+      return engines;
+   }
 
 }

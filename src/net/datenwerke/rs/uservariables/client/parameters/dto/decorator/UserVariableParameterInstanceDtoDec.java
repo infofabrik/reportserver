@@ -8,11 +8,10 @@ import net.datenwerke.rs.uservariables.client.parameters.dto.UserVariableParamet
  */
 public class UserVariableParameterInstanceDtoDec extends UserVariableParameterInstanceDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public UserVariableParameterInstanceDtoDec() {
-		super();
-	}
+   public UserVariableParameterInstanceDtoDec() {
+      super();
+   }
 
 }

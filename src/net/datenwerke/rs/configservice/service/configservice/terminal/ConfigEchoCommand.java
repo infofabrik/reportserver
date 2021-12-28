@@ -17,48 +17,43 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.Object
 
 public class ConfigEchoCommand implements ConfigSubCommandHook {
 
-	public static final String BASE_COMMAND = "echo";
-	
-	private final ConfigService configService;
-	
-	@Inject
-	public ConfigEchoCommand(
-		ConfigService configService 
-		) {
-		this.configService = configService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "echo";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ConfigMessages.class,
-		name = BASE_COMMAND,
-		description = "commandConfig_sub_echo_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> args = parser.getNonOptionArguments();
-		if(args.size() != 2)
-			throw new IllegalArgumentException("Expected two arguments: the config file (e.g. main/main.cf) and the property to be read (e.g. default.charset).");
-		
-		try{
-			Configuration config = configService.getConfig(args.get(0));
-			return new CommandResult(config.getString(args.get(1)));
-		} catch(IllegalArgumentException e){
-			return new CommandResult(e.getMessage());
-		}
-		
-	}
+   private final ConfigService configService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+   @Inject
+   public ConfigEchoCommand(ConfigService configService) {
+      this.configService = configService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandConfig_sub_echo_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> args = parser.getNonOptionArguments();
+      if (args.size() != 2)
+         throw new IllegalArgumentException(
+               "Expected two arguments: the config file (e.g. main/main.cf) and the property to be read (e.g. default.charset).");
+
+      try {
+         Configuration config = configService.getConfig(args.get(0));
+         return new CommandResult(config.getString(args.get(1)));
+      } catch (IllegalArgumentException e) {
+         return new CommandResult(e.getMessage());
+      }
+
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 }

@@ -29,41 +29,33 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class TsDiskStartup {
 
-	@Inject
-	public TsDiskStartup(
-		HookHandlerService hookHandler,
-		Provider<TsDiskTeamSpaceAppDefinition> tsDiskAppDefinition,
-		ImportPostProcessorHooker importPostProcessor,
-		TsFavoriteHistoryUrlBuilderHooker urlBuilder,
-		TsFavoriteHistoryUrlBuilderForReportsHooker urlBuilderForReports,
-		
-		Provider<TsDiskExporter> exporterProvider,
-		Provider<TsDiskImporter> importerProvider,
-		Provider<ExportAllTsDiskHooker> exportAllHooker,
-		Provider<ImportAllTsDiskHooker> importAllHooker,
-		
-		EventBus eventBus,
-		TeamSpaceRemovedCallback removedTeamSpaceCallback,
-		HandleReportRemoveEvent reportRemoveEventHandler,
-		HandleReportForceRemoveEvent reportForceRemoveEventHandler
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, TeamSpace.class, removedTeamSpaceCallback);
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, reportRemoveEventHandler);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, Report.class, reportForceRemoveEventHandler);
-		
-		
-		hookHandler.attachHooker(TeamSpaceAppDefinitionProviderHook.class, new TeamSpaceAppDefinitionProviderHook(tsDiskAppDefinition));
-		
-		hookHandler.attachHooker(HttpImportPostProcessProviderHook.class, importPostProcessor);
-		
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilder, HookHandlerService.PRIORITY_HIGH);
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilderForReports, HookHandlerService.PRIORITY_LOW);
-		
-		/* eximport */
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(ExportAllHook.class, exportAllHooker);
-		hookHandler.attachHooker(ImportAllHook.class, importAllHooker);
-	}
+   @Inject
+   public TsDiskStartup(HookHandlerService hookHandler, Provider<TsDiskTeamSpaceAppDefinition> tsDiskAppDefinition,
+         ImportPostProcessorHooker importPostProcessor, TsFavoriteHistoryUrlBuilderHooker urlBuilder,
+         TsFavoriteHistoryUrlBuilderForReportsHooker urlBuilderForReports,
+
+         Provider<TsDiskExporter> exporterProvider, Provider<TsDiskImporter> importerProvider,
+         Provider<ExportAllTsDiskHooker> exportAllHooker, Provider<ImportAllTsDiskHooker> importAllHooker,
+
+         EventBus eventBus, TeamSpaceRemovedCallback removedTeamSpaceCallback,
+         HandleReportRemoveEvent reportRemoveEventHandler, HandleReportForceRemoveEvent reportForceRemoveEventHandler) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, TeamSpace.class, removedTeamSpaceCallback);
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, reportRemoveEventHandler);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, Report.class, reportForceRemoveEventHandler);
+
+      hookHandler.attachHooker(TeamSpaceAppDefinitionProviderHook.class,
+            new TeamSpaceAppDefinitionProviderHook(tsDiskAppDefinition));
+
+      hookHandler.attachHooker(HttpImportPostProcessProviderHook.class, importPostProcessor);
+
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilder, HookHandlerService.PRIORITY_HIGH);
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, urlBuilderForReports, HookHandlerService.PRIORITY_LOW);
+
+      /* eximport */
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(ExportAllHook.class, exportAllHooker);
+      hookHandler.attachHooker(ImportAllHook.class, importAllHooker);
+   }
 }

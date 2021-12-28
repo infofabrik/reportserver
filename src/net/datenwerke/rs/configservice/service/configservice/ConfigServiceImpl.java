@@ -48,11 +48,8 @@ public class ConfigServiceImpl implements ConfigService {
    private final Provider<PackagedScriptHelper> packagedScriptHelperProvider;
 
    @Inject
-   public ConfigServiceImpl(
-         FileServerService fileService,
-         TerminalService terminalService,
-         HookHandlerService hookHandler,
-         Provider<PackagedScriptHelper> packagedScriptHelperProvider) {
+   public ConfigServiceImpl(FileServerService fileService, TerminalService terminalService,
+         HookHandlerService hookHandler, Provider<PackagedScriptHelper> packagedScriptHelperProvider) {
 
       /* store objects */
       this.fileService = fileService;
@@ -106,7 +103,7 @@ public class ConfigServiceImpl implements ConfigService {
          return new String(data);
       } catch (ObjectResolverException e) {
          throw new ConfigFileNotFoundException("Could not find config for " + identifier, e);
-      } 
+      }
    }
 
    @Override
@@ -216,7 +213,7 @@ public class ConfigServiceImpl implements ConfigService {
        * config files are extracted temporarily to /tmp. We check if this folder
        * exists and if does not exist previously, we delete it
        */
-      boolean tmpFolderDidExist = (null == fileService.getNodeByPath("/tmp", false))? false : true;
+      boolean tmpFolderDidExist = (null == fileService.getNodeByPath("/tmp", false)) ? false : true;
       PackagedScriptHelper helper = packagedScriptHelperProvider.get();
       File pkgDir = helper.getPackageDirectory();
 
@@ -229,11 +226,8 @@ public class ConfigServiceImpl implements ConfigService {
       }
 
       if (pkgDir.exists() && pkgDir.isDirectory()) {
-         Optional<File> baseConfigPackageScriptFile = helper
-               .listPackages()
-               .stream()
-               .filter(f -> f.getName().matches("^baseconfig-RS.*[.]zip$"))
-               .findAny();
+         Optional<File> baseConfigPackageScriptFile = helper.listPackages().stream()
+               .filter(f -> f.getName().matches("^baseconfig-RS.*[.]zip$")).findAny();
 
          if (baseConfigPackageScriptFile.isPresent() && helper.validateZip(baseConfigPackageScriptFile.get(), true)) {
             try {

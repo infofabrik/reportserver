@@ -6,17 +6,18 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 
 /**
  * Allows to register a maintenance task. Maintenance tasks are regularly
- * executed depending on the configuration specified in {@link MaintenanceModule#CONFIG_FILE}.
+ * executed depending on the configuration specified in
+ * {@link MaintenanceModule#CONFIG_FILE}.
  * 
  *
  */
 @HookConfig
 public interface MaintenanceTask extends Hook {
 
-	/**
-	 * Callback called by the maintenance thread. 
-	 * The method should preferably not throw exceptions.
-	 */
-	void performMaintenance();
-	
+   /**
+    * Callback called by the maintenance thread. The method should preferably not
+    * throw exceptions.
+    */
+   void performMaintenance();
+
 }

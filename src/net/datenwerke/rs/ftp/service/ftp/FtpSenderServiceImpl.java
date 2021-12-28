@@ -60,12 +60,12 @@ public class FtpSenderServiceImpl implements FtpSenderService {
       if (!(config instanceof DatasinkFilenameFolderConfig))
          throw new IllegalStateException("Not a FilenameFolder config");
 
-      String folder = ((DatasinkFilenameFolderConfig)config).getFolder();
-      String filename = ((DatasinkFilenameFolderConfig)config).getFilename();
-      
+      String folder = ((DatasinkFilenameFolderConfig) config).getFolder();
+      String filename = ((DatasinkFilenameFolderConfig) config).getFilename();
+
       Objects.requireNonNull(folder);
       Objects.requireNonNull(filename);
-      
+
       if (storageType != StorageType.FTP && storageType != StorageType.SFTP && storageType != StorageType.FTPS)
          throw new IllegalArgumentException("storage type not allowed");
 

@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.RetryTimeUni
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.helper.RetryTimeUnit.class)
 public interface RetryTimeUnitDtoPA extends PropertyAccess<RetryTimeUnitDto> {
 
-
-
 }

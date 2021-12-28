@@ -4,5 +4,5 @@ import javax.mail.Session;
 
 public interface SessionProvider {
 
-	Session getSession();
+   Session getSession();
 }

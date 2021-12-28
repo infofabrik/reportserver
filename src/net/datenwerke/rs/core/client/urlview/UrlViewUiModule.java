@@ -4,9 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class UrlViewUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(UrlViewUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(UrlViewUiStartup.class).asEagerSingleton();
+   }
 
 }

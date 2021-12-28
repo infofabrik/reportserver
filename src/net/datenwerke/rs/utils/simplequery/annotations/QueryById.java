@@ -15,14 +15,16 @@ import java.lang.annotation.Target;
  *		return null; // by magic
  *	}
  * </pre>
- * This code snipped will perform a query 
+ * 
+ * This code snipped will perform a query
+ * 
  * <pre>
  *   FROM AbstractReportManagerNode where idField = :id
  * </pre>
  * 
  * <p>
- *  Note that if from is not specified it, the return type is examined and
- *  taken as from.
+ * Note that if from is not specified it, the return type is examined and taken
+ * as from.
  * </p>
  * 
  *
@@ -32,6 +34,6 @@ import java.lang.annotation.Target;
 @Target(ElementType.METHOD)
 public @interface QueryById {
 
-	Class<?> from() default Void.class;
-	
+   Class<?> from() default Void.class;
+
 }

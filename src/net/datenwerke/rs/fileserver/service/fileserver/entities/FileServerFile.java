@@ -29,101 +29,87 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
 @Entity
-@Table(name="FILE_SERVER_FILE")
+@Table(name = "FILE_SERVER_FILE")
 @Audited
 @Indexed
-@GenerateDto(
-		dtoPackage="net.datenwerke.rs.fileserver.client.fileserver.dto",
-		createDecorator=true,
-		poso2DtoPostProcessors=File2DtoPostProcessor.class,
-		typeDescriptionMsg=FileServerMessages.class, typeDescriptionKey="file",
-		additionalFields = {
-			@AdditionalField(name="size", type=Integer.class)
-		}
-		)
-@InstanceDescription(
-		msgLocation=FileserverMessages.class,
-		objNameKey="fileTypeName",
-		icon = "file"
-		)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.fileserver.client.fileserver.dto", createDecorator = true, poso2DtoPostProcessors = File2DtoPostProcessor.class, typeDescriptionMsg = FileServerMessages.class, typeDescriptionKey = "file", additionalFields = {
+      @AdditionalField(name = "size", type = Integer.class) })
+@InstanceDescription(msgLocation = FileserverMessages.class, objNameKey = "fileTypeName", icon = "file")
 @Cacheable(false)
-@Cache(usage=CacheConcurrencyStrategy.NONE)
-public class FileServerFile extends AbstractFileServerNode  {
+@Cache(usage = CacheConcurrencyStrategy.NONE)
+public class FileServerFile extends AbstractFileServerNode {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2324696384754535610L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2324696384754535610L;
 
-	@ExposeToClient(
-			view=DtoView.MINIMAL,
-			displayTitle=true
-			)
-	@Column(length = 128)
-	@Field
-	@Title
-	private String name;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   @Field
+   @Title
+   private String name;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@Description
-	private String description;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @Description
+   private String description;
 
-	@ExposeToClient
-	@Column(length = 128)
-	private String contentType;
+   @ExposeToClient
+   @Column(length = 128)
+   private String contentType;
 
-	@EnclosedEntity
-	@OneToOne(cascade=CascadeType.ALL,fetch=FetchType.LAZY)
-	private FileServerFileData fileData = new FileServerFileData();
+   @EnclosedEntity
+   @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+   private FileServerFileData fileData = new FileServerFileData();
 
-	public String getName() {
-		return name;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public void setData(byte[] data) {
-		getFileData().setData(data);
-	}
+   public void setData(byte[] data) {
+      getFileData().setData(data);
+   }
 
-	public byte[] getData() {
-		return getFileData().getData();
-	}
+   public byte[] getData() {
+      return getFileData().getData();
+   }
 
-	public void setContentType(String contentType) {
-		this.contentType = contentType;
-	}
+   public void setContentType(String contentType) {
+      this.contentType = contentType;
+   }
 
-	public String getContentType() {
-		return contentType;
-	}
+   public String getContentType() {
+      return contentType;
+   }
 
-	public FileServerFileData getFileData() {
-		return fileData;
-	}
+   public FileServerFileData getFileData() {
+      return fileData;
+   }
 
-	public long getSize() {
-		if(null == fileData)
-			return 0;
-		return fileData.getSize();
-	}
+   public long getSize() {
+      if (null == fileData)
+         return 0;
+      return fileData.getSize();
+   }
 
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 
 }

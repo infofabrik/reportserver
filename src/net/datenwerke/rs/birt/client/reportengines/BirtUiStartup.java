@@ -28,54 +28,55 @@ import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ReadDto;
 
 public class BirtUiStartup {
-	
-	@Inject
-	public BirtUiStartup(
-		final HookHandlerService hookHandler,
-		final WaitOnEventUIService waitOnEventService,
-		final SecurityUIService securityService,
-		
-		BirtReportConfigHooker birtReportConfigHooker, 
-		BirtReportPreviewViewFactory birtReportPreviewViewFactory, 
-		
-		Provider<Birt2HTML> birt2HTML,
-		Provider<Birt2PDF> birt2PDF,
-		Provider<Birt2Excel> birt2Excel,
-		Provider<Birt2Doc> birt2Doc,
-		
-		BirtReportFileDownloadToolbarConfiguratorHooker birtReportFileDownloadToolbarConfiguratorHooker,
-		BirtReportParameterProposerToolbarConfiguratorHooker birtReportParameterProposerToolbarConfiguratorHooker,
-		
-		BirtReportDatasourceConfigProviderHooker birtReportDatasourceConfigProviderHooker,
-		
-		final Provider<BirtReportDadgetExporter> reportDadgetExporterProvider
-		){
-		
-		hookHandler.attachHooker(ReportTypeConfigHook.class, birtReportConfigHooker,20);
-		hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(birtReportPreviewViewFactory), HookHandlerService.PRIORITY_LOW);
-		
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2Doc), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2Excel), HookHandlerService.PRIORITY_LOW);
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2PDF));
-		hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2HTML), HookHandlerService.PRIORITY_LOW);
-		
-		
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, birtReportFileDownloadToolbarConfiguratorHooker);
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, birtReportParameterProposerToolbarConfiguratorHooker);
-		
-		hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, birtReportDatasourceConfigProviderHooker,40);
-		
-		/* request callback after login and check for rights */
-		waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED, new SynchronousCallbackOnEventTrigger() {
-			
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)){
-					hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
-				}
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-	}
+   @Inject
+   public BirtUiStartup(final HookHandlerService hookHandler, final WaitOnEventUIService waitOnEventService,
+         final SecurityUIService securityService,
+
+         BirtReportConfigHooker birtReportConfigHooker, BirtReportPreviewViewFactory birtReportPreviewViewFactory,
+
+         Provider<Birt2HTML> birt2HTML, Provider<Birt2PDF> birt2PDF, Provider<Birt2Excel> birt2Excel,
+         Provider<Birt2Doc> birt2Doc,
+
+         BirtReportFileDownloadToolbarConfiguratorHooker birtReportFileDownloadToolbarConfiguratorHooker,
+         BirtReportParameterProposerToolbarConfiguratorHooker birtReportParameterProposerToolbarConfiguratorHooker,
+
+         BirtReportDatasourceConfigProviderHooker birtReportDatasourceConfigProviderHooker,
+
+         final Provider<BirtReportDadgetExporter> reportDadgetExporterProvider) {
+
+      hookHandler.attachHooker(ReportTypeConfigHook.class, birtReportConfigHooker, 20);
+      hookHandler.attachHooker(ReportViewHook.class, new ReportViewHook(birtReportPreviewViewFactory),
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2Doc),
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2Excel),
+            HookHandlerService.PRIORITY_LOW);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2PDF));
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(birt2HTML),
+            HookHandlerService.PRIORITY_LOW);
+
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class,
+            birtReportFileDownloadToolbarConfiguratorHooker);
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class,
+            birtReportParameterProposerToolbarConfiguratorHooker);
+
+      hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, birtReportDatasourceConfigProviderHooker,
+            40);
+
+      /* request callback after login and check for rights */
+      waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(DashboardViewGenericTargetIdentifier.class, ReadDto.class)) {
+                     hookHandler.attachHooker(ReportDadgetExportHook.class, reportDadgetExporterProvider);
+                  }
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+   }
 
 }

@@ -9,12 +9,10 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportVariantDto;
  */
 public class CrystalReportVariantDtoDec extends CrystalReportVariantDto implements ReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public CrystalReportVariantDtoDec() {
-		super();
-	}
-
+   public CrystalReportVariantDtoDec() {
+      super();
+   }
 
 }

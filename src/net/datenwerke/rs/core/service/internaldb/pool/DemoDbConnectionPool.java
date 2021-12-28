@@ -8,7 +8,7 @@ import net.datenwerke.dbpool.config.ConnectionPoolConfig;
 public class DemoDbConnectionPool implements ConnectionPoolConfig {
 
    private final String jdbcUrl;
-   
+
    private final Long datasourceId;
    private final String datasourceName;
 

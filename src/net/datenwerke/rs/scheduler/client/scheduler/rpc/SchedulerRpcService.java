@@ -18,39 +18,42 @@ import net.datenwerke.scheduler.client.scheduler.dto.history.ExecutionLogEntryDt
 import net.datenwerke.security.client.security.dto.RightDto;
 
 @RemoteServiceRelativePath("scheduler")
-public interface SchedulerRpcService extends RemoteService{
+public interface SchedulerRpcService extends RemoteService {
 
-	public void schedule(ReportScheduleDefinition scheduleDTO) throws ServerCallFailedException;
+   public void schedule(ReportScheduleDefinition scheduleDTO) throws ServerCallFailedException;
 
-	public boolean unschedule(Long jobId) throws ServerCallFailedException;
+   public boolean unschedule(Long jobId) throws ServerCallFailedException;
 
-	public ReportDto getReportFor(Long jobId) throws ServerCallFailedException;
-	
-	PagingLoadResult<ReportScheduleJobListInformation> getReportJobList(
-			JobFilterConfigurationDto jobFilterConfig, List<JobFilterCriteriaDto> addCriterions) throws ServerCallFailedException;
+   public ReportDto getReportFor(Long jobId) throws ServerCallFailedException;
 
-	ReportScheduleJobInformation loadFullScheduleInformation(ReportScheduleJobListInformation selected) throws ServerCallFailedException;
+   PagingLoadResult<ReportScheduleJobListInformation> getReportJobList(JobFilterConfigurationDto jobFilterConfig,
+         List<JobFilterCriteriaDto> addCriterions) throws ServerCallFailedException;
 
-	void reschedule(Long jobId, ReportScheduleDefinition scheduleDTO) throws ServerCallFailedException;
+   ReportScheduleJobInformation loadFullScheduleInformation(ReportScheduleJobListInformation selected)
+         throws ServerCallFailedException;
 
-	ReportScheduleJobInformation loadDetailsFor(ReportScheduleJobListInformation selected) throws ServerCallFailedException;
-	
-	ExecutionLogEntryDto loadFullDetailsFor(Long jobId, ExecutionLogEntryDto entry) throws ServerCallFailedException;
-	
-	void scheduleOnce(Long jobId) throws ServerCallFailedException;
+   void reschedule(Long jobId, ReportScheduleDefinition scheduleDTO) throws ServerCallFailedException;
 
-	boolean remove(Long jobId) throws ServerCallFailedException;
+   ReportScheduleJobInformation loadDetailsFor(ReportScheduleJobListInformation selected)
+         throws ServerCallFailedException;
 
-	void clearErrorStatus(Long jobId) throws ServerCallFailedException;
-	
-	List<ReportScheduleJobListInformation> getReportJobList(ReportDto report) throws ServerCallFailedException;
-	
-	SafeHtml getReportJobListAsHtml(ReportDto report) throws ServerCallFailedException;
-	
-	/**
-	 * @return true if email attachments should be compressed by default
-	 */
-	boolean isDefaultEmailCompression() throws ServerCallFailedException;
-	
-	void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto report, List<RightDto> rights) throws ServerCallFailedException;
+   ExecutionLogEntryDto loadFullDetailsFor(Long jobId, ExecutionLogEntryDto entry) throws ServerCallFailedException;
+
+   void scheduleOnce(Long jobId) throws ServerCallFailedException;
+
+   boolean remove(Long jobId) throws ServerCallFailedException;
+
+   void clearErrorStatus(Long jobId) throws ServerCallFailedException;
+
+   List<ReportScheduleJobListInformation> getReportJobList(ReportDto report) throws ServerCallFailedException;
+
+   SafeHtml getReportJobListAsHtml(ReportDto report) throws ServerCallFailedException;
+
+   /**
+    * @return true if email attachments should be compressed by default
+    */
+   boolean isDefaultEmailCompression() throws ServerCallFailedException;
+
+   void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto report, List<RightDto> rights)
+         throws ServerCallFailedException;
 }

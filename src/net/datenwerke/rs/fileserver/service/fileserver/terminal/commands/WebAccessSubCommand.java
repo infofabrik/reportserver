@@ -40,14 +40,9 @@ public class WebAccessSubCommand implements DirModCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(
-         messageClass = FileserverMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandWebAccess_description", 
-         nonOptArgs = {
-               @NonOptArgument(name = "directory", description = "commandDirMod_description_arg_dirpath", mandatory = true),
-               @NonOptArgument(name = "access", description = "commandDirMod_description_arg_webaccess", mandatory = true) 
-               })
+   @CliHelpMessage(messageClass = FileserverMessages.class, name = BASE_COMMAND, description = "commandWebAccess_description", nonOptArgs = {
+         @NonOptArgument(name = "directory", description = "commandDirMod_description_arg_dirpath", mandatory = true),
+         @NonOptArgument(name = "access", description = "commandDirMod_description_arg_webaccess", mandatory = true) })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       final CommandResult cr = new CommandResult();
@@ -63,17 +58,15 @@ public class WebAccessSubCommand implements DirModCommandHook {
 
       final Collection<?> resolvedObjects = session.getObjectResolver().getObjects(path, Read.class);
       final List<?> searchResults = (List<?>) resolvedObjects;
-      
+
       if (0 == resolvedObjects.size()) {
          cr.addResultLine("No FileServerFolder objects found");
          return cr;
       }
 
-      if (searchResults
-            .stream()
-            .anyMatch(item -> !(item instanceof FileServerFolder)))
+      if (searchResults.stream().anyMatch(item -> !(item instanceof FileServerFolder)))
          throw new IllegalArgumentException("Only FileServerFolder objects can be modified");
-         
+
       cr.addResultLine("Web access permission changed for the following directories:");
       searchResults.forEach(item -> {
          FileServerFolder folder = (FileServerFolder) item;
@@ -81,7 +74,7 @@ public class WebAccessSubCommand implements DirModCommandHook {
          fileServerService.persist(folder);
          try {
             historyService.buildLinksFor(item)
-               .forEach(link -> cr.addResultHyperLink(link.getObjectCaption(), link.getLink()));
+                  .forEach(link -> cr.addResultHyperLink(link.getObjectCaption(), link.getLink()));
          } catch (IllegalArgumentException e) {
             logger.warn(e.getMessage(), e);
          }

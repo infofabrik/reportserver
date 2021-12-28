@@ -20,83 +20,73 @@ import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 
 public class DemoDataInstallTask implements DbInstallationTask {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private static final String DEMO_DATASOURCES_FOLDER_NAME = "sample data";
-	private static final String DEMO_DATA_SOURCE_NAME = "Demo Data";
+   private static final String DEMO_DATASOURCES_FOLDER_NAME = "sample data";
+   private static final String DEMO_DATA_SOURCE_NAME = "Demo Data";
 
-	private DatasourceService datasourceService;
-	private DBHelperService dbHelperService;
+   private DatasourceService datasourceService;
+   private DBHelperService dbHelperService;
 
-	@Inject
-	public DemoDataInstallTask(
-			DatasourceService datasourceService,
-			DBHelperService dbHelperService
-			) {
-		this.datasourceService = datasourceService;
-		this.dbHelperService = dbHelperService;
-	}
+   @Inject
+   public DemoDataInstallTask(DatasourceService datasourceService, DBHelperService dbHelperService) {
+      this.datasourceService = datasourceService;
+      this.dbHelperService = dbHelperService;
+   }
 
-	@Override
-	public void executeOnStartup() {
-	}
+   @Override
+   public void executeOnStartup() {
+   }
 
-	@Override
-	public void executeOnFirstRun() {
-		installDatasource();
-	}
+   @Override
+   public void executeOnFirstRun() {
+      installDatasource();
+   }
 
-	protected void installDatasource() {
-		logger.info("install demo data datasources");
-		
-		DatasourceFolder folder = new DatasourceFolder(); 
-		folder.setName(DEMO_DATASOURCES_FOLDER_NAME); //$NON-NLS-1$
+   protected void installDatasource() {
+      logger.info("install demo data datasources");
 
-		AbstractDatasourceManagerNode root = datasourceService.getRoots().get(0);
-		root.addChild(folder);
-		datasourceService.persist(folder);
+      DatasourceFolder folder = new DatasourceFolder();
+      folder.setName(DEMO_DATASOURCES_FOLDER_NAME); // $NON-NLS-1$
 
-		String url = "rs:demodata";
-		String username = "demo";
-		String password = "demo";
-		final String driver = "org.h2.Driver";
-		final String dbHelperName = 
-				dbHelperService.getDatabaseHelpers()
-				.stream()
-				.filter(dh -> driver.equals(dh.getDriver()))
-				.map(DatabaseHelper::getDescriptor)
-				.findAny()
-				.orElse("");
+      AbstractDatasourceManagerNode root = datasourceService.getRoots().get(0);
+      root.addChild(folder);
+      datasourceService.persist(folder);
 
-		DatabaseDatasource demoDataSource = new DatabaseDatasource();
-		demoDataSource.setDatabaseDescriptor(dbHelperName);
-		demoDataSource.setUrl(url);
-		demoDataSource.setName(DEMO_DATA_SOURCE_NAME);
-		demoDataSource.setUsername(username);
-		demoDataSource.setPassword(password);
-		folder.addChild(demoDataSource);
-		datasourceService.persist(demoDataSource);
+      String url = "rs:demodata";
+      String username = "demo";
+      String password = "demo";
+      final String driver = "org.h2.Driver";
+      final String dbHelperName = dbHelperService.getDatabaseHelpers().stream()
+            .filter(dh -> driver.equals(dh.getDriver())).map(DatabaseHelper::getDescriptor).findAny().orElse("");
 
-		MondrianDatasource mds = new MondrianDatasource();
-		InputStream is = getClass().getClassLoader().getResourceAsStream("resources/demo/FoodMart-schema.xml");
-		mds.setName("Foodmart");
+      DatabaseDatasource demoDataSource = new DatabaseDatasource();
+      demoDataSource.setDatabaseDescriptor(dbHelperName);
+      demoDataSource.setUrl(url);
+      demoDataSource.setName(DEMO_DATA_SOURCE_NAME);
+      demoDataSource.setUsername(username);
+      demoDataSource.setPassword(password);
+      folder.addChild(demoDataSource);
+      datasourceService.persist(demoDataSource);
 
-		mds.setUsername(username);
-		mds.setPassword(password);
-		mds.setUrl("rs:mondrian:demodata");
+      MondrianDatasource mds = new MondrianDatasource();
+      InputStream is = getClass().getClassLoader().getResourceAsStream("resources/demo/FoodMart-schema.xml");
+      mds.setName("Foodmart");
 
-		try {
-			mds.setMondrianSchema(IOUtils.toString(is));
-		} catch (IOException e) {
-		}
-		String props = "type=OLAP\n" + 
-				"name=foodmart\n" + 
-				"driver=mondrian.olap4j.MondrianOlap4jDriver\n" + 
-				"jdbcDrivers=" + H2.DB_DRIVER + ""; 
-		mds.setProperties(props);
+      mds.setUsername(username);
+      mds.setPassword(password);
+      mds.setUrl("rs:mondrian:demodata");
 
-		folder.addChild(mds);
-		datasourceService.persist(mds);
+      try {
+         mds.setMondrianSchema(IOUtils.toString(is));
+      } catch (IOException e) {
+      }
+      String props = "type=OLAP\n" + "name=foodmart\n" + "driver=mondrian.olap4j.MondrianOlap4jDriver\n"
+            + "jdbcDrivers=" + H2.DB_DRIVER + "";
+      mds.setProperties(props);
 
-	}
+      folder.addChild(mds);
+      datasourceService.persist(mds);
+
+   }
 }

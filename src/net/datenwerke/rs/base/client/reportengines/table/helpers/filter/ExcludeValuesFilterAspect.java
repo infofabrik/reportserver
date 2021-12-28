@@ -12,24 +12,24 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  * 
  *
  */
-public class ExcludeValuesFilterAspect extends AbstractSingleFilterAspect{
-	
-	public ExcludeValuesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
-		super(FilterMessages.INSTANCE.excludeTitle(), report, column, FilterType.Exclude, executeToken); 
-	}	
-	
-	@Override
-	protected List<String> getValues(FilterDto filter) {
-		return filter.getExcludeValues();
-	}
-	
-	@Override
-	protected SelectionPanel<StringBaseModel> createSelectionPanel(ColumnDto column) {
-		return new SingleSelectionPanel(this, column);
-	}
+public class ExcludeValuesFilterAspect extends AbstractSingleFilterAspect {
 
-	@Override
-	protected void setValues(FilterDto filter, List<String> newValues) {
-		filter.setExcludeValues(newValues);
-	}
+   public ExcludeValuesFilterAspect(TableReportDto report, ColumnDto column, String executeToken) {
+      super(FilterMessages.INSTANCE.excludeTitle(), report, column, FilterType.Exclude, executeToken);
+   }
+
+   @Override
+   protected List<String> getValues(FilterDto filter) {
+      return filter.getExcludeValues();
+   }
+
+   @Override
+   protected SelectionPanel<StringBaseModel> createSelectionPanel(ColumnDto column) {
+      return new SingleSelectionPanel(this, column);
+   }
+
+   @Override
+   protected void setValues(FilterDto filter, List<String> newValues) {
+      filter.setExcludeValues(newValues);
+   }
 }

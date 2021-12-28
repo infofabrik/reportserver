@@ -20,35 +20,26 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportPrope
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Entity
-@Table(name="JASPER_TO_TABLE_CONFIG")
+@Table(name = "JASPER_TO_TABLE_CONFIG")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@GenerateDto(
-	dtoImplementInterfaces=DatasourceContainerProviderDto.class,
-	dtoPackage="net.datenwerke.rs.incubator.client.jaspertotable.dto",
-	createDecorator=true,
-	additionalFields = {
-		@AdditionalField(name="active", type=Boolean.class)
-	}
-)
-public class JasperToTableConfig extends ReportProperty implements DatasourceContainerProvider  {
+@Inheritance(strategy = InheritanceType.JOINED)
+@GenerateDto(dtoImplementInterfaces = DatasourceContainerProviderDto.class, dtoPackage = "net.datenwerke.rs.incubator.client.jaspertotable.dto", createDecorator = true, additionalFields = {
+      @AdditionalField(name = "active", type = Boolean.class) })
+public class JasperToTableConfig extends ReportProperty implements DatasourceContainerProvider {
 
-	@ExposeToClient(
-		view=DtoView.ALL,
-		mergeDtoValueBack=false
-	)
-	@EnclosedEntity
-	@OneToOne(cascade=CascadeType.ALL, orphanRemoval=true)
-    private DatasourceContainer datasourceContainer;
+   @ExposeToClient(view = DtoView.ALL, mergeDtoValueBack = false)
+   @EnclosedEntity
+   @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+   private DatasourceContainer datasourceContainer;
 
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return datasourceContainer;
-	}
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return datasourceContainer;
+   }
 
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasourceContainer) {
-		this.datasourceContainer = datasourceContainer;
-	}
-    
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasourceContainer) {
+      this.datasourceContainer = datasourceContainer;
+   }
+
 }

@@ -11,22 +11,22 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class RemoveEntityEventInterceptor implements MethodInterceptor {
 
-	@Inject
-	private EventBus eventBus;
-	
-	@Override
-	public Object invoke(MethodInvocation method) throws Throwable {
-		if(1 != method.getArguments().length)
-			throw new IllegalArgumentException("Excepted exactly one argument");
-		
-		Object entity = method.getArguments()[0];
+   @Inject
+   private EventBus eventBus;
 
-		eventBus.fireEvent(new RemoveEntityEvent(entity));
-		
-		Object returnValue = method.proceed();
-		
-		eventBus.fireEvent(new AfterRemoveEntityEvent(entity));
-		
-		return returnValue;
-	}
+   @Override
+   public Object invoke(MethodInvocation method) throws Throwable {
+      if (1 != method.getArguments().length)
+         throw new IllegalArgumentException("Excepted exactly one argument");
+
+      Object entity = method.getArguments()[0];
+
+      eventBus.fireEvent(new RemoveEntityEvent(entity));
+
+      Object returnValue = method.proceed();
+
+      eventBus.fireEvent(new AfterRemoveEntityEvent(entity));
+
+      return returnValue;
+   }
 }

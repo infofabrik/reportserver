@@ -9,18 +9,15 @@ import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessage
 @Singleton
 public class DatasourceManagerPanel extends AbstractTreeManagerPanel {
 
-	@Inject
-	public DatasourceManagerPanel(
-		DatasourceManagerMainPanel mainPanel,
-		DatasourceManagerTreePanel treePanel
-		){
-		
-		super(mainPanel, treePanel);
-	}
-	
-	@Override
-	protected String getHeadingText() {
-		return DatasourcesMessages.INSTANCE.datasources();
-	}
-	
+   @Inject
+   public DatasourceManagerPanel(DatasourceManagerMainPanel mainPanel, DatasourceManagerTreePanel treePanel) {
+
+      super(mainPanel, treePanel);
+   }
+
+   @Override
+   protected String getHeadingText() {
+      return DatasourcesMessages.INSTANCE.datasources();
+   }
+
 }

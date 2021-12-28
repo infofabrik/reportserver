@@ -25,12 +25,8 @@ public class OneDriveTreeProvider implements Provider<ManagerHelperTree> {
    private final ManagerHelperTreeFactory treeFactory;
 
    @Inject
-   public OneDriveTreeProvider(
-         TreeDBUIService treeDBUIService, 
-         DatasinkTreeLoaderDao datasinkTreeLoader,
-         DatasinkTreeManagerDao datasinkTreeManager, 
-         ManagerHelperTreeFactory treeFactory
-         ) {
+   public OneDriveTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
 
       this.treeDBUIService = treeDBUIService;
       this.datasinkTreeLoader = datasinkTreeLoader;

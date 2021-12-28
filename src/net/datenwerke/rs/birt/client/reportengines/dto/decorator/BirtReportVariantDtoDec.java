@@ -8,12 +8,10 @@ import net.datenwerke.rs.birt.client.reportengines.dto.BirtReportVariantDto;
  */
 public class BirtReportVariantDtoDec extends BirtReportVariantDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public BirtReportVariantDtoDec() {
-		super();
-	}
-
+   public BirtReportVariantDtoDec() {
+      super();
+   }
 
 }

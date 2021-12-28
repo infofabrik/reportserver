@@ -7,6 +7,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ApplicationPropertiesProviderHook extends Hook {
 
-	public Configuration getConfig() throws ConfigurationException;
-	
+   public Configuration getConfig() throws ConfigurationException;
+
 }

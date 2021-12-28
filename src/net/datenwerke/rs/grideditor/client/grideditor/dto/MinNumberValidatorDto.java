@@ -20,64 +20,54 @@ import net.datenwerke.rs.grideditor.service.grideditor.definition.validator.MinI
 @GeneratedType("net.datenwerke.dtoservices.dtogenerator.DtoAnnotationProcessor")
 abstract public class MinNumberValidatorDto extends ValidatorDtoDec {
 
+   private static final long serialVersionUID = 1;
 
-	private static final long serialVersionUID = 1;
+   /* Fields */
 
+   public MinNumberValidatorDto() {
+      super();
+   }
 
-	/* Fields */
+   @Override
+   public String toString() {
+      return super.toString();
+   }
 
-	public MinNumberValidatorDto() {
-		super();
-	}
+   public static Dto2PosoMapper newPosoMapper() {
+      return new MinNumberValidatorDto2PosoMap();
+   }
 
-	@Override
-	public String toString()  {
-		return super.toString();
-	}
+   public MinNumberValidatorDtoPA instantiatePropertyAccess() {
+      return GWT.create(MinNumberValidatorDtoPA.class);
+   }
 
-	public static Dto2PosoMapper newPosoMapper()  {
-		return new MinNumberValidatorDto2PosoMap();
-	}
+   public void clearModified() {
+   }
 
-	public MinNumberValidatorDtoPA instantiatePropertyAccess()  {
-		return GWT.create(MinNumberValidatorDtoPA.class);
-	}
+   public boolean isModified() {
+      if (super.isModified())
+         return true;
+      return false;
+   }
 
-	public void clearModified()  {
-	}
+   public List<PropertyAccessor> getPropertyAccessors() {
+      List<PropertyAccessor> list = super.getPropertyAccessors();
+      return list;
+   }
 
+   public List<PropertyAccessor> getModifiedPropertyAccessors() {
+      List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
+      return list;
+   }
 
-	public boolean isModified()  {
-		if(super.isModified())
-			return true;
-		return false;
-	}
+   public List<PropertyAccessor> getPropertyAccessorsByView(net.datenwerke.gxtdto.client.dtomanager.DtoView view) {
+      List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
+      return list;
+   }
 
-
-	public List<PropertyAccessor> getPropertyAccessors()  {
-		List<PropertyAccessor> list = super.getPropertyAccessors();
-		return list;
-	}
-
-
-	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
-		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
-		return list;
-	}
-
-
-	public List<PropertyAccessor> getPropertyAccessorsByView(net.datenwerke.gxtdto.client.dtomanager.DtoView view)  {
-		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
-		return list;
-	}
-
-
-	public List<PropertyAccessor> getPropertyAccessorsForDtos()  {
-		List<PropertyAccessor> list = super.getPropertyAccessorsForDtos();
-		return list;
-	}
-
-
-
+   public List<PropertyAccessor> getPropertyAccessorsForDtos() {
+      List<PropertyAccessor> list = super.getPropertyAccessorsForDtos();
+      return list;
+   }
 
 }

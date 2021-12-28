@@ -83,72 +83,66 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class JobReportConfigurationForm extends DwContentPanel implements Validatable, WizardAware, WizardResizer {
 
-	private ListStore<ReportDto> store;
-	private Grid<ReportDto> grid;
-	
-	private ToggleGroup exportTypeGroup;
-	private Map<Radio, ReportExporter> exporterMap;
-	private List<ReportExecutionConfigDto> exporterConfig;
-	
-	private WizardDialog wizard;
-	
-	private final ReportScheduleDefinition jobDefinition;
-	
-	private final ReportDocumentationUiService reportDocService;
-	private final ReportExecutorUIService reportExecutorService;
-	private final ReportExporterUIService reportExporterService;
-	private final ReportManagerTreeLoaderDao reportLoaderDao;
-	private final ReportExecutorDao reportExecutorDao;
-	private final Provider<ReportSelectionDialog> reportDialogProvider;
-	
-	private ReportSelectionDialog reportSelector;
+   private ListStore<ReportDto> store;
+   private Grid<ReportDto> grid;
 
-	private VerticalLayoutContainer verticalContainer;
-	private VerticalLayoutContainer exportFormFieldWrapper = new VerticalLayoutContainer();
-	
-	private Optional<ReportDto> report;
-	
-	private CheckBox advancedCheckbox;
-	
-	final List<ScheduleConfigWizardPageProviderHook> advancedPages;
+   private ToggleGroup exportTypeGroup;
+   private Map<Radio, ReportExporter> exporterMap;
+   private List<ReportExecutionConfigDto> exporterConfig;
 
-	@Inject
-	public JobReportConfigurationForm(
-			ReportExecutorUIService reportExecutorService,
-			ReportDocumentationUiService reportDocService,
-			ReportExporterUIService reportExporterService,
-			ReportManagerTreeLoaderDao reportLoaderDao,
-			ReportExecutorDao reportExecutorDao,
-			Provider<ReportSelectionDialog> reportDialogProvider,
-			HookHandlerService hookHandler,
-			@Assisted Optional<ReportDto> report, 
-			@Assisted Collection<ReportViewConfiguration> configs,
-			@Nullable @Assisted ReportScheduleDefinition definition,
-			@Assisted List<ScheduleConfigWizardPageProviderHook> advancedPages 
-			) {
-		
-		super();
-		this.reportExecutorService = reportExecutorService;
-		this.reportDocService = reportDocService;
-		this.reportExporterService = reportExporterService;
-		this.reportLoaderDao = reportLoaderDao;
-		this.reportExecutorDao = reportExecutorDao;
-		
-		this.jobDefinition = definition;
-		
-		this.reportDialogProvider = reportDialogProvider;
-		
-		this.advancedPages = advancedPages;
-		
-		this.report = report;
-		
-		Collections.reverse(this.advancedPages);
-		
-		configureForm(report);
-	}
-	
-	private void configureForm(Optional<ReportDto> report) {
-	   setBorders(false);
+   private WizardDialog wizard;
+
+   private final ReportScheduleDefinition jobDefinition;
+
+   private final ReportDocumentationUiService reportDocService;
+   private final ReportExecutorUIService reportExecutorService;
+   private final ReportExporterUIService reportExporterService;
+   private final ReportManagerTreeLoaderDao reportLoaderDao;
+   private final ReportExecutorDao reportExecutorDao;
+   private final Provider<ReportSelectionDialog> reportDialogProvider;
+
+   private ReportSelectionDialog reportSelector;
+
+   private VerticalLayoutContainer verticalContainer;
+   private VerticalLayoutContainer exportFormFieldWrapper = new VerticalLayoutContainer();
+
+   private Optional<ReportDto> report;
+
+   private CheckBox advancedCheckbox;
+
+   final List<ScheduleConfigWizardPageProviderHook> advancedPages;
+
+   @Inject
+   public JobReportConfigurationForm(ReportExecutorUIService reportExecutorService,
+         ReportDocumentationUiService reportDocService, ReportExporterUIService reportExporterService,
+         ReportManagerTreeLoaderDao reportLoaderDao, ReportExecutorDao reportExecutorDao,
+         Provider<ReportSelectionDialog> reportDialogProvider, HookHandlerService hookHandler,
+         @Assisted Optional<ReportDto> report, @Assisted Collection<ReportViewConfiguration> configs,
+         @Nullable @Assisted ReportScheduleDefinition definition,
+         @Assisted List<ScheduleConfigWizardPageProviderHook> advancedPages) {
+
+      super();
+      this.reportExecutorService = reportExecutorService;
+      this.reportDocService = reportDocService;
+      this.reportExporterService = reportExporterService;
+      this.reportLoaderDao = reportLoaderDao;
+      this.reportExecutorDao = reportExecutorDao;
+
+      this.jobDefinition = definition;
+
+      this.reportDialogProvider = reportDialogProvider;
+
+      this.advancedPages = advancedPages;
+
+      this.report = report;
+
+      Collections.reverse(this.advancedPages);
+
+      configureForm(report);
+   }
+
+   private void configureForm(Optional<ReportDto> report) {
+      setBorders(false);
       setBodyBorder(false);
       setHeaderVisible(false);
       enableScrollContainer();
@@ -162,14 +156,14 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
       wrapper.setInfoText(SchedulerMessages.INSTANCE.reportConfigDescription());
       wrapper.setHeight(480);
       wrapper.setWidget(verticalContainer);
-      
+
       ToolBar toolbar = createToolbar();
       verticalContainer.add(toolbar);
-      
+
       initGrid(report);
-      
+
       verticalContainer.add(exportFormFieldWrapper, new VerticalLayoutData(1, 1, new Margins(10, 0, 0, 0)));
-      
+
       /* advanced options */
       advancedCheckbox = new CheckBox();
       advancedCheckbox.setToolTip(SchedulerMessages.INSTANCE.showAdvancedOptionsTooltip());
@@ -179,59 +173,55 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
       verticalContainer.add(advLabel);
 
       advancedCheckbox.addValueChangeHandler(event -> showAdvanced(event.getValue()));
-      
-	}
-	
+
+   }
+
    /**
     * Shows or removes all advanced-options pages at the end of the
     * {@link WizardDialog}.
     * 
-    * @param show          if {@code true}, shows the advanced-options pages at the
-    *                      end of the {@link WizardDialog}. Else, removes them from
-    *                      the {@link WizardDialog}.
+    * @param show if {@code true}, shows the advanced-options pages at the end of
+    *             the {@link WizardDialog}. Else, removes them from the
+    *             {@link WizardDialog}.
     */
-	private void showAdvanced(final boolean show) {
-	   if (!report.isPresent())
-	      return;
-	   
+   private void showAdvanced(final boolean show) {
+      if (!report.isPresent())
+         return;
+
       if (show) {
-         advancedPages
-            .stream()
-            .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
-            .forEach(pageProvider -> wizard.addPage(wizard.getPageCount() - 1, pageProvider.getPage(report.get(), jobDefinition)));
+         advancedPages.stream().filter(ScheduleConfigWizardPageProviderHook::isAdvanced).forEach(pageProvider -> wizard
+               .addPage(wizard.getPageCount() - 1, pageProvider.getPage(report.get(), jobDefinition)));
       } else {
-         advancedPages
-            .stream()
-            .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
-            .forEach(pageProvider -> wizard.removePage(pageProvider.getPage(report.get(), jobDefinition)));
+         advancedPages.stream().filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
+               .forEach(pageProvider -> wizard.removePage(pageProvider.getPage(report.get(), jobDefinition)));
       }
    }
 
-	private ToolBar createToolbar() {
-		ToolBar toolbar = new DwToolBar();
-		
-		DwTextButton addBtn = new DwTextButton(FormsMessages.INSTANCE.select(), BaseIcon.REPORT);
+   private ToolBar createToolbar() {
+      ToolBar toolbar = new DwToolBar();
 
-		addBtn.addSelectHandler( event -> showReportSelector() );
-		toolbar.add(addBtn);
-		
-		return toolbar;
-	}
+      DwTextButton addBtn = new DwTextButton(FormsMessages.INSTANCE.select(), BaseIcon.REPORT);
 
-	private void initReportSelectionBox() {
-		reportSelector = reportDialogProvider.get();
-		reportSelector.initSubmitButton();
-		
-		reportSelector.initRepositories(report, new ReportCatalogOnDemandRepositoryProvider.Config() {
-			@Override
-			public boolean includeVariants() {
-				return true;
-			}
-			
-			@Override
-			public boolean showCatalog() {
-				return true;
-			}
+      addBtn.addSelectHandler(event -> showReportSelector());
+      toolbar.add(addBtn);
+
+      return toolbar;
+   }
+
+   private void initReportSelectionBox() {
+      reportSelector = reportDialogProvider.get();
+      reportSelector.initSubmitButton();
+
+      reportSelector.initRepositories(report, new ReportCatalogOnDemandRepositoryProvider.Config() {
+         @Override
+         public boolean includeVariants() {
+            return true;
+         }
+
+         @Override
+         public boolean showCatalog() {
+            return true;
+         }
 
          @Override
          public boolean filterOnSchedulableReports() {
@@ -247,402 +237,400 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
          public boolean filterOnTeamSpaceImportableReports() {
             return false;
          }
-		});
-		
-		reportSelector.setHeading(SchedulerMessages.INSTANCE.report());
-		reportSelector.setHeaderIcon(BaseIcon.REPORT_ADD);
-		reportSelector.setClosable(true);
-		reportSelector.setOnEsc(true);
-		
-		reportSelector.setEventHandler(new ReportSelectionDialogEventHandler() {
-			
-			@Override
-			public boolean handleSubmit(ReportContainerDto container) {
-				if (null == container || null == container.getReport())
-					return false;
-				onReportSelected(container.getReport());
-				reportSelector.hide();
-				return true;
-			}
-			
-			@Override
-			public void handleDoubleClick(final ReportContainerDto report,
-					ReportSelectionRepositoryProviderHook hooker, NativeEvent event, Object... info) {
-				if (null == report || null == report.getReport())
-					return;
-				
-				onReportSelected(report.getReport());
-				reportSelector.hide();
-			}
-			
-			@Override
-			public Menu getContextMenuFor(final ReportContainerDto report,
-					ReportSelectionRepositoryProviderHook hooker, final Object... info) {
-				return null;
-			}
+      });
 
-		});
-	}
+      reportSelector.setHeading(SchedulerMessages.INSTANCE.report());
+      reportSelector.setHeaderIcon(BaseIcon.REPORT_ADD);
+      reportSelector.setClosable(true);
+      reportSelector.setOnEsc(true);
 
-	private void showExportForm(SelectionChangedEvent<ReportDto> selectionChangedEvent) {
-		
-		exportFormFieldWrapper.clear();
-		
-		if (null == selectionChangedEvent.getSelection() || selectionChangedEvent.getSelection().isEmpty())
-			return;
-		
-		ReportDto report = selectionChangedEvent.getSelection().get(0);
-		
-		exportTypeGroup = new ToggleGroup();
-		HorizontalPanel horizontalRadioPanel = null;
-		VerticalPanel verticalRadioPanel = new VerticalPanel();
-		
-		final DwTextButton formatConfigBtn = new DwTextButton(SchedulerMessages.INSTANCE.formatConfig(), BaseIcon.COG);
-		formatConfigBtn.addStyleName("rs-export-type-conf-btn");
-		
-		List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
-		exporterMap = new HashMap<>();
-		boolean showConfigBtn = false;
-		boolean first = true;
-		Radio firstRadio = null;
-		int horizontalRadioCounter = 0;
-		for(final ReportExporter exporter : exporters){
-			if(! exporter.canBeScheduled())
-				continue;
-			
-			showConfigBtn |= exporter.hasConfiguration(); 
-			
-			String name = exporter.getExportTitle();
+      reportSelector.setEventHandler(new ReportSelectionDialogEventHandler() {
 
-			final Radio radio = new Radio();
-			radio.setName("exportFormat"); //$NON-NLS-1$
-			radio.setData("rs_outputFormat", exporter.getOutputFormat()); //$NON-NLS-1$
-			radio.setBoxLabel(name);
-			
-			/* select default */
-			if(null == jobDefinition && first)
-				radio.setValue(true);
-			
-			if (first)
-				firstRadio = radio;
-			
-			radio.addValueChangeHandler( event -> {
-				if(radio.getValue()){
-					if(exporter.hasConfiguration())
-						formatConfigBtn.enable();
-					else
-						formatConfigBtn.disable();
-				}
-			});
-			
-			if (0 == horizontalRadioCounter % 6 ) {
-				horizontalRadioPanel = new HorizontalPanel();
-				horizontalRadioPanel.addStyleName("rs-export-type-radio-group");
-				verticalRadioPanel.add(horizontalRadioPanel);
-			}
-				
-			horizontalRadioPanel.add(radio);
-			exportTypeGroup.add(radio);
-			exporterMap.put(radio, exporter);
-			
-			/* select */
-			if(null != jobDefinition && exporter.getOutputFormat().equals(jobDefinition.getOutputFormat())){
-				radio.setValue(true);
-				exporter.configureFrom(jobDefinition.getExportConfiguration());
-				exporterConfig = exporter.getConfiguration();
-			}
-			
-			if(radio.getValue())
-				formatConfigBtn.setEnabled(exporter.hasConfiguration());
-			
-			first = false;
-			
-			horizontalRadioCounter++;
-		}
-		
-		if (null == getOutputFormat())
-			firstRadio.setValue(true);
-		
-		/* add to form */
-		FieldLabel typeLabel = new FieldLabel(verticalRadioPanel,SchedulerMessages.INSTANCE.exportType());
-		typeLabel.setLabelAlign(LabelAlign.LEFT);
-		exportFormFieldWrapper.add(typeLabel);
-		
-		/* selection listener for extra config */
-		if(showConfigBtn){
-			formatConfigBtn.addSelectHandler( event -> {
-				Radio radio = null;
-				for(HasValue<Boolean> hv : exportTypeGroup){
-					if(Boolean.TRUE.equals(hv.getValue())){
-						radio = (Radio) hv;
-						break;
-					}
-				}
+         @Override
+         public boolean handleSubmit(ReportContainerDto container) {
+            if (null == container || null == container.getReport())
+               return false;
+            onReportSelected(container.getReport());
+            reportSelector.hide();
+            return true;
+         }
 
-				if(null != radio && exporterMap.containsKey(radio)){
-					final ReportExporter exporter = exporterMap.get(radio);
-					exporter.displayConfiguration(report, null, false, () -> exporterConfig = exporter.getConfiguration());
-				}
-			});
-			
-			horizontalRadioPanel = new HorizontalPanel();
-			verticalRadioPanel.add(horizontalRadioPanel);
-			verticalRadioPanel.add(formatConfigBtn);
-		}
-		
-	}
-	
-	private void initGrid(Optional<ReportDto> report) {
-		/* prepare store */
-		store = new ListStore<ReportDto>(new DtoIdModelKeyProvider());
-		store.setAutoCommit(true);
-		store.addSortInfo(new StoreSortInfo<ReportDto>(ReportDtoPA.INSTANCE.name(), SortDir.ASC));
+         @Override
+         public void handleDoubleClick(final ReportContainerDto report, ReportSelectionRepositoryProviderHook hooker,
+               NativeEvent event, Object... info) {
+            if (null == report || null == report.getReport())
+               return;
 
-		createGrid();
-		if (report.isPresent()) 
-			onReportSelected(report.get());
-		
-		grid.setContextMenu(new DwMenu());
-		grid.addBeforeShowContextMenuHandler( event -> grid.setContextMenu(createContextMenu()) );
-		
-	}
+            onReportSelected(report.getReport());
+            reportSelector.hide();
+         }
 
-	private Menu createContextMenu() {
-		Menu menu = new DwMenu();
-		
-		/* open */
-		MenuItem openItem = new DwMenuItem(BaseMessages.INSTANCE.open(), BaseIcon.ROTATE_RIGHT);
-		openItem.addSelectionHandler(event -> {
-			ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
-			if (null == reportDto)
-				return;
-			reportExecutorService.executeReport(reportDto);
-		});
-		menu.add(openItem);
-		
-		menu.add(new SeparatorMenuItem());
-		
-		/* export */
-		menu.add(createExportMenuItem());
-		
-		menu.add(new SeparatorMenuItem());
+         @Override
+         public Menu getContextMenuFor(final ReportContainerDto report, ReportSelectionRepositoryProviderHook hooker,
+               final Object... info) {
+            return null;
+         }
 
-		/* test */
-		MenuItem testItem = new DwMenuItem(BaseMessages.INSTANCE.test(), BaseIcon.REPORT);
-		testItem.addSelectionHandler(event -> {
-			ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
-			if (null == reportDto)
-				return;
-			
-			InfoConfig infoConfig = new DefaultInfoConfig(ReportExporterMessages.INSTANCE.reportIsBeingExportedTitle(), 
-						ReportExporterMessages.INSTANCE.reportIsBeingExportedMsg("TEST"));
-			infoConfig.setWidth(350);
-			infoConfig.setDisplay(3500);
-			Info.display(infoConfig);
-			
-			reportDocService.openVariantTestForopen(reportDto, new ArrayList<DatasourceDefinitionDto>());
-		});
-		menu.add(testItem);
-		
-		return menu;
+      });
+   }
 
-	}
+   private void showExportForm(SelectionChangedEvent<ReportDto> selectionChangedEvent) {
 
-	private MenuItem createExportMenuItem() {
-		final MenuItem exportItem = new DwMenuItem(ReportExporterMessages.INSTANCE.exportReport(), BaseIcon.PLAY_CIRCLE_O);
-		final Menu subMenu = new DwMenu();
-		exportItem.disable();
-		exportItem.setSubMenu(subMenu);
-		
-		
-		final ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
-		if (null == reportDto)
-			return exportItem;
-		
-		/* load reference to ensure we have properties */
-		reportLoaderDao.loadNode(reportDto, new RsAsyncCallback<AbstractNodeDto>(){
-			@Override
-			public void onSuccess(AbstractNodeDto result) {
-				super.onSuccess(result);
-				
-				if(! (result instanceof ReportDto))
-					return;
-				
-				reportExporterService.getCleanedUpAvailableExporters((ReportDto) result).forEach(exporter -> {
-					MenuItem subExportItem = new DwMenuItem(exporter.getExportTitle(), exporter.getIcon());
-					subMenu.add(subExportItem);
-					subExportItem.addSelectionHandler(event -> {
-						exporter.displayConfiguration(reportDto, null, true, () -> {
-							reportExecutorDao.loadFullReportForExecution(reportDto, new RsAsyncCallback<ReportDto>() {
-								@Override
-								public void onSuccess(ReportDto result) {
-									exporter.export(result, null);
-								}
-							});
-						});
-					});
-				});
-				
-				if (subMenu.getWidgetCount() > 0)
-					exportItem.enable();
-				
-			}
-			
-		});
-		
-		return exportItem;
-	}
+      exportFormFieldWrapper.clear();
 
-	private void createGrid() {
-		/* configure columns */
-		List<ColumnConfig<ReportDto, ?>> columns = new ArrayList<ColumnConfig<ReportDto, ?>>();
+      if (null == selectionChangedEvent.getSelection() || selectionChangedEvent.getSelection().isEmpty())
+         return;
 
-		/* id column */
-		ColumnConfig<ReportDto, Long> idConfig = new ColumnConfig<ReportDto, Long>(ReportDtoPA.INSTANCE.id(), 80,
-				BaseMessages.INSTANCE.id());
-		idConfig.setMenuDisabled(true);
+      ReportDto report = selectionChangedEvent.getSelection().get(0);
 
-		columns.add(idConfig);
+      exportTypeGroup = new ToggleGroup();
+      HorizontalPanel horizontalRadioPanel = null;
+      VerticalPanel verticalRadioPanel = new VerticalPanel();
 
-		/* name column */
-		ColumnConfig<ReportDto, String> nameConfig = new ColumnConfig<ReportDto, String>(ReportDtoPA.INSTANCE.name(),
-				320, BaseMessages.INSTANCE.name());
-		nameConfig.setMenuDisabled(true);
+      final DwTextButton formatConfigBtn = new DwTextButton(SchedulerMessages.INSTANCE.formatConfig(), BaseIcon.COG);
+      formatConfigBtn.addStyleName("rs-export-type-conf-btn");
 
-		columns.add(nameConfig);
+      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
+      exporterMap = new HashMap<>();
+      boolean showConfigBtn = false;
+      boolean first = true;
+      Radio firstRadio = null;
+      int horizontalRadioCounter = 0;
+      for (final ReportExporter exporter : exporters) {
+         if (!exporter.canBeScheduled())
+            continue;
 
-		/* key column */
-		ColumnConfig<ReportDto, String> keyConfig = new ColumnConfig<ReportDto, String>(ReportDtoPA.INSTANCE.key(), 188,
-				BaseMessages.INSTANCE.key());
-		keyConfig.setMenuDisabled(true);
+         showConfigBtn |= exporter.hasConfiguration();
 
-		columns.add(keyConfig);
+         String name = exporter.getExportTitle();
 
-		/* create grid */
-		grid = new Grid<ReportDto>(store, new ColumnModel<ReportDto>(columns));
-		grid.setSelectionModel(new GridSelectionModel<ReportDto>());
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		grid.setBorders(true);
-		
-		grid.getSelectionModel().addSelectionChangedHandler( this::showExportForm );
-		grid.addCellDoubleClickHandler( event -> showReportSelector() );
-		if (report.isPresent())
-		   grid.getSelectionModel().select(report.get(), false);
+         final Radio radio = new Radio();
+         radio.setName("exportFormat"); //$NON-NLS-1$
+         radio.setData("rs_outputFormat", exporter.getOutputFormat()); //$NON-NLS-1$
+         radio.setBoxLabel(name);
 
-		verticalContainer.add(grid, new VerticalLayoutData(1, 270, new Margins(10, 0, 0, 0)));
-	}
-	
-	private void showReportSelector() {
-		if (null == reportSelector) 
-			initReportSelectionBox();
-		
-		reportSelector.show();
-	}
+         /* select default */
+         if (null == jobDefinition && first)
+            radio.setValue(true);
 
-	@Override
-	public boolean isValid() {
-	   
-	   if (!report.isPresent()) {
-	      new DwAlertMessageBox(SchedulerMessages.INSTANCE.reportConfig(), SchedulerMessages.INSTANCE.reportConfigError()).show();
+         if (first)
+            firstRadio = radio;
+
+         radio.addValueChangeHandler(event -> {
+            if (radio.getValue()) {
+               if (exporter.hasConfiguration())
+                  formatConfigBtn.enable();
+               else
+                  formatConfigBtn.disable();
+            }
+         });
+
+         if (0 == horizontalRadioCounter % 6) {
+            horizontalRadioPanel = new HorizontalPanel();
+            horizontalRadioPanel.addStyleName("rs-export-type-radio-group");
+            verticalRadioPanel.add(horizontalRadioPanel);
+         }
+
+         horizontalRadioPanel.add(radio);
+         exportTypeGroup.add(radio);
+         exporterMap.put(radio, exporter);
+
+         /* select */
+         if (null != jobDefinition && exporter.getOutputFormat().equals(jobDefinition.getOutputFormat())) {
+            radio.setValue(true);
+            exporter.configureFrom(jobDefinition.getExportConfiguration());
+            exporterConfig = exporter.getConfiguration();
+         }
+
+         if (radio.getValue())
+            formatConfigBtn.setEnabled(exporter.hasConfiguration());
+
+         first = false;
+
+         horizontalRadioCounter++;
+      }
+
+      if (null == getOutputFormat())
+         firstRadio.setValue(true);
+
+      /* add to form */
+      FieldLabel typeLabel = new FieldLabel(verticalRadioPanel, SchedulerMessages.INSTANCE.exportType());
+      typeLabel.setLabelAlign(LabelAlign.LEFT);
+      exportFormFieldWrapper.add(typeLabel);
+
+      /* selection listener for extra config */
+      if (showConfigBtn) {
+         formatConfigBtn.addSelectHandler(event -> {
+            Radio radio = null;
+            for (HasValue<Boolean> hv : exportTypeGroup) {
+               if (Boolean.TRUE.equals(hv.getValue())) {
+                  radio = (Radio) hv;
+                  break;
+               }
+            }
+
+            if (null != radio && exporterMap.containsKey(radio)) {
+               final ReportExporter exporter = exporterMap.get(radio);
+               exporter.displayConfiguration(report, null, false, () -> exporterConfig = exporter.getConfiguration());
+            }
+         });
+
+         horizontalRadioPanel = new HorizontalPanel();
+         verticalRadioPanel.add(horizontalRadioPanel);
+         verticalRadioPanel.add(formatConfigBtn);
+      }
+
+   }
+
+   private void initGrid(Optional<ReportDto> report) {
+      /* prepare store */
+      store = new ListStore<ReportDto>(new DtoIdModelKeyProvider());
+      store.setAutoCommit(true);
+      store.addSortInfo(new StoreSortInfo<ReportDto>(ReportDtoPA.INSTANCE.name(), SortDir.ASC));
+
+      createGrid();
+      if (report.isPresent())
+         onReportSelected(report.get());
+
+      grid.setContextMenu(new DwMenu());
+      grid.addBeforeShowContextMenuHandler(event -> grid.setContextMenu(createContextMenu()));
+
+   }
+
+   private Menu createContextMenu() {
+      Menu menu = new DwMenu();
+
+      /* open */
+      MenuItem openItem = new DwMenuItem(BaseMessages.INSTANCE.open(), BaseIcon.ROTATE_RIGHT);
+      openItem.addSelectionHandler(event -> {
+         ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
+         if (null == reportDto)
+            return;
+         reportExecutorService.executeReport(reportDto);
+      });
+      menu.add(openItem);
+
+      menu.add(new SeparatorMenuItem());
+
+      /* export */
+      menu.add(createExportMenuItem());
+
+      menu.add(new SeparatorMenuItem());
+
+      /* test */
+      MenuItem testItem = new DwMenuItem(BaseMessages.INSTANCE.test(), BaseIcon.REPORT);
+      testItem.addSelectionHandler(event -> {
+         ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
+         if (null == reportDto)
+            return;
+
+         InfoConfig infoConfig = new DefaultInfoConfig(ReportExporterMessages.INSTANCE.reportIsBeingExportedTitle(),
+               ReportExporterMessages.INSTANCE.reportIsBeingExportedMsg("TEST"));
+         infoConfig.setWidth(350);
+         infoConfig.setDisplay(3500);
+         Info.display(infoConfig);
+
+         reportDocService.openVariantTestForopen(reportDto, new ArrayList<DatasourceDefinitionDto>());
+      });
+      menu.add(testItem);
+
+      return menu;
+
+   }
+
+   private MenuItem createExportMenuItem() {
+      final MenuItem exportItem = new DwMenuItem(ReportExporterMessages.INSTANCE.exportReport(),
+            BaseIcon.PLAY_CIRCLE_O);
+      final Menu subMenu = new DwMenu();
+      exportItem.disable();
+      exportItem.setSubMenu(subMenu);
+
+      final ReportDto reportDto = grid.getSelectionModel().getSelectedItem();
+      if (null == reportDto)
+         return exportItem;
+
+      /* load reference to ensure we have properties */
+      reportLoaderDao.loadNode(reportDto, new RsAsyncCallback<AbstractNodeDto>() {
+         @Override
+         public void onSuccess(AbstractNodeDto result) {
+            super.onSuccess(result);
+
+            if (!(result instanceof ReportDto))
+               return;
+
+            reportExporterService.getCleanedUpAvailableExporters((ReportDto) result).forEach(exporter -> {
+               MenuItem subExportItem = new DwMenuItem(exporter.getExportTitle(), exporter.getIcon());
+               subMenu.add(subExportItem);
+               subExportItem.addSelectionHandler(event -> {
+                  exporter.displayConfiguration(reportDto, null, true, () -> {
+                     reportExecutorDao.loadFullReportForExecution(reportDto, new RsAsyncCallback<ReportDto>() {
+                        @Override
+                        public void onSuccess(ReportDto result) {
+                           exporter.export(result, null);
+                        }
+                     });
+                  });
+               });
+            });
+
+            if (subMenu.getWidgetCount() > 0)
+               exportItem.enable();
+
+         }
+
+      });
+
+      return exportItem;
+   }
+
+   private void createGrid() {
+      /* configure columns */
+      List<ColumnConfig<ReportDto, ?>> columns = new ArrayList<ColumnConfig<ReportDto, ?>>();
+
+      /* id column */
+      ColumnConfig<ReportDto, Long> idConfig = new ColumnConfig<ReportDto, Long>(ReportDtoPA.INSTANCE.id(), 80,
+            BaseMessages.INSTANCE.id());
+      idConfig.setMenuDisabled(true);
+
+      columns.add(idConfig);
+
+      /* name column */
+      ColumnConfig<ReportDto, String> nameConfig = new ColumnConfig<ReportDto, String>(ReportDtoPA.INSTANCE.name(), 320,
+            BaseMessages.INSTANCE.name());
+      nameConfig.setMenuDisabled(true);
+
+      columns.add(nameConfig);
+
+      /* key column */
+      ColumnConfig<ReportDto, String> keyConfig = new ColumnConfig<ReportDto, String>(ReportDtoPA.INSTANCE.key(), 188,
+            BaseMessages.INSTANCE.key());
+      keyConfig.setMenuDisabled(true);
+
+      columns.add(keyConfig);
+
+      /* create grid */
+      grid = new Grid<ReportDto>(store, new ColumnModel<ReportDto>(columns));
+      grid.setSelectionModel(new GridSelectionModel<ReportDto>());
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+      grid.setBorders(true);
+
+      grid.getSelectionModel().addSelectionChangedHandler(this::showExportForm);
+      grid.addCellDoubleClickHandler(event -> showReportSelector());
+      if (report.isPresent())
+         grid.getSelectionModel().select(report.get(), false);
+
+      verticalContainer.add(grid, new VerticalLayoutData(1, 270, new Margins(10, 0, 0, 0)));
+   }
+
+   private void showReportSelector() {
+      if (null == reportSelector)
+         initReportSelectionBox();
+
+      reportSelector.show();
+   }
+
+   @Override
+   public boolean isValid() {
+
+      if (!report.isPresent()) {
+         new DwAlertMessageBox(SchedulerMessages.INSTANCE.reportConfig(),
+               SchedulerMessages.INSTANCE.reportConfigError()).show();
          return false;
-	   }
-	      
-		Radio radio = null;
-		for(HasValue<Boolean> hv : exportTypeGroup){
-			if(Boolean.TRUE.equals(hv.getValue())){
-				radio = (Radio) hv;
-				break;
-			}
-		}
-		
-		if (null == store.get(0)) 
-			return false;
-		
-		if(null != radio && exporterMap.containsKey(radio)){
-			final ReportExporter exporter = exporterMap.get(radio);
-			if(! exporter.isConfigured()){
-				new DwAlertMessageBox(SchedulerMessages.INSTANCE.formatConfig(), SchedulerMessages.INSTANCE.formatConfigError()).show();
-				return false;
-			}
-		} else {
-			return false;
-		}
-		
-		return true;
-	}
+      }
 
-	@Override
-	public void setWizard(WizardDialog dialog) {
-	   this.wizard = dialog;
-	}
+      Radio radio = null;
+      for (HasValue<Boolean> hv : exportTypeGroup) {
+         if (Boolean.TRUE.equals(hv.getValue())) {
+            radio = (Radio) hv;
+            break;
+         }
+      }
 
-	@Override
-	public int getPageHeight() {
-		return 556;
-	}
-	
-	public ToggleGroup getExportTypeGroup() {
-		return exportTypeGroup;
-	}
-	
-	public String getOutputFormat(){
-		for(HasValue<Boolean> hv : exportTypeGroup)
-			if(Boolean.TRUE.equals(hv.getValue()))
-				return ((Radio) hv).getData("rs_outputFormat");
-		
-		return null;
-	}
-	
-	public List<ReportExecutionConfigDto> getExportConfiguration(){
-		return exporterConfig;
-	}
+      if (null == store.get(0))
+         return false;
 
-	private void onReportSelected(ReportDto report) {
-		if (null != wizard ) 
-		   wizard.setHeading(SchedulerMessages.INSTANCE.scheduleReportMulti(report.getName()));
-		
-		configureAdvancedOptions();
-		
-		this.report = Optional.of(report);
-		store.clear();
-		store.add(report);
-		grid.getSelectionModel().select(report, false);
-	}
-	
-	
+      if (null != radio && exporterMap.containsKey(radio)) {
+         final ReportExporter exporter = exporterMap.get(radio);
+         if (!exporter.isConfigured()) {
+            new DwAlertMessageBox(SchedulerMessages.INSTANCE.formatConfig(),
+                  SchedulerMessages.INSTANCE.formatConfigError()).show();
+            return false;
+         }
+      } else {
+         return false;
+      }
+
+      return true;
+   }
+
+   @Override
+   public void setWizard(WizardDialog dialog) {
+      this.wizard = dialog;
+   }
+
+   @Override
+   public int getPageHeight() {
+      return 556;
+   }
+
+   public ToggleGroup getExportTypeGroup() {
+      return exportTypeGroup;
+   }
+
+   public String getOutputFormat() {
+      for (HasValue<Boolean> hv : exportTypeGroup)
+         if (Boolean.TRUE.equals(hv.getValue()))
+            return ((Radio) hv).getData("rs_outputFormat");
+
+      return null;
+   }
+
+   public List<ReportExecutionConfigDto> getExportConfiguration() {
+      return exporterConfig;
+   }
+
+   private void onReportSelected(ReportDto report) {
+      if (null != wizard)
+         wizard.setHeading(SchedulerMessages.INSTANCE.scheduleReportMulti(report.getName()));
+
+      configureAdvancedOptions();
+
+      this.report = Optional.of(report);
+      store.clear();
+      store.add(report);
+      grid.getSelectionModel().select(report, false);
+   }
+
    /**
     * Checks if the job definition contains any advanced options saved. If yes,
     * selects the advanced pages checkbox and shows advanced-options pages.
     */
-	private void configureAdvancedOptions() {
+   private void configureAdvancedOptions() {
       Scheduler.get().scheduleDeferred(new ScheduledCommand() {
          @Override
          public void execute() {
             /* First remove */
             advancedCheckbox.setValue(false, true);
             showAdvanced(false);
-            
+
             if (!report.isPresent())
                return;
-            
+
             /* Add if job definition is configured */
-            advancedPages
-               .stream()
-               .filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
-               .filter(pageProvider -> pageProvider.isConfigured(report.get(), jobDefinition))
-               .findAny()
-               .ifPresent(pageProvider -> {
-                  advancedCheckbox.setValue(true, true);
-               });
+            advancedPages.stream().filter(ScheduleConfigWizardPageProviderHook::isAdvanced)
+                  .filter(pageProvider -> pageProvider.isConfigured(report.get(), jobDefinition)).findAny()
+                  .ifPresent(pageProvider -> {
+                     advancedCheckbox.setValue(true, true);
+                  });
          }
       });
-      
+
    }
 
    public ReportDto getReport() {
       if (!report.isPresent())
          throw new IllegalStateException("Report cannot be empty");
-		return report.get();
-	}
+      return report.get();
+   }
 
 }

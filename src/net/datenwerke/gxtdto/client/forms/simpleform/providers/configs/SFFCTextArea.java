@@ -4,6 +4,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCTextArea extends SimpleFormFieldConfiguration {
 
-	public int getWidth();
-	public int getHeight();
+   public int getWidth();
+
+   public int getHeight();
 }

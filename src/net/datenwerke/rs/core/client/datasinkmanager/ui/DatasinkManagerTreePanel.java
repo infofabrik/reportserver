@@ -13,12 +13,9 @@ import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.Datasi
  */
 public class DatasinkManagerTreePanel extends AbstractTreeNavigationPanel {
 
-	@Inject
-	public DatasinkManagerTreePanel(
-		HookHandlerService hookHandler,
-		@DatasinkManagerAdminViewTree UITree tree
-		){
-		super(hookHandler, tree);
-	}
-	
+   @Inject
+   public DatasinkManagerTreePanel(HookHandlerService hookHandler, @DatasinkManagerAdminViewTree UITree tree) {
+      super(hookHandler, tree);
+   }
+
 }

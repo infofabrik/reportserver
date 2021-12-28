@@ -18,41 +18,32 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class ExportCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "import";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public ExportCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "import";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = ExImportMessages.class,
-		name = BASE_COMMAND,
-		description = "commandImport_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<ImportSubCommandHook> list =  hookHandler.getHookers(ImportSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public ExportCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = ExImportMessages.class, name = BASE_COMMAND, description = "commandImport_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<ImportSubCommandHook> list = hookHandler.getHookers(ImportSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

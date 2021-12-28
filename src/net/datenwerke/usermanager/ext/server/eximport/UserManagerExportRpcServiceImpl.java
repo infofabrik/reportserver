@@ -19,58 +19,50 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperServiceImpl;
 import net.datenwerke.usermanager.ext.client.eximport.ex.rpc.UserManagerExportRpcService;
 
-
 /**
  * 
  *
  */
 @Singleton
-public class UserManagerExportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements UserManagerExportRpcService {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -9053878597686343257L;
-	
-	private final DtoService dtoService;
-	private final Provider<HttpExportService> httpExportServiceProvider;
+public class UserManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements UserManagerExportRpcService {
 
-	private TreeNodeExportHelperServiceImpl exportHelper;
-	
-	@Inject
-	public UserManagerExportRpcServiceImpl(
-		DtoService dtoService,
-		Provider<HttpExportService> httpExportServiceProvider,
-		TreeNodeExportHelperServiceImpl exportHelper
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.httpExportServiceProvider = httpExportServiceProvider;
-		this.exportHelper = exportHelper;
-	}
-	
-	@Override
-	@SecurityChecked(
-		genericTargetVerification = { 
-			@GenericTargetVerification(
-				target = ExportSecurityTarget.class, 
-				verify = @RightsVerification(rights = Execute.class)) 
-		})
-	@Transactional(rollbackOn={Exception.class})
-	public void quickExport(AbstractUserManagerNodeDto nodeDto) throws ServerCallFailedException {
-		AbstractUserManagerNode node = (AbstractUserManagerNode) dtoService.loadPoso(nodeDto);
-		
-		String exportXML = exportHelper.export(node, true, "User-Export");
-		
-		httpExportServiceProvider.get().storeExport(exportXML, node.getName());
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public String loadResult() throws ServerCallFailedException {
-		return httpExportServiceProvider.get().getAndRemoveStoredExport();
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -9053878597686343257L;
+
+   private final DtoService dtoService;
+   private final Provider<HttpExportService> httpExportServiceProvider;
+
+   private TreeNodeExportHelperServiceImpl exportHelper;
+
+   @Inject
+   public UserManagerExportRpcServiceImpl(DtoService dtoService, Provider<HttpExportService> httpExportServiceProvider,
+         TreeNodeExportHelperServiceImpl exportHelper) {
+
+      /* store objects */
+      this.dtoService = dtoService;
+      this.httpExportServiceProvider = httpExportServiceProvider;
+      this.exportHelper = exportHelper;
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void quickExport(AbstractUserManagerNodeDto nodeDto) throws ServerCallFailedException {
+      AbstractUserManagerNode node = (AbstractUserManagerNode) dtoService.loadPoso(nodeDto);
+
+      String exportXML = exportHelper.export(node, true, "User-Export");
+
+      httpExportServiceProvider.get().storeExport(exportXML, node.getName());
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public String loadResult() throws ServerCallFailedException {
+      return httpExportServiceProvider.get().getAndRemoveStoredExport();
+   }
 
 }

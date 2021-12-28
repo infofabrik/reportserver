@@ -10,7 +10,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public class DummyLocalFileSystemServiceImpl implements LocalFileSystemService {
 
-
    @Override
    public Optional<LocalFileSystemDatasink> getDefaultDatasink() {
       return null;

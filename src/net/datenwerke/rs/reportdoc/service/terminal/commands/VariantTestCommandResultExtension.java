@@ -10,26 +10,26 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultExtension;
 
 @GenerateDto(dtoPackage = "net.datenwerke.rs.reportdoc.client.dto")
 public class VariantTestCommandResultExtension extends CommandResultExtension {
-	@ExposeToClient
-	private Report report;
-	
-	@ExposeToClient
-	private List<DatasourceDefinition> datasources;
+   @ExposeToClient
+   private Report report;
 
-	public Report getReport() {
-		return report;
-	}
+   @ExposeToClient
+   private List<DatasourceDefinition> datasources;
 
-	public void setReport(Report report) {
-		this.report = report;
-	}
+   public Report getReport() {
+      return report;
+   }
 
-	public List<DatasourceDefinition> getDatasources() {
-		return datasources;
-	}
+   public void setReport(Report report) {
+      this.report = report;
+   }
 
-	public void setDatasources(List<DatasourceDefinition> datasources) {
-		this.datasources = datasources;
-	}
+   public List<DatasourceDefinition> getDatasources() {
+      return datasources;
+   }
+
+   public void setDatasources(List<DatasourceDefinition> datasources) {
+      this.datasources = datasources;
+   }
 
 }

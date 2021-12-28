@@ -12,15 +12,15 @@ import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
  *
  */
 public class FolderForm extends SimpleFormView {
-	
-	public void configureSimpleForm(SimpleForm form) {
-		form.setHeading(ReportmanagerMessages.INSTANCE.editFolder() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-		
-		form.addField(String.class, ReportFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name()); 
-		
-		form.addField(String.class, ReportFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(), new SFFCTextAreaImpl());
-	}
 
+   public void configureSimpleForm(SimpleForm form) {
+      form.setHeading(ReportmanagerMessages.INSTANCE.editFolder()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
 
+      form.addField(String.class, ReportFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+
+      form.addField(String.class, ReportFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.propertyDescription(),
+            new SFFCTextAreaImpl());
+   }
 
 }

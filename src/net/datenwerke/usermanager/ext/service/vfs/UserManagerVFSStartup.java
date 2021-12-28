@@ -8,12 +8,9 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemMa
 
 public class UserManagerVFSStartup {
 
-	@Inject
-	public UserManagerVFSStartup(
-		HookHandlerService hookHandler,
-		Provider<UserManagerVFS> vfsProvider
-		){
-		
-		hookHandler.attachHooker(VirtualFileSystemManagerHook.class, vfsProvider);
-	}
+   @Inject
+   public UserManagerVFSStartup(HookHandlerService hookHandler, Provider<UserManagerVFS> vfsProvider) {
+
+      hookHandler.attachHooker(VirtualFileSystemManagerHook.class, vfsProvider);
+   }
 }

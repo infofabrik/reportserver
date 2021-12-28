@@ -35,10 +35,7 @@ public abstract class Export2CSV extends ReportExporterImpl {
    private static final String CONFIGURATION_FILE = "csvexport.cf";
 
    @Inject
-   public Export2CSV(
-         ReportExporterDao exporterDao, 
-         ClientConfigXmlService xmlService
-         ) {
+   public Export2CSV(ReportExporterDao exporterDao, ClientConfigXmlService xmlService) {
       this.exporterDao = exporterDao;
       this.xmlService = xmlService;
    }
@@ -50,11 +47,8 @@ public abstract class Export2CSV extends ReportExporterImpl {
 
    @Override
    public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration) {
-      this.config = streamOfNullable(exportConfiguration)
-            .filter(config -> !exportConfiguration.isEmpty())
-            .filter(config -> config instanceof RECCsvDtoDec)
-            .map(config -> (RECCsvDtoDec) config)
-            .findAny()
+      this.config = streamOfNullable(exportConfiguration).filter(config -> !exportConfiguration.isEmpty())
+            .filter(config -> config instanceof RECCsvDtoDec).map(config -> (RECCsvDtoDec) config).findAny()
             .orElse(null);
    }
 
@@ -124,9 +118,8 @@ public abstract class Export2CSV extends ReportExporterImpl {
    public List<ReportExecutionConfigDto> getConfiguration() {
       if (null == config)
          return new ArrayList<>();
-      
-      return Stream.of(config)
-            .collect(toList());
+
+      return Stream.of(config).collect(toList());
    }
 
    @Override

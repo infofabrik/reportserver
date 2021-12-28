@@ -17,60 +17,56 @@ import net.datenwerke.security.service.treedb.actions.UpdateAction;
 
 public class CrystalReportUploadHooker implements FileUploadHandlerHook {
 
-	private Provider<SecurityService> securityServiceProvider;
-	private Provider<ReportService> reportServiceProvider;
+   private Provider<SecurityService> securityServiceProvider;
+   private Provider<ReportService> reportServiceProvider;
 
-	@Inject
-	public CrystalReportUploadHooker(
-			Provider<SecurityService> securityServiceProvider, 
-			Provider<ReportService> reportServiceProvider) {
-		this.securityServiceProvider = securityServiceProvider;
-		this.reportServiceProvider = reportServiceProvider;
-	}
+   @Inject
+   public CrystalReportUploadHooker(Provider<SecurityService> securityServiceProvider,
+         Provider<ReportService> reportServiceProvider) {
+      this.securityServiceProvider = securityServiceProvider;
+      this.reportServiceProvider = reportServiceProvider;
+   }
 
-	@Override
-	public boolean consumes(String handler) {
-		return CrystalUiModule.UPLOAD_HANDLER_ID.equals(handler);
-	}
+   @Override
+   public boolean consumes(String handler) {
+      return CrystalUiModule.UPLOAD_HANDLER_ID.equals(handler);
+   }
 
+   @Override
+   public String uploadOccured(UploadedFile uploadedFile) {
+      Map<String, String> metadataMap = uploadedFile.getMetadata();
 
-	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		Map<String, String> metadataMap = uploadedFile.getMetadata();
+      long reportId = Long.valueOf(metadataMap.get(CrystalUiModule.UPLOAD_REPORT_ID_FIELD));
+      String reportName = uploadedFile.getFileName();
+      byte[] reportContents = uploadedFile.getFileBytes();
 
-		long reportId = Long.valueOf(metadataMap.get(CrystalUiModule.UPLOAD_REPORT_ID_FIELD));
-		String reportName = uploadedFile.getFileName();
-		byte[] reportContents = uploadedFile.getFileBytes();
+      if (null == reportName || null == reportContents || reportContents.length == 0 || reportName.isEmpty())
+         return null;
 
+      if (!reportName.endsWith(".rpt"))
+         throw new RuntimeException("Expected .rpt file");
 
-		if(null == reportName || null == reportContents || reportContents.length == 0 || reportName.isEmpty())
-			return null;
+      SecurityService securityService = securityServiceProvider.get();
+      securityService.assertUserLoggedIn();
 
-		if(!reportName.endsWith(".rpt"))
-			throw new RuntimeException("Expected .rpt file");
+      ReportService reportService = reportServiceProvider.get();
+      AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
 
-		SecurityService securityService = securityServiceProvider.get();
-		securityService.assertUserLoggedIn();
+      securityService.assertActions(rmn, UpdateAction.class);
 
-		ReportService reportService = reportServiceProvider.get();
-		AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
+      if (rmn instanceof CrystalReport) {
+         CrystalReport crystalReport = (CrystalReport) rmn;
 
-		securityService.assertActions(rmn, UpdateAction.class);
+         CrystalReportFile reportFile = new CrystalReportFile();
+         reportFile.setName(reportName);
+         reportFile.setContent(reportContents);
 
-		if(rmn instanceof CrystalReport){
-			CrystalReport crystalReport = (CrystalReport) rmn;
+         crystalReport.setReportFile(reportFile);
 
-			CrystalReportFile reportFile = new CrystalReportFile();
-			reportFile.setName(reportName);
-			reportFile.setContent(reportContents);
+         reportService.merge(crystalReport);
+      }
 
-			crystalReport.setReportFile(reportFile);
-
-			reportService.merge(crystalReport);
-		}
-		
-		return null;
-	}
-
+      return null;
+   }
 
 }

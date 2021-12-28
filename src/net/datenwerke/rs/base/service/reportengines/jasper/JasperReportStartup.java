@@ -15,24 +15,22 @@ import net.datenwerke.rs.base.service.reportengines.jasper.hooks.JasperOutputGen
 
 public class JasperReportStartup {
 
-	@Inject
-	public JasperReportStartup(
-		JasperReportMasterUploadHooker jasperReportMasterUploadHooker,
-		JasperReportSubreportHandler subreportHandler,
-		JasperReportJRXMLDownloadHooker jrxmlDownloadHandler,
-		
-		Provider<BaseJasperOutputGeneratorProvider> baseOutputGenerators,
-		
-		HookHandlerService hookHandlerService
-		){
-	
-		hookHandlerService.attachHooker(FileUploadHandlerHook.class, jasperReportMasterUploadHooker);
-		
-		hookHandlerService.attachHooker(FileSelectionHandlerHook.class, subreportHandler);
-		
-		hookHandlerService.attachHooker(FileDownloadHandlerHook.class, jrxmlDownloadHandler);
-		
-		/* base exporters */
-		hookHandlerService.attachHooker(JasperOutputGeneratorProviderHook.class, baseOutputGenerators, HookHandlerService.PRIORITY_LOW);
-	}
+   @Inject
+   public JasperReportStartup(JasperReportMasterUploadHooker jasperReportMasterUploadHooker,
+         JasperReportSubreportHandler subreportHandler, JasperReportJRXMLDownloadHooker jrxmlDownloadHandler,
+
+         Provider<BaseJasperOutputGeneratorProvider> baseOutputGenerators,
+
+         HookHandlerService hookHandlerService) {
+
+      hookHandlerService.attachHooker(FileUploadHandlerHook.class, jasperReportMasterUploadHooker);
+
+      hookHandlerService.attachHooker(FileSelectionHandlerHook.class, subreportHandler);
+
+      hookHandlerService.attachHooker(FileDownloadHandlerHook.class, jrxmlDownloadHandler);
+
+      /* base exporters */
+      hookHandlerService.attachHooker(JasperOutputGeneratorProviderHook.class, baseOutputGenerators,
+            HookHandlerService.PRIORITY_LOW);
+   }
 }

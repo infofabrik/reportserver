@@ -16,49 +16,49 @@ import net.datenwerke.rs.utils.jpa.EntityUtils;
  */
 public class EnclosedEntityImporter extends EnclosedObjectImporter {
 
-	protected EntityUtils entityServices;
-	protected Provider<EntityManager> entityManagerProvider;
-	protected HookHandlerService hookHandler;
-	
-	@Inject
-	public void setHookHandler(HookHandlerService hookHandler) {
-		this.hookHandler = hookHandler;
-	}
-	
-	@Inject
-	public void setEntityServices(EntityUtils entityServices) {
-		this.entityServices = entityServices;
-	}
-	
-	@Inject
-	public void setEntityManagerProvider(
-			Provider<EntityManager> entityManagerProvider) {
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   protected EntityUtils entityServices;
+   protected Provider<EntityManager> entityManagerProvider;
+   protected HookHandlerService hookHandler;
 
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{EnclosedEntityExporter.class};
-	}
-	
-	 @Override
-	public boolean postProcess(String id, Object object, boolean enclosed) {
-		 try{
-			 boolean foundHook = false;
-			 for(ImporterPersistEnclosedEntityHook persister : hookHandler.getHookers(ImporterPersistEnclosedEntityHook.class)){
-				 if(persister.consumes(object)){
-					 persister.persist(object);
-					 foundHook = true;
-					 break;
-				 }
-			 }
-				 
-			 if(! foundHook && entityServices.isEntity(object) && null == entityServices.getId(object))
-				 entityManagerProvider.get().persist(object);
+   @Inject
+   public void setHookHandler(HookHandlerService hookHandler) {
+      this.hookHandler = hookHandler;
+   }
 
-			 return true;
-		 } catch(Exception e){
-			 throw new IllegalArgumentException(e);
-		 }
-	}
+   @Inject
+   public void setEntityServices(EntityUtils entityServices) {
+      this.entityServices = entityServices;
+   }
+
+   @Inject
+   public void setEntityManagerProvider(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
+
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { EnclosedEntityExporter.class };
+   }
+
+   @Override
+   public boolean postProcess(String id, Object object, boolean enclosed) {
+      try {
+         boolean foundHook = false;
+         for (ImporterPersistEnclosedEntityHook persister : hookHandler
+               .getHookers(ImporterPersistEnclosedEntityHook.class)) {
+            if (persister.consumes(object)) {
+               persister.persist(object);
+               foundHook = true;
+               break;
+            }
+         }
+
+         if (!foundHook && entityServices.isEntity(object) && null == entityServices.getId(object))
+            entityManagerProvider.get().persist(object);
+
+         return true;
+      } catch (Exception e) {
+         throw new IllegalArgumentException(e);
+      }
+   }
 }

@@ -12,10 +12,8 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class FieldErrorHandler extends FieldInfoHandler {
 
-	public FieldErrorHandler(Widget target) {
-		super(target, BaseIcon.ERROR);
-	}
-	
-	
+   public FieldErrorHandler(Widget target) {
+      super(target, BaseIcon.ERROR);
+   }
 
 }

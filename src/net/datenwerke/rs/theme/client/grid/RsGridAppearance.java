@@ -11,39 +11,40 @@ import com.sencha.gxt.theme.neptune.client.base.grid.Css3GridAppearance;
 
 public class RsGridAppearance extends Css3GridAppearance {
 
-	public interface GridTemplates extends XTemplates {
-		@XTemplate(source = "Grid.html")
-		SafeHtml render(GridStyle style);
-	}
+   public interface GridTemplates extends XTemplates {
+      @XTemplate(source = "Grid.html")
+      SafeHtml render(GridStyle style);
+   }
 
-	protected final GridResources resources;
-	protected final GridStyle style;
-	private GridTemplates templates = GWT.create(GridTemplates.class);
+   protected final GridResources resources;
+   protected final GridStyle style;
+   private GridTemplates templates = GWT.create(GridTemplates.class);
 
-	public RsGridAppearance() {
-		this(GWT.<GridResources>create(GridResources.class));
-	}
-	public RsGridAppearance(GridResources resources) {
-		this.resources = resources;
-		this.style = this.resources.css();
+   public RsGridAppearance() {
+      this(GWT.<GridResources>create(GridResources.class));
+   }
 
-		StyleInjectorHelper.ensureInjected(style, true);
-	}
+   public RsGridAppearance(GridResources resources) {
+      this.resources = resources;
+      this.style = this.resources.css();
 
-	@Override
-	public void render(SafeHtmlBuilder sb) {
-		sb.append(templates.render(style));
-	}
+      StyleInjectorHelper.ensureInjected(style, true);
+   }
 
-	@Override
-	public void onRowHighlight(Element row, boolean highlight) {
-		super.onRowHighlight(row, highlight);
-		row.<XElement> cast().setClassName("rs-grid-hl", highlight);
-	}
+   @Override
+   public void render(SafeHtmlBuilder sb) {
+      sb.append(templates.render(style));
+   }
 
-	@Override
-	public void onRowOver(Element row, boolean over) {
-		super.onRowOver(row, over);
-		row.<XElement> cast().setClassName("rs-grid-over", over);
-	}
+   @Override
+   public void onRowHighlight(Element row, boolean highlight) {
+      super.onRowHighlight(row, highlight);
+      row.<XElement>cast().setClassName("rs-grid-hl", highlight);
+   }
+
+   @Override
+   public void onRowOver(Element row, boolean over) {
+      super.onRowOver(row, over);
+      row.<XElement>cast().setClassName("rs-grid-over", over);
+   }
 }

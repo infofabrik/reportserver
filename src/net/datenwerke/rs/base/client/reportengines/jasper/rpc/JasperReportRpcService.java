@@ -14,12 +14,13 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 @RemoteServiceRelativePath("jasperreport")
 public interface JasperReportRpcService extends RemoteService {
 
-	public JasperReportDto uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files) throws ServerCallFailedException;
-	
-	public AbstractNodeDto updateJRXMLFile(JasperReportJRXMLFileDto file) throws ServerCallFailedException;
-	
-	public AbstractNodeDto removeJRXMLFile(JasperReportJRXMLFileDto file) throws ServerCallFailedException;
-	
-	public AbstractNodeDto removeAllSubReports(JasperReportDto reportDto) throws ServerCallFailedException;
+   public JasperReportDto uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files)
+         throws ServerCallFailedException;
+
+   public AbstractNodeDto updateJRXMLFile(JasperReportJRXMLFileDto file) throws ServerCallFailedException;
+
+   public AbstractNodeDto removeJRXMLFile(JasperReportJRXMLFileDto file) throws ServerCallFailedException;
+
+   public AbstractNodeDto removeAllSubReports(JasperReportDto reportDto) throws ServerCallFailedException;
 
 }

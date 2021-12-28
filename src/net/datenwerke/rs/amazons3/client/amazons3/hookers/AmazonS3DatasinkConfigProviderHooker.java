@@ -16,18 +16,15 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 
-
 public class AmazonS3DatasinkConfigProviderHooker implements DatasinkDefinitionConfigProviderHook {
 
    private final Provider<AmazonS3DatasinkForm> formProvider;
-   
+
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public AmazonS3DatasinkConfigProviderHooker(
-         Provider<AmazonS3DatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider
-         ) {
+   public AmazonS3DatasinkConfigProviderHooker(Provider<AmazonS3DatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
       /* store objects */
       this.formProvider = formProvider;

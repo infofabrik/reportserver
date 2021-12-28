@@ -22,11 +22,8 @@ public class SftpServiceImpl implements SftpService {
    private final Provider<FtpSenderService> ftpSenderService;
 
    @Inject
-   public SftpServiceImpl(
-		   @DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
-		   Provider<DatasinkService> datasinkServiceProvider,
-		   Provider<FtpSenderService> ftpSenderService
-		   ) {
+   public SftpServiceImpl(@DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider, Provider<FtpSenderService> ftpSenderService) {
       this.defaultSftpDatasinkProvider = defaultSftpDatasinkProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.ftpSenderService = ftpSenderService;
@@ -39,9 +36,9 @@ public class SftpServiceImpl implements SftpService {
          throw new IllegalStateException("sftp is disabled");
       if (!(datasink instanceof SftpDatasink))
          throw new IllegalStateException("Not an SFTP datasink");
-      
+
       SftpDatasink sftpDatasink = (SftpDatasink) datasink;
-      
+
       try {
          ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, config);
       } catch (IOException e) {

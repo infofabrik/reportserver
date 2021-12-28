@@ -9,16 +9,14 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class DwGwtFrameworkStartup {
 
-	@Inject
-	public DwGwtFrameworkStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<CloseTaskAndConnectionsHooker> closeAsyncTasks
-		){
-		
-		hookHandler.attachHooker(ContextHook.class, closeAsyncTasks);
-		
+   @Inject
+   public DwGwtFrameworkStartup(HookHandlerService hookHandler,
+
+         Provider<CloseTaskAndConnectionsHooker> closeAsyncTasks) {
+
+      hookHandler.attachHooker(ContextHook.class, closeAsyncTasks);
+
 //		System.setSecurityManager(new SandboxingSecurityManager());
 //		System.setSecurityManager(new PassAllSecurityManager());
-	}
+   }
 }

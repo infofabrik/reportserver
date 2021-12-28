@@ -3,35 +3,37 @@ package net.datenwerke.rs.core.service.reportmanager.locale;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.Messages;
 
+public interface ReportManagerMessages extends Messages {
 
-public interface ReportManagerMessages extends Messages{
+   public final static ReportManagerMessages INSTANCE = LocalizationServiceImpl
+         .getMessages(ReportManagerMessages.class);
 
-	public final static ReportManagerMessages INSTANCE = LocalizationServiceImpl.getMessages(ReportManagerMessages.class);
-	
-	String parameterDefinitionDefaultDescription();
+   String parameterDefinitionDefaultDescription();
 
-	String parameterDefinitionDefaultName();
+   String parameterDefinitionDefaultName();
 
-	String reportManagerSecureeName();
+   String reportManagerSecureeName();
 
-	String rightCreateVariantAbbreviation();
+   String rightCreateVariantAbbreviation();
 
-	String rightCreateVariantDescription();
+   String rightCreateVariantDescription();
 
-	String historyUrlBuilderName();
-	
-	String historyUrlBuilderIcon();
+   String historyUrlBuilderName();
 
-	String exceptionInvalidParameter();
-	String exceptionReportCouldNotBeLoaded();
-	String exceptionReportCouldNotBeExecuted(String localizedMessage);
-	String exceptionWhileReportExecution();
-	
-	String folderTypeName();
+   String historyUrlBuilderIcon();
 
-	String exceptionCannotMoveVariantSinceMismatchedParams();
+   String exceptionInvalidParameter();
 
-	String exceptionReportDoesNotExist();
-	
+   String exceptionReportCouldNotBeLoaded();
+
+   String exceptionReportCouldNotBeExecuted(String localizedMessage);
+
+   String exceptionWhileReportExecution();
+
+   String folderTypeName();
+
+   String exceptionCannotMoveVariantSinceMismatchedParams();
+
+   String exceptionReportDoesNotExist();
+
 }
-

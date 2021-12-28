@@ -27,74 +27,82 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
 
-
 @Entity
-@Table(name="SCHED_ACTION_AS_LOCAL_FILE_SYSTEM")
-@Inheritance(strategy=InheritanceType.JOINED)
-public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
-   
-   @Transient @Inject private Provider<SimpleJuel> simpleJuelProvider;
-   @Transient @Inject private LocalFileSystemService localFileSystemService;
-   @Transient @Inject private DatasinkService datasinkService;
-   
+@Table(name = "SCHED_ACTION_AS_LOCAL_FILE_SYSTEM")
+@Inheritance(strategy = InheritanceType.JOINED)
+public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
+
+   @Transient
+   @Inject
+   private Provider<SimpleJuel> simpleJuelProvider;
+   @Transient
+   @Inject
+   private LocalFileSystemService localFileSystemService;
+   @Transient
+   @Inject
+   private DatasinkService datasinkService;
+
    @EnclosedEntity
    @OneToOne
    private LocalFileSystemDatasink localFileSystemDatasink;
-   
-   @Transient private Report report;
-   
-   @Transient private String filename;
-   
+
+   @Transient
+   private Report report;
+
+   @Transient
+   private String filename;
+
    private String name;
    private String folder;
-   
+
    private Boolean compressed = false;
-   
+
    public Boolean isCompressed() {
       return compressed;
    }
-      
+
    public void setCompressed(Boolean compressed) {
       this.compressed = compressed;
    }
-      
+
    @Transient
    @Inject
    private ZipUtilsService zipUtilsService;
-   
+
    @Override
    public void execute(AbstractJob job) throws ActionExecutionException {
-      if(! (job instanceof ReportExecuteJob))
+      if (!(job instanceof ReportExecuteJob))
          throw new ActionExecutionException("No idea what job that is");
-      
+
       ReportExecuteJob rJob = (ReportExecuteJob) job;
-      
-      /* did everything go as planned ?*/
-      if(null == rJob.getExecutedReport())
+
+      /* did everything go as planned ? */
+      if (null == rJob.getExecutedReport())
          return;
-      
-      if (! datasinkService.isEnabled(localFileSystemService) || ! datasinkService.isSchedulingEnabled(localFileSystemService))
+
+      if (!datasinkService.isEnabled(localFileSystemService)
+            || !datasinkService.isSchedulingEnabled(localFileSystemService))
          throw new ActionExecutionException("Local File System scheduling is disabled");
-      
+
       report = rJob.getReport();
-      
+
       SimpleJuel juel = simpleJuelProvider.get();
       juel.addReplacement("now", new SimpleDateFormat("yyyyMMddhhmm").format(Calendar.getInstance().getTime()));
       filename = null == name ? "" : juel.parse(name);
-      
+
       sendViaLocalFileSystemDatasink(rJob, filename);
-      
-      if(null == name || name.trim().isEmpty())
+
+      if (null == name || name.trim().isEmpty())
          throw new ActionExecutionException("name is empty");
-      
-      if(null == localFileSystemDatasink)
+
+      if (null == localFileSystemDatasink)
          throw new ActionExecutionException("Local File System datasink is empty");
-      
-      if(null == folder || folder.trim().isEmpty())
+
+      if (null == folder || folder.trim().isEmpty())
          throw new ActionExecutionException("folder is empty");
-      
+
    }
-   
+
    private void sendViaLocalFileSystemDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
       try {
          if (compressed) {
@@ -139,7 +147,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
          throw new ActionExecutionException("report could not be sent to Local File System", e);
       }
    }
-   
+
    public String getName() {
       return name;
    }
@@ -147,11 +155,11 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
    public void setName(String name) {
       this.name = name;
    }
-   
+
    public String getFilename() {
       return filename;
    }
-   
+
    public String getFolder() {
       return folder;
    }
@@ -163,7 +171,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction{
    public Report getReport() {
       return report;
    }
-   
+
    public LocalFileSystemDatasink getLocalFileSystemDatasink() {
       return localFileSystemDatasink;
    }

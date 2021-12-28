@@ -8,7 +8,7 @@ public class ConnectionPoolInfoDto implements Serializable {
     * 
     */
    private static final long serialVersionUID = -3941724813655907606L;
-   
+
    private long dsId;
    private String dsName;
    private int maxPoolSize;
@@ -21,7 +21,7 @@ public class ConnectionPoolInfoDto implements Serializable {
    private int unclosedOrphanedConnections;
 
    private Long timestamp;
-   
+
    public ConnectionPoolInfoDto() {
    }
 

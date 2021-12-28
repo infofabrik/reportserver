@@ -12,24 +12,23 @@ import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 
 public class HandleReportForceRemoveEvent implements EventHandler<ForceRemoveEntityEvent> {
 
-	private final ConditionService conditionService;
-	
-	@Inject
-	public HandleReportForceRemoveEvent(ConditionService conditionService) {
-		this.conditionService = conditionService;
-	}
+   private final ConditionService conditionService;
 
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		TableReport report = (TableReport) event.getObject();
-		
-		List<ReportCondition> conditions = conditionService.getReportConditionsFor(report);
-		if(null != conditions && ! conditions.isEmpty()){
-			for(ReportCondition condition : conditions){
-				conditionService.remove(condition);
-			}
-		}
-	}
+   @Inject
+   public HandleReportForceRemoveEvent(ConditionService conditionService) {
+      this.conditionService = conditionService;
+   }
 
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      TableReport report = (TableReport) event.getObject();
+
+      List<ReportCondition> conditions = conditionService.getReportConditionsFor(report);
+      if (null != conditions && !conditions.isEmpty()) {
+         for (ReportCondition condition : conditions) {
+            conditionService.remove(condition);
+         }
+      }
+   }
 
 }

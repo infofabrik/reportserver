@@ -9,12 +9,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.FavoriteListDto;
  */
 public class FavoriteListDtoDec extends FavoriteListDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public FavoriteListDtoDec() {
-		super();
-	}
-
+   public FavoriteListDtoDec() {
+      super();
+   }
 
 }

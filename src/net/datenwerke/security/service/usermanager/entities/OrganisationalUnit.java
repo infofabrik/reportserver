@@ -29,76 +29,60 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
  *
  */
 @Entity
-@Table(name="ORGANISATIONAL_UNIT")
+@Table(name = "ORGANISATIONAL_UNIT")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	Group.class,
-	User.class,
-	OrganisationalUnit.class
-})
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.usermanager.dto",
-	dtoImplementInterfaces=FolderDto.class,
-	poso2DtoPostProcessors=OU2DtoPostProcessor.class,
-	typeDescriptionMsg=net.datenwerke.security.client.locale.UserManagerMessages.class, typeDescriptionKey="ou",
-	icon="folder",
-	additionalFields = {
-		@AdditionalField(name="isUserRoot",type=Boolean.class)
-	}
-)
-@InstanceDescription(
-	msgLocation=UserManagerMessages.class,
-	objNameKey="ouTypeName",
-	icon = "folder"
-)
+@TreeDBAllowedChildren({ Group.class, User.class, OrganisationalUnit.class })
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.usermanager.dto", dtoImplementInterfaces = FolderDto.class, poso2DtoPostProcessors = OU2DtoPostProcessor.class, typeDescriptionMsg = net.datenwerke.security.client.locale.UserManagerMessages.class, typeDescriptionKey = "ou", icon = "folder", additionalFields = {
+      @AdditionalField(name = "isUserRoot", type = Boolean.class) })
+@InstanceDescription(msgLocation = UserManagerMessages.class, objNameKey = "ouTypeName", icon = "folder")
 public class OrganisationalUnit extends AbstractUserManagerNode implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8497522954279869294L;
-	
-	@ExposeToClient(displayTitle=true)
-	@Column(length = 64)
-	@Title
-	@Field
-	private String name;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Description
-	@Field
-    private String description;
-	
-	public OrganisationalUnit(){
-		
-	}
-	
-	public OrganisationalUnit(String name) {
-		setName(name);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8497522954279869294L;
 
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
-		this.name = name;
-	}
+   @ExposeToClient(displayTitle = true)
+   @Column(length = 64)
+   @Title
+   @Field
+   private String name;
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Description
+   @Field
+   private String description;
 
-	public String getDescription() {
-		return description;
-	}
-	
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public OrganisationalUnit() {
+
+   }
+
+   public OrganisationalUnit(String name) {
+      setName(name);
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
 
 }

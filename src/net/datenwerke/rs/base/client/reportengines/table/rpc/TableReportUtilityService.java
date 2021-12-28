@@ -22,21 +22,25 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDt
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 @RemoteServiceRelativePath("tablereportutility")
-public interface TableReportUtilityService extends RemoteService{
+public interface TableReportUtilityService extends RemoteService {
 
-	public ListLoadResult<ColumnDto> getReturnedColumns(TableReportDto tableReport, String executeToken) throws ServerCallFailedException, NonFatalException;
+   public ListLoadResult<ColumnDto> getReturnedColumns(TableReportDto tableReport, String executeToken)
+         throws ServerCallFailedException, NonFatalException;
 
-	public TableReportInformation getReportInformation(TableReportDto tableReport,  String executeToken) throws ServerCallFailedException, NonFatalException;
+   public TableReportInformation getReportInformation(TableReportDto tableReport, String executeToken)
+         throws ServerCallFailedException, NonFatalException;
 
-	public Map<String, List<String>> getSpecialParameter(TableReportDto tableReportDto, String executeToken) throws ServerCallFailedException, NonFatalException;
-	
-	public PagingLoadResult<StringBaseModel> getDistinctValuesPaged(
-			SelectorPanelLoadConfig pagingLoadConfig, TableReportDto report,
-			ColumnDto column, FilterType type, boolean useFilters, boolean countResults, String executeToken) throws ServerCallFailedException;
+   public Map<String, List<String>> getSpecialParameter(TableReportDto tableReportDto, String executeToken)
+         throws ServerCallFailedException, NonFatalException;
 
-	List<ColumnDto> loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query, String executeToken) throws ServerCallFailedException, NonFatalException;
+   public PagingLoadResult<StringBaseModel> getDistinctValuesPaged(SelectorPanelLoadConfig pagingLoadConfig,
+         TableReportDto report, ColumnDto column, FilterType type, boolean useFilters, boolean countResults,
+         String executeToken) throws ServerCallFailedException;
 
-	PagingLoadResult<ListStringBaseModel> loadData(ReportDto report, DatasourceContainerDto containerDto,
-			PagingLoadConfig loadConfig, String query) throws ServerCallFailedException, NonFatalException;
+   List<ColumnDto> loadColumnDefinition(ReportDto report, DatasourceContainerDto containerDto, String query,
+         String executeToken) throws ServerCallFailedException, NonFatalException;
+
+   PagingLoadResult<ListStringBaseModel> loadData(ReportDto report, DatasourceContainerDto containerDto,
+         PagingLoadConfig loadConfig, String query) throws ServerCallFailedException, NonFatalException;
 
 }

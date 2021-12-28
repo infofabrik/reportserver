@@ -9,10 +9,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.security.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.security.dto")
 public enum AccessType {
-	ALLOW,
-	DENY
+   ALLOW, DENY
 }

@@ -21,101 +21,91 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.condition.client.condition.Condition;
 
 @Entity
-@Table(name="CONDITION")
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.condition.client.condition.dto",
-	dtoImplementInterfaces=Condition.class,
-	createDecorator=true
-)
+@Table(name = "CONDITION")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.condition.client.condition.dto", dtoImplementInterfaces = Condition.class, createDecorator = true)
 public class ReportCondition implements Serializable, Condition {
 
-	 /**
-	 * 
-	 */
-	private static final long serialVersionUID = -2064489443721722192L;
+   /**
+   * 
+   */
+   private static final long serialVersionUID = -2064489443721722192L;
 
-	@ExposeToClient(
-		view=DtoView.LIST
-	)
-	@ManyToOne
-	private TableReport report;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL
-	)
-	@Column(length = 64)
-	private String key;
-	
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Column(length = 128)
-	private String name;
+   @ExposeToClient(view = DtoView.LIST)
+   @ManyToOne
+   private TableReport report;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String description;
-	
-	@Version
-	private Long version;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 64)
+   private String key;
 
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   private String name;
 
-	public Long getId() {
-		return id;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String description;
 
-	public void setId(Long id){
-		this.id = id;
-	}
+   @Version
+   private Long version;
 
-	public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public String getName() {
-		return name;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public String getName() {
+      return name;
+   }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   public void setName(String name) {
+      this.name = name;
+   }
 
-	public String getKey() {
-		return key;
-	}
+   public String getDescription() {
+      return description;
+   }
 
-	public void setReport(TableReport report) {
-		this.report = report;
-	}
+   public void setDescription(String description) {
+      this.description = description;
+   }
 
-	public TableReport getReport() {
-		return report;
-	}
-	
-	@Override
-	public boolean hasExpression() {
-		return true;
-	}
-	
+   public void setKey(String key) {
+      this.key = key;
+   }
+
+   public String getKey() {
+      return key;
+   }
+
+   public void setReport(TableReport report) {
+      this.report = report;
+   }
+
+   public TableReport getReport() {
+      return report;
+   }
+
+   @Override
+   public boolean hasExpression() {
+      return true;
+   }
+
 }

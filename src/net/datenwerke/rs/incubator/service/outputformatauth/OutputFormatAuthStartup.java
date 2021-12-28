@@ -9,14 +9,12 @@ import net.datenwerke.rs.incubator.service.outputformatauth.hookers.OutputFormat
 
 public class OutputFormatAuthStartup {
 
-	@Inject
-	public OutputFormatAuthStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<OutputFormatAuthWatchDog> outputFormatAuthWatchdog
-		){
-		
-		hookHandler.attachHooker(ReportExecutionNotificationHook.class, outputFormatAuthWatchdog);
-		
-	}
+   @Inject
+   public OutputFormatAuthStartup(HookHandlerService hookHandler,
+
+         Provider<OutputFormatAuthWatchDog> outputFormatAuthWatchdog) {
+
+      hookHandler.attachHooker(ReportExecutionNotificationHook.class, outputFormatAuthWatchdog);
+
+   }
 }

@@ -10,11 +10,9 @@ import net.datenwerke.rs.core.service.contexthelp.hooks.ContextHelpAdapterHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class ContextHelpAdapterHookAdapter implements ContextHelpAdapterHook {
 
-	@Override
-	public String adaptContextHelp(String text, ContextHelpInfo info)  {
-		return null;
-	}
-
-
+   @Override
+   public String adaptContextHelp(String text, ContextHelpInfo info) {
+      return null;
+   }
 
 }

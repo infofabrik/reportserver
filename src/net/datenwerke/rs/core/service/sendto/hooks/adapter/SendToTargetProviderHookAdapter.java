@@ -16,38 +16,36 @@ import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class SendToTargetProviderHookAdapter implements SendToTargetProviderHook {
 
-	@Override
-	public SendToClientConfig consumes(Report report)  {
-		return null;
-	}
+   @Override
+   public SendToClientConfig consumes(Report report) {
+      return null;
+   }
 
+   @Override
+   public String getId() {
+      return null;
+   }
 
-	@Override
-	public String getId()  {
-		return null;
-	}
+   @Override
+   public String sendTo(Report report, Map<String, String> values, ReportExecutionConfig... executionConfig) {
+      return "";
+   }
 
+   @Override
+   public String sendTo(CompiledReport compiledReport, Report report, String format, Map<String, String> values,
+         ReportExecutionConfig... executionConfig) {
+      return sendTo(report, values);
+   }
 
-	@Override
-	public String sendTo(Report report, Map<String, String> values, ReportExecutionConfig... executionConfig)  {
-		return "";
-	}
-	
-	@Override
-	public String sendTo(CompiledReport compiledReport, Report report,
-			String format, Map<String, String> values,
-			ReportExecutionConfig... executionConfig) {
-		return sendTo(report,values);
-	}
+   @Override
+   public void scheduledSendTo(CompiledReport compiledReport, Report report, AbstractJob reportJob, String format,
+         Map<String, String> values) {
+      sendTo(compiledReport, report, format, values);
+   }
 
-	@Override
-	public void scheduledSendTo(CompiledReport compiledReport, Report report, AbstractJob reportJob, String format, Map<String, String> values){
-		sendTo(compiledReport, report, format, values);
-	}
-	
-	@Override
-	public boolean supportsScheduling(){
-		return true;
-	}
+   @Override
+   public boolean supportsScheduling() {
+      return true;
+   }
 
 }

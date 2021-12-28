@@ -21,88 +21,84 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.scheduler.service.scheduler.entities.Outcome;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.history"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.scheduler.client.scheduler.dto.history")
 @Entity
-@Table(name="SCHED_HIST_JOB_ENTRY")
+@Table(name = "SCHED_HIST_JOB_ENTRY")
 public class JobEntry {
-	
-	@ExposeToClient
-	private Outcome outcome = Outcome.EXECUTING;
-	
-	@ExposeToClient
-	@JoinTable(name="SCHED_JOB_ENT_2_PROP")
-	@EnclosedEntity
-	@OneToMany(cascade=CascadeType.ALL)
-	private Set<HistoryEntryProperty> historyProperties = new HashSet<HistoryEntryProperty>();
 
-	@ExposeToClient
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String errorDescription;
+   @ExposeToClient
+   private Outcome outcome = Outcome.EXECUTING;
 
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   @JoinTable(name = "SCHED_JOB_ENT_2_PROP")
+   @EnclosedEntity
+   @OneToMany(cascade = CascadeType.ALL)
+   private Set<HistoryEntryProperty> historyProperties = new HashSet<HistoryEntryProperty>();
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String errorDescription;
 
-	public Long getId() {
-		return id;
-	}
+   @Version
+   private Long version;
 
-	public void setId(Long id) {
-		this.id = id;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setOutcome(Outcome outcome) {
-		this.outcome = outcome;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public Outcome getOutcome() {
-		return outcome;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setHistoryProperties(Set<HistoryEntryProperty> historyProperties) {
-		this.historyProperties = historyProperties;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public Set<HistoryEntryProperty> getHistoryProperties() {
-		return historyProperties;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public void addHistoryProperty(String key, String value) {
-		HistoryEntryProperty property = new HistoryEntryProperty(key, value);
-		this.historyProperties.add(property);
-	}
-	
-	public void addHistoryProperty(HistoryEntryProperty historyProperty) {
-		this.historyProperties.add(historyProperty);
-	}
+   public void setOutcome(Outcome outcome) {
+      this.outcome = outcome;
+   }
 
-	
-	public void setErrorDescription(String description) {
-		this.errorDescription = description;
-	}
+   public Outcome getOutcome() {
+      return outcome;
+   }
 
-	public String getErrorDescription() {
-		return errorDescription;
-	}
+   public void setHistoryProperties(Set<HistoryEntryProperty> historyProperties) {
+      this.historyProperties = historyProperties;
+   }
 
-	public void addHistoryProperty(String key, Long value) {
-		addHistoryProperty(key, null == value ? "null" : value.toString());
-	}
-	
-	
-	
+   public Set<HistoryEntryProperty> getHistoryProperties() {
+      return historyProperties;
+   }
+
+   public void addHistoryProperty(String key, String value) {
+      HistoryEntryProperty property = new HistoryEntryProperty(key, value);
+      this.historyProperties.add(property);
+   }
+
+   public void addHistoryProperty(HistoryEntryProperty historyProperty) {
+      this.historyProperties.add(historyProperty);
+   }
+
+   public void setErrorDescription(String description) {
+      this.errorDescription = description;
+   }
+
+   public String getErrorDescription() {
+      return errorDescription;
+   }
+
+   public void addHistoryProperty(String key, Long value) {
+      addHistoryProperty(key, null == value ? "null" : value.toString());
+   }
+
 }

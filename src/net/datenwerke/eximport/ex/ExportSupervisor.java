@@ -44,14 +44,9 @@ public class ExportSupervisor {
    private Set<EnclosedObjectConfig> enclosedConfigs = new HashSet<EnclosedObjectConfig>();
 
    @Inject
-   public ExportSupervisor(
-         ExImportIdService idService, 
-         ExImportHelperService eiHelper,
-         ReflectionService reflectionServices, 
-         @Assisted ExportConfig config, 
-         @Assisted List<Exporter> exporters,
-         @Assisted XMLStreamWriter xsw
-         ) {
+   public ExportSupervisor(ExImportIdService idService, ExImportHelperService eiHelper,
+         ReflectionService reflectionServices, @Assisted ExportConfig config, @Assisted List<Exporter> exporters,
+         @Assisted XMLStreamWriter xsw) {
 
       /* store objects */
       this.idService = idService;

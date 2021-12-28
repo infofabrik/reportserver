@@ -33,7 +33,7 @@ public class EmailDatasinkSessionProvider implements Provider<Session> {
       final boolean requireTLS = emailDatasink.isTlsRequire();
 
       final String password = emailDatasink.getPassword();
-      
+
       /* prepare properties */
       Properties props = new Properties();
       props.setProperty("mail.smtp.host", String.valueOf(host)); //$NON-NLS-1$

@@ -7,7 +7,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetadataExporterManager;
 
-
 /**
  * Manages the output generators for table reports.
  * 
@@ -20,11 +19,10 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.AbstractReportMetad
  *
  */
 public class JasperMetadataExporterManager extends AbstractReportMetadataExporterManager<JasperMetadataExporter> {
-	
-	@Inject
-	public JasperMetadataExporterManager(
-			Provider<Set<JasperMetadataExporter>> exporters) {
-		super(exporters);
-	}
-	
+
+   @Inject
+   public JasperMetadataExporterManager(Provider<Set<JasperMetadataExporter>> exporters) {
+      super(exporters);
+   }
+
 }

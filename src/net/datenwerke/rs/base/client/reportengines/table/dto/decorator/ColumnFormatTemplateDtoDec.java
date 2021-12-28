@@ -9,21 +9,19 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnFormatTemplat
  */
 public class ColumnFormatTemplateDtoDec extends ColumnFormatTemplateDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFormatTemplateDtoDec() {
+      super();
+   }
 
-	public ColumnFormatTemplateDtoDec() {
-		super();
-	}
+   @Override
+   public ColumnFormatDto cloneFormat() {
+      ColumnFormatTemplateDtoDec clone = new ColumnFormatTemplateDtoDec();
 
-	@Override
-	public ColumnFormatDto cloneFormat() {
-		ColumnFormatTemplateDtoDec clone = new ColumnFormatTemplateDtoDec();
-		
-		clone.setTemplate(getTemplate());
-		
-		return clone;
-	}
+      clone.setTemplate(getTemplate());
 
+      return clone;
+   }
 
 }

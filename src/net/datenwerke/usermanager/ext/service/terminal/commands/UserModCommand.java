@@ -16,44 +16,34 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
 
-
 public class UserModCommand extends SubCommandContainerImpl {
 
-	public static final String BASE_COMMAND = "usermod";
-	
-	private final HookHandlerService hookHandler;
-	
-	@Inject
-	public UserModCommand(
-		HookHandlerService hookHandler
-		){
-		
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   public static final String BASE_COMMAND = "usermod";
 
-	@Override
-	@CliHelpMessage(
-		messageClass = UserManagerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandUsermod_description"
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser,session);
-	}
+   private final HookHandlerService hookHandler;
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<UserModSubCommandHook> list =  hookHandler.getHookers(UserModSubCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
+   @Inject
+   public UserModCommand(HookHandlerService hookHandler) {
 
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
+   @Override
+   @CliHelpMessage(messageClass = UserManagerMessages.class, name = BASE_COMMAND, description = "commandUsermod_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
+
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<UserModSubCommandHook> list = hookHandler.getHookers(UserModSubCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
 
 }

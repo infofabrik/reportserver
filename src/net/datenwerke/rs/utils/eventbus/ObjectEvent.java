@@ -1,6 +1,6 @@
 package net.datenwerke.rs.utils.eventbus;
 
-public interface ObjectEvent extends Event{
+public interface ObjectEvent extends Event {
 
-	public Object getObject();
+   public Object getObject();
 }

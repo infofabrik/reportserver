@@ -33,10 +33,7 @@ public class ActivateUserRpcServiceImpl extends SecuredRemoteServiceServlet impl
    private ActivateUserService activateUserService;
 
    @Inject
-   public ActivateUserRpcServiceImpl(
-         UserManagerService userManagerService, 
-         ActivateUserService activateUserService
-         ) {
+   public ActivateUserRpcServiceImpl(UserManagerService userManagerService, ActivateUserService activateUserService) {
 
       this.userManagerService = userManagerService;
       this.activateUserService = activateUserService;

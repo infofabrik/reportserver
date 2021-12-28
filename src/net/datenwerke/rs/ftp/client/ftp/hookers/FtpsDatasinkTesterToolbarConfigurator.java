@@ -27,10 +27,7 @@ public class FtpsDatasinkTesterToolbarConfigurator implements MainPanelViewToolb
    private final FtpsDao ftpsDao;
 
    @Inject
-   public FtpsDatasinkTesterToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         FtpsDao ftpsDao
-         ) {
+   public FtpsDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, FtpsDao ftpsDao) {
       this.toolbarUtils = toolbarUtils;
       this.ftpsDao = ftpsDao;
    }

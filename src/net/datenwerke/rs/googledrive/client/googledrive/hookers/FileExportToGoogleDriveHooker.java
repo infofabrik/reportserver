@@ -38,13 +38,9 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
    private final Provider<GoogleDriveUiService> googleDriveUiService;
 
    @Inject
-   public FileExportToGoogleDriveHooker(
-         @DatasinkTreeGoogleDrive Provider<UITree> treeProvider,
-         Provider<GoogleDriveDao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<GoogleDriveUiService> googleDriveUiService
-         ) {
+   public FileExportToGoogleDriveHooker(@DatasinkTreeGoogleDrive Provider<UITree> treeProvider,
+         Provider<GoogleDriveDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<GoogleDriveUiService> googleDriveUiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
@@ -54,34 +50,33 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem(GoogleDriveUiModule.NAME, treeHandler, GoogleDriveUiModule.ICON.toImageResource());
-      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
+      FileSendToMenuItem item = new FileSendToMenuItem(GoogleDriveUiModule.NAME, treeHandler,
+            GoogleDriveUiModule.ICON.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto) node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
       item.disable();
    }
 
    protected void displayExportDialog(final AbstractFileServerNodeDto toExport) {
-      String name="";
-      if(toExport instanceof FileServerFolderDto)
-         name = ((FileServerFolderDto)toExport).getName();
-      else if(toExport instanceof FileServerFileDto)
-          name = ((FileServerFileDto)toExport).getName();
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            GoogleDriveDatasinkDto.class,
-            name, treeProvider, datasinkDaoProvider, toExport, 
-            Optional.empty(),
-            new AsyncCallback<Map<String,Object>>() {
-               
+      String name = "";
+      if (toExport instanceof FileServerFolderDto)
+         name = ((FileServerFolderDto) toExport).getName();
+      else if (toExport instanceof FileServerFileDto)
+         name = ((FileServerFileDto) toExport).getName();
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(GoogleDriveDatasinkDto.class, name, treeProvider,
+            datasinkDaoProvider, toExport, Optional.empty(), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
+               public void onSuccess(Map<String, Object> result) {
                   datasinkDaoProvider.get().exportFileIntoDatasink(toExport,
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
-                        (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY),
+                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
+                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

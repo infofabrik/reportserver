@@ -16,44 +16,44 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoole
  */
 public class BooleanProvider extends FormFieldProviderHookImpl {
 
-	@Override
-	public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
-		return Boolean.class.equals(type);
-	}
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      return Boolean.class.equals(type);
+   }
 
-	@Override
-	public Field<Boolean> createFormField() {
-		final CheckBox cb = new CheckBox();
-		cb.setName(name);
-		SFFCBoolean config = getConfig();
-		if(null != config)
-			cb.setBoxLabel(config.getBoxLabel());
-		else
-		cb.setBoxLabel("");
-		
-		/* add change listener */
-		cb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
-			
-			@Override
-			public void onValueChange(ValueChangeEvent<Boolean> event) {
-				ValueChangeEvent.fire(BooleanProvider.this, cb.getValue());
-			}
-		});
-		
-		return cb;
-	}
-	
-	protected SFFCBoolean getConfig(){
-		for(SimpleFormFieldConfiguration config : configs)
-			if(config instanceof SFFCBoolean)
-				return (SFFCBoolean) config;
-		return null;
-	}
-	
-	@Override
-	public Object getValue(Widget field){
-		CheckBox cb = (CheckBox)(field);
-		return cb.getValue();
-	}
+   @Override
+   public Field<Boolean> createFormField() {
+      final CheckBox cb = new CheckBox();
+      cb.setName(name);
+      SFFCBoolean config = getConfig();
+      if (null != config)
+         cb.setBoxLabel(config.getBoxLabel());
+      else
+         cb.setBoxLabel("");
+
+      /* add change listener */
+      cb.addValueChangeHandler(new ValueChangeHandler<Boolean>() {
+
+         @Override
+         public void onValueChange(ValueChangeEvent<Boolean> event) {
+            ValueChangeEvent.fire(BooleanProvider.this, cb.getValue());
+         }
+      });
+
+      return cb;
+   }
+
+   protected SFFCBoolean getConfig() {
+      for (SimpleFormFieldConfiguration config : configs)
+         if (config instanceof SFFCBoolean)
+            return (SFFCBoolean) config;
+      return null;
+   }
+
+   @Override
+   public Object getValue(Widget field) {
+      CheckBox cb = (CheckBox) (field);
+      return cb.getValue();
+   }
 
 }

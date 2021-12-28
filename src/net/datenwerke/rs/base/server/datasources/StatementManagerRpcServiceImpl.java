@@ -10,17 +10,17 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class StatementManagerRpcServiceImpl extends SecuredRemoteServiceServlet implements StatementManagerRpcService {
 
-	private static final long serialVersionUID = 7450755126306154348L;
-	private StatementManagerService statementManagerService;
-	
-	@Inject
-	public StatementManagerRpcServiceImpl(StatementManagerService statementManagerService) {
-		this.statementManagerService = statementManagerService;
-	}
+   private static final long serialVersionUID = 7450755126306154348L;
+   private StatementManagerService statementManagerService;
 
-	@Override
-	public void cancelStatement(String statementId) {
-		statementManagerService.cancelStatement(statementId);
-	}
+   @Inject
+   public StatementManagerRpcServiceImpl(StatementManagerService statementManagerService) {
+      this.statementManagerService = statementManagerService;
+   }
+
+   @Override
+   public void cancelStatement(String statementId) {
+      statementManagerService.cancelStatement(statementId);
+   }
 
 }

@@ -11,19 +11,18 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 
 public interface DatasinkDefinitionConfigProviderHook extends Hook {
 
-	boolean consumes(DatasinkDefinitionDto datasinkDefinition);
-	
-	Collection<? extends MainPanelView> getAdminViews(
-			DatasinkDefinitionDto datasinkDefinition);
+   boolean consumes(DatasinkDefinitionDto datasinkDefinition);
 
-	Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass();
+   Collection<? extends MainPanelView> getAdminViews(DatasinkDefinitionDto datasinkDefinition);
 
-	String getDatasinkName();
+   Class<? extends AbstractDatasinkManagerNodeDto> getDatasinkClass();
 
-	AbstractDatasinkManagerNodeDto instantiateDatasink();
+   String getDatasinkName();
 
-	ImageResource getDatasinkIcon();
+   AbstractDatasinkManagerNodeDto instantiateDatasink();
 
-	boolean isAvailable();
+   ImageResource getDatasinkIcon();
+
+   boolean isAvailable();
 
 }

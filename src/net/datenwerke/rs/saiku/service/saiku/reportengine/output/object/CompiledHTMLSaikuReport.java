@@ -4,15 +4,14 @@ import net.datenwerke.rs.core.service.reportmanager.engine.basereports.CompiledH
 
 public class CompiledHTMLSaikuReport extends CompiledHtmlReportImpl implements CompiledRSSaikuReport {
 
-	private static final long serialVersionUID = -5303584974753303200L;
+   private static final long serialVersionUID = -5303584974753303200L;
 
-	public CompiledHTMLSaikuReport(String report) {
-		super(report);
-	}
+   public CompiledHTMLSaikuReport(String report) {
+      super(report);
+   }
 
-	public CompiledHTMLSaikuReport() {
-		super("");
-	}
+   public CompiledHTMLSaikuReport() {
+      super("");
+   }
 
-	
 }

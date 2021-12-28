@@ -11,27 +11,23 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDi
 
 public class AbstractTsDiskNode2DtoPost implements Poso2DtoPostProcessor<AbstractTsDiskNode, AbstractTsDiskNodeDto> {
 
-	private final TsDiskService diskService;
-	
-	@Inject
-	public AbstractTsDiskNode2DtoPost(TsDiskService diskService) {
-		this.diskService = diskService;
-	}
+   private final TsDiskService diskService;
 
-	@Override
-	public void dtoCreated(AbstractTsDiskNode poso, AbstractTsDiskNodeDto dto) {
-		TeamSpace ts = diskService.getTeamSpaceFor(poso);
-		if(null != ts)
-			((AbstractTsDiskNodeDtoDec)dto).setTeamSpaceId(ts.getId());
-	}
+   @Inject
+   public AbstractTsDiskNode2DtoPost(TsDiskService diskService) {
+      this.diskService = diskService;
+   }
 
-	@Override
-	public void dtoInstantiated(AbstractTsDiskNode arg0,
-			AbstractTsDiskNodeDto arg1) {
-		
-	}
+   @Override
+   public void dtoCreated(AbstractTsDiskNode poso, AbstractTsDiskNodeDto dto) {
+      TeamSpace ts = diskService.getTeamSpaceFor(poso);
+      if (null != ts)
+         ((AbstractTsDiskNodeDtoDec) dto).setTeamSpaceId(ts.getId());
+   }
 
-	
+   @Override
+   public void dtoInstantiated(AbstractTsDiskNode arg0, AbstractTsDiskNodeDto arg1) {
 
+   }
 
 }

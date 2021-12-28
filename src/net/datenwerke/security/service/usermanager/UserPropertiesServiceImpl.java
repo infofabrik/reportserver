@@ -18,118 +18,113 @@ import net.datenwerke.security.service.usermanager.hooks.UserPropertyChangedHook
 
 public class UserPropertiesServiceImpl implements UserPropertiesService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	private final HookHandlerService hookHandlerService;
-	
-	
-	@Inject
-	public UserPropertiesServiceImpl(
-			Provider<EntityManager> entityManagerProvider, 
-			HookHandlerService hookHandlerService) {
-		this.entityManagerProvider = entityManagerProvider;
-		this.hookHandlerService = hookHandlerService;
-	}
-	
+   private final Provider<EntityManager> entityManagerProvider;
+   private final HookHandlerService hookHandlerService;
 
-	@Override
-	public void setProperty(User user, UserProperty property) {
-		UserProperty oldProperty = getProperty(user, property.getKey());
-		fireBeforeChangeEvent(user, oldProperty, property);
-		
-		if(null != oldProperty)
-			removeProperty(user, oldProperty);
-		
-		if(null != property) 
-			user.getProperties().add(property);
-		
-		fireAfterChangeEvent(user, oldProperty, property);
-	}
+   @Inject
+   public UserPropertiesServiceImpl(Provider<EntityManager> entityManagerProvider,
+         HookHandlerService hookHandlerService) {
+      this.entityManagerProvider = entityManagerProvider;
+      this.hookHandlerService = hookHandlerService;
+   }
 
-	@Override
-	public void setPropertyValue(User user, String key, Object value) {
-		UserProperty oldProperty = getProperty(user, key);
-		
-		UserProperty newProperty = new UserProperty(key, String.valueOf(value));
-		setProperty(user, newProperty);
-		
-		if(null != oldProperty){
-			removeProperty(user, oldProperty);
-		}
-	}
+   @Override
+   public void setProperty(User user, UserProperty property) {
+      UserProperty oldProperty = getProperty(user, property.getKey());
+      fireBeforeChangeEvent(user, oldProperty, property);
 
-	@Override
-	@SimpleQuery(select=UserProperty__.key,from=UserProperty.class,distinct=true,orderBy=@OrderBy(attribute=UserProperty__.key))
-	public List<String> getPropertyKeys() {
-		return null; //magic
-	}
-	
-	@Override
-	public UserProperty getProperty(User user, String key) {
-		if(null == key)
-			return null;
-		for(UserProperty property : user.getProperties())
-			if(key.equals(property.getKey()))
-				return property;
-		return null;
-	}
+      if (null != oldProperty)
+         removeProperty(user, oldProperty);
 
-	@Override
-	public String getPropertyValue(User user, String key) {
-		for(UserProperty property : user.getProperties())
-			if(key.equals(property.getKey()))
-				return property.getValue();
-		return null;
-	}
+      if (null != property)
+         user.getProperties().add(property);
 
-	@Override
-	public void removeProperty(User user, String key) {
-		UserProperty prop = getProperty(user, key);
-		
-		if(null != prop)
-			removeProperty(user, prop);
-	}
+      fireAfterChangeEvent(user, oldProperty, property);
+   }
 
-	@Override
-	public boolean removeProperty(User user, UserProperty property) {
-		fireBeforeChangeEvent(user, property, null);
-		boolean res = user.getProperties().remove(property);
-		remove(property);
-		fireAfterChangeEvent(user, property, null);
-		return res;
-	}
+   @Override
+   public void setPropertyValue(User user, String key, Object value) {
+      UserProperty oldProperty = getProperty(user, key);
 
-	@Override
-	public Set<UserProperty> getProperties(User user) {
-		return user.getProperties();
-	}
+      UserProperty newProperty = new UserProperty(key, String.valueOf(value));
+      setProperty(user, newProperty);
 
-	@Override
-	public void setProperties(User user, Set<UserProperty> properties) {
-		for(UserProperty up : properties){
-			setProperty(user, up);
-		}
-	}
+      if (null != oldProperty) {
+         removeProperty(user, oldProperty);
+      }
+   }
 
-	private void fireBeforeChangeEvent(User user, UserProperty oldValue, UserProperty newValue){
-		for(UserPropertyChangedHook h : hookHandlerService.getHookers(UserPropertyChangedHook.class)){
-			h.beforeUserPropertyChange(user, oldValue, newValue);
-		}
-	}
-	
-	private void fireAfterChangeEvent(User user, UserProperty oldValue, UserProperty newValue){
-		for(UserPropertyChangedHook h : hookHandlerService.getHookers(UserPropertyChangedHook.class)){
-			h.afterUserPropertyChange(user, oldValue, newValue);
-		}
-	}
-	
-	@FireRemoveEntityEvents
-	private void remove(UserProperty property) {
-		EntityManager em = entityManagerProvider.get();
-		property = em.find(property.getClass(), property.getId());
-		if(null != property)
-			em.remove(property);
-	}
+   @Override
+   @SimpleQuery(select = UserProperty__.key, from = UserProperty.class, distinct = true, orderBy = @OrderBy(attribute = UserProperty__.key))
+   public List<String> getPropertyKeys() {
+      return null; // magic
+   }
 
-	
+   @Override
+   public UserProperty getProperty(User user, String key) {
+      if (null == key)
+         return null;
+      for (UserProperty property : user.getProperties())
+         if (key.equals(property.getKey()))
+            return property;
+      return null;
+   }
+
+   @Override
+   public String getPropertyValue(User user, String key) {
+      for (UserProperty property : user.getProperties())
+         if (key.equals(property.getKey()))
+            return property.getValue();
+      return null;
+   }
+
+   @Override
+   public void removeProperty(User user, String key) {
+      UserProperty prop = getProperty(user, key);
+
+      if (null != prop)
+         removeProperty(user, prop);
+   }
+
+   @Override
+   public boolean removeProperty(User user, UserProperty property) {
+      fireBeforeChangeEvent(user, property, null);
+      boolean res = user.getProperties().remove(property);
+      remove(property);
+      fireAfterChangeEvent(user, property, null);
+      return res;
+   }
+
+   @Override
+   public Set<UserProperty> getProperties(User user) {
+      return user.getProperties();
+   }
+
+   @Override
+   public void setProperties(User user, Set<UserProperty> properties) {
+      for (UserProperty up : properties) {
+         setProperty(user, up);
+      }
+   }
+
+   private void fireBeforeChangeEvent(User user, UserProperty oldValue, UserProperty newValue) {
+      for (UserPropertyChangedHook h : hookHandlerService.getHookers(UserPropertyChangedHook.class)) {
+         h.beforeUserPropertyChange(user, oldValue, newValue);
+      }
+   }
+
+   private void fireAfterChangeEvent(User user, UserProperty oldValue, UserProperty newValue) {
+      for (UserPropertyChangedHook h : hookHandlerService.getHookers(UserPropertyChangedHook.class)) {
+         h.afterUserPropertyChange(user, oldValue, newValue);
+      }
+   }
+
+   @FireRemoveEntityEvents
+   private void remove(UserProperty property) {
+      EntityManager em = entityManagerProvider.get();
+      property = em.find(property.getClass(), property.getId());
+      if (null != property)
+         em.remove(property);
+   }
 
 }

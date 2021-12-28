@@ -9,6 +9,6 @@ import net.datenwerke.gxtdto.client.model.ListStringBaseModel;
 
 public interface ListStringBaseModelPa extends PropertyAccess<ListStringBaseModel> {
 
-	public ValueProvider<ListStringBaseModel,List<String>> value();
-	
+   public ValueProvider<ListStringBaseModel, List<String>> value();
+
 }

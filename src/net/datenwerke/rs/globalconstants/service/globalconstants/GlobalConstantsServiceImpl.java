@@ -17,54 +17,52 @@ import net.datenwerke.rs.utils.simplequery.annotations.SimpleQuery;
  */
 public class GlobalConstantsServiceImpl implements GlobalConstantsService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public GlobalConstantsServiceImpl(
-		Provider<EntityManager> entityManagerProvider	
-		){
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@Override
-	@SimpleQuery
-	public List<GlobalConstant> getAllGlobalConstants() {
-		return null; // magic
-	}
+   @Inject
+   public GlobalConstantsServiceImpl(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
 
-	@Override
-	public GlobalConstant merge(GlobalConstant constant) {
-		return entityManagerProvider.get().merge(constant);
-	}
+   @Override
+   @SimpleQuery
+   public List<GlobalConstant> getAllGlobalConstants() {
+      return null; // magic
+   }
 
-	@Override
-	public void remove(GlobalConstant constant) {
-		EntityManager em = entityManagerProvider.get();
-		em.remove(em.find(constant.getClass(), constant.getId()));
-	}
+   @Override
+   public GlobalConstant merge(GlobalConstant constant) {
+      return entityManagerProvider.get().merge(constant);
+   }
 
-	@Override
-	public void removeAllConstants() {
-		Collection<GlobalConstant> constants = getAllGlobalConstants();
-		if(null != constants){
-			for(GlobalConstant constant : constants)
-				remove(constant);
-		}
-			
-	}
+   @Override
+   public void remove(GlobalConstant constant) {
+      EntityManager em = entityManagerProvider.get();
+      em.remove(em.find(constant.getClass(), constant.getId()));
+   }
 
-	@Override
-	public void persist(GlobalConstant constant) {
-		entityManagerProvider.get().persist(constant);
-	}
-	
-	@Override
-	public String getConstantFor(String name) {
-		if(null == name)
-			return null;
-		for(GlobalConstant g : getAllGlobalConstants())
-			if(name.equals(g.getName()))
-				return g.getValue();
-		return null;
-	}
+   @Override
+   public void removeAllConstants() {
+      Collection<GlobalConstant> constants = getAllGlobalConstants();
+      if (null != constants) {
+         for (GlobalConstant constant : constants)
+            remove(constant);
+      }
+
+   }
+
+   @Override
+   public void persist(GlobalConstant constant) {
+      entityManagerProvider.get().persist(constant);
+   }
+
+   @Override
+   public String getConstantFor(String name) {
+      if (null == name)
+         return null;
+      for (GlobalConstant g : getAllGlobalConstants())
+         if (name.equals(g.getName()))
+            return g.getValue();
+      return null;
+   }
 }

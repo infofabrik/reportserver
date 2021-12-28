@@ -8,10 +8,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 
 public interface DatasourceSelectionFieldFactory {
 
-	public DatasourceSelectionField create(
-		boolean displayConfigFields,
-		Container container, 
-		UITree datasourceTree,
-		DatasourceDao generalPropertiesDao, 
-		Class<? extends DatasourceDefinitionDto>[] types);
+   public DatasourceSelectionField create(boolean displayConfigFields, Container container, UITree datasourceTree,
+         DatasourceDao generalPropertiesDao, Class<? extends DatasourceDefinitionDto>[] types);
 }

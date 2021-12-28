@@ -5,9 +5,11 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface TreeDbExtMessages extends Messages {
 
-	public final static TreeDbExtMessages INSTANCE = GWT.create(TreeDbExtMessages.class);
+   public final static TreeDbExtMessages INSTANCE = GWT.create(TreeDbExtMessages.class);
 
-	String logTypeCreate();
-	String logTypeMerge();
-	String logTypeRemove();
+   String logTypeCreate();
+
+   String logTypeMerge();
+
+   String logTypeRemove();
 }

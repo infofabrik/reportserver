@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.utilityservices.submittracker.SubmitTrackerT
 
 public interface RpcPropertiesDialogCard extends PropertiesDialogCard {
 
-	public void submitPressed(SubmitTrackerToken token);
+   public void submitPressed(SubmitTrackerToken token);
 }

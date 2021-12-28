@@ -19,75 +19,71 @@ import net.datenwerke.rs.userprofile.client.userprofile.hooks.UserProfileCardPro
  * 
  *
  */
-public class UserProfileDashboardPropertiesHooker extends
-		UserProfileCardProviderHookImpl {
+public class UserProfileDashboardPropertiesHooker extends UserProfileCardProviderHookImpl {
 
-	private static final String DEFAULT_DASHBOARD_KEY = "_defaultDashboard";
+   private static final String DEFAULT_DASHBOARD_KEY = "_defaultDashboard";
 
-	private final DashboardDao dashboardDao;
+   private final DashboardDao dashboardDao;
 
-	private SimpleForm form;
-	
-	@Inject
-	public UserProfileDashboardPropertiesHooker(
-		DashboardDao dashboardDao
-		){
-		
-		/* store objects */
-		this.dashboardDao = dashboardDao;
-	}
-	
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.DASHBOARD.toImageResource(1);
-	}
+   private SimpleForm form;
 
-	@Override
-	public Widget getCard() {
-		form = SimpleForm.getInlineInstance();
-		form.addField(
-			DashboardDto.class, DEFAULT_DASHBOARD_KEY, DashboardMessages.INSTANCE.defaultDashboardLabel(),
-			new SFFCDashboard(){
-				@Override
-				public boolean isMulti() {
-					return false;
-				}
+   @Inject
+   public UserProfileDashboardPropertiesHooker(DashboardDao dashboardDao) {
 
-				@Override
-				public boolean isLoadAll() {
-					return false;
-				}
-			});
-			
-		form.loadFields();
-		
-		form.mask(BaseMessages.INSTANCE.loadingMsg());
-		dashboardDao.getExplicitPrimaryDashboard(new RsAsyncCallback<DashboardDto>(){
-			@Override
-			public void onSuccess(DashboardDto result) {
-				if(null != result)
-					form.setValue(DEFAULT_DASHBOARD_KEY, result);
-				form.unmask();
-			}
-		});
-		
-		return form;
-	}
-	
-	@Override
-	public void submitPressed(final SubmitTrackerToken token) {
-		DashboardDto dashboard = (DashboardDto) form.getValue(DEFAULT_DASHBOARD_KEY);
-		dashboardDao.setPrimaryDashboard(dashboard, new RsAsyncCallback<Void>(){
-			@Override
-			public void onSuccess(Void result) {
-				token.setCompleted();
-			}
-		});
-	}
+      /* store objects */
+      this.dashboardDao = dashboardDao;
+   }
 
-	@Override
-	public String getName() {
-		return DashboardMessages.INSTANCE.clientModuleName();
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.DASHBOARD.toImageResource(1);
+   }
+
+   @Override
+   public Widget getCard() {
+      form = SimpleForm.getInlineInstance();
+      form.addField(DashboardDto.class, DEFAULT_DASHBOARD_KEY, DashboardMessages.INSTANCE.defaultDashboardLabel(),
+            new SFFCDashboard() {
+               @Override
+               public boolean isMulti() {
+                  return false;
+               }
+
+               @Override
+               public boolean isLoadAll() {
+                  return false;
+               }
+            });
+
+      form.loadFields();
+
+      form.mask(BaseMessages.INSTANCE.loadingMsg());
+      dashboardDao.getExplicitPrimaryDashboard(new RsAsyncCallback<DashboardDto>() {
+         @Override
+         public void onSuccess(DashboardDto result) {
+            if (null != result)
+               form.setValue(DEFAULT_DASHBOARD_KEY, result);
+            form.unmask();
+         }
+      });
+
+      return form;
+   }
+
+   @Override
+   public void submitPressed(final SubmitTrackerToken token) {
+      DashboardDto dashboard = (DashboardDto) form.getValue(DEFAULT_DASHBOARD_KEY);
+      dashboardDao.setPrimaryDashboard(dashboard, new RsAsyncCallback<Void>() {
+         @Override
+         public void onSuccess(Void result) {
+            token.setCompleted();
+         }
+      });
+   }
+
+   @Override
+   public String getName() {
+      return DashboardMessages.INSTANCE.clientModuleName();
+   }
 
 }

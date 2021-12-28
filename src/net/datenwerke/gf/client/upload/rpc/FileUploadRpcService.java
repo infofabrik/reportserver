@@ -10,7 +10,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 @RemoteServiceRelativePath("fileuploadservice")
 public interface FileUploadRpcService extends RemoteService {
 
-	UploadResponse uploadInterimFile(FileToUpload file) throws ServerCallFailedException;
-	
-	
+   UploadResponse uploadInterimFile(FileToUpload file) throws ServerCallFailedException;
+
 }

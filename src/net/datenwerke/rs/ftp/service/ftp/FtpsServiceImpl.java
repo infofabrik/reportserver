@@ -22,11 +22,8 @@ public class FtpsServiceImpl implements FtpsService {
    private final Provider<FtpSenderService> ftpSenderServiceProvider;
 
    @Inject
-   public FtpsServiceImpl(
-		   @DefaultFtpsDatasink Provider<Optional<FtpsDatasink>> defaultFtpsDatasinkProvider,
-		   Provider<DatasinkService> datasinkServiceProvider,
-		   Provider<FtpSenderService> ftpSenderServiceProvider
-		   ) {
+   public FtpsServiceImpl(@DefaultFtpsDatasink Provider<Optional<FtpsDatasink>> defaultFtpsDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider, Provider<FtpSenderService> ftpSenderServiceProvider) {
       this.defaultFtpsDatasinkProvider = defaultFtpsDatasinkProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.ftpSenderServiceProvider = ftpSenderServiceProvider;
@@ -39,9 +36,9 @@ public class FtpsServiceImpl implements FtpsService {
          throw new IllegalStateException("ftps is disabled");
       if (!(datasink instanceof FtpsDatasink))
          throw new IllegalStateException("Not an FTPS datasink");
-      
+
       FtpsDatasink ftpsDatasink = (FtpsDatasink) datasink;
-      
+
       try {
          ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, config);
       } catch (IOException e) {

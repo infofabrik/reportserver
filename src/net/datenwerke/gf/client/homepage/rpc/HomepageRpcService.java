@@ -5,13 +5,13 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
 @RemoteServiceRelativePath("homepage")
 public interface HomepageRpcService extends RemoteService {
-	
-	public String getPageTitle();
 
-	public boolean isStartupComplete();
+   public String getPageTitle();
 
-	String getSessionRedirect();
-	
-	void assertAllowsRedirect(String redir);
+   public boolean isStartupComplete();
+
+   String getSessionRedirect();
+
+   void assertAllowsRedirect(String redir);
 
 }

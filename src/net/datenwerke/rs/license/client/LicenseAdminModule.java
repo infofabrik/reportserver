@@ -16,30 +16,30 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class LicenseAdminModule implements AdminModule {
 
-	private final Provider<LicenseAdminPanel> mainWidgetProvider;
-	
-	@Inject
-	public LicenseAdminModule(Provider<LicenseAdminPanel> mainWidgetProvider){
-		this.mainWidgetProvider = mainWidgetProvider;
-	}
-	
-	@Override
-	public Widget getMainWidget() {
-		return mainWidgetProvider.get();
-	}
+   private final Provider<LicenseAdminPanel> mainWidgetProvider;
 
-	@Override
-	public ImageResource getNavigationIcon() {
-		return BaseIcon.CERTIFICATE.toImageResource();
-	}
+   @Inject
+   public LicenseAdminModule(Provider<LicenseAdminPanel> mainWidgetProvider) {
+      this.mainWidgetProvider = mainWidgetProvider;
+   }
 
-	@Override
-	public String getNavigationText() {
-		return LicenseMessages.INSTANCE.viewNavigationTitle();
-	}
+   @Override
+   public Widget getMainWidget() {
+      return mainWidgetProvider.get();
+   }
 
-	@Override
-	public void notifyOfSelection() {
-		mainWidgetProvider.get().notifyOfSelection();
-	}
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.CERTIFICATE.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return LicenseMessages.INSTANCE.viewNavigationTitle();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+      mainWidgetProvider.get().notifyOfSelection();
+   }
 }

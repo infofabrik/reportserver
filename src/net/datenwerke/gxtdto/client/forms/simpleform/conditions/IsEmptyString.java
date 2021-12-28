@@ -11,13 +11,11 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
  */
 public class IsEmptyString implements SimpleFormCondition {
 
-	public boolean isMet(Widget formField,
-			FormFieldProviderHook responsibleHook,
-			SimpleForm form) {
-		String value = (String) responsibleHook.getValue(formField);
-		if(null == value || "".equals(value.trim()))
-			return true;
-		return false;
-	}
+   public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+      String value = (String) responsibleHook.getValue(formField);
+      if (null == value || "".equals(value.trim()))
+         return true;
+      return false;
+   }
 
 }

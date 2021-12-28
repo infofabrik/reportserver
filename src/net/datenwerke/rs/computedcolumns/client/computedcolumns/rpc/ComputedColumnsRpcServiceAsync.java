@@ -7,10 +7,9 @@ import net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColu
 
 public interface ComputedColumnsRpcServiceAsync {
 
-	void getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn,
-			AsyncCallback<Integer> callback);
-	
-	void getColumnType(TableReportDto report, ComputedColumnDto column,
-			AsyncCallback<Integer> callback);
-	
+   void getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn,
+         AsyncCallback<Integer> callback);
+
+   void getColumnType(TableReportDto report, ComputedColumnDto column, AsyncCallback<Integer> callback);
+
 }

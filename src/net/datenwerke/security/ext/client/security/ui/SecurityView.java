@@ -19,61 +19,57 @@ import net.datenwerke.security.ext.client.security.ui.aclview.NodeACLView;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class SecurityView extends MainPanelView {
-	
-	public static final String VIEW_ID = "SecurityView";
-	
-	private final Provider<NodeACLView> aclViewProvider;
-	
-	@Inject
-	public SecurityView(
-		Provider<NodeACLView> aclViewProvider 
-		){
-		super();
-		
-		/* store objects */
-		this.aclViewProvider = aclViewProvider;
-	}
-	
-	@Override
-	public String getViewId() {
-		return VIEW_ID;
-	}
-	
-	@Override
-	public boolean isSticky() {
-		return true;
-	}
 
-	@Override
-	public boolean appliesTo(AbstractNodeDto item) {
-		if(! (item instanceof SecuredAbstractNodeDto))
-			return false;
-		
-		return ((SecuredAbstractNodeDtoDec)item).hasAccessRight(GrantAccessDto.class);
-	}
-	
-	@Override
-	public String getComponentHeader(){
-		return SecurityMessages.INSTANCE.permissionManagement();
-	}
-	
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.LOCK.toImageResource();
-	}
-	
-	@Override
-	public Widget getViewComponent(AbstractNodeDto selectedNode) {
-		NodeACLView aclView = aclViewProvider.get();
-		aclView.initialize((SecuredAbstractNodeDto) getSelectedNode());
-		
-		VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
-		wrapper.setScrollMode(ScrollMode.AUTOY);
-		wrapper.add(aclView, new VerticalLayoutData(1,-1, new Margins(10)));
-		
-		return wrapper;
-	}
+   public static final String VIEW_ID = "SecurityView";
 
-	
+   private final Provider<NodeACLView> aclViewProvider;
+
+   @Inject
+   public SecurityView(Provider<NodeACLView> aclViewProvider) {
+      super();
+
+      /* store objects */
+      this.aclViewProvider = aclViewProvider;
+   }
+
+   @Override
+   public String getViewId() {
+      return VIEW_ID;
+   }
+
+   @Override
+   public boolean isSticky() {
+      return true;
+   }
+
+   @Override
+   public boolean appliesTo(AbstractNodeDto item) {
+      if (!(item instanceof SecuredAbstractNodeDto))
+         return false;
+
+      return ((SecuredAbstractNodeDtoDec) item).hasAccessRight(GrantAccessDto.class);
+   }
+
+   @Override
+   public String getComponentHeader() {
+      return SecurityMessages.INSTANCE.permissionManagement();
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.LOCK.toImageResource();
+   }
+
+   @Override
+   public Widget getViewComponent(AbstractNodeDto selectedNode) {
+      NodeACLView aclView = aclViewProvider.get();
+      aclView.initialize((SecuredAbstractNodeDto) getSelectedNode());
+
+      VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
+      wrapper.setScrollMode(ScrollMode.AUTOY);
+      wrapper.add(aclView, new VerticalLayoutData(1, -1, new Margins(10)));
+
+      return wrapper;
+   }
 
 }

@@ -5,48 +5,48 @@ import java.util.UUID;
 
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
-public class BackLinkReport implements Serializable{
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -6423821722701693015L;
-	
-	private String id;
-	private long reportId;
-	private Report adjustedReport;
-	private String outputFormat;
-	
-	private String predecessor; 
+public class BackLinkReport implements Serializable {
 
-	public BackLinkReport(long reportId, Report adjustedReport,String outputFormat) {
-		this.reportId = reportId;
-		this.adjustedReport = adjustedReport;
-		this.outputFormat = outputFormat;
-		this.id = UUID.randomUUID().toString().substring(0,8);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -6423821722701693015L;
 
-	public String getId() {
-		return id;
-	}
+   private String id;
+   private long reportId;
+   private Report adjustedReport;
+   private String outputFormat;
 
-	public long getReportId() {
-		return reportId;
-	}
+   private String predecessor;
 
-	public Report getAdjustedReport() {
-		return adjustedReport;
-	}
+   public BackLinkReport(long reportId, Report adjustedReport, String outputFormat) {
+      this.reportId = reportId;
+      this.adjustedReport = adjustedReport;
+      this.outputFormat = outputFormat;
+      this.id = UUID.randomUUID().toString().substring(0, 8);
+   }
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+   public String getId() {
+      return id;
+   }
 
-	public void setPredecessor(String predecessor) {
-		this.predecessor = predecessor;
-	}
+   public long getReportId() {
+      return reportId;
+   }
 
-	public String getPredecessor() {
-		return predecessor;
-	}
+   public Report getAdjustedReport() {
+      return adjustedReport;
+   }
+
+   public String getOutputFormat() {
+      return outputFormat;
+   }
+
+   public void setPredecessor(String predecessor) {
+      this.predecessor = predecessor;
+   }
+
+   public String getPredecessor() {
+      return predecessor;
+   }
 }

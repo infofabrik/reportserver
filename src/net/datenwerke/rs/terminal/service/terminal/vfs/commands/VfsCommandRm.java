@@ -16,61 +16,53 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.locale.VfsMessages;
 
-public class VfsCommandRm implements TerminalCommandHook  {
+public class VfsCommandRm implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "rm";
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "rm";
 
-	@CliHelpMessage(
-		messageClass = VfsMessages.class,
-		name = BASE_COMMAND,
-		description = "commandRm_description",
-		args = {
-			@Argument(flag="r", description="commandRm_rArgument"),
-			@Argument(flag="f", description="commandRm_fArgument")
-		},
-		nonOptArgs = {
-			@NonOptArgument(name="dir", description="commandRm_dirArgument")
-		}
-	)
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		VirtualFileSystemDeamon vfs = session.getFileSystem();
-		
-		try {
-			List<String> arguments = parser.getNonOptionArguments();
-			if(arguments.size() < 1)
-				throw new IllegalArgumentException();
-			
-			boolean recursive = parser.hasOption("r", "r?f?");
-			boolean force = parser.hasOption("f", "r?f?");
-			
-			for(String arg : arguments){
-				VFSLocation locations = vfs.getLocation(arg);
-				
-				if(locations.isVirtualLocation())
-					throw new IllegalArgumentException("location is virtual");
-				
-				Iterator<VFSLocation> locationIt = locations.resolveWildcards(vfs).iterator();
-				while(locationIt.hasNext())
-					vfs.remove(locationIt.next(), recursive, force);
-			}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-			CommandResult result = new CommandResult();
-			result.setCommitTransaction(true);
-			return result;
-		} catch (VFSException e) {
-			return new CommandResult(e.getMessage());
-		}
-	}
+   @CliHelpMessage(messageClass = VfsMessages.class, name = BASE_COMMAND, description = "commandRm_description", args = {
+         @Argument(flag = "r", description = "commandRm_rArgument"),
+         @Argument(flag = "f", description = "commandRm_fArgument") }, nonOptArgs = {
+               @NonOptArgument(name = "dir", description = "commandRm_dirArgument") })
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      VirtualFileSystemDeamon vfs = session.getFileSystem();
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+      try {
+         List<String> arguments = parser.getNonOptionArguments();
+         if (arguments.size() < 1)
+            throw new IllegalArgumentException();
+
+         boolean recursive = parser.hasOption("r", "r?f?");
+         boolean force = parser.hasOption("f", "r?f?");
+
+         for (String arg : arguments) {
+            VFSLocation locations = vfs.getLocation(arg);
+
+            if (locations.isVirtualLocation())
+               throw new IllegalArgumentException("location is virtual");
+
+            Iterator<VFSLocation> locationIt = locations.resolveWildcards(vfs).iterator();
+            while (locationIt.hasNext())
+               vfs.remove(locationIt.next(), recursive, force);
+         }
+
+         CommandResult result = new CommandResult();
+         result.setCommitTransaction(true);
+         return result;
+      } catch (VFSException e) {
+         return new CommandResult(e.getMessage());
+      }
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

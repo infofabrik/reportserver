@@ -18,62 +18,63 @@ import net.datenwerke.rs.base.service.datasources.statementmanager.hooks.adapter
 
 public class MonetDbStatementCancler extends StatementCancellationHookAdapter {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private final String STATEMENT_TYPE = "nl.cwi.monetdb.jdbc.MonetPreparedStatement"; 
-	
-	private final DbPoolService<?> poolService;
-	
-	@Inject
-	public MonetDbStatementCancler(
-			DbPoolService poolService) {
-		this.poolService = poolService;
-	}
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Override
-	public boolean consumes(Statement statement, Connection connection) {
-		if(STATEMENT_TYPE.equals(statement.getClass()))
-			return true;
-		if(statement instanceof NewProxyPreparedStatement){
-			try{
-				Class<?> stmtType = Class.forName(STATEMENT_TYPE);
-				return ((NewProxyPreparedStatement)statement).isWrapperFor(stmtType);
-			}catch(Exception e){}
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public boolean cancelStatement(Statement statement, Connection connection, String statementId) {
-		try{
-			ConnectionPoolConfig poolConfig = null;
-			try{
-				if(connection instanceof ConnectionPoolAware) 
-					poolConfig = ((ConnectionPoolAware)connection).__getReportServerConnectionPoolConfig();
-			} catch(Exception e){
-				logger.warn("Could not extract pool from connection", e);
-			}
-			
-			if(null == poolConfig)
-				return false;
+   private final String STATEMENT_TYPE = "nl.cwi.monetdb.jdbc.MonetPreparedStatement";
 
-			try(Connection con = poolService.getConnection(poolConfig).get()){
-				try(PreparedStatement newStmt = con.prepareStatement("SELECT qtag FROM sys.queue() WHERE query LIKE ? LIMIT 1")){
-					
-					newStmt.setString(1, "%" + statementId + "%");
+   private final DbPoolService<?> poolService;
 
-					try(ResultSet resultSet = newStmt.executeQuery()){
-						if(resultSet.next()){
-							int id = resultSet.getInt(1);
-							con.createStatement().execute("CALL sys.stop(" + id + ")");
-						}
-					} 
-				}
-			}
-			
-			
-		} catch(Exception e){}
-		return true;
-	}
+   @Inject
+   public MonetDbStatementCancler(DbPoolService poolService) {
+      this.poolService = poolService;
+   }
+
+   @Override
+   public boolean consumes(Statement statement, Connection connection) {
+      if (STATEMENT_TYPE.equals(statement.getClass()))
+         return true;
+      if (statement instanceof NewProxyPreparedStatement) {
+         try {
+            Class<?> stmtType = Class.forName(STATEMENT_TYPE);
+            return ((NewProxyPreparedStatement) statement).isWrapperFor(stmtType);
+         } catch (Exception e) {
+         }
+      }
+
+      return false;
+   }
+
+   @Override
+   public boolean cancelStatement(Statement statement, Connection connection, String statementId) {
+      try {
+         ConnectionPoolConfig poolConfig = null;
+         try {
+            if (connection instanceof ConnectionPoolAware)
+               poolConfig = ((ConnectionPoolAware) connection).__getReportServerConnectionPoolConfig();
+         } catch (Exception e) {
+            logger.warn("Could not extract pool from connection", e);
+         }
+
+         if (null == poolConfig)
+            return false;
+
+         try (Connection con = poolService.getConnection(poolConfig).get()) {
+            try (PreparedStatement newStmt = con
+                  .prepareStatement("SELECT qtag FROM sys.queue() WHERE query LIKE ? LIMIT 1")) {
+
+               newStmt.setString(1, "%" + statementId + "%");
+
+               try (ResultSet resultSet = newStmt.executeQuery()) {
+                  if (resultSet.next()) {
+                     int id = resultSet.getInt(1);
+                     con.createStatement().execute("CALL sys.stop(" + id + ")");
+                  }
+               }
+            }
+         }
+
+      } catch (Exception e) {
+      }
+      return true;
+   }
 }

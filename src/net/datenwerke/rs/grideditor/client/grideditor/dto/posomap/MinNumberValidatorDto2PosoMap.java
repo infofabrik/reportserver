@@ -11,5 +11,4 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 @CorrespondingPoso(net.datenwerke.rs.grideditor.service.grideditor.definition.validator.MinIntegerValidator.class)
 public class MinNumberValidatorDto2PosoMap implements Dto2PosoMapper {
 
-
 }

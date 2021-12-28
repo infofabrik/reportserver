@@ -8,30 +8,30 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 
 public interface VariantStorerConfig {
 
-	public boolean displayVariantStorer();
-	
-	public boolean displayEditVariantOnStore();
-	
-	public boolean allowEditVariant();
-	
-	public VariantStorerHandleServerCalls getServerCallHandler();
-	
-	public TeamSpaceDto getTeamSpace();
-	
-	public TsDiskFolderDto getTeamSpaceFolder();
-	
-	public interface VariantStorerHandleServerCalls{
+   public boolean displayVariantStorer();
 
-		void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken,
-				String name, String desc, AsyncCallback<ReportDto> callback);
+   public boolean displayEditVariantOnStore();
 
-		void deleteVariant(ReportDto report, AsyncCallback<Void> callback);
+   public boolean allowEditVariant();
 
-		void editVariant(ReportDto report, String executeToken, String name,
-				String description, AsyncCallback<ReportDto> callback);
-		
-	}
-	
-	public boolean allowNullTeamSpace();
-	
+   public VariantStorerHandleServerCalls getServerCallHandler();
+
+   public TeamSpaceDto getTeamSpace();
+
+   public TsDiskFolderDto getTeamSpaceFolder();
+
+   public interface VariantStorerHandleServerCalls {
+
+      void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken,
+            String name, String desc, AsyncCallback<ReportDto> callback);
+
+      void deleteVariant(ReportDto report, AsyncCallback<Void> callback);
+
+      void editVariant(ReportDto report, String executeToken, String name, String description,
+            AsyncCallback<ReportDto> callback);
+
+   }
+
+   public boolean allowNullTeamSpace();
+
 }

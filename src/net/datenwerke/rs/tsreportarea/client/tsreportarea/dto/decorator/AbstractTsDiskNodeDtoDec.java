@@ -7,11 +7,11 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNode
  *
  */
 abstract public class AbstractTsDiskNodeDtoDec extends AbstractTsDiskNodeDto {
-	
-	private static final long serialVersionUID = 1L;
 
-	public AbstractTsDiskNodeDtoDec() {
-		super();
-	}
+   private static final long serialVersionUID = 1L;
+
+   public AbstractTsDiskNodeDtoDec() {
+      super();
+   }
 
 }

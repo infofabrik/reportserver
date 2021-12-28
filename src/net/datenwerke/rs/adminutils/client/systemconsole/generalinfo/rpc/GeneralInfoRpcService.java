@@ -9,6 +9,6 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.General
 @RemoteServiceRelativePath("generalinfoconsole")
 public interface GeneralInfoRpcService extends RemoteService {
 
-	GeneralInfoDto loadGeneralInfo() throws ServerCallFailedException;
+   GeneralInfoDto loadGeneralInfo() throws ServerCallFailedException;
 
 }

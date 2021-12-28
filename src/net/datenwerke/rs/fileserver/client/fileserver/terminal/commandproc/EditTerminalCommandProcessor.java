@@ -9,24 +9,23 @@ import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHook;
 
 public class EditTerminalCommandProcessor implements CommandResultProcessorHook {
-	
-	private final FileServerUiService fileService;
-	
-	@Inject
-	public EditTerminalCommandProcessor(
-		FileServerUiService fileService
-			) {
-		this.fileService = fileService;
-	}
 
-	@Override
-	public void process(CommandResultDto result) {
-		if(result.getExtensions().size() == 1 && result.getExtensions().get(0) instanceof EditCommandResultExtensionDto){
-			final EditCommandResultExtensionDto editCmd = (EditCommandResultExtensionDto) result.getExtensions().get(0);
-			final FileServerFileDto file = editCmd.getFile(); 
-			
-			fileService.editFileDirectly(file, true, false, false, false, editCmd.getData());
-		}
-	}
+   private final FileServerUiService fileService;
+
+   @Inject
+   public EditTerminalCommandProcessor(FileServerUiService fileService) {
+      this.fileService = fileService;
+   }
+
+   @Override
+   public void process(CommandResultDto result) {
+      if (result.getExtensions().size() == 1
+            && result.getExtensions().get(0) instanceof EditCommandResultExtensionDto) {
+         final EditCommandResultExtensionDto editCmd = (EditCommandResultExtensionDto) result.getExtensions().get(0);
+         final FileServerFileDto file = editCmd.getFile();
+
+         fileService.editFileDirectly(file, true, false, false, false, editCmd.getData());
+      }
+   }
 
 }

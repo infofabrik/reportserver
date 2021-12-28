@@ -5,14 +5,14 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface UserVariablesTypesMessages extends Messages {
 
-	public final static UserVariablesTypesMessages INSTANCE = GWT.create(UserVariablesTypesMessages.class);
-	
-	String textVariable();
+   public final static UserVariablesTypesMessages INSTANCE = GWT.create(UserVariablesTypesMessages.class);
 
-	String listVariable();
+   String textVariable();
 
-	String noEditTitle();
-	String noEditMessage();
-	
+   String listVariable();
+
+   String noEditTitle();
+
+   String noEditMessage();
 
 }

@@ -8,5 +8,5 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface MainPanelViewProviderHook extends Hook {
 
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node);
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node);
 }

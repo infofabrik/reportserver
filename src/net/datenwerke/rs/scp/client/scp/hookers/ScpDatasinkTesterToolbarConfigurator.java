@@ -19,46 +19,46 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class ScpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook{
-	
-	   final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
+public class ScpDatasinkTesterToolbarConfigurator implements MainPanelViewToolbarConfiguratorHook {
 
-	   private final ToolbarService toolbarUtils;
-	   private final ScpDao scpDao;
+   final DatasinksMessages messages = GWT.create(DatasinksMessages.class);
 
-	   @Inject
-	   public ScpDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, ScpDao scpDao) {
-	      this.toolbarUtils = toolbarUtils;
-	      this.scpDao = scpDao;
-	   }
+   private final ToolbarService toolbarUtils;
+   private final ScpDao scpDao;
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
-			AbstractNodeDto selectedNode) {
-	      if (!(view instanceof SimpleFormView))
-	          return;
-	       if (!(selectedNode instanceof ScpDatasinkDto))
-	          return;
-	       DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(),
-	             BaseIcon.LINK);
-	       testBtn.addSelectHandler(event -> {
-	          ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),
-	                messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
-	                messages.testingTitle(), messages.testingProgressMessage()) {
-	          };
-	          Request request = scpDao.testScpDatasink((ScpDatasinkDto) selectedNode,
-	                new TimeoutCallback<Boolean>(120000, callback));
-	          callback.setRequest(request);
-	       });
-	       toolbar.add(testBtn);
-		
-	}
+   @Inject
+   public ScpDatasinkTesterToolbarConfigurator(ToolbarService toolbarUtils, ScpDao scpDao) {
+      this.toolbarUtils = toolbarUtils;
+      this.scpDao = scpDao;
+   }
 
-	@Override
-	public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
-			AbstractNodeDto selectedNode) {
-		// TODO Auto-generated method stub
-		
-	}
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addLeft(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      if (!(view instanceof SimpleFormView))
+         return;
+      if (!(selectedNode instanceof ScpDatasinkDto))
+         return;
+      DwTextButton testBtn = toolbarUtils.createSmallButtonLeft(DatasinksMessages.INSTANCE.testDatasink(),
+            BaseIcon.LINK);
+      testBtn.addSelectHandler(event -> {
+         ModalAsyncCallback<Boolean> callback = new ModalAsyncCallback<Boolean>(BaseMessages.INSTANCE.error(),
+               messages.testFailed(), messages.success(), messages.testSuccess(), messages.pleaseWait(),
+               messages.testingTitle(), messages.testingProgressMessage()) {
+         };
+         Request request = scpDao.testScpDatasink((ScpDatasinkDto) selectedNode,
+               new TimeoutCallback<Boolean>(120000, callback));
+         callback.setRequest(request);
+      });
+      toolbar.add(testBtn);
+
+   }
+
+   @Override
+   public void mainPanelViewToolbarConfiguratorHook_addRight(MainPanelView view, ToolBar toolbar,
+         AbstractNodeDto selectedNode) {
+      // TODO Auto-generated method stub
+
+   }
 
 }

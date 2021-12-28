@@ -24,76 +24,78 @@ import net.datenwerke.security.client.login.AuthenticateCallback;
 
 public class SessionTimeoutWarningDialog extends DwWindow {
 
-	private ProgressBar progressBar;
-	private Timer timer;
+   private ProgressBar progressBar;
+   private Timer timer;
 
-	@Inject
-	private static LoginService loginService;
+   @Inject
+   private static LoginService loginService;
 
-	private DwTextButton refreshSessionButton;
+   private DwTextButton refreshSessionButton;
 
-	public SessionTimeoutWarningDialog(final int timeout) {
-		setModal(true);
-		setSize(330, 180);
-		setHeading(LoginMessages.INSTANCE.expirationWarningTitle());
+   public SessionTimeoutWarningDialog(final int timeout) {
+      setModal(true);
+      setSize(330, 180);
+      setHeading(LoginMessages.INSTANCE.expirationWarningTitle());
 
-		progressBar = new ProgressBar();
+      progressBar = new ProgressBar();
 
-		timer = new Timer() {
-			int i = 0;
-			@Override
-			public void run() {
-				double percentage = (double)i / timeout;
-				i++;
+      timer = new Timer() {
+         int i = 0;
 
-				if(percentage > 1){
-					progressBar.updateText(LoginMessages.INSTANCE.loggingOut());
-					this.cancel();
-					forceLogout();
-				}else{
-					String s = DateTimeFormat.getFormat("mm:ss").format(new Date((long)(1000 * (timeout - percentage * timeout))));
-					progressBar.updateProgress(percentage, s);
-				}
-			}
-		};
+         @Override
+         public void run() {
+            double percentage = (double) i / timeout;
+            i++;
 
-		timer.scheduleRepeating(1000);
+            if (percentage > 1) {
+               progressBar.updateText(LoginMessages.INSTANCE.loggingOut());
+               this.cancel();
+               forceLogout();
+            } else {
+               String s = DateTimeFormat.getFormat("mm:ss")
+                     .format(new Date((long) (1000 * (timeout - percentage * timeout))));
+               progressBar.updateProgress(percentage, s);
+            }
+         }
+      };
 
-		VerticalLayoutContainer hlc = new VerticalLayoutContainer();
-		add(hlc, new MarginData(10));
-		
-		Label text = new Label(LoginMessages.INSTANCE.expirationWarningMessage());
-		hlc.add(text);
-		hlc.add(new Label(" "));
-		hlc.add(progressBar, new VerticalLayoutData(1,-1d, new Margins(5, 5, 5, 5)));
+      timer.scheduleRepeating(1000);
 
-		ButtonBar bb = getButtonBar();
-		refreshSessionButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
-		refreshSessionButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				keepSessionAlive();
-				timer.cancel();
-				hide();
-			}
-		});
-		bb.add(refreshSessionButton);
+      VerticalLayoutContainer hlc = new VerticalLayoutContainer();
+      add(hlc, new MarginData(10));
 
-		forceLayout();
-	}
+      Label text = new Label(LoginMessages.INSTANCE.expirationWarningMessage());
+      hlc.add(text);
+      hlc.add(new Label(" "));
+      hlc.add(progressBar, new VerticalLayoutData(1, -1d, new Margins(5, 5, 5, 5)));
 
-	private void forceLogout(){
-		refreshSessionButton.disable();
-		loginService.logoff();
-	}
+      ButtonBar bb = getButtonBar();
+      refreshSessionButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      refreshSessionButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            keepSessionAlive();
+            timer.cancel();
+            hide();
+         }
+      });
+      bb.add(refreshSessionButton);
 
-	private void keepSessionAlive(){
-		loginService.tryReAuthenticate(new AuthenticateCallback() {
-			@Override
-			public void execute(boolean authenticateSucceeded) {
-				
-			}
-		});
-	}
+      forceLayout();
+   }
+
+   private void forceLogout() {
+      refreshSessionButton.disable();
+      loginService.logoff();
+   }
+
+   private void keepSessionAlive() {
+      loginService.tryReAuthenticate(new AuthenticateCallback() {
+         @Override
+         public void execute(boolean authenticateSucceeded) {
+
+         }
+      });
+   }
 
 }

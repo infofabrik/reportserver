@@ -10,25 +10,23 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class QueryCommentAdderHooker implements TableDbDatasourceOpenedHook {
 
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	
-	@Inject
-	public QueryCommentAdderHooker(
-			Provider<AuthenticatorService> authenticatorServiceProvider) {
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
-	@Override
-	public void datasourceOpenend(TableDBDataSource tableDBDataSource,
-			String executorToken) {
-		try{
-			tableDBDataSource.addQueryComment("token: " + String.valueOf(executorToken));
-			
-			User currentUser = authenticatorServiceProvider.get().getCurrentUser();
-			if(null != currentUser)
-				tableDBDataSource.addQueryComment("currentuser: " + String.valueOf(currentUser.getId()));
-		}catch(Exception e){
-		}
-	}
+   @Inject
+   public QueryCommentAdderHooker(Provider<AuthenticatorService> authenticatorServiceProvider) {
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+   }
+
+   @Override
+   public void datasourceOpenend(TableDBDataSource tableDBDataSource, String executorToken) {
+      try {
+         tableDBDataSource.addQueryComment("token: " + String.valueOf(executorToken));
+
+         User currentUser = authenticatorServiceProvider.get().getCurrentUser();
+         if (null != currentUser)
+            tableDBDataSource.addQueryComment("currentuser: " + String.valueOf(currentUser.getId()));
+      } catch (Exception e) {
+      }
+   }
 
 }

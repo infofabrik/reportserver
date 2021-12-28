@@ -21,89 +21,86 @@ import net.datenwerke.rs.enterprise.client.EnterpriseUiService;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class CrystalReportConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<CrystalReportForm> adminFormProvider;
-	private final CrystalUiService crystalService;
-	private final EnterpriseUiService enterpriseService;
-	
-	@Inject
-	public CrystalReportConfigHooker(
-			Provider<CrystalReportForm> adminFormProvider,
-			CrystalUiService crystalService,
-			EnterpriseUiService enterpriseService
-	) {
-		this.adminFormProvider = adminFormProvider;
-		this.crystalService = crystalService;
-		this.enterpriseService = enterpriseService;
-	}
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof CrystalReportDto;
-	}
+   private final Provider<CrystalReportForm> adminFormProvider;
+   private final CrystalUiService crystalService;
+   private final EnterpriseUiService enterpriseService;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   @Inject
+   public CrystalReportConfigHooker(Provider<CrystalReportForm> adminFormProvider, CrystalUiService crystalService,
+         EnterpriseUiService enterpriseService) {
+      this.adminFormProvider = adminFormProvider;
+      this.crystalService = crystalService;
+      this.enterpriseService = enterpriseService;
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return CrystalReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof CrystalReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.REPORT_CRYSTAL.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.REPORT_CRYSTAL.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return CrystalReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.REPORT_CRYSTAL_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.REPORT_CRYSTAL.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.REPORT_CRYSTAL_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.REPORT_CRYSTAL.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return CrystalMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.REPORT_CRYSTAL_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return CrystalReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.REPORT_CRYSTAL_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return CrystalMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return CrystalReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new CrystalReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new CrystalReportVariantDtoDec();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return crystalService.isAvailable() && enterpriseService.isEnterprise();
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource(1);
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new CrystalReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new CrystalReportVariantDtoDec();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return crystalService.isAvailable() && enterpriseService.isEnterprise();
+   }
 }

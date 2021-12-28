@@ -49,11 +49,8 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public OneDriveExportSnippetProvider(
-         @DatasinkTreeOneDrive Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager, 
-         Provider<OneDriveDao> datasinkDaoProvider
-         ) {
+   public OneDriveExportSnippetProvider(@DatasinkTreeOneDrive Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<OneDriveDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -111,7 +108,7 @@ public class OneDriveExportSnippetProvider implements ScheduleExportSnippetProvi
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

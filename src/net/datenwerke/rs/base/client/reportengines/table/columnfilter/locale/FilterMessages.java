@@ -5,185 +5,212 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface FilterMessages extends Messages {
 
-	public static final FilterMessages INSTANCE = GWT.create(FilterMessages.class);
-	
-	String excludeRangeTitle();
+   public static final FilterMessages INSTANCE = GWT.create(FilterMessages.class);
 
-	String excludeTitle();
+   String excludeRangeTitle();
 
-	String includeRangesTitle();
+   String excludeTitle();
 
-	String includeTitle();
+   String includeRangesTitle();
 
-	String grid();
+   String includeTitle();
 
-	String value();
+   String grid();
 
-	String textViewTitle();
+   String value();
 
-	String textViewInvalidMessage();
+   String textViewTitle();
 
-	String rangeFrom();
+   String textViewInvalidMessage();
 
-	String rangeTo();
+   String rangeFrom();
 
-	String columnSelectionTitle();
+   String rangeTo();
 
-	String editFilter();
+   String columnSelectionTitle();
 
-	String selection();
+   String editFilter();
 
-	String linkedDescription();
+   String selection();
 
-	String column();
+   String linkedDescription();
 
-	String highlightColor();
+   String column();
 
-	String alias();
+   String highlightColor();
 
-	String removeAllFilters();
+   String alias();
 
-	String removeColumn();
+   String removeAllFilters();
 
-	String selectColumns();
+   String removeColumn();
 
-	String removeAllColumns();
+   String selectColumns();
 
-	String filterHeading();
+   String removeAllColumns();
 
-	String generalColumnProperties();
+   String filterHeading();
 
-	String columnProperties();
+   String generalColumnProperties();
 
-	String aggregateHeading();
+   String columnProperties();
 
-	String aggregate();
+   String aggregateHeading();
 
-	String properties();
+   String aggregate();
 
-	String aggregateFunction();
+   String properties();
 
-	String defaultAlias();
+   String aggregateFunction();
 
-	String description();
+   String defaultAlias();
 
-	String filter();
+   String description();
 
-	String type();
+   String filter();
 
-	String distinctFilter();
-	
-	String errorRangeParseTextLine(String line);
-	String errorRangeNoHyphen(String line);
+   String type();
 
-	String validationErrorNoNumberFormatInvalidCharacter(String value);
-	String validationErrorNoIntegerFormatInvalidCharacter(String value);
+   String distinctFilter();
 
-	String loadColumnsMessage();
+   String errorRangeParseTextLine(String line);
 
-	String orderHeading();
+   String errorRangeNoHyphen(String line);
 
-	String visible();
+   String validationErrorNoNumberFormatInvalidCharacter(String value);
 
-	String hidden();
+   String validationErrorNoIntegerFormatInvalidCharacter(String value);
 
-	String nullHandling();
-	
-	String orderAsc();
-	String orderDesc();
-	String orderNone();
+   String loadColumnsMessage();
 
-	String excludeValue();
-	String includeValue();
+   String orderHeading();
 
-	String nullHandlingLabel();
+   String visible();
 
-	String filterDialogHeading(String name, String name2);
-	
-	String previewEnhancerMenuFilterHeading();
+   String hidden();
 
-	String caseSensitiveLabel();
+   String nullHandling();
 
-	String editColumnFilter();
+   String orderAsc();
 
-	String editColumnFormat();
+   String orderDesc();
 
-	String format();
-	String formatTitle();
+   String orderNone();
 
-	String removeFormat();
+   String excludeValue();
 
-	String decimalPlacesLabel();
-	String thousandSeparatorLabel();
-	String currencySymbolLabel();
-	String formatDateBaseFormat();
-	String formatDateTargetFormat();
-	String formatDateRollover();
-	String formatDateReplaceError();
-	String formatDateReplaceErrorWith();
+   String includeValue();
 
-	String formatDialogHeading(String name, String type);
+   String nullHandlingLabel();
 
-	String formatTypeDefault();
-	String formatTypeNumber();
-	String formatTypeCurrency();
-	String formatTypeDate();
-	String formatTypePercent();
-	String formatTypeScientific();
-	String formatTypeText();
-	String formatTypeTemplate();
+   String filterDialogHeading(String name, String name2);
 
-	String formateTemplateLabel();
+   String previewEnhancerMenuFilterHeading();
 
-	String editSubtotals();
+   String caseSensitiveLabel();
 
-	String subtotalGroupColumnsLabel();
+   String editColumnFilter();
 
-	String selectedGroupingColumns();
+   String editColumnFormat();
 
-	String moveColumnsToTop();
-	String moveColumnsToBottom();
+   String format();
 
-	String nullReplacementLabel();
+   String formatTitle();
 
-	String formatTypeLabel();
-	
-	String nullHandlingDefaultLabel();
-	String nullHandlingIncludeLabel();
-	String nullHandlingExcludeLabel();
+   String removeFormat();
 
-	String optionsLabel();
+   String decimalPlacesLabel();
 
-	String noSearchPossible();
+   String thousandSeparatorLabel();
 
-	String validationErrorTimeStamp(String value);
+   String currencySymbolLabel();
 
-	String validationErrorDate(String value);
+   String formatDateBaseFormat();
 
-	String noFloatEqualFilterWarning();
+   String formatDateTargetFormat();
 
-	String blobAggregateCancelTitle();
+   String formatDateRollover();
 
-	String blobAggregateCancelMsg();
+   String formatDateReplaceError();
 
-	String columnCannotBeImportedTitle();
-	String columnNotAllowedInReport(String column);
+   String formatDateReplaceErrorWith();
 
-	String convertToPrefilterTitle();
-	
-	String convertToPrefilterText();
+   String formatDialogHeading(String name, String type);
 
-	String dimension();
+   String formatTypeDefault();
 
-	String deleteColumnOnKeyPressTitle();
+   String formatTypeNumber();
 
-	String deleteColumnOnKeyPressText();
+   String formatTypeCurrency();
 
-	String subTotalFilterWarningMsg();
-	
-	String defaultWidth();
-	String width();
-	String failed();
-	String previewWidthWarningMsg();
+   String formatTypeDate();
+
+   String formatTypePercent();
+
+   String formatTypeScientific();
+
+   String formatTypeText();
+
+   String formatTypeTemplate();
+
+   String formateTemplateLabel();
+
+   String editSubtotals();
+
+   String subtotalGroupColumnsLabel();
+
+   String selectedGroupingColumns();
+
+   String moveColumnsToTop();
+
+   String moveColumnsToBottom();
+
+   String nullReplacementLabel();
+
+   String formatTypeLabel();
+
+   String nullHandlingDefaultLabel();
+
+   String nullHandlingIncludeLabel();
+
+   String nullHandlingExcludeLabel();
+
+   String optionsLabel();
+
+   String noSearchPossible();
+
+   String validationErrorTimeStamp(String value);
+
+   String validationErrorDate(String value);
+
+   String noFloatEqualFilterWarning();
+
+   String blobAggregateCancelTitle();
+
+   String blobAggregateCancelMsg();
+
+   String columnCannotBeImportedTitle();
+
+   String columnNotAllowedInReport(String column);
+
+   String convertToPrefilterTitle();
+
+   String convertToPrefilterText();
+
+   String dimension();
+
+   String deleteColumnOnKeyPressTitle();
+
+   String deleteColumnOnKeyPressText();
+
+   String subTotalFilterWarningMsg();
+
+   String defaultWidth();
+
+   String width();
+
+   String failed();
+
+   String previewWidthWarningMsg();
 
 }

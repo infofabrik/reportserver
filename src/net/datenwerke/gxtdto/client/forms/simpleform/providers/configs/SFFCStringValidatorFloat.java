@@ -15,36 +15,35 @@ import net.datenwerke.gxtdto.client.i18n.I18nToolsUIService;
 
 public class SFFCStringValidatorFloat implements SFFCStringValidator {
 
-	@Inject
-	protected static I18nToolsUIService i18nTools;
-	private boolean allowBlank;
-	
-	public Validator<String> getValidator() {
-		return new Validator<String>() {
+   @Inject
+   protected static I18nToolsUIService i18nTools;
+   private boolean allowBlank;
 
-			@Override
-			public List<EditorError> validate(Editor<String> editor, String value) {
-				
-				if(allowBlank && (null == value || value.isEmpty()))
-					return null;
-				
-				value = i18nTools.translateNumberFromUserToSystem(value);
-				try{
-					new BigDecimal(value);
-					return null;
-				} catch(NumberFormatException e){
-					List<EditorError> list = new ArrayList<EditorError>();
-					list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidDecimal(), value));
-					return list;
-				}
-			}
-		};
-	}
+   public Validator<String> getValidator() {
+      return new Validator<String>() {
 
-	@Override
-	public void setAllowBlank(boolean allowBlank) {
-		this.allowBlank = allowBlank;
-	}
-	
+         @Override
+         public List<EditorError> validate(Editor<String> editor, String value) {
+
+            if (allowBlank && (null == value || value.isEmpty()))
+               return null;
+
+            value = i18nTools.translateNumberFromUserToSystem(value);
+            try {
+               new BigDecimal(value);
+               return null;
+            } catch (NumberFormatException e) {
+               List<EditorError> list = new ArrayList<EditorError>();
+               list.add(new DefaultEditorError(editor, FormsMessages.INSTANCE.invalidDecimal(), value));
+               return list;
+            }
+         }
+      };
+   }
+
+   @Override
+   public void setAllowBlank(boolean allowBlank) {
+      this.allowBlank = allowBlank;
+   }
 
 }

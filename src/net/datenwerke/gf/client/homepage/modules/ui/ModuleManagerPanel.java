@@ -21,79 +21,77 @@ import net.datenwerke.gxtdto.client.theme.CssClassConstant;
 @Singleton
 public class ModuleManagerPanel extends DwContentPanel {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-body";
-	
-	private CardLayoutContainer container;
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-body";
 
-	private Map<ClientModule, Widget> moduleWidgetMap = new HashMap<ClientModule, Widget>();
-	
-	private Widget lastActiveNonRecycleable;
-	private ClientModule lastModule;
-	
-	@Inject
-	public ModuleManagerPanel(
-		){
-		
-		initializeUI();
-	}
-	
-	@Override
-	public String getCssName() {
-		return super.getCssName() + " " + CSS_NAME;
-	}
+   private CardLayoutContainer container;
 
-	/**
-	 * builds the basic UI
-	 */
-	private void initializeUI() {
-		setHeaderVisible(false);
-		setBorders(false);
-		setBodyBorder(false);
-		
-		container = new CardLayoutContainer();
-		add(container, new MarginData(15,10,10,10));
-	}
+   private Map<ClientModule, Widget> moduleWidgetMap = new HashMap<ClientModule, Widget>();
 
-	public void displayModule(ClientModule module) {
-		if(module == lastModule)
-			return;
-			
-		/* remove last non recycleable */
-		if(null != lastActiveNonRecycleable){
-			lastActiveNonRecycleable.removeFromParent();
-			lastActiveNonRecycleable = null;
-		}
-		
-		if(module.isRecyclable()){
-			if(! moduleWidgetMap.containsKey(module)){
-				Widget widget = module.getMainWidget();
-				moduleWidgetMap.put(module, widget);
-			
-				container.add(widget);
-			} 
+   private Widget lastActiveNonRecycleable;
+   private ClientModule lastModule;
 
-			Widget widget = moduleWidgetMap.get(module);
+   @Inject
+   public ModuleManagerPanel() {
 
-			/* set active */
-			container.setActiveWidget(widget);
-		} else {
-			Widget widget = module.getMainWidget();
-			container.add(widget);
-			container.setActiveWidget(widget);
-			
-			lastActiveNonRecycleable = widget;
-		}
-		
-		lastModule = module;
-	}
+      initializeUI();
+   }
 
-	public void removeModule(ClientTempModule module) {
-		if(moduleWidgetMap.containsKey(module)){
-			moduleWidgetMap.get(module).removeFromParent();
-			moduleWidgetMap.remove(module);
-		}
-	}
+   @Override
+   public String getCssName() {
+      return super.getCssName() + " " + CSS_NAME;
+   }
 
-	
+   /**
+    * builds the basic UI
+    */
+   private void initializeUI() {
+      setHeaderVisible(false);
+      setBorders(false);
+      setBodyBorder(false);
+
+      container = new CardLayoutContainer();
+      add(container, new MarginData(15, 10, 10, 10));
+   }
+
+   public void displayModule(ClientModule module) {
+      if (module == lastModule)
+         return;
+
+      /* remove last non recycleable */
+      if (null != lastActiveNonRecycleable) {
+         lastActiveNonRecycleable.removeFromParent();
+         lastActiveNonRecycleable = null;
+      }
+
+      if (module.isRecyclable()) {
+         if (!moduleWidgetMap.containsKey(module)) {
+            Widget widget = module.getMainWidget();
+            moduleWidgetMap.put(module, widget);
+
+            container.add(widget);
+         }
+
+         Widget widget = moduleWidgetMap.get(module);
+
+         /* set active */
+         container.setActiveWidget(widget);
+      } else {
+         Widget widget = module.getMainWidget();
+         container.add(widget);
+         container.setActiveWidget(widget);
+
+         lastActiveNonRecycleable = widget;
+      }
+
+      lastModule = module;
+   }
+
+   public void removeModule(ClientTempModule module) {
+      if (moduleWidgetMap.containsKey(module)) {
+         moduleWidgetMap.get(module).removeFromParent();
+         moduleWidgetMap.remove(module);
+      }
+   }
+
 }

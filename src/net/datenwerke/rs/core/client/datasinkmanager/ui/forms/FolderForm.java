@@ -12,14 +12,16 @@ import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
  *
  */
 public class FolderForm extends SimpleFormView {
-	
-	@Override
-	public void configureSimpleForm(SimpleForm form) {
-		form.setHeading(DatasinksMessages.INSTANCE.editFolder() + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
-		
-		form.addField(String.class, DatasinkFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name()); 
-		
-		form.addField(String.class, DatasinkFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(), new SFFCTextAreaImpl());
-	}
+
+   @Override
+   public void configureSimpleForm(SimpleForm form) {
+      form.setHeading(DatasinksMessages.INSTANCE.editFolder()
+            + (getSelectedNode() == null ? "" : " (" + getSelectedNode().getId() + ")"));
+
+      form.addField(String.class, DatasinkFolderDtoPA.INSTANCE.name(), BaseMessages.INSTANCE.name());
+
+      form.addField(String.class, DatasinkFolderDtoPA.INSTANCE.description(), BaseMessages.INSTANCE.description(),
+            new SFFCTextAreaImpl());
+   }
 
 }

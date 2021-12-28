@@ -5,10 +5,10 @@ import com.google.inject.Singleton;
 
 public class ThemeUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(ThemeUiService.class).to(ThemeUiServiceImpl.class).in(Singleton.class);
-		bind(ThemeUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(ThemeUiService.class).to(ThemeUiServiceImpl.class).in(Singleton.class);
+      bind(ThemeUiStartup.class).asEagerSingleton();
+   }
 
 }

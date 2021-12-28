@@ -9,12 +9,12 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(StupidOracleServiceImpl.class)
 public interface StupidOracleService {
 
-	boolean isOracleTimestamp(Object obj);
+   boolean isOracleTimestamp(Object obj);
 
-	boolean isOracleDatum(Object obj);
+   boolean isOracleDatum(Object obj);
 
-	Timestamp getTimeStampFromOracleTimestamp(Object obj, Connection con);
+   Timestamp getTimeStampFromOracleTimestamp(Object obj, Connection con);
 
-	Date getDateFromOracleDatum(Object obj);
+   Date getDateFromOracleDatum(Object obj);
 
 }

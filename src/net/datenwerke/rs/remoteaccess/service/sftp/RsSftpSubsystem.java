@@ -24,7 +24,7 @@ public class RsSftpSubsystem extends SftpSubsystem {
    private final Provider<UnitOfWork> unitOfWorkProvider;
    private final Provider<EntityManager> entityManagerProvider;
 
-   public RsSftpSubsystem(Provider<UnitOfWork> unitOfWorkProvider, Provider<EntityManager> entityManagerProvider, 
+   public RsSftpSubsystem(Provider<UnitOfWork> unitOfWorkProvider, Provider<EntityManager> entityManagerProvider,
          SftpSubsystemConfigurator conf, ChannelSession channel) {
       super(channel, conf);
       this.unitOfWorkProvider = unitOfWorkProvider;
@@ -38,23 +38,22 @@ public class RsSftpSubsystem extends SftpSubsystem {
       int type = buffer.getUByte();
       int id = buffer.getInt();
       if (log.isDebugEnabled()) {
-          log.debug("process({})[length={}, type={}, id={}] processing",
-                  getServerSession(), length, SftpConstants.getCommandMessageName(type), id);
+         log.debug("process({})[length={}, type={}, id={}] processing", getServerSession(), length,
+               SftpConstants.getCommandMessageName(type), id);
       }
       try {
-          SftpEventListener listener = getSftpEventListenerProxy();
-          ServerSession session = getServerSession();
-          listener.received(session, type, id);
+         SftpEventListener listener = getSftpEventListenerProxy();
+         ServerSession session = getServerSession();
+         listener.received(session, type, id);
       } catch (IOException | RuntimeException e) {
-          if (type == SftpConstants.SSH_FXP_INIT) {
-              throw e;
-          }
-          sendStatus(prepareReply(buffer), id, e, type);
-          return;
+         if (type == SftpConstants.SSH_FXP_INIT) {
+            throw e;
+         }
+         sendStatus(prepareReply(buffer), id, e, type);
+         return;
       }
       /* end super.process() */
-      
-      
+
       UnitOfWork unitOfWork = null;
       EntityManager em = null;
       boolean success = false;

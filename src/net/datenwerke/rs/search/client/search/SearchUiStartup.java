@@ -4,8 +4,8 @@ import com.google.inject.Inject;
 
 public class SearchUiStartup {
 
-	@Inject
-	public SearchUiStartup(){
-		
-	}
+   @Inject
+   public SearchUiStartup() {
+
+   }
 }

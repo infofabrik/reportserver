@@ -15,78 +15,78 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public class StrippedDownTypeAwareGridDropTarget<M> extends TypeAwareGridDropTarget<M> {
 
-	private final Class<? extends AbstractStrippedDownNode> strippedDownType;
+   private final Class<? extends AbstractStrippedDownNode> strippedDownType;
 
-	public StrippedDownTypeAwareGridDropTarget(Grid<M> grid, Class<? extends AbstractStrippedDownNode> strippedDownType,
-			Class<?>... types) {
-		super(grid, types);
+   public StrippedDownTypeAwareGridDropTarget(Grid<M> grid, Class<? extends AbstractStrippedDownNode> strippedDownType,
+         Class<?>... types) {
+      super(grid, types);
 
-		this.strippedDownType = strippedDownType;
-	}
+      this.strippedDownType = strippedDownType;
+   }
 
-	@Override
-	protected void onDragMove(DndDragMoveEvent event) {
-		List list = (List) event.getData();
-		if (list.size() > 0) {
-			Object m = list.get(0);
+   @Override
+   protected void onDragMove(DndDragMoveEvent event) {
+      List list = (List) event.getData();
+      if (list.size() > 0) {
+         Object m = list.get(0);
 
-			/* search for object */
-			Object data = m;
-			if (m instanceof TreeNode)
-				data = ((TreeNode) m).getData();
+         /* search for object */
+         Object data = m;
+         if (m instanceof TreeNode)
+            data = ((TreeNode) m).getData();
 
-			boolean foundType = false;
-			if (strippedDownType.equals(data.getClass())) {
-				foundType = true;
-			}
-			
-			if (! foundType) {
-				for (Class<?> type : types) {
-					if (type.equals(data.getClass())) {
-						foundType = true;
-						break;
-					}
-				}
-			}
+         boolean foundType = false;
+         if (strippedDownType.equals(data.getClass())) {
+            foundType = true;
+         }
 
-			if (foundType) {
-				super.onDragMove(event);
-			} else {
-				event.setCancelled(true);
-				event.getStatusProxy().setStatus(false);
-				return;
-			}
-		}
-	}
+         if (!foundType) {
+            for (Class<?> type : types) {
+               if (type.equals(data.getClass())) {
+                  foundType = true;
+                  break;
+               }
+            }
+         }
 
-	@Override
-	protected List<Object> prepareDropData(Object data, boolean convertTreeStoreModel) {
-		List<Object> models = new ArrayList<Object>();
+         if (foundType) {
+            super.onDragMove(event);
+         } else {
+            event.setCancelled(true);
+            event.getStatusProxy().setStatus(false);
+            return;
+         }
+      }
+   }
 
-		if (data instanceof TreeNode) {
-			models.add(((TreeNode) data).getData());
-		} else if (data instanceof List) {
-			for (Object obj : (List) data) {
-				if (obj instanceof TreeNode) {
-					Object treeNodeData = ((TreeNode) obj).getData();
-					if (treeNodeData instanceof AbstractStrippedDownNode) {
-						models.add(treeNodeData);
-					} else {
-						Object strippedDownObject = getStrippedDownObject(treeNodeData);
-						models.add(strippedDownObject);
-					}
-				}
-			}
-		}
+   @Override
+   protected List<Object> prepareDropData(Object data, boolean convertTreeStoreModel) {
+      List<Object> models = new ArrayList<Object>();
 
-		return models;
-	}
+      if (data instanceof TreeNode) {
+         models.add(((TreeNode) data).getData());
+      } else if (data instanceof List) {
+         for (Object obj : (List) data) {
+            if (obj instanceof TreeNode) {
+               Object treeNodeData = ((TreeNode) obj).getData();
+               if (treeNodeData instanceof AbstractStrippedDownNode) {
+                  models.add(treeNodeData);
+               } else {
+                  Object strippedDownObject = getStrippedDownObject(treeNodeData);
+                  models.add(strippedDownObject);
+               }
+            }
+         }
+      }
 
-	private Object getStrippedDownObject(Object treeNodeData) {
-		if (treeNodeData instanceof UserDto)
-			return StrippedDownUser.fromUser((UserDto) treeNodeData);
-		else if (treeNodeData instanceof GroupDto)
-			return StrippedDownGroup.fromGroup((GroupDto) treeNodeData);
-		return null;
-	}
+      return models;
+   }
+
+   private Object getStrippedDownObject(Object treeNodeData) {
+      if (treeNodeData instanceof UserDto)
+         return StrippedDownUser.fromUser((UserDto) treeNodeData);
+      else if (treeNodeData instanceof GroupDto)
+         return StrippedDownGroup.fromGroup((GroupDto) treeNodeData);
+      return null;
+   }
 }

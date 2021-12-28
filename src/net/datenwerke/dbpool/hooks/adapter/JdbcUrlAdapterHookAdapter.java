@@ -9,11 +9,9 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class JdbcUrlAdapterHookAdapter implements JdbcUrlAdapterHook {
 
-	@Override
-	public String adaptJdbcUrl(String url)  {
-		return url;
-	}
-
-
+   @Override
+   public String adaptJdbcUrl(String url) {
+      return url;
+   }
 
 }

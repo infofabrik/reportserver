@@ -9,6 +9,6 @@ import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 @HookConfig
 public interface OlapConnectionHook extends Hook {
 
-	public OlapConnection postprocessConnection(MondrianDatasource mondrianDatasource, OlapConnection connection);
-	
+   public OlapConnection postprocessConnection(MondrianDatasource mondrianDatasource, OlapConnection connection);
+
 }

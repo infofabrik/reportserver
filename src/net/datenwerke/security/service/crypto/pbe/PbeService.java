@@ -5,26 +5,26 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface PbeService {
 
-	public EncryptionService getEncryptionService();
+   public EncryptionService getEncryptionService();
 
-	EncryptionService getClientEncryptionService();
-	
-	EncryptionService getClientEncryptionService(User user);
-	
-	EncryptionService getEncryptionService(User user);
-	
-	EncryptionService getEncryptionService(String passphrase);
+   EncryptionService getClientEncryptionService();
 
-	EncryptionService getEncryptionService(String passphrase, String salt);
+   EncryptionService getClientEncryptionService(User user);
 
-	public String getSalt();
-	
-	public int getIterations();
-	
-	public int getKeyLength();
+   EncryptionService getEncryptionService(User user);
 
-	String getCipherAlgorithm();
+   EncryptionService getEncryptionService(String passphrase);
 
-	String getKeySpecAlgorithm();
-	
+   EncryptionService getEncryptionService(String passphrase, String salt);
+
+   public String getSalt();
+
+   public int getIterations();
+
+   public int getKeyLength();
+
+   String getCipherAlgorithm();
+
+   String getKeySpecAlgorithm();
+
 }

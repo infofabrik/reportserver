@@ -20,74 +20,72 @@ import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
 @Entity
-@Table(name="BIRT_REPORT_VARIANT")
+@Table(name = "BIRT_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.birt.client.reportengines.dto", 
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", createDecorator = true)
 public class BirtReportVariant extends BirtReport implements ReportVariant {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 23275428041040698L;
-	
-	public BirtReport getBaseReport() {
-		AbstractReportManagerNode parent = getParent();
-		if(parent instanceof HibernateProxy)
-			parent = (AbstractReportManagerNode) ((HibernateProxy)parent).getHibernateLazyInitializer().getImplementation();
-		return (BirtReport) parent;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 23275428041040698L;
 
-	public void setBaseReport(Report baseReport) {
-		throw new IllegalStateException("should not be called on server");
-	}
+   public BirtReport getBaseReport() {
+      AbstractReportManagerNode parent = getParent();
+      if (parent instanceof HibernateProxy)
+         parent = (AbstractReportManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+               .getImplementation();
+      return (BirtReport) parent;
+   }
 
-	@Override
-	public BirtReportFile getReportFile() {
-		return getBaseReport().getReportFile();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setReportFile(BirtReportFile reportFile) {
-		throw new NotImplementedException("not implemented");
-	}
+   public void setBaseReport(Report baseReport) {
+      throw new IllegalStateException("should not be called on server");
+   }
 
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return getBaseReport().getDatasourceContainer();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return getBaseReport().getParameterDefinitions();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	/**
-	 */
-	@ClonePostProcessor
-	public void guideCloningProcess(Object report){
-		super.setParameterDefinitions(null);
-		super.setDatasourceContainer(null);
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Override
+   public BirtReportFile getReportFile() {
+      return getBaseReport().getReportFile();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setReportFile(BirtReportFile reportFile) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return getBaseReport().getDatasourceContainer();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public List<ParameterDefinition> getParameterDefinitions() {
+      return getBaseReport().getParameterDefinitions();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setParameterDefinitions(List<ParameterDefinition> parameters) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   /**
+    */
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      super.setParameterDefinitions(null);
+      super.setDatasourceContainer(null);
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

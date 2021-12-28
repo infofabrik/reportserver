@@ -11,15 +11,13 @@ import net.datenwerke.rs.incubator.service.exportmetadata.hookers.MetadataTableP
 
 public class ExportMetadataStartup {
 
-	@Inject
-	public ExportMetadataStartup(
-		HookHandlerService hookHandlerService,
-		
-		Provider<MetadataJasperPdfExportHooker> jasperPdfExportHookerProvider,
-		Provider<MetadataTablePdfExportHooker> tablePdfExportHookerProvider
-		){
-		
-		hookHandlerService.attachHooker(JasperExportHook.class, jasperPdfExportHookerProvider);
-		hookHandlerService.attachHooker(TableExportHook.class, tablePdfExportHookerProvider);
-	}
+   @Inject
+   public ExportMetadataStartup(HookHandlerService hookHandlerService,
+
+         Provider<MetadataJasperPdfExportHooker> jasperPdfExportHookerProvider,
+         Provider<MetadataTablePdfExportHooker> tablePdfExportHookerProvider) {
+
+      hookHandlerService.attachHooker(JasperExportHook.class, jasperPdfExportHookerProvider);
+      hookHandlerService.attachHooker(TableExportHook.class, tablePdfExportHookerProvider);
+   }
 }

@@ -4,5 +4,5 @@ import com.sencha.gxt.core.client.ValueProvider;
 
 public interface HasValueProviderByPath<M> {
 
-	public ValueProvider<M, ?> getValueProviderByPath(String path);
+   public ValueProvider<M, ?> getValueProviderByPath(String path);
 }

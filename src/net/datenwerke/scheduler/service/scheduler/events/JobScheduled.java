@@ -4,13 +4,13 @@ import net.datenwerke.security.service.eventlogger.jpa.JpaEvent;
 
 public class JobScheduled extends JpaEvent {
 
-	public JobScheduled(Object entity, Object... properties) {
-		super(entity, properties);
-	}
+   public JobScheduled(Object entity, Object... properties) {
+      super(entity, properties);
+   }
 
-	@Override
-	public String getLoggedAction() {
-		return "JOB_SCHEDULED";
-	}
+   @Override
+   public String getLoggedAction() {
+      return "JOB_SCHEDULED";
+   }
 
 }

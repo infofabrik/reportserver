@@ -70,9 +70,11 @@ public interface DatasinkService {
     */
    void exportIntoDatasink(Object report, DatasinkDefinition datasink, BasicDatasinkService basicDatasinkService,
          DatasinkConfiguration config) throws DatasinkExportException;
-   
+
    Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);
-   
-   void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto, BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed) throws ServerCallFailedException;
+
+   void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto,
+         BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed)
+         throws ServerCallFailedException;
 
 }

@@ -10,9 +10,9 @@ import net.datenwerke.rs.core.service.reportmanager.output.AbstractReportOutputG
 @Singleton
 public class BirtOutputGeneratorManager extends AbstractReportOutputGeneratorManager<BirtOutputGenerator> {
 
-	@Inject
-	public BirtOutputGeneratorManager(HookHandlerService hookHandler) {
-		super(hookHandler, BirtOutputGeneratorProviderHook.class);
-	}
+   @Inject
+   public BirtOutputGeneratorManager(HookHandlerService hookHandler) {
+      super(hookHandler, BirtOutputGeneratorProviderHook.class);
+   }
 
 }

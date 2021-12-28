@@ -8,13 +8,13 @@ import net.datenwerke.rs.adminutils.client.systemconsole.memory.MemoryConsoleUiM
 
 public class SystemConsoleUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(SystemConsoleUiStartup.class).asEagerSingleton();
-		
-		install(new GeneralInfoUiModule());
-		install(new MemoryConsoleUiModule());
-		install(new ConnectionPoolConsoleUiModule());
-	}
+   @Override
+   protected void configure() {
+      bind(SystemConsoleUiStartup.class).asEagerSingleton();
+
+      install(new GeneralInfoUiModule());
+      install(new MemoryConsoleUiModule());
+      install(new ConnectionPoolConsoleUiModule());
+   }
 
 }

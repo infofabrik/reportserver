@@ -12,42 +12,41 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  */
 public class ColumnFilterDtoDec extends ColumnFilterDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFilterDtoDec() {
+      super();
+   }
 
-	public ColumnFilterDtoDec() {
-		super();
-	}
+   @Override
+   public String toDisplayTitle() {
+      return "Filter: " + (null != getColumn() ? getColumn().getName() : "");
+   }
 
-	@Override
-	public String toDisplayTitle() {
-		return "Filter: " + (null != getColumn() ? getColumn().getName() : "");
-	}
+   @Override
+   public boolean isStillValid(TableReportDto report) {
+      ColumnDto a = getColumn();
 
-	@Override
-	public boolean isStillValid(TableReportDto report) {
-		ColumnDto a = getColumn();
+      if (null == a)
+         return false;
 
-		if(null == a)
-			return false;
-		
-		if(! (a instanceof ColumnReferenceDto))
-			return true;
-		
-		for(ColumnDto col : report.getAdditionalColumns())
-			if(a.getName().equals(col.getName()))
-				return true;
-		
-		return false;
-	}
-	
-	@Override
-	public FilterSpecDto cloneFilter() {
-		ColumnFilterDtoDec clone = new ColumnFilterDtoDec();
+      if (!(a instanceof ColumnReferenceDto))
+         return true;
 
-		if(null != getColumn())
-			clone.setColumn(((ColumnDtoDec)getColumn()).cloneColumnForSelection());
-		
-		return clone;
-	}
+      for (ColumnDto col : report.getAdditionalColumns())
+         if (a.getName().equals(col.getName()))
+            return true;
+
+      return false;
+   }
+
+   @Override
+   public FilterSpecDto cloneFilter() {
+      ColumnFilterDtoDec clone = new ColumnFilterDtoDec();
+
+      if (null != getColumn())
+         clone.setColumn(((ColumnDtoDec) getColumn()).cloneColumnForSelection());
+
+      return clone;
+   }
 }

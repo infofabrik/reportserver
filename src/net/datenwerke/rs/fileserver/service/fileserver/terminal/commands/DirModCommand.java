@@ -16,35 +16,32 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.SubCommandContainerImpl
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
 public class DirModCommand extends SubCommandContainerImpl {
-	public static final String BASE_COMMAND = "dirmod";
+   public static final String BASE_COMMAND = "dirmod";
 
-	private final HookHandlerService hookHandler;
+   private final HookHandlerService hookHandler;
 
-	@Inject
-	public DirModCommand(HookHandlerService hookHandler) {
+   @Inject
+   public DirModCommand(HookHandlerService hookHandler) {
 
-		/* store objects */
-		this.hookHandler = hookHandler;
-	}
+      /* store objects */
+      this.hookHandler = hookHandler;
+   }
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
-	@Override
-	@CliHelpMessage(
-			messageClass = FileserverMessages.class, 
-			name = BASE_COMMAND, 
-			description = "commandDirMod_description")
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		return super.execute(parser, session);
-	}
+   @Override
+   @CliHelpMessage(messageClass = FileserverMessages.class, name = BASE_COMMAND, description = "commandDirMod_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      return super.execute(parser, session);
+   }
 
-	@Override
-	public List<SubCommand> getSubCommands() {
-		List<DirModCommandHook> list = hookHandler.getHookers(DirModCommandHook.class);
-		return new ArrayList<SubCommand>(list);
-	}
-	
+   @Override
+   public List<SubCommand> getSubCommands() {
+      List<DirModCommandHook> list = hookHandler.getHookers(DirModCommandHook.class);
+      return new ArrayList<SubCommand>(list);
+   }
+
 }

@@ -1,6 +1,5 @@
 package net.datenwerke.gf.client.treedb.selection;
 
-
 import java.text.ParseException;
 import java.util.List;
 
@@ -42,201 +41,199 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class SingleTreeSelectionField extends DwTwinTriggerField<AbstractNodeDto> {
 
-	@Inject
-	private static HistoryUiService historyService;
-	
-	@Inject
-	private static HookHandlerService hookHandlerService;
-	
-	@Inject
-	private static ClipboardUiService clipboardService;
-	
-	protected UITree treePanel;
-	protected Dto originalDTO;
-	private final Class<? extends RsDto>[] types;
-	
-	protected boolean ignoreTriggerClick = false;
+   @Inject
+   private static HistoryUiService historyService;
 
-	private HandlerRegistration triggerClickHandler;
+   @Inject
+   private static HookHandlerService hookHandlerService;
 
-	private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
-	
-	public SingleTreeSelectionField(Class<? extends RsDto>... types){
-		super(new DwTwinTriggerFieldCell<AbstractNodeDto>(), new PropertyEditor<AbstractNodeDto>() {
-			@Override
-			public String render(AbstractNodeDto object) {
-				return object.toDisplayTitle();
-			}
+   @Inject
+   private static ClipboardUiService clipboardService;
 
-			@Override
-			public AbstractNodeDto parse(CharSequence text)
-					throws ParseException {
-				return null;
-			}
-		});
-		this.types = types;
-		
-		
-		/* build ui */
-		initializeUI();
-	}
+   protected UITree treePanel;
+   protected Dto originalDTO;
+   private final Class<? extends RsDto>[] types;
 
-	private void initializeUI() {
-		/* configure triggerField */
-		setTriggerIcon(BaseIcon.SEARCH);
-		setHideTwinTrigger(true);
-		
-		/* must come after appearance config */
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			@Override
-			public void execute() {
-				setEditable(false);
-			}
-		});
-		
-		/* take care of drops */
-		initDropTarget();
-		
-		/* init context menu */
-		initContextMenu();
-		
-		addTriggerClickHandler();
-	}
-	
-	private void addTriggerClickHandler() {
-		if(null != triggerClickHandler)
-			return;
-		
-		/* listener */
-		triggerClickHandler = addTriggerClickHandler(new TriggerClickHandler() {
-			@Override
-			public void onTriggerClick(TriggerClickEvent event) {
-				triggerClicked();
-			}
-		});
-	}
+   protected boolean ignoreTriggerClick = false;
 
-	protected void initDropTarget() {
-		new TypeAwareDropTarget(this, types){
-			
-			@Override
-			protected void onDragDrop(DndDropEvent event) {
-				if(! (event.getData() instanceof List))
-					return;
-				
-				List list = (List) event.getData();
+   private HandlerRegistration triggerClickHandler;
 
-				if(list.size() > 0){
-					setValue((AbstractNodeDto) ((TreeStore.TreeNode)list.get(0)).getData(), true);
-				}
+   private SelectionFilter selectionFilter = SelectionFilter.DUMMY_FILTER;
 
-				super.onDragDrop(event);
-			}
-		};
-	}
-	
-	public UITree getTreePanel() {
-		return treePanel;
-	}
-	
-	public void setTreePanel(UITree treePanel) {
-		this.treePanel = treePanel;
-	}
+   public SingleTreeSelectionField(Class<? extends RsDto>... types) {
+      super(new DwTwinTriggerFieldCell<AbstractNodeDto>(), new PropertyEditor<AbstractNodeDto>() {
+         @Override
+         public String render(AbstractNodeDto object) {
+            return object.toDisplayTitle();
+         }
 
-	protected void initContextMenu() {
-		Menu menu = new DwMenu();
-		
-		ClipboardItem clipboardItem = clipboardService.getClipboardItem();
-		if(clipboardItem instanceof ClipboardDtoItem){
-			final Dto dto = ((ClipboardDtoItem)clipboardItem).getDto();
-			
-			if(null != dto && dto instanceof AbstractNodeDto && isValidType(dto.getClass())){
-				MenuItem insert = new DwMenuItem(BaseMessages.INSTANCE.insert());
-				menu.add(insert);
-				menu.addSelectionHandler(new SelectionHandler<Item>() {
-					@Override
-					public void onSelection(SelectionEvent<Item> event) {
-						setValue((AbstractNodeDto) dto, true);
-					}
-				});
-				
-				menu.add(new SeparatorMenuItem());
-			}
-		}
-		
-		menu.add(historyService.getJumpToMenuItem(new JumpToObjectCallbackImpl() {
-			@Override
-			public Dto getDtoTarget() {
-				return getValue();
-			}
-		}));
-		
-		for(AddSelectionFieldMenuItemHook hooker : hookHandlerService.getHookers(AddSelectionFieldMenuItemHook.class)){
-			hooker.addMenuEntries(this,menu,new MenuNodeProvider(){
-				@Override
-				public AbstractNodeDto getNode() {
-					return getValue();
-				}
-			});
-		}
-		
-		menu.add(new SeparatorMenuItem());
-		
-		MenuItem delete = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-		menu.add(delete);
-		
-		delete.addSelectionHandler(new SelectionHandler<Item>() {
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				setValue(null, true);
-			}
-		});
-		setContextMenu(menu);
-	}
-	
-	public boolean isValidType(Class<?> needle) {
-		while(null != needle){
-			for(Class<?> type : types)
-				if(type.equals(needle))
-					return true;
-			needle = needle.getSuperclass();
-		}
-		return false;
-	}
+         @Override
+         public AbstractNodeDto parse(CharSequence text) throws ParseException {
+            return null;
+         }
+      });
+      this.types = types;
 
-	public void triggerClicked(){
-		TreeSelectionPopup popup = new TreeSelectionPopup(treePanel, types){
-			@Override
-			protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
-				if(selectedItems.size() > 0)
-					setValue(selectedItems.get(0), true);
-				else
-					setValue(null, true);
-			}
-		};
-		popup.setSelectedValues(getValue());
-		popup.setSelectionFilter(selectionFilter);
-		
-		popup.show();
-	}
-	
-	public void setIgnoreTriggerClick(boolean ignoreTriggerClick) {
-		this.ignoreTriggerClick = ignoreTriggerClick;
-		if(ignoreTriggerClick && null != triggerClickHandler)
-			triggerClickHandler.removeHandler();
-		else
-			addTriggerClickHandler();
-	}
-	
-	public boolean isIgnoreTriggerClick() {
-		return ignoreTriggerClick;
-	}
-	
-	public SelectionFilter getSelectionFilter() {
-		return selectionFilter;
-	}
-	
-	public void setSelectionFilter(SelectionFilter selectionFilter) {
-		this.selectionFilter  = selectionFilter;
-	}
+      /* build ui */
+      initializeUI();
+   }
+
+   private void initializeUI() {
+      /* configure triggerField */
+      setTriggerIcon(BaseIcon.SEARCH);
+      setHideTwinTrigger(true);
+
+      /* must come after appearance config */
+      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+         @Override
+         public void execute() {
+            setEditable(false);
+         }
+      });
+
+      /* take care of drops */
+      initDropTarget();
+
+      /* init context menu */
+      initContextMenu();
+
+      addTriggerClickHandler();
+   }
+
+   private void addTriggerClickHandler() {
+      if (null != triggerClickHandler)
+         return;
+
+      /* listener */
+      triggerClickHandler = addTriggerClickHandler(new TriggerClickHandler() {
+         @Override
+         public void onTriggerClick(TriggerClickEvent event) {
+            triggerClicked();
+         }
+      });
+   }
+
+   protected void initDropTarget() {
+      new TypeAwareDropTarget(this, types) {
+
+         @Override
+         protected void onDragDrop(DndDropEvent event) {
+            if (!(event.getData() instanceof List))
+               return;
+
+            List list = (List) event.getData();
+
+            if (list.size() > 0) {
+               setValue((AbstractNodeDto) ((TreeStore.TreeNode) list.get(0)).getData(), true);
+            }
+
+            super.onDragDrop(event);
+         }
+      };
+   }
+
+   public UITree getTreePanel() {
+      return treePanel;
+   }
+
+   public void setTreePanel(UITree treePanel) {
+      this.treePanel = treePanel;
+   }
+
+   protected void initContextMenu() {
+      Menu menu = new DwMenu();
+
+      ClipboardItem clipboardItem = clipboardService.getClipboardItem();
+      if (clipboardItem instanceof ClipboardDtoItem) {
+         final Dto dto = ((ClipboardDtoItem) clipboardItem).getDto();
+
+         if (null != dto && dto instanceof AbstractNodeDto && isValidType(dto.getClass())) {
+            MenuItem insert = new DwMenuItem(BaseMessages.INSTANCE.insert());
+            menu.add(insert);
+            menu.addSelectionHandler(new SelectionHandler<Item>() {
+               @Override
+               public void onSelection(SelectionEvent<Item> event) {
+                  setValue((AbstractNodeDto) dto, true);
+               }
+            });
+
+            menu.add(new SeparatorMenuItem());
+         }
+      }
+
+      menu.add(historyService.getJumpToMenuItem(new JumpToObjectCallbackImpl() {
+         @Override
+         public Dto getDtoTarget() {
+            return getValue();
+         }
+      }));
+
+      for (AddSelectionFieldMenuItemHook hooker : hookHandlerService.getHookers(AddSelectionFieldMenuItemHook.class)) {
+         hooker.addMenuEntries(this, menu, new MenuNodeProvider() {
+            @Override
+            public AbstractNodeDto getNode() {
+               return getValue();
+            }
+         });
+      }
+
+      menu.add(new SeparatorMenuItem());
+
+      MenuItem delete = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
+      menu.add(delete);
+
+      delete.addSelectionHandler(new SelectionHandler<Item>() {
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            setValue(null, true);
+         }
+      });
+      setContextMenu(menu);
+   }
+
+   public boolean isValidType(Class<?> needle) {
+      while (null != needle) {
+         for (Class<?> type : types)
+            if (type.equals(needle))
+               return true;
+         needle = needle.getSuperclass();
+      }
+      return false;
+   }
+
+   public void triggerClicked() {
+      TreeSelectionPopup popup = new TreeSelectionPopup(treePanel, types) {
+         @Override
+         protected void itemsSelected(List<AbstractNodeDto> selectedItems) {
+            if (selectedItems.size() > 0)
+               setValue(selectedItems.get(0), true);
+            else
+               setValue(null, true);
+         }
+      };
+      popup.setSelectedValues(getValue());
+      popup.setSelectionFilter(selectionFilter);
+
+      popup.show();
+   }
+
+   public void setIgnoreTriggerClick(boolean ignoreTriggerClick) {
+      this.ignoreTriggerClick = ignoreTriggerClick;
+      if (ignoreTriggerClick && null != triggerClickHandler)
+         triggerClickHandler.removeHandler();
+      else
+         addTriggerClickHandler();
+   }
+
+   public boolean isIgnoreTriggerClick() {
+      return ignoreTriggerClick;
+   }
+
+   public SelectionFilter getSelectionFilter() {
+      return selectionFilter;
+   }
+
+   public void setSelectionFilter(SelectionFilter selectionFilter) {
+      this.selectionFilter = selectionFilter;
+   }
 }

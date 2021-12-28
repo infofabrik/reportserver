@@ -27,41 +27,36 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 
 public class UserVariableStartup {
 
-	@Inject
-	public UserVariableStartup(
-			HookHandlerService hookHandler,
-			EventBus eventBus,
-			
-			Provider<UserVariableExporter> exporterProvider,
-			Provider<UserVariableImporter> importerProvider,
-			Provider<ExportAllUserVariablesHooker> exportAllUserVars,
-			Provider<ImportAllUserVariablesHooker> importAllUserVars,
-			
-			Provider<BaseUserVariableProvider> baseVariableProvider,
-			
-			Provider<UserVariableParameterProviderHooker> parameterProvider,
-			
-			HandleUserVarRemoveEvents handleRemove,
-			HandleUserVarForceRemoveEvents handleForceRemove,
-			
-			HandleUserNodeRemoveEvents handleFolkRemove
-			
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, UserVariableDefinition.class, handleRemove);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, UserVariableDefinition.class, handleForceRemove);
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class, handleFolkRemove);
-		
-		/* eximport */
-		hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
-		hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
-		hookHandler.attachHooker(ExportAllHook.class, exportAllUserVars);
-		hookHandler.attachHooker(ImportAllHook.class, importAllUserVars);
-		
-		
-		hookHandler.attachHooker(UserVariableProviderHook.class, baseVariableProvider);
-		
-		hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
-	}
+   @Inject
+   public UserVariableStartup(HookHandlerService hookHandler, EventBus eventBus,
+
+         Provider<UserVariableExporter> exporterProvider, Provider<UserVariableImporter> importerProvider,
+         Provider<ExportAllUserVariablesHooker> exportAllUserVars,
+         Provider<ImportAllUserVariablesHooker> importAllUserVars,
+
+         Provider<BaseUserVariableProvider> baseVariableProvider,
+
+         Provider<UserVariableParameterProviderHooker> parameterProvider,
+
+         HandleUserVarRemoveEvents handleRemove, HandleUserVarForceRemoveEvents handleForceRemove,
+
+         HandleUserNodeRemoveEvents handleFolkRemove
+
+   ) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, UserVariableDefinition.class, handleRemove);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, UserVariableDefinition.class, handleForceRemove);
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class, handleFolkRemove);
+
+      /* eximport */
+      hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
+      hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
+      hookHandler.attachHooker(ExportAllHook.class, exportAllUserVars);
+      hookHandler.attachHooker(ImportAllHook.class, importAllUserVars);
+
+      hookHandler.attachHooker(UserVariableProviderHook.class, baseVariableProvider);
+
+      hookHandler.attachHooker(ParameterProviderHook.class, parameterProvider);
+   }
 }

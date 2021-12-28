@@ -35,19 +35,10 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "ONEDRIVE_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.onedrive.client.onedrive.dto", 
-      poso2DtoPostProcessors = OneDriveDatasink2DtoPostProcessor.class, 
-      additionalFields = {
-            @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
-            @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, 
-      icon = "cloud-upload"
-      )
-@InstanceDescription(
-      msgLocation = OneDriveDatasinkMessages.class, 
-      objNameKey = "oneDriveDatasinkTypeName", 
-      icon = "cloud-upload"
-      )
+@GenerateDto(dtoPackage = "net.datenwerke.rs.onedrive.client.onedrive.dto", poso2DtoPostProcessors = OneDriveDatasink2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
+      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "cloud-upload")
+@InstanceDescription(msgLocation = OneDriveDatasinkMessages.class, objNameKey = "oneDriveDatasinkTypeName", icon = "cloud-upload")
 @Indexed
 public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
    /**
@@ -70,11 +61,11 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
    private String refreshToken;
-   
+
    @ExposeToClient
    @Field
    private String tenantId = "common";
-   
+
    @ExposeToClient
    @Field
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
@@ -149,7 +140,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
       EncryptionService encryptionService = pbeServiceProvider.get().getEncryptionService();
       return new String(encryptionService.decryptFromHex(secretKey));
    }
-   
+
    public String getTenantId() {
       return tenantId;
    }
@@ -157,7 +148,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
    public void setTenantId(String tenantId) {
       this.tenantId = tenantId;
    }
-   
+
    public String getBaseRoot() {
       return baseRoot;
    }
@@ -189,9 +180,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
 
    @Override
    public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
-      return authorizationUrlBuilder
-            .scope("offline_access files.readwrite.all")
-            .build();
+      return authorizationUrlBuilder.scope("offline_access files.readwrite.all").build();
    }
 
 }

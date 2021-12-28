@@ -13,29 +13,26 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class RemoteAccessStartup {
 
-	protected final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   protected final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public RemoteAccessStartup(
+   @Inject
+   public RemoteAccessStartup(
 
-			SecurityService securityService,
-			HookHandlerService hookHandlerService,
-			final SftpService sftpService
-			){
+         SecurityService securityService, HookHandlerService hookHandlerService, final SftpService sftpService) {
 
-		securityService.registerSecurityTarget(SftpSecurityTarget.class);
+      securityService.registerSecurityTarget(SftpSecurityTarget.class);
 
-		hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
+      hookHandlerService.attachHooker(LateInitHook.class, new LateInitHook() {
 
-			@Override
-			public void initialize() {
-				try{
-					sftpService.start();
-				}catch(Exception e){
-					logger.warn( "Failed to start SFTP Server", e);
-				}
-			}
-		});
+         @Override
+         public void initialize() {
+            try {
+               sftpService.start();
+            } catch (Exception e) {
+               logger.warn("Failed to start SFTP Server", e);
+            }
+         }
+      });
 
-	}
+   }
 }

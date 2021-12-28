@@ -23,52 +23,50 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
  */
 public class FloatSelectionListEditorDtoDec extends FloatSelectionListEditorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public FloatSelectionListEditorDtoDec() {
+      super();
+   }
 
-	public FloatSelectionListEditorDtoDec() {
-		super();
-	}
+   @Override
+   public Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing) {
+      ListStore<String> store = new ListStore<String>(new BasicObjectModelKeyProvider<String>());
+      Map<String, Float> valueMap = getValueMap();
+      if (null == valueMap) {
+         valueMap = new TreeMap<String, Float>();
+         for (Float i : getValues())
+            valueMap.put("" + i, i);
+      }
 
-	@Override
-	public Field addEditor(ColumnConfig columnConfig,
-			GridEditing<GridEditorRecordDto> editing) {
-		ListStore<String> store = new ListStore<String>(new BasicObjectModelKeyProvider<String>());
-		Map<String, Float> valueMap = getValueMap();
-		if(null == valueMap){
-			valueMap = new TreeMap<String, Float>();
-			for(Float i : getValues())
-				valueMap.put(""+i, i);
-		}
+      store.addAll(valueMap.keySet());
 
-		store.addAll(valueMap.keySet());
-		
-		ComboBox<String> combo = new ComboBox<String>(store, new StringLabelProvider<String>());
-	    combo.setAllowBlank(true);
-	    combo.setForceSelection(isForceSelection());
-	    combo.setTriggerAction(TriggerAction.ALL);
+      ComboBox<String> combo = new ComboBox<String>(store, new StringLabelProvider<String>());
+      combo.setAllowBlank(true);
+      combo.setForceSelection(isForceSelection());
+      combo.setTriggerAction(TriggerAction.ALL);
 
-	    final Map<String, Float> map = valueMap; 
-    	editing.addEditor(columnConfig, new Converter<Float,String>() {
+      final Map<String, Float> map = valueMap;
+      editing.addEditor(columnConfig, new Converter<Float, String>() {
 
-			@Override
-			public Float convertFieldValue(String object) {
-				if(null == object)
-					return null;
-				return map.get(object);
-			}
-			
-			@Override
-			public String convertModelValue(Float object) {
-				if(null == object)
-					return null;
-				for(Entry<String, Float> e: map.entrySet())
-					if(object.equals(e.getValue()))
-						return e.getKey();
-				return null;
-			}
-		}, combo);
-		
-		return combo;
-	}
+         @Override
+         public Float convertFieldValue(String object) {
+            if (null == object)
+               return null;
+            return map.get(object);
+         }
+
+         @Override
+         public String convertModelValue(Float object) {
+            if (null == object)
+               return null;
+            for (Entry<String, Float> e : map.entrySet())
+               if (object.equals(e.getValue()))
+                  return e.getKey();
+            return null;
+         }
+      }, combo);
+
+      return combo;
+   }
 }

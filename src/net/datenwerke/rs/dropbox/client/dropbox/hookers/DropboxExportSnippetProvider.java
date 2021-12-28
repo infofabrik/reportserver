@@ -50,11 +50,8 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public DropboxExportSnippetProvider(
-         @DatasinkTreeDropbox Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<DropboxDao> datasinkDaoProvider
-         ) {
+   public DropboxExportSnippetProvider(@DatasinkTreeDropbox Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<DropboxDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -89,6 +86,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
          public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
+
          @Override
          public BaseIcon getIcon() {
             return DropboxUiModule.ICON;
@@ -111,7 +109,7 @@ public class DropboxExportSnippetProvider implements ScheduleExportSnippetProvid
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

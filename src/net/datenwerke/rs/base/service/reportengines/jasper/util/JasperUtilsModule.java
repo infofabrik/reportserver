@@ -6,10 +6,11 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 import net.datenwerke.rs.utils.xml.XMLUtilsService;
 
 /**
- * The jasper utils module provides some jasper related utility methods (e.g. for converting).
+ * The jasper utils module provides some jasper related utility methods (e.g.
+ * for converting).
  * 
- * <h1>Description</h1>
- * The Jasper utils provides the user with methods for converting JRXML files and acting on them.
+ * <h1>Description</h1> The Jasper utils provides the user with methods for
+ * converting JRXML files and acting on them.
  * 
  * <h1>Content</h1>
  * <h2>Services</h2>
@@ -41,9 +42,9 @@ import net.datenwerke.rs.utils.xml.XMLUtilsService;
  */
 public class JasperUtilsModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		bind(JasperUtilsService.class).to(JasperUtilsServiceImpl.class).in(Scopes.SINGLETON);
-	}
+   @Override
+   protected void configure() {
+      bind(JasperUtilsService.class).to(JasperUtilsServiceImpl.class).in(Scopes.SINGLETON);
+   }
 
 }

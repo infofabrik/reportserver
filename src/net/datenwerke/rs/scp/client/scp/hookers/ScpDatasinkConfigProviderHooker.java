@@ -23,10 +23,8 @@ public class ScpDatasinkConfigProviderHooker implements DatasinkDefinitionConfig
    private final Provider<EnterpriseUiService> enterpriseServiceProvider;
 
    @Inject
-   public ScpDatasinkConfigProviderHooker(
-         Provider<ScpDatasinkForm> formProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider
-         ) {
+   public ScpDatasinkConfigProviderHooker(Provider<ScpDatasinkForm> formProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider) {
 
       /* store objects */
       this.formProvider = formProvider;

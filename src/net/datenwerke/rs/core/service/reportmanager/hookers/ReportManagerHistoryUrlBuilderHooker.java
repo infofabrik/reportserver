@@ -14,51 +14,51 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class ReportManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-	private final ReportManagerMessages messages = LocalizationServiceImpl.getMessages(ReportManagerMessages.class);
-	
-	private final static String HISTORY_BUILDER_NAME = "Reportmanager";
+   private final ReportManagerMessages messages = LocalizationServiceImpl.getMessages(ReportManagerMessages.class);
 
-	private final SecurityService securityService;
+   private final static String HISTORY_BUILDER_NAME = "Reportmanager";
 
-	@Inject
-	public ReportManagerHistoryUrlBuilderHooker(SecurityService securityService){
-		this.securityService = securityService;
-		
-	}
-	
-	@Override
-	public boolean consumes(Object o) {
-		if(! (o instanceof AbstractReportManagerNode))
-			return false;
-		
-         if (securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class))
-            return true;
-         else {
-            if (!(o instanceof SecurityTarget))
-               return false;
-            else
-               return securityService.checkRights((SecurityTarget) o, Read.class);
-         }
-	}
+   private final SecurityService securityService;
 
-	@Override
-	protected String getTokenName() {
-		return ReportManagerUIModule.REPORTMANAGER_FAV_HISTORY_TOKEN;
-	}
+   @Inject
+   public ReportManagerHistoryUrlBuilderHooker(SecurityService securityService) {
+      this.securityService = securityService;
 
-	@Override
-	protected String getBuilderId() {
-		return HISTORY_BUILDER_NAME;
-	}
+   }
 
-	@Override
-	protected String getNameFor(Object o) {
-		return messages.historyUrlBuilderName();
-	}
+   @Override
+   public boolean consumes(Object o) {
+      if (!(o instanceof AbstractReportManagerNode))
+         return false;
 
-	@Override
-	protected String getIconFor(Object o) {
-		return messages.historyUrlBuilderIcon();
-	}
+      if (securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class))
+         return true;
+      else {
+         if (!(o instanceof SecurityTarget))
+            return false;
+         else
+            return securityService.checkRights((SecurityTarget) o, Read.class);
+      }
+   }
+
+   @Override
+   protected String getTokenName() {
+      return ReportManagerUIModule.REPORTMANAGER_FAV_HISTORY_TOKEN;
+   }
+
+   @Override
+   protected String getBuilderId() {
+      return HISTORY_BUILDER_NAME;
+   }
+
+   @Override
+   protected String getNameFor(Object o) {
+      return messages.historyUrlBuilderName();
+   }
+
+   @Override
+   protected String getIconFor(Object o) {
+      return messages.historyUrlBuilderIcon();
+   }
 
 }

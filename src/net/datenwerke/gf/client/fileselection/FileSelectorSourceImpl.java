@@ -10,57 +10,54 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public abstract class FileSelectorSourceImpl implements FileSelectorSource {
 
-	protected FileSelectionWidget fileSelectionWidget;
+   protected FileSelectionWidget fileSelectionWidget;
 
-	@Override
-	public void configureToolbar(FileSelectionWidget fileSelectionWidget,
-			ToolBar toolbar) {
-	}
+   @Override
+   public void configureToolbar(FileSelectionWidget fileSelectionWidget, ToolBar toolbar) {
+   }
 
-	@Override
-	public void configureGrid(FileSelectionWidget fileSelectionWidget,
-			Grid<SelectedFileWrapper> grid) {
-	}
+   @Override
+   public void configureGrid(FileSelectionWidget fileSelectionWidget, Grid<SelectedFileWrapper> grid) {
+   }
 
-	@Override
-	public void init(FileSelectionWidget fileSelectionWidget) {
-		this.fileSelectionWidget = fileSelectionWidget;
-	}
+   @Override
+   public void init(FileSelectionWidget fileSelectionWidget) {
+      this.fileSelectionWidget = fileSelectionWidget;
+   }
 
-	@Override
-	public boolean consumes(SelectedFileWrapper value) {
-		return false;
-	}
+   @Override
+   public boolean consumes(SelectedFileWrapper value) {
+      return false;
+   }
 
-	@Override
-	public ImageResource getIconFor(SelectedFileWrapper value) {
-		return BaseIcon.FILE_O.toImageResource();
-	}
+   @Override
+   public ImageResource getIconFor(SelectedFileWrapper value) {
+      return BaseIcon.FILE_O.toImageResource();
+   }
 
-	@Override
-	public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
-		return true;
-	}
+   @Override
+   public boolean isEditNameEnabled(SelectedFileWrapper selectedItem) {
+      return true;
+   }
 
-	@Override
-	public boolean isDownloadEnabled(SelectedFileWrapper item) {
-		return true;
-	}
-	
-	@Override
-	public DownloadProperties getDownloadPropertiesFor(
-			SelectedFileWrapper selectedItem) {
-		return null;
-	}
-	
-	@Override
-	public String getTypeDescription(SelectedFileWrapper value) {
-		return "";
-	}
-	
-	@Override
-	public boolean isValid() {
-		return true;
-	}
+   @Override
+   public boolean isDownloadEnabled(SelectedFileWrapper item) {
+      return true;
+   }
+
+   @Override
+   public DownloadProperties getDownloadPropertiesFor(SelectedFileWrapper selectedItem) {
+      return null;
+   }
+
+   @Override
+   public String getTypeDescription(SelectedFileWrapper value) {
+      return "";
+   }
+
+   @Override
+   public boolean isValid() {
+      return true;
+   }
 
 }

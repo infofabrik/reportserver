@@ -26,48 +26,44 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 public class LocalFileSystemUiStartup {
 
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 35;
-   
+
    @Inject
-   public LocalFileSystemUiStartup(
-         final Provider<ExportToLocalFileSystemHooker> exportToLocalFileSystemHooker,
+   public LocalFileSystemUiStartup(final Provider<ExportToLocalFileSystemHooker> exportToLocalFileSystemHooker,
          final Provider<FileExportToLocalFileSystemHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler,
          final Provider<LocalFileSystemDatasinkConfigProviderHooker> localFileSystemTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, 
-         final LocalFileSystemDao dao,
+         final WaitOnEventUIService waitOnEventService, final LocalFileSystemDao dao,
          final Provider<LocalFileSystemExportSnippetProvider> localFileSystemExportSnippetProvider,
          final LocalFileSystemDatasinkTesterToolbarConfigurator localFileSystemTestToolbarConfigurator,
          final LocalFileSystemUiService localFileSystemUiService,
-         final Provider<LocalFileSystemSendToFormConfiguratorHooker> sendToConfigHookProvider
-         ) {
+         final Provider<LocalFileSystemSendToFormConfiguratorHooker> sendToConfigHookProvider) {
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
-      
+
       /* config tree */
-      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class, localFileSystemTreeConfiguratorProvider.get(), 
-            PRIO);
+      hookHandler.attachHooker(DatasinkDefinitionConfigProviderHook.class,
+            localFileSystemTreeConfiguratorProvider.get(), PRIO);
 
       /* Send-to hookers */
-      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToLocalFileSystemHooker,
-            PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker,
-            PRIO);
-      
+      hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToLocalFileSystemHooker, PRIO);
+      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
+
       /* test datasinks */
       hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, localFileSystemTestToolbarConfigurator);
-      
+
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
 
-         dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType,Boolean>>() {
+         dao.getStorageEnabledConfigs(new RsAsyncCallback<Map<StorageType, Boolean>>() {
             @Override
-            public void onSuccess(final Map<StorageType,Boolean> result) {
-               ((LocalFileSystemUiServiceImpl)localFileSystemUiService).setEnabledConfigs(result);
+            public void onSuccess(final Map<StorageType, Boolean> result) {
+               ((LocalFileSystemUiServiceImpl) localFileSystemUiService).setEnabledConfigs(result);
                if (result.get(StorageType.LOCALFILESYSTEM) && result.get(StorageType.LOCALFILESYSTEM_SCHEDULING))
-                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider,
-                        PRIO);
+                  hookHandler.attachHooker(ScheduleExportSnippetProviderHook.class,
+                        localFileSystemExportSnippetProvider, PRIO);
                else
-                  hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class, localFileSystemExportSnippetProvider);
+                  hookHandler.detachHooker(ScheduleExportSnippetProviderHook.class,
+                        localFileSystemExportSnippetProvider);
             }
 
             @Override
@@ -75,7 +71,7 @@ public class LocalFileSystemUiStartup {
                super.onFailure(caught);
             }
          });
-         
+
       });
    }
 

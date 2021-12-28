@@ -6,39 +6,38 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
  * 
  *
  */
-public class CompiledDocReport implements CompiledReport{
+public class CompiledDocReport implements CompiledReport {
 
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7935299997822053401L;
-	
-	final private byte[] report;
-	
-	public CompiledDocReport(byte[] report) {
-		this.report = report;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7935299997822053401L;
 
-	public byte[] getReport() {
-		return report;
-	}
+   final private byte[] report;
 
-	public String getFileExtension() {
-		return "doc"; //$NON-NLS-1$
-	}
+   public CompiledDocReport(byte[] report) {
+      this.report = report;
+   }
 
-	public String getMimeType() {
-		return "application/msword"; //$NON-NLS-1$
-	}
+   public byte[] getReport() {
+      return report;
+   }
 
-	@Override
-	public boolean isStringReport() {
-		return false;
-	}
+   public String getFileExtension() {
+      return "doc"; //$NON-NLS-1$
+   }
 
-	@Override
-	public boolean hasData() {
-		return report != null;
-	}
+   public String getMimeType() {
+      return "application/msword"; //$NON-NLS-1$
+   }
+
+   @Override
+   public boolean isStringReport() {
+      return false;
+   }
+
+   @Override
+   public boolean hasData() {
+      return report != null;
+   }
 }

@@ -54,12 +54,8 @@ public class ScriptingCommandResultProcessorHooker implements CommandResultProce
    }
 
    @Inject
-   public ScriptingCommandResultProcessorHooker(
-         HookHandlerService hookHandlerService,
-         ScriptingUiService scriptingService, 
-         ToolbarService toolbarService, 
-         StatusBarUIService statusBarService
-         ) {
+   public ScriptingCommandResultProcessorHooker(HookHandlerService hookHandlerService,
+         ScriptingUiService scriptingService, ToolbarService toolbarService, StatusBarUIService statusBarService) {
 
       /* store objects */
       this.hookHandlerService = hookHandlerService;
@@ -128,15 +124,13 @@ public class ScriptingCommandResultProcessorHooker implements CommandResultProce
    }
 
    protected boolean conditionsHold(final AddToolbarEntryExtensionDto ext, final HookableContainer container) {
-      return !streamOfNullable(ext.getDisplayConditions())
-         .filter(cond -> !conditionHolds(cond, container))
-         .findAny().isPresent();
+      return !streamOfNullable(ext.getDisplayConditions()).filter(cond -> !conditionHolds(cond, container)).findAny()
+            .isPresent();
    }
 
    protected boolean conditionsHold(final AddMenuEntryExtensionDto ext, final HookableContainer container) {
-      return !streamOfNullable(ext.getDisplayConditions())
-         .filter(cond -> !conditionHolds(cond, container))
-         .findAny().isPresent();
+      return !streamOfNullable(ext.getDisplayConditions()).filter(cond -> !conditionHolds(cond, container)).findAny()
+            .isPresent();
    }
 
    protected boolean conditionHolds(DisplayConditionDto cond, HookableContainer container) {
@@ -205,12 +199,10 @@ public class ScriptingCommandResultProcessorHooker implements CommandResultProce
 //			ButtonGroup group = new ButtonGroup(ext.getColumns());
          final ButtonGroup group = new ButtonGroup();
          group.setHeading(ext.getLabel());
-         
-         ext.getGroupEntries()
-            .stream()
-            .map(groupEntry -> createToolbarButton(dwToolbar, groupEntry))
-            .forEach(group::add);
-         
+
+         ext.getGroupEntries().stream().map(groupEntry -> createToolbarButton(dwToolbar, groupEntry))
+               .forEach(group::add);
+
          dwToolbar.add(group);
       } else
          dwToolbar.add(createToolbarButton(dwToolbar, ext));
@@ -238,8 +230,7 @@ public class ScriptingCommandResultProcessorHooker implements CommandResultProce
          else
             btn.setArrowAlign(ButtonArrowAlign.RIGHT);
 
-         ext.getSubMenuEntries()
-            .forEach(entry -> menu.add(createMenuItem(entry, () -> dwToolbar.getHookConfig())));
+         ext.getSubMenuEntries().forEach(entry -> menu.add(createMenuItem(entry, () -> dwToolbar.getHookConfig())));
       }
 
       return btn;
@@ -261,10 +252,7 @@ public class ScriptingCommandResultProcessorHooker implements CommandResultProce
          final Menu submenu = new DwMenu();
          item.setSubMenu(submenu);
 
-         ext.getSubMenuEntries()
-            .stream()
-            .map(subEntry -> createMenuItem(subEntry, configGetter))
-            .forEach(submenu::add);
+         ext.getSubMenuEntries().stream().map(subEntry -> createMenuItem(subEntry, configGetter)).forEach(submenu::add);
       }
 
       return item;

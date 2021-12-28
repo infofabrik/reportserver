@@ -33,160 +33,157 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ReportExecuteAreaMainWidget extends DwTabPanel {
 
-	private ReportExecuteAreaModule module;
-	
-	private Map<Component, ReportDto> reportLookup = new HashMap<Component, ReportDto>();
-	private Map<Component, String> urlParams = new HashMap<Component, String>();
+   private ReportExecuteAreaModule module;
 
-	private Collection<Widget> markedChange = new HashSet<Widget>();
+   private Map<Component, ReportDto> reportLookup = new HashMap<Component, ReportDto>();
+   private Map<Component, String> urlParams = new HashMap<Component, String>();
 
-	public ReportExecuteAreaMainWidget(){
-		super(GWT.<TabPanelAppearance> create(TabPanelBottomAppearance.class));
-		
-		setCloseContextMenu(true);
-		setTabScroll(true);
-		setAnimScroll(true);
-		setBorders(false);
-		setBodyBorder(false);
-		setHideMode(HideMode.OFFSETS);
-		
-		addSelectionHandler(new SelectionHandler<Widget>() {
-			@Override
-			public void onSelection(SelectionEvent<Widget> event) {
-				Widget selectedItem = event.getSelectedItem();
-				if(null != selectedItem){
-					ReportDto report = reportLookup.get(selectedItem);
-					if(null != report){
-						String additionalParams = urlParams.get(selectedItem);
-						if(null == additionalParams)
-							additionalParams = "";
-						else
-							additionalParams = "&" + additionalParams;
-						
-						History.newItem(ReportExecutorUIModule.REPORT_EXECUTOR_HISTORY_TOKEN + "/uuid:" + report.getUuid() + additionalParams, false);
-					}
-				}
-			}
-		});
-	}
-	
-	public void addExecutionComponent(ReportDto report, final Component displayComponent, String urlParameters) {
-		TabItemConfig tab = new TabItemConfig(shortenReportName(report));
-		tab.setClosable(true);
+   private Collection<Widget> markedChange = new HashSet<Widget>();
 
-		/* add tab select it and layout */
-		add(displayComponent, tab);
-		
-		reportLookup.put(displayComponent, report);
-		if(null != urlParameters)
-			urlParams.put(displayComponent, urlParameters);
-		
-		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				setActiveWidget(displayComponent);
-			}
-		});
-		
-	}
+   public ReportExecuteAreaMainWidget() {
+      super(GWT.<TabPanelAppearance>create(TabPanelBottomAppearance.class));
 
+      setCloseContextMenu(true);
+      setTabScroll(true);
+      setAnimScroll(true);
+      setBorders(false);
+      setBodyBorder(false);
+      setHideMode(HideMode.OFFSETS);
 
-	public String shortenReportName(ReportDto report) {
-		int maxlength = 10;
-		
-		String name = report.getName();
-		if(null == name)
-			name = BaseMessages.INSTANCE.unknown();
-		name = Format.ellipse(name, maxlength);
-		
-		if(report instanceof ReportVariantDto){
-			String baseName = Format.ellipse(((ReportVariantDto)report).getBaseReport().getName(), maxlength);
-			return baseName + " : " + name; //$NON-NLS-1$
-		} else
-			return name;
-	}
-	
-	public String getFullReportName(ReportDto report) {
-		String name = report.getName();
-		
-		if(report instanceof ReportVariantDto){
-			String baseName = ((ReportVariantDto)report).getBaseReport().getName();
-			return baseName + " : " + name; //$NON-NLS-1$
-		} else
-			return name;
-	}
+      addSelectionHandler(new SelectionHandler<Widget>() {
+         @Override
+         public void onSelection(SelectionEvent<Widget> event) {
+            Widget selectedItem = event.getSelectedItem();
+            if (null != selectedItem) {
+               ReportDto report = reportLookup.get(selectedItem);
+               if (null != report) {
+                  String additionalParams = urlParams.get(selectedItem);
+                  if (null == additionalParams)
+                     additionalParams = "";
+                  else
+                     additionalParams = "&" + additionalParams;
 
-	public void closeCurrent() {
-		Widget currentTab = getActiveWidget();
-        close(currentTab);
-	}
-	
+                  History.newItem(ReportExecutorUIModule.REPORT_EXECUTOR_HISTORY_TOKEN + "/uuid:" + report.getUuid()
+                        + additionalParams, false);
+               }
+            }
+         }
+      });
+   }
 
-	public void forceCloseCurrent() {
-		Widget currentTab = getActiveWidget();
-        forceClose(currentTab);
-	}
-	
-	public void markCurrentChanged() {
-		Widget currentTab = getActiveWidget();
-		if(! markedChange.contains(currentTab)){
-			TabItemConfig config = getConfig(currentTab);
-			config.setText("*" + config.getText());
-			update(currentTab, config);
-			markedChange.add(currentTab);
-		}
-	}
-	
-	@Override
-	protected boolean hasUnchangedChanges(Widget item) {
-		ReportDto report = reportLookup.get(item);
-		if(null != report && report.isModified())
-			return true;
-		return false;
-	}
-	
-	@Override
-	protected void close(final Widget item) {
-		boolean recheckClose = false;
-		if(item instanceof CloseableAware)
-			recheckClose = ((CloseableAware)item).needToConfirmClose();
-		
-		ReportDto report = reportLookup.get(item);
-		if(!recheckClose && ! report.isModified())
-			forceClose(item);
-		else {
-			ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportexecutorMessages.INSTANCE.closeChangedReportTitle(), ReportexecutorMessages.INSTANCE.closeChangedReportMessage());
-			cmb.addDialogHideHandler(new DialogHideHandler() {
-				@Override
-				public void onDialogHide(DialogHideEvent event) {
-					if (event.getHideButton() == PredefinedButton.YES) {
-						forceClose(item);
-					}	
-				}
-			});
-			cmb.show();
-		}
-	}
-	
+   public void addExecutionComponent(ReportDto report, final Component displayComponent, String urlParameters) {
+      TabItemConfig tab = new TabItemConfig(shortenReportName(report));
+      tab.setClosable(true);
 
-	@Override
-	protected void forceClose(Widget item) {	
-		if(item instanceof ReportExecutorMainPanel){
-			((ReportExecutorMainPanel) item).cleanup();
-		}
-		
-		super.close(item);
-		reportLookup.remove(item);
-		
-		if(0 == getWidgetCount())
-			module.removeModule();
-	}
+      /* add tab select it and layout */
+      add(displayComponent, tab);
 
-	public void setModule(ReportExecuteAreaModule reportExecuteAreaModule) {
-		this.module = reportExecuteAreaModule;
-	}
+      reportLookup.put(displayComponent, report);
+      if (null != urlParameters)
+         urlParams.put(displayComponent, urlParameters);
 
+      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
+         @Override
+         public void execute() {
+            setActiveWidget(displayComponent);
+         }
+      });
+
+   }
+
+   public String shortenReportName(ReportDto report) {
+      int maxlength = 10;
+
+      String name = report.getName();
+      if (null == name)
+         name = BaseMessages.INSTANCE.unknown();
+      name = Format.ellipse(name, maxlength);
+
+      if (report instanceof ReportVariantDto) {
+         String baseName = Format.ellipse(((ReportVariantDto) report).getBaseReport().getName(), maxlength);
+         return baseName + " : " + name; //$NON-NLS-1$
+      } else
+         return name;
+   }
+
+   public String getFullReportName(ReportDto report) {
+      String name = report.getName();
+
+      if (report instanceof ReportVariantDto) {
+         String baseName = ((ReportVariantDto) report).getBaseReport().getName();
+         return baseName + " : " + name; //$NON-NLS-1$
+      } else
+         return name;
+   }
+
+   public void closeCurrent() {
+      Widget currentTab = getActiveWidget();
+      close(currentTab);
+   }
+
+   public void forceCloseCurrent() {
+      Widget currentTab = getActiveWidget();
+      forceClose(currentTab);
+   }
+
+   public void markCurrentChanged() {
+      Widget currentTab = getActiveWidget();
+      if (!markedChange.contains(currentTab)) {
+         TabItemConfig config = getConfig(currentTab);
+         config.setText("*" + config.getText());
+         update(currentTab, config);
+         markedChange.add(currentTab);
+      }
+   }
+
+   @Override
+   protected boolean hasUnchangedChanges(Widget item) {
+      ReportDto report = reportLookup.get(item);
+      if (null != report && report.isModified())
+         return true;
+      return false;
+   }
+
+   @Override
+   protected void close(final Widget item) {
+      boolean recheckClose = false;
+      if (item instanceof CloseableAware)
+         recheckClose = ((CloseableAware) item).needToConfirmClose();
+
+      ReportDto report = reportLookup.get(item);
+      if (!recheckClose && !report.isModified())
+         forceClose(item);
+      else {
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(ReportexecutorMessages.INSTANCE.closeChangedReportTitle(),
+               ReportexecutorMessages.INSTANCE.closeChangedReportMessage());
+         cmb.addDialogHideHandler(new DialogHideHandler() {
+            @Override
+            public void onDialogHide(DialogHideEvent event) {
+               if (event.getHideButton() == PredefinedButton.YES) {
+                  forceClose(item);
+               }
+            }
+         });
+         cmb.show();
+      }
+   }
+
+   @Override
+   protected void forceClose(Widget item) {
+      if (item instanceof ReportExecutorMainPanel) {
+         ((ReportExecutorMainPanel) item).cleanup();
+      }
+
+      super.close(item);
+      reportLookup.remove(item);
+
+      if (0 == getWidgetCount())
+         module.removeModule();
+   }
+
+   public void setModule(ReportExecuteAreaModule reportExecuteAreaModule) {
+      this.module = reportExecuteAreaModule;
+   }
 
 }

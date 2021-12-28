@@ -54,15 +54,10 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final ExceptionServices exceptionServices;
 
    @Inject
-   public SaikuRpcServiceImpl(
-         Provider<SecurityService> securityServiceProvider,
-         Provider<SaikuSessionContainer> sessionContainer, 
-         OlapUtilService olapService,
-         ReportDtoService reportDtoService, 
-         DtoService dtoService, 
-         EntityUtils entityUtils,
-         ExceptionServices exceptionServices
-         ) {
+   public SaikuRpcServiceImpl(Provider<SecurityService> securityServiceProvider,
+         Provider<SaikuSessionContainer> sessionContainer, OlapUtilService olapService,
+         ReportDtoService reportDtoService, DtoService dtoService, EntityUtils entityUtils,
+         ExceptionServices exceptionServices) {
       this.securityServiceProvider = securityServiceProvider;
       this.sessionContainer = sessionContainer;
       this.olapService = olapService;
@@ -99,16 +94,9 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       }
    }
 
-   @SecurityChecked(
-         argumentVerification = {
-               @ArgumentVerification(
-                     name = "node", 
-                     isDto = true, 
-                     verify = @RightsVerification(rights = Read.class)),
-               @ArgumentVerification(
-                     name = "report", 
-                     isDto = true, 
-                     verify = @RightsVerification(rights = { Read.class })) })
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Read.class)),
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class })) })
    @Override
    public ListLoadResult<String> loadCubesFor(@Named("node") MondrianDatasourceDto datasourceDto,
          @Named("report") SaikuReportDto saikuReportDto) throws ServerCallFailedException {
@@ -137,15 +125,13 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
       }
    }
 
-   @SecurityChecked(
-         argumentVerification = {
-               @ArgumentVerification(
-                     name = "datasource", 
-                     isDto = true, 
-                     verify = @RightsVerification(rights = {Read.class, Execute.class })) })
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "datasource", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Execute.class })) })
    @Transactional(rollbackOn = { Exception.class })
    @Override
-   public boolean testConnection(@Named("datasource") MondrianDatasourceDto datasourceDto) throws ServerCallFailedException {
+   public boolean testConnection(@Named("datasource") MondrianDatasourceDto datasourceDto)
+         throws ServerCallFailedException {
       try {
          olapService.testConnection((MondrianDatasource) dtoService.loadPoso(datasourceDto));
       } catch (Exception e) {

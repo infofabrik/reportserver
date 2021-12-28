@@ -89,7 +89,7 @@ public class MailServiceImpl implements MailService {
    private final Provider<Session> defaultSessionProvider;
    // used when sending emails based on email datasinks
    private final Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory;
-   
+
    private final Provider<EmailDatasinkService> emailDatasinkServiceProvider;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -97,18 +97,13 @@ public class MailServiceImpl implements MailService {
    private final ExecutorService sendMailPool = Executors.newFixedThreadPool(1);
 
    @Inject
-   public MailServiceImpl(
-         Provider<Session> defaultSessionProvider,
+   public MailServiceImpl(Provider<Session> defaultSessionProvider,
          Provider<EmailDatasinkSessionFactory> emailDatasinkSessionFactory,
          Provider<SimpleMailFactory> simpleMailFactoryProvider,
-         Provider<SimpleCryptoMailFactory> simpleCryptoMailFactoryProvider, 
-         CryptoService cryptoService,
-         Provider<SimpleJuel> simpleJuelProvider, 
-         Provider<EventBus> eventBus,
+         Provider<SimpleCryptoMailFactory> simpleCryptoMailFactoryProvider, CryptoService cryptoService,
+         Provider<SimpleJuel> simpleJuelProvider, Provider<EventBus> eventBus,
          Provider<EmailDatasinkService> emailDatasinkServiceProvider,
-         @MailModuleProperties Provider<Configuration> config,
-         Provider<DatasinkService> datasinkServiceProvider
-         ) {
+         @MailModuleProperties Provider<Configuration> config, Provider<DatasinkService> datasinkServiceProvider) {
 
       /* store objects */
       this.defaultSessionProvider = defaultSessionProvider;
@@ -131,7 +126,7 @@ public class MailServiceImpl implements MailService {
    @Override
    public SimpleMail newSimpleMail(Optional<EmailDatasink> emailDatasink) {
       if (!emailDatasink.isPresent()) {
-         //try to load default
+         // try to load default
          Optional<EmailDatasink> defaultEmailDatasink = loadDefaultEmailDatasink();
          if (defaultEmailDatasink.isPresent())
             return simpleCryptoMailFactoryProvider.get()
@@ -173,29 +168,30 @@ public class MailServiceImpl implements MailService {
    public void sendMailSync(Optional<EmailDatasink> emailDatasink, MimeMessage message) {
       sendMailSync(emailDatasink, message, new MailSupervisorImpl());
    }
-   
+
    /**
-    * Partitions the given addresses in addresses supporting encryption and addresses not
-    * supporting encryption. Adds the partitions to the given collections.
+    * Partitions the given addresses in addresses supporting encryption and
+    * addresses not supporting encryption. Adds the partitions to the given
+    * collections.
     * 
     * @param allAddresses all addresses
-    * @param supported container for adding all addresses supporting encryption
-    * @param unsupported container for adding all addresses not supporting encryption
+    * @param supported    container for adding all addresses supporting encryption
+    * @param unsupported  container for adding all addresses not supporting
+    *                     encryption
     */
-   private void partitionEncryptionSupportedAddresses(Collection<Address> allAddresses, 
-         Collection<Address> supported, Collection<Address> unsupported) {
+   private void partitionEncryptionSupportedAddresses(Collection<Address> allAddresses, Collection<Address> supported,
+         Collection<Address> unsupported) {
       Objects.requireNonNull(allAddresses);
       Objects.requireNonNull(supported);
       Objects.requireNonNull(unsupported);
-      
-      Map<Boolean, List<Address>> partitioned = allAddresses
-            .stream()
+
+      Map<Boolean, List<Address>> partitioned = allAddresses.stream()
             .collect(partitioningBy(a -> null != cryptoService.getUserCryptoCredentials(a.toString())));
-      
+
       supported.addAll(partitioned.get(true));
       unsupported.addAll(partitioned.get(false));
    }
-   
+
    private Optional<EmailDatasink> loadDefaultEmailDatasink() {
       // try to load default email datasink
       Optional<EmailDatasink> defaultEmailDatasink = (Optional<EmailDatasink>) datasinkServiceProvider.get()
@@ -205,14 +201,14 @@ public class MailServiceImpl implements MailService {
 
       return Optional.empty();
    }
-   
+
    @Override
    public synchronized void sendMailSync(Optional<EmailDatasink> emailDatasink, MimeMessage message,
          MailSupervisor supervisor) {
       eventBus.get().fireEvent(new SendMailEvent(message));
-      
+
       Optional<EmailDatasink> toUse = emailDatasink;
-      if (!toUse.isPresent()) 
+      if (!toUse.isPresent())
          toUse = loadDefaultEmailDatasink();
 
       try {
@@ -379,8 +375,8 @@ public class MailServiceImpl implements MailService {
 
    private boolean forceEncryption(Optional<EmailDatasink> emailDatasink) {
       if (!emailDatasink.isPresent()) {
-         return !config.get().getString(CFG_ENCRYPTION_POLICY, 
-               RsCoreUiModule.EMAIL_ENCRYPTION_MIXED).equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
+         return !config.get().getString(CFG_ENCRYPTION_POLICY, RsCoreUiModule.EMAIL_ENCRYPTION_MIXED)
+               .equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
       } else
          return !emailDatasink.get().getEncryptionPolicy().equals(RsCoreUiModule.EMAIL_ENCRYPTION_MIXED);
    }
@@ -405,11 +401,8 @@ public class MailServiceImpl implements MailService {
 
    @Override
    public List<Address> getEmailList(List<User> users) throws AddressException {
-      return users
-            .stream()
-            .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-            .map(rethrowFunction(user -> new InternetAddress(user.getEmail()))).distinct()
-            .collect(toList());
+      return users.stream().filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
+            .map(rethrowFunction(user -> new InternetAddress(user.getEmail()))).distinct().collect(toList());
    }
 
 }

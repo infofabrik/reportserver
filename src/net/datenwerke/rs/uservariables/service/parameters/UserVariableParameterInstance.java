@@ -22,58 +22,53 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Entity
-@Table(name="USERVAR_PARAM_INST")
+@Table(name = "USERVAR_PARAM_INST")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.uservariables.client.parameters.dto",
-	createDecorator=true,
-	poso2DtoPostProcessors=UserVariableInstance2DtoPostProcessor.class,
-	additionalFields={
-		@AdditionalField(name="value", type=String.class)
-	}
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.uservariables.client.parameters.dto", createDecorator = true, poso2DtoPostProcessors = UserVariableInstance2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "value", type = String.class) })
 public class UserVariableParameterInstance extends ParameterInstance<UserVariableParameterDefinition> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4562050325298290322L;
-	
-	@Inject
-	private static UserVariableService userVariableService;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4562050325298290322L;
 
-	@Override
-	public Object getSelectedValue(User user) {
-		/* get user variable */
-		UserVariableParameterDefinition parameterDefinition = (UserVariableParameterDefinition) getDefinition();
-		UserVariableDefinition variableDefinition = parameterDefinition.getUserVariableDefinition();
-		
-		/* find variable instance for current user */
-		UserVariableInstance instance = userVariableService.getVariableInstanceForUser(user, variableDefinition);
-		
-		if(null == instance){
-			throw new RuntimeException("Failed retrieving value for UserVariable \"" + variableDefinition.getName() + "\" and user \""+user.getUsername()+"\". Usually that means, the variable was not bound anywhere in the users subtree.");
-		}
-		
-		return instance.getVariableValue();
-	}
-	
-	@Override
-	public Object getDefaultValue(User user, ParameterSet parameterSet) {
-		return getSelectedValue(user);
-	}
+   @Inject
+   private static UserVariableService userVariableService;
 
-	@Override
-	protected Class<?> getType() {
-		UserVariableParameterDefinition parameterDefinition = (UserVariableParameterDefinition) getDefinition();
-		UserVariableDefinition variableDefinition = parameterDefinition.getUserVariableDefinition();
-		return variableDefinition.getType();
-	}
-	
-	@Override
-	public void parseStringValue(String value) {
-		// don't set user variables
-	}
+   @Override
+   public Object getSelectedValue(User user) {
+      /* get user variable */
+      UserVariableParameterDefinition parameterDefinition = (UserVariableParameterDefinition) getDefinition();
+      UserVariableDefinition variableDefinition = parameterDefinition.getUserVariableDefinition();
 
-	
+      /* find variable instance for current user */
+      UserVariableInstance instance = userVariableService.getVariableInstanceForUser(user, variableDefinition);
+
+      if (null == instance) {
+         throw new RuntimeException("Failed retrieving value for UserVariable \"" + variableDefinition.getName()
+               + "\" and user \"" + user.getUsername()
+               + "\". Usually that means, the variable was not bound anywhere in the users subtree.");
+      }
+
+      return instance.getVariableValue();
+   }
+
+   @Override
+   public Object getDefaultValue(User user, ParameterSet parameterSet) {
+      return getSelectedValue(user);
+   }
+
+   @Override
+   protected Class<?> getType() {
+      UserVariableParameterDefinition parameterDefinition = (UserVariableParameterDefinition) getDefinition();
+      UserVariableDefinition variableDefinition = parameterDefinition.getUserVariableDefinition();
+      return variableDefinition.getType();
+   }
+
+   @Override
+   public void parseStringValue(String value) {
+      // don't set user variables
+   }
+
 }

@@ -12,13 +12,13 @@ import net.datenwerke.rs.globalconstants.client.globalconstants.dto.GlobalConsta
 @RemoteServiceRelativePath("globalconstants")
 public interface GlobalConstantsRpcService extends RemoteService {
 
-	public List<GlobalConstantDto> loadGlobalConstants();
-	
-	public GlobalConstantDto addNewConstant();
-	
-	public GlobalConstantDto updateConstant(GlobalConstantDto constantDto) throws ServerCallFailedException;
-	
-	public void removeConstants(Collection<GlobalConstantDto> constant);
-	
-	public void removeAllConstants();
+   public List<GlobalConstantDto> loadGlobalConstants();
+
+   public GlobalConstantDto addNewConstant();
+
+   public GlobalConstantDto updateConstant(GlobalConstantDto constantDto) throws ServerCallFailedException;
+
+   public void removeConstants(Collection<GlobalConstantDto> constant);
+
+   public void removeAllConstants();
 }

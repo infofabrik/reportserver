@@ -33,96 +33,80 @@ import net.datenwerke.security.service.security.rights.Write;
 @Singleton
 public class JasperUtilsRpcServiceImpl extends SecuredRemoteServiceServlet implements JasperUtilsRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 5349153525496058426L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 5349153525496058426L;
 
-	private final ReportService reportService;
-	private final ReportParameterService parameterService;
-	private final DtoService dtoService;
-	private final JasperUtilsService jasperUtils;
-	
-	@Inject
-	public JasperUtilsRpcServiceImpl(
-		ReportService reportManagerService,
-		ReportParameterService parameterService,
-		DtoService dtoService,
-		JasperUtilsService jasperUtils
-		){
-		
-		this.reportService = reportManagerService;
-		this.parameterService = parameterService;
-		this.dtoService = dtoService;
-		this.jasperUtils = jasperUtils;
-	}
-	
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "report",
-					isDto = true,
-					verify = @RightsVerification(rights={Read.class, Write.class})
-				)
-			}
-		)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public List<JasperParameterProposalDto> proposeParametersFor(
-			@Named("report") JasperReportDto jasperReportDto) {
-		
-		/* load jasper report */
-		JasperReport report = (JasperReport) dtoService.loadPoso(jasperReportDto);
-		if(null == report || null == report.getMasterFile())
-			return null;
-		
-		List<JasperParameterProposal> proposals = jasperUtils.extractParameters(report.getMasterFile().getContent());
-		
-		List<JasperParameterProposalDto> proposalDtos = new ArrayList<JasperParameterProposalDto>();
-		for(JasperParameterProposal proposal : proposals)
-			proposalDtos.add((JasperParameterProposalDto) dtoService.createDto(proposal));
-		
-		return proposalDtos;
-	}
+   private final ReportService reportService;
+   private final ReportParameterService parameterService;
+   private final DtoService dtoService;
+   private final JasperUtilsService jasperUtils;
 
-	@SecurityChecked(
-			argumentVerification = {
-				@ArgumentVerification(
-					name = "report",
-					isDto = true,
-					verify = @RightsVerification(rights={Read.class, Write.class})
-				)
-			}
-		)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public JasperReportDto addParametersFor(@Named("report") JasperReportDto jasperReportDto, List<JasperParameterProposalDto> proposalDtos) throws ExpectedException {
-		/* load jasper report */
-		JasperReport report = (JasperReport) dtoService.loadPoso(jasperReportDto);
-		if(null == report)
-			return null;
-		
-		for(JasperParameterProposalDto proposal : proposalDtos){
-			if(null == proposal.getParameterProposal())
-				continue;
-			
-			ParameterDefinition definition = (ParameterDefinition) dtoService.createPoso(proposal.getParameterProposal());
-			
-			/* init default values */
-			definition.initWithDefaultValues();
-			
-			/* override with parameters from proposal */
-			definition.setKey(proposal.getKey());
-			definition.setName(proposal.getName());
-			
-			/* add to report/folder */
-			parameterService.addParameterDefinition(report, definition);
-		}
+   @Inject
+   public JasperUtilsRpcServiceImpl(ReportService reportManagerService, ReportParameterService parameterService,
+         DtoService dtoService, JasperUtilsService jasperUtils) {
 
-		/* persist parameter */
-		reportService.merge(report);
-		
-		return (JasperReportDto) dtoService.createDto(report);
-	}
+      this.reportService = reportManagerService;
+      this.parameterService = parameterService;
+      this.dtoService = dtoService;
+      this.jasperUtils = jasperUtils;
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Write.class })) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public List<JasperParameterProposalDto> proposeParametersFor(@Named("report") JasperReportDto jasperReportDto) {
+
+      /* load jasper report */
+      JasperReport report = (JasperReport) dtoService.loadPoso(jasperReportDto);
+      if (null == report || null == report.getMasterFile())
+         return null;
+
+      List<JasperParameterProposal> proposals = jasperUtils.extractParameters(report.getMasterFile().getContent());
+
+      List<JasperParameterProposalDto> proposalDtos = new ArrayList<JasperParameterProposalDto>();
+      for (JasperParameterProposal proposal : proposals)
+         proposalDtos.add((JasperParameterProposalDto) dtoService.createDto(proposal));
+
+      return proposalDtos;
+   }
+
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "report", isDto = true, verify = @RightsVerification(rights = { Read.class,
+               Write.class })) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public JasperReportDto addParametersFor(@Named("report") JasperReportDto jasperReportDto,
+         List<JasperParameterProposalDto> proposalDtos) throws ExpectedException {
+      /* load jasper report */
+      JasperReport report = (JasperReport) dtoService.loadPoso(jasperReportDto);
+      if (null == report)
+         return null;
+
+      for (JasperParameterProposalDto proposal : proposalDtos) {
+         if (null == proposal.getParameterProposal())
+            continue;
+
+         ParameterDefinition definition = (ParameterDefinition) dtoService.createPoso(proposal.getParameterProposal());
+
+         /* init default values */
+         definition.initWithDefaultValues();
+
+         /* override with parameters from proposal */
+         definition.setKey(proposal.getKey());
+         definition.setName(proposal.getName());
+
+         /* add to report/folder */
+         parameterService.addParameterDefinition(report, definition);
+      }
+
+      /* persist parameter */
+      reportService.merge(report);
+
+      return (JasperReportDto) dtoService.createDto(report);
+   }
 
 }

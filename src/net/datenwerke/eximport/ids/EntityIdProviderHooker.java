@@ -14,31 +14,29 @@ import net.datenwerke.rs.utils.jpa.EntityUtils;
  */
 public class EntityIdProviderHooker implements ExImportIdProviderHook {
 
-	private final EntityUtils jpaServices;
-	
-	@Inject
-	public EntityIdProviderHooker(
-			EntityUtils jpaServices	
-		){
-		
-		/* store objects */
-		this.jpaServices = jpaServices;
-	}
-	
-	@Override
-	public String provideIdFor(Object object) {
-		if(null == object)
-			return null;
-		
-		if(! object.getClass().isAnnotationPresent(Entity.class))
-			return null;
-		
-		Object id = jpaServices.getId(object);
-		
-		if(null != id)
-			return object.getClass().getName() + "-" + id.toString();
-		
-		return null;
-	}
+   private final EntityUtils jpaServices;
+
+   @Inject
+   public EntityIdProviderHooker(EntityUtils jpaServices) {
+
+      /* store objects */
+      this.jpaServices = jpaServices;
+   }
+
+   @Override
+   public String provideIdFor(Object object) {
+      if (null == object)
+         return null;
+
+      if (!object.getClass().isAnnotationPresent(Entity.class))
+         return null;
+
+      Object id = jpaServices.getId(object);
+
+      if (null != id)
+         return object.getClass().getName() + "-" + id.toString();
+
+      return null;
+   }
 
 }

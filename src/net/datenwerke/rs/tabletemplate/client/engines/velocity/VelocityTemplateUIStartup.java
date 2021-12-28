@@ -8,13 +8,9 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.hooks.TableTemplateC
 
 public class VelocityTemplateUIStartup {
 
-	@Inject
-	public VelocityTemplateUIStartup(
-		HookHandlerService hookHandler,
-		VelocityTemplateClientProvider templateProvider
-		){
-		
-		
-		hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
-	}
+   @Inject
+   public VelocityTemplateUIStartup(HookHandlerService hookHandler, VelocityTemplateClientProvider templateProvider) {
+
+      hookHandler.attachHooker(TableTemplateClientProviderHook.class, templateProvider);
+   }
 }

@@ -28,83 +28,82 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.ColumnDto;
  */
 public abstract class SelectionPanel<M> {
 
-	@Inject
-	protected static FilterService filterService;
-	
-	@Inject
-	protected static SqlTypes sqlTypes;
-	
-	protected TabPanel tabPanel;
-	protected GridView<M> gridView;
-	protected TextView<M> textView;
-	protected ListStore<M> store;
-	protected ColumnDto column;
-	
-	private boolean fireUpdates = true;
+   @Inject
+   protected static FilterService filterService;
 
-	
-	public SelectionPanel(final AbstractFilterAspect<M> filterAspect, ColumnDto column) {
-		this.column = column;
+   @Inject
+   protected static SqlTypes sqlTypes;
 
-		/* create tabpanel and initialize store */
-		this.tabPanel = new DwTabPanel(GWT.<TabPanelAppearance> create(TabPanelBottomAppearance.class));
-		
-		this.store = new ListStore<M>(getModelKeyProvider());
-		store.setAutoCommit(true);
-		
-		/* initialze views */
-		this.gridView = initializeGridView();
-		this.textView = initializeTextView();
-		
-		/* init tab panel */
-		tabPanel.setBodyBorder(false);
-		tabPanel.setBorders(false);
-		
-		/* add tabs */
-		TabItemConfig gridConfig = new TabItemConfig(FilterMessages.INSTANCE.grid());
-		TabItemConfig textConfig = new TabItemConfig(FilterMessages.INSTANCE.textViewTitle());
-		
-		tabPanel.add(gridView, gridConfig);
-		tabPanel.add(textView, textConfig);
-	
-		/* attach store listener */
-		store.addStoreHandlers(new GenericStoreHandler<M>(){
-			@Override
-			protected void handleDataChangeEvent() {
-				if(fireUpdates)
-					filterAspect.storeConfiguration();
-			}
-		});
-	}
+   protected TabPanel tabPanel;
+   protected GridView<M> gridView;
+   protected TextView<M> textView;
+   protected ListStore<M> store;
+   protected ColumnDto column;
 
-	protected ModelKeyProvider<? super M> getModelKeyProvider(){
-		return new BasicObjectModelKeyProvider<M>();
-	}
+   private boolean fireUpdates = true;
 
-	abstract protected TextView<M> initializeTextView();
+   public SelectionPanel(final AbstractFilterAspect<M> filterAspect, ColumnDto column) {
+      this.column = column;
 
-	abstract protected GridView<M> initializeGridView();
+      /* create tabpanel and initialize store */
+      this.tabPanel = new DwTabPanel(GWT.<TabPanelAppearance>create(TabPanelBottomAppearance.class));
 
-	public Widget getComponent() {
-		return tabPanel;
-	}
+      this.store = new ListStore<M>(getModelKeyProvider());
+      store.setAutoCommit(true);
 
-	public ListStore<M> getStore() {
-		return store;
-	}
-	
-	public void setFireUpdates(boolean fire){
-		this.fireUpdates = fire;
-	}
+      /* initialze views */
+      this.gridView = initializeGridView();
+      this.textView = initializeTextView();
 
-	public abstract void insertElement(StringBaseModel value);
-	
-	public void tryParseText(){
-		List<M> newDtos = textView.tryParseText();
-		store.clear();
-		store.addAll(newDtos);
-	}
+      /* init tab panel */
+      tabPanel.setBodyBorder(false);
+      tabPanel.setBorders(false);
 
-	public void validate() {
-	}
+      /* add tabs */
+      TabItemConfig gridConfig = new TabItemConfig(FilterMessages.INSTANCE.grid());
+      TabItemConfig textConfig = new TabItemConfig(FilterMessages.INSTANCE.textViewTitle());
+
+      tabPanel.add(gridView, gridConfig);
+      tabPanel.add(textView, textConfig);
+
+      /* attach store listener */
+      store.addStoreHandlers(new GenericStoreHandler<M>() {
+         @Override
+         protected void handleDataChangeEvent() {
+            if (fireUpdates)
+               filterAspect.storeConfiguration();
+         }
+      });
+   }
+
+   protected ModelKeyProvider<? super M> getModelKeyProvider() {
+      return new BasicObjectModelKeyProvider<M>();
+   }
+
+   abstract protected TextView<M> initializeTextView();
+
+   abstract protected GridView<M> initializeGridView();
+
+   public Widget getComponent() {
+      return tabPanel;
+   }
+
+   public ListStore<M> getStore() {
+      return store;
+   }
+
+   public void setFireUpdates(boolean fire) {
+      this.fireUpdates = fire;
+   }
+
+   public abstract void insertElement(StringBaseModel value);
+
+   public void tryParseText() {
+      List<M> newDtos = textView.tryParseText();
+      store.clear();
+      store.addAll(newDtos);
+   }
+
+   public void validate() {
+   }
 }

@@ -15,30 +15,21 @@ import net.datenwerke.security.service.usermanager.hooks.PasswordManualSetHook;
 
 public class UserManagerStartup {
 
-	@Inject
-	public UserManagerStartup(
-		EventBus eventBus,
-		SecurityService securityService,
-		
-		UserRemoveEventHandler userRemoveEventHandler,
-		HookHandlerService hookHandlerService, 
-		NotificationEmailChangedPasswordHook notificationEmailHooker 
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, User.class, userRemoveEventHandler);
-		
-		registerSecurityTargets(securityService);
-		
-		hookHandlerService.attachHooker(PasswordManualSetHook.class, notificationEmailHooker);
-	}
-	
-	
-	private void registerSecurityTargets(SecurityService securityService) {
-		securityService.registerSecurityTarget(
-			Group.class,
-			User.class,
-			OrganisationalUnit.class
-		);
-	}
+   @Inject
+   public UserManagerStartup(EventBus eventBus, SecurityService securityService,
+
+         UserRemoveEventHandler userRemoveEventHandler, HookHandlerService hookHandlerService,
+         NotificationEmailChangedPasswordHook notificationEmailHooker) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, User.class, userRemoveEventHandler);
+
+      registerSecurityTargets(securityService);
+
+      hookHandlerService.attachHooker(PasswordManualSetHook.class, notificationEmailHooker);
+   }
+
+   private void registerSecurityTargets(SecurityService securityService) {
+      securityService.registerSecurityTarget(Group.class, User.class, OrganisationalUnit.class);
+   }
 
 }

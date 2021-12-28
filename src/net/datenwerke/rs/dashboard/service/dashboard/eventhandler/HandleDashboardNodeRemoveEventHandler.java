@@ -11,26 +11,25 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleDashboardNodeRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleDashboardNodeRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final DadgetService dadgetService;
+   private final DadgetService dadgetService;
 
-	@Inject
-	public HandleDashboardNodeRemoveEventHandler(DadgetService dadgetService) {
-		this.dadgetService = dadgetService;
-	}
+   @Inject
+   public HandleDashboardNodeRemoveEventHandler(DadgetService dadgetService) {
+      this.dadgetService = dadgetService;
+   }
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		DashboardNode node = (DashboardNode) event.getObject();
-		
-		List<DashboardReference> container = dadgetService.getDashboardContainerssWith(node);
-		
-		if(null != container && ! container.isEmpty()){
-			String error = "Dashboard is used."; 
-			throw new NeedForcefulDeleteException(error);
-		}
-	}
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      DashboardNode node = (DashboardNode) event.getObject();
+
+      List<DashboardReference> container = dadgetService.getDashboardContainerssWith(node);
+
+      if (null != container && !container.isEmpty()) {
+         String error = "Dashboard is used.";
+         throw new NeedForcefulDeleteException(error);
+      }
+   }
 
 }

@@ -19,9 +19,7 @@ public class DatasinkManagerVFS extends TreeBasedVirtualFileSystem<AbstractDatas
    private static final String FILESYSTEM_NAME = "datasinks";
 
    @Inject
-   public DatasinkManagerVFS(
-         Provider<DatasinkTreeService> datasinkServiceProvider
-         ) {
+   public DatasinkManagerVFS(Provider<DatasinkTreeService> datasinkServiceProvider) {
       super(datasinkServiceProvider);
    }
 

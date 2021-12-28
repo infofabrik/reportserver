@@ -29,10 +29,7 @@ import net.datenwerke.security.ext.client.security.locale.SecurityMessages;
 public class LostPasswordUIStartup {
 
    @Inject
-   public LostPasswordUIStartup(
-         HookHandlerService hookHandler, 
-         final LostPasswordDao lostPasswordDao
-         ) {
+   public LostPasswordUIStartup(HookHandlerService hookHandler, final LostPasswordDao lostPasswordDao) {
       /* hook a menu item into the login dialog */
       final Provider<MenuItem> provider = new Provider<MenuItem>() {
 
@@ -96,12 +93,13 @@ public class LostPasswordUIStartup {
          @Override
          public void onSuccess(Boolean result) {
             if (!result)
-               hookHandler.attachHooker(LoginMenuHook.class, new LoginMenuHook(provider));  
+               hookHandler.attachHooker(LoginMenuHook.class, new LoginMenuHook(provider));
          }
+
          @Override
          public void onFailure(Throwable caught) {
             super.onFailure(caught);
          }
-        });  
+      });
    }
 }

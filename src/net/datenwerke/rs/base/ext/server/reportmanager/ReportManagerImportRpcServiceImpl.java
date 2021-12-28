@@ -24,43 +24,35 @@ import net.datenwerke.treedb.ext.service.eximport.http.HttpTreeImportService;
  *
  */
 @Singleton
-public class ReportManagerImportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements ReportManagerImportRpcService {
+public class ReportManagerImportRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements ReportManagerImportRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4199359279281665755L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4199359279281665755L;
 
-	private final Provider<HttpTreeImportService> httpImportServiceProvider;
-	
-	@Inject
-	public ReportManagerImportRpcServiceImpl(
-		Provider<HttpTreeImportService> httpImportServiceProvider
-		
-		) {
-		
-		/* store objects */
-		this.httpImportServiceProvider = httpImportServiceProvider;
-	}
+   private final Provider<HttpTreeImportService> httpImportServiceProvider;
 
+   @Inject
+   public ReportManagerImportRpcServiceImpl(Provider<HttpTreeImportService> httpImportServiceProvider
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = { 
-				@GenericTargetVerification(
-					target = ImportSecurityTarget.class, 
-					verify = @RightsVerification(rights = Execute.class)) 
-			})
-	@Transactional(rollbackOn={Exception.class})
-	public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
-		HttpTreeImportService httpImportService = httpImportServiceProvider.get();
+   ) {
 
-		List<ImportTreeModel> tree = httpImportService.loadTreeDto(ReportManagerExporter.class);
-		
-		return tree;
-	}
+      /* store objects */
+      this.httpImportServiceProvider = httpImportServiceProvider;
+   }
 
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ImportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public List<ImportTreeModel> loadTree() throws ServerCallFailedException {
+      HttpTreeImportService httpImportService = httpImportServiceProvider.get();
 
+      List<ImportTreeModel> tree = httpImportService.loadTreeDto(ReportManagerExporter.class);
+
+      return tree;
+   }
 
 }

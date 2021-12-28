@@ -31,65 +31,63 @@ import net.datenwerke.security.ext.client.usermanager.security.UserManagerAdminV
 import net.datenwerke.security.ext.client.usermanager.ui.UserManagerPanel;
 
 public class UserManagerUIStartup {
-	
-	@Inject
-	public UserManagerUIStartup(
-		final WaitOnEventUIService waitOnEventService,
-		
-		final UserManagerDao userManagerDao,
-			
-		final Provider<UserManagerAdminModule> adminModuleProvider,
-		
-		MainPanelViewProviderHooker mainPanelViewProvider,
-		
-		final HookHandlerService hookHandler,
-		
-		UserManagerAdminViewSecurityTargetDomainHooker securityTargetDomain,
-		
-		final SecurityUIService securityService,
-		
-		final UserManagerTreeLoaderDao umdao,
-		
-		final UserManagerTreeConfigurationHooker treeConfigurator,
-		
-		final Provider<UserProvider> simpleFormUserProvider,
-		Provider<StrippedDownUserProvider> strippedDownUserProvider,
-		
-		HistoryUiService historyService,
-		@UserManagerAdminViewTree Provider<UITree> userManagerTree,
-		EventBus eventBus,
-		Provider<UserManagerPanel> userManagerAdminPanel
-		){
-		
-		/* config tree */
-		hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		/* attach views */
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-		
-		/* test if user has rights to see user manager admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, new SynchronousCallbackOnEventTrigger(){
-			public void execute(final WaitOnEventTicket ticket) {
-				if(securityService.hasRight(UserManagerAdminViewGenericTargetIdentifier.class, ReadDto.class))
-					hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 10);
 
-				waitOnEventService.signalProcessingDone(ticket);
-			}
-		});
-		
-		/* simpleform */
-		hookHandler.attachHooker(FormFieldProviderHook.class, simpleFormUserProvider, HookHandlerService.PRIORITY_HIGH);
-		hookHandler.attachHooker(FormFieldProviderHook.class, strippedDownUserProvider, HookHandlerService.PRIORITY_LOW);
-		
-		
-		/* configureHistory */
-		historyService.addHistoryCallback(UserManagerUIModule.USERMANAGER_FAV_HISTORY_TOKEN,
-				new TreeDBHistoryCallback(userManagerTree, eventBus, userManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
-		
-	}
-	
+   @Inject
+   public UserManagerUIStartup(final WaitOnEventUIService waitOnEventService,
+
+         final UserManagerDao userManagerDao,
+
+         final Provider<UserManagerAdminModule> adminModuleProvider,
+
+         MainPanelViewProviderHooker mainPanelViewProvider,
+
+         final HookHandlerService hookHandler,
+
+         UserManagerAdminViewSecurityTargetDomainHooker securityTargetDomain,
+
+         final SecurityUIService securityService,
+
+         final UserManagerTreeLoaderDao umdao,
+
+         final UserManagerTreeConfigurationHooker treeConfigurator,
+
+         final Provider<UserProvider> simpleFormUserProvider,
+         Provider<StrippedDownUserProvider> strippedDownUserProvider,
+
+         HistoryUiService historyService, @UserManagerAdminViewTree Provider<UITree> userManagerTree, EventBus eventBus,
+         Provider<UserManagerPanel> userManagerAdminPanel) {
+
+      /* config tree */
+      hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* attach views */
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+
+      /* test if user has rights to see user manager admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  if (securityService.hasRight(UserManagerAdminViewGenericTargetIdentifier.class, ReadDto.class))
+                     hookHandler.attachHooker(AdminModuleProviderHook.class,
+                           new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 10);
+
+                  waitOnEventService.signalProcessingDone(ticket);
+               }
+            });
+
+      /* simpleform */
+      hookHandler.attachHooker(FormFieldProviderHook.class, simpleFormUserProvider, HookHandlerService.PRIORITY_HIGH);
+      hookHandler.attachHooker(FormFieldProviderHook.class, strippedDownUserProvider, HookHandlerService.PRIORITY_LOW);
+
+      /* configureHistory */
+      historyService.addHistoryCallback(UserManagerUIModule.USERMANAGER_FAV_HISTORY_TOKEN, new TreeDBHistoryCallback(
+            userManagerTree, eventBus, userManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
+
+   }
+
 }

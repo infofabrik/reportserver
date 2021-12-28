@@ -18,46 +18,38 @@ import net.datenwerke.security.service.security.SecurityService;
  *
  */
 @Singleton
-public class DatasinkManagerTreeHandlerRpcServiceImpl 
-	extends TreeDBManagerTreeHandler<AbstractDatasinkManagerNode>
-	implements DatasinkTreeLoader, DatasinkTreeManager {
+public class DatasinkManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractDatasinkManagerNode>
+      implements DatasinkTreeLoader, DatasinkTreeManager {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -455777535667237770L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -455777535667237770L;
+   private final DatasinkTreeService datasinkService;
 
-	private final DatasinkTreeService datasinkService;
+   @Inject
+   public DatasinkManagerTreeHandlerRpcServiceImpl(DatasinkTreeService datasinkService, DtoService dtoGenerator,
+         SecurityService securityService, EntityClonerService entityClonerService) {
 
-	
-	@Inject
-	public DatasinkManagerTreeHandlerRpcServiceImpl(
-			DatasinkTreeService datasinkService,
-			DtoService dtoGenerator,
-			SecurityService securityService,
-			EntityClonerService entityClonerService
-		) {
-	
-		super(datasinkService, dtoGenerator, securityService, entityClonerService);
-		
-		/* store objects */
-		this.datasinkService = datasinkService;
-	}
-	
-	@Override
-	protected boolean allowDuplicateNode(AbstractDatasinkManagerNode node) {
-		return node instanceof DatasinkDefinition;
-	}
+      super(datasinkService, dtoGenerator, securityService, entityClonerService);
 
-	@Override
-	protected void nodeCloned(AbstractDatasinkManagerNode clonedNode) {
-		if(! (clonedNode instanceof DatasinkDefinition))
-			throw new IllegalArgumentException();
-		DatasinkDefinition datasink = (DatasinkDefinition) clonedNode;
-		
-		datasink.setName(datasink.getName() == null ? "copy" : datasink.getName() + " (copy)");
-	}
+      /* store objects */
+      this.datasinkService = datasinkService;
+   }
 
-	
+   @Override
+   protected boolean allowDuplicateNode(AbstractDatasinkManagerNode node) {
+      return node instanceof DatasinkDefinition;
+   }
+
+   @Override
+   protected void nodeCloned(AbstractDatasinkManagerNode clonedNode) {
+      if (!(clonedNode instanceof DatasinkDefinition))
+         throw new IllegalArgumentException();
+      DatasinkDefinition datasink = (DatasinkDefinition) clonedNode;
+
+      datasink.setName(datasink.getName() == null ? "copy" : datasink.getName() + " (copy)");
+   }
+
 }

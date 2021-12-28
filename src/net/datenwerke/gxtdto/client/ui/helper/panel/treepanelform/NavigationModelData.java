@@ -2,60 +2,58 @@ package net.datenwerke.gxtdto.client.ui.helper.panel.treepanelform;
 
 import net.datenwerke.gxtdto.client.model.DwModel;
 
-
 class NavigationModelData<M> implements DwModel {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8783945078009624370L;
 
-	private int id;
-	private String name;
-	private M component;
-	private String iconPath;
-	
-	public NavigationModelData(){
-	}
-	
-	public NavigationModelData(int id, String name, String iconPath, M component){
-		setId(id); 
-		setName(name); 
-		setModel(component);
-		setIconPath(iconPath);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8783945078009624370L;
 
-	public void setModel(M Model) {
-		this.component = Model;
-	}
+   private int id;
+   private String name;
+   private M component;
+   private String iconPath;
 
-	public M getModel() {
-		return component;
-	}
+   public NavigationModelData() {
+   }
 
-	public void setIconPath(String iconPath) {
-		this.iconPath = iconPath;
-	}
+   public NavigationModelData(int id, String name, String iconPath, M component) {
+      setId(id);
+      setName(name);
+      setModel(component);
+      setIconPath(iconPath);
+   }
 
-	public String getIconPath() {
-		return iconPath;
-	}
+   public void setModel(M Model) {
+      this.component = Model;
+   }
 
-	public void setId(int id) {
-		this.id = id;
-	}
+   public M getModel() {
+      return component;
+   }
 
-	public int getId() {
-		return id;
-	}
+   public void setIconPath(String iconPath) {
+      this.iconPath = iconPath;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public String getIconPath() {
+      return iconPath;
+   }
 
-	public String getName() {
-		return name;
-	}
-	
+   public void setId(int id) {
+      this.id = id;
+   }
+
+   public int getId() {
+      return id;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getName() {
+      return name;
+   }
+
 }
-

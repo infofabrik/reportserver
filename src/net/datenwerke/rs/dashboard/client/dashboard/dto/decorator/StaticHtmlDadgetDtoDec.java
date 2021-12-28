@@ -8,12 +8,10 @@ import net.datenwerke.rs.dashboard.client.dashboard.dto.StaticHtmlDadgetDto;
  */
 public class StaticHtmlDadgetDtoDec extends StaticHtmlDadgetDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-
-	public StaticHtmlDadgetDtoDec() {
-		super();
-	}
-
+   public StaticHtmlDadgetDtoDec() {
+      super();
+   }
 
 }

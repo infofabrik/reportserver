@@ -8,13 +8,11 @@ import net.datenwerke.rs.incubator.client.reportmetadata.hookers.MainPanelViewPr
 
 public class ReportMetadataUIStartup {
 
-	@Inject
-	public ReportMetadataUIStartup(
-		HookHandlerService hookHandler,
-		
-		MainPanelViewProviderHooker mainPanelViewProvider
-		){
-		
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider, HookHandlerService.PRIORITY_LOW);
-	}
+   @Inject
+   public ReportMetadataUIStartup(HookHandlerService hookHandler,
+
+         MainPanelViewProviderHooker mainPanelViewProvider) {
+
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider, HookHandlerService.PRIORITY_LOW);
+   }
 }

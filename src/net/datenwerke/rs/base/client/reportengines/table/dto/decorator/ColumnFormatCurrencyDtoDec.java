@@ -11,28 +11,27 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.NumberTypeDto;
  */
 public class ColumnFormatCurrencyDtoDec extends ColumnFormatCurrencyDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public ColumnFormatCurrencyDtoDec() {
+      super();
+      init();
+   }
 
-	public ColumnFormatCurrencyDtoDec() {
-		super();
-		init();
-	}
+   private void init() {
+      setNumberOfDecimalPlaces(2);
+      setType(NumberTypeDto.DEFAULT);
+      setCurrencyType(CurrencyTypeDto.EURO);
+   }
 
-	private void init() {
-		setNumberOfDecimalPlaces(2);
-		setType(NumberTypeDto.DEFAULT);
-		setCurrencyType(CurrencyTypeDto.EURO);
-	}
+   @Override
+   public ColumnFormatDto cloneFormat() {
+      ColumnFormatCurrencyDtoDec clone = new ColumnFormatCurrencyDtoDec();
 
-	@Override
-	public ColumnFormatDto cloneFormat() {
-		ColumnFormatCurrencyDtoDec clone = new ColumnFormatCurrencyDtoDec();
-		
-		clone.setThousandSeparator(isThousandSeparator());
-		clone.setNumberOfDecimalPlaces(clone.getNumberOfDecimalPlaces());
-		clone.setCurrencyType(getCurrencyType());
-		
-		return clone;
-	}
+      clone.setThousandSeparator(isThousandSeparator());
+      clone.setNumberOfDecimalPlaces(clone.getNumberOfDecimalPlaces());
+      clone.setCurrencyType(getCurrencyType());
+
+      return clone;
+   }
 }

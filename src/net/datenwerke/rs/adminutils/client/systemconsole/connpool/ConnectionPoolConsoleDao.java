@@ -21,7 +21,7 @@ public class ConnectionPoolConsoleDao extends Dao {
    public void loadDatasources(RsAsyncCallback<List<ConnectionPoolDatasourceDto>> callback) {
       rpcService.loadDatasources(transformAndKeepCallback(callback));
    }
-   
+
    public void getDatasourceById(long id, RsAsyncCallback<ConnectionPoolInfoDto> callback) {
       rpcService.getDatasourceById(id, transformAndKeepCallback(callback));
    }

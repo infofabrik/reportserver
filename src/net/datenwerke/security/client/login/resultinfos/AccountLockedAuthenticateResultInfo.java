@@ -4,27 +4,27 @@ import java.util.Date;
 
 import net.datenwerke.security.client.login.AuthenticateResultInfo;
 
-public class AccountLockedAuthenticateResultInfo extends AuthenticateResultInfo{
+public class AccountLockedAuthenticateResultInfo extends AuthenticateResultInfo {
 
-	private static final long serialVersionUID = 44454867455548906L;
+   private static final long serialVersionUID = 44454867455548906L;
 
-	private Date lockedUntil;
-	
-	public AccountLockedAuthenticateResultInfo() {
-		super();
-	}
+   private Date lockedUntil;
 
-	public AccountLockedAuthenticateResultInfo(Date lockedUntil) {
-		super();
-		setLockedUntil(lockedUntil);
-	}
+   public AccountLockedAuthenticateResultInfo() {
+      super();
+   }
 
-	public Date getLockedUntil() {
-		return lockedUntil;
-	}
+   public AccountLockedAuthenticateResultInfo(Date lockedUntil) {
+      super();
+      setLockedUntil(lockedUntil);
+   }
 
-	public void setLockedUntil(Date lockedUntil) {
-		this.lockedUntil = lockedUntil;
-	}
-	
+   public Date getLockedUntil() {
+      return lockedUntil;
+   }
+
+   public void setLockedUntil(Date lockedUntil) {
+      this.lockedUntil = lockedUntil;
+   }
+
 }

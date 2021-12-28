@@ -23,126 +23,118 @@ import net.datenwerke.security.service.usermanager.hooks.PasswordSetHook;
  */
 public class BsiPasswordPolicy implements PasswordPolicy {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	public final static String BSI_PASSWORD_POLICY_CHARSET_KEY = "rs.security.passwordpolicy.bsipasswordpolicy.characterset";
-	public final static String BSI_PASSWORD_POLICY_OCCURRENCES_KEY = "rs.security.passwordpolicy.bsipasswordpolicy.choosemin";
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	public final static String BSI_PASSWORD_POLICY_PSWD_MAX_AGE = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.maxage";
-	public final static String BSI_PASSWORD_POLICY_PSWD_MIN_AGE = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.minage";
-	public final static String BSI_PASSWORD_POLICY_PSWD_MIN_LENGTH = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.minlength";
-	public final static String BSI_PASSWORD_POLICY_HISTORY_SIZE = "rs.security.passwordpolicy.bsipasswordpolicy.historysize";
-	public final static String BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_THRESHOLD  = "rs.security.passwordpolicy.bsipasswordpolicy.lockoutthreshold";
-	public final static String BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_RESET_TIMEOUT = "rs.security.passwordpolicy.bsipasswordpolicy.lockoutresettimeout";
-	
-	private CharacterClassBasedPasswordComplexitySpecification passwordComplexitySpecification;
-	
-	private int passwordMaxAge;
-	private int passwordMinAge;
-	private int historySize;
-	private int accountLockoutThreshold;
-	private int accountLockoutAutoResetTimeout;
-	
-	private final ConfigService configService;
-	
-	private final Provider<BsiPasswordPolicyChangePasswordHook> passwordChangeHookProvider;
-	private final Provider<BsiPasswordPolicyPasswordSetHook> passwordSetHookProvider;
-	private final Provider<BsiPasswordPolicyPostAuthenticateHook> postAuthenticateHookProvider;
-	
-	private boolean valid;
-	
-	@Inject
-	public BsiPasswordPolicy(
-		ConfigService configService, 
-		Provider<BsiPasswordPolicyChangePasswordHook> passwordChangeHookProvider, 
-		Provider<BsiPasswordPolicyPasswordSetHook> passwordSetHookProvider, 
-		Provider<BsiPasswordPolicyPostAuthenticateHook> postAuthenticateHookProvider
-		) {
+   public final static String BSI_PASSWORD_POLICY_CHARSET_KEY = "rs.security.passwordpolicy.bsipasswordpolicy.characterset";
+   public final static String BSI_PASSWORD_POLICY_OCCURRENCES_KEY = "rs.security.passwordpolicy.bsipasswordpolicy.choosemin";
 
-		this.configService = configService;
-		this.passwordChangeHookProvider = passwordChangeHookProvider;
-		this.passwordSetHookProvider = passwordSetHookProvider;
-		this.postAuthenticateHookProvider = postAuthenticateHookProvider;
-	}
-	
-	public void loadConfig(){
-			Configuration rsProperties = configService.getConfig(PasswordPolicyModule.CONFIG_FILE);
+   public final static String BSI_PASSWORD_POLICY_PSWD_MAX_AGE = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.maxage";
+   public final static String BSI_PASSWORD_POLICY_PSWD_MIN_AGE = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.minage";
+   public final static String BSI_PASSWORD_POLICY_PSWD_MIN_LENGTH = "rs.security.passwordpolicy.bsipasswordpolicy.pswd.minlength";
+   public final static String BSI_PASSWORD_POLICY_HISTORY_SIZE = "rs.security.passwordpolicy.bsipasswordpolicy.historysize";
+   public final static String BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_THRESHOLD = "rs.security.passwordpolicy.bsipasswordpolicy.lockoutthreshold";
+   public final static String BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_RESET_TIMEOUT = "rs.security.passwordpolicy.bsipasswordpolicy.lockoutresettimeout";
 
-			/* retrieve configuration from .properties */
-			passwordMaxAge = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MAX_AGE);
-			passwordMinAge = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MIN_AGE);
-			historySize = rsProperties.getInt(BSI_PASSWORD_POLICY_HISTORY_SIZE);
-			accountLockoutThreshold = rsProperties.getInt(BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_THRESHOLD);
-			accountLockoutAutoResetTimeout = rsProperties.getInt(BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_RESET_TIMEOUT);
+   private CharacterClassBasedPasswordComplexitySpecification passwordComplexitySpecification;
 
-			/* Build password complexity specification from config */
-			String[] charsets = rsProperties.getStringArray(BSI_PASSWORD_POLICY_CHARSET_KEY);
-			String[] occurrences = rsProperties.getStringArray(BSI_PASSWORD_POLICY_OCCURRENCES_KEY);
-			int passwordMinLength = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MIN_LENGTH);
+   private int passwordMaxAge;
+   private int passwordMinAge;
+   private int historySize;
+   private int accountLockoutThreshold;
+   private int accountLockoutAutoResetTimeout;
 
-			passwordComplexitySpecification = new CharacterClassBasedPasswordComplexitySpecification(passwordMinLength);
+   private final ConfigService configService;
 
-			for(int i = 0; i < charsets.length; i++){
-				int minOccurrences = 0;
+   private final Provider<BsiPasswordPolicyChangePasswordHook> passwordChangeHookProvider;
+   private final Provider<BsiPasswordPolicyPasswordSetHook> passwordSetHookProvider;
+   private final Provider<BsiPasswordPolicyPostAuthenticateHook> postAuthenticateHookProvider;
 
-				if(i < occurrences.length)
-					minOccurrences = Integer.valueOf(occurrences[i]);
+   private boolean valid;
 
+   @Inject
+   public BsiPasswordPolicy(ConfigService configService,
+         Provider<BsiPasswordPolicyChangePasswordHook> passwordChangeHookProvider,
+         Provider<BsiPasswordPolicyPasswordSetHook> passwordSetHookProvider,
+         Provider<BsiPasswordPolicyPostAuthenticateHook> postAuthenticateHookProvider) {
 
-				passwordComplexitySpecification.addSelectionSpecification(new CharacterSelectionSpecification(new CharacterClass(charsets[i]), minOccurrences));
-			}
+      this.configService = configService;
+      this.passwordChangeHookProvider = passwordChangeHookProvider;
+      this.passwordSetHookProvider = passwordSetHookProvider;
+      this.postAuthenticateHookProvider = postAuthenticateHookProvider;
+   }
 
-			valid = true;
-	}
+   public void loadConfig() {
+      Configuration rsProperties = configService.getConfig(PasswordPolicyModule.CONFIG_FILE);
 
-	public boolean isValid(){
-		return valid;
-	}
-	
+      /* retrieve configuration from .properties */
+      passwordMaxAge = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MAX_AGE);
+      passwordMinAge = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MIN_AGE);
+      historySize = rsProperties.getInt(BSI_PASSWORD_POLICY_HISTORY_SIZE);
+      accountLockoutThreshold = rsProperties.getInt(BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_THRESHOLD);
+      accountLockoutAutoResetTimeout = rsProperties.getInt(BSI_PASSWORD_POLICY_ACCOUNT_LOCKOUT_RESET_TIMEOUT);
 
-	@Override
-	public CharacterClassBasedPasswordComplexitySpecification getPasswordComplexitySpecification() {
-		return passwordComplexitySpecification;
-	}
-	
-	@Override
-	public PostAuthenticateHook getPostAuthenticateHooker() {
-		return postAuthenticateHookProvider.get();
-	}
-	
-	@Override
-	public ChangePasswordHook getChangePasswordHooker(){
-		return passwordChangeHookProvider.get();
-	}
+      /* Build password complexity specification from config */
+      String[] charsets = rsProperties.getStringArray(BSI_PASSWORD_POLICY_CHARSET_KEY);
+      String[] occurrences = rsProperties.getStringArray(BSI_PASSWORD_POLICY_OCCURRENCES_KEY);
+      int passwordMinLength = rsProperties.getInt(BSI_PASSWORD_POLICY_PSWD_MIN_LENGTH);
 
+      passwordComplexitySpecification = new CharacterClassBasedPasswordComplexitySpecification(passwordMinLength);
 
-	public int getPasswordMaxAge() {
-		return passwordMaxAge;
-	}
+      for (int i = 0; i < charsets.length; i++) {
+         int minOccurrences = 0;
 
+         if (i < occurrences.length)
+            minOccurrences = Integer.valueOf(occurrences[i]);
 
-	public int getPasswordMinAge() {
-		return passwordMinAge;
-	}
+         passwordComplexitySpecification.addSelectionSpecification(
+               new CharacterSelectionSpecification(new CharacterClass(charsets[i]), minOccurrences));
+      }
 
+      valid = true;
+   }
 
-	public int getHistorySize() {
-		return historySize;
-	}
+   public boolean isValid() {
+      return valid;
+   }
 
+   @Override
+   public CharacterClassBasedPasswordComplexitySpecification getPasswordComplexitySpecification() {
+      return passwordComplexitySpecification;
+   }
 
-	public int getAccountLockoutThreshold() {
-		return accountLockoutThreshold;
-	}
+   @Override
+   public PostAuthenticateHook getPostAuthenticateHooker() {
+      return postAuthenticateHookProvider.get();
+   }
 
+   @Override
+   public ChangePasswordHook getChangePasswordHooker() {
+      return passwordChangeHookProvider.get();
+   }
 
-	public int getAccountLockoutAutoResetTimeout() {
-		return accountLockoutAutoResetTimeout;
-	}
+   public int getPasswordMaxAge() {
+      return passwordMaxAge;
+   }
 
-	@Override
-	public PasswordSetHook getPasswordSetHooker() {
-		return passwordSetHookProvider.get();
-	}
-	
+   public int getPasswordMinAge() {
+      return passwordMinAge;
+   }
+
+   public int getHistorySize() {
+      return historySize;
+   }
+
+   public int getAccountLockoutThreshold() {
+      return accountLockoutThreshold;
+   }
+
+   public int getAccountLockoutAutoResetTimeout() {
+      return accountLockoutAutoResetTimeout;
+   }
+
+   @Override
+   public PasswordSetHook getPasswordSetHooker() {
+      return passwordSetHookProvider.get();
+   }
+
 }

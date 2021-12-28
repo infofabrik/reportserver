@@ -13,6 +13,4 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceRoleDto;
 @CorrespondingPoso(net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceRole.class)
 public interface TeamSpaceRoleDtoPA extends PropertyAccess<TeamSpaceRoleDto> {
 
-
-
 }

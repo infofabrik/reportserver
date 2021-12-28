@@ -23,55 +23,52 @@ import net.datenwerke.treedb.ext.client.eximport.ex.QuickExportHookerBase;
  * 
  *
  */
-public class ExportButtonHook extends QuickExportHookerBase{
-	
-	final ReportManagerExportDao reDao;
-	
-	@Inject
-	public ExportButtonHook(
-		ReportManagerExportDao reDao,
-		ToolbarService toolbarUIService,
-		UtilsUIService utilsUIService
-		) {
-		super(toolbarUIService, utilsUIService);
-		
-		/* store objects */
-		this.reDao = reDao;
-	}
-	
-	@Override
-	protected boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode) {
-		if(! (selectedNode instanceof ReportDto) && !(selectedNode instanceof ReportFolderDto))
-			return false;
-		if(! MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
-			return false;
-	
-		return true;
-	}
+public class ExportButtonHook extends QuickExportHookerBase {
 
-	@Override
-	protected void quickExportClicked(final AbstractNodeDto selectedNode) {
-		final MessageBox mb = new DwMessageBox(ReportmanagerMessages.INSTANCE.quickExportIncludeVariantsTitle(), ReportmanagerMessages.INSTANCE.quickExportIncludeVariantsText());
-		mb.setPredefinedButtons(PredefinedButton.YES,PredefinedButton.NO, PredefinedButton.CANCEL);
-		mb.addDialogHideHandler(new DialogHideHandler() {
-			
-			@Override
-			public void onDialogHide(DialogHideEvent event) {
-				if(event.getHideButton() == PredefinedButton.CANCEL)
-					return;
-				
-				boolean includeVariants = event.getHideButton() == PredefinedButton.YES; 
-				startProgress();
-				reDao.quickExport((AbstractReportManagerNodeDto) selectedNode, includeVariants, getExportCallback());	
-			}
-		});
-		
-		mb.show();
-	}
-	
-	@Override
-	protected void loadAndDisplayResult(
-			AsyncCallback<String> callback) {
-		reDao.loadResult(callback);
-	}
+   final ReportManagerExportDao reDao;
+
+   @Inject
+   public ExportButtonHook(ReportManagerExportDao reDao, ToolbarService toolbarUIService,
+         UtilsUIService utilsUIService) {
+      super(toolbarUIService, utilsUIService);
+
+      /* store objects */
+      this.reDao = reDao;
+   }
+
+   @Override
+   protected boolean viewApplies(MainPanelView view, AbstractNodeDto selectedNode) {
+      if (!(selectedNode instanceof ReportDto) && !(selectedNode instanceof ReportFolderDto))
+         return false;
+      if (!MainPanelView.ID_MAIN_PROPERTIES_VIEW.equals(view.getViewId()))
+         return false;
+
+      return true;
+   }
+
+   @Override
+   protected void quickExportClicked(final AbstractNodeDto selectedNode) {
+      final MessageBox mb = new DwMessageBox(ReportmanagerMessages.INSTANCE.quickExportIncludeVariantsTitle(),
+            ReportmanagerMessages.INSTANCE.quickExportIncludeVariantsText());
+      mb.setPredefinedButtons(PredefinedButton.YES, PredefinedButton.NO, PredefinedButton.CANCEL);
+      mb.addDialogHideHandler(new DialogHideHandler() {
+
+         @Override
+         public void onDialogHide(DialogHideEvent event) {
+            if (event.getHideButton() == PredefinedButton.CANCEL)
+               return;
+
+            boolean includeVariants = event.getHideButton() == PredefinedButton.YES;
+            startProgress();
+            reDao.quickExport((AbstractReportManagerNodeDto) selectedNode, includeVariants, getExportCallback());
+         }
+      });
+
+      mb.show();
+   }
+
+   @Override
+   protected void loadAndDisplayResult(AsyncCallback<String> callback) {
+      reDao.loadResult(callback);
+   }
 }

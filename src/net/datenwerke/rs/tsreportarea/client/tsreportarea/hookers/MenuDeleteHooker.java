@@ -33,102 +33,100 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MenuDeleteHooker implements TsFavoriteMenuHook {
 
-	
-	private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
-	
-	
-	private final TsDiskTreeManagerDao treeManagerDao;
-	private final TeamSpaceUIService teamSpaceService;
-	
-	@Inject
-	public MenuDeleteHooker(
-		TsDiskTreeManagerDao treeManagerDao,
-		TeamSpaceUIService teamSpaceService
-		){
-	
-		/* store objects */
-		this.treeManagerDao = treeManagerDao;
-		this.teamSpaceService = teamSpaceService;
-	}
-	
-	@Override
-	public boolean addContextMenuEntries(Menu menu, List<AbstractTsDiskNodeDto> items, ItemSelector selector, final TsDiskMainComponent mainComponent) {
-		if(null == items || items.isEmpty())
-			return false;
-		if(! teamSpaceService.isUser(mainComponent.getCurrentSpace()))
-			return false;
-		for(AbstractTsDiskNodeDto node : items)
-			if(node instanceof TsDiskRootDto)
-				return false;
-		
-		final List<AbstractNodeDto> nodes = new ArrayList<AbstractNodeDto>(items);
-		
-		/* delete */
-		MenuItem deleteItem = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-		deleteItem.addSelectionHandler(new SelectionHandler<Item>() {
-			
-			@Override
-			public void onSelection(SelectionEvent<Item> event) {
-				if(null != nodes && ! nodes.isEmpty()){
-					String msg = null;
-					if(nodes.size() == 1)
-						msg = BaseMessages.INSTANCE.confirmDeleteMsg(nodes.get(0).toDisplayTitle());
-					else
-						msg = BaseMessages.INSTANCE.confirmDeleteManyMsg(nodes.size());
-					
-					ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(), msg);
-					cmb.addDialogHideHandler(new DialogHideHandler() {
-						
-						@Override
-						public void onDialogHide(DialogHideEvent event) {
-							if (event.getHideButton() == PredefinedButton.YES) {
-								treeManagerDao.setState(mainComponent.getCurrentSpace());
-								treeManagerDao.deleteNodesAndAskForMoreForce(nodes, new NotamCallback<Boolean>(messages.itemDeleted()){
-									public void doOnSuccess(Boolean result) {
-										if(! result)
-											return;
-										for(AbstractNodeDto node : nodes)
-											mainComponent.getListStore().remove((AbstractTsDiskNodeDto)node);
-									
-										List<AbstractTsDiskNodeDto> currentPath = mainComponent.getCurrentPath();
-										boolean found = false;
-										for(AbstractNodeDto node : nodes){
-											AbstractTsDiskNodeDto item = (AbstractTsDiskNodeDto)node;
-											if(currentPath.contains(item)){
-												int idx = 0;
-												for(AbstractTsDiskNodeDto newParent : currentPath){
-													if(newParent.equals(item)){
-														if(idx == 1)
-															mainComponent.folderOpened(null);
-														else
-															mainComponent.folderOpened((TsDiskFolderDto) currentPath.get(idx-1));
-														
-														found = true;
-														break;
-													}
-													idx++;
-												}
-											}
-										}
-										
-										if(!found && ! currentPath.isEmpty())
-											mainComponent.folderOpened((TsDiskFolderDto) currentPath.get(0));
-										else
-											mainComponent.folderOpened(null);
-									};
-								});
-							}
-						}
-					});
-					
-					cmb.show();
-				}
-			}
-		});
+   private final static TsFavoriteMessages messages = GWT.create(TsFavoriteMessages.class);
 
-		menu.add(deleteItem);
-		
-		return true;
-	}
+   private final TsDiskTreeManagerDao treeManagerDao;
+   private final TeamSpaceUIService teamSpaceService;
+
+   @Inject
+   public MenuDeleteHooker(TsDiskTreeManagerDao treeManagerDao, TeamSpaceUIService teamSpaceService) {
+
+      /* store objects */
+      this.treeManagerDao = treeManagerDao;
+      this.teamSpaceService = teamSpaceService;
+   }
+
+   @Override
+   public boolean addContextMenuEntries(Menu menu, List<AbstractTsDiskNodeDto> items, ItemSelector selector,
+         final TsDiskMainComponent mainComponent) {
+      if (null == items || items.isEmpty())
+         return false;
+      if (!teamSpaceService.isUser(mainComponent.getCurrentSpace()))
+         return false;
+      for (AbstractTsDiskNodeDto node : items)
+         if (node instanceof TsDiskRootDto)
+            return false;
+
+      final List<AbstractNodeDto> nodes = new ArrayList<AbstractNodeDto>(items);
+
+      /* delete */
+      MenuItem deleteItem = new DwMenuItem(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
+      deleteItem.addSelectionHandler(new SelectionHandler<Item>() {
+
+         @Override
+         public void onSelection(SelectionEvent<Item> event) {
+            if (null != nodes && !nodes.isEmpty()) {
+               String msg = null;
+               if (nodes.size() == 1)
+                  msg = BaseMessages.INSTANCE.confirmDeleteMsg(nodes.get(0).toDisplayTitle());
+               else
+                  msg = BaseMessages.INSTANCE.confirmDeleteManyMsg(nodes.size());
+
+               ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.confirmDeleteTitle(), msg);
+               cmb.addDialogHideHandler(new DialogHideHandler() {
+
+                  @Override
+                  public void onDialogHide(DialogHideEvent event) {
+                     if (event.getHideButton() == PredefinedButton.YES) {
+                        treeManagerDao.setState(mainComponent.getCurrentSpace());
+                        treeManagerDao.deleteNodesAndAskForMoreForce(nodes,
+                              new NotamCallback<Boolean>(messages.itemDeleted()) {
+                                 public void doOnSuccess(Boolean result) {
+                                    if (!result)
+                                       return;
+                                    for (AbstractNodeDto node : nodes)
+                                       mainComponent.getListStore().remove((AbstractTsDiskNodeDto) node);
+
+                                    List<AbstractTsDiskNodeDto> currentPath = mainComponent.getCurrentPath();
+                                    boolean found = false;
+                                    for (AbstractNodeDto node : nodes) {
+                                       AbstractTsDiskNodeDto item = (AbstractTsDiskNodeDto) node;
+                                       if (currentPath.contains(item)) {
+                                          int idx = 0;
+                                          for (AbstractTsDiskNodeDto newParent : currentPath) {
+                                             if (newParent.equals(item)) {
+                                                if (idx == 1)
+                                                   mainComponent.folderOpened(null);
+                                                else
+                                                   mainComponent
+                                                         .folderOpened((TsDiskFolderDto) currentPath.get(idx - 1));
+
+                                                found = true;
+                                                break;
+                                             }
+                                             idx++;
+                                          }
+                                       }
+                                    }
+
+                                    if (!found && !currentPath.isEmpty())
+                                       mainComponent.folderOpened((TsDiskFolderDto) currentPath.get(0));
+                                    else
+                                       mainComponent.folderOpened(null);
+                                 };
+                              });
+                     }
+                  }
+               });
+
+               cmb.show();
+            }
+         }
+      });
+
+      menu.add(deleteItem);
+
+      return true;
+   }
 
 }

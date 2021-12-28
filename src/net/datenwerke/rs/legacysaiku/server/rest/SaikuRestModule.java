@@ -16,26 +16,19 @@ import net.datenwerke.rs.legacysaiku.server.rest.resources.StatisticsResource;
 
 public class SaikuRestModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* register rest resources */
+   @Override
+   protected void configure() {
+      /* register rest resources */
 //		ResourceConfig rc = new PackagesResourceConfig(this.getClass().getPackage().getName());
-		
-		ClassNamesResourceConfig cnrc = new ClassNamesResourceConfig(
-				BasicRepositoryResource.class,
-				BasicRepositoryResource2.class,
-				BasicTagRepositoryResource.class,
-				DataSourceResource.class,
-				ExporterResource.class, 
-				OlapDiscoverResource.class,
-				QueryResource.class,
-				SessionResource.class, 
-				StatisticsResource.class, 
-				SaikuI18nResource.class);
-		
-		for ( Class<?> resource : cnrc.getClasses() ) {
-			bind( resource );
-		}
-	}
+
+      ClassNamesResourceConfig cnrc = new ClassNamesResourceConfig(BasicRepositoryResource.class,
+            BasicRepositoryResource2.class, BasicTagRepositoryResource.class, DataSourceResource.class,
+            ExporterResource.class, OlapDiscoverResource.class, QueryResource.class, SessionResource.class,
+            StatisticsResource.class, SaikuI18nResource.class);
+
+      for (Class<?> resource : cnrc.getClasses()) {
+         bind(resource);
+      }
+   }
 
 }

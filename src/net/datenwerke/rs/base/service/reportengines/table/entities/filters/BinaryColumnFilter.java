@@ -21,65 +21,62 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Entity
-@Table(name="BINARY_COLUMN_FILTER")
+@Table(name = "BINARY_COLUMN_FILTER")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	createDecorator = true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
 public class BinaryColumnFilter extends FilterSpec {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2692299428473434186L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 2692299428473434186L;
 
-	@ExposeToClient
-	private BinaryOperator operator;
-	
-	@EnclosedEntity
-	@ExposeToClient
-	@OneToOne(cascade=CascadeType.ALL)
-	private Column columnA;
-	
-	@EnclosedEntity
-	@ExposeToClient
-	@OneToOne(cascade=CascadeType.ALL)
-	private Column columnB;
+   @ExposeToClient
+   private BinaryOperator operator;
 
-	public void setColumnA(Column columnA) {
-		this.columnA = columnA;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   @OneToOne(cascade = CascadeType.ALL)
+   private Column columnA;
 
-	public Column getColumnA() {
-		return columnA;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   @OneToOne(cascade = CascadeType.ALL)
+   private Column columnB;
 
-	public void setColumnB(Column columnB) {
-		this.columnB = columnB;
-	}
+   public void setColumnA(Column columnA) {
+      this.columnA = columnA;
+   }
 
-	public Column getColumnB() {
-		return columnB;
-	}
+   public Column getColumnA() {
+      return columnA;
+   }
 
-	public void setOperator(BinaryOperator operator) {
-		this.operator = operator;
-	}
+   public void setColumnB(Column columnB) {
+      this.columnB = columnB;
+   }
 
-	public BinaryOperator getOperator() {
-		return operator;
-	}
-	
-	@Override
-	public Collection<Column> getColumns() {
-		List<Column> l = new ArrayList<Column>();
-		if(null != columnA)
-			l.add(columnA);
-		if(null != columnB)
-			l.add(columnB);
-		return l;
-	}
+   public Column getColumnB() {
+      return columnB;
+   }
+
+   public void setOperator(BinaryOperator operator) {
+      this.operator = operator;
+   }
+
+   public BinaryOperator getOperator() {
+      return operator;
+   }
+
+   @Override
+   public Collection<Column> getColumns() {
+      List<Column> l = new ArrayList<Column>();
+      if (null != columnA)
+         l.add(columnA);
+      if (null != columnB)
+         l.add(columnB);
+      return l;
+   }
 
    @Override
    public Map<String, Object> asMap() {
@@ -87,5 +84,5 @@ public class BinaryColumnFilter extends FilterSpec {
       asMap.put(operator.getStrOp(), getColumns().stream().map(Column::getName).collect(toList()));
       return asMap;
    }
-	
+
 }

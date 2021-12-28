@@ -9,19 +9,19 @@ import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardPasteProcessor;
 @ImplementedBy(ClipboardUiServiceImpl.class)
 public interface ClipboardUiService {
 
-	public void setClipboardItem(ClipboardItem clipboardItem);
-	
-	public ClipboardItem getClipboardItem();
-	
-	public void registerCopyHandler(Widget component, ClipboardCopyProcessor copyProcessor);
-	
-	public void detachCopyHandler(Widget component);
-	
-	public void registerPasteHandler(Widget component, ClipboardPasteProcessor pasteProcessor);
+   public void setClipboardItem(ClipboardItem clipboardItem);
 
-	public void detachPasteHandler(Widget component);
-	
-	void copyToSystemClipboard(String txt);
+   public ClipboardItem getClipboardItem();
 
-	String readFromSystemClipboard();
+   public void registerCopyHandler(Widget component, ClipboardCopyProcessor copyProcessor);
+
+   public void detachCopyHandler(Widget component);
+
+   public void registerPasteHandler(Widget component, ClipboardPasteProcessor pasteProcessor);
+
+   public void detachPasteHandler(Widget component);
+
+   void copyToSystemClipboard(String txt);
+
+   String readFromSystemClipboard();
 }

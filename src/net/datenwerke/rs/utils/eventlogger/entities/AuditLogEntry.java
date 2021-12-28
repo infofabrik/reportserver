@@ -17,75 +17,75 @@ import javax.persistence.Version;
 
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-@Table(name="AUDIT_LOG_ENTRY")
+@Table(name = "AUDIT_LOG_ENTRY")
 @Entity
 public class AuditLogEntry {
 
-	@EnclosedEntity
-	@OneToMany(cascade=CascadeType.ALL)
-	@JoinColumn(name="LOG_ENTRY_ID")
-	private Set<LogProperty> logProperties = new HashSet<LogProperty>();
-	
-	@Id @GeneratedValue
-	private long id;
-	
-	@Version
-	private Long version;
+   @EnclosedEntity
+   @OneToMany(cascade = CascadeType.ALL)
+   @JoinColumn(name = "LOG_ENTRY_ID")
+   private Set<LogProperty> logProperties = new HashSet<LogProperty>();
 
-	private Long userId;
+   @Id
+   @GeneratedValue
+   private long id;
 
-	private Date date = new GregorianCalendar().getTime();
-	
-	@Column(length=64)
-	private String action;
+   @Version
+   private Long version;
 
-	public long getId() {
-		return id;
-	}
+   private Long userId;
 
-	public void setId(long id) {
-		this.id = id;
-	}
+   private Date date = new GregorianCalendar().getTime();
 
-	public Long getVersion() {
-		return version;
-	}
+   @Column(length = 64)
+   private String action;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public long getId() {
+      return id;
+   }
 
-	public Long getUserId() {
-		return userId;
-	}
+   public void setId(long id) {
+      this.id = id;
+   }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public String getAction() {
-		return action;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	public void setAction(String action) {
-		this.action = action;
-	}
+   public Long getUserId() {
+      return userId;
+   }
 
-	public void setLogProperties(Set<LogProperty> logProperties) {
-		this.logProperties = logProperties;
-	}
+   public void setUserId(Long userId) {
+      this.userId = userId;
+   }
 
-	public Set<LogProperty> getLogProperties() {
-		return logProperties;
-	}
+   public String getAction() {
+      return action;
+   }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+   public void setAction(String action) {
+      this.action = action;
+   }
 
-	public Date getDate() {
-		return date;
-	}
+   public void setLogProperties(Set<LogProperty> logProperties) {
+      this.logProperties = logProperties;
+   }
 
-	
+   public Set<LogProperty> getLogProperties() {
+      return logProperties;
+   }
+
+   public void setDate(Date date) {
+      this.date = date;
+   }
+
+   public Date getDate() {
+      return date;
+   }
+
 }

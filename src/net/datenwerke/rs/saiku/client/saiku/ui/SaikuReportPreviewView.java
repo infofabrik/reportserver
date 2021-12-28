@@ -27,105 +27,102 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class SaikuReportPreviewView extends AbstractReportPreviewView {
 
-	private DwContentPanel wrapper;
-	private SaikuDao saikuDao;
-	private SaikuUiService saikuService;
-	
-	@Inject
-	public SaikuReportPreviewView(
-			ReportExecutorDao rexService,
-			SaikuDao saikuDao, 
-			HookHandlerService hookHandler,
-			SaikuUiService saikuService) {
-		super(rexService, hookHandler);
-		
-		this.saikuDao = saikuDao;
-		this.saikuService = saikuService;
-		
-		wrapper = DwContentPanel.newInlineInstance();
-	}
-	
-	@Override
-	protected boolean isCreateStatusBar() {
-		return false;
-	}
+   private DwContentPanel wrapper;
+   private SaikuDao saikuDao;
+   private SaikuUiService saikuService;
 
-	@Override
-	protected void doLoadReport(DwModel reportExecutionResult) {
-		saikuService.getSettings(new AsyncCallback<HashMap<String,String>>() {
-			@Override
-			public void onSuccess(HashMap<String, String> settings) {
-				wrapper.clear();
-				
-				VerticalLayoutContainer container = new VerticalLayoutContainer();
-				wrapper.setWidget(container);
-				
-				String addProperties = "";
-				if(null != settings){
-					for(String key : settings.keySet()){
-						String value = settings.get(key);
-						
-						addProperties += "&" + URL.encode(key) + "=" + URL.encode(value);
-					}
-				}
-				
-				boolean isConfigurationProtected = report.isConfigurationProtected();
-				
-				final NamedFrame iframe= new NamedFrame("rs-saiku-" + getExecuteReportToken());
-				iframe.getElement().setAttribute("id", "rs-saiku-" + getExecuteReportToken());
-				iframe.setUrl("resources/saiku/index.html?username=" + getExecuteReportToken() + "&password=none&RS_SHOW_RESET=true&RS_CONFIGURATION_PROTECTED=" + isConfigurationProtected + addProperties);
-				iframe.setHeight("100%");
-				iframe.setWidth("100%");
-				iframe.getElement().setAttribute("width", "100%");
-				iframe.getElement().setAttribute("height", "100%");
-				iframe.getElement().setAttribute("frameborder", "0");
-				iframe.getElement().setPropertyString("scrolling", "no");
-				iframe.getElement().getStyle().setProperty("border", "none");
-				iframe.getElement().getStyle().setProperty("margin","0");
-				
-				container.add(iframe, new VerticalLayoutData(1,1,new Margins(0)));
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					@Override
-					public void execute() {
-						wrapper.forceLayout();
-						iframe.getElement().getStyle().setProperty("border", "none");
-						iframe.getElement().getStyle().setProperty("margin","0");
-						
-					}
-				});
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-			}
-		});
-	}
+   @Inject
+   public SaikuReportPreviewView(ReportExecutorDao rexService, SaikuDao saikuDao, HookHandlerService hookHandler,
+         SaikuUiService saikuService) {
+      super(rexService, hookHandler);
 
-	
-	@Override
-	protected void cancelExecution(String executeToken) {
-		// TODO Auto-generated method stub
-	}
-	
-	@Override
-	public Request execute(final ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
-		return saikuDao.stashReport(getExecuteReportToken(), (SaikuReportDto) report, new RsAsyncCallback<Void>(){
-			@Override
-			public void onSuccess(Void result) {
-				callback.onSuccess(report);
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				callback.onFailure(caught);
-			}
-		});
-	}
+      this.saikuDao = saikuDao;
+      this.saikuService = saikuService;
 
-	@Override
-	public Widget doGetViewComponent() {
-		return wrapper;
-	}
+      wrapper = DwContentPanel.newInlineInstance();
+   }
 
+   @Override
+   protected boolean isCreateStatusBar() {
+      return false;
+   }
+
+   @Override
+   protected void doLoadReport(DwModel reportExecutionResult) {
+      saikuService.getSettings(new AsyncCallback<HashMap<String, String>>() {
+         @Override
+         public void onSuccess(HashMap<String, String> settings) {
+            wrapper.clear();
+
+            VerticalLayoutContainer container = new VerticalLayoutContainer();
+            wrapper.setWidget(container);
+
+            String addProperties = "";
+            if (null != settings) {
+               for (String key : settings.keySet()) {
+                  String value = settings.get(key);
+
+                  addProperties += "&" + URL.encode(key) + "=" + URL.encode(value);
+               }
+            }
+
+            boolean isConfigurationProtected = report.isConfigurationProtected();
+
+            final NamedFrame iframe = new NamedFrame("rs-saiku-" + getExecuteReportToken());
+            iframe.getElement().setAttribute("id", "rs-saiku-" + getExecuteReportToken());
+            iframe.setUrl("resources/saiku/index.html?username=" + getExecuteReportToken()
+                  + "&password=none&RS_SHOW_RESET=true&RS_CONFIGURATION_PROTECTED=" + isConfigurationProtected
+                  + addProperties);
+            iframe.setHeight("100%");
+            iframe.setWidth("100%");
+            iframe.getElement().setAttribute("width", "100%");
+            iframe.getElement().setAttribute("height", "100%");
+            iframe.getElement().setAttribute("frameborder", "0");
+            iframe.getElement().setPropertyString("scrolling", "no");
+            iframe.getElement().getStyle().setProperty("border", "none");
+            iframe.getElement().getStyle().setProperty("margin", "0");
+
+            container.add(iframe, new VerticalLayoutData(1, 1, new Margins(0)));
+            Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+               @Override
+               public void execute() {
+                  wrapper.forceLayout();
+                  iframe.getElement().getStyle().setProperty("border", "none");
+                  iframe.getElement().getStyle().setProperty("margin", "0");
+
+               }
+            });
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+         }
+      });
+   }
+
+   @Override
+   protected void cancelExecution(String executeToken) {
+      // TODO Auto-generated method stub
+   }
+
+   @Override
+   public Request execute(final ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
+      return saikuDao.stashReport(getExecuteReportToken(), (SaikuReportDto) report, new RsAsyncCallback<Void>() {
+         @Override
+         public void onSuccess(Void result) {
+            callback.onSuccess(report);
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            callback.onFailure(caught);
+         }
+      });
+   }
+
+   @Override
+   public Widget doGetViewComponent() {
+      return wrapper;
+   }
 
 }

@@ -6,14 +6,16 @@ import com.sencha.gxt.core.client.ValueProvider;
 import com.sencha.gxt.data.shared.ModelKeyProvider;
 import com.sencha.gxt.data.shared.PropertyAccess;
 
-public interface StrippedDownOrganisationalUnitPA extends  PropertyAccess<StrippedDownOrganisationalUnit> {
+public interface StrippedDownOrganisationalUnitPA extends PropertyAccess<StrippedDownOrganisationalUnit> {
 
-	public static final StrippedDownOrganisationalUnitPA INSTANCE = GWT.create(StrippedDownOrganisationalUnitPA.class);
-	
-	@Path("id")
-	public ModelKeyProvider<StrippedDownOrganisationalUnit> dtoId();
-	
-	public ValueProvider<StrippedDownOrganisationalUnit,Long> id();
-	public ValueProvider<StrippedDownOrganisationalUnit,String> name();
-	public ValueProvider<StrippedDownOrganisationalUnit,String> parentOu();
+   public static final StrippedDownOrganisationalUnitPA INSTANCE = GWT.create(StrippedDownOrganisationalUnitPA.class);
+
+   @Path("id")
+   public ModelKeyProvider<StrippedDownOrganisationalUnit> dtoId();
+
+   public ValueProvider<StrippedDownOrganisationalUnit, Long> id();
+
+   public ValueProvider<StrippedDownOrganisationalUnit, String> name();
+
+   public ValueProvider<StrippedDownOrganisationalUnit, String> parentOu();
 }

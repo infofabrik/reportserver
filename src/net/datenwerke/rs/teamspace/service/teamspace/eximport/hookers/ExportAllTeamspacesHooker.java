@@ -11,20 +11,20 @@ import net.datenwerke.security.service.security.exceptions.ViolatedSecurityExcep
 
 public class ExportAllTeamspacesHooker implements ExportAllHook {
 
-	private final TeamSpaceService teamSpaceService;
-	
-	@Inject
-	public ExportAllTeamspacesHooker(TeamSpaceService teamSpaceService) {
-		this.teamSpaceService = teamSpaceService;
-	}
+   private final TeamSpaceService teamSpaceService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		if(! teamSpaceService.isGlobalTsAdmin())
-			throw new ViolatedSecurityException();
-		
-		for(TeamSpace ts : teamSpaceService.getAllTeamSpaces())
-			config.addItemConfig(new EntityExportItemConfig(ts));
-	}
+   @Inject
+   public ExportAllTeamspacesHooker(TeamSpaceService teamSpaceService) {
+      this.teamSpaceService = teamSpaceService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      if (!teamSpaceService.isGlobalTsAdmin())
+         throw new ViolatedSecurityException();
+
+      for (TeamSpace ts : teamSpaceService.getAllTeamSpaces())
+         config.addItemConfig(new EntityExportItemConfig(ts));
+   }
 
 }

@@ -5,37 +5,37 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.Expre
 
 public class FunctionExpressionToken implements ExpressionToken {
 
-	private final String name;
-	private final FunctionProviderHook function;
+   private final String name;
+   private final FunctionProviderHook function;
 
-	public FunctionExpressionToken(String name, FunctionProviderHook function) {
-		super();
-		this.name = name;
-		this.function = function;
-	}
+   public FunctionExpressionToken(String name, FunctionProviderHook function) {
+      super();
+      this.name = name;
+      this.function = function;
+   }
 
-	public String getName() {
-		return name;
-	}
-	
-	public FunctionProviderHook getFunction() {
-		return function;
-	}
-	
-	@Override
-	public int hashCode() {
-		return name.hashCode();
-	}
-	
-	@Override
-	public boolean equals(Object obj) {
-		if(! (obj instanceof FunctionExpressionToken))
-			return false;
-		return name.equals(((FunctionExpressionToken)obj).name);
-	}
-	
-	@Override
-	public boolean isGreedy() {
-		return false;
-	}
+   public String getName() {
+      return name;
+   }
+
+   public FunctionProviderHook getFunction() {
+      return function;
+   }
+
+   @Override
+   public int hashCode() {
+      return name.hashCode();
+   }
+
+   @Override
+   public boolean equals(Object obj) {
+      if (!(obj instanceof FunctionExpressionToken))
+         return false;
+      return name.equals(((FunctionExpressionToken) obj).name);
+   }
+
+   @Override
+   public boolean isGreedy() {
+      return false;
+   }
 }

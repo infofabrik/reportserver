@@ -5,8 +5,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface DispatcherTakeOverHook extends Hook {
 
-	boolean isActive();
+   boolean isActive();
 
-	Dispatchable getDispatcheable();
+   Dispatchable getDispatcheable();
 
 }

@@ -3,16 +3,16 @@ package net.datenwerke.rs.jxlsreport.client.jxlsreport.locale;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
-public interface JxlsReportMessages extends Messages{
+public interface JxlsReportMessages extends Messages {
 
-	public final static JxlsReportMessages INSTANCE = GWT.create(JxlsReportMessages.class);
-	
-	String reportTypeName();
+   public final static JxlsReportMessages INSTANCE = GWT.create(JxlsReportMessages.class);
 
-	String editReport();
+   String reportTypeName();
 
-	String templateUpload();
+   String editReport();
 
-	String fileName();
+   String templateUpload();
+
+   String fileName();
 
 }

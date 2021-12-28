@@ -13,24 +13,23 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.TimeDto;
  */
 public class TimeDtoDec extends TimeDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public TimeDtoDec() {
+      super();
+   }
 
-	public TimeDtoDec() {
-		super();
-	}
-	
-	public TimeDtoDec(Date date){
-		setHour(new DateWrapper(date).getHours());
-		setMinutes(new DateWrapper(date).getMinutes());
-	}
+   public TimeDtoDec(Date date) {
+      setHour(new DateWrapper(date).getHours());
+      setMinutes(new DateWrapper(date).getMinutes());
+   }
 
-	public Date toTime(){
-		return new DateWrapper(1970, 0, 1).clearTime().addHours(getHour()).addMinutes(getMinutes()).asDate();
-	}
+   public Date toTime() {
+      return new DateWrapper(1970, 0, 1).clearTime().addHours(getHour()).addMinutes(getMinutes()).asDate();
+   }
 
-	@Override
-	public String toDisplayTitle() {
-		return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.HOUR_MINUTE).format(toTime());
-	}
+   @Override
+   public String toDisplayTitle() {
+      return DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.HOUR_MINUTE).format(toTime());
+   }
 }

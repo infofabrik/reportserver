@@ -10,10 +10,9 @@ import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportTempl
 
 public interface TableTemplateRpcServiceAsync {
 
-	void removeTemplates(ReportDto report, String executeToken, Collection<TableReportTemplateDto> templates, AsyncCallback<Void> callback);
+   void removeTemplates(ReportDto report, String executeToken, Collection<TableReportTemplateDto> templates,
+         AsyncCallback<Void> callback);
 
-	void loadTemplates(ReportDto report, String executeToken,
-			AsyncCallback<List<TableReportTemplateDto>> callback);
-
+   void loadTemplates(ReportDto report, String executeToken, AsyncCallback<List<TableReportTemplateDto>> callback);
 
 }

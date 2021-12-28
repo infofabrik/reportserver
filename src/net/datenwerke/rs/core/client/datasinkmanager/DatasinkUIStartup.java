@@ -33,53 +33,48 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
  */
 public class DatasinkUIStartup {
 
-	@Inject
-	public DatasinkUIStartup(
-		final HookHandlerService hookHandler,
-		Provider<DatasinkSimpleFormProvider> datasinkSimpleFormProvider,
-		
-		final WaitOnEventUIService waitOnEventService,
-		final DatasinkUIService datasinkService,
-		
-		DatasinkManagerViewSecurityTargetDomainHooker securityTargetDomain,
-		
-		MainPanelViewProviderHooker mainPanelViewProvider,
-		final Provider<DatasinkAdminModule> adminModuleProvider,
-		final SecurityUIService securityService,
-		
-		final DatasinkManagerTreeConfigurationHooker treeConfigurator,
-		
-		HistoryUiService historyService,
-		@DatasinkManagerAdminViewTree Provider<UITree> datasinkManagerTree,
-		EventBus eventBus,
-		Provider<DatasinkManagerPanel> datasinkManagerAdminPanel
-		){
-		
-		/* config tree */
-		hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
-		
-		/* attach Hooks */
-		hookHandler.attachHooker(FormFieldProviderHook.class, datasinkSimpleFormProvider);
-		
-		/* attach security target domains */
-		hookHandler.attachHooker(GenericTargetProviderHook.class, new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
-		hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
-		
-		/* attach views */
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-		
-		/* test if user has rights to see datasource manager admin view */
-		waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
-			if (securityService.hasRight(DatasinkManagerGenericTargetIdentifier.class, ReadDto.class)) 
-				hookHandler.attachHooker(AdminModuleProviderHook.class,
-						new AdminModuleProviderHook(adminModuleProvider), HookHandlerService.PRIORITY_HIGH + 20);
-			
-			waitOnEventService.signalProcessingDone(ticket);
-		});
-		
-		/* configureHistory */
-		historyService.addHistoryCallback(DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN,
-				new TreeDBHistoryCallback(datasinkManagerTree, eventBus, datasinkManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
-	}
-	
+   @Inject
+   public DatasinkUIStartup(final HookHandlerService hookHandler,
+         Provider<DatasinkSimpleFormProvider> datasinkSimpleFormProvider,
+
+         final WaitOnEventUIService waitOnEventService, final DatasinkUIService datasinkService,
+
+         DatasinkManagerViewSecurityTargetDomainHooker securityTargetDomain,
+
+         MainPanelViewProviderHooker mainPanelViewProvider, final Provider<DatasinkAdminModule> adminModuleProvider,
+         final SecurityUIService securityService,
+
+         final DatasinkManagerTreeConfigurationHooker treeConfigurator,
+
+         HistoryUiService historyService, @DatasinkManagerAdminViewTree Provider<UITree> datasinkManagerTree,
+         EventBus eventBus, Provider<DatasinkManagerPanel> datasinkManagerAdminPanel) {
+
+      /* config tree */
+      hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+
+      /* attach Hooks */
+      hookHandler.attachHooker(FormFieldProviderHook.class, datasinkSimpleFormProvider);
+
+      /* attach security target domains */
+      hookHandler.attachHooker(GenericTargetProviderHook.class,
+            new GenericTargetProviderHook(securityTargetDomain.genericSecurityViewDomainHook_getTargetId()));
+      hookHandler.attachHooker(GenericSecurityViewDomainHook.class, securityTargetDomain);
+
+      /* attach views */
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+
+      /* test if user has rights to see datasource manager admin view */
+      waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
+         if (securityService.hasRight(DatasinkManagerGenericTargetIdentifier.class, ReadDto.class))
+            hookHandler.attachHooker(AdminModuleProviderHook.class, new AdminModuleProviderHook(adminModuleProvider),
+                  HookHandlerService.PRIORITY_HIGH + 20);
+
+         waitOnEventService.signalProcessingDone(ticket);
+      });
+
+      /* configureHistory */
+      historyService.addHistoryCallback(DatasinkUIModule.DATASINK_FAV_HISTORY_TOKEN, new TreeDBHistoryCallback(
+            datasinkManagerTree, eventBus, datasinkManagerAdminPanel, AdministrationUIModule.ADMIN_PANEL_ID));
+   }
+
 }

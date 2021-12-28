@@ -12,26 +12,26 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
 
 public class ViewLogFileTerminalCommandProcessor implements CommandResultProcessorHook {
 
-	private final FileServerUiService fileService;
+   private final FileServerUiService fileService;
 
-	@Inject
-	public ViewLogFileTerminalCommandProcessor(FileServerUiService fileService) {
-		this.fileService = fileService;
-	}
+   @Inject
+   public ViewLogFileTerminalCommandProcessor(FileServerUiService fileService) {
+      this.fileService = fileService;
+   }
 
-	@Override
-	public void process(CommandResultDto result) {
-		if (result.getExtensions().size() == 1
-				&& result.getExtensions().get(0) instanceof ViewLogFileCommandResultExtensionDto) {
-			final ViewLogFileCommandResultExtensionDto viewCmd = (ViewLogFileCommandResultExtensionDto) result
-					.getExtensions().get(0);
-			
-			List<String> lines = viewCmd.getData();
-			
-			String data = String.join("\n", lines);
-			
-			fileService.editFileDirectly(viewCmd.getFilename(), data, false, true, true, true, Optional.empty());
-		}
-	}
+   @Override
+   public void process(CommandResultDto result) {
+      if (result.getExtensions().size() == 1
+            && result.getExtensions().get(0) instanceof ViewLogFileCommandResultExtensionDto) {
+         final ViewLogFileCommandResultExtensionDto viewCmd = (ViewLogFileCommandResultExtensionDto) result
+               .getExtensions().get(0);
+
+         List<String> lines = viewCmd.getData();
+
+         String data = String.join("\n", lines);
+
+         fileService.editFileDirectly(viewCmd.getFilename(), data, false, true, true, true, Optional.empty());
+      }
+   }
 
 }

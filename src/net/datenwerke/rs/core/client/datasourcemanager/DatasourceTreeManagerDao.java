@@ -9,16 +9,14 @@ import net.datenwerke.treedb.client.treedb.TreeDbManagerDao;
 
 public class DatasourceTreeManagerDao extends TreeDbManagerDao {
 
+   @Inject
+   public DatasourceTreeManagerDao(DatasourceTreeManagerAsync treeManager) {
+      super(treeManager);
+   }
 
-	@Inject
-	public DatasourceTreeManagerDao(DatasourceTreeManagerAsync treeManager) {
-		super(treeManager);
-	}
+   @Override
+   public Dto2PosoMapper getBaseNodeMapper() {
+      return AbstractDatasourceManagerNodeDto.newPosoMapper();
+   }
 
-	@Override
-	public Dto2PosoMapper getBaseNodeMapper() {
-		return AbstractDatasourceManagerNodeDto.newPosoMapper();
-	}
-	
-	
 }

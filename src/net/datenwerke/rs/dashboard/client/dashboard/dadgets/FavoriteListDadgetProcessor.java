@@ -87,11 +87,8 @@ public class FavoriteListDadgetProcessor implements DadgetProcessorHook {
          @Override
          public void onSuccess(final FavoriteListDto result) {
             if (null != result) {
-               store.addAll(result.getReferenceEntries()
-                     .stream()
-                     .filter(entry -> null != entry.getReferenceEntry())
-                     .map(FavoriteListEntryDto::getReferenceEntry)
-                     .collect(toList()));
+               store.addAll(result.getReferenceEntries().stream().filter(entry -> null != entry.getReferenceEntry())
+                     .map(FavoriteListEntryDto::getReferenceEntry).collect(toList()));
             }
          }
       });

@@ -21,35 +21,34 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class LogFilesRpcServiceImpl extends SecuredRemoteServiceServlet implements LogFilesRpcService {
 
-	private static final long serialVersionUID = 1L;
-	private LogFilesService logFilesService;
+   private static final long serialVersionUID = 1L;
+   private LogFilesService logFilesService;
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public LogFilesRpcServiceImpl(LogFilesService logFilesService) {
-		this.logFilesService = logFilesService;
-	}
+   @Inject
+   public LogFilesRpcServiceImpl(LogFilesService logFilesService) {
+      this.logFilesService = logFilesService;
+   }
 
-	@Override
-	public List<String> readLastLines(String filename) throws ServerCallFailedException {
-		try {
-			return logFilesService.readLastLines(filename);
-		} catch (IOException e) {
-			logger.warn(e.getMessage(), e);
-			throw new ServerCallFailedException("Cannot read " + filename, e);
-		}
-	}
+   @Override
+   public List<String> readLastLines(String filename) throws ServerCallFailedException {
+      try {
+         return logFilesService.readLastLines(filename);
+      } catch (IOException e) {
+         logger.warn(e.getMessage(), e);
+         throw new ServerCallFailedException("Cannot read " + filename, e);
+      }
+   }
 
-	@Override
-	public void emailFile(String filename) throws ServerCallFailedException {
-		try {
-			logFilesService.emailLogFiles(
-					Arrays.asList(Paths.get(logFilesService.getLogDirectory() + "/" + filename)), 
-					filename);
-		} catch (IOException | MessagingException e) {
-			logger.warn(e.getMessage(), e);
-			throw new ServerCallFailedException("Cannot read " + filename, e);
-		}		
-	}
+   @Override
+   public void emailFile(String filename) throws ServerCallFailedException {
+      try {
+         logFilesService.emailLogFiles(Arrays.asList(Paths.get(logFilesService.getLogDirectory() + "/" + filename)),
+               filename);
+      } catch (IOException | MessagingException e) {
+         logger.warn(e.getMessage(), e);
+         throw new ServerCallFailedException("Cannot read " + filename, e);
+      }
+   }
 }

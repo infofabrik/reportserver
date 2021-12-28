@@ -30,9 +30,7 @@ public class JobMetadataConfigurationForm extends DwContentPanel
    private ReportScheduleDefinition jobDefinition;
 
    @Inject
-   public JobMetadataConfigurationForm(
-         @Nullable @Assisted ReportScheduleDefinition jobDefinition
-         ) {
+   public JobMetadataConfigurationForm(@Nullable @Assisted ReportScheduleDefinition jobDefinition) {
       super();
 
       this.jobDefinition = jobDefinition;

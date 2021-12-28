@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.parameters.datasource.dto.SingleSelectionMo
 @CorrespondingPoso(net.datenwerke.rs.base.service.parameters.datasource.SingleSelectionMode.class)
 public interface SingleSelectionModeDtoPA extends PropertyAccess<SingleSelectionModeDto> {
 
-
-
 }

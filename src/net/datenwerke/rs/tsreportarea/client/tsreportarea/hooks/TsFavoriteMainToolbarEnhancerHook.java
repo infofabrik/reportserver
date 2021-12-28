@@ -7,11 +7,8 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent
 
 public interface TsFavoriteMainToolbarEnhancerHook extends Hook {
 
-	boolean enhanceToolbarLeft(ToolBar mainToolbar,
-			TsDiskMainComponent tsFavoriteMainComponent);
+   boolean enhanceToolbarLeft(ToolBar mainToolbar, TsDiskMainComponent tsFavoriteMainComponent);
 
-	boolean enhanceToolbarRight(ToolBar mainToolbar,
-			TsDiskMainComponent tsFavoriteMainComponent);
+   boolean enhanceToolbarRight(ToolBar mainToolbar, TsDiskMainComponent tsFavoriteMainComponent);
 
-	
 }

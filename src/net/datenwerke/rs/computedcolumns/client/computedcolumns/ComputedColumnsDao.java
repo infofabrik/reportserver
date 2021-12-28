@@ -10,22 +10,21 @@ import net.datenwerke.rs.computedcolumns.client.computedcolumns.rpc.ComputedColu
 
 public class ComputedColumnsDao extends Dao {
 
-	private final ComputedColumnsRpcServiceAsync rpcService;
+   private final ComputedColumnsRpcServiceAsync rpcService;
 
-	@Inject
-	public ComputedColumnsDao(ComputedColumnsRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public ComputedColumnsDao(ComputedColumnsRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public void getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn,
-			AsyncCallback<Integer> callback){
-		rpcService.getColumnType(report, oldColumn, newColumn, transformAndKeepCallback(callback));
-	}
-	
-	public void getColumnType(TableReportDto report, ComputedColumnDto column,
-			AsyncCallback<Integer> callback){
-		rpcService.getColumnType(report, column, transformAndKeepCallback(callback));
-	}
-	
+   public void getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn,
+         AsyncCallback<Integer> callback) {
+      rpcService.getColumnType(report, oldColumn, newColumn, transformAndKeepCallback(callback));
+   }
+
+   public void getColumnType(TableReportDto report, ComputedColumnDto column, AsyncCallback<Integer> callback) {
+      rpcService.getColumnType(report, column, transformAndKeepCallback(callback));
+   }
+
 }

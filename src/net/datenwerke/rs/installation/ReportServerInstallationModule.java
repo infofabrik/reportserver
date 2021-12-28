@@ -12,38 +12,34 @@ import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 
 public class ReportServerInstallationModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-	}
-	
-	@Provides
-	@Inject
-	protected List<DbInstallationTask> provideDbInstallationTasks(
-		ApplicationPropertiesService propertiesService,
-		Provider<InstallBaseDataTask> baseDataTaskProvider,
-		Provider<ExecutePackagedScriptsTask> executePackagedScriptsTask,
-		Provider<DemoDataInstallTask> demoDbInstallTask, 
-		Provider<DemoContentInstallTask> demoContentInstallTask,
-		Provider<InitConfigTask> initConfigTask,
-		Provider<InstallMissingEntitiesTask> installMissingEntitiesTask
-		){
-		List<DbInstallationTask> tasks = new ArrayList<DbInstallationTask>();
-		
-		if("true".equals(propertiesService.getString("rs.install.basedata"))){
-			tasks.add(baseDataTaskProvider.get());
-			tasks.add(executePackagedScriptsTask.get());
-		}
-		
-		
-		if("true".equals(propertiesService.getString("rs.install.demodata", "true"))){
-			tasks.add(demoDbInstallTask.get());
-			tasks.add(demoContentInstallTask.get());
-		};
-		
-		tasks.add(initConfigTask.get());
-		tasks.add(installMissingEntitiesTask.get());
-				
-		return tasks;
-	}
+   @Override
+   protected void configure() {
+   }
+
+   @Provides
+   @Inject
+   protected List<DbInstallationTask> provideDbInstallationTasks(ApplicationPropertiesService propertiesService,
+         Provider<InstallBaseDataTask> baseDataTaskProvider,
+         Provider<ExecutePackagedScriptsTask> executePackagedScriptsTask,
+         Provider<DemoDataInstallTask> demoDbInstallTask, Provider<DemoContentInstallTask> demoContentInstallTask,
+         Provider<InitConfigTask> initConfigTask, Provider<InstallMissingEntitiesTask> installMissingEntitiesTask) {
+      List<DbInstallationTask> tasks = new ArrayList<DbInstallationTask>();
+
+      if ("true".equals(propertiesService.getString("rs.install.basedata"))) {
+         tasks.add(baseDataTaskProvider.get());
+         tasks.add(executePackagedScriptsTask.get());
+      }
+
+      if ("true".equals(propertiesService.getString("rs.install.demodata", "true"))) {
+         tasks.add(demoDbInstallTask.get());
+         tasks.add(demoContentInstallTask.get());
+      }
+      ;
+
+      tasks.add(initConfigTask.get());
+      tasks.add(installMissingEntitiesTask.get());
+
+      return tasks;
+   }
 
 }

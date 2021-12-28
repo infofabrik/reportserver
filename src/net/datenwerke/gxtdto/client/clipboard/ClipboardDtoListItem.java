@@ -7,50 +7,50 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public class ClipboardDtoListItem extends ClipboardItem implements ClipboardItemDescriber {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 2781270065293838858L;
-	
-	private List<? extends Dto> list;
-	private Object additionalInfo;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 2781270065293838858L;
 
-	public ClipboardDtoListItem(){
-		super();
-	}
-	
-	public ClipboardDtoListItem(List<? extends Dto> list, Class<?> type){
-		setType(type);
-		this.setList(list);
-	}
-	
-	public ClipboardDtoListItem(List<? extends Dto> list, Class<?> type, Object addInfo){
-		setType(type);
-		this.setList(list);
-		setAdditionalInfo(addInfo);
-	}
+   private List<? extends Dto> list;
+   private Object additionalInfo;
 
-	public List<? extends Dto> getList() {
-		return list;
-	}
+   public ClipboardDtoListItem() {
+      super();
+   }
 
-	public void setList(List<? extends Dto> list) {
-		this.list = list;
-	}
+   public ClipboardDtoListItem(List<? extends Dto> list, Class<?> type) {
+      setType(type);
+      this.setList(list);
+   }
 
-	@Override
-	public String describe() {
-		if(null != list)
-			return ClipboardMessages.INSTANCE.dtoListCopiedToClipboard(list.size());
-		return "";
-	}
+   public ClipboardDtoListItem(List<? extends Dto> list, Class<?> type, Object addInfo) {
+      setType(type);
+      this.setList(list);
+      setAdditionalInfo(addInfo);
+   }
 
-	public void setAdditionalInfo(Object additionalInfo) {
-		this.additionalInfo = additionalInfo;
-	}
+   public List<? extends Dto> getList() {
+      return list;
+   }
 
-	public Object getAdditionalInfo() {
-		return additionalInfo;
-	}
-	
+   public void setList(List<? extends Dto> list) {
+      this.list = list;
+   }
+
+   @Override
+   public String describe() {
+      if (null != list)
+         return ClipboardMessages.INSTANCE.dtoListCopiedToClipboard(list.size());
+      return "";
+   }
+
+   public void setAdditionalInfo(Object additionalInfo) {
+      this.additionalInfo = additionalInfo;
+   }
+
+   public Object getAdditionalInfo() {
+      return additionalInfo;
+   }
+
 }

@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCBoolean extends SimpleFormFieldConfiguration {
 
-	String getBoxLabel();
+   String getBoxLabel();
 }

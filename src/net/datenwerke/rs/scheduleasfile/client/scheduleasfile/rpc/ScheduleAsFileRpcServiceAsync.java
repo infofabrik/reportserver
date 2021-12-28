@@ -8,12 +8,10 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
 
+public interface ScheduleAsFileRpcServiceAsync {
 
-public interface ScheduleAsFileRpcServiceAsync  {
+   void exportIntoTeamSpace(ReportDto reportDto, String executorToke, String format,
+         List<ReportExecutionConfigDto> configs, AbstractTsDiskNodeDto folder, String name, String description,
+         AsyncCallback<Void> callback);
 
-	void exportIntoTeamSpace(ReportDto reportDto, String executorToke,
-			String format, List<ReportExecutionConfigDto> configs,
-			AbstractTsDiskNodeDto folder, String name, String description,
-			AsyncCallback<Void> callback);
-	
 }

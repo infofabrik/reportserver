@@ -7,9 +7,9 @@ import com.sencha.gxt.data.shared.PropertyAccess;
 import net.datenwerke.gxtdto.client.model.StringBaseModel;
 
 public interface StringBaseModelPa extends PropertyAccess<StringBaseModel> {
-	
-	public static final StringBaseModelPa INSTANCE = GWT.create(StringBaseModelPa.class);
-	
-	public ValueProvider<StringBaseModel,String> value();
-	
+
+   public static final StringBaseModelPa INSTANCE = GWT.create(StringBaseModelPa.class);
+
+   public ValueProvider<StringBaseModel, String> value();
+
 }

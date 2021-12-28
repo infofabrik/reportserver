@@ -24,12 +24,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<LicenseService> licenseServiceProvider;
 
    @Inject
-   public GeneralInfoServiceImpl(
-         Provider<ServletContext> servletContextProvider,
-         Provider<HttpServletRequest> servletRequestProvider, 
-         Provider<SecurityService> securityServiceProvider,
-         Provider<LicenseService> licenseServiceProvider
-         ) {
+   public GeneralInfoServiceImpl(Provider<ServletContext> servletContextProvider,
+         Provider<HttpServletRequest> servletRequestProvider, Provider<SecurityService> securityServiceProvider,
+         Provider<LicenseService> licenseServiceProvider) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
       this.licenseServiceProvider = licenseServiceProvider;

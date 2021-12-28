@@ -8,12 +8,12 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 
 public interface ScheduleConfigWizardPageProviderHook extends Hook {
 
-	boolean isAdvanced();
+   boolean isAdvanced();
 
-	Widget getPage(ReportDto report, ReportScheduleDefinition definition);
+   Widget getPage(ReportDto report, ReportScheduleDefinition definition);
 
-	void configureConfig(ReportScheduleDefinition configDto, ReportDto report);
+   void configureConfig(ReportScheduleDefinition configDto, ReportDto report);
 
-	boolean isConfigured(ReportDto report, ReportScheduleDefinition definition);
-	
+   boolean isConfigured(ReportDto report, ReportScheduleDefinition definition);
+
 }

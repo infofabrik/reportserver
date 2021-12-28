@@ -14,52 +14,51 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class DatasourceManagerHistoryUrlBuilderHooker extends TreePanelHistoryUrlBuilderHooker {
 
-	private final DatasourceManagerMessages messages = LocalizationServiceImpl.getMessages(DatasourceManagerMessages.class);
+   private final DatasourceManagerMessages messages = LocalizationServiceImpl
+         .getMessages(DatasourceManagerMessages.class);
 
-	private final static String HISTORY_BUILDER_NAME = "Datasourcemanager";
-	
-	private final SecurityService securityService;
-	
-	@Inject
-	public DatasourceManagerHistoryUrlBuilderHooker(
-		SecurityService securityService	
-		){
-		this.securityService = securityService;
-	}
-	
-	@Override
-	public boolean consumes(Object o) {
-		if(! ( o instanceof AbstractDatasourceManagerNode))
-			return false;
-		
-         if (securityService.checkRights(DatasourceManagerAdminViewSecurityTarget.class, Read.class))
-            return true;
-         else {
-            if (!(o instanceof SecurityTarget))
-               return false;
-            else
-               return securityService.checkRights((SecurityTarget) o, Read.class);
-         }
-	}
+   private final static String HISTORY_BUILDER_NAME = "Datasourcemanager";
 
-	@Override
-	protected String getTokenName() {
-		return DatasourceUIModule.DATASOURCE_FAV_HISTORY_TOKEN;
-	}
+   private final SecurityService securityService;
 
-	@Override
-	protected String getBuilderId() {
-		return HISTORY_BUILDER_NAME;
-	}
+   @Inject
+   public DatasourceManagerHistoryUrlBuilderHooker(SecurityService securityService) {
+      this.securityService = securityService;
+   }
 
-	@Override
-	protected String getNameFor(Object o) {
-		return messages.historyUrlBuilderName();
-	}
+   @Override
+   public boolean consumes(Object o) {
+      if (!(o instanceof AbstractDatasourceManagerNode))
+         return false;
 
-	@Override
-	protected String getIconFor(Object o) {
-		return messages.historyUrlBuilderIcon();
-	}
+      if (securityService.checkRights(DatasourceManagerAdminViewSecurityTarget.class, Read.class))
+         return true;
+      else {
+         if (!(o instanceof SecurityTarget))
+            return false;
+         else
+            return securityService.checkRights((SecurityTarget) o, Read.class);
+      }
+   }
+
+   @Override
+   protected String getTokenName() {
+      return DatasourceUIModule.DATASOURCE_FAV_HISTORY_TOKEN;
+   }
+
+   @Override
+   protected String getBuilderId() {
+      return HISTORY_BUILDER_NAME;
+   }
+
+   @Override
+   protected String getNameFor(Object o) {
+      return messages.historyUrlBuilderName();
+   }
+
+   @Override
+   protected String getIconFor(Object o) {
+      return messages.historyUrlBuilderIcon();
+   }
 
 }

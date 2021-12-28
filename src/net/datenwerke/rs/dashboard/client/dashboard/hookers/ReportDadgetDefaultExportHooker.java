@@ -41,196 +41,196 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportRefere
 
 public abstract class ReportDadgetDefaultExportHooker implements ReportDadgetExportHook {
 
-	protected static final String FULL = "full";
-	protected static final String HTML = "html";
-	protected static final String PREVIEW = "preview";
-	
-	protected final ReportExecutorUIService reportExecutorService;
-	protected final ReportExporterUIService reportExportService;
-	protected final ReportExecutorDao reportExecutorDao;
-	protected final ReportExporterDao reportExporterDao;
-	
-	@Inject
-	protected  ClientDtoManagerService dtoManager;
-	
-	
-	public ReportDadgetDefaultExportHooker(
-			ReportExecutorUIService reportExecutorService,
-			ReportExporterUIService reportExportService,
-			ReportExecutorDao reportExecutorDao,
-			ReportExporterDao reportExporterDao) {
-		super();
-		this.reportExecutorService = reportExecutorService;
-		this.reportExportService = reportExportService;
-		this.reportExecutorDao = reportExecutorDao;
-		this.reportExporterDao = reportExporterDao;
-	}
+   protected static final String FULL = "full";
+   protected static final String HTML = "html";
+   protected static final String PREVIEW = "preview";
 
-	@Override
-	public boolean consumes(ReportDadgetDto dadget) {
-		ReportDto report = getReportOrReference(dadget);
-		return null == report || isSupportedReport(report);
-	}
-	
-	protected ReportDto getReportOrReference(ReportDadgetDto dadget){
-        ReportDto report = dadget.getReport();
-        if(null == report && null != dadget.getReportReference())
-            return dadget.getReportReference().getReport();
-        return report;
-    }
+   protected final ReportExecutorUIService reportExecutorService;
+   protected final ReportExporterUIService reportExportService;
+   protected final ReportExecutorDao reportExecutorDao;
+   protected final ReportExporterDao reportExporterDao;
 
-	@Override
-	public void configureDisplayConfigDialog(ReportDadgetDto dadget,
-			SimpleForm form) {
-		form.addField(List.class, getPropertyName(), DashboardMessages.INSTANCE.reportDadgetFormat(), new SFFCFancyStaticList<String>(){
+   @Inject
+   protected ClientDtoManagerService dtoManager;
 
-			@Override
-			public Map<String, String> getValues() {
-				return getValueMap();
-			}
+   public ReportDadgetDefaultExportHooker(ReportExecutorUIService reportExecutorService,
+         ReportExporterUIService reportExportService, ReportExecutorDao reportExecutorDao,
+         ReportExporterDao reportExporterDao) {
+      super();
+      this.reportExecutorService = reportExecutorService;
+      this.reportExportService = reportExportService;
+      this.reportExecutorDao = reportExecutorDao;
+      this.reportExporterDao = reportExporterDao;
+   }
 
-			@Override
-			public int getHeight() {
-				return 36;
-			}
+   @Override
+   public boolean consumes(ReportDadgetDto dadget) {
+      ReportDto report = getReportOrReference(dadget);
+      return null == report || isSupportedReport(report);
+   }
 
-			@Override
-			public int getWidth() {
-				return 300;
-			}
+   protected ReportDto getReportOrReference(ReportDadgetDto dadget) {
+      ReportDto report = dadget.getReport();
+      if (null == report && null != dadget.getReportReference())
+         return dadget.getReportReference().getReport();
+      return report;
+   }
 
-			@Override
-			public Map<String, ImageResource> getIconMap() {
-				return ReportDadgetDefaultExportHooker.this.getIconMap();
-			}
+   @Override
+   public void configureDisplayConfigDialog(ReportDadgetDto dadget, SimpleForm form) {
+      form.addField(List.class, getPropertyName(), DashboardMessages.INSTANCE.reportDadgetFormat(),
+            new SFFCFancyStaticList<String>() {
 
-			@Override
-			public Map<String, String> getDescriptionMap() {
-				LinkedHashMap<String, String> descriptions = new LinkedHashMap<String, String>();
-				return descriptions;
-			}
-		});
-		if(consumes(dadget))
-			form.setValue(getPropertyName(), dadget.getConfig());
-		
-		form.addCondition(ReportDadgetProcessor.REPORT_PROPERTY_KEY, new SimpleFormCondition() {
-			@Override
-			public boolean isMet(Widget formField,
-					FormFieldProviderHook responsibleHook, SimpleForm form) {
-				Object obj = form.getValue(ReportDadgetProcessor.REPORT_PROPERTY_KEY);
-				ReportDto report = null;
-				if(obj instanceof ReportDto) 
-					report = (ReportDto) obj;
-				else if(obj instanceof TsDiskReportReferenceDto){
-			    	TsDiskReportReferenceDto ref = (TsDiskReportReferenceDto) obj;
-			    	report = ref.getReport();
-			    }
-				return  null != report && isSupportedReport(report);
-			}
-		}, new ShowHideFieldAction(getPropertyName()));
-		
-	}
+               @Override
+               public Map<String, String> getValues() {
+                  return getValueMap();
+               }
 
-	protected Map<String, ImageResource> getIconMap() {
-		LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
-		
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), BaseIcon.NO_ICON.toImageResource(1));
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatHtml(), BaseIcon.NO_ICON.toImageResource(1));
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), BaseIcon.NO_ICON.toImageResource(1));
-			
-		return icons;
-	}
+               @Override
+               public int getHeight() {
+                  return 36;
+               }
 
-	protected Map<String, String> getValueMap() {
-		Map<String, String> map = new LinkedHashMap<String, String>();
-		
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), PREVIEW);
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatHtml(), HTML);
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), FULL);
-		
-		return map;
-	}
+               @Override
+               public int getWidth() {
+                  return 300;
+               }
 
-	@Override
-	public abstract String getPropertyName();
+               @Override
+               public Map<String, ImageResource> getIconMap() {
+                  return ReportDadgetDefaultExportHooker.this.getIconMap();
+               }
 
-	abstract protected boolean isSupportedReport(ReportDto report);
+               @Override
+               public Map<String, String> getDescriptionMap() {
+                  LinkedHashMap<String, String> descriptions = new LinkedHashMap<String, String>();
+                  return descriptions;
+               }
+            });
+      if (consumes(dadget))
+         form.setValue(getPropertyName(), dadget.getConfig());
 
-	@Override
-	public void storeConfig(ReportDadgetDto dadget, SimpleForm form) {
-		if(form.isField(getPropertyName()))
-			((ReportDadgetDto)dadget).setConfig((String) form.getValue(getPropertyName()));
-	}
+      form.addCondition(ReportDadgetProcessor.REPORT_PROPERTY_KEY, new SimpleFormCondition() {
+         @Override
+         public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+            Object obj = form.getValue(ReportDadgetProcessor.REPORT_PROPERTY_KEY);
+            ReportDto report = null;
+            if (obj instanceof ReportDto)
+               report = (ReportDto) obj;
+            else if (obj instanceof TsDiskReportReferenceDto) {
+               TsDiskReportReferenceDto ref = (TsDiskReportReferenceDto) obj;
+               report = ref.getReport();
+            }
+            return null != report && isSupportedReport(report);
+         }
+      }, new ShowHideFieldAction(getPropertyName()));
 
-	@Override
-	public void displayReport(final ReportDadgetDto rDadget, ReportDto report,
-			final DadgetPanel panel, final Set<ParameterInstanceDto> parameterInstancesProxied) {
-		final String config = rDadget.getConfig();
-		if(null == config)
-			return;
-		
-		panel.mask(BaseMessages.INSTANCE.loadingMsg());
-		final Set<ParameterInstanceDto> parameterInstances = (Set<ParameterInstanceDto>) dtoManager.unproxy(parameterInstancesProxied);
-		reportExecutorDao.loadFullReportForExecution(report, new RsAsyncCallback<ReportDto>(){
-			@Override
-			public void onSuccess(ReportDto result) {
-				panel.unmask();
-				
-				/* use dadget parameter instances */
-				if(null != parameterInstances && !parameterInstances.isEmpty())
-					result.setParameterInstances(parameterInstances);
-				
-				if(FULL.equals(config) ) {
-					Component executeReportComponent = reportExecutorService.getExecuteReportComponent(result);
-					if(executeReportComponent instanceof ContentPanel)
-						((ContentPanel) executeReportComponent).setHeaderVisible(false);
-					executeReportComponent.setBorders(false);
-					
-					panel.add(executeReportComponent);
-				} else if (PREVIEW.equals(config)) {
-					PreviewViewFactory factory = reportExecutorService.getPreviewReportComponent(result);
-					ReportExecutorMainPanelView view = factory.newInstance(result, Collections.EMPTY_SET);
-					
-					if(view instanceof AbstractReportPreviewView)
-						((AbstractReportPreviewView)view).setDelayModalWindowOnExecution(10000);
-					
-					Widget component = view.getViewComponent();
-					
-					view.setExecuteReportToken(reportExecutorService.createExecuteReportToken(result));
-					if(view instanceof MainPanelAwareView)
-						((MainPanelAwareView)view).makeAwareOfMainPanel(panel);
-					if(view instanceof SelectionAwareView)
-						((SelectionAwareView)view).makeAwareOfSelection();
-					
-					panel.add(component);
-				} else {
-					/* generate or get export token */
-					final String exportToken = generateOrObtainExportToken(result);
-					
-					/* use dadget parameter instances */
-					if(null != parameterInstances && !parameterInstances.isEmpty())
-						result.setParameterInstances(parameterInstances);
-					
-					reportExporterDao.storeInSessionForExport(result, exportToken, null != config ? config.toUpperCase() : config, new RsAsyncCallback<Void>(){
-						@Override
-						public void onSuccess(Void result) {
-							panel.setUrl(reportExportService.getExportServletPath() + "&tid=" + exportToken + "&download=false");
-						}
-					});
-				}
-				panel.forceLayout();
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				super.onFailure(caught);
-				panel.unmask();
-			}
-		});
-		
-	}
+   }
 
-	protected String generateOrObtainExportToken(ReportDto report) {
-		return reportExecutorService.createExecuteReportToken(report);
-	}
+   protected Map<String, ImageResource> getIconMap() {
+      LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
+
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), BaseIcon.NO_ICON.toImageResource(1));
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatHtml(), BaseIcon.NO_ICON.toImageResource(1));
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), BaseIcon.NO_ICON.toImageResource(1));
+
+      return icons;
+   }
+
+   protected Map<String, String> getValueMap() {
+      Map<String, String> map = new LinkedHashMap<String, String>();
+
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), PREVIEW);
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatHtml(), HTML);
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), FULL);
+
+      return map;
+   }
+
+   @Override
+   public abstract String getPropertyName();
+
+   abstract protected boolean isSupportedReport(ReportDto report);
+
+   @Override
+   public void storeConfig(ReportDadgetDto dadget, SimpleForm form) {
+      if (form.isField(getPropertyName()))
+         ((ReportDadgetDto) dadget).setConfig((String) form.getValue(getPropertyName()));
+   }
+
+   @Override
+   public void displayReport(final ReportDadgetDto rDadget, ReportDto report, final DadgetPanel panel,
+         final Set<ParameterInstanceDto> parameterInstancesProxied) {
+      final String config = rDadget.getConfig();
+      if (null == config)
+         return;
+
+      panel.mask(BaseMessages.INSTANCE.loadingMsg());
+      final Set<ParameterInstanceDto> parameterInstances = (Set<ParameterInstanceDto>) dtoManager
+            .unproxy(parameterInstancesProxied);
+      reportExecutorDao.loadFullReportForExecution(report, new RsAsyncCallback<ReportDto>() {
+         @Override
+         public void onSuccess(ReportDto result) {
+            panel.unmask();
+
+            /* use dadget parameter instances */
+            if (null != parameterInstances && !parameterInstances.isEmpty())
+               result.setParameterInstances(parameterInstances);
+
+            if (FULL.equals(config)) {
+               Component executeReportComponent = reportExecutorService.getExecuteReportComponent(result);
+               if (executeReportComponent instanceof ContentPanel)
+                  ((ContentPanel) executeReportComponent).setHeaderVisible(false);
+               executeReportComponent.setBorders(false);
+
+               panel.add(executeReportComponent);
+            } else if (PREVIEW.equals(config)) {
+               PreviewViewFactory factory = reportExecutorService.getPreviewReportComponent(result);
+               ReportExecutorMainPanelView view = factory.newInstance(result, Collections.EMPTY_SET);
+
+               if (view instanceof AbstractReportPreviewView)
+                  ((AbstractReportPreviewView) view).setDelayModalWindowOnExecution(10000);
+
+               Widget component = view.getViewComponent();
+
+               view.setExecuteReportToken(reportExecutorService.createExecuteReportToken(result));
+               if (view instanceof MainPanelAwareView)
+                  ((MainPanelAwareView) view).makeAwareOfMainPanel(panel);
+               if (view instanceof SelectionAwareView)
+                  ((SelectionAwareView) view).makeAwareOfSelection();
+
+               panel.add(component);
+            } else {
+               /* generate or get export token */
+               final String exportToken = generateOrObtainExportToken(result);
+
+               /* use dadget parameter instances */
+               if (null != parameterInstances && !parameterInstances.isEmpty())
+                  result.setParameterInstances(parameterInstances);
+
+               reportExporterDao.storeInSessionForExport(result, exportToken,
+                     null != config ? config.toUpperCase() : config, new RsAsyncCallback<Void>() {
+                        @Override
+                        public void onSuccess(Void result) {
+                           panel.setUrl(reportExportService.getExportServletPath() + "&tid=" + exportToken
+                                 + "&download=false");
+                        }
+                     });
+            }
+            panel.forceLayout();
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            super.onFailure(caught);
+            panel.unmask();
+         }
+      });
+
+   }
+
+   protected String generateOrObtainExportToken(ReportDto report) {
+      return reportExecutorService.createExecuteReportToken(report);
+   }
 
 }

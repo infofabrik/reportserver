@@ -5,8 +5,8 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface LocalizationMessages extends Messages {
 
-	public static final LocalizationMessages INSTANCE = GWT.create(LocalizationMessages.class);
-	
-	String language();
+   public static final LocalizationMessages INSTANCE = GWT.create(LocalizationMessages.class);
+
+   String language();
 
 }

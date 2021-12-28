@@ -5,12 +5,12 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface AdministrationMessages extends Messages {
 
-	public static AdministrationMessages INSTANCE = GWT.create(AdministrationMessages.class);
-	
-	String administrationHeader();
+   public static AdministrationMessages INSTANCE = GWT.create(AdministrationMessages.class);
 
-	String administration();
+   String administrationHeader();
 
-	String adminSecurityTargetDescription();
+   String administration();
+
+   String adminSecurityTargetDescription();
 
 }

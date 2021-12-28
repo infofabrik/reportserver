@@ -6,5 +6,5 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 
 public interface CompiledPngReport extends CompiledReport {
 
-	public BufferedImage[] getReport();
+   public BufferedImage[] getReport();
 }

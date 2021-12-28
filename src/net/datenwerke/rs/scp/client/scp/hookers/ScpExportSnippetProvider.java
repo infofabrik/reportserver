@@ -50,11 +50,8 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public ScpExportSnippetProvider(
-         @DatasinkTreeScp Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<ScpDao> datasinkDaoProvider
-         ) {
+   public ScpExportSnippetProvider(@DatasinkTreeScp Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<ScpDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -89,6 +86,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
          public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
             return datasinkDaoProvider;
          }
+
          @Override
          public BaseIcon getIcon() {
             return ScpUiModule.ICON;
@@ -111,7 +109,7 @@ public class ScpExportSnippetProvider implements ScheduleExportSnippetProviderHo
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

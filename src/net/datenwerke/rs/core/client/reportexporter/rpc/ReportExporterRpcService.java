@@ -14,14 +14,16 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 @RemoteServiceRelativePath("reportexporterrpc")
 public interface ReportExporterRpcService extends RemoteService {
 
-	public void storeInSessionForExport(ReportDto reportDto, String executorToken, String format, List<ReportExecutionConfigDto> configs) throws ServerCallFailedException;
-	
-	void exportViaMail(ReportDto reportDto, String executorToke, String format,
-			List<ReportExecutionConfigDto> configs, String subject, String message, boolean compressed, List<StrippedDownUser> recipients) throws ServerCallFailedException, ExpectedException;
-	
-	public String getExportDefaultSettingsAsXml(String identifier);
-	
-	public String getExportDefaultCharset();
-	
-	void exportSkipDownload(ReportDto reportDto, String executorToken, String format) throws ServerCallFailedException;
+   public void storeInSessionForExport(ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs) throws ServerCallFailedException;
+
+   void exportViaMail(ReportDto reportDto, String executorToke, String format, List<ReportExecutionConfigDto> configs,
+         String subject, String message, boolean compressed, List<StrippedDownUser> recipients)
+         throws ServerCallFailedException, ExpectedException;
+
+   public String getExportDefaultSettingsAsXml(String identifier);
+
+   public String getExportDefaultCharset();
+
+   void exportSkipDownload(ReportDto reportDto, String executorToken, String format) throws ServerCallFailedException;
 }

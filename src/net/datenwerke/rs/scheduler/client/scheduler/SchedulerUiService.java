@@ -6,15 +6,13 @@ import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.ReportScheduleJobListInformation;
 import net.datenwerke.scheduler.client.scheduler.dto.filter.JobFilterConfigurationDto;
 
-
 public interface SchedulerUiService {
 
-	ColumnModel<ReportScheduleJobListInformation> createReportScheduleListColumnModel();
+   ColumnModel<ReportScheduleJobListInformation> createReportScheduleListColumnModel();
 
-	void transformLoadConfig(PagingLoadConfig plc,
-			JobFilterConfigurationDto jobFilterConfig);
+   void transformLoadConfig(PagingLoadConfig plc, JobFilterConfigurationDto jobFilterConfig);
 
-	ColumnModel<ReportScheduleJobListInformation> createReportScheduleListColumnModel(boolean displayJobId,
-			boolean displayOwnerColumn, boolean displayScheduledByColumn);
+   ColumnModel<ReportScheduleJobListInformation> createReportScheduleListColumnModel(boolean displayJobId,
+         boolean displayOwnerColumn, boolean displayScheduledByColumn);
 
 }

@@ -21,107 +21,117 @@ import net.datenwerke.security.service.authenticator.exceptions.AuthenticatorRun
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
-public class ClientCertificateMatchEmailPAM implements ReportServerPAM{
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+public class ClientCertificateMatchEmailPAM implements ReportServerPAM {
 
-	private static final String debugConfigKey = "rs.authenticator.pam.ClientCertificateMatchEmailPAM.debug";
-	
-	private final Provider<HttpServletRequest> requestProvider;
-	private final UserManagerService userManagerService;
-	private final ApplicationPropertiesService propsService;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private final boolean debug;
+   private static final String debugConfigKey = "rs.authenticator.pam.ClientCertificateMatchEmailPAM.debug";
 
-	@Inject
-	public ClientCertificateMatchEmailPAM(
-			Provider<HttpServletRequest> requestProvider, 
-			ApplicationPropertiesService propsService,
-			UserManagerService userManagerService
-	) {
+   private final Provider<HttpServletRequest> requestProvider;
+   private final UserManagerService userManagerService;
+   private final ApplicationPropertiesService propsService;
 
-		this.requestProvider = requestProvider;
-		this.propsService = propsService;
-		this.userManagerService = userManagerService;
-		
-		this.debug = propsService.getBoolean(debugConfigKey, false);
-	}
+   private final boolean debug;
 
-	@Override
-	public AuthenticationResult authenticate(AuthToken[] tokens) {
-		HttpServletRequest request = requestProvider.get();
+   @Inject
+   public ClientCertificateMatchEmailPAM(Provider<HttpServletRequest> requestProvider,
+         ApplicationPropertiesService propsService, UserManagerService userManagerService) {
 
-		if(null == request){
-			throw new AuthenticatorRuntimeException("Not in a request scope"); //$NON-NLS-1$
-		}
+      this.requestProvider = requestProvider;
+      this.propsService = propsService;
+      this.userManagerService = userManagerService;
 
-		X509Certificate[] certificates = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate"); //$NON-NLS-1$
+      this.debug = propsService.getBoolean(debugConfigKey, false);
+   }
 
-		if(debug) System.out.println("Trying certificate authentication");
-		if(null != certificates && certificates.length > 0){
-			if(debug) System.out.println("found certificate");
-			X509Certificate crt = certificates[0];
-			if(debug) System.out.println(crt);
-			String mail = null;
-			
-			try{
-				if(debug) System.out.println("trying subject alternative names");
-				if (crt.getSubjectAlternativeNames() != null) {
-					java.util.Collection altNames = crt.getSubjectAlternativeNames();
-					java.util.Iterator i = altNames.iterator();
-					
-					while(i.hasNext()) {
-						java.util.List item = (java.util.List)i.next();
-						Integer type = (Integer)item.get(0);
-						if (type.intValue() == 1) {
-							mail = (String)item.get(1);
-						}
-					}
-					if(debug) System.out.println("got email " + mail);
-				}else{
-					if(debug) System.out.println("no subject alternative names");
-				}
-			}catch(Exception e){
-				logger.warn( "Error reading names from certificate", e);
-			}
+   @Override
+   public AuthenticationResult authenticate(AuthToken[] tokens) {
+      HttpServletRequest request = requestProvider.get();
 
-			
-			if(null == mail){
-				if(debug) System.out.println("trying subject");
-				try {
-					mail = IETFUtils.valueToString(new JcaX509CertificateHolder(crt).getSubject().getRDNs(BCStyle.E)[0].getFirst().getValue());
-				} catch (Exception e1) {
-					if(debug) System.out.println("no email in subject");
-				}
-			}
+      if (null == request) {
+         throw new AuthenticatorRuntimeException("Not in a request scope"); //$NON-NLS-1$
+      }
 
-			if(null != mail){
-				if(debug) System.out.println("performing certauth with email " + mail);
-				User u = userManagerService.getUserByMail(mail);
-				if(u != null){
-					if(debug) System.out.println("user id: " + u.getId());
-					return new AuthenticationResult(true, u);
-				}else{
-					if(debug) System.out.println("No user. aborting certauth");
-				}
-			}else{
-				if(debug) System.out.println("no email. abort certauth");
-			}
+      X509Certificate[] certificates = (X509Certificate[]) request
+            .getAttribute("javax.servlet.request.X509Certificate"); //$NON-NLS-1$
 
-		}else{
-			if(debug) System.out.println("no certificate. abort certauth");
-		}
+      if (debug)
+         System.out.println("Trying certificate authentication");
+      if (null != certificates && certificates.length > 0) {
+         if (debug)
+            System.out.println("found certificate");
+         X509Certificate crt = certificates[0];
+         if (debug)
+            System.out.println(crt);
+         String mail = null;
 
-		
-		return new AuthenticationResult(!isAuthoritative(), null);
-	}
+         try {
+            if (debug)
+               System.out.println("trying subject alternative names");
+            if (crt.getSubjectAlternativeNames() != null) {
+               java.util.Collection altNames = crt.getSubjectAlternativeNames();
+               java.util.Iterator i = altNames.iterator();
 
-	@Override
-	public String getClientModuleName() {
-		return null;
-	}
+               while (i.hasNext()) {
+                  java.util.List item = (java.util.List) i.next();
+                  Integer type = (Integer) item.get(0);
+                  if (type.intValue() == 1) {
+                     mail = (String) item.get(1);
+                  }
+               }
+               if (debug)
+                  System.out.println("got email " + mail);
+            } else {
+               if (debug)
+                  System.out.println("no subject alternative names");
+            }
+         } catch (Exception e) {
+            logger.warn("Error reading names from certificate", e);
+         }
 
-	protected boolean isAuthoritative() {
-		return false;
-	}
+         if (null == mail) {
+            if (debug)
+               System.out.println("trying subject");
+            try {
+               mail = IETFUtils.valueToString(
+                     new JcaX509CertificateHolder(crt).getSubject().getRDNs(BCStyle.E)[0].getFirst().getValue());
+            } catch (Exception e1) {
+               if (debug)
+                  System.out.println("no email in subject");
+            }
+         }
+
+         if (null != mail) {
+            if (debug)
+               System.out.println("performing certauth with email " + mail);
+            User u = userManagerService.getUserByMail(mail);
+            if (u != null) {
+               if (debug)
+                  System.out.println("user id: " + u.getId());
+               return new AuthenticationResult(true, u);
+            } else {
+               if (debug)
+                  System.out.println("No user. aborting certauth");
+            }
+         } else {
+            if (debug)
+               System.out.println("no email. abort certauth");
+         }
+
+      } else {
+         if (debug)
+            System.out.println("no certificate. abort certauth");
+      }
+
+      return new AuthenticationResult(!isAuthoritative(), null);
+   }
+
+   @Override
+   public String getClientModuleName() {
+      return null;
+   }
+
+   protected boolean isAuthoritative() {
+      return false;
+   }
 }

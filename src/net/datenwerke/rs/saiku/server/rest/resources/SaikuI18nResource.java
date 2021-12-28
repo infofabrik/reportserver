@@ -25,39 +25,38 @@ import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 @XmlAccessorType(XmlAccessType.NONE)
 public class SaikuI18nResource {
 
-	private Provider<ServletContext> servletContext;
-	private RemoteMessageService remoteMessageService;
+   private Provider<ServletContext> servletContext;
+   private RemoteMessageService remoteMessageService;
 
-	@Inject
-	public SaikuI18nResource(
-			Provider<ServletContext> servletContext, 
-			RemoteMessageService remoteMessageService) {
-		this.servletContext = servletContext;
-		this.remoteMessageService = remoteMessageService;
-	}
+   @Inject
+   public SaikuI18nResource(Provider<ServletContext> servletContext, RemoteMessageService remoteMessageService) {
+      this.servletContext = servletContext;
+      this.remoteMessageService = remoteMessageService;
+   }
 
-	@GET
-	@Path("/{lang}")
-	@Produces({"application/json" })
-	public Map<String, String> getMapping() throws JsonParseException, IOException {
-		Map<String, String> mapping = new HashMap<String, String>();
+   @GET
+   @Path("/{lang}")
+   @Produces({ "application/json" })
+   public Map<String, String> getMapping() throws JsonParseException, IOException {
+      Map<String, String> mapping = new HashMap<String, String>();
 
-		Locale locale = LocalizationServiceImpl.getLocale();
-		String country = locale.getLanguage();
-		
-		/* try loading original json */
-		InputStream originalMapping = servletContext.get().getResourceAsStream("/resources/saiku/js/saiku/plugins/I18n/po/" + country + ".json");
-		if(null == originalMapping)
-			originalMapping = servletContext.get().getResourceAsStream("/resources/saiku/js/saiku/plugins/I18n/po/en.json");
-		
-		
-		/* overlay rs messages */
-		HashMap<String,HashMap<String,String>> messages = remoteMessageService.getMessages(country);
-		if(null != messages){
-			HashMap<String,String> rsmap = messages.get(SaikuNativeMessages.class.getName());
-			mapping.putAll(rsmap);
-		}
-		
-		return mapping;
-	}
+      Locale locale = LocalizationServiceImpl.getLocale();
+      String country = locale.getLanguage();
+
+      /* try loading original json */
+      InputStream originalMapping = servletContext.get()
+            .getResourceAsStream("/resources/saiku/js/saiku/plugins/I18n/po/" + country + ".json");
+      if (null == originalMapping)
+         originalMapping = servletContext.get()
+               .getResourceAsStream("/resources/saiku/js/saiku/plugins/I18n/po/en.json");
+
+      /* overlay rs messages */
+      HashMap<String, HashMap<String, String>> messages = remoteMessageService.getMessages(country);
+      if (null != messages) {
+         HashMap<String, String> rsmap = messages.get(SaikuNativeMessages.class.getName());
+         mapping.putAll(rsmap);
+      }
+
+      return mapping;
+   }
 }

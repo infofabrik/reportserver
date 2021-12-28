@@ -7,9 +7,9 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 @HookConfig
 public interface ChangePasswordHook extends Hook {
-	
-	public void beforePasswordChanged(User user, String newPassword) throws ExpectedException;
-	
-	public void afterPasswordChanged(User user);
+
+   public void beforePasswordChanged(User user, String newPassword) throws ExpectedException;
+
+   public void afterPasswordChanged(User user);
 
 }

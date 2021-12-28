@@ -9,9 +9,7 @@ public class ClientConfigServiceImpl implements ClientConfigService {
    private final ClientConfigXmlService jsonService;
 
    @Inject
-   public ClientConfigServiceImpl(
-         ClientConfigXmlService jsonService
-         ) {
+   public ClientConfigServiceImpl(ClientConfigXmlService jsonService) {
       this.jsonService = jsonService;
    }
 

@@ -8,59 +8,54 @@ import net.datenwerke.rs.core.client.parameters.dto.ParameterProposalDto;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
-@GenerateDto(
-		dtoPackage="net.datenwerke.rs.crystal.client.crystal.dto",
-		proxyableDto=false,
-		dtoImplementInterfaces=ParameterProposalDto.class
-	)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", proxyableDto = false, dtoImplementInterfaces = ParameterProposalDto.class)
 public class CrystalParameterProposal implements Serializable {
 
-	private static final long serialVersionUID = -7663623995399473020L;
-	
-	@ExposeToClient(id=true)
-	private String key;
-	
-	@ExposeToClient
-	private String name;
-	
-	@ExposeToClient
-	private String type;
+   private static final long serialVersionUID = -7663623995399473020L;
 
-	@EnclosedEntity
-	@ExposeToClient
-	private ParameterDefinition parameterProposal;
-	
-	public String getKey() {
-		return key;
-	}
+   @ExposeToClient(id = true)
+   private String key;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   @ExposeToClient
+   private String name;
 
-	public String getName() {
-		return name;
-	}
+   @ExposeToClient
+   private String type;
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   @EnclosedEntity
+   @ExposeToClient
+   private ParameterDefinition parameterProposal;
 
-	public String getType() {
-		return type;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public void setType(String type) {
-		this.type = type;
-	}
-	
-	public ParameterDefinition getParameterProposal() {
-		return parameterProposal;
-	}
-	
-	public void setParameterProposal(ParameterDefinition parameterProposal) {
-		this.parameterProposal = parameterProposal;
-	}
-	
+   public void setKey(String key) {
+      this.key = key;
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public String getType() {
+      return type;
+   }
+
+   public void setType(String type) {
+      this.type = type;
+   }
+
+   public ParameterDefinition getParameterProposal() {
+      return parameterProposal;
+   }
+
+   public void setParameterProposal(ParameterDefinition parameterProposal) {
+      this.parameterProposal = parameterProposal;
+   }
 
 }

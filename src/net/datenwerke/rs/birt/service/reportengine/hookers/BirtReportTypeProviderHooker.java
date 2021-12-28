@@ -10,13 +10,13 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook
 
 public class BirtReportTypeProviderHooker implements ReportTypeProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends Report>> getReportTypes() {
-		Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
-		
-		types.add(BirtReport.class);
-		
-		return types;
-	}
+   @Override
+   public Collection<? extends Class<? extends Report>> getReportTypes() {
+      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
+
+      types.add(BirtReport.class);
+
+      return types;
+   }
 
 }

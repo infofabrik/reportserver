@@ -12,21 +12,21 @@ import net.datenwerke.rs.utils.simplequery.simple.SimpleQueryInterceptor;
 
 public class SimpleQueryModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* simple */
-		SimpleQueryInterceptor interceptor = new SimpleQueryInterceptor();
-		requestInjection(interceptor);
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(SimpleQuery.class), interceptor);
-		
-		QueryByIdInterceptor idQInterceptor = new QueryByIdInterceptor();
-		requestInjection(idQInterceptor);
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(QueryById.class), idQInterceptor);
-		
-		QueryByAttInterceptor attQInterceptor = new QueryByAttInterceptor();
-		requestInjection(attQInterceptor);
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(QueryByAttribute.class), attQInterceptor);
+   @Override
+   protected void configure() {
+      /* simple */
+      SimpleQueryInterceptor interceptor = new SimpleQueryInterceptor();
+      requestInjection(interceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(SimpleQuery.class), interceptor);
 
-	}
+      QueryByIdInterceptor idQInterceptor = new QueryByIdInterceptor();
+      requestInjection(idQInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(QueryById.class), idQInterceptor);
+
+      QueryByAttInterceptor attQInterceptor = new QueryByAttInterceptor();
+      requestInjection(attQInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(QueryByAttribute.class), attQInterceptor);
+
+   }
 
 }

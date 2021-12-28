@@ -21,102 +21,105 @@ import net.datenwerke.security.service.security.rights.Read;
 
 public class PkgInstallSubCommand implements SubCommand {
 
-	private static final String BASE_COMMAND = "install";
-	private Provider<PackagedScriptHelper> packageScriptHelper;
-	private FileServerService fileServerService;
+   private static final String BASE_COMMAND = "install";
+   private Provider<PackagedScriptHelper> packageScriptHelper;
+   private FileServerService fileServerService;
 
-	@Inject
-	public PkgInstallSubCommand(Provider<PackagedScriptHelper> packageScriptHelper, FileServerService fileServerService) {
-		this.packageScriptHelper = packageScriptHelper;
-		this.fileServerService = fileServerService;
-		
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Inject
+   public PkgInstallSubCommand(Provider<PackagedScriptHelper> packageScriptHelper,
+         FileServerService fileServerService) {
+      this.packageScriptHelper = packageScriptHelper;
+      this.fileServerService = fileServerService;
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		String packageName = parser.getNonOptionArguments().get(0);
-		PackagedScriptHelper packagedScriptHelper = packageScriptHelper.get();
-		if(parser.hasOption("d")){
-			File packageFile = new File(packagedScriptHelper.getPackageDirectory(), packageName);
-			if(!packageFile.exists()){
-				throw new IllegalArgumentException("no such package " + packageName);
-			}
-			FileServerFolder uploadPackage = null;
-			try {
-				uploadPackage = packagedScriptHelper.extractPackageTemporarily(new FileInputStream(packageFile));
-				String result = packagedScriptHelper.executePackage(uploadPackage, getScriptArguments(parser.getArguments()));
-				
-				CommandResult cr = new CommandResult(null == result ? "ok" : result);
-				return cr;
-			} catch (Exception e) {
-				throw new IllegalArgumentException(e);
-			}finally{
-				fileServerService.forceRemove(uploadPackage);
-			}
-		}else{
-			Collection<Object> objects = session.getObjectResolver().getObjects(packageName, Read.class);
-			if(objects.size() != 1)
-				throw new IllegalArgumentException("expression must resolve to exactly one object.");
-			
-			Object pkgObj = objects.iterator().next();
-			if(pkgObj instanceof FileServerFile){
-				FileServerFile pkgFile = (FileServerFile) pkgObj;
-				if(!packagedScriptHelper.validateZip(new ByteArrayInputStream(pkgFile.getData()), false)){
-					throw new IllegalArgumentException("not a valid package");
-				}
-				FileServerFolder uploadPackage = null;
-				try {
-					uploadPackage = packagedScriptHelper.extractPackageTemporarily(new ByteArrayInputStream(pkgFile.getData()));
-					
-					String result = packagedScriptHelper.executePackage(uploadPackage, getScriptArguments(parser.getArguments()));
-					
-					CommandResult cr = new CommandResult(null == result ? "ok" : result);
-					return cr;
-				} catch (Exception e) {
-					throw new IllegalArgumentException(e);
-				}finally{
-					fileServerService.forceRemove(uploadPackage);
-				}
-				
-			}else{
-				throw new IllegalArgumentException("no such package");
-			}
-				
-		}
+   }
 
-	}
-	
-	private String getScriptArguments(String[] opts){
-		boolean seenEndOfOptions = false;
-		
-		for(int i=0 ; i < opts.length; i++){
-			if(seenEndOfOptions)
-				return opts[i];
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-			if("--".equals(opts[i]))
-				seenEndOfOptions = true;
-			
-		}
-		
-		return "";
-	}
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      String packageName = parser.getNonOptionArguments().get(0);
+      PackagedScriptHelper packagedScriptHelper = packageScriptHelper.get();
+      if (parser.hasOption("d")) {
+         File packageFile = new File(packagedScriptHelper.getPackageDirectory(), packageName);
+         if (!packageFile.exists()) {
+            throw new IllegalArgumentException("no such package " + packageName);
+         }
+         FileServerFolder uploadPackage = null;
+         try {
+            uploadPackage = packagedScriptHelper.extractPackageTemporarily(new FileInputStream(packageFile));
+            String result = packagedScriptHelper.executePackage(uploadPackage,
+                  getScriptArguments(parser.getArguments()));
 
-	
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		if(autocompleteHelper.getParser().hasOption("d"))
-			packageScriptHelper.get().listPackages().stream()
-					.forEach(f -> autocompleteHelper.addAutocompleteNamesForToken(4, f.getName()));
-	}
+            CommandResult cr = new CommandResult(null == result ? "ok" : result);
+            return cr;
+         } catch (Exception e) {
+            throw new IllegalArgumentException(e);
+         } finally {
+            fileServerService.forceRemove(uploadPackage);
+         }
+      } else {
+         Collection<Object> objects = session.getObjectResolver().getObjects(packageName, Read.class);
+         if (objects.size() != 1)
+            throw new IllegalArgumentException("expression must resolve to exactly one object.");
 
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
+         Object pkgObj = objects.iterator().next();
+         if (pkgObj instanceof FileServerFile) {
+            FileServerFile pkgFile = (FileServerFile) pkgObj;
+            if (!packagedScriptHelper.validateZip(new ByteArrayInputStream(pkgFile.getData()), false)) {
+               throw new IllegalArgumentException("not a valid package");
+            }
+            FileServerFolder uploadPackage = null;
+            try {
+               uploadPackage = packagedScriptHelper
+                     .extractPackageTemporarily(new ByteArrayInputStream(pkgFile.getData()));
+
+               String result = packagedScriptHelper.executePackage(uploadPackage,
+                     getScriptArguments(parser.getArguments()));
+
+               CommandResult cr = new CommandResult(null == result ? "ok" : result);
+               return cr;
+            } catch (Exception e) {
+               throw new IllegalArgumentException(e);
+            } finally {
+               fileServerService.forceRemove(uploadPackage);
+            }
+
+         } else {
+            throw new IllegalArgumentException("no such package");
+         }
+
+      }
+
+   }
+
+   private String getScriptArguments(String[] opts) {
+      boolean seenEndOfOptions = false;
+
+      for (int i = 0; i < opts.length; i++) {
+         if (seenEndOfOptions)
+            return opts[i];
+
+         if ("--".equals(opts[i]))
+            seenEndOfOptions = true;
+
+      }
+
+      return "";
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      if (autocompleteHelper.getParser().hasOption("d"))
+         packageScriptHelper.get().listPackages().stream()
+               .forEach(f -> autocompleteHelper.addAutocompleteNamesForToken(4, f.getName()));
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
 
 }

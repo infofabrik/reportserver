@@ -18,26 +18,24 @@ import net.datenwerke.usermanager.ext.client.properties.ui.UserPropertiesView;
  */
 public class UserPropertiesViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final Provider<UserPropertiesView> propertiesViewProvider;
-	
-	@Inject
-	public UserPropertiesViewProviderHooker(
-		Provider<UserPropertiesView> propertiesViewProvider
-		){
+   private final Provider<UserPropertiesView> propertiesViewProvider;
 
-		/* store objects */
-		this.propertiesViewProvider = propertiesViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof UserDto)
-			return getView();
+   @Inject
+   public UserPropertiesViewProviderHooker(Provider<UserPropertiesView> propertiesViewProvider) {
 
-		return null;
-	}
+      /* store objects */
+      this.propertiesViewProvider = propertiesViewProvider;
+   }
 
-	private List<MainPanelView> getView() {
-		return Arrays.asList(new MainPanelView[]{propertiesViewProvider.get()});
-	}
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof UserDto)
+         return getView();
+
+      return null;
+   }
+
+   private List<MainPanelView> getView() {
+      return Arrays.asList(new MainPanelView[] { propertiesViewProvider.get() });
+   }
 
 }

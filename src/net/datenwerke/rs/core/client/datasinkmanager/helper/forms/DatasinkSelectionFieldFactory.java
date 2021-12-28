@@ -10,11 +10,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface DatasinkSelectionFieldFactory {
 
-   public DatasinkSelectionField create(
-         Provider<? extends HasDefaultDatasink> datasinkDaoProvider, 
-         BaseIcon icon,
-         Container container,
-         UITree datasourceTree, 
-         Class<? extends DatasinkDefinitionDto>[] types
-         );
+   public DatasinkSelectionField create(Provider<? extends HasDefaultDatasink> datasinkDaoProvider, BaseIcon icon,
+         Container container, UITree datasourceTree, Class<? extends DatasinkDefinitionDto>[] types);
 }

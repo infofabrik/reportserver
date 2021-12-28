@@ -6,12 +6,10 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsDatasinkManagerStartup {
 
-	@Inject
-	public GenRightsDatasinkManagerStartup(
-		SecurityService securityService	
-		){
-		
-		/* register security targets */
-		securityService.registerSecurityTarget(DatasinkManagerAdminViewSecurityTarget.class);
-	}
+   @Inject
+   public GenRightsDatasinkManagerStartup(SecurityService securityService) {
+
+      /* register security targets */
+      securityService.registerSecurityTarget(DatasinkManagerAdminViewSecurityTarget.class);
+   }
 }

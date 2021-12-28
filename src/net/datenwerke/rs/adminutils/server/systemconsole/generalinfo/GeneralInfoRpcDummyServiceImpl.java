@@ -9,14 +9,14 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 @Singleton
 public class GeneralInfoRpcDummyServiceImpl extends SecuredRemoteServiceServlet implements GeneralInfoRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -1809584778778017356L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -1809584778778017356L;
 
-	@Override
-	public GeneralInfoDto loadGeneralInfo() {
-		return null;
-	}
+   @Override
+   public GeneralInfoDto loadGeneralInfo() {
+      return null;
+   }
 
 }

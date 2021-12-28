@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.MonthsDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Months.class)
 public interface MonthsDtoPA extends PropertyAccess<MonthsDto> {
 
-
-
 }

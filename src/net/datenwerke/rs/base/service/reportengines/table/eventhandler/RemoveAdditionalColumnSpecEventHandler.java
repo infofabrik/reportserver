@@ -10,21 +10,21 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class RemoveAdditionalColumnSpecEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final TableReportUtils utils;
-	
-	@Inject
-	public RemoveAdditionalColumnSpecEventHandler(TableReportUtils utils) {
-		this.utils = utils;
-	}
+   private final TableReportUtils utils;
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		AdditionalColumnSpec spec = (AdditionalColumnSpec) event.getObject();
-		
-		for(ColumnReference ref : utils.getColumnReferencesFor(spec)){
-			ref.setReference(null);
-			utils.merge(ref);
-		}
-	}
+   @Inject
+   public RemoveAdditionalColumnSpecEventHandler(TableReportUtils utils) {
+      this.utils = utils;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      AdditionalColumnSpec spec = (AdditionalColumnSpec) event.getObject();
+
+      for (ColumnReference ref : utils.getColumnReferencesFor(spec)) {
+         ref.setReference(null);
+         utils.merge(ref);
+      }
+   }
 
 }

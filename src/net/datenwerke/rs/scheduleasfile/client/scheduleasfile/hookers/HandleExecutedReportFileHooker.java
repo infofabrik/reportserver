@@ -10,31 +10,28 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralRefer
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.GeneralReferenceHandlerHook;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.ui.TsDiskMainComponent;
 
-public class HandleExecutedReportFileHooker implements
-		GeneralReferenceHandlerHook {
+public class HandleExecutedReportFileHooker implements GeneralReferenceHandlerHook {
 
-	private final UtilsUIService utilsService;
-	
-	@Inject
-	public HandleExecutedReportFileHooker(
-		UtilsUIService utilsService
-		) {
-		
-		/* store objects */
-		this.utilsService = utilsService;
-	}
+   private final UtilsUIService utilsService;
 
-	@Override
-	public boolean consumes(TsDiskGeneralReferenceDto item) {	
-		return item instanceof ExecutedReportFileReferenceDto;
-	}
+   @Inject
+   public HandleExecutedReportFileHooker(UtilsUIService utilsService) {
 
-	@Override
-	public void handle(TsDiskGeneralReferenceDto item, TsDiskMainComponent mainComponent) {
-		String id = String.valueOf(item.getId());
-		String url = GWT.getModuleBaseURL() +  ScheduleAsFileUiModule.EXPORT_SERVLET + "?fileId=" + id + "&download=false"; //$NON-NLS-1$
-		
-		utilsService.redirectInPopup(url);
-	}
+      /* store objects */
+      this.utilsService = utilsService;
+   }
+
+   @Override
+   public boolean consumes(TsDiskGeneralReferenceDto item) {
+      return item instanceof ExecutedReportFileReferenceDto;
+   }
+
+   @Override
+   public void handle(TsDiskGeneralReferenceDto item, TsDiskMainComponent mainComponent) {
+      String id = String.valueOf(item.getId());
+      String url = GWT.getModuleBaseURL() + ScheduleAsFileUiModule.EXPORT_SERVLET + "?fileId=" + id + "&download=false"; //$NON-NLS-1$
+
+      utilsService.redirectInPopup(url);
+   }
 
 }

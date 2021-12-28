@@ -27,91 +27,91 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class NativeReportPreviewView extends AbstractReportPreviewView {
 
-	private DwBorderContainer wrapper;
-	private ReportExporterUIService exporterUIService;
-	
-	@Inject
-	public NativeReportPreviewView(
-			ReportExecutorDao rexService, 
-			HookHandlerService hookHandler, 
-			ReportExporterUIService exporterUIService) {
-		
-		super(rexService, hookHandler);
-		this.exporterUIService = exporterUIService;
+   private DwBorderContainer wrapper;
+   private ReportExporterUIService exporterUIService;
 
-		wrapper = new DwBorderContainer();
-		wrapper.setBorders(false);
-	}
-	
-	@Override
-	protected void doLoadReport(DwModel reportExecutionResult) {
-		if(((SuccessIndicatorBaseModel)reportExecutionResult).isSuccess()){
-			
-			try{
-				InfoConfig infoConfig = new DefaultInfoConfig(ReportExporterMessages.INSTANCE.reportIsBeingExportedTitle(), ReportExporterMessages.INSTANCE.reportLoadingWait());
-				infoConfig.setWidth(350);
-				infoConfig.setDisplay(3500);
-				Info.display(infoConfig);
-			}catch(Exception e){}
-			
-			wrapper.clear();
+   @Inject
+   public NativeReportPreviewView(ReportExecutorDao rexService, HookHandlerService hookHandler,
+         ReportExporterUIService exporterUIService) {
 
-			DwContentPanel frame = new DwContentPanel();
-			frame.setBodyBorder(false);
-			frame.setHeaderVisible(false);
-			Frame iFrame = frame.setUrl(exporterUIService.getExportServletPath() + "&tid=" + getExecuteReportToken() + "&download=false");
+      super(rexService, hookHandler);
+      this.exporterUIService = exporterUIService;
+
+      wrapper = new DwBorderContainer();
+      wrapper.setBorders(false);
+   }
+
+   @Override
+   protected void doLoadReport(DwModel reportExecutionResult) {
+      if (((SuccessIndicatorBaseModel) reportExecutionResult).isSuccess()) {
+
+         try {
+            InfoConfig infoConfig = new DefaultInfoConfig(ReportExporterMessages.INSTANCE.reportIsBeingExportedTitle(),
+                  ReportExporterMessages.INSTANCE.reportLoadingWait());
+            infoConfig.setWidth(350);
+            infoConfig.setDisplay(3500);
+            Info.display(infoConfig);
+         } catch (Exception e) {
+         }
+
+         wrapper.clear();
+
+         DwContentPanel frame = new DwContentPanel();
+         frame.setBodyBorder(false);
+         frame.setHeaderVisible(false);
+         Frame iFrame = frame.setUrl(
+               exporterUIService.getExportServletPath() + "&tid=" + getExecuteReportToken() + "&download=false");
 //			iFrame.getElement().setPropertyString("scrolling", "no");
-			iFrame.getElement().addClassName("rs-report-preview");
-			
-			
-			wrapper.add(frame, new MarginData(0));
-		}
-	}
-	
+         iFrame.getElement().addClassName("rs-report-preview");
 
-	@Override
-	protected void cancelExecution(String executeToken) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Request execute(ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
-		/* Find exporter */
-		ReportExporter exporter = null;
-		List<ReportExporter> exporters = exporterUIService.getAvailableExporters(report);
-		for(ReportExporter rex : exporters){
-			if(rex instanceof Export2PDF){
-				exporter = rex;
-				break;
-			}
-		}
-		
-		if(null == exporter)
-			throw new RuntimeException("No PDFExporter for " + report.getClass().getName());
-		
-		return exporter.prepareExportForPreview(report, getExecuteReportToken(), new AsyncCallback<Void>() {
-			@Override
-			public void onFailure(Throwable caught) {
-				callback.onFailure(caught);	
-			}
-			@Override
-			public void onSuccess(Void result) {
-				SuccessIndicatorBaseModel model = new SuccessIndicatorBaseModel();
-				model.setSuccess(true);
-				callback.onSuccess(model);
-			}
-		});
-	}
+         wrapper.add(frame, new MarginData(0));
+      }
+   }
 
-	@Override
-	public Widget doGetViewComponent() {
-		return wrapper;
-	}
+   @Override
+   protected void cancelExecution(String executeToken) {
+      // TODO Auto-generated method stub
 
-	@Override
-	protected boolean isCreateStatusBar() {
-		return false;
-	}
+   }
+
+   @Override
+   public Request execute(ReportDto report, String executeToken, final AsyncCallback<DwModel> callback) {
+      /* Find exporter */
+      ReportExporter exporter = null;
+      List<ReportExporter> exporters = exporterUIService.getAvailableExporters(report);
+      for (ReportExporter rex : exporters) {
+         if (rex instanceof Export2PDF) {
+            exporter = rex;
+            break;
+         }
+      }
+
+      if (null == exporter)
+         throw new RuntimeException("No PDFExporter for " + report.getClass().getName());
+
+      return exporter.prepareExportForPreview(report, getExecuteReportToken(), new AsyncCallback<Void>() {
+         @Override
+         public void onFailure(Throwable caught) {
+            callback.onFailure(caught);
+         }
+
+         @Override
+         public void onSuccess(Void result) {
+            SuccessIndicatorBaseModel model = new SuccessIndicatorBaseModel();
+            model.setSuccess(true);
+            callback.onSuccess(model);
+         }
+      });
+   }
+
+   @Override
+   public Widget doGetViewComponent() {
+      return wrapper;
+   }
+
+   @Override
+   protected boolean isCreateStatusBar() {
+      return false;
+   }
 
 }

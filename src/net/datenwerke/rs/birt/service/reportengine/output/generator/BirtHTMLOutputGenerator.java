@@ -15,53 +15,52 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 
 public class BirtHTMLOutputGenerator extends BirtOutputGeneratorImpl {
-	
-	@Override
-	public CompiledRSBirtReport exportReport(
-			Object oRunAndRenderTask, String outputFormat,
-			ReportExecutionConfig... configs) {
-		
-		try {
-			IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
-			HTMLRenderOption options = new HTMLRenderOption();
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			options.setOutputStream(bos);
-			options.setOutputFormat("html");
-			options.setImageHandler(new Base64ImageHandler());
+   @Override
+   public CompiledRSBirtReport exportReport(Object oRunAndRenderTask, String outputFormat,
+         ReportExecutionConfig... configs) {
 
-			/* adapt render options */
-			RenderOption renderOptions = adapt(options);
-			
-			/* render */
-			runAndRenderTask.setRenderOption(renderOptions);
-			runAndRenderTask.run();
+      try {
+         IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
+         HTMLRenderOption options = new HTMLRenderOption();
 
-			/* create return object */
-			CompiledHTMLBirtReport cbReport = new CompiledHTMLBirtReport();
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         options.setOutputStream(bos);
+         options.setOutputFormat("html");
+         options.setImageHandler(new Base64ImageHandler());
 
-			/* add report to object */
-			cbReport.setReport(new String(bos.toByteArray()));
+         /* adapt render options */
+         RenderOption renderOptions = adapt(options);
 
-			/* return compiled report */
-			return cbReport;
+         /* render */
+         runAndRenderTask.setRenderOption(renderOptions);
+         runAndRenderTask.run();
 
-		} catch (EngineException e) {
-			ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
-			rere.initCause(e);
-			throw rere;
-		}
-		
-	}
+         /* create return object */
+         CompiledHTMLBirtReport cbReport = new CompiledHTMLBirtReport();
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_HTML};
-	}
+         /* add report to object */
+         cbReport.setReport(new String(bos.toByteArray()));
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledHTMLBirtReport();
-	}
+         /* return compiled report */
+         return cbReport;
+
+      } catch (EngineException e) {
+         ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
+         rere.initCause(e);
+         throw rere;
+      }
+
+   }
+
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_HTML };
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledHTMLBirtReport();
+   }
 
 }

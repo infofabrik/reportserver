@@ -10,9 +10,9 @@ import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.SaikuOutputGener
 @Singleton
 public class SaikuOutputGeneratorManager extends AbstractReportOutputGeneratorManager<SaikuOutputGenerator> {
 
-	@Inject
-	public SaikuOutputGeneratorManager(HookHandlerService hookHandler) {
-		super(hookHandler, SaikuOutputGeneratorProviderHook.class);
-	}
+   @Inject
+   public SaikuOutputGeneratorManager(HookHandlerService hookHandler) {
+      super(hookHandler, SaikuOutputGeneratorProviderHook.class);
+   }
 
 }

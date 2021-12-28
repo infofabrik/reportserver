@@ -12,21 +12,21 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 
 public class HandleUserNodeRemoveEvents implements EventHandler<RemoveEntityEvent> {
 
-	private final UserVariableService userVarService;
+   private final UserVariableService userVarService;
 
-	@Inject
-	public HandleUserNodeRemoveEvents(UserVariableService userVarService) {
-		this.userVarService = userVarService;
-	}
+   @Inject
+   public HandleUserNodeRemoveEvents(UserVariableService userVarService) {
+      this.userVarService = userVarService;
+   }
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		AbstractUserManagerNode folk = (AbstractUserManagerNode) event.getObject();
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      AbstractUserManagerNode folk = (AbstractUserManagerNode) event.getObject();
 
-		Collection<UserVariableInstance> instances = userVarService.getDefinedInstancesFor(folk);
-		if(null != instances && instances.size() > 0)
-			for(UserVariableInstance instance : instances)
-				userVarService.remove(instance);
-	}
+      Collection<UserVariableInstance> instances = userVarService.getDefinedInstancesFor(folk);
+      if (null != instances && instances.size() > 0)
+         for (UserVariableInstance instance : instances)
+            userVarService.remove(instance);
+   }
 
 }

@@ -26,67 +26,51 @@ import net.datenwerke.security.service.usermanager.entities.User;
  *
  */
 @Singleton
-public class SuUserRpcServiceImpl extends SecuredRemoteServiceServlet implements
-		SuUserRpcService {
+public class SuUserRpcServiceImpl extends SecuredRemoteServiceServlet implements SuUserRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7294232233898833127L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7294232233898833127L;
 
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final UserManagerService userManagerService;
-	private final SecurityService securityService;
-	
-	
-	@Inject
-	public SuUserRpcServiceImpl(
-			Provider<AuthenticatorService> authenticatorServiceProvider,
-			UserManagerService userManagerService, 
-			SecurityService securityService) {
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final UserManagerService userManagerService;
+   private final SecurityService securityService;
 
-		/* store objects */
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.userManagerService = userManagerService;
-		this.securityService = securityService;
-	}
+   @Inject
+   public SuUserRpcServiceImpl(Provider<AuthenticatorService> authenticatorServiceProvider,
+         UserManagerService userManagerService, SecurityService securityService) {
 
+      /* store objects */
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.userManagerService = userManagerService;
+      this.securityService = securityService;
+   }
 
-	@Override
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=SuSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	@Transactional(rollbackOn={Exception.class})
-	public void su(String username) throws ServerCallFailedException {
-		User user = userManagerService.getUserByName(username);
-		if(null == user)
-			throw new ExpectedException("Could not find user: " + username);
+   @Override
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = SuSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   @Transactional(rollbackOn = { Exception.class })
+   public void su(String username) throws ServerCallFailedException {
+      User user = userManagerService.getUserByName(username);
+      if (null == user)
+         throw new ExpectedException("Could not find user: " + username);
 
-		authenticatorServiceProvider.get().su(user);
-	}
+      authenticatorServiceProvider.get().su(user);
+   }
 
+   @Override
+   @SecurityChecked(genericTargetVerification = @GenericTargetVerification(target = SuSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)))
+   @Transactional(rollbackOn = { Exception.class })
+   public void su(Long id) throws ExpectedException {
+      AbstractUserManagerNode node = (AbstractUserManagerNode) userManagerService.getNodeById(id);
+      if (null == node || !(node instanceof AbstractUserManagerNode))
+         throw new ExpectedException("Could not find user: " + id);
 
-	@Override
-	@SecurityChecked(
-		genericTargetVerification = @GenericTargetVerification(
-			target=SuSecurityTarget.class,
-			verify=@RightsVerification(rights=Execute.class)
-		)
-	)
-	@Transactional(rollbackOn={Exception.class})
-	public void su(Long id) throws ExpectedException {
-		AbstractUserManagerNode node = (AbstractUserManagerNode) userManagerService.getNodeById(id);
-		if(null == node || ! (node instanceof AbstractUserManagerNode))
-			throw new ExpectedException("Could not find user: " + id);
+      if (!securityService.checkRights(node, Execute.class)) {
+         throw new ViolatedSecurityException("Insufficient priviledges to log in as " + node.getName());
+      }
 
-		if(!securityService.checkRights(node, Execute.class)){
-			throw new ViolatedSecurityException("Insufficient priviledges to log in as " + node.getName());
-		}
-		
-		authenticatorServiceProvider.get().su((User) node);
-	}
+      authenticatorServiceProvider.get().su((User) node);
+   }
 
 }

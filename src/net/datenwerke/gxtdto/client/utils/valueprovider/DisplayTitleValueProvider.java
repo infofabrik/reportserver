@@ -6,18 +6,18 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public class DisplayTitleValueProvider<T extends Dto> implements ValueProvider<T, String> {
 
-	@Override
-	public String getValue(T object) {
-		return null != object ? object.toDisplayTitle() : "";
-	}
+   @Override
+   public String getValue(T object) {
+      return null != object ? object.toDisplayTitle() : "";
+   }
 
-	@Override
-	public void setValue(T object, String value) {
-	}
+   @Override
+   public void setValue(T object, String value) {
+   }
 
-	@Override
-	public String getPath() {
-		return "__displayTitle";
-	}
+   @Override
+   public String getPath() {
+      return "__displayTitle";
+   }
 
 }

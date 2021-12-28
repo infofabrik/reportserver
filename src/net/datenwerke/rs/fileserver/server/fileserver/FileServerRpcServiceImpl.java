@@ -52,233 +52,186 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
  *
  */
 @Singleton
-public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractFileServerNode> 
-implements 
-FileServerRpcService, 
-FileServerTreeLoader, 
-FileServerTreeManager,
-FileServerExportRpcService {
+public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractFileServerNode>
+      implements FileServerRpcService, FileServerTreeLoader, FileServerTreeManager, FileServerExportRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8869851090677352067L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -8869851090677352067L;
 
-	private final FileServerService fileService;
-	private final ExportService exportService;
-	private final Provider<HttpExportService> httpExportServiceProvider;
-	private final MimeUtils mimeUtils;
-	private final BasepathZipExtractConfigFactory extractConfigFactory;
-	private final Provider<ZipUtilsService> zipUtilsServiceProvider;
+   private final FileServerService fileService;
+   private final ExportService exportService;
+   private final Provider<HttpExportService> httpExportServiceProvider;
+   private final MimeUtils mimeUtils;
+   private final BasepathZipExtractConfigFactory extractConfigFactory;
+   private final Provider<ZipUtilsService> zipUtilsServiceProvider;
 
-	@Inject
-	public FileServerRpcServiceImpl(
-			DtoService dtoService,
-			FileServerService fileService,
-			SecurityService securityService,
-			EntityClonerService entityClonerService,
-			ExportService exportService,
-			Provider<HttpExportService> httpExportServiceProvider, 
-			MimeUtils mimeUtils,
-			BasepathZipExtractConfigFactory extractConfigFactory,
-			Provider<ZipUtilsService> zipUtilsServiceProvider
-			) {
+   @Inject
+   public FileServerRpcServiceImpl(DtoService dtoService, FileServerService fileService,
+         SecurityService securityService, EntityClonerService entityClonerService, ExportService exportService,
+         Provider<HttpExportService> httpExportServiceProvider, MimeUtils mimeUtils,
+         BasepathZipExtractConfigFactory extractConfigFactory, Provider<ZipUtilsService> zipUtilsServiceProvider) {
 
-		super(fileService, dtoService, securityService, entityClonerService);
+      super(fileService, dtoService, securityService, entityClonerService);
 
-		/* store objects */
-		this.fileService = fileService;
-		this.exportService = exportService;
-		this.httpExportServiceProvider = httpExportServiceProvider;
-		this.mimeUtils = mimeUtils;
-		this.extractConfigFactory = extractConfigFactory;
-		this.zipUtilsServiceProvider = zipUtilsServiceProvider;
-	}
+      /* store objects */
+      this.fileService = fileService;
+      this.exportService = exportService;
+      this.httpExportServiceProvider = httpExportServiceProvider;
+      this.mimeUtils = mimeUtils;
+      this.extractConfigFactory = extractConfigFactory;
+      this.zipUtilsServiceProvider = zipUtilsServiceProvider;
+   }
 
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "node",
-							isDto = true,
-							verify = @RightsVerification(rights=Write.class)
-							)
-			}
-			)
-	@Override
-	@Transactional(rollbackOn=Exception.class)
-	public void updateFile(@Named("node") FileServerFileDto fileDto, String data)
-			throws ServerCallFailedException {
-		FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-		file.setData(data.getBytes());
-		fileService.merge(file);
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Write.class)) })
+   @Override
+   @Transactional(rollbackOn = Exception.class)
+   public void updateFile(@Named("node") FileServerFileDto fileDto, String data) throws ServerCallFailedException {
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      file.setData(data.getBytes());
+      fileService.merge(file);
+   }
 
-	@Override
-	protected boolean allowDuplicateNode(AbstractFileServerNode realNode) {
-		return true;
-	}
+   @Override
+   protected boolean allowDuplicateNode(AbstractFileServerNode realNode) {
+      return true;
+   }
 
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "node",
-							isDto = true,
-							verify = @RightsVerification(rights=Read.class)
-							)
-			}
-			)
-	@Override
-	@Transactional(rollbackOn=Exception.class)
-	public String loadFileDataAsString(@Named("node") FileServerFileDto fileDto) {
-		FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
-		if(null == file.getData())
-			return "";
-		return new String(file.getData());
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "node", isDto = true, verify = @RightsVerification(rights = Read.class)) })
+   @Override
+   @Transactional(rollbackOn = Exception.class)
+   public String loadFileDataAsString(@Named("node") FileServerFileDto fileDto) {
+      FileServerFile file = (FileServerFile) dtoService.loadPoso(fileDto);
+      if (null == file.getData())
+         return "";
+      return new String(file.getData());
+   }
 
-	@Override
-	@SecurityChecked(
-			genericTargetVerification = { 
-					@GenericTargetVerification(
-							target = ExportSecurityTarget.class, 
-							verify = @RightsVerification(rights = Execute.class)) 
-			})
-	@Transactional(rollbackOn={Exception.class})
-	public void quickExport(AbstractFileServerNodeDto nodeDto) throws ServerCallFailedException {
-		AbstractFileServerNode node = (AbstractFileServerNode) dtoService.loadPoso(nodeDto);
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void quickExport(AbstractFileServerNodeDto nodeDto) throws ServerCallFailedException {
+      AbstractFileServerNode node = (AbstractFileServerNode) dtoService.loadPoso(nodeDto);
 
-		/* export report */
-		ExportConfig exportConfig = new ExportConfig();
-		exportConfig.setName("FileServer-Export");
-		exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
+      /* export report */
+      ExportConfig exportConfig = new ExportConfig();
+      exportConfig.setName("FileServer-Export");
+      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
 
-		addChildren(exportConfig, node);
+      addChildren(exportConfig, node);
 
-		String exportXML = exportService.exportIndent(exportConfig);
+      String exportXML = exportService.exportIndent(exportConfig);
 
-		httpExportServiceProvider.get().storeExport(exportXML, node.getName());
-	}
+      httpExportServiceProvider.get().storeExport(exportXML, node.getName());
+   }
 
-	private void addChildren(ExportConfig exportConfig, AbstractFileServerNode report) {
-		for(AbstractFileServerNode childNode : report.getChildren()){
-			exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-			addChildren(exportConfig, childNode);
-		}
-	}
+   private void addChildren(ExportConfig exportConfig, AbstractFileServerNode report) {
+      for (AbstractFileServerNode childNode : report.getChildren()) {
+         exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+         addChildren(exportConfig, childNode);
+      }
+   }
 
+   @Override
+   public String loadResult() throws ServerCallFailedException {
+      return httpExportServiceProvider.get().getAndRemoveStoredExport();
+   }
 
-	@Override
-	public String loadResult() throws ServerCallFailedException {
-		return httpExportServiceProvider.get().getAndRemoveStoredExport();
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "parentNode", isDto = true, verify = @RightsVerification(actions = InsertAction.class)) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public List<FileServerFileDto> uploadFiles(@Named("parentNode") FileServerFolderDto folderDto,
+         List<FileToUpload> files) throws ServerCallFailedException {
+      List<FileServerFileDto> dtoFiles = new ArrayList<FileServerFileDto>();
 
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "parentNode",
-							isDto = true,
-							verify = @RightsVerification(actions=InsertAction.class)
-							)
-			}
-			)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public List<FileServerFileDto> uploadFiles(@Named("parentNode") FileServerFolderDto folderDto,
-			List<FileToUpload> files)
-					throws ServerCallFailedException {
-		List<FileServerFileDto> dtoFiles = new ArrayList<FileServerFileDto>(); 
+      FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
 
-		FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
+      for (FileToUpload uFile : files) {
+         FileServerFile file = getFileFromUploadFile(uFile);
+         folder.addChild(file);
 
-		for(FileToUpload uFile : files){
-			FileServerFile file = getFileFromUploadFile(uFile);
-			folder.addChild(file);
+         fileService.persist(file);
 
-			fileService.persist(file);
+         dtoFiles.add((FileServerFileDto) dtoService.createDto(file));
+      }
 
-			dtoFiles.add((FileServerFileDto) dtoService.createDto(file));
-		}
+      fileService.merge(folder);
 
-		fileService.merge(folder);
+      return dtoFiles;
+   }
 
-		return dtoFiles;
-	}
+   @SecurityChecked(argumentVerification = {
+         @ArgumentVerification(name = "parentNode", isDto = true, verify = @RightsVerification(actions = InsertAction.class)) })
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public List<AbstractFileServerNodeDto> uploadAndExtract(@Named("parentNode") FileServerFolderDto folderDto,
+         FileToUpload fileToUpload) throws ServerCallFailedException {
+      List<AbstractFileServerNodeDto> dtoFiles = new ArrayList<AbstractFileServerNodeDto>();
 
-	
-	@SecurityChecked(
-			argumentVerification = {
-					@ArgumentVerification(
-							name = "parentNode",
-							isDto = true,
-							verify = @RightsVerification(actions=InsertAction.class)
-							)
-			}
-			)
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public List<AbstractFileServerNodeDto> uploadAndExtract(@Named("parentNode") FileServerFolderDto folderDto, FileToUpload fileToUpload)
-			throws ServerCallFailedException {
-		List<AbstractFileServerNodeDto> dtoFiles = new ArrayList<AbstractFileServerNodeDto>(); 
+      FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
 
-		FileServerFolder folder = (FileServerFolder) dtoService.loadPoso(folderDto);
-		
-		if(null != fileToUpload){
-			FileServerFile archive = getFileFromUploadFile(fileToUpload);
-			
-			/* create folder to extract into */
-			FileServerFolder base = new FileServerFolder();
-			String name = archive.getName();
-			base.setName(name.endsWith(".zip") ? name.substring(0, name.length()-4) : name);
-			folder.addChild(base);
-			fileService.persist(base);
-			dtoFiles.add((AbstractFileServerNodeDto) dtoService.createListDto(base));
-			
-			base.addChild(archive);
-			
-			ZipExtractionConfig zec = extractConfigFactory.create(base);
+      if (null != fileToUpload) {
+         FileServerFile archive = getFileFromUploadFile(fileToUpload);
 
-			try {
-				zipUtilsServiceProvider.get().extractZip(archive.getData(), zec);
-				
-				/* remove zip */
-				base.removeChild(archive);
-			} catch (IOException e) {
-				throw new ServerCallFailedException(e);
-			}
-		}
-		
-		fileService.merge(folder);
-		
-		return dtoFiles;
-	}
-	
-	protected FileServerFile getFileFromUploadFile(FileToUpload uFile) {
-		int b64idx = uFile.getB64Data().indexOf("base64,");
+         /* create folder to extract into */
+         FileServerFolder base = new FileServerFolder();
+         String name = archive.getName();
+         base.setName(name.endsWith(".zip") ? name.substring(0, name.length() - 4) : name);
+         folder.addChild(base);
+         fileService.persist(base);
+         dtoFiles.add((AbstractFileServerNodeDto) dtoService.createListDto(base));
 
-		String strData = uFile.getB64Data().substring(b64idx + 7);
-		String mimeType = (b64idx < 6)? "" : uFile.getB64Data().substring(5, b64idx - 1);
+         base.addChild(archive);
 
-		if(null == mimeType || mimeType.isEmpty() || "application/octet-stream".equals(mimeType)){
-			mimeType = mimeUtils.getMimeTypeByExtension(uFile.getName());
-		}
+         ZipExtractionConfig zec = extractConfigFactory.create(base);
 
-		byte[] data = Base64.decodeBase64(strData.getBytes());
+         try {
+            zipUtilsServiceProvider.get().extractZip(archive.getData(), zec);
 
-		FileServerFile file = new FileServerFile();
-		file.setName(uFile.getName());
-		file.setContentType(mimeType);
-		file.setData(data);
-		
-		return file;
-	}
+            /* remove zip */
+            base.removeChild(archive);
+         } catch (IOException e) {
+            throw new ServerCallFailedException(e);
+         }
+      }
 
-	@Override
-	protected void nodeCloned(AbstractFileServerNode clonedNode) {
-		if(! (clonedNode instanceof FileServerFile))
-			throw new IllegalArgumentException();
-		FileServerFile file = (FileServerFile) clonedNode;
-		
-		file.setName(file.getName() == null ? "copy" : file.getName() + " (copy)");
-	}
+      fileService.merge(folder);
+
+      return dtoFiles;
+   }
+
+   protected FileServerFile getFileFromUploadFile(FileToUpload uFile) {
+      int b64idx = uFile.getB64Data().indexOf("base64,");
+
+      String strData = uFile.getB64Data().substring(b64idx + 7);
+      String mimeType = (b64idx < 6) ? "" : uFile.getB64Data().substring(5, b64idx - 1);
+
+      if (null == mimeType || mimeType.isEmpty() || "application/octet-stream".equals(mimeType)) {
+         mimeType = mimeUtils.getMimeTypeByExtension(uFile.getName());
+      }
+
+      byte[] data = Base64.decodeBase64(strData.getBytes());
+
+      FileServerFile file = new FileServerFile();
+      file.setName(uFile.getName());
+      file.setContentType(mimeType);
+      file.setData(data);
+
+      return file;
+   }
+
+   @Override
+   protected void nodeCloned(AbstractFileServerNode clonedNode) {
+      if (!(clonedNode instanceof FileServerFile))
+         throw new IllegalArgumentException();
+      FileServerFile file = (FileServerFile) clonedNode;
+
+      file.setName(file.getName() == null ? "copy" : file.getName() + " (copy)");
+   }
 
 }

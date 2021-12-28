@@ -68,7 +68,6 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
     * 
     */
    private static final long serialVersionUID = 4953913261676032725L;
-   
 
    private final ReportService reportService;
    private final EmailDatasinkService emailDatasinkService;
@@ -84,20 +83,12 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
-   public EmailDatasinkRpcServiceImpl(
-         ReportService reportService, 
-         EmailDatasinkService emailDatasinkService,
-         DtoService dtoService, 
-         ReportExecutorService reportExecutorService, 
-         ReportDtoService reportDtoService,
-         SecurityService securityService, 
-         HookHandlerService hookHandlerService, 
-         ExceptionServices exceptionServices,
-         UserManagerService userManagerService,
-         ZipUtilsService zipUtilsService,
+   public EmailDatasinkRpcServiceImpl(ReportService reportService, EmailDatasinkService emailDatasinkService,
+         DtoService dtoService, ReportExecutorService reportExecutorService, ReportDtoService reportDtoService,
+         SecurityService securityService, HookHandlerService hookHandlerService, ExceptionServices exceptionServices,
+         UserManagerService userManagerService, ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
-         ) {
+         Provider<AuthenticatorService> authenticatorServiceProvider) {
       this.reportService = reportService;
       this.emailDatasinkService = emailDatasinkService;
       this.dtoService = dtoService;
@@ -114,11 +105,11 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
    @Override
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message, boolean compressed,
-         List<StrippedDownUser> recipients) throws ServerCallFailedException {
-      if (! (datasinkDto instanceof EmailDatasinkDto))
+         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
+         boolean compressed, List<StrippedDownUser> recipients) throws ServerCallFailedException {
+      if (!(datasinkDto instanceof EmailDatasinkDto))
          throw new IllegalArgumentException("Not an email datasink");
-      
+
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
 
       EmailDatasink emailDatasink = (EmailDatasink) dtoService.loadPoso(datasinkDto);
@@ -150,9 +141,9 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
                Object reportObj = cReport.getReport();
                zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()),
-                     reportObj, os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), emailDatasink, emailDatasinkService, 
+                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
+                     os);
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), emailDatasink, emailDatasinkService,
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -186,31 +177,31 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), emailDatasink, emailDatasinkService,
                   new DatasinkEmailConfig() {
 
-               @Override
-               public String getFilename() {
-                  return filename;
-               }
+                     @Override
+                     public String getFilename() {
+                        return filename;
+                     }
 
-               @Override
-               public boolean isSendSyncEmail() {
-                  return true;
-               }
+                     @Override
+                     public boolean isSendSyncEmail() {
+                        return true;
+                     }
 
-               @Override
-               public String getSubject() {
-                  return subject;
-               }
+                     @Override
+                     public String getSubject() {
+                        return subject;
+                     }
 
-               @Override
-               public List<User> getRecipients() {
-                  return recipientUsers;
-               }
+                     @Override
+                     public List<User> getRecipients() {
+                        return recipientUsers;
+                     }
 
-               @Override
-               public String getBody() {
-                  return message;
-               }
-            });
+                     @Override
+                     public String getBody() {
+                        return message;
+                     }
+                  });
          }
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to email: " + e.getMessage(), e);
@@ -240,27 +231,27 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       try {
          String emailText = "ReportServer Email Datasink Test";
          datasinkServiceProvider.get().testDatasink(emailDatasink, emailDatasinkService, new DatasinkEmailConfig() {
-            
+
             @Override
             public String getFilename() {
                return "reportserver-email-datasink-test.txt";
             }
-            
+
             @Override
             public boolean isSendSyncEmail() {
                return true;
             }
-            
+
             @Override
             public String getSubject() {
                return emailText;
             }
-            
+
             @Override
             public List<User> getRecipients() {
                return Arrays.asList(authenticatorServiceProvider.get().getCurrentUser());
             }
-            
+
             @Override
             public String getBody() {
                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
@@ -290,12 +281,11 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       return (DatasinkDefinitionDto) dtoService.createDto(defaultDatasink.get());
    }
 
-
    @Override
    public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
          String filename, String folder, boolean compressed, String subject, String message,
          List<StrippedDownUser> recipients) throws ServerCallFailedException {
-   
+
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
@@ -317,7 +307,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                   zipUtilsService.createZip(
                         zipUtilsService.cleanFilename(filenameWithoutExtension + originalFileExtension), reportObj, os);
 
-                  exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject, message, recipients);
+                  exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject,
+                        message, recipients);
                }
             } else {
                exportIntoDatasink(emailDatasinkService, folder, datasink, filename + originalFileExtension,
@@ -326,8 +317,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          } catch (Exception e) {
             throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
          }
-      } 
-      else if (abstractNodeDto instanceof FileServerFolderDto) {
+      } else if (abstractNodeDto instanceof FileServerFolderDto) {
          FileServerFolder folderObj = (FileServerFolder) dtoService.loadPoso(abstractNodeDto);
          try {
             String zipFilename = filename + ".zip";
@@ -342,20 +332,21 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                      return false;
                   }
                });
-               exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject, message, recipients);
+               exportIntoDatasink(emailDatasinkService, folder, datasink, zipFilename, os.toByteArray(), subject,
+                     message, recipients);
             }
 
          } catch (Exception e) {
             throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
          }
       }
-      
+
    }
 
    private void exportIntoDatasink(BasicDatasinkService basicDatasinkService, String folder,
          DatasinkDefinition datasink, String filename, byte[] os, String subject, String message,
          List<StrippedDownUser> recipients) throws DatasinkExportException {
-      
+
       List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
             .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
       datasinkServiceProvider.get().exportIntoDatasink(os, datasink, basicDatasinkService, new DatasinkEmailConfig() {

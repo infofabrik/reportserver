@@ -15,27 +15,29 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 
-public class HandleDatasinkForceRemoveEventHandler implements
-		EventHandler<ForceRemoveEntityEvent> {
+public class HandleDatasinkForceRemoveEventHandler implements EventHandler<ForceRemoveEntityEvent> {
 
-	@Inject private Provider<EntityManager> entityManagerProvider;
-	@Inject private DatasinkTreeService datasinkService;
-	
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		DatasinkDefinition ds = (DatasinkDefinition) event.getObject();
-		
-		EntityManager em = entityManagerProvider.get();
-		Query query = em.createQuery("FROM " + DatasinkContainer.class.getSimpleName() + " WHERE " + DatasinkContainer__.datasink + " = :datasink");
-		query.setParameter("datasink", ds);
-		List<DatasinkContainer> containers = query.getResultList();
-		
-		if(null != containers && ! containers.isEmpty()){
-			for(DatasinkContainer container : containers){
-				container.setDatasink(null);
-				datasinkService.merge(container);
-			}
-		}
-	}
+   @Inject
+   private Provider<EntityManager> entityManagerProvider;
+   @Inject
+   private DatasinkTreeService datasinkService;
+
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      DatasinkDefinition ds = (DatasinkDefinition) event.getObject();
+
+      EntityManager em = entityManagerProvider.get();
+      Query query = em.createQuery("FROM " + DatasinkContainer.class.getSimpleName() + " WHERE "
+            + DatasinkContainer__.datasink + " = :datasink");
+      query.setParameter("datasink", ds);
+      List<DatasinkContainer> containers = query.getResultList();
+
+      if (null != containers && !containers.isEmpty()) {
+         for (DatasinkContainer container : containers) {
+            container.setDatasink(null);
+            datasinkService.merge(container);
+         }
+      }
+   }
 
 }

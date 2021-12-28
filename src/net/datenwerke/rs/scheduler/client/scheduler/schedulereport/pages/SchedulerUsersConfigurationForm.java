@@ -54,14 +54,14 @@ import net.datenwerke.security.ext.client.usermanager.helper.simpleform.SFFCUser
 import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserManagerTreeUsers;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
-public class SchedulerUsersConfigurationForm extends DwContentPanel implements Validatable, WizardResizer, WizardPageChangeListener {
+public class SchedulerUsersConfigurationForm extends DwContentPanel
+      implements Validatable, WizardResizer, WizardPageChangeListener {
 
    private final UserManagerUIService userManagerService;
    private final UserManagerDao userManagerDao;
    private final LoginService loginService;
    private final SecurityUIService securityService;
    private final SchedulerDao schedulerDao;
-   
 
    private DateField date;
    private TimeField time;
@@ -72,25 +72,20 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
    private String executorKey;
 
    private final UITree basicTreeForUserSelection;
-   
+
    private ReportScheduleDefinition jobDefinition;
 
    /* ie properties */
    private ListStore<StrippedDownUser> strippedUserStore;
    private ListStore<StrippedDownUser> selectedRecipientStore;
    private static ListStore<StrippedDownUser> selectedOwnerStore;
-   
+
    private ReportDto report;
 
    @Inject
-   public SchedulerUsersConfigurationForm(
-         LoginService loginService, 
-         ReportExporterUIService reportExporterService,
-         UserManagerUIService userManagerService, 
-         UserManagerDao userManagerDao, 
-         SecurityUIService securityService,
-         SchedulerDao schedulerDao, 
-         @UserManagerTreeUsers UITree basicTreeForUserSelection,
+   public SchedulerUsersConfigurationForm(LoginService loginService, ReportExporterUIService reportExporterService,
+         UserManagerUIService userManagerService, UserManagerDao userManagerDao, SecurityUIService securityService,
+         SchedulerDao schedulerDao, @UserManagerTreeUsers UITree basicTreeForUserSelection,
          @Nullable @Assisted ReportScheduleDefinition jobDefinition) {
 
       /* store objects */
@@ -124,7 +119,7 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
       FieldLabel rcptLabel = new FieldLabel(recipients, SchedulerMessages.INSTANCE.recipients());
       rcptLabel.setLabelAlign(LabelAlign.LEFT);
       fieldWrapper.add(rcptLabel, new VerticalLayoutData(1, 190, new Margins(10, 0, 5, 0)));
-      
+
       DwContentPanel wrapper = new DwContentPanel();
       wrapper.setLightDarkStyle();
       wrapper.setHeading(SchedulerMessages.INSTANCE.users());
@@ -151,17 +146,15 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
          @Override
          protected void validateSelectedItems(final List<AbstractNodeDto> selectedItems,
                final AsyncCallback<Boolean> itemsValidatedCallback) {
-            final List<Long> ownerIds = selectedItems
-                  .stream()
-                  .map(AbstractNodeDto::getId)
-                  .collect(toList());
+            final List<Long> ownerIds = selectedItems.stream().map(AbstractNodeDto::getId).collect(toList());
 
-            schedulerDao.assertOwnersHaveReportRights(ownerIds, report, Arrays.asList(new ExecuteDto()), new RsAsyncCallback<Void>() {
-               @Override
-               public void onSuccess(Void result) {
-                  itemsValidatedCallback.onSuccess(true);
-               }
-            });
+            schedulerDao.assertOwnersHaveReportRights(ownerIds, report, Arrays.asList(new ExecuteDto()),
+                  new RsAsyncCallback<Void>() {
+                     @Override
+                     public void onSuccess(Void result) {
+                        itemsValidatedCallback.onSuccess(true);
+                     }
+                  });
 
          }
       };
@@ -319,10 +312,10 @@ public class SchedulerUsersConfigurationForm extends DwContentPanel implements V
    @Override
    public void onPageChange(int pageNr, Widget page) {
       if (page instanceof JobReportConfigurationForm) {
-         ReportDto report = ((JobReportConfigurationForm)page).getReport();
+         ReportDto report = ((JobReportConfigurationForm) page).getReport();
          if (report != this.report)
             initForm(report);
-         
+
          this.report = report;
       }
    }

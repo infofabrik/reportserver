@@ -7,32 +7,28 @@ import net.datenwerke.eximport.im.ImportConfig;
 
 public class HttpImportConfiguration implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7043340618318521368L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7043340618318521368L;
 
-	private ExportDataProvider importData;
-	private ImportConfig importConfig;
-	
-	
-	public ExportDataProvider getImportData() {
-		return importData;
-	}
+   private ExportDataProvider importData;
+   private ImportConfig importConfig;
 
-	public void setImportData(ExportDataProvider importData) {
-		this.importData = importData;
-	}
+   public ExportDataProvider getImportData() {
+      return importData;
+   }
 
-	public void setImportConfig(ImportConfig importConfig) {
-		this.importConfig = importConfig;
-	}
+   public void setImportData(ExportDataProvider importData) {
+      this.importData = importData;
+   }
 
-	public ImportConfig getImportConfig() {
-		return importConfig;
-	}
+   public void setImportConfig(ImportConfig importConfig) {
+      this.importConfig = importConfig;
+   }
 
-
-
+   public ImportConfig getImportConfig() {
+      return importConfig;
+   }
 
 }

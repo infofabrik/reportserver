@@ -3,23 +3,21 @@ package net.datenwerke.rs.eximport.service.eximport.locale;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.localization.Messages;
 
+public interface ExImportMessages extends Messages {
 
-public interface ExImportMessages extends Messages{
-	
-	public final static ExImportMessages INSTANCE = LocalizationServiceImpl.getMessages(ExImportMessages.class);
+   public final static ExImportMessages INSTANCE = LocalizationServiceImpl.getMessages(ExImportMessages.class);
 
-	String commandExport_description();
-	
-	String commandExport_sub_all_description();
+   String commandExport_description();
 
-	String commandImport_description();
-	
-	String expectedXmlOrZip();
+   String commandExport_sub_all_description();
 
-	String fileSeemsEmpty();
+   String commandImport_description();
 
-	String zipShouldContainOnlyOne();
+   String expectedXmlOrZip();
 
-	String parseException(String message);
+   String fileSeemsEmpty();
+
+   String zipShouldContainOnlyOne();
+
+   String parseException(String message);
 }
-

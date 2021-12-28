@@ -19,54 +19,56 @@ import net.datenwerke.rs.legacysaiku.server.rest.objects.SavedQuery;
 @XmlAccessorType(XmlAccessType.NONE)
 public class BasicRepositoryResource {
 
+   /**
+    * Get Saved Queries.
+    * 
+    * @return A list of SavedQuery Objects.
+    */
+   @GET
+   @Produces({ "application/json" })
+   public List<SavedQuery> getSavedQueries() {
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Get Saved Queries.
-	 * @return A list of SavedQuery Objects.
-	 */
-	@GET
-	@Produces({"application/json" })
-	public List<SavedQuery> getSavedQueries() {
-		throw new RuntimeException("Not implemented.");
-	}
+   /**
+    * Delete Query.
+    * 
+    * @param queryName - The name of the query.
+    * @return A GONE Status if the query was deleted, otherwise it will return a
+    *         NOT FOUND Status code.
+    */
+   @DELETE
+   @Produces({ "application/json" })
+   @Path("/{queryname}")
+   public Status deleteQuery(@PathParam("queryname") String queryName) {
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Delete Query.
-	 * @param queryName - The name of the query.
-	 * @return A GONE Status if the query was deleted, otherwise it will return a NOT FOUND Status code.
-	 */
-	@DELETE
-	@Produces({"application/json" })
-	@Path("/{queryname}")
-	public Status deleteQuery(@PathParam("queryname") String queryName){
-		throw new RuntimeException("Not implemented.");
-	}
+   /**
+    * 
+    * @param queryName - The name of the query.
+    * @param newName   - The saved query name.
+    * @return An OK Status, if the save was good, otherwise a NOT FOUND Status when
+    *         not saved properly.
+    */
+   @POST
+   @Produces({ "application/json" })
+   @Path("/{queryname}")
+   public Status saveQuery(@PathParam("queryname") String queryName, @FormParam("newname") String newName) {
 
-	/**
-	 * 
-	 * @param queryName - The name of the query.
-	 * @param newName - The saved query name.
-	 * @return An OK Status, if the save was good, otherwise a NOT FOUND Status when not saved properly.
-	 */
-	@POST
-	@Produces({"application/json" })
-	@Path("/{queryname}")
-	public Status saveQuery(
-			@PathParam("queryname") String queryName,
-			@FormParam("newname") String newName ){
-		
-		throw new RuntimeException("Not implemented.");
-	}
+      throw new RuntimeException("Not implemented.");
+   }
 
-	/**
-	 * Load a query.
-	 * @param queryName - The name of the query to load.
-	 * @return A Saiku Query Object.
-	 */
-	@GET
-	@Produces({"application/json" })
-	@Path("/{queryname}")
-	public SavedQuery loadQuery(@PathParam("queryname") String queryName){
+   /**
+    * Load a query.
+    * 
+    * @param queryName - The name of the query to load.
+    * @return A Saiku Query Object.
+    */
+   @GET
+   @Produces({ "application/json" })
+   @Path("/{queryname}")
+   public SavedQuery loadQuery(@PathParam("queryname") String queryName) {
 //		try{
 //			String uri = repo.getName().getPath();
 //			if (uri != null && !uri.endsWith("" + File.separatorChar)) {
@@ -106,6 +108,6 @@ public class BasicRepositoryResource {
 //		} catch(Exception e){
 //			log.error("Cannot load query (" + queryName + ")",e);
 //		}
-		throw new RuntimeException("Not implemented.");
-	}
+      throw new RuntimeException("Not implemented.");
+   }
 }

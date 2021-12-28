@@ -9,21 +9,21 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionC
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
 
-public class DatabaseBundleConfigConfigurator extends
-	DatabaseDatasourceConfigConfigurator {
+public class DatabaseBundleConfigConfigurator extends DatabaseDatasourceConfigConfigurator {
 
-	@Inject
-	public DatabaseBundleConfigConfigurator(ToolbarService toolbarService) {
-		super(toolbarService);
-	}
+   @Inject
+   public DatabaseBundleConfigConfigurator(ToolbarService toolbarService) {
+      super(toolbarService);
+   }
 
+   public DatasourceDefinitionConfigDto createConfigObject() {
+      return new DatabaseDatasourceConfigDto();
+   }
 
-	public DatasourceDefinitionConfigDto createConfigObject() {
-		return new DatabaseDatasourceConfigDto();
-	}
-	
-	@Override
-	public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceDefinitionConfigDto datasourceConfig) {
-		return null != datasourceConfig && datasourceConfig instanceof DatabaseDatasourceConfigDto && datasourceDefinitionDto instanceof DatabaseBundleDto;
-	}
+   @Override
+   public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceDefinitionConfigDto datasourceConfig) {
+      return null != datasourceConfig && datasourceConfig instanceof DatabaseDatasourceConfigDto
+            && datasourceDefinitionDto instanceof DatabaseBundleDto;
+   }
 }

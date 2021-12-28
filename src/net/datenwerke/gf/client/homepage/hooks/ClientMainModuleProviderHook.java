@@ -9,16 +9,14 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.ObjectHook;
  * 
  *
  */
-public class ClientMainModuleProviderHook extends ObjectHook<ClientMainModule>{
+public class ClientMainModuleProviderHook extends ObjectHook<ClientMainModule> {
 
+   public ClientMainModuleProviderHook(ClientMainModule object) {
+      super(object);
+   }
 
-	public ClientMainModuleProviderHook(ClientMainModule object) {
-		super(object);
-	}
-
-	public ClientMainModuleProviderHook(Provider<? extends ClientMainModule> provider) {
-		super(provider);
-	}
-	
+   public ClientMainModuleProviderHook(Provider<? extends ClientMainModule> provider) {
+      super(provider);
+   }
 
 }

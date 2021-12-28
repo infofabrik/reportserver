@@ -63,24 +63,10 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ TableReportVariant.class })
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", 
-      createDecorator = true, 
-      dto2PosoPostProcessors = Dto2TableReportPost.class, 
-      dto2PosoSupervisor = Dto2TableReportSupervisor.class, 
-      poso2DtoPostProcessors = TableReport2DtoPost.class, 
-      typeDescriptionMsg = TableMessages.class, 
-      typeDescriptionKey = "reportTypeName", icon = "table")
-@InstanceDescription(
-      msgLocation = ReportEnginesMessages.class, 
-      objNameKey = "tableReportTypeName", 
-      icon = "table")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true, dto2PosoPostProcessors = Dto2TableReportPost.class, dto2PosoSupervisor = Dto2TableReportSupervisor.class, poso2DtoPostProcessors = TableReport2DtoPost.class, typeDescriptionMsg = TableMessages.class, typeDescriptionKey = "reportTypeName", icon = "table")
+@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "tableReportTypeName", icon = "table")
 @EntityDiffGuides(guides = {
-      @EntityDiffGuide(
-            name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, 
-            ignoreId = true, 
-            ignoreVersion = true, 
-            whitelist = {
+      @EntityDiffGuide(name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, ignoreId = true, ignoreVersion = true, whitelist = {
             "parameterDefinitions", "parameterInstances", "datasourceContainer", "additionalColumns", "enableSubtotals",
             "columns", "selectAllColumns", "metadataDatasourceContainer", "distinctFlag", "preFilter",
             "parameterDefinitions", "parameterInstances", "datasourceContainer" }) })
@@ -248,7 +234,7 @@ public class TableReport extends Report {
     */
    private void repairFilter(final FilterBlock rootBlock, final TableReport variant) {
       rootBlock.getChildBlocks().forEach(childBlock -> repairFilter(childBlock, variant));
-      
+
       for (FilterSpec spec : rootBlock.getFilters()) {
          for (Column col : spec.getColumns()) {
             if (col instanceof ColumnReference) {
@@ -292,7 +278,7 @@ public class TableReport extends Report {
          columns = new ArrayList<Column>();
       columns.add(col);
    }
-   
+
    public DatasourceContainer getMetadataDatasourceContainer() {
       return metadataDatasourceContainer;
    }
@@ -412,7 +398,7 @@ public class TableReport extends Report {
       if (null == datasource)
          return false;
 
-      if (datasource instanceof ParameterAwareDatasource) 
+      if (datasource instanceof ParameterAwareDatasource)
          return ((ParameterAwareDatasource) datasource).usesParameter(config, key);
 
       return super.usesParameter(key);
@@ -427,17 +413,12 @@ public class TableReport extends Report {
    }
 
    public CellFormatter[] getCellFormatter(final User user) {
-      return getVisibleColumns()
-         .stream()
-         .map(col -> col.getCellFormatter(user))
-         .toArray(CellFormatter[]::new);
+      return getVisibleColumns().stream().map(col -> col.getCellFormatter(user)).toArray(CellFormatter[]::new);
    }
 
    public CellFormatter[] getCellFormatterForGroupRow(final User user) {
-      return getVisibleColumns()
-         .stream()
-         .map(col -> col.getCellFormatterForGroupRow(user))
-         .toArray(CellFormatter[]::new);
+      return getVisibleColumns().stream().map(col -> col.getCellFormatterForGroupRow(user))
+            .toArray(CellFormatter[]::new);
    }
 
    public boolean isColumnFormatted(int i) {
@@ -449,10 +430,7 @@ public class TableReport extends Report {
    }
 
    public List<Column> getVisibleColumns() {
-      return getColumns()
-         .stream()
-         .filter(col -> !col.isHidden())
-         .collect(Collectors.toList());
+      return getColumns().stream().filter(col -> !col.isHidden()).collect(Collectors.toList());
    }
 
    public void setEnableSubtotals(boolean enableSubtotals) {
@@ -464,17 +442,11 @@ public class TableReport extends Report {
    }
 
    public int getNumberOfSubtotalGroupColumns() {
-      return (int) getVisibleColumns()
-         .stream()
-         .filter(Column::isSubtotalGroup)
-         .count();
+      return (int) getVisibleColumns().stream().filter(Column::isSubtotalGroup).count();
    }
 
    public int getNumberOfAggregateColumns() {
-      return (int) getVisibleColumns()
-         .stream()
-         .filter(col -> null != col.getAggregateFunction())
-         .count();
+      return (int) getVisibleColumns().stream().filter(col -> null != col.getAggregateFunction()).count();
    }
 
    public int[] getAggregateColumnIndices() {
@@ -529,7 +501,7 @@ public class TableReport extends Report {
    public void setAllowMdx(boolean allowMdx) {
       this.allowMdx = allowMdx;
    }
-   
+
    public boolean hasPrefilters() {
       FilterBlock rootBlock = getPreFilter().getRootBlock();
 

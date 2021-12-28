@@ -9,7 +9,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 @RemoteServiceRelativePath("themeservice")
 public interface ThemeRpcService extends RemoteService {
 
-	ThemeUiConfig loadUiConfig() throws ServerCallFailedException;
-	
-	
+   ThemeUiConfig loadUiConfig() throws ServerCallFailedException;
+
 }

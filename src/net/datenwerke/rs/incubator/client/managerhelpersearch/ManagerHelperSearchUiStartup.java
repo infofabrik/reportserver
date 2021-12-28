@@ -12,16 +12,13 @@ import net.datenwerke.rs.incubator.client.managerhelpersearch.hookers.TreeSelect
 
 public class ManagerHelperSearchUiStartup {
 
-	@Inject
-	public ManagerHelperSearchUiStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ManagerHelperSearchBar> managerHelperSearcher,
-		Provider<TreeSelectionSearchBar> treeSelectionSearcher, 
-		Provider<BaseTreeComponentsForTreeNavToolbarHooker> baseTreeComponentsHooker
-		){
-		hookHandler.attachHooker(ManagerHelperTreeToolbarEnhancerHook.class, managerHelperSearcher);
-		hookHandler.attachHooker(TreeSelectionToolbarEnhancerHook.class, treeSelectionSearcher);
-		hookHandler.attachHooker(TreeSelectionToolbarEnhancerHook.class, baseTreeComponentsHooker);
-	}
+   @Inject
+   public ManagerHelperSearchUiStartup(HookHandlerService hookHandler,
+
+         Provider<ManagerHelperSearchBar> managerHelperSearcher, Provider<TreeSelectionSearchBar> treeSelectionSearcher,
+         Provider<BaseTreeComponentsForTreeNavToolbarHooker> baseTreeComponentsHooker) {
+      hookHandler.attachHooker(ManagerHelperTreeToolbarEnhancerHook.class, managerHelperSearcher);
+      hookHandler.attachHooker(TreeSelectionToolbarEnhancerHook.class, treeSelectionSearcher);
+      hookHandler.attachHooker(TreeSelectionToolbarEnhancerHook.class, baseTreeComponentsHooker);
+   }
 }

@@ -4,6 +4,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ClipboardListener extends Hook {
 
-	public void itemCopiedToClipboard(ClipboardItem item);
-	
+   public void itemCopiedToClipboard(ClipboardItem item);
+
 }

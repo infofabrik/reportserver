@@ -11,37 +11,36 @@ import net.datenwerke.scheduler.service.scheduler.stores.jpa.filter.JobFilterCri
 
 public interface JobStore {
 
-	public void scheduleJob(AbstractJob job, AbstractTrigger trigger);
-	
-	public Collection<AbstractJob> getActiveJobs();
-	
-	public Collection<AbstractJob> getAllJobs();
-	
-	public Collection<AbstractJob> getMisfiredJobs();
-	
-	public Collection<AbstractJob> getMisfiredJobs(Date before);
-	
-	public Collection<AbstractJob> getExecutingJobs();
+   public void scheduleJob(AbstractJob job, AbstractTrigger trigger);
 
-	public Collection<AbstractJob> getWaitingJobs();
-	
-	public void unschedule(AbstractJob job);
-	
-	public void remove(AbstractJob job); 
-	
-	public JobExecutionCompanion getExecutionCompanion();
+   public Collection<AbstractJob> getActiveJobs();
 
-	void initJob(AbstractJob job);
+   public Collection<AbstractJob> getAllJobs();
 
-	void initJobs(Collection<AbstractJob> jobs);
+   public Collection<AbstractJob> getMisfiredJobs();
 
-	public AbstractJob getJobById(long id);
+   public Collection<AbstractJob> getMisfiredJobs(Date before);
 
-	public void merge(AbstractJob job);
+   public Collection<AbstractJob> getExecutingJobs();
 
-	List<AbstractJob> getJobsBy(JobFilterConfiguration filterConfig, JobFilterCriteria... addConfigs);
+   public Collection<AbstractJob> getWaitingJobs();
 
-	public void clearErrorState(AbstractJob job);
+   public void unschedule(AbstractJob job);
 
+   public void remove(AbstractJob job);
+
+   public JobExecutionCompanion getExecutionCompanion();
+
+   void initJob(AbstractJob job);
+
+   void initJobs(Collection<AbstractJob> jobs);
+
+   public AbstractJob getJobById(long id);
+
+   public void merge(AbstractJob job);
+
+   List<AbstractJob> getJobsBy(JobFilterConfiguration filterConfig, JobFilterCriteria... addConfigs);
+
+   public void clearErrorState(AbstractJob job);
 
 }

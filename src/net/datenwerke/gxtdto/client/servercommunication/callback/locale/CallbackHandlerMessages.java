@@ -5,10 +5,10 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface CallbackHandlerMessages extends Messages {
 
-	public static CallbackHandlerMessages INSTANCE = GWT.create(CallbackHandlerMessages.class);
-	
-	String defaultErrorMessage();
+   public static CallbackHandlerMessages INSTANCE = GWT.create(CallbackHandlerMessages.class);
 
-	String timeoutMessage();
+   String defaultErrorMessage();
+
+   String timeoutMessage();
 
 }

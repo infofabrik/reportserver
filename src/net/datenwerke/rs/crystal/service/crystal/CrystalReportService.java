@@ -10,22 +10,22 @@ import com.crystaldecisions.sdk.occa.report.lib.ReportSDKException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.crystal.service.crystal.entities.CrystalReportFile;
 
-
 public interface CrystalReportService {
-	
-	
-	public void remove(CrystalReportFile file);
 
-	public boolean isCrystalEnabled();
+   public void remove(CrystalReportFile file);
 
-	public void replaceDatasourceWithJndi(ReportClientDocument reportClientDoc, String dsJndiName) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ReportSDKException;
+   public boolean isCrystalEnabled();
 
-	public List<CrystalParameterProposal> extractParameters(CrystalReportFile reportFile) throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException, IOException, ReportSDKException;
+   public void replaceDatasourceWithJndi(ReportClientDocument reportClientDoc, String dsJndiName)
+         throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, ReportSDKException;
 
-	ReportClientDocument openReportClientDoc(CrystalReportFile crFile) throws IOException,
-			IllegalArgumentException, IllegalAccessException,
-			InvocationTargetException, InstantiationException, ReportSDKException;
+   public List<CrystalParameterProposal> extractParameters(CrystalReportFile reportFile)
+         throws IllegalArgumentException, IllegalAccessException, InvocationTargetException, InstantiationException,
+         IOException, ReportSDKException;
 
-	public void setParameters(ReportClientDocument reportClientDoc, ParameterSet parameters) throws ReportSDKException;
+   ReportClientDocument openReportClientDoc(CrystalReportFile crFile) throws IOException, IllegalArgumentException,
+         IllegalAccessException, InvocationTargetException, InstantiationException, ReportSDKException;
+
+   public void setParameters(ReportClientDocument reportClientDoc, ParameterSet parameters) throws ReportSDKException;
 
 }

@@ -11,10 +11,11 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface TreeDBTree {
-	
-	@SuppressWarnings("unchecked")
-	Class<? extends AbstractNode>[] rootTypes();
-	boolean multipleRoots() default false;
-	
-	Class<? extends TreeDBManager> manager();
+
+   @SuppressWarnings("unchecked")
+   Class<? extends AbstractNode>[] rootTypes();
+
+   boolean multipleRoots() default false;
+
+   Class<? extends TreeDBManager> manager();
 }

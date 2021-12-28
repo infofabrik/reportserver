@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.config.complex.NthDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.triggers.complex.config.enums.Nth.class)
 public interface NthDtoPA extends PropertyAccess<NthDto> {
 
-
-
 }

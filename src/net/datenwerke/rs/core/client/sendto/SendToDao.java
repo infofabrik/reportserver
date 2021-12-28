@@ -17,31 +17,28 @@ import net.datenwerke.rs.core.client.sendto.rpc.SendToRpcServiceAsync;
 
 public class SendToDao extends Dao {
 
-	private final SendToRpcServiceAsync rpcService;
-	private final HookHandlerService hookHandler;
+   private final SendToRpcServiceAsync rpcService;
+   private final HookHandlerService hookHandler;
 
-	@Inject
-	public SendToDao(SendToRpcServiceAsync rpcService,
-			HookHandlerService hookHandler) {
-		super();
-		this.rpcService = rpcService;
-		this.hookHandler = hookHandler;
-	}
-	
-	public void loadClientConfigsFor(ReportDto report,
-			RsAsyncCallback<ArrayList<SendToClientConfig>> callback){
-		rpcService.loadClientConfigsFor(report, callback);
-	}
+   @Inject
+   public SendToDao(SendToRpcServiceAsync rpcService, HookHandlerService hookHandler) {
+      super();
+      this.rpcService = rpcService;
+      this.hookHandler = hookHandler;
+   }
 
-	public void sendTo(final ReportDto report, final String executorToken, final String id, 
-			final String format, final List<ReportExecutionConfigDto> formatConfig, 
-			final Map<String, String> values, final AsyncCallback<String> callback){
-		
-		hookHandler.getHookers(PrepareReportModelForStorageOrExecutionHook.class)
-			.stream()
-			.filter(hooker -> hooker.consumes(report))
-			.forEach(hooker -> hooker.prepareForExecutionOrStorage(report, executorToken));
-		
-		rpcService.sendTo(report, executorToken, id, format, formatConfig, values, callback);
-	}
+   public void loadClientConfigsFor(ReportDto report, RsAsyncCallback<ArrayList<SendToClientConfig>> callback) {
+      rpcService.loadClientConfigsFor(report, callback);
+   }
+
+   public void sendTo(final ReportDto report, final String executorToken, final String id, final String format,
+         final List<ReportExecutionConfigDto> formatConfig, final Map<String, String> values,
+         final AsyncCallback<String> callback) {
+
+      hookHandler.getHookers(PrepareReportModelForStorageOrExecutionHook.class).stream()
+            .filter(hooker -> hooker.consumes(report))
+            .forEach(hooker -> hooker.prepareForExecutionOrStorage(report, executorToken));
+
+      rpcService.sendTo(report, executorToken, id, format, formatConfig, values, callback);
+   }
 }

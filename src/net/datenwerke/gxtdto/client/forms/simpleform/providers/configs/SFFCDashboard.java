@@ -4,8 +4,8 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCDashboard extends SimpleFormFieldConfiguration {
 
-	boolean isMulti();
-	
-	boolean isLoadAll();
-	
+   boolean isMulti();
+
+   boolean isLoadAll();
+
 }

@@ -8,12 +8,9 @@ import net.datenwerke.rs.core.service.jarextension.hookers.ReportServerExtenderH
 
 public class ReportServerExtenderStartup {
 
-	@Inject
-	public ReportServerExtenderStartup(
-		HookHandlerService hookHandler,
-		ReportServerExtenderHooker extender
-		){
-		hookHandler.attachHooker(LateInitHook.class, extender, HookHandlerService.PRIORITY_HIGH);
-		
-	}
+   @Inject
+   public ReportServerExtenderStartup(HookHandlerService hookHandler, ReportServerExtenderHooker extender) {
+      hookHandler.attachHooker(LateInitHook.class, extender, HookHandlerService.PRIORITY_HIGH);
+
+   }
 }

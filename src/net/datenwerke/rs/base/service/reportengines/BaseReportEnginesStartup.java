@@ -16,20 +16,18 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook
 
 public class BaseReportEnginesStartup {
 
-	@Inject
-	public BaseReportEnginesStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<AdjustBaseReportForExecutionHooker> adjustReportForExecutionProvider,
-		Provider<ConfigureBaseReportViaRequestHooker> adjustReportViaRequestProvider,
-		Provider<BaseReportEngineProviderHooker> reportEngineProvider,
-		Provider<BaseReportTypeProviderHooker> reportTypeProvider
-		){
-		
-		hookHandler.attachHooker(AdjustReportForExecutionHook.class, adjustReportForExecutionProvider);
-		hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, adjustReportViaRequestProvider);
-		hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, adjustReportViaRequestProvider);
-		hookHandler.attachHooker(ReportEngineProviderHook.class, reportEngineProvider);
-		hookHandler.attachHooker(ReportTypeProviderHook.class, reportTypeProvider);
-	}
+   @Inject
+   public BaseReportEnginesStartup(HookHandlerService hookHandler,
+
+         Provider<AdjustBaseReportForExecutionHooker> adjustReportForExecutionProvider,
+         Provider<ConfigureBaseReportViaRequestHooker> adjustReportViaRequestProvider,
+         Provider<BaseReportEngineProviderHooker> reportEngineProvider,
+         Provider<BaseReportTypeProviderHooker> reportTypeProvider) {
+
+      hookHandler.attachHooker(AdjustReportForExecutionHook.class, adjustReportForExecutionProvider);
+      hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, adjustReportViaRequestProvider);
+      hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, adjustReportViaRequestProvider);
+      hookHandler.attachHooker(ReportEngineProviderHook.class, reportEngineProvider);
+      hookHandler.attachHooker(ReportTypeProviderHook.class, reportTypeProvider);
+   }
 }

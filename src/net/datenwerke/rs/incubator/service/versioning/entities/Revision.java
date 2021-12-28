@@ -13,34 +13,35 @@ import net.datenwerke.rs.incubator.service.versioning.RevisionEntityListener;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 @Entity
-@Table(name="REVISION")
+@Table(name = "REVISION")
 @RevisionEntity(RevisionEntityListener.class)
-public class Revision extends DefaultRevisionEntity implements Comparable<Revision>{
+public class Revision extends DefaultRevisionEntity implements Comparable<Revision> {
 
-	@Inject
-	private static Provider<AuthenticatorService> authenticatorServiceProvider;
-	
-	private static final long serialVersionUID = 6478004157779519705L;
+   @Inject
+   private static Provider<AuthenticatorService> authenticatorServiceProvider;
 
-	private long userId;
-	
-	public Revision() {
-		try{
-			this.userId = authenticatorServiceProvider.get().getCurrentUser().getId();
-		}catch (Exception e) {
-		}
-	}
-	
-	public long getUserId() {
-		return userId;
-	}
-	public void setUserId(long userId) {
-		this.userId = userId;
-	}
+   private static final long serialVersionUID = 6478004157779519705L;
 
-	@Override
-	public int compareTo(Revision o) {
-		return Long.valueOf(o.getId()).compareTo(Long.valueOf(getId()));
-	}
-	
+   private long userId;
+
+   public Revision() {
+      try {
+         this.userId = authenticatorServiceProvider.get().getCurrentUser().getId();
+      } catch (Exception e) {
+      }
+   }
+
+   public long getUserId() {
+      return userId;
+   }
+
+   public void setUserId(long userId) {
+      this.userId = userId;
+   }
+
+   @Override
+   public int compareTo(Revision o) {
+      return Long.valueOf(o.getId()).compareTo(Long.valueOf(getId()));
+   }
+
 }

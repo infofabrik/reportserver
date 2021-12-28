@@ -11,21 +11,19 @@ import net.datenwerke.rs.terminal.service.terminal.objresolver.hooks.ObjectResol
 
 public class ObjectResolverStartup {
 
-	@Inject
-	public ObjectResolverStartup(	
-		HookHandlerService hookHandler,
-		
-		Provider<ObjectResolverDeamon> objectResolverDeamonProvider,
-		
-		Provider<IdResolver> idResolverProvider,
-		Provider<HqlResolver> hqlResolverProvider
-		
-		){
-		
-		hookHandler.attachHooker(TerminalSessionDeamonHook.class, objectResolverDeamonProvider);
-		
-		/* resolver */
-		hookHandler.attachHooker(ObjectResolverHook.class, idResolverProvider);
-		hookHandler.attachHooker(ObjectResolverHook.class, hqlResolverProvider);
-	}
+   @Inject
+   public ObjectResolverStartup(HookHandlerService hookHandler,
+
+         Provider<ObjectResolverDeamon> objectResolverDeamonProvider,
+
+         Provider<IdResolver> idResolverProvider, Provider<HqlResolver> hqlResolverProvider
+
+   ) {
+
+      hookHandler.attachHooker(TerminalSessionDeamonHook.class, objectResolverDeamonProvider);
+
+      /* resolver */
+      hookHandler.attachHooker(ObjectResolverHook.class, idResolverProvider);
+      hookHandler.attachHooker(ObjectResolverHook.class, hqlResolverProvider);
+   }
 }

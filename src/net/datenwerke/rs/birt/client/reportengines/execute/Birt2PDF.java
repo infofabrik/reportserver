@@ -6,9 +6,9 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class Birt2PDF extends Export2PDF {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof BirtReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof BirtReportDto;
+   }
 
 }

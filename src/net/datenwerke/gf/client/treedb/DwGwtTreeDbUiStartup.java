@@ -9,13 +9,10 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
 public class DwGwtTreeDbUiStartup {
-	
-	@Inject
-	public DwGwtTreeDbUiStartup(
-		HookHandlerService hookHandler,
-		Provider<TreeNodeDtoProvider> genericNodeProvider	
-		){
-	
-		hookHandler.attachHooker(FormFieldProviderHook.class, genericNodeProvider, HookHandlerService.PRIORITY_LOW);
-	}
+
+   @Inject
+   public DwGwtTreeDbUiStartup(HookHandlerService hookHandler, Provider<TreeNodeDtoProvider> genericNodeProvider) {
+
+      hookHandler.attachHooker(FormFieldProviderHook.class, genericNodeProvider, HookHandlerService.PRIORITY_LOW);
+   }
 }

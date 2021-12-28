@@ -36,162 +36,167 @@ import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSe
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class DatabaseDatasourceConfigConfigurator implements
-		DatasourceDefinitionConfigConfigurator {
+public class DatabaseDatasourceConfigConfigurator implements DatasourceDefinitionConfigConfigurator {
 
-	public interface DatabaseSpecificFieldConfigToolbar extends SpecificDatasourceConfig{
-		public void enhance(ToolBar toolbar, final CodeMirrorPanel codeMirrorPanel);
-	}
-	
-	public interface DatabaseSpecificFieldConfigExecution extends SpecificDatasourceConfig{
-		public void executeGetColumns(String query, AsyncCallback<List<String>> asyncCallback);
-		public void executeGetData(PagingLoadConfig loadConfig, String query, AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback);
-	}
-	
-	private final ToolbarService toolbarService;
+   public interface DatabaseSpecificFieldConfigToolbar extends SpecificDatasourceConfig {
+      public void enhance(ToolBar toolbar, final CodeMirrorPanel codeMirrorPanel);
+   }
 
-	private HasValue<String> queryField;
-	
-	@Inject
-	public DatabaseDatasourceConfigConfigurator(
-		ToolbarService toolbarService) {
-		this.toolbarService = toolbarService;
-	}
+   public interface DatabaseSpecificFieldConfigExecution extends SpecificDatasourceConfig {
+      public void executeGetColumns(String query, AsyncCallback<List<String>> asyncCallback);
 
-	@Override
-	public List<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField, final DatasourceContainerProviderDto datasourceContainerProvider) {
-		if(! (config instanceof DatabaseDatasourceConfigDto))
-			throw new IllegalArgumentException("Expected " + DatabaseDatasourceConfigDto.class.getName()); //$NON-NLS-1$
-		
-		/* get enhancer */
-		final DatabaseSpecificFieldConfigToolbar toolbarSpecConfig = getSpecificConfigToolbar(datasourceSelectionField);
-		final DatabaseSpecificFieldConfigExecution executionSpecConfig = getSpecificConfigExecution(datasourceSelectionField);
-		ToolBarEnhancer enhancer = new ToolBarEnhancer() {
-			
-			@Override
-			public void enhance(ToolBar toolbar, final CodeMirrorPanel codeMirrorPanel) {
-				if(null != executionSpecConfig){
-					/* execute */
-					DwTextButton executeBtn = toolbarService.createSmallButtonLeft(DatasourcesMessages.INSTANCE.execute(), BaseIcon.COG);
-					toolbar.add(executeBtn);
-					executeBtn.addSelectHandler(new SelectHandler() {
-						@Override
-						public void onSelect(SelectEvent event) {
-							executeQuery(executionSpecConfig, codeMirrorPanel.getTextArea().getValue());
-						}
-					});
-				}
-				
-				if(null != toolbarSpecConfig)
-					toolbarSpecConfig.enhance(toolbar, codeMirrorPanel);
-			}
-			
-			@Override
-			public boolean allowPopup() {
-				return true;
-			}
-		};
-		
-		queryField = new CodeMirrorPanel("text/x-sql", enhancer);
-		queryField.setValue(((DatabaseDatasourceConfigDto)config).getQuery());
-		if(queryField instanceof CodeMirrorPanel)
-			((CodeMirrorPanel)queryField).setHeight(200);
-		else if(queryField instanceof TextArea)
-			((TextArea)queryField).setHeight(200);
-		
-		queryField.addValueChangeHandler(new ValueChangeHandler<String>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<String> event) {
-				datasourceSelectionField.updateDatasourceConfig();
-			}
-		});
-		
-		return Arrays.asList(new Widget[]{new FieldLabel((Widget)queryField, DatasourcesMessages.INSTANCE.query())});
-	}
+      public void executeGetData(PagingLoadConfig loadConfig, String query,
+            AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback);
+   }
 
-	private DatabaseSpecificFieldConfigToolbar getSpecificConfigToolbar(
-			DatasourceSelectionField datasourceSelectionField) {
-		for(SpecificDatasourceConfig conf : datasourceSelectionField.getSpecificDatasourceConfigs())
-			if(conf instanceof DatabaseSpecificFieldConfigToolbar)
-				return (DatabaseSpecificFieldConfigToolbar) conf;
-		return null;
-	}
-	
-	private DatabaseSpecificFieldConfigExecution getSpecificConfigExecution(
-			DatasourceSelectionField datasourceSelectionField) {
-		for(SpecificDatasourceConfig conf : datasourceSelectionField.getSpecificDatasourceConfigs())
-			if(conf instanceof DatabaseSpecificFieldConfigExecution)
-				return (DatabaseSpecificFieldConfigExecution) conf;
-		return null;
-	}
+   private final ToolbarService toolbarService;
 
-	@Override
-	public void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto) {
-		if(! (config instanceof DatabaseDatasourceConfigDto))
-			throw new IllegalArgumentException("Expected " + DatabaseDatasourceConfigDto.class.getName()); //$NON-NLS-1$
+   private HasValue<String> queryField;
 
-		/* are we rendered */
-		if(null == queryField)
-			((DatabaseDatasourceConfigDto)config).setQuery(null);
-		else
-			((DatabaseDatasourceConfigDto)config).setQuery(queryField.getValue());
-	}
+   @Inject
+   public DatabaseDatasourceConfigConfigurator(ToolbarService toolbarService) {
+      this.toolbarService = toolbarService;
+   }
 
-	@Override
-	public DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceContainerProviderDto datasourceContainerProvider) {
-		return new DatabaseDatasourceConfigDto();
-	}
-	
-	@Override
-	public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceDefinitionConfigDto datasourceConfig) {
-		return datasourceDefinitionDto instanceof DatabaseDatasourceDto && datasourceConfig instanceof DatabaseDatasourceConfigDto;
-	}
-	
+   @Override
+   public List<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, final DatasourceSelectionField datasourceSelectionField,
+         final DatasourceContainerProviderDto datasourceContainerProvider) {
+      if (!(config instanceof DatabaseDatasourceConfigDto))
+         throw new IllegalArgumentException("Expected " + DatabaseDatasourceConfigDto.class.getName()); //$NON-NLS-1$
 
-	protected void executeQuery(final DatabaseSpecificFieldConfigExecution specConfig, final String value) {
-		if(null == value || "".equals(value.trim()))
-			return;
-		
-		DynamicGridWindow window = new DynamicGridWindow(new DataProvider(){
-			@Override
-			public void getData(
-					PagingLoadConfig loadConfig,
-					AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
-				specConfig.executeGetData((PagingLoadConfig) loadConfig, value, callback);
-			}
+      /* get enhancer */
+      final DatabaseSpecificFieldConfigToolbar toolbarSpecConfig = getSpecificConfigToolbar(datasourceSelectionField);
+      final DatabaseSpecificFieldConfigExecution executionSpecConfig = getSpecificConfigExecution(
+            datasourceSelectionField);
+      ToolBarEnhancer enhancer = new ToolBarEnhancer() {
 
-			@Override
-			public void getColumns(AsyncCallback<List<String>> asyncCallback) {
-				specConfig.executeGetColumns(value, asyncCallback);
-			}
-		});
-		
-		window.show();
-	}
+         @Override
+         public void enhance(ToolBar toolbar, final CodeMirrorPanel codeMirrorPanel) {
+            if (null != executionSpecConfig) {
+               /* execute */
+               DwTextButton executeBtn = toolbarService.createSmallButtonLeft(DatasourcesMessages.INSTANCE.execute(),
+                     BaseIcon.COG);
+               toolbar.add(executeBtn);
+               executeBtn.addSelectHandler(new SelectHandler() {
+                  @Override
+                  public void onSelect(SelectEvent event) {
+                     executeQuery(executionSpecConfig, codeMirrorPanel.getTextArea().getValue());
+                  }
+               });
+            }
 
-	@Override
-	public boolean isValid(DatasourceContainerDto container) {
-		if(! consumes(container.getDatasource(), container.getDatasourceConfig()))
-			return false;
-		
-		DatabaseDatasourceConfigDto config = (DatabaseDatasourceConfigDto) container.getDatasourceConfig();
-		
-		if(null == config.getQuery() || "".equals(config.getQuery().trim()))
-			return false;
-		
-		return true;
-	}
-	
-	@Override
-	public boolean isReloadOnDatasourceChange() {
-		return false;
-	}
+            if (null != toolbarSpecConfig)
+               toolbarSpecConfig.enhance(toolbar, codeMirrorPanel);
+         }
 
-	@Override
-	public Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config,
-			DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField,
-			DatasourceContainerProviderDto datasourceContainerProvider) {
-		return null;
-	}
+         @Override
+         public boolean allowPopup() {
+            return true;
+         }
+      };
+
+      queryField = new CodeMirrorPanel("text/x-sql", enhancer);
+      queryField.setValue(((DatabaseDatasourceConfigDto) config).getQuery());
+      if (queryField instanceof CodeMirrorPanel)
+         ((CodeMirrorPanel) queryField).setHeight(200);
+      else if (queryField instanceof TextArea)
+         ((TextArea) queryField).setHeight(200);
+
+      queryField.addValueChangeHandler(new ValueChangeHandler<String>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<String> event) {
+            datasourceSelectionField.updateDatasourceConfig();
+         }
+      });
+
+      return Arrays.asList(new Widget[] { new FieldLabel((Widget) queryField, DatasourcesMessages.INSTANCE.query()) });
+   }
+
+   private DatabaseSpecificFieldConfigToolbar getSpecificConfigToolbar(
+         DatasourceSelectionField datasourceSelectionField) {
+      for (SpecificDatasourceConfig conf : datasourceSelectionField.getSpecificDatasourceConfigs())
+         if (conf instanceof DatabaseSpecificFieldConfigToolbar)
+            return (DatabaseSpecificFieldConfigToolbar) conf;
+      return null;
+   }
+
+   private DatabaseSpecificFieldConfigExecution getSpecificConfigExecution(
+         DatasourceSelectionField datasourceSelectionField) {
+      for (SpecificDatasourceConfig conf : datasourceSelectionField.getSpecificDatasourceConfigs())
+         if (conf instanceof DatabaseSpecificFieldConfigExecution)
+            return (DatabaseSpecificFieldConfigExecution) conf;
+      return null;
+   }
+
+   @Override
+   public void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto) {
+      if (!(config instanceof DatabaseDatasourceConfigDto))
+         throw new IllegalArgumentException("Expected " + DatabaseDatasourceConfigDto.class.getName()); //$NON-NLS-1$
+
+      /* are we rendered */
+      if (null == queryField)
+         ((DatabaseDatasourceConfigDto) config).setQuery(null);
+      else
+         ((DatabaseDatasourceConfigDto) config).setQuery(queryField.getValue());
+   }
+
+   @Override
+   public DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceContainerProviderDto datasourceContainerProvider) {
+      return new DatabaseDatasourceConfigDto();
+   }
+
+   @Override
+   public boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceDefinitionConfigDto datasourceConfig) {
+      return datasourceDefinitionDto instanceof DatabaseDatasourceDto
+            && datasourceConfig instanceof DatabaseDatasourceConfigDto;
+   }
+
+   protected void executeQuery(final DatabaseSpecificFieldConfigExecution specConfig, final String value) {
+      if (null == value || "".equals(value.trim()))
+         return;
+
+      DynamicGridWindow window = new DynamicGridWindow(new DataProvider() {
+         @Override
+         public void getData(PagingLoadConfig loadConfig,
+               AsyncCallback<PagingLoadResult<ListStringBaseModel>> callback) {
+            specConfig.executeGetData((PagingLoadConfig) loadConfig, value, callback);
+         }
+
+         @Override
+         public void getColumns(AsyncCallback<List<String>> asyncCallback) {
+            specConfig.executeGetColumns(value, asyncCallback);
+         }
+      });
+
+      window.show();
+   }
+
+   @Override
+   public boolean isValid(DatasourceContainerDto container) {
+      if (!consumes(container.getDatasource(), container.getDatasourceConfig()))
+         return false;
+
+      DatabaseDatasourceConfigDto config = (DatabaseDatasourceConfigDto) container.getDatasourceConfig();
+
+      if (null == config.getQuery() || "".equals(config.getQuery().trim()))
+         return false;
+
+      return true;
+   }
+
+   @Override
+   public boolean isReloadOnDatasourceChange() {
+      return false;
+   }
+
+   @Override
+   public Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField,
+         DatasourceContainerProviderDto datasourceContainerProvider) {
+      return null;
+   }
 
 }

@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCStringMaxLength extends SimpleFormFieldConfiguration {
 
-	public int maxLength();
+   public int maxLength();
 }

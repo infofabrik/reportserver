@@ -29,43 +29,42 @@ import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuNativeMessages;
 @XmlAccessorType(XmlAccessType.NONE)
 public class SaikuI18nResource {
 
-	private Provider<ServletContext> servletContext;
-	private RemoteMessageService remoteMessageService;
+   private Provider<ServletContext> servletContext;
+   private RemoteMessageService remoteMessageService;
 
-	@Inject
-	public SaikuI18nResource(
-			Provider<ServletContext> servletContext, 
-			RemoteMessageService remoteMessageService) {
-		this.servletContext = servletContext;
-		this.remoteMessageService = remoteMessageService;
-	}
+   @Inject
+   public SaikuI18nResource(Provider<ServletContext> servletContext, RemoteMessageService remoteMessageService) {
+      this.servletContext = servletContext;
+      this.remoteMessageService = remoteMessageService;
+   }
 
-	@GET
-	@Path("/{lang}")
-	@Produces({"application/json" })
-	public Map<String, String> getMapping(@PathParam("lang") String lang) throws JsonParseException, IOException {
-		Map<String, String> mapping = new HashMap<String, String>();
+   @GET
+   @Path("/{lang}")
+   @Produces({ "application/json" })
+   public Map<String, String> getMapping(@PathParam("lang") String lang) throws JsonParseException, IOException {
+      Map<String, String> mapping = new HashMap<String, String>();
 
-		/* try loading original json */
-		String esclang = lang.replaceAll("\\W", "");
-		InputStream originalMapping = servletContext.get().getResourceAsStream("/resources/legacysaiku/js/saiku/plugins/I18n/po/" + esclang + ".json");
-		if(null != originalMapping){
-			ObjectMapper mapper = new ObjectMapper();
-			JsonNode jsonMapping = mapper.readTree(originalMapping);
+      /* try loading original json */
+      String esclang = lang.replaceAll("\\W", "");
+      InputStream originalMapping = servletContext.get()
+            .getResourceAsStream("/resources/legacysaiku/js/saiku/plugins/I18n/po/" + esclang + ".json");
+      if (null != originalMapping) {
+         ObjectMapper mapper = new ObjectMapper();
+         JsonNode jsonMapping = mapper.readTree(originalMapping);
 
-			for(Entry<String, JsonNode> e : ImmutableList.copyOf(jsonMapping.getFields())){
-				mapping.put(e.getKey(), e.getValue().asText());
-			}
+         for (Entry<String, JsonNode> e : ImmutableList.copyOf(jsonMapping.getFields())) {
+            mapping.put(e.getKey(), e.getValue().asText());
+         }
 
-		}
-		
-		/* overlay rs messages */
-		HashMap<String,HashMap<String,String>> messages = remoteMessageService.getMessages(lang);
-		if(null != messages){
-			HashMap<String,String> rsmap = messages.get(SaikuNativeMessages.class.getName());
-			mapping.putAll(rsmap);
-		}
-		
-		return mapping;
-	}
+      }
+
+      /* overlay rs messages */
+      HashMap<String, HashMap<String, String>> messages = remoteMessageService.getMessages(lang);
+      if (null != messages) {
+         HashMap<String, String> rsmap = messages.get(SaikuNativeMessages.class.getName());
+         mapping.putAll(rsmap);
+      }
+
+      return mapping;
+   }
 }

@@ -119,16 +119,16 @@ public class FilterBlock implements Serializable {
          throw new IllegalStateException("BlockTypes have not been initialized");
       return blockType;
    }
-   
+
    public Map<BlockType, Object> asMap() {
       Map<BlockType, Object> asMap = new HashMap<>();
       Set<Object> childElements = new HashSet<>();
-      
+
       // add all filter specs
       childElements.addAll(getFilters().stream().map(FilterSpec::asMap).collect(toSet()));
       // add all subblocks
       childElements.addAll(getChildBlocks().stream().map(FilterBlock::asMap).collect(toSet()));
-      
+
       asMap.put(getBlockType(), childElements);
       return asMap;
    }

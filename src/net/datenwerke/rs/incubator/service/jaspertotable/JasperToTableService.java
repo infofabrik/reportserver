@@ -5,6 +5,6 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 
 public interface JasperToTableService {
 
-	TableReport transformToTableReport(JasperReport report);
+   TableReport transformToTableReport(JasperReport report);
 
 }

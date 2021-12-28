@@ -13,26 +13,26 @@ import net.datenwerke.rs.dsbundle.client.dsbundle.rpc.DatasourceBundleRpcService
 
 public class DatasourceBundleDao extends Dao {
 
-	private final DatasourceBundleRpcServiceAsync rpcService;
+   private final DatasourceBundleRpcServiceAsync rpcService;
 
-	@Inject
-	public DatasourceBundleDao(DatasourceBundleRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
-	
-	public void getAvailableBundleKeys(AsyncCallback<List<String>> callback){
-		rpcService.getAvailableBundleKeys(transformAndKeepCallback(callback));
-	}
-	
-	public void getBundleSelectorConfiguration(AsyncCallback<Map<String, String>> callback){
-		rpcService.getBundleSelectorConfiguration(callback);
-	}
-	
-	public void setSelectedBundle(String bundleKey, AsyncCallback<Void> callback){
-		rpcService.setSelectedBundle(bundleKey, callback);
-	}
-	
-	public Request testConnection(DatabaseBundleDto databaseBundleDto, AsyncCallback<Boolean> callback){
-       return rpcService.testConnection(databaseBundleDto, transformAndKeepCallback(callback));
+   @Inject
+   public DatasourceBundleDao(DatasourceBundleRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void getAvailableBundleKeys(AsyncCallback<List<String>> callback) {
+      rpcService.getAvailableBundleKeys(transformAndKeepCallback(callback));
+   }
+
+   public void getBundleSelectorConfiguration(AsyncCallback<Map<String, String>> callback) {
+      rpcService.getBundleSelectorConfiguration(callback);
+   }
+
+   public void setSelectedBundle(String bundleKey, AsyncCallback<Void> callback) {
+      rpcService.setSelectedBundle(bundleKey, callback);
+   }
+
+   public Request testConnection(DatabaseBundleDto databaseBundleDto, AsyncCallback<Boolean> callback) {
+      return rpcService.testConnection(databaseBundleDto, transformAndKeepCallback(callback));
    }
 }

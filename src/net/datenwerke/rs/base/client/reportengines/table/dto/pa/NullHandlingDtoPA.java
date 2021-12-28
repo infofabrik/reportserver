@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.NullHandlingDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.NullHandling.class)
 public interface NullHandlingDtoPA extends PropertyAccess<NullHandlingDto> {
 
-
-
 }

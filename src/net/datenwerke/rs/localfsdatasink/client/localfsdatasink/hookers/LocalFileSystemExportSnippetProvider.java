@@ -50,11 +50,8 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
    private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public LocalFileSystemExportSnippetProvider(
-         @DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager,
-         Provider<LocalFileSystemDao> datasinkDaoProvider
-         ) {
+   public LocalFileSystemExportSnippetProvider(@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<LocalFileSystemDao> datasinkDaoProvider) {
       this.treeProvider = treeProvider;
       this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
@@ -90,6 +87,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
                public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
                   return datasinkDaoProvider;
                }
+
                @Override
                public BaseIcon getIcon() {
                   return LocalFileSystemUiModule.ICON;
@@ -112,7 +110,7 @@ public class LocalFileSystemExportSnippetProvider implements ScheduleExportSnipp
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

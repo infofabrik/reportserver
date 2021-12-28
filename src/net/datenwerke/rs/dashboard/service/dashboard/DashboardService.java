@@ -12,47 +12,47 @@ import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
 public interface DashboardService extends TreeDBManager<AbstractDashboardManagerNode> {
-	
-	public static final String USER_PROPERTY_PRIMARY_DASHBOARD = "dashboard:primaryDashboard";
 
-	void removeDashboardFor(User user);
-	
-	Dashboard getExplicitPrimaryDashboard(User user);
+   public static final String USER_PROPERTY_PRIMARY_DASHBOARD = "dashboard:primaryDashboard";
 
-	UserDashboard getUserDashboard(User user);
+   void removeDashboardFor(User user);
 
-	DashboardContainer getDashboardFor(User user);
+   Dashboard getExplicitPrimaryDashboard(User user);
 
-	DashboardContainer merge(DashboardContainer dashboardContainer);
+   UserDashboard getUserDashboard(User user);
 
-	Dashboard merge(Dashboard dashboard);
+   DashboardContainer getDashboardFor(User user);
 
-	void remove(Dashboard dashboard);
+   DashboardContainer merge(DashboardContainer dashboardContainer);
 
-	void persist(Dadget dadget);
+   Dashboard merge(Dashboard dashboard);
 
-	void persist(Dashboard dashboard);
+   void remove(Dashboard dashboard);
 
-	void remove(Dadget dadget);
+   void persist(Dadget dadget);
 
-	Dadget merge(Dadget dadget);
+   void persist(Dashboard dashboard);
 
-	DashboardContainer getDashboardContainerFor(Dashboard db);
+   void remove(Dadget dadget);
 
-	UserDashboard getUserDashboardFor(DashboardContainer container);
+   Dadget merge(Dadget dadget);
 
-	Dashboard getDashboardById(Long id);
+   DashboardContainer getDashboardContainerFor(Dashboard db);
 
-	Dashboard getDashboardFor(Dadget dadget);
+   UserDashboard getUserDashboardFor(DashboardContainer container);
 
-	DashboardNode getNodeFor(Dashboard dashboard);
-	
-	boolean isOwner(User user, Dashboard dashboard);
+   Dashboard getDashboardById(Long id);
 
-	Collection<Dashboard> getAllDashboards();
+   Dashboard getDashboardFor(Dadget dadget);
 
-	Collection<Dashboard> getDashboards();
+   DashboardNode getNodeFor(Dashboard dashboard);
 
-	void setPrimaryDashboard(Dashboard dashboard);
+   boolean isOwner(User user, Dashboard dashboard);
+
+   Collection<Dashboard> getAllDashboards();
+
+   Collection<Dashboard> getDashboards();
+
+   void setPrimaryDashboard(Dashboard dashboard);
 
 }

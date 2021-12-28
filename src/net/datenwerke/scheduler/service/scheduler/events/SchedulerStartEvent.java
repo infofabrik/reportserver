@@ -4,13 +4,13 @@ import net.datenwerke.security.service.eventlogger.DwLoggedEvent;
 
 public class SchedulerStartEvent extends DwLoggedEvent {
 
-	public SchedulerStartEvent(Object... properties){
-		super(properties);
-	}
-	
-	@Override
-	public String getLoggedAction() {
-		return "SCHEDULER_START";
-	}
+   public SchedulerStartEvent(Object... properties) {
+      super(properties);
+   }
+
+   @Override
+   public String getLoggedAction() {
+      return "SCHEDULER_START";
+   }
 
 }

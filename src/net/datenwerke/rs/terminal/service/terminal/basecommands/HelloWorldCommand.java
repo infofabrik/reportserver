@@ -15,46 +15,40 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class HelloWorldCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "hello";
-	
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	
-	@Inject
-	public HelloWorldCommand(
-		Provider<AuthenticatorService> authenticatorServiceProvider	
-		){
-		
-		/* store objects */
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "hello";
 
-	@CliHelpMessage(
-		messageClass = TerminalMessages.class,
-		name = BASE_COMMAND,
-		description = "commandHelloWorld_description"
-	)
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		CommandResult result = new CommandResult();
-		
-		User user = authenticatorServiceProvider.get().getCurrentUser();
-		
-		String firstName = user.getFirstname() == null ? "" : user.getFirstname();
-		String lastname = user.getLastname() == null ? "" : user.getLastname();
-		
-		result.addResultLine("Hello " + firstName + " " + lastname);
-		
-		return result;
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Inject
+   public HelloWorldCommand(Provider<AuthenticatorService> authenticatorServiceProvider) {
+
+      /* store objects */
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandHelloWorld_description")
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      CommandResult result = new CommandResult();
+
+      User user = authenticatorServiceProvider.get().getCurrentUser();
+
+      String firstName = user.getFirstname() == null ? "" : user.getFirstname();
+      String lastname = user.getLastname() == null ? "" : user.getLastname();
+
+      result.addResultLine("Hello " + firstName + " " + lastname);
+
+      return result;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

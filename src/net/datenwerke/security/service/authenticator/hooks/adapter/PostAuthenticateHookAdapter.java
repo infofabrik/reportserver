@@ -10,10 +10,8 @@ import net.datenwerke.security.service.authenticator.hooks.PostAuthenticateHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class PostAuthenticateHookAdapter implements PostAuthenticateHook {
 
-	@Override
-	public void authenticated(AuthenticationResult authRes)  {
-	}
-
-
+   @Override
+   public void authenticated(AuthenticationResult authRes) {
+   }
 
 }

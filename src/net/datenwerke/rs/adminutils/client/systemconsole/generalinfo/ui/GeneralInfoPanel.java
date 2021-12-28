@@ -28,137 +28,136 @@ import net.datenwerke.rs.adminutils.client.systemconsole.locale.SystemConsoleMes
 @Singleton
 public class GeneralInfoPanel extends DwContentPanel {
 
-	private final GeneralInfoDao generalInfoDao;
-	
-	private VerticalLayoutContainer wrapper;
+   private final GeneralInfoDao generalInfoDao;
 
-	@Inject
-	public GeneralInfoPanel(
-		GeneralInfoDao licenseDao
-		){
-		
-		this.generalInfoDao = licenseDao;
-		
-		/* initialize ui */
-		initializeUI();
-	}
+   private VerticalLayoutContainer wrapper;
 
-	private void initializeUI() {
-		setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
-		addStyleName("rs-generalinfo");
-		
-		wrapper = new VerticalLayoutContainer();
-		wrapper.setScrollMode(ScrollMode.AUTOY);
-		add(wrapper);
-		
-		updateView();
-	}
-	
+   @Inject
+   public GeneralInfoPanel(GeneralInfoDao licenseDao) {
 
-	protected void updateView() {
-		mask(BaseMessages.INSTANCE.loadingMsg());
-		
-		wrapper.clear();
-		
-		generalInfoDao.loadGeneralInfo(new RsAsyncCallback<GeneralInfoDto>(){
-			@Override
-			public void onSuccess(GeneralInfoDto result) {
-				super.onSuccess(result);
-				init(result);
-				unmask();
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				super.onFailure(caught);
-				unmask();
-			}
-		});
-	}
+      this.generalInfoDao = licenseDao;
 
-	protected void init(final GeneralInfoDto result) {
-		final SimpleForm form = SimpleForm.getNewInstance();
-		form.setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
-		form.setLabelAlign(LabelAlign.LEFT);
-		
-		form.setLabelWidth(150);
-		
-		/* version */
-		form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.versionLabel(), new SFFCStaticLabel() {
-			@Override
-			public String getLabel() {
-				return result.getRsVersion();
-			}
-		});
-		
-		/* Java version */
-		if(null != result.getJavaVersion()){
-			form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.javaVersionLabel(), new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getJavaVersion();
-				}
-			});
-		}
-		
-		/* Vm Arguments */
-		if(null != result.getVmArguments()){
-			form.addField(StaticLabel.class, "JVM Args", new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getVmArguments();
-				}
-			});
-		}
+      /* initialize ui */
+      initializeUI();
+   }
 
-		/* Application server */
-		if(null != result.getApplicationServer()){
-			form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.applicationServerLabel(), new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getApplicationServer();
-				}
-			});
-		}
-		
-		/* Operation system */
-		if(null != result.getOsVersion()){
-			form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.operationSystemLabel(), new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getOsVersion();
-				}
-			});
-		}
-		
-		form.addField(Separator.class, new SFFCSpace());
-		
-		/* Browser name */
-		if(null != result.getBrowserName()){
-			form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserNameLabel(), new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getBrowserName();
-				}
-			});
-		}
+   private void initializeUI() {
+      setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
+      addStyleName("rs-generalinfo");
 
-		/* Browser version */
-		if(null != result.getBrowserVersion()){
-			form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserVersionLabel(), new SFFCStaticLabel() {
-				@Override
-				public String getLabel() {
-					return result.getBrowserVersion();
-				}
-			});
-		}
-		
-		form.loadFields();
+      wrapper = new VerticalLayoutContainer();
+      wrapper.setScrollMode(ScrollMode.AUTOY);
+      add(wrapper);
 
-		wrapper.add(form, new VerticalLayoutData(1,-1, new Margins(10)));
-		
-		form.clearButtonBar();
-		
-		Scheduler.get().scheduleDeferred(forceLayoutCommand);
-	}
+      updateView();
+   }
+
+   protected void updateView() {
+      mask(BaseMessages.INSTANCE.loadingMsg());
+
+      wrapper.clear();
+
+      generalInfoDao.loadGeneralInfo(new RsAsyncCallback<GeneralInfoDto>() {
+         @Override
+         public void onSuccess(GeneralInfoDto result) {
+            super.onSuccess(result);
+            init(result);
+            unmask();
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            super.onFailure(caught);
+            unmask();
+         }
+      });
+   }
+
+   protected void init(final GeneralInfoDto result) {
+      final SimpleForm form = SimpleForm.getNewInstance();
+      form.setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
+      form.setLabelAlign(LabelAlign.LEFT);
+
+      form.setLabelWidth(150);
+
+      /* version */
+      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.versionLabel(), new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return result.getRsVersion();
+         }
+      });
+
+      /* Java version */
+      if (null != result.getJavaVersion()) {
+         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.javaVersionLabel(), new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return result.getJavaVersion();
+            }
+         });
+      }
+
+      /* Vm Arguments */
+      if (null != result.getVmArguments()) {
+         form.addField(StaticLabel.class, "JVM Args", new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return result.getVmArguments();
+            }
+         });
+      }
+
+      /* Application server */
+      if (null != result.getApplicationServer()) {
+         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.applicationServerLabel(),
+               new SFFCStaticLabel() {
+                  @Override
+                  public String getLabel() {
+                     return result.getApplicationServer();
+                  }
+               });
+      }
+
+      /* Operation system */
+      if (null != result.getOsVersion()) {
+         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.operationSystemLabel(), new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return result.getOsVersion();
+            }
+         });
+      }
+
+      form.addField(Separator.class, new SFFCSpace());
+
+      /* Browser name */
+      if (null != result.getBrowserName()) {
+         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserNameLabel(), new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return result.getBrowserName();
+            }
+         });
+      }
+
+      /* Browser version */
+      if (null != result.getBrowserVersion()) {
+         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserVersionLabel(), new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return result.getBrowserVersion();
+            }
+         });
+      }
+
+      form.loadFields();
+
+      wrapper.add(form, new VerticalLayoutData(1, -1, new Margins(10)));
+
+      form.clearButtonBar();
+
+      Scheduler.get().scheduleDeferred(forceLayoutCommand);
+   }
 
 }

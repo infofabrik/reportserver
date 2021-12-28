@@ -19,27 +19,24 @@ import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.SaikuOutpu
 
 public class SaikuStartup {
 
-	@Inject
-	public SaikuStartup(
-			HookHandlerService hookHandler, 
-			MondrianDatasourceProviderHooker mondrianDatasourceProvider, 
-			VariantStoreHooker variantStoreHooker, 
-			SaikuReportEngineProviderHooker saikuReportEngineProviderHooker, 
-			ReportExportViaSessionHooker reportExportViaSessionHooker,
-			
-			SaikuReportTypeProviderHooker saikuReportTypeProviderHooker,
-			
-			Provider<BaseSaikuOutputGeneratorProvider> baseOutputGenerators
-			){
-		
-		hookHandler.attachHooker(ReportEngineProviderHook.class, saikuReportEngineProviderHooker);
-		hookHandler.attachHooker(DatasourceProviderHook.class, mondrianDatasourceProvider);
-		hookHandler.attachHooker(VariantToBeStoredHook.class, variantStoreHooker);
-		hookHandler.attachHooker(ReportExportViaSessionHook.class, reportExportViaSessionHooker);
-		
-		hookHandler.attachHooker(ReportTypeProviderHook.class, saikuReportTypeProviderHooker);
-		
-		/* base exporters */
-		hookHandler.attachHooker(SaikuOutputGeneratorProviderHook.class, baseOutputGenerators, HookHandlerService.PRIORITY_LOW);
-	}
+   @Inject
+   public SaikuStartup(HookHandlerService hookHandler, MondrianDatasourceProviderHooker mondrianDatasourceProvider,
+         VariantStoreHooker variantStoreHooker, SaikuReportEngineProviderHooker saikuReportEngineProviderHooker,
+         ReportExportViaSessionHooker reportExportViaSessionHooker,
+
+         SaikuReportTypeProviderHooker saikuReportTypeProviderHooker,
+
+         Provider<BaseSaikuOutputGeneratorProvider> baseOutputGenerators) {
+
+      hookHandler.attachHooker(ReportEngineProviderHook.class, saikuReportEngineProviderHooker);
+      hookHandler.attachHooker(DatasourceProviderHook.class, mondrianDatasourceProvider);
+      hookHandler.attachHooker(VariantToBeStoredHook.class, variantStoreHooker);
+      hookHandler.attachHooker(ReportExportViaSessionHook.class, reportExportViaSessionHooker);
+
+      hookHandler.attachHooker(ReportTypeProviderHook.class, saikuReportTypeProviderHooker);
+
+      /* base exporters */
+      hookHandler.attachHooker(SaikuOutputGeneratorProviderHook.class, baseOutputGenerators,
+            HookHandlerService.PRIORITY_LOW);
+   }
 }

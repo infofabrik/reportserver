@@ -26,115 +26,103 @@ import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.security.service.security.rights.Read;
 
-public class LocateCommand implements TerminalCommandHook{
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-	
-	private final static String BASE_COMMAND = "locate";
+public class LocateCommand implements TerminalCommandHook {
 
-	private final SearchService searchService;
-	private final EntityUtils entityUtils;
-	private final HistoryService historyService;
-	
-	@Inject
-	public LocateCommand(
-			SearchService searchService,
-			EntityUtils entityUtils, 
-			HistoryService historyService
-	) {
-		this.searchService = searchService;
-		this.entityUtils = entityUtils;
-		this.historyService = historyService;
-	}
-	
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final static String BASE_COMMAND = "locate";
 
-	@Override
-	@CliHelpMessage(
-			messageClass = SearchMessages.class,
-			name = BASE_COMMAND,
-			description = "commandSearch_description",
-			args = {
-				@Argument(flag="t", hasValue=true, valueName="type", description="commandSearch_tArgument")
-			},
-			nonOptArgs = {
-				@NonOptArgument(name="query", description="commandSearch_queryArgument", mandatory = true)
-			}
-		)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		
-		Class<?> entityType; 
-		
-		String query = getQuery(parser);
-		
-		if(parser.hasOption("t")){
-			OptionSet parsed = parser.parse("t:");
-			String typeName = String.valueOf(parsed.valueOf("t"));
-			entityType = entityUtils.getEntityBySimpleName(typeName);
-		}else{
-			entityType = Object.class;
-		}
-		
-		Collection<Object> resolvedObjects = session.getObjectResolver().getObjects(query,Read.class);
-		if (null != resolvedObjects && resolvedObjects.size() != 0) {
-			List<?> searchResults;
-			if (resolvedObjects instanceof List)
-			  searchResults = (List<?>)resolvedObjects;
-			else
-			  searchResults = new ArrayList(resolvedObjects);
-			
-			return produceResult(searchResults);
-		}
-		
-		List<?> searchResults;
-		query = searchService.enhanceQuery(query);
-		searchResults = searchService.locate(entityType, query);
-		
-		return produceResult(searchResults);
-	}
-	
-	private String getQuery(CommandParser parser) {
-		String query = null;
-		
-		if(parser.hasOption("t")){
-			OptionSet parsed = parser.parse("t:");
-			List<?> nonOptionArguments = parsed.nonOptionArguments();
-			
-			if(null == nonOptionArguments || nonOptionArguments.isEmpty())
-				throw new IllegalArgumentException("Expected query");
-			
-			query = (String) nonOptionArguments.get(0);
-		}else{
-			 query = parser.getArgumentNr(1);
-		}
-		
-		return query;
-	}
-	
-	private CommandResult produceResult(List<?> searchResults) {
-		CommandResult cr = new CommandResult();
-		for(Object o : searchResults){
-			try {
-				List<HistoryLink> links = historyService.buildLinksFor(o);
-				for(HistoryLink link : links){
-					cr.addResultHyperLink(link.getObjectCaption() + " (" + link.getHistoryLinkBuilderId() + ")", link.getLink());
-				}
-			} catch (IllegalArgumentException e) {
-				logger.warn( e.getMessage(), e);
-			}
-			
-		}
-		
-		return cr;
-	}
+   private final SearchService searchService;
+   private final EntityUtils entityUtils;
+   private final HistoryService historyService;
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+   @Inject
+   public LocateCommand(SearchService searchService, EntityUtils entityUtils, HistoryService historyService) {
+      this.searchService = searchService;
+      this.entityUtils = entityUtils;
+      this.historyService = historyService;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = SearchMessages.class, name = BASE_COMMAND, description = "commandSearch_description", args = {
+         @Argument(flag = "t", hasValue = true, valueName = "type", description = "commandSearch_tArgument") }, nonOptArgs = {
+               @NonOptArgument(name = "query", description = "commandSearch_queryArgument", mandatory = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+
+      Class<?> entityType;
+
+      String query = getQuery(parser);
+
+      if (parser.hasOption("t")) {
+         OptionSet parsed = parser.parse("t:");
+         String typeName = String.valueOf(parsed.valueOf("t"));
+         entityType = entityUtils.getEntityBySimpleName(typeName);
+      } else {
+         entityType = Object.class;
+      }
+
+      Collection<Object> resolvedObjects = session.getObjectResolver().getObjects(query, Read.class);
+      if (null != resolvedObjects && resolvedObjects.size() != 0) {
+         List<?> searchResults;
+         if (resolvedObjects instanceof List)
+            searchResults = (List<?>) resolvedObjects;
+         else
+            searchResults = new ArrayList(resolvedObjects);
+
+         return produceResult(searchResults);
+      }
+
+      List<?> searchResults;
+      query = searchService.enhanceQuery(query);
+      searchResults = searchService.locate(entityType, query);
+
+      return produceResult(searchResults);
+   }
+
+   private String getQuery(CommandParser parser) {
+      String query = null;
+
+      if (parser.hasOption("t")) {
+         OptionSet parsed = parser.parse("t:");
+         List<?> nonOptionArguments = parsed.nonOptionArguments();
+
+         if (null == nonOptionArguments || nonOptionArguments.isEmpty())
+            throw new IllegalArgumentException("Expected query");
+
+         query = (String) nonOptionArguments.get(0);
+      } else {
+         query = parser.getArgumentNr(1);
+      }
+
+      return query;
+   }
+
+   private CommandResult produceResult(List<?> searchResults) {
+      CommandResult cr = new CommandResult();
+      for (Object o : searchResults) {
+         try {
+            List<HistoryLink> links = historyService.buildLinksFor(o);
+            for (HistoryLink link : links) {
+               cr.addResultHyperLink(link.getObjectCaption() + " (" + link.getHistoryLinkBuilderId() + ")",
+                     link.getLink());
+            }
+         } catch (IllegalArgumentException e) {
+            logger.warn(e.getMessage(), e);
+         }
+
+      }
+
+      return cr;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

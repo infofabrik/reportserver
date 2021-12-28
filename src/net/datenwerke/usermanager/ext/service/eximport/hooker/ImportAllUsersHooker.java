@@ -7,13 +7,11 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 import net.datenwerke.treedb.ext.service.eximport.helper.ImportAllNodesHooker;
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 
-public class ImportAllUsersHooker extends ImportAllNodesHooker<AbstractUserManagerNode>{
+public class ImportAllUsersHooker extends ImportAllNodesHooker<AbstractUserManagerNode> {
 
-	@Inject
-	public ImportAllUsersHooker(
-		UserManagerService treeDbManager
-		) {
-		super(treeDbManager, UserManagerExporter.class);
-	}
+   @Inject
+   public ImportAllUsersHooker(UserManagerService treeDbManager) {
+      super(treeDbManager, UserManagerExporter.class);
+   }
 
 }

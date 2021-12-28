@@ -8,63 +8,61 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder.OrderDe
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Order;
 
-public class MsSQLOrderOffsetQuery extends OrderOffsetQuery{
+public class MsSQLOrderOffsetQuery extends OrderOffsetQuery {
 
-	public MsSQLOrderOffsetQuery(Query nestedQuery, QueryBuilder queryBuilder, ColumnNamingService columnNamingService) {
-		super(nestedQuery, queryBuilder, columnNamingService);
-		this.columnNamingService = columnNamingService;
-	}
+   public MsSQLOrderOffsetQuery(Query nestedQuery, QueryBuilder queryBuilder, ColumnNamingService columnNamingService) {
+      super(nestedQuery, queryBuilder, columnNamingService);
+      this.columnNamingService = columnNamingService;
+   }
 
-	@Override
-	public void appendToBuffer(StringBuffer buf) {
-		
-		buf.append("SELECT ");
+   @Override
+   public void appendToBuffer(StringBuffer buf) {
 
-		if(queryBuilder.getColumns().size() == 0){
-			buf.append("mssqlOrdOffQry2.*"); //$NON-NLS-1$
-		} else {
-			int i = 1;
-			for(Column col : queryBuilder.getColumns()){
-				/* if distinct && hidden -> ignore */
-				if(queryBuilder.ignoreHiddenColumns() && null != col.isHidden() && col.isHidden())
-					continue;
-				
-				if(i > 1)
-					buf.append(", "); //$NON-NLS-1$
+      buf.append("SELECT ");
 
-				/* column name */
-				buf.append(columnNamingService.getColumnName(col));
+      if (queryBuilder.getColumns().size() == 0) {
+         buf.append("mssqlOrdOffQry2.*"); //$NON-NLS-1$
+      } else {
+         int i = 1;
+         for (Column col : queryBuilder.getColumns()) {
+            /* if distinct && hidden -> ignore */
+            if (queryBuilder.ignoreHiddenColumns() && null != col.isHidden() && col.isHidden())
+               continue;
 
-				i++;
-			}
-		}
+            if (i > 1)
+               buf.append(", "); //$NON-NLS-1$
 
-		buf.append(" FROM (SELECT mssqlOrdOffQry1.*, (ROW_NUMBER() OVER(ORDER BY ");
+            /* column name */
+            buf.append(columnNamingService.getColumnName(col));
 
-		int i = 1;
-		for(OrderDefinition def : queryBuilder.getOrderDefinitions()){
-			/* if distinct && hidden -> ignore */
-			if(queryBuilder.ignoreHiddenColumns() && null != def.getColumn().isHidden() && def.getColumn().isHidden())
-				continue;
-			
-			if(i > 1)
-				buf.append(", "); //$NON-NLS-1$
+            i++;
+         }
+      }
 
-			buf.append(columnNamingService.getColumnName(def.getColumn()))
-				.append(' ') //$NON-NLS-1$
-				.append( def.getOrder().equals(Order.ASC) ? "ASC" : "DESC" ); //$NON-NLS-1$ //$NON-NLS-2$
+      buf.append(" FROM (SELECT mssqlOrdOffQry1.*, (ROW_NUMBER() OVER(ORDER BY ");
 
-			i++;
-		}
-				
-		buf.append(")) mssqlRowNum FROM (");
+      int i = 1;
+      for (OrderDefinition def : queryBuilder.getOrderDefinitions()) {
+         /* if distinct && hidden -> ignore */
+         if (queryBuilder.ignoreHiddenColumns() && null != def.getColumn().isHidden() && def.getColumn().isHidden())
+            continue;
 
-		nestedQuery.appendToBuffer(buf);
-		buf.append(") mssqlOrdOffQry1 ) mssqlOrdOffQry2 WHERE mssqlOrdOffQry2.mssqlRowNum BETWEEN ")
-		.append(queryBuilder.getOffset())
-		.append(" AND ") //$NON-NLS-1$
-		.append(queryBuilder.getLimit() + queryBuilder.getOffset());
+         if (i > 1)
+            buf.append(", "); //$NON-NLS-1$
 
-	}
+         buf.append(columnNamingService.getColumnName(def.getColumn())).append(' ') // $NON-NLS-1$
+               .append(def.getOrder().equals(Order.ASC) ? "ASC" : "DESC"); //$NON-NLS-1$ //$NON-NLS-2$
+
+         i++;
+      }
+
+      buf.append(")) mssqlRowNum FROM (");
+
+      nestedQuery.appendToBuffer(buf);
+      buf.append(") mssqlOrdOffQry1 ) mssqlOrdOffQry2 WHERE mssqlOrdOffQry2.mssqlRowNum BETWEEN ")
+            .append(queryBuilder.getOffset()).append(" AND ") //$NON-NLS-1$
+            .append(queryBuilder.getLimit() + queryBuilder.getOffset());
+
+   }
 
 }

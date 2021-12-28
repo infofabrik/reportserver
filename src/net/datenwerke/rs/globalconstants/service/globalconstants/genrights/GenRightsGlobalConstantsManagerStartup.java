@@ -6,12 +6,10 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsGlobalConstantsManagerStartup {
 
-	@Inject
-	public GenRightsGlobalConstantsManagerStartup(
-		SecurityService securityService	
-		){
-		
-		/* register security targets */
-		securityService.registerSecurityTarget(GlobalConstantsAdminViewSecurityTarget.class);
-	}
+   @Inject
+   public GenRightsGlobalConstantsManagerStartup(SecurityService securityService) {
+
+      /* register security targets */
+      securityService.registerSecurityTarget(GlobalConstantsAdminViewSecurityTarget.class);
+   }
 }

@@ -4,75 +4,75 @@ import java.io.Serializable;
 
 public class GeneralInfoDto implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-	
-	private String rsVersion;
-	private String javaVersion;
-	private String vmArguments;
-	private String applicationServer;
-	private String osVersion;
-	private String browserName;
-	private String browserVersion;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
-	public String getBrowserName() {
-		return browserName;
-	}
+   private String rsVersion;
+   private String javaVersion;
+   private String vmArguments;
+   private String applicationServer;
+   private String osVersion;
+   private String browserName;
+   private String browserVersion;
 
-	public void setBrowserName(String name) {
-		this.browserName = name;
-	}
-	
-	public String getOsVersion() {
-		return osVersion;
-	}
+   public String getBrowserName() {
+      return browserName;
+   }
 
-	public void setOsVersion(String osVersion) {
-		this.osVersion = osVersion;
-	}
+   public void setBrowserName(String name) {
+      this.browserName = name;
+   }
 
-	public String getJavaVersion() {
-		return javaVersion;
-	}
+   public String getOsVersion() {
+      return osVersion;
+   }
 
-	public void setJavaVersion(String javaVersion) {
-		this.javaVersion = javaVersion;
-	}
-	
-	public String getVmArguments() {
-		return vmArguments;
-	}
+   public void setOsVersion(String osVersion) {
+      this.osVersion = osVersion;
+   }
 
-	public void setVmArguments(String vmArguments) {
-		this.vmArguments = vmArguments;
-	}
+   public String getJavaVersion() {
+      return javaVersion;
+   }
 
-	public String getApplicationServer() {
-		return applicationServer;
-	}
+   public void setJavaVersion(String javaVersion) {
+      this.javaVersion = javaVersion;
+   }
 
-	public void setApplicationServer(String applicationServer) {
-		this.applicationServer = applicationServer;
-	}
-	
-	public GeneralInfoDto() {
-	}
-	
-	public String getRsVersion() {
-		return rsVersion;
-	}
+   public String getVmArguments() {
+      return vmArguments;
+   }
 
-	public void setRsVersion(String rsVersion) {
-		this.rsVersion = rsVersion;
-	}
+   public void setVmArguments(String vmArguments) {
+      this.vmArguments = vmArguments;
+   }
 
-	public String getBrowserVersion() {
-		return browserVersion;
-	}
+   public String getApplicationServer() {
+      return applicationServer;
+   }
 
-	public void setBrowserVersion(String browserVersion) {
-		this.browserVersion = browserVersion;
-	}
+   public void setApplicationServer(String applicationServer) {
+      this.applicationServer = applicationServer;
+   }
+
+   public GeneralInfoDto() {
+   }
+
+   public String getRsVersion() {
+      return rsVersion;
+   }
+
+   public void setRsVersion(String rsVersion) {
+      this.rsVersion = rsVersion;
+   }
+
+   public String getBrowserVersion() {
+      return browserVersion;
+   }
+
+   public void setBrowserVersion(String browserVersion) {
+      this.browserVersion = browserVersion;
+   }
 }

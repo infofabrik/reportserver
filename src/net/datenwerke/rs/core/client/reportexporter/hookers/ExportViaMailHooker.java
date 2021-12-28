@@ -40,12 +40,8 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
    private final LoginService loginService;
    private final HookHandlerService hookHandler;
 
-   
    @Inject
-   public ExportViaMailHooker(
-         ReportExporterDao reDao, 
-         LoginService loginService,
-         HookHandlerService hookHandler) {
+   public ExportViaMailHooker(ReportExporterDao reDao, LoginService loginService, HookHandlerService hookHandler) {
       this.reDao = reDao;
       this.loginService = loginService;
       this.hookHandler = hookHandler;
@@ -55,7 +51,8 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
    public void getMenuEntry(Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
 
-      MenuItem item = new DwMenuItem(ReportExporterMessages.INSTANCE.exportViaMailLabel() + " (deprecated)", BaseIcon.ENVELOPE_O);
+      MenuItem item = new DwMenuItem(ReportExporterMessages.INSTANCE.exportViaMailLabel() + " (deprecated)",
+            BaseIcon.ENVELOPE_O);
       menu.add(item);
       item.addSelectionHandler(event -> displayExportDialog(report, info));
    }
@@ -86,16 +83,16 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
       final String subjKey = form.addField(String.class, ReportExporterMessages.INSTANCE.subjectLabel());
       final String msgKey = form.addField(String.class, ReportExporterMessages.INSTANCE.messageLabel(),
             new SFFCTextAreaImpl());
-      
+
       form.setLabelAlign(LabelAlign.LEFT);
-      
+
       final String compressedKey = form.addField(Boolean.class, "", new SFFCBoolean() {
          @Override
          public String getBoxLabel() {
             return SchedulerMessages.INSTANCE.reportCompress();
          }
       });
-      
+
       window.add(form, new MarginData(10));
 
       UserDto user = loginService.getCurrentUser();
@@ -103,11 +100,11 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
 
       List<StrippedDownUser> users = new ArrayList<>();
       users.add(sUser);
-      
+
       form.setValue(subjKey, "");
       form.setValue(msgKey, "");
       form.setValue(rcptKey, users);
-      
+
       form.loadFields();
 
       window.addCancelButton();
@@ -119,17 +116,16 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
          String message = (String) form.getValue(msgKey);
          boolean compressed = (boolean) form.getValue(compressedKey);
          ExportTypeSelection type = (ExportTypeSelection) form.getValue(formatKey);
-         
+
          if (!type.isConfigured()) {
             new DwAlertMessageBox(BaseMessages.INSTANCE.error(),
                   ReportExporterMessages.INSTANCE.exportTypeNotConfigured()).show();
             return;
          }
 
-         hookHandler.getHookers(PrepareReportModelForStorageOrExecutionHook.class)
-            .stream()
-            .filter(hooker -> hooker.consumes(report))
-            .forEach(hooker -> hooker.prepareForExecutionOrStorage(report, info.getExecuteReportToken()));
+         hookHandler.getHookers(PrepareReportModelForStorageOrExecutionHook.class).stream()
+               .filter(hooker -> hooker.consumes(report))
+               .forEach(hooker -> hooker.prepareForExecutionOrStorage(report, info.getExecuteReportToken()));
 
          reDao.exportViaMail(report, info.getExecuteReportToken(), type.getOutputFormat(),
                type.getExportConfiguration(), subject, message, compressed, rcptList,

@@ -11,92 +11,93 @@ import com.sencha.gxt.widget.core.client.Component;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
-
 public class Html5FileUploadListener {
 
-	public interface UploadCallback {
-		void fileUploaded(String name, long size, String base64);
-		void allFilesUploaded(List<FileToUpload> list);
-		void fireOnDropStart(int nrOfFiles);
-	}
-	
-	private final UploadCallback callback;
-	
-	private String maskText = BaseMessages.INSTANCE.validUploadTarget();
-	private boolean addHoverClass = false;
-	private String hoverClassName = "";
-	
-	private List<FileToUpload> files = new ArrayList<FileToUpload>();
+   public interface UploadCallback {
+      void fileUploaded(String name, long size, String base64);
 
-	private HandlerRegistration attachHandlerRegistrar;
+      void allFilesUploaded(List<FileToUpload> list);
 
-	private Component component;
-	
-	public Html5FileUploadListener(UploadCallback callback, final Component component){
-		this.callback = callback;
-		this.component = component;
-		
-		/* style */
-	    hoverClassName = "rs-html5-upload-hover";
-		
-		if(component.isAttached())
-			attachFileUploadListener(this, component.getId());
-		else {
-			attachHandlerRegistrar = component.addAttachHandler(new Handler() {
-				
-				@Override
-				public void onAttachOrDetach(AttachEvent event) {
-					attachFileUploadListener(Html5FileUploadListener.this, component.getId());
-					attachHandlerRegistrar.removeHandler();
-				}
-			});
-		}
-	}
-	
-	protected void onDragStart(){
-		if(addHoverClass)
-			component.getElement().addClassName(hoverClassName);
-		else
-			component.mask(getMaskText());
-	}
-	
-	protected void onDragEnd(){
-		if(addHoverClass)
-			component.getElement().removeClassName(hoverClassName);
-		else
-			component.unmask();
-	}
-	
-	protected void log(String e){
-		System.out.println(e);
-	}
-	
-	public String getMaskText(){
-		return maskText;
-	}
-	
-	public void setMaskText(String maskText) {
-		this.maskText = maskText;
-	}
-	
-	public String getHoverClassName() {
-		return hoverClassName;
-	}
-	
-	public void setHoverClassName(String hoverClassName) {
-		this.hoverClassName = hoverClassName;
-		setAddHoverClass(true);
-	}
-	
-	public void setAddHoverClass(boolean addHoverClass) {
-		this.addHoverClass = addHoverClass;
-	}
-	
-	public boolean isAddHoverClass() {
-		return addHoverClass;
-	}
-	
-	protected static native void attachFileUploadListener(Html5FileUploadListener instance, String id) /*-{
+      void fireOnDropStart(int nrOfFiles);
+   }
+
+   private final UploadCallback callback;
+
+   private String maskText = BaseMessages.INSTANCE.validUploadTarget();
+   private boolean addHoverClass = false;
+   private String hoverClassName = "";
+
+   private List<FileToUpload> files = new ArrayList<FileToUpload>();
+
+   private HandlerRegistration attachHandlerRegistrar;
+
+   private Component component;
+
+   public Html5FileUploadListener(UploadCallback callback, final Component component) {
+      this.callback = callback;
+      this.component = component;
+
+      /* style */
+      hoverClassName = "rs-html5-upload-hover";
+
+      if (component.isAttached())
+         attachFileUploadListener(this, component.getId());
+      else {
+         attachHandlerRegistrar = component.addAttachHandler(new Handler() {
+
+            @Override
+            public void onAttachOrDetach(AttachEvent event) {
+               attachFileUploadListener(Html5FileUploadListener.this, component.getId());
+               attachHandlerRegistrar.removeHandler();
+            }
+         });
+      }
+   }
+
+   protected void onDragStart() {
+      if (addHoverClass)
+         component.getElement().addClassName(hoverClassName);
+      else
+         component.mask(getMaskText());
+   }
+
+   protected void onDragEnd() {
+      if (addHoverClass)
+         component.getElement().removeClassName(hoverClassName);
+      else
+         component.unmask();
+   }
+
+   protected void log(String e) {
+      System.out.println(e);
+   }
+
+   public String getMaskText() {
+      return maskText;
+   }
+
+   public void setMaskText(String maskText) {
+      this.maskText = maskText;
+   }
+
+   public String getHoverClassName() {
+      return hoverClassName;
+   }
+
+   public void setHoverClassName(String hoverClassName) {
+      this.hoverClassName = hoverClassName;
+      setAddHoverClass(true);
+   }
+
+   public void setAddHoverClass(boolean addHoverClass) {
+      this.addHoverClass = addHoverClass;
+   }
+
+   public boolean isAddHoverClass() {
+      return addHoverClass;
+   }
+
+   protected static native void attachFileUploadListener(Html5FileUploadListener instance, String id) /*-{
 	    var filedrag = $doc.getElementById(id);
 	  	
 	  	if(null == filedrag)
@@ -190,18 +191,18 @@ public class Html5FileUploadListener {
 	       filedrag.style.display = "block";  
 	   }   
 	}-*/;
-	
-	protected void fireOnDropStart(int nrOfFiles){
-		callback.fireOnDropStart(nrOfFiles);
-	}
-	
-	protected void fireOnDrop(String name, int size, String base64) {
-		files.add(new FileToUpload(name, size, base64));  
-		callback.fileUploaded(name, size, base64);
-	}
-	
-	protected void uploadDone() {
-		 callback.allFilesUploaded(new ArrayList<FileToUpload>(files));
-		 files.clear();
-	}
+
+   protected void fireOnDropStart(int nrOfFiles) {
+      callback.fireOnDropStart(nrOfFiles);
+   }
+
+   protected void fireOnDrop(String name, int size, String base64) {
+      files.add(new FileToUpload(name, size, base64));
+      callback.fileUploaded(name, size, base64);
+   }
+
+   protected void uploadDone() {
+      callback.allFilesUploaded(new ArrayList<FileToUpload>(files));
+      files.clear();
+   }
 }

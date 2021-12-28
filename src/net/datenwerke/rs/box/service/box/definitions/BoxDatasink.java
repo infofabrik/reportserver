@@ -166,4 +166,3 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
    }
 
 }
-

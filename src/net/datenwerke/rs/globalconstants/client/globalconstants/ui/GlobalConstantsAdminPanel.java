@@ -52,183 +52,185 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 @Singleton
 public class GlobalConstantsAdminPanel extends DwContentPanel {
 
-	private final GlobalConstantsDao constantsDao;
-	private final ToolbarService toolbarService;
-	
-	private ListStore<GlobalConstantDto> globalConstantStore;
-	
-	private GlobalConstantDtoPA globalConstantProps;
-	
-	@Inject
-	public GlobalConstantsAdminPanel(
-		GlobalConstantsDao constantsDao,
-		ToolbarService toolbarService
-		){
-		
-		/* store objects */
-		this.constantsDao = constantsDao;
-		this.toolbarService = toolbarService;
-		
-		/* initialize ui */
-		initializeUI();
-	}
+   private final GlobalConstantsDao constantsDao;
+   private final ToolbarService toolbarService;
 
-	private void initializeUI() {
-		setHeading(GlobalConstantsMessages.INSTANCE.dialogTitle());
-		
-		/* create props */
-		globalConstantProps = GWT.create(GlobalConstantDtoPA.class);
-		
-		/* create store */
-		globalConstantStore = new ListStore<GlobalConstantDto>(globalConstantProps.dtoId());
-		globalConstantStore.addStoreUpdateHandler(new StoreUpdateHandler<GlobalConstantDto>() {
-			@Override
-			public void onUpdate(StoreUpdateEvent<GlobalConstantDto> event) {
-				for(GlobalConstantDto constant : event.getItems())
-					updateConstant(constant);
-			}
-		});
-		
-		/* create grid */
-		Component gridComponent = createGrid();
-		
-		DwContentPanel wrapper = new DwContentPanel();
-		wrapper.setLightHeader();
-		wrapper.setHeading(GlobalConstantsMessages.INSTANCE.dialogTitle());
-		wrapper.setInfoText(GlobalConstantsMessages.INSTANCE.dialogDescription());
-		wrapper.add(gridComponent);
-		
-		VerticalLayoutContainer outerWrapper = new VerticalLayoutContainer();
-		outerWrapper.add(wrapper, new VerticalLayoutData(1,1, new Margins(10)));
-		
-		add(outerWrapper);
-	}
+   private ListStore<GlobalConstantDto> globalConstantStore;
 
-	private void loadConstants() {
-		constantsDao.loadGlobalConstants(new RsAsyncCallback<List<GlobalConstantDto>>(){
-			@Override
-			public void onSuccess(List<GlobalConstantDto> result) {
-				/* clear store */
-				globalConstantStore.clear();
-				
-				for(GlobalConstantDto constant : result)
-					globalConstantStore.add(constant);
-				
-				enable();
-				unmask();
-			}
-		});
-	}
+   private GlobalConstantDtoPA globalConstantProps;
 
-	private Component createGrid() {
-		/* configure columns */ 
-		List<ColumnConfig<GlobalConstantDto, ?>> columns = new ArrayList<ColumnConfig<GlobalConstantDto, ?>>();
-		
-		/* name column */
-		ColumnConfig<GlobalConstantDto, String> nameConfig = new ColumnConfig<GlobalConstantDto, String>(globalConstantProps.name(), 200, GlobalConstantsMessages.INSTANCE.propertyName()); 
-		nameConfig.setMenuDisabled(true);
-		columns.add(nameConfig);
-		
-		/* value column */
-		ColumnConfig<GlobalConstantDto, String> valueConfig = new ColumnConfig<GlobalConstantDto, String>(globalConstantProps.value(), 200, GlobalConstantsMessages.INSTANCE.propertyValue()); 
-		valueConfig.setMenuDisabled(true);
-		columns.add(valueConfig);
-		
-		/* create grid */
-		final Grid<GlobalConstantDto> grid = new Grid<GlobalConstantDto>(globalConstantStore, new ColumnModel<GlobalConstantDto>(columns));
-		grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
-		grid.getView().setAutoExpandColumn(valueConfig);
-		grid.getView().setShowDirtyCells(false);
-		
-		// edit //
-		GridEditing<GlobalConstantDto> editing = new GridInlineEditing<GlobalConstantDto>(grid);
-		editing.addEditor(nameConfig, new TextField());
-		editing.addEditor(valueConfig, new TextField());
-		editing.addCompleteEditHandler(new CompleteEditHandler<GlobalConstantDto>() {
-			@Override
-			public void onCompleteEdit(
-					CompleteEditEvent<GlobalConstantDto> event) {
-				globalConstantStore.commitChanges();
-			}
-		});
-		
-		ToolbarWrapperPanel wrapper = new ToolbarWrapperPanel(grid){
-			
-			@Override
-			protected void removeAllButtonClicked(SelectionEvent<Item> event) {
-				ConfirmMessageBox cmb = new DwConfirmMessageBox(GlobalConstantsMessages.INSTANCE.confirmRemoveAllTitle(), GlobalConstantsMessages.INSTANCE.confirmRemoveAllText());
-				cmb.addDialogHideHandler(new DialogHideHandler() {
-					
-					@Override
-					public void onDialogHide(DialogHideEvent event) {
-						 if (event.getHideButton() == PredefinedButton.YES) 
-							 removeAllConstants();						
-					}
-				});
-				cmb.show();
-			}
+   @Inject
+   public GlobalConstantsAdminPanel(GlobalConstantsDao constantsDao, ToolbarService toolbarService) {
 
-			@Override
-			protected void removeButtonClicked(SelectEvent ce) {
-				List<GlobalConstantDto> constantsToRemove = grid.getSelectionModel().getSelectedItems();
-				if(null != constantsToRemove)
-					removeSelectedConstant(constantsToRemove);
-			}
-		};
-		
-		DwTextButton addConstantBtn = toolbarService.createSmallButtonLeft(GlobalConstantsMessages.INSTANCE.addConstantText(), BaseIcon.EDIT);
-		addConstantBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				addNewConstant();
-			}
-		});
-		
-		wrapper.getToolbar().add(addConstantBtn);
-		
-		/* remove buttons */
-		wrapper.addRemoveButtons();
-		
-		return wrapper;
-	}
+      /* store objects */
+      this.constantsDao = constantsDao;
+      this.toolbarService = toolbarService;
 
-	protected void addNewConstant() {
-		constantsDao.addNewConstant(new RsAsyncCallback<GlobalConstantDto>(){
-			@Override
-			public void onSuccess(GlobalConstantDto result) {
-				globalConstantStore.add(result);
-			}
-		});
-	}
-	
-	protected void removeAllConstants() {
-		constantsDao.removeAllConstants(new RsAsyncCallback<Void>(){
-			@Override
-			public void onSuccess(Void result) {
-				globalConstantStore.clear();
-			}
-		}, globalConstantStore.getAll());
-	}
-	
-	protected void removeSelectedConstant(final	List<GlobalConstantDto> constantsToRemove) {
-		constantsDao.removeConstants(constantsToRemove, new RsAsyncCallback<Void>(){
-			@Override
-			public void onSuccess(Void result) {
-				for(GlobalConstantDto constant: constantsToRemove)
-					globalConstantStore.remove(constant);
-			}
-		});
-	}
-	
-	protected void updateConstant(GlobalConstantDto constant) {
-		constantsDao.updateConstant(constant, new NotamCallback<GlobalConstantDto>(GlobalConstantsMessages.INSTANCE.constantSuccessfullyUpdated()));
-	}
+      /* initialize ui */
+      initializeUI();
+   }
 
-	public void notifyOfSelection() {
-		disable();
-		mask(BaseMessages.INSTANCE.loadingMsg());
+   private void initializeUI() {
+      setHeading(GlobalConstantsMessages.INSTANCE.dialogTitle());
 
-		loadConstants();
-	}
+      /* create props */
+      globalConstantProps = GWT.create(GlobalConstantDtoPA.class);
+
+      /* create store */
+      globalConstantStore = new ListStore<GlobalConstantDto>(globalConstantProps.dtoId());
+      globalConstantStore.addStoreUpdateHandler(new StoreUpdateHandler<GlobalConstantDto>() {
+         @Override
+         public void onUpdate(StoreUpdateEvent<GlobalConstantDto> event) {
+            for (GlobalConstantDto constant : event.getItems())
+               updateConstant(constant);
+         }
+      });
+
+      /* create grid */
+      Component gridComponent = createGrid();
+
+      DwContentPanel wrapper = new DwContentPanel();
+      wrapper.setLightHeader();
+      wrapper.setHeading(GlobalConstantsMessages.INSTANCE.dialogTitle());
+      wrapper.setInfoText(GlobalConstantsMessages.INSTANCE.dialogDescription());
+      wrapper.add(gridComponent);
+
+      VerticalLayoutContainer outerWrapper = new VerticalLayoutContainer();
+      outerWrapper.add(wrapper, new VerticalLayoutData(1, 1, new Margins(10)));
+
+      add(outerWrapper);
+   }
+
+   private void loadConstants() {
+      constantsDao.loadGlobalConstants(new RsAsyncCallback<List<GlobalConstantDto>>() {
+         @Override
+         public void onSuccess(List<GlobalConstantDto> result) {
+            /* clear store */
+            globalConstantStore.clear();
+
+            for (GlobalConstantDto constant : result)
+               globalConstantStore.add(constant);
+
+            enable();
+            unmask();
+         }
+      });
+   }
+
+   private Component createGrid() {
+      /* configure columns */
+      List<ColumnConfig<GlobalConstantDto, ?>> columns = new ArrayList<ColumnConfig<GlobalConstantDto, ?>>();
+
+      /* name column */
+      ColumnConfig<GlobalConstantDto, String> nameConfig = new ColumnConfig<GlobalConstantDto, String>(
+            globalConstantProps.name(), 200, GlobalConstantsMessages.INSTANCE.propertyName());
+      nameConfig.setMenuDisabled(true);
+      columns.add(nameConfig);
+
+      /* value column */
+      ColumnConfig<GlobalConstantDto, String> valueConfig = new ColumnConfig<GlobalConstantDto, String>(
+            globalConstantProps.value(), 200, GlobalConstantsMessages.INSTANCE.propertyValue());
+      valueConfig.setMenuDisabled(true);
+      columns.add(valueConfig);
+
+      /* create grid */
+      final Grid<GlobalConstantDto> grid = new Grid<GlobalConstantDto>(globalConstantStore,
+            new ColumnModel<GlobalConstantDto>(columns));
+      grid.getSelectionModel().setSelectionMode(SelectionMode.SINGLE);
+      grid.getView().setAutoExpandColumn(valueConfig);
+      grid.getView().setShowDirtyCells(false);
+
+      // edit //
+      GridEditing<GlobalConstantDto> editing = new GridInlineEditing<GlobalConstantDto>(grid);
+      editing.addEditor(nameConfig, new TextField());
+      editing.addEditor(valueConfig, new TextField());
+      editing.addCompleteEditHandler(new CompleteEditHandler<GlobalConstantDto>() {
+         @Override
+         public void onCompleteEdit(CompleteEditEvent<GlobalConstantDto> event) {
+            globalConstantStore.commitChanges();
+         }
+      });
+
+      ToolbarWrapperPanel wrapper = new ToolbarWrapperPanel(grid) {
+
+         @Override
+         protected void removeAllButtonClicked(SelectionEvent<Item> event) {
+            ConfirmMessageBox cmb = new DwConfirmMessageBox(GlobalConstantsMessages.INSTANCE.confirmRemoveAllTitle(),
+                  GlobalConstantsMessages.INSTANCE.confirmRemoveAllText());
+            cmb.addDialogHideHandler(new DialogHideHandler() {
+
+               @Override
+               public void onDialogHide(DialogHideEvent event) {
+                  if (event.getHideButton() == PredefinedButton.YES)
+                     removeAllConstants();
+               }
+            });
+            cmb.show();
+         }
+
+         @Override
+         protected void removeButtonClicked(SelectEvent ce) {
+            List<GlobalConstantDto> constantsToRemove = grid.getSelectionModel().getSelectedItems();
+            if (null != constantsToRemove)
+               removeSelectedConstant(constantsToRemove);
+         }
+      };
+
+      DwTextButton addConstantBtn = toolbarService
+            .createSmallButtonLeft(GlobalConstantsMessages.INSTANCE.addConstantText(), BaseIcon.EDIT);
+      addConstantBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            addNewConstant();
+         }
+      });
+
+      wrapper.getToolbar().add(addConstantBtn);
+
+      /* remove buttons */
+      wrapper.addRemoveButtons();
+
+      return wrapper;
+   }
+
+   protected void addNewConstant() {
+      constantsDao.addNewConstant(new RsAsyncCallback<GlobalConstantDto>() {
+         @Override
+         public void onSuccess(GlobalConstantDto result) {
+            globalConstantStore.add(result);
+         }
+      });
+   }
+
+   protected void removeAllConstants() {
+      constantsDao.removeAllConstants(new RsAsyncCallback<Void>() {
+         @Override
+         public void onSuccess(Void result) {
+            globalConstantStore.clear();
+         }
+      }, globalConstantStore.getAll());
+   }
+
+   protected void removeSelectedConstant(final List<GlobalConstantDto> constantsToRemove) {
+      constantsDao.removeConstants(constantsToRemove, new RsAsyncCallback<Void>() {
+         @Override
+         public void onSuccess(Void result) {
+            for (GlobalConstantDto constant : constantsToRemove)
+               globalConstantStore.remove(constant);
+         }
+      });
+   }
+
+   protected void updateConstant(GlobalConstantDto constant) {
+      constantsDao.updateConstant(constant,
+            new NotamCallback<GlobalConstantDto>(GlobalConstantsMessages.INSTANCE.constantSuccessfullyUpdated()));
+   }
+
+   public void notifyOfSelection() {
+      disable();
+      mask(BaseMessages.INSTANCE.loadingMsg());
+
+      loadConstants();
+   }
 
 }

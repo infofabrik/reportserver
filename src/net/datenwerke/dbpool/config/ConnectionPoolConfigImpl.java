@@ -36,10 +36,8 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
    private Date lastUpdated;
 
    @Inject
-   public ConnectionPoolConfigImpl(
-         @Nullable @ConnectionPoolConfigFile HierarchicalConfiguration config,
-         @Nullable @Assisted Long id
-         ) {
+   public ConnectionPoolConfigImpl(@Nullable @ConnectionPoolConfigFile HierarchicalConfiguration config,
+         @Nullable @Assisted Long id) {
       this.id = id;
       this.setPoolable(null != id);
 
@@ -48,7 +46,7 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
       /* try to set default values */
       if (null != config) {
          try {
-            if (! config.configurationsAt("pool.defaultconfig").isEmpty()) {
+            if (!config.configurationsAt("pool.defaultconfig").isEmpty()) {
                HierarchicalConfiguration defaultCon = config.configurationAt("pool.defaultconfig");
                if (null != defaultCon) {
                   Iterator<String> keys = defaultCon.getKeys();
@@ -64,7 +62,7 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
             properties = new Properties();
 
          try {
-            if (! config.configurationsAt("pool.pool").isEmpty()) {
+            if (!config.configurationsAt("pool.pool").isEmpty()) {
                HierarchicalConfiguration specCon = config.configurationAt("pool.pool" + id);
                if (null != specCon) {
                   Iterator<String> keys = specCon.getKeys();

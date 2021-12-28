@@ -14,17 +14,22 @@ import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSe
  */
 public interface DatasourceDefinitionConfigConfigurator {
 
-	Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField, DatasourceContainerProviderDto datasourceContainerProvider); 
-	
-	Iterable<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField, DatasourceContainerProviderDto datasourceContainerProvider);
-	
-	void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto);
-	
-	DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceContainerProviderDto datasourceContainerProvider);
+   Iterable<Widget> getDefaultAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField,
+         DatasourceContainerProviderDto datasourceContainerProvider);
 
-	boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceDefinitionConfigDto datasourceConfig);
+   Iterable<Widget> getOptionalAdditionalFormfields(DatasourceDefinitionConfigDto config,
+         DatasourceDefinitionDto datasourceDefinitionDto, DatasourceSelectionField datasourceSelectionField,
+         DatasourceContainerProviderDto datasourceContainerProvider);
 
-	boolean isValid(DatasourceContainerDto datasourceContainer);
+   void inheritChanges(DatasourceDefinitionConfigDto config, DatasourceDefinitionDto datasourceDefinitionDto);
 
-	boolean isReloadOnDatasourceChange();
+   DatasourceDefinitionConfigDto createConfigObject(DatasourceDefinitionDto datasourceDefinitionDto,
+         DatasourceContainerProviderDto datasourceContainerProvider);
+
+   boolean consumes(DatasourceDefinitionDto datasourceDefinitionDto, DatasourceDefinitionConfigDto datasourceConfig);
+
+   boolean isValid(DatasourceContainerDto datasourceContainer);
+
+   boolean isReloadOnDatasourceChange();
 }

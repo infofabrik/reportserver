@@ -4,13 +4,13 @@ import com.sencha.gxt.core.client.XTemplates;
 
 public class NullSafeFormatter implements XTemplates.Formatter<Object> {
 
-	@Override
-	public String format(Object data) {
-		return null == data ? "" : String.valueOf(data);
-	}
-	
-	public static NullSafeFormatter getFormat(){
-		return new NullSafeFormatter();
-	}
+   @Override
+   public String format(Object data) {
+      return null == data ? "" : String.valueOf(data);
+   }
+
+   public static NullSafeFormatter getFormat() {
+      return new NullSafeFormatter();
+   }
 
 }

@@ -39,223 +39,224 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  */
 abstract public class AbstractTreeMainPanel extends DwContentPanel {
 
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-mngr-main";
-	
-	@CssClassConstant
-	public static final String CSS_TOOLBAR_NAME = "rs-mngr-main-tb";
-		
-	@Inject
-	private static HookHandlerService hookHandler;
-	
-	@Inject private Provider<DwHookableToolbar> toolbarProvider;
-	
-	/**
-	 * Stores the tree manager that is invoked if forms are submitted.
-	 */
-	private final TreeDbManagerDao treeManager;
-	
-	final Map<MainPanelView, Widget> viewComponents = new HashMap<MainPanelView, Widget>();
-	final Map<MainPanelView, VerticalLayoutContainer> mainPanelLookup = new HashMap<MainPanelView, VerticalLayoutContainer>();
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-mngr-main";
 
-	private AbstractTreeNavigationPanel treePanel;
-	
-	private DwTabPanel tabPanel;
+   @CssClassConstant
+   public static final String CSS_TOOLBAR_NAME = "rs-mngr-main-tb";
 
-	private String showTabOnSelection;
+   @Inject
+   private static HookHandlerService hookHandler;
 
-	public AbstractTreeMainPanel(
-		TreeDbManagerDao treeManager
-		){
-		
-		/* store objects */
-		this.treeManager = treeManager;
-		
-		initializeUI();
-	}
-	
-	@Override
-	public String getCssName() {
-		return super.getCssName() + " " + CSS_NAME;
-	}
+   @Inject
+   private Provider<DwHookableToolbar> toolbarProvider;
 
-	public String getCssToolbarName() {
-		return CSS_TOOLBAR_NAME;
-	}
-	
-	private void initializeUI() {
-		setHeaderVisible(false);
-	}
-	
-	public TreeDbManagerDao getTreeDbManager(){
-		return treeManager;
-	}
+   /**
+    * Stores the tree manager that is invoked if forms are submitted.
+    */
+   private final TreeDbManagerDao treeManager;
 
-	public void displayTreeSelection(final List<MainPanelView> views, final AbstractNodeDto selectedNode, final UITree tree) {
-		/* clear container */
-		clear();
-		
-		/* clear maps */
-		viewComponents.clear();
-		mainPanelLookup.clear();
+   final Map<MainPanelView, Widget> viewComponents = new HashMap<MainPanelView, Widget>();
+   final Map<MainPanelView, VerticalLayoutContainer> mainPanelLookup = new HashMap<MainPanelView, VerticalLayoutContainer>();
 
-		/* build tab panel */
-		tabPanel = new DwTabPanel(GWT.<TabPanelAppearance> create(TabPanelBottomAppearance.class));
-		
-		tabPanel.setAutoSelect(false);
-		tabPanel.setBodyBorder(false);
-		tabPanel.setBorders(false);
-		
-		/* add module's widget */
-		boolean bFirst = true;
-		for(final MainPanelView view : views){
-			/* init */
-			
-			/* create inner tab panel */
-			final VerticalLayoutContainer viewWrapper = new VerticalLayoutContainer();
-			viewWrapper.setBorders(false);
-			
-			/* add toolbar */
-			DwHookableToolbar toolbar = toolbarProvider.get();
-			toolbar.getElement().addClassName(getCssToolbarName());
-			toolbar.setContainerName(getToolbarName());
-			viewWrapper.add(toolbar, new VerticalLayoutData(1,39));
-			
-			/* add to lookup table */
-			mainPanelLookup.put(view, viewWrapper);
-			
-			/* configure dwToolbar */
-			toolbar.getHookConfig().put("id", String.valueOf(selectedNode.getId()));
-			toolbar.getHookConfig().put("classname", selectedNode.getClass().getName());
-			toolbar.getHookConfig().put("path", treePanel.getPath(selectedNode));
-			
-			/* configure toolbar */
-			Collection<MainPanelViewToolbarConfiguratorHook> toolbarConfigurators = hookHandler.getHookers(MainPanelViewToolbarConfiguratorHook.class);
-			for(MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
-				configurator.mainPanelViewToolbarConfiguratorHook_addLeft(view, toolbar, selectedNode);
-			
-			toolbar.addBaseHookersLeft();
-			
-			toolbar.add(new FillToolItem());
-			
-			for(MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
-				configurator.mainPanelViewToolbarConfiguratorHook_addRight(view, toolbar, selectedNode);
-			
-			toolbar.addBaseHookersRight();
-			
-			/* add tab to panel */
-			TabItemConfig tabItemConfig = new TabItemConfig(view.getComponentHeader());
-			if(null != view.getIcon())
-				tabItemConfig.setIcon(view.getIcon());
-			tabPanel.add(viewWrapper, tabItemConfig);
-			
-			/* initialize view */
-			if(bFirst){
-				bFirst = false;
-				if(null == showTabOnSelection || ! viewsContain(showTabOnSelection, views) ){
-					display(view, selectedNode, tree, false);
-					tabPanel.setActiveWidget(viewWrapper);
-				}
-			}
-			
-			if(null != showTabOnSelection && showTabOnSelection.equals(view.getViewId())){
-				display(view, selectedNode, tree, false);
-				tabPanel.setActiveWidget(viewWrapper);
-			}
-			
-		}
-		
-		/* add listener to tab selection */
-		tabPanel.addSelectionHandler(new SelectionHandler<Widget>() {
-			@Override
-			public void onSelection(SelectionEvent<Widget> event) {
-				Widget viewWrapper = event.getSelectedItem();
-				for(Entry<MainPanelView, VerticalLayoutContainer> e : mainPanelLookup.entrySet()){
-					if(e.getValue() == viewWrapper){
-						display(e.getKey(), selectedNode, tree, false);
-						break;
-					}
-				}
-			}
-		});
+   private AbstractTreeNavigationPanel treePanel;
 
-		/* add tab panel */
-		setWidget(tabPanel);
-		
-		/* rerender */
-		forceLayout();
-	}
-	
-	private boolean viewsContain(String viewId, List<MainPanelView> views) {
-		for (MainPanelView view: views) 
-			if (null != view.getViewId() && view.getViewId().equals(viewId))
-				return true;
-		
-		return false;
-	}
+   private DwTabPanel tabPanel;
 
-	protected void display(MainPanelView view, AbstractNodeDto selectedNode, UITree tree, boolean select) {
-		VerticalLayoutContainer viewWrapper = mainPanelLookup.get(view);
-		if(null == viewWrapper)
-			return;
-		
-		if(! viewComponents.containsKey(view)){
-			view.initializeView(selectedNode, tree, treeManager, AbstractTreeMainPanel.this);
-			Widget viewComponent = view.getViewComponent(selectedNode);
-			viewComponents.put(view, viewComponent);
-			
-			viewWrapper.add(viewComponent, new VerticalLayoutData(1,1));
-			view.viewAdded(viewWrapper);
-		}
-		
-		if(select)
-			tabPanel.setActiveWidget(viewWrapper, false);
-		
-		if(view.isSticky())
-			showTabOnSelection = view.getViewId();
-		else
-			showTabOnSelection = null;
-		
-		viewWrapper.forceLayout();
-	}
+   private String showTabOnSelection;
 
-	protected String getToolbarName() {
-		return "AbstractTreeMainPanelToolbar";
-	}
+   public AbstractTreeMainPanel(TreeDbManagerDao treeManager) {
 
-	public void reloadView(MainPanelView view, AbstractNodeDto selectedNode) {
-		if(viewComponents.containsKey(view)){
-			Widget viewComponent = view.getViewComponent(selectedNode);
-			viewComponents.put(view, viewComponent);
-			
-			VerticalLayoutContainer mainPanel = mainPanelLookup.get(view);
+      /* store objects */
+      this.treeManager = treeManager;
 
-			mainPanel.clear();
-			mainPanel.add(viewComponent);
-			mainPanel.forceLayout();
-		}
-	}
+      initializeUI();
+   }
 
-	public void init(AbstractTreeManagerPanel managerPanel) {
-	}
+   @Override
+   public String getCssName() {
+      return super.getCssName() + " " + CSS_NAME;
+   }
 
-	public void setTree(AbstractTreeNavigationPanel treePanel) {
-		this.treePanel = treePanel;
-	}
-	
-	public void showTabOnSelection(String id) {
-		this.showTabOnSelection = id;
-	}
-	
-	public void showTab(String id, AbstractNodeDto selectedNode, UITree tree) {
-		if(null == id)
-			return;
-		
-		for(MainPanelView view : mainPanelLookup.keySet()){
-			if(id.equals(view.getViewId())){
-				display(view, selectedNode, tree, true);
-				break;
-			}
-		}
-	}
+   public String getCssToolbarName() {
+      return CSS_TOOLBAR_NAME;
+   }
+
+   private void initializeUI() {
+      setHeaderVisible(false);
+   }
+
+   public TreeDbManagerDao getTreeDbManager() {
+      return treeManager;
+   }
+
+   public void displayTreeSelection(final List<MainPanelView> views, final AbstractNodeDto selectedNode,
+         final UITree tree) {
+      /* clear container */
+      clear();
+
+      /* clear maps */
+      viewComponents.clear();
+      mainPanelLookup.clear();
+
+      /* build tab panel */
+      tabPanel = new DwTabPanel(GWT.<TabPanelAppearance>create(TabPanelBottomAppearance.class));
+
+      tabPanel.setAutoSelect(false);
+      tabPanel.setBodyBorder(false);
+      tabPanel.setBorders(false);
+
+      /* add module's widget */
+      boolean bFirst = true;
+      for (final MainPanelView view : views) {
+         /* init */
+
+         /* create inner tab panel */
+         final VerticalLayoutContainer viewWrapper = new VerticalLayoutContainer();
+         viewWrapper.setBorders(false);
+
+         /* add toolbar */
+         DwHookableToolbar toolbar = toolbarProvider.get();
+         toolbar.getElement().addClassName(getCssToolbarName());
+         toolbar.setContainerName(getToolbarName());
+         viewWrapper.add(toolbar, new VerticalLayoutData(1, 39));
+
+         /* add to lookup table */
+         mainPanelLookup.put(view, viewWrapper);
+
+         /* configure dwToolbar */
+         toolbar.getHookConfig().put("id", String.valueOf(selectedNode.getId()));
+         toolbar.getHookConfig().put("classname", selectedNode.getClass().getName());
+         toolbar.getHookConfig().put("path", treePanel.getPath(selectedNode));
+
+         /* configure toolbar */
+         Collection<MainPanelViewToolbarConfiguratorHook> toolbarConfigurators = hookHandler
+               .getHookers(MainPanelViewToolbarConfiguratorHook.class);
+         for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
+            configurator.mainPanelViewToolbarConfiguratorHook_addLeft(view, toolbar, selectedNode);
+
+         toolbar.addBaseHookersLeft();
+
+         toolbar.add(new FillToolItem());
+
+         for (MainPanelViewToolbarConfiguratorHook configurator : toolbarConfigurators)
+            configurator.mainPanelViewToolbarConfiguratorHook_addRight(view, toolbar, selectedNode);
+
+         toolbar.addBaseHookersRight();
+
+         /* add tab to panel */
+         TabItemConfig tabItemConfig = new TabItemConfig(view.getComponentHeader());
+         if (null != view.getIcon())
+            tabItemConfig.setIcon(view.getIcon());
+         tabPanel.add(viewWrapper, tabItemConfig);
+
+         /* initialize view */
+         if (bFirst) {
+            bFirst = false;
+            if (null == showTabOnSelection || !viewsContain(showTabOnSelection, views)) {
+               display(view, selectedNode, tree, false);
+               tabPanel.setActiveWidget(viewWrapper);
+            }
+         }
+
+         if (null != showTabOnSelection && showTabOnSelection.equals(view.getViewId())) {
+            display(view, selectedNode, tree, false);
+            tabPanel.setActiveWidget(viewWrapper);
+         }
+
+      }
+
+      /* add listener to tab selection */
+      tabPanel.addSelectionHandler(new SelectionHandler<Widget>() {
+         @Override
+         public void onSelection(SelectionEvent<Widget> event) {
+            Widget viewWrapper = event.getSelectedItem();
+            for (Entry<MainPanelView, VerticalLayoutContainer> e : mainPanelLookup.entrySet()) {
+               if (e.getValue() == viewWrapper) {
+                  display(e.getKey(), selectedNode, tree, false);
+                  break;
+               }
+            }
+         }
+      });
+
+      /* add tab panel */
+      setWidget(tabPanel);
+
+      /* rerender */
+      forceLayout();
+   }
+
+   private boolean viewsContain(String viewId, List<MainPanelView> views) {
+      for (MainPanelView view : views)
+         if (null != view.getViewId() && view.getViewId().equals(viewId))
+            return true;
+
+      return false;
+   }
+
+   protected void display(MainPanelView view, AbstractNodeDto selectedNode, UITree tree, boolean select) {
+      VerticalLayoutContainer viewWrapper = mainPanelLookup.get(view);
+      if (null == viewWrapper)
+         return;
+
+      if (!viewComponents.containsKey(view)) {
+         view.initializeView(selectedNode, tree, treeManager, AbstractTreeMainPanel.this);
+         Widget viewComponent = view.getViewComponent(selectedNode);
+         viewComponents.put(view, viewComponent);
+
+         viewWrapper.add(viewComponent, new VerticalLayoutData(1, 1));
+         view.viewAdded(viewWrapper);
+      }
+
+      if (select)
+         tabPanel.setActiveWidget(viewWrapper, false);
+
+      if (view.isSticky())
+         showTabOnSelection = view.getViewId();
+      else
+         showTabOnSelection = null;
+
+      viewWrapper.forceLayout();
+   }
+
+   protected String getToolbarName() {
+      return "AbstractTreeMainPanelToolbar";
+   }
+
+   public void reloadView(MainPanelView view, AbstractNodeDto selectedNode) {
+      if (viewComponents.containsKey(view)) {
+         Widget viewComponent = view.getViewComponent(selectedNode);
+         viewComponents.put(view, viewComponent);
+
+         VerticalLayoutContainer mainPanel = mainPanelLookup.get(view);
+
+         mainPanel.clear();
+         mainPanel.add(viewComponent);
+         mainPanel.forceLayout();
+      }
+   }
+
+   public void init(AbstractTreeManagerPanel managerPanel) {
+   }
+
+   public void setTree(AbstractTreeNavigationPanel treePanel) {
+      this.treePanel = treePanel;
+   }
+
+   public void showTabOnSelection(String id) {
+      this.showTabOnSelection = id;
+   }
+
+   public void showTab(String id, AbstractNodeDto selectedNode, UITree tree) {
+      if (null == id)
+         return;
+
+      for (MainPanelView view : mainPanelLookup.keySet()) {
+         if (id.equals(view.getViewId())) {
+            display(view, selectedNode, tree, true);
+            break;
+         }
+      }
+   }
 }

@@ -5,358 +5,370 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface EnumMessages extends Messages {
 
-	public static final EnumMessages INSTANCE = GWT.create(EnumMessages.class);
-	
-	public String avg();
-	public String count();
-	public String max();
-	public String min();
-	public String sum();
-	public String variance();
-	public String countDistinct();
+   public static final EnumMessages INSTANCE = GWT.create(EnumMessages.class);
 
-	public String asc();
-	public String desc();
-	
-	public String nullInclude();
-	public String nullExclude();
-	
-	public String numberDefault();
-	public String numberPercent();
-	public String numberScientific();
-	
-	public String currencyEuro();
-	public String currencyDollar();
-	public String currencyPound();
-	
-	public String none();
-	
-	public String AFN();
+   public String avg();
 
-	public String ALL();
+   public String count();
 
-	public String DZD();
+   public String max();
 
-	public String AOA();
+   public String min();
 
-	public String ARS();
+   public String sum();
 
-	public String AMD();
+   public String variance();
 
-	public String AWG();
+   public String countDistinct();
 
-	public String AUD();
+   public String asc();
 
-	public String AZN();
+   public String desc();
 
-	public String BSD();
+   public String nullInclude();
 
-	public String BHD();
+   public String nullExclude();
 
-	public String BDT();
+   public String numberDefault();
 
-	public String BBD();
+   public String numberPercent();
 
-	public String BYR();
+   public String numberScientific();
 
-	public String BZD();
+   public String currencyEuro();
 
-	public String BMD();
+   public String currencyDollar();
 
-	public String BTN();
+   public String currencyPound();
 
-	public String BOB();
+   public String none();
 
-	public String BAM();
+   public String AFN();
 
-	public String BWP();
+   public String ALL();
 
-	public String BRL();
+   public String DZD();
 
-	public String BND();
+   public String AOA();
 
-	public String BGN();
+   public String ARS();
 
-	public String BIF();
+   public String AMD();
 
-	public String KHR();
+   public String AWG();
 
-	public String CAD();
+   public String AUD();
 
-	public String CVE();
+   public String AZN();
 
-	public String KYD();
+   public String BSD();
 
-	public String CLP();
+   public String BHD();
 
-	public String CNY();
+   public String BDT();
 
-	public String COP();
+   public String BBD();
 
-	public String XOF();
+   public String BYR();
 
-	public String XAF();
+   public String BZD();
 
-	public String KMF();
+   public String BMD();
 
-	public String XPF();
+   public String BTN();
 
-	public String CDF();
+   public String BOB();
 
-	public String CRC();
+   public String BAM();
 
-	public String HRK();
+   public String BWP();
 
-	public String CUC();
+   public String BRL();
 
-	public String CUP();
+   public String BND();
 
-	public String CZK();
+   public String BGN();
 
-	public String DKK();
+   public String BIF();
 
-	public String DJF();
+   public String KHR();
 
-	public String DOP();
+   public String CAD();
 
-	public String XCD();
+   public String CVE();
 
-	public String EGP();
+   public String KYD();
 
-	public String SVC();
-	
-	public String SSP();
+   public String CLP();
 
-	public String ERN();
+   public String CNY();
 
-	public String ETB();
+   public String COP();
 
-	public String EUR();
+   public String XOF();
 
-	public String FKP();
+   public String XAF();
 
-	public String FJD();
+   public String KMF();
 
-	public String GMD();
+   public String XPF();
 
-	public String GEL();
+   public String CDF();
 
-	public String GHS();
+   public String CRC();
 
-	public String GIP();
+   public String HRK();
 
-	public String GTQ();
+   public String CUC();
 
-	public String GGP();
+   public String CUP();
 
-	public String GNF();
+   public String CZK();
 
-	public String GYD();
+   public String DKK();
 
-	public String HTG();
+   public String DJF();
 
-	public String HNL();
+   public String DOP();
 
-	public String HKD();
+   public String XCD();
 
-	public String HUF();
+   public String EGP();
 
-	public String ISK();
+   public String SVC();
 
-	public String INR();
+   public String SSP();
 
-	public String IDR();
+   public String ERN();
 
-	public String XDR();
+   public String ETB();
 
-	public String IRR();
+   public String EUR();
 
-	public String IQD();
+   public String FKP();
 
-	public String IMP();
+   public String FJD();
 
-	public String ILS();
+   public String GMD();
 
-	public String JMD();
+   public String GEL();
 
-	public String JPY();
+   public String GHS();
 
-	public String JEP();
+   public String GIP();
 
-	public String JOD();
+   public String GTQ();
 
-	public String KZT();
+   public String GGP();
 
-	public String KES();
+   public String GNF();
 
-	public String KPW();
+   public String GYD();
 
-	public String KRW();
+   public String HTG();
 
-	public String KWD();
+   public String HNL();
 
-	public String KGS();
+   public String HKD();
 
-	public String LAK();
+   public String HUF();
 
-	public String LBP();
+   public String ISK();
 
-	public String LSL();
+   public String INR();
 
-	public String LRD();
+   public String IDR();
 
-	public String LYD();
+   public String XDR();
 
-	public String LTL();
+   public String IRR();
 
-	public String MOP();
+   public String IQD();
 
-	public String MKD();
+   public String IMP();
 
-	public String MGA();
+   public String ILS();
 
-	public String MWK();
+   public String JMD();
 
-	public String MYR();
+   public String JPY();
 
-	public String MVR();
+   public String JEP();
 
-	public String MRU();
+   public String JOD();
 
-	public String MUR();
+   public String KZT();
 
-	public String MXN();
+   public String KES();
 
-	public String MDL();
+   public String KPW();
 
-	public String MNT();
+   public String KRW();
 
-	public String MAD();
+   public String KWD();
 
-	public String MZN();
+   public String KGS();
 
-	public String MMK();
+   public String LAK();
 
-	public String NAD();
+   public String LBP();
 
-	public String NPR();
+   public String LSL();
 
-	public String ANG();
+   public String LRD();
 
-	public String NZD();
+   public String LYD();
 
-	public String NIO();
+   public String LTL();
 
-	public String NGN();
+   public String MOP();
 
-	public String NOK();
+   public String MKD();
 
-	public String OMR();
+   public String MGA();
 
-	public String PKR();
+   public String MWK();
 
-	public String PAB();
+   public String MYR();
 
-	public String PGK();
+   public String MVR();
 
-	public String PYG();
+   public String MRU();
 
-	public String PEN();
+   public String MUR();
 
-	public String PHP();
+   public String MXN();
 
-	public String PLN();
+   public String MDL();
 
-	public String QAR();
+   public String MNT();
 
-	public String RON();
+   public String MAD();
 
-	public String RUB();
+   public String MZN();
 
-	public String RWF();
+   public String MMK();
 
-	public String SHP();
+   public String NAD();
 
-	public String WST();
+   public String NPR();
 
-	public String SAR();
+   public String ANG();
 
-	public String SPL();
+   public String NZD();
 
-	public String RSD();
+   public String NIO();
 
-	public String SCR();
+   public String NGN();
 
-	public String SLL();
+   public String NOK();
 
-	public String SGD();
+   public String OMR();
 
-	public String SBD();
+   public String PKR();
 
-	public String SOS();
+   public String PAB();
 
-	public String ZAR();
+   public String PGK();
 
-	public String LKR();
+   public String PYG();
 
-	public String SDG();
+   public String PEN();
 
-	public String SRD();
+   public String PHP();
 
-	public String SZL();
+   public String PLN();
 
-	public String SEK();
+   public String QAR();
 
-	public String CHF();
+   public String RON();
 
-	public String SYP();
+   public String RUB();
 
-	public String STN();
+   public String RWF();
 
-	public String TWD();
+   public String SHP();
 
-	public String TJS();
+   public String WST();
 
-	public String TZS();
+   public String SAR();
 
-	public String THB();
+   public String SPL();
 
-	public String TOP();
+   public String RSD();
 
-	public String TTD();
+   public String SCR();
 
-	public String TND();
+   public String SLL();
 
-	public String TRY();
+   public String SGD();
 
-	public String TMT();
+   public String SBD();
 
-	public String TVD();
+   public String SOS();
 
-	public String UGX();
+   public String ZAR();
 
-	public String UAH();
+   public String LKR();
 
-	public String AED();
+   public String SDG();
 
-	public String GBP();
+   public String SRD();
 
-	public String USD();
+   public String SZL();
 
-	public String UYU();
+   public String SEK();
 
-	public String UZS();
+   public String CHF();
 
-	public String VUV();
+   public String SYP();
 
-	public String VEF();
+   public String STN();
 
-	public String VND();
+   public String TWD();
 
-	public String YER();
+   public String TJS();
 
-	public String ZMW();
+   public String TZS();
 
-	public String ZWL();
+   public String THB();
+
+   public String TOP();
+
+   public String TTD();
+
+   public String TND();
+
+   public String TRY();
+
+   public String TMT();
+
+   public String TVD();
+
+   public String UGX();
+
+   public String UAH();
+
+   public String AED();
+
+   public String GBP();
+
+   public String USD();
+
+   public String UYU();
+
+   public String UZS();
+
+   public String VUV();
+
+   public String VEF();
+
+   public String VND();
+
+   public String YER();
+
+   public String ZMW();
+
+   public String ZWL();
 
 }

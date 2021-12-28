@@ -21,7 +21,7 @@ public abstract class Export2JSONC extends ReportExporterImpl {
 
    @Override
    public String getExportTitle() {
-      return ReportExporterMessages.INSTANCE.jsonc(); //$NON-NLS-1$
+      return ReportExporterMessages.INSTANCE.jsonc(); // $NON-NLS-1$
    }
 
    @Override

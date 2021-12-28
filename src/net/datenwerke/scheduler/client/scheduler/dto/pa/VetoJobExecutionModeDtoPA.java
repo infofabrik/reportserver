@@ -13,6 +13,4 @@ import net.datenwerke.scheduler.client.scheduler.dto.VetoJobExecutionModeDto;
 @CorrespondingPoso(net.datenwerke.scheduler.service.scheduler.helper.VetoJobExecutionMode.class)
 public interface VetoJobExecutionModeDtoPA extends PropertyAccess<VetoJobExecutionModeDto> {
 
-
-
 }

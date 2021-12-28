@@ -7,5 +7,5 @@ import com.google.inject.ImplementedBy;
 
 @ImplementedBy(ExcelUtilsServiceImpl.class)
 public interface ExcelUtilsService {
-	public void setCellComment(Workbook workbook, int cellsCount, Row row, String text);
+   public void setCellComment(Workbook workbook, int cellsCount, Row row, String text);
 }

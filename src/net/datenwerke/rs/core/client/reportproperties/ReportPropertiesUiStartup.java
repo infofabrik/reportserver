@@ -8,14 +8,13 @@ import net.datenwerke.rs.core.client.reportproperties.hookers.ReportPropertiesVi
 
 public class ReportPropertiesUiStartup {
 
-	@Inject
-	public ReportPropertiesUiStartup(
-		HookHandlerService hookHandler,
-		
-		ReportPropertiesViewProviderHooker mainPanelViewProvider
-		){
-		
-		hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider, HookHandlerService.PRIORITY_LOW -5);
-	
-	}
+   @Inject
+   public ReportPropertiesUiStartup(HookHandlerService hookHandler,
+
+         ReportPropertiesViewProviderHooker mainPanelViewProvider) {
+
+      hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider,
+            HookHandlerService.PRIORITY_LOW - 5);
+
+   }
 }

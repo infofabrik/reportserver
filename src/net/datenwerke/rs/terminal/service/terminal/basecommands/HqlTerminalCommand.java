@@ -28,90 +28,79 @@ import net.datenwerke.rs.utils.jpa.EntityUtils;
 
 public class HqlTerminalCommand implements TerminalCommandHook {
 
-	public static final String BASE_COMMAND = "hql";
-	
-	private final Provider<EntityManager> entityManagerProvider;
-	private final EntityUtils entityUtils;
-	
-	@Inject
-	public HqlTerminalCommand(
-		Provider<EntityManager> entityManagerProvider,
-		EntityUtils entityUtils
-		){
-		
-		/* store objects */
-		this.entityManagerProvider = entityManagerProvider;
-		this.entityUtils = entityUtils;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   public static final String BASE_COMMAND = "hql";
 
-	@CliHelpMessage(
-		messageClass = TerminalMessages.class,
-		name = BASE_COMMAND,
-		description = "commandHql_description",
-		args = {
-			@Argument(flag="w", description="commandHql_wFlag")
-		},
-		nonOptArgs = {
-			@NonOptArgument(name="query", description="commandHql_hqlArgument")
-		}
-	)
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) {
-		String arg = StringUtils.join(parser.getNonOptionArguments(), " ");
+   private final Provider<EntityManager> entityManagerProvider;
+   private final EntityUtils entityUtils;
 
-		try{
-			/* execute query */
-			List resultList = entityManagerProvider.get().createQuery(arg).getResultList();
-			
-			/* prepare result */
-			CommandResult result = new CommandResult();
-			
-			/* simple result */
-			if(! resultList.isEmpty() && entityUtils.isEntity(resultList.get(0))){
-				if(resultList.get(0) instanceof Object[]){
-					RSTableModel table = new RSTableModel();
-					
-					for(Object objArr : resultList){
-						List<String> row = new ArrayList<String>();
-						for(Object obj : (Object[])objArr){
-							if(null != obj)
-								row.add(obj.toString());
-							else
-								row.add("null");
-						}
-						table.addDataRow(new RSStringTableRow(row));
-					}
-					
-					result.addResultTable(table);
-				} else {
-					List<String> stringResults = new ArrayList<String>();
-					for(Object obj : resultList)
-						stringResults.add(null == obj ? "NULL" : obj.toString());
-					CommandResultList entryList = new CommandResultList(stringResults);
-					entryList.setDenyBreakUp(true);
-					result.addEntry(entryList);
-				}
-			}
-			
-			if(parser.hasOption("w"))
-				result.setDisplayMode(DisplayMode.WINDOW);
-			
-			return result;
-		} catch(NoResultException e){
-			return new CommandResult("No result found");
-		} catch(Exception e){
-			return new CommandResult("Could not execute query: " + e.getMessage());
-		}
-	}
+   @Inject
+   public HqlTerminalCommand(Provider<EntityManager> entityManagerProvider, EntityUtils entityUtils) {
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+      /* store objects */
+      this.entityManagerProvider = entityManagerProvider;
+      this.entityUtils = entityUtils;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandHql_description", args = {
+         @Argument(flag = "w", description = "commandHql_wFlag") }, nonOptArgs = {
+               @NonOptArgument(name = "query", description = "commandHql_hqlArgument") })
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) {
+      String arg = StringUtils.join(parser.getNonOptionArguments(), " ");
+
+      try {
+         /* execute query */
+         List resultList = entityManagerProvider.get().createQuery(arg).getResultList();
+
+         /* prepare result */
+         CommandResult result = new CommandResult();
+
+         /* simple result */
+         if (!resultList.isEmpty() && entityUtils.isEntity(resultList.get(0))) {
+            if (resultList.get(0) instanceof Object[]) {
+               RSTableModel table = new RSTableModel();
+
+               for (Object objArr : resultList) {
+                  List<String> row = new ArrayList<String>();
+                  for (Object obj : (Object[]) objArr) {
+                     if (null != obj)
+                        row.add(obj.toString());
+                     else
+                        row.add("null");
+                  }
+                  table.addDataRow(new RSStringTableRow(row));
+               }
+
+               result.addResultTable(table);
+            } else {
+               List<String> stringResults = new ArrayList<String>();
+               for (Object obj : resultList)
+                  stringResults.add(null == obj ? "NULL" : obj.toString());
+               CommandResultList entryList = new CommandResultList(stringResults);
+               entryList.setDenyBreakUp(true);
+               result.addEntry(entryList);
+            }
+         }
+
+         if (parser.hasOption("w"))
+            result.setDisplayMode(DisplayMode.WINDOW);
+
+         return result;
+      } catch (NoResultException e) {
+         return new CommandResult("No result found");
+      } catch (Exception e) {
+         return new CommandResult("Could not execute query: " + e.getMessage());
+      }
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

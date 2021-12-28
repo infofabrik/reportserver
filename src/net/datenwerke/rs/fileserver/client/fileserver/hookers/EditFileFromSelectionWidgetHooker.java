@@ -16,41 +16,37 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class EditFileFromSelectionWidgetHooker implements AddSelectionFieldMenuItemHook {
 
-	private final FileServerUiService fileService;
-	
-	@Inject
-	public EditFileFromSelectionWidgetHooker(FileServerUiService fileService) {
-		this.fileService = fileService;
-	}
+   private final FileServerUiService fileService;
 
+   @Inject
+   public EditFileFromSelectionWidgetHooker(FileServerUiService fileService) {
+      this.fileService = fileService;
+   }
 
+   @Override
+   public void addMenuEntries(SingleTreeSelectionField field, Menu menu, final MenuNodeProvider provider) {
+      if (!field.isValidType(FileServerFileDtoDec.class))
+         return;
 
-	@Override
-	public void addMenuEntries(SingleTreeSelectionField field, Menu menu,
-			final MenuNodeProvider provider) {
-		if(! field.isValidType(FileServerFileDtoDec.class))
-			return;
+      final MenuItem editItem = new DwMenuItem(BaseMessages.INSTANCE.edit(), BaseIcon.EDIT);
+      menu.add(editItem);
 
-		final MenuItem editItem = new DwMenuItem(BaseMessages.INSTANCE.edit(),BaseIcon.EDIT);
-		menu.add(editItem);
-		
-		editItem.addSelectionHandler( event -> {
-			AbstractNodeDto node = provider.getNode();
-			if(node instanceof FileServerFileDto)
-				fileService.editFileDirectly((FileServerFileDto) node, true, false, false, false);
-		});
-		
-		editItem.disable();
-		
-		menu.addShowHandler( event -> {
-			AbstractNodeDto node = provider.getNode();
-			if(node instanceof FileServerFileDto)
-				editItem.enable();
-			else
-				editItem.disable();
-		});
-		
-	}
+      editItem.addSelectionHandler(event -> {
+         AbstractNodeDto node = provider.getNode();
+         if (node instanceof FileServerFileDto)
+            fileService.editFileDirectly((FileServerFileDto) node, true, false, false, false);
+      });
 
+      editItem.disable();
+
+      menu.addShowHandler(event -> {
+         AbstractNodeDto node = provider.getNode();
+         if (node instanceof FileServerFileDto)
+            editItem.enable();
+         else
+            editItem.disable();
+      });
+
+   }
 
 }

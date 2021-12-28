@@ -10,15 +10,14 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public interface LoginHandlerAsync {
 
-	void authenticate(AuthToken[] tokens,
-			AsyncCallback<AuthenticateResultDto> callback);
+   void authenticate(AuthToken[] tokens, AsyncCallback<AuthenticateResultDto> callback);
 
-	void getRequiredClientModules(AsyncCallback<Set<String>> callback);
+   void getRequiredClientModules(AsyncCallback<Set<String>> callback);
 
-	void getSessionTimeout(AsyncCallback<Integer> callback);
+   void getSessionTimeout(AsyncCallback<Integer> callback);
 
-	void isAuthenticated(AsyncCallback<UserDto> callback);
+   void isAuthenticated(AsyncCallback<UserDto> callback);
 
-	void logoff(AsyncCallback<String> callback);
+   void logoff(AsyncCallback<String> callback);
 
 }

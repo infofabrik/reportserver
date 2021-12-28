@@ -23,50 +23,49 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  *
  */
 @Singleton
-public class HeadlineConfigurator extends ParameterConfiguratorImpl<HeadlineParameterDefinitionDto, HeadlineParameterInstanceDto> {
+public class HeadlineConfigurator
+      extends ParameterConfiguratorImpl<HeadlineParameterDefinitionDto, HeadlineParameterInstanceDto> {
 
-	@Override
-	public Widget getEditComponentForDefinition(HeadlineParameterDefinitionDto definition, ReportDto report) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		form.addField(String.class, HeadlineParameterDefinitionDtoPA.INSTANCE.value(), RsMessages.INSTANCE.headline()); 
-		
-		/* bind definition */
-		form.bind(definition);
-		
-		return form;
-	}
+   @Override
+   public Widget getEditComponentForDefinition(HeadlineParameterDefinitionDto definition, ReportDto report) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-	public String getName() {
-		return RsMessages.INSTANCE.headline(); 
-	}
+      form.addField(String.class, HeadlineParameterDefinitionDtoPA.INSTANCE.value(), RsMessages.INSTANCE.headline());
 
-	@Override
-	protected HeadlineParameterDefinitionDto doGetNewDto() {
-		return new HeadlineParameterDefinitionDto();
-	}
-	
-	@Override
-	public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
-		return HeadlineParameterDefinitionDto.class.equals(type);
-	}
+      /* bind definition */
+      form.bind(definition);
 
-	public ImageResource getIcon() {
-		return BaseIcon.HEADER.toImageResource();
-	}
+      return form;
+   }
 
-	@Override
-	public ParameterType getType(){
-		return ParameterType.Separator;
-	}
+   public String getName() {
+      return RsMessages.INSTANCE.headline();
+   }
 
+   @Override
+   protected HeadlineParameterDefinitionDto doGetNewDto() {
+      return new HeadlineParameterDefinitionDto();
+   }
 
-	@Override
-	protected Widget doGetEditComponentForInstance(
-			HeadlineParameterInstanceDto instance,
-			Collection<ParameterInstanceDto> relevantInstances, HeadlineParameterDefinitionDto definition, boolean initial, int labelWidth, String executeReportToken, ReportDto report) {
-		return SeparatorTextLabel.createHeadlineLarge(definition.getValue());
-	}
+   @Override
+   public boolean consumes(Class<? extends ParameterDefinitionDto> type) {
+      return HeadlineParameterDefinitionDto.class.equals(type);
+   }
 
+   public ImageResource getIcon() {
+      return BaseIcon.HEADER.toImageResource();
+   }
+
+   @Override
+   public ParameterType getType() {
+      return ParameterType.Separator;
+   }
+
+   @Override
+   protected Widget doGetEditComponentForInstance(HeadlineParameterInstanceDto instance,
+         Collection<ParameterInstanceDto> relevantInstances, HeadlineParameterDefinitionDto definition, boolean initial,
+         int labelWidth, String executeReportToken, ReportDto report) {
+      return SeparatorTextLabel.createHeadlineLarge(definition.getValue());
+   }
 
 }

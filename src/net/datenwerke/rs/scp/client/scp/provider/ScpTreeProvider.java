@@ -26,12 +26,8 @@ public class ScpTreeProvider implements Provider<ManagerHelperTree> {
    private final ManagerHelperTreeFactory treeFactory;
 
    @Inject
-   public ScpTreeProvider(
-         TreeDBUIService treeDBUIService, 
-         DatasinkTreeLoaderDao datasinkTreeLoader,
-         DatasinkTreeManagerDao datasinkTreeManager, 
-         ManagerHelperTreeFactory treeFactory
-         ) {
+   public ScpTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
 
       this.treeDBUIService = treeDBUIService;
       this.datasinkTreeLoader = datasinkTreeLoader;

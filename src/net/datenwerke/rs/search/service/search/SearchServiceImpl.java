@@ -67,15 +67,9 @@ public class SearchServiceImpl implements SearchService {
    private final HashMap<Class<?>, Set<String>> fieldCache = new HashMap<>();
 
    @Inject
-   public SearchServiceImpl(
-         Provider<EntityManager> emp, 
-         EntityUtils entityUtils, 
-         ReflectionService reflectionService,
-         HookHandlerService hookHandler, 
-         ConfigService configService, 
-         DtoService dtoService,
-         final SearchIndexService searchIndexService, 
-         EventBus eventBus) {
+   public SearchServiceImpl(Provider<EntityManager> emp, EntityUtils entityUtils, ReflectionService reflectionService,
+         HookHandlerService hookHandler, ConfigService configService, DtoService dtoService,
+         final SearchIndexService searchIndexService, EventBus eventBus) {
 
       /* store objects */
       this.entityManagerProvider = emp;
@@ -179,11 +173,8 @@ public class SearchServiceImpl implements SearchService {
          }
       }
 
-      final Set<SearchResultTag> tagSet = overallEntryList
-            .stream()
-            .flatMap(e -> e.getTags().stream())
-            .collect(toSet());
-      
+      final Set<SearchResultTag> tagSet = overallEntryList.stream().flatMap(e -> e.getTags().stream()).collect(toSet());
+
       resultList.setTags(tagSet);
 
       /* filter by tags */
@@ -205,11 +196,11 @@ public class SearchServiceImpl implements SearchService {
                      Class<?> filterDto2PosoMapperType = Class.forName(filterTagsNext.getValue());
                      Object filterObject = filterDto2PosoMapperType.newInstance();
                      Class<?> filterBaseType = null;
-                     if (filterObject instanceof Dto2PosoMapper) 
+                     if (filterObject instanceof Dto2PosoMapper)
                         filterBaseType = dtoService.getPosoFromDtoMapper((Dto2PosoMapper) filterObject);
-                     else 
+                     else
                         filterBaseType = filterObject.getClass();
-                     
+
                      Iterator<SearchResultTag> tagsIt = tags.iterator();
                      while (tagsIt.hasNext()) {
                         SearchResultTag tagsNext = tagsIt.next();

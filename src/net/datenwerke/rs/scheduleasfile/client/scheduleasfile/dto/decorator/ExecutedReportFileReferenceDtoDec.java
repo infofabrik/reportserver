@@ -9,20 +9,20 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class ExecutedReportFileReferenceDtoDec extends ExecutedReportFileReferenceDto {
 
-	private static final long serialVersionUID = 1L;
+   private static final long serialVersionUID = 1L;
 
-	public ExecutedReportFileReferenceDtoDec() {
-		super();
-	}
-	
-	@Override
-	public BaseIcon toIcon() {
-		return BaseIcon.from(getIconStr());
-	}
-	
-	@Override
-	public String toTypeDescription() {
-		return getTypeStr();
-	}
+   public ExecutedReportFileReferenceDtoDec() {
+      super();
+   }
+
+   @Override
+   public BaseIcon toIcon() {
+      return BaseIcon.from(getIconStr());
+   }
+
+   @Override
+   public String toTypeDescription() {
+      return getTypeStr();
+   }
 
 }

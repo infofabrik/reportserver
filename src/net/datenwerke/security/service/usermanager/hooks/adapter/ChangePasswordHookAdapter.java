@@ -10,15 +10,12 @@ import net.datenwerke.security.service.usermanager.hooks.ChangePasswordHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class ChangePasswordHookAdapter implements ChangePasswordHook {
 
-	@Override
-	public void beforePasswordChanged(User user, String newPassword)  {
-	}
+   @Override
+   public void beforePasswordChanged(User user, String newPassword) {
+   }
 
-
-	@Override
-	public void afterPasswordChanged(User user)  {
-	}
-
-
+   @Override
+   public void afterPasswordChanged(User user) {
+   }
 
 }

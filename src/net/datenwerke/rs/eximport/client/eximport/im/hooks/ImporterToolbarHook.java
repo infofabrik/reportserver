@@ -7,6 +7,6 @@ import net.datenwerke.rs.eximport.client.eximport.im.ui.ImportMainPanel;
 
 public interface ImporterToolbarHook extends Hook {
 
-	void enhance(ToolBar mainToolbar, ImportMainPanel importMainPanel);
-	
+   void enhance(ToolBar mainToolbar, ImportMainPanel importMainPanel);
+
 }

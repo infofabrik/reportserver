@@ -11,15 +11,12 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public interface JasperReportRpcServiceAsync {
 
-	void updateJRXMLFile(JasperReportJRXMLFileDto file,
-			AsyncCallback<AbstractNodeDto> callback);
+   void updateJRXMLFile(JasperReportJRXMLFileDto file, AsyncCallback<AbstractNodeDto> callback);
 
-	void removeJRXMLFile(JasperReportJRXMLFileDto file,
-			AsyncCallback<AbstractNodeDto> callback);
+   void removeJRXMLFile(JasperReportJRXMLFileDto file, AsyncCallback<AbstractNodeDto> callback);
 
-	void removeAllSubReports(JasperReportDto reoportDto,
-			AsyncCallback<AbstractNodeDto> callback);
+   void removeAllSubReports(JasperReportDto reoportDto, AsyncCallback<AbstractNodeDto> callback);
 
-	void uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files, AsyncCallback<JasperReportDto> callback);
+   void uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files, AsyncCallback<JasperReportDto> callback);
 
 }

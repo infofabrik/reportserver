@@ -9,11 +9,10 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterInstance;
  *
  */
 @Deprecated
-public interface ParameterInstanceCreatedFromDtoHook extends Hook{
-	
-	public boolean consumes(ParameterInstanceDto parameterInstanceDto);
+public interface ParameterInstanceCreatedFromDtoHook extends Hook {
 
-	public void posoCreated(ParameterInstanceDto parameterInstanceDto, ParameterInstance parameterInstance);
-	
+   public boolean consumes(ParameterInstanceDto parameterInstanceDto);
+
+   public void posoCreated(ParameterInstanceDto parameterInstanceDto, ParameterInstance parameterInstance);
 
 }

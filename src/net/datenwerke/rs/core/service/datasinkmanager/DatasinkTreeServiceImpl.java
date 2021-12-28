@@ -40,11 +40,9 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
    private final Provider<ConfigService> configServiceProvider;
 
    @Inject
-   public DatasinkTreeServiceImpl(
-         Provider<EntityManager> entityManagerProvider,
+   public DatasinkTreeServiceImpl(Provider<EntityManager> entityManagerProvider,
          @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDataSourceDefinitions,
-         Provider<ConfigService> configServiceProvider
-         ) {
+         Provider<ConfigService> configServiceProvider) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
@@ -103,7 +101,7 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
    public <T extends DatasinkDefinition> Optional<T> getDefaultDatasink(Class<T> type, String defaultDatasinkIdProperty,
          String defaultDatasinkNameProperty) {
       final ConfigService configService = configServiceProvider.get();
-      
+
       Configuration config = configService.getConfigFailsafe(DatasinkModule.CONFIG_FILE);
 
       DatasinkDefinition datasink = null;

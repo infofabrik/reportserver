@@ -6,15 +6,15 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCCusto
 
 public class SFFCCustomComponentImpl implements SFFCCustomComponent {
 
-	private final Widget widget;
+   private final Widget widget;
 
-	public SFFCCustomComponentImpl(Widget widget) {
-		this.widget = widget;
-	}
-	
-	@Override
-	public Widget getComponent() {
-		return widget;
-	}
+   public SFFCCustomComponentImpl(Widget widget) {
+      this.widget = widget;
+   }
+
+   @Override
+   public Widget getComponent() {
+      return widget;
+   }
 
 }

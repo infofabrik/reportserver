@@ -7,10 +7,11 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.ClientEncryptionServic
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
 /**
- * The PbeModule provides several functions for getting an {@link EncryptionService} instance.
+ * The PbeModule provides several functions for getting an
+ * {@link EncryptionService} instance.
  * 
- * <h1>Description</h1>
- * The PbeModule provides several functions for getting an {@link EncryptionService} instance.
+ * <h1>Description</h1> The PbeModule provides several functions for getting an
+ * {@link EncryptionService} instance.
  * 
  * 
  * <h1>Content</h1>
@@ -65,13 +66,12 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
  * <li>{@link org.bouncycastle.util.encoders.Hex}</li>
  * </ul>
  */
-public class PbeModule extends AbstractModule{
+public class PbeModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(PbeService.class).to(PbeServiceImpl.class).in(Singleton.class);
-		bind(PbeConfig.class);
-	}
-	
-	
+   @Override
+   protected void configure() {
+      bind(PbeService.class).to(PbeServiceImpl.class).in(Singleton.class);
+      bind(PbeConfig.class);
+   }
+
 }

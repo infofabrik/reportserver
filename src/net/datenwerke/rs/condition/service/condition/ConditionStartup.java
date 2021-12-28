@@ -25,41 +25,35 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class ConditionStartup {
 
-	@Inject
-	public ConditionStartup(
-		HookHandlerService hookHandler,
-		
-		Provider<ConditionTerminalCommand> condTerminalCommand,
-		Provider<CreateConditionCommand> createCommand,
-		Provider<ListConditionCommand> listCommand,
-		Provider<RemoveConditionCommand> removeCommand,
-		
-		Provider<ScheduleConditionConfigProvider> conditionConfigProvider,
-		
-		Provider<SchedulerVetoProvider> vetoProvider,
-		
-		Provider<NotIsEmptySchedulerCondition> notIsEmptyCondition,
-		
-		EventBus eventBus,
-		HandleReportRemoveEvent reportRemoveEventHandler,
-		HandleReportForceRemoveEvent reportForceRemoveEventHandler
-		){
-		
-		
-		hookHandler.attachHooker(TerminalCommandHook.class, condTerminalCommand);
-		
-		hookHandler.attachHooker(ConditionSubCommandHook.class, createCommand);
-		hookHandler.attachHooker(ConditionSubCommandHook.class, listCommand);
-		hookHandler.attachHooker(ConditionSubCommandHook.class, removeCommand);
-		
-		hookHandler.attachHooker(ConditionProviderHook.class, notIsEmptyCondition);
-		
-		hookHandler.attachHooker(ScheduleConfigProviderHook.class, conditionConfigProvider);
-		
-		hookHandler.attachHooker(SchedulerExecutionHook.class, vetoProvider);
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, TableReport.class, reportRemoveEventHandler);
-		eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, TableReport.class, reportForceRemoveEventHandler);
-	}
-	
+   @Inject
+   public ConditionStartup(HookHandlerService hookHandler,
+
+         Provider<ConditionTerminalCommand> condTerminalCommand, Provider<CreateConditionCommand> createCommand,
+         Provider<ListConditionCommand> listCommand, Provider<RemoveConditionCommand> removeCommand,
+
+         Provider<ScheduleConditionConfigProvider> conditionConfigProvider,
+
+         Provider<SchedulerVetoProvider> vetoProvider,
+
+         Provider<NotIsEmptySchedulerCondition> notIsEmptyCondition,
+
+         EventBus eventBus, HandleReportRemoveEvent reportRemoveEventHandler,
+         HandleReportForceRemoveEvent reportForceRemoveEventHandler) {
+
+      hookHandler.attachHooker(TerminalCommandHook.class, condTerminalCommand);
+
+      hookHandler.attachHooker(ConditionSubCommandHook.class, createCommand);
+      hookHandler.attachHooker(ConditionSubCommandHook.class, listCommand);
+      hookHandler.attachHooker(ConditionSubCommandHook.class, removeCommand);
+
+      hookHandler.attachHooker(ConditionProviderHook.class, notIsEmptyCondition);
+
+      hookHandler.attachHooker(ScheduleConfigProviderHook.class, conditionConfigProvider);
+
+      hookHandler.attachHooker(SchedulerExecutionHook.class, vetoProvider);
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, TableReport.class, reportRemoveEventHandler);
+      eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, TableReport.class, reportForceRemoveEventHandler);
+   }
+
 }

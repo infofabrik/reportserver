@@ -5,10 +5,8 @@ import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-
 public interface UrlViewRpcServiceAsync {
 
-	void loadViewConfiguration(AsyncCallback<Map<String,Map<String, List<String[]>>>> callback);
-
+   void loadViewConfiguration(AsyncCallback<Map<String, Map<String, List<String[]>>>> callback);
 
 }

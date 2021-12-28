@@ -7,5 +7,5 @@ import net.datenwerke.security.client.login.AuthToken;
 @HookConfig
 public interface PreAuthenticateHook extends Hook {
 
-	public void authenticating(AuthToken[] tokens);
+   public void authenticating(AuthToken[] tokens);
 }

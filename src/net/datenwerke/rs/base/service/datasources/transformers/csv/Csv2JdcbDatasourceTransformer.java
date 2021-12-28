@@ -19,7 +19,6 @@ import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.resultcache.ResultCacheService;
 
-
 /**
  * Transforms DataSourceDefitions into QRDataSources
  *
@@ -27,38 +26,37 @@ import net.datenwerke.rs.resultcache.ResultCacheService;
 @Singleton
 public class Csv2JdcbDatasourceTransformer extends Csv2XTransformer<DataSource> {
 
-	@Inject
-	public Csv2JdcbDatasourceTransformer(
-			DbPoolService dbPoolService,
-			DBHelperService dbHelperService, 
-			TempTableService tempTableService, 
-			TableModelDbHelper tableModelDbHelper, 
-			ResultCacheService resultCacheService
-			){
-		super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
-	}
+   @Inject
+   public Csv2JdcbDatasourceTransformer(DbPoolService dbPoolService, DBHelperService dbHelperService,
+         TempTableService tempTableService, TableModelDbHelper tableModelDbHelper,
+         ResultCacheService resultCacheService) {
+      super(dbPoolService, dbHelperService, tempTableService, tableModelDbHelper, resultCacheService);
+   }
 
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof CsvDatasource && dst.isAssignableFrom(DataSource.class));
-	}
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof CsvDatasource
+            && dst.isAssignableFrom(DataSource.class));
+   }
 
-	@Override
-	protected DataSource transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider, ParameterSet parameterSet, Class<TableDataSource> targetType) {
-		TempTableResult tempTableResult = (TempTableResult) r;
+   @Override
+   protected DataSource transformResult(Object r, DatasourceContainerProvider datasourceContainerProvider,
+         ParameterSet parameterSet, Class<TableDataSource> targetType) {
+      TempTableResult tempTableResult = (TempTableResult) r;
 
-		String query = tempTableResult.getFinalQuery();
-		
-		String queryWrapper = ((CsvDatasourceConfig)datasourceContainerProvider.getDatasourceContainer().getDatasourceConfig()).getQueryWrapper();
-		if(null == queryWrapper || "".equals(queryWrapper.trim()))
-			queryWrapper = query;
-		
-		parameterSet.addVariable("query", query);
-		for(String alias : tempTableResult.getTableHelper().getTableAliases())
-			parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
-		
-		DataSource conn = dbPoolService.getDataSource(tempTableResult.getPoolConfig(), new ReadOnlyConnectionConfig());
-		return conn;
-	}
+      String query = tempTableResult.getFinalQuery();
+
+      String queryWrapper = ((CsvDatasourceConfig) datasourceContainerProvider.getDatasourceContainer()
+            .getDatasourceConfig()).getQueryWrapper();
+      if (null == queryWrapper || "".equals(queryWrapper.trim()))
+         queryWrapper = query;
+
+      parameterSet.addVariable("query", query);
+      for (String alias : tempTableResult.getTableHelper().getTableAliases())
+         parameterSet.addVariable(alias, tempTableResult.getTableHelper().getTableName(alias));
+
+      DataSource conn = dbPoolService.getDataSource(tempTableResult.getPoolConfig(), new ReadOnlyConnectionConfig());
+      return conn;
+   }
 }

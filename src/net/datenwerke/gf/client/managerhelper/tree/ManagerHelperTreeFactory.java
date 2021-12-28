@@ -6,5 +6,6 @@ import net.datenwerke.treedb.client.treedb.TreeDbManagerDao;
 
 public interface ManagerHelperTreeFactory {
 
-	ManagerHelperTree create(Class<?> guarantor, EnhancedTreeStore store, TreeDbLoaderDao treeLoaderDao, TreeDbManagerDao treeManagerDao);
+   ManagerHelperTree create(Class<?> guarantor, EnhancedTreeStore store, TreeDbLoaderDao treeLoaderDao,
+         TreeDbManagerDao treeManagerDao);
 }

@@ -9,8 +9,9 @@ import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.dto.Repor
 
 public interface ScheduledReportListDetailToolbarHook extends Hook {
 
+   public void statusBarToolbarHook_addLeft(ToolBar toolbar, ReportScheduleJobListInformation info,
+         ReportScheduleJobInformation detailInfo, ScheduledReportListPanel reportListPanel);
 
-	public void statusBarToolbarHook_addLeft(ToolBar toolbar, ReportScheduleJobListInformation info, ReportScheduleJobInformation detailInfo, ScheduledReportListPanel reportListPanel);
-	
-	public void statusBarToolbarHook_addRight(ToolBar toolbar, ReportScheduleJobListInformation info,ReportScheduleJobInformation detailInfo, ScheduledReportListPanel reportListPanel);
+   public void statusBarToolbarHook_addRight(ToolBar toolbar, ReportScheduleJobListInformation info,
+         ReportScheduleJobInformation detailInfo, ScheduledReportListPanel reportListPanel);
 }

@@ -16,37 +16,35 @@ import net.datenwerke.security.ext.client.usermanager.locale.UsermanagerMessages
 
 public class SFFCTeamSpaceMemberAsUser implements SFFCBaseModel<UserDto> {
 
-	private static UserDtoPA userPa = GWT.create(UserDtoPA.class);
-	
-	private final TeamSpaceDto teamSpace;
-	
-	public SFFCTeamSpaceMemberAsUser(
-		TeamSpaceDto teamSpace
-		){
-		
-		this.teamSpace = teamSpace;
-	}
-	
-	public ListStore<UserDto> getAllItemsStore(){
-		ListStore<UserDto> store = new ListStore<UserDto>(userPa.dtoId());
-		
-		for(TeamSpaceMemberDto member : teamSpace.getMembers())
-			if(member.getFolk() instanceof UserDto)
-				store.add((UserDto) member.getFolk());
-		
-		return store;
-	}
-	
-	public Map<ValueProvider<UserDto, String>, String> getDisplayProperties(){
-		Map<ValueProvider<UserDto, String>, String> displayProperties = new LinkedHashMap<ValueProvider<UserDto, String>, String>();
-		
-		displayProperties.put(userPa.firstname(), UsermanagerMessages.INSTANCE.firstname());
-		displayProperties.put(userPa.lastname(), UsermanagerMessages.INSTANCE.lastname());
-		
-		return displayProperties;
-	}
-	
-	public boolean isMultiSelect(){
-		return false;
-	}
+   private static UserDtoPA userPa = GWT.create(UserDtoPA.class);
+
+   private final TeamSpaceDto teamSpace;
+
+   public SFFCTeamSpaceMemberAsUser(TeamSpaceDto teamSpace) {
+
+      this.teamSpace = teamSpace;
+   }
+
+   public ListStore<UserDto> getAllItemsStore() {
+      ListStore<UserDto> store = new ListStore<UserDto>(userPa.dtoId());
+
+      for (TeamSpaceMemberDto member : teamSpace.getMembers())
+         if (member.getFolk() instanceof UserDto)
+            store.add((UserDto) member.getFolk());
+
+      return store;
+   }
+
+   public Map<ValueProvider<UserDto, String>, String> getDisplayProperties() {
+      Map<ValueProvider<UserDto, String>, String> displayProperties = new LinkedHashMap<ValueProvider<UserDto, String>, String>();
+
+      displayProperties.put(userPa.firstname(), UsermanagerMessages.INSTANCE.firstname());
+      displayProperties.put(userPa.lastname(), UsermanagerMessages.INSTANCE.lastname());
+
+      return displayProperties;
+   }
+
+   public boolean isMultiSelect() {
+      return false;
+   }
 }

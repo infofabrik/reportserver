@@ -8,15 +8,12 @@ import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 
 public class DemoDataStartup {
 
-	@Inject
-	public DemoDataStartup(
-		HookHandlerService hookHandler,	
-		DemoDataJdbcUrlAdapter urlAdapter,
-		ApplicationPropertiesService propertiesService
-		) {
+   @Inject
+   public DemoDataStartup(HookHandlerService hookHandler, DemoDataJdbcUrlAdapter urlAdapter,
+         ApplicationPropertiesService propertiesService) {
 
-		if("true".equals(propertiesService.getString("rs.install.demodata", "true")))
-			hookHandler.attachHooker(JdbcUrlAdapterHook.class, urlAdapter);
-		
-	}
+      if ("true".equals(propertiesService.getString("rs.install.demodata", "true")))
+         hookHandler.attachHooker(JdbcUrlAdapterHook.class, urlAdapter);
+
+   }
 }

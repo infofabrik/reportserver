@@ -9,16 +9,13 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
 
 public class LogFilesUiStartup {
 
-	
-	@Inject
-	public LogFilesUiStartup(
-		final HookHandlerService hookHandler,
-		
-		Provider<ViewLogFileTerminalCommandProcessor> commandProcessor
-		){
-		
-		/* terminal commands */
-		hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
-		
-	}
+   @Inject
+   public LogFilesUiStartup(final HookHandlerService hookHandler,
+
+         Provider<ViewLogFileTerminalCommandProcessor> commandProcessor) {
+
+      /* terminal commands */
+      hookHandler.attachHooker(CommandResultProcessorHook.class, commandProcessor);
+
+   }
 }

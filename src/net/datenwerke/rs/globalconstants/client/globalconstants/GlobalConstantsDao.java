@@ -18,39 +18,34 @@ import net.datenwerke.rs.globalconstants.client.globalconstants.rpc.GlobalConsta
  */
 public class GlobalConstantsDao extends Dao {
 
-	private final GlobalConstantsRpcServiceAsync rpcService;
-	
-	@Inject
-	public GlobalConstantsDao(
-		GlobalConstantsRpcServiceAsync rpcService
-		){
-		this.rpcService = rpcService;
-	}
-	
-	public void loadGlobalConstants(AsyncCallback<List<GlobalConstantDto>> callback){
-		rpcService.loadGlobalConstants(transformListCallback(callback));
-	}
+   private final GlobalConstantsRpcServiceAsync rpcService;
 
-	public void addNewConstant(
-			RsAsyncCallback<GlobalConstantDto> callback) {
-		rpcService.addNewConstant(transformDtoCallback(callback));
-	}
-	
-	public void updateConstant(GlobalConstantDto constantDto,
-			AsyncCallback<GlobalConstantDto> callback){
-		rpcService.updateConstant(constantDto, transformDtoCallback(callback));
-	}
+   @Inject
+   public GlobalConstantsDao(GlobalConstantsRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
 
-	public void removeAllConstants(AsyncCallback<Void> callback, Collection<GlobalConstantDto> oldConstants){
-		DaoAsyncCallback<Void> tCallback = transformAndKeepCallback(callback);
-		tCallback.setDtosToDetach((Collection)oldConstants);
-		rpcService.removeAllConstants(tCallback);
-	}
-	
-	public void removeConstants(Collection<GlobalConstantDto> constants,
-			AsyncCallback<Void> callback){
-		DaoAsyncCallback<Void> tCallback = transformAndKeepCallback(callback);
-		tCallback.setDtosToDetach((Collection)constants);
-		rpcService.removeConstants(constants, tCallback);
-	}
+   public void loadGlobalConstants(AsyncCallback<List<GlobalConstantDto>> callback) {
+      rpcService.loadGlobalConstants(transformListCallback(callback));
+   }
+
+   public void addNewConstant(RsAsyncCallback<GlobalConstantDto> callback) {
+      rpcService.addNewConstant(transformDtoCallback(callback));
+   }
+
+   public void updateConstant(GlobalConstantDto constantDto, AsyncCallback<GlobalConstantDto> callback) {
+      rpcService.updateConstant(constantDto, transformDtoCallback(callback));
+   }
+
+   public void removeAllConstants(AsyncCallback<Void> callback, Collection<GlobalConstantDto> oldConstants) {
+      DaoAsyncCallback<Void> tCallback = transformAndKeepCallback(callback);
+      tCallback.setDtosToDetach((Collection) oldConstants);
+      rpcService.removeAllConstants(tCallback);
+   }
+
+   public void removeConstants(Collection<GlobalConstantDto> constants, AsyncCallback<Void> callback) {
+      DaoAsyncCallback<Void> tCallback = transformAndKeepCallback(callback);
+      tCallback.setDtosToDetach((Collection) constants);
+      rpcService.removeConstants(constants, tCallback);
+   }
 }

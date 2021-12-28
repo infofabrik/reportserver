@@ -13,62 +13,62 @@ import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 
 public class RsMenuItemAppearance extends Css3MenuItemAppearance {
 
-	private Css3MenuItemStyle style;
+   private Css3MenuItemStyle style;
 
-	public interface RsMenuItemTemplate extends MenuItemTemplate {
+   public interface RsMenuItemTemplate extends MenuItemTemplate {
 
-		@XTemplates.XTemplate(source = "RsMenuItem.html")
-		SafeHtml template(MenuItemStyle style);
+      @XTemplates.XTemplate(source = "RsMenuItem.html")
+      SafeHtml template(MenuItemStyle style);
 
-	}
+   }
 
-	public RsMenuItemAppearance() {
-		this(GWT.<Css3MenuItemResources>create(Css3MenuItemResources.class),
-				GWT.<MenuItemTemplate>create(RsMenuItemTemplate.class));
+   public RsMenuItemAppearance() {
+      this(GWT.<Css3MenuItemResources>create(Css3MenuItemResources.class),
+            GWT.<MenuItemTemplate>create(RsMenuItemTemplate.class));
 
-	}
+   }
 
-	public RsMenuItemAppearance(Css3MenuItemResources resources, MenuItemTemplate template) {
-		super(resources, template);
+   public RsMenuItemAppearance(Css3MenuItemResources resources, MenuItemTemplate template) {
+      super(resources, template);
 
-		this.style = resources.style();
-	}
+      this.style = resources.style();
+   }
 
-	public void setIcon(XElement parent, ImageResource icon) {
-		XElement anchor = getAnchor(parent);
-		XElement oldIcon = parent.selectNode("." + style.menuItemIcon());
-		if (oldIcon != null) {
-			oldIcon.removeFromParent();
-		}
-		if (icon != null) {
-			Element e = null;
-			if(icon instanceof CssIconImageResource)
-				e = ((CssIconImageResource)icon).getCssElement();
-			else 
-				e = IconHelper.getElement(icon);
+   public void setIcon(XElement parent, ImageResource icon) {
+      XElement anchor = getAnchor(parent);
+      XElement oldIcon = parent.selectNode("." + style.menuItemIcon());
+      if (oldIcon != null) {
+         oldIcon.removeFromParent();
+      }
+      if (icon != null) {
+         Element e = null;
+         if (icon instanceof CssIconImageResource)
+            e = ((CssIconImageResource) icon).getCssElement();
+         else
+            e = IconHelper.getElement(icon);
 
-			e.addClassName(style.menuItemIcon());
-			anchor.insertChild(e, 0);
-		}
-	}
+         e.addClassName(style.menuItemIcon());
+         anchor.insertChild(e, 0);
+      }
+   }
 
-	@Override
-	public void onAddSubMenu(XElement parent) {
-		parent.addClassName("rs-menuitem-hassub");
-	}
+   @Override
+   public void onAddSubMenu(XElement parent) {
+      parent.addClassName("rs-menuitem-hassub");
+   }
 
-	@Override
-	public void onRemoveSubMenu(XElement parent) {
-		parent.removeClassName("rs-menuitem-hassub");
-	}
+   @Override
+   public void onRemoveSubMenu(XElement parent) {
+      parent.removeClassName("rs-menuitem-hassub");
+   }
 
-	public void onActivate(XElement parent) {
-		super.onActivate(parent);
-		parent.addClassName("rs-menuitem-active");
-	}
+   public void onActivate(XElement parent) {
+      super.onActivate(parent);
+      parent.addClassName("rs-menuitem-active");
+   }
 
-	public void onDeactivate(XElement parent) {
-		super.onDeactivate(parent);
-		parent.removeClassName("rs-menuitem-active");
-	}
+   public void onDeactivate(XElement parent) {
+      super.onDeactivate(parent);
+      parent.removeClassName("rs-menuitem-active");
+   }
 }

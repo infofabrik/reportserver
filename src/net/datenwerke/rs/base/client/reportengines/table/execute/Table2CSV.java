@@ -15,10 +15,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 public class Table2CSV extends Export2CSV {
 
    @Inject
-   public Table2CSV(
-         ReportExporterDao exporterDao, 
-         ClientConfigXmlService jsonService
-         ) {
+   public Table2CSV(ReportExporterDao exporterDao, ClientConfigXmlService jsonService) {
       super(exporterDao, jsonService);
    }
 

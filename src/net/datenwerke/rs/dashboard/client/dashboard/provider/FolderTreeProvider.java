@@ -17,37 +17,34 @@ import net.datenwerke.rs.dashboard.client.dashboard.DashboardUiModule;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManagerNodeDto;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.posomap.DashboardFolderDto2PosoMap;
 
-public class FolderTreeProvider implements Provider<ManagerHelperTree>{
+public class FolderTreeProvider implements Provider<ManagerHelperTree> {
 
-	private final TreeDBUIService treeDBUIService;
-	private final DashboardTreeLoaderDao treeLoader;
-	private final DashboardTreeManagerDao treeManager;
-	private final ManagerHelperTreeFactory treeFactory;
-	
-	@Inject
-	public FolderTreeProvider(
-		TreeDBUIService treeDBUIService,	
-		DashboardTreeLoaderDao treeLoader,
-		DashboardTreeManagerDao treeManager,
-		ManagerHelperTreeFactory treeFactory
-		){
-		
-		this.treeDBUIService = treeDBUIService;
-		this.treeLoader = treeLoader;
-		this.treeManager = treeManager;
-		this.treeFactory = treeFactory;
-	}
+   private final TreeDBUIService treeDBUIService;
+   private final DashboardTreeLoaderDao treeLoader;
+   private final DashboardTreeManagerDao treeManager;
+   private final ManagerHelperTreeFactory treeFactory;
 
-	public ManagerHelperTree get() {
-		/* store */
-		List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
-		filters.add(new DashboardFolderDto2PosoMap());
-		EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDashboardManagerNodeDto.class, treeLoader, false, filters);
-		
-		/* build tree */
-		final ManagerHelperTree tree = treeFactory.create(DashboardUiModule.class, store, treeLoader, treeManager);
-		tree.configureIconProvider();
+   @Inject
+   public FolderTreeProvider(TreeDBUIService treeDBUIService, DashboardTreeLoaderDao treeLoader,
+         DashboardTreeManagerDao treeManager, ManagerHelperTreeFactory treeFactory) {
 
-		return tree;
-	}
+      this.treeDBUIService = treeDBUIService;
+      this.treeLoader = treeLoader;
+      this.treeManager = treeManager;
+      this.treeFactory = treeFactory;
+   }
+
+   public ManagerHelperTree get() {
+      /* store */
+      List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
+      filters.add(new DashboardFolderDto2PosoMap());
+      EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDashboardManagerNodeDto.class, treeLoader, false,
+            filters);
+
+      /* build tree */
+      final ManagerHelperTree tree = treeFactory.create(DashboardUiModule.class, store, treeLoader, treeManager);
+      tree.configureIconProvider();
+
+      return tree;
+   }
 }

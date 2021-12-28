@@ -24,108 +24,107 @@ import net.datenwerke.eximport.obj.ExportedItem;
  */
 public class EnclosedObjectExporter implements Exporter {
 
-	private static final String EXPORTER_ID = "EnclosedObjectExporter";
+   private static final String EXPORTER_ID = "EnclosedObjectExporter";
 
-	protected final BasicObjectExporterFactory exporterFactory;
-	protected final ExImportHelperService eiHelper;
-	
-	@Inject
-	public EnclosedObjectExporter(
-		BasicObjectExporterFactory exporterFactory,
-		ExImportHelperService eiHelper
-		){
-		
-		/* store objects */
-		this.exporterFactory = exporterFactory;
-		this.eiHelper = eiHelper;
-	}
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
+   protected final BasicObjectExporterFactory exporterFactory;
+   protected final ExImportHelperService eiHelper;
 
-	
-	@Override
-	public Collection<ExportItemConfig<?>> addReferences(
-			ExportSupervisor exportSupervisor,
-			Collection<ExportItemConfig<?>> queue) {
-		return Collections.emptyList();
-	}
+   @Inject
+   public EnclosedObjectExporter(BasicObjectExporterFactory exporterFactory, ExImportHelperService eiHelper) {
 
-	@Override
-	public void configure(Collection<ExporterSpecificExportConfig> specificConfigs, Collection<ExportItemConfig<?>> configItems) {
-	}
+      /* store objects */
+      this.exporterFactory = exporterFactory;
+      this.eiHelper = eiHelper;
+   }
 
-	@Override
-	public boolean consumes(ExportItemConfig<?> config) {
-		return false;
-	}
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
 
-	@Override
-	public boolean consumes(Object object) {
-		return false;
-	}
-	
-	@Override
-	public boolean consumesEnclosedObject(EnclosedObjectConfig config) {
-		return true;
-	}
+   @Override
+   public Collection<ExportItemConfig<?>> addReferences(ExportSupervisor exportSupervisor,
+         Collection<ExportItemConfig<?>> queue) {
+      return Collections.emptyList();
+   }
 
-	@Override
-	public void export(ExportSupervisor exportSupervisor) {
-	}
+   @Override
+   public void configure(Collection<ExporterSpecificExportConfig> specificConfigs,
+         Collection<ExportItemConfig<?>> configItems) {
+   }
 
-	@Override
-	public void exportEnclosed(final ExportSupervisor exportSupervisor, EnclosedObjectConfig config) throws XMLStreamException {
-		BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, config.getId(), config.getEnclosed());
-		exporter.exportWithoutBaseElementCreation();
-	}
+   @Override
+   public boolean consumes(ExportItemConfig<?> config) {
+      return false;
+   }
 
-	@Override
-	public ExportItemConfig<?> generateExportConfig(Object object) {
-		return null;
-	}
+   @Override
+   public boolean consumes(Object object) {
+      return false;
+   }
 
-	@Override
-	public ExportItemConfig<?> getConfigFor(Object value) {
-		return null;
-	}
+   @Override
+   public boolean consumesEnclosedObject(EnclosedObjectConfig config) {
+      return true;
+   }
 
-	@Override
-	public boolean hasConfigFor(Object value) {
-		return false;
-	}
+   @Override
+   public void export(ExportSupervisor exportSupervisor) {
+   }
 
-	@Override
-	public Collection<EnclosedObjectConfig> addEnclosed(
-			ExportSupervisor exportSupervisor,
-			Collection<ExportItemConfig<?>> configItems) {
-		return Collections.emptySet();
-	}
+   @Override
+   public void exportEnclosed(final ExportSupervisor exportSupervisor, EnclosedObjectConfig config)
+         throws XMLStreamException {
+      BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, config.getId(), config.getEnclosed());
+      exporter.exportWithoutBaseElementCreation();
+   }
 
-	@Override
-	public Collection<EnclosedObjectConfig> addEnclosed(
-			ExportSupervisor exportSupervisor, EnclosedObjectConfig enclosedCon) {
-		BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, enclosedCon.getId(), enclosedCon.getEnclosed());
-		return exporter.getEnclosed();
-	}
+   @Override
+   public ExportItemConfig<?> generateExportConfig(Object object) {
+      return null;
+   }
 
-	@Override
-	public Collection<ExportItemConfig<?>> addReferences(
-			ExportSupervisor exportSupervisor, EnclosedObjectConfig enclosedCon) {
-		BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, enclosedCon.getId(), enclosedCon.getEnclosed());
-		return exporter.getReferences();
+   @Override
+   public ExportItemConfig<?> getConfigFor(Object value) {
+      return null;
+   }
 
-	}
-	
-	@Override
-	public String getDisplayNameFor(ExportedItem exportedItem) {
-		ComplexItemProperty nameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("name");
-		if(null != nameProperty)
-			return nameProperty.getElement().getValue();
-		
-		else return "";
-	}
+   @Override
+   public boolean hasConfigFor(Object value) {
+      return false;
+   }
+
+   @Override
+   public Collection<EnclosedObjectConfig> addEnclosed(ExportSupervisor exportSupervisor,
+         Collection<ExportItemConfig<?>> configItems) {
+      return Collections.emptySet();
+   }
+
+   @Override
+   public Collection<EnclosedObjectConfig> addEnclosed(ExportSupervisor exportSupervisor,
+         EnclosedObjectConfig enclosedCon) {
+      BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, enclosedCon.getId(),
+            enclosedCon.getEnclosed());
+      return exporter.getEnclosed();
+   }
+
+   @Override
+   public Collection<ExportItemConfig<?>> addReferences(ExportSupervisor exportSupervisor,
+         EnclosedObjectConfig enclosedCon) {
+      BasicObjectExporter exporter = exporterFactory.create(exportSupervisor, enclosedCon.getId(),
+            enclosedCon.getEnclosed());
+      return exporter.getReferences();
+
+   }
+
+   @Override
+   public String getDisplayNameFor(ExportedItem exportedItem) {
+      ComplexItemProperty nameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("name");
+      if (null != nameProperty)
+         return nameProperty.getElement().getValue();
+
+      else
+         return "";
+   }
 
 }

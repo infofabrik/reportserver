@@ -27,88 +27,87 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ToolBarEnhancedDeletableRowsGridForSelection extends DwContentPanel {
 
-	protected final Grid grid;
+   protected final Grid grid;
 
-	public ToolBarEnhancedDeletableRowsGridForSelection() {
-		grid = null;
-	}
+   public ToolBarEnhancedDeletableRowsGridForSelection() {
+      grid = null;
+   }
 
-	public ToolBarEnhancedDeletableRowsGridForSelection(ListStore store, ColumnModel cm,
-			ListStore<? extends RsDto> allElementsStore, ListLoader allElementsLoader,
-			Map allElementsDisplayProperties) {
-		grid = new DeletableRowsGrid(store, cm);
+   public ToolBarEnhancedDeletableRowsGridForSelection(ListStore store, ColumnModel cm,
+         ListStore<? extends RsDto> allElementsStore, ListLoader allElementsLoader, Map allElementsDisplayProperties) {
+      grid = new DeletableRowsGrid(store, cm);
 
-		initPanel(grid, allElementsStore, allElementsLoader, allElementsDisplayProperties);
-	}
+      initPanel(grid, allElementsStore, allElementsLoader, allElementsDisplayProperties);
+   }
 
-	protected void initPanel(final Grid grid, final ListStore<? extends RsDto> allElementsStore,
-			final ListLoader<ListLoadConfig, ListLoadResult<? extends RsDto>> allElementsLoader,
-			final Map allElementsDisplayProperties) {
-		setBodyBorder(false);
-		setHeaderVisible(false);
+   protected void initPanel(final Grid grid, final ListStore<? extends RsDto> allElementsStore,
+         final ListLoader<ListLoadConfig, ListLoadResult<? extends RsDto>> allElementsLoader,
+         final Map allElementsDisplayProperties) {
+      setBodyBorder(false);
+      setHeaderVisible(false);
 
-		DwNorthSouthContainer nsContainer = new DwNorthSouthContainer();
-		setWidget(nsContainer);
+      DwNorthSouthContainer nsContainer = new DwNorthSouthContainer();
+      setWidget(nsContainer);
 
-		/* toolbar */
-		ToolBar tb = new DwToolBar();
-		nsContainer.setNorthWidget(tb);
-		nsContainer.setWidget(grid);
+      /* toolbar */
+      ToolBar tb = new DwToolBar();
+      nsContainer.setNorthWidget(tb);
+      nsContainer.setWidget(grid);
 
-		/* add buttons */
-		DwTextButton addButton = new DwTextButton(BaseMessages.INSTANCE.add(), BaseIcon.REMOVE);
-		addButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
+      /* add buttons */
+      DwTextButton addButton = new DwTextButton(BaseMessages.INSTANCE.add(), BaseIcon.REMOVE);
+      addButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
 
-				SelectionPopup selectionPanel = new SelectionPopup(allElementsStore, allElementsDisplayProperties) {
-					@Override
-					protected void itemsSelected(List selectedItems) {
+            SelectionPopup selectionPanel = new SelectionPopup(allElementsStore, allElementsDisplayProperties) {
+               @Override
+               protected void itemsSelected(List selectedItems) {
 
-						for (Object item : selectedItems)
-							if (null == grid.getStore().findModel(item))
-								grid.getStore().add(item);
-					}
-				};
-				selectionPanel.setLoader(allElementsLoader);
-				selectionPanel.loadData();
-				selectionPanel.setSelectionMode(SelectionMode.MULTI);
+                  for (Object item : selectedItems)
+                     if (null == grid.getStore().findModel(item))
+                        grid.getStore().add(item);
+               }
+            };
+            selectionPanel.setLoader(allElementsLoader);
+            selectionPanel.loadData();
+            selectionPanel.setSelectionMode(SelectionMode.MULTI);
 
-				List selectedUsers = new ArrayList();
-				for (Object member : grid.getStore().getAll())
-					selectedUsers.add(member);
-				selectionPanel.setSelectedItems(selectedUsers);
-				selectionPanel.show();
+            List selectedUsers = new ArrayList();
+            for (Object member : grid.getStore().getAll())
+               selectedUsers.add(member);
+            selectionPanel.setSelectedItems(selectedUsers);
+            selectionPanel.show();
 
-			}
-		});
-		tb.add(addButton);
+         }
+      });
+      tb.add(addButton);
 
-		/* remove buttons */
-		DwTextButton removeButton = new DwTextButton(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-		removeButton.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				List selectedItems = grid.getSelectionModel().getSelectedItems();
-				for (Object node : selectedItems)
-					if (null != grid.getStore().findModel(node))
-						grid.getStore().remove(node);
-			}
-		});
-		tb.add(removeButton);
+      /* remove buttons */
+      DwTextButton removeButton = new DwTextButton(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
+      removeButton.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            List selectedItems = grid.getSelectionModel().getSelectedItems();
+            for (Object node : selectedItems)
+               if (null != grid.getStore().findModel(node))
+                  grid.getStore().remove(node);
+         }
+      });
+      tb.add(removeButton);
 
-		DwTextButton removeAllButton = new DwTextButton(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
-		removeAllButton.addSelectHandler(new SelectHandler() {
+      DwTextButton removeAllButton = new DwTextButton(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
+      removeAllButton.addSelectHandler(new SelectHandler() {
 
-			@Override
-			public void onSelect(SelectEvent event) {
-				grid.getStore().clear();
-			}
-		});
-		tb.add(removeAllButton);
-	}
+         @Override
+         public void onSelect(SelectEvent event) {
+            grid.getStore().clear();
+         }
+      });
+      tb.add(removeAllButton);
+   }
 
-	public Grid getGrid() {
-		return grid;
-	}
+   public Grid getGrid() {
+      return grid;
+   }
 }

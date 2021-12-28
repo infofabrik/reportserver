@@ -9,11 +9,11 @@ import net.datenwerke.rs.core.service.reportmanager.metadata.ReportMetadataExpor
  */
 public interface TableMetadataExporter extends ReportMetadataExporter {
 
-	public void visitColumn(Column column);
-	
-	public void beginColumnSection();
-	
-	public void beginFilterSection();
-	
-	public void visitFilter(Column column);
+   public void visitColumn(Column column);
+
+   public void beginColumnSection();
+
+   public void beginFilterSection();
+
+   public void visitFilter(Column column);
 }

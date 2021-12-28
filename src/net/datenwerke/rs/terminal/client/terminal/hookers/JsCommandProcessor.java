@@ -9,24 +9,23 @@ import net.datenwerke.rs.terminal.client.terminal.hooks.CommandResultProcessorHo
 
 public class JsCommandProcessor implements CommandResultProcessorHook {
 
-	@Override
-	public void process(CommandResultDto result) {
-		if(null != result.getExtensions()){
-			for(CommandResultExtensionDto ext : result.getExtensions()){
-				if(ext instanceof CreJavaScriptDto){
-					CreJavaScriptDto extension = (CreJavaScriptDto) ext;
-					
-					final String data = extension.getData();
-					
-					Scheduler.get().scheduleDeferred(() -> eval(data));
-				}
-			}
-		}
-	}
+   @Override
+   public void process(CommandResultDto result) {
+      if (null != result.getExtensions()) {
+         for (CommandResultExtensionDto ext : result.getExtensions()) {
+            if (ext instanceof CreJavaScriptDto) {
+               CreJavaScriptDto extension = (CreJavaScriptDto) ext;
 
-	public static native void eval(String data) /*-{
+               final String data = extension.getData();
+
+               Scheduler.get().scheduleDeferred(() -> eval(data));
+            }
+         }
+      }
+   }
+
+   public static native void eval(String data) /*-{
     	eval(data);
 	}-*/;
-		
 
 }

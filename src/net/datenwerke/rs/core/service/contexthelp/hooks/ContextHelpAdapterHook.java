@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.client.contexthelp.dto.ContextHelpInfo;
 @HookConfig
 public interface ContextHelpAdapterHook extends Hook {
 
-	public String adaptContextHelp(String text, ContextHelpInfo info);
-	
+   public String adaptContextHelp(String text, ContextHelpInfo info);
+
 }

@@ -11,14 +11,14 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook
 
 public class BaseReportTypeProviderHooker implements ReportTypeProviderHook {
 
-	@Override
-	public Collection<? extends Class<? extends Report>> getReportTypes() {
-		Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
-		
-		types.add(JasperReport.class);
-		types.add(TableReport.class);
-		
-		return types;
-	}
+   @Override
+   public Collection<? extends Class<? extends Report>> getReportTypes() {
+      Set<Class<? extends Report>> types = new HashSet<Class<? extends Report>>();
+
+      types.add(JasperReport.class);
+      types.add(TableReport.class);
+
+      return types;
+   }
 
 }

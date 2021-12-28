@@ -13,6 +13,4 @@ import net.datenwerke.rs.terminal.client.terminal.dto.DisplayModeDto;
 @CorrespondingPoso(net.datenwerke.rs.terminal.service.terminal.obj.DisplayMode.class)
 public interface DisplayModeDtoPA extends PropertyAccess<DisplayModeDto> {
 
-
-
 }

@@ -5,11 +5,11 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface JasperMessages extends Messages {
 
-	public final static JasperMessages INSTANCE = GWT.create(JasperMessages.class);
-	
-	public String reportTypeName();
+   public final static JasperMessages INSTANCE = GWT.create(JasperMessages.class);
 
-	public String jasperDownloadToolbarButtonText();
+   public String reportTypeName();
 
-	public String fileMustBeJrxml();
+   public String jasperDownloadToolbarButtonText();
+
+   public String fileMustBeJrxml();
 }

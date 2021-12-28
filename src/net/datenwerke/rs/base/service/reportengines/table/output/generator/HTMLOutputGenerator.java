@@ -62,7 +62,7 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
 
    @Inject
    protected Provider<LocalizationServiceImpl> localizationServiceProvider;
-   
+
    @Inject
    protected Provider<FilterService> filterServiceProvider;
 
@@ -359,7 +359,7 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
       builder.append("</caption>");
 
       final Map<String, Map<String, Object>> filterMap = filterServiceProvider.get().getFilterMap(report);
-      
+
       if (filterMap.isEmpty()) {
          builder.append(FILTERS_TABLE_CLOSE);
          builder.append("<div style=\"font-size:10pt;\">" + messages.nofilters() + "</div>");
@@ -378,13 +378,13 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
          builder.append("</tr>");
          builder.append("</thead>");
          builder.append("<tbody>");
-         
+
          ObjectHolder<Boolean> odd = new ObjectHolder<>();// odd/even color
          odd.set(true);
-         
+
          filterMap.forEach((column, filters) -> {
             final int rowSpan = filters.size();
-            
+
             if (odd.get())
                builder.append(FILTERS_ROW_TAG_OPEN_ODD);
             else
@@ -392,34 +392,34 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
             builder.append("<td rowspan=\"" + rowSpan + "\">");
             builder.append(column);
             builder.append(FILTERS_FIELD_CLOSE);
-            
+
             ObjectHolder<Boolean> first = new ObjectHolder<>();
             first.set(true);
-            
+
             filters.forEach((type, value) -> {
-               
+
                if (!first.get()) {
                   if (odd.get())
                      builder.append(FILTERS_ROW_TAG_OPEN_ODD);
                   else
                      builder.append(FILTERS_ROW_TAG_OPEN_EVEN);
                }
-               
+
                builder.append(FILTERS_FIELD_OPEN);
                builder.append(type);
                builder.append(FILTERS_FIELD_CLOSE);
-               
+
                builder.append(FILTERS_FIELD_OPEN);
                builder.append(value.toString());
                builder.append(FILTERS_FIELD_CLOSE);
                builder.append(FILTERS_ROW_TAG_CLOSE);
-               
+
                first.set(false);
-               
+
             });
             odd.set(!odd.get());
          });
-         
+
          builder.append("</tbody>");
          builder.append(FILTERS_TABLE_CLOSE);
       }
@@ -428,10 +428,10 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
 
       return builder.toString();
    }
-   
+
    private void addPrefilterOutput(StringBuilder builder) {
       Map<BlockType, Object> prefilterMap = filterServiceProvider.get().getPrefilterMap(report);
-      
+
       StringBuilder prefilterBuilder = new StringBuilder();
       prefilterBuilder.append("<div class=\"headlineSeparator\">").append(messages.prefilter()).append("</div>\r\n");
       if (!prefilterMap.isEmpty()) {
@@ -446,12 +446,13 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
       builder.append(prefilterBuilder);
    }
 
-   protected void printPrefilterBlock(final BlockType blockType, Set<?> childElements, int currentDepth, StringBuilder builder) {
+   protected void printPrefilterBlock(final BlockType blockType, Set<?> childElements, int currentDepth,
+         StringBuilder builder) {
 
       builder.append("<div class=\"prefilterBlock " + (currentDepth % 2 == 0 ? "even" : "odd") + "\">\r\n");
-      
+
       builder.append("<span class=\"prefilterOp\">").append(blockType.name()).append("</span>");
-      
+
       childElements.forEach(child -> {
          if (child instanceof Map) {
             Map<?, ?> childMap = (Map<?, ?>) child;
@@ -469,14 +470,14 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
             });
          }
       });
-      
+
       builder.append("</div>");
    }
-   
+
    private void printBinaryColumnFilter(String operator, List<?> values, int currentDepth, StringBuilder builder) {
       if (2 != values.size())
          throw new IllegalArgumentException("Values of binary column filter must have size 2");
-      
+
       builder.append("<div class=\"prefilterChildFilter " + (currentDepth % 2 == 0 ? "even" : "odd") + "\">");
       builder.append("<div class=\"prefilterCompare\">");
       builder.append(htmlspecialchars(values.get(0).toString()));
@@ -487,22 +488,22 @@ public class HTMLOutputGenerator extends TableOutputGeneratorImpl {
       builder.append("</div>");
       builder.append("</div>");
    }
-   
+
    private void printColumnFilter(String columnName, Map<?, ?> columnFilters, int currentDepth, StringBuilder builder) {
       builder.append("<div class=\"prefilterChildFilter " + (currentDepth % 2 == 0 ? "even" : "odd") + "\">");
       builder.append("<div class=\"prefilterValue\">");
       builder.append(htmlspecialchars(columnName));
-      
+
       builder.append("<div class=\"\">");
       columnFilters.forEach((filterKey, filterVal) -> {
          builder.append("<div class=\"filtertype\">");
          builder.append(htmlspecialchars(filterKey.toString()));
          builder.append("</div>");
-         
+
          builder.append("<div class=\"filtervalue\">");
          builder.append(htmlspecialchars(filterVal.toString()));
          builder.append("</div>");
-         
+
          builder.append("<div class=\"break\"></div>");
       });
       builder.append("</div>");

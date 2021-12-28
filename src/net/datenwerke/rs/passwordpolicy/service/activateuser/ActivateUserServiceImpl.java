@@ -42,16 +42,10 @@ public class ActivateUserServiceImpl implements ActivateUserService {
    private final RemoteMessageService remoteMessageService;
 
    @Inject
-   public ActivateUserServiceImpl(
-         UserManagerService userManagerService, 
-         EventBus eventBus,
-         Provider<PasswordGenerator> passwordGenerator, 
-         MailService mailService,
-         Provider<HttpServletRequest> requestProvider, 
-         ConfigService configService,
-         BsiPasswordPolicyService bsiPasswordPolicyService, 
-         RemoteMessageService remoteMessageService
-         ) {
+   public ActivateUserServiceImpl(UserManagerService userManagerService, EventBus eventBus,
+         Provider<PasswordGenerator> passwordGenerator, MailService mailService,
+         Provider<HttpServletRequest> requestProvider, ConfigService configService,
+         BsiPasswordPolicyService bsiPasswordPolicyService, RemoteMessageService remoteMessageService) {
       this.userManagerService = userManagerService;
       this.eventBus = eventBus;
       this.passwordGenerator = passwordGenerator;

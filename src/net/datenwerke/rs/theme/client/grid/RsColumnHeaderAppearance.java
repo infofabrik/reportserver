@@ -13,44 +13,44 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class RsColumnHeaderAppearance extends Css3ColumnHeaderAppearance {
 
-	public interface ColumnHeaderTemplate extends XTemplates {
-		@XTemplate("<div class=\"{style.header} rs-grid-head\"><div class=\"{style.headerInner}\"></div></div>")
-		SafeHtml render(ColumnHeaderStyles style);
-	}
-	
-	public interface RsColumnHeaderAppearanceResources extends Css3ColumnHeaderResources  {
-	    @Source("RsColumnHeader.gss")
-	    Styles style();
-    }
+   public interface ColumnHeaderTemplate extends XTemplates {
+      @XTemplate("<div class=\"{style.header} rs-grid-head\"><div class=\"{style.headerInner}\"></div></div>")
+      SafeHtml render(ColumnHeaderStyles style);
+   }
 
-	private final RsColumnHeaderAppearanceResources resources;
-	private final ColumnHeaderStyles style;
-	private ColumnHeaderTemplate templates = GWT.create(ColumnHeaderTemplate.class);
+   public interface RsColumnHeaderAppearanceResources extends Css3ColumnHeaderResources {
+      @Source("RsColumnHeader.gss")
+      Styles style();
+   }
 
-	public RsColumnHeaderAppearance() {
-		this(GWT.<RsColumnHeaderAppearanceResources> create(RsColumnHeaderAppearanceResources.class));
-	}
+   private final RsColumnHeaderAppearanceResources resources;
+   private final ColumnHeaderStyles style;
+   private ColumnHeaderTemplate templates = GWT.create(ColumnHeaderTemplate.class);
 
-	public RsColumnHeaderAppearance(RsColumnHeaderAppearanceResources resources) {
-		this.resources = resources;
-		this.style = this.resources.style();
+   public RsColumnHeaderAppearance() {
+      this(GWT.<RsColumnHeaderAppearanceResources>create(RsColumnHeaderAppearanceResources.class));
+   }
 
-		StyleInjectorHelper.ensureInjected(style, true);
-	}
+   public RsColumnHeaderAppearance(RsColumnHeaderAppearanceResources resources) {
+      this.resources = resources;
+      this.style = this.resources.style();
 
-	@Override
-	public void render(SafeHtmlBuilder sb) {
-		sb.append(templates.render(style));
-	}
+      StyleInjectorHelper.ensureInjected(style, true);
+   }
 
-	@Override
-	public ImageResource sortAscendingIcon() {
-		return BaseIcon.SORT_ALPHA_ASC.toImageResource();
-	}
+   @Override
+   public void render(SafeHtmlBuilder sb) {
+      sb.append(templates.render(style));
+   }
 
-	@Override
-	public ImageResource sortDescendingIcon() {
-		return BaseIcon.SORT_ALPHA_DESC.toImageResource();
-	}
+   @Override
+   public ImageResource sortAscendingIcon() {
+      return BaseIcon.SORT_ALPHA_ASC.toImageResource();
+   }
+
+   @Override
+   public ImageResource sortDescendingIcon() {
+      return BaseIcon.SORT_ALPHA_DESC.toImageResource();
+   }
 
 }

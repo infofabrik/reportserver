@@ -67,7 +67,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
       public boolean includeVariants();
 
       boolean showCatalog();
-      
+
       /**
        * Schedulable reports are those type of reports that may be directly scheduled.
        * E.g., dynamic list variants are schedulable, while dynamic list base reports
@@ -77,7 +77,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
        * @return true if it should be filtered on schedulable reports
        */
       boolean filterOnSchedulableReports();
-      
+
       /**
        * Entries with unaccessible history path are those that cannot be opened by the
        * user by a history link because the user does not have sufficient rights for
@@ -91,6 +91,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
 
       /**
        * Reports that may be imported into a TeamSpace. These are base reports.
+       * 
        * @return true if it should be filtered on teamspace-importable reports.
        */
       boolean filterOnTeamSpaceImportableReports();
@@ -102,7 +103,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
 
    private final SearchDao searcher;
    private final SearchUiService searchService;
-   
+
    private Optional<SearchFilterDto> filter = Optional.empty();
 
    @Inject
@@ -122,17 +123,17 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
       Config conf = getConfig(configs);
       if (null != conf && !conf.showCatalog())
          return;
-      
+
       if (null != conf) {
          if (conf.filterOnSchedulableReports() && conf.filterOnTeamSpaceImportableReports())
             throw new IllegalStateException("Only one filter permitted");
-         
+
          if (conf.filterOnSchedulableReports())
             installSchedulableReportsFilter();
-         
+
          if (conf.filterOnTeamSpaceImportableReports())
             installTeamSpaceImportableReportsFilter();
-         
+
          if (conf.showEntriesWithUnaccessibleHistoryPath())
             installShowEntriesWithUnaccessibleHistoryPath();
       } else
@@ -147,7 +148,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          filter.setLimit(25);
          this.filter = Optional.of(filter);
       }
-      
+
       filter.get().setShowEntriesWithUnaccessibleHistoryPath(true);
    }
 
@@ -258,36 +259,21 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          }
       });
    }
-   
+
    private void installSchedulableReportsFilter() {
-      filter = Optional.of(searchService
-            .createFilterFor(asList(
-                  // variants
-                  TableReportVariantDto.class, 
-                  SaikuReportVariantDto.class,
-                  // base reports
-                  BirtReportDto.class,
-                  CrystalReportDto.class,
-                  GridEditorReportDto.class,
-                  JasperReportDto.class,
-                  JxlsReportDto.class,
-                  ScriptReportDto.class
-                  ), false));
+      filter = Optional.of(searchService.createFilterFor(asList(
+            // variants
+            TableReportVariantDto.class, SaikuReportVariantDto.class,
+            // base reports
+            BirtReportDto.class, CrystalReportDto.class, GridEditorReportDto.class, JasperReportDto.class,
+            JxlsReportDto.class, ScriptReportDto.class), false));
    }
-   
+
    private void installTeamSpaceImportableReportsFilter() {
-      filter = Optional.of(searchService
-            .createFilterFor(asList(
-                  // base reports
-                  TableReportDto.class, 
-                  SaikuReportDto.class,
-                  BirtReportDto.class,
-                  CrystalReportDto.class,
-                  GridEditorReportDto.class,
-                  JasperReportDto.class,
-                  JxlsReportDto.class,
-                  ScriptReportDto.class
-                  ), true));
+      filter = Optional.of(searchService.createFilterFor(asList(
+            // base reports
+            TableReportDto.class, SaikuReportDto.class, BirtReportDto.class, CrystalReportDto.class,
+            GridEditorReportDto.class, JasperReportDto.class, JxlsReportDto.class, ScriptReportDto.class), true));
    }
 
    protected void addSearchBar(ToolBar toolbar, final SelectionHandler<SearchResultEntryDto> selectionHandler) {
@@ -295,7 +281,7 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
          @Override
          public void load(SearchLoadConfig loadConfig, AsyncCallback<SearchResultListDto> callback) {
             String query = loadConfig.getQuery();
-            if (null != query && query.length() > 1) 
+            if (null != query && query.length() > 1)
                if (filter.isPresent())
                   searcher.find(searchService.enhanceQuery(query), filter.get(), callback);
                else

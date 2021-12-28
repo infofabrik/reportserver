@@ -19,48 +19,46 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class CrystalReportDadgetExporter extends ReportDadgetDefaultExportHooker {
 
-	private static final String PNG = "PNG";
+   private static final String PNG = "PNG";
 
-	@Inject
-	public CrystalReportDadgetExporter(
-			ReportExecutorUIService reportExecutorService,
-			ReportExporterUIService reportExportService,
-			ReportExecutorDao reportExecutorDao,
-			ReportExporterDao reportExporterDao) {
-		super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
-		
-	}
-	
-	@Override
-	protected Map<String, ImageResource> getIconMap() {
-		LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
-		
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), BaseIcon.REPORT_PICTURE.toImageResource(1));
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatImage(), BaseIcon.WEBPAGE.toImageResource(1));
-		icons.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), BaseIcon.EYE.toImageResource(1));
-			
-		return icons;
-	}
+   @Inject
+   public CrystalReportDadgetExporter(ReportExecutorUIService reportExecutorService,
+         ReportExporterUIService reportExportService, ReportExecutorDao reportExecutorDao,
+         ReportExporterDao reportExporterDao) {
+      super(reportExecutorService, reportExportService, reportExecutorDao, reportExporterDao);
 
-	@Override
-	protected Map<String, String> getValueMap() {
-		Map<String, String> map = new LinkedHashMap<String, String>();
-		
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), PREVIEW);
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatImage(), PNG);
-		map.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), FULL);
-		
-		return map;
-	}
+   }
 
-	@Override
-	public String getPropertyName() {
-		return "crystalConfig";
-	}
+   @Override
+   protected Map<String, ImageResource> getIconMap() {
+      LinkedHashMap<String, ImageResource> icons = new LinkedHashMap<String, ImageResource>();
 
-	@Override
-	protected boolean isSupportedReport(ReportDto report) {
-		return report instanceof CrystalReportDto;
-	}
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), BaseIcon.REPORT_PICTURE.toImageResource(1));
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatImage(), BaseIcon.WEBPAGE.toImageResource(1));
+      icons.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), BaseIcon.EYE.toImageResource(1));
+
+      return icons;
+   }
+
+   @Override
+   protected Map<String, String> getValueMap() {
+      Map<String, String> map = new LinkedHashMap<String, String>();
+
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatPreview(), PREVIEW);
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatImage(), PNG);
+      map.put(DashboardMessages.INSTANCE.reportDadgetFormatFull(), FULL);
+
+      return map;
+   }
+
+   @Override
+   public String getPropertyName() {
+      return "crystalConfig";
+   }
+
+   @Override
+   protected boolean isSupportedReport(ReportDto report) {
+      return report instanceof CrystalReportDto;
+   }
 
 }

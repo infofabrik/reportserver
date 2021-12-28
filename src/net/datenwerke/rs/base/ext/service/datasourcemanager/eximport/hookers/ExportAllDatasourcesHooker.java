@@ -12,21 +12,21 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class ExportAllDatasourcesHooker implements ExportAllHook {
 
-	private final DatasourceService dsService;
-	
-	@Inject
-	public ExportAllDatasourcesHooker(DatasourceService dsService) {
-		this.dsService = dsService;
-	}
+   private final DatasourceService dsService;
 
-	@Override
-	public void configure(ExportConfig config) {
-		TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
-		specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
-		config.addSpecificExporterConfigs(specConfig);
-		
-		for(AbstractNode<?> node: dsService.getAllNodes())
-			config.addItemConfig(new TreeNodeExportItemConfig(node));
-	}
+   @Inject
+   public ExportAllDatasourcesHooker(DatasourceService dsService) {
+      this.dsService = dsService;
+   }
+
+   @Override
+   public void configure(ExportConfig config) {
+      TreeNodeExporterConfig specConfig = new TreeNodeExporterConfig();
+      specConfig.addExImporterOptions(TreeNodeExImportOptions.INCLUDE_OWNER, TreeNodeExImportOptions.INCLUDE_SECURITY);
+      config.addSpecificExporterConfigs(specConfig);
+
+      for (AbstractNode<?> node : dsService.getAllNodes())
+         config.addItemConfig(new TreeNodeExportItemConfig(node));
+   }
 
 }

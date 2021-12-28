@@ -14,14 +14,14 @@ import net.sf.jasperreports.engine.design.JasperDesign;
  */
 public interface JasperOutputGenerator extends ReportOutputGenerator {
 
-	
-	/**
-	 * May adjust the design according to the output format.
-	 * 
-	 * @param jasperDesign
-	 * @param outputFormat
-	 */
-	public void adjustDesign(JasperDesign jasperDesign, String outputFormat, ReportExecutionConfig... configs);
-	
-	public CompiledRSJasperReport exportReport(JasperPrint jasperPrint, String outputFormat, JasperReport report,  User user, ReportExecutionConfig... configs);
+   /**
+    * May adjust the design according to the output format.
+    * 
+    * @param jasperDesign
+    * @param outputFormat
+    */
+   public void adjustDesign(JasperDesign jasperDesign, String outputFormat, ReportExecutionConfig... configs);
+
+   public CompiledRSJasperReport exportReport(JasperPrint jasperPrint, String outputFormat, JasperReport report,
+         User user, ReportExecutionConfig... configs);
 }

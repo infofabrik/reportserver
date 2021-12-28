@@ -7,9 +7,9 @@ import net.datenwerke.security.service.security.rights.Right;
 
 public interface SecurityAction {
 
-	public Collection<Right> getRights();
-	
-	public Class<? extends Securee> getSecuree();
-	
-	public boolean requireInheritance();
+   public Collection<Right> getRights();
+
+   public Class<? extends Securee> getSecuree();
+
+   public boolean requireInheritance();
 }

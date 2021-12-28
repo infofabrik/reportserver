@@ -112,21 +112,12 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
    private final DateTriggerFactory dateTriggerFactory;
 
    @Inject
-   public SchedulerRpcServiceImpl(
-         Provider<Injector> injectorProvider, 
-         DtoService dtoService,
-         HookHandlerService hookHandler, 
-         ReportService reportManager, 
-         SchedulerService schedulerService,
-         ReportExecutorService reportExecutorService, 
-         Provider<ReportExecuteJob> reportExecuteJobProvider,
-         SecurityService securityService, 
-         Provider<AuthenticatorService> authenticatorService,
-         UserManagerService userService, 
-         DateTriggerFactory dateTriggerFactory,
-         Provider<FormatHelper> formatHelperProvider, 
-         Provider<ConfigService> configServiceProvider
-         ) {
+   public SchedulerRpcServiceImpl(Provider<Injector> injectorProvider, DtoService dtoService,
+         HookHandlerService hookHandler, ReportService reportManager, SchedulerService schedulerService,
+         ReportExecutorService reportExecutorService, Provider<ReportExecuteJob> reportExecuteJobProvider,
+         SecurityService securityService, Provider<AuthenticatorService> authenticatorService,
+         UserManagerService userService, DateTriggerFactory dateTriggerFactory,
+         Provider<FormatHelper> formatHelperProvider, Provider<ConfigService> configServiceProvider) {
 
       /* store objects */
       this.injectorProvider = injectorProvider;
@@ -184,14 +175,11 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       schedulerService.assertJobExecutorChangeAllowed(null == previous ? null : previous.getExecutor(), executor);
 
       /* load owners. */
-      Set<User> owners = userService.getUsers(
-            scheduleDTO.getOwners()
-            .stream()
-            .map(StrippedDownUser::getId)
-            .collect(toList()));
+      Set<User> owners = userService
+            .getUsers(scheduleDTO.getOwners().stream().map(StrippedDownUser::getId).collect(toList()));
 
       /* the executor must be an owner. */
-      if (!owners.contains(executor)) 
+      if (!owners.contains(executor))
          throw new ExpectedException(SchedulerMessages.INSTANCE.errorExecutorNotOwner() + " " + executor);
 
       /* all owners must have execute rights on the report. */
@@ -200,9 +188,7 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       /* gather configuration */
       List<ReportExecutionConfig> configList = new ArrayList<>();
       if (null != scheduleDTO.getExportConfiguration()) {
-         configList.addAll(
-               scheduleDTO.getExportConfiguration()
-               .stream()
+         configList.addAll(scheduleDTO.getExportConfiguration().stream()
                .map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config)))
                .collect(toList()));
       }
@@ -257,11 +243,11 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       /* call hookers */
       try {
          hookHandler.getHookers(ScheduleConfigProviderHook.class)
-            .forEach(rethrowConsumer(configProvider -> configProvider.adaptJob(job, scheduleDTO)));
+               .forEach(rethrowConsumer(configProvider -> configProvider.adaptJob(job, scheduleDTO)));
       } catch (InvalidConfigurationException e) {
          throw new ExpectedException(e);
       }
-      
+
       /* schedule report */
       DateTrigger trigger = dateTriggerFactory
             .createTrigger((DateTriggerConfig) dtoService.createPoso(scheduleDTO.getSchedulerConfig()));
@@ -463,26 +449,21 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       rsd.setOutputFormat(job.getOutputFormat());
 
       rsd.setExecutor(selected.getExecutor());
-      
-      rsd.setOwners(
-            job.getOwners()
-            .stream()
-            .map(user -> StrippedDownUser.fromUser((UserDto) dtoService.createListDto(user)))
-            .collect(toList()));
-      
+
+      rsd.setOwners(job.getOwners().stream()
+            .map(user -> StrippedDownUser.fromUser((UserDto) dtoService.createListDto(user))).collect(toList()));
+
       List<ReportExecutionConfigDto> configList = new ArrayList<>();
       if (null != job.getExportConfiguration()) {
-         configList.addAll(job.getExportConfiguration()
-            .stream()
-            .map(config -> (ReportExecutionConfigDto) dtoService.createDto(config))
-            .collect(toList()));
+         configList.addAll(job.getExportConfiguration().stream()
+               .map(config -> (ReportExecutionConfigDto) dtoService.createDto(config)).collect(toList()));
       }
       rsd.setExportConfiguration(configList);
 
       /* call hookers */
       hookHandler.getHookers(ScheduleConfigProviderHook.class).forEach(
             LambdaExceptionUtil.rethrowConsumer(configProvider -> configProvider.adaptScheduleDefinition(rsd, job)));
-      
+
       info.setScheduleDefinition(rsd);
 
       /* execution status */
@@ -495,8 +476,7 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       }
 
       /* last entries */
-      List<ExecutionLogEntry> entries = new ArrayList<>(
-            job.getHistory().getExecutionLogEntriesInScheduledStartOrder());
+      List<ExecutionLogEntry> entries = new ArrayList<>(job.getHistory().getExecutionLogEntriesInScheduledStartOrder());
       Collections.reverse(entries);
 
       List<ExecutionLogEntryDto> lastExecutedEntrydtos = new ArrayList<ExecutionLogEntryDto>();
@@ -716,14 +696,12 @@ public class SchedulerRpcServiceImpl extends SecuredRemoteServiceServlet impleme
    @Override
    public void assertOwnersHaveReportRights(List<Long> ownerIds, ReportDto reportDto, List<RightDto> rights)
          throws ServerCallFailedException {
-      Class<? extends Right>[] rightsArray = 
-            rights
-            .stream()
+      Class<? extends Right>[] rightsArray = rights.stream()
             .map(LambdaExceptionUtil.rethrowFunction(rightDto -> ((Right) dtoService.createPoso(rightDto)).getClass()))
             .toArray(Class[]::new);
 
-      securityService
-            .assertRights(userService.getUsers(ownerIds), (Report) dtoService.loadPoso(reportDto), rightsArray);
+      securityService.assertRights(userService.getUsers(ownerIds), (Report) dtoService.loadPoso(reportDto),
+            rightsArray);
    }
 
 }

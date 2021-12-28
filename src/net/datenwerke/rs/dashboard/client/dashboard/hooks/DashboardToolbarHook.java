@@ -8,11 +8,11 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DashboardView;
 
 public interface DashboardToolbarHook extends Hook {
 
-	public void addLeft(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent);
-	
-	public void addRight(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent);
+   public void addLeft(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent);
 
-	public void dashboardDisplayed(DashboardDto dashboard, DashboardView dashboardView);
+   public void addRight(DwToolBar toolbar, DashboardMainComponent dashboardMainComponent);
 
-	public void dashboardChanged(DashboardDto dashboard, DashboardView view);
+   public void dashboardDisplayed(DashboardDto dashboard, DashboardView dashboardView);
+
+   public void dashboardChanged(DashboardDto dashboard, DashboardView view);
 }

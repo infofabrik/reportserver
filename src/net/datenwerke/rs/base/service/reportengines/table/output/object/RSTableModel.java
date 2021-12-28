@@ -18,123 +18,121 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
  * 
  *
  */
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.base.client.reportengines.table.dto",
-	generateDto2Poso=false
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", generateDto2Poso = false)
 public class RSTableModel extends CompiledTableReport implements Iterable<RSTableRow>, Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6867038322739389992L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6867038322739389992L;
 
-	@ExposeToClient
-	@EnclosedEntity
-	private TableDefinition tableDefinition;
-	
-	@ExposeToClient
-	@EnclosedEntity
-	private List<RSTableRow> data = new ArrayList<RSTableRow>();
-	
-	public RSTableModel() {
-	}
-	
-	public void setTableDefinition(TableDefinition tableDefinition) {
-		this.tableDefinition = tableDefinition;
-	}
+   @ExposeToClient
+   @EnclosedEntity
+   private TableDefinition tableDefinition;
 
-	public RSTableModel(TableDefinition tableDefinition) {
-		super();
-		this.tableDefinition = tableDefinition;
-	}
+   @ExposeToClient
+   @EnclosedEntity
+   private List<RSTableRow> data = new ArrayList<RSTableRow>();
 
-	public TableDefinition getTableDefinition() {
-		return tableDefinition;
-	}
+   public RSTableModel() {
+   }
 
-	public RSTableRow addDataRow(Collection<?> row){
-		Object[] data = row.toArray(new Object[row.size()]);
-		return addDataRow(data);
-	}
-	
-	public RSTableRow addDataRow(Object... row){
-		if(row.length != tableDefinition.size())
-			throw new IllegalArgumentException("Number of items in row must match table definition"); //$NON-NLS-1$
-		
-		RSTableRow tableRow = new RSTableRow(tableDefinition,row); 
-		addDataRow(tableRow);
-		
-		return tableRow;
-	}
-	
-	public void addDataRow(RSTableRow row){
-		data.add(row);
-	}
-	
-	public List<RSTableRow> getData() {
-		return data;
-	}
+   public void setTableDefinition(TableDefinition tableDefinition) {
+      this.tableDefinition = tableDefinition;
+   }
 
-	public void setData(List<RSTableRow> data) {
-		this.data = data;
-	}
+   public RSTableModel(TableDefinition tableDefinition) {
+      super();
+      this.tableDefinition = tableDefinition;
+   }
 
-	public Iterator<RSTableRow> iterator() {
-		return data.iterator();
-	}
+   public TableDefinition getTableDefinition() {
+      return tableDefinition;
+   }
 
-	public Class<?> getColumnType(int columnIndex) {
-		return getTableDefinition().getColumnTypes().get(columnIndex);
-	}
+   public RSTableRow addDataRow(Collection<?> row) {
+      Object[] data = row.toArray(new Object[row.size()]);
+      return addDataRow(data);
+   }
 
-	public int getColumnCount() {
-		return getTableDefinition().size();
-	}
+   public RSTableRow addDataRow(Object... row) {
+      if (row.length != tableDefinition.size())
+         throw new IllegalArgumentException("Number of items in row must match table definition"); //$NON-NLS-1$
 
-	public String getColumnName(int columnIndex) {
-		return getTableDefinition().getColumnNames().get(columnIndex);
-	}
+      RSTableRow tableRow = new RSTableRow(tableDefinition, row);
+      addDataRow(tableRow);
 
-	public int getRowCount() {
-		return data.size();
-	}
+      return tableRow;
+   }
 
-	public Object getValueAt(int rowIndex, int columnIndex) {
-		return data.get(rowIndex).getAt(columnIndex);
-	}
+   public void addDataRow(RSTableRow row) {
+      data.add(row);
+   }
 
-	public boolean isCellEditable(int rowIndex, int columnIndex) {
-		throw new NotImplementedException("not implemented");
-	}
+   public List<RSTableRow> getData() {
+      return data;
+   }
 
-	public void removeTableModelListener(TableModelListener l) {
-		throw new NotImplementedException("not implemented");
-	}
+   public void setData(List<RSTableRow> data) {
+      this.data = data;
+   }
 
-	public void setValueAt(Object value, int rowIndex, int columnIndex) {
-		data.get(rowIndex).setAt(columnIndex, value);
-	}
+   public Iterator<RSTableRow> iterator() {
+      return data.iterator();
+   }
 
-	public Object getReport() {
-		return data;
-	}
+   public Class<?> getColumnType(int columnIndex) {
+      return getTableDefinition().getColumnTypes().get(columnIndex);
+   }
 
-	public String getFileExtension() {
-		return null;
-	}
+   public int getColumnCount() {
+      return getTableDefinition().size();
+   }
 
-	public String getMimeType() {
-		return null;
-	}
-	
-	@Override
-	public boolean isStringReport() {
-		return false;
-	}
-	
-	@Override
-	public String toString() {
-		return  "Table(definition:" + (null != tableDefinition ? tableDefinition.toString() : "null" )+ ", rows: " + getRowCount() + ")";
-	}
+   public String getColumnName(int columnIndex) {
+      return getTableDefinition().getColumnNames().get(columnIndex);
+   }
+
+   public int getRowCount() {
+      return data.size();
+   }
+
+   public Object getValueAt(int rowIndex, int columnIndex) {
+      return data.get(rowIndex).getAt(columnIndex);
+   }
+
+   public boolean isCellEditable(int rowIndex, int columnIndex) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   public void removeTableModelListener(TableModelListener l) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   public void setValueAt(Object value, int rowIndex, int columnIndex) {
+      data.get(rowIndex).setAt(columnIndex, value);
+   }
+
+   public Object getReport() {
+      return data;
+   }
+
+   public String getFileExtension() {
+      return null;
+   }
+
+   public String getMimeType() {
+      return null;
+   }
+
+   @Override
+   public boolean isStringReport() {
+      return false;
+   }
+
+   @Override
+   public String toString() {
+      return "Table(definition:" + (null != tableDefinition ? tableDefinition.toString() : "null") + ", rows: "
+            + getRowCount() + ")";
+   }
 }

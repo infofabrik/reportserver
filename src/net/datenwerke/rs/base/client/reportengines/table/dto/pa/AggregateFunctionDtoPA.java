@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.AggregateFunctionDt
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.AggregateFunction.class)
 public interface AggregateFunctionDtoPA extends PropertyAccess<AggregateFunctionDto> {
 
-
-
 }

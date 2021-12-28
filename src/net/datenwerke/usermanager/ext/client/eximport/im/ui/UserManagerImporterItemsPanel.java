@@ -15,44 +15,42 @@ import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;
 import net.datenwerke.usermanager.ext.client.eximport.im.UserManagerImportDao;
 import net.datenwerke.usermanager.ext.client.eximport.im.dto.UserManagerImportConfigDto;
 
-
 public class UserManagerImporterItemsPanel extends ImporterItemsPanel<UserManagerImportConfigDto> {
 
-	private final UserManagerImportDao dsImportDao;
-	
-	@Inject
-	public UserManagerImporterItemsPanel(UserManagerImportDao dsImportDao) {
-		super();
-		
-		/* store objects */
-		this.dsImportDao = dsImportDao;
-		
-		/* load data */
-		loadData();
-	}
+   private final UserManagerImportDao dsImportDao;
 
+   @Inject
+   public UserManagerImporterItemsPanel(UserManagerImportDao dsImportDao) {
+      super();
 
-	private void loadData() {
-		dsImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>(){
-			@Override
-			public void onSuccess(List<ImportTreeModel> roots) {
-				buildTree(roots);
-			}
-		});
-	}
-	
-	protected void configureTree() {
-		super.configureTree();
-		
-		tree.setIconProvider(new IconProvider<ImportTreeModel>() {
-			@Override
-			public ImageResource getIcon(ImportTreeModel model) {
-				if(GroupDto.class.getName().equals(model.getType()))
-					return BaseIcon.GROUP.toImageResource();
-				if(UserDtoDec.class.getName().equals(model.getType()))
-					return BaseIcon.USER.toImageResource();
-				return BaseIcon.FOLDER_USER.toImageResource();
-			}
-		});
-	}
+      /* store objects */
+      this.dsImportDao = dsImportDao;
+
+      /* load data */
+      loadData();
+   }
+
+   private void loadData() {
+      dsImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>() {
+         @Override
+         public void onSuccess(List<ImportTreeModel> roots) {
+            buildTree(roots);
+         }
+      });
+   }
+
+   protected void configureTree() {
+      super.configureTree();
+
+      tree.setIconProvider(new IconProvider<ImportTreeModel>() {
+         @Override
+         public ImageResource getIcon(ImportTreeModel model) {
+            if (GroupDto.class.getName().equals(model.getType()))
+               return BaseIcon.GROUP.toImageResource();
+            if (UserDtoDec.class.getName().equals(model.getType()))
+               return BaseIcon.USER.toImageResource();
+            return BaseIcon.FOLDER_USER.toImageResource();
+         }
+      });
+   }
 }

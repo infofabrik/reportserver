@@ -7,21 +7,20 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDi
 import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleDiskNodeRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleDiskNodeRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final DadgetService dadgetService;
+   private final DadgetService dadgetService;
 
-	@Inject
-	public HandleDiskNodeRemoveEventHandler(DadgetService dadgetService) {
-		this.dadgetService = dadgetService;
-	}
+   @Inject
+   public HandleDiskNodeRemoveEventHandler(DadgetService dadgetService) {
+      this.dadgetService = dadgetService;
+   }
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		AbstractTsDiskNode node = (AbstractTsDiskNode) event.getObject();
-		
-		dadgetService.removeFromFavorites(node);
-	}
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      AbstractTsDiskNode node = (AbstractTsDiskNode) event.getObject();
+
+      dadgetService.removeFromFavorites(node);
+   }
 
 }

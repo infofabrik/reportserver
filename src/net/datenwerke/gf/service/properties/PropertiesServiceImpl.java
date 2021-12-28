@@ -18,82 +18,82 @@ import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityE
 
 public class PropertiesServiceImpl implements PropertiesService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public PropertiesServiceImpl(Provider<EntityManager> entityManagerProvider) {
-		this.entityManagerProvider = entityManagerProvider;
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@Override
-	@QueryById
-	public Property getPropertyById(Long id) {
-		return null; // magic
-	}
+   @Inject
+   public PropertiesServiceImpl(Provider<EntityManager> entityManagerProvider) {
+      this.entityManagerProvider = entityManagerProvider;
+   }
 
-	@Override
-	@QueryByAttribute(where=Property__.key)
-	public Property getPropertyByKey(String key) {
-		return null; // magic
-	}
-	
-	@Override
-	@SimpleQuery
-	public List<Property> getAllProperties(){
-		return null; // magic
-	}
-	
-	@Override
-	public String get(String key) {
-		Property prop = getPropertyByKey(key);
-		return null == prop ? null : prop.getValue();
-	}
+   @Override
+   @QueryById
+   public Property getPropertyById(Long id) {
+      return null; // magic
+   }
 
-	@Override
-	@FirePersistEntityEvents
-	public void persist(Property property) {
-		entityManagerProvider.get().persist(property);
-	}
+   @Override
+   @QueryByAttribute(where = Property__.key)
+   public Property getPropertyByKey(String key) {
+      return null; // magic
+   }
 
-	@Override
-	@FireMergeEntityEvents
-	public Property merge(Property property) {
-		return entityManagerProvider.get().merge(property);
-	}
+   @Override
+   @SimpleQuery
+   public List<Property> getAllProperties() {
+      return null; // magic
+   }
 
-	@Override
-	@FireRemoveEntityEvents
-	public void remove(Property property) {
-		EntityManager em = entityManagerProvider.get();
-		property = em.find(Property.class, property.getId());
-		if(null != property)
-			em.remove(property);
-	}
+   @Override
+   public String get(String key) {
+      Property prop = getPropertyByKey(key);
+      return null == prop ? null : prop.getValue();
+   }
 
-	@Override
-	public void removeByKey(String key) {
-		Property property = getPropertyByKey(key);
-		if(null != property)
-			remove(property);
-	}
-	
-	@Override
-	public boolean containsKey(String key) {
-		Property property = getPropertyByKey(key);
-		return null != property;
-	}
+   @Override
+   @FirePersistEntityEvents
+   public void persist(Property property) {
+      entityManagerProvider.get().persist(property);
+   }
 
-	@Override
-	public Property setProperty(String key, String value) {
-		Property property = getPropertyByKey(key);
-		if(null != property){
-			property.setValue(value);
-			merge(property);
-		} else {
-			property = new Property(key, value);
-			persist(property);
-		}
-		return property;
-	}
+   @Override
+   @FireMergeEntityEvents
+   public Property merge(Property property) {
+      return entityManagerProvider.get().merge(property);
+   }
+
+   @Override
+   @FireRemoveEntityEvents
+   public void remove(Property property) {
+      EntityManager em = entityManagerProvider.get();
+      property = em.find(Property.class, property.getId());
+      if (null != property)
+         em.remove(property);
+   }
+
+   @Override
+   public void removeByKey(String key) {
+      Property property = getPropertyByKey(key);
+      if (null != property)
+         remove(property);
+   }
+
+   @Override
+   public boolean containsKey(String key) {
+      Property property = getPropertyByKey(key);
+      return null != property;
+   }
+
+   @Override
+   public Property setProperty(String key, String value) {
+      Property property = getPropertyByKey(key);
+      if (null != property) {
+         property.setValue(value);
+         merge(property);
+      } else {
+         property = new Property(key, value);
+         persist(property);
+      }
+      return property;
+   }
 
 }

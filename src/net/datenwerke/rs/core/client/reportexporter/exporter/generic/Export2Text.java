@@ -9,33 +9,33 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public abstract class Export2Text extends ReportExporterImpl {
 
-	@Override
-	public boolean consumesConfiguration(ReportDto report) {
-		return true;
-	}
-	
-	@Override
-	public String getExportDescription() {
-		return ReportExporterMessages.INSTANCE.export2Text();
-	}
+   @Override
+   public boolean consumesConfiguration(ReportDto report) {
+      return true;
+   }
 
-	@Override
-	public String getExportTitle() {
-		return "TEXT"; //$NON-NLS-1$
-	}
+   @Override
+   public String getExportDescription() {
+      return ReportExporterMessages.INSTANCE.export2Text();
+   }
 
-	@Override
-	public String getOutputFormat() {
-		return "TEXT"; //$NON-NLS-1$
-	}
+   @Override
+   public String getExportTitle() {
+      return "TEXT"; //$NON-NLS-1$
+   }
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.fromFileExtension("txt").toImageResource();
-	}
-	
-	@Override
-	public boolean hasConfiguration() {
-		return false;
-	}
+   @Override
+   public String getOutputFormat() {
+      return "TEXT"; //$NON-NLS-1$
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.fromFileExtension("txt").toImageResource();
+   }
+
+   @Override
+   public boolean hasConfiguration() {
+      return false;
+   }
 }

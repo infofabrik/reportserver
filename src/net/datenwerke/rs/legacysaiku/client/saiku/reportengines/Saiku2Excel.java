@@ -8,15 +8,15 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class Saiku2Excel extends Export2Excel {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		if (report instanceof SaikuReportDto) {
-		    DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-		    return ((MondrianDatasourceDto)datasourceContainer.getDatasource()).isMondrian3();
-			
-		}
-		
-		return false;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      if (report instanceof SaikuReportDto) {
+         DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
+         return ((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+
+      }
+
+      return false;
+   }
 
 }

@@ -5,6 +5,6 @@ import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
 
 public interface CommandResultProcessorHook extends Hook {
 
-	void process(CommandResultDto result);
+   void process(CommandResultDto result);
 
 }

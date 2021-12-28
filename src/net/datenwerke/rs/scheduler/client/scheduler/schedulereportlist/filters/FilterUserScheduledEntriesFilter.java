@@ -26,135 +26,131 @@ import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserM
 
 public class FilterUserScheduledEntriesFilter implements ScheduledReportListFilter {
 
-	private final Provider<UITree> tree;
+   private final Provider<UITree> tree;
 
-	private FormFieldProviderHook executorHook;
-	private Widget executorField;
-	private FormFieldProviderHook ownerHook;
-	private Widget ownerField;
-	private FormFieldProviderHook toUserHook;
-	private Widget scheduledByField;
-	private FormFieldProviderHook scheduledByHook;
-	private Widget toUserField;
-	
-	@Inject
-	public FilterUserScheduledEntriesFilter(
-		@UserManagerTreeBasic Provider<UITree> tree	
-		) {
-		this.tree = tree;
-	}
-	
-	public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel){
-		executorHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return tree.get();
-			}
-		});
-		executorField = executorHook.createFormField();
-		
-		executorHook.addValueChangeHandler(new ValueChangeHandler() {
-			@Override
-			public void onValueChange(ValueChangeEvent event) {
-				scheduledReportListPanel.reload();
-			}
-		});
-		
-		FieldLabel executor = new FieldLabel(executorField, SchedulerMessages.INSTANCE.executor());
-		executor.setLabelWidth(120);
-		
-		ownerHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return tree.get();
-			}
-		});
-		ownerField = ownerHook.createFormField();
-		
-		ownerHook.addValueChangeHandler(new ValueChangeHandler() {
-			@Override
-			public void onValueChange(ValueChangeEvent event) {
-				scheduledReportListPanel.reload();
-			}
-		});
-		
-		FieldLabel owner = new FieldLabel(ownerField, SchedulerMessages.INSTANCE.owner());
-		owner.setLabelWidth(120);
-		
-		scheduledByHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return tree.get();
-			}
-		});
-		scheduledByField = scheduledByHook.createFormField();
-		
-		scheduledByHook.addValueChangeHandler(new ValueChangeHandler() {
-			@Override
-			public void onValueChange(ValueChangeEvent event) {
-				scheduledReportListPanel.reload();
-			}
-		});
-		
-		FieldLabel scheduledBy = new FieldLabel(scheduledByField, SchedulerMessages.INSTANCE.scheduledBy());
-		scheduledBy.setLabelWidth(120);
-		
-		toUserHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return tree.get();
-			}
-		});
-		toUserField = toUserHook.createFormField();
-		
-		toUserHook.addValueChangeHandler(new ValueChangeHandler() {
-			@Override
-			public void onValueChange(ValueChangeEvent event) {
-				scheduledReportListPanel.reload();
-			}
-		});
-		
-		FieldLabel toUser = new FieldLabel(toUserField, SchedulerMessages.INSTANCE.toUser());
-		toUser.setLabelWidth(120);
-		
-		ArrayList<Widget> widgets = new ArrayList<Widget>();
-		widgets.add(executor);
-		widgets.add(owner);
-		widgets.add(toUser);
-		widgets.add(scheduledBy);
-		
-		return widgets;
-	}
-	
-	public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto config, List<JobFilterCriteriaDto> addCriterions){
-		if(config instanceof ReportServerJobFilterDto){
-			((ReportServerJobFilterDto)config).setFromUser(null);
-			((ReportServerJobFilterDto)config).setToUser(null);
-			
-			if(null != executorField && null != ownerField && null != toUserField){
-				UserDto executorUser = (UserDto) executorHook.getValue(executorField);
-				UserDto ownerUser = (UserDto) ownerHook.getValue(ownerField);
-				UserDto toUser = (UserDto) toUserHook.getValue(toUserField);
-				UserDto scheduledByUser = (UserDto) scheduledByHook.getValue(scheduledByField);
-				
-				if( null != executorUser)
-					((ReportServerJobFilterDto)config).setFromUser(executorUser);
-				if( null != ownerUser)
-					((ReportServerJobFilterDto)config).setOwner(ownerUser);
-				if(null != toUser)
-					((ReportServerJobFilterDto)config).setToUser(toUser);
-				if (null != scheduledByUser)
-					((ReportServerJobFilterDto)config).setScheduledBy(scheduledByUser);
-			}
-		}
-	}
+   private FormFieldProviderHook executorHook;
+   private Widget executorField;
+   private FormFieldProviderHook ownerHook;
+   private Widget ownerField;
+   private FormFieldProviderHook toUserHook;
+   private Widget scheduledByField;
+   private FormFieldProviderHook scheduledByHook;
+   private Widget toUserField;
 
-	@Override
-	public boolean appliesTo(String panelName) {
-		return SchedulerAdminModule.ADMIN_FILTER_PANEL.equals(panelName);
-	}
+   @Inject
+   public FilterUserScheduledEntriesFilter(@UserManagerTreeBasic Provider<UITree> tree) {
+      this.tree = tree;
+   }
 
-	
-	
-	
+   public Iterable<Widget> getFilter(final ScheduledReportListPanel scheduledReportListPanel) {
+      executorHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return tree.get();
+         }
+      });
+      executorField = executorHook.createFormField();
+
+      executorHook.addValueChangeHandler(new ValueChangeHandler() {
+         @Override
+         public void onValueChange(ValueChangeEvent event) {
+            scheduledReportListPanel.reload();
+         }
+      });
+
+      FieldLabel executor = new FieldLabel(executorField, SchedulerMessages.INSTANCE.executor());
+      executor.setLabelWidth(120);
+
+      ownerHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return tree.get();
+         }
+      });
+      ownerField = ownerHook.createFormField();
+
+      ownerHook.addValueChangeHandler(new ValueChangeHandler() {
+         @Override
+         public void onValueChange(ValueChangeEvent event) {
+            scheduledReportListPanel.reload();
+         }
+      });
+
+      FieldLabel owner = new FieldLabel(ownerField, SchedulerMessages.INSTANCE.owner());
+      owner.setLabelWidth(120);
+
+      scheduledByHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return tree.get();
+         }
+      });
+      scheduledByField = scheduledByHook.createFormField();
+
+      scheduledByHook.addValueChangeHandler(new ValueChangeHandler() {
+         @Override
+         public void onValueChange(ValueChangeEvent event) {
+            scheduledReportListPanel.reload();
+         }
+      });
+
+      FieldLabel scheduledBy = new FieldLabel(scheduledByField, SchedulerMessages.INSTANCE.scheduledBy());
+      scheduledBy.setLabelWidth(120);
+
+      toUserHook = SimpleForm.getResponsibleHooker(UserDto.class, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return tree.get();
+         }
+      });
+      toUserField = toUserHook.createFormField();
+
+      toUserHook.addValueChangeHandler(new ValueChangeHandler() {
+         @Override
+         public void onValueChange(ValueChangeEvent event) {
+            scheduledReportListPanel.reload();
+         }
+      });
+
+      FieldLabel toUser = new FieldLabel(toUserField, SchedulerMessages.INSTANCE.toUser());
+      toUser.setLabelWidth(120);
+
+      ArrayList<Widget> widgets = new ArrayList<Widget>();
+      widgets.add(executor);
+      widgets.add(owner);
+      widgets.add(toUser);
+      widgets.add(scheduledBy);
+
+      return widgets;
+   }
+
+   public void configure(ScheduledReportListPanel scheduledReportListPanel, JobFilterConfigurationDto config,
+         List<JobFilterCriteriaDto> addCriterions) {
+      if (config instanceof ReportServerJobFilterDto) {
+         ((ReportServerJobFilterDto) config).setFromUser(null);
+         ((ReportServerJobFilterDto) config).setToUser(null);
+
+         if (null != executorField && null != ownerField && null != toUserField) {
+            UserDto executorUser = (UserDto) executorHook.getValue(executorField);
+            UserDto ownerUser = (UserDto) ownerHook.getValue(ownerField);
+            UserDto toUser = (UserDto) toUserHook.getValue(toUserField);
+            UserDto scheduledByUser = (UserDto) scheduledByHook.getValue(scheduledByField);
+
+            if (null != executorUser)
+               ((ReportServerJobFilterDto) config).setFromUser(executorUser);
+            if (null != ownerUser)
+               ((ReportServerJobFilterDto) config).setOwner(ownerUser);
+            if (null != toUser)
+               ((ReportServerJobFilterDto) config).setToUser(toUser);
+            if (null != scheduledByUser)
+               ((ReportServerJobFilterDto) config).setScheduledBy(scheduledByUser);
+         }
+      }
+   }
+
+   @Override
+   public boolean appliesTo(String panelName) {
+      return SchedulerAdminModule.ADMIN_FILTER_PANEL.equals(panelName);
+   }
+
 }

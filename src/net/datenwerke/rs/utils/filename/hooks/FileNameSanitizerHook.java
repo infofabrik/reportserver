@@ -6,5 +6,5 @@ import net.datenwerke.hookservices.annotations.HookConfig;
 @HookConfig
 public interface FileNameSanitizerHook extends Hook {
 
-	public String sanitizeFileName(String name);
+   public String sanitizeFileName(String name);
 }

@@ -17,81 +17,80 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 
 public class DateFormulaPicker extends TriggerField<DateFormulaContainer> {
 
-	@Inject
-	private static JuelUiService juelService;
-	private FieldInfoHandler fieldInfoHandler;
-	
-	@Inject
-	private static EventBus eventBus;
-	
-	public DateFormulaPicker(){
-		this(null);
-	}
-	
-	
-	public DateFormulaPicker(DateTimeFormat dateFormat) {
-		super(new DateFormulaPickerCell(), new DateFormulaPickerEditor(dateFormat));
-		fieldInfoHandler = new FieldInfoHandler(this);
-		
-		fieldInfoHandler.addClickHandler(new ClickHandler() {
-			@Override
-			public void onClick(ClickEvent event) {
-				final DateFormulaContainer value = getValue();
-				if(null != value && null != value.getFormula()){
-					((DateFormulaPickerCell)getCell()).startEditFormula(value.getFormula());
-					focus();
-				}
-			}
-		});
-		
-		setErrorSupport(new FieldErrorHandler(this));
-	}
+   @Inject
+   private static JuelUiService juelService;
+   private FieldInfoHandler fieldInfoHandler;
 
+   @Inject
+   private static EventBus eventBus;
 
-	@Override
-	protected void onRedraw() {
-		/* clear any marks */
-		fieldInfoHandler.clear();
-		clearInvalid();
-		
-		/* check value for formula */
-		final DateFormulaContainer value = getValue();
-		if(null != value && null != value.getFormula()){
-			juelService.evaluateExpression(value.getFormula(), new RsAsyncCallback<JuelResultDto>(){
-				@Override
-				public void onSuccess(JuelResultDto result) {
-					if(null == result.getDateValue()){
-						markInvalid(UiUtilsMessages.INSTANCE.cannotParseDateFormula());
-						return;
-					}
-					
-					fieldInfoHandler.mark(UiUtilsMessages.INSTANCE.dateComputedBy(value.getFormula()));
-					
-					/* redraw */
-					SafeHtmlBuilder sb = new SafeHtmlBuilder();
-				    ((DateFormulaPickerCell)getCell()).render(createContext(), value, result, sb);
-				    getElement().setInnerHTML(sb.toSafeHtml().asString());	
-				    
-				    eventBus.fireEvent(new FormulaEvaluatedEvent(result.getDateValue()));
-				}
-				@Override
-				public void onFailure(Throwable caught) {
-					markInvalid(UiUtilsMessages.INSTANCE.cannotParseDateFormula());
-				}
-			});
-		}
-	}
-	
-	@Override
-	public void setValue(DateFormulaContainer value, boolean fireEvents, boolean redraw) {
-		if(null != fieldInfoHandler)
-			fieldInfoHandler.clear();
-		super.setValue(value, fireEvents, redraw || (null != value && null != value.getFormula()));
-	}
-	
-	@Override
-	public boolean isValid(boolean preventMark) {
-		return isCurrentValid(preventMark);
-	}
+   public DateFormulaPicker() {
+      this(null);
+   }
+
+   public DateFormulaPicker(DateTimeFormat dateFormat) {
+      super(new DateFormulaPickerCell(), new DateFormulaPickerEditor(dateFormat));
+      fieldInfoHandler = new FieldInfoHandler(this);
+
+      fieldInfoHandler.addClickHandler(new ClickHandler() {
+         @Override
+         public void onClick(ClickEvent event) {
+            final DateFormulaContainer value = getValue();
+            if (null != value && null != value.getFormula()) {
+               ((DateFormulaPickerCell) getCell()).startEditFormula(value.getFormula());
+               focus();
+            }
+         }
+      });
+
+      setErrorSupport(new FieldErrorHandler(this));
+   }
+
+   @Override
+   protected void onRedraw() {
+      /* clear any marks */
+      fieldInfoHandler.clear();
+      clearInvalid();
+
+      /* check value for formula */
+      final DateFormulaContainer value = getValue();
+      if (null != value && null != value.getFormula()) {
+         juelService.evaluateExpression(value.getFormula(), new RsAsyncCallback<JuelResultDto>() {
+            @Override
+            public void onSuccess(JuelResultDto result) {
+               if (null == result.getDateValue()) {
+                  markInvalid(UiUtilsMessages.INSTANCE.cannotParseDateFormula());
+                  return;
+               }
+
+               fieldInfoHandler.mark(UiUtilsMessages.INSTANCE.dateComputedBy(value.getFormula()));
+
+               /* redraw */
+               SafeHtmlBuilder sb = new SafeHtmlBuilder();
+               ((DateFormulaPickerCell) getCell()).render(createContext(), value, result, sb);
+               getElement().setInnerHTML(sb.toSafeHtml().asString());
+
+               eventBus.fireEvent(new FormulaEvaluatedEvent(result.getDateValue()));
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+               markInvalid(UiUtilsMessages.INSTANCE.cannotParseDateFormula());
+            }
+         });
+      }
+   }
+
+   @Override
+   public void setValue(DateFormulaContainer value, boolean fireEvents, boolean redraw) {
+      if (null != fieldInfoHandler)
+         fieldInfoHandler.clear();
+      super.setValue(value, fireEvents, redraw || (null != value && null != value.getFormula()));
+   }
+
+   @Override
+   public boolean isValid(boolean preventMark) {
+      return isCurrentValid(preventMark);
+   }
 
 }

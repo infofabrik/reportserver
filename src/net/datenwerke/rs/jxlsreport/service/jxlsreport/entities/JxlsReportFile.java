@@ -20,67 +20,62 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 
 @Entity
-@Table(name="JXLS_REPORT_FILE")
+@Table(name = "JXLS_REPORT_FILE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.jxlsreport.client.jxlsreport.dto"
-)
-public class JxlsReportFile implements Serializable{
+@GenerateDto(dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto")
+public class JxlsReportFile implements Serializable {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 4292694073518194857L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4292694073518194857L;
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   private String name;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	private String name;
+   @Basic(fetch = FetchType.LAZY)
+   @Lob
+   private byte[] content;
 
-	@Basic(fetch=FetchType.LAZY)
-	@Lob
-	private byte[] content;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	
-	
-	public String getName() {
-		return name;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public byte[] getContent() {
-		return content;
-	}
+   public Long getVersion() {
+      return version;
+   }
 
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
-	
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public byte[] getContent() {
+      return content;
+   }
+
+   public void setContent(byte[] content) {
+      this.content = content;
+   }
+
 }

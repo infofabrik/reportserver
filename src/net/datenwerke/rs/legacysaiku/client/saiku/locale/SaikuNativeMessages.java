@@ -5,6 +5,6 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface SaikuNativeMessages extends Messages {
 
-	public final static SaikuNativeMessages INSTANCE = GWT.create(SaikuNativeMessages.class);
+   public final static SaikuNativeMessages INSTANCE = GWT.create(SaikuNativeMessages.class);
 
 }

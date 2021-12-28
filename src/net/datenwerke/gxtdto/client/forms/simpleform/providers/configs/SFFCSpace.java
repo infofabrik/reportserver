@@ -4,7 +4,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public class SFFCSpace implements SimpleFormFieldConfiguration {
 
-	public int getSpace(){
-		return 25;
-	}
+   public int getSpace() {
+      return 25;
+   }
 }

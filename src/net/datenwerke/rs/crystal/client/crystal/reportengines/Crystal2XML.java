@@ -6,9 +6,9 @@ import net.datenwerke.rs.crystal.client.crystal.dto.CrystalReportDto;
 
 public class Crystal2XML extends Export2XML {
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof CrystalReportDto;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof CrystalReportDto;
+   }
 
 }

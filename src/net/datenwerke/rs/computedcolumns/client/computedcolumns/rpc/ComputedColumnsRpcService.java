@@ -10,7 +10,8 @@ import net.datenwerke.rs.computedcolumns.client.computedcolumns.dto.ComputedColu
 @RemoteServiceRelativePath("computed_columns")
 public interface ComputedColumnsRpcService extends RemoteService {
 
-	Integer getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn) throws ServerCallFailedException;
-	
-	Integer getColumnType(TableReportDto report, ComputedColumnDto column) throws ServerCallFailedException;
+   Integer getColumnType(TableReportDto report, ComputedColumnDto oldColumn, ComputedColumnDto newColumn)
+         throws ServerCallFailedException;
+
+   Integer getColumnType(TableReportDto report, ComputedColumnDto column) throws ServerCallFailedException;
 }

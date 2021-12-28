@@ -115,12 +115,8 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
    private ReportExecutorUIService reportExecutorUIService;
 
    @Inject
-   public TableReportPreviewView(
-         ReportExecutorDao rexDao, 
-         HookHandlerService hookHandler,
-         StatementManagerDao statementManager, 
-         ReportExecutorUIService reportExecutorUIService
-         ) {
+   public TableReportPreviewView(ReportExecutorDao rexDao, HookHandlerService hookHandler,
+         StatementManagerDao statementManager, ReportExecutorUIService reportExecutorUIService) {
       super(rexDao, hookHandler);
       this.statementManager = statementManager;
       this.reportExecutorUIService = reportExecutorUIService;
@@ -279,8 +275,8 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
                      int width = Math.max(10,
                            Math.min(reportExecutorUIService.getMaxColumnWidth(), Integer.parseInt(value)));
 
-                     ((TableReportDtoDec) report).setPreviewColumnWidth(
-                           ((TableReportDtoDec) report).getVisibleColumnByPos(colIndex), width);
+                     ((TableReportDtoDec) report)
+                           .setPreviewColumnWidth(((TableReportDtoDec) report).getVisibleColumnByPos(colIndex), width);
 
                      grid.getColumnModel().getColumn(colIndex).setWidth(width);
                      grid.getView().refresh(true);
@@ -319,29 +315,28 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
          final PromptMessageBox mb = new DwPromptMessageBox(TableMessages.INSTANCE.allColumnWidth(),
                TableMessages.INSTANCE.setColumnWidthMsg());
          mb.addDialogHideHandler(dialogHideEvent -> {
-               if (dialogHideEvent.getHideButton() == PredefinedButton.OK) {
-                  String value = mb.getTextField().getCurrentValue();
-                  if (null == value)
-                     return;
-                  try {
-                     int width = Math.max(10,
-                           Math.min(reportExecutorUIService.getMaxColumnWidth(), Integer.parseInt(value)));
+            if (dialogHideEvent.getHideButton() == PredefinedButton.OK) {
+               String value = mb.getTextField().getCurrentValue();
+               if (null == value)
+                  return;
+               try {
+                  int width = Math.max(10,
+                        Math.min(reportExecutorUIService.getMaxColumnWidth(), Integer.parseInt(value)));
 
-                     for (int i = 0; i <= grid.getColumnModel().getColumnCount() - 1; i++)
-                        ((TableReportDtoDec) report)
-                              .setPreviewColumnWidth(((TableReportDtoDec) report).getVisibleColumnByPos(i), width);
+                  for (int i = 0; i <= grid.getColumnModel().getColumnCount() - 1; i++)
+                     ((TableReportDtoDec) report)
+                           .setPreviewColumnWidth(((TableReportDtoDec) report).getVisibleColumnByPos(i), width);
 
-                     grid.getColumnModel().getColumns()
-                        .forEach(col -> col.setWidth(width));
+                  grid.getColumnModel().getColumns().forEach(col -> col.setWidth(width));
 
-                     grid.getView().refresh(true);
+                  grid.getView().refresh(true);
 
-                     for (int i = 0; i <= grid.getColumnModel().getColumnCount() - 1; i++)
-                        grid.fireEvent(new ColumnWidthChangeEvent(i, grid.getColumnModel().getColumn(i)));
+                  for (int i = 0; i <= grid.getColumnModel().getColumnCount() - 1; i++)
+                     grid.fireEvent(new ColumnWidthChangeEvent(i, grid.getColumnModel().getColumn(i)));
 
-                  } catch (Exception e) {
-                  }
+               } catch (Exception e) {
                }
+            }
          });
 
          mb.getTextField().setWidth(200);
@@ -400,10 +395,9 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
       int cwidth = (int) Math.floor(width / (double) report.getVisibleColumnCount());
       return cwidth;
    }
-   
-   private void showPreviewData(DwWindow window, DwTextButton prevBtn, DwTextButton nextBtn, 
-         DwTextButton firstBtn, DwTextButton lastBtn, 
-         String[] values, final PreviewModel model, FlexTable table) {
+
+   private void showPreviewData(DwWindow window, DwTextButton prevBtn, DwTextButton nextBtn, DwTextButton firstBtn,
+         DwTextButton lastBtn, String[] values, final PreviewModel model, FlexTable table) {
       for (int i = 0; i < model.getColumnNames().size(); i++) {
          table.setText(i, 0, model.getColumnName(i) + ":");
          table.setText(i, 1, values[i]);
@@ -413,7 +407,7 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 
          table.getRowFormatter().addStyleName(i, resources.css().previewRow());
       }
-      
+
       if (0 == currentRowNumber.get(window)) {
          prevBtn.disable();
          firstBtn.disable();
@@ -421,7 +415,7 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
          prevBtn.enable();
          firstBtn.enable();
       }
-      
+
       if (currentRowNumber.get(window) == model.getRows().size() - 1) {
          nextBtn.disable();
          lastBtn.disable();
@@ -446,9 +440,9 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
       final DwTextButton nextBtn = new DwTextButton(BaseIcon.CHEVRON_RIGHT);
       final DwTextButton prevBtn = new DwTextButton(BaseIcon.CHEVRON_LEFT);
       final DwTextButton lastBtn = new DwTextButton(BaseIcon.FAST_FORWARD);
-      
+
       showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(rowIndex), model, table);
-      
+
       VerticalLayoutContainer wrapper = new VerticalLayoutContainer();
       wrapper.setScrollMode(ScrollMode.AUTOY);
       wrapper.add(table, new VerticalLayoutData(1, -1, new Margins(10)));
@@ -456,29 +450,29 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 
       firstBtn.addSelectHandler(event -> {
          currentRowNumber.put(window, 0);
-         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
-               model.getRows().get(currentRowNumber.get(window)), model, table);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(currentRowNumber.get(window)),
+               model, table);
       });
       window.addButton(firstBtn);
-      
+
       prevBtn.addSelectHandler(event -> {
          currentRowNumber.put(window, currentRowNumber.get(window) - 1);
-         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
-               model.getRows().get(currentRowNumber.get(window)), model, table);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(currentRowNumber.get(window)),
+               model, table);
       });
       window.addButton(prevBtn);
 
       nextBtn.addSelectHandler(event -> {
          currentRowNumber.put(window, currentRowNumber.get(window) + 1);
-         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
-               model.getRows().get(currentRowNumber.get(window)), model, table);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(currentRowNumber.get(window)),
+               model, table);
       });
       window.addButton(nextBtn);
-      
+
       lastBtn.addSelectHandler(event -> {
          currentRowNumber.put(window, model.getRows().size() - 1);
-         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn,  
-               model.getRows().get(currentRowNumber.get(window)), model, table);
+         showPreviewData(window, prevBtn, nextBtn, firstBtn, lastBtn, model.getRows().get(currentRowNumber.get(window)),
+               model, table);
       });
       window.addButton(lastBtn);
 

@@ -12,20 +12,19 @@ import net.datenwerke.rs.grideditor.client.grideditor.rpc.GridEditorRpcServiceAs
 
 public class GridEditorDao extends Dao {
 
-	private final GridEditorRpcServiceAsync rpcService;
+   private final GridEditorRpcServiceAsync rpcService;
 
-	@Inject
-	public GridEditorDao(GridEditorRpcServiceAsync rpcService) {
-		super();
-		this.rpcService = rpcService;
-	}
+   @Inject
+   public GridEditorDao(GridEditorRpcServiceAsync rpcService) {
+      super();
+      this.rpcService = rpcService;
+   }
 
-	public void commitChanges(ReportDto report, String executeToken,
-			List<GridEditorRecordDto> modified,
-			List<GridEditorRecordDto> modifiedOriginals,
-			List<GridEditorRecordDto> deletedRecords, List<GridEditorRecordDto> newRecords, RsAsyncCallback<Void> callback) {
-		rpcService.commitChanges(report, executeToken, modified, modifiedOriginals, deletedRecords, newRecords, transformAndKeepCallback(callback)); 
-	}
+   public void commitChanges(ReportDto report, String executeToken, List<GridEditorRecordDto> modified,
+         List<GridEditorRecordDto> modifiedOriginals, List<GridEditorRecordDto> deletedRecords,
+         List<GridEditorRecordDto> newRecords, RsAsyncCallback<Void> callback) {
+      rpcService.commitChanges(report, executeToken, modified, modifiedOriginals, deletedRecords, newRecords,
+            transformAndKeepCallback(callback));
+   }
 
-	
 }

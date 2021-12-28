@@ -24,81 +24,71 @@ import net.datenwerke.security.service.usermanager.entities.User;
 import net.datenwerke.security.service.usermanager.locale.UserManagerMessages;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
 
-
 public class SetUserPropertySubCommand implements UserModSubCommandHook {
 
-	public static final String BASE_COMMAND = "setproperty";
-	
-	private final UserManagerService userService;
+   public static final String BASE_COMMAND = "setproperty";
 
-	private final UserPropertiesService userPropertiesService;
+   private final UserManagerService userService;
 
-	@Inject
-	public SetUserPropertySubCommand(
-		UserManagerService userService, 
-		UserPropertiesService userPropertiesService
-		){
-		
-		/* store objects */
-		this.userService = userService;
-		this.userPropertiesService = userPropertiesService;
-	}
-	
-	@Override
-	public String getBaseCommand() {
-		return BASE_COMMAND;
-	}
-	
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   private final UserPropertiesService userPropertiesService;
 
-	@Override
-	@CliHelpMessage(
-		messageClass = UserManagerMessages.class,
-		name = BASE_COMMAND,
-		description = "commandUsermod_sub_setProperty_description",
-		nonOptArgs = {
-			@NonOptArgument(name="property", description="commandUsermod_sub_setProperty_arg1", mandatory=true),
-			@NonOptArgument(name="value", description="commandUsermod_sub_setProperty_arg2", mandatory=true),
-			@NonOptArgument(name="users", description="commandUsermod_sub_setProperty_arg3", mandatory=true, varArgs=true)
-		}
-	)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
-		List<String> arguments = parser.getNonOptionArguments();
-		if(3 > arguments.size())
-			throw new IllegalArgumentException();
-		
-		String property = arguments.remove(0);
-		String value = arguments.remove(0);
-		
-		ObjectResolverDeamon objectResolver = session.getObjectResolver();
-		
-		Set<User> userList = new HashSet<User>();
-		for(String locationStr : arguments){
-			Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class, Write.class);
-			if(objectList.isEmpty())
-				throw new IllegalArgumentException("No users selected");
-			
-			for(Object obj : objectList){
-				if(! (obj instanceof AbstractUserManagerNode))
-					throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
-				if(obj instanceof User)
-					userList.add((User) obj);
-			}
-		}
-		
-		for(User user : userList){
-			userPropertiesService.setPropertyValue(user, property, value);
-			userService.merge(user);
-		}
-		
-		return new CommandResult();
-	}
+   @Inject
+   public SetUserPropertySubCommand(UserManagerService userService, UserPropertiesService userPropertiesService) {
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-	}
+      /* store objects */
+      this.userService = userService;
+      this.userPropertiesService = userPropertiesService;
+   }
+
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
+
+   @Override
+   @CliHelpMessage(messageClass = UserManagerMessages.class, name = BASE_COMMAND, description = "commandUsermod_sub_setProperty_description", nonOptArgs = {
+         @NonOptArgument(name = "property", description = "commandUsermod_sub_setProperty_arg1", mandatory = true),
+         @NonOptArgument(name = "value", description = "commandUsermod_sub_setProperty_arg2", mandatory = true),
+         @NonOptArgument(name = "users", description = "commandUsermod_sub_setProperty_arg3", mandatory = true, varArgs = true) })
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
+      List<String> arguments = parser.getNonOptionArguments();
+      if (3 > arguments.size())
+         throw new IllegalArgumentException();
+
+      String property = arguments.remove(0);
+      String value = arguments.remove(0);
+
+      ObjectResolverDeamon objectResolver = session.getObjectResolver();
+
+      Set<User> userList = new HashSet<User>();
+      for (String locationStr : arguments) {
+         Collection<Object> objectList = objectResolver.getObjects(locationStr, Read.class, Write.class);
+         if (objectList.isEmpty())
+            throw new IllegalArgumentException("No users selected");
+
+         for (Object obj : objectList) {
+            if (!(obj instanceof AbstractUserManagerNode))
+               throw new IllegalArgumentException("Found unknown objects in object selection: " + obj.getClass());
+            if (obj instanceof User)
+               userList.add((User) obj);
+         }
+      }
+
+      for (User user : userList) {
+         userPropertiesService.setPropertyValue(user, property, value);
+         userService.merge(user);
+      }
+
+      return new CommandResult();
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+   }
 
 }

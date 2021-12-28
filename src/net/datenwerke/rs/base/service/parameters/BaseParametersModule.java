@@ -6,12 +6,12 @@ import net.datenwerke.rs.base.service.parameters.datasource.DatasourceParameterM
 
 public class BaseParametersModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		bind(BaseParametersStartup.class).asEagerSingleton();
-	
-		/* submodules */
-		install(new DatasourceParameterModule());
-	}
+   @Override
+   protected void configure() {
+      bind(BaseParametersStartup.class).asEagerSingleton();
+
+      /* submodules */
+      install(new DatasourceParameterModule());
+   }
 
 }

@@ -12,40 +12,41 @@ import javax.inject.Singleton;
 @Singleton
 public class ClassloaderHelper {
 
-	@Inject
-	public ClassloaderHelper() {
-		// TODO Auto-generated constructor stub
-	}
-	
-	
-	private void addFileCp(File f) throws MalformedURLException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		addURLCp(f.toURI().toURL());
-	}
+   @Inject
+   public ClassloaderHelper() {
+      // TODO Auto-generated constructor stub
+   }
 
-	private void addURLCp(URL u) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
-		URLClassLoader sysloader = (URLClassLoader)ClassLoader.getSystemClassLoader();
-		Class sysclass = URLClassLoader.class;
+   private void addFileCp(File f) throws MalformedURLException, IllegalAccessException, IllegalArgumentException,
+         InvocationTargetException, NoSuchMethodException, SecurityException {
+      addURLCp(f.toURI().toURL());
+   }
 
-		java.lang.reflect.Method method = sysclass.getDeclaredMethod("addURL", URL.class);
-		method.setAccessible(true);
-		method.invoke(sysloader, u);
-	}
-	
-	private URLClassLoader findWebappClassLoader() {
-		
-		URLClassLoader candidate = null;
-		ClassLoader cl = this.getClass().getClassLoader();
-		while(null != cl){
-			if(cl instanceof URLClassLoader){
-				for(URL u : ((URLClassLoader)cl).getURLs()){
-					if(u.toString().contains("rscore.jar") || u.toString().contains("/RsCore/")){
-						candidate = (URLClassLoader) cl;
-					}
-				}
-			}
+   private void addURLCp(URL u) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException,
+         NoSuchMethodException, SecurityException {
+      URLClassLoader sysloader = (URLClassLoader) ClassLoader.getSystemClassLoader();
+      Class sysclass = URLClassLoader.class;
 
-			cl = cl.getParent();
-		}
-		return candidate;
-	}
+      java.lang.reflect.Method method = sysclass.getDeclaredMethod("addURL", URL.class);
+      method.setAccessible(true);
+      method.invoke(sysloader, u);
+   }
+
+   private URLClassLoader findWebappClassLoader() {
+
+      URLClassLoader candidate = null;
+      ClassLoader cl = this.getClass().getClassLoader();
+      while (null != cl) {
+         if (cl instanceof URLClassLoader) {
+            for (URL u : ((URLClassLoader) cl).getURLs()) {
+               if (u.toString().contains("rscore.jar") || u.toString().contains("/RsCore/")) {
+                  candidate = (URLClassLoader) cl;
+               }
+            }
+         }
+
+         cl = cl.getParent();
+      }
+      return candidate;
+   }
 }

@@ -6,6 +6,6 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface OlapConnectionHook extends Hook {
 
-	public OlapConnection postprocessConnection(OlapConnection connection);
-	
+   public OlapConnection postprocessConnection(OlapConnection connection);
+
 }

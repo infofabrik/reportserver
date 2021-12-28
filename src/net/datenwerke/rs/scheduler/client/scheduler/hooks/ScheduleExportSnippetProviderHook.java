@@ -12,20 +12,19 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 
 public interface ScheduleExportSnippetProviderHook extends Hook {
 
-	void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs);
+   void configureSimpleForm(SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs);
 
-	boolean isValid(SimpleForm simpleForm);
+   boolean isValid(SimpleForm simpleForm);
 
-	void configureConfig(ReportScheduleDefinition configDto,
-			SimpleForm simpleForm);
+   void configureConfig(ReportScheduleDefinition configDto, SimpleForm simpleForm);
 
-	boolean isActive(SimpleForm simpleForm);
+   boolean isActive(SimpleForm simpleForm);
 
-	void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report);
-	
-	void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition, ReportDto report);
+   void loadFields(SimpleForm form, ReportScheduleDefinition definition, ReportDto report);
 
-	boolean appliesFor(ReportDto report,
-			Collection<ReportViewConfiguration> configs);
-	
+   void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
+         ReportDto report);
+
+   boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs);
+
 }

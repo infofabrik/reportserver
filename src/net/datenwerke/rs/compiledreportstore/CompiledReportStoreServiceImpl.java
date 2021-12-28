@@ -23,84 +23,81 @@ import net.datenwerke.security.service.eventlogger.annotations.FireRemoveEntityE
 
 public class CompiledReportStoreServiceImpl implements CompiledReportStoreService {
 
-	private final Provider<EntityManager> entityManagerProvider;
-	
-	@Inject
-	public CompiledReportStoreServiceImpl(
-		Provider<EntityManager> entityManagerProvider
-		){
-		
-		/* store objects */
-		this.entityManagerProvider = entityManagerProvider;
-	}
-	
-	@QueryById
-	@Override
-	public PersistentCompiledReport getById(Long id) {
-		return null; // magic
-	}
-	
-	@Override
-	@QueryByAttribute(where=PersistentCompiledReport__.report)
-	public List<PersistentCompiledReport> getCompiledReportsFor(@Named("report") Report report) {
-		return null; // by magic
-	}
-	
-	@Override
-	public PersistentCompiledReport toPersistenReport(CompiledReport compiledReport, Report report){
-		PersistentCompiledReport cReport = new PersistentCompiledReport();
-		cReport.setReport(report);
-		
-		ByteArrayOutputStream out = new ByteArrayOutputStream();
-		ObjectOutputStream oOut;
-		try {
-			oOut = new ObjectOutputStream(out);
-			oOut.writeObject(compiledReport);
-			cReport.setSerializedReport(out.toByteArray());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		
-		return cReport;
-	}
-	
-	@Override
-	@FirePersistEntityEvents
-	public void persist(PersistentCompiledReport cReport) {
-		entityManagerProvider.get().persist(cReport);
-	}
+   private final Provider<EntityManager> entityManagerProvider;
 
-	@Override
-	@FireMergeEntityEvents
-	public PersistentCompiledReport merge(PersistentCompiledReport cReport) {
-		cReport = entityManagerProvider.get().merge(cReport);
-		return cReport;
-	}
+   @Inject
+   public CompiledReportStoreServiceImpl(Provider<EntityManager> entityManagerProvider) {
 
-	@Override
-	@FireRemoveEntityEvents
-	public void remove(PersistentCompiledReport cReport) {
-		EntityManager em = entityManagerProvider.get();
-		cReport = em.find(PersistentCompiledReport.class, cReport.getId());
-		if(null != cReport)
-			em.remove(cReport);
-	}
+      /* store objects */
+      this.entityManagerProvider = entityManagerProvider;
+   }
 
-	@Override
-	public void removeForReport(Report report) {
-		if(null != report)
-			for(PersistentCompiledReport cReport : getCompiledReportsFor(report))
-				remove(cReport);
-	}
-	
-	@Override
-	public void unsetForReport(final Report report) {
-		if(null != report)
-			getCompiledReportsFor(report)
-				.forEach(cReport -> {
-					cReport.setReport(null);
-					merge(cReport);
-				});
-	}
+   @QueryById
+   @Override
+   public PersistentCompiledReport getById(Long id) {
+      return null; // magic
+   }
+
+   @Override
+   @QueryByAttribute(where = PersistentCompiledReport__.report)
+   public List<PersistentCompiledReport> getCompiledReportsFor(@Named("report") Report report) {
+      return null; // by magic
+   }
+
+   @Override
+   public PersistentCompiledReport toPersistenReport(CompiledReport compiledReport, Report report) {
+      PersistentCompiledReport cReport = new PersistentCompiledReport();
+      cReport.setReport(report);
+
+      ByteArrayOutputStream out = new ByteArrayOutputStream();
+      ObjectOutputStream oOut;
+      try {
+         oOut = new ObjectOutputStream(out);
+         oOut.writeObject(compiledReport);
+         cReport.setSerializedReport(out.toByteArray());
+      } catch (IOException e) {
+         throw new RuntimeException(e);
+      }
+
+      return cReport;
+   }
+
+   @Override
+   @FirePersistEntityEvents
+   public void persist(PersistentCompiledReport cReport) {
+      entityManagerProvider.get().persist(cReport);
+   }
+
+   @Override
+   @FireMergeEntityEvents
+   public PersistentCompiledReport merge(PersistentCompiledReport cReport) {
+      cReport = entityManagerProvider.get().merge(cReport);
+      return cReport;
+   }
+
+   @Override
+   @FireRemoveEntityEvents
+   public void remove(PersistentCompiledReport cReport) {
+      EntityManager em = entityManagerProvider.get();
+      cReport = em.find(PersistentCompiledReport.class, cReport.getId());
+      if (null != cReport)
+         em.remove(cReport);
+   }
+
+   @Override
+   public void removeForReport(Report report) {
+      if (null != report)
+         for (PersistentCompiledReport cReport : getCompiledReportsFor(report))
+            remove(cReport);
+   }
+
+   @Override
+   public void unsetForReport(final Report report) {
+      if (null != report)
+         getCompiledReportsFor(report).forEach(cReport -> {
+            cReport.setReport(null);
+            merge(cReport);
+         });
+   }
 
 }

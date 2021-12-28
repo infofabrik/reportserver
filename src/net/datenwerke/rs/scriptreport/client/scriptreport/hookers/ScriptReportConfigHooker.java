@@ -20,87 +20,85 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.ui.ScriptReportForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class ScriptReportConfigHooker implements ReportTypeConfigHook {
-	
-	private final Provider<ScriptReportForm> adminFormProvider;
-	private final EnterpriseUiService enterpriseService;
-	
-	@Inject
-	public ScriptReportConfigHooker(
-			Provider<ScriptReportForm> adminFormProvider,
-			EnterpriseUiService enterpriseService
-	) {
-		this.adminFormProvider = adminFormProvider;
-		this.enterpriseService = enterpriseService;
 
-	}
+   private final Provider<ScriptReportForm> adminFormProvider;
+   private final EnterpriseUiService enterpriseService;
 
-	@Override
-	public boolean consumes(ReportDto report) {
-		return report instanceof ScriptReportDto;
-	}
+   @Inject
+   public ScriptReportConfigHooker(Provider<ScriptReportForm> adminFormProvider,
+         EnterpriseUiService enterpriseService) {
+      this.adminFormProvider = adminFormProvider;
+      this.enterpriseService = enterpriseService;
 
-	@Override
-	public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
-		return Collections.singleton(adminFormProvider.get());
-	}
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportClass() {
-		return ScriptReportDto.class;
-	}
+   @Override
+   public boolean consumes(ReportDto report) {
+      return report instanceof ScriptReportDto;
+   }
 
-	@Override
-	public ImageResource getReportIcon() {
-		return BaseIcon.SCRIPT.toImageResource();
-	}
+   @Override
+   public Collection<? extends MainPanelView> getAdminViews(ReportDto report) {
+      return Collections.singleton(adminFormProvider.get());
+   }
 
-	@Override
-	public ImageResource getReportIconLarge() {
-		return BaseIcon.SCRIPT.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportClass() {
+      return ScriptReportDto.class;
+   }
 
-	@Override
-	public ImageResource getReportLinkIcon() {
-		return BaseIcon.SCRIPT_LINK.toImageResource();
-	}
+   @Override
+   public ImageResource getReportIcon() {
+      return BaseIcon.SCRIPT.toImageResource();
+   }
 
-	@Override
-	public ImageResource getReportLinkIconLarge() {
-		return BaseIcon.SCRIPT_LINK.toImageResource(1);
-	}
+   @Override
+   public ImageResource getReportIconLarge() {
+      return BaseIcon.SCRIPT.toImageResource(1);
+   }
 
-	@Override
-	public String getReportName() {
-		return ScriptReportMessages.INSTANCE.reportTypeName();
-	}
+   @Override
+   public ImageResource getReportLinkIcon() {
+      return BaseIcon.SCRIPT_LINK.toImageResource();
+   }
 
-	@Override
-	public Class<? extends ReportDto> getReportVariantClass() {
-		return ScriptReportVariantDto.class;
-	}
+   @Override
+   public ImageResource getReportLinkIconLarge() {
+      return BaseIcon.SCRIPT_LINK.toImageResource(1);
+   }
 
-	@Override
-	public ImageResource getReportVariantIcon() {
-		return BaseIcon.REPORT_USER.toImageResource();
-	}
+   @Override
+   public String getReportName() {
+      return ScriptReportMessages.INSTANCE.reportTypeName();
+   }
 
-	@Override
-	public ImageResource getReportVariantIconLarge() {
-		return BaseIcon.REPORT_USER.toImageResource(1);
-	}
+   @Override
+   public Class<? extends ReportDto> getReportVariantClass() {
+      return ScriptReportVariantDto.class;
+   }
 
-	@Override
-	public ReportDto instantiateReport() {
-		return new ScriptReportDtoDec();
-	}
+   @Override
+   public ImageResource getReportVariantIcon() {
+      return BaseIcon.REPORT_USER.toImageResource();
+   }
 
-	@Override
-	public ReportDto instantiateReportVariant() {
-		return new ScriptReportVariantDtoDec();
-	}
-	
-	@Override
-	public boolean isAvailable() {
-		return enterpriseService.isEnterprise();
-	}
+   @Override
+   public ImageResource getReportVariantIconLarge() {
+      return BaseIcon.REPORT_USER.toImageResource(1);
+   }
+
+   @Override
+   public ReportDto instantiateReport() {
+      return new ScriptReportDtoDec();
+   }
+
+   @Override
+   public ReportDto instantiateReportVariant() {
+      return new ScriptReportVariantDtoDec();
+   }
+
+   @Override
+   public boolean isAvailable() {
+      return enterpriseService.isEnterprise();
+   }
 }

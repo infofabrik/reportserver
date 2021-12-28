@@ -11,7 +11,11 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 @RemoteServiceRelativePath("security_accountinhibition")
 public interface AccountInhibitionRpcService extends RemoteService {
-	public InhibitionState getInhibitionState(UserDto user) throws ServerCallFailedException;
-	public void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionModel) throws ServerCallFailedException;
-	public AccountInhibitionConfiguration getAccountInhibitionConfiguration(@Named("user")UserDto user) throws ServerCallFailedException;
+   public InhibitionState getInhibitionState(UserDto user) throws ServerCallFailedException;
+
+   public void applyAccountInhibitionConfiguration(AccountInhibitionConfiguration accountInhibitionModel)
+         throws ServerCallFailedException;
+
+   public AccountInhibitionConfiguration getAccountInhibitionConfiguration(@Named("user") UserDto user)
+         throws ServerCallFailedException;
 }

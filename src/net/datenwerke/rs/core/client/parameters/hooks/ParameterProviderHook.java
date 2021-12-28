@@ -10,6 +10,6 @@ import net.datenwerke.rs.core.client.parameters.config.ParameterConfigurator;
  *
  */
 public interface ParameterProviderHook extends Hook {
-	
-	public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators();
+
+   public Collection<ParameterConfigurator> parameterProviderHook_getConfigurators();
 }

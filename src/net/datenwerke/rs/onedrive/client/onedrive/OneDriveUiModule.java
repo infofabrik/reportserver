@@ -15,11 +15,11 @@ public class OneDriveUiModule extends AbstractGinModule {
    public final static String NAME = "OneDrive - SharePoint (O365)";
    public final static BaseIcon ICON = BaseIcon.CLOUD_UPLOAD;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = OneDriveDatasinkDto.class;
-   
+
    @Override
    protected void configure() {
       bind(OneDriveUiService.class).to(OneDriveUiServiceImpl.class).in(Singleton.class);
-      
+
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeOneDrive.class).toProvider(OneDriveTreeProvider.class);
       bind(OneDriveUiStartup.class).asEagerSingleton();

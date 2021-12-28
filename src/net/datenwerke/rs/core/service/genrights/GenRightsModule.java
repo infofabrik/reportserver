@@ -9,13 +9,13 @@ import net.datenwerke.rs.core.service.guice.AbstractReportServerModule;
 
 public class GenRightsModule extends AbstractReportServerModule {
 
-	@Override
-	protected void configure() {
-		install(new GenRightsAdministrationModule());
-		install(new GenRightsDatasourceManagerModule());
-		install(new GenRightsDatasinkManagerModule());
-		install(new GenRightsReportManagerModule());
-		install(new GenRightsAccessRsModule());
-	}
+   @Override
+   protected void configure() {
+      install(new GenRightsAdministrationModule());
+      install(new GenRightsDatasourceManagerModule());
+      install(new GenRightsDatasinkManagerModule());
+      install(new GenRightsReportManagerModule());
+      install(new GenRightsAccessRsModule());
+   }
 
 }

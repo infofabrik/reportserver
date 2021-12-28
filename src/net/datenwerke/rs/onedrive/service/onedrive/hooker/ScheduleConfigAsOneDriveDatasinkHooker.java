@@ -20,11 +20,8 @@ public class ScheduleConfigAsOneDriveDatasinkHooker implements ScheduleConfigPro
    private final Provider<DtoService> dtoServiceProvider;
 
    @Inject
-   public ScheduleConfigAsOneDriveDatasinkHooker(
-         DtoService dtoService,
-         Provider<ScheduleAsOneDriveFileAction> actionProvider, 
-         Provider<DtoService> dtoServiceProvider
-         ) {
+   public ScheduleConfigAsOneDriveDatasinkHooker(DtoService dtoService,
+         Provider<ScheduleAsOneDriveFileAction> actionProvider, Provider<DtoService> dtoServiceProvider) {
 
       /* store objects */
       this.actionProvider = actionProvider;

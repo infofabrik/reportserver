@@ -10,57 +10,58 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ReportParameterService {
 
-	/**
-	 * Returns all installed parameter definitions.
-	 * 
-	 */
-	public Set<Class<? extends ParameterDefinition>> getInstalledParameters();
+   /**
+    * Returns all installed parameter definitions.
+    * 
+    */
+   public Set<Class<? extends ParameterDefinition>> getInstalledParameters();
 
-	/**
-	 * Persists the parameter
-	 * @param pd
-	 */
-	public void persist(ParameterDefinition pd);
-	
-	public void persist(ParameterInstance pi);
+   /**
+    * Persists the parameter
+    * 
+    * @param pd
+    */
+   public void persist(ParameterDefinition pd);
 
-	public ParameterDefinition getParameterById(long id);
-	public ParameterDefinition getParameterByKey(long report, String key);
-	
-	public List<ParameterDefinition> getParameterDependees(ParameterDefinition definition);
-	
-	public List<ParameterInstance> getInstancesForParameterDefinition(ParameterDefinition pd);
+   public void persist(ParameterInstance pi);
 
-	public ParameterDefinition merge(ParameterDefinition parameter);
-	
-	public AbstractReportManagerNode remove(ParameterDefinition parameter);
+   public ParameterDefinition getParameterById(long id);
 
-	/**
-	 * Creates an instance for the report and all possible variants
-	 * @param report
-	 * @param definition
-	 */
-	public void addParameterDefinition(Report report, ParameterDefinition definition);
-	
-	public ParameterDefinition getUnmanagedParameterById(long id);
-	
-	public Report getReportWithParameter(ParameterDefinition pd);
+   public ParameterDefinition getParameterByKey(long report, String key);
 
+   public List<ParameterDefinition> getParameterDependees(ParameterDefinition definition);
 
-	/**
-	 * Moves a parameter to the specified position
-	 * 
-	 * @param parameter
-	 * @param to
-	 */
-	public AbstractReportManagerNode moveParameter(ParameterDefinition parameter, int to);
+   public List<ParameterInstance> getInstancesForParameterDefinition(ParameterDefinition pd);
 
-	public void remove(ParameterInstance instance);
+   public ParameterDefinition merge(ParameterDefinition parameter);
 
-	public ParameterDefinition getUnmanagedParameter(
-			ParameterDefinition<?> definition);
+   public AbstractReportManagerNode remove(ParameterDefinition parameter);
 
-	void updateParameterInstances(Report report, ParameterDefinition definition);
+   /**
+    * Creates an instance for the report and all possible variants
+    * 
+    * @param report
+    * @param definition
+    */
+   public void addParameterDefinition(Report report, ParameterDefinition definition);
 
-	Report getReportWithInstance(ParameterInstance instance);
+   public ParameterDefinition getUnmanagedParameterById(long id);
+
+   public Report getReportWithParameter(ParameterDefinition pd);
+
+   /**
+    * Moves a parameter to the specified position
+    * 
+    * @param parameter
+    * @param to
+    */
+   public AbstractReportManagerNode moveParameter(ParameterDefinition parameter, int to);
+
+   public void remove(ParameterInstance instance);
+
+   public ParameterDefinition getUnmanagedParameter(ParameterDefinition<?> definition);
+
+   void updateParameterInstances(Report report, ParameterDefinition definition);
+
+   Report getReportWithInstance(ParameterInstance instance);
 }

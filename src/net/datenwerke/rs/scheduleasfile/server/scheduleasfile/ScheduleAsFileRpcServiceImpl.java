@@ -46,117 +46,101 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 
 @Singleton
-public class ScheduleAsFileRpcServiceImpl extends SecuredRemoteServiceServlet
-		implements ScheduleAsFileRpcService {
+public class ScheduleAsFileRpcServiceImpl extends SecuredRemoteServiceServlet implements ScheduleAsFileRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 366549503536730298L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 366549503536730298L;
 
-	private final ReportService reportService;
-	private final DtoService dtoService;
-	private final ReportExecutorService reportExecutorService;
-	private final EventBus eventBus;
-	private final TsDiskService tsService;
-	private final CompiledReportStoreService compiledReportService;
-	private final TeamSpaceService teamSpaceService;
-	private final ReportDtoService reportDtoService;
-	private final HookHandlerService hookHandlerService;
-	private final SecurityService securityService;
-	
-	@Inject
-	public ScheduleAsFileRpcServiceImpl(
-		ReportService reportService,
-		ReportDtoService reportDtoService,
-		DtoService dtoService,
-		ReportExecutorService reportExecutorService,
-		EventBus eventBus,
-		TsDiskService tsService,
-		SecurityService securityService,
-		CompiledReportStoreService compiledReportService,
-		HookHandlerService hookHandlerService,
-		TeamSpaceService teamSpaceService
-		){
-		
-		this.reportService = reportService;
-		this.reportDtoService = reportDtoService;
-		this.dtoService = dtoService;
-		this.reportExecutorService = reportExecutorService;
-		this.eventBus = eventBus;
-		this.tsService = tsService;
-		this.securityService = securityService;
-		this.compiledReportService = compiledReportService;
-		this.hookHandlerService = hookHandlerService;
-		this.teamSpaceService = teamSpaceService;
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public void exportIntoTeamSpace(@Named("report") ReportDto reportDto, String executorToke,
-			String format, List<ReportExecutionConfigDto> configs,
-			AbstractTsDiskNodeDto folder, String name, String description) throws ServerCallFailedException, ExpectedException {
-		final ReportExecutionConfig[] configArray = getConfigArray(executorToke, configs);
+   private final ReportService reportService;
+   private final DtoService dtoService;
+   private final ReportExecutorService reportExecutorService;
+   private final EventBus eventBus;
+   private final TsDiskService tsService;
+   private final CompiledReportStoreService compiledReportService;
+   private final TeamSpaceService teamSpaceService;
+   private final ReportDtoService reportDtoService;
+   private final HookHandlerService hookHandlerService;
+   private final SecurityService securityService;
 
-		/* get a clean and unmanaged report from the database */
-		Report orgReport = (Report) reportService.getReportById(reportDto.getId());
-		Report referenceReport = reportDtoService.getReferenceReport(reportDto);
-		
-		/* check rights */
-		securityService.assertRights(referenceReport, Execute.class);
+   @Inject
+   public ScheduleAsFileRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService,
+         DtoService dtoService, ReportExecutorService reportExecutorService, EventBus eventBus, TsDiskService tsService,
+         SecurityService securityService, CompiledReportStoreService compiledReportService,
+         HookHandlerService hookHandlerService, TeamSpaceService teamSpaceService) {
 
-		/* get variant from orginal report to execute */
-		Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
-		final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
-		
-		hookHandlerService
-			.getHookers(ReportExportViaSessionHook.class)
-			.forEach(hooker -> hooker.adjustReport(toExecute, configArray));
-		
-		try {
-			CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
-			
-			PersistentCompiledReport pReport = compiledReportService.toPersistenReport(cReport, orgReport);
-			
-			ExecutedReportFileReference ref = new ExecutedReportFileReference();
-			ref.setCompiledReport(pReport);
-			ref.setOutputFormat(format);
-			ref.setDescription(description);
-			ref.setName(name);
-			
-			AbstractTsDiskNode node = tsService.getNodeById(folder.getId());
-			if(null == node || (! (node instanceof TsDiskRoot ) && !(node instanceof TsDiskFolder)))
-				throw new ActionExecutionException("could not load folder with id: " + folder.getId());
-			
-			TeamSpace teamSpace = tsService.getTeamSpaceFor(node);
-			if(! teamSpaceService.hasRole(teamSpace, TeamSpaceRole.USER))
-				throw new InvalidConfigurationException("Insufficient TeamSpace rights");
-			
-			node.addChild(ref);
-			
-			tsService.persist(ref);
-			tsService.merge(node);
-		} catch(Exception e){
-			eventBus.fireEvent(
-				new ExportReportIntoTeamSpaceFailedEvent(reportDto, executorToke, format, configs, folder, name, description)	
-			);
-			
-			throw new ExpectedException("Could not store report in teamspace: " + e.getMessage(), e);
-		}
-	}
+      this.reportService = reportService;
+      this.reportDtoService = reportDtoService;
+      this.dtoService = dtoService;
+      this.reportExecutorService = reportExecutorService;
+      this.eventBus = eventBus;
+      this.tsService = tsService;
+      this.securityService = securityService;
+      this.compiledReportService = compiledReportService;
+      this.hookHandlerService = hookHandlerService;
+      this.teamSpaceService = teamSpaceService;
+   }
 
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public void exportIntoTeamSpace(@Named("report") ReportDto reportDto, String executorToke, String format,
+         List<ReportExecutionConfigDto> configs, AbstractTsDiskNodeDto folder, String name, String description)
+         throws ServerCallFailedException, ExpectedException {
+      final ReportExecutionConfig[] configArray = getConfigArray(executorToke, configs);
 
-	private ReportExecutionConfig[] getConfigArray(final String executorToken,
-			final List<ReportExecutionConfigDto> configs) throws ExpectedException {
-		
-		return 
-			Stream.concat(
-					configs
-						.stream()
-						.map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
-					Stream.of(new RECReportExecutorToken(executorToken)))
-			.toArray(ReportExecutionConfig[]::new);
-			
-	}
+      /* get a clean and unmanaged report from the database */
+      Report orgReport = (Report) reportService.getReportById(reportDto.getId());
+      Report referenceReport = reportDtoService.getReferenceReport(reportDto);
+
+      /* check rights */
+      securityService.assertRights(referenceReport, Execute.class);
+
+      /* get variant from orginal report to execute */
+      Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
+      final Report toExecute = orgReport.createTemporaryVariant(adjustedReport);
+
+      hookHandlerService.getHookers(ReportExportViaSessionHook.class)
+            .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
+
+      try {
+         CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+
+         PersistentCompiledReport pReport = compiledReportService.toPersistenReport(cReport, orgReport);
+
+         ExecutedReportFileReference ref = new ExecutedReportFileReference();
+         ref.setCompiledReport(pReport);
+         ref.setOutputFormat(format);
+         ref.setDescription(description);
+         ref.setName(name);
+
+         AbstractTsDiskNode node = tsService.getNodeById(folder.getId());
+         if (null == node || (!(node instanceof TsDiskRoot) && !(node instanceof TsDiskFolder)))
+            throw new ActionExecutionException("could not load folder with id: " + folder.getId());
+
+         TeamSpace teamSpace = tsService.getTeamSpaceFor(node);
+         if (!teamSpaceService.hasRole(teamSpace, TeamSpaceRole.USER))
+            throw new InvalidConfigurationException("Insufficient TeamSpace rights");
+
+         node.addChild(ref);
+
+         tsService.persist(ref);
+         tsService.merge(node);
+      } catch (Exception e) {
+         eventBus.fireEvent(new ExportReportIntoTeamSpaceFailedEvent(reportDto, executorToke, format, configs, folder,
+               name, description));
+
+         throw new ExpectedException("Could not store report in teamspace: " + e.getMessage(), e);
+      }
+   }
+
+   private ReportExecutionConfig[] getConfigArray(final String executorToken,
+         final List<ReportExecutionConfigDto> configs) throws ExpectedException {
+
+      return Stream.concat(
+            configs.stream().map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
+            Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
+
+   }
 
 }

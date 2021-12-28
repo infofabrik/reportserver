@@ -21,78 +21,72 @@ import net.datenwerke.security.service.treedb.actions.UpdateAction;
 
 public class JxlsReportUploadHooker implements FileUploadHandlerHook {
 
-	private final Provider<SecurityService> securityServiceProvider;
-	private final Provider<ReportService> reportServiceProvider;
-	private final Provider<JxlsReportService> jxlsReportServiceProvider;
+   private final Provider<SecurityService> securityServiceProvider;
+   private final Provider<ReportService> reportServiceProvider;
+   private final Provider<JxlsReportService> jxlsReportServiceProvider;
 
-	@Inject
-	public JxlsReportUploadHooker(
-			Provider<SecurityService> securityServiceProvider, 
-			Provider<ReportService> reportServiceProvider,
-			Provider<JxlsReportService> jxlsReportServiceProvider
-			) {
-		this.securityServiceProvider = securityServiceProvider;
-		this.reportServiceProvider = reportServiceProvider;
-		this.jxlsReportServiceProvider = jxlsReportServiceProvider;
-	}
+   @Inject
+   public JxlsReportUploadHooker(Provider<SecurityService> securityServiceProvider,
+         Provider<ReportService> reportServiceProvider, Provider<JxlsReportService> jxlsReportServiceProvider) {
+      this.securityServiceProvider = securityServiceProvider;
+      this.reportServiceProvider = reportServiceProvider;
+      this.jxlsReportServiceProvider = jxlsReportServiceProvider;
+   }
 
-	@Override
-	public boolean consumes(String handler) {
-		return JxlsReportUiModule.UPLOAD_HANDLER_ID.equals(handler);
-	}
+   @Override
+   public boolean consumes(String handler) {
+      return JxlsReportUiModule.UPLOAD_HANDLER_ID.equals(handler);
+   }
 
+   @Override
+   public String uploadOccured(UploadedFile uploadedFile) {
+      Map<String, String> metadataMap = uploadedFile.getMetadata();
 
-	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		Map<String, String> metadataMap = uploadedFile.getMetadata();
+      long reportId = Long.valueOf(metadataMap.get(JxlsReportUiModule.UPLOAD_REPORT_ID_FIELD));
+      String reportName = uploadedFile.getFileName();
+      byte[] content = uploadedFile.getFileBytes();
 
-		long reportId = Long.valueOf(metadataMap.get(JxlsReportUiModule.UPLOAD_REPORT_ID_FIELD));
-		String reportName = uploadedFile.getFileName();
-		byte[] content = uploadedFile.getFileBytes();
+      if (null == reportName || null == content || "".equals(reportName.trim()) || content.length == 0)
+         return null;
 
+      if (!(reportName.endsWith(".xls") || reportName.endsWith(".xlsx") || reportName.endsWith(".xlsm")))
+         throw new RuntimeException("Could not create template. No xls file specified");
 
-		if(null == reportName || null == content || "".equals(reportName.trim()) || content.length == 0)
-			return null;
+      try {
+         /* make sure template is indeed xls */
+         WorkbookFactory.create(new ByteArrayInputStream(content));
+      } catch (Exception e) {
+         throw new RuntimeException("Could not load excel file", e);
+      }
 
-		if(! (reportName.endsWith(".xls") || reportName.endsWith(".xlsx") || reportName.endsWith(".xlsm")))
-			throw new RuntimeException("Could not create template. No xls file specified");
+      SecurityService securityService = securityServiceProvider.get();
+      securityService.assertUserLoggedIn();
 
-		try {
-			/* make sure template is indeed xls */
-			WorkbookFactory.create(new ByteArrayInputStream(content));
-		} catch (Exception e) {
-			throw new RuntimeException("Could not load excel file", e);	
-		}
+      ReportService reportService = reportServiceProvider.get();
+      AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
 
-		SecurityService securityService = securityServiceProvider.get();
-		securityService.assertUserLoggedIn();
+      securityService.assertActions(rmn, UpdateAction.class);
 
-		ReportService reportService = reportServiceProvider.get();
-		AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
+      if (rmn instanceof JxlsReport) {
+         JxlsReport jxlsReport = (JxlsReport) rmn;
 
-		securityService.assertActions(rmn, UpdateAction.class);
+         JxlsReportFile oldFile = jxlsReport.getReportFile();
 
-		if(rmn instanceof JxlsReport){
-			JxlsReport jxlsReport = (JxlsReport) rmn;
+         JxlsReportFile reportFile = new JxlsReportFile();
+         reportFile.setName(reportName);
+         reportFile.setContent(content);
 
-			JxlsReportFile oldFile = jxlsReport.getReportFile();
+         jxlsReport.setReportFile(reportFile);
 
-			JxlsReportFile reportFile = new JxlsReportFile();
-			reportFile.setName(reportName);
-			reportFile.setContent(content);
+         if (null != oldFile) {
+            JxlsReportService jxlsReportService = jxlsReportServiceProvider.get();
+            jxlsReportService.remove(oldFile);
+         }
 
-			jxlsReport.setReportFile(reportFile);
+         reportService.merge(jxlsReport);
+      }
 
-			if(null != oldFile){
-				JxlsReportService jxlsReportService = jxlsReportServiceProvider.get();
-				jxlsReportService.remove(oldFile);
-			}
-
-			reportService.merge(jxlsReport);
-		}
-		
-		return null;
-	}
-
+      return null;
+   }
 
 }

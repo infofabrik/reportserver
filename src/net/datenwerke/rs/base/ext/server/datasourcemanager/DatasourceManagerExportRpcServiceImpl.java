@@ -26,60 +26,51 @@ import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperSer
  *
  */
 @Singleton
-public class DatasourceManagerExportRpcServiceImpl extends
-		SecuredRemoteServiceServlet implements DatasourceManagerExportRpcService {
+public class DatasourceManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
+      implements DatasourceManagerExportRpcService {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1551324209469664301L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1551324209469664301L;
-	
-	private final DtoService dtoService;
-	private final Provider<HttpExportService> httpExportServiceProvider;
-	private final TreeNodeExportHelperServiceImpl exportHelper;
+   private final DtoService dtoService;
+   private final Provider<HttpExportService> httpExportServiceProvider;
+   private final TreeNodeExportHelperServiceImpl exportHelper;
 
-	@Inject
-	public DatasourceManagerExportRpcServiceImpl(
-		DtoService dtoService,
-		Provider<HttpExportService> httpExportServiceProvider,
-		TreeNodeExportHelperServiceImpl exportHelper
-		){
-		
-		/* store objects */
-		this.dtoService = dtoService;
-		this.httpExportServiceProvider = httpExportServiceProvider;
-		this.exportHelper = exportHelper;
-	}
-	
-	@Override
-	@SecurityChecked(
-		genericTargetVerification = { 
-			@GenericTargetVerification(
-				target = ExportSecurityTarget.class, 
-				verify = @RightsVerification(rights = Execute.class)) 
-		})
-	@Transactional(rollbackOn={Exception.class})
-	public void quickExport(AbstractDatasourceManagerNodeDto nodeDto) throws ServerCallFailedException {
-		AbstractDatasourceManagerNode node = (AbstractDatasourceManagerNode) dtoService.loadPoso(nodeDto);
-		
-		String exportXML = exportHelper.export(node,true,"Datasource-Export");
-		
-		httpExportServiceProvider.get().storeExport(exportXML, node.getName());
-	}
-	
-	private void addChildren(ExportConfig exportConfig, AbstractDatasourceManagerNode report) {
-		for(AbstractDatasourceManagerNode childNode : report.getChildren()){
-			exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-			addChildren(exportConfig, childNode);
-		}
-	}
-	
-	@Override
-	@Transactional(rollbackOn={Exception.class})
-	public String loadResult() throws ServerCallFailedException {
-		return httpExportServiceProvider.get().getAndRemoveStoredExport();
-	}
+   @Inject
+   public DatasourceManagerExportRpcServiceImpl(DtoService dtoService,
+         Provider<HttpExportService> httpExportServiceProvider, TreeNodeExportHelperServiceImpl exportHelper) {
 
+      /* store objects */
+      this.dtoService = dtoService;
+      this.httpExportServiceProvider = httpExportServiceProvider;
+      this.exportHelper = exportHelper;
+   }
+
+   @Override
+   @SecurityChecked(genericTargetVerification = {
+         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @Transactional(rollbackOn = { Exception.class })
+   public void quickExport(AbstractDatasourceManagerNodeDto nodeDto) throws ServerCallFailedException {
+      AbstractDatasourceManagerNode node = (AbstractDatasourceManagerNode) dtoService.loadPoso(nodeDto);
+
+      String exportXML = exportHelper.export(node, true, "Datasource-Export");
+
+      httpExportServiceProvider.get().storeExport(exportXML, node.getName());
+   }
+
+   private void addChildren(ExportConfig exportConfig, AbstractDatasourceManagerNode report) {
+      for (AbstractDatasourceManagerNode childNode : report.getChildren()) {
+         exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
+         addChildren(exportConfig, childNode);
+      }
+   }
+
+   @Override
+   @Transactional(rollbackOn = { Exception.class })
+   public String loadResult() throws ServerCallFailedException {
+      return httpExportServiceProvider.get().getAndRemoveStoredExport();
+   }
 
 }

@@ -7,9 +7,9 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
  *
  */
 public abstract class PreviewViewFactory implements ReportViewFactory {
-	
-	@Override
-	public String getViewId() {
-		return AbstractReportPreviewView.VIEW_ID;
-	}
+
+   @Override
+   public String getViewId() {
+      return AbstractReportPreviewView.VIEW_ID;
+   }
 }

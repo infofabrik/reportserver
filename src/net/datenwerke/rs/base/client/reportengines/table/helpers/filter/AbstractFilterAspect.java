@@ -18,79 +18,80 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
  */
 public abstract class AbstractFilterAspect<M> {
 
-	@Inject
-	protected static FilterService filterService;
-	
-	@Inject
-	protected static SqlTypes sqlTypes;
-	
-	protected final ColumnDto column;
-	
-	protected DistinctSelectorPanel<M> distinctSelectorPanel;
-	protected SelectionPanel<M> selectionPanel;
-	
-	private String titleString;
+   @Inject
+   protected static FilterService filterService;
 
+   @Inject
+   protected static SqlTypes sqlTypes;
 
-	public AbstractFilterAspect(String titleString, TableReportDto report, ColumnDto column, FilterType type, String executeToken) {
-		this.column = column;
-		this.titleString = titleString;
+   protected final ColumnDto column;
 
-		selectionPanel = createSelectionPanel(column);
-		distinctSelectorPanel = new DistinctSelectorPanel<M>(report, column, selectionPanel, type, executeToken + getClass().getName());
-	}
+   protected DistinctSelectorPanel<M> distinctSelectorPanel;
+   protected SelectionPanel<M> selectionPanel;
 
-	public String getTitleString(){
-		return titleString;
-	}
-	
-	protected abstract SelectionPanel<M> createSelectionPanel(ColumnDto column);
+   private String titleString;
 
-	public Widget getComponent(){
-		BorderLayoutContainer container = new BorderLayoutContainer();
+   public AbstractFilterAspect(String titleString, TableReportDto report, ColumnDto column, FilterType type,
+         String executeToken) {
+      this.column = column;
+      this.titleString = titleString;
 
-		BorderLayoutData westData = new BorderLayoutData(250);
-		westData.setSplit(true);
-		container.setWestWidget(distinctSelectorPanel.getComponent(), westData);
-		
-		Widget component = selectionPanel.getComponent();
-		doConfigureSelectionComponent(component);
-		
-		container.setCenterWidget(component);
+      selectionPanel = createSelectionPanel(column);
+      distinctSelectorPanel = new DistinctSelectorPanel<M>(report, column, selectionPanel, type,
+            executeToken + getClass().getName());
+   }
 
-		return container;
-	}
+   public String getTitleString() {
+      return titleString;
+   }
 
-	protected void doConfigureSelectionComponent(Widget component) {
-		// TODO Auto-generated method stub
-		
-	}
+   protected abstract SelectionPanel<M> createSelectionPanel(ColumnDto column);
 
-	abstract public void storeConfiguration();
+   public Widget getComponent() {
+      BorderLayoutContainer container = new BorderLayoutContainer();
 
-	abstract public void loadConfiguration(FilterDto filter);
+      BorderLayoutData westData = new BorderLayoutData(250);
+      westData.setSplit(true);
+      container.setWestWidget(distinctSelectorPanel.getComponent(), westData);
 
-	public void tryParseText(){
-		selectionPanel.tryParseText();
-	}
+      Widget component = selectionPanel.getComponent();
+      doConfigureSelectionComponent(component);
 
-	public void cleanup() {
-		distinctSelectorPanel.cleanup();
-	}
-	
-	public void onSelection() {
-		distinctSelectorPanel.onSelection();
-	}
+      container.setCenterWidget(component);
 
-	public void setForceConsistency(boolean force) {
-		distinctSelectorPanel.setForceConsistency(force);
-	}
+      return container;
+   }
 
-	public void hideForceConsistency() {
-		distinctSelectorPanel.hideForceConsistency();
-	}
+   protected void doConfigureSelectionComponent(Widget component) {
+      // TODO Auto-generated method stub
 
-	public void validate() {
-		selectionPanel.validate();
-	}
+   }
+
+   abstract public void storeConfiguration();
+
+   abstract public void loadConfiguration(FilterDto filter);
+
+   public void tryParseText() {
+      selectionPanel.tryParseText();
+   }
+
+   public void cleanup() {
+      distinctSelectorPanel.cleanup();
+   }
+
+   public void onSelection() {
+      distinctSelectorPanel.onSelection();
+   }
+
+   public void setForceConsistency(boolean force) {
+      distinctSelectorPanel.setForceConsistency(force);
+   }
+
+   public void hideForceConsistency() {
+      distinctSelectorPanel.hideForceConsistency();
+   }
+
+   public void validate() {
+      selectionPanel.validate();
+   }
 }

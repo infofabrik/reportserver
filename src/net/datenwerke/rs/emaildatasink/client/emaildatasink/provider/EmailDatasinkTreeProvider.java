@@ -25,12 +25,8 @@ public class EmailDatasinkTreeProvider implements Provider<ManagerHelperTree> {
    private final ManagerHelperTreeFactory treeFactory;
 
    @Inject
-   public EmailDatasinkTreeProvider(
-         TreeDBUIService treeDBUIService, 
-         DatasinkTreeLoaderDao datasinkTreeLoader,
-         DatasinkTreeManagerDao datasinkTreeManager, 
-         ManagerHelperTreeFactory treeFactory
-         ) {
+   public EmailDatasinkTreeProvider(TreeDBUIService treeDBUIService, DatasinkTreeLoaderDao datasinkTreeLoader,
+         DatasinkTreeManagerDao datasinkTreeManager, ManagerHelperTreeFactory treeFactory) {
 
       this.treeDBUIService = treeDBUIService;
       this.datasinkTreeLoader = datasinkTreeLoader;
@@ -44,7 +40,7 @@ public class EmailDatasinkTreeProvider implements Provider<ManagerHelperTree> {
 
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasinkManagerNodeDto.class, datasinkTreeLoader,
             false, filters);
-      
+
       /* build tree */
       final ManagerHelperTree tree = treeFactory.create(DatasinkUIModule.class, store, datasinkTreeLoader,
             datasinkTreeManager);

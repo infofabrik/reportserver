@@ -39,17 +39,8 @@ public class VfsCommandMkdir implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(
-         messageClass = VfsMessages.class, 
-         name = BASE_COMMAND, 
-         description = "commandMkdir_description", 
-         nonOptArgs = {
-               @NonOptArgument(
-                     name = "dir", 
-                     description = "commandMkdir_argument"
-                     ) 
-               }
-         )
+   @CliHelpMessage(messageClass = VfsMessages.class, name = BASE_COMMAND, description = "commandMkdir_description", nonOptArgs = {
+         @NonOptArgument(name = "dir", description = "commandMkdir_argument") })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) {
       VirtualFileSystemDeamon vfs = session.getFileSystem();
@@ -65,7 +56,7 @@ public class VfsCommandMkdir implements TerminalCommandHook {
 
          if (location.isVirtualLocation())
             throw new IllegalArgumentException("location is virtual");
-         
+
          if (null == location.getFilesystemManager())
             throw new IllegalArgumentException("cannot create dir in root");
 

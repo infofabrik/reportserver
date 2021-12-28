@@ -4,7 +4,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public interface SFFCUserSelector extends SimpleFormFieldConfiguration {
-	
-	public UserDto getUser();
+
+   public UserDto getUser();
 
 }

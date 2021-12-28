@@ -11,29 +11,26 @@ import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
-
 public class HistoryUIStartup {
 
-	@Inject
-	public HistoryUIStartup(
-			HookHandlerService hookHandler, 
-			HistoryUiService historyService, 
-			final WaitOnEventUIService waitOnEventService
-			) {
+   @Inject
+   public HistoryUIStartup(HookHandlerService hookHandler, HistoryUiService historyService,
+         final WaitOnEventUIService waitOnEventService) {
 
-		waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_USER_LOGGED_IN_APPLICATION_LOADED, new SynchronousCallbackOnEventTrigger(){
-			public void execute(final WaitOnEventTicket ticket) {
-				waitOnEventService.signalProcessingDone(ticket);
-				Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-					
-					@Override
-					public void execute() {
-						History.fireCurrentHistoryState();
-					}
-				});
-			}
-		});
+      waitOnEventService.callbackOnEvent(DispatcherService.REPORTSERVER_EVENT_USER_LOGGED_IN_APPLICATION_LOADED,
+            new SynchronousCallbackOnEventTrigger() {
+               public void execute(final WaitOnEventTicket ticket) {
+                  waitOnEventService.signalProcessingDone(ticket);
+                  Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 
-	}
+                     @Override
+                     public void execute() {
+                        History.fireCurrentHistoryState();
+                     }
+                  });
+               }
+            });
+
+   }
 
 }

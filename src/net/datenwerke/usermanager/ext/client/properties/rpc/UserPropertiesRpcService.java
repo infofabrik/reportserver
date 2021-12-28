@@ -11,9 +11,10 @@ import net.datenwerke.security.client.usermanager.dto.UserPropertyDto;
 
 @RemoteServiceRelativePath("userproperties")
 public interface UserPropertiesRpcService extends RemoteService {
-	
-	public List<String> getPropertyKeys() throws ServerCallFailedException;
 
-	UserDto updateProperties(UserDto user, List<UserPropertyDto> addedProperties,
-			List<UserPropertyDto> modifiedProperties, List<UserPropertyDto> removedProperties) throws ServerCallFailedException;
+   public List<String> getPropertyKeys() throws ServerCallFailedException;
+
+   UserDto updateProperties(UserDto user, List<UserPropertyDto> addedProperties,
+         List<UserPropertyDto> modifiedProperties, List<UserPropertyDto> removedProperties)
+         throws ServerCallFailedException;
 }

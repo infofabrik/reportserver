@@ -16,44 +16,42 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 @Singleton
 public class TeamSpaceClientMainModule extends ClientMainModuleImpl {
-	
-	private final Provider<TeamSpaceMainComponent> mainComponentProvider;
-	private TeamSpaceMainComponent mainComponent;
-	
-	@Inject
-	public TeamSpaceClientMainModule(
-		Provider<TeamSpaceMainComponent> mainComponentProvider
-		){
-		
-		/* store objects */
-		this.mainComponentProvider = mainComponentProvider;
-		
-	}
-	
-	@Override
-	public String getModuleName() {
-		return TeamSpaceMessages.INSTANCE.clientModuleName();
-	}
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.GROUP_EDIT.toImageResource();
-	}
+   private final Provider<TeamSpaceMainComponent> mainComponentProvider;
+   private TeamSpaceMainComponent mainComponent;
 
-	@Override
-	public TeamSpaceMainComponent getMainWidget() {
-		if(null == mainComponent)
-			mainComponent = mainComponentProvider.get();
-		return mainComponent;
-	}
+   @Inject
+   public TeamSpaceClientMainModule(Provider<TeamSpaceMainComponent> mainComponentProvider) {
 
-	@Override
-	public void selected() {
-		mainComponent.notifyOfSelection();
-	}
+      /* store objects */
+      this.mainComponentProvider = mainComponentProvider;
 
-	@Override
-	public boolean isRecyclable() {
-		return true;
-	}
+   }
+
+   @Override
+   public String getModuleName() {
+      return TeamSpaceMessages.INSTANCE.clientModuleName();
+   }
+
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.GROUP_EDIT.toImageResource();
+   }
+
+   @Override
+   public TeamSpaceMainComponent getMainWidget() {
+      if (null == mainComponent)
+         mainComponent = mainComponentProvider.get();
+      return mainComponent;
+   }
+
+   @Override
+   public void selected() {
+      mainComponent.notifyOfSelection();
+   }
+
+   @Override
+   public boolean isRecyclable() {
+      return true;
+   }
 }

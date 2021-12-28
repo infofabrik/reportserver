@@ -5,9 +5,9 @@ import net.datenwerke.treedb.ext.client.eximport.im.dto.TreeImportConfigDto;
 
 public class DashboardManagerImportConfigDto extends TreeImportConfigDto<AbstractDashboardManagerNodeDto> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4700661026815876867L;
-	
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4700661026815876867L;
+
 }

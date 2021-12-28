@@ -4,20 +4,18 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface DatasourceTesterMessages extends Messages {
 
-	String testFailed();
+   String testFailed();
 
-	String testConnection();
+   String testConnection();
 
-	String testSuccess();
+   String testSuccess();
 
-	String pleaseWait();
+   String pleaseWait();
 
-	String testingTitle();
+   String testingTitle();
 
-	String testingProgressMessage();
+   String testingProgressMessage();
 
-	String success();
-	
-	
-	
+   String success();
+
 }

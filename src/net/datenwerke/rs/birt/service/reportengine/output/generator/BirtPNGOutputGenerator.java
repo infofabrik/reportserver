@@ -22,79 +22,75 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 
+public class BirtPNGOutputGenerator extends BirtOutputGeneratorImpl {
 
-public class BirtPNGOutputGenerator extends BirtOutputGeneratorImpl{
+   @Inject
+   public BirtPNGOutputGenerator() {
+   }
 
-	@Inject
-	public BirtPNGOutputGenerator() {
-	}
+   @Override
+   public CompiledRSBirtReport exportReport(Object oRunAndRenderTask, String outputFormat,
+         ReportExecutionConfig... configs) {
+      try {
+         IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
+         PDFRenderOption options = new PDFRenderOption();
 
-	@Override
-	public CompiledRSBirtReport exportReport(Object oRunAndRenderTask, String outputFormat, ReportExecutionConfig... configs) {
-		try {
-			IRunAndRenderTask runAndRenderTask = (IRunAndRenderTask) oRunAndRenderTask;
-			PDFRenderOption options = new PDFRenderOption();
+         ByteArrayOutputStream bos = new ByteArrayOutputStream();
+         options.setOutputStream(bos);
+         options.setOutputFormat("pdf");
 
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			options.setOutputStream(bos);
-			options.setOutputFormat("pdf");
+         /* adapt render options */
+         RenderOption renderOptions = adapt(options);
 
-			/* adapt render options */
-			RenderOption renderOptions = adapt(options);
-			
-			runAndRenderTask.setRenderOption(renderOptions);
-			runAndRenderTask.run();
+         runAndRenderTask.setRenderOption(renderOptions);
+         runAndRenderTask.run();
 
-			/* convert to png */
-			BufferedImage[] images = pdfToImage(new ByteArrayInputStream(bos.toByteArray()));
+         /* convert to png */
+         BufferedImage[] images = pdfToImage(new ByteArrayInputStream(bos.toByteArray()));
 
-			/* create return object */
-			CompiledPNGBirtReport cbReport = new CompiledPNGBirtReport();
+         /* create return object */
+         CompiledPNGBirtReport cbReport = new CompiledPNGBirtReport();
 
-			/* add report to object */
-			cbReport.setReport(images);
+         /* add report to object */
+         cbReport.setReport(images);
 
-			/* return compiled report */
-			return cbReport;
+         /* return compiled report */
+         return cbReport;
 
-		
-		} catch (EngineException e) {
-			ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
-			rere.initCause(e);
-			throw rere;
-		}
+      } catch (EngineException e) {
+         ReportExecutorRuntimeException rere = new ReportExecutorRuntimeException();
+         rere.initCause(e);
+         throw rere;
+      }
 
+   }
 
-	}
+   @Override
+   public String[] getFormats() {
+      return new String[] { ReportExecutorService.OUTPUT_FORMAT_PNG };
+   }
 
-	@Override
-	public String[] getFormats() {
-		return new String[]{ReportExecutorService.OUTPUT_FORMAT_PNG};
-	}
-	
-	private BufferedImage[] pdfToImage(InputStream is) {
-		BufferedImage[] images = new BufferedImage[1];
-		
-		PDDocument document;
-		try {
-			document = PDDocument.load(is);
-			
-			BufferedImage o = new PDFRenderer(document).renderImage(0);
-			images[0] = o;
+   private BufferedImage[] pdfToImage(InputStream is) {
+      BufferedImage[] images = new BufferedImage[1];
 
-			document.close();
+      PDDocument document;
+      try {
+         document = PDDocument.load(is);
 
-			return images;
-		} catch (IOException e) {
-			throw new ReportExecutorRuntimeException(e);
-		} 
-	}
-	
+         BufferedImage o = new PDFRenderer(document).renderImage(0);
+         images[0] = o;
 
-	@Override
-	public CompiledReport getFormatInfo() {
-		return new CompiledPNGBirtReport();
-	}
+         document.close();
 
+         return images;
+      } catch (IOException e) {
+         throw new ReportExecutorRuntimeException(e);
+      }
+   }
+
+   @Override
+   public CompiledReport getFormatInfo() {
+      return new CompiledPNGBirtReport();
+   }
 
 }

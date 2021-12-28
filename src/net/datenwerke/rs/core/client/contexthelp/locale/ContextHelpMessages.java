@@ -5,7 +5,7 @@ import com.google.gwt.i18n.client.Messages;
 
 public interface ContextHelpMessages extends Messages {
 
-	public final static ContextHelpMessages INSTANCE = GWT.create(ContextHelpMessages.class);
-	
-	String windowTitlePrefix();
+   public final static ContextHelpMessages INSTANCE = GWT.create(ContextHelpMessages.class);
+
+   String windowTitlePrefix();
 }

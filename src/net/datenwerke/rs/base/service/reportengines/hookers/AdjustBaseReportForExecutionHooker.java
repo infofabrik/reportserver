@@ -14,35 +14,33 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class AdjustBaseReportForExecutionHooker implements AdjustReportForExecutionHook {
 
-	private final TableReportColumnMetadataService columnMetadataService;
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	
-	@Inject
-	public AdjustBaseReportForExecutionHooker(
-		TableReportColumnMetadataService columnMetadataService,
-		Provider<AuthenticatorService> authenticatorServiceProvider
-		){
-		
-		/* store objects */
-		this.columnMetadataService = columnMetadataService;
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-	}
-	
-	@Override
-	public void adjust(Report report) {
-		if(report instanceof TableReport){
-			try {
-				AuthenticatorService authenticatorService = authenticatorServiceProvider.get();
-				User user = authenticatorService.getCurrentUser();
-				columnMetadataService.augmentWithMetadata((TableReport)report, user);
-			} catch (NonFatalException e) {
-			}
-		}
-	}
-	
-	@Override
-	public void adjust(ReportDto tmpReport) {
-		
-	}
+   private final TableReportColumnMetadataService columnMetadataService;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+
+   @Inject
+   public AdjustBaseReportForExecutionHooker(TableReportColumnMetadataService columnMetadataService,
+         Provider<AuthenticatorService> authenticatorServiceProvider) {
+
+      /* store objects */
+      this.columnMetadataService = columnMetadataService;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+   }
+
+   @Override
+   public void adjust(Report report) {
+      if (report instanceof TableReport) {
+         try {
+            AuthenticatorService authenticatorService = authenticatorServiceProvider.get();
+            User user = authenticatorService.getCurrentUser();
+            columnMetadataService.augmentWithMetadata((TableReport) report, user);
+         } catch (NonFatalException e) {
+         }
+      }
+   }
+
+   @Override
+   public void adjust(ReportDto tmpReport) {
+
+   }
 
 }

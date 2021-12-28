@@ -12,29 +12,26 @@ import net.datenwerke.treedb.ext.service.eximport.TreeNodeImportItemConfig;
 
 public class ImportAllTsDiskHooker implements ImportAllHook {
 
-	private final TsDiskService tsDiskService;
-	private final ExportDataAnalyzerService analizerService;
-	
-	@Inject
-	public ImportAllTsDiskHooker(
-		TsDiskService tsDiskService,
-		ExportDataAnalyzerService analizerService) {
-		this.tsDiskService = tsDiskService;
-		this.analizerService = analizerService;
-	}
+   private final TsDiskService tsDiskService;
+   private final ExportDataAnalyzerService analizerService;
 
+   @Inject
+   public ImportAllTsDiskHooker(TsDiskService tsDiskService, ExportDataAnalyzerService analizerService) {
+      this.tsDiskService = tsDiskService;
+      this.analizerService = analizerService;
+   }
 
-
-	@Override
-	public void configure(ImportConfig config) {
-		try {
-			for(ExportedItem item : analizerService.getExportedItemsFor(config.getExportDataProvider(), TsDiskExporter.class)){
-				TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId());
-				config.addItemConfig(itemConfig);
-			}
-		} catch (ClassNotFoundException e) {
-			throw new IllegalArgumentException(e);
-		}
-	}
+   @Override
+   public void configure(ImportConfig config) {
+      try {
+         for (ExportedItem item : analizerService.getExportedItemsFor(config.getExportDataProvider(),
+               TsDiskExporter.class)) {
+            TreeNodeImportItemConfig itemConfig = new TreeNodeImportItemConfig(item.getId());
+            config.addItemConfig(itemConfig);
+         }
+      } catch (ClassNotFoundException e) {
+         throw new IllegalArgumentException(e);
+      }
+   }
 
 }

@@ -9,14 +9,8 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorRecordDto;
 
 public interface GridEditorRpcServiceAsync {
 
-	void commitChanges(ReportDto report, String executeToken,
-			List<GridEditorRecordDto> modified,
-			List<GridEditorRecordDto> modifiedOriginals,
-			List<GridEditorRecordDto> deletedRecords,
-			List<GridEditorRecordDto> newRecords,
-			AsyncCallback<Void> transformAndKeepCallback);
-
-	
-
+   void commitChanges(ReportDto report, String executeToken, List<GridEditorRecordDto> modified,
+         List<GridEditorRecordDto> modifiedOriginals, List<GridEditorRecordDto> deletedRecords,
+         List<GridEditorRecordDto> newRecords, AsyncCallback<Void> transformAndKeepCallback);
 
 }

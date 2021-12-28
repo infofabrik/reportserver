@@ -28,63 +28,51 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBTree;
  *
  */
 @Entity
-@Table(name="USERMANAGER_NODE")
+@Table(name = "USERMANAGER_NODE")
 @Audited
-@Inheritance(strategy=InheritanceType.JOINED)
-@TreeDBTree(
-	rootTypes=OrganisationalUnit.class,
-	manager=UserManagerService.class
-)
-@GenerateDto(
-	dtoPackage="net.datenwerke.security.client.usermanager.dto",
-	abstractDto=true,
-	whitelist={
-		UserDto.class, OrganisationalUnitDto.class, GroupDto.class
-	}
-)
-abstract public class AbstractUserManagerNode extends SecuredAbstractNode<AbstractUserManagerNode>  {
+@Inheritance(strategy = InheritanceType.JOINED)
+@TreeDBTree(rootTypes = OrganisationalUnit.class, manager = UserManagerService.class)
+@GenerateDto(dtoPackage = "net.datenwerke.security.client.usermanager.dto", abstractDto = true, whitelist = {
+      UserDto.class, OrganisationalUnitDto.class, GroupDto.class })
+abstract public class AbstractUserManagerNode extends SecuredAbstractNode<AbstractUserManagerNode> {
 
-	private static final long serialVersionUID = -4729776009606610343L;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 128)
-	@Field
-    private String guid;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Column(length = 1024)
-	@Field
-    private String origin;
-	
+   private static final long serialVersionUID = -4729776009606610343L;
 
-	public abstract String getName();
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 128)
+   @Field
+   private String guid;
 
-	@Override
-	public String getNodeName() {
-		return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Column(length = 1024)
+   @Field
+   private String origin;
 
-	@Override
-	public String getRootNodeName() {
-		return "usermanager";
-	}
-	
-	public String getOrigin() {
-		return origin;
-	}
+   public abstract String getName();
 
+   @Override
+   public String getNodeName() {
+      return isRoot() ? getRootNodeName() : null == getName() ? "undefined" : getName();
+   }
 
-	public void setOrigin(String origin) {
-		this.origin = origin;
-	}
+   @Override
+   public String getRootNodeName() {
+      return "usermanager";
+   }
 
+   public String getOrigin() {
+      return origin;
+   }
 
-	public String getGuid() {
-		return guid;
-	}
+   public void setOrigin(String origin) {
+      this.origin = origin;
+   }
 
+   public String getGuid() {
+      return guid;
+   }
 
-	public void setGuid(String guid) {
-		this.guid = guid;
-	}
+   public void setGuid(String guid) {
+      this.guid = guid;
+   }
 }

@@ -20,72 +20,70 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasou
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 
 @Entity
-@Table(name="DATABASE_BUNDLE_ENTRY")
+@Table(name = "DATABASE_BUNDLE_ENTRY")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dsbundle.client.dsbundle.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dsbundle.client.dsbundle.dto")
 public class DatabaseBundleEntry implements Serializable {
 
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 6648113810813153773L;
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 6648113810813153773L;
+   @ExposeToClient
+   private String key;
 
-	@ExposeToClient
-	private String key;
-	
-	@ExposeToClient
-	@ManyToOne
-	private AbstractDatasourceManagerNode database;
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	@Field(name="nodeId")
-	private Long id;
-	
-	@Transient @TransientID
-	private Long oldTransientId;
-	
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @ExposeToClient
+   @ManyToOne
+   private AbstractDatasourceManagerNode database;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
-	
-	public Long getOldTransientId() {
-		return oldTransientId;
-	}
+   @Version
+   private Long version;
 
-	public String getKey() {
-		return key;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   @Field(name = "nodeId")
+   private Long id;
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   @Transient
+   @TransientID
+   private Long oldTransientId;
 
-	public AbstractDatasourceManagerNode getDatabase() {
-		return database;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public void setDatabase(AbstractDatasourceManagerNode database) {
-		this.database = database;
-	}
-	
-	
+   public void setId(Long id) {
+      this.id = id;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public Long getOldTransientId() {
+      return oldTransientId;
+   }
+
+   public String getKey() {
+      return key;
+   }
+
+   public void setKey(String key) {
+      this.key = key;
+   }
+
+   public AbstractDatasourceManagerNode getDatabase() {
+      return database;
+   }
+
+   public void setDatabase(AbstractDatasourceManagerNode database) {
+      this.database = database;
+   }
+
 }

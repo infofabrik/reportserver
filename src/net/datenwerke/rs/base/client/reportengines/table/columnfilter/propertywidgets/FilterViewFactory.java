@@ -11,31 +11,28 @@ import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 
-public class FilterViewFactory implements ReportViewFactory{
-	
-	private final Provider<FilterView> filterViewProvider;
-	
-	@Inject
-	public FilterViewFactory(
-			Provider<FilterView> filterViewProvider
-		) {
-		this.filterViewProvider = filterViewProvider;
-	}
-	
-	public FilterView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
-		FilterView fw = filterViewProvider.get();
-		fw.setReport((TableReportDto) report);
-		return fw;
-	}
+public class FilterViewFactory implements ReportViewFactory {
 
-	public boolean consumes(ReportDto report) {
-		return 
-			report instanceof TableReportDto &&
-			report.hasAccessRight(ExecuteDto.class) && ! ((TableReportDto)report).isCubeFlag() && !report.isConfigurationProtected();
-	}
-	
-	@Override
-	public String getViewId() {
-		return FilterView.VIEW_ID;
-	}
+   private final Provider<FilterView> filterViewProvider;
+
+   @Inject
+   public FilterViewFactory(Provider<FilterView> filterViewProvider) {
+      this.filterViewProvider = filterViewProvider;
+   }
+
+   public FilterView newInstance(ReportDto report, Collection<? extends ReportViewConfiguration> configs) {
+      FilterView fw = filterViewProvider.get();
+      fw.setReport((TableReportDto) report);
+      return fw;
+   }
+
+   public boolean consumes(ReportDto report) {
+      return report instanceof TableReportDto && report.hasAccessRight(ExecuteDto.class)
+            && !((TableReportDto) report).isCubeFlag() && !report.isConfigurationProtected();
+   }
+
+   @Override
+   public String getViewId() {
+      return FilterView.VIEW_ID;
+   }
 }

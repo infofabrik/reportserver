@@ -15,29 +15,26 @@ import net.datenwerke.rs.core.client.reportmanager.hookers.ReportCatalogOnDemand
 
 public class ReportSelectorSimpleFormProvider extends FormFieldProviderHookImpl {
 
-	
-	
-	@Override
-	public boolean doConsumes(Class<?> type,
-			SimpleFormFieldConfiguration... configs) {
-		return type == ReportSelectionDialog.class;
-	}
+   @Override
+   public boolean doConsumes(Class<?> type, SimpleFormFieldConfiguration... configs) {
+      return type == ReportSelectionDialog.class;
+   }
 
-	@Override
-	public Widget createFormField() {
-		ReportSelectionField field = new ReportSelectionField();
-	
-		final SFFCReportSelection config = getConfig();
-		if(null != config){
-			Collection<RepositoryProviderConfig> configs = new ArrayList<RepositoryProviderConfig>();
-			if(null != config.getRepositoryConfigs())
-				configs.addAll(config.getRepositoryConfigs());
-			configs.add(new ReportCatalogOnDemandRepositoryProvider.Config() {
+   @Override
+   public Widget createFormField() {
+      ReportSelectionField field = new ReportSelectionField();
+
+      final SFFCReportSelection config = getConfig();
+      if (null != config) {
+         Collection<RepositoryProviderConfig> configs = new ArrayList<RepositoryProviderConfig>();
+         if (null != config.getRepositoryConfigs())
+            configs.addAll(config.getRepositoryConfigs());
+         configs.add(new ReportCatalogOnDemandRepositoryProvider.Config() {
             @Override
             public boolean includeVariants() {
                return config.showVariantsInCatalog();
             }
-            
+
             @Override
             public boolean showCatalog() {
                return config.showCatalog();
@@ -58,28 +55,27 @@ public class ReportSelectorSimpleFormProvider extends FormFieldProviderHookImpl 
                return false;
             }
          });
-			field.setRepositoryConfigs(configs.toArray(new RepositoryProviderConfig[]{}));
-		}
-		
-		field.addValueChangeHandler(new ValueChangeHandler<ReportContainerDto>() {
-			@Override
-			public void onValueChange(ValueChangeEvent<ReportContainerDto> event) {
-				ValueChangeEvent.fire(ReportSelectorSimpleFormProvider.this, event.getValue());
-			}
-		});
-		
-		return field;
-	}
-	
-	
-	private SFFCReportSelection getConfig() {
-		for(SimpleFormFieldConfiguration conf : configs)
-			if(conf instanceof SFFCReportSelection)
-				return (SFFCReportSelection) conf;
-		return null;
-	}
+         field.setRepositoryConfigs(configs.toArray(new RepositoryProviderConfig[] {}));
+      }
 
-	public Object getValue(Widget field){
-		return ((ReportSelectionField)field).getValue();
-	}
+      field.addValueChangeHandler(new ValueChangeHandler<ReportContainerDto>() {
+         @Override
+         public void onValueChange(ValueChangeEvent<ReportContainerDto> event) {
+            ValueChangeEvent.fire(ReportSelectorSimpleFormProvider.this, event.getValue());
+         }
+      });
+
+      return field;
+   }
+
+   private SFFCReportSelection getConfig() {
+      for (SimpleFormFieldConfiguration conf : configs)
+         if (conf instanceof SFFCReportSelection)
+            return (SFFCReportSelection) conf;
+      return null;
+   }
+
+   public Object getValue(Widget field) {
+      return ((ReportSelectionField) field).getValue();
+   }
 }

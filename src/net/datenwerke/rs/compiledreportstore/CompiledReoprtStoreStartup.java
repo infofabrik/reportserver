@@ -9,12 +9,9 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class CompiledReoprtStoreStartup {
 
-	@Inject
-	public CompiledReoprtStoreStartup(
-		RemoveCompiledReportsOnDelete cleanupTask,
-		EventBus eventBus
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, cleanupTask);
-	}
+   @Inject
+   public CompiledReoprtStoreStartup(RemoveCompiledReportsOnDelete cleanupTask, EventBus eventBus) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, Report.class, cleanupTask);
+   }
 }

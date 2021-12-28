@@ -32,11 +32,9 @@ public class JxlsReportEngine extends ReportEngine<Connection, JxlsOutputGenerat
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    @Inject
-   public JxlsReportEngine(
-         JxlsOutputGeneratorManager outputGeneratorManager,
+   public JxlsReportEngine(JxlsOutputGeneratorManager outputGeneratorManager,
          JxlsMetadataExporterManager metadataExporterManager,
-         DatasourceTransformationService datasourceTransformationService
-         ) {
+         DatasourceTransformationService datasourceTransformationService) {
       super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
    }
 

@@ -7,6 +7,6 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 
 public interface ParameterProviderHook extends Hook {
 
-	Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions();
+   Collection<? extends Class<? extends ParameterDefinition>> getParameterDefinitions();
 
 }

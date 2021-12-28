@@ -47,9 +47,7 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @Entity
 @Table(name = "SCHED_EXECUTE_REPORT_JOB")
 @Inheritance(strategy = InheritanceType.JOINED)
-@AssociationOverride(
-      name = BaseJob__.baseProperties, 
-      joinTable = @JoinTable(name = "SCHED_REP_EXEC_JOB_2_PROP"))
+@AssociationOverride(name = BaseJob__.baseProperties, joinTable = @JoinTable(name = "SCHED_REP_EXEC_JOB_2_PROP"))
 public class ReportExecuteJob extends ReportServerJob {
 
    private final static String EXPORT_CONFIG_KEY = "exportConfigurations";
@@ -91,10 +89,7 @@ public class ReportExecuteJob extends ReportServerJob {
    public void setRecipients(List<User> recipients) {
       rcptIDs.clear();
 
-      rcptIDs.addAll(recipients
-            .stream()
-            .map(User::getId)
-            .collect(toList()));
+      rcptIDs.addAll(recipients.stream().map(User::getId).collect(toList()));
    }
 
    public List<Long> getRecipientsIds() {

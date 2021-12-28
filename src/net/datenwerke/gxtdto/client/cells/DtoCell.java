@@ -7,9 +7,9 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto;
 
 public class DtoCell<D extends Dto> extends AbstractCell<D> {
 
-	@Override
-	public void render(Context context, D value, SafeHtmlBuilder sb) {
-		sb.appendEscaped(value.toDisplayTitle());
-	}
+   @Override
+   public void render(Context context, D value, SafeHtmlBuilder sb) {
+      sb.appendEscaped(value.toDisplayTitle());
+   }
 
 }

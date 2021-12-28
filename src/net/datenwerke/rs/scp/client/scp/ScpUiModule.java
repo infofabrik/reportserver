@@ -18,7 +18,7 @@ public class ScpUiModule extends AbstractGinModule {
    public final static String NAME = "SCP";
    public final static BaseIcon ICON = BaseIcon.ARROW_UP;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = ScpDatasinkDto.class;
-   
+
    /**
     * Identifies the {@link FileUploadHandlerHook} to use
     * {@link ScpPrivateKeyUploadHooker} in case of SCP private key upload

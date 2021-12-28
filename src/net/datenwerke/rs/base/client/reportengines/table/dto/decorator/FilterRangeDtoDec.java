@@ -12,29 +12,27 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.FilterRangeDto;
  */
 public class FilterRangeDtoDec extends FilterRangeDto implements IdedDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public FilterRangeDtoDec() {
+      super();
+   }
 
-	public FilterRangeDtoDec() {
-		super();
-	}
+   public static List<FilterRangeDto> clone(List<FilterRangeDto> ranges) {
+      if (null == ranges)
+         return null;
 
-	public static List<FilterRangeDto> clone(List<FilterRangeDto> ranges) {
-		if(null == ranges)
-			return null;
-		
-		
-		List<FilterRangeDto> cloneList = new ArrayList<FilterRangeDto>();
-	
-		for(FilterRangeDto range : ranges){
-			FilterRangeDto clone = new FilterRangeDtoDec();
-			
-			clone.setRangeFrom(range.getRangeFrom());
-			clone.setRangeTo(range.getRangeTo());
-			
-			cloneList.add(clone);
-		}
-		
-		return cloneList;
-	}
+      List<FilterRangeDto> cloneList = new ArrayList<FilterRangeDto>();
+
+      for (FilterRangeDto range : ranges) {
+         FilterRangeDto clone = new FilterRangeDtoDec();
+
+         clone.setRangeFrom(range.getRangeFrom());
+         clone.setRangeTo(range.getRangeTo());
+
+         cloneList.add(clone);
+      }
+
+      return cloneList;
+   }
 }

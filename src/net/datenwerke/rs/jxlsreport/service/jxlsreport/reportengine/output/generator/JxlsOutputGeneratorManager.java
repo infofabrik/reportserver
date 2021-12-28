@@ -10,9 +10,9 @@ import net.datenwerke.rs.jxlsreport.service.jxlsreport.reportengine.hooks.JxlsOu
 @Singleton
 public class JxlsOutputGeneratorManager extends AbstractReportOutputGeneratorManager<JxlsOutputGenerator> {
 
-	@Inject
-	public JxlsOutputGeneratorManager(HookHandlerService hookHandler) {
-		super(hookHandler, JxlsOutputGeneratorProviderHook.class);
-	}
+   @Inject
+   public JxlsOutputGeneratorManager(HookHandlerService hookHandler) {
+      super(hookHandler, JxlsOutputGeneratorProviderHook.class);
+   }
 
 }

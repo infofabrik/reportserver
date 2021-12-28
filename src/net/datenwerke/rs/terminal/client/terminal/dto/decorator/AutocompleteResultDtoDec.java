@@ -8,16 +8,14 @@ import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
  */
 public class AutocompleteResultDtoDec extends AutocompleteResultDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public AutocompleteResultDtoDec() {
+      super();
+   }
 
-	public AutocompleteResultDtoDec() {
-		super();
-	}
-
-	public int size() {
-		return getEntries().getList().size() + getCmdEntries().getList().size() + getObjectEntries().getList().size();
-	}
-
+   public int size() {
+      return getEntries().getList().size() + getCmdEntries().getList().size() + getObjectEntries().getList().size();
+   }
 
 }

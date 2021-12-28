@@ -12,28 +12,23 @@ import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 
 @Singleton
-public class ThemeRpcServiceImpl  extends SecuredRemoteServiceServlet implements ThemeRpcService {
+public class ThemeRpcServiceImpl extends SecuredRemoteServiceServlet implements ThemeRpcService {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 1L;
 
+   private final Provider<ThemeService> themeServiceProvider;
 
-	private final Provider<ThemeService> themeServiceProvider;
+   @Inject
+   public ThemeRpcServiceImpl(Provider<ThemeService> themeServiceProvider) {
+      this.themeServiceProvider = themeServiceProvider;
+   }
 
-	@Inject
-	public ThemeRpcServiceImpl(
-			Provider<ThemeService> themeServiceProvider
-			){
-		this.themeServiceProvider = themeServiceProvider;
-	}
-
-	@SecurityChecked(bypass=true)
-	public ThemeUiConfig loadUiConfig() throws ServerCallFailedException {
-		return themeServiceProvider.get().loadUiConfig();
-	}
-
-
+   @SecurityChecked(bypass = true)
+   public ThemeUiConfig loadUiConfig() throws ServerCallFailedException {
+      return themeServiceProvider.get().loadUiConfig();
+   }
 
 }

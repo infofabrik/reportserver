@@ -7,12 +7,12 @@ import net.datenwerke.rs.eximport.client.eximport.im.exceptions.NotProperlyConfi
 
 public interface ImporterPostProcessorConfiguratorHook extends Hook {
 
-	ImportPostProcessConfigDto getConfiguration() throws NotProperlyConfiguredException;
+   ImportPostProcessConfigDto getConfiguration() throws NotProperlyConfiguredException;
 
-	String getPostProcessorId();
+   String getPostProcessorId();
 
-	PropertiesDialogCard getCard();
+   PropertiesDialogCard getCard();
 
-	void reset();
+   void reset();
 
 }

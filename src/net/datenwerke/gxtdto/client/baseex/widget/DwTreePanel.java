@@ -18,100 +18,97 @@ import net.datenwerke.rs.theme.client.icon.CssIconImageResource;
 import net.datenwerke.rs.theme.client.tree.RsTreeAppearance;
 
 public class DwTreePanel<M> extends Tree<M, String> {
-	
-	@CssClassConstant
-	public static final String CSS_NAME = "rs-t";
-	
-	public static class DwTreeStyle extends TreeStyle {
-		
-		@Override
-		public ImageResource getJointCloseIcon() {
-			return new CssIconImageResource(BaseIcon.CARET_RIGHT);
-		}
 
-		@Override
-		public ImageResource getJointOpenIcon() {
-			return new CssIconImageResource(BaseIcon.CARET_DOWN);
-		}
+   @CssClassConstant
+   public static final String CSS_NAME = "rs-t";
 
-		@Override
-		public ImageResource getLeafIcon() {
-			return super.getLeafIcon();
-		}
+   public static class DwTreeStyle extends TreeStyle {
 
-		@Override
-		public ImageResource getNodeCloseIcon() {
-			return new CssIconImageResource(BaseIcon.FOLDER_O);
-		}
+      @Override
+      public ImageResource getJointCloseIcon() {
+         return new CssIconImageResource(BaseIcon.CARET_RIGHT);
+      }
 
-		@Override
-		public ImageResource getNodeOpenIcon() {
-			return new CssIconImageResource(BaseIcon.FOLDER_OPEN_O);
-		}
-	}
-	
-	class DwTreeView<Y> extends TreeView<Y> {
-		@Override //identical to get to getImage
-		public void onIconStyleChange(TreeNode<Y> node, ImageResource icon) {
-			Element iconEl = getIconElement(node);
-			if (iconEl != null) {
-				Element e;
-				if (icon != null) {
-					e = getImage(icon);
-				} else {
-					e = DOM.createSpan();
-				}
-				// do not override class .. do it properly
-				// e.setClassName(iconEl.getClassName());
-				e.addClassName(((RsTreeAppearance)getAppearance()).getIconStyle());
+      @Override
+      public ImageResource getJointOpenIcon() {
+         return new CssIconImageResource(BaseIcon.CARET_DOWN);
+      }
 
-				node.setIconElement((Element) getElement(node).getFirstChild().insertBefore(e, iconEl));
-				iconEl.removeFromParent();
-			}
-		}
-		
-		protected Element getImage(ImageResource ir) {
-			if(ir instanceof CssIconContainer){
-				return ((CssIconContainer)ir).getCssElement();
-			}
-			return AbstractImagePrototype.create(ir).createElement();
-		}
-	}
-	
-	public DwTreePanel(TreeStore<M> store, ValueProvider<? super M, String> vp) {
-		super(store, vp);
-		init();
-	}
+      @Override
+      public ImageResource getLeafIcon() {
+         return super.getLeafIcon();
+      }
 
-	public DwTreePanel(TreeStore<M> store,
-			ValueProvider<? super M, String> valueProvider,
-			RsTreeAppearance app) {
-		super(store, valueProvider, app);
-		init();
-	}
-	
-	private void init() {
-		setStyle(new DwTreeStyle());
-		setView(new DwTreeView<M>());
-		
-		getElement().addClassName(getCssName());
-	}
+      @Override
+      public ImageResource getNodeCloseIcon() {
+         return new CssIconImageResource(BaseIcon.FOLDER_O);
+      }
 
-	public String getCssName() {
-		return CSS_NAME;
-	}
-	
-	public void addClassName(String name) {
-		getElement().addClassName(name);
-	}
-	
-	public M getEventTargetNode(DomEvent<?> e){
-		com.sencha.gxt.widget.core.client.tree.Tree.TreeNode<M> node = findNode(e.getNativeEvent().getEventTarget().<Element> cast());
-	    if(null != node)
-	    	return (M) node.getModel();
-    	return null;
-	}
-	
-	
-	
+      @Override
+      public ImageResource getNodeOpenIcon() {
+         return new CssIconImageResource(BaseIcon.FOLDER_OPEN_O);
+      }
+   }
+
+   class DwTreeView<Y> extends TreeView<Y> {
+      @Override // identical to get to getImage
+      public void onIconStyleChange(TreeNode<Y> node, ImageResource icon) {
+         Element iconEl = getIconElement(node);
+         if (iconEl != null) {
+            Element e;
+            if (icon != null) {
+               e = getImage(icon);
+            } else {
+               e = DOM.createSpan();
+            }
+            // do not override class .. do it properly
+            // e.setClassName(iconEl.getClassName());
+            e.addClassName(((RsTreeAppearance) getAppearance()).getIconStyle());
+
+            node.setIconElement((Element) getElement(node).getFirstChild().insertBefore(e, iconEl));
+            iconEl.removeFromParent();
+         }
+      }
+
+      protected Element getImage(ImageResource ir) {
+         if (ir instanceof CssIconContainer) {
+            return ((CssIconContainer) ir).getCssElement();
+         }
+         return AbstractImagePrototype.create(ir).createElement();
+      }
+   }
+
+   public DwTreePanel(TreeStore<M> store, ValueProvider<? super M, String> vp) {
+      super(store, vp);
+      init();
+   }
+
+   public DwTreePanel(TreeStore<M> store, ValueProvider<? super M, String> valueProvider, RsTreeAppearance app) {
+      super(store, valueProvider, app);
+      init();
+   }
+
+   private void init() {
+      setStyle(new DwTreeStyle());
+      setView(new DwTreeView<M>());
+
+      getElement().addClassName(getCssName());
+   }
+
+   public String getCssName() {
+      return CSS_NAME;
+   }
+
+   public void addClassName(String name) {
+      getElement().addClassName(name);
+   }
+
+   public M getEventTargetNode(DomEvent<?> e) {
+      com.sencha.gxt.widget.core.client.tree.Tree.TreeNode<M> node = findNode(
+            e.getNativeEvent().getEventTarget().<Element>cast());
+      if (null != node)
+         return (M) node.getModel();
+      return null;
+   }
+
 }

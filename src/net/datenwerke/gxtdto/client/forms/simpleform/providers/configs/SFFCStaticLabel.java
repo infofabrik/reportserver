@@ -4,6 +4,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguratio
 
 public interface SFFCStaticLabel extends SimpleFormFieldConfiguration {
 
-	public String getLabel();
-	
+   public String getLabel();
+
 }

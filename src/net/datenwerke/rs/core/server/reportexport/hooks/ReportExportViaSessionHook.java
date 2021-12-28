@@ -6,6 +6,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 
 public interface ReportExportViaSessionHook extends Hook {
 
-	void adjustReport(Report adjustedReport, ReportExecutionConfig... reportExecutorConfigs);
+   void adjustReport(Report adjustedReport, ReportExecutionConfig... reportExecutorConfigs);
 
 }

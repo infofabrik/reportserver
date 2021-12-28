@@ -24,66 +24,63 @@ import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 
 @Audited
 @Entity
-@Table(name="DASHBOARD_CONTAINER")
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	createDecorator=true
-)
+@Table(name = "DASHBOARD_CONTAINER")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", createDecorator = true)
 public class DashboardContainer implements Serializable {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4401146517117953733L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -4401146517117953733L;
 
-	@JoinTable(name="DASHBOARD_CONT_2_DASHBRD")
-	@EnclosedEntity
-	@ExposeToClient(mergeDtoValueBack=false, view=DtoView.MINIMAL)
-	@OneToMany(cascade=CascadeType.ALL)
-	@OrderBy("n")
-	private List<Dashboard> dashboards = new ArrayList<Dashboard>();
-	
-	@Version
-	private Long version;
-	
-	@ExposeToClient(id=true)
-	@Id @GeneratedValue(strategy=GenerationType.AUTO)
-	private Long id;
-	
+   @JoinTable(name = "DASHBOARD_CONT_2_DASHBRD")
+   @EnclosedEntity
+   @ExposeToClient(mergeDtoValueBack = false, view = DtoView.MINIMAL)
+   @OneToMany(cascade = CascadeType.ALL)
+   @OrderBy("n")
+   private List<Dashboard> dashboards = new ArrayList<Dashboard>();
 
-	public Long getId() {
-		return id;
-	}
-	
-	public void setId(Long id){
-		this.id = id;
-	}
-	
-    public Long getVersion() {
-		return version;
-	}
+   @Version
+   private Long version;
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   @ExposeToClient(id = true)
+   @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
+   private Long id;
 
-	public void setDashboards(List<Dashboard> dashboards) {
-		this.dashboards = dashboards;
-	}
+   public Long getId() {
+      return id;
+   }
 
-	public List<Dashboard> getDashboards() {
-		return dashboards;
-	}
-	
-	public void addDashboard(Dashboard dashboard){
-		dashboards.add(dashboard);
-	}
-	
-	public boolean removeDashboard(Dashboard dashboard){
-		return dashboards.remove(dashboard);
-	}
+   public void setId(Long id) {
+      this.id = id;
+   }
 
-	public boolean contains(Dashboard dashboard) {
-		return dashboards.contains(dashboard);
-	}
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
+
+   public void setDashboards(List<Dashboard> dashboards) {
+      this.dashboards = dashboards;
+   }
+
+   public List<Dashboard> getDashboards() {
+      return dashboards;
+   }
+
+   public void addDashboard(Dashboard dashboard) {
+      dashboards.add(dashboard);
+   }
+
+   public boolean removeDashboard(Dashboard dashboard) {
+      return dashboards.remove(dashboard);
+   }
+
+   public boolean contains(Dashboard dashboard) {
+      return dashboards.contains(dashboard);
+   }
 }

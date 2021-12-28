@@ -5,88 +5,84 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResultExtension;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.scripting.client.scripting.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scripting.client.scripting.dto")
 public class AddReportExportFormatProvider extends CommandResultExtension {
-	
-	@ExposeToClient
-	private ReportDto reportType;
-	
-	@ExposeToClient
-	private String description;
-	
-	@ExposeToClient
-	private String title;
-	
-	@ExposeToClient
-	private String outputFormat;
 
-	@ExposeToClient
-	private String icon;
-	
-	@ExposeToClient
-	private boolean skipDownload = false;
-	
-	
-	public AddReportExportFormatProvider(){
-		super();
-	}
+   @ExposeToClient
+   private ReportDto reportType;
 
-	public AddReportExportFormatProvider(ReportDto reportType, String title,
-			String outputFormat, String icon) {
-		super();
-		this.reportType = reportType;
-		this.title = title;
-		this.outputFormat = outputFormat;
-		this.icon = icon;
-	}
+   @ExposeToClient
+   private String description;
 
-	public ReportDto getReportType() {
-		return reportType;
-	}
+   @ExposeToClient
+   private String title;
 
-	public void setReportType(ReportDto reportType) {
-		this.reportType = reportType;
-	}
+   @ExposeToClient
+   private String outputFormat;
 
-	public String getTitle() {
-		return title;
-	}
+   @ExposeToClient
+   private String icon;
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
+   @ExposeToClient
+   private boolean skipDownload = false;
 
-	public String getOutputFormat() {
-		return outputFormat;
-	}
+   public AddReportExportFormatProvider() {
+      super();
+   }
 
-	public void setOutputFormat(String outputFormat) {
-		this.outputFormat = outputFormat;
-	}
+   public AddReportExportFormatProvider(ReportDto reportType, String title, String outputFormat, String icon) {
+      super();
+      this.reportType = reportType;
+      this.title = title;
+      this.outputFormat = outputFormat;
+      this.icon = icon;
+   }
 
-	public String getIcon() {
-		return icon;
-	}
+   public ReportDto getReportType() {
+      return reportType;
+   }
 
-	public void setIcon(String icon) {
-		this.icon = icon;
-	}
+   public void setReportType(ReportDto reportType) {
+      this.reportType = reportType;
+   }
 
-	public String getDescription() {
-		return description;
-	}
+   public String getTitle() {
+      return title;
+   }
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   public void setTitle(String title) {
+      this.title = title;
+   }
 
-	public boolean isSkipDownload() {
-		return skipDownload;
-	}
-	
-	public void setSkipDownload(boolean skipDownload) {
-		this.skipDownload = skipDownload;
-	}
+   public String getOutputFormat() {
+      return outputFormat;
+   }
+
+   public void setOutputFormat(String outputFormat) {
+      this.outputFormat = outputFormat;
+   }
+
+   public String getIcon() {
+      return icon;
+   }
+
+   public void setIcon(String icon) {
+      this.icon = icon;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public boolean isSkipDownload() {
+      return skipDownload;
+   }
+
+   public void setSkipDownload(boolean skipDownload) {
+      this.skipDownload = skipDownload;
+   }
 }

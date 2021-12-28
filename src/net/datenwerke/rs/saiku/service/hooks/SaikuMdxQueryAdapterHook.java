@@ -7,6 +7,6 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 @HookConfig
 public interface SaikuMdxQueryAdapterHook extends Hook {
 
-	public String adaptMdx(String mdx, SaikuReport report);
+   public String adaptMdx(String mdx, SaikuReport report);
 
 }

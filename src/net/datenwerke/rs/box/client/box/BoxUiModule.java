@@ -11,7 +11,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class BoxUiModule extends AbstractGinModule {
-   
+
    public final static String NAME = "Box";
    public final static BaseIcon ICON = BaseIcon.CUBE;
    public final static Class<? extends DatasinkDefinitionDto> TYPE = BoxDatasinkDto.class;
@@ -19,7 +19,7 @@ public class BoxUiModule extends AbstractGinModule {
    @Override
    protected void configure() {
       bind(BoxUiService.class).to(BoxUiServiceImpl.class).in(Singleton.class);
-      
+
       /* bind trees */
       bind(UITree.class).annotatedWith(DatasinkTreeBox.class).toProvider(BoxTreeProvider.class);
       bind(BoxUiStartup.class).asEagerSingleton();

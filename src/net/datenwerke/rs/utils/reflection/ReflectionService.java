@@ -13,63 +13,60 @@ import com.google.inject.ImplementedBy;
 @ImplementedBy(ReflectionServiceImpl.class)
 public interface ReflectionService {
 
-	/**
-	 * Handles primitive types.
-	 * 
-	 * @param type
-	 * @throws ClassNotFoundException 
-	 */
-	public Class<?> getClassForName(String type) throws ClassNotFoundException;
+   /**
+    * Handles primitive types.
+    * 
+    * @param type
+    * @throws ClassNotFoundException
+    */
+   public Class<?> getClassForName(String type) throws ClassNotFoundException;
 
-	public boolean isPrimitiveTypeName(String typeName);
-	
-	public boolean isSimpleField(Field exportableField);
+   public boolean isPrimitiveTypeName(String typeName);
 
-	public boolean isSimpleType(Class<?> type);
+   public boolean isSimpleField(Field exportableField);
 
-	boolean isCollection(Class<?> type);
-	
-	public boolean isCollection(Field exportableField);
+   public boolean isSimpleType(Class<?> type);
 
-	public Class<?> getGenericType(Class<?> type);
-	
-	public Class<?> getGenericType(Field exportableField);
+   boolean isCollection(Class<?> type);
 
-	public Class<?> getGenericType(ParameterizedType type);
+   public boolean isCollection(Field exportableField);
 
-	public Object convertStringToSimpleType(String value, Class<?> type);
+   public Class<?> getGenericType(Class<?> type);
 
-	public Collection<?> createCollection(Class<?> type);
+   public Class<?> getGenericType(Field exportableField);
 
-	public Object getEnumByString(Class<?> enumType, String name);
+   public Class<?> getGenericType(ParameterizedType type);
 
-	public boolean isList(Class<?> type);
+   public Object convertStringToSimpleType(String value, Class<?> type);
 
-	boolean isSet(Class<?> type);
-	
-	public Field getFieldByAnnotation(Object object, Class<? extends Annotation> annotation);
-	
-	public Field getFieldByAnnotation(Class<?> object, Class<? extends Annotation> annotation);
+   public Collection<?> createCollection(Class<?> type);
 
-	public Method getMethodByAnnotation(Object object, Class<? extends Annotation> annotation);
-	
-	public Method getMethodByAnnotation(Class<?> object, Class<? extends Annotation> annotation);
-	
-	List<Field> getFieldsByAnnotation(Class<?> type,
-			Class<? extends Annotation> annotation);
+   public Object getEnumByString(Class<?> enumType, String name);
 
-	public Field getFieldByName(Object object, String fieldName);
-	public Field getFieldByName(Class<?> type, String fieldName);
-	
-	public <A extends Annotation> A getAnnotationRecursive(Class<A> annotationClass, Class<?> type);
+   public boolean isList(Class<?> type);
 
-	public boolean representsNull(Class<?> type);
+   boolean isSet(Class<?> type);
 
-	Set<Field> getAllFields(Class<?> clazz);
+   public Field getFieldByAnnotation(Object object, Class<? extends Annotation> annotation);
 
-	Object getFieldValueNoSecurity(Field f, Object o);
+   public Field getFieldByAnnotation(Class<?> object, Class<? extends Annotation> annotation);
 
+   public Method getMethodByAnnotation(Object object, Class<? extends Annotation> annotation);
 
-	
+   public Method getMethodByAnnotation(Class<?> object, Class<? extends Annotation> annotation);
+
+   List<Field> getFieldsByAnnotation(Class<?> type, Class<? extends Annotation> annotation);
+
+   public Field getFieldByName(Object object, String fieldName);
+
+   public Field getFieldByName(Class<?> type, String fieldName);
+
+   public <A extends Annotation> A getAnnotationRecursive(Class<A> annotationClass, Class<?> type);
+
+   public boolean representsNull(Class<?> type);
+
+   Set<Field> getAllFields(Class<?> clazz);
+
+   Object getFieldValueNoSecurity(Field f, Object o);
 
 }

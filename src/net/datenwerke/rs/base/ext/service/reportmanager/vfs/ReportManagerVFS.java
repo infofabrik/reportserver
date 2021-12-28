@@ -12,71 +12,69 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.TreeBasedVirtualFil
 
 public class ReportManagerVFS extends TreeBasedVirtualFileSystem<AbstractReportManagerNode> {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7186418223163754943L;
-	
-	public static final String FILESYSTEM_NAME = "reportmanager";
-	
-	@Inject
-	public ReportManagerVFS(
-		Provider<ReportService> reportServiceProvider	
-		){
-		super(reportServiceProvider);
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7186418223163754943L;
 
-	@Override
-	public String getFileSystemName() {
-		return FILESYSTEM_NAME;
-	}
-	
-	@Override
-	protected boolean doIsFolder(AbstractReportManagerNode node) {
-		return node instanceof ReportFolder;
-	}
+   public static final String FILESYSTEM_NAME = "reportmanager";
 
-	@Override
-	protected String doGetNodeName(AbstractReportManagerNode node) {
-		if(node instanceof ReportFolder)
-			return ((ReportFolder)node).getName();
-		else
-			return ((Report)node).getName();
-	}
-	
-	@Override
-	protected void doRename(AbstractReportManagerNode node, String name) {
-		if(node instanceof ReportFolder)
-			((ReportFolder)node).setName(name);
-		else
-			 ((Report)node).setName(name);
-	}
+   @Inject
+   public ReportManagerVFS(Provider<ReportService> reportServiceProvider) {
+      super(reportServiceProvider);
+   }
 
-	@Override
-	protected AbstractReportManagerNode instantiateFolder(String folder) {
-		return new ReportFolder(folder);
-	}
+   @Override
+   public String getFileSystemName() {
+      return FILESYSTEM_NAME;
+   }
 
-	@Override
-	protected boolean isFolder(AbstractReportManagerNode node) {
-		return node instanceof ReportFolder;
-	}
-	
-	@Override
-	public boolean canWriteIntoLocation(VFSLocation vfsLocation) {
-		if(! vfsLocation.exists()){
-			VFSLocation parentLoc = vfsLocation.getParentLocation();
-			if(! parentLoc.exists())
-				return false;
-			
-			AbstractReportManagerNode parent = getNodeByLocation(parentLoc);
-			if(! (parent instanceof ReportFolder))
-				return false;
-			
-			return canWrite(parent);
-		} else {
-			return false;
-		}
-	}
+   @Override
+   protected boolean doIsFolder(AbstractReportManagerNode node) {
+      return node instanceof ReportFolder;
+   }
+
+   @Override
+   protected String doGetNodeName(AbstractReportManagerNode node) {
+      if (node instanceof ReportFolder)
+         return ((ReportFolder) node).getName();
+      else
+         return ((Report) node).getName();
+   }
+
+   @Override
+   protected void doRename(AbstractReportManagerNode node, String name) {
+      if (node instanceof ReportFolder)
+         ((ReportFolder) node).setName(name);
+      else
+         ((Report) node).setName(name);
+   }
+
+   @Override
+   protected AbstractReportManagerNode instantiateFolder(String folder) {
+      return new ReportFolder(folder);
+   }
+
+   @Override
+   protected boolean isFolder(AbstractReportManagerNode node) {
+      return node instanceof ReportFolder;
+   }
+
+   @Override
+   public boolean canWriteIntoLocation(VFSLocation vfsLocation) {
+      if (!vfsLocation.exists()) {
+         VFSLocation parentLoc = vfsLocation.getParentLocation();
+         if (!parentLoc.exists())
+            return false;
+
+         AbstractReportManagerNode parent = getNodeByLocation(parentLoc);
+         if (!(parent instanceof ReportFolder))
+            return false;
+
+         return canWrite(parent);
+      } else {
+         return false;
+      }
+   }
 
 }

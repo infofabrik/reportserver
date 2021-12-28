@@ -9,18 +9,15 @@ import net.datenwerke.rs.fileserver.client.fileserver.locale.FileServerMessages;
 @Singleton
 public class FileServerManagerPanel extends AbstractTreeManagerPanel {
 
-	@Inject
-	public FileServerManagerPanel(
-		FileServerManagerMainPanel mainPanel,
-		FileServerManagerTreePanel treePanel
-		){
-		
-		super(mainPanel, treePanel);
-	}
+   @Inject
+   public FileServerManagerPanel(FileServerManagerMainPanel mainPanel, FileServerManagerTreePanel treePanel) {
 
-	@Override
-	protected String getHeadingText() {
-		return FileServerMessages.INSTANCE.mainPanelHeading();
-	}
-	
+      super(mainPanel, treePanel);
+   }
+
+   @Override
+   protected String getHeadingText() {
+      return FileServerMessages.INSTANCE.mainPanelHeading();
+   }
+
 }

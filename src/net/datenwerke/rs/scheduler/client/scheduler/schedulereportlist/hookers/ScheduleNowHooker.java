@@ -24,67 +24,60 @@ import net.datenwerke.security.client.usermanager.dto.UserDto;
 
 public class ScheduleNowHooker implements ScheduledReportListDetailToolbarHook {
 
-	private final LoginService loginService;
-	private final SchedulerDao schedulerDao;
-	private final ToolbarService toolbarService;
-	private final SecurityUIService securityService;
-	
-	
-	@Inject
-	public ScheduleNowHooker(
-		LoginService loginService,
-		SchedulerDao schedulerDao,
-		SecurityUIService securityService,
-		ToolbarService toolbarService
-		) {
-		
-		this.loginService = loginService;
-		/* store objects */
-		this.schedulerDao = schedulerDao;
-		this.securityService = securityService;
-		this.toolbarService = toolbarService;
-	}
+   private final LoginService loginService;
+   private final SchedulerDao schedulerDao;
+   private final ToolbarService toolbarService;
+   private final SecurityUIService securityService;
 
-	@Override
-	public void statusBarToolbarHook_addLeft(ToolBar toolbar,
-			final ReportScheduleJobListInformation info,
-			final ReportScheduleJobInformation detailInfo,
-			final ScheduledReportListPanel reportListPanel) {
+   @Inject
+   public ScheduleNowHooker(LoginService loginService, SchedulerDao schedulerDao, SecurityUIService securityService,
+         ToolbarService toolbarService) {
 
-		/* only for selected user */
-		UserDto user = loginService.getCurrentUser();
-		if(! detailInfo.isOwner(user) && ! user.isSuperUser() && ! securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class))
-			return;
-		
-		DwTextButton removeBtn = toolbarService.createSmallButtonLeft(SchedulerMessages.INSTANCE.scheduleNowLabel(), BaseIcon.PLAY);
-		removeBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				reportListPanel.mask(BaseMessages.INSTANCE.loadingMsg());
-				schedulerDao.scheduleOnce(info.getJobId(), new AsyncCallback<Void>() {
-					
-					@Override
-					public void onSuccess(Void result) {
-						reportListPanel.unmask();
-					}
-					
-					@Override
-					public void onFailure(Throwable caught) {
-						reportListPanel.unmask();
-					}
-				});
-			}
-		});
-		toolbar.add(removeBtn);
-		
-	}
+      this.loginService = loginService;
+      /* store objects */
+      this.schedulerDao = schedulerDao;
+      this.securityService = securityService;
+      this.toolbarService = toolbarService;
+   }
 
-	@Override
-	public void statusBarToolbarHook_addRight(ToolBar toolbar,
-			ReportScheduleJobListInformation info,
-			ReportScheduleJobInformation detailInfo,
-			ScheduledReportListPanel reportListPanel) {
+   @Override
+   public void statusBarToolbarHook_addLeft(ToolBar toolbar, final ReportScheduleJobListInformation info,
+         final ReportScheduleJobInformation detailInfo, final ScheduledReportListPanel reportListPanel) {
 
-	}
+      /* only for selected user */
+      UserDto user = loginService.getCurrentUser();
+      if (!detailInfo.isOwner(user) && !user.isSuperUser()
+            && !securityService.hasRight(SchedulingAdminViewGenericTargetIdentifier.class, ExecuteDto.class))
+         return;
+
+      DwTextButton removeBtn = toolbarService.createSmallButtonLeft(SchedulerMessages.INSTANCE.scheduleNowLabel(),
+            BaseIcon.PLAY);
+      removeBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            reportListPanel.mask(BaseMessages.INSTANCE.loadingMsg());
+            schedulerDao.scheduleOnce(info.getJobId(), new AsyncCallback<Void>() {
+
+               @Override
+               public void onSuccess(Void result) {
+                  reportListPanel.unmask();
+               }
+
+               @Override
+               public void onFailure(Throwable caught) {
+                  reportListPanel.unmask();
+               }
+            });
+         }
+      });
+      toolbar.add(removeBtn);
+
+   }
+
+   @Override
+   public void statusBarToolbarHook_addRight(ToolBar toolbar, ReportScheduleJobListInformation info,
+         ReportScheduleJobInformation detailInfo, ScheduledReportListPanel reportListPanel) {
+
+   }
 
 }

@@ -12,11 +12,13 @@ import net.datenwerke.rs.utils.guice.GuiceMatchers;
  */
 public class GWTStacktraceModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		CatchStacktraceInterceptor interceptor = new CatchStacktraceInterceptor();
-		bindInterceptor(Matchers.any(), Matchers.annotatedWith(GWTInitClientException.class), interceptor);
-		bindInterceptor(Matchers.annotatedWith(GWTInitClientException.class), Matchers.not(Matchers.annotatedWith(GWTInitClientException.class)).and(GuiceMatchers.publicMethod()), interceptor);
-	}
+   @Override
+   protected void configure() {
+      CatchStacktraceInterceptor interceptor = new CatchStacktraceInterceptor();
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(GWTInitClientException.class), interceptor);
+      bindInterceptor(Matchers.annotatedWith(GWTInitClientException.class),
+            Matchers.not(Matchers.annotatedWith(GWTInitClientException.class)).and(GuiceMatchers.publicMethod()),
+            interceptor);
+   }
 
 }

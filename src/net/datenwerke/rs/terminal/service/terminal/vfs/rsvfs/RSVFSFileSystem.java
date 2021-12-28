@@ -89,23 +89,23 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
    private final Provider<TempFileService> tempFileServiceProvider;
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
-   
+
    public final static String VFS = "RS_VFS";
    public final static String SESSION_CONTEXT = "RS_SESSION_CONTEXT";
    public final static String TEMPFILESERVICE_PROVIDER = "RS_TEMPFILESERVICE_PROVIDER";
-   
 
    public RSVFSFileSystem(FileSystemProvider provider, Map<String, ?> env) {
       super(provider);
       this.terminalServiceProvider = Objects.requireNonNull((Provider<TerminalService>) env.get(VFS));
       this.sessionContext = Objects.requireNonNull((SessionContext) env.get(SESSION_CONTEXT));
-      this.tempFileServiceProvider = Objects.requireNonNull((Provider<TempFileService>) env.get(TEMPFILESERVICE_PROVIDER));
+      this.tempFileServiceProvider = Objects
+            .requireNonNull((Provider<TempFileService>) env.get(TEMPFILESERVICE_PROVIDER));
    }
 
    protected TerminalSession getSession() {
       return terminalServiceProvider.get().getUnscopedTerminalSession();
    }
-   
+
    @Override
    protected RSVFSPath create(String root, List<String> names) {
       return new RSVFSPath(this, root, names);
@@ -142,9 +142,8 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
-   private InputStream doNewInputStream(Path path, OpenOption[] options)
-         throws IOException, VFSException {
+
+   private InputStream doNewInputStream(Path path, OpenOption[] options) throws IOException, VFSException {
       TerminalSession session = getSession();
       VFSLocation loc = session.getFileSystem().getLocation(path.toAbsolutePath().toString());
       if (!loc.exists())
@@ -152,7 +151,7 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
       InputStream is = new ByteArrayInputStream(loc.getContent());
       return is;
    }
-   
+
    public <A extends BasicFileAttributes> A readAttributes(final Path path, final Class<A> clazz,
          final LinkOption... options) throws IOException, VFSException {
       try {
@@ -174,14 +173,10 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
 
       final boolean folder = loc.isFolder();
       final Date lastModifiedTime = loc.getLastModified();
-      
-      return (A) new RSVFSFileAttributes(
-            folder, 
-            folder? 0: loc.getSize(),
-            null != lastModifiedTime ? FileTime.fromMillis(lastModifiedTime.getTime()) : FileTime.fromMillis(0l), 
-            FileTime.fromMillis(0l),
-            FileTime.fromMillis(0l),
-            loc.canWriteIntoLocation());
+
+      return (A) new RSVFSFileAttributes(folder, folder ? 0 : loc.getSize(),
+            null != lastModifiedTime ? FileTime.fromMillis(lastModifiedTime.getTime()) : FileTime.fromMillis(0l),
+            FileTime.fromMillis(0l), FileTime.fromMillis(0l), loc.canWriteIntoLocation());
    }
 
    public DirectoryStream<Path> newDirectoryStream(final Path dir, final DirectoryStream.Filter<? super Path> filter)
@@ -195,23 +190,21 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
       }
    }
 
-   private DirectoryStream<Path> doNewDirectoryStream(Path dir, Filter<? super Path> filter) throws IOException, VFSException {
+   private DirectoryStream<Path> doNewDirectoryStream(Path dir, Filter<? super Path> filter)
+         throws IOException, VFSException {
       TerminalSession session = getSession();
-      
+
       VFSLocation loc = session.getFileSystem().getLocation(dir.toAbsolutePath().toString());
       VFSLocationInfo info = session.getFileSystem().getLocationInfo(loc);
-      
+
       if (!loc.exists())
          throw new NoSuchFileException("does not exist");
 
       if (!loc.isFolder())
          throw new IOException("not a folder");
 
-      final List<String> childList = info.getChildInfos()
-            .stream()
-            .filter(child -> null != child.getName())
-            .map(VFSObjectInfo::getName)
-            .collect(toList());
+      final List<String> childList = info.getChildInfos().stream().filter(child -> null != child.getName())
+            .map(VFSObjectInfo::getName).collect(toList());
 
       return new DirectoryStream<Path>() {
          @Override
@@ -243,34 +236,34 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
       };
 
    }
-   
-   public SeekableByteChannel newByteChannel(final Path path, 
-         final Set<? extends OpenOption> options, final FileAttribute<?>[] attrs) throws IOException, VFSException {
+
+   public SeekableByteChannel newByteChannel(final Path path, final Set<? extends OpenOption> options,
+         final FileAttribute<?>[] attrs) throws IOException, VFSException {
       return newFileChannel(path, options, attrs);
    }
-   
-   public FileChannel newFileChannel(final Path path, final Set<? extends OpenOption> options, final FileAttribute<?>[] attrs) 
-         throws IOException {
+
+   public FileChannel newFileChannel(final Path path, final Set<? extends OpenOption> options,
+         final FileAttribute<?>[] attrs) throws IOException {
       try {
          return SftpRequestWrapper.wrapRequest(() -> doNewFileChannel(path, options, attrs), sessionContext).call();
       } catch (Exception e) {
          throw new IOException(e);
       }
    }
-   
+
    private FileChannel doNewFileChannel(Path path, Set<? extends OpenOption> options, FileAttribute<?>[] attrs)
          throws VFSException, IOException {
       TerminalSession session = getSession();
 
       final Path tmpFile = tempFileServiceProvider.get().createTempFile();
-      
-      final boolean openForWrite = (options.contains(StandardOpenOption.WRITE) ||
-            options.contains(StandardOpenOption.APPEND));
-      
+
+      final boolean openForWrite = (options.contains(StandardOpenOption.WRITE)
+            || options.contains(StandardOpenOption.APPEND));
+
       final boolean openForRead = options.contains(StandardOpenOption.READ);
-      
+
       final VFSLocation loc = session.getFileSystem().getLocation(path.toAbsolutePath().toString());
-      
+
       if (openForRead) {
          final byte[] data = loc.getContent();
          if (null != data)
@@ -365,7 +358,7 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          @Override
          public void implCloseChannel() throws IOException {
             try {
-               if(openForWrite) 
+               if (openForWrite)
                   upload(loc, tmpFile);
             } catch (IOException e) {
                throw new IOException(e);
@@ -376,7 +369,7 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          }
       };
    }
-   
+
    public Boolean createDirectory(Path dir, FileAttribute<?>[] attrs) throws IOException {
       try {
          return SftpRequestWrapper.wrapRequest(() -> doCreateDirectory(dir, attrs), sessionContext).call();
@@ -384,13 +377,13 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
+
    private Boolean doCreateDirectory(Path file, FileAttribute<?>[] attrs) throws VFSException {
       TerminalSession session = getSession();
       final VFSLocation loc = session.getFileSystem().getLocation(file.toAbsolutePath().toString());
       return loc.mkdir();
    }
-   
+
    public Boolean delete(final Path path) throws IOException {
       try {
          return SftpRequestWrapper.wrapRequest(() -> doDelete(path), sessionContext).call();
@@ -398,14 +391,14 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
+
    private Boolean doDelete(Path path) throws VFSException {
       TerminalSession session = getSession();
       final VFSLocation loc = session.getFileSystem().getLocation(path.toAbsolutePath().toString());
       loc.delete();
       return true;
    }
-   
+
    public Boolean move(final RSVFSPath source, final RSVFSPath target, final CopyOption[] options) throws IOException {
       try {
          return SftpRequestWrapper.wrapRequest(() -> doMove(source, target, options), sessionContext).call();
@@ -413,46 +406,49 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
-   /* Adapted from org.apache.sshd.sftp.client.fs.SftpFileSystemProvider.move(Path, Path, CopyOption...), Version 2.6.0 */
-   private Boolean doMove(final RSVFSPath source, final RSVFSPath target, final CopyOption[] options) 
+
+   /*
+    * Adapted from org.apache.sshd.sftp.client.fs.SftpFileSystemProvider.move(Path,
+    * Path, CopyOption...), Version 2.6.0
+    */
+   private Boolean doMove(final RSVFSPath source, final RSVFSPath target, final CopyOption[] options)
          throws VFSException, IOException {
       if (source.getFileSystem() != target.getFileSystem()) {
-          throw new ProviderMismatchException("Mismatched file system providers for " + source + " vs. " + target);
+         throw new ProviderMismatchException("Mismatched file system providers for " + source + " vs. " + target);
       }
-      
+
       provider().checkAccess(source);
 
       boolean replaceExisting = false;
       boolean copyAttributes = false;
       boolean noFollowLinks = false;
       for (CopyOption opt : options) {
-          replaceExisting |= opt == StandardCopyOption.REPLACE_EXISTING;
-          copyAttributes |= opt == StandardCopyOption.COPY_ATTRIBUTES;
-          noFollowLinks |= opt == LinkOption.NOFOLLOW_LINKS;
+         replaceExisting |= opt == StandardCopyOption.REPLACE_EXISTING;
+         copyAttributes |= opt == StandardCopyOption.COPY_ATTRIBUTES;
+         noFollowLinks |= opt == LinkOption.NOFOLLOW_LINKS;
       }
       LinkOption[] linkOptions = IoUtils.getLinkOptions(noFollowLinks);
 
       // attributes of source file
       BasicFileAttributes attrs = readAttributes(source, BasicFileAttributes.class, linkOptions);
       if (attrs.isSymbolicLink()) {
-          throw new IOException("Moving of source symbolic link (" + source + ") to " + target + " not supported");
+         throw new IOException("Moving of source symbolic link (" + source + ") to " + target + " not supported");
       }
 
       // delete target if it exists and REPLACE_EXISTING is specified
       Boolean status = IoUtils.checkFileExists(target, linkOptions);
       if (status == null) {
-          throw new AccessDeniedException("Existence cannot be determined for move target " + target);
+         throw new AccessDeniedException("Existence cannot be determined for move target " + target);
       }
 
       if (log.isDebugEnabled()) {
-          log.debug("move({})[{}] {} => {}", source.getFileSystem(), Arrays.asList(options), source, target);
+         log.debug("move({})[{}] {} => {}", source.getFileSystem(), Arrays.asList(options), source, target);
       }
 
       if (replaceExisting) {
-          provider().deleteIfExists(target);
+         provider().deleteIfExists(target);
       } else if (status) {
-          throw new FileAlreadyExistsException(target.toString());
+         throw new FileAlreadyExistsException(target.toString());
       }
 
       provider().copy(source, target);
@@ -460,23 +456,24 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
 
       // copy basic attributes to target
       if (copyAttributes) {
-          BasicFileAttributeView view = provider().getFileAttributeView(target, BasicFileAttributeView.class, linkOptions);
-          try {
-              view.setTimes(attrs.lastModifiedTime(), attrs.lastAccessTime(), attrs.creationTime());
-          } catch (Throwable x) {
-              // rollback
-              try {
-                  provider().delete(target);
-              } catch (Throwable suppressed) {
-                  x.addSuppressed(suppressed);
-              }
-              throw x;
-          }
+         BasicFileAttributeView view = provider().getFileAttributeView(target, BasicFileAttributeView.class,
+               linkOptions);
+         try {
+            view.setTimes(attrs.lastModifiedTime(), attrs.lastAccessTime(), attrs.creationTime());
+         } catch (Throwable x) {
+            // rollback
+            try {
+               provider().delete(target);
+            } catch (Throwable suppressed) {
+               x.addSuppressed(suppressed);
+            }
+            throw x;
+         }
       }
-      
+
       return true;
    }
-   
+
    public Boolean copy(final RSVFSPath source, final RSVFSPath target, final CopyOption[] options) throws IOException {
       try {
          return SftpRequestWrapper.wrapRequest(() -> doCopy(source, target, options), sessionContext).call();
@@ -484,8 +481,11 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
-   /* Adapted from org.apache.sshd.sftp.client.fs.SftpFileSystemProvider.copy(Path, Path, CopyOption...), Version 2.6.0 */
+
+   /*
+    * Adapted from org.apache.sshd.sftp.client.fs.SftpFileSystemProvider.copy(Path,
+    * Path, CopyOption...), Version 2.6.0
+    */
    private Boolean doCopy(final RSVFSPath source, final RSVFSPath target, final CopyOption[] options)
          throws VFSException, IOException {
       if (source.getFileSystem() != target.getFileSystem()) {
@@ -497,62 +497,62 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
       boolean copyAttributes = false;
       boolean noFollowLinks = false;
       for (CopyOption opt : options) {
-          replaceExisting |= opt == StandardCopyOption.REPLACE_EXISTING;
-          copyAttributes |= opt == StandardCopyOption.COPY_ATTRIBUTES;
-          noFollowLinks |= opt == LinkOption.NOFOLLOW_LINKS;
+         replaceExisting |= opt == StandardCopyOption.REPLACE_EXISTING;
+         copyAttributes |= opt == StandardCopyOption.COPY_ATTRIBUTES;
+         noFollowLinks |= opt == LinkOption.NOFOLLOW_LINKS;
       }
-      
+
       /* Don't follow links! */
       LinkOption[] linkOptions = IoUtils.getLinkOptions(noFollowLinks);
 
       // attributes of source file
       BasicFileAttributes attrs = readAttributes(source, BasicFileAttributes.class, linkOptions);
       if (attrs.isSymbolicLink()) {
-          throw new IOException("Copying of symbolic links not supported");
+         throw new IOException("Copying of symbolic links not supported");
       }
 
       // delete target if it exists and REPLACE_EXISTING is specified
       Boolean status = IoUtils.checkFileExists(target, linkOptions);
       if (status == null) {
-          throw new AccessDeniedException("Existence cannot be determined for copy target: " + target);
+         throw new AccessDeniedException("Existence cannot be determined for copy target: " + target);
       }
 
       if (log.isDebugEnabled()) {
-          log.debug("copy({})[{}] {} => {}", source.getFileSystem(), Arrays.asList(options), source, target);
+         log.debug("copy({})[{}] {} => {}", source.getFileSystem(), Arrays.asList(options), source, target);
       }
 
       if (replaceExisting) {
-          provider().deleteIfExists(target);
+         provider().deleteIfExists(target);
       } else {
-          if (status) {
-              throw new FileAlreadyExistsException(target.toString());
-          }
+         if (status) {
+            throw new FileAlreadyExistsException(target.toString());
+         }
       }
 
       // create directory or copy file
       if (attrs.isDirectory()) {
-          provider().createDirectory(target);
+         provider().createDirectory(target);
       } else {
-         try (InputStream in = newInputStream(source);
-               OutputStream os = provider().newOutputStream(target)) {
-              IoUtils.copy(in, os);
-          }
+         try (InputStream in = newInputStream(source); OutputStream os = provider().newOutputStream(target)) {
+            IoUtils.copy(in, os);
+         }
       }
 
       // copy basic attributes to target
       if (copyAttributes) {
-          BasicFileAttributeView view = provider().getFileAttributeView(target, BasicFileAttributeView.class, linkOptions);
-          try {
-              view.setTimes(attrs.lastModifiedTime(), attrs.lastAccessTime(), attrs.creationTime());
-          } catch (Throwable x) {
-              // rollback
-              try {
-                  delete(target);
-              } catch (Throwable suppressed) {
-                  x.addSuppressed(suppressed);
-              }
-              throw x;
-          }
+         BasicFileAttributeView view = provider().getFileAttributeView(target, BasicFileAttributeView.class,
+               linkOptions);
+         try {
+            view.setTimes(attrs.lastModifiedTime(), attrs.lastAccessTime(), attrs.creationTime());
+         } catch (Throwable x) {
+            // rollback
+            try {
+               delete(target);
+            } catch (Throwable suppressed) {
+               x.addSuppressed(suppressed);
+            }
+            throw x;
+         }
       }
 
       return true;
@@ -565,7 +565,7 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
          throw new IOException(e);
       }
    }
-   
+
    private Boolean doUpload(final VFSLocation loc, final Path tmpFile) throws IOException, VFSException {
       if (loc.canWriteIntoLocation()) {
          loc.create();
@@ -585,8 +585,8 @@ public class RSVFSFileSystem extends BaseFileSystem<RSVFSPath> {
       private final FileTime creationTime;
       private final boolean writeable;
 
-      private RSVFSFileAttributes(boolean dir, long size, FileTime lastModifiedTime, FileTime lastAccessTime, FileTime creationTime, 
-            boolean writeable) {
+      private RSVFSFileAttributes(boolean dir, long size, FileTime lastModifiedTime, FileTime lastAccessTime,
+            FileTime creationTime, boolean writeable) {
          this.dir = dir;
          this.size = size;
          this.lastModifiedTime = lastModifiedTime;

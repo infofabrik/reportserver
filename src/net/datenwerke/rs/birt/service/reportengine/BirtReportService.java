@@ -7,14 +7,14 @@ import net.datenwerke.rs.birt.service.reportengine.entities.BirtReportFile;
 
 public interface BirtReportService {
 
-	public void remove(BirtReportFile file);
+   public void remove(BirtReportFile file);
 
-	public boolean isBirtEnabled();
+   public boolean isBirtEnabled();
 
-	IReportEngine getReportEngine() throws BirtException;
+   IReportEngine getReportEngine() throws BirtException;
 
-	public void shutdown();
+   public void shutdown();
 
-	public void clearFontCache();
+   public void clearFontCache();
 
 }

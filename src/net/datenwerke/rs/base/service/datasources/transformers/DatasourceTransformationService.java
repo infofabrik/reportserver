@@ -5,5 +5,5 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public interface DatasourceTransformationService {
 
-	public <T> T transform(Class<T> resultType, DatasourceContainerProvider containerProvider, ParameterSet parameters);
+   public <T> T transform(Class<T> resultType, DatasourceContainerProvider containerProvider, ParameterSet parameters);
 }

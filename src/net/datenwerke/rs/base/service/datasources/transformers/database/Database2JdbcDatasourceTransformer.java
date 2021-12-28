@@ -15,37 +15,34 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 
 public class Database2JdbcDatasourceTransformer implements DataSourceDefinitionTransformer<DataSource> {
 
-	private DbPoolService<?> dbPoolService;
+   private DbPoolService<?> dbPoolService;
 
-	@Inject
-	public Database2JdbcDatasourceTransformer(DbPoolService dbPoolService) {
-		this.dbPoolService = dbPoolService;
-	}
-	
-	
-	@Override
-	public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		return (null != container && container.getDatasource() instanceof DatabaseDatasource && dst.isAssignableFrom(DataSource.class));
-	}
+   @Inject
+   public Database2JdbcDatasourceTransformer(DbPoolService dbPoolService) {
+      this.dbPoolService = dbPoolService;
+   }
 
-	@Override
-	public DataSource transform(
-			DatasourceContainerProvider containerProvider,
-			Class<?> dst, ParameterSet parameters) throws UnsupportedDriverException,
-			DatabaseConnectionException {
+   @Override
+   public boolean consumes(DatasourceContainerProvider containerProvider, Class<?> dst) {
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      return (null != container && container.getDatasource() instanceof DatabaseDatasource
+            && dst.isAssignableFrom(DataSource.class));
+   }
 
-		DatasourceContainer container = containerProvider.getDatasourceContainer();
-		DatabaseDatasource ds = (DatabaseDatasource) container.getDatasource();
-		
-		try {
-			DataSource conn = dbPoolService.getDataSource(ds.getConnectionConfig(), new ReadOnlyConnectionConfig());
-			return conn;
-		} catch (Exception e) {
-			DatabaseConnectionException dce = new DatabaseConnectionException(ds.getUrl(), ds.getUsername(), e);
-			throw dce;
-		}
+   @Override
+   public DataSource transform(DatasourceContainerProvider containerProvider, Class<?> dst, ParameterSet parameters)
+         throws UnsupportedDriverException, DatabaseConnectionException {
 
-		
-	}
+      DatasourceContainer container = containerProvider.getDatasourceContainer();
+      DatabaseDatasource ds = (DatabaseDatasource) container.getDatasource();
+
+      try {
+         DataSource conn = dbPoolService.getDataSource(ds.getConnectionConfig(), new ReadOnlyConnectionConfig());
+         return conn;
+      } catch (Exception e) {
+         DatabaseConnectionException dce = new DatabaseConnectionException(ds.getUrl(), ds.getUsername(), e);
+         throw dce;
+      }
+
+   }
 }

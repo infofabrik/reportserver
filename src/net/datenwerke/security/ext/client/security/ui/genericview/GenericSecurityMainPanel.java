@@ -16,43 +16,41 @@ import net.datenwerke.security.ext.client.security.ui.aclview.GenericTargetACLVi
 @Singleton
 public class GenericSecurityMainPanel extends DwContentPanel {
 
-	private final Provider<GenericTargetACLView> aclViewProvider;
-	
-	@Inject
-	public GenericSecurityMainPanel(
-		Provider<GenericTargetACLView> aclViewProvider
-		){
-		/* store objects */
-		this.aclViewProvider = aclViewProvider;
-		
-		initializeUI();
-	}
+   private final Provider<GenericTargetACLView> aclViewProvider;
 
-	private void initializeUI() {
-		setHeading(SecurityMessages.INSTANCE.securityManagement()); //$NON-NLS-1$
-	}
-	
-	public void displayGenericRightsItem(final GenericSecurityViewDomainHook domain){
-		/* clear panel */
-		clear();
-		
-		VerticalLayoutContainer container = new VerticalLayoutContainer();
-		add(container);
-		
-		/* load */
-		GenericTargetIdentifier genericTargetId = domain.genericSecurityViewDomainHook_getTargetId();
-		
-		GenericTargetACLView view = aclViewProvider.get();
-		view.initialize(genericTargetId);
-		
-		/* description */
-		view.addInfoText(domain.genericSecurityViewDomainHook_getDescription());
-		
-		/* panel */
-		container.add(view, new VerticalLayoutData(1,-1, new Margins(10)));
-		
-		/* redo layout */
-		forceLayout();
-	}
+   @Inject
+   public GenericSecurityMainPanel(Provider<GenericTargetACLView> aclViewProvider) {
+      /* store objects */
+      this.aclViewProvider = aclViewProvider;
+
+      initializeUI();
+   }
+
+   private void initializeUI() {
+      setHeading(SecurityMessages.INSTANCE.securityManagement()); // $NON-NLS-1$
+   }
+
+   public void displayGenericRightsItem(final GenericSecurityViewDomainHook domain) {
+      /* clear panel */
+      clear();
+
+      VerticalLayoutContainer container = new VerticalLayoutContainer();
+      add(container);
+
+      /* load */
+      GenericTargetIdentifier genericTargetId = domain.genericSecurityViewDomainHook_getTargetId();
+
+      GenericTargetACLView view = aclViewProvider.get();
+      view.initialize(genericTargetId);
+
+      /* description */
+      view.addInfoText(domain.genericSecurityViewDomainHook_getDescription());
+
+      /* panel */
+      container.add(view, new VerticalLayoutData(1, -1, new Margins(10)));
+
+      /* redo layout */
+      forceLayout();
+   }
 
 }

@@ -7,9 +7,9 @@ import net.datenwerke.security.service.security.annotation.GenericTargetIdentifi
 @GenericTargetIdentifierMapper(SftpSecurityTarget.class)
 public class SftpGenericTargetIdentifier implements GenericTargetIdentifier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 7140134460185977474L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 7140134460185977474L;
 
 }

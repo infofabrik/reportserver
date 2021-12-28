@@ -20,110 +20,108 @@ import net.datenwerke.rs.utils.misc.PropertiesUtils;
  */
 public class ApplicationPropertiesServiceImpl implements ApplicationPropertiesService {
 
-	private final PropertiesUtils propertiesUtils;
-	private final HookHandlerService hookHandlerService;
-	
-	private Supplier<Configuration> reportServerProperties;
-	
-	@Inject
-	public ApplicationPropertiesServiceImpl(
-		PropertiesUtils propertiesUtils, 
-		HookHandlerService HookHandlerService
-		){
-		this.propertiesUtils = propertiesUtils;
-		hookHandlerService = HookHandlerService;
-		
-		reportServerProperties = Suppliers.memoizeWithExpiration(new Supplier<Configuration>(){
-			@Override
-			public Configuration get() {
-				return loadConfiguration();
-			}
-			
-		}, 30, TimeUnit.SECONDS);
-		
-	}
+   private final PropertiesUtils propertiesUtils;
+   private final HookHandlerService hookHandlerService;
 
-	private Configuration loadConfiguration(){
-		CompositeConfiguration cc = new CompositeConfiguration();
+   private Supplier<Configuration> reportServerProperties;
 
-		/* Hooked properties */
-		for(ApplicationPropertiesProviderHook p : hookHandlerService.getHookers(ApplicationPropertiesProviderHook.class)) {
-			try{
-				Configuration config = p.getConfig();
-				if(null != config){
-					cc.addConfiguration(config);
-				}
-			}catch(ConfigurationException e){
-			}
-		}
+   @Inject
+   public ApplicationPropertiesServiceImpl(PropertiesUtils propertiesUtils, HookHandlerService HookHandlerService) {
+      this.propertiesUtils = propertiesUtils;
+      hookHandlerService = HookHandlerService;
 
-		try{ /* webapp override props */
-			Configuration props = propertiesUtils.load(RS_PROPERTIES_OVERRIDE_FILE_NAME);
-			cc.addConfiguration(props);
-		} catch (ConfigurationException e) {
-		}
+      reportServerProperties = Suppliers.memoizeWithExpiration(new Supplier<Configuration>() {
+         @Override
+         public Configuration get() {
+            return loadConfiguration();
+         }
 
-		try{ /* webapp props */
-			Configuration props = propertiesUtils.load(RS_PROPERTIES_FILE_NAME);
-			cc.addConfiguration(props);
-		} catch (ConfigurationException e) {
-		}
+      }, 30, TimeUnit.SECONDS);
 
-		if(cc.getNumberOfConfigurations() == 1){
-			/* 1 is the in-memory configuration */
-			throw new RuntimeException("Could not load application properties");
-		}
-		return cc;
-	}
-	
-	@Override
-	public Configuration getProperties() {
-		return reportServerProperties.get();
-	}
-	
-	@Override
-	public String getString(String key){
-		return getProperties().getString(key);
-	}
+   }
 
-	@Override
-	public String getString(String key, String defaultValue){
-		return getProperties().getString(key, defaultValue);
-	}
-	
-	@Override
-	public List<String> getList(String key){
-		return (List)getProperties().getList(key);
-	}
-	
-	@Override
-	public Long getLong(String key) {
-		return getProperties().getLong(key);
-	}
-	
-	@Override
-	public Long getLong(String key, Long defaultValue) {
-		return getProperties().getLong(key, defaultValue);
-	}
+   private Configuration loadConfiguration() {
+      CompositeConfiguration cc = new CompositeConfiguration();
 
-	@Override
-	public Integer getInteger(String key) {
-		return getProperties().getInt(key);
-	}
+      /* Hooked properties */
+      for (ApplicationPropertiesProviderHook p : hookHandlerService
+            .getHookers(ApplicationPropertiesProviderHook.class)) {
+         try {
+            Configuration config = p.getConfig();
+            if (null != config) {
+               cc.addConfiguration(config);
+            }
+         } catch (ConfigurationException e) {
+         }
+      }
 
-	@Override
-	public Integer getInteger(String key, int defaultValue) {
-		return getProperties().getInt(key, defaultValue);
-	}
+      try { /* webapp override props */
+         Configuration props = propertiesUtils.load(RS_PROPERTIES_OVERRIDE_FILE_NAME);
+         cc.addConfiguration(props);
+      } catch (ConfigurationException e) {
+      }
 
-	@Override
-	public boolean getBoolean(String key) {
-		return getProperties().getBoolean(key);
-	}
+      try { /* webapp props */
+         Configuration props = propertiesUtils.load(RS_PROPERTIES_FILE_NAME);
+         cc.addConfiguration(props);
+      } catch (ConfigurationException e) {
+      }
 
-	@Override
-	public boolean getBoolean(String key, boolean defaultValue) {
-		return getProperties().getBoolean(key, defaultValue);
-	}
+      if (cc.getNumberOfConfigurations() == 1) {
+         /* 1 is the in-memory configuration */
+         throw new RuntimeException("Could not load application properties");
+      }
+      return cc;
+   }
+
+   @Override
+   public Configuration getProperties() {
+      return reportServerProperties.get();
+   }
+
+   @Override
+   public String getString(String key) {
+      return getProperties().getString(key);
+   }
+
+   @Override
+   public String getString(String key, String defaultValue) {
+      return getProperties().getString(key, defaultValue);
+   }
+
+   @Override
+   public List<String> getList(String key) {
+      return (List) getProperties().getList(key);
+   }
+
+   @Override
+   public Long getLong(String key) {
+      return getProperties().getLong(key);
+   }
+
+   @Override
+   public Long getLong(String key, Long defaultValue) {
+      return getProperties().getLong(key, defaultValue);
+   }
+
+   @Override
+   public Integer getInteger(String key) {
+      return getProperties().getInt(key);
+   }
+
+   @Override
+   public Integer getInteger(String key, int defaultValue) {
+      return getProperties().getInt(key, defaultValue);
+   }
+
+   @Override
+   public boolean getBoolean(String key) {
+      return getProperties().getBoolean(key);
+   }
+
+   @Override
+   public boolean getBoolean(String key, boolean defaultValue) {
+      return getProperties().getBoolean(key, defaultValue);
+   }
 
 }

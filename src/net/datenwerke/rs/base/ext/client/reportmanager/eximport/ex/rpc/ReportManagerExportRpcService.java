@@ -9,7 +9,7 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportMan
 @RemoteServiceRelativePath("reportmanager_export")
 public interface ReportManagerExportRpcService extends RemoteService {
 
-	public void quickExport(AbstractReportManagerNodeDto dto, boolean includeVariants) throws ServerCallFailedException;
-	
-	public String loadResult() throws ServerCallFailedException;
+   public void quickExport(AbstractReportManagerNodeDto dto, boolean includeVariants) throws ServerCallFailedException;
+
+   public String loadResult() throws ServerCallFailedException;
 }

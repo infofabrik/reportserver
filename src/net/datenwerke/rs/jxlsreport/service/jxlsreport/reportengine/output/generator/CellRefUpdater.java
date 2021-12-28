@@ -6,12 +6,12 @@ import org.jxls.common.CellRef;
 import org.jxls.common.Context;
 
 public class CellRefUpdater implements CellDataUpdater {
-    
-    @Override
-    public void updateCellData(CellData cellData, CellRef targetCell, Context context) {
-        if (cellData.isFormulaCell() && cellData.getFormula() != null) {
-            cellData.setEvaluationResult(cellData.getFormula().replaceAll("(?<=[A-Za-z])\\d",
-                    Integer.toString(targetCell.getRow() + 1)));
-        }
-    }
+
+   @Override
+   public void updateCellData(CellData cellData, CellRef targetCell, Context context) {
+      if (cellData.isFormulaCell() && cellData.getFormula() != null) {
+         cellData.setEvaluationResult(
+               cellData.getFormula().replaceAll("(?<=[A-Za-z])\\d", Integer.toString(targetCell.getRow() + 1)));
+      }
+   }
 }

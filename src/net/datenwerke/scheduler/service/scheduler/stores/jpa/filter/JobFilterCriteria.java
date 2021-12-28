@@ -10,11 +10,9 @@ import javax.persistence.criteria.Root;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 
-@GenerateDto(
-	dtoPackage="net.datenwerke.scheduler.client.scheduler.dto.filter"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.scheduler.client.scheduler.dto.filter")
 public interface JobFilterCriteria {
 
-	public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder,
-			CriteriaQuery<?> cQuery, Root<? extends AbstractJob> root);
+   public List<Predicate> prepareCriteriaQuery(CriteriaBuilder builder, CriteriaQuery<?> cQuery,
+         Root<? extends AbstractJob> root);
 }

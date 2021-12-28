@@ -9,23 +9,23 @@ import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 
 public class TableReport2DtoPost implements Poso2DtoPostProcessor<TableReport, TableReportDto> {
 
-	@Override
-	public void dtoCreated(TableReport report, TableReportDto dto) {
-		for(ColumnDto col : dto.getColumns()){
-			if(col instanceof ColumnReferenceDto){
-				for(AdditionalColumnSpecDto spec: dto.getAdditionalColumns()){
-					if(spec.equals(((ColumnReferenceDto)col).getReference())){
-						((ColumnReferenceDto)col).setReference(spec);
-						break;
-					}
-				}
-			}
-		}
-	}
+   @Override
+   public void dtoCreated(TableReport report, TableReportDto dto) {
+      for (ColumnDto col : dto.getColumns()) {
+         if (col instanceof ColumnReferenceDto) {
+            for (AdditionalColumnSpecDto spec : dto.getAdditionalColumns()) {
+               if (spec.equals(((ColumnReferenceDto) col).getReference())) {
+                  ((ColumnReferenceDto) col).setReference(spec);
+                  break;
+               }
+            }
+         }
+      }
+   }
 
-	@Override
-	public void dtoInstantiated(TableReport arg0, TableReportDto arg1) {
-		
-	}
+   @Override
+   public void dtoInstantiated(TableReport arg0, TableReportDto arg1) {
+
+   }
 
 }

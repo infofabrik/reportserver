@@ -6,10 +6,10 @@ import net.datenwerke.rs.eximport.client.eximport.im.dto.ImportConfigDto;
 
 public interface HttpImportConfigurationProviderHook extends Hook {
 
-	boolean consumes(String id);
+   boolean consumes(String id);
 
-	void configureImport(ImportConfigDto config) throws IllegalImportConfigException;
+   void configureImport(ImportConfigDto config) throws IllegalImportConfigException;
 
-	void validate(ImportConfigDto config) throws IllegalImportConfigException;
+   void validate(ImportConfigDto config) throws IllegalImportConfigException;
 
 }

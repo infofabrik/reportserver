@@ -19,38 +19,38 @@ import net.datenwerke.gxtdto.client.baseex.widget.window.SimpleDialogWindow;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 
 public class UtilsUIServiceImpl implements UtilsUIService {
-	
-	private static final String GWT_DOWNLOAD_FRAME = "__gwt_downloadFrame";
-	private HandlerRegistration iframeLoadHandler;
 
-	private final Provider<DispatcherService> dispatcherServiceProvider;
-	
-	@Inject
-	public UtilsUIServiceImpl(Provider<DispatcherService> dispatcherService) {
-		this.dispatcherServiceProvider = dispatcherService;
-	}
+   private static final String GWT_DOWNLOAD_FRAME = "__gwt_downloadFrame";
+   private HandlerRegistration iframeLoadHandler;
 
-	@Override
-	public Widget asIframe(final String html){
-		final IFrameElement iframe = Document.get().createIFrameElement();
-		iframe.setAttribute("width", "100%");
-		iframe.setAttribute("height", "100%");
-		iframe.setAttribute("frameborder", "0");
-		FlowPanel innerBox = new FlowPanel() {
-		    @Override
-		    protected void onLoad() {
-		        super.onLoad();
-		 
-		        // Fill the IFrame with the content html
-		        fillIframe(iframe, html);
-		    }
-		};
-		innerBox.getElement().appendChild(iframe);
-		
-		return innerBox;
-	}
+   private final Provider<DispatcherService> dispatcherServiceProvider;
 
-	private final native void fillIframe(IFrameElement iframe, String content) /*-{
+   @Inject
+   public UtilsUIServiceImpl(Provider<DispatcherService> dispatcherService) {
+      this.dispatcherServiceProvider = dispatcherService;
+   }
+
+   @Override
+   public Widget asIframe(final String html) {
+      final IFrameElement iframe = Document.get().createIFrameElement();
+      iframe.setAttribute("width", "100%");
+      iframe.setAttribute("height", "100%");
+      iframe.setAttribute("frameborder", "0");
+      FlowPanel innerBox = new FlowPanel() {
+         @Override
+         protected void onLoad() {
+            super.onLoad();
+
+            // Fill the IFrame with the content html
+            fillIframe(iframe, html);
+         }
+      };
+      innerBox.getElement().appendChild(iframe);
+
+      return innerBox;
+   }
+
+   private final native void fillIframe(IFrameElement iframe, String content) /*-{
 	  var doc = iframe.document;
 	 
 	  if(iframe.contentDocument)
@@ -63,71 +63,69 @@ public class UtilsUIServiceImpl implements UtilsUIService {
 	  doc.writeln(content);
 	  doc.close();
 	}-*/;
-	
-	@Override
-	public void redirectWithoutAsking(String url) {
-		dispatcherServiceProvider.get().setWarnOnExit(false);
-		redirect(url);
-	}
-	
-	public native void redirect(String url) /*-{
+
+   @Override
+   public void redirectWithoutAsking(String url) {
+      dispatcherServiceProvider.get().setWarnOnExit(false);
+      redirect(url);
+   }
+
+   public native void redirect(String url) /*-{
     	$wnd.location = url;
 	}-*/;
-	
-	
-	public native void redirectInPopup(String url) /*-{
+
+   public native void redirectInPopup(String url) /*-{
 	       $wnd.open(url, "_blank", "");
 	}-*/;
-	
-	
-	public void triggerDownload(String url) {
-		if (url == null) 
-			throw new IllegalArgumentException("download url was null");
 
-		Frame downloadFrame = Frame.wrap(Document.get().getElementById(GWT_DOWNLOAD_FRAME));
-		iframeLoadHandler = downloadFrame.addLoadHandler(new LoadHandler() {
-			@Override
-			public void onLoad(LoadEvent event) {
-				iframeLoadHandler.removeHandler();
-				String content = getIFrameContent(GWT_DOWNLOAD_FRAME);
-				String title = getIFrameTitle(GWT_DOWNLOAD_FRAME);
-				showHtmlPopupWindows(title, content);
-			}
-		});
-		
-		downloadFrame.setUrl(url);
-		
-	} 
-	
-	public void showHtmlPopupWindows(final String title, final String html) {
-		SimpleDialogWindow popup = new SimpleDialogWindow(){
-			
-			@Override
-			protected void initializeUi() {
+   public void triggerDownload(String url) {
+      if (url == null)
+         throw new IllegalArgumentException("download url was null");
 
-				/* create window */
-				setWidth(700);
-				setHeading(title);
-				setHeight(550);
+      Frame downloadFrame = Frame.wrap(Document.get().getElementById(GWT_DOWNLOAD_FRAME));
+      iframeLoadHandler = downloadFrame.addLoadHandler(new LoadHandler() {
+         @Override
+         public void onLoad(LoadEvent event) {
+            iframeLoadHandler.removeHandler();
+            String content = getIFrameContent(GWT_DOWNLOAD_FRAME);
+            String title = getIFrameTitle(GWT_DOWNLOAD_FRAME);
+            showHtmlPopupWindows(title, content);
+         }
+      });
 
-				setWidget(asIframe(html));
-				
-				DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
-				okButton.addSelectHandler(new SelectHandler() {
-					@Override
-					public void onSelect(SelectEvent event) {
-						hide();				
-					}
-				});
-				
-				addButton(okButton);
-			}
-		};
-		
-		popup.show();
-	}
-	
-	private native String getIFrameContent(String name) /*-{
+      downloadFrame.setUrl(url);
+
+   }
+
+   public void showHtmlPopupWindows(final String title, final String html) {
+      SimpleDialogWindow popup = new SimpleDialogWindow() {
+
+         @Override
+         protected void initializeUi() {
+
+            /* create window */
+            setWidth(700);
+            setHeading(title);
+            setHeight(550);
+
+            setWidget(asIframe(html));
+
+            DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.ok());
+            okButton.addSelectHandler(new SelectHandler() {
+               @Override
+               public void onSelect(SelectEvent event) {
+                  hide();
+               }
+            });
+
+            addButton(okButton);
+         }
+      };
+
+      popup.show();
+   }
+
+   private native String getIFrameContent(String name) /*-{
 		var iframe = $doc.getElementById(name);
 		var doc = iframe.document;
 	
@@ -141,8 +139,8 @@ public class UtilsUIServiceImpl implements UtilsUIService {
 		
 		return markup;
 	}-*/;
-	
-	private native String getIFrameTitle(String name) /*-{
+
+   private native String getIFrameTitle(String name) /*-{
 		var iframe = $doc.getElementById(name);
 		var doc = iframe.document;
 	
@@ -156,24 +154,24 @@ public class UtilsUIServiceImpl implements UtilsUIService {
 		
 		return title;
 	}-*/;
-	
-	@Override
-	public void reloadPageWithoutAsking() {
-		dispatcherServiceProvider.get().setWarnOnExit(false);
-		reloadPage();
-	}
-	
-	public native void reloadPage() /*-{
-	    $wnd.location.reload();
-	}-*/; 
 
-	public native void reloadPage(String locale) /*-{
+   @Override
+   public void reloadPageWithoutAsking() {
+      dispatcherServiceProvider.get().setWarnOnExit(false);
+      reloadPage();
+   }
+
+   public native void reloadPage() /*-{
+	    $wnd.location.reload();
+	}-*/;
+
+   public native void reloadPage(String locale) /*-{
 	    var currLocation = $wnd.location.toString();
 	    $wnd.location.href = currLocation + "?locale=" + locale;
-	}-*/; 
-	
-	@Override
-	public native String guessUserTimezone() /*-{
+	}-*/;
+
+   @Override
+   public native String guessUserTimezone() /*-{
 		var timezone = $wnd.jstz.determine();
 		return timezone.name();
 	}-*/;

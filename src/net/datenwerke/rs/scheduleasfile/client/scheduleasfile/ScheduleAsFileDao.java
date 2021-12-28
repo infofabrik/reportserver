@@ -13,17 +13,18 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNode
 
 public class ScheduleAsFileDao extends Dao {
 
-	private final ScheduleAsFileRpcServiceAsync rpcService;
-	
-	@Inject
-	public ScheduleAsFileDao(ScheduleAsFileRpcServiceAsync rpcService) {
-		this.rpcService = rpcService;
-	}
+   private final ScheduleAsFileRpcServiceAsync rpcService;
 
-	public void exportIntoTeamSpace(ReportDto reportDto, String executorToken,
-			String format, List<ReportExecutionConfigDto> configs, AbstractTsDiskNodeDto folder, String name,
-			String description, AsyncCallback<Void> callback){
-		rpcService.exportIntoTeamSpace(reportDto, executorToken, format, configs, folder, name, description, transformAndKeepCallback(callback));
-	}
-	
+   @Inject
+   public ScheduleAsFileDao(ScheduleAsFileRpcServiceAsync rpcService) {
+      this.rpcService = rpcService;
+   }
+
+   public void exportIntoTeamSpace(ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs, AbstractTsDiskNodeDto folder, String name, String description,
+         AsyncCallback<Void> callback) {
+      rpcService.exportIntoTeamSpace(reportDto, executorToken, format, configs, folder, name, description,
+            transformAndKeepCallback(callback));
+   }
+
 }

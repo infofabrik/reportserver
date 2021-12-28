@@ -16,69 +16,71 @@ import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.StringUse
 import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.pa.StringUserVariableDefinitionDtoPA;
 import net.datenwerke.rs.uservariables.client.variabletypes.string.dto.pa.StringUserVariableInstanceDtoPA;
 
-public class StringConfigurator extends UserVariableConfiguratorImpl<StringUserVariableDefinitionDto, StringUserVariableInstanceDto> {
+public class StringConfigurator
+      extends UserVariableConfiguratorImpl<StringUserVariableDefinitionDto, StringUserVariableInstanceDto> {
 
-	public UserVariableDefinitionDto createDTOInstance() {
-		return new StringUserVariableDefinitionDto();
-	}
+   public UserVariableDefinitionDto createDTOInstance() {
+      return new StringUserVariableDefinitionDto();
+   }
 
-	public ImageResource getIcon() {
-		return BaseIcon.PARAGRAPH.toImageResource();
-	}
+   public ImageResource getIcon() {
+      return BaseIcon.PARAGRAPH.toImageResource();
+   }
 
-	public String getName() {
-		return UserVariablesTypesMessages.INSTANCE.textVariable(); //$NON-NLS-1$
-	}
+   public String getName() {
+      return UserVariablesTypesMessages.INSTANCE.textVariable(); // $NON-NLS-1$
+   }
 
-	public Widget getEditComponent(StringUserVariableDefinitionDto definition) {
-		SimpleForm form = SimpleForm.getInlineInstance();
+   public Widget getEditComponent(StringUserVariableDefinitionDto definition) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-		form.addField(Integer.class, StringUserVariableDefinitionDtoPA.INSTANCE.width(), BaseMessages.INSTANCE.width()); 
-		form.addField(Integer.class, StringUserVariableDefinitionDtoPA.INSTANCE.height(), BaseMessages.INSTANCE.height()); 
-		form.bind(definition);
-		
-		return form;
-	}
+      form.addField(Integer.class, StringUserVariableDefinitionDtoPA.INSTANCE.width(), BaseMessages.INSTANCE.width());
+      form.addField(Integer.class, StringUserVariableDefinitionDtoPA.INSTANCE.height(), BaseMessages.INSTANCE.height());
+      form.bind(definition);
 
-	@Override
-	public Widget getEditComponent(StringUserVariableInstanceDto instance, final StringUserVariableDefinitionDto definition) {
-		SimpleForm form = SimpleForm.getInlineInstance();
-		
-		if(definition.getHeight() == 1)
-			form.addField(String.class, StringUserVariableInstanceDtoPA.INSTANCE.value(), BaseMessages.INSTANCE.value()); 
-		else
-			form.addField(String.class, StringUserVariableInstanceDtoPA.INSTANCE.value(), BaseMessages.INSTANCE.value(), new SFFCTextArea(){ 
-				public int getHeight() {
-					return definition.getHeight();
-				}
-	
-				public int getWidth() {
-					return definition.getWidth();
-				}
-			});
-		
-		/* bind instance */
-		form.bind(instance);
-		
-		return form;
-	}
+      return form;
+   }
 
-	public Object getDisplayValue(StringUserVariableInstanceDto instance, StringUserVariableDefinitionDto definition) {
-		return String.valueOf(instance.getValue());
-	}
-	
-	@Override
-	public void configureEditWindow(StringUserVariableDefinitionDto definition,
-			Window window) {
-		window.setWidth(400);
-		window.setHeight(220);
-	}
+   @Override
+   public Widget getEditComponent(StringUserVariableInstanceDto instance,
+         final StringUserVariableDefinitionDto definition) {
+      SimpleForm form = SimpleForm.getInlineInstance();
 
-	@Override
-	public void configureEditWindow(StringUserVariableInstanceDto instance,
-			StringUserVariableDefinitionDto definition, Window window) {
-		window.setWidth(500);
-		window.setHeight(170 + definition.getHeight());
-	}
+      if (definition.getHeight() == 1)
+         form.addField(String.class, StringUserVariableInstanceDtoPA.INSTANCE.value(), BaseMessages.INSTANCE.value());
+      else
+         form.addField(String.class, StringUserVariableInstanceDtoPA.INSTANCE.value(), BaseMessages.INSTANCE.value(),
+               new SFFCTextArea() {
+                  public int getHeight() {
+                     return definition.getHeight();
+                  }
+
+                  public int getWidth() {
+                     return definition.getWidth();
+                  }
+               });
+
+      /* bind instance */
+      form.bind(instance);
+
+      return form;
+   }
+
+   public Object getDisplayValue(StringUserVariableInstanceDto instance, StringUserVariableDefinitionDto definition) {
+      return String.valueOf(instance.getValue());
+   }
+
+   @Override
+   public void configureEditWindow(StringUserVariableDefinitionDto definition, Window window) {
+      window.setWidth(400);
+      window.setHeight(220);
+   }
+
+   @Override
+   public void configureEditWindow(StringUserVariableInstanceDto instance, StringUserVariableDefinitionDto definition,
+         Window window) {
+      window.setWidth(500);
+      window.setHeight(170 + definition.getHeight());
+   }
 
 }

@@ -11,8 +11,7 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.parameters.dto.ScriptP
 @RemoteServiceRelativePath("scriptreport")
 public interface ScriptReportRpcService extends RemoteService {
 
-	String getScriptParameterContents(ScriptParameterDefinitionDto definition, Collection<ParameterInstanceDto> relevantInstances);
-
-	
+   String getScriptParameterContents(ScriptParameterDefinitionDto definition,
+         Collection<ParameterInstanceDto> relevantInstances);
 
 }

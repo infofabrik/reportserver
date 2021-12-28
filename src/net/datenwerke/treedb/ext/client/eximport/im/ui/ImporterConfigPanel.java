@@ -15,52 +15,49 @@ import net.datenwerke.rs.eximport.client.eximport.locale.ExImportMessages;
 
 abstract public class ImporterConfigPanel<C extends ImportConfigDto> extends DwTabPanel {
 
-	protected final ImporterItemsPanel<C> itemsPanel;
-	protected final ImporterMainPropertiesPanel<C> mainPropertiesPanel;
-	
-	public ImporterConfigPanel(
-		ImporterItemsPanel<C> itemsPanel,
-		ImporterMainPropertiesPanel<C> mainPropertiesPanel
-		){
-		super(GWT.<TabPanelAppearance> create(TabPanelBottomAppearance.class));
-		
-		/* store objects */
-		this.itemsPanel = itemsPanel;
-		this.mainPropertiesPanel = mainPropertiesPanel;
+   protected final ImporterItemsPanel<C> itemsPanel;
+   protected final ImporterMainPropertiesPanel<C> mainPropertiesPanel;
 
-		/* init */
-		initializeUI();
-		
-	}
+   public ImporterConfigPanel(ImporterItemsPanel<C> itemsPanel, ImporterMainPropertiesPanel<C> mainPropertiesPanel) {
+      super(GWT.<TabPanelAppearance>create(TabPanelBottomAppearance.class));
 
-	private void initializeUI() {
-		setBodyBorder(false);
-		setBorders(false);
-		
-		TabItemConfig tabMainProperties = new TabItemConfig(ExImportMessages.INSTANCE.importMainProperties());
-		add(mainPropertiesPanel, tabMainProperties);
-		
-		TabItemConfig tabItems = new TabItemConfig(ExImportMessages.INSTANCE.importItems());
-		add(itemsPanel, tabItems);
-	}
+      /* store objects */
+      this.itemsPanel = itemsPanel;
+      this.mainPropertiesPanel = mainPropertiesPanel;
 
-	public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
-		C config = createConfigObject();
-		
-		itemsPanel.populateConfig(config);
-		mainPropertiesPanel.populateConfig(config);
-		
-		itemsPanel.validateConfig(config);
-		mainPropertiesPanel.validateConfig(config);
-		
-		return config;
-	}
-	
-	public void resetConfig() {
-		itemsPanel.resetConfig();
-		mainPropertiesPanel.resetConfig();
-	}
+      /* init */
+      initializeUI();
 
-	abstract protected C createConfigObject();
-	
+   }
+
+   private void initializeUI() {
+      setBodyBorder(false);
+      setBorders(false);
+
+      TabItemConfig tabMainProperties = new TabItemConfig(ExImportMessages.INSTANCE.importMainProperties());
+      add(mainPropertiesPanel, tabMainProperties);
+
+      TabItemConfig tabItems = new TabItemConfig(ExImportMessages.INSTANCE.importItems());
+      add(itemsPanel, tabItems);
+   }
+
+   public ImportConfigDto getConfiguration() throws NotProperlyConfiguredException {
+      C config = createConfigObject();
+
+      itemsPanel.populateConfig(config);
+      mainPropertiesPanel.populateConfig(config);
+
+      itemsPanel.validateConfig(config);
+      mainPropertiesPanel.validateConfig(config);
+
+      return config;
+   }
+
+   public void resetConfig() {
+      itemsPanel.resetConfig();
+      mainPropertiesPanel.resetConfig();
+   }
+
+   abstract protected C createConfigObject();
+
 }

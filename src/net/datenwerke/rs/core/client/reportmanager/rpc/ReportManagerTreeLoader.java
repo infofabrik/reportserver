@@ -10,5 +10,5 @@ import net.datenwerke.treedb.client.treedb.rpc.RPCTreeLoader;
 @RemoteServiceRelativePath("reportmanager_tree")
 public interface ReportManagerTreeLoader extends RemoteService, RPCTreeLoader {
 
-	public String[][] getReportsInCatalog(ReportFolderDto folder, boolean showVariants) throws ServerCallFailedException;
+   public String[][] getReportsInCatalog(ReportFolderDto folder, boolean showVariants) throws ServerCallFailedException;
 }

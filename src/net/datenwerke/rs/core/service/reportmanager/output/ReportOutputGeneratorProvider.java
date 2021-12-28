@@ -6,5 +6,5 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface ReportOutputGeneratorProvider<G extends ReportOutputGenerator> extends Hook {
 
-	public Collection<G> provideGenerators();
+   public Collection<G> provideGenerators();
 }

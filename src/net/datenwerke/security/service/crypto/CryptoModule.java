@@ -63,7 +63,7 @@ import net.datenwerke.security.service.crypto.pbe.PbeModule;
  * <h2>Services:</h2>
  * <ul>
  * <li>{@link net.datenwerke.rs.core.service.mail.MailService}</li>
- * </ul> 
+ * </ul>
  * <h2>Others:</h2>
  * <ul>
  * <li>{@link net.datenwerke.security.service.crypto.passwordhasher.HmacPassphrase}</li>
@@ -95,26 +95,27 @@ import net.datenwerke.security.service.crypto.pbe.PbeModule;
  * <li>{@link org.hibernate.validator.constraints.Length}</li>
  * </ul>
  */
-public class CryptoModule extends AbstractModule{
-	
-	public static final String PASSWORDHASHER_PROPERTY_HMAC_PASSPHRASE = "rs.crypto.passwordhasher.hmac.passphrase";
+public class CryptoModule extends AbstractModule {
 
-	@Inject
-	@Provides @HmacPassphrase
-	protected String provideHmacPassphrase(ApplicationPropertiesService rsService){
-		return rsService.getString(PASSWORDHASHER_PROPERTY_HMAC_PASSPHRASE);
-	}
-	
-	@Override
-	protected void configure() {
-		
-		bind(CryptoModuleStartup.class).asEagerSingleton();
-		bind(CryptoService.class).to(CryptoServiceImpl.class);
-		bind(PasswordHasher.class).to(PasswordHasherImpl.class);
-		bind(CryptoRpcService.class).to(CryptoRpcServiceImpl.class);
-		requestStaticInjection(CryptoServiceImpl.class);
-		
-		install(new PbeModule());
-	}
-	
+   public static final String PASSWORDHASHER_PROPERTY_HMAC_PASSPHRASE = "rs.crypto.passwordhasher.hmac.passphrase";
+
+   @Inject
+   @Provides
+   @HmacPassphrase
+   protected String provideHmacPassphrase(ApplicationPropertiesService rsService) {
+      return rsService.getString(PASSWORDHASHER_PROPERTY_HMAC_PASSPHRASE);
+   }
+
+   @Override
+   protected void configure() {
+
+      bind(CryptoModuleStartup.class).asEagerSingleton();
+      bind(CryptoService.class).to(CryptoServiceImpl.class);
+      bind(PasswordHasher.class).to(PasswordHasherImpl.class);
+      bind(CryptoRpcService.class).to(CryptoRpcServiceImpl.class);
+      requestStaticInjection(CryptoServiceImpl.class);
+
+      install(new PbeModule());
+   }
+
 }

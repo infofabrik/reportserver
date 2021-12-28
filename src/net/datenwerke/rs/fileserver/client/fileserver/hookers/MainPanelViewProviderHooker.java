@@ -20,56 +20,52 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class MainPanelViewProviderHooker implements MainPanelViewProviderHook {
 
-	private final HookHandlerService hookHandler;
-	private final Provider<FolderForm> folderFormProvider;
-	
-	private final Provider<SecurityView> securityViewProvider;
-	private final Provider<FileForm> fileFormProvider;
-	
-	
-	@Inject
-	public MainPanelViewProviderHooker(
-			HookHandlerService hookHandler,
-			Provider<FolderForm> folderFormProvider,
-			Provider<FileForm> fileFormProvider,
-			
-			Provider<SecurityView> securityViewProvider
-		){
+   private final HookHandlerService hookHandler;
+   private final Provider<FolderForm> folderFormProvider;
 
-		/* store objects */
-		this.hookHandler = hookHandler;
-		this.folderFormProvider = folderFormProvider;
-		this.fileFormProvider = fileFormProvider;
-		this.securityViewProvider = securityViewProvider;
-	}
-	
-	public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
-		if(node instanceof FileServerFolderDto)
-			return getViewForFolder();
-		if(node instanceof FileServerFileDto)
-			return getViewForFiles((FileServerFileDto) node);
-		return null;
-	}
+   private final Provider<SecurityView> securityViewProvider;
+   private final Provider<FileForm> fileFormProvider;
 
-	private List<MainPanelView> getViewForFiles(FileServerFileDto file) {
-		List<MainPanelView> views = new ArrayList<MainPanelView>();
-		
-		views.add(fileFormProvider.get());
-		
-		for(EditFileServerFileHook hooker : hookHandler.getHookers(EditFileServerFileHook.class)){
-			if(hooker.consumes(file)){
-				views.add(hooker.getView(file));
-				break;
-			}
-		}
-		
-		views.add(securityViewProvider.get());
-		
-		return views;
-	}
+   @Inject
+   public MainPanelViewProviderHooker(HookHandlerService hookHandler, Provider<FolderForm> folderFormProvider,
+         Provider<FileForm> fileFormProvider,
 
-	private List<MainPanelView> getViewForFolder() {
-		return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
-	}
+         Provider<SecurityView> securityViewProvider) {
+
+      /* store objects */
+      this.hookHandler = hookHandler;
+      this.folderFormProvider = folderFormProvider;
+      this.fileFormProvider = fileFormProvider;
+      this.securityViewProvider = securityViewProvider;
+   }
+
+   public List<MainPanelView> mainPanelViewProviderHook_getView(AbstractNodeDto node) {
+      if (node instanceof FileServerFolderDto)
+         return getViewForFolder();
+      if (node instanceof FileServerFileDto)
+         return getViewForFiles((FileServerFileDto) node);
+      return null;
+   }
+
+   private List<MainPanelView> getViewForFiles(FileServerFileDto file) {
+      List<MainPanelView> views = new ArrayList<MainPanelView>();
+
+      views.add(fileFormProvider.get());
+
+      for (EditFileServerFileHook hooker : hookHandler.getHookers(EditFileServerFileHook.class)) {
+         if (hooker.consumes(file)) {
+            views.add(hooker.getView(file));
+            break;
+         }
+      }
+
+      views.add(securityViewProvider.get());
+
+      return views;
+   }
+
+   private List<MainPanelView> getViewForFolder() {
+      return Arrays.asList(folderFormProvider.get(), securityViewProvider.get());
+   }
 
 }

@@ -29,77 +29,62 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBDeniedChildren;
  *
  */
 @Entity
-@Table(name="DASHBOARD_FOLDER")
+@Table(name = "DASHBOARD_FOLDER")
 @Audited
 @Indexed
-@TreeDBAllowedChildren({
-	DadgetNode.class,
-	DashboardNode.class,
-	
-	DashboardFolder.class
-})
+@TreeDBAllowedChildren({ DadgetNode.class, DashboardNode.class,
+
+      DashboardFolder.class })
 @TreeDBDeniedChildren(ReportVariant.class)
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.dashboard.client.dashboard.dto",
-	dtoImplementInterfaces=FolderDto.class,
-	typeDescriptionMsg=BaseMessages.class, typeDescriptionKey="folder",
-	icon="folder"
-)
-@InstanceDescription(
-	msgLocation=DashboardMessages.class,
-	objNameKey="folderTypeName",		
-	icon = "folder"
-)
-public class DashboardFolder extends AbstractDashboardManagerNode  {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 3139118358223220435L;
+@GenerateDto(dtoPackage = "net.datenwerke.rs.dashboard.client.dashboard.dto", dtoImplementInterfaces = FolderDto.class, typeDescriptionMsg = BaseMessages.class, typeDescriptionKey = "folder", icon = "folder")
+@InstanceDescription(msgLocation = DashboardMessages.class, objNameKey = "folderTypeName", icon = "folder")
+public class DashboardFolder extends AbstractDashboardManagerNode {
 
-	@ExposeToClient(
-		view=DtoView.MINIMAL,
-		displayTitle=true
-	)
-	@Column(length = 128)
-	@Field
-	@Title
-	private String name;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 3139118358223220435L;
 
-	@ExposeToClient(view=DtoView.MINIMAL)
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	@Field
-	@Description
-    private String description;
-	
-	public DashboardFolder(){
-		
-	}
+   @ExposeToClient(view = DtoView.MINIMAL, displayTitle = true)
+   @Column(length = 128)
+   @Field
+   @Title
+   private String name;
 
-	public DashboardFolder(String name){
-		setName(name);
-	}
-	
-    public String getName() {
-        return name;
-    }
+   @ExposeToClient(view = DtoView.MINIMAL)
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   @Field
+   @Description
+   private String description;
 
-    public void setName(String name) {
-        this.name = name;
-    }
+   public DashboardFolder() {
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
+   }
 
-	public String getDescription() {
-		return description;
-	}
-    
-	@Override
-	public boolean isFolder() {
-		return true;
-	}
+   public DashboardFolder(String name) {
+      setName(name);
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
+   }
+
+   public void setDescription(String description) {
+      this.description = description;
+   }
+
+   public String getDescription() {
+      return description;
+   }
+
+   @Override
+   public boolean isFolder() {
+      return true;
+   }
 
 }

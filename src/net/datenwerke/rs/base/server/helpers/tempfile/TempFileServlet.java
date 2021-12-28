@@ -19,42 +19,40 @@ import net.datenwerke.security.service.authenticator.AuthenticatorService;
 @Singleton
 public class TempFileServlet extends SecuredHttpServlet {
 
-	private static final long serialVersionUID = -3699726518482517393L;
-	
-	private final TempFileService tempFileService;
+   private static final long serialVersionUID = -3699726518482517393L;
 
-	private Provider<AuthenticatorService> authenticatorService;
-	
-	@Inject
-	public TempFileServlet(TempFileService tempFileService, Provider<AuthenticatorService> authenticatorService) {
-		this.tempFileService = tempFileService;
-		this.authenticatorService = authenticatorService;
+   private final TempFileService tempFileService;
 
-	}
-	
-	
-	@Override
-	public void doGet(HttpServletRequest req, HttpServletResponse resp)	throws ServletException, IOException {
-		String tempfileId = req.getParameter("id");
-		TempFile tempFile = tempFileService.getTempFileById(tempfileId);
-		
+   private Provider<AuthenticatorService> authenticatorService;
 
-		if(null == tempFile){
-			resp.sendError(HttpServletResponse.SC_NOT_FOUND);	
-		}
+   @Inject
+   public TempFileServlet(TempFileService tempFileService, Provider<AuthenticatorService> authenticatorService) {
+      this.tempFileService = tempFileService;
+      this.authenticatorService = authenticatorService;
 
-		if(!tempFile.isPermittedUser(authenticatorService.get().getCurrentUser())){
-			resp.sendError(HttpServletResponse.SC_FORBIDDEN);
-		}
-		
-		if(null != tempFile.getMimeType() && !tempFile.getMimeType().isEmpty()){
-			resp.setContentType(tempFile.getMimeType());
-		}
-		
-		OutputStream os = resp.getOutputStream();
-		byte[] fileContents = Files.readAllBytes(tempFile.getPath());
-		os.write(fileContents);
-		os.close();
-	}
+   }
+
+   @Override
+   public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+      String tempfileId = req.getParameter("id");
+      TempFile tempFile = tempFileService.getTempFileById(tempfileId);
+
+      if (null == tempFile) {
+         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+      }
+
+      if (!tempFile.isPermittedUser(authenticatorService.get().getCurrentUser())) {
+         resp.sendError(HttpServletResponse.SC_FORBIDDEN);
+      }
+
+      if (null != tempFile.getMimeType() && !tempFile.getMimeType().isEmpty()) {
+         resp.setContentType(tempFile.getMimeType());
+      }
+
+      OutputStream os = resp.getOutputStream();
+      byte[] fileContents = Files.readAllBytes(tempFile.getPath());
+      os.write(fileContents);
+      os.close();
+   }
 
 }

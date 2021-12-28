@@ -6,33 +6,33 @@ import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
  * 
  *
  */
-public class CompiledXLSTableReport extends CompiledTableReport  implements CompiledReport{
+public class CompiledXLSTableReport extends CompiledTableReport implements CompiledReport {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -875662961695339486L;
-	
-	final private byte[] report;
-	
-	public CompiledXLSTableReport(byte[] report) {
-		this.report = report;
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -875662961695339486L;
 
-	public byte[] getReport() {
-		return report;
-	}
+   final private byte[] report;
 
-	public String getFileExtension() {
-		return "xls"; //$NON-NLS-1$
-	}
+   public CompiledXLSTableReport(byte[] report) {
+      this.report = report;
+   }
 
-	public String getMimeType() {
-		return "application/excel"; //$NON-NLS-1$
-	}
+   public byte[] getReport() {
+      return report;
+   }
 
-	@Override
-	public boolean isStringReport() {
-		return false;
-	}
+   public String getFileExtension() {
+      return "xls"; //$NON-NLS-1$
+   }
+
+   public String getMimeType() {
+      return "application/excel"; //$NON-NLS-1$
+   }
+
+   @Override
+   public boolean isStringReport() {
+      return false;
+   }
 }

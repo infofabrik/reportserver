@@ -16,34 +16,32 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class FileServerAdminModule implements AdminModule {
 
-	final private Provider<FileServerManagerPanel> managerPanelanelProvider;
-	
-	@Inject
-	public FileServerAdminModule(
-		Provider<FileServerManagerPanel> managerPanelanelProvider
-		){
-		
-		/* store objects */
-		this.managerPanelanelProvider = managerPanelanelProvider;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.FLOPPY_O.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return FileServerMessages.INSTANCE.adminLabel();
-	}
+   final private Provider<FileServerManagerPanel> managerPanelanelProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return managerPanelanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-		
-	}
+   @Inject
+   public FileServerAdminModule(Provider<FileServerManagerPanel> managerPanelanelProvider) {
+
+      /* store objects */
+      this.managerPanelanelProvider = managerPanelanelProvider;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.FLOPPY_O.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return FileServerMessages.INSTANCE.adminLabel();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return managerPanelanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+
+   }
 }

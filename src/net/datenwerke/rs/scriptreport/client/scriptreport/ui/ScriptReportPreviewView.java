@@ -19,60 +19,56 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public class ScriptReportPreviewView extends AbstractReportPreviewView {
 
-	private DwContentPanel wrapper;
-	private final UtilsUIService utilsService;
+   private DwContentPanel wrapper;
+   private final UtilsUIService utilsService;
 
-	
-	@Inject
-	public ScriptReportPreviewView(
-		ReportExecutorDao rexService, HookHandlerService hookHandler,
-		UtilsUIService utilsService) {
-		super(rexService, hookHandler);
-		
-		this.utilsService = utilsService;
-		
-		wrapper = DwContentPanel.newInlineInstance();
-	}
-	
-	@Override
-	protected boolean isCreateStatusBar() {
-		return false;
-	}
+   @Inject
+   public ScriptReportPreviewView(ReportExecutorDao rexService, HookHandlerService hookHandler,
+         UtilsUIService utilsService) {
+      super(rexService, hookHandler);
 
-	@Override
-	protected void doLoadReport(final DwModel result) {
-		StringBaseModel reportExecutionResult = (net.datenwerke.gxtdto.client.model.StringBaseModel) result;
-		if(null != reportExecutionResult && null != reportExecutionResult.getValue()){
-			wrapper.clear();
-			SimpleContainer container = new SimpleContainer();
-			wrapper.setWidget(container);
-			
-			container.add(utilsService.asIframe((String) reportExecutionResult.getValue()));
-			Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-				@Override
-				public void execute() {
-					wrapper.forceLayout();
-				}
-			});
-		}
-	}
-	
-	
-	@Override
-	protected void cancelExecution(String executeToken) {
-		// TODO Auto-generated method stub
-		
-	}
-	
-	@Override
-	public Request execute(ReportDto report, String executeToken, AsyncCallback<DwModel> callback) {
-		return reportExecutorDao.executeAs("SCRIPT_REPORT_PREVIEW", executeToken, report, null, callback);
-	}
-	
-	@Override
-	public Widget doGetViewComponent() {
-		return wrapper;
-	}
-	
+      this.utilsService = utilsService;
+
+      wrapper = DwContentPanel.newInlineInstance();
+   }
+
+   @Override
+   protected boolean isCreateStatusBar() {
+      return false;
+   }
+
+   @Override
+   protected void doLoadReport(final DwModel result) {
+      StringBaseModel reportExecutionResult = (net.datenwerke.gxtdto.client.model.StringBaseModel) result;
+      if (null != reportExecutionResult && null != reportExecutionResult.getValue()) {
+         wrapper.clear();
+         SimpleContainer container = new SimpleContainer();
+         wrapper.setWidget(container);
+
+         container.add(utilsService.asIframe((String) reportExecutionResult.getValue()));
+         Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+            @Override
+            public void execute() {
+               wrapper.forceLayout();
+            }
+         });
+      }
+   }
+
+   @Override
+   protected void cancelExecution(String executeToken) {
+      // TODO Auto-generated method stub
+
+   }
+
+   @Override
+   public Request execute(ReportDto report, String executeToken, AsyncCallback<DwModel> callback) {
+      return reportExecutorDao.executeAs("SCRIPT_REPORT_PREVIEW", executeToken, report, null, callback);
+   }
+
+   @Override
+   public Widget doGetViewComponent() {
+      return wrapper;
+   }
 
 }

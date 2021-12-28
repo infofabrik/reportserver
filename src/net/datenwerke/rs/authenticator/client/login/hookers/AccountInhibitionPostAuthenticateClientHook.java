@@ -11,49 +11,51 @@ import net.datenwerke.security.client.login.resultinfos.AccountInhibitionAuthent
 import net.datenwerke.security.client.security.passwordpolicy.locale.PasswordPolicyMessages;
 
 public class AccountInhibitionPostAuthenticateClientHook implements PostAuthenticateClientHook {
-	
-	@Override
-	public void authenticated(final AuthenticateResultDto authRes, final List<PostAuthenticateClientHook> chain) {
 
-		boolean autoProceed = true;
+   @Override
+   public void authenticated(final AuthenticateResultDto authRes, final List<PostAuthenticateClientHook> chain) {
 
-		if(null != authRes.getInfo()){
-			for(final AuthenticateResultInfo info : authRes.getInfo()){
-				if(info instanceof AccountExpiredAuthenticateResultInfo){
-					autoProceed = false;
-					new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountInhibitedHeading(), PasswordPolicyMessages.INSTANCE.accountInhibitedMessage()){
-						@Override
-						protected void onHide() {
-							skipToEnd(authRes, chain);
-						}
-					}.show();
-				} else if(info instanceof AccountInhibitionAuthenticateResultInfo){
-					autoProceed = false;
-					new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountInhibitedHeading(), PasswordPolicyMessages.INSTANCE.accountInhibitedMessage()) {
-						@Override
-						protected void onHide() {
-							skipToEnd(authRes, chain);
-						};
-					}.show();
-				} 
-			}
-		}
+      boolean autoProceed = true;
 
-		if(autoProceed)
-			proceed(authRes, chain);
-	}
-	
-	protected void proceed(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain){
-		if(chain.size() > 0)
-			chain.remove(0).authenticated(authRes, chain);
-	}
-	
-	protected void skipToEnd(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain){
-		if(chain.size() > 0){
-			PostAuthenticateClientHook last = chain.get(chain.size()-1);
-			chain.clear();
-			last.authenticated(authRes, chain);
-		}
-	}
+      if (null != authRes.getInfo()) {
+         for (final AuthenticateResultInfo info : authRes.getInfo()) {
+            if (info instanceof AccountExpiredAuthenticateResultInfo) {
+               autoProceed = false;
+               new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountInhibitedHeading(),
+                     PasswordPolicyMessages.INSTANCE.accountInhibitedMessage()) {
+                  @Override
+                  protected void onHide() {
+                     skipToEnd(authRes, chain);
+                  }
+               }.show();
+            } else if (info instanceof AccountInhibitionAuthenticateResultInfo) {
+               autoProceed = false;
+               new SimpleErrorDialog(PasswordPolicyMessages.INSTANCE.accountInhibitedHeading(),
+                     PasswordPolicyMessages.INSTANCE.accountInhibitedMessage()) {
+                  @Override
+                  protected void onHide() {
+                     skipToEnd(authRes, chain);
+                  };
+               }.show();
+            }
+         }
+      }
+
+      if (autoProceed)
+         proceed(authRes, chain);
+   }
+
+   protected void proceed(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain) {
+      if (chain.size() > 0)
+         chain.remove(0).authenticated(authRes, chain);
+   }
+
+   protected void skipToEnd(AuthenticateResultDto authRes, List<PostAuthenticateClientHook> chain) {
+      if (chain.size() > 0) {
+         PostAuthenticateClientHook last = chain.get(chain.size() - 1);
+         chain.clear();
+         last.authenticated(authRes, chain);
+      }
+   }
 
 }

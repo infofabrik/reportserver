@@ -6,7 +6,8 @@ import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 
 public interface TeamSpaceEditDialogHook extends Hook, RpcPropertiesDialogCard {
 
-	public boolean applies(TeamSpaceDto teamSpace);
-	public void setCurrentSpace(TeamSpaceDto teamSpace);
-	
+   public boolean applies(TeamSpaceDto teamSpace);
+
+   public void setCurrentSpace(TeamSpaceDto teamSpace);
+
 }

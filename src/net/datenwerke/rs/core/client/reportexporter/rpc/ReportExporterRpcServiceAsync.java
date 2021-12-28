@@ -11,18 +11,16 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public interface ReportExporterRpcServiceAsync {
 
-	Request storeInSessionForExport(ReportDto reportDto, String executorToken,
-			String format, List<ReportExecutionConfigDto> configs,
-			AsyncCallback<Void> callback);
+   Request storeInSessionForExport(ReportDto reportDto, String executorToken, String format,
+         List<ReportExecutionConfigDto> configs, AsyncCallback<Void> callback);
 
-	void exportViaMail(ReportDto reportDto, String executorToke, String format,
-			List<ReportExecutionConfigDto> configs, String subject,
-			String message, boolean compressed, List<StrippedDownUser> recipients,
-			AsyncCallback<Void> callback);
-	
-	void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback);
-	
-	void getExportDefaultCharset(AsyncCallback<String> callback);
+   void exportViaMail(ReportDto reportDto, String executorToke, String format, List<ReportExecutionConfigDto> configs,
+         String subject, String message, boolean compressed, List<StrippedDownUser> recipients,
+         AsyncCallback<Void> callback);
 
-	Request exportSkipDownload(ReportDto reportDto, String executorToken, String format, AsyncCallback<Void> callback);
+   void getExportDefaultSettingsAsXml(String identifier, AsyncCallback<String> callback);
+
+   void getExportDefaultCharset(AsyncCallback<String> callback);
+
+   Request exportSkipDownload(ReportDto reportDto, String executorToken, String format, AsyncCallback<Void> callback);
 }

@@ -18,69 +18,63 @@ import net.datenwerke.rs.incubator.service.scriptdatasource.locale.ScriptDatasou
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
-@Table(name="SCRIPT_DATASOURCE")
+@Table(name = "SCRIPT_DATASOURCE")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.incubator.client.scriptdatasource.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.incubator.client.scriptdatasource.dto")
 @Indexed
-@InstanceDescription(
-      msgLocation=ScriptDatasourceMessages.class,
-      objNameKey="scriptDatasourceTypeName",
-      icon = "file-code-o"
-  )
-public class ScriptDatasource extends DatasourceDefinition implements CacheableDatasource{
+@InstanceDescription(msgLocation = ScriptDatasourceMessages.class, objNameKey = "scriptDatasourceTypeName", icon = "file-code-o")
+public class ScriptDatasource extends DatasourceDefinition implements CacheableDatasource {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -48477041777124011L;
-	
-	public static final String TABLE_NAME_PREFIX = "RS_SCR_TAB_";
-	
-	@ExposeToClient
-	@ManyToOne
-	private FileServerFile script;
-	
-	@ExposeToClient
-	private int databaseCache = -1;
-	
-	@ExposeToClient(view=DtoView.MINIMAL)
-	private boolean defineAtTarget;
-	
-	@Override
-	public DatasourceDefinitionConfig createConfigObject() {
-		return new ScriptDatasourceConfig();
-	}
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -48477041777124011L;
 
-	public void setScript(FileServerFile script) {
-		this.script = script;
-	}
+   public static final String TABLE_NAME_PREFIX = "RS_SCR_TAB_";
 
-	public FileServerFile getScript() {
-		return script;
-	}
+   @ExposeToClient
+   @ManyToOne
+   private FileServerFile script;
 
-	public int getDatabaseCache() {
-		return databaseCache;
-	}
+   @ExposeToClient
+   private int databaseCache = -1;
 
-	public void setDatabaseCache(int databaseCache) {
-		this.databaseCache = databaseCache;
-	}
-	
-	public String generateTableName(){
-		if(null == getId())
-			throw new IllegalStateException("Expected id");
-		return TABLE_NAME_PREFIX + getId();
-	}
-	
-	public boolean isDefineAtTarget() {
-		return defineAtTarget;
-	}
-	
-	public void setDefineAtTarget(boolean defineAtTarget) {
-		this.defineAtTarget = defineAtTarget;
-	}
+   @ExposeToClient(view = DtoView.MINIMAL)
+   private boolean defineAtTarget;
+
+   @Override
+   public DatasourceDefinitionConfig createConfigObject() {
+      return new ScriptDatasourceConfig();
+   }
+
+   public void setScript(FileServerFile script) {
+      this.script = script;
+   }
+
+   public FileServerFile getScript() {
+      return script;
+   }
+
+   public int getDatabaseCache() {
+      return databaseCache;
+   }
+
+   public void setDatabaseCache(int databaseCache) {
+      this.databaseCache = databaseCache;
+   }
+
+   public String generateTableName() {
+      if (null == getId())
+         throw new IllegalStateException("Expected id");
+      return TABLE_NAME_PREFIX + getId();
+   }
+
+   public boolean isDefineAtTarget() {
+      return defineAtTarget;
+   }
+
+   public void setDefineAtTarget(boolean defineAtTarget) {
+      this.defineAtTarget = defineAtTarget;
+   }
 
 }

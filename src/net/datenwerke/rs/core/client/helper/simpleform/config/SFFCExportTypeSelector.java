@@ -5,8 +5,8 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
 public interface SFFCExportTypeSelector extends SimpleFormFieldConfiguration {
 
-	ReportDto getReport();
+   ReportDto getReport();
 
-	String getExecuteReportToken();
+   String getExecuteReportToken();
 
 }

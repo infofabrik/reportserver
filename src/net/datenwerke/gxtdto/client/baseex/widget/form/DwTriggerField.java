@@ -9,17 +9,16 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class DwTriggerField<D> extends TriggerField<D> {
 
-	public DwTriggerField(TriggerFieldCell<D> cell) {
-		super(cell);
-	}
-	
-	public DwTriggerField(TriggerFieldCell<D> cell,
-			PropertyEditor<D> propertyEditor) {
-		super(cell, propertyEditor);
-	}
-	
-	public void setTriggerIcon(BaseIcon icon) {
-		((RsTriggerFieldAppearance)getCell().getAppearance()).setTriggerIcon(icon);
-	}
+   public DwTriggerField(TriggerFieldCell<D> cell) {
+      super(cell);
+   }
+
+   public DwTriggerField(TriggerFieldCell<D> cell, PropertyEditor<D> propertyEditor) {
+      super(cell, propertyEditor);
+   }
+
+   public void setTriggerIcon(BaseIcon icon) {
+      ((RsTriggerFieldAppearance) getCell().getAppearance()).setTriggerIcon(icon);
+   }
 
 }

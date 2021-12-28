@@ -6,7 +6,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.interfaces.Hook;
 
 public interface UrlViewSpecialViewHandler extends Hook {
 
-	public boolean consumes(String url);
-	
-	public Widget getWidget(String url);
+   public boolean consumes(String url);
+
+   public Widget getWidget(String url);
 }

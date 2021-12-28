@@ -10,35 +10,35 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public interface DadgetProcessorHook extends Hook {
 
-	public interface DadgetConfigureCallback{
-		void configuringDone();
-		void cancelled();
-	}
-	
-	public BaseIcon getIcon();
-	
-	public String getTitle();
-	
-	public String getDescription();
-	
-	public boolean consumes(DadgetDto dadget);
+   public interface DadgetConfigureCallback {
+      void configuringDone();
 
-	public DadgetDto instantiateDadget();
+      void cancelled();
+   }
 
-	public void draw(DadgetDto dadget, DadgetPanel panel);
+   public BaseIcon getIcon();
 
-	public Widget getAdminConfigDialog(DadgetDto dadget, SimpleForm form);
-	
-	public void displayConfigDialog(DadgetDto dadget,
-			DadgetConfigureCallback dadgetConfigureCallback);
+   public String getTitle();
 
-	public boolean hasConfigDialog();
+   public String getDescription();
 
-	public void addTools(DadgetPanel dadgetPanel);
+   public boolean consumes(DadgetDto dadget);
 
-	public boolean isRedrawOnMove();
+   public DadgetDto instantiateDadget();
 
-	public boolean supportsDadgetLibrary();
+   public void draw(DadgetDto dadget, DadgetPanel panel);
 
-	public boolean readyToDisplayParameters(DadgetPanel dadgetPanel);
+   public Widget getAdminConfigDialog(DadgetDto dadget, SimpleForm form);
+
+   public void displayConfigDialog(DadgetDto dadget, DadgetConfigureCallback dadgetConfigureCallback);
+
+   public boolean hasConfigDialog();
+
+   public void addTools(DadgetPanel dadgetPanel);
+
+   public boolean isRedrawOnMove();
+
+   public boolean supportsDadgetLibrary();
+
+   public boolean readyToDisplayParameters(DadgetPanel dadgetPanel);
 }

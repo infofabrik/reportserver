@@ -37,182 +37,178 @@ import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class FtpExportSnippetProvider implements
-		ScheduleExportSnippetProviderHook {
+public class FtpExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
-	private String isExportAsFtpKey;
-	private String folderKey;
-	private String nameKey;
-	private String ftpKey;
-	private String compressedKey;
-	
-	private final Provider<UITree> treeProvider;
-	private final Provider<FtpDao> datasinkDaoProvider;
-	private final DatasinkTreeManagerDao datasinkTreeManager;
-	
-	@Inject
-	public FtpExportSnippetProvider(
-			@DatasinkTreeFtp Provider<UITree> treeProvider,
-			DatasinkTreeManagerDao datasinkTreeManager,
-			Provider<FtpDao> datasinkDaoProvider
-			) {
-		this.treeProvider = treeProvider;
-		this.datasinkTreeManager = datasinkTreeManager;
-		this.datasinkDaoProvider = datasinkDaoProvider;
-	}
-	
-	@Override
-	public boolean appliesFor(ReportDto report,
-			Collection<ReportViewConfiguration> configs) {
-		return true;
-	}
-	
-	@Override
-	public void configureSimpleForm(final SimpleForm xform, ReportDto report, Collection<ReportViewConfiguration> configs) {
-		
-		xform.setLabelAlign(LabelAlign.LEFT);
-		isExportAsFtpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
-			@Override
-			public String getBoxLabel() {
-				return FtpUiModule.FTP_NAME;
-			}
-		});
-		xform.setLabelAlign(LabelAlign.TOP);
-		
-		xform.setFieldWidth(260);
-		xform.beginFloatRow();
-		
-		ftpKey = xform.addField(DatasinkSelectionField.class, FtpUiModule.FTP_NAME, new SFFCGenericTreeNode() {
-			@Override
-			public UITree getTreeForPopup() {
-				return treeProvider.get();
-			}
-		}, new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-        }, new SFFCDatasinkDao() {
-           @Override
-           public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
-              return datasinkDaoProvider;
-           }
+   private String isExportAsFtpKey;
+   private String folderKey;
+   private String nameKey;
+   private String ftpKey;
+   private String compressedKey;
 
-           @Override
-           public BaseIcon getIcon() {
-              return FtpUiModule.FTP_ICON;
-           }
-        });
-		
-		folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		});
-		
-		xform.endRow();
-		xform.setFieldWidth(530);
-		
-		nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
-			@Override
-			public boolean allowBlank() {
-				return false;
-			}
-		});
-		
-	    xform.setLabelAlign(LabelAlign.LEFT);
-	    compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
-	       @Override
-	       public String getBoxLabel() {
-	          return SchedulerMessages.INSTANCE.reportCompress();
-	       }
-	    });
-		
-		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
-		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
-		xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(ftpKey));
-	    xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
-		
-	}
+   private final Provider<UITree> treeProvider;
+   private final Provider<FtpDao> datasinkDaoProvider;
+   private final DatasinkTreeManagerDao datasinkTreeManager;
 
-	@Override
-	public boolean isValid(SimpleForm simpleForm) {
-		simpleForm.clearInvalid();
-		return simpleForm.isValid();
-	}
+   @Inject
+   public FtpExportSnippetProvider(@DatasinkTreeFtp Provider<UITree> treeProvider,
+         DatasinkTreeManagerDao datasinkTreeManager, Provider<FtpDao> datasinkDaoProvider) {
+      this.treeProvider = treeProvider;
+      this.datasinkTreeManager = datasinkTreeManager;
+      this.datasinkDaoProvider = datasinkDaoProvider;
+   }
 
-	@Override
-	public void configureConfig(ReportScheduleDefinition configDto, SimpleForm form) {
-		if(! isActive(form))
-			return;
+   @Override
+   public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
+      return true;
+   }
 
-		ScheduleAsFtpFileInformation info = new ScheduleAsFtpFileInformation();
-		info.setName((String) form.getValue(nameKey));
-		info.setFolder((String) form.getValue(folderKey));
-		info.setCompressed((Boolean) form.getValue(compressedKey));
-        info.setFtpDatasinkDto((FtpDatasinkDto) form.getValue(ftpKey));
-	    
-		configDto.addAdditionalInfo(info);
-	}
+   @Override
+   public void configureSimpleForm(final SimpleForm xform, ReportDto report,
+         Collection<ReportViewConfiguration> configs) {
 
-	@Override
-	public boolean isActive(SimpleForm simpleForm) {
-		return (Boolean) simpleForm.getValue(isExportAsFtpKey);
-	}
+      xform.setLabelAlign(LabelAlign.LEFT);
+      isExportAsFtpKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return FtpUiModule.FTP_NAME;
+         }
+      });
+      xform.setLabelAlign(LabelAlign.TOP);
 
-	@Override
-	public void loadFields(final SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
-		form.loadFields();
-		
-		final SingleTreeSelectionField ftpField = extractSingleTreeSelectionField(form.getField(ftpKey));
-		
-		if (null != definition) {
-			form.setValue(nameKey, "${now} - " + definition.getTitle());
-			ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
-			if(null != info){
-				form.setValue(isExportAsFtpKey, true);
-				form.setValue(nameKey, info.getName());
-				form.setValue(folderKey, info.getFolder());
-				form.setValue(compressedKey, info.isCompressed());
-				ftpField.setValue(info.getFtpDatasinkDto());
-			} 
-		}
-		
-		ftpField.addValueChangeHandler(event -> {
-			if (null == event.getValue()) 
-				return;
-			
-			datasinkTreeManager.loadFullViewNode((FtpDatasinkDto)event.getValue(), new RsAsyncCallback<FtpDatasinkDto>() {
-				@Override
-				public void onSuccess(FtpDatasinkDto result) {
-					form.setValue(folderKey, result.getFolder());
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					super.onFailure(caught);
-				}
-			});
-			
-		});
-	}
+      xform.setFieldWidth(260);
+      xform.beginFloatRow();
 
-	@Override
-	public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
-			ReportDto report) {
-		if (! (page instanceof JobMetadataConfigurationForm))
-			return;
-		
-		JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-		
-		String jobTitle = metadataForm.getTitleValue();
-		form.setValue(nameKey, "${now} - " + jobTitle);
-		if (null != definition) {
-			ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
-			if(null != info)
-				form.setValue(nameKey, info.getName());
-		}
-	}
+      ftpKey = xform.addField(DatasinkSelectionField.class, FtpUiModule.FTP_NAME, new SFFCGenericTreeNode() {
+         @Override
+         public UITree getTreeForPopup() {
+            return treeProvider.get();
+         }
+      }, new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      }, new SFFCDatasinkDao() {
+         @Override
+         public Provider<? extends HasDefaultDatasink> getDatasinkDaoProvider() {
+            return datasinkDaoProvider;
+         }
+
+         @Override
+         public BaseIcon getIcon() {
+            return FtpUiModule.FTP_ICON;
+         }
+      });
+
+      folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
+
+      xform.endRow();
+      xform.setFieldWidth(530);
+
+      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
+         @Override
+         public boolean allowBlank() {
+            return false;
+         }
+      });
+
+      xform.setLabelAlign(LabelAlign.LEFT);
+      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
+         @Override
+         public String getBoxLabel() {
+            return SchedulerMessages.INSTANCE.reportCompress();
+         }
+      });
+
+      xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
+      xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
+      xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(ftpKey));
+      xform.addCondition(isExportAsFtpKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
+
+   }
+
+   @Override
+   public boolean isValid(SimpleForm simpleForm) {
+      simpleForm.clearInvalid();
+      return simpleForm.isValid();
+   }
+
+   @Override
+   public void configureConfig(ReportScheduleDefinition configDto, SimpleForm form) {
+      if (!isActive(form))
+         return;
+
+      ScheduleAsFtpFileInformation info = new ScheduleAsFtpFileInformation();
+      info.setName((String) form.getValue(nameKey));
+      info.setFolder((String) form.getValue(folderKey));
+      info.setCompressed((Boolean) form.getValue(compressedKey));
+      info.setFtpDatasinkDto((FtpDatasinkDto) form.getValue(ftpKey));
+
+      configDto.addAdditionalInfo(info);
+   }
+
+   @Override
+   public boolean isActive(SimpleForm simpleForm) {
+      return (Boolean) simpleForm.getValue(isExportAsFtpKey);
+   }
+
+   @Override
+   public void loadFields(final SimpleForm form, ReportScheduleDefinition definition, ReportDto report) {
+      form.loadFields();
+
+      final SingleTreeSelectionField ftpField = extractSingleTreeSelectionField(form.getField(ftpKey));
+
+      if (null != definition) {
+         form.setValue(nameKey, "${now} - " + definition.getTitle());
+         ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
+         if (null != info) {
+            form.setValue(isExportAsFtpKey, true);
+            form.setValue(nameKey, info.getName());
+            form.setValue(folderKey, info.getFolder());
+            form.setValue(compressedKey, info.isCompressed());
+            ftpField.setValue(info.getFtpDatasinkDto());
+         }
+      }
+
+      ftpField.addValueChangeHandler(event -> {
+         if (null == event.getValue())
+            return;
+
+         datasinkTreeManager.loadFullViewNode((FtpDatasinkDto) event.getValue(), new RsAsyncCallback<FtpDatasinkDto>() {
+            @Override
+            public void onSuccess(FtpDatasinkDto result) {
+               form.setValue(folderKey, result.getFolder());
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+               super.onFailure(caught);
+            }
+         });
+
+      });
+   }
+
+   @Override
+   public void onWizardPageChange(int pageNr, Widget page, SimpleForm form, ReportScheduleDefinition definition,
+         ReportDto report) {
+      if (!(page instanceof JobMetadataConfigurationForm))
+         return;
+
+      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
+
+      String jobTitle = metadataForm.getTitleValue();
+      form.setValue(nameKey, "${now} - " + jobTitle);
+      if (null != definition) {
+         ScheduleAsFtpFileInformation info = definition.getAdditionalInfo(ScheduleAsFtpFileInformation.class);
+         if (null != info)
+            form.setValue(nameKey, info.getName());
+      }
+   }
 
 }

@@ -10,33 +10,33 @@ import net.datenwerke.rs.search.client.search.locale.SearchMessages;
 
 public class SearchAreaMainWidget extends DwContentPanel {
 
-	private SearchAreaModule module;
+   private SearchAreaModule module;
 
-	public SearchAreaMainWidget(){
-		setHeading(SearchMessages.INSTANCE.searchAreaModule());
-		
-		ToolButton toolButton = new ToolButton(ToolButton.CLOSE);
-		addTool(toolButton);
-		toolButton.addSelectHandler(new SelectHandler() {
-			
-			@Override
-			public void onSelect(SelectEvent event) {
-				close();
-			}
-		});
-	}
-	
-	public void addSearchComponent(String search, Component displayComponent) {
-		setWidget(displayComponent);
-		forceLayoutCommand.execute();
-	}
+   public SearchAreaMainWidget() {
+      setHeading(SearchMessages.INSTANCE.searchAreaModule());
 
-	public void close() {
-		hide();
-		module.removeModule();
-	}
+      ToolButton toolButton = new ToolButton(ToolButton.CLOSE);
+      addTool(toolButton);
+      toolButton.addSelectHandler(new SelectHandler() {
 
-	public void setModule(SearchAreaModule reportExecuteAreaModule) {
-		this.module = reportExecuteAreaModule;
-	}
+         @Override
+         public void onSelect(SelectEvent event) {
+            close();
+         }
+      });
+   }
+
+   public void addSearchComponent(String search, Component displayComponent) {
+      setWidget(displayComponent);
+      forceLayoutCommand.execute();
+   }
+
+   public void close() {
+      hide();
+      module.removeModule();
+   }
+
+   public void setModule(SearchAreaModule reportExecuteAreaModule) {
+      this.module = reportExecuteAreaModule;
+   }
 }

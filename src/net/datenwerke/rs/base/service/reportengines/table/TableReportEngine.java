@@ -57,13 +57,10 @@ public class TableReportEngine extends ReportEngine<TableDataSource, TableOutput
    final private TableReportColumnMetadataService tableReportMetadataService;
 
    @Inject
-   public TableReportEngine(
-         EntityClonerService entityClonerService, 
-         TableOutputGeneratorManager outputGeneratorManager,
+   public TableReportEngine(EntityClonerService entityClonerService, TableOutputGeneratorManager outputGeneratorManager,
          TableMetadataExporterManager metadataExporterManager,
          TableReportColumnMetadataService tableReportMetadataService,
-         DatasourceTransformationService datasourceTransformationService
-         ) {
+         DatasourceTransformationService datasourceTransformationService) {
       super(outputGeneratorManager, metadataExporterManager, datasourceTransformationService);
 
       /* store objects */

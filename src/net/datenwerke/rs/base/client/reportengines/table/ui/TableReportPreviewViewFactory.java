@@ -22,9 +22,7 @@ public class TableReportPreviewViewFactory extends PreviewViewFactory {
    private final Provider<TableReportPreviewView> jroProvider;
 
    @Inject
-   public TableReportPreviewViewFactory(
-         Provider<TableReportPreviewView> jroProvider
-         ) {
+   public TableReportPreviewViewFactory(Provider<TableReportPreviewView> jroProvider) {
       this.jroProvider = jroProvider;
    }
 

@@ -16,28 +16,29 @@ import net.datenwerke.security.service.eventlogger.aop.RemoveEntityEventIntercep
 
 public class DwEventLoggerModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		PersistEntityEventInterceptor persistInterceptor = new PersistEntityEventInterceptor();
-		requestInjection(persistInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(FirePersistEntityEvents.class), persistInterceptor);
+   @Override
+   protected void configure() {
+      PersistEntityEventInterceptor persistInterceptor = new PersistEntityEventInterceptor();
+      requestInjection(persistInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(FirePersistEntityEvents.class), persistInterceptor);
 
-		MergeEntityEventInterceptor mergeInterceptor = new MergeEntityEventInterceptor();
-		requestInjection(mergeInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(FireMergeEntityEvents.class), mergeInterceptor);
+      MergeEntityEventInterceptor mergeInterceptor = new MergeEntityEventInterceptor();
+      requestInjection(mergeInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(FireMergeEntityEvents.class), mergeInterceptor);
 
-		RemoveEntityEventInterceptor removeInterceptor = new RemoveEntityEventInterceptor();
-		requestInjection(removeInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(FireRemoveEntityEvents.class), removeInterceptor);
+      RemoveEntityEventInterceptor removeInterceptor = new RemoveEntityEventInterceptor();
+      requestInjection(removeInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(FireRemoveEntityEvents.class), removeInterceptor);
 
-		ForceRemoveEntityEventInterceptor forceRemoveInterceptor = new ForceRemoveEntityEventInterceptor();
-		requestInjection(forceRemoveInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(FireForceRemoveEntityEvents.class), forceRemoveInterceptor);
-		
-		FireEventInterceptor fireEventInterceptor = new FireEventInterceptor();
-		requestInjection(fireEventInterceptor);
-		bindInterceptor(Matchers.any(),Matchers.annotatedWith(FireEvent.class), fireEventInterceptor);
+      ForceRemoveEntityEventInterceptor forceRemoveInterceptor = new ForceRemoveEntityEventInterceptor();
+      requestInjection(forceRemoveInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(FireForceRemoveEntityEvents.class),
+            forceRemoveInterceptor);
 
-	}
+      FireEventInterceptor fireEventInterceptor = new FireEventInterceptor();
+      requestInjection(fireEventInterceptor);
+      bindInterceptor(Matchers.any(), Matchers.annotatedWith(FireEvent.class), fireEventInterceptor);
+
+   }
 
 }

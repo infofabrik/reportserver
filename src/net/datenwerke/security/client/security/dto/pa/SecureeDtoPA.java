@@ -13,6 +13,4 @@ import net.datenwerke.security.client.security.dto.SecureeDto;
 @CorrespondingPoso(net.datenwerke.security.service.security.Securee.class)
 public interface SecureeDtoPA extends PropertyAccess<SecureeDto> {
 
-
-
 }

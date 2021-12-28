@@ -9,12 +9,10 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ParameterSetReplacemen
 
 public class BaseParameterReplacementStartup {
 
-	@Inject
-	public BaseParameterReplacementStartup(
-		HookHandlerService hookHandler,
-		Provider<ParameterSetReplacementProviderHooker> replacementProvider
-		){
-		
-		hookHandler.attachHooker(ParameterSetReplacementProviderHook.class, replacementProvider);
-	}
+   @Inject
+   public BaseParameterReplacementStartup(HookHandlerService hookHandler,
+         Provider<ParameterSetReplacementProviderHooker> replacementProvider) {
+
+      hookHandler.attachHooker(ParameterSetReplacementProviderHook.class, replacementProvider);
+   }
 }

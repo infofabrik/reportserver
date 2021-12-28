@@ -12,13 +12,13 @@ import net.datenwerke.rs.uservariables.client.uservariables.dto.UserVariableInst
 
 public interface UserVariablesUIService {
 
-	public Collection<UserVariableConfigurator> getAllVariableConfigurators();
+   public Collection<UserVariableConfigurator> getAllVariableConfigurators();
 
-	public UserVariableConfigurator getConfigurator(UserVariableInstanceDto instance);
-	
-	public UserVariableConfigurator getConfigurator(UserVariableDefinitionDto definition);
+   public UserVariableConfigurator getConfigurator(UserVariableInstanceDto instance);
 
-	public ListLoader<ListLoadConfig, ListLoadResult<UserVariableDefinitionDto>> getDefinedVariableDefinitionsLoader();
-	
-	public LoadableListStore<ListLoadConfig, UserVariableDefinitionDto, ListLoadResult<UserVariableDefinitionDto>> getDefinedVariableDefinitionsStore();
+   public UserVariableConfigurator getConfigurator(UserVariableDefinitionDto definition);
+
+   public ListLoader<ListLoadConfig, ListLoadResult<UserVariableDefinitionDto>> getDefinedVariableDefinitionsLoader();
+
+   public LoadableListStore<ListLoadConfig, UserVariableDefinitionDto, ListLoadResult<UserVariableDefinitionDto>> getDefinedVariableDefinitionsStore();
 }

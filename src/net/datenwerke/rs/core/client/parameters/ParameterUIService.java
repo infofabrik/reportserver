@@ -10,24 +10,27 @@ import net.datenwerke.rs.core.client.parameters.dto.ParameterInstanceDto;
 
 public interface ParameterUIService {
 
-	public List<ParameterConfigurator> getAvailableParameterConfigurators();
-	
-	public ParameterConfigurator getConfigurator(ParameterDefinitionDto pd);
+   public List<ParameterConfigurator> getAvailableParameterConfigurators();
 
-	public String getMandatoryPrefix();
+   public ParameterConfigurator getConfigurator(ParameterDefinitionDto pd);
 
-	public String getMandatorySuffix();
+   public String getMandatoryPrefix();
 
-	public String getOptionalPrefix();
+   public String getMandatorySuffix();
 
-	public String getOptionalSuffix();
+   public String getOptionalPrefix();
 
-	public ParameterInstanceDto getParameterInstanceFor(Set<ParameterInstanceDto> instances, ParameterDefinitionDto definition);
+   public String getOptionalSuffix();
 
-	public Collection<ParameterInstanceDto> getRelevantInstancesFor(List<ParameterDefinitionDto> defs, Set<ParameterInstanceDto> instances, ParameterDefinitionDto definition);
+   public ParameterInstanceDto getParameterInstanceFor(Set<ParameterInstanceDto> instances,
+         ParameterDefinitionDto definition);
 
-	public List<ParameterDefinitionDto> getAllParameterDependents(List<ParameterDefinitionDto> defs, ParameterDefinitionDto paramDefinition);
+   public Collection<ParameterInstanceDto> getRelevantInstancesFor(List<ParameterDefinitionDto> defs,
+         Set<ParameterInstanceDto> instances, ParameterDefinitionDto definition);
 
-	public ParameterDefinitionDto getParameterDefinitionByKey(List<ParameterDefinitionDto> defs, String name);
+   public List<ParameterDefinitionDto> getAllParameterDependents(List<ParameterDefinitionDto> defs,
+         ParameterDefinitionDto paramDefinition);
+
+   public ParameterDefinitionDto getParameterDefinitionByKey(List<ParameterDefinitionDto> defs, String name);
 
 }

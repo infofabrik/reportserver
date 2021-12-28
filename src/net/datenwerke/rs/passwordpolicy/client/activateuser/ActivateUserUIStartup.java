@@ -7,16 +7,14 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.passwordpolicy.client.activateuser.hooks.ActivateUserToolbarConfigurator;
 
 public class ActivateUserUIStartup {
-	
-	@Inject
-	public ActivateUserUIStartup(
-		HookHandlerService hookHandler, 
-			
-		ActivateUserToolbarConfigurator activateUserToolbarConfigurator
-		) {
-		
-		hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, activateUserToolbarConfigurator);
-		
-	}
+
+   @Inject
+   public ActivateUserUIStartup(HookHandlerService hookHandler,
+
+         ActivateUserToolbarConfigurator activateUserToolbarConfigurator) {
+
+      hookHandler.attachHooker(MainPanelViewToolbarConfiguratorHook.class, activateUserToolbarConfigurator);
+
+   }
 
 }

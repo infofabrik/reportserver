@@ -49,9 +49,7 @@ public class ScpDatasinkForm extends SimpleFormView {
    private Widget authenticationTypeForm;
 
    @Inject
-   public ScpDatasinkForm(
-         Provider<FileUploadUiService> fileUploadServiceProvider, 
-         HookHandlerService hookHandler) {
+   public ScpDatasinkForm(Provider<FileUploadUiService> fileUploadServiceProvider, HookHandlerService hookHandler) {
       this.fileUploadServiceProvider = fileUploadServiceProvider;
 
       this.configs = hookHandler.getHookers(DatasinkAuthenticatorConfiguratorHook.class);
@@ -90,9 +88,9 @@ public class ScpDatasinkForm extends SimpleFormView {
 
    private void addAuthenticationType(SimpleForm form) {
       form.setFieldWidth(0.3);
-      
-      authTypeKey = form.addField(List.class, ScpDatasinkDtoPA.INSTANCE.authenticationType(), DatasinksMessages.INSTANCE.authenticationType(),
-            new SFFCStaticDropdownList<String>() {
+
+      authTypeKey = form.addField(List.class, ScpDatasinkDtoPA.INSTANCE.authenticationType(),
+            DatasinksMessages.INSTANCE.authenticationType(), new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
 
@@ -102,11 +100,8 @@ public class ScpDatasinkForm extends SimpleFormView {
                      map = new HashMap<>();
 
                      final ScpDatasinkDto datasink = (ScpDatasinkDto) getSelectedNode();
-                     configs
-                        .stream()
-                        .filter(config -> config.consumes(datasink))
-                        .forEach(config -> map.put(config.getAuthenticatorLabel(),
-                              config.getAuthenticatorName()));
+                     configs.stream().filter(config -> config.consumes(datasink))
+                           .forEach(config -> map.put(config.getAuthenticatorLabel(), config.getAuthenticatorName()));
                   }
                   return map;
                }
@@ -126,30 +121,26 @@ public class ScpDatasinkForm extends SimpleFormView {
       form.addCondition(authTypeKey, new FieldChanged(), new SimpleFormAction() {
          public void onSuccess(SimpleForm form) {
             final ScpDatasinkDto datasink = (ScpDatasinkDto) getSelectedNode();
-            if (null==datasink) //new datasink
+            if (null == datasink) // new datasink
                return;
-            
+
             final Optional<String> authType = Optional.ofNullable((String) form.getValue(authTypeKey));
-            if (authType.isPresent()) 
+            if (authType.isPresent())
                datasink.setAuthenticationType(authType.get());
             else
                datasink.setAuthenticationType(null);
-            
 
             if (authType.isPresent()) {
                if (null != authenticationTypeForm)
                   authenticationTypeForm.removeFromParent();
 
-               configs
-                  .stream()
-                  .filter(config -> config.consumes(datasink))
-                  .filter(config -> authType.isPresent() && authType.get().equals(config.getAuthenticatorName()))
-                  .findAny()
-                  .ifPresent(config -> {
-                     authenticationTypeForm = config.configureForm(ScpDatasinkForm.this, datasink);
-                     if (null != authenticationTypeForm) 
-                        specificsWrapper.add(authenticationTypeForm, new MarginData(10));
-                  });
+               configs.stream().filter(config -> config.consumes(datasink))
+                     .filter(config -> authType.isPresent() && authType.get().equals(config.getAuthenticatorName()))
+                     .findAny().ifPresent(config -> {
+                        authenticationTypeForm = config.configureForm(ScpDatasinkForm.this, datasink);
+                        if (null != authenticationTypeForm)
+                           specificsWrapper.add(authenticationTypeForm, new MarginData(10));
+                     });
             }
          }
 
@@ -168,15 +159,12 @@ public class ScpDatasinkForm extends SimpleFormView {
       final Optional<String> authType = Optional.ofNullable((String) form.getValue(authTypeKey));
       final ScpDatasinkDto datasink = (ScpDatasinkDto) getSelectedNode();
       if (authType.isPresent()) {
-         configs
-            .stream()
-            .filter(config -> config.consumes(datasink) && config.isUploadForm())
-            .filter(config -> authType.isPresent() && authType.get().equals(config.getAuthenticatorName()))
-            .findAny()
-            .ifPresent(config -> {
-               if (null != authenticationTypeForm && authenticationTypeForm instanceof SimpleForm)
-                  ((SimpleForm) authenticationTypeForm).submit();
-            });
+         configs.stream().filter(config -> config.consumes(datasink) && config.isUploadForm())
+               .filter(config -> authType.isPresent() && authType.get().equals(config.getAuthenticatorName())).findAny()
+               .ifPresent(config -> {
+                  if (null != authenticationTypeForm && authenticationTypeForm instanceof SimpleForm)
+                     ((SimpleForm) authenticationTypeForm).submit();
+               });
       }
    }
 

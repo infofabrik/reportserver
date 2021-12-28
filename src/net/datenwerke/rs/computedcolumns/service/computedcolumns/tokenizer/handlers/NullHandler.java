@@ -7,13 +7,14 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class NullHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
-		
-		strToken = strToken.toLowerCase().trim();
-		
-		return "null".equals(strToken) ? new NullExpressionToken(greedy) : null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      boolean greedy = null == lookaheadChar || "".equals(lookaheadChar.trim());
+
+      strToken = strToken.toLowerCase().trim();
+
+      return "null".equals(strToken) ? new NullExpressionToken(greedy) : null;
+   }
 
 }

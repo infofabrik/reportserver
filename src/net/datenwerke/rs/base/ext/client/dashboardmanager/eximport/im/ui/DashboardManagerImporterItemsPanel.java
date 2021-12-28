@@ -15,44 +15,42 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;
 
-
 public class DashboardManagerImporterItemsPanel extends ImporterItemsPanel<DashboardManagerImportConfigDto> {
 
-	private final DashboardManagerImportDao dashboardImportDao;
-	
-	@Inject
-	public DashboardManagerImporterItemsPanel(DashboardManagerImportDao dsImportDao) {
-		super();
-		
-		/* store objects */
-		this.dashboardImportDao = dsImportDao;
-		
-		/* load data */
-		loadData();
-	}
+   private final DashboardManagerImportDao dashboardImportDao;
 
+   @Inject
+   public DashboardManagerImporterItemsPanel(DashboardManagerImportDao dsImportDao) {
+      super();
 
-	private void loadData() {
-		dashboardImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>(){
-			@Override
-			public void onSuccess(List<ImportTreeModel> roots) {
-				buildTree(roots);
-			}
-		});
-	}
-	
-	protected void configureTree() {
-		super.configureTree();
-		
-		tree.setIconProvider(new IconProvider<ImportTreeModel>() {
-			@Override
-			public ImageResource getIcon(ImportTreeModel model) {
-				if(DadgetNodeDto.class.getName().equals(model.getType()))
-					return BaseIcon.MAP_O.toImageResource();
-				if(DashboardNodeDto.class.getName().equals(model.getType()))
-					return BaseIcon.ITEMS_DETAIL.toImageResource();
-				return BaseIcon.FOLDER_O.toImageResource();
-			}
-		});
-	}
+      /* store objects */
+      this.dashboardImportDao = dsImportDao;
+
+      /* load data */
+      loadData();
+   }
+
+   private void loadData() {
+      dashboardImportDao.loadTree(new RsAsyncCallback<List<ImportTreeModel>>() {
+         @Override
+         public void onSuccess(List<ImportTreeModel> roots) {
+            buildTree(roots);
+         }
+      });
+   }
+
+   protected void configureTree() {
+      super.configureTree();
+
+      tree.setIconProvider(new IconProvider<ImportTreeModel>() {
+         @Override
+         public ImageResource getIcon(ImportTreeModel model) {
+            if (DadgetNodeDto.class.getName().equals(model.getType()))
+               return BaseIcon.MAP_O.toImageResource();
+            if (DashboardNodeDto.class.getName().equals(model.getType()))
+               return BaseIcon.ITEMS_DETAIL.toImageResource();
+            return BaseIcon.FOLDER_O.toImageResource();
+         }
+      });
+   }
 }

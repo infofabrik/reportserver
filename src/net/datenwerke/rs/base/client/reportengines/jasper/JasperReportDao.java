@@ -14,30 +14,27 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class JasperReportDao extends Dao {
 
+   private final JasperReportRpcServiceAsync rpcService;
 
-	private final JasperReportRpcServiceAsync rpcService;
-	
-	@Inject
-	public JasperReportDao(JasperReportRpcServiceAsync treeManager){
-		this.rpcService = treeManager;
-	}
-	
-	public void updateJRXMLFile(JasperReportJRXMLFileDto file,
-			AsyncCallback<AbstractNodeDto> callback){
-		rpcService.updateJRXMLFile(file, transformDtoCallback(callback));
-	}
+   @Inject
+   public JasperReportDao(JasperReportRpcServiceAsync treeManager) {
+      this.rpcService = treeManager;
+   }
 
-	public void removeJRXMLFile(JasperReportJRXMLFileDto file,
-			AsyncCallback<AbstractNodeDto> callback){
-		rpcService.removeJRXMLFile(file, transformDtoCallback(callback));
-	}
+   public void updateJRXMLFile(JasperReportJRXMLFileDto file, AsyncCallback<AbstractNodeDto> callback) {
+      rpcService.updateJRXMLFile(file, transformDtoCallback(callback));
+   }
 
-	public void removeAllSubReports(JasperReportDto report,
-			AsyncCallback<AbstractNodeDto> callback) {
-		rpcService.removeAllSubReports(report, transformDtoCallback(callback));
-	}
-	
-	public void uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files, AsyncCallback<JasperReportDto> callback){
-		rpcService.uploadJRXMLFiles(report, files, transformDtoCallback(callback));
-	}
+   public void removeJRXMLFile(JasperReportJRXMLFileDto file, AsyncCallback<AbstractNodeDto> callback) {
+      rpcService.removeJRXMLFile(file, transformDtoCallback(callback));
+   }
+
+   public void removeAllSubReports(JasperReportDto report, AsyncCallback<AbstractNodeDto> callback) {
+      rpcService.removeAllSubReports(report, transformDtoCallback(callback));
+   }
+
+   public void uploadJRXMLFiles(JasperReportDto report, List<FileToUpload> files,
+         AsyncCallback<JasperReportDto> callback) {
+      rpcService.uploadJRXMLFiles(report, files, transformDtoCallback(callback));
+   }
 }

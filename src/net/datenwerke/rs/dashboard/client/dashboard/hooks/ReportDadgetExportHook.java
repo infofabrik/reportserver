@@ -11,15 +11,15 @@ import net.datenwerke.rs.dashboard.client.dashboard.ui.DadgetPanel;
 
 public interface ReportDadgetExportHook extends Hook {
 
-	boolean consumes(ReportDadgetDto dadget);
+   boolean consumes(ReportDadgetDto dadget);
 
-	void configureDisplayConfigDialog(ReportDadgetDto dadget, SimpleForm form);
+   void configureDisplayConfigDialog(ReportDadgetDto dadget, SimpleForm form);
 
-	void storeConfig(ReportDadgetDto dadget, SimpleForm form);
+   void storeConfig(ReportDadgetDto dadget, SimpleForm form);
 
-	void displayReport(ReportDadgetDto rDadget, ReportDto report,
-			DadgetPanel panel, Set<ParameterInstanceDto> parameterInstances);
+   void displayReport(ReportDadgetDto rDadget, ReportDto report, DadgetPanel panel,
+         Set<ParameterInstanceDto> parameterInstances);
 
-	String getPropertyName();
+   String getPropertyName();
 
 }

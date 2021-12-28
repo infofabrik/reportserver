@@ -108,7 +108,7 @@ public class BoxExportSnippetProvider implements ScheduleExportSnippetProviderHo
             return false;
          }
       });
-      
+
       xform.setLabelAlign(LabelAlign.LEFT);
       compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
          @Override

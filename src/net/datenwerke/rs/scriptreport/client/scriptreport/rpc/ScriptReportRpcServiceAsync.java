@@ -9,6 +9,7 @@ import net.datenwerke.rs.scriptreport.client.scriptreport.parameters.dto.ScriptP
 
 public interface ScriptReportRpcServiceAsync {
 
-	void getScriptParameterContents(ScriptParameterDefinitionDto definition, Collection<ParameterInstanceDto> relevantInstances, AsyncCallback<String> callback);
+   void getScriptParameterContents(ScriptParameterDefinitionDto definition,
+         Collection<ParameterInstanceDto> relevantInstances, AsyncCallback<String> callback);
 
 }

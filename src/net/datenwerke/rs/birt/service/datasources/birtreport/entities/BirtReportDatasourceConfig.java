@@ -14,92 +14,89 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 
 @Entity
-@Table(name="BIRT_REPORT_DATASRC_CFG")
+@Table(name = "BIRT_REPORT_DATASRC_CFG")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.birt.client.datasources.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.birt.client.datasources.dto")
 public class BirtReportDatasourceConfig extends DatasourceDefinitionConfig {
-	
-	private static final long serialVersionUID = 206876596722300331L;
 
+   private static final long serialVersionUID = 206876596722300331L;
 
-	@ExposeToClient
-	@ManyToOne
-	private BirtReport report;
-	
-	/**
-	 * The name of the dataset / parameter the data is pulled from
-	 */
-	@ExposeToClient
-	private String target;
-	
-	@ExposeToClient
-	private BirtReportDatasourceTargetType targetType = BirtReportDatasourceTargetType.DATASET;
-	
-	@ExposeToClient(disableHtmlEncode=true)
-	@Column(length = 4096)
-	private String queryWrapper;
+   @ExposeToClient
+   @ManyToOne
+   private BirtReport report;
 
-	public String getQueryWrapper() {
-		return queryWrapper;
-	}
+   /**
+    * The name of the dataset / parameter the data is pulled from
+    */
+   @ExposeToClient
+   private String target;
 
-	public void setQueryWrapper(String queryWrapper) {
-		this.queryWrapper = queryWrapper;
-	}
+   @ExposeToClient
+   private BirtReportDatasourceTargetType targetType = BirtReportDatasourceTargetType.DATASET;
 
-	public BirtReport getReport() {
-		return report;
-	}
+   @ExposeToClient(disableHtmlEncode = true)
+   @Column(length = 4096)
+   private String queryWrapper;
 
-	public void setReport(BirtReport report) {
-		this.report = report;
-	}
+   public String getQueryWrapper() {
+      return queryWrapper;
+   }
 
-	public String getTarget() {
-		return target;
-	}
+   public void setQueryWrapper(String queryWrapper) {
+      this.queryWrapper = queryWrapper;
+   }
 
-	public void setTarget(String target) {
-		this.target = target;
-	}
+   public BirtReport getReport() {
+      return report;
+   }
 
-	public BirtReportDatasourceTargetType getTargetType() {
-		return targetType;
-	}
+   public void setReport(BirtReport report) {
+      this.report = report;
+   }
 
-	public void setTargetType(BirtReportDatasourceTargetType targetType) {
-		this.targetType = targetType;
-	}
+   public String getTarget() {
+      return target;
+   }
 
-	@Override
-	public boolean contentEquals(DatasourceDefinition definition, DatasourceDefinitionConfig config) {
-		if(! (config instanceof BirtReportDatasourceConfig))
-			return false;
-		if(! (definition instanceof BirtReportDatasourceDefinition))
-			return false;
-		
-		BirtReportDatasourceConfig otherConfig = (BirtReportDatasourceConfig) config;
-		
-		if(null != target && ! target.equals(otherConfig.target))
-			return false;
-		if(null == target && null != otherConfig.target)
-			return false;
-		
-		if(null != targetType && ! targetType.equals(otherConfig.targetType))
-			return false;
-		if(null == targetType && null != otherConfig.targetType)
-			return false;
-		
-		if(null != queryWrapper && ! queryWrapper.equals(otherConfig.queryWrapper))
-			return false;
-		if(null == queryWrapper && null != otherConfig.queryWrapper)
-			return false;
-		
-		if(null != report && ! report.idsMatch(otherConfig.report))
-			return false;
-		
-		return super.contentEquals(definition, config);
-	}
+   public void setTarget(String target) {
+      this.target = target;
+   }
+
+   public BirtReportDatasourceTargetType getTargetType() {
+      return targetType;
+   }
+
+   public void setTargetType(BirtReportDatasourceTargetType targetType) {
+      this.targetType = targetType;
+   }
+
+   @Override
+   public boolean contentEquals(DatasourceDefinition definition, DatasourceDefinitionConfig config) {
+      if (!(config instanceof BirtReportDatasourceConfig))
+         return false;
+      if (!(definition instanceof BirtReportDatasourceDefinition))
+         return false;
+
+      BirtReportDatasourceConfig otherConfig = (BirtReportDatasourceConfig) config;
+
+      if (null != target && !target.equals(otherConfig.target))
+         return false;
+      if (null == target && null != otherConfig.target)
+         return false;
+
+      if (null != targetType && !targetType.equals(otherConfig.targetType))
+         return false;
+      if (null == targetType && null != otherConfig.targetType)
+         return false;
+
+      if (null != queryWrapper && !queryWrapper.equals(otherConfig.queryWrapper))
+         return false;
+      if (null == queryWrapper && null != otherConfig.queryWrapper)
+         return false;
+
+      if (null != report && !report.idsMatch(otherConfig.report))
+         return false;
+
+      return super.contentEquals(definition, config);
+   }
 }

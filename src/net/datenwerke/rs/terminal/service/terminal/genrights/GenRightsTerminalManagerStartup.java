@@ -6,12 +6,10 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class GenRightsTerminalManagerStartup {
 
-	@Inject
-	public GenRightsTerminalManagerStartup(
-		SecurityService securityService	
-		){
-		
-		/* register security targets */
-		securityService.registerSecurityTarget(TerminalSecurityTarget.class);
-	}
+   @Inject
+   public GenRightsTerminalManagerStartup(SecurityService securityService) {
+
+      /* register security targets */
+      securityService.registerSecurityTarget(TerminalSecurityTarget.class);
+   }
 }

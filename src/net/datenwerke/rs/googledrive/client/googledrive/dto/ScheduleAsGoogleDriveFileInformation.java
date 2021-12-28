@@ -37,11 +37,11 @@ public class ScheduleAsGoogleDriveFileInformation implements AdditionalScheduleI
    public void setFolder(String folder) {
       this.folder = folder;
    }
-   
+
    public boolean isCompressed() {
       return compressed;
    }
-    
+
    public void setCompressed(boolean compressed) {
       this.compressed = compressed;
    }

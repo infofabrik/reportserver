@@ -23,53 +23,50 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.IntSelectionListEditor
  */
 public class IntSelectionListEditorDtoDec extends IntSelectionListEditorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public IntSelectionListEditorDtoDec() {
+      super();
+   }
 
-	public IntSelectionListEditorDtoDec() {
-		super();
-	}
+   @Override
+   public Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing) {
+      ListStore<String> store = new ListStore<String>(new BasicObjectModelKeyProvider<String>());
+      Map<String, Integer> valueMap = getValueMap();
+      if (null == valueMap) {
+         valueMap = new TreeMap<String, Integer>();
+         for (int i : getValues())
+            valueMap.put("" + i, i);
+      }
 
+      store.addAll(valueMap.keySet());
 
-	@Override
-	public Field addEditor(ColumnConfig columnConfig,
-			GridEditing<GridEditorRecordDto> editing) {
-		ListStore<String> store = new ListStore<String>(new BasicObjectModelKeyProvider<String>());
-		Map<String, Integer> valueMap = getValueMap();
-		if(null == valueMap){
-			valueMap = new TreeMap<String, Integer>();
-			for(int i : getValues())
-				valueMap.put(""+i, i);
-		}
+      ComboBox<String> combo = new ComboBox<String>(store, new StringLabelProvider<String>());
+      combo.setAllowBlank(true);
+      combo.setForceSelection(isForceSelection());
+      combo.setTriggerAction(TriggerAction.ALL);
 
-		store.addAll(valueMap.keySet());
-		
-		ComboBox<String> combo = new ComboBox<String>(store, new StringLabelProvider<String>());
-	    combo.setAllowBlank(true);
-	    combo.setForceSelection(isForceSelection());
-	    combo.setTriggerAction(TriggerAction.ALL);
+      final Map<String, Integer> map = valueMap;
+      editing.addEditor(columnConfig, new Converter<Integer, String>() {
 
-	    final Map<String, Integer> map = valueMap; 
-    	editing.addEditor(columnConfig, new Converter<Integer,String>() {
+         @Override
+         public Integer convertFieldValue(String object) {
+            if (null == object)
+               return null;
+            return map.get(object);
+         }
 
-			@Override
-			public Integer convertFieldValue(String object) {
-				if(null == object)
-					return null;
-				return map.get(object);
-			}
-			
-			@Override
-			public String convertModelValue(Integer object) {
-				if(null == object)
-					return null;
-				for(Entry<String, Integer> e: map.entrySet())
-					if(object.equals(e.getValue()))
-						return e.getKey();
-				return null;
-			}
-		}, combo);
-		
-		return combo;
-	}
+         @Override
+         public String convertModelValue(Integer object) {
+            if (null == object)
+               return null;
+            for (Entry<String, Integer> e : map.entrySet())
+               if (object.equals(e.getValue()))
+                  return e.getKey();
+            return null;
+         }
+      }, combo);
+
+      return combo;
+   }
 }

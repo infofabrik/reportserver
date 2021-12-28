@@ -4,12 +4,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 public interface HomepageRpcServiceAsync {
 
-	void getPageTitle(AsyncCallback<String> callback);
+   void getPageTitle(AsyncCallback<String> callback);
 
-	void isStartupComplete(AsyncCallback<Boolean> callback);
+   void isStartupComplete(AsyncCallback<Boolean> callback);
 
-	void getSessionRedirect(AsyncCallback<String> callback);
+   void getSessionRedirect(AsyncCallback<String> callback);
 
-	void assertAllowsRedirect(String redir, AsyncCallback<Void> callback);
+   void assertAllowsRedirect(String redir, AsyncCallback<Void> callback);
 
 }

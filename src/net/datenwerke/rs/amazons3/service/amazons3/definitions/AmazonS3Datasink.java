@@ -24,7 +24,6 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
-
 /**
  * Used to define AmazonS3 datasinks that can be used in ReportServer to send
  * reports to a given drop box account.
@@ -32,17 +31,9 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "AMAZONS3_DATASINK")
 @Audited
-@GenerateDto(
-      dtoPackage = "net.datenwerke.rs.amazons3.client.amazons3.dto", 
-      poso2DtoPostProcessors = AmazonS3Datasink2DtoPostProcessor.class, 
-      additionalFields = {
-            @AdditionalField(name = "hasSecretKey", type = Boolean.class) 
-      }, 
-      icon = "amazon")
-@InstanceDescription(
-      msgLocation = AmazonS3DatasinkMessages.class, 
-      objNameKey = "amazonS3DatasinkTypeName", 
-      icon = "amazon")
+@GenerateDto(dtoPackage = "net.datenwerke.rs.amazons3.client.amazons3.dto", poso2DtoPostProcessors = AmazonS3Datasink2DtoPostProcessor.class, additionalFields = {
+      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "amazon")
+@InstanceDescription(msgLocation = AmazonS3DatasinkMessages.class, objNameKey = "amazonS3DatasinkTypeName", icon = "amazon")
 @Indexed
 public class AmazonS3Datasink extends DatasinkDefinition implements FolderedDatasink {
 
@@ -77,7 +68,7 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
    @Field
    @Column(length = 1024)
    private String regionName;
-   
+
    @ExposeToClient
    @Field
    private String storageClass;

@@ -9,7 +9,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 @RemoteServiceRelativePath("remotemessage")
 public interface RemoteMessageRpcService extends RemoteService {
 
-	public HashMap<String, HashMap<String, String>> getMessages(String language);
+   public HashMap<String, HashMap<String, String>> getMessages(String language);
 
-	public Collection<String> getAvailableLanguages();
+   public Collection<String> getAvailableLanguages();
 }

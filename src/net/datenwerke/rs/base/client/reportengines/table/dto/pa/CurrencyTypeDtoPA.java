@@ -13,6 +13,4 @@ import net.datenwerke.rs.base.client.reportengines.table.dto.CurrencyTypeDto;
 @CorrespondingPoso(net.datenwerke.rs.base.service.reportengines.table.entities.format.enums.CurrencyType.class)
 public interface CurrencyTypeDtoPA extends PropertyAccess<CurrencyTypeDto> {
 
-
-
 }

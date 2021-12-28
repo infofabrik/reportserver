@@ -106,9 +106,7 @@ public class SchedulerConditionPageProvider implements ScheduleConfigWizardPageP
    private DwTextButton addPredefinedConditionBtn;
 
    @Inject
-   public SchedulerConditionPageProvider(
-         ConditionDao conditionDao, 
-         ToolbarService toolbarService) {
+   public SchedulerConditionPageProvider(ConditionDao conditionDao, ToolbarService toolbarService) {
 
       /* store objects */
       this.conditionDao = conditionDao;

@@ -13,59 +13,60 @@ import net.datenwerke.rs.license.service.LicenseServiceImpl;
 
 public class ThemeServiceImpl implements ThemeService {
 
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	public static final String THEME_CONFIG = "ui/theme.cf";
-	
-	@Override
-	public String getTheme() {
-		String theme = loadTheme();
-		return theme;
-		
-	}
+   public static final String THEME_CONFIG = "ui/theme.cf";
 
-	@Override
-	public byte[] getLogo() {
-		try {
-			return IOUtils.toByteArray(getClass().getResourceAsStream("rs-logo.png"));
-		} catch (IOException e) {
-			throw new RuntimeException("Could not load logo", e);
-		}
-	}
-	
-	@Override
-	public Map<String, String> getColorMap() {
-		return new HashMap<String, String>();
-	}
-	
-	@Override
-	public ThemeUiConfig loadUiConfig() {
-		ThemeUiConfig uiConfig = new ThemeUiConfig();
+   @Override
+   public String getTheme() {
+      String theme = loadTheme();
+      return theme;
 
-		String loginHtml = "<span class='rs-login-logo'><i class=\"icon-rs-logo\"></i></span><span class='rs-login-edition'>"+LicenseServiceImpl.COMMUNITY_LICENSE+"</span><span class=\"rs-login-bg\"><i class=\"icon-rs-logo-square\"></i></span>";
-		String loginWidth = "200px";
+   }
 
-		String headerHtml = "<span class=\"rs-header-logo\"><i class=\"icon-rs-Report\"></i><i class=\"icon-rs-Server\"></i></span>";
-		String headerWidth = "185px";
+   @Override
+   public byte[] getLogo() {
+      try {
+         return IOUtils.toByteArray(getClass().getResourceAsStream("rs-logo.png"));
+      } catch (IOException e) {
+         throw new RuntimeException("Could not load logo", e);
+      }
+   }
 
-		uiConfig.setLogoHeaderHtml(headerHtml);
-		uiConfig.setLogoHeaderWidth(headerWidth);
+   @Override
+   public Map<String, String> getColorMap() {
+      return new HashMap<String, String>();
+   }
 
-		uiConfig.setLogoLoginHtml(loginHtml);
-		uiConfig.setLogoLoginWidth(loginWidth);
+   @Override
+   public ThemeUiConfig loadUiConfig() {
+      ThemeUiConfig uiConfig = new ThemeUiConfig();
 
-		return uiConfig;
-	}
+      String loginHtml = "<span class='rs-login-logo'><i class=\"icon-rs-logo\"></i></span><span class='rs-login-edition'>"
+            + LicenseServiceImpl.COMMUNITY_LICENSE
+            + "</span><span class=\"rs-login-bg\"><i class=\"icon-rs-logo-square\"></i></span>";
+      String loginWidth = "200px";
 
-	protected String loadTheme() {
-		try {
-			String theme = IOUtils.toString(getClass().getResourceAsStream("theme.css"));
-			
-			return theme;
-		} catch (IOException e) {
-			throw new RuntimeException("Could not load theme", e);
-		}
-	}
+      String headerHtml = "<span class=\"rs-header-logo\"><i class=\"icon-rs-Report\"></i><i class=\"icon-rs-Server\"></i></span>";
+      String headerWidth = "185px";
 
+      uiConfig.setLogoHeaderHtml(headerHtml);
+      uiConfig.setLogoHeaderWidth(headerWidth);
+
+      uiConfig.setLogoLoginHtml(loginHtml);
+      uiConfig.setLogoLoginWidth(loginWidth);
+
+      return uiConfig;
+   }
+
+   protected String loadTheme() {
+      try {
+         String theme = IOUtils.toString(getClass().getResourceAsStream("theme.css"));
+
+         return theme;
+      } catch (IOException e) {
+         throw new RuntimeException("Could not load theme", e);
+      }
+   }
 
 }

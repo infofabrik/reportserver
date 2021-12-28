@@ -11,40 +11,40 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 
 public class UserManagerExporter extends TreeNodeExporter {
 
-	private static final String EXPORTER_ID = "UserManagerExporter";
-	
-	@Override
-	public String getExporterId() {
-		return EXPORTER_ID;
-	}
-	
-	@Override
-	protected Class<? extends AbstractNode<?>> getTreeType() {
-		return AbstractUserManagerNode.class;
-	}
-	
-	@Override
-	protected Class<?>[] getExportableTypes() {
-		return new Class<?>[]{User.class, OrganisationalUnit.class, Group.class};
-	}
+   private static final String EXPORTER_ID = "UserManagerExporter";
 
-	@Override
-	public String getDisplayNameFor(ExportedItem exportedItem) {
+   @Override
+   public String getExporterId() {
+      return EXPORTER_ID;
+   }
 
-		if(exportedItem.getType().equals(User.class)){
-			String name = "";
+   @Override
+   protected Class<? extends AbstractNode<?>> getTreeType() {
+      return AbstractUserManagerNode.class;
+   }
 
-			ComplexItemProperty firstNameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("firstname");
-			if(null != firstNameProperty)
-				name += firstNameProperty.getElement().getValue() + " ";
+   @Override
+   protected Class<?>[] getExportableTypes() {
+      return new Class<?>[] { User.class, OrganisationalUnit.class, Group.class };
+   }
 
-			ComplexItemProperty lastNameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("lastname");
-			if(null != lastNameProperty)
-				name += lastNameProperty.getElement().getValue();
+   @Override
+   public String getDisplayNameFor(ExportedItem exportedItem) {
 
-			return name;
-		}else
-			return super.getDisplayNameFor(exportedItem);
-	}
+      if (exportedItem.getType().equals(User.class)) {
+         String name = "";
+
+         ComplexItemProperty firstNameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("firstname");
+         if (null != firstNameProperty)
+            name += firstNameProperty.getElement().getValue() + " ";
+
+         ComplexItemProperty lastNameProperty = (ComplexItemProperty) exportedItem.getPropertyByName("lastname");
+         if (null != lastNameProperty)
+            name += lastNameProperty.getElement().getValue();
+
+         return name;
+      } else
+         return super.getDisplayNameFor(exportedItem);
+   }
 
 }

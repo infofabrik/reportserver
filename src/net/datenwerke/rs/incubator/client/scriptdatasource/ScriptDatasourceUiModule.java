@@ -4,9 +4,9 @@ import com.google.gwt.inject.client.AbstractGinModule;
 
 public class ScriptDatasourceUiModule extends AbstractGinModule {
 
-	@Override
-	protected void configure() {
-		bind(ScriptDatasourceUiStartup.class).asEagerSingleton();
-	}
+   @Override
+   protected void configure() {
+      bind(ScriptDatasourceUiStartup.class).asEagerSingleton();
+   }
 
 }

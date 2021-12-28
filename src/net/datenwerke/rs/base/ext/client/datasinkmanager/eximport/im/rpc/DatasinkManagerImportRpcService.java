@@ -9,8 +9,8 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 
 @RemoteServiceRelativePath("datasinks_import")
-public interface DatasinkManagerImportRpcService extends RemoteService{
-   
+public interface DatasinkManagerImportRpcService extends RemoteService {
+
    public List<ImportTreeModel> loadTree() throws ServerCallFailedException;
 
 }

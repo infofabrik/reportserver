@@ -46,13 +46,10 @@ public class ScheduleDialog {
    }
 
    @Inject
-   public ScheduleDialog(
-         SchedulerUsersConfigFormFactory schedulerUsersConfigurationFormFactory,
+   public ScheduleDialog(SchedulerUsersConfigFormFactory schedulerUsersConfigurationFormFactory,
          SchedulerMetadataConfigFormFactory metadataConfigurationFormFactory,
-         SchedulerReportConfigFormFactory reportConfigurationFormFactory, 
-         ExportConfigFormFactory exportFormFactory,
-         SeriesConfigFormFactory seriesConfigurationFormFactory, 
-         HookHandlerService hookHandler) {
+         SchedulerReportConfigFormFactory reportConfigurationFormFactory, ExportConfigFormFactory exportFormFactory,
+         SeriesConfigFormFactory seriesConfigurationFormFactory, HookHandlerService hookHandler) {
 
       /* store objects */
       this.schedulerUsersConfigurationFormFactory = schedulerUsersConfigurationFormFactory;
@@ -74,19 +71,17 @@ public class ScheduleDialog {
       displayDialog(Optional.of(report), new HashSet<ReportViewConfiguration>(), sendToConfigs, definition, callback);
    }
 
-   protected void displayDialog(
-         final Optional<ReportDto> report, 
-         Collection<ReportViewConfiguration> configs,
-         ArrayList<SendToClientConfig> sendToConfigs, 
-         ReportScheduleDefinition jobDefinition,
+   protected void displayDialog(final Optional<ReportDto> report, Collection<ReportViewConfiguration> configs,
+         ArrayList<SendToClientConfig> sendToConfigs, ReportScheduleDefinition jobDefinition,
          final DialogCallback callback) {
-      
+
       final List<ScheduleConfigWizardPageProviderHook> advancedPages = hookHandler
             .getHookers(ScheduleConfigWizardPageProviderHook.class);
-      
+
       final JobReportConfigurationForm jobReportConfigForm = reportConfigurationFormFactory.create(report, configs,
             jobDefinition, advancedPages);
-      final SchedulerUsersConfigurationForm schedulerUsersConfigForm = schedulerUsersConfigurationFormFactory.create(jobDefinition);
+      final SchedulerUsersConfigurationForm schedulerUsersConfigForm = schedulerUsersConfigurationFormFactory
+            .create(jobDefinition);
       final JobMetadataConfigurationForm jobMetadataConfigForm = metadataConfigurationFormFactory.create(jobDefinition);
       final SchedulerExportConfigurationForm exportForm = exportFormFactory.create(configs, sendToConfigs,
             jobDefinition);
@@ -105,10 +100,8 @@ public class ScheduleDialog {
 
             configDto.setExecutor(schedulerUsersConfigForm.getExecutor());
 
-            configDto.setRecipients(schedulerUsersConfigForm.getSelectedRecipientsStore().getAll()
-                  .stream()
-                  .map(StrippedDownUser::getId)
-                  .collect(toList()));
+            configDto.setRecipients(schedulerUsersConfigForm.getSelectedRecipientsStore().getAll().stream()
+                  .map(StrippedDownUser::getId).collect(toList()));
 
             /* owners */
             configDto.setOwners(new ArrayList<>(schedulerUsersConfigForm.getSelectedOwnerStore().getAll()));
@@ -117,7 +110,8 @@ public class ScheduleDialog {
             configDto.setOutputFormat(jobReportConfigForm.getOutputFormat());
             configDto.setExportConfiguration(jobReportConfigForm.getExportConfiguration());
 
-            advancedPages.forEach(pageProvider -> pageProvider.configureConfig(configDto, jobReportConfigForm.getReport()));
+            advancedPages
+                  .forEach(pageProvider -> pageProvider.configureConfig(configDto, jobReportConfigForm.getReport()));
 
             callback.finished(configDto, this);
          }
@@ -133,10 +127,10 @@ public class ScheduleDialog {
       wizard.addPage(jobMetadataConfigForm);
       wizard.addPage(exportForm);
       wizard.addPage(seriesConfigForm);
-      
+
       wizard.setSize(640, 556);
-      wizard.setHeading(
-            SchedulerMessages.INSTANCE.scheduleReportMulti(report.isPresent() ? report.get().getName() : BaseMessages.INSTANCE.name()));
+      wizard.setHeading(SchedulerMessages.INSTANCE
+            .scheduleReportMulti(report.isPresent() ? report.get().getName() : BaseMessages.INSTANCE.name()));
       wizard.show();
    }
 

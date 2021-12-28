@@ -6,18 +6,18 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
 public class ReloadMenuItem extends TreeMenuItem {
-	
-	public ReloadMenuItem(){
-		super();
-		
-		setIcon(BaseIcon.REFRESH);
-		setText(BaseMessages.INSTANCE.reload());
-		addMenuSelectionListener(new TreeMenuSelectionEvent() {
-			
-			public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
-				tree.reload(node);
-			}
-		});
-	}
+
+   public ReloadMenuItem() {
+      super();
+
+      setIcon(BaseIcon.REFRESH);
+      setText(BaseMessages.INSTANCE.reload());
+      addMenuSelectionListener(new TreeMenuSelectionEvent() {
+
+         public void menuItemSelected(final UITree tree, final AbstractNodeDto node) {
+            tree.reload(node);
+         }
+      });
+   }
 
 }

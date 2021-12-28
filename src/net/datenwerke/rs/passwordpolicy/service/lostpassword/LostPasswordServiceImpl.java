@@ -53,18 +53,11 @@ public class LostPasswordServiceImpl implements LostPasswordService {
    private final RemoteMessageService remoteMessageService;
 
    @Inject
-   public LostPasswordServiceImpl(
-         EventBus eventBus, 
-         PasswordHasher passwordHasher,
-         UserManagerService userManagerService, 
-         Provider<PasswordGenerator> passwordGenerator,
-         UserPropertiesService userPropertiesService, 
-         ConfigService configService,
-         RemoteMessageService remoteMessageService, 
-         MailService mailService, 
-         CryptoRpcService cryptoRpcService,
-         Provider<ConfigService> configServiceProvider
-         ) {
+   public LostPasswordServiceImpl(EventBus eventBus, PasswordHasher passwordHasher,
+         UserManagerService userManagerService, Provider<PasswordGenerator> passwordGenerator,
+         UserPropertiesService userPropertiesService, ConfigService configService,
+         RemoteMessageService remoteMessageService, MailService mailService, CryptoRpcService cryptoRpcService,
+         Provider<ConfigService> configServiceProvider) {
       this.eventBus = eventBus;
       this.passwordHasher = passwordHasher;
       this.userManagerService = userManagerService;
@@ -80,7 +73,7 @@ public class LostPasswordServiceImpl implements LostPasswordService {
    public String requestNewPassword(String username) throws ExpectedException {
       if (isLostPasswordDisabled())
          throw new IllegalStateException("\"Lost Password\" is disabled");
-      
+
       Configuration config = configService.getConfigFailsafe(LostPasswordModule.CONFIG_FILE);
 
       String mailTemplate = config.getString("lostpassword.email.text", messages.lostPasswordMessageTemplate());
@@ -159,11 +152,10 @@ public class LostPasswordServiceImpl implements LostPasswordService {
 
       return PasswordPolicyMessages.INSTANCE.lostPasswordMessageConfirmation();
    }
-   
+
    @Override
    public boolean isLostPasswordDisabled() {
       return configService.getConfigFailsafe(SecurityModule.CONFIG_FILE).getBoolean("disableLostPassword", false);
    }
-
 
 }

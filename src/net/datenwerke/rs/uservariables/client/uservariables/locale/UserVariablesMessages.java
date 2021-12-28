@@ -4,44 +4,48 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Messages;
 
 public interface UserVariablesMessages extends Messages {
-	
-	public final static UserVariablesMessages INSTANCE = GWT.create(UserVariablesMessages.class);
-	
-	public String confirmRemoveAllHeader();
-	public String confirmRemoveAllText();
-	public String confirmRemoveText();
 
-	public String editVariable();
+   public final static UserVariablesMessages INSTANCE = GWT.create(UserVariablesMessages.class);
 
-	public String mainPanelView_description();
+   public String confirmRemoveAllHeader();
 
-	public String mainPanelView_header();
+   public String confirmRemoveAllText();
 
-	public String mainPanelView_inheritedDescription();
+   public String confirmRemoveText();
 
-	public String moduleName();
+   public String editVariable();
 
+   public String mainPanelView_description();
 
-	public String removedVariable();
+   public String mainPanelView_header();
 
-	public String uservariableManagamentHeading();
+   public String mainPanelView_inheritedDescription();
 
-	public String userVariableManager();
+   public String moduleName();
 
-	public String userVariablesegnericAdminHeading();
+   public String removedVariable();
 
-	public String userVariablesGenericAdmindescription();
+   public String uservariableManagamentHeading();
 
-	public String variableCreated();
+   public String userVariableManager();
 
-	public String variableDeleted();
+   public String userVariablesegnericAdminHeading();
 
-	public String viewDescription();
-	public String viewHeadline();
-	
-	public String userVariablesParameterText();
+   public String userVariablesGenericAdmindescription();
 
-	public String listVariableText();
-	public String stringVariableText();
-	public String definedAt();
+   public String variableCreated();
+
+   public String variableDeleted();
+
+   public String viewDescription();
+
+   public String viewHeadline();
+
+   public String userVariablesParameterText();
+
+   public String listVariableText();
+
+   public String stringVariableText();
+
+   public String definedAt();
 }

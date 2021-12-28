@@ -10,17 +10,17 @@ import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
 public class HandleCsvDatasourceMergeEvents implements EventHandler<MergeEntityEvent> {
 
-	private ResultCacheService resultCacheService;
+   private ResultCacheService resultCacheService;
 
-	@Inject
-	public HandleCsvDatasourceMergeEvents(ResultCacheService resultCacheService) {
-		this.resultCacheService = resultCacheService;
-	}
+   @Inject
+   public HandleCsvDatasourceMergeEvents(ResultCacheService resultCacheService) {
+      this.resultCacheService = resultCacheService;
+   }
 
-	@Override
-	public void handle(MergeEntityEvent event) {
-		CsvDatasource ds = (CsvDatasource) event.getObject();
-		resultCacheService.removeFromResultCache(new ResultCacheKeyDatasource(ds));
-	}
+   @Override
+   public void handle(MergeEntityEvent event) {
+      CsvDatasource ds = (CsvDatasource) event.getObject();
+      resultCacheService.removeFromResultCache(new ResultCacheKeyDatasource(ds));
+   }
 
 }

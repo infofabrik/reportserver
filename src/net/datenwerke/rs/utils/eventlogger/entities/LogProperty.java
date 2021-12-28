@@ -10,61 +10,62 @@ import javax.persistence.Version;
 
 import org.hibernate.annotations.Type;
 
-@Table(name="AUDIT_LOG_PROPERTY")
+@Table(name = "AUDIT_LOG_PROPERTY")
 @Entity
 public class LogProperty {
 
-	@Lob
-	@Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-	private String value;
-	
-	@Column(length=64,nullable=false)
-	private String key;
-	
-	@Id @GeneratedValue
-	private long id;
-	
-	@Version
-	private Long version;
+   @Lob
+   @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
+   private String value;
 
-	public LogProperty() {
-	}
-	
-	public LogProperty(String key, String value) {
-		setKey(key);
-		setValue(value);
-	}
+   @Column(length = 64, nullable = false)
+   private String key;
 
-	public String getValue() {
-		return value;
-	}
+   @Id
+   @GeneratedValue
+   private long id;
 
-	public void setValue(String value) {
-		this.value = value;
-	}
+   @Version
+   private Long version;
 
-	public String getKey() {
-		return key;
-	}
+   public LogProperty() {
+   }
 
-	public void setKey(String key) {
-		this.key = key;
-	}
+   public LogProperty(String key, String value) {
+      setKey(key);
+      setValue(value);
+   }
 
-	public long getId() {
-		return id;
-	}
+   public String getValue() {
+      return value;
+   }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+   public void setValue(String value) {
+      this.value = value;
+   }
 
-	public Long getVersion() {
-		return version;
-	}
+   public String getKey() {
+      return key;
+   }
 
-	public void setVersion(Long version) {
-		this.version = version;
-	}
+   public void setKey(String key) {
+      this.key = key;
+   }
+
+   public long getId() {
+      return id;
+   }
+
+   public void setId(long id) {
+      this.id = id;
+   }
+
+   public Long getVersion() {
+      return version;
+   }
+
+   public void setVersion(Long version) {
+      this.version = version;
+   }
 
 }

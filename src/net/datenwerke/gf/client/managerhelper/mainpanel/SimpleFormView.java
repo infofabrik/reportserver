@@ -40,183 +40,186 @@ import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
  */
 public abstract class SimpleFormView extends MainPanelView {
 
-	protected SimpleMultiForm form;
-	
-	protected AbstractNodeDto selectedNode;
-	
-	@Inject
-	protected HookHandlerService hookHandlerService;
+   protected SimpleMultiForm form;
 
-	private VerticalLayoutContainer wrapper;
+   protected AbstractNodeDto selectedNode;
 
-	private VerticalLayoutContainer formWrapper;
-	
-	@Override
-	public String getComponentHeader(){
-		return BaseMessages.INSTANCE.properties();
-	}
+   @Inject
+   protected HookHandlerService hookHandlerService;
 
-	@Override
-	public ImageResource getIcon() {
-		return BaseIcon.LIST.toImageResource();
-	}
-	
-	@Override
-	public Component getViewComponent(AbstractNodeDto selectedNode) {
-		this.selectedNode = selectedNode;
-		
-		wrapper = new VerticalLayoutContainer();
-		wrapper.setScrollMode(ScrollMode.AUTOY);
-		
-		formWrapper = new VerticalLayoutContainer();
-		if(useScrollWrapper())
-			wrapper.add(formWrapper, new VerticalLayoutData(1,-1));
-		
-		/* create form and configure submit event handler */ 
-		form = new SimpleMultiForm();
-		formWrapper.add(form, getFormLayoutData());
+   private VerticalLayoutContainer wrapper;
 
-		if(null != getFormWidth())
-			form.setWidth(getFormWidth());
+   private VerticalLayoutContainer formWrapper;
 
-		form.addSubmissionCallback(new SimpleFormSubmissionCallback(form) {
-			@Override
-			public void formSubmitted() {
-				onSubmit(this);
-			}
-		});
+   @Override
+   public String getComponentHeader() {
+      return BaseMessages.INSTANCE.properties();
+   }
 
-		/* is upload form */
-		if(isUploadForm()){
-			form.setMethod(Method.POST);
-			form.setEncoding(Encoding.MULTIPART);
-			
-			form.getFormPanel().addSubmitCompleteHandler(new SubmitCompleteHandler() {
-				
-				@Override
-				public void onSubmitComplete(SubmitCompleteEvent event) {
-					if(!event.getResults().startsWith(FileUploadUIModule.UPLOAD_SUCCESSFUL_PREFIX))
-						new DetailErrorDialog(BaseMessages.INSTANCE.error(), BaseMessages.INSTANCE.uploadError(), ManagerhelperMessages.INSTANCE.upoadError() + event.getResults()).show(); 
-					
-					/* reload selected node */
-					reloadNodeAndView();
-				}
-			});
-		}
-		
-		if(null != getFormAction())
-			form.setAction(getFormAction());
-		
-		/* ask configurator for a configuration */
-		configureSimpleForm(form);
-		
-		/* binding */
-		form.bind(getBindingEntity());
-		
-		callbackAfterBinding(form, selectedNode);
-		
-		/* add external fields from hookers */
-		List<SimpleFormViewHook> simpleFormViewHookers = getSimpleFormViewHookers(this.getClass());
-		
-		for(SimpleFormViewHook hooker : simpleFormViewHookers){
-			SimpleForm xform = SimpleForm.getNewInstance();
-			xform.getButtonBar().clear();
-			hooker.configureSimpleForm(xform, getSelectedNode());
-			form.addSubForm(xform);
-		}
-		
-		/* buttons */
-		if((getSelectedNode() instanceof SecuredAbstractNodeDtoDec) && ! ((SecuredAbstractNodeDtoDec)getSelectedNode()).hasAccessRight(WriteDto.class))
-			form.getButtonBar().clear();
-		
-		return useScrollWrapper() ? wrapper : formWrapper;
-	}
-	
-	protected boolean useScrollWrapper(){
-		return true;
-	}
-	
-	protected VerticalLayoutData getFormLayoutData() {
-		return new VerticalLayoutData(1,-1, new Margins(10));
-	}
-	
-	protected String getFormAction() {
-		return null;
-	}
+   @Override
+   public ImageResource getIcon() {
+      return BaseIcon.LIST.toImageResource();
+   }
 
-	protected boolean isUploadForm() {
-		return false;
-	}
+   @Override
+   public Component getViewComponent(AbstractNodeDto selectedNode) {
+      this.selectedNode = selectedNode;
 
-	protected VerticalLayoutContainer getFormWrapper() {
-		return formWrapper;
-	}
-	
-	protected String getFormWidth() {
-		return null;
-	}
+      wrapper = new VerticalLayoutContainer();
+      wrapper.setScrollMode(ScrollMode.AUTOY);
 
-	protected FlowLayoutContainer createFlowWrapper() {
-		return new DwFlowContainer();
-	}
+      formWrapper = new VerticalLayoutContainer();
+      if (useScrollWrapper())
+         wrapper.add(formWrapper, new VerticalLayoutData(1, -1));
 
-	protected void callbackAfterBinding(SimpleMultiForm form, AbstractNodeDto selectedNode) {
-	}
+      /* create form and configure submit event handler */
+      form = new SimpleMultiForm();
+      formWrapper.add(form, getFormLayoutData());
 
-	protected void onSubmit(final SimpleFormSubmissionCallback callback) {
-		/* upload */
-		if(isUploadForm())
-			form.submit();	
-		
-		/* perform server call */
-		treeManager.updateNode(getSelectedNode(), new NotamCallback<AbstractNodeDto>(ManagerhelperMessages.INSTANCE.updated()){
-			@Override
-			public void doOnSuccess(AbstractNodeDto result) {
-				callback.cbSuccess();
-				onSuccessfulSubmit();
-			}
-			
-			@Override
-			public void doOnFailure(Throwable caught) {
-				callback.cbFailure(caught);
-			}
-		});
-	}
+      if (null != getFormWidth())
+         form.setWidth(getFormWidth());
 
-	protected void onSuccessfulSubmit() {
-		
-	}
-	
-	protected void addSubmissionListener(SimpleFormSubmissionListener listener) {
-		form.addSubmissionListener(listener);
-	}
+      form.addSubmissionCallback(new SimpleFormSubmissionCallback(form) {
+         @Override
+         public void formSubmitted() {
+            onSubmit(this);
+         }
+      });
 
-	protected Object getBindingEntity() {
-		return selectedNode;
-	}
+      /* is upload form */
+      if (isUploadForm()) {
+         form.setMethod(Method.POST);
+         form.setEncoding(Encoding.MULTIPART);
 
-	public void mask(String message){
-		wrapper.mask(message);
-	}
-	
-	public void unmask(){
-		wrapper.unmask();
-	}
-	
-	abstract protected void configureSimpleForm(SimpleForm form);
-	
+         form.getFormPanel().addSubmitCompleteHandler(new SubmitCompleteHandler() {
 
-	protected <T extends SimpleFormView> List<SimpleFormViewHook> getSimpleFormViewHookers(Class<T> simpleFormViewClass){
-		List<SimpleFormViewHook> hookers = hookHandlerService.getHookers(SimpleFormViewHook.class);
-		List<SimpleFormViewHook> res = new ArrayList<SimpleFormViewHook>();
-		
-		for(SimpleFormViewHook h : hookers){
-			if(h.appliesTo(simpleFormViewClass)){
-				res.add(h);
-			}
-		}
-		
-		return res;
-	}
-	
+            @Override
+            public void onSubmitComplete(SubmitCompleteEvent event) {
+               if (!event.getResults().startsWith(FileUploadUIModule.UPLOAD_SUCCESSFUL_PREFIX))
+                  new DetailErrorDialog(BaseMessages.INSTANCE.error(), BaseMessages.INSTANCE.uploadError(),
+                        ManagerhelperMessages.INSTANCE.upoadError() + event.getResults()).show();
+
+               /* reload selected node */
+               reloadNodeAndView();
+            }
+         });
+      }
+
+      if (null != getFormAction())
+         form.setAction(getFormAction());
+
+      /* ask configurator for a configuration */
+      configureSimpleForm(form);
+
+      /* binding */
+      form.bind(getBindingEntity());
+
+      callbackAfterBinding(form, selectedNode);
+
+      /* add external fields from hookers */
+      List<SimpleFormViewHook> simpleFormViewHookers = getSimpleFormViewHookers(this.getClass());
+
+      for (SimpleFormViewHook hooker : simpleFormViewHookers) {
+         SimpleForm xform = SimpleForm.getNewInstance();
+         xform.getButtonBar().clear();
+         hooker.configureSimpleForm(xform, getSelectedNode());
+         form.addSubForm(xform);
+      }
+
+      /* buttons */
+      if ((getSelectedNode() instanceof SecuredAbstractNodeDtoDec)
+            && !((SecuredAbstractNodeDtoDec) getSelectedNode()).hasAccessRight(WriteDto.class))
+         form.getButtonBar().clear();
+
+      return useScrollWrapper() ? wrapper : formWrapper;
+   }
+
+   protected boolean useScrollWrapper() {
+      return true;
+   }
+
+   protected VerticalLayoutData getFormLayoutData() {
+      return new VerticalLayoutData(1, -1, new Margins(10));
+   }
+
+   protected String getFormAction() {
+      return null;
+   }
+
+   protected boolean isUploadForm() {
+      return false;
+   }
+
+   protected VerticalLayoutContainer getFormWrapper() {
+      return formWrapper;
+   }
+
+   protected String getFormWidth() {
+      return null;
+   }
+
+   protected FlowLayoutContainer createFlowWrapper() {
+      return new DwFlowContainer();
+   }
+
+   protected void callbackAfterBinding(SimpleMultiForm form, AbstractNodeDto selectedNode) {
+   }
+
+   protected void onSubmit(final SimpleFormSubmissionCallback callback) {
+      /* upload */
+      if (isUploadForm())
+         form.submit();
+
+      /* perform server call */
+      treeManager.updateNode(getSelectedNode(),
+            new NotamCallback<AbstractNodeDto>(ManagerhelperMessages.INSTANCE.updated()) {
+               @Override
+               public void doOnSuccess(AbstractNodeDto result) {
+                  callback.cbSuccess();
+                  onSuccessfulSubmit();
+               }
+
+               @Override
+               public void doOnFailure(Throwable caught) {
+                  callback.cbFailure(caught);
+               }
+            });
+   }
+
+   protected void onSuccessfulSubmit() {
+
+   }
+
+   protected void addSubmissionListener(SimpleFormSubmissionListener listener) {
+      form.addSubmissionListener(listener);
+   }
+
+   protected Object getBindingEntity() {
+      return selectedNode;
+   }
+
+   public void mask(String message) {
+      wrapper.mask(message);
+   }
+
+   public void unmask() {
+      wrapper.unmask();
+   }
+
+   abstract protected void configureSimpleForm(SimpleForm form);
+
+   protected <T extends SimpleFormView> List<SimpleFormViewHook> getSimpleFormViewHookers(
+         Class<T> simpleFormViewClass) {
+      List<SimpleFormViewHook> hookers = hookHandlerService.getHookers(SimpleFormViewHook.class);
+      List<SimpleFormViewHook> res = new ArrayList<SimpleFormViewHook>();
+
+      for (SimpleFormViewHook h : hookers) {
+         if (h.appliesTo(simpleFormViewClass)) {
+            res.add(h);
+         }
+      }
+
+      return res;
+   }
+
 }

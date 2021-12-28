@@ -10,102 +10,102 @@ import net.datenwerke.scheduler.client.scheduler.dto.history.ExecutionLogEntryDt
 import net.datenwerke.security.client.usermanager.dto.UserDto;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
-public class ReportScheduleJobInformation extends RsDto{
+public class ReportScheduleJobInformation extends RsDto {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -2710512228549048347L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -2710512228549048347L;
 
-	private ReportScheduleDefinition scheduleDefinition;
-	
-	private List<Date> nextPlannedEntries;
-	private List<ExecutionLogEntryDto> lastExecutedEntries;
-	
-	private int nrOfSuccessfulExecutions = 0;
-	private int nrOfVetoedExecutions = 0;
-	private int nrOfFailedExecutions = 0;
-	
-	private JobExecutionStatusDto executionStatus;
-	
-	private Long userId;
-	
-	public void setScheduleDefinition(ReportScheduleDefinition scheduleDefinition) {
-		this.scheduleDefinition = scheduleDefinition;
-	}
+   private ReportScheduleDefinition scheduleDefinition;
 
-	public ReportScheduleDefinition getScheduleDefinition() {
-		return scheduleDefinition;
-	}
+   private List<Date> nextPlannedEntries;
+   private List<ExecutionLogEntryDto> lastExecutedEntries;
 
-	public void setNextPlannedEntries(List<Date> nextPlannedEntries) {
-		this.nextPlannedEntries = nextPlannedEntries;
-	}
+   private int nrOfSuccessfulExecutions = 0;
+   private int nrOfVetoedExecutions = 0;
+   private int nrOfFailedExecutions = 0;
 
-	public List<Date> getNextPlannedEntries() {
-		return nextPlannedEntries;
-	}
+   private JobExecutionStatusDto executionStatus;
 
-	public void setLastExecutedEntries(List<ExecutionLogEntryDto> lastExecutedEntries) {
-		this.lastExecutedEntries = lastExecutedEntries;
-	}
+   private Long userId;
 
-	public List<ExecutionLogEntryDto> getLastExecutedEntries() {
-		return lastExecutedEntries;
-	}
+   public void setScheduleDefinition(ReportScheduleDefinition scheduleDefinition) {
+      this.scheduleDefinition = scheduleDefinition;
+   }
 
-	public int getNrOfSuccessfulExecutions() {
-		return nrOfSuccessfulExecutions;
-	}
+   public ReportScheduleDefinition getScheduleDefinition() {
+      return scheduleDefinition;
+   }
 
-	public void setNrOfSuccessfulExecutions(int nrOfSuccessfulExecutions) {
-		this.nrOfSuccessfulExecutions = nrOfSuccessfulExecutions;
-	}
+   public void setNextPlannedEntries(List<Date> nextPlannedEntries) {
+      this.nextPlannedEntries = nextPlannedEntries;
+   }
 
-	public int getNrOfVetoedExecutions() {
-		return nrOfVetoedExecutions;
-	}
+   public List<Date> getNextPlannedEntries() {
+      return nextPlannedEntries;
+   }
 
-	public void setNrOfVetoedExecutions(int nrOfVetoedExecutions) {
-		this.nrOfVetoedExecutions = nrOfVetoedExecutions;
-	}
+   public void setLastExecutedEntries(List<ExecutionLogEntryDto> lastExecutedEntries) {
+      this.lastExecutedEntries = lastExecutedEntries;
+   }
 
-	public int getNrOfFailedExecutions() {
-		return nrOfFailedExecutions;
-	}
+   public List<ExecutionLogEntryDto> getLastExecutedEntries() {
+      return lastExecutedEntries;
+   }
 
-	public void setNrOfFailedExecutions(int nrOfFailedExecutions) {
-		this.nrOfFailedExecutions = nrOfFailedExecutions;
-	}
+   public int getNrOfSuccessfulExecutions() {
+      return nrOfSuccessfulExecutions;
+   }
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
-	}
+   public void setNrOfSuccessfulExecutions(int nrOfSuccessfulExecutions) {
+      this.nrOfSuccessfulExecutions = nrOfSuccessfulExecutions;
+   }
 
-	public Long getUserId() {
-		return userId;
-	}
-	
-	public void setExecutionStatus(JobExecutionStatusDto executionStatus) {
-		this.executionStatus = executionStatus;
-	}
+   public int getNrOfVetoedExecutions() {
+      return nrOfVetoedExecutions;
+   }
 
-	public JobExecutionStatusDto getExecutionStatus() {
-		return executionStatus;
-	}
+   public void setNrOfVetoedExecutions(int nrOfVetoedExecutions) {
+      this.nrOfVetoedExecutions = nrOfVetoedExecutions;
+   }
 
-	public boolean isOwner(UserDto user){
-		if(null != userId && userId.equals(user.getId()))
-			return true;
-		
-		if (null == scheduleDefinition) 
-			return false;
-		
-		for (StrippedDownUser owner: scheduleDefinition.getOwners())
-			if(owner.getId().equals(user.getId()))
-				return true;
+   public int getNrOfFailedExecutions() {
+      return nrOfFailedExecutions;
+   }
 
-		return false;
-	}
-	
+   public void setNrOfFailedExecutions(int nrOfFailedExecutions) {
+      this.nrOfFailedExecutions = nrOfFailedExecutions;
+   }
+
+   public void setUserId(Long userId) {
+      this.userId = userId;
+   }
+
+   public Long getUserId() {
+      return userId;
+   }
+
+   public void setExecutionStatus(JobExecutionStatusDto executionStatus) {
+      this.executionStatus = executionStatus;
+   }
+
+   public JobExecutionStatusDto getExecutionStatus() {
+      return executionStatus;
+   }
+
+   public boolean isOwner(UserDto user) {
+      if (null != userId && userId.equals(user.getId()))
+         return true;
+
+      if (null == scheduleDefinition)
+         return false;
+
+      for (StrippedDownUser owner : scheduleDefinition.getOwners())
+         if (owner.getId().equals(user.getId()))
+            return true;
+
+      return false;
+   }
+
 }

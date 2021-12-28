@@ -37,7 +37,7 @@ public class ScheduleAsOneDriveFileInformation implements AdditionalScheduleInfo
    public void setFolder(String folder) {
       this.folder = folder;
    }
-   
+
    public boolean isCompressed() {
       return compressed;
    }

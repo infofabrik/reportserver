@@ -22,29 +22,33 @@ import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 /**
- * Builder class for constructing an email step-by-step by providing the necessary elements
- * using the builder pattern. By default, the email is sent using the ReportServer internal email settings.
- * If you need to send the email to a given {@link EmailDatasink}, you can use {@link #withEmailDatasink(EmailDatasink)}.
- * A typical email can be constructed and sent as shown
- * below.
+ * Builder class for constructing an email step-by-step by providing the
+ * necessary elements using the builder pattern. By default, the email is sent
+ * using the ReportServer internal email settings. If you need to send the email
+ * to a given {@link EmailDatasink}, you can use
+ * {@link #withEmailDatasink(EmailDatasink)}. A typical email can be constructed
+ * and sent as shown below.
  * 
  * <pre>
- * {@code
- * SimpleMail mail = mailBuilderFactory
- *  .create("my subject text", "my body text", Arrays.asList(currentUser))
- *  .withEmailDatasink(emailDatasink)
- *  .withFileAttachments(files)
- *  .withZippedAttachments("myAttachments.zip")
- *  .build();
- * mailService.sendMail(mail);
- * }</pre>
- * where 
+ * {
+ *    &#64;code
+ *    SimpleMail mail = mailBuilderFactory.create("my subject text", "my body text", Arrays.asList(currentUser))
+ *          .withEmailDatasink(emailDatasink).withFileAttachments(files).withZippedAttachments("myAttachments.zip")
+ *          .build();
+ *    mailService.sendMail(mail);
+ * }
+ * </pre>
+ * 
+ * where
  * <ul>
- *  <li>{@code mailBuilderFactory} denotes the {@link MailBuilderFactory} for creating the mail builder</li>
- *  <li>{@code emailDatasink} denotes the {@link EmailDatasink} used for sending the email</li>
- *  <li>{@code currentUser} denotes the current {@link User} as the e-mail recipient</li>
- *  <li>{@code files} denotes the list of attachments to add</li>
- *  <li>Finally, the e-mail is sent using the {@link MailService}</li>
+ * <li>{@code mailBuilderFactory} denotes the {@link MailBuilderFactory} for
+ * creating the mail builder</li>
+ * <li>{@code emailDatasink} denotes the {@link EmailDatasink} used for sending
+ * the email</li>
+ * <li>{@code currentUser} denotes the current {@link User} as the e-mail
+ * recipient</li>
+ * <li>{@code files} denotes the list of attachments to add</li>
+ * <li>Finally, the e-mail is sent using the {@link MailService}</li>
  * </ul>
  */
 public class MailBuilder {
@@ -66,15 +70,9 @@ public class MailBuilder {
    private Optional<EmailDatasink> emailDatasink = Optional.empty();
 
    @Inject
-   public MailBuilder(
-         Provider<MailService> mailServiceProvider,
-         Provider<TempFileService> tempFileServiceProvider,
-         Provider<ZipUtilsService> zipServiceProvider, 
-         Provider<MimeUtils> mimeUtilsProvider,
-         @Assisted("subject") String subject, 
-         @Assisted("body") String body, 
-         @Assisted List<User> recipients
-         ) {
+   public MailBuilder(Provider<MailService> mailServiceProvider, Provider<TempFileService> tempFileServiceProvider,
+         Provider<ZipUtilsService> zipServiceProvider, Provider<MimeUtils> mimeUtilsProvider,
+         @Assisted("subject") String subject, @Assisted("body") String body, @Assisted List<User> recipients) {
       this.mailServiceProvider = mailServiceProvider;
       this.tempFileServiceProvider = tempFileServiceProvider;
       this.zipServiceProvider = zipServiceProvider;
@@ -106,18 +104,16 @@ public class MailBuilder {
     */
    public MailBuilder withFileAttachments(final List<Path> attachments) {
       final MimeUtils mimeUtils = mimeUtilsProvider.get();
-      this.attachments = Optional.of(attachments
-         .stream()
-         .map(file -> {
-            String filename = file.getFileName().toString();
-            return new SimpleAttachment(file, mimeUtils.getMimeTypeByExtension(filename), filename);
-         })
-         .collect(toList()));
+      this.attachments = Optional.of(attachments.stream().map(file -> {
+         String filename = file.getFileName().toString();
+         return new SimpleAttachment(file, mimeUtils.getMimeTypeByExtension(filename), filename);
+      }).collect(toList()));
       return this;
    }
-   
+
    /**
     * Adds a list of attachments. These can contain byte arrays or {@link Path}s.
+    * 
     * @param attachments the attachments as byte arrays or {@link Path}s
     * @return the current state of {@link MailBuilder}
     */
@@ -125,7 +121,7 @@ public class MailBuilder {
       this.attachments = Optional.of(attachments);
       return this;
    }
-   
+
    /**
     * Specifies that the attachments should be zipped using the provided filename.
     * 
@@ -161,9 +157,7 @@ public class MailBuilder {
       if (recipients.isEmpty())
          throw new IllegalArgumentException("Recipient list is empty");
 
-      if (recipients
-            .stream()
-            .anyMatch(u -> null == u.getEmail() || "".equals(u.getEmail())))
+      if (recipients.stream().anyMatch(u -> null == u.getEmail() || "".equals(u.getEmail())))
          throw new IllegalArgumentException("Recipients must have email defined");
 
       if (attachments.isPresent()) {
@@ -207,13 +201,11 @@ public class MailBuilder {
       if (template) {
          MailTemplate mailTemplate = createMailTemplate();
          mail = mailServiceProvider.get().newTemplateMail(emailDatasink, mailTemplate,
-               attachments.orElseThrow(IllegalStateException::new)
-               .toArray(new SimpleAttachment[] {}));
+               attachments.orElseThrow(IllegalStateException::new).toArray(new SimpleAttachment[] {}));
       } else {
          mail = mailServiceProvider.get().newSimpleMail(emailDatasink);
          mail.setSubject(subject);
-         mail.setContent(body, attachments.orElseThrow(IllegalStateException::new)
-               .toArray(new SimpleAttachment[] {}));
+         mail.setContent(body, attachments.orElseThrow(IllegalStateException::new).toArray(new SimpleAttachment[] {}));
       }
 
       configureRecipients(mail);
@@ -227,8 +219,8 @@ public class MailBuilder {
       try (final OutputStream out = Files.newOutputStream(tmpFile)) {
          zipServiceProvider.get().createZipFromEmailAttachments(attachments.get(), out);
          SimpleAttachment attachment = new SimpleAttachment(tmpFile,
-               mimeUtilsProvider.get().getMimeTypeByExtension(zipFilename.orElseThrow(IllegalStateException::new))
-               , zipFilename.orElseThrow(IllegalStateException::new));
+               mimeUtilsProvider.get().getMimeTypeByExtension(zipFilename.orElseThrow(IllegalStateException::new)),
+               zipFilename.orElseThrow(IllegalStateException::new));
 
          SimpleMail mail = null;
 
@@ -248,11 +240,8 @@ public class MailBuilder {
    }
 
    private void configureRecipients(SimpleMail mail) {
-      mail.setToRecipients(recipients
-            .stream()
-            .filter(user -> null != user.getEmail())
-            .map(User::getEmail)
-            .collect(toList()));
+      mail.setToRecipients(
+            recipients.stream().filter(user -> null != user.getEmail()).map(User::getEmail).collect(toList()));
    }
 
 }

@@ -38,13 +38,9 @@ public class FileExportToScpHooker implements FileExportExternalEntryProviderHoo
    private final Provider<ScpUiService> scpUiService;
 
    @Inject
-   public FileExportToScpHooker(
-         @DatasinkTreeScp Provider<UITree> treeProvider,
-         Provider<ScpDao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<ScpUiService> scpUiService
-         ) {
+   public FileExportToScpHooker(@DatasinkTreeScp Provider<UITree> treeProvider, Provider<ScpDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider, Provider<DatasinkUIService> datasinkUiServiceProvider,
+         Provider<ScpUiService> scpUiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
@@ -54,34 +50,33 @@ public class FileExportToScpHooker implements FileExportExternalEntryProviderHoo
 
    @Override
    public void createMenuEntry(final Menu menu, final FileServerTreeManagerDao treeHandler) {
-      FileSendToMenuItem item = new FileSendToMenuItem(ScpUiModule.NAME, treeHandler, ScpUiModule.ICON.toImageResource());
-      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto)node));
+      FileSendToMenuItem item = new FileSendToMenuItem(ScpUiModule.NAME, treeHandler,
+            ScpUiModule.ICON.toImageResource());
+      item.addMenuSelectionListener((tree, node) -> displayExportDialog((AbstractFileServerNodeDto) node));
       menu.add(item);
       item.setAvailableCallback(() -> isAvailable());
       item.disable();
    }
 
    protected void displayExportDialog(final AbstractFileServerNodeDto toExport) {
-      String name="";
-         if(toExport instanceof FileServerFolderDto)
-           name = ((FileServerFolderDto)toExport).getName();
-        else if(toExport instanceof FileServerFileDto)
-          name = ((FileServerFileDto)toExport).getName();
-      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(
-            ScpDatasinkDto.class,
-            name, treeProvider, datasinkDaoProvider, toExport, 
-            Optional.empty(),
-            new AsyncCallback<Map<String,Object>>() {
-               
+      String name = "";
+      if (toExport instanceof FileServerFolderDto)
+         name = ((FileServerFolderDto) toExport).getName();
+      else if (toExport instanceof FileServerFileDto)
+         name = ((FileServerFileDto) toExport).getName();
+      datasinkUiServiceProvider.get().displaySendToDatasinkDialog(ScpDatasinkDto.class, name, treeProvider,
+            datasinkDaoProvider, toExport, Optional.empty(), new AsyncCallback<Map<String, Object>>() {
+
                @Override
-               public void onSuccess(Map<String,Object> result) {
+               public void onSuccess(Map<String, Object> result) {
                   datasinkDaoProvider.get().exportFileIntoDatasink(toExport,
-                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), 
-                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME), 
-                        (String)result.get(DatasinkUIModule.DATASINK_FOLDER), 
-                        (Boolean)result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
+                        (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY),
+                        (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
+                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
+                        (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }
+
                @Override
                public void onFailure(Throwable caught) {
                }

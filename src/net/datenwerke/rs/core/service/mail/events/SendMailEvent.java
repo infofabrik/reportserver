@@ -6,16 +6,15 @@ import net.datenwerke.rs.utils.eventbus.Event;
 
 public class SendMailEvent implements Event {
 
-	private final MimeMessage message;
+   private final MimeMessage message;
 
-	public SendMailEvent(MimeMessage message) {
-		super();
-		this.message = message;
-	}
+   public SendMailEvent(MimeMessage message) {
+      super();
+      this.message = message;
+   }
 
-	public MimeMessage getMessage() {
-		return message;
-	}
-	
-	
+   public MimeMessage getMessage() {
+      return message;
+   }
+
 }

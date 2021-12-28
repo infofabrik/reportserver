@@ -15,33 +15,30 @@ import net.datenwerke.rs.utils.properties.ApplicationPropertiesProviderHook;
 
 public class ConfigDirApplicationPropertiesProvider implements ApplicationPropertiesProviderHook {
 
-	private static final String REPORTSERVER_PROPERTIES = "reportserver.properties";
-	
-	private ConfigDirService configDirService;
+   private static final String REPORTSERVER_PROPERTIES = "reportserver.properties";
 
-	@Inject
-	public ConfigDirApplicationPropertiesProvider(ConfigDirService configDirService) {
-		this.configDirService = configDirService;
-	}
-	
-	@Override
-	public Configuration getConfig() throws ConfigurationException {
-		if(!configDirService.isEnabled())
-			return null;
-		
-		File cfg = new File(configDirService.getConfigDir(), REPORTSERVER_PROPERTIES);
-		if(cfg.exists()){
-		   FileBasedConfigurationBuilder<PropertiesConfiguration> builder =
-		         new FileBasedConfigurationBuilder<PropertiesConfiguration>(PropertiesConfiguration.class)
-		         .configure(new Parameters().properties()
-		             .setFile(cfg));
-			PropertiesConfiguration config = builder.getConfiguration();
-			
-			return config;
-		} 
-		
-		return null;
-	}
-	
+   private ConfigDirService configDirService;
+
+   @Inject
+   public ConfigDirApplicationPropertiesProvider(ConfigDirService configDirService) {
+      this.configDirService = configDirService;
+   }
+
+   @Override
+   public Configuration getConfig() throws ConfigurationException {
+      if (!configDirService.isEnabled())
+         return null;
+
+      File cfg = new File(configDirService.getConfigDir(), REPORTSERVER_PROPERTIES);
+      if (cfg.exists()) {
+         FileBasedConfigurationBuilder<PropertiesConfiguration> builder = new FileBasedConfigurationBuilder<PropertiesConfiguration>(
+               PropertiesConfiguration.class).configure(new Parameters().properties().setFile(cfg));
+         PropertiesConfiguration config = builder.getConfiguration();
+
+         return config;
+      }
+
+      return null;
+   }
 
 }

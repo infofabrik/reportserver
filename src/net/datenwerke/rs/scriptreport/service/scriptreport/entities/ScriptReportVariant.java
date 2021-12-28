@@ -21,99 +21,97 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 
 @Entity
-@Table(name="SCRIPT_REPORT_VARIANT")
+@Table(name = "SCRIPT_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.scriptreport.client.scriptreport.dto", 
-	createDecorator=true
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.scriptreport.client.scriptreport.dto", createDecorator = true)
 public class ScriptReportVariant extends ScriptReport implements ReportVariant {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 8689438037587625879L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = 8689438037587625879L;
 
-	public ScriptReport getBaseReport() {
-		AbstractReportManagerNode parent = getParent();
-		if(parent instanceof HibernateProxy)
-			parent = (AbstractReportManagerNode) ((HibernateProxy)parent).getHibernateLazyInitializer().getImplementation();
-		return (ScriptReport) parent;
-	}
+   public ScriptReport getBaseReport() {
+      AbstractReportManagerNode parent = getParent();
+      if (parent instanceof HibernateProxy)
+         parent = (AbstractReportManagerNode) ((HibernateProxy) parent).getHibernateLazyInitializer()
+               .getImplementation();
+      return (ScriptReport) parent;
+   }
 
-	public void setBaseReport(Report baseReport) {
-		throw new IllegalStateException("should not be called on server");
-	}
+   public void setBaseReport(Report baseReport) {
+      throw new IllegalStateException("should not be called on server");
+   }
 
-	@Override
-	public DatasourceContainer getDatasourceContainer() {
-		return getBaseReport().getDatasourceContainer();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setScript(FileServerFile script) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setArguments(String arguments) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setExportFormats(List<String> exportFormats) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public FileServerFile getScript() {
-		return getBaseReport().getScript();
-	}
-	
-	@Override
-	public String getArguments() {
-		return getBaseReport().getArguments();
-	}
-	
-	@Override
-	public List<String> getExportFormats() {
-		return getBaseReport().getExportFormats();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setDatasourceContainer(DatasourceContainer datasource){
-		throw new NotImplementedException("not implemented");
-	}
-	
-	@Override
-	public List<ParameterDefinition> getParameterDefinitions() {
-		return getBaseReport().getParameterDefinitions();
-	}
-	
-	@IgnoreMergeBackDto
-	@Override
-	public void setParameterDefinitions( List<ParameterDefinition> parameters) {
-		throw new NotImplementedException("not implemented");
-	}
-	
-	/**
-	 */
-	@ClonePostProcessor
-	public void guideCloningProcess(Object report){
-		super.setParameterDefinitions(null);
-		super.setDatasourceContainer(null);
-		super.setScript(null);
-		super.setArguments(null);
-		super.setExportFormats(null);
-	}
-	
-	@Override
-	public boolean hasChildren() {
-		return false;
-	}
+   @Override
+   public DatasourceContainer getDatasourceContainer() {
+      return getBaseReport().getDatasourceContainer();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setScript(FileServerFile script) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setArguments(String arguments) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setExportFormats(List<String> exportFormats) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public FileServerFile getScript() {
+      return getBaseReport().getScript();
+   }
+
+   @Override
+   public String getArguments() {
+      return getBaseReport().getArguments();
+   }
+
+   @Override
+   public List<String> getExportFormats() {
+      return getBaseReport().getExportFormats();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setDatasourceContainer(DatasourceContainer datasource) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   @Override
+   public List<ParameterDefinition> getParameterDefinitions() {
+      return getBaseReport().getParameterDefinitions();
+   }
+
+   @IgnoreMergeBackDto
+   @Override
+   public void setParameterDefinitions(List<ParameterDefinition> parameters) {
+      throw new NotImplementedException("not implemented");
+   }
+
+   /**
+    */
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      super.setParameterDefinitions(null);
+      super.setDatasourceContainer(null);
+      super.setScript(null);
+      super.setArguments(null);
+      super.setExportFormats(null);
+   }
+
+   @Override
+   public boolean hasChildren() {
+      return false;
+   }
 }

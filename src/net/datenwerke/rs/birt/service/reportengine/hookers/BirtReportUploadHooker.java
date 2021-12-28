@@ -18,76 +18,71 @@ import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.treedb.actions.UpdateAction;
 
 public class BirtReportUploadHooker implements FileUploadHandlerHook {
-	
-	private final Provider<AuthenticatorService> authenticatorServiceProvider;
-	private final Provider<SecurityService> securityServiceProvider;
-	private final Provider<ReportService> reportServiceProvider;
-	private final Provider<BirtReportService> birtReportServiceProvider;
 
-	@Inject
-	public BirtReportUploadHooker(
-			Provider<AuthenticatorService> authenticatorServiceProvider, 
-			Provider<SecurityService> securityServiceProvider, 
-			Provider<ReportService> reportServiceProvider,
-			Provider<BirtReportService> birtReportServiceProvider
-	) {
-		this.authenticatorServiceProvider = authenticatorServiceProvider;
-		this.securityServiceProvider = securityServiceProvider;
-		this.reportServiceProvider = reportServiceProvider;
-		this.birtReportServiceProvider = birtReportServiceProvider;
-	}
-	
-	@Override
-	public boolean consumes(String handler) {
-		return BirtUiModule.UPLOAD_HANDLER_ID.equals(handler);
-	}
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final Provider<SecurityService> securityServiceProvider;
+   private final Provider<ReportService> reportServiceProvider;
+   private final Provider<BirtReportService> birtReportServiceProvider;
 
-	@Override
-	public String uploadOccured(UploadedFile uploadedFile) {
-		Map<String, String> metadataMap = uploadedFile.getMetadata();
-		
-		long reportId = Long.valueOf(metadataMap.get(BirtUiModule.UPLOAD_REPORT_ID_FIELD));
-		String reportName = uploadedFile.getFileName();
-		String reportContents = new String(uploadedFile.getFileBytes());
+   @Inject
+   public BirtReportUploadHooker(Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<SecurityService> securityServiceProvider, Provider<ReportService> reportServiceProvider,
+         Provider<BirtReportService> birtReportServiceProvider) {
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
+      this.reportServiceProvider = reportServiceProvider;
+      this.birtReportServiceProvider = birtReportServiceProvider;
+   }
 
+   @Override
+   public boolean consumes(String handler) {
+      return BirtUiModule.UPLOAD_HANDLER_ID.equals(handler);
+   }
 
-		if(null == reportName || null == reportContents || reportContents.isEmpty() || reportName.isEmpty())
-			return null;
+   @Override
+   public String uploadOccured(UploadedFile uploadedFile) {
+      Map<String, String> metadataMap = uploadedFile.getMetadata();
 
-		if(!reportName.endsWith(".rptdesign"))
-			throw new RuntimeException("Expectet .rptdesign file");
+      long reportId = Long.valueOf(metadataMap.get(BirtUiModule.UPLOAD_REPORT_ID_FIELD));
+      String reportName = uploadedFile.getFileName();
+      String reportContents = new String(uploadedFile.getFileBytes());
 
-		SecurityService securityService = securityServiceProvider.get();
-		securityService.assertUserLoggedIn();
+      if (null == reportName || null == reportContents || reportContents.isEmpty() || reportName.isEmpty())
+         return null;
 
-		ReportService reportService = reportServiceProvider.get();
-		AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
+      if (!reportName.endsWith(".rptdesign"))
+         throw new RuntimeException("Expectet .rptdesign file");
 
-		securityService.assertActions(rmn, UpdateAction.class);
+      SecurityService securityService = securityServiceProvider.get();
+      securityService.assertUserLoggedIn();
 
-		if(rmn instanceof BirtReport){
-			BirtReport birtReport = (BirtReport) rmn;
+      ReportService reportService = reportServiceProvider.get();
+      AbstractReportManagerNode rmn = reportService.getNodeById(reportId);
 
-			BirtReportFile oldFile = birtReport.getReportFile();
+      securityService.assertActions(rmn, UpdateAction.class);
 
-			BirtReportFile reportFile = new BirtReportFile();
-			reportFile.setName(reportName);
-			reportFile.setContent(reportContents);
+      if (rmn instanceof BirtReport) {
+         BirtReport birtReport = (BirtReport) rmn;
 
-			birtReport.setReportFile(reportFile);
+         BirtReportFile oldFile = birtReport.getReportFile();
 
-			/* delete old file */
-			if(null != oldFile){
-				BirtReportService service = birtReportServiceProvider.get();
-				service.remove(oldFile);
-			}
+         BirtReportFile reportFile = new BirtReportFile();
+         reportFile.setName(reportName);
+         reportFile.setContent(reportContents);
 
-			/* merge new file */
-			reportService.merge(birtReport);
-		}
-		
-		return null;
-	}
+         birtReport.setReportFile(reportFile);
 
+         /* delete old file */
+         if (null != oldFile) {
+            BirtReportService service = birtReportServiceProvider.get();
+            service.remove(oldFile);
+         }
+
+         /* merge new file */
+         reportService.merge(birtReport);
+      }
+
+      return null;
+   }
 
 }

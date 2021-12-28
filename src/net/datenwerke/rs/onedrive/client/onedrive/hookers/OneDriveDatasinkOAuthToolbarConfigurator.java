@@ -32,12 +32,8 @@ public class OneDriveDatasinkOAuthToolbarConfigurator implements MainPanelViewTo
    private final OAuthDao oAuthDao;
 
    @Inject
-   public OneDriveDatasinkOAuthToolbarConfigurator(
-         ToolbarService toolbarUtils, 
-         OneDriveDao oneDriveDao,
-         UtilsUIService utilsUiService,
-         OAuthDao oAuthDao
-         ) {
+   public OneDriveDatasinkOAuthToolbarConfigurator(ToolbarService toolbarUtils, OneDriveDao oneDriveDao,
+         UtilsUIService utilsUiService, OAuthDao oAuthDao) {
       this.toolbarUtils = toolbarUtils;
       this.utilsUiService = utilsUiService;
       this.oAuthDao = oAuthDao;
@@ -65,7 +61,7 @@ public class OneDriveDatasinkOAuthToolbarConfigurator implements MainPanelViewTo
       oAuthDao.generateAuthenticationUrl(oneDriveDatasinkDto, new RsAsyncCallback<OAuthAuthenticationUriInfo>() {
          @Override
          public void onSuccess(OAuthAuthenticationUriInfo result) {
-            
+
             final DwWindow window = new DwWindow();
             window.setHeading(BaseMessages.INSTANCE.datasinkOauth2AuthenticationSetup());
             window.setSize(600, 190);
@@ -84,7 +80,8 @@ public class OneDriveDatasinkOAuthToolbarConfigurator implements MainPanelViewTo
             hlc.add(textRedirectUri);
 
             DwTextButton authenticationBtn = new DwTextButton(BaseMessages.INSTANCE.oauthStart());
-            authenticationBtn.addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
+            authenticationBtn
+                  .addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
 
             window.addButton(authenticationBtn);
 

@@ -7,11 +7,11 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.hooks
 
 public class InExpressionHandler implements ExpressionTokenHandlerHook {
 
-	@Override
-	public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer, String lookaheadChar) {
-		strToken = strToken.toLowerCase();
-		return "in".equals(strToken) ? new InExpressionToken() :
-			   null;
-	}
+   @Override
+   public ExpressionToken generateToken(String strToken, ExpressionTokenizer expressionTokenizer,
+         String lookaheadChar) {
+      strToken = strToken.toLowerCase();
+      return "in".equals(strToken) ? new InExpressionToken() : null;
+   }
 
 }

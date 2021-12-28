@@ -7,7 +7,6 @@ import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 
 public interface DatasourceTesterRPCServiceAsync {
 
-	Request testConnection(DatabaseDatasourceDto databaseDto,
-			AsyncCallback<Boolean> callback);
+   Request testConnection(DatabaseDatasourceDto databaseDto, AsyncCallback<Boolean> callback);
 
 }

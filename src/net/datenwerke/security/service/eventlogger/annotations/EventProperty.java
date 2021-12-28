@@ -10,7 +10,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface EventProperty {
-	String key();
-	String value() default "";
-	String valueKey() default "";
+   String key();
+
+   String value() default "";
+
+   String valueKey() default "";
 }

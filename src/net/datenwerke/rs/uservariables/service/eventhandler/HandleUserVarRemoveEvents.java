@@ -15,24 +15,24 @@ import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
 public class HandleUserVarRemoveEvents implements EventHandler<RemoveEntityEvent> {
 
-	private final UserVariableService userVarService;
+   private final UserVariableService userVarService;
 
-	@Inject
-	public HandleUserVarRemoveEvents(UserVariableService userVarService) {
-		this.userVarService = userVarService;
-	}
+   @Inject
+   public HandleUserVarRemoveEvents(UserVariableService userVarService) {
+      this.userVarService = userVarService;
+   }
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		UserVariableDefinition userVar = (UserVariableDefinition) event.getObject();
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      UserVariableDefinition userVar = (UserVariableDefinition) event.getObject();
 
-		Collection<UserVariableInstance> instances = userVarService.getInstancesForDefinition(userVar);
-		if(null != instances && instances.size() > 0)
-			throw new NeedForcefulDeleteException(UserVarMessages.INSTANCE.userVarHasInstances());
-		
-		Collection<UserVariableParameterDefinition> params = userVarService.getParametersFor(userVar);
-		if(null != params && params.size() > 0)
-			throw new NeedForcefulDeleteException(UserVarMessages.INSTANCE.userVarHasParameters());
-	}
+      Collection<UserVariableInstance> instances = userVarService.getInstancesForDefinition(userVar);
+      if (null != instances && instances.size() > 0)
+         throw new NeedForcefulDeleteException(UserVarMessages.INSTANCE.userVarHasInstances());
+
+      Collection<UserVariableParameterDefinition> params = userVarService.getParametersFor(userVar);
+      if (null != params && params.size() > 0)
+         throw new NeedForcefulDeleteException(UserVarMessages.INSTANCE.userVarHasParameters());
+   }
 
 }

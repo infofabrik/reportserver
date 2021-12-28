@@ -11,26 +11,25 @@ import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook
  */
 public class ComplexCondition implements SimpleFormCondition {
 
-	private final String fieldKey;
-	private final SimpleFormCondition condition;
-	
-	public ComplexCondition(String fieldKey, SimpleFormCondition condition){
-		this.fieldKey = fieldKey;
-		this.condition = condition;
-	}
+   private final String fieldKey;
+   private final SimpleFormCondition condition;
 
-	public String getFieldKey() {
-		return fieldKey;
-	}
+   public ComplexCondition(String fieldKey, SimpleFormCondition condition) {
+      this.fieldKey = fieldKey;
+      this.condition = condition;
+   }
 
-	public SimpleFormCondition getCondition() {
-		return condition;
-	}
+   public String getFieldKey() {
+      return fieldKey;
+   }
 
-	@Override
-	public boolean isMet(Widget formField,
-			FormFieldProviderHook responsibleHook, SimpleForm form) {
-		return getCondition().isMet(form.getField(fieldKey), form.getResponsibleHook(fieldKey), form);
-	}
-	
+   public SimpleFormCondition getCondition() {
+      return condition;
+   }
+
+   @Override
+   public boolean isMet(Widget formField, FormFieldProviderHook responsibleHook, SimpleForm form) {
+      return getCondition().isMet(form.getField(fieldKey), form.getResponsibleHook(fieldKey), form);
+   }
+
 }

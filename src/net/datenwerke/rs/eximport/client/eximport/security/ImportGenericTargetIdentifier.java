@@ -8,18 +8,15 @@ import net.datenwerke.security.client.security.GenericTargetIdentifier;
 import net.datenwerke.security.service.security.annotation.GenericTargetIdentifierMapper;
 
 /**
- * Transport object to identify the corresponding generic security target. 
+ * Transport object to identify the corresponding generic security target.
  *
  */
-@GenericTargetIdentifierMapper(ImportSecurityTarget.class) 
-public class ImportGenericTargetIdentifier implements GenericTargetIdentifier{
+@GenericTargetIdentifierMapper(ImportSecurityTarget.class)
+public class ImportGenericTargetIdentifier implements GenericTargetIdentifier {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7511693765108572827L;
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -7511693765108572827L;
 
-
-
-	
 }

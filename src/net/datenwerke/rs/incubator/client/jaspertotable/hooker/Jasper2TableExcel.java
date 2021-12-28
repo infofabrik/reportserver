@@ -13,19 +13,20 @@ import net.datenwerke.rs.incubator.client.jaspertotable.locale.JasperToTableMess
  */
 public class Jasper2TableExcel extends Export2Excel {
 
-	public String getExportDescription() {
-		return JasperToTableMessages.INSTANCE.exportDescription(); 
-	}
+   public String getExportDescription() {
+      return JasperToTableMessages.INSTANCE.exportDescription();
+   }
 
-	public String getExportTitle() {
-		return JasperToTableMessages.INSTANCE.exportDescription();
-	}
+   public String getExportTitle() {
+      return JasperToTableMessages.INSTANCE.exportDescription();
+   }
 
-	public String getOutputFormat() {
-		return "TABLE_EXCEL"; //$NON-NLS-1$
-	}
-	
-	public boolean consumes(ReportDto report) {
-		return report instanceof JasperReportDto && ((ReportDtoDec)report).hasReportPropertyWithName(JasperToTableUIModule.PROPERTY_NAME);
-	}
+   public String getOutputFormat() {
+      return "TABLE_EXCEL"; //$NON-NLS-1$
+   }
+
+   public boolean consumes(ReportDto report) {
+      return report instanceof JasperReportDto
+            && ((ReportDtoDec) report).hasReportPropertyWithName(JasperToTableUIModule.PROPERTY_NAME);
+   }
 }

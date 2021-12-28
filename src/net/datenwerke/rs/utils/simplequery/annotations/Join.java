@@ -11,15 +11,13 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Join {
 
-	public enum Type{
-		INNER,
-		LEFT,
-		RIGHT
-	}
-	
-	String joinAttribute();
-	
-	Predicate[] where() default {};
-	
-	Join.Type type() default Join.Type.INNER; 
+   public enum Type {
+      INNER, LEFT, RIGHT
+   }
+
+   String joinAttribute();
+
+   Predicate[] where() default {};
+
+   Join.Type type() default Join.Type.INNER;
 }

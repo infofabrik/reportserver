@@ -14,23 +14,21 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.TextAreaEditorDto;
  */
 public class TextAreaEditorDtoDec extends TextAreaEditorDto {
 
+   private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
+   public TextAreaEditorDtoDec() {
+      super();
+   }
 
-	public TextAreaEditorDtoDec() {
-		super();
-	}
+   @Override
+   public Field addEditor(ColumnConfig columnConfig, GridEditing<GridEditorRecordDto> editing) {
+      TextArea ta = new TextArea();
+      editing.addEditor(columnConfig, ta);
+      return ta;
+   }
 
-	@Override
-	public Field addEditor(ColumnConfig columnConfig,
-			GridEditing<GridEditorRecordDto> editing) {
-		TextArea ta = new TextArea();
-		editing.addEditor(columnConfig, ta);
-		return ta;
-	}
-	
-	@Override
-	public boolean isRowEditable() {
-		return false;
-	}
+   @Override
+   public boolean isRowEditable() {
+      return false;
+   }
 }

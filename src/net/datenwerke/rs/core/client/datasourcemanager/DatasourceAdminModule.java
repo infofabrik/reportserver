@@ -16,34 +16,32 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
  */
 public class DatasourceAdminModule implements AdminModule {
 
-	final private Provider<DatasourceManagerPanel> datasourceManagerPanelProvider;
-	
-	@Inject
-	public DatasourceAdminModule(
-		Provider<DatasourceManagerPanel> datasourceManagerPanel
-		){
-		
-		/* store objects */
-		this.datasourceManagerPanelProvider = datasourceManagerPanel;
-	}
-	
-	@Override
-	public ImageResource getNavigationIcon(){
-		return BaseIcon.DATABASE.toImageResource();
-	}
-	
-	@Override
-	public String getNavigationText() {
-		return DatasourcesMessages.INSTANCE.adminModuleName();
-	}
+   final private Provider<DatasourceManagerPanel> datasourceManagerPanelProvider;
 
-	@Override
-	public Widget getMainWidget() {
-		return datasourceManagerPanelProvider.get();
-	}
-	
-	@Override
-	public void notifyOfSelection() {
-		// ignore
-	}
+   @Inject
+   public DatasourceAdminModule(Provider<DatasourceManagerPanel> datasourceManagerPanel) {
+
+      /* store objects */
+      this.datasourceManagerPanelProvider = datasourceManagerPanel;
+   }
+
+   @Override
+   public ImageResource getNavigationIcon() {
+      return BaseIcon.DATABASE.toImageResource();
+   }
+
+   @Override
+   public String getNavigationText() {
+      return DatasourcesMessages.INSTANCE.adminModuleName();
+   }
+
+   @Override
+   public Widget getMainWidget() {
+      return datasourceManagerPanelProvider.get();
+   }
+
+   @Override
+   public void notifyOfSelection() {
+      // ignore
+   }
 }

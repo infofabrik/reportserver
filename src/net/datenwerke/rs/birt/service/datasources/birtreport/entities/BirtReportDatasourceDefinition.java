@@ -13,31 +13,28 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefin
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinitionConfig;
 
 @Entity
-@Table(name="BIRT_REPORT_DATASRC")
+@Table(name = "BIRT_REPORT_DATASRC")
 @Audited
-@GenerateDto(
-	dtoPackage="net.datenwerke.rs.birt.client.datasources.dto"
-)
+@GenerateDto(dtoPackage = "net.datenwerke.rs.birt.client.datasources.dto")
 public class BirtReportDatasourceDefinition extends DatasourceDefinition implements CacheableDatasource {
 
-	private static final long serialVersionUID = -2945350730488549534L;
+   private static final long serialVersionUID = -2945350730488549534L;
 
-	@Override
-	@Transient
-	public DatasourceDefinitionConfig createConfigObject() {
-		return new BirtReportDatasourceConfig();
-	}
-	
-	@ExposeToClient
-	private int databaseCache = 0;
+   @Override
+   @Transient
+   public DatasourceDefinitionConfig createConfigObject() {
+      return new BirtReportDatasourceConfig();
+   }
 
-	public int getDatabaseCache() {
-		return databaseCache;
-	}
+   @ExposeToClient
+   private int databaseCache = 0;
 
-	public void setDatabaseCache(int databaseCache) {
-		this.databaseCache = databaseCache;
-	}
+   public int getDatabaseCache() {
+      return databaseCache;
+   }
 
+   public void setDatabaseCache(int databaseCache) {
+      this.databaseCache = databaseCache;
+   }
 
 }

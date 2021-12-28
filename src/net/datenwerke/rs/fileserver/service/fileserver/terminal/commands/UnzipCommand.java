@@ -27,73 +27,62 @@ import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class UnzipCommand implements TerminalCommandHook {
-	
-	private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	private static final String BASE_COMMAND = "unzip";
-	private final FileServerService fileServerService;
-	private final ZipUtilsService zipUtilsService;
-	private final BasepathZipExtractConfigFactory extractConfigFactory;
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-	@Inject
-	public UnzipCommand(
-			FileServerService fileServerService,
-			ZipUtilsService zipUtilsService, 
-			BasepathZipExtractConfigFactory extractConfigFactory
-			) {
-		this.fileServerService = fileServerService;
-		this.zipUtilsService = zipUtilsService;
-		this.extractConfigFactory = extractConfigFactory;
-	}
+   private static final String BASE_COMMAND = "unzip";
+   private final FileServerService fileServerService;
+   private final ZipUtilsService zipUtilsService;
+   private final BasepathZipExtractConfigFactory extractConfigFactory;
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Inject
+   public UnzipCommand(FileServerService fileServerService, ZipUtilsService zipUtilsService,
+         BasepathZipExtractConfigFactory extractConfigFactory) {
+      this.fileServerService = fileServerService;
+      this.zipUtilsService = zipUtilsService;
+      this.extractConfigFactory = extractConfigFactory;
+   }
 
-	@Override
-	@CliHelpMessage(
-			messageClass = FileserverMessages.class,
-			name = BASE_COMMAND,
-			description = "commandUnzip_description"
-			)
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		try {
-			Object archive = session.getObjectResolver().getObject(parser.getArgumentNr(1), Read.class);
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-			VFSLocation location = session.getFileSystem().getCurrentLocation();
+   @Override
+   @CliHelpMessage(messageClass = FileserverMessages.class, name = BASE_COMMAND, description = "commandUnzip_description")
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      try {
+         Object archive = session.getObjectResolver().getObject(parser.getArgumentNr(1), Read.class);
 
-			if(! (location.getFilesystemManager() instanceof FileServerVfs))
-				return new CommandResult("wrong filesystem");
+         VFSLocation location = session.getFileSystem().getCurrentLocation();
 
-			FileServerFolder parent = null;
-			try {
-				parent = (FileServerFolder) location.getObject();
-			} catch (VFSException e) {
-				return new CommandResult(e.getMessage());
-			} catch(ClassCastException e){
-				return new CommandResult("Can only unzip to folder");
-			}
+         if (!(location.getFilesystemManager() instanceof FileServerVfs))
+            return new CommandResult("wrong filesystem");
 
-			ZipExtractionConfig zec = extractConfigFactory.create(parent);
+         FileServerFolder parent = null;
+         try {
+            parent = (FileServerFolder) location.getObject();
+         } catch (VFSException e) {
+            return new CommandResult(e.getMessage());
+         } catch (ClassCastException e) {
+            return new CommandResult("Can only unzip to folder");
+         }
 
-			if(archive instanceof FileServerFile){
-				zipUtilsService.extractZip(((FileServerFile) archive).getData(), zec);
-			}
-		} catch (IOException e) {
-			logger.warn( e.getMessage(), e);
-		}
+         ZipExtractionConfig zec = extractConfigFactory.create(parent);
 
-		return new CommandResult("");
-	}
+         if (archive instanceof FileServerFile) {
+            zipUtilsService.extractZip(((FileServerFile) archive).getData(), zec);
+         }
+      } catch (IOException e) {
+         logger.warn(e.getMessage(), e);
+      }
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+      return new CommandResult("");
+   }
 
-	
-
-	
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

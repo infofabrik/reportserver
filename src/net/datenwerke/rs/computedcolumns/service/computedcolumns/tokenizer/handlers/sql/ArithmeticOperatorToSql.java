@@ -8,28 +8,27 @@ import net.datenwerke.rs.computedcolumns.service.computedcolumns.tokenizer.handl
 
 public class ArithmeticOperatorToSql implements ExpressionTokenToSqlHook {
 
-	@Override
-	public boolean consumes(ExpressionToken token) {
-		return token instanceof ArithmeticOperatorExpressionToken;
-	}
+   @Override
+   public boolean consumes(ExpressionToken token) {
+      return token instanceof ArithmeticOperatorExpressionToken;
+   }
 
-	@Override
-	public String handleToken(ExpressionToken token,
-			Iterator<ExpressionToken> tokenIt) {
-		switch (((ArithmeticOperatorExpressionToken)token).getType()){
-		case PLUS:
-			return "+";
-		case MINUS:
-			return "-";
-		case TIMES:
-			return "*";
-		case DIVIDES:
-			return "/";
-		case POWER:
-			return "**";
-		default:
-			throw new IllegalArgumentException();
-		}
-	}
+   @Override
+   public String handleToken(ExpressionToken token, Iterator<ExpressionToken> tokenIt) {
+      switch (((ArithmeticOperatorExpressionToken) token).getType()) {
+      case PLUS:
+         return "+";
+      case MINUS:
+         return "-";
+      case TIMES:
+         return "*";
+      case DIVIDES:
+         return "/";
+      case POWER:
+         return "**";
+      default:
+         throw new IllegalArgumentException();
+      }
+   }
 
 }

@@ -6,11 +6,11 @@ import com.google.inject.AbstractModule;
 
 public class HttpTreeImportModule extends AbstractModule {
 
-	@Override
-	protected void configure() {
-		/* bind http config to session */
-		bind(HttpTreeImportService.class).to(HttpTreeImportServiceImpl.class).in(Singleton.class);
-		
-	}
+   @Override
+   protected void configure() {
+      /* bind http config to session */
+      bind(HttpTreeImportService.class).to(HttpTreeImportServiceImpl.class).in(Singleton.class);
+
+   }
 
 }

@@ -14,37 +14,36 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 
 public interface ReportExecutorUIService {
 
-	public void executeReport(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config, ReportViewConfiguration... viewConfigs);
-	
-	public Component getExecuteReportComponent(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config, ReportViewConfiguration... viewConfigs);
-	
-	public PreviewViewFactory getPreviewReportComponent(ReportDto report);
+   public void executeReport(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config,
+         ReportViewConfiguration... viewConfigs);
 
-	public String createExecuteReportToken(ReportDto report);
+   public Component getExecuteReportComponent(ReportDto report, ExecutorEventHandler eventHandler,
+         ExecuteReportConfiguration config, ReportViewConfiguration... viewConfigs);
 
-	public void executeReport(ReportDto node);
-	
+   public PreviewViewFactory getPreviewReportComponent(ReportDto report);
 
-	void executeReportDirectly(ReportDto report);
+   public String createExecuteReportToken(ReportDto report);
 
-	void executeReportDirectly(ReportDto report,
-			ExecutorEventHandler eventHandler,
-			ExecuteReportConfiguration config,
-			ReportViewConfiguration... viewConfigs);
+   public void executeReport(ReportDto node);
 
-	Component getExecuteReportComponent(ReportDto report);
-	
-	Component getExecuteReportComponent(ReportDto report, boolean showVariantStorer);
-	
-	public ReportExecuteAreaModule getActiveReportExecuteAreaModule();
+   void executeReportDirectly(ReportDto report);
 
-	public AbstractReportPreviewView getPdfPreviewView();
-	
-	public void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken, String name, String description,
-			AsyncCallback<ReportDto> callback);
-	
-	public Integer getDefaultColumnWidth();
-	
-	public Integer getMaxColumnWidth();
+   void executeReportDirectly(ReportDto report, ExecutorEventHandler eventHandler, ExecuteReportConfiguration config,
+         ReportViewConfiguration... viewConfigs);
+
+   Component getExecuteReportComponent(ReportDto report);
+
+   Component getExecuteReportComponent(ReportDto report, boolean showVariantStorer);
+
+   public ReportExecuteAreaModule getActiveReportExecuteAreaModule();
+
+   public AbstractReportPreviewView getPdfPreviewView();
+
+   public void createNewVariant(ReportDto report, TeamSpaceDto teamSpace, TsDiskFolderDto folder, String executeToken,
+         String name, String description, AsyncCallback<ReportDto> callback);
+
+   public Integer getDefaultColumnWidth();
+
+   public Integer getMaxColumnWidth();
 
 }

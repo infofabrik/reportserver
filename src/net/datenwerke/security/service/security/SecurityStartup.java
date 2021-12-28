@@ -11,19 +11,14 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 @Singleton
 public class SecurityStartup {
 
-	@Inject
-	public SecurityStartup(
-		EventBus eventBus,
-		SecurityIntegrityValidator integrityValidator,
-		SecurityService securityService
-		){
-		
-		
-		/* attach validator */
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class, integrityValidator);
-		
-		
-		/* register securee */
-		securityService.registerSecuree(new SecurityServiceSecuree());
-	}
+   @Inject
+   public SecurityStartup(EventBus eventBus, SecurityIntegrityValidator integrityValidator,
+         SecurityService securityService) {
+
+      /* attach validator */
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class, integrityValidator);
+
+      /* register securee */
+      securityService.registerSecuree(new SecurityServiceSecuree());
+   }
 }

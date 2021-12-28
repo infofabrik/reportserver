@@ -46,153 +46,146 @@ import net.datenwerke.security.client.security.SecurityUIService;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
 
 public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbarHook {
-	
-	private final Provider<ScheduleDialog> multiDialogProvider;
-	private final SchedulerDao schedulerDao;
-	private final SecurityUIService securityService;
-	private final SendToDao sendToDao;
-	
-	private final ReportExporterUIService reportExporterService;
-	private ScheduleDialog multiDialog;
-	
-	@Inject
-	public ReportViewScheduleButtonHooker(
-		Provider<ScheduleDialog> multiDialogProvider,
-		SchedulerDao schedulerDao,
-		SecurityUIService securityService,
-		ReportExporterUIService reportExporterService,
-		SendToDao sendToDao
-		){
-		
-		/* store objects */
-		this.multiDialogProvider = multiDialogProvider;
-		this.schedulerDao = schedulerDao;
-		this.securityService = securityService;
-		this.reportExporterService = reportExporterService;
-		this.sendToDao = sendToDao;
-	}
-	
-	@Override
-	public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report, ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
-		if(! securityService.hasRight(SchedulingBasicGenericTargetIdentifier.class, ExecuteDto.class))
-			return false;
-		
-		/* only if report can be exported */
-		List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
-		if(! exporters.iterator().hasNext())
-			return false;
-		
-		for(ReportViewConfiguration config : mainPanel.getViewConfigs())
-			if(config instanceof InlineReportView)
-				return false;
-		
-		/* repeated dialog */
-		DwTextButton schedulerDialogBtn = new DwTextButton(SchedulerMessages.INSTANCE.repeatedly(), BaseIcon.CALENDAR);
-		schedulerDialogBtn.addSelectHandler(new SelectHandler() {
-			@Override
-			public void onSelect(SelectEvent event) {
-				if(! report.isModified()) {
-					ArrayList<String> errorMsgs = new ArrayList<String>();
-					for(ReportExecutorMainPanelView view : mainPanel.getViews()) {
-						errorMsgs.addAll(view.validateView());
-					}
-					if(null != errorMsgs && ! errorMsgs.isEmpty()){
-						String errorMsg = "";
-						boolean first = true;
-						for(String msg : errorMsgs){
-							if(first)
-								first = false;
-							else
-								errorMsg += "<br/>";
-							errorMsg += msg;
-						}
-						
-						new DwAlertMessageBox(BaseMessages.INSTANCE.error(), errorMsg).show();
-					} else {
-						displayDialog(report, mainPanel, mainPanel.getViewConfigs());
-					}
-				} else {
 
-					ConfirmMessageBox cmb = new DwConfirmMessageBox(SchedulerMessages.INSTANCE.reportChangedInfoHeader(), SchedulerMessages.INSTANCE.reportChangedInfoMessage());
-					cmb.addDialogHideHandler(new DialogHideHandler() {
-						@Override
-						public void onDialogHide(DialogHideEvent event) {
-							if (event.getHideButton() == PredefinedButton.YES) 
-								displayDialog(report, mainPanel, mainPanel.getViewConfigs());	
+   private final Provider<ScheduleDialog> multiDialogProvider;
+   private final SchedulerDao schedulerDao;
+   private final SecurityUIService securityService;
+   private final SendToDao sendToDao;
 
-						}
-					});
-						
-					cmb.show();
-				}
-				
-				
-			}
-		});
-		toolbar.add(schedulerDialogBtn);
+   private final ReportExporterUIService reportExporterService;
+   private ScheduleDialog multiDialog;
 
-		if(! (report instanceof ReportVariantDto) && !((ReportDtoDec)report).isBaseReportExecutable())
-			schedulerDialogBtn.disable();
-		
-		return true;
-	}
+   @Inject
+   public ReportViewScheduleButtonHooker(Provider<ScheduleDialog> multiDialogProvider, SchedulerDao schedulerDao,
+         SecurityUIService securityService, ReportExporterUIService reportExporterService, SendToDao sendToDao) {
 
-	protected void displayDialog(
-			final ReportDto report,
-			final ReportExecutorMainPanel mainPanel, 
-			final Collection<ReportViewConfiguration> viewConfigs) {
-		
-		mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
-		sendToDao.loadClientConfigsFor(report, new RsAsyncCallback<ArrayList<SendToClientConfig>>(){
-			@Override
-			public void onSuccess(ArrayList<SendToClientConfig> result) {
-				mainPanel.unmask();
-				doDisplayDialog(report, viewConfigs, result);
-			}
-			@Override
-			public void onFailure(Throwable caught) {
-				mainPanel.unmask();
-			}
-		});
-		
-		
-	}
+      /* store objects */
+      this.multiDialogProvider = multiDialogProvider;
+      this.schedulerDao = schedulerDao;
+      this.securityService = securityService;
+      this.reportExporterService = reportExporterService;
+      this.sendToDao = sendToDao;
+   }
 
-	protected void doDisplayDialog(ReportDto report,
-			Collection<ReportViewConfiguration> viewConfigs,
-			ArrayList<SendToClientConfig> sendToConfigs) {
-		if(null == multiDialog)
-			multiDialog = multiDialogProvider.get();
-		
-		multiDialog.displayDialog(Optional.ofNullable(report), viewConfigs, sendToConfigs, new DialogCallback() {
-			@Override
-			public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
-				dialog.mask(BaseMessages.INSTANCE.storingMsg());
-				schedulerDao.schedule(configDto, new NotamCallback<Void>(SchedulerMessages.INSTANCE.scheduled()){
-					@Override
-					public void doOnSuccess(Void result) {
-						dialog.hide();
-					}
-					@Override
-					public void doOnFailure(Throwable caught) {
-						super.doOnFailure(caught);
-						dialog.unmask();
-					}
-				});						
-			}
-		});
-	}
+   @Override
+   public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
+         ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
+      if (!securityService.hasRight(SchedulingBasicGenericTargetIdentifier.class, ExecuteDto.class))
+         return false;
 
-	@Override
-	public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report, ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-		return false;
-	}
+      /* only if report can be exported */
+      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
+      if (!exporters.iterator().hasNext())
+         return false;
 
-	@Override
-	public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report,
-			ReportExecutorInformation info) {
-		
-	}
+      for (ReportViewConfiguration config : mainPanel.getViewConfigs())
+         if (config instanceof InlineReportView)
+            return false;
 
+      /* repeated dialog */
+      DwTextButton schedulerDialogBtn = new DwTextButton(SchedulerMessages.INSTANCE.repeatedly(), BaseIcon.CALENDAR);
+      schedulerDialogBtn.addSelectHandler(new SelectHandler() {
+         @Override
+         public void onSelect(SelectEvent event) {
+            if (!report.isModified()) {
+               ArrayList<String> errorMsgs = new ArrayList<String>();
+               for (ReportExecutorMainPanelView view : mainPanel.getViews()) {
+                  errorMsgs.addAll(view.validateView());
+               }
+               if (null != errorMsgs && !errorMsgs.isEmpty()) {
+                  String errorMsg = "";
+                  boolean first = true;
+                  for (String msg : errorMsgs) {
+                     if (first)
+                        first = false;
+                     else
+                        errorMsg += "<br/>";
+                     errorMsg += msg;
+                  }
+
+                  new DwAlertMessageBox(BaseMessages.INSTANCE.error(), errorMsg).show();
+               } else {
+                  displayDialog(report, mainPanel, mainPanel.getViewConfigs());
+               }
+            } else {
+
+               ConfirmMessageBox cmb = new DwConfirmMessageBox(SchedulerMessages.INSTANCE.reportChangedInfoHeader(),
+                     SchedulerMessages.INSTANCE.reportChangedInfoMessage());
+               cmb.addDialogHideHandler(new DialogHideHandler() {
+                  @Override
+                  public void onDialogHide(DialogHideEvent event) {
+                     if (event.getHideButton() == PredefinedButton.YES)
+                        displayDialog(report, mainPanel, mainPanel.getViewConfigs());
+
+                  }
+               });
+
+               cmb.show();
+            }
+
+         }
+      });
+      toolbar.add(schedulerDialogBtn);
+
+      if (!(report instanceof ReportVariantDto) && !((ReportDtoDec) report).isBaseReportExecutable())
+         schedulerDialogBtn.disable();
+
+      return true;
+   }
+
+   protected void displayDialog(final ReportDto report, final ReportExecutorMainPanel mainPanel,
+         final Collection<ReportViewConfiguration> viewConfigs) {
+
+      mainPanel.mask(BaseMessages.INSTANCE.loadingMsg());
+      sendToDao.loadClientConfigsFor(report, new RsAsyncCallback<ArrayList<SendToClientConfig>>() {
+         @Override
+         public void onSuccess(ArrayList<SendToClientConfig> result) {
+            mainPanel.unmask();
+            doDisplayDialog(report, viewConfigs, result);
+         }
+
+         @Override
+         public void onFailure(Throwable caught) {
+            mainPanel.unmask();
+         }
+      });
+
+   }
+
+   protected void doDisplayDialog(ReportDto report, Collection<ReportViewConfiguration> viewConfigs,
+         ArrayList<SendToClientConfig> sendToConfigs) {
+      if (null == multiDialog)
+         multiDialog = multiDialogProvider.get();
+
+      multiDialog.displayDialog(Optional.ofNullable(report), viewConfigs, sendToConfigs, new DialogCallback() {
+         @Override
+         public void finished(ReportScheduleDefinition configDto, final WizardDialog dialog) {
+            dialog.mask(BaseMessages.INSTANCE.storingMsg());
+            schedulerDao.schedule(configDto, new NotamCallback<Void>(SchedulerMessages.INSTANCE.scheduled()) {
+               @Override
+               public void doOnSuccess(Void result) {
+                  dialog.hide();
+               }
+
+               @Override
+               public void doOnFailure(Throwable caught) {
+                  super.doOnFailure(caught);
+                  dialog.unmask();
+               }
+            });
+         }
+      });
+   }
+
+   @Override
+   public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report,
+         ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
+      return false;
+   }
+
+   @Override
+   public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
+
+   }
 
 }

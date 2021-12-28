@@ -8,7 +8,7 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFai
 @RemoteServiceRelativePath("datenwerke/suuser")
 public interface SuUserRpcService extends RemoteService {
 
-	public void su(String username) throws ServerCallFailedException;
+   public void su(String username) throws ServerCallFailedException;
 
-	void su(Long id) throws ServerCallFailedException;
+   void su(Long id) throws ServerCallFailedException;
 }

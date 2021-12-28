@@ -12,29 +12,29 @@ import net.datenwerke.scheduler.service.scheduler.SchedulerService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 
-public class HandleReportForceRemoveEventHandler implements
-		EventHandler<ForceRemoveEntityEvent> {
+public class HandleReportForceRemoveEventHandler implements EventHandler<ForceRemoveEntityEvent> {
 
-	@Inject private SchedulerService scheduler;
-	
-	@Override
-	public void handle(ForceRemoveEntityEvent event) {
-		Report report = (Report) event.getObject();
-		
-		ReportServerJobFilter filter = new ReportServerJobFilter();
-		filter.setJobType(ReportExecuteJob.class);
-		filter.setActive(true);
-		filter.setInActive(false);
-		filter.setAnyUser();
-		filter.addReport(report);
-		
-		List<AbstractJob> jobs = scheduler.getJobsBy(filter);
-		if(null != jobs && ! jobs.isEmpty()){
-			for(AbstractJob job : jobs){
-				((ReportExecuteJob)job).setReport(null);
-				scheduler.unschedule(job);
-			}
-		}
-	}
+   @Inject
+   private SchedulerService scheduler;
+
+   @Override
+   public void handle(ForceRemoveEntityEvent event) {
+      Report report = (Report) event.getObject();
+
+      ReportServerJobFilter filter = new ReportServerJobFilter();
+      filter.setJobType(ReportExecuteJob.class);
+      filter.setActive(true);
+      filter.setInActive(false);
+      filter.setAnyUser();
+      filter.addReport(report);
+
+      List<AbstractJob> jobs = scheduler.getJobsBy(filter);
+      if (null != jobs && !jobs.isEmpty()) {
+         for (AbstractJob job : jobs) {
+            ((ReportExecuteJob) job).setReport(null);
+            scheduler.unschedule(job);
+         }
+      }
+   }
 
 }

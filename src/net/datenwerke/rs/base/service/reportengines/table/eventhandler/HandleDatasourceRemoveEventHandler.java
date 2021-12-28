@@ -12,30 +12,30 @@ import net.datenwerke.rs.utils.eventbus.EventHandler;
 import net.datenwerke.rs.utils.exception.exceptions.NeedForcefulDeleteException;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 
-public class HandleDatasourceRemoveEventHandler implements
-		EventHandler<RemoveEntityEvent> {
+public class HandleDatasourceRemoveEventHandler implements EventHandler<RemoveEntityEvent> {
 
-	private final TableReportUtils tableReportUtils;
-	
-	@Inject
-	public HandleDatasourceRemoveEventHandler(TableReportUtils tableReportUtils) {
-		/* store obejcts */
-		this.tableReportUtils = tableReportUtils;
-	}
+   private final TableReportUtils tableReportUtils;
 
-	@Override
-	public void handle(RemoveEntityEvent event) {
-		DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
-		
-		List<TableReport> reports = tableReportUtils.getReportsWithMetadataDatasource(ds);
-		if(null != reports && ! reports.isEmpty()){
-			Iterator<TableReport> it = reports.iterator();
-			StringBuilder error = new StringBuilder("Datasource " + ds.getId() + " is used in table reports. Report Ids: " + it.next().getId());
-			while(it.hasNext())
-				error.append(", ").append(it.next().getId());
-			
-			throw new NeedForcefulDeleteException(error.toString());
-		}
-	}
+   @Inject
+   public HandleDatasourceRemoveEventHandler(TableReportUtils tableReportUtils) {
+      /* store obejcts */
+      this.tableReportUtils = tableReportUtils;
+   }
+
+   @Override
+   public void handle(RemoveEntityEvent event) {
+      DatasourceDefinition ds = (DatasourceDefinition) event.getObject();
+
+      List<TableReport> reports = tableReportUtils.getReportsWithMetadataDatasource(ds);
+      if (null != reports && !reports.isEmpty()) {
+         Iterator<TableReport> it = reports.iterator();
+         StringBuilder error = new StringBuilder(
+               "Datasource " + ds.getId() + " is used in table reports. Report Ids: " + it.next().getId());
+         while (it.hasNext())
+            error.append(", ").append(it.next().getId());
+
+         throw new NeedForcefulDeleteException(error.toString());
+      }
+   }
 
 }

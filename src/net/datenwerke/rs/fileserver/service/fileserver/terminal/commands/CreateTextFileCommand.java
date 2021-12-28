@@ -21,92 +21,86 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.helper.PathHelper;
 
 public class CreateTextFileCommand implements TerminalCommandHook {
 
+   private static final String BASE_COMMAND = "createTextFile";
 
-	private static final String BASE_COMMAND = "createTextFile";
+   private final FileServerService fileService;
 
-	private final FileServerService fileService;
-	
-	@Inject
-	public CreateTextFileCommand(
-		FileServerService fileService	
-		){
-	
-		/* store objects */
-		this.fileService = fileService;
-	}
+   @Inject
+   public CreateTextFileCommand(FileServerService fileService) {
 
+      /* store objects */
+      this.fileService = fileService;
+   }
 
-	@Override
-	public boolean consumes(CommandParser parser, TerminalSession session) {
-		return BASE_COMMAND.equals(parser.getBaseCommand());
-	}
+   @Override
+   public boolean consumes(CommandParser parser, TerminalSession session) {
+      return BASE_COMMAND.equals(parser.getBaseCommand());
+   }
 
-	@Override
-	public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-		String completePath = parser.getArgumentNr(1);
-		
-		if (null == completePath)
-			throw new IllegalArgumentException("Expected filename");
-		
-		PathHelper helper = new PathHelper(completePath);
-		String path = helper.getPath();
-		String fileName = helper.getLastPathway();
-		
-		if(null == fileName || "".equals(fileName.trim()))
-			throw new IllegalArgumentException("Expected filename");
+   @Override
+   public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
+      String completePath = parser.getArgumentNr(1);
 
-		VFSLocation location;
-		if("".equals(path))
-			location = session.getFileSystem().getCurrentLocation();
-		else {
-			try {
-				location = session.getFileSystem().getLocation(path);
-			} catch (VFSException e1) {
-				throw new IllegalArgumentException("illegal path: " + path);
-			}
-		}
-		
-		if(! (location.getFilesystemManager() instanceof FileServerVfs))
-			return new CommandResult("wrong filesystem");
-		
-		/* check if file exists */
-		VirtualFileSystemDeamon vfs = session.getFileSystem();
-		VFSLocationInfo locationInfo = vfs.getLocationInfo(location);
-		for(VFSObjectInfo info : locationInfo.getChildInfos()){
-			if(fileName.equals(info.getName()))
-				return  new CommandResult("A file or folder with this name already exists");
-		}
-		
-		AbstractFileServerNode parent = null;
-		try {
-			parent = (AbstractFileServerNode) location.getObject();
-		} catch (VFSException e) {
-			return new CommandResult(e.getMessage());
-		}
-	
-		FileServerFile textFile = new FileServerFile();
-		textFile.setName(fileName);
-		if(null != parent)
-			parent.addChild(textFile);
-		
-		fileService.persist(textFile);
-		if(null != parent)
-			fileService.merge(parent);
-		
-		CommandResult result = new CommandResult("file created");
-		EditCommandResultExtension ext = new EditCommandResultExtension();
-		ext.setFile(textFile);
-		ext.setData("");
-		result.addExtension(ext);
-		
-		return result;
-	}
-	
+      if (null == completePath)
+         throw new IllegalArgumentException("Expected filename");
 
+      PathHelper helper = new PathHelper(completePath);
+      String path = helper.getPath();
+      String fileName = helper.getLastPathway();
 
-	@Override
-	public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-		autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-	}
+      if (null == fileName || "".equals(fileName.trim()))
+         throw new IllegalArgumentException("Expected filename");
+
+      VFSLocation location;
+      if ("".equals(path))
+         location = session.getFileSystem().getCurrentLocation();
+      else {
+         try {
+            location = session.getFileSystem().getLocation(path);
+         } catch (VFSException e1) {
+            throw new IllegalArgumentException("illegal path: " + path);
+         }
+      }
+
+      if (!(location.getFilesystemManager() instanceof FileServerVfs))
+         return new CommandResult("wrong filesystem");
+
+      /* check if file exists */
+      VirtualFileSystemDeamon vfs = session.getFileSystem();
+      VFSLocationInfo locationInfo = vfs.getLocationInfo(location);
+      for (VFSObjectInfo info : locationInfo.getChildInfos()) {
+         if (fileName.equals(info.getName()))
+            return new CommandResult("A file or folder with this name already exists");
+      }
+
+      AbstractFileServerNode parent = null;
+      try {
+         parent = (AbstractFileServerNode) location.getObject();
+      } catch (VFSException e) {
+         return new CommandResult(e.getMessage());
+      }
+
+      FileServerFile textFile = new FileServerFile();
+      textFile.setName(fileName);
+      if (null != parent)
+         parent.addChild(textFile);
+
+      fileService.persist(textFile);
+      if (null != parent)
+         fileService.merge(parent);
+
+      CommandResult result = new CommandResult("file created");
+      EditCommandResultExtension ext = new EditCommandResultExtension();
+      ext.setFile(textFile);
+      ext.setData("");
+      result.addExtension(ext);
+
+      return result;
+   }
+
+   @Override
+   public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
+      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
 
 }

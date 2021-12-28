@@ -12,33 +12,33 @@ import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpaceApp;
  */
 public class TsDiskTeamSpaceAppDefinition implements TeamSpaceAppDefinition {
 
-	public static final String APP_ID = "tsApp-favoriteReports";
-	
-	private final TsDiskService diskService;
+   public static final String APP_ID = "tsApp-favoriteReports";
 
-	@Inject
-	public TsDiskTeamSpaceAppDefinition(TsDiskService diskService) {
-		this.diskService = diskService;
-	}
+   private final TsDiskService diskService;
 
-	@Override
-	public String getAppId() {
-		return APP_ID;
-	}
+   @Inject
+   public TsDiskTeamSpaceAppDefinition(TsDiskService diskService) {
+      this.diskService = diskService;
+   }
 
-	@Override
-	public String getName() {
-		return "Favoriten";
-	}
+   @Override
+   public String getAppId() {
+      return APP_ID;
+   }
 
-	@Override
-	public String getDescription() {
-		return "Favoriten";
-	}
+   @Override
+   public String getName() {
+      return "Favoriten";
+   }
 
-	@Override
-	public void initializeApp(TeamSpace teamSpace, TeamSpaceApp app) {
-		diskService.createRoot(teamSpace);
-	}
+   @Override
+   public String getDescription() {
+      return "Favoriten";
+   }
+
+   @Override
+   public void initializeApp(TeamSpace teamSpace, TeamSpaceApp app) {
+      diskService.createRoot(teamSpace);
+   }
 
 }

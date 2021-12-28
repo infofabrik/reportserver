@@ -25,43 +25,41 @@ import net.datenwerke.security.service.security.SecurityService;
 
 public class ReportManagerStartup {
 
-	@Inject
-	public ReportManagerStartup(
-		HookHandlerService hookHandler,
-		EventBus eventBus,
-		final Provider<SecurityService> securityServiceProvider,
-		final @ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
-		
-		Provider<ConfigureBaseReportViaRequestHooker> baseReportRequestConfiguration,
-		
-		Provider<ReportManagerHistoryUrlBuilderHooker> reportManagerUrlBuilder,
-		
-		HandleDatasourceRemoveEventHandler handleDatasourceRemoveHandler,
-		
-		VariantCreatedAdjustMetadataHooker adjustMetadataHooker
-		){
-		
-		eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class, handleDatasourceRemoveHandler);
-		
-		hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, baseReportRequestConfiguration);
-		hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, baseReportRequestConfiguration);
-		hookHandler.attachHooker(VariantCreatorHook.class, adjustMetadataHooker);
-		
-		hookHandler.attachHooker(HistoryUrlBuilderHook.class, reportManagerUrlBuilder);
+   @Inject
+   public ReportManagerStartup(HookHandlerService hookHandler, EventBus eventBus,
+         final Provider<SecurityService> securityServiceProvider,
+         final @ReportServerReportTypes Provider<Set<Class<? extends Report>>> installedReportTypes,
 
-		/* register security targets */
-		hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
-			
-			@Override
-			public void configDone() {
-				/* secure folder */
-				securityServiceProvider.get().registerSecurityTarget(ReportFolder.class);
+         Provider<ConfigureBaseReportViaRequestHooker> baseReportRequestConfiguration,
 
-				/* secure report entities */
-				for(Class<? extends Report> rClass : installedReportTypes.get())
-					securityServiceProvider.get().registerSecurityTarget(rClass);
-			}
-		});
-	}
-	
+         Provider<ReportManagerHistoryUrlBuilderHooker> reportManagerUrlBuilder,
+
+         HandleDatasourceRemoveEventHandler handleDatasourceRemoveHandler,
+
+         VariantCreatedAdjustMetadataHooker adjustMetadataHooker) {
+
+      eventBus.attachObjectEventHandler(RemoveEntityEvent.class, DatasourceDefinition.class,
+            handleDatasourceRemoveHandler);
+
+      hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, baseReportRequestConfiguration);
+      hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, baseReportRequestConfiguration);
+      hookHandler.attachHooker(VariantCreatorHook.class, adjustMetadataHooker);
+
+      hookHandler.attachHooker(HistoryUrlBuilderHook.class, reportManagerUrlBuilder);
+
+      /* register security targets */
+      hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
+
+         @Override
+         public void configDone() {
+            /* secure folder */
+            securityServiceProvider.get().registerSecurityTarget(ReportFolder.class);
+
+            /* secure report entities */
+            for (Class<? extends Report> rClass : installedReportTypes.get())
+               securityServiceProvider.get().registerSecurityTarget(rClass);
+         }
+      });
+   }
+
 }

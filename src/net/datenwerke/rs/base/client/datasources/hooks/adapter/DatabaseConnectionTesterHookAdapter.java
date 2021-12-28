@@ -11,17 +11,14 @@ import net.datenwerke.rs.base.service.dbhelper.DatabaseHelper;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class DatabaseConnectionTesterHookAdapter implements DatabaseConnectionTesterHook {
 
-	@Override
-	public boolean consumes(DatabaseDatasource datasource, DatabaseHelper dbHelper)  {
-		return false;
-	}
+   @Override
+   public boolean consumes(DatabaseDatasource datasource, DatabaseHelper dbHelper) {
+      return false;
+   }
 
-
-	@Override
-	public boolean testConnection(DatabaseDatasource datasource, DatabaseHelper dbHelper)  {
-		return false;
-	}
-
-
+   @Override
+   public boolean testConnection(DatabaseDatasource datasource, DatabaseHelper dbHelper) {
+      return false;
+   }
 
 }

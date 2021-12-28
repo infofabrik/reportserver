@@ -10,11 +10,9 @@ import net.datenwerke.security.service.crypto.hooks.UserCryptoCredentialHook;
 @GeneratedType("net.datenwerke.hookservices.HookAdapterProcessor")
 public class UserCryptoCredentialHookAdapter implements UserCryptoCredentialHook {
 
-	@Override
-	public CryptoCredentials getUserCryptoCredentials(String email)  {
-		return null;
-	}
-
-
+   @Override
+   public CryptoCredentials getUserCryptoCredentials(String email) {
+      return null;
+   }
 
 }

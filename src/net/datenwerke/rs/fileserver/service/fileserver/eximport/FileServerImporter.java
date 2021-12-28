@@ -12,32 +12,30 @@ import net.datenwerke.treedb.service.treedb.TreeDBManager;
  */
 public class FileServerImporter extends TreeNodeImporter {
 
-	public static final String IMPORTER_ID = "FileServerImporter";
-	
-	private final FileServerService fileService;
-	
-	@Inject
-	public FileServerImporter(
-		FileServerService fileService
-		){
-		
-		/* store objects */
-		this.fileService = fileService;
-	}
-	
-	@Override
-	public Class<?>[] getRecognizedExporters() {
-		return new Class<?>[]{FileServerExporter.class};
-	}
+   public static final String IMPORTER_ID = "FileServerImporter";
 
-	@Override
-	protected TreeDBManager getTreeDBManager() {
-		return fileService;
-	}
+   private final FileServerService fileService;
 
-	@Override
-	public String getId() {
-		return IMPORTER_ID;
-	}
-	
+   @Inject
+   public FileServerImporter(FileServerService fileService) {
+
+      /* store objects */
+      this.fileService = fileService;
+   }
+
+   @Override
+   public Class<?>[] getRecognizedExporters() {
+      return new Class<?>[] { FileServerExporter.class };
+   }
+
+   @Override
+   protected TreeDBManager getTreeDBManager() {
+      return fileService;
+   }
+
+   @Override
+   public String getId() {
+      return IMPORTER_ID;
+   }
+
 }

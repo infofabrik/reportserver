@@ -12,12 +12,14 @@ import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
 
 public interface UserManagerUIService {
 
-	public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> getStrippedGroupLoader();
-	public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>> getStrippedUserLoader();
-	
-	BaseIcon getIcon(AbstractUserManagerNodeDto node);
+   public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownGroup>> getStrippedGroupLoader();
 
-	public LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>> getStrippedUserStore();
-	public LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>> getStrippedGroupStore();
-	
+   public ListLoader<ListLoadConfig, ListLoadResult<StrippedDownUser>> getStrippedUserLoader();
+
+   BaseIcon getIcon(AbstractUserManagerNodeDto node);
+
+   public LoadableListStore<ListLoadConfig, StrippedDownUser, ListLoadResult<StrippedDownUser>> getStrippedUserStore();
+
+   public LoadableListStore<ListLoadConfig, StrippedDownGroup, ListLoadResult<StrippedDownGroup>> getStrippedGroupStore();
+
 }

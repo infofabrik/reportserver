@@ -8,8 +8,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * A field annotated with this annotation will be used to store the id, of a "cloned" entity.
- *  
+ * A field annotated with this annotation will be used to store the id, of a
+ * "cloned" entity.
+ * 
  *
  */
 @Target(ElementType.FIELD)
