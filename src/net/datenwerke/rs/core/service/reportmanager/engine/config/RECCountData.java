@@ -9,6 +9,14 @@ public class RECCountData implements ReportExecutionConfig {
 
    @Override
    public boolean equals(Object obj) {
-      return obj instanceof RECCountData;
+      if (obj == this)
+         return true;
+      if (obj == null)
+         return false;
+
+      if (obj instanceof RECCountData)
+         return true;
+      else
+         return false;
    }
 }

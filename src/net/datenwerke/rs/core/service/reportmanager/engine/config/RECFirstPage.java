@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.service.reportmanager.engine.config;
 
+import java.util.Objects;
+
 public class RECFirstPage implements RECPaged {
 
    /**
@@ -34,14 +36,21 @@ public class RECFirstPage implements RECPaged {
 
    @Override
    public int hashCode() {
-      return pageSize;
+      return Objects.hashCode(pageSize);
    }
 
    @Override
    public boolean equals(Object obj) {
-      if (null == obj || !(obj instanceof RECFirstPage))
+      if (obj == this)
+         return true;
+      if (obj == null)
          return false;
 
-      return pageSize == ((RECFirstPage) obj).pageSize;
+      if (obj instanceof RECFirstPage) {
+         final RECFirstPage other = (RECFirstPage) obj;
+         return pageSize == other.pageSize;
+      } else {
+         return false;
+      }
    }
 }

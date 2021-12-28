@@ -31,7 +31,7 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
    private String quotationMark; // $NON-NLS-1$
    private String newline; // $NON-NLS-1$
    protected boolean haveSeenFieldInRow = false;
-   protected StringBuilder stringBuffer;
+   protected StringBuilder builder;
 
    protected PrintWriter writer;
 
@@ -58,28 +58,28 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
    @Override
    public void addField(Object field, CellFormatter formatter) throws IOException {
       if (haveSeenFieldInRow)
-         stringBuffer.append(delimiter);
-      stringBuffer.append(quotationMark);
+         builder.append(delimiter);
+      builder.append(quotationMark);
       if (!"".equals(quotationMark))
-         stringBuffer.append(
+         builder.append(
                String.valueOf(formatter.format(getValueOf(field))).replaceAll(quotationMark, "\\\\" + quotationMark));
       else
-         stringBuffer.append(String.valueOf(formatter.format(getValueOf(field))));
-      stringBuffer.append(quotationMark);
+         builder.append(String.valueOf(formatter.format(getValueOf(field))));
+      builder.append(quotationMark);
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
       haveSeenFieldInRow = true;
    }
 
    @Override
    public void close() throws IOException {
-      stringBuffer.append(newline);
+      builder.append(newline);
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
 
          writer.close();
       }
@@ -109,7 +109,7 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public CompiledReport getTableObject() {
-      return new CompiledCSVTableReport(stringBuffer.toString());
+      return new CompiledCSVTableReport(builder.toString());
    }
 
    @Override
@@ -128,7 +128,7 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
       }
 
       /* initialize buffer */
-      stringBuffer = new StringBuilder();
+      builder = new StringBuilder();
       if (null != os)
          writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os, charset)));
 
@@ -139,28 +139,28 @@ public class CSVOutputGenerator extends TableOutputGeneratorImpl {
             if (first)
                first = false;
             else
-               stringBuffer.append(delimiter);
+               builder.append(delimiter);
 
-            stringBuffer.append(quotationMark);
-            stringBuffer.append(name);
-            stringBuffer.append(quotationMark);
+            builder.append(quotationMark);
+            builder.append(name);
+            builder.append(quotationMark);
          }
-         stringBuffer.append(newline);
+         builder.append(newline);
       }
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
    }
 
    @Override
    public void nextRow() throws IOException {
-      stringBuffer.append(newline);
+      builder.append(newline);
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
 
       haveSeenFieldInRow = false;

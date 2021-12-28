@@ -20,7 +20,8 @@ import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitio
 public class DatasourceExtensionUiStartup {
 
    @Inject
-   public DatasourceExtensionUiStartup(HookHandlerService hookHandler,
+   public DatasourceExtensionUiStartup(
+         HookHandlerService hookHandler,
 
          Provider<DatabaseDatasourceConfigProviderHooker> databaseConfigHooker,
          Provider<CsvDatasourceConfigProviderHooker> csvDatasourceConfigHooker,
@@ -29,7 +30,9 @@ public class DatasourceExtensionUiStartup {
          Provider<UrlDatasourceConnectorConfigHooker> urlDatasourceConfigHooker,
          Provider<ArgumentDatasourceConnectorConfigHooker> argumentDatasourceConfigHooker,
 
-         BaseDatasourceDao baseDatasourceDao, final BaseDatasourceUiService datasourcService) {
+         BaseDatasourceDao baseDatasourceDao, 
+         final BaseDatasourceUiService datasourcService
+         ) {
 
       /* datasources */
       hookHandler.attachHooker(DatasourceDefinitionConfigProviderHook.class, databaseConfigHooker, 10);

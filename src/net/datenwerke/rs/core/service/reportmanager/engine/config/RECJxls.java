@@ -5,7 +5,10 @@ import java.util.Objects;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
-@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.reportexporter.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.core.client.reportexporter.dto", 
+      createDecorator = true
+      )
 public class RECJxls implements ReportExecutionConfig {
 
    /**
@@ -26,7 +29,7 @@ public class RECJxls implements ReportExecutionConfig {
    private int currencyColumnWidth = 8;
 
    @ExposeToClient
-   public boolean jxlsReport = false;
+   private boolean jxlsReport = false;
 
    public boolean isJxlsReport() {
       return jxlsReport;
@@ -82,8 +85,10 @@ public class RECJxls implements ReportExecutionConfig {
 
       if (obj instanceof RECJxls) {
          final RECJxls other = (RECJxls) obj;
-         return numberColumnWidth == other.numberColumnWidth && textColumnWidth == other.textColumnWidth
-               && dateColumnWidth == other.dateColumnWidth && currencyColumnWidth == other.currencyColumnWidth
+         return numberColumnWidth == other.numberColumnWidth 
+               && textColumnWidth == other.textColumnWidth
+               && dateColumnWidth == other.dateColumnWidth 
+               && currencyColumnWidth == other.currencyColumnWidth
                && jxlsReport == other.jxlsReport;
       } else {
          return false;

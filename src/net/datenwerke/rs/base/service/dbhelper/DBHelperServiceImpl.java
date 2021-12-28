@@ -20,7 +20,9 @@ public class DBHelperServiceImpl implements DBHelperService {
    final private Provider<Set<DatabaseHelper>> helperProvider;
 
    @Inject
-   public DBHelperServiceImpl(Provider<Set<DatabaseHelper>> helperProvider) {
+   public DBHelperServiceImpl(
+         Provider<Set<DatabaseHelper>> helperProvider
+         ) {
       this.helperProvider = helperProvider;
    }
 

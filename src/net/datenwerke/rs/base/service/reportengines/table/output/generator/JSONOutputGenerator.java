@@ -23,7 +23,7 @@ import net.datenwerke.security.service.usermanager.entities.User;
  */
 public class JSONOutputGenerator extends TableOutputGeneratorImpl {
 
-   protected StringBuffer stringBuffer;
+   protected StringBuilder builder;
 
    protected PrintWriter writer;
 
@@ -36,26 +36,26 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
             " ");
 
       if (cell > 0)
-         stringBuffer.append(",");
+         builder.append(",");
 
-      stringBuffer.append("\"").append(name).append("\"").append(":");
+      builder.append("\"").append(name).append("\"").append(":");
       if (field instanceof Number || field instanceof BigDecimal)
-         stringBuffer.append(field);
+         builder.append(field);
       else if (field == null)
-         stringBuffer.append("null");
+         builder.append("null");
       else if (field instanceof Boolean)
-         stringBuffer.append(Boolean.TRUE.equals(field) ? "true" : "false");
+         builder.append(Boolean.TRUE.equals(field) ? "true" : "false");
       else {
          Object value = getValueOf(field, formatter);
-         stringBuffer.append("\"")
+         builder.append("\"")
                .append(
                      String.valueOf(value).replace("\\", "\\\\").replace("\"", "\\\"").replaceAll("[\\r\\n\\s]+", " "))
                .append("\"");
       }
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
 
       cell++;
@@ -63,11 +63,11 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public void close() throws IOException {
-      stringBuffer.append("}]");
+      builder.append("}]");
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
 
          writer.close();
       }
@@ -80,7 +80,7 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
 
    @Override
    public CompiledReport getTableObject() {
-      return new CompiledJSONTableReport(stringBuffer.toString());
+      return new CompiledJSONTableReport(builder.toString());
    }
 
    @Override
@@ -90,20 +90,20 @@ public class JSONOutputGenerator extends TableOutputGeneratorImpl {
       super.initialize(os, td, withSubtotals, report, orgReport, cellFormatters, parameters, user, configs);
 
       /* initialize buffer */
-      stringBuffer = new StringBuffer();
+      builder = new StringBuilder();
       if (null != os)
          writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(os, charset)));
 
-      stringBuffer.append("[{");
+      builder.append("[{");
    }
 
    @Override
    public void nextRow() throws IOException {
-      stringBuffer.append("},{");
+      builder.append("},{");
 
       if (null != writer) {
-         writer.write(stringBuffer.toString());
-         stringBuffer.delete(0, stringBuffer.length());
+         writer.write(builder.toString());
+         builder.delete(0, builder.length());
       }
 
       cell = 0;

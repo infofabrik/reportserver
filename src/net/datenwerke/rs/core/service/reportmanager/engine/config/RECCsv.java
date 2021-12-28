@@ -1,9 +1,14 @@
 package net.datenwerke.rs.core.service.reportmanager.engine.config;
 
+import java.util.Objects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
-@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.reportexporter.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.core.client.reportexporter.dto", 
+      createDecorator = true
+      )
 public class RECCsv implements ReportExecutionConfig {
 
    /**
@@ -68,17 +73,26 @@ public class RECCsv implements ReportExecutionConfig {
 
    @Override
    public int hashCode() {
-      return separator.hashCode();
+      return Objects.hash(printHeader, separator, quote, lineSeparator, charset);
    }
 
    @Override
    public boolean equals(Object obj) {
-      if (null == obj || !(obj instanceof RECCsv))
+      if (obj == this)
+         return true;
+      if (obj == null)
          return false;
 
-      return printHeader == ((RECCsv) obj).printHeader && separator == ((RECCsv) obj).separator
-            && quote == ((RECCsv) obj).quote && lineSeparator == ((RECCsv) obj).lineSeparator
-            && charset == ((RECCsv) obj).charset;
+      if (obj instanceof RECCsv) {
+         final RECCsv other = (RECCsv) obj;
+         return printHeader == other.printHeader
+               && Objects.equals(separator, other.separator)
+               && Objects.equals(quote, other.quote)
+               && Objects.equals(lineSeparator, other.lineSeparator)
+               && Objects.equals(charset, other.charset);
+      } else {
+         return false;
+      }
    }
 
 }

@@ -9,6 +9,14 @@ public class RECMetadata implements ReportExecutionConfig {
 
    @Override
    public boolean equals(Object obj) {
-      return obj instanceof RECMetadata;
+      if (obj == this)
+         return true;
+      if (obj == null)
+         return false;
+
+      if (obj instanceof RECMetadata)
+         return true;
+      else
+         return false;
    }
 }

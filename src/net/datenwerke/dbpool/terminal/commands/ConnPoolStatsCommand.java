@@ -37,7 +37,11 @@ public class ConnPoolStatsCommand implements TerminalCommandHook {
    }
 
    @Override
-   @CliHelpMessage(messageClass = DatasourcesMessages.class, name = BASE_COMMAND, description = "commandConnPoolStats_description")
+   @CliHelpMessage(
+         messageClass = DatasourcesMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandConnPoolStats_description"
+         )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
 
       CommandResult result = new CommandResult();
@@ -45,34 +49,36 @@ public class ConnPoolStatsCommand implements TerminalCommandHook {
       Map<ConnectionPoolConfig, ComboPooledDataSource> poolMap = dbPoolService.getPoolMap();
       try {
          if (!poolMap.keySet().isEmpty()) {
-            poolMap.keySet().stream().sorted(comparing(ConnectionPoolConfig::getDatasourceName))
-                  .forEach(rethrowConsumer(connPoolConfig -> {
-                     RSTableModel table = new RSTableModel();
-                     TableDefinition td = new TableDefinition(Arrays.asList("Pool", ""),
-                           Arrays.asList(String.class, String.class));
-                     table.setTableDefinition(td);
+            poolMap.keySet()
+               .stream()
+               .sorted(comparing(ConnectionPoolConfig::getDatasourceName))
+               .forEach(rethrowConsumer(connPoolConfig -> {
+                  RSTableModel table = new RSTableModel();
+                  TableDefinition td = new TableDefinition(Arrays.asList("Pool", ""),
+                        Arrays.asList(String.class, String.class));
+                  table.setTableDefinition(td);
 
-                     String datasource = connPoolConfig.getDatasourceName()
-                           + (null == connPoolConfig.getDatasourceId() ? ""
-                                 : " (" + connPoolConfig.getDatasourceId() + ")");
+                  String datasource = connPoolConfig.getDatasourceName()
+                        + (null == connPoolConfig.getDatasourceId() ? ""
+                              : " (" + connPoolConfig.getDatasourceId() + ")");
 
-                     table.addDataRow(new RSStringTableRow("Datasource:", datasource));
-                     ComboPooledDataSource ds = poolMap.get(connPoolConfig);
-                     table.addDataRow(new RSStringTableRow("Max Pool Size:",
-                           NumberFormat.getIntegerInstance().format(ds.getMaxPoolSize())));
-                     table.addDataRow(new RSStringTableRow("Number of connections:",
-                           NumberFormat.getIntegerInstance().format(ds.getNumConnectionsDefaultUser())));
-                     table.addDataRow(new RSStringTableRow("Busy connections:",
-                           NumberFormat.getIntegerInstance().format(ds.getNumBusyConnectionsDefaultUser())));
-                     table.addDataRow(new RSStringTableRow("Idle connections:",
-                           NumberFormat.getIntegerInstance().format(ds.getNumIdleConnectionsDefaultUser())));
-                     table.addDataRow(new RSStringTableRow("Threads awaiting connection checkout:",
-                           NumberFormat.getIntegerInstance().format(ds.getNumThreadsAwaitingCheckoutDefaultUser())));
-                     table.addDataRow(new RSStringTableRow("Unclosed orphaned connections:", NumberFormat
-                           .getIntegerInstance().format(ds.getNumUnclosedOrphanedConnectionsDefaultUser())));
+                  table.addDataRow(new RSStringTableRow("Datasource:", datasource));
+                  ComboPooledDataSource ds = poolMap.get(connPoolConfig);
+                  table.addDataRow(new RSStringTableRow("Max Pool Size:",
+                        NumberFormat.getIntegerInstance().format(ds.getMaxPoolSize())));
+                  table.addDataRow(new RSStringTableRow("Number of connections:",
+                        NumberFormat.getIntegerInstance().format(ds.getNumConnectionsDefaultUser())));
+                  table.addDataRow(new RSStringTableRow("Busy connections:",
+                        NumberFormat.getIntegerInstance().format(ds.getNumBusyConnectionsDefaultUser())));
+                  table.addDataRow(new RSStringTableRow("Idle connections:",
+                        NumberFormat.getIntegerInstance().format(ds.getNumIdleConnectionsDefaultUser())));
+                  table.addDataRow(new RSStringTableRow("Threads awaiting connection checkout:",
+                        NumberFormat.getIntegerInstance().format(ds.getNumThreadsAwaitingCheckoutDefaultUser())));
+                  table.addDataRow(new RSStringTableRow("Unclosed orphaned connections:", NumberFormat
+                        .getIntegerInstance().format(ds.getNumUnclosedOrphanedConnectionsDefaultUser())));
 
-                     result.addResultTable(table);
-                  }));
+                  result.addResultTable(table);
+               }));
          } else {
             return new CommandResult("Connection pool is empty");
          }

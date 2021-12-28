@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.service.reportmanager.engine.config;
 
+import java.util.Objects;
+
 public class RECSetExecutionUUID implements ReportExecutionConfig {
 
    /**
@@ -19,27 +21,22 @@ public class RECSetExecutionUUID implements ReportExecutionConfig {
 
    @Override
    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((uuid == null) ? 0 : uuid.hashCode());
-      return result;
+      return Objects.hashCode(uuid);
    }
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj)
+      if (obj == this)
          return true;
       if (obj == null)
          return false;
-      if (getClass() != obj.getClass())
+
+      if (obj instanceof RECSetExecutionUUID) {
+         final RECSetExecutionUUID other = (RECSetExecutionUUID) obj;
+         return Objects.equals(uuid, other.uuid);
+      } else {
          return false;
-      RECSetExecutionUUID other = (RECSetExecutionUUID) obj;
-      if (uuid == null) {
-         if (other.uuid != null)
-            return false;
-      } else if (!uuid.equals(other.uuid))
-         return false;
-      return true;
+      }
    }
 
 }

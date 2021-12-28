@@ -19,7 +19,9 @@ public class BaseDatasourceDao extends Dao {
    private final BaseDatasourceRpcServiceAsync rpcService;
 
    @Inject
-   public BaseDatasourceDao(BaseDatasourceRpcServiceAsync rpcService) {
+   public BaseDatasourceDao(
+         BaseDatasourceRpcServiceAsync rpcService
+         ) {
       this.rpcService = rpcService;
    }
 
