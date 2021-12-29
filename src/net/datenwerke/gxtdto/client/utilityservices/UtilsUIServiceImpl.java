@@ -173,7 +173,8 @@ public class UtilsUIServiceImpl implements UtilsUIService {
    @Override
    public native String guessUserTimezone() /*-{
 		var timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-		if (timezone === undefined) timezone = 'Europe/Berlin';
+		//only happens in IE
+		if (timezone === undefined) timezone = 'Europe/Berlin'; 
 		return timezone;
 	}-*/;
 }

@@ -46,7 +46,7 @@ public class JsViewerReportPreviewView extends AbstractReportPreviewView {
          DwContentPanel frame = new DwContentPanel();
          frame.setBodyBorder(false);
          frame.setHeaderVisible(false);
-         Frame iFrame = frame.setUrl("resources/pdf.js/web/viewer.html?file=" + URL.encodeQueryString(
+         Frame iFrame = frame.setUrl("resources/js/pdf.js-2.12.313/web/viewer.html?file=" + URL.encodeQueryString(
                exporterUIService.getExportServletPath() + "&tid=" + getExecuteReportToken() + "&isJsViewer=true"));
          iFrame.getElement().setPropertyString("scrolling", "no");
          iFrame.getElement().addClassName("rs-report-preview");
