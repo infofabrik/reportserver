@@ -46,8 +46,9 @@ var Saiku = {
     
     /**
      * Create a new variable for Leaflet interactive maps
+     *
+     * leaflet: (typeof L !== 'undefined') ? L : {},
      */
-    leaflet: (typeof L !== 'undefined') ? L : {},
 
     /**
      * Convenience functions for blocking the UI
