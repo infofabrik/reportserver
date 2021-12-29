@@ -41,7 +41,6 @@ import net.datenwerke.rs.condition.client.condition.ConditionUiModule;
 import net.datenwerke.rs.core.client.RsCoreUiModule;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
-import net.datenwerke.rs.core.client.easteregg.EasterEggModule;
 import net.datenwerke.rs.core.client.parameters.ParameterUIModule;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIModule;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIModule;
@@ -208,8 +207,6 @@ public class DispatcherModule extends AbstractGinModule {
 
       install(new SaikuPivotUiModule());
       install(new GridEditorUiModule());
-
-      install(new EasterEggModule());
 
       /* bind dispatcher module */
       bind(DispatcherService.class).to(DispatcherServiceImpl.class);
