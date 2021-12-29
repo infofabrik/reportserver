@@ -1,5 +1,7 @@
 package net.datenwerke.rs.scheduler.client.scheduler.hookers;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,10 +11,6 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
-import com.sencha.gxt.widget.core.client.event.DialogHideEvent.DialogHideHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -56,8 +54,12 @@ public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbar
    private ScheduleDialog multiDialog;
 
    @Inject
-   public ReportViewScheduleButtonHooker(Provider<ScheduleDialog> multiDialogProvider, SchedulerDao schedulerDao,
-         SecurityUIService securityService, ReportExporterUIService reportExporterService, SendToDao sendToDao) {
+   public ReportViewScheduleButtonHooker(
+         Provider<ScheduleDialog> multiDialogProvider, 
+         SchedulerDao schedulerDao,
+         SecurityUIService securityService, 
+         ReportExporterUIService reportExporterService, 
+         SendToDao sendToDao) {
 
       /* store objects */
       this.multiDialogProvider = multiDialogProvider;
@@ -69,7 +71,7 @@ public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbar
 
    @Override
    public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
-         ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
+         final ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
       if (!securityService.hasRight(SchedulingBasicGenericTargetIdentifier.class, ExecuteDto.class))
          return false;
 
@@ -84,45 +86,27 @@ public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbar
 
       /* repeated dialog */
       DwTextButton schedulerDialogBtn = new DwTextButton(SchedulerMessages.INSTANCE.repeatedly(), BaseIcon.CALENDAR);
-      schedulerDialogBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            if (!report.isModified()) {
-               ArrayList<String> errorMsgs = new ArrayList<String>();
-               for (ReportExecutorMainPanelView view : mainPanel.getViews()) {
-                  errorMsgs.addAll(view.validateView());
-               }
-               if (null != errorMsgs && !errorMsgs.isEmpty()) {
-                  String errorMsg = "";
-                  boolean first = true;
-                  for (String msg : errorMsgs) {
-                     if (first)
-                        first = false;
-                     else
-                        errorMsg += "<br/>";
-                     errorMsg += msg;
-                  }
-
-                  new DwAlertMessageBox(BaseMessages.INSTANCE.error(), errorMsg).show();
-               } else {
+      schedulerDialogBtn.addSelectHandler(selectEvent -> {
+         if (!report.isModified()) {
+            List<String> errorMsgs = mainPanel.getViews()
+                  .stream()
+                  .map(ReportExecutorMainPanelView::validateView)
+                  .flatMap(List::stream)
+                  .collect(toList());
+            if (null != errorMsgs && !errorMsgs.isEmpty())
+               new DwAlertMessageBox(BaseMessages.INSTANCE.error(), String.join("<br />", errorMsgs)).show();
+            else 
+               displayDialog(report, mainPanel, mainPanel.getViewConfigs());
+            
+         } else {
+            ConfirmMessageBox cmb = new DwConfirmMessageBox(SchedulerMessages.INSTANCE.reportChangedInfoHeader(),
+                  SchedulerMessages.INSTANCE.reportChangedInfoMessage());
+            cmb.addDialogHideHandler(dialogHideEvent -> {
+               if (dialogHideEvent.getHideButton() == PredefinedButton.YES)
                   displayDialog(report, mainPanel, mainPanel.getViewConfigs());
-               }
-            } else {
+            });
 
-               ConfirmMessageBox cmb = new DwConfirmMessageBox(SchedulerMessages.INSTANCE.reportChangedInfoHeader(),
-                     SchedulerMessages.INSTANCE.reportChangedInfoMessage());
-               cmb.addDialogHideHandler(new DialogHideHandler() {
-                  @Override
-                  public void onDialogHide(DialogHideEvent event) {
-                     if (event.getHideButton() == PredefinedButton.YES)
-                        displayDialog(report, mainPanel, mainPanel.getViewConfigs());
-
-                  }
-               });
-
-               cmb.show();
-            }
-
+            cmb.show();
          }
       });
       toolbar.add(schedulerDialogBtn);
