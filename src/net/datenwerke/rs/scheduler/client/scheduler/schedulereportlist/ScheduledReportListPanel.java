@@ -179,14 +179,23 @@ public class ScheduledReportListPanel extends DwBorderContainer {
    private FormatUiHelper formatUiHelper;
 
    @Inject
-   public ScheduledReportListPanel(HookHandlerService hookHandler, LoginService loginService, SchedulerDao schedulerDao,
-         SchedulerUiService schedulerService, Provider<DwHookableToolbar> toolbarProvider,
-         KeyValueGridHelper gridHelper, HistoryUiService historyService, ReportManagerTreeLoaderDao reportTreeLoader,
-         ToolbarService toolbarService, SecurityUIService securityService, FormatUiHelper formatUiHelper,
+   public ScheduledReportListPanel(
+         HookHandlerService hookHandler, 
+         LoginService loginService, 
+         SchedulerDao schedulerDao,
+         SchedulerUiService schedulerService, 
+         Provider<DwHookableToolbar> toolbarProvider,
+         KeyValueGridHelper gridHelper, 
+         HistoryUiService historyService, 
+         ReportManagerTreeLoaderDao reportTreeLoader,
+         ToolbarService toolbarService, 
+         SecurityUIService securityService, 
+         FormatUiHelper formatUiHelper,
          Provider<ScheduleDialog> scheduleDialogProvider,
 
          @Assisted String name, @Assisted("displayExecutorColumn") boolean displayExecutorColumn,
-         @Assisted("displayScheduledByColumn") boolean displayScheduledByColumn) {
+         @Assisted("displayScheduledByColumn") boolean displayScheduledByColumn
+         ) {
 
       /* store objects */
       this.hookHandler = hookHandler;

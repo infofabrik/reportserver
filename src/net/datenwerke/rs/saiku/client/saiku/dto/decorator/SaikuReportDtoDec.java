@@ -13,5 +13,10 @@ public class SaikuReportDtoDec extends SaikuReportDto {
    public SaikuReportDtoDec() {
       super();
    }
+   
+   @Override
+   public boolean isBaseReportExecutable() {
+      return false;
+   }
 
 }

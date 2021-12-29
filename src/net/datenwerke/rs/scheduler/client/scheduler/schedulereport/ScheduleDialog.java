@@ -46,10 +46,14 @@ public class ScheduleDialog {
    }
 
    @Inject
-   public ScheduleDialog(SchedulerUsersConfigFormFactory schedulerUsersConfigurationFormFactory,
+   public ScheduleDialog(
+         SchedulerUsersConfigFormFactory schedulerUsersConfigurationFormFactory,
          SchedulerMetadataConfigFormFactory metadataConfigurationFormFactory,
-         SchedulerReportConfigFormFactory reportConfigurationFormFactory, ExportConfigFormFactory exportFormFactory,
-         SeriesConfigFormFactory seriesConfigurationFormFactory, HookHandlerService hookHandler) {
+         SchedulerReportConfigFormFactory reportConfigurationFormFactory, 
+         ExportConfigFormFactory exportFormFactory,
+         SeriesConfigFormFactory seriesConfigurationFormFactory, 
+         HookHandlerService hookHandler
+         ) {
 
       /* store objects */
       this.schedulerUsersConfigurationFormFactory = schedulerUsersConfigurationFormFactory;
