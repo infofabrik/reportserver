@@ -6,11 +6,12 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.olap4j.CellSet;
 import org.saiku.olap.dto.resultset.CellDataSet;
 import org.saiku.olap.query2.ThinHierarchy;
 import org.saiku.olap.util.formatter.ICellSetFormatter;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;

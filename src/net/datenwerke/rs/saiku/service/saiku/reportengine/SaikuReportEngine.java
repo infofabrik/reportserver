@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.olap4j.CellSet;
 import org.olap4j.metadata.Cube;
 import org.saiku.olap.dto.resultset.CellDataSet;
@@ -20,6 +19,7 @@ import org.saiku.olap.util.formatter.ICellSetFormatter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.datasources.transformers.DatasourceTransformationService;

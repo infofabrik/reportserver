@@ -16,10 +16,9 @@ import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.codehaus.jackson.JsonNode;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableList;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
@@ -52,7 +51,7 @@ public class SaikuI18nResource {
          ObjectMapper mapper = new ObjectMapper();
          JsonNode jsonMapping = mapper.readTree(originalMapping);
 
-         for (Entry<String, JsonNode> e : ImmutableList.copyOf(jsonMapping.getFields())) {
+         for (Entry<String, JsonNode> e : ImmutableList.copyOf(jsonMapping.fields())) {
             mapping.put(e.getKey(), e.getValue().asText());
          }
 

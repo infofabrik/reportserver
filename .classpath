@@ -82,10 +82,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-1.4.200.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/j2objc-annotations-1.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-1.9.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-mapper-asl-1.9.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-xc-1.9.13.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacc-5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.annotation-3.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
@@ -247,7 +243,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mssql-jdbc-9.4.0.jre8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.8.0.jar"/>
@@ -256,7 +251,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.28.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-10.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.12.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xom-1.3.7.jar"/>
@@ -265,5 +259,11 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.1.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-base-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-json-provider-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-module-jaxb-annotations-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.xml.bind-api-2.3.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mssql-jdbc-9.4.1.jre8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

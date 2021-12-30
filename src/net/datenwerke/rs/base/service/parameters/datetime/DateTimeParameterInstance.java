@@ -12,9 +12,9 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import org.apache.commons.configuration2.Configuration;
-import org.codehaus.jackson.map.util.ISO8601DateFormat;
 import org.hibernate.envers.Audited;
 
+import com.fasterxml.jackson.databind.util.StdDateFormat;
 import com.google.inject.Inject;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
@@ -145,7 +145,7 @@ public class DateTimeParameterInstance extends ParameterInstance<DateTimeParamet
          if (null != pattern && !pattern.isEmpty()) {
             dateVal = new SimpleDateFormat(pattern).parse(value);
          } else {
-            dateVal = new ISO8601DateFormat().parse(value);
+            dateVal = new StdDateFormat().parse(value);
          }
 
          setValue(dateVal);

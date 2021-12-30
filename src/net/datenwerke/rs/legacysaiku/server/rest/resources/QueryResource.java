@@ -34,9 +34,6 @@ import javax.xml.bind.annotation.XmlAccessorType;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.exception.ExceptionUtils;
-import org.codehaus.jackson.annotate.JsonAutoDetect.Visibility;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.SaikuMember;
 import org.legacysaiku.olap.dto.SaikuQuery;
@@ -55,6 +52,10 @@ import org.olap4j.OlapException;
 import org.olap4j.metadata.Cube;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.datenwerke.rs.legacysaiku.server.rest.objects.MdxQueryObject;
 import net.datenwerke.rs.legacysaiku.server.rest.objects.SavedQuery;
@@ -954,7 +955,8 @@ public class QueryResource {
          if (selectionJSON != null) {
             ObjectMapper mapper = new ObjectMapper();
             List<SelectionRestObject> selections = mapper.readValue(selectionJSON,
-                  TypeFactory.collectionType(ArrayList.class, SelectionRestObject.class));
+                  new TypeReference<ArrayList<SelectionRestObject>>() { }
+                  );
 
             // remove stuff first, then add, removing removes all selections for that level
             // first
@@ -1015,7 +1017,8 @@ public class QueryResource {
             String selectionJSON = (String) sels.getFirst();
             ObjectMapper mapper = new ObjectMapper(); // can reuse, share globally
             List<SelectionRestObject> selections = mapper.readValue(selectionJSON,
-                  TypeFactory.collectionType(ArrayList.class, SelectionRestObject.class));
+                  new TypeReference<ArrayList<SelectionRestObject>>() { }
+                  );
             for (SelectionRestObject member : selections) {
                removeMember("MEMBER", queryName, axisName, dimensionName, member.getUniquename(), username);
             }

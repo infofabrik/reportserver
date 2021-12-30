@@ -7,10 +7,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 import org.apache.commons.io.IOUtils;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.legacysaiku.olap.dto.SaikuDimensionSelection;
 import org.legacysaiku.olap.dto.resultset.CellDataSet;
 import org.olap4j.CellSet;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;

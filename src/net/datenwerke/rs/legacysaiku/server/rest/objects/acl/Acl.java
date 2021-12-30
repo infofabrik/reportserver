@@ -18,10 +18,11 @@ import org.apache.commons.vfs.FileSystemManager;
 import org.apache.commons.vfs.FileType;
 import org.apache.commons.vfs.NameScope;
 import org.apache.commons.vfs.VFS;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.map.type.TypeFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import net.datenwerke.rs.legacysaiku.server.rest.objects.acl.enumeration.AclMethod;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
@@ -284,7 +285,8 @@ public class Acl {
             InputStreamReader reader = new InputStreamReader(accessFile.getContent().getInputStream());
             BufferedReader br = new BufferedReader(reader);
             acl = (Map<String, AclEntry>) mapper.readValue(br,
-                  TypeFactory.mapType(HashMap.class, String.class, AclEntry.class));
+                  new TypeReference<HashMap<String,AclEntry>>() { }
+                  );
          }
       } catch (Exception e) {
          logger.error("Error reading the json file:" + accessFile, e);

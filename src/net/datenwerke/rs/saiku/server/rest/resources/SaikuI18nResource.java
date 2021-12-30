@@ -15,7 +15,7 @@ import javax.ws.rs.Produces;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import org.codehaus.jackson.JsonParseException;
+import com.fasterxml.jackson.core.JsonParseException;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.saiku.client.saiku.locale.SaikuNativeMessages;
