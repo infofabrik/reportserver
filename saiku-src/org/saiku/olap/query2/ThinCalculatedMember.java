@@ -3,7 +3,7 @@ package org.saiku.olap.query2;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by bugg on 15/09/15.
