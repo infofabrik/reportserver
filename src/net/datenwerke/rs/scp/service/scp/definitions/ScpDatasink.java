@@ -78,7 +78,7 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
    @ExposeToClient
    @Field
    @Column(length = 1024)
-   private String folder = "./";
+   private String folder = "/absolute/path/to/your/destination/folder";
 
    @Override
    public String getHost() {
