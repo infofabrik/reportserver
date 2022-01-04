@@ -65,6 +65,8 @@ public class FtpSenderServiceImpl implements FtpSenderService {
 
       Objects.requireNonNull(folder);
       Objects.requireNonNull(filename);
+      
+      folder = folder.endsWith("/") ? folder : folder + "/";
 
       if (storageType != StorageType.FTP && storageType != StorageType.SFTP && storageType != StorageType.FTPS)
          throw new IllegalArgumentException("storage type not allowed");
@@ -97,7 +99,7 @@ public class FtpSenderServiceImpl implements FtpSenderService {
             break;
          }
 
-         String ftpurl = host + ":" + port + "/" + folder + "/" + filename;
+         String ftpurl = host + ":" + port + "/" + folder + filename;
          FileObject remoteFile = fsmanager.resolveFile(ftpurl, opts);
 
          try (OutputStream ostream = remoteFile.getContent().getOutputStream()) {
