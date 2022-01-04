@@ -1,5 +1,7 @@
 package net.datenwerke.rs.ldap.service.ldap;
 
+import javax.naming.directory.SearchResult;
+
 import com.google.inject.ImplementedBy;
 
 import net.datenwerke.rs.ldap.service.ldap.exceptions.LdapException;
@@ -42,4 +44,15 @@ public interface LdapService {
     * @throws LdapException if the LDAP users cannot be imported
     */
    void importUsers() throws LdapException;
+
+   /**
+    * Reads a given attribute value of a given LDAP SearchResult
+    * 
+    * @param sr            the SearchResult
+    * @param attributeName the attribute to read
+    * @return the attribute value as String
+    * @throws LdapException if the attribute does not exist or an error happens
+    *                       during attribute retrieval
+    */
+   String getStringAttribute(SearchResult sr, String attributeName) throws LdapException;
 }
