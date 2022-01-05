@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.history.HistoryService;
+import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
+import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
 import net.datenwerke.rs.search.service.search.index.SearchIndexService;
 import net.datenwerke.rs.search.service.search.locale.SearchMessages;
@@ -63,6 +65,11 @@ public class EntitySearchProvider implements SearchProvider {
          if (entity instanceof AbstractTsDiskNode) {
             TeamSpace teamSpace = tsDiskService.getTeamSpaceFor((AbstractTsDiskNode) entity);
             if (!teamSpaceService.mayAccess(teamSpace))
+               continue;
+         }
+         
+         if (entity instanceof AbstractReportManagerNode) {
+            if (!securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class))
                continue;
          }
 
