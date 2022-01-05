@@ -34,6 +34,7 @@ import org.slf4j.LoggerFactory;
 
 import net.datenwerke.rs.search.service.search.EntityReflectionCache;
 import net.datenwerke.rs.search.service.search.SearchServiceImpl;
+import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 
 @Singleton
@@ -115,10 +116,19 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
          }
       }
       try {
+         if (unproxied instanceof TsDiskReportReference) {
+            TsDiskReportReference ref = (TsDiskReportReference) unproxied;
+            
+            String sval = "reportId:" + String.valueOf(entityUtils.getId(entityUtils.simpleHibernateUnproxy(ref.getReport())));
+            catchall.append(sval).append(" ");
+            doc.add(new StringField("reportId", sval, Store.YES));
+         }
+         
          doc.add(new StringField("catchall", catchall.toString().toLowerCase(), Store.YES));
          String id = unproxied.getClass().getName() + ":" + entityUtils.getId(unproxied);
          doc.add(new StringField("id", id, Store.YES));
          writer.updateDocument(new Term("id", id), doc);
+         
       } catch (IllegalArgumentException e) {
          logger.warn("error creating index", e);
       } catch (IOException e) {
