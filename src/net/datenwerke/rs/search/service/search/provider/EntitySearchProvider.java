@@ -6,19 +6,15 @@ import java.util.List;
 import com.google.inject.Inject;
 
 import net.datenwerke.gf.service.history.HistoryService;
-import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
-import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
+import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
 import net.datenwerke.rs.search.service.search.index.SearchIndexService;
 import net.datenwerke.rs.search.service.search.locale.SearchMessages;
 import net.datenwerke.rs.search.service.search.results.SearchFilter;
 import net.datenwerke.rs.search.service.search.results.SearchResultEntry;
 import net.datenwerke.rs.search.service.search.results.SearchResultTag;
 import net.datenwerke.rs.search.service.search.results.SearchResultTagType;
-import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceService;
-import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
-import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskService;
-import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.AbstractTsDiskNode;
 import net.datenwerke.rs.utils.instancedescription.InstanceDescription;
 import net.datenwerke.rs.utils.instancedescription.InstanceDescriptionService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -32,29 +28,30 @@ public class EntitySearchProvider implements SearchProvider {
    private final HistoryService historyService;
    private final SecurityService securityService;
    private final SearchIndexService searchIndexService;
-   private final TsDiskService tsDiskService;
-   private final TeamSpaceService teamSpaceService;
+   private final HookHandlerService hookHandlerService;
 
    @Inject
-   public EntitySearchProvider(InstanceDescriptionService instanceDescriber, HistoryService historyService,
-         SearchIndexService searchIndexService, SecurityService securityService, TsDiskService tsDiskService,
-         TeamSpaceService teamSpaceService) {
+   public EntitySearchProvider(
+         InstanceDescriptionService instanceDescriber, 
+         HistoryService historyService,
+         SearchIndexService searchIndexService, 
+         SecurityService securityService, 
+         HookHandlerService hookHandlerService
+         ) {
       this.instanceDescriber = instanceDescriber;
       this.historyService = historyService;
       this.searchIndexService = searchIndexService;
       this.securityService = securityService;
-      this.tsDiskService = tsDiskService;
-      this.teamSpaceService = teamSpaceService;
+      this.hookHandlerService = hookHandlerService;
    }
 
    @Override
    public List<SearchResultEntry> search(String query, SearchFilter filter) {
 
-      List<SearchResultEntry> entryList = new ArrayList<SearchResultEntry>();
+      List<SearchResultEntry> entryList = new ArrayList<>();
       List<?> results = searchIndexService.locate(filter.getBaseType(), query, filter.getLimit());
       long id = 1;
-      int countedResults = 0;
-      for (Object entity : results) {
+      for (final Object entity : results) {
 
          if (null == entity)
             continue;
@@ -62,19 +59,14 @@ public class EntitySearchProvider implements SearchProvider {
          if (entity instanceof SecurityTarget && !securityService.checkRights((SecurityTarget) entity, Read.class))
             continue;
 
-         if (entity instanceof AbstractTsDiskNode) {
-            TeamSpace teamSpace = tsDiskService.getTeamSpaceFor((AbstractTsDiskNode) entity);
-            if (!teamSpaceService.mayAccess(teamSpace))
-               continue;
-         }
+         if (hookHandlerService.getHookers(SearchResultAllowHook.class)
+            .stream()
+            .map(hooker -> hooker.allow((AbstractNode<? extends AbstractNode<?>>) entity))
+            .filter(allow -> false == allow)
+            .findAny()
+            .isPresent())
+            continue;
          
-         if (entity instanceof AbstractReportManagerNode) {
-            if (!securityService.checkRights(ReportManagerAdminViewSecurityTarget.class, Read.class))
-               continue;
-         }
-
-         countedResults++;
-
          SearchResultEntry sr = new SearchResultEntry();
 
          InstanceDescription instanceDesc = instanceDescriber.getDescriptionFor(entity);
