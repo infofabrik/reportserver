@@ -32,9 +32,10 @@ import org.apache.lucene.store.RAMDirectory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.search.service.search.EntityReflectionCache;
 import net.datenwerke.rs.search.service.search.SearchServiceImpl;
-import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
+import net.datenwerke.rs.search.service.search.hooks.AdditionalFieldsIndexerHook;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 
 @Singleton
@@ -48,19 +49,25 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
    private IndexReader reader;
    private IndexSearcher searcher;
 
-   private IndexWriterConfig iwc;
-   private Analyzer analyzer;
+   private final IndexWriterConfig iwc;
+   private final Analyzer analyzer;
 
-   private Provider<EntityManager> entityManager;
-   private EntityReflectionCache reflectCache;
-   private EntityUtils entityUtils;
+   private final Provider<EntityManager> entityManager;
+   private final EntityReflectionCache reflectCache;
+   private final EntityUtils entityUtils;
+   private final HookHandlerService hookHandlerService;
 
    @Inject
-   public LuceneSearchIndexServiceImpl(EntityReflectionCache reflectionCache, EntityUtils entityUtils,
-         Provider<EntityManager> entityManager) {
+   public LuceneSearchIndexServiceImpl(
+         EntityReflectionCache reflectionCache, 
+         EntityUtils entityUtils,
+         Provider<EntityManager> entityManager,
+         HookHandlerService hookHandlerService
+         ) {
       this.reflectCache = reflectionCache;
       this.entityUtils = entityUtils;
       this.entityManager = entityManager;
+      this.hookHandlerService = hookHandlerService;
       this.analyzer = new StandardAnalyzer();
 
       indexDir = new RAMDirectory();
@@ -93,9 +100,9 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
       if (null == o)
          return;
 
-      Object unproxied = entityUtils.simpleHibernateUnproxy(o);
+      final Object unproxied = entityUtils.simpleHibernateUnproxy(o);
 
-      Document doc = new Document();
+      final Document doc = new Document();
       StringBuilder catchall = new StringBuilder();
       List<Field> fields = reflectCache.getFields(unproxied.getClass());
       for (Field f : fields) {
@@ -116,13 +123,9 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
          }
       }
       try {
-         if (unproxied instanceof TsDiskReportReference) {
-            TsDiskReportReference ref = (TsDiskReportReference) unproxied;
-            
-            String sval = "reportId:" + String.valueOf(entityUtils.getId(entityUtils.simpleHibernateUnproxy(ref.getReport())));
-            catchall.append(sval).append(" ");
-            doc.add(new StringField("reportId", sval, Store.YES));
-         }
+         
+         hookHandlerService.getHookers(AdditionalFieldsIndexerHook.class)
+            .forEach(hooker -> hooker.addToIndex(unproxied, catchall, doc));
          
          doc.add(new StringField("catchall", catchall.toString().toLowerCase(), Store.YES));
          String id = unproxied.getClass().getName() + ":" + entityUtils.getId(unproxied);

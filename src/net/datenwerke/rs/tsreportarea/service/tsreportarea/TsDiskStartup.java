@@ -11,6 +11,7 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportPostProcessProviderHook;
+import net.datenwerke.rs.search.service.search.hooks.AdditionalFieldsIndexerHook;
 import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.hooks.TeamSpaceAppDefinitionProviderHook;
@@ -22,6 +23,7 @@ import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.TsDiskImport
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.hookers.ExportAllTsDiskHooker;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.hookers.ImportAllTsDiskHooker;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eximport.hookers.ImportPostProcessorHooker;
+import net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers.TeamSpaceAdditionalFieldsHooker;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers.TeamSpaceNodeSearchResultCheckHooker;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers.TsFavoriteHistoryUrlBuilderForReportsHooker;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.hookers.TsFavoriteHistoryUrlBuilderHooker;
@@ -45,6 +47,7 @@ public class TsDiskStartup {
          Provider<ImportAllTsDiskHooker> importAllHooker,
          
          TeamSpaceNodeSearchResultCheckHooker teamSpaceSearchResultCheckHooker,
+         TeamSpaceAdditionalFieldsHooker teamSpaceAdditionalFieldsHooker,
 
          EventBus eventBus, 
          TeamSpaceRemovedCallback removedTeamSpaceCallback,
@@ -72,5 +75,6 @@ public class TsDiskStartup {
       hookHandler.attachHooker(ImportAllHook.class, importAllHooker);
       
       hookHandler.attachHooker(SearchResultAllowHook.class, teamSpaceSearchResultCheckHooker);
+      hookHandler.attachHooker(AdditionalFieldsIndexerHook.class, teamSpaceAdditionalFieldsHooker);
    }
 }
