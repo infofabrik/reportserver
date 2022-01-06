@@ -4,12 +4,12 @@ import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.service.genrights.reportmanager.ReportManagerAdminViewSecurityTarget;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
-import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
+import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
-public class ReportManagerNodeSearchResultCheckHooker implements SearchResultAllowHook {
+public class ReportManagerNodeSearchResultCheckHooker implements SearchResultAllowerHook {
 
    private final SecurityService securityService;
 

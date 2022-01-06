@@ -20,7 +20,7 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHist
 import net.datenwerke.rs.core.service.reportmanager.hooks.ConfigureReportViaHttpRequestHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
 import net.datenwerke.rs.core.service.reportmanager.metadata.hookers.VariantCreatedAdjustMetadataHooker;
-import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
+import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.RemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
@@ -47,7 +47,7 @@ public class ReportManagerStartup {
       hookHandler.attachHooker(ConfigureReportViaHttpRequestHook.class, baseReportRequestConfiguration);
       hookHandler.attachHooker(ConfigureReportViaHistoryLocationHook.class, baseReportRequestConfiguration);
       hookHandler.attachHooker(VariantCreatorHook.class, adjustMetadataHooker);
-      hookHandler.attachHooker(SearchResultAllowHook.class, reportManagerSearchResultCheckHooker);
+      hookHandler.attachHooker(SearchResultAllowerHook.class, reportManagerSearchResultCheckHooker);
 
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, reportManagerUrlBuilder);
 

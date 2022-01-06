@@ -46,7 +46,10 @@ public interface LdapService {
    void importUsers() throws LdapException;
 
    /**
-    * Reads a given attribute value of a given LDAP SearchResult
+    * Reads a given attribute value of a given LDAP SearchResult. Note that you
+    * have to include the property needed in the ldap.cf configuration file
+    * (additionalReturningAttributes) in order to the attribute to be retrieved if
+    * you need non-standard attributes.
     * 
     * @param sr            the SearchResult
     * @param attributeName the attribute to read

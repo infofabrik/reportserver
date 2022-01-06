@@ -8,7 +8,7 @@ import com.google.inject.Inject;
 import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.search.service.search.hooks.SearchProvider;
-import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
+import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
 import net.datenwerke.rs.search.service.search.index.SearchIndexService;
 import net.datenwerke.rs.search.service.search.locale.SearchMessages;
 import net.datenwerke.rs.search.service.search.results.SearchFilter;
@@ -59,7 +59,7 @@ public class EntitySearchProvider implements SearchProvider {
          if (entity instanceof SecurityTarget && !securityService.checkRights((SecurityTarget) entity, Read.class))
             continue;
 
-         if (hookHandlerService.getHookers(SearchResultAllowHook.class)
+         if (hookHandlerService.getHookers(SearchResultAllowerHook.class)
             .stream()
             .map(hooker -> hooker.allow((AbstractNode<? extends AbstractNode<?>>) entity))
             .filter(allow -> false == allow)

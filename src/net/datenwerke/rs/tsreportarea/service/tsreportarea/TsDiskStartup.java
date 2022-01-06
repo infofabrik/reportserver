@@ -12,7 +12,7 @@ import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportPostProcessProviderHook;
 import net.datenwerke.rs.search.service.search.hooks.AdditionalFieldsIndexerHook;
-import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowHook;
+import net.datenwerke.rs.search.service.search.hooks.SearchResultAllowerHook;
 import net.datenwerke.rs.teamspace.service.teamspace.entities.TeamSpace;
 import net.datenwerke.rs.teamspace.service.teamspace.hooks.TeamSpaceAppDefinitionProviderHook;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.eventhandler.HandleReportForceRemoveEvent;
@@ -74,7 +74,7 @@ public class TsDiskStartup {
       hookHandler.attachHooker(ExportAllHook.class, exportAllHooker);
       hookHandler.attachHooker(ImportAllHook.class, importAllHooker);
       
-      hookHandler.attachHooker(SearchResultAllowHook.class, teamSpaceSearchResultCheckHooker);
+      hookHandler.attachHooker(SearchResultAllowerHook.class, teamSpaceSearchResultCheckHooker);
       hookHandler.attachHooker(AdditionalFieldsIndexerHook.class, teamSpaceAdditionalFieldsHooker);
    }
 }
