@@ -237,11 +237,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk14-1.70.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-3.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.6.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.11.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.8.0.jar"/>
@@ -265,5 +260,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mssql-jdbc-9.4.1.jre8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.6.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.18.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analyzers-common-8.11.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-8.11.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.11.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.11.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
