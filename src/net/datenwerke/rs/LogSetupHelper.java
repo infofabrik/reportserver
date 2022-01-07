@@ -82,7 +82,7 @@ public class LogSetupHelper {
 
                   /*
                    * we get null if the filename contains the version maybe because of multiple
-                   * dots e.g. logback-core-1.2.7.jar, so we remove the version number from
+                   * dots e.g. logback-core-1.2.10.jar, so we remove the version number from
                    * filename. The version can be found in the MANIFEST.MF file.
                    */
                   cphelper.addUrl(classloader, LogSetupHelper.class.getResource("/resources/optlib/jul-to-slf4j.jar"));
