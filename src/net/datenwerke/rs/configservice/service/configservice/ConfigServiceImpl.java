@@ -1,9 +1,12 @@
 package net.datenwerke.rs.configservice.service.configservice;
 
+import static java.util.stream.Collectors.toList;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
@@ -48,8 +51,12 @@ public class ConfigServiceImpl implements ConfigService {
    private final Provider<PackagedScriptHelper> packagedScriptHelperProvider;
 
    @Inject
-   public ConfigServiceImpl(FileServerService fileService, TerminalService terminalService,
-         HookHandlerService hookHandler, Provider<PackagedScriptHelper> packagedScriptHelperProvider) {
+   public ConfigServiceImpl(
+         FileServerService fileService, 
+         TerminalService terminalService,
+         HookHandlerService hookHandler, 
+         Provider<PackagedScriptHelper> packagedScriptHelperProvider
+         ) {
 
       /* store objects */
       this.fileService = fileService;
@@ -242,5 +249,13 @@ public class ConfigServiceImpl implements ConfigService {
          }
       }
       return targetDir;
+   }
+
+   @Override
+   public List<String> parseConfigList(Configuration config, String identifier) {
+     return config.getList(identifier)
+           .stream()
+           .map(Object::toString)
+           .collect(toList());
    }
 }

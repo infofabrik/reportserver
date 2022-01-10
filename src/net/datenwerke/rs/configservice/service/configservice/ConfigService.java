@@ -2,6 +2,7 @@ package net.datenwerke.rs.configservice.service.configservice;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.List;
 
 import org.apache.commons.configuration2.Configuration;
 
@@ -22,6 +23,8 @@ public interface ConfigService {
    void clearCache(String identifier);
 
    Configuration getConfigFailsafe(String identifier);
+   
+   List<String> parseConfigList(Configuration config, String identifier);
 
    String getConfigAsXml(String identifier);
 
