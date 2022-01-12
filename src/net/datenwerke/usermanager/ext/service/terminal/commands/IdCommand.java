@@ -61,7 +61,7 @@ public class IdCommand implements TerminalCommandHook {
 
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("User-Info", ""),
-            Arrays.asList(String.class, String.class, String.class));
+            Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
 
       table.addDataRow(

@@ -20,4 +20,20 @@ public interface DatasourcesMessages extends Messages {
    String exceptionCouldNotPrepareStmt(String message);
 
    String commandConnPoolStats_description();
+   
+   String commandCopyTableContents_description();
+   
+   String commandCopyTableContents_sourceDatasource();
+   
+   String commandCopyTableContents_sourceTable();
+   
+   String commandCopyTableContents_destinationDatasource();
+   
+   String commandCopyTableContents_destinationTable();
+   
+   String commandCopyTableContents_primaryKeys();
+   
+   String commandCopyTableContents_copyPrimaryKeys();
+   
+   String commandCopyTableContents_batchSize();
 }
