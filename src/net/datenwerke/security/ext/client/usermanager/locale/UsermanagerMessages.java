@@ -81,4 +81,12 @@ public interface UsermanagerMessages extends Messages {
 
    String noUserSelectedMsg();
 
+   String userNotInGroupMessages();
+
+   String organisationalUnit();
+
+   String userDetails();
+
+   String groups();
+
 }

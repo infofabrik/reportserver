@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.inject.Inject;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
@@ -55,6 +56,18 @@ public class UserManagerDao extends Dao {
    public void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
          AsyncCallback<GroupDto> callback) {
       rpcService.updateGroupMembership(group, userIds, groupIds, ouIds, transformAndKeepCallback(callback));
+   }
+   
+   public void getUserDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback) {
+      rpcService.getUserDetailsAsHtml(userDto, transformAndKeepCallback(callback));
+   }
+
+   public void getUserGroupDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback) {
+      rpcService.getUserGroupDetailsAsHtml(userDto, transformAndKeepCallback(callback));
+   }
+   
+   public void getOrganisationalUnitDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback) {
+      rpcService.getOrganisationalUnitDetailsAsHtml(userDto, transformAndKeepCallback(callback));
    }
 
 }

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 
@@ -25,4 +26,9 @@ public interface UserManagerRpcServiceAsync {
    void updateGroupMembership(GroupDto group, Set<Long> userIds, Set<Long> groupIds, Set<Long> ouIds,
          AsyncCallback<GroupDto> callback);
 
+   void getUserDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback);
+   
+   void getUserGroupDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback);
+   
+   void getOrganisationalUnitDetailsAsHtml(UserDto userDto, AsyncCallback<SafeHtml> callback);
 }

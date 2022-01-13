@@ -9,6 +9,7 @@ import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
 import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -57,6 +58,8 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem.disable();
       userMenu.add(inserItem);
       userMenu.add(new DeleteMenuItem(treeHandler));
+      userMenu.add(new SeparatorMenuItem());
+      userMenu.add(new InfoMenuItem());
 
       /* role */
       Menu groupMenu = menuProvider.createOrGetMenuFor(GroupDto.class);

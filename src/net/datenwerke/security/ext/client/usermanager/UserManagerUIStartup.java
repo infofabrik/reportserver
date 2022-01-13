@@ -13,6 +13,8 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoAdditionalInfoProvider;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
@@ -24,6 +26,10 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 import net.datenwerke.security.ext.client.usermanager.helper.simpleform.StrippedDownUserProvider;
 import net.datenwerke.security.ext.client.usermanager.helper.simpleform.UserProvider;
 import net.datenwerke.security.ext.client.usermanager.hookers.MainPanelViewProviderHooker;
+import net.datenwerke.security.ext.client.usermanager.objectinfo.UserDetailsObjectInfo;
+import net.datenwerke.security.ext.client.usermanager.objectinfo.UserGroupsObjectInfo;
+import net.datenwerke.security.ext.client.usermanager.objectinfo.UserObjectInfo;
+import net.datenwerke.security.ext.client.usermanager.objectinfo.UserOrganisationalUnitObjectInfo;
 import net.datenwerke.security.ext.client.usermanager.provider.annotations.UserManagerAdminViewTree;
 import net.datenwerke.security.ext.client.usermanager.provider.treehookers.UserManagerTreeConfigurationHooker;
 import net.datenwerke.security.ext.client.usermanager.security.UserManagerAdminViewGenericTargetIdentifier;
@@ -50,6 +56,14 @@ public class UserManagerUIStartup {
          final UserManagerTreeLoaderDao umdao,
 
          final UserManagerTreeConfigurationHooker treeConfigurator,
+         
+         final UserObjectInfo userObjectInfo,
+         
+         final UserDetailsObjectInfo userDetailsObjectInfo,
+         
+         final UserGroupsObjectInfo userGroupsObjectInfo,
+         
+         final UserOrganisationalUnitObjectInfo userOrganisationalUnitObjectInfo,
 
          final Provider<UserProvider> simpleFormUserProvider,
          Provider<StrippedDownUserProvider> strippedDownUserProvider,
@@ -59,6 +73,12 @@ public class UserManagerUIStartup {
 
       /* config tree */
       hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+      
+      /* object info */
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, userObjectInfo);
+      hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userDetailsObjectInfo);
+      hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userGroupsObjectInfo);
+      hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userOrganisationalUnitObjectInfo);
 
       /* attach security target domains */
       hookHandler.attachHooker(GenericTargetProviderHook.class,
