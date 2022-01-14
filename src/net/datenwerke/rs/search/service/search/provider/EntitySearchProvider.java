@@ -59,13 +59,15 @@ public class EntitySearchProvider implements SearchProvider {
          if (entity instanceof SecurityTarget && !securityService.checkRights((SecurityTarget) entity, Read.class))
             continue;
 
-         if (hookHandlerService.getHookers(SearchResultAllowerHook.class)
-            .stream()
-            .map(hooker -> hooker.allow((AbstractNode<? extends AbstractNode<?>>) entity))
-            .filter(allow -> false == allow)
-            .findAny()
-            .isPresent())
-            continue;
+         if (entity instanceof AbstractNode) {
+            if (hookHandlerService.getHookers(SearchResultAllowerHook.class)
+               .stream()
+               .map(hooker -> hooker.allow((AbstractNode<? extends AbstractNode<?>>) entity))
+               .filter(allow -> false == allow)
+               .findAny()
+               .isPresent())
+               continue;
+         }
          
          SearchResultEntry sr = new SearchResultEntry();
 
