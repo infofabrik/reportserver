@@ -229,34 +229,34 @@ public class UserManagerRpcServiceImpl extends SecuredRemoteServiceServlet imple
    public SafeHtml getUserDetailsAsHtml(UserDto userDto) throws ServerCallFailedException {
       User user = (User) dtoService.loadPoso(userDto);
       SafeHtmlBuilder builder = new SafeHtmlBuilder();
-      builder.appendEscaped("Title: " + (Sex.Male.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderMale()
+      builder.appendEscaped(UserManagerMessages.INSTANCE.title()+": " + (Sex.Male.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderMale()
             : Sex.Female.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderFemale() : ""));
       builder.appendHtmlConstant("<br/>");
-      builder.appendEscaped("ID: " + user.getId());
+      builder.appendEscaped(UserManagerMessages.INSTANCE.id()+": " + user.getId());
       builder.appendHtmlConstant("<br/>");
-      builder.appendEscaped("User name: " + user.getUsername());
+      builder.appendEscaped(UserManagerMessages.INSTANCE.username()+": " + user.getUsername());
       builder.appendHtmlConstant("<br/>");
-      builder.appendEscaped("First name: " + (null != user.getFirstname() ? user.getFirstname() : ""));
+      builder.appendEscaped(UserManagerMessages.INSTANCE.firstName()+": " + (null != user.getFirstname() ? user.getFirstname() : ""));
       builder.appendHtmlConstant("<br/>");
-      builder.appendEscaped("Last name: " + (null != user.getLastname() ? user.getLastname() : ""));
+      builder.appendEscaped(UserManagerMessages.INSTANCE.lastName()+": " + (null != user.getLastname() ? user.getLastname() : ""));
       builder.appendHtmlConstant("<br/>");
-      builder.appendEscaped("E-mail: " + (null != user.getEmail() ? user.getEmail() : ""));
+      builder.appendEscaped(UserManagerMessages.INSTANCE.email()+": " + (null != user.getEmail() ? user.getEmail() : ""));
       builder.appendHtmlConstant("<br/>");
       BsiPasswordPolicyUserMetadata metadata = bsiPasswordPolicyService.getUserMetadata(user);
 
       if (null != metadata.getAccountInhibited()) {
-         builder.appendEscaped("Account Inhibition: " + String.valueOf(metadata.getAccountInhibited()));
+         builder.appendEscaped(UserManagerMessages.INSTANCE.accountInhibitionLabel()+": " + String.valueOf(metadata.getAccountInhibited()));
       } else {
-         builder.appendEscaped("Account Inhibition: " + "false");
+         builder.appendEscaped(UserManagerMessages.INSTANCE.accountInhibitionLabel()+": " + "false");
       }
 
       builder.appendHtmlConstant("<br/>");
 
       if (null != metadata.getAccountExpirationDate()) {
-         builder.appendEscaped(
-               "Account Expires: " + (new SimpleDateFormat("dd.MM.yyyy").format(metadata.getAccountExpirationDate())));
+         builder.appendEscaped(UserManagerMessages.INSTANCE.accountExpirationDate()+
+               ": " + (new SimpleDateFormat("dd.MM.yyyy").format(metadata.getAccountExpirationDate())));
       } else {
-         builder.appendEscaped("Account Expires : " + " ");
+         builder.appendEscaped(UserManagerMessages.INSTANCE.accountExpirationDate()+": " + " ");
       }
       return builder.toSafeHtml();
    }

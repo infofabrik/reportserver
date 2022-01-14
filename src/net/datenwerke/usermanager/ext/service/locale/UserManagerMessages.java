@@ -19,4 +19,20 @@ public interface UserManagerMessages extends Messages {
 
    String commandId_arg_username();
 
+   String title();
+
+   String id();
+
+   String username();
+
+   String firstName();
+
+   String lastName();
+
+   String email();
+
+   String accountInhibitionLabel();
+
+   String accountExpirationDate();
+
 }
