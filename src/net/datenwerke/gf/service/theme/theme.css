@@ -1505,12 +1505,12 @@ div.rs-menu {
 	padding-top: 7px !important;
 	padding-bottom: 6px !important;
 	border-bottom: 1px solid #B8BDC0 /*col:border.light*/ !important;
-	background: none repeat scroll 0 0 #EEEEEE /*col:bg.shaded*/ !important;
-    color: #666666 /*col:shaded.text*/ !important;
+	background: none repeat scroll 0 0 #3E4059 /*col:hl.dark.bg*/ !important;
+    color: #FFFFFF /*hl.dark.text*/ !important;
 }
 
 .rs-search-view-filter .rs-cp-header > div > div {
-	color: #666666 /*col:shaded.text*/ !important;
+	color: #FFFFFF /*hl.dark.text*/ !important;
 }
 
 .rs-search-view-results .x-toolbar {
