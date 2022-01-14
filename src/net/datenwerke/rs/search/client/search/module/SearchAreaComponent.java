@@ -1,5 +1,7 @@
 package net.datenwerke.rs.search.client.search.module;
 
+import static java.util.Comparator.comparing;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
@@ -117,8 +119,13 @@ public class SearchAreaComponent extends DwContentPanel {
    private VerticalLayoutContainer previewPanelContainer;
 
    @Inject
-   public SearchAreaComponent(Provider<ObjectPreviewTabPanel> objectInformationPanelProvider, SearchDao searchDao,
-         SearchUiService searchService, ToolbarService toolbarService, FormatUiHelper formatUiHelper) {
+   public SearchAreaComponent(
+         Provider<ObjectPreviewTabPanel> objectInformationPanelProvider, 
+         SearchDao searchDao,
+         SearchUiService searchService, 
+         ToolbarService toolbarService, 
+         FormatUiHelper formatUiHelper
+         ) {
 
       this.objectInformationPanelProvider = objectInformationPanelProvider;
       this.searchDao = searchDao;
@@ -384,22 +391,26 @@ public class SearchAreaComponent extends DwContentPanel {
          final DwFlowContainer typeContainer = new DwFlowContainer();
          panel.setWidget(typeContainer);
 
-         result.getTags().stream().filter(tag -> tag.getType().getType().equals(type.getType())).forEach(tag -> {
-            final Label tagComp = new Label(tag.getDisplay());
-            tagComp.addStyleName(CSS_NAME_TAG);
-            typeContainer.add(tagComp);
-
-            tagComp.addDomHandler(event -> {
-               if (!selectedTags.contains(tag)) {
-                  selectedTags.add(tag);
-                  tagComp.addStyleName(CSS_NAME_TAG_SELECTED);
-               } else {
-                  selectedTags.remove(tag);
-                  tagComp.removeStyleName(CSS_NAME_TAG_SELECTED);
-               }
-               doRunSearch();
-            }, ClickEvent.getType());
-         });
+         result.getTags()
+            .stream()
+            .filter(tag -> tag.getType().getType().equals(type.getType()))
+            .sorted(comparing(SearchResultTagDto::getDisplay))
+            .forEach(tag -> {
+               final Label tagComp = new Label(tag.getDisplay());
+               tagComp.addStyleName(CSS_NAME_TAG);
+               typeContainer.add(tagComp);
+               
+               tagComp.addDomHandler(event -> {
+                  if (!selectedTags.contains(tag)) {
+                     selectedTags.add(tag);
+                     tagComp.addStyleName(CSS_NAME_TAG_SELECTED);
+                  } else {
+                     selectedTags.remove(tag);
+                     tagComp.removeStyleName(CSS_NAME_TAG_SELECTED);
+                  }
+                  doRunSearch();
+               }, ClickEvent.getType());
+            });
 
          wrapper.add(panel);
          panel.expand();

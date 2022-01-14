@@ -26,7 +26,7 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
 /**
  * Used to define AmazonS3 datasinks that can be used in ReportServer to send
- * reports to a given drop box account.
+ * reports to a given Amazon S3 account.
  */
 @Entity
 @Table(name = "AMAZONS3_DATASINK")
