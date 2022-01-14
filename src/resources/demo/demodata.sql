@@ -23,15 +23,15 @@
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Employees (
-  employeeNumber int(11) NOT NULL,
+  employeeNumber int NOT NULL,
   lastName varchar(50) NOT NULL,
   firstName varchar(50) NOT NULL,
   extension varchar(10) NOT NULL,
   email varchar(100) NOT NULL,
   officeCode varchar(10) NOT NULL,
-  reportsTo int(11) DEFAULT NULL,
+  reportsTo int DEFAULT NULL,
   jobTitle varchar(50) NOT NULL,
-  age int(11) DEFAULT NULL,
+  age int DEFAULT NULL,
   sex varchar(1) DEFAULT NULL,
   PRIMARY KEY (employeeNumber)
 ) ;
@@ -92,7 +92,7 @@ INSERT INTO Offices (officeCode, city, phone, addressLine1, addressLine2, state,
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Payments (
-  customerNumber int(11) NOT NULL,
+  customerNumber int NOT NULL,
   checkNumber varchar(50) NOT NULL,
   paymentDate datetime NOT NULL,
   amount decimal(12,2) NOT NULL
@@ -378,7 +378,7 @@ INSERT INTO Payments (customerNumber, checkNumber, paymentDate, amount) VALUES (
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Customers (
-  customerNumber int(11) NOT NULL,
+  customerNumber int NOT NULL,
   customerName varchar(50) NOT NULL,
   contactLastName varchar(50) NOT NULL,
   contactFirstName varchar(50) NOT NULL,
@@ -389,7 +389,7 @@ CREATE TABLE Customers (
   state varchar(50) DEFAULT NULL,
   postalCode varchar(15) DEFAULT NULL,
   country varchar(50) NOT NULL,
-  salesRepEmployeeNumber int(11) DEFAULT NULL,
+  salesRepEmployeeNumber int DEFAULT NULL,
   creditLimit decimal(12,2) DEFAULT NULL,
   PRIMARY KEY (customerNumber)
 ) ;
@@ -556,11 +556,11 @@ INSERT INTO ProductLines (productLine, textDescription, htmlDescription, image) 
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE OrderDetails (
-  orderNumber int(11) NOT NULL,
+  orderNumber int NOT NULL,
   productCode varchar(15) NOT NULL,
-  quantityOrdered int(11) NOT NULL,
+  quantityOrdered int NOT NULL,
   priceEach decimal(12,2) NOT NULL,
-  orderLineNumber smallint(6) NOT NULL,
+  orderLineNumber smallint NOT NULL,
   PRIMARY KEY (orderNumber,productCode)
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -3573,7 +3573,7 @@ CREATE TABLE Products (
   productScale varchar(10) NOT NULL,
   productVendor varchar(50) NOT NULL,
   productDescription text NOT NULL,
-  quantityInStock smallint(6) NOT NULL,
+  quantityInStock smallint NOT NULL,
   buyPrice decimal(12,2) NOT NULL,
   MSRP decimal(12,2) NOT NULL,
   PRIMARY KEY (productCode)
@@ -3696,13 +3696,13 @@ INSERT INTO Products (productCode, productName, productLine, productScale, produ
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE Orders (
-  orderNumber int(11) NOT NULL,
+  orderNumber int NOT NULL,
   orderDate datetime NOT NULL,
   requiredDate datetime NOT NULL,
   shippedDate datetime DEFAULT NULL,
   status varchar(15) NOT NULL,
   comments text,
-  customerNumber int(11) NOT NULL
+  customerNumber int NOT NULL
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -4043,7 +4043,7 @@ CREATE TABLE METADATA (
   default_alias varchar(45) DEFAULT NULL,
   description varchar(255) DEFAULT NULL,
   semantic varchar(255) DEFAULT NULL,  
-  hasindex smallint(1) DEFAULT NULL,    
+  hasindex smallint DEFAULT NULL,    
   PRIMARY KEY (column_name,table_name)
 ) ;
 /*!40101 SET character_set_client = @saved_cs_client */;
