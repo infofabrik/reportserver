@@ -63,13 +63,33 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ TableReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true, dto2PosoPostProcessors = Dto2TableReportPost.class, dto2PosoSupervisor = Dto2TableReportSupervisor.class, poso2DtoPostProcessors = TableReport2DtoPost.class, typeDescriptionMsg = TableMessages.class, typeDescriptionKey = "reportTypeName", icon = "table")
-@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "tableReportTypeName", icon = "table")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", 
+      createDecorator = true, 
+      dto2PosoPostProcessors = Dto2TableReportPost.class, 
+      dto2PosoSupervisor = Dto2TableReportSupervisor.class, 
+      poso2DtoPostProcessors = TableReport2DtoPost.class, 
+      typeDescriptionMsg = TableMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "table"
+      )
+@InstanceDescription(
+      msgLocation = ReportEnginesMessages.class, 
+      objNameKey = "tableReportTypeName", 
+      icon = "table"
+      )
 @EntityDiffGuides(guides = {
-      @EntityDiffGuide(name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, ignoreId = true, ignoreVersion = true, whitelist = {
-            "parameterDefinitions", "parameterInstances", "datasourceContainer", "additionalColumns", "enableSubtotals",
-            "columns", "selectAllColumns", "metadataDatasourceContainer", "distinctFlag", "preFilter",
-            "parameterDefinitions", "parameterInstances", "datasourceContainer" }) })
+      @EntityDiffGuide(
+            name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, 
+            ignoreId = true, 
+            ignoreVersion = true, 
+            whitelist = {
+               "parameterDefinitions", "parameterInstances", "datasourceContainer", "additionalColumns", "enableSubtotals",
+               "columns", "selectAllColumns", "metadataDatasourceContainer", "distinctFlag", "preFilter",
+               "parameterDefinitions", "parameterInstances", "datasourceContainer" }
+            ) 
+      }
+)
 public class TableReport extends Report {
 
    @Inject

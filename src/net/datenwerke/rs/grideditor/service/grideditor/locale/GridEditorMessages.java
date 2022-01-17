@@ -8,6 +8,8 @@ public interface GridEditorMessages extends Messages {
    public final static GridEditorMessages INSTANCE = LocalizationServiceImpl.getMessages(GridEditorMessages.class);
 
    String reportTypeName();
+   
+   String reportVariantTypeName();
 
    String validationFailedDefaultMessage();
 

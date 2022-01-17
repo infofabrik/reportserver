@@ -22,8 +22,17 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ GridEditorReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", createDecorator = true, typeDescriptionMsg = net.datenwerke.rs.grideditor.client.grideditor.locale.GridEditorMessages.class, typeDescriptionKey = "reportTypeName")
-@InstanceDescription(msgLocation = GridEditorMessages.class, objNameKey = "reportTypeName", icon = "edit")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = net.datenwerke.rs.grideditor.client.grideditor.locale.GridEditorMessages.class, 
+      typeDescriptionKey = "reportTypeName"
+      )
+@InstanceDescription(
+      msgLocation = GridEditorMessages.class, 
+      objNameKey = "reportTypeName", 
+      icon = "edit"
+      )
 public class GridEditorReport extends Report {
 
    /**

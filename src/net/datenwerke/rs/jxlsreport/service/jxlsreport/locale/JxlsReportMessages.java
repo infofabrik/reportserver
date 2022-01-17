@@ -8,5 +8,7 @@ public interface JxlsReportMessages extends Messages {
    public final static JxlsReportMessages INSTANCE = LocalizationServiceImpl.getMessages(JxlsReportMessages.class);
 
    String reportTypeName();
+   
+   String reportVariantTypeName();
 
 }

@@ -17,13 +17,23 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.jxlsreport.service.jxlsreport.locale.JxlsReportMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "JXLS_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = JxlsReportMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "file-excel-o"
+      )
 public class JxlsReportVariant extends JxlsReport implements ReportVariant {
 
    /**

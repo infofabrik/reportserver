@@ -25,8 +25,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ CrystalReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", createDecorator = true, typeDescriptionMsg = CrystalMessages.class, typeDescriptionKey = "reportTypeName", icon = "diamond")
-@InstanceDescription(msgLocation = CrystalEngineMessages.class, objNameKey = "reportTypeName", icon = "diamond")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = CrystalMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "diamond"
+      )
+@InstanceDescription(
+      msgLocation = CrystalEngineMessages.class, 
+      objNameKey = "reportTypeName", 
+      icon = "diamond"
+      )
 public class CrystalReport extends Report {
 
    /**

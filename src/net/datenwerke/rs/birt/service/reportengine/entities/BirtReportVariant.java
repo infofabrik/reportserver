@@ -12,18 +12,28 @@ import org.hibernate.proxy.HibernateProxy;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.dtoservices.dtogenerator.annotations.IgnoreMergeBackDto;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.birt.service.reportengine.locale.BirtEngineMessages;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "BIRT_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.birt.client.reportengines.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = BirtEngineMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "file-image-o"
+      )
 public class BirtReportVariant extends BirtReport implements ReportVariant {
 
    /**

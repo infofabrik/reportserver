@@ -30,9 +30,18 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 @Table(name = "JASPER_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto", createDecorator = true)
-@ExImportConfig(excludeFields = { "datasourceContainer", "parameterDefinitions", "masterFile", "subFiles" })
-@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "jasperReportVariantTypeName", icon = "script")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto", 
+      createDecorator = true
+      )
+@ExImportConfig(
+      excludeFields = { "datasourceContainer", "parameterDefinitions", "masterFile", "subFiles" }
+      )
+@InstanceDescription(
+      msgLocation = ReportEnginesMessages.class, 
+      objNameKey = "jasperReportVariantTypeName", 
+      icon = "newspaper-o"
+      )
 public class JasperReportVariant extends JasperReport implements ReportVariant {
 
    /**

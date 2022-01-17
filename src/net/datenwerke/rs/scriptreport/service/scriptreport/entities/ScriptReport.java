@@ -29,9 +29,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(dtoPackage = "net.datenwerke.rs.scriptreport.client.scriptreport.dto", createDecorator = true, typeDescriptionMsg = net.datenwerke.rs.scriptreport.client.scriptreport.locale.ScriptReportMessages.class, typeDescriptionKey = "reportTypeName")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.scriptreport.client.scriptreport.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = net.datenwerke.rs.scriptreport.client.scriptreport.locale.ScriptReportMessages.class, 
+      typeDescriptionKey = "reportTypeName"
+      )
 @TreeDBAllowedChildren({ ScriptReportVariant.class })
-@InstanceDescription(msgLocation = ScriptReportMessages.class, objNameKey = "scriptReportTypeName", icon = "script")
+@InstanceDescription(
+      msgLocation = ScriptReportMessages.class, 
+      objNameKey = "scriptReportTypeName", 
+      icon = "script"
+      )
 public class ScriptReport extends Report {
 
    /**

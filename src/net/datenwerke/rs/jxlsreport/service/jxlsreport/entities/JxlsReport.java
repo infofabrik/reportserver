@@ -24,8 +24,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ JxlsReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", createDecorator = true, typeDescriptionMsg = net.datenwerke.rs.jxlsreport.client.jxlsreport.locale.JxlsReportMessages.class, typeDescriptionKey = "reportTypeName", icon = "file-excel-o")
-@InstanceDescription(msgLocation = JxlsReportMessages.class, objNameKey = "reportTypeName", icon = "file-excel-o")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.jxlsreport.client.jxlsreport.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = net.datenwerke.rs.jxlsreport.client.jxlsreport.locale.JxlsReportMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "file-excel-o"
+      )
+@InstanceDescription(
+      msgLocation = JxlsReportMessages.class, 
+      objNameKey = "reportTypeName", 
+      icon = "file-excel-o"
+      )
 public class JxlsReport extends Report {
 
    /**

@@ -18,13 +18,23 @@ import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManag
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.grideditor.service.grideditor.locale.GridEditorMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "GRID_EDT_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.grideditor.client.grideditor.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = GridEditorMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "edit"
+      )
 public class GridEditorReportVariant extends GridEditorReport implements ReportVariant {
 
    /**

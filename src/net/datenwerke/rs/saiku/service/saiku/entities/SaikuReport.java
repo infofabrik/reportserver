@@ -25,8 +25,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ SaikuReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.saiku.client.saiku.dto", createDecorator = true, typeDescriptionMsg = SaikuMessages.class, typeDescriptionKey = "reportTypeName", icon = "cubes")
-@InstanceDescription(msgLocation = SaikuEngineMessages.class, objNameKey = "reportTypeName", icon = "cubes")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.saiku.client.saiku.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = SaikuMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "cubes"
+      )
+@InstanceDescription(
+      msgLocation = SaikuEngineMessages.class, 
+      objNameKey = "reportTypeName", 
+      icon = "cubes"
+      )
 public class SaikuReport extends Report {
 
    private static final long serialVersionUID = 895906038962019952L;

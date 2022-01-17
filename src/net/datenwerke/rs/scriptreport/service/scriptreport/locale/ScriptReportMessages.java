@@ -8,5 +8,7 @@ public interface ScriptReportMessages extends Messages {
    public final static ScriptReportMessages INSTANCE = LocalizationServiceImpl.getMessages(ScriptReportMessages.class);
 
    String scriptReportTypeName();
+   
+   String reportVariantTypeName();
 
 }

@@ -18,13 +18,23 @@ import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManag
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.scriptreport.service.scriptreport.locale.ScriptReportMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "SCRIPT_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.scriptreport.client.scriptreport.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.scriptreport.client.scriptreport.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = ScriptReportMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "script"
+      )
 public class ScriptReportVariant extends ScriptReport implements ReportVariant {
 
    /**

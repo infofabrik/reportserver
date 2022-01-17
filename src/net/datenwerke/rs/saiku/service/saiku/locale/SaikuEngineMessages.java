@@ -8,6 +8,8 @@ public interface SaikuEngineMessages extends Messages {
    public final static SaikuEngineMessages INSTANCE = LocalizationServiceImpl.getMessages(SaikuEngineMessages.class);
 
    String reportTypeName();
+   
+   String reportVariantTypeName();
 
    String errorUnableToFindMember(String member);
 

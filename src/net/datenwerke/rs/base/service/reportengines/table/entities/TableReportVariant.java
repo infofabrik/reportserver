@@ -30,9 +30,16 @@ import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescripti
 @Table(name = "TABLE_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", 
+      createDecorator = true
+      )
 @ExImportConfig(excludeFields = { "datasourceContainer", "metadataDatasourceContainer", "parameterDefinitions" })
-@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "tableReportVariantTypeName", icon = "table")
+@InstanceDescription(
+      msgLocation = ReportEnginesMessages.class, 
+      objNameKey = "tableReportVariantTypeName", 
+      icon = "table"
+      )
 public class TableReportVariant extends TableReport implements ReportVariant {
 
    /**

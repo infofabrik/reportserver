@@ -35,8 +35,18 @@ import net.datenwerke.treedb.service.treedb.annotation.TreeDBAllowedChildren;
 @Audited
 @Indexed
 @TreeDBAllowedChildren({ JasperReportVariant.class })
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto", createDecorator = true, typeDescriptionMsg = JasperMessages.class, typeDescriptionKey = "reportTypeName", icon = "newspaper-o")
-@InstanceDescription(msgLocation = ReportEnginesMessages.class, objNameKey = "jasperReportTypeName", icon = "newspaper-o")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.reportengines.jasper.dto", 
+      createDecorator = true, 
+      typeDescriptionMsg = JasperMessages.class, 
+      typeDescriptionKey = "reportTypeName", 
+      icon = "newspaper-o"
+      )
+@InstanceDescription(
+      msgLocation = ReportEnginesMessages.class, 
+      objNameKey = "jasperReportTypeName", 
+      icon = "newspaper-o"
+      )
 public class JasperReport extends Report {
 
    @Inject

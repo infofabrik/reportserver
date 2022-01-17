@@ -17,14 +17,29 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.crystal.service.crystal.locale.CrystalEngineMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "CRYSTAL_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.crystal.client.crystal.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = CrystalEngineMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "diamond"
+      )
 public class CrystalReportVariant extends CrystalReport implements ReportVariant {
+
+   /**
+    * 
+    */
+   private static final long serialVersionUID = -319938511179945406L;
 
    public CrystalReport getBaseReport() {
       AbstractReportManagerNode parent = getParent();

@@ -8,6 +8,8 @@ public interface BirtEngineMessages extends Messages {
    public final static BirtEngineMessages INSTANCE = LocalizationServiceImpl.getMessages(BirtEngineMessages.class);
 
    String birtReportTypeName();
+   
+   String reportVariantTypeName();
 
    String commandBirt_description();
 

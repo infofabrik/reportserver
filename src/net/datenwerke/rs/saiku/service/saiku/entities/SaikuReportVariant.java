@@ -17,13 +17,23 @@ import net.datenwerke.rs.core.service.parameters.entities.ParameterDefinition;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
+import net.datenwerke.rs.saiku.service.saiku.locale.SaikuEngineMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
+import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 
 @Entity
 @Table(name = "SAIKU_REPORT_VARIANT")
 @Audited
 @Indexed
-@GenerateDto(dtoPackage = "net.datenwerke.rs.saiku.client.saiku.dto", createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.saiku.client.saiku.dto", 
+      createDecorator = true
+      )
+@InstanceDescription(
+      msgLocation = SaikuEngineMessages.class, 
+      objNameKey = "reportVariantTypeName", 
+      icon = "cubes"
+      )
 public class SaikuReportVariant extends SaikuReport implements ReportVariant {
 
    private static final long serialVersionUID = 5745075422591319002L;
