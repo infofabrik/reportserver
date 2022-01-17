@@ -22,8 +22,11 @@ public class FilterServiceImpl implements FilterService {
       Map<String, Map<String, Object>> filterMap = new HashMap<>();
 
       List<Column> columns = report.getColumns();
-      List<Column> colsHavingFilter = columns.stream().filter(col -> col.hasFilters()).collect(toList());
-      colsHavingFilter.sort(comparing(Column::getName));
+      List<Column> colsHavingFilter = columns
+            .stream()
+            .filter(Column::hasFilters)
+            .sorted(comparing(Column::getName))
+            .collect(toList());
 
       if (!colsHavingFilter.isEmpty())
          colsHavingFilter.forEach(col -> filterMap.put(col.getName(), col.getFilterAsMap()));

@@ -218,9 +218,9 @@ public class SearchAreaComponent extends DwContentPanel {
       });
 
       /* create columns */
-      List<ColumnConfig<SearchResultEntryDto, ?>> columns = new ArrayList<ColumnConfig<SearchResultEntryDto, ?>>();
+      List<ColumnConfig<SearchResultEntryDto, ?>> columns = new ArrayList<>();
 
-      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> iconColumn = new ColumnConfig<SearchResultEntryDto, SearchResultEntryDto>(
+      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> iconColumn = new ColumnConfig<>(
             new IdentityValueProvider<SearchResultEntryDto>(), 30);
       iconColumn.setCell(new AbstractCell<SearchResultEntryDto>() {
          @Override
@@ -232,7 +232,7 @@ public class SearchAreaComponent extends DwContentPanel {
       });
       columns.add(iconColumn);
 
-      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> idColumn = new ColumnConfig<SearchResultEntryDto, SearchResultEntryDto>(
+      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> idColumn = new ColumnConfig<>(
             new IdentityValueProvider<SearchResultEntryDto>("__id"), 90, BaseMessages.INSTANCE.id());
       idColumn.setMenuDisabled(true);
       idColumn.setCell(new AbstractCell<SearchResultEntryDto>() {
@@ -244,7 +244,7 @@ public class SearchAreaComponent extends DwContentPanel {
       });
       columns.add(idColumn);
 
-      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> entryColumn = new ColumnConfig<SearchResultEntryDto, SearchResultEntryDto>(
+      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> entryColumn = new ColumnConfig<>(
             new IdentityValueProvider<SearchResultEntryDto>("__entry"), 200,
             SearchMessages.INSTANCE.entryColumnLabel());
       columns.add(entryColumn);
@@ -264,7 +264,7 @@ public class SearchAreaComponent extends DwContentPanel {
       entryColumn.setMenuDisabled(true);
       entryColumn.setSortable(false);
 
-      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> ccLastModified = new ColumnConfig<SearchResultEntryDto, SearchResultEntryDto>(
+      ColumnConfig<SearchResultEntryDto, SearchResultEntryDto> ccLastModified = new ColumnConfig<>(
             new IdentityValueProvider<SearchResultEntryDto>("__last"), 150, BaseMessages.INSTANCE.lastModified());
       ccLastModified.setMenuDisabled(true);
       ccLastModified.setCell(new AbstractCell<SearchResultEntryDto>() {
@@ -286,7 +286,7 @@ public class SearchAreaComponent extends DwContentPanel {
       columns.add(ccLastModified);
 
       /* create grid */
-      final Grid<SearchResultEntryDto> grid = new Grid<SearchResultEntryDto>(store,
+      final Grid<SearchResultEntryDto> grid = new Grid<>(store,
             new ColumnModel<SearchResultEntryDto>(columns));
       grid.getView().setAutoExpandColumn(entryColumn);
       grid.getView().setEmptyText(SearchMessages.INSTANCE.noResultsFound());
@@ -433,7 +433,8 @@ public class SearchAreaComponent extends DwContentPanel {
    }
 
    protected PagingLoader<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>> renewLoader() {
-      RpcProxy<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>> proxy = new RpcProxy<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>>() {
+      RpcProxy<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>> proxy = 
+            new RpcProxy<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>>() {
 
          @Override
          public void load(PagingLoadConfig loadConfig,
@@ -459,8 +460,7 @@ public class SearchAreaComponent extends DwContentPanel {
          }
       };
 
-      final PagingLoader<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>> loader = new PagingLoader<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>>(
-            proxy);
+      final PagingLoader<PagingLoadConfig, PagingLoadResult<SearchResultEntryDto>> loader = new PagingLoader<>(proxy);
       loader.setRemoteSort(true);
 
       return loader;
