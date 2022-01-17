@@ -31,9 +31,22 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "FTP_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.ftp.client.ftp.dto", poso2DtoPostProcessors = FtpDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasPassword", type = Boolean.class), }, icon = "upload")
-@InstanceDescription(msgLocation = FtpMessages.class, objNameKey = "ftpDatasinkTypeName", icon = "upload")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.ftp.client.ftp.dto", 
+      poso2DtoPostProcessors = FtpDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasPassword", 
+                  type = Boolean.class
+                  )
+            }, 
+            icon = "upload"
+            )
+@InstanceDescription(
+      msgLocation = FtpMessages.class, 
+      objNameKey = "ftpDatasinkTypeName", 
+      icon = "upload"
+      )
 @Indexed
 public class FtpDatasink extends DatasinkDefinition implements HostDatasink, FolderedDatasink {
 

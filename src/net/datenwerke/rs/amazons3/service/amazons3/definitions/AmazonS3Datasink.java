@@ -31,9 +31,22 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "AMAZONS3_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.amazons3.client.amazons3.dto", poso2DtoPostProcessors = AmazonS3Datasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "amazon")
-@InstanceDescription(msgLocation = AmazonS3DatasinkMessages.class, objNameKey = "amazonS3DatasinkTypeName", icon = "amazon")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.amazons3.client.amazons3.dto", 
+      poso2DtoPostProcessors = AmazonS3Datasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasSecretKey", 
+                  type = Boolean.class
+                  ) 
+            }, 
+            icon = "amazon"
+            )
+@InstanceDescription(
+      msgLocation = AmazonS3DatasinkMessages.class, 
+      objNameKey = "amazonS3DatasinkTypeName", 
+      icon = "amazon"
+      )
 @Indexed
 public class AmazonS3Datasink extends DatasinkDefinition implements FolderedDatasink {
 

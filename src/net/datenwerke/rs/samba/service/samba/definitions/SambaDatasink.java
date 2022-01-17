@@ -31,11 +31,22 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "SAMBA_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.samba.client.samba.dto", poso2DtoPostProcessors = SambaDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasPassword", type = Boolean.class), }, icon = "angle-double-up")
-@InstanceDescription(msgLocation = SambaMessages.class, objNameKey = "sambaDatasinkTypeName",
-
-      icon = "angle-double-up")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.samba.client.samba.dto", 
+      poso2DtoPostProcessors = SambaDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasPassword", 
+                  type = Boolean.class
+                  )
+            }, 
+            icon = "angle-double-up"
+            )
+@InstanceDescription(
+      msgLocation = SambaMessages.class, 
+      objNameKey = "sambaDatasinkTypeName",
+      icon = "angle-double-up"
+      )
 @Indexed
 public class SambaDatasink extends DatasinkDefinition implements HostDatasink, FolderedDatasink {
 

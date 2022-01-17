@@ -38,10 +38,26 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "BOX_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.box.client.box.dto", poso2DtoPostProcessors = BoxDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
-      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "cube")
-@InstanceDescription(msgLocation = BoxDatasinkMessages.class, objNameKey = "boxDatasinkTypeName", icon = "cube")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.box.client.box.dto", 
+      poso2DtoPostProcessors = BoxDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasRefreshToken", 
+                  type = Boolean.class
+                  ),
+            @AdditionalField(
+                  name = "hasSecretKey", 
+                  type = Boolean.class
+                  ) 
+            }, 
+            icon = "cube"
+            )
+@InstanceDescription(
+      msgLocation = BoxDatasinkMessages.class, 
+      objNameKey = "boxDatasinkTypeName", 
+      icon = "cube"
+      )
 @Indexed
 public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 

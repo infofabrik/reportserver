@@ -38,10 +38,26 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "GOOGLEDRIVE_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.googledrive.client.googledrive.dto", poso2DtoPostProcessors = GoogleDriveDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
-      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "google")
-@InstanceDescription(msgLocation = GoogleDriveDatasinkMessages.class, objNameKey = "googleDriveDatasinkTypeName", icon = "google")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.googledrive.client.googledrive.dto", 
+      poso2DtoPostProcessors = GoogleDriveDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasRefreshToken", 
+                  type = Boolean.class
+                  ),
+            @AdditionalField(
+                  name = "hasSecretKey", 
+                  type = Boolean.class
+                  ) 
+            }, 
+            icon = "google"
+            )
+@InstanceDescription(
+      msgLocation = GoogleDriveDatasinkMessages.class, 
+      objNameKey = "googleDriveDatasinkTypeName", 
+      icon = "google"
+      )
 @Indexed
 public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
 

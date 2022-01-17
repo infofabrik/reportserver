@@ -35,10 +35,26 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "ONEDRIVE_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.onedrive.client.onedrive.dto", poso2DtoPostProcessors = OneDriveDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasRefreshToken", type = Boolean.class),
-      @AdditionalField(name = "hasSecretKey", type = Boolean.class) }, icon = "cloud-upload")
-@InstanceDescription(msgLocation = OneDriveDatasinkMessages.class, objNameKey = "oneDriveDatasinkTypeName", icon = "cloud-upload")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.onedrive.client.onedrive.dto", 
+      poso2DtoPostProcessors = OneDriveDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasRefreshToken", 
+                  type = Boolean.class
+                  ),
+            @AdditionalField(
+                  name = "hasSecretKey", 
+                  type = Boolean.class
+                  ) 
+            }, 
+            icon = "cloud-upload"
+            )
+@InstanceDescription(
+      msgLocation = OneDriveDatasinkMessages.class, 
+      objNameKey = "oneDriveDatasinkTypeName", 
+      icon = "cloud-upload"
+      )
 @Indexed
 public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthenticatable, FolderedDatasink {
    /**

@@ -29,9 +29,22 @@ import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 @Entity
 @Table(name = "EMAIL_DATASINK")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.emaildatasink.client.emaildatasink.dto", poso2DtoPostProcessors = EmailDatasink2DtoPostProcessor.class, additionalFields = {
-      @AdditionalField(name = "hasPassword", type = Boolean.class) }, icon = "send")
-@InstanceDescription(msgLocation = EmailDatasinkMessages.class, objNameKey = "emailDatasinkTypeName", icon = "send")
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.emaildatasink.client.emaildatasink.dto", 
+      poso2DtoPostProcessors = EmailDatasink2DtoPostProcessor.class, 
+      additionalFields = {
+            @AdditionalField(
+                  name = "hasPassword", 
+                  type = Boolean.class
+                  ) 
+            }, 
+            icon = "send"
+            )
+@InstanceDescription(
+      msgLocation = EmailDatasinkMessages.class, 
+      objNameKey = "emailDatasinkTypeName", 
+      icon = "send"
+      )
 @Indexed
 public class EmailDatasink extends DatasinkDefinition {
 
