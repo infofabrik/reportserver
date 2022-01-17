@@ -358,7 +358,7 @@ public class JasperStyleParameterParser extends JRAbstractQueryExecuter {
       setStatementParameter(parameterIndex, clazz, parameterValue, parameterName);
    }
 
-   protected int getDateTimeParameterType(String parameterName, int defaultType) {
+   protected int getDateTimeParameterType(String parameterName, Class parameterType,  int defaultType) {
       int type = defaultType;
 
       /* parse parameters if they arrive in the form %{param} */
@@ -381,18 +381,25 @@ public class JasperStyleParameterParser extends JRAbstractQueryExecuter {
                DateTimeParameterDefinition dateParamDefinition = dateParam.getDefinition();
                switch (dateParamDefinition.getMode()) {
                case Date:
-                  type = Types.DATE;
-                  break;
+                  return Types.DATE;
                case DateTime:
-                  type = Types.TIMESTAMP;
-                  break;
+                  return Types.TIMESTAMP;
                case Time:
-                  type = Types.TIME;
-                  break;
+                  return Types.TIME;
                }
             }
          }
       }
+      
+      if (java.sql.Timestamp.class.equals(parameterType))
+         return Types.TIMESTAMP;
+      
+      if (java.sql.Time.class.equals(parameterType))
+         return Types.TIME;
+      
+      if (java.util.Date.class.equals(parameterType))
+         return Types.DATE;
+      
       return type;
    }
 
@@ -499,7 +506,7 @@ public class JasperStyleParameterParser extends JRAbstractQueryExecuter {
             || java.sql.Time.class.isAssignableFrom(parameterType)
             || java.util.Date.class.isAssignableFrom(parameterType)) {
 
-         int dateTimeType = getDateTimeParameterType(parameterName, Types.DATE);
+         int dateTimeType = getDateTimeParameterType(parameterName, parameterType, Types.DATE);
          if (dateTimeType == Types.DATE) {
             if (parameterValue == null) {
                statement.setNull(parameterIndex, Types.DATE);
