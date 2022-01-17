@@ -185,6 +185,7 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
                Class c = Class.forName(id.substring(0, id.indexOf(":")));
                if (clazz.isAssignableFrom(c)) {
                   Object o = entityManager.get().find(c, Long.valueOf(id.substring(id.indexOf(":") + 1)));
+                  o = entityUtils.simpleHibernateUnproxy(o);
                   res.add(o);
                }
             } catch (ClassNotFoundException e) {
