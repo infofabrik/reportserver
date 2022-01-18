@@ -220,7 +220,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.mail-1.6.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.27.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.9.0.jar"/>
@@ -265,5 +264,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.210.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.7.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.28.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
