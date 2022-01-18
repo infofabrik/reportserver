@@ -1,6 +1,10 @@
 package net.datenwerke.rs.base.service.reportengines.table.maintenance;
 
+import static java.util.stream.Collectors.toList;
+
+import java.math.BigInteger;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.EntityManager;
 
@@ -65,53 +69,72 @@ public class TableReportIntegrityValidator implements MaintenanceTask {
 
    private List<FilterSpec> getOrphanedFilterSpecs() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<FilterSpec> query = session.createNativeQuery("SELECT A.* FROM RS_FILTER_SPEC A "
+      NativeQuery<?> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_FILTER_SPEC A "
             + "LEFT OUTER JOIN ( " + "SELECT FILTERS_ID FROM RS_FILTER_BLOCK_2_FILTERS) B "
-            + "ON B.FILTERS_ID = A.ENTITY_ID WHERE B.FILTERS_ID IS NULL", FilterSpec.class);
-      List<FilterSpec> specList = query.list();
-      return specList;
+            + "ON B.FILTERS_ID = A.ENTITY_ID WHERE B.FILTERS_ID IS NULL");
+      List<?> ids = query.list();
+      return mapToHibernateObjects(ids, FilterSpec.class, session);
    }
-
+   
    protected List<FilterBlock> getOrphanedFilterBlocks() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<FilterBlock> query = session.createNativeQuery("SELECT A.* FROM RS_FILTER_BLOCK A "
+      NativeQuery<?> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_FILTER_BLOCK A "
             + "LEFT OUTER JOIN ( "
             + "SELECT ROOT_BLOCK_ID AS BID FROM RS_PRE_FILTER UNION SELECT CHILD_BLOCKS_ID AS BID FROM RS_FILTER_BLOCK_2_CHILD_BL) B "
-            + "ON B.BID = A.ENTITY_ID WHERE B.BID IS NULL", FilterBlock.class);
-      List<FilterBlock> list = query.list();
-      return list;
+            + "ON B.BID = A.ENTITY_ID WHERE B.BID IS NULL");
+      List<?> ids = query.list();
+      return mapToHibernateObjects(ids, FilterBlock.class, session);
    }
 
    public List<Column> getOrphanedColumns() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<Column> query = session.createNativeQuery("SELECT A.* FROM RS_COLUMN A " + "LEFT OUTER JOIN ( "
+      NativeQuery<?> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_COLUMN A " + "LEFT OUTER JOIN ( "
             + "SELECT COLUMNS_ID AS CID FROM RS_TABLE_REPORT_2_COLUMN UNION "
             + "SELECT ADDITIONAL_COLUMNS_ID AS CID FROM RS_TABLE_REPORT_2_ADD_COLUMN UNION "
             + "SELECT COLUMN_ID  AS CID FROM RS_COLUMN_FILTER UNION "
             + "SELECT COLUMNA_ID AS CID FROM RS_BINARY_COLUMN_FILTER UNION "
             + "SELECT COLUMNB_ID AS CID FROM RS_BINARY_COLUMN_FILTER ) B "
-            + "ON B.CID = A.ENTITY_ID WHERE B.CID IS NULL", Column.class);
-      List<Column> colList = query.list();
-      return colList;
+            + "ON B.CID = A.ENTITY_ID WHERE B.CID IS NULL");
+      List<?> ids = query.list();
+      return mapToHibernateObjects(ids, Column.class, session);
    }
 
    public List<Filter> getOrphanedSapFilters() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<Filter> query = session.createNativeQuery("SELECT A.* FROM RS_FILTER A " + "LEFT OUTER JOIN ( "
+      NativeQuery<?> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_FILTER A " + "LEFT OUTER JOIN ( "
             + "SELECT FILTER_ID FROM RS_COLUMN WHERE NOT FILTER_ID IS NULL ) B "
-            + "ON B.FILTER_ID = A.ENTITY_ID WHERE B.FILTER_ID IS NULL", Filter.class);
-      List<Filter> list = query.list();
-      return list;
+            + "ON B.FILTER_ID = A.ENTITY_ID WHERE B.FILTER_ID IS NULL");
+      List<?> ids = query.list();
+      return mapToHibernateObjects(ids, Filter.class, session);
    }
 
    public List<FilterRange> getOrphanedRanges() {
       Session session = (Session) entityManagerProvider.get();
-      NativeQuery<FilterRange> query = session.createNativeQuery("SELECT A.* FROM RS_FILTER_RANGE A "
+      NativeQuery<?> query = session.createNativeQuery("SELECT A.ENTITY_ID FROM RS_FILTER_RANGE A "
             + "LEFT OUTER JOIN ( "
             + "SELECT EXCLUDE_RANGES_ID AS RANGE_ID FROM RS_FILTER_2_FILTER_RNG_EXC UNION SELECT INCLUDE_RANGES_ID AS RANGE_ID FROM RS_FILTER_2_FILTER_RNG_INC) B "
-            + "ON B.RANGE_ID = A.ENTITY_ID WHERE B.RANGE_ID IS NULL", FilterRange.class);
-      List<FilterRange> list = query.list();
-      return list;
+            + "ON B.RANGE_ID = A.ENTITY_ID WHERE B.RANGE_ID IS NULL");
+      List<?> ids = query.list();
+      return mapToHibernateObjects(ids, FilterRange.class, session);
    }
 
+   private <T> List<T> mapToHibernateObjects(final List<?> ids, final Class<T> clazz, final Session session) {
+      return ids
+            .stream()
+            .map(this::mapIdToLong)
+            .map(id -> session.find(clazz, id))
+            .collect(toList());
+   }
+   
+   private Long mapIdToLong(Object id) {
+      Objects.requireNonNull(id);
+
+      if (id instanceof BigInteger)
+         return ((BigInteger) id).longValue();
+      else if (id instanceof Long)
+         return (Long) id;
+      else
+         return Long.valueOf(id.toString());
+   }
+   
 }
