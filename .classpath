@@ -264,6 +264,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.11.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.11.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.0.206.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.210.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
