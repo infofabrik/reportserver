@@ -20,25 +20,27 @@ public class JxlsReportStartup {
 
    @Inject
    public JxlsReportStartup(HookHandlerService hookHandlerService,
-
          JxlsReportEngineProviderHooker jxlsReportEngineProviderHooker,
-
          Provider<BaseJxlsOutputGeneratorProvider> baseOutputGenerators,
-
-         JxlsReportUploadHooker jxlsReportUploadHooker) {
+         JxlsReportUploadHooker jxlsReportUploadHooker
+         ) {
 
       hookHandlerService.attachHooker(ReportTypeProviderHook.class, new JxlsReportTypeProviderHooker());
-
       hookHandlerService.attachHooker(ReportEngineProviderHook.class, jxlsReportEngineProviderHooker);
-
       hookHandlerService.attachHooker(FileUploadHandlerHook.class, jxlsReportUploadHooker);
 
       /* base exporters */
       hookHandlerService.attachHooker(JxlsOutputGeneratorProviderHook.class, baseOutputGenerators,
             HookHandlerService.PRIORITY_LOW);
 
-      /* multi-line and comment support */
-      hookHandlerService.attachHooker(LateInitHook.class, () -> XlsCommentAreaBuilder.MULTI_LINE_SQL_FEATURE = true);
+      hookHandlerService.attachHooker(LateInitHook.class, () -> {
+         // multi-line and comment support
+         XlsCommentAreaBuilder.MULTI_LINE_SQL_FEATURE = true;
+         
+         // collapsible rows support
+         XlsCommentAreaBuilder.addCommandMapping("groupRow", GroupRowCommand.class);
+      });
+      
 
    }
 
