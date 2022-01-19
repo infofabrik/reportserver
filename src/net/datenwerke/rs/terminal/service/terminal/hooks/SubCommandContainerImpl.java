@@ -1,7 +1,6 @@
 package net.datenwerke.rs.terminal.service.terminal.hooks;
 
-import java.util.ArrayList;
-import java.util.List;
+import static java.util.stream.Collectors.toList;
 
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -38,25 +37,27 @@ public abstract class SubCommandContainerImpl implements SubCommandContainer, Te
          if (null != subCommand)
             subCommand.addAutoCompletEntries(autocompleteHelper, session);
          else {
-            List<String> subCmdList = new ArrayList<String>();
-            for (SubCommand command : getSubCommands())
-               subCmdList.add(command.getBaseCommand());
-
-            autocompleteHelper.addAutocompleteNamesForToken(2, subCmdList);
+            autocompleteHelper.addAutocompleteNamesForToken(2, 
+                  getSubCommands()
+                  .stream()
+                  .map(SubCommand::getBaseCommand)
+                  .collect(toList())
+                  );
          }
       }
    }
 
    @Override
-   public TerminalCommandHook getSubCommand(CommandParser parser, TerminalSession session) {
+   public TerminalCommandHook getSubCommand(final CommandParser parser, final TerminalSession session) {
       String arg = parser.getArgumentNr(1);
       if (null == arg)
          return null;
-
-      for (TerminalCommandHook command : getSubCommands())
-         if (command.consumes(parser.getSubCommandParser(), session))
-            return command;
-      return null;
+      
+      return getSubCommands()
+         .stream()
+         .filter(command -> command.consumes(parser.getSubCommandParser(), session))
+         .findAny()
+         .orElse(null);
    }
 
 }
