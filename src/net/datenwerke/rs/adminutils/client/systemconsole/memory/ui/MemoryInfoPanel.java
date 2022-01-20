@@ -115,16 +115,16 @@ public class MemoryInfoPanel extends DwContentPanel {
       categoriesAxis.setLabelProvider(item -> "");
 
       Sprite marker = Primitives.diamond(0, 0, 2);
-      marker.setFill(new RGB(32, 68, 186));
+      marker.setFill(new RGB(80, 89, 134));
 
       final LineSeries<MemoryInfoDto> seriesUsed = new LineSeries<>();
       seriesUsed.setYAxisPosition(Position.LEFT);
       seriesUsed.setLegendTitle(SystemConsoleMessages.INSTANCE.used() + " (MB)");
       seriesUsed.setYField(props.usedMb());
-      seriesUsed.setStroke(new RGB(0, 23, 165));
+      seriesUsed.setStroke(new RGB(32, 38, 58));
       seriesUsed.setShowMarkers(true);
       seriesUsed.setSmooth(false);
-      seriesUsed.setFill(new RGB(0, 23, 165));
+      seriesUsed.setFill(new RGB(32, 38, 58));
       seriesUsed.setMarkerConfig(marker);
       seriesUsed.setHighlighting(true);
 
@@ -132,17 +132,17 @@ public class MemoryInfoPanel extends DwContentPanel {
       seriesTotal.setYAxisPosition(Position.LEFT);
       seriesTotal.setLegendTitle(SystemConsoleMessages.INSTANCE.total() + " (MB)");
       seriesTotal.setYField(props.totalMb());
-      seriesTotal.setStroke(new RGB(23, 168, 35));
+      seriesTotal.setStroke(new RGB(209, 211, 228));
       seriesTotal.setShowMarkers(true);
       seriesTotal.setSmooth(false);
-      seriesTotal.setFill(new RGB(23, 168, 35));
+      seriesTotal.setFill(new RGB(209, 211, 228));
       seriesTotal.setMarkerConfig(marker);
       seriesTotal.setHighlighting(true);
 
       seriesMax.setYAxisPosition(Position.LEFT);
       seriesMax.setYField(props.maxMb());
       seriesMax.setLegendTitle(SystemConsoleMessages.INSTANCE.maximum() + " (MB)");
-      seriesMax.setStroke(new RGB(194, 0, 36));
+      seriesMax.setStroke(new RGB(151, 11, 48));
       seriesMax.setShowMarkers(true);
       seriesMax.setSmooth(false);
       seriesMax.setMarkerConfig(marker);

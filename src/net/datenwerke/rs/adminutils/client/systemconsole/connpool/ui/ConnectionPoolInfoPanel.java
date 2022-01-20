@@ -132,16 +132,16 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       categoriesAxis.setLabelProvider(item -> "");
 
       Sprite marker = Primitives.diamond(0, 0, 2);
-      marker.setFill(new RGB(32, 68, 186));
+      marker.setFill(new RGB(80, 89, 134));
 
       final LineSeries<ConnectionPoolInfoDto> seriesBusyConns = new LineSeries<>();
       seriesBusyConns.setYAxisPosition(Position.LEFT);
       seriesBusyConns.setLegendTitle(SystemConsoleMessages.INSTANCE.busyConnections());
       seriesBusyConns.setYField(props.busyConnections());
-      seriesBusyConns.setStroke(new RGB(0, 23, 165));
+      seriesBusyConns.setStroke(new RGB(32, 38, 58));
       seriesBusyConns.setShowMarkers(true);
       seriesBusyConns.setSmooth(false);
-      seriesBusyConns.setFill(new RGB(0, 23, 165));
+      seriesBusyConns.setFill(new RGB(32, 38, 58));
       seriesBusyConns.setMarkerConfig(marker);
       seriesBusyConns.setHighlighting(true);
 
@@ -149,17 +149,17 @@ public class ConnectionPoolInfoPanel extends DwContentPanel {
       seriesNumberConns.setYAxisPosition(Position.LEFT);
       seriesNumberConns.setLegendTitle(SystemConsoleMessages.INSTANCE.numberOfConnections());
       seriesNumberConns.setYField(props.noOfConnections());
-      seriesNumberConns.setStroke(new RGB(23, 168, 35));
+      seriesNumberConns.setStroke(new RGB(209, 211, 228));
       seriesNumberConns.setShowMarkers(true);
       seriesNumberConns.setSmooth(false);
-      seriesNumberConns.setFill(new RGB(23, 168, 35));
+      seriesNumberConns.setFill(new RGB(209, 211, 228));
       seriesNumberConns.setMarkerConfig(marker);
       seriesNumberConns.setHighlighting(true);
 
       seriesMax.setYAxisPosition(Position.LEFT);
       seriesMax.setLegendTitle(SystemConsoleMessages.INSTANCE.maximumPoolSize());
       seriesMax.setYField(props.maxPoolSize());
-      seriesMax.setStroke(new RGB(194, 0, 36));
+      seriesMax.setStroke(new RGB(151, 11, 48));
       seriesMax.setShowMarkers(true);
       seriesMax.setSmooth(false);
       seriesMax.setMarkerConfig(marker);
