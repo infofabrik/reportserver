@@ -88,6 +88,9 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
    }
 
    interface Style extends CssResource {
+      @ClassName("rs-dynamic-list-preview-table")
+      String tableLabel();
+      
       @ClassName("rs-dynamic-list-preview-label")
       String previewLabel();
 
@@ -142,7 +145,7 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
          final PreviewModel model = (PreviewModel) reportExecutionResult;
 
          /* create data store */
-         ListStore<String[]> store = new ListStore<String[]>(new BasicObjectModelKeyProvider<String[]>());
+         ListStore<String[]> store = new ListStore<>(new BasicObjectModelKeyProvider<>());
          store.addAll(model.getRows());
 
          /* configure columns */
@@ -435,6 +438,7 @@ public class TableReportPreviewView extends AbstractReportPreviewView implements
 
       FlexTable table = new FlexTable();
       table.getColumnFormatter().setWidth(0, "33%");
+      table.addStyleName(resources.css().tableLabel());
 
       final DwTextButton firstBtn = new DwTextButton(BaseIcon.FAST_BACKWARD);
       final DwTextButton nextBtn = new DwTextButton(BaseIcon.CHEVRON_RIGHT);

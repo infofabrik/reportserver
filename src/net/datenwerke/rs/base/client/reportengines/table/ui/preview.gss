@@ -1,3 +1,14 @@
+.rs-dynamic-list-preview-table {
+	 overflow-wrap: break-word;
+	 word-wrap: break-word;
+	 -ms-word-break: break-all;
+	 word-break: break-word;
+	 -ms-hyphens: auto;
+	 -moz-hyphens: auto;
+	 -webkit-hyphens: auto;
+	 hyphens: auto;
+}
+
 .rs-dynamic-list-preview-label {
 	font-size: 9pt;
 	font-weight: bold;
