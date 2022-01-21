@@ -32,8 +32,18 @@ public class DiffconfigfilesCreatallCommand extends DiffconfigfilesSubCommand {
       super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
-   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandDiffConfigFiles_sub_createall_description", nonOptArgs = {
-         @NonOptArgument(name = "folder", description = "commandDiffConfigFiles_sub_createall_folderArgument", mandatory = true) })
+   @CliHelpMessage(
+         messageClass = ConfigMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandDiffConfigFiles_sub_createall_description", 
+         nonOptArgs = {
+               @NonOptArgument(
+                     name = "folder", 
+                     description = "commandDiffConfigFiles_sub_createall_folderArgument", 
+                     mandatory = true
+                     ) 
+               }
+         )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       HistoryLink linkToDstFolder = null;

@@ -18,6 +18,9 @@ public class VfsObjectResolver implements ObjectResolverHook {
 
    @Override
    public boolean consumes(String locationStr, TerminalSession terminalSession) {
+      if (locationStr.startsWith("id:") && locationStr.split(":").length == 3)
+         return false; 
+      
       try {
          PathHelper pathHelper = new PathHelper(locationStr);
          VFSLocation parentLoc = getParentLocation(pathHelper, terminalSession);

@@ -35,7 +35,11 @@ public class DiffconfigfilesShowmissingCommand extends DiffconfigfilesSubCommand
       super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
-   @CliHelpMessage(messageClass = ConfigMessages.class, name = BASE_COMMAND, description = "commandDiffConfigFiles_sub_showmissing_description")
+   @CliHelpMessage(
+         messageClass = ConfigMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandDiffConfigFiles_sub_showmissing_description"
+         )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       FileServerFolder root = (FileServerFolder) fileServerService.getRoots().get(0);

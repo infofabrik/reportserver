@@ -49,9 +49,26 @@ public class LocateCommand implements TerminalCommandHook {
    }
 
    @Override
-   @CliHelpMessage(messageClass = SearchMessages.class, name = BASE_COMMAND, description = "commandSearch_description", args = {
-         @Argument(flag = "t", hasValue = true, valueName = "type", description = "commandSearch_tArgument") }, nonOptArgs = {
-               @NonOptArgument(name = "query", description = "commandSearch_queryArgument", mandatory = true) })
+   @CliHelpMessage(
+         messageClass = SearchMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandSearch_description", 
+         args = {
+               @Argument(
+                     flag = "t", 
+                     hasValue = true, 
+                     valueName = "type", 
+                     description = "commandSearch_tArgument"
+                     ) 
+               }, 
+               nonOptArgs = {
+                     @NonOptArgument(
+                           name = "query", 
+                           description = "commandSearch_queryArgument", 
+                           mandatory = true
+                           ) 
+                     }
+         )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
 
       Class<?> entityType;
