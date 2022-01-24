@@ -192,7 +192,7 @@ public class DisplayHelper {
    }
 
    public void format(CommandResultHyperlinkDto hyperlink, SafeHtmlBuilder builder) {
-      Hyperlink link = new Hyperlink(hyperlink.getCaption(), hyperlink.getHistoryToken());
+      Hyperlink link = new Hyperlink(hyperlink.getCaption(), hyperlink.getHistoryToken().replace("&amp;", "&"));
       builder.appendHtmlConstant(link.getElement().getInnerHTML());
    }
 
