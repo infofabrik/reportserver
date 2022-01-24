@@ -101,10 +101,14 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
 
    public void setHtml(String html) {
       try {
-         super.setText(html, CHARSET_UTF8, MIME_SUBTYPE_HTML);
+         super.setText(replaceNonHTMLSymbols(html), CHARSET_UTF8, MIME_SUBTYPE_HTML);
       } catch (MessagingException e) {
          logger.warn(e.getMessage(), e);
       }
+   }
+   
+   private String replaceNonHTMLSymbols(String html) {
+      return html.replace("\n", "<br />");
    }
 
    public void setHtml(String html, SimpleAttachment... attachments) {
@@ -114,7 +118,7 @@ public class SimpleMail extends MimeMessage implements SessionProvider {
       try {
          /* create text */
          MimeBodyPart textMBP = new MimeBodyPart();
-         textMBP.setText(html, CHARSET_UTF8, MIME_SUBTYPE_HTML);
+         textMBP.setText(replaceNonHTMLSymbols(html), CHARSET_UTF8, MIME_SUBTYPE_HTML);
          multipart.addBodyPart(textMBP);
 
          /* create attachements */
