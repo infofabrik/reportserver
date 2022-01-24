@@ -13,35 +13,35 @@ import net.datenwerke.dtoservices.dtogenerator.dto2posogenerator.validator.DtoPr
 @Target(ElementType.TYPE)
 public @interface PropertyValidator {
 
-	/**
-	 * The validator will not interfere if bypass is true
-	 */
-	boolean bypass() default false;
-	
-	/**
-	 * Tells the validator to simply ignore the property on failure. 
-	 * 
-	 * Default is to throw a validation failed exception
-	 */
-	boolean ignoreOnFailure() default false;
-	
-	/**
-	 * The expected Supertype
-	 */
-	Class<?> type() default Object.class;
-	
-	/**
-	 * The expected property is a string
-	 */
-	StringValidator string() default @StringValidator(bypass=true);
-	
-	/**
-	 * The expected property is a number. 
-	 */
-	NumberValidator number() default @NumberValidator(bypass=true);
-	
-	/**
-	 * Returns an array containing validators for a specific property 
-	 */
-	Class<? extends DtoPropertyValidator>[] validators() default {};
+   /**
+    * The validator will not interfere if bypass is true
+    */
+   boolean bypass() default false;
+
+   /**
+    * Tells the validator to simply ignore the property on failure.
+    * 
+    * Default is to throw a validation failed exception
+    */
+   boolean ignoreOnFailure() default false;
+
+   /**
+    * The expected Supertype
+    */
+   Class<?> type() default Object.class;
+
+   /**
+    * The expected property is a string
+    */
+   StringValidator string() default @StringValidator(bypass = true);
+
+   /**
+    * The expected property is a number.
+    */
+   NumberValidator number() default @NumberValidator(bypass = true);
+
+   /**
+    * Returns an array containing validators for a specific property
+    */
+   Class<? extends DtoPropertyValidator>[] validators() default {};
 }

@@ -10,6 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.FIELD)
 public @interface EnumLabel {
-	Class<?> msg();
-	String key();
+   Class<?> msg();
+
+   String key();
 }

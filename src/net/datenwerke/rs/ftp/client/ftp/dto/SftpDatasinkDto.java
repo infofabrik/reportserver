@@ -815,7 +815,7 @@ public class SftpDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("server");
+		return BaseIcon.from("arrow-circle-up");
 	}
 
 	@Override

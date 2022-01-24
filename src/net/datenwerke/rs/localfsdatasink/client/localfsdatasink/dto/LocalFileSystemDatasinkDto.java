@@ -219,7 +219,7 @@ public class LocalFileSystemDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("upload");
+		return BaseIcon.from("server");
 	}
 
 	@Override

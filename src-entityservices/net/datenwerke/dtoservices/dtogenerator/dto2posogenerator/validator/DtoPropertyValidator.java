@@ -4,5 +4,5 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ValidationFai
 
 public interface DtoPropertyValidator {
 
-	public void validateProperty(Object property, Object poso, Object dto) throws ValidationFailedException;
+   public void validateProperty(Object property, Object poso, Object dto) throws ValidationFailedException;
 }

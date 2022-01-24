@@ -11,11 +11,11 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface StringValidator {
 
-	boolean bypass() default false;
-	
-	int maxLength() default -1;
-	
-	int minLength() default -1;
-	
-	String regex() default "";
+   boolean bypass() default false;
+
+   int maxLength() default -1;
+
+   int minLength() default -1;
+
+   String regex() default "";
 }

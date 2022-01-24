@@ -11,56 +11,56 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.EnumLabel;
 
 public class EnumAnalizer {
 
-	private DtoAnnotationProcessor dtoAnnotationProcessor;
-	private Element theEnum;
+   private DtoAnnotationProcessor dtoAnnotationProcessor;
+   private Element theEnum;
 
-	public EnumAnalizer(DtoAnnotationProcessor dtoAnnotationProcessor, Element theEnum) {
-		super();
-		this.dtoAnnotationProcessor = dtoAnnotationProcessor;
-		this.theEnum = theEnum;
-		
-		/* analize and store information objects */
-		analizeEnum();
-	}
+   public EnumAnalizer(DtoAnnotationProcessor dtoAnnotationProcessor, Element theEnum) {
+      super();
+      this.dtoAnnotationProcessor = dtoAnnotationProcessor;
+      this.theEnum = theEnum;
 
-	private void analizeEnum() {
-	}
-	
-	public Element getTheEnum() {
-		return theEnum;
-	}
+      /* analize and store information objects */
+      analizeEnum();
+   }
 
-	public String getSimpleName() {
-		return getTheEnum().getSimpleName().toString();
-	}
+   private void analizeEnum() {
+   }
 
-	public boolean hasLabelAnnotation() {
-		return getLabelAnnotation() != null;
-	}
+   public Element getTheEnum() {
+      return theEnum;
+   }
 
-	public EnumLabel getLabelAnnotation() {
-		return getTheEnum().getAnnotation(EnumLabel.class);
-	}
-	
-	public AnnotationMirror getLabelAnnotationMirror() {
-		for(AnnotationMirror mirror : theEnum.getAnnotationMirrors()){
-			if(mirror.getAnnotationType().toString().equals(EnumLabel.class.getName()))
-				return mirror;
-		}
-		
-		throw new IllegalStateException("Could not find annotation mirror");
-	}
-	
-	public DeclaredType getLabelMsgInterface() {
-		AnnotationMirror gdAnno = getLabelAnnotationMirror();
-		for(ExecutableElement key : gdAnno.getElementValues().keySet()){
-			if(key.toString().equals("msg()")){
-				AnnotationValue value = gdAnno.getElementValues().get(key);
-				return (DeclaredType) value.getValue(); 
-			}
-		}
-		
-		return null;
-	}
+   public String getSimpleName() {
+      return getTheEnum().getSimpleName().toString();
+   }
+
+   public boolean hasLabelAnnotation() {
+      return getLabelAnnotation() != null;
+   }
+
+   public EnumLabel getLabelAnnotation() {
+      return getTheEnum().getAnnotation(EnumLabel.class);
+   }
+
+   public AnnotationMirror getLabelAnnotationMirror() {
+      for (AnnotationMirror mirror : theEnum.getAnnotationMirrors()) {
+         if (mirror.getAnnotationType().toString().equals(EnumLabel.class.getName()))
+            return mirror;
+      }
+
+      throw new IllegalStateException("Could not find annotation mirror");
+   }
+
+   public DeclaredType getLabelMsgInterface() {
+      AnnotationMirror gdAnno = getLabelAnnotationMirror();
+      for (ExecutableElement key : gdAnno.getElementValues().keySet()) {
+         if (key.toString().equals("msg()")) {
+            AnnotationValue value = gdAnno.getElementValues().get(key);
+            return (DeclaredType) value.getValue();
+         }
+      }
+
+      return null;
+   }
 
 }

@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface NumberValidator {
 
-	boolean bypass() default false;
+   boolean bypass() default false;
 }

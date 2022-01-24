@@ -21,62 +21,64 @@ import net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadata
 
 public class FileGenerator extends SourceFileGeneratorImpl {
 
-	private EntityMetadataProcessor processor;
-	private Element element;
+   private EntityMetadataProcessor processor;
+   private Element element;
 
-	public FileGenerator(EntityMetadataProcessor processor, Element element){
-		super(processor);
-		this.processor = processor;
-		this.element = element;
-	}
-	
-	@Override
-	public String getPackageName() {
-		Elements utils = processor.getProcessingEnvironment().getElementUtils();
-		return utils.getPackageOf(element).toString(); 
-	}
+   public FileGenerator(EntityMetadataProcessor processor, Element element) {
+      super(processor);
+      this.processor = processor;
+      this.element = element;
+   }
 
-	@Override
-	public String getClassName() {
-		return element.getSimpleName().toString() + "__";
-	}
+   @Override
+   public String getPackageName() {
+      Elements utils = processor.getProcessingEnvironment().getElementUtils();
+      return utils.getPackageOf(element).toString();
+   }
 
-	@Override
-	protected void addClassBody(StringBuilder sourceBuilder) {
-		List<VariableElement> fieldsIn = new ArrayList<VariableElement>(ElementFilter.fieldsIn(element.getEnclosedElements()));
-		Collections.sort(fieldsIn, new Comparator<VariableElement>() {
-			@Override
-			public int compare(VariableElement o1, VariableElement o2) {
-				return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());
-			}
-		});
-		
-		for(VariableElement field : fieldsIn){
-			if(null == field.getAnnotation(Transient.class))
-				sourceBuilder.append("\tpublic static final String ").append(field.getSimpleName().toString()).append(" = \"").append(field.getSimpleName().toString()).append("\";\n");
-		}
-	}
+   @Override
+   public String getClassName() {
+      return element.getSimpleName().toString() + "__";
+   }
 
-	@Override
-	protected String getExtendedClass() {
-		Element superclass = ((DeclaredType)((TypeElement)element).getSuperclass()).asElement();
-		if(null == superclass.getAnnotation(Entity.class) && null == superclass.getAnnotation(MappedSuperclass.class))
-			return super.getExtendedClass();
+   @Override
+   protected void addClassBody(StringBuilder sourceBuilder) {
+      List<VariableElement> fieldsIn = new ArrayList<VariableElement>(
+            ElementFilter.fieldsIn(element.getEnclosedElements()));
+      Collections.sort(fieldsIn, new Comparator<VariableElement>() {
+         @Override
+         public int compare(VariableElement o1, VariableElement o2) {
+            return o1.getSimpleName().toString().compareTo(o2.getSimpleName().toString());
+         }
+      });
 
-		DeclaredType typeDecl = ((DeclaredType)((TypeElement)element).getSuperclass());
-		String name = typeDecl.toString();
+      for (VariableElement field : fieldsIn) {
+         if (null == field.getAnnotation(Transient.class))
+            sourceBuilder.append("\tpublic static final String ").append(field.getSimpleName().toString())
+                  .append(" = \"").append(field.getSimpleName().toString()).append("\";\n");
+      }
+   }
 
-		/* do we have type parameters */
-		if(typeDecl.getTypeArguments().isEmpty())
-			return name + "__";
-		
-		return name.substring(0, name.indexOf("<")) + "__";
-	}
-	
-	@Override
-	protected Collection<String> getImplementedInterfaces() {
-		Collection<String> ifaces = super.getImplementedInterfaces();
-		ifaces.add(EntityMetadataProvider.class.getName());
-		return ifaces;
-	}
+   @Override
+   protected String getExtendedClass() {
+      Element superclass = ((DeclaredType) ((TypeElement) element).getSuperclass()).asElement();
+      if (null == superclass.getAnnotation(Entity.class) && null == superclass.getAnnotation(MappedSuperclass.class))
+         return super.getExtendedClass();
+
+      DeclaredType typeDecl = ((DeclaredType) ((TypeElement) element).getSuperclass());
+      String name = typeDecl.toString();
+
+      /* do we have type parameters */
+      if (typeDecl.getTypeArguments().isEmpty())
+         return name + "__";
+
+      return name.substring(0, name.indexOf("<")) + "__";
+   }
+
+   @Override
+   protected Collection<String> getImplementedInterfaces() {
+      Collection<String> ifaces = super.getImplementedInterfaces();
+      ifaces.add(EntityMetadataProvider.class.getName());
+      return ifaces;
+   }
 }

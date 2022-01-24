@@ -6,9 +6,9 @@ import net.datenwerke.dtoservices.dtogenerator.analizer.ExposedClientMethod;
 
 public class ExposedClientMethodComparator implements Comparator<ExposedClientMethod> {
 
-	@Override
-	public int compare(ExposedClientMethod o1, ExposedClientMethod o2) {
-		return o1.getSimpleName().compareTo(o2.getSimpleName());
-	}
+   @Override
+   public int compare(ExposedClientMethod o1, ExposedClientMethod o2) {
+      return o1.getSimpleName().compareTo(o2.getSimpleName());
+   }
 
 }

@@ -6,13 +6,13 @@ package net.datenwerke.annotationprocessing.utils;
  */
 public interface SourceFileGenerator {
 
-	public void generateSource();
-	
-	public String getPackageName();
+   public void generateSource();
 
-	public String getClassName();
+   public String getPackageName();
 
-	public String getFullyQualifiedClassName();
+   public String getClassName();
 
-	public String getSource();
+   public String getFullyQualifiedClassName();
+
+   public String getSource();
 }

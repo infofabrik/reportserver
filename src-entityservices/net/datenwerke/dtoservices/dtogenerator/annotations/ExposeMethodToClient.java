@@ -10,10 +10,10 @@ import java.lang.annotation.Target;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 
 /**
- * Exposes a get/set method to the client. 
+ * Exposes a get/set method to the client.
  * 
- * In the dto both get and set methods will be generated. If added to 
- * a set method the dto's value can be merged back to the poso.
+ * In the dto both get and set methods will be generated. If added to a set
+ * method the dto's value can be merged back to the poso.
  * 
  *
  */
@@ -23,9 +23,9 @@ import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 @Inherited
 public @interface ExposeMethodToClient {
 
-	/**
-	 * The minimal clearance needed to see this property.
-	 */
-	DtoView view() default DtoView.NORMAL;
-	
+   /**
+    * The minimal clearance needed to see this property.
+    */
+   DtoView view() default DtoView.NORMAL;
+
 }

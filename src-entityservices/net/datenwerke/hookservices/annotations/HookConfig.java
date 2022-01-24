@@ -11,5 +11,5 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface HookConfig {
 
-	boolean generateAdapter() default true;
+   boolean generateAdapter() default true;
 }

@@ -11,54 +11,55 @@ import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
 
 public class Dto2PosoMapGenerator extends SourceFileGeneratorImpl {
 
-	private final PosoAnalizer posoAnalizer;
-	
-	public Dto2PosoMapGenerator(PosoAnalizer posoAnalizer, AbstractProcessor processor) {
-		super(processor);
-		
-		this.posoAnalizer = posoAnalizer;
-	}
+   private final PosoAnalizer posoAnalizer;
 
-	@Override
-	public String getPackageName() {
-		return posoAnalizer.getDtoInformation().getDto2PosoMapPackageName();
-	}
+   public Dto2PosoMapGenerator(PosoAnalizer posoAnalizer, AbstractProcessor processor) {
+      super(processor);
 
-	@Override
-	public String getClassName() {
-		return posoAnalizer.getDtoInformation().getDto2PosoMapClassName();
-	}
+      this.posoAnalizer = posoAnalizer;
+   }
 
-	@Override
-	protected void addClassBody(StringBuilder sourceBuilder) {
+   @Override
+   public String getPackageName() {
+      return posoAnalizer.getDtoInformation().getDto2PosoMapPackageName();
+   }
 
-	}
-	
-	@Override
-	protected void addAnnotations(StringBuilder sourceBuilder) {
-		super.addAnnotations(sourceBuilder);
-		if(addGeneratedAnnotation())
-			sourceBuilder.append("@").append(CorrespondingPoso.class.getSimpleName()).append("(").append(posoAnalizer.getFullyQualifiedClassName()).append(".class)\n");
-		
-	}
+   @Override
+   public String getClassName() {
+      return posoAnalizer.getDtoInformation().getDto2PosoMapClassName();
+   }
 
-	@Override
-	protected Collection<String> getImplementedInterfaces() {
-		Collection<String> ifaces =  super.getImplementedInterfaces();
-		
-		ifaces.add(Dto2PosoMapper.class.getSimpleName());
-		
-		return ifaces;
-	}
-	
-	@Override
-	protected Collection<String> getReferencedClasses() {
-		Collection<String> references = super.getReferencedClasses();
-		
-		references.add(CorrespondingPoso.class.getName());
-		references.add(Dto2PosoMapper.class.getName());
-		
-		return references;
-	}
+   @Override
+   protected void addClassBody(StringBuilder sourceBuilder) {
+
+   }
+
+   @Override
+   protected void addAnnotations(StringBuilder sourceBuilder) {
+      super.addAnnotations(sourceBuilder);
+      if (addGeneratedAnnotation())
+         sourceBuilder.append("@").append(CorrespondingPoso.class.getSimpleName()).append("(")
+               .append(posoAnalizer.getFullyQualifiedClassName()).append(".class)\n");
+
+   }
+
+   @Override
+   protected Collection<String> getImplementedInterfaces() {
+      Collection<String> ifaces = super.getImplementedInterfaces();
+
+      ifaces.add(Dto2PosoMapper.class.getSimpleName());
+
+      return ifaces;
+   }
+
+   @Override
+   protected Collection<String> getReferencedClasses() {
+      Collection<String> references = super.getReferencedClasses();
+
+      references.add(CorrespondingPoso.class.getName());
+      references.add(Dto2PosoMapper.class.getName());
+
+      return references;
+   }
 
 }
