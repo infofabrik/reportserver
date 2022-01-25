@@ -1,3138 +1,3465 @@
 
     create table RS_ACE (
-        ENTITY_ID number(19,0) not null,
-        accesstype number(10,0) not null,
-        n number(10,0) not null,
-        ENTITY_VERSION number(10,0),
-        acl_id number(19,0) not null,
-        folk_id number(19,0),
+        ENTITY_ID bigint not null,
+        accesstype int not null,
+        n int not null,
+        ENTITY_VERSION int,
+        acl_id bigint not null,
+        folk_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_ACE_2_ACCESS_MAPS (
-        ace_id number(19,0) not null,
-        access_maps_id number(19,0) not null,
+        ace_id bigint not null,
+        access_maps_id bigint not null,
         primary key (ace_id, access_maps_id)
     );
 
     create table RS_ACE_2_ACCESS_MAPS_A (
-        REV number(10,0) not null,
-        ace_id number(19,0) not null,
-        access_maps_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        ace_id bigint not null,
+        access_maps_id bigint not null,
+        revtype smallint,
         primary key (REV, ace_id, access_maps_id)
     );
 
     create table RS_ACE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        accesstype number(10,0),
-        n number(10,0),
-        acl_id number(19,0),
-        folk_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        accesstype int,
+        n int,
+        acl_id bigint,
+        folk_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_ACE_ACCESS_MAP (
-        ENTITY_ID number(19,0) not null,
-        ACCESS_FIELD number(19,0),
-        securee varchar2(32 char),
-        ENTITY_VERSION number(10,0),
+        ENTITY_ID bigint not null,
+        ACCESS_FIELD bigint,
+        securee varchar(32),
+        ENTITY_VERSION int,
         primary key (ENTITY_ID)
     );
 
     create table RS_ACE_ACCESS_MAP_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        ACCESS_FIELD number(19,0),
-        securee varchar2(32 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        ACCESS_FIELD bigint,
+        securee varchar(32),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_ACL (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(10,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION int,
         primary key (ENTITY_ID)
     );
 
     create table RS_ACL_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_ADD_COLUMN_SPEC (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_ADD_COLUMN_SPEC_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
+        primary key (id, REV)
+    );
+
+    create table RS_AMAZONS3_DATASINK (
+        app_key varchar(MAX),
+        bucket_name varchar(MAX),
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key varchar(MAX),
+        storage_class varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_AMAZONS3_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        app_key varchar(MAX),
+        bucket_name varchar(MAX),
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key varchar(MAX),
+        storage_class varchar(255),
         primary key (id, REV)
     );
 
     create table RS_AUDIT_LOG_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        action varchar2(64 char),
-        DATE_FIELD timestamp,
-        user_id number(19,0),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        action varchar(64),
+        DATE_FIELD datetime2,
+        user_id bigint,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_AUDIT_LOG_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(64 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
-        LOG_ENTRY_ID number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(64) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
+        LOG_ENTRY_ID bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_BINARY_COLUMN_FILTER (
-        operator number(10,0),
-        id number(19,0) not null,
-        columna_id number(19,0),
-        columnb_id number(19,0),
+        operator int,
+        id bigint not null,
+        columna_id bigint,
+        columnb_id bigint,
         primary key (id)
     );
 
     create table RS_BINARY_COLUMN_FILTER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        operator number(10,0),
-        columna_id number(19,0),
-        columnb_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        operator int,
+        columna_id bigint,
+        columnb_id bigint,
         primary key (id, REV)
     );
 
     create table RS_BIRT_REPORT (
-        id number(19,0) not null,
-        report_file_id number(19,0),
+        id bigint not null,
+        report_file_id bigint,
         primary key (id)
     );
 
     create table RS_BIRT_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        report_file_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        report_file_id bigint,
         primary key (id, REV)
     );
 
     create table RS_BIRT_REPORT_DATASRC (
-        database_cache number(10,0) not null,
-        id number(19,0) not null,
+        database_cache int not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_BIRT_REPORT_DATASRC_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        database_cache number(10,0),
+        id bigint not null,
+        REV int not null,
+        database_cache int,
         primary key (id, REV)
     );
 
     create table RS_BIRT_REPORT_DATASRC_CFG (
-        query_wrapper long,
-        target varchar2(255 char),
-        target_type number(10,0),
-        id number(19,0) not null,
-        report_id number(19,0),
+        query_wrapper varchar(4096),
+        target varchar(255),
+        target_type int,
+        id bigint not null,
+        report_id bigint,
         primary key (id)
     );
 
     create table RS_BIRT_REPORT_DATASRC_CFG_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        query_wrapper long,
-        target varchar2(255 char),
-        target_type number(10,0),
-        report_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        query_wrapper varchar(4096),
+        target varchar(255),
+        target_type int,
+        report_id bigint,
         primary key (id, REV)
     );
 
     create table RS_BIRT_REPORT_FILE (
-        ENTITY_ID number(19,0) not null,
-        content clob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varchar(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_BIRT_REPORT_FILE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content clob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_BIRT_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_BIRT_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_BLATEXT_PARAM_DEF (
-        value clob,
-        id number(19,0) not null,
+        value varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_BLATEXT_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        value clob,
+        id bigint not null,
+        REV int not null,
+        value varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_BLATEXT_PARAM_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_BLATEXT_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
+        primary key (id, REV)
+    );
+
+    create table RS_BOX_DATASINK (
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_BOX_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_COLUMN (
-        ENTITY_ID number(19,0) not null,
-        aggregate_function number(10,0),
-        alias varchar2(255 char),
-        dimension varchar2(255 char),
-        hidden number(1,0),
-        NAME_FIELD varchar2(255 char),
-        null_handling number(10,0),
-        null_replacement_format varchar2(255 char),
-        ORDER_FIELD number(10,0),
-        position number(10,0) not null,
-        preview_width number(10,0),
-        subtotal_group number(1,0),
-        type number(10,0),
-        ENTITY_VERSION number(19,0),
-        filter_id number(19,0),
-        format_id number(19,0),
+        ENTITY_ID bigint not null,
+        aggregate_function int,
+        alias varchar(255),
+        dimension varchar(255),
+        hidden bit,
+        NAME_FIELD varchar(255),
+        null_handling int,
+        null_replacement_format varchar(255),
+        ORDER_FIELD int,
+        position int not null,
+        preview_width int,
+        subtotal_group bit,
+        type int,
+        ENTITY_VERSION bigint,
+        filter_id bigint,
+        format_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_COLUMN_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        aggregate_function number(10,0),
-        alias varchar2(255 char),
-        dimension varchar2(255 char),
-        hidden number(1,0),
-        NAME_FIELD varchar2(255 char),
-        null_handling number(10,0),
-        null_replacement_format varchar2(255 char),
-        ORDER_FIELD number(10,0),
-        position number(10,0),
-        preview_width number(10,0),
-        subtotal_group number(1,0),
-        type number(10,0),
-        filter_id number(19,0),
-        format_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        aggregate_function int,
+        alias varchar(255),
+        dimension varchar(255),
+        hidden bit,
+        NAME_FIELD varchar(255),
+        null_handling int,
+        null_replacement_format varchar(255),
+        ORDER_FIELD int,
+        position int,
+        preview_width int,
+        subtotal_group bit,
+        type int,
+        filter_id bigint,
+        format_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_COLUMN_FILTER (
-        id number(19,0) not null,
-        column_id number(19,0),
+        id bigint not null,
+        column_id bigint,
         primary key (id)
     );
 
     create table RS_COLUMN_FILTER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        column_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        column_id bigint,
         primary key (id, REV)
     );
 
     create table RS_COLUMN_FORMAT (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_COLUMN_FORMAT_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_COLUMN_FORMAT_CURRENCY (
-        currency_type number(10,0),
-        id number(19,0) not null,
+        currency_type int,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COLUMN_FORMAT_CURRENCY_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        currency_type number(10,0),
+        id bigint not null,
+        REV int not null,
+        currency_type int,
         primary key (id, REV)
     );
 
     create table RS_COLUMN_FORMAT_DATE (
-        base_format varchar2(255 char),
-        error_replacement varchar2(255 char),
-        replace_errors number(1,0),
-        roll_over number(1,0),
-        target_format varchar2(255 char),
-        id number(19,0) not null,
+        base_format varchar(255),
+        error_replacement varchar(255),
+        replace_errors bit,
+        roll_over bit,
+        target_format varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COLUMN_FORMAT_DATE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        base_format varchar2(255 char),
-        error_replacement varchar2(255 char),
-        replace_errors number(1,0),
-        roll_over number(1,0),
-        target_format varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        base_format varchar(255),
+        error_replacement varchar(255),
+        replace_errors bit,
+        roll_over bit,
+        target_format varchar(255),
         primary key (id, REV)
     );
 
     create table RS_COLUMN_FORMAT_NUMBER (
-        number_of_decimal_places number(10,0) not null,
-        thousand_separator number(1,0) not null,
-        type number(10,0),
-        id number(19,0) not null,
+        number_of_decimal_places int not null,
+        thousand_separator bit not null,
+        type int,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COLUMN_FORMAT_NUMBER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        number_of_decimal_places number(10,0),
-        thousand_separator number(1,0),
-        type number(10,0),
+        id bigint not null,
+        REV int not null,
+        number_of_decimal_places int,
+        thousand_separator bit,
+        type int,
         primary key (id, REV)
     );
 
     create table RS_COLUMN_FORMAT_TEMPLATE (
-        template varchar2(255 char),
-        id number(19,0) not null,
+        template varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COLUMN_FORMAT_TEMPLATE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        template varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        template varchar(255),
         primary key (id, REV)
     );
 
     create table RS_COLUMN_FORMAT_TEXT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COLUMN_FORMAT_TEXT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_COLUMN_REFERENCE (
-        id number(19,0) not null,
-        reference_id number(19,0),
+        id bigint not null,
+        reference_id bigint,
         primary key (id)
     );
 
     create table RS_COLUMN_REFERENCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        reference_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        reference_id bigint,
         primary key (id, REV)
     );
 
     create table RS_COMPILED_REPORT (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        serialized_report blob,
-        ENTITY_VERSION number(19,0),
-        report_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        serialized_report varbinary(MAX),
+        ENTITY_VERSION bigint,
+        report_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_COMPUTED_COLUMN (
-        description clob,
-        expression clob,
-        id number(19,0) not null,
+        description varchar(MAX),
+        expression varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_COMPUTED_COLUMN_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        expression clob,
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        expression varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_CONDITION (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        KEY_FIELD varchar2(64 char),
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
-        report_id number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        KEY_FIELD varchar(64),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
+        report_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_CRYSTAL_REPORT (
-        id number(19,0) not null,
-        report_file_id number(19,0),
+        id bigint not null,
+        report_file_id bigint,
         primary key (id)
     );
 
     create table RS_CRYSTAL_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        report_file_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        report_file_id bigint,
         primary key (id, REV)
     );
 
     create table RS_CRYSTAL_REPORT_FILE (
-        ENTITY_ID number(19,0) not null,
-        content blob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_CRYSTAL_REPORT_FILE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content blob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_CRYSTAL_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_CRYSTAL_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_CSV_DATASOURCE (
-        database_cache number(10,0) not null,
-        quote varchar2(255 char),
-        SEPARATOR_FIELD varchar2(255 char),
-        id number(19,0) not null,
-        connector_id number(19,0),
+        database_cache int not null,
+        quote varchar(255),
+        SEPARATOR_FIELD varchar(255),
+        id bigint not null,
+        connector_id bigint,
         primary key (id)
     );
 
     create table RS_CSV_DATASOURCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        database_cache number(10,0),
-        quote varchar2(255 char),
-        SEPARATOR_FIELD varchar2(255 char),
-        connector_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        database_cache int,
+        quote varchar(255),
+        SEPARATOR_FIELD varchar(255),
+        connector_id bigint,
         primary key (id, REV)
     );
 
     create table RS_CSV_DATASOURCE_CONF (
-        query_wrapper long,
-        id number(19,0) not null,
+        query_wrapper varchar(4096),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_CSV_DATASOURCE_CONF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        query_wrapper long,
+        id bigint not null,
+        REV int not null,
+        query_wrapper varchar(4096),
         primary key (id, REV)
     );
 
     create table RS_DADGET (
-        ENTITY_ID number(19,0) not null,
-        col number(10,0) not null,
-        container number(10,0),
-        height number(10,0) not null,
-        n number(10,0) not null,
-        reload_interval number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        col int not null,
+        container int,
+        height int not null,
+        n int not null,
+        reload_interval bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DADGET_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        col number(10,0),
-        container number(10,0),
-        height number(10,0),
-        n number(10,0),
-        reload_interval number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        col int,
+        container int,
+        height int,
+        n int,
+        reload_interval bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DADGET_FAVORITE_LIST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DADGET_LIBRARY (
-        id number(19,0) not null,
-        dadget_node_id number(19,0),
+        id bigint not null,
+        dadget_node_id bigint,
         primary key (id)
     );
 
     create table RS_DADGET_PARAMETER (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DADGET_REPORT (
-        config clob,
-        show_execute_button number(1,0) not null,
-        id number(19,0) not null,
-        report_id number(19,0),
-        report_reference_id number(19,0),
+        config varchar(MAX),
+        show_execute_button bit not null,
+        id bigint not null,
+        report_id bigint,
+        report_reference_id bigint,
         primary key (id)
     );
 
     create table RS_DADGET_REPORT_2_PARAM_INST (
-        dadget_id number(19,0) not null,
-        parameter_instances_id number(19,0) not null,
+        dadget_id bigint not null,
+        parameter_instances_id bigint not null,
         primary key (dadget_id, parameter_instances_id)
     );
 
     create table RS_DADGET_STATIC_HTML (
-        data clob,
-        title varchar2(255 char),
-        id number(19,0) not null,
+        data varchar(MAX),
+        title varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DADGET_URL (
-        title varchar2(255 char),
-        url varchar2(255 char),
-        id number(19,0) not null,
+        title varchar(255),
+        url varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DASHBOARD (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        layout number(10,0),
-        n number(10,0) not null,
-        NAME_FIELD varchar2(255 char),
-        reload_interval number(19,0) not null,
-        single_page number(1,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        layout int,
+        n int not null,
+        NAME_FIELD varchar(255),
+        reload_interval bigint not null,
+        single_page bit not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DASHBOARD_2_DADGET (
-        dashboard_id number(19,0) not null,
-        dadgets_id number(19,0) not null
+        dashboard_id bigint not null,
+        dadgets_id bigint not null
     );
 
     create table RS_DASHBOARD_2_DADGET_A (
-        REV number(10,0) not null,
-        dashboard_id number(19,0) not null,
-        dadgets_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        dashboard_id bigint not null,
+        dadgets_id bigint not null,
+        revtype smallint,
         primary key (REV, dashboard_id, dadgets_id)
     );
 
     create table RS_DASHBOARD_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
-        layout number(10,0),
-        n number(10,0),
-        NAME_FIELD varchar2(255 char),
-        reload_interval number(19,0),
-        single_page number(1,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
+        layout int,
+        n int,
+        NAME_FIELD varchar(255),
+        reload_interval bigint,
+        single_page bit,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DASHBOARD_CONTAINER (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DASHBOARD_CONTAINER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DASHBOARD_CONT_2_DASHBRD (
-        dashboard_container_id number(19,0) not null,
-        dashboards_id number(19,0) not null
+        dashboard_container_id bigint not null,
+        dashboards_id bigint not null
     );
 
     create table RS_DASHBOARD_CONT_2_DASHBRD_A (
-        REV number(10,0) not null,
-        dashboard_container_id number(19,0) not null,
-        dashboards_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        dashboard_container_id bigint not null,
+        dashboards_id bigint not null,
+        revtype smallint,
         primary key (REV, dashboard_container_id, dashboards_id)
     );
 
     create table RS_DASHBOARD_DADGET_NODE (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
-        dadget_id number(19,0),
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
+        dadget_id bigint,
         primary key (id)
     );
 
     create table RS_DASHBOARD_DADGET_NODE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        dadget_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        dadget_id bigint,
         primary key (id, REV)
     );
 
     create table RS_DASHBOARD_DASHBOARD_NODE (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
-        dashboard_id number(19,0),
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
+        dashboard_id bigint,
         primary key (id)
     );
 
     create table RS_DASHBOARD_DASHBOARD_NODE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        dashboard_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        dashboard_id bigint,
         primary key (id, REV)
     );
 
     create table RS_DASHBOARD_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DASHBOARD_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_DASHBOARD_MNGR_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DASHBOARD_MNGR_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DASHBOARD_REFERENCE (
-        id number(19,0) not null,
-        dashboard_node_id number(19,0),
+        id bigint not null,
+        dashboard_node_id bigint,
         primary key (id)
     );
 
     create table RS_DASHBOARD_REFERENCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        dashboard_node_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        dashboard_node_id bigint,
         primary key (id, REV)
     );
 
     create table RS_DASHBOARD_USER (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        dashboard_container_id number(19,0),
-        user_id number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        dashboard_container_id bigint,
+        user_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DASHBOARD_USER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        dashboard_container_id number(19,0),
-        user_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        dashboard_container_id bigint,
+        user_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATABASE_BUNDLE_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(255 char),
-        ENTITY_VERSION number(19,0),
-        database_id number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(255),
+        ENTITY_VERSION bigint,
+        database_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATABASE_BUNDLE_ENTRY_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        KEY_FIELD varchar2(255 char),
-        database_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        KEY_FIELD varchar(255),
+        database_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATABASE_DATASOURCE (
-        database_descriptor varchar2(255 char),
-        jdbc_properties clob,
-        password varchar2(255 char),
-        url varchar2(1024 char),
-        username varchar2(255 char),
-        id number(19,0) not null,
+        database_descriptor varchar(255),
+        jdbc_properties varchar(MAX),
+        password varchar(255),
+        url varchar(1024),
+        username varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATABASE_DATASOURCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        database_descriptor varchar2(255 char),
-        jdbc_properties clob,
-        password varchar2(255 char),
-        url varchar2(1024 char),
-        username varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        database_descriptor varchar(255),
+        jdbc_properties varchar(MAX),
+        password varchar(255),
+        url varchar(1024),
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_DATABASE_DATASOURCE_CONF (
-        query clob,
-        id number(19,0) not null,
+        query varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATABASE_DATASOURCE_CONF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        query clob,
+        id bigint not null,
+        REV int not null,
+        query varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_DATASINK_CONTAINER (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        datasink_id number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        datasink_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASINK_CONTAINER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        datasink_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        datasink_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASINK_DEFINITION (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATASINK_DEFINITION_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_DATASINK_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATASINK_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_DATASINK_MNGR_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASINK_MNGR_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_CONNECTOR (
-        DTYPE varchar2(31 char) not null,
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        data clob,
-        url varchar2(255 char),
+        DTYPE varchar(31) not null,
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        data varchar(MAX),
+        url varchar(255),
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_CONNECTOR_A (
-        DTYPE varchar2(31 char) not null,
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        url varchar2(255 char),
-        data clob,
+        DTYPE varchar(31) not null,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        url varchar(255),
+        data varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_CONNECTOR_CFG (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(255 char),
-        value clob,
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(255),
+        value varchar(MAX),
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_CONNECTOR_CFG_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        KEY_FIELD varchar2(255 char),
-        value clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        KEY_FIELD varchar(255),
+        value varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_CONTAINER (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        datasource_id number(19,0),
-        datasource_config_id number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        datasource_id bigint,
+        datasource_config_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_CONTAINER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        datasource_id number(19,0),
-        datasource_config_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        datasource_id bigint,
+        datasource_config_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_DEFINITION (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATASOURCE_DEFINITION_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_DATASOURCE_DEF_CONFIG (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_DEF_CONFIG_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_FBCFG_2_DSCC (
-        csv_datasource_conf_id number(19,0) not null,
-        connector_config_id number(19,0) not null
+        csv_datasource_conf_id bigint not null,
+        connector_config_id bigint not null
     );
 
     create table RS_DATASOURCE_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATASOURCE_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_DATASOURCE_MNGR_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_MNGR_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_PARAMETER_DATA (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(255 char),
-        value varchar2(255 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(255),
+        value varchar(255),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_DATASOURCE_PARAMETER_DATA_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        KEY_FIELD varchar2(255 char),
-        value varchar2(255 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        KEY_FIELD varchar(255),
+        value varchar(255),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_DATASOURCE_PARAM_DEF (
-        box_layout_mode number(10,0),
-        box_layout_pack_col_size number(10,0) not null,
-        box_layout_pack_mode number(10,0),
-        format varchar2(255 char),
-        height number(10,0) not null,
-        MODE_FIELD number(10,0),
-        multi_selection_mode number(10,0),
-        post_process clob,
-        return_type number(10,0),
-        single_selection_mode number(10,0),
-        width number(10,0) not null,
-        id number(19,0) not null,
-        datasource_container_id number(19,0),
-        s_def_value_simpl_data_id number(19,0),
+        box_layout_mode int,
+        box_layout_pack_col_size int not null,
+        box_layout_pack_mode int,
+        format varchar(255),
+        height int not null,
+        MODE_FIELD int,
+        multi_selection_mode int,
+        post_process varchar(MAX),
+        return_type int,
+        single_selection_mode int,
+        width int not null,
+        id bigint not null,
+        datasource_container_id bigint,
+        s_def_value_simpl_data_id bigint,
         primary key (id)
     );
 
     create table RS_DATASOURCE_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        box_layout_mode number(10,0),
-        box_layout_pack_col_size number(10,0),
-        box_layout_pack_mode number(10,0),
-        format varchar2(255 char),
-        height number(10,0),
-        MODE_FIELD number(10,0),
-        multi_selection_mode number(10,0),
-        post_process clob,
-        return_type number(10,0),
-        single_selection_mode number(10,0),
-        width number(10,0),
-        datasource_container_id number(19,0),
-        s_def_value_simpl_data_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        box_layout_mode int,
+        box_layout_pack_col_size int,
+        box_layout_pack_mode int,
+        format varchar(255),
+        height int,
+        MODE_FIELD int,
+        multi_selection_mode int,
+        post_process varchar(MAX),
+        return_type int,
+        single_selection_mode int,
+        width int,
+        datasource_container_id bigint,
+        s_def_value_simpl_data_id bigint,
         primary key (id, REV)
     );
 
     create table RS_DATASOURCE_PARAM_INST (
-        id number(19,0) not null,
-        single_value_id number(19,0),
+        id bigint not null,
+        single_value_id bigint,
         primary key (id)
     );
 
     create table RS_DATASOURCE_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        single_value_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        single_value_id bigint,
         primary key (id, REV)
     );
 
     create table RS_DATASOURCE_P_DF_2_ML_DEF (
-        datasource_param_def_id number(19,0) not null,
-        mult_def_val_simpl_data_id number(19,0) not null
+        datasource_param_def_id bigint not null,
+        mult_def_val_simpl_data_id bigint not null
     );
 
     create table RS_DATASOURCE_P_DF_2_ML_DEF_A (
-        REV number(10,0) not null,
-        datasource_param_def_id number(19,0) not null,
-        mult_def_val_simpl_data_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        datasource_param_def_id bigint not null,
+        mult_def_val_simpl_data_id bigint not null,
+        revtype smallint,
         primary key (REV, datasource_param_def_id, mult_def_val_simpl_data_id)
     );
 
     create table RS_DATASOURCE_P_INS_2_ML_VAL (
-        datasource_param_inst_id number(19,0) not null,
-        multi_value_id number(19,0) not null
+        datasource_param_inst_id bigint not null,
+        multi_value_id bigint not null
     );
 
     create table RS_DATASOURCE_P_INS_2_ML_VAL_A (
-        REV number(10,0) not null,
-        datasource_param_inst_id number(19,0) not null,
-        multi_value_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        datasource_param_inst_id bigint not null,
+        multi_value_id bigint not null,
+        revtype smallint,
         primary key (REV, datasource_param_inst_id, multi_value_id)
     );
 
     create table RS_DATETIME_PARAM_DEF (
-        default_value timestamp,
-        formula varchar2(255 char),
-        MODE_FIELD number(10,0),
-        use_now_as_default number(1,0),
-        id number(19,0) not null,
+        default_value datetime2,
+        formula varchar(255),
+        MODE_FIELD int,
+        use_now_as_default bit,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATETIME_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        default_value timestamp,
-        formula varchar2(255 char),
-        MODE_FIELD number(10,0),
-        use_now_as_default number(1,0),
+        id bigint not null,
+        REV int not null,
+        default_value datetime2,
+        formula varchar(255),
+        MODE_FIELD int,
+        use_now_as_default bit,
         primary key (id, REV)
     );
 
     create table RS_DATETIME_PARAM_INST (
-        formula varchar2(255 char),
-        value timestamp,
-        id number(19,0) not null,
+        formula varchar(255),
+        value datetime2,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DATETIME_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        formula varchar2(255 char),
-        value timestamp,
+        id bigint not null,
+        REV int not null,
+        formula varchar(255),
+        value datetime2,
         primary key (id, REV)
     );
 
     create table RS_DATE_TRIGGER_CONFIG (
-        DTYPE varchar2(31 char) not null,
-        ENTITY_ID number(19,0) not null,
-        at_time_hour number(10,0),
-        at_time_minutes number(10,0),
-        daily_repeat_type number(10,0),
-        end_type number(10,0),
-        first_execution timestamp,
-        last_execution timestamp,
-        number_of_executions number(10,0),
-        time_range_end_hour number(10,0),
-        time_range_end_minutes number(10,0),
-        time_range_interval number(10,0),
-        time_range_start_hour number(10,0),
-        time_range_start_minutes number(10,0),
-        time_range_unit number(10,0),
-        ENTITY_VERSION number(19,0),
-        yearly_month number(10,0),
-        yearly_nd_ay number(10,0),
-        day_in_month number(10,0),
-        month number(10,0),
-        weeklyn number(10,0),
-        dailyn number(10,0),
-        pattern number(10,0),
-        yearly_day number(10,0),
-        yearly_nth number(10,0),
-        monthly_day number(10,0),
-        monthly_nth number(10,0),
+        DTYPE varchar(31) not null,
+        ENTITY_ID bigint not null,
+        at_time_hour int,
+        at_time_minutes int,
+        daily_repeat_type int,
+        end_type int,
+        first_execution datetime2,
+        last_execution datetime2,
+        number_of_executions int,
+        time_range_end_hour int,
+        time_range_end_minutes int,
+        time_range_interval int,
+        time_range_start_hour int,
+        time_range_start_minutes int,
+        time_range_unit int,
+        ENTITY_VERSION bigint,
+        yearly_month int,
+        yearly_nd_ay int,
+        day_in_month int,
+        month int,
+        weeklyn int,
+        dailyn int,
+        pattern int,
+        monthly_day int,
+        monthly_nth int,
+        yearly_day int,
+        yearly_nth int,
         primary key (ENTITY_ID)
     );
 
     create table RS_DB_BUNDLE_2_ENTRY (
-        db_bundle_datasource_id number(19,0) not null,
-        bundle_entries_id number(19,0) not null,
+        db_bundle_datasource_id bigint not null,
+        bundle_entries_id bigint not null,
         primary key (db_bundle_datasource_id, bundle_entries_id)
     );
 
     create table RS_DB_BUNDLE_2_ENTRY_A (
-        REV number(10,0) not null,
-        db_bundle_datasource_id number(19,0) not null,
-        bundle_entries_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        db_bundle_datasource_id bigint not null,
+        bundle_entries_id bigint not null,
+        revtype smallint,
         primary key (REV, db_bundle_datasource_id, bundle_entries_id)
     );
 
     create table RS_DB_BUNDLE_DATASOURCE (
-        key_source varchar2(255 char),
-        key_source_param_name varchar2(255 char),
-        mapping_source varchar2(255 char),
-        id number(19,0) not null,
+        key_source varchar(255),
+        key_source_param_name varchar(255),
+        mapping_source varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_DB_BUNDLE_DATASOURCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        key_source varchar2(255 char),
-        key_source_param_name varchar2(255 char),
-        mapping_source varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        key_source varchar(255),
+        key_source_param_name varchar(255),
+        mapping_source varchar(255),
+        primary key (id, REV)
+    );
+
+    create table RS_DROPBOX_DATASINK (
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_DROPBOX_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        primary key (id, REV)
+    );
+
+    create table RS_EMAIL_DATASINK (
+        encryption_policy varchar(255),
+        force_sender bit not null,
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable bit not null,
+        tls_enable bit not null,
+        tls_require bit not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_EMAIL_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        encryption_policy varchar(255),
+        force_sender bit,
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable bit,
+        tls_enable bit,
+        tls_require bit,
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_EXEC_REPORT_AS_FILE_REF (
-        output_format varchar2(255 char),
-        id number(19,0) not null,
-        compiled_report_id number(19,0),
+        output_format varchar(255),
+        id bigint not null,
+        compiled_report_id bigint,
         primary key (id)
     );
 
     create table RS_EXEC_REPORT_AS_FILE_REF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        output_format varchar2(255 char),
-        compiled_report_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        output_format varchar(255),
+        compiled_report_id bigint,
         primary key (id, REV)
     );
 
     create table RS_FAVORITE_LIST (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        user_id number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        user_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FAVORITE_LIST_2_ENTRY (
-        favorite_list_id number(19,0) not null,
-        reference_entries_id number(19,0) not null
+        favorite_list_id bigint not null,
+        reference_entries_id bigint not null
     );
 
     create table RS_FAVORITE_LIST_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        reference_entry_id number(19,0),
+        ENTITY_ID bigint not null,
+        position int not null,
+        ENTITY_VERSION bigint,
+        reference_entry_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILESEL_PARAM_DEF (
-        allow_download number(1,0) not null,
-        allow_file_server_selection number(1,0) not null,
-        allow_file_upload number(1,0) not null,
-        allow_team_space_selection number(1,0) not null,
-        allowed_file_extensions varchar2(255 char),
-        file_size_string varchar2(255 char),
-        height number(10,0) not null,
-        max_number_of_files number(10,0),
-        min_number_of_files number(10,0),
-        width number(10,0) not null,
-        id number(19,0) not null,
+        allow_download bit not null,
+        allow_file_server_selection bit not null,
+        allow_file_upload bit not null,
+        allow_team_space_selection bit not null,
+        allowed_file_extensions varchar(255),
+        file_size_string varchar(255),
+        height int not null,
+        max_number_of_files int,
+        min_number_of_files int,
+        width int not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_FILESEL_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        allow_download number(1,0),
-        allow_file_server_selection number(1,0),
-        allow_file_upload number(1,0),
-        allow_team_space_selection number(1,0),
-        allowed_file_extensions varchar2(255 char),
-        file_size_string varchar2(255 char),
-        height number(10,0),
-        max_number_of_files number(10,0),
-        min_number_of_files number(10,0),
-        width number(10,0),
+        id bigint not null,
+        REV int not null,
+        allow_download bit,
+        allow_file_server_selection bit,
+        allow_file_upload bit,
+        allow_team_space_selection bit,
+        allowed_file_extensions varchar(255),
+        file_size_string varchar(255),
+        height int,
+        max_number_of_files int,
+        min_number_of_files int,
+        width int,
         primary key (id, REV)
     );
 
     create table RS_FILESEL_PARAM_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_FILESEL_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_FILESEL_PARAM_IN_2_FILE (
-        filesel_param_inst_id number(19,0) not null,
-        selected_files_id number(19,0) not null
+        filesel_param_inst_id bigint not null,
+        selected_files_id bigint not null
     );
 
     create table RS_FILESEL_PARAM_IN_2_FILE_A (
-        REV number(10,0) not null,
-        filesel_param_inst_id number(19,0) not null,
-        selected_files_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filesel_param_inst_id bigint not null,
+        selected_files_id bigint not null,
+        revtype smallint,
         primary key (REV, filesel_param_inst_id, selected_files_id)
     );
 
     create table RS_FILESEL_PARAM_SEL_FILE (
-        ENTITY_ID number(19,0) not null,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
-        file_server_file_id number(19,0),
-        team_space_file_id number(19,0),
-        uploaded_file_id number(19,0),
+        ENTITY_ID bigint not null,
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
+        file_server_file_id bigint,
+        team_space_file_id bigint,
+        uploaded_file_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILESEL_PARAM_SEL_FILE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        NAME_FIELD varchar2(128 char),
-        file_server_file_id number(19,0),
-        team_space_file_id number(19,0),
-        uploaded_file_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        NAME_FIELD varchar(128),
+        file_server_file_id bigint,
+        team_space_file_id bigint,
+        uploaded_file_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILESEL_PARAM_UP_FILE (
-        ENTITY_ID number(19,0) not null,
-        content blob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varbinary(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILESEL_PARAM_UP_FILE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content blob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varbinary(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILE_SERVER_FILE (
-        content_type varchar2(128 char),
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
-        file_data_id number(19,0),
+        content_type varchar(128),
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
+        file_data_id bigint,
         primary key (id)
     );
 
     create table RS_FILE_SERVER_FILE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        content_type varchar2(128 char),
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        file_data_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        content_type varchar(128),
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        file_data_id bigint,
         primary key (id, REV)
     );
 
     create table RS_FILE_SERVER_FILE_DATA (
-        ENTITY_ID number(19,0) not null,
-        data blob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        data varbinary(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILE_SERVER_FILE_DATA_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        data blob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        data varbinary(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILE_SERVER_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        publicly_accessible number(1,0) not null,
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        publicly_accessible bit not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_FILE_SERVER_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        publicly_accessible number(1,0),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        publicly_accessible bit,
         primary key (id, REV)
     );
 
     create table RS_FILE_SERVER_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILE_SERVER_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILTER (
-        ENTITY_ID number(19,0) not null,
-        case_sensitive number(1,0),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        case_sensitive bit,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILTER_2_EXCLUDE_VAL (
-        filter_id number(19,0) not null,
-        exclude_values varchar2(255 char),
-        val_n number(10,0) not null,
+        filter_id bigint not null,
+        exclude_values varchar(255),
+        val_n int not null,
         primary key (filter_id, val_n)
     );
 
     create table RS_FILTER_2_EXCLUDE_VAL_A (
-        REV number(10,0) not null,
-        filter_id number(19,0) not null,
-        exclude_values varchar2(255 char) not null,
-        val_n number(10,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_id bigint not null,
+        exclude_values varchar(255) not null,
+        val_n int not null,
+        revtype smallint,
         primary key (REV, filter_id, exclude_values, val_n)
     );
 
     create table RS_FILTER_2_FILTER_RNG_EXC (
-        filter_id number(19,0) not null,
-        exclude_ranges_id number(19,0) not null
+        filter_id bigint not null,
+        exclude_ranges_id bigint not null
     );
 
     create table RS_FILTER_2_FILTER_RNG_EXC_A (
-        REV number(10,0) not null,
-        filter_id number(19,0) not null,
-        exclude_ranges_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_id bigint not null,
+        exclude_ranges_id bigint not null,
+        revtype smallint,
         primary key (REV, filter_id, exclude_ranges_id)
     );
 
     create table RS_FILTER_2_FILTER_RNG_INC (
-        filter_id number(19,0) not null,
-        include_ranges_id number(19,0) not null
+        filter_id bigint not null,
+        include_ranges_id bigint not null
     );
 
     create table RS_FILTER_2_FILTER_RNG_INC_A (
-        REV number(10,0) not null,
-        filter_id number(19,0) not null,
-        include_ranges_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_id bigint not null,
+        include_ranges_id bigint not null,
+        revtype smallint,
         primary key (REV, filter_id, include_ranges_id)
     );
 
     create table RS_FILTER_2_INCLUDE_VAL (
-        filter_id number(19,0) not null,
-        include_values varchar2(255 char),
-        val_n number(10,0) not null,
+        filter_id bigint not null,
+        include_values varchar(255),
+        val_n int not null,
         primary key (filter_id, val_n)
     );
 
     create table RS_FILTER_2_INCLUDE_VAL_A (
-        REV number(10,0) not null,
-        filter_id number(19,0) not null,
-        include_values varchar2(255 char) not null,
-        val_n number(10,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_id bigint not null,
+        include_values varchar(255) not null,
+        val_n int not null,
+        revtype smallint,
         primary key (REV, filter_id, include_values, val_n)
     );
 
     create table RS_FILTER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        case_sensitive number(1,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        case_sensitive bit,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILTER_BLOCK (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILTER_BLOCK_2_CHILD_BL (
-        filter_block_id number(19,0) not null,
-        child_blocks_id number(19,0) not null,
+        filter_block_id bigint not null,
+        child_blocks_id bigint not null,
         primary key (filter_block_id, child_blocks_id)
     );
 
     create table RS_FILTER_BLOCK_2_CHILD_BL_A (
-        REV number(10,0) not null,
-        filter_block_id number(19,0) not null,
-        child_blocks_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_block_id bigint not null,
+        child_blocks_id bigint not null,
+        revtype smallint,
         primary key (REV, filter_block_id, child_blocks_id)
     );
 
     create table RS_FILTER_BLOCK_2_FILTERS (
-        filter_block_id number(19,0) not null,
-        filters_id number(19,0) not null,
+        filter_block_id bigint not null,
+        filters_id bigint not null,
         primary key (filter_block_id, filters_id)
     );
 
     create table RS_FILTER_BLOCK_2_FILTERS_A (
-        REV number(10,0) not null,
-        filter_block_id number(19,0) not null,
-        filters_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        filter_block_id bigint not null,
+        filters_id bigint not null,
+        revtype smallint,
         primary key (REV, filter_block_id, filters_id)
     );
 
     create table RS_FILTER_BLOCK_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILTER_RANGE (
-        ENTITY_ID number(19,0) not null,
-        range_from varchar2(255 char),
-        range_to varchar2(255 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        range_from varchar(255),
+        range_to varchar(255),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILTER_RANGE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        range_from varchar2(255 char),
-        range_to varchar2(255 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        range_from varchar(255),
+        range_to varchar(255),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_FILTER_SPEC (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_FILTER_SPEC_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
+    create table RS_FTPS_DATASINK (
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_FTPS_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        username varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_FTP_DATASINK (
-        folder varchar2(1024 char),
-        host varchar2(1024 char),
-        password varchar2(255 char),
-        port number(10,0) not null,
-        username varchar2(255 char),
-        id number(19,0) not null,
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        username varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_FTP_DATASINK_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        folder varchar2(1024 char),
-        host varchar2(1024 char),
-        password varchar2(255 char),
-        port number(10,0),
-        username varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_GEN_SECURITY_TGT_ENTITY (
-        ENTITY_ID number(19,0) not null,
-        target_identifier varchar2(128 char),
-        ENTITY_VERSION number(19,0),
-        acl_id number(19,0),
+        ENTITY_ID bigint not null,
+        target_identifier varchar(128),
+        ENTITY_VERSION bigint,
+        acl_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_GEN_SECURITY_TGT_ENTITY_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        target_identifier varchar2(128 char),
-        acl_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        target_identifier varchar(128),
+        acl_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_GLOBAL_CONSTANT (
-        ENTITY_ID number(19,0) not null,
-        NAME_FIELD varchar2(255 char),
-        value varchar2(255 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        NAME_FIELD varchar(255),
+        value varchar(255),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_GLOBAL_CONSTANT_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        NAME_FIELD varchar2(255 char),
-        value varchar2(255 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        NAME_FIELD varchar(255),
+        value varchar(255),
         primary key (ENTITY_ID, REV)
     );
 
+    create table RS_GOOGLEDRIVE_DATASINK (
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_GOOGLEDRIVE_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        app_key varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        primary key (id, REV)
+    );
+
     create table RS_GRID_EDT_REPORT (
-        arguments varchar2(255 char),
-        id number(19,0) not null,
-        script_id number(19,0),
+        arguments varchar(255),
+        id bigint not null,
+        script_id bigint,
         primary key (id)
     );
 
     create table RS_GRID_EDT_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        arguments varchar2(255 char),
-        script_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        arguments varchar(255),
+        script_id bigint,
         primary key (id, REV)
     );
 
     create table RS_GRID_EDT_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_GRID_EDT_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_GROUP (
-        description clob,
-        NAME_FIELD varchar2(255 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_GROUP_2_GROUP (
-        group_id number(19,0) not null,
-        referenced_groups_id number(19,0) not null,
+        group_id bigint not null,
+        referenced_groups_id bigint not null,
         primary key (group_id, referenced_groups_id)
     );
 
     create table RS_GROUP_2_GROUP_A (
-        REV number(10,0) not null,
-        group_id number(19,0) not null,
-        referenced_groups_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        group_id bigint not null,
+        referenced_groups_id bigint not null,
+        revtype smallint,
         primary key (REV, group_id, referenced_groups_id)
     );
 
     create table RS_GROUP_2_OU (
-        group_id number(19,0) not null,
-        ous_id number(19,0) not null,
+        group_id bigint not null,
+        ous_id bigint not null,
         primary key (group_id, ous_id)
     );
 
     create table RS_GROUP_2_OU_A (
-        REV number(10,0) not null,
-        group_id number(19,0) not null,
-        ous_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        group_id bigint not null,
+        ous_id bigint not null,
+        revtype smallint,
         primary key (REV, group_id, ous_id)
     );
 
     create table RS_GROUP_2_USER (
-        groups_id number(19,0) not null,
-        users_id number(19,0) not null,
+        groups_id bigint not null,
+        users_id bigint not null,
         primary key (groups_id, users_id)
     );
 
     create table RS_GROUP_2_USER_A (
-        REV number(10,0) not null,
-        groups_id number(19,0) not null,
-        users_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        groups_id bigint not null,
+        users_id bigint not null,
+        revtype smallint,
         primary key (REV, groups_id, users_id)
     );
 
     create table RS_GROUP_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(255),
         primary key (id, REV)
     );
 
     create table RS_HEADLINE_PARAM_DEF (
-        value clob,
-        id number(19,0) not null,
+        value varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_HEADLINE_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        value clob,
+        id bigint not null,
+        REV int not null,
+        value varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_HEADLINE_PARAM_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_HEADLINE_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_HIERARCHICAL_ACE (
-        inheritancetype number(10,0) not null,
-        id number(19,0) not null,
+        inheritancetype int not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_HIERARCHICAL_ACE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        inheritancetype number(10,0),
+        id bigint not null,
+        REV int not null,
+        inheritancetype int,
         primary key (id, REV)
     );
 
     create table RS_HIERARCHICAL_ACL (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_HIERARCHICAL_ACL_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_JASPER_REPORT (
-        id number(19,0) not null,
-        master_file_id number(19,0),
+        id bigint not null,
+        master_file_id bigint,
         primary key (id)
     );
 
     create table RS_JASPER_REPORT_2_SUB_JRXML (
-        jasper_report_id number(19,0) not null,
-        sub_files_id number(19,0) not null
+        jasper_report_id bigint not null,
+        sub_files_id bigint not null
     );
 
     create table RS_JASPER_REPORT_2_SUB_JRXML_A (
-        REV number(10,0) not null,
-        jasper_report_id number(19,0) not null,
-        sub_files_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        jasper_report_id bigint not null,
+        sub_files_id bigint not null,
+        revtype smallint,
         primary key (REV, jasper_report_id, sub_files_id)
     );
 
     create table RS_JASPER_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        master_file_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        master_file_id bigint,
         primary key (id, REV)
     );
 
     create table RS_JASPER_REPORT_JRXML (
-        ENTITY_ID number(19,0) not null,
-        content clob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varchar(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_JASPER_REPORT_JRXML_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content clob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_JASPER_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_JASPER_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_JASPER_TO_TABLE_CONFIG (
-        id number(19,0) not null,
-        datasource_container_id number(19,0),
+        id bigint not null,
+        datasource_container_id bigint,
         primary key (id)
     );
 
     create table RS_JASPER_TO_TABLE_CONFIG_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        datasource_container_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        datasource_container_id bigint,
         primary key (id, REV)
     );
 
     create table RS_JXLS_REPORT (
-        jxls_one number(1,0) not null,
-        id number(19,0) not null,
-        report_file_id number(19,0),
+        id bigint not null,
+        report_file_id bigint,
         primary key (id)
     );
 
     create table RS_JXLS_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        jxls_one number(1,0),
-        report_file_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        report_file_id bigint,
         primary key (id, REV)
     );
 
     create table RS_JXLS_REPORT_FILE (
-        ENTITY_ID number(19,0) not null,
-        content blob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_JXLS_REPORT_FILE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content blob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_JXLS_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_JXLS_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_LIST_USERVARIABLE_DEF (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_LIST_USERVARIABLE_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_LIST_USERVARIABLE_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_LIST_USERVARIABLE_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_LIST_USERVARIABLE_INST_VL (
-        list_user_var_instanc_id number(19,0) not null,
-        value varchar2(255 char)
+        list_user_var_instanc_id bigint not null,
+        value varchar(255)
     );
 
     create table RS_LIST_USERVARIABLE_INST_VL_A (
-        REV number(10,0) not null,
-        list_user_var_instanc_id number(19,0) not null,
-        value varchar2(255 char) not null,
-        revtype number(3,0),
+        REV int not null,
+        list_user_var_instanc_id bigint not null,
+        value varchar(255) not null,
+        revtype smallint,
         primary key (REV, list_user_var_instanc_id, value)
     );
 
+    create table RS_LOCALFILESYSTEM_DATASINK (
+        folder varchar(1024),
+        path varchar(1024),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_LOCALFILESYSTEM_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        folder varchar(1024),
+        path varchar(1024),
+        primary key (id, REV)
+    );
+
     create table RS_MONDRIAN_DATASOURCE (
-        mondrian3 number(1,0) not null,
-        mondrian_schema clob,
-        password varchar2(255 char),
-        properties clob,
-        url varchar2(255 char),
-        username varchar2(255 char),
-        id number(19,0) not null,
+        mondrian3 bit not null,
+        mondrian_schema varchar(MAX),
+        password varchar(255),
+        properties varchar(MAX),
+        url varchar(255),
+        username varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_MONDRIAN_DATASOURCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        mondrian3 number(1,0),
-        mondrian_schema clob,
-        password varchar2(255 char),
-        properties clob,
-        url varchar2(255 char),
-        username varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        mondrian3 bit,
+        mondrian_schema varchar(MAX),
+        password varchar(255),
+        properties varchar(MAX),
+        url varchar(255),
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_MONDRIAN_DATASOURCE_CFG (
-        cube_name varchar2(255 char),
-        id number(19,0) not null,
+        cube_name varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_MONDRIAN_DATASOURCE_CFG_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        cube_name varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        cube_name varchar(255),
+        primary key (id, REV)
+    );
+
+    create table RS_ONEDRIVE_DATASINK (
+        app_key varchar(MAX),
+        base_root varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        tenant_id varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_ONEDRIVE_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        app_key varchar(MAX),
+        base_root varchar(MAX),
+        folder varchar(1024),
+        refresh_token varchar(MAX),
+        secret_key varchar(MAX),
+        tenant_id varchar(255),
         primary key (id, REV)
     );
 
     create table RS_ORGANISATIONAL_UNIT (
-        description clob,
-        NAME_FIELD varchar2(64 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(64),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_ORGANISATIONAL_UNIT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(64 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(64),
         primary key (id, REV)
     );
 
     create table RS_PARAMETER_DEFINITION (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        display_inline number(1,0),
-        editable number(1,0),
-        hidden number(1,0),
-        KEY_FIELD varchar2(128 char),
-        label_width number(10,0),
-        mandatory number(1,0) not null,
-        n number(10,0) not null,
-        NAME_FIELD varchar2(255 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        display_inline bit,
+        editable bit,
+        hidden bit,
+        KEY_FIELD varchar(128),
+        label_width int,
+        mandatory bit not null,
+        n int not null,
+        NAME_FIELD varchar(255),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_PARAMETER_DEFINITION_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
-        display_inline number(1,0),
-        editable number(1,0),
-        hidden number(1,0),
-        KEY_FIELD varchar2(128 char),
-        label_width number(10,0),
-        mandatory number(1,0),
-        n number(10,0),
-        NAME_FIELD varchar2(255 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
+        display_inline bit,
+        editable bit,
+        hidden bit,
+        KEY_FIELD varchar(128),
+        label_width int,
+        mandatory bit,
+        n int,
+        NAME_FIELD varchar(255),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_PARAMETER_INSTANCE (
-        ENTITY_ID number(19,0) not null,
-        still_default number(1,0) not null,
-        ENTITY_VERSION number(19,0),
-        definition_id number(19,0),
+        ENTITY_ID bigint not null,
+        still_default bit not null,
+        ENTITY_VERSION bigint,
+        definition_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_PARAMETER_INSTANCE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        still_default number(1,0),
-        definition_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        still_default bit,
+        definition_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_PARAM_DEF_2_DEPENDANTS (
-        parameter_definition_id number(19,0) not null,
-        depends_on_id number(19,0) not null
+        parameter_definition_id bigint not null,
+        depends_on_id bigint not null
     );
 
     create table RS_PARAM_DEF_2_DEPENDANTS_A (
-        REV number(10,0) not null,
-        parameter_definition_id number(19,0) not null,
-        depends_on_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        parameter_definition_id bigint not null,
+        depends_on_id bigint not null,
+        revtype smallint,
         primary key (REV, parameter_definition_id, depends_on_id)
     );
 
     create table RS_PRE_FILTER (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        root_block_type number(10,0),
-        ENTITY_VERSION number(19,0),
-        root_block_id number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        root_block_type int,
+        ENTITY_VERSION bigint,
+        root_block_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_PRE_FILTER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
-        root_block_type number(10,0),
-        root_block_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
+        root_block_type int,
+        root_block_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(128 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(128) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_REPORT (
-        description clob,
-        KEY_FIELD varchar2(40 char),
-        NAME_FIELD varchar2(128 char),
-        uuid varchar2(255 char),
-        id number(19,0) not null,
-        datasource_container_id number(19,0),
-        preview_image_id number(19,0),
+        description varchar(MAX),
+        KEY_FIELD varchar(40),
+        NAME_FIELD varchar(128),
+        uuid varchar(255),
+        id bigint not null,
+        datasource_container_id bigint,
+        preview_image_id bigint,
         primary key (id)
     );
 
     create table RS_REPORT_2_METADATA (
-        report_id number(19,0) not null,
-        report_metadata_id number(19,0) not null,
+        report_id bigint not null,
+        report_metadata_id bigint not null,
         primary key (report_id, report_metadata_id)
     );
 
     create table RS_REPORT_2_METADATA_A (
-        REV number(10,0) not null,
-        report_id number(19,0) not null,
-        report_metadata_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        report_id bigint not null,
+        report_metadata_id bigint not null,
+        revtype smallint,
         primary key (REV, report_id, report_metadata_id)
     );
 
     create table RS_REPORT_2_PARAM_DEF (
-        report_id number(19,0) not null,
-        parameter_definitions_id number(19,0) not null
+        report_id bigint not null,
+        parameter_definitions_id bigint not null
     );
 
     create table RS_REPORT_2_PARAM_DEF_A (
-        REV number(10,0) not null,
-        report_id number(19,0) not null,
-        parameter_definitions_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        report_id bigint not null,
+        parameter_definitions_id bigint not null,
+        revtype smallint,
         primary key (REV, report_id, parameter_definitions_id)
     );
 
     create table RS_REPORT_2_PARAM_INST (
-        report_id number(19,0) not null,
-        parameter_instances_id number(19,0) not null,
+        report_id bigint not null,
+        parameter_instances_id bigint not null,
         primary key (report_id, parameter_instances_id)
     );
 
     create table RS_REPORT_2_PARAM_INST_A (
-        REV number(10,0) not null,
-        report_id number(19,0) not null,
-        parameter_instances_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        report_id bigint not null,
+        parameter_instances_id bigint not null,
+        revtype smallint,
         primary key (REV, report_id, parameter_instances_id)
     );
 
     create table RS_REPORT_2_PROPERTY (
-        report_id number(19,0) not null,
-        report_properties_id number(19,0) not null,
+        report_id bigint not null,
+        report_properties_id bigint not null,
         primary key (report_id, report_properties_id)
     );
 
     create table RS_REPORT_2_PROPERTY_A (
-        REV number(10,0) not null,
-        report_id number(19,0) not null,
-        report_properties_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        report_id bigint not null,
+        report_properties_id bigint not null,
+        revtype smallint,
         primary key (REV, report_id, report_properties_id)
     );
 
     create table RS_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        KEY_FIELD varchar2(40 char),
-        NAME_FIELD varchar2(128 char),
-        uuid varchar2(255 char),
-        datasource_container_id number(19,0),
-        preview_image_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        KEY_FIELD varchar(40),
+        NAME_FIELD varchar(128),
+        uuid varchar(255),
+        datasource_container_id bigint,
+        preview_image_id bigint,
         primary key (id, REV)
     );
 
     create table RS_REPORT_BYTE_PROPERTY (
-        byte_value blob,
-        id number(19,0) not null,
+        byte_value varbinary(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_REPORT_BYTE_PROPERTY_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        byte_value blob,
+        id bigint not null,
+        REV int not null,
+        byte_value varbinary(MAX),
         primary key (id, REV)
     );
 
     create table RS_REPORT_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_REPORT_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_REPORT_METADATA (
-        ENTITY_ID number(19,0) not null,
-        NAME_FIELD varchar2(40 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        NAME_FIELD varchar(40) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_REPORT_METADATA_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        NAME_FIELD varchar2(40 char),
-        value clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        NAME_FIELD varchar(40),
+        value varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_REPORT_MNGR_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_REPORT_MNGR_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_REPORT_PREVIEW_IMAGE (
-        ENTITY_ID number(19,0) not null,
-        content blob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_REPORT_PREVIEW_IMAGE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content blob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content varbinary(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_REPORT_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        NAME_FIELD varchar2(40 char) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        NAME_FIELD varchar(40) not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_REPORT_PROPERTY_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        NAME_FIELD varchar2(40 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        NAME_FIELD varchar(40),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_REPORT_SS_STRING_PROPERTY (
-        str_value clob,
-        id number(19,0) not null,
+        str_value varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_REPORT_SS_STRING_PROPERTY_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        str_value clob,
+        id bigint not null,
+        REV int not null,
+        str_value varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_REPORT_STRING_PROPERTY (
-        str_value clob,
-        id number(19,0) not null,
+        str_value varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_REPORT_STRING_PROPERTY_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        str_value clob,
+        id bigint not null,
+        REV int not null,
+        str_value varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_REVISION (
-        ENTITY_ID number(10,0) not null,
-        timestamp number(19,0) not null,
-        user_id number(19,0) not null,
+        ENTITY_ID int not null,
+        timestamp bigint not null,
+        user_id bigint not null,
         primary key (ENTITY_ID)
     );
 
     create table RS_SAIKU_REPORT (
-        allow_mdx number(1,0) not null,
-        hide_parents number(1,0) not null,
-        query_xml clob,
-        id number(19,0) not null,
+        allow_mdx bit not null,
+        hide_parents bit not null,
+        query_xml varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SAIKU_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        allow_mdx number(1,0),
-        hide_parents number(1,0),
-        query_xml clob,
+        id bigint not null,
+        REV int not null,
+        allow_mdx bit,
+        hide_parents bit,
+        query_xml varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_SAIKU_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SAIKU_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
+        primary key (id, REV)
+    );
+
+    create table RS_SAMBA_DATASINK (
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_SAMBA_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_SCHEDULER_JOB_HISTORY (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_ACTION (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
+    create table RS_SCHED_ACTION_AS_AMAZONS3_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        amazon_s3datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_BOX_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        box_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_DROPBOX_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        dropbox_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_EMAIL_FILE (
+        compressed bit,
+        message varchar(MAX),
+        NAME_FIELD varchar(255),
+        subject varchar(255),
+        id bigint not null,
+        email_datasink_id bigint,
+        primary key (id)
+    );
+
     create table RS_SCHED_ACTION_AS_FILE (
-        description varchar2(255 char),
-        folder_id number(19,0),
-        NAME_FIELD varchar2(255 char),
-        teamspace_id number(19,0),
-        id number(19,0) not null,
+        description varchar(255),
+        folder_id bigint,
+        NAME_FIELD varchar(255),
+        teamspace_id bigint,
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_FTPS_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        ftps_datasink_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_ACTION_AS_FTP_FILE (
-        folder varchar2(255 char),
-        NAME_FIELD varchar2(255 char),
-        id number(19,0) not null,
-        ftp_datasink_id number(19,0),
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        ftp_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        google_drive_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        local_file_system_datas_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_ONEDRIVE_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        one_drive_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_SAMBA_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        samba_datasink_id bigint,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_SCP_FILE (
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        scp_datasink_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_ACTION_AS_SFTP_FILE (
-        folder varchar2(255 char),
-        NAME_FIELD varchar2(255 char),
-        id number(19,0) not null,
-        sftp_datasink_id number(19,0),
+        compressed bit,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        sftp_datasink_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_ACTION_ENT_2_PROP (
-        sched_hist_action_entry_id number(19,0) not null,
-        history_properties_id number(19,0) not null,
+        sched_hist_action_entry_id bigint not null,
+        history_properties_id bigint not null,
         primary key (sched_hist_action_entry_id, history_properties_id)
     );
 
     create table RS_SCHED_ACTION_MAIL_REPORT (
-        compressed number(1,0) not null,
-        message clob,
-        subject varchar2(255 char),
-        id number(19,0) not null,
+        compressed bit not null,
+        message varchar(MAX),
+        subject varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_ACTION_SEND_TO (
-        send_to_id varchar2(255 char),
-        id number(19,0) not null,
+        send_to_id varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_ACTION_SEND_TO_V (
-        ENTITY_ID number(19,0) not null,
-        the_value clob,
-        value_id varchar2(255 char),
-        ENTITY_VERSION number(19,0),
-        SEND_TO number(19,0),
+        ENTITY_ID bigint not null,
+        the_value varchar(MAX),
+        value_id varchar(255),
+        ENTITY_VERSION bigint,
+        SEND_TO bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_BASE_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(64 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(64) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_EXECUTE_REPORT_JOB (
-        output_format varchar2(255 char),
-        id number(19,0) not null,
-        executor_id number(19,0),
-        scheduled_by_id number(19,0),
-        report_id number(19,0),
+        output_format varchar(255),
+        id bigint not null,
+        executor_id bigint,
+        scheduled_by_id bigint,
+        report_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_EXECUTE_SCRIPT_JOB (
-        arguments varchar2(255 char),
-        script_id number(19,0),
-        id number(19,0) not null,
-        executor_id number(19,0),
-        scheduled_by_id number(19,0),
+        arguments varchar(255),
+        script_id bigint,
+        id bigint not null,
+        executor_id bigint,
+        scheduled_by_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_HIST_ACTION_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        action_name varchar2(255 char),
-        error_description clob,
-        outcome number(10,0),
-        ENTITY_VERSION number(19,0),
-        EXEC_ENTRY number(19,0),
+        ENTITY_ID bigint not null,
+        action_name varchar(255),
+        error_description varchar(MAX),
+        outcome int,
+        ENTITY_VERSION bigint,
+        EXEC_ENTRY bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_HIST_ENTRY_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(64 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(64) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_HIST_EXEC_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        bad_error_description clob,
-        END_FIELD timestamp,
-        outcome number(10,0),
-        scheduled_start timestamp,
-        START_FIELD timestamp,
-        ENTITY_VERSION number(19,0),
-        veto_explanation clob,
-        veto_mode number(10,0),
-        job_entry_id number(19,0),
-        JOB_HISTORY number(19,0),
+        ENTITY_ID bigint not null,
+        bad_error_description varchar(MAX),
+        END_FIELD datetime2,
+        outcome int,
+        scheduled_start datetime2,
+        START_FIELD datetime2,
+        ENTITY_VERSION bigint,
+        veto_explanation varchar(MAX),
+        veto_mode int,
+        job_entry_id bigint,
+        JOB_HISTORY bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_HIST_JOB_ENTRY (
-        ENTITY_ID number(19,0) not null,
-        error_description clob,
-        outcome number(10,0),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        error_description varchar(MAX),
+        outcome int,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_JOB (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        description clob,
-        execution_status number(10,0),
-        last_outcome number(10,0),
-        title varchar2(128 char),
-        ENTITY_VERSION number(19,0),
-        history_id number(19,0),
-        link_to_previous_id number(19,0),
-        trigger_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        description varchar(MAX),
+        execution_status int,
+        last_outcome int,
+        title varchar(128),
+        ENTITY_VERSION bigint,
+        history_id bigint,
+        link_to_previous_id bigint,
+        trigger_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_JOB_2_ACTIONS (
-        sched_job_id number(19,0) not null,
-        actions_id number(19,0) not null
+        sched_job_id bigint not null,
+        actions_id bigint not null
     );
 
     create table RS_SCHED_JOB_2_OWNER (
-        sched_execute_report_job_id number(19,0) not null,
-        owners_id number(19,0) not null,
+        sched_execute_report_job_id bigint not null,
+        owners_id bigint not null,
         primary key (sched_execute_report_job_id, owners_id)
     );
 
     create table RS_SCHED_JOB_ENT_2_PROP (
-        sched_hist_job_entry_id number(19,0) not null,
-        history_properties_id number(19,0) not null,
+        sched_hist_job_entry_id bigint not null,
+        history_properties_id bigint not null,
         primary key (sched_hist_job_entry_id, history_properties_id)
     );
 
     create table RS_SCHED_REP_EXEC_JOB_2_PROP (
-        sched_execute_report_job_id number(19,0) not null,
-        base_properties_id number(19,0) not null,
+        sched_execute_report_job_id bigint not null,
+        base_properties_id bigint not null,
         primary key (sched_execute_report_job_id, base_properties_id)
     );
 
     create table RS_SCHED_REP_EXEC_JOB_2_RCPT (
-        report_execute_job_id number(19,0) not null,
-        rcpt_ids number(19,0)
+        report_execute_job_id bigint not null,
+        rcpt_ids bigint
     );
 
     create table RS_SCHED_SCR_EXE_JOB_2_PROP (
-        sched_execute_script_job_id number(19,0) not null,
-        base_properties_id number(19,0) not null,
+        sched_execute_script_job_id bigint not null,
+        base_properties_id bigint not null,
         primary key (sched_execute_script_job_id, base_properties_id)
     );
 
     create table RS_SCHED_TRIGGER (
-        ENTITY_ID number(19,0) not null,
-        execute_once number(1,0) not null,
-        first_fire_time timestamp,
-        misfire_instruction number(10,0),
-        next_scheduled_fire_time timestamp,
-        nr_of_failed_executions number(10,0) not null,
-        nr_of_successful_executions number(10,0) not null,
-        nr_of_vetoed_executions number(10,0) not null,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        execute_once bit not null,
+        first_fire_time datetime2,
+        misfire_instruction int,
+        next_scheduled_fire_time datetime2,
+        nr_of_failed_executions int not null,
+        nr_of_successful_executions int not null,
+        nr_of_vetoed_executions int not null,
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_SCHED_TRIG_DAILY_NTHDAY (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_DAILY_WORKDAY (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_DATE (
-        id number(19,0) not null,
-        config_id number(19,0),
+        id bigint not null,
+        config_id bigint,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_MONTH_NAMED_DAY (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_MON_DAY_O_MON (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_WEEKLY (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_YEARLY_AT_DATE (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCHED_TRIG_YEAR_NAMED_DAY (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
+    create table RS_SCP_DATASINK (
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        private_key varbinary(MAX),
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    );
+
+    create table RS_SCP_DATASINK_A (
+        id bigint not null,
+        REV int not null,
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        private_key varbinary(MAX),
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_SCRIPT_DATASOURCE (
-        database_cache number(10,0) not null,
-        define_at_target number(1,0) not null,
-        id number(19,0) not null,
-        script_id number(19,0),
+        database_cache int not null,
+        define_at_target bit not null,
+        id bigint not null,
+        script_id bigint,
         primary key (id)
     );
 
     create table RS_SCRIPT_DATASOURCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        database_cache number(10,0),
-        define_at_target number(1,0),
-        script_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        database_cache int,
+        define_at_target bit,
+        script_id bigint,
         primary key (id, REV)
     );
 
     create table RS_SCRIPT_DATASOURCE_CONFIG (
-        arguments varchar2(255 char),
-        query_wrapper long,
-        script clob,
-        id number(19,0) not null,
+        arguments varchar(255),
+        query_wrapper varchar(4096),
+        script varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCRIPT_DATASOURCE_CONFIG_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        arguments varchar2(255 char),
-        query_wrapper long,
-        script clob,
+        id bigint not null,
+        REV int not null,
+        arguments varchar(255),
+        query_wrapper varchar(4096),
+        script varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_SCRIPT_PARAM_DEF (
-        arguments varchar2(255 char),
-        default_value clob,
-        height number(10,0),
-        width number(10,0),
-        id number(19,0) not null,
-        script_id number(19,0),
+        arguments varchar(255),
+        default_value varchar(MAX),
+        height int,
+        width int,
+        id bigint not null,
+        script_id bigint,
         primary key (id)
     );
 
     create table RS_SCRIPT_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        arguments varchar2(255 char),
-        default_value clob,
-        height number(10,0),
-        width number(10,0),
-        script_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        arguments varchar(255),
+        default_value varchar(MAX),
+        height int,
+        width int,
+        script_id bigint,
         primary key (id, REV)
     );
 
     create table RS_SCRIPT_PARAM_INST (
-        value clob,
-        id number(19,0) not null,
+        value varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCRIPT_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        value clob,
+        id bigint not null,
+        REV int not null,
+        value varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_SCRIPT_REPORT (
-        arguments varchar2(255 char),
-        id number(19,0) not null,
-        script_id number(19,0),
+        arguments varchar(255),
+        id bigint not null,
+        script_id bigint,
         primary key (id)
     );
 
     create table RS_SCRIPT_REPORT_2_EX_FORMAT (
-        script_report_id number(19,0) not null,
-        export_formats varchar2(255 char),
-        val_n number(10,0) not null,
+        script_report_id bigint not null,
+        export_formats varchar(255),
+        val_n int not null,
         primary key (script_report_id, val_n)
     );
 
     create table RS_SCRIPT_REPORT_2_EX_FORMAT_A (
-        REV number(10,0) not null,
-        script_report_id number(19,0) not null,
-        export_formats varchar2(255 char) not null,
-        val_n number(10,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        script_report_id bigint not null,
+        export_formats varchar(255) not null,
+        val_n int not null,
+        revtype smallint,
         primary key (REV, script_report_id, export_formats, val_n)
     );
 
     create table RS_SCRIPT_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        arguments varchar2(255 char),
-        script_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        arguments varchar(255),
+        script_id bigint,
         primary key (id, REV)
     );
 
     create table RS_SCRIPT_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SCRIPT_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_SEP_PARAM_DEF (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SEP_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_SEP_PARAM_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SEP_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_SFTP_DATASINK (
-        folder varchar2(1024 char),
-        host varchar2(1024 char),
-        password varchar2(255 char),
-        port number(10,0) not null,
-        username varchar2(255 char),
-        id number(19,0) not null,
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int not null,
+        private_key varbinary(MAX),
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_SFTP_DATASINK_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        folder varchar2(1024 char),
-        host varchar2(1024 char),
-        password varchar2(255 char),
-        port number(10,0),
-        username varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int,
+        private_key varbinary(MAX),
+        private_key_passphrase varchar(255),
+        username varchar(255),
         primary key (id, REV)
     );
 
     create table RS_STR_USERVARIABLE_DEF (
-        height number(10,0),
-        width number(10,0),
-        id number(19,0) not null,
+        height int,
+        width int,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_STR_USERVARIABLE_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        height number(10,0),
-        width number(10,0),
+        id bigint not null,
+        REV int not null,
+        height int,
+        width int,
         primary key (id, REV)
     );
 
     create table RS_STR_USERVARIABLE_INST (
-        value varchar2(255 char),
-        id number(19,0) not null,
+        value varchar(255),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_STR_USERVARIABLE_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        value varchar2(255 char),
+        id bigint not null,
+        REV int not null,
+        value varchar(255),
         primary key (id, REV)
     );
 
     create table RS_TABLE_REPORT (
-        allow_cubification number(1,0) not null,
-        allow_mdx number(1,0) not null,
-        cube_flag number(1,0) not null,
-        cube_xml clob,
-        distinct_flag number(1,0),
-        enable_subtotals number(1,0) not null,
-        hide_parents number(1,0) not null,
-        id number(19,0) not null,
-        metadata_datas_container_id number(19,0),
-        pre_filter_id number(19,0),
+        allow_cubification bit not null,
+        allow_mdx bit not null,
+        cube_flag bit not null,
+        cube_xml varchar(MAX),
+        distinct_flag bit,
+        enable_subtotals bit not null,
+        hide_parents bit not null,
+        id bigint not null,
+        metadata_datas_container_id bigint,
+        pre_filter_id bigint,
         primary key (id)
     );
 
     create table RS_TABLE_REPORT_2_ADD_COLUMN (
-        table_report_id number(19,0) not null,
-        additional_columns_id number(19,0) not null
+        table_report_id bigint not null,
+        additional_columns_id bigint not null
     );
 
     create table RS_TABLE_REPORT_2_ADD_COLUMN_A (
-        REV number(10,0) not null,
-        table_report_id number(19,0) not null,
-        additional_columns_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        table_report_id bigint not null,
+        additional_columns_id bigint not null,
+        revtype smallint,
         primary key (REV, table_report_id, additional_columns_id)
     );
 
     create table RS_TABLE_REPORT_2_COLUMN (
-        table_report_id number(19,0) not null,
-        columns_id number(19,0) not null
+        table_report_id bigint not null,
+        columns_id bigint not null
     );
 
     create table RS_TABLE_REPORT_2_COLUMN_A (
-        REV number(10,0) not null,
-        table_report_id number(19,0) not null,
-        columns_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        table_report_id bigint not null,
+        columns_id bigint not null,
+        revtype smallint,
         primary key (REV, table_report_id, columns_id)
     );
 
     create table RS_TABLE_REPORT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        allow_cubification number(1,0),
-        allow_mdx number(1,0),
-        cube_flag number(1,0),
-        cube_xml clob,
-        distinct_flag number(1,0),
-        enable_subtotals number(1,0),
-        hide_parents number(1,0),
-        metadata_datas_container_id number(19,0),
-        pre_filter_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        allow_cubification bit,
+        allow_mdx bit,
+        cube_flag bit,
+        cube_xml varchar(MAX),
+        distinct_flag bit,
+        enable_subtotals bit,
+        hide_parents bit,
+        metadata_datas_container_id bigint,
+        pre_filter_id bigint,
         primary key (id, REV)
     );
 
     create table RS_TABLE_REPORT_BYTE_TPL (
-        template blob,
-        id number(19,0) not null,
+        template varbinary(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TABLE_REPORT_BYTE_TPL_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        template blob,
+        id bigint not null,
+        REV int not null,
+        template varbinary(MAX),
         primary key (id, REV)
     );
 
     create table RS_TABLE_REPORT_STR_TEMPLATE (
-        template clob,
-        id number(19,0) not null,
+        template varchar(MAX),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TABLE_REPORT_STR_TEMPLATE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        template clob,
+        id bigint not null,
+        REV int not null,
+        template varchar(MAX),
         primary key (id, REV)
     );
 
     create table RS_TABLE_REPORT_TEMPLATE (
-        ENTITY_ID number(19,0) not null,
-        content_type varchar2(255 char),
-        description clob,
-        file_extension varchar2(255 char),
-        KEY_FIELD varchar2(255 char),
-        NAME_FIELD varchar2(255 char),
-        template_type varchar2(255 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        content_type varchar(255),
+        description varchar(MAX),
+        file_extension varchar(255),
+        KEY_FIELD varchar(255),
+        NAME_FIELD varchar(255),
+        template_type varchar(255),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TABLE_REPORT_TEMPLATE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        content_type varchar2(255 char),
-        description clob,
-        file_extension varchar2(255 char),
-        KEY_FIELD varchar2(255 char),
-        NAME_FIELD varchar2(255 char),
-        template_type varchar2(255 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        content_type varchar(255),
+        description varchar(MAX),
+        file_extension varchar(255),
+        KEY_FIELD varchar(255),
+        NAME_FIELD varchar(255),
+        template_type varchar(255),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TABLE_REPORT_TEMPLATE_LST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TABLE_REPORT_TEMPLATE_LST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_TABLE_REPORT_VARIANT (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TABLE_REPORT_VARIANT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_TAB_REP_TPL_LST_2_TPL (
-        table_report_templat_lst_id number(19,0) not null,
-        templates_id number(19,0) not null,
+        table_report_templat_lst_id bigint not null,
+        templates_id bigint not null,
         primary key (table_report_templat_lst_id, templates_id)
     );
 
     create table RS_TAB_REP_TPL_LST_2_TPL_A (
-        REV number(10,0) not null,
-        table_report_templat_lst_id number(19,0) not null,
-        templates_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        table_report_templat_lst_id bigint not null,
+        templates_id bigint not null,
+        revtype smallint,
         primary key (REV, table_report_templat_lst_id, templates_id)
     );
 
     create table RS_TEAMSPACE (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        NAME_FIELD varchar2(255 char),
-        ENTITY_VERSION number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(255),
+        ENTITY_VERSION bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TEAMSPACE_2_APP (
-        teamspace_id number(19,0) not null,
-        apps_id number(19,0) not null,
+        teamspace_id bigint not null,
+        apps_id bigint not null,
         primary key (teamspace_id, apps_id)
     );
 
     create table RS_TEAMSPACE_2_APP_A (
-        REV number(10,0) not null,
-        teamspace_id number(19,0) not null,
-        apps_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        teamspace_id bigint not null,
+        apps_id bigint not null,
+        revtype smallint,
         primary key (REV, teamspace_id, apps_id)
     );
 
     create table RS_TEAMSPACE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
-        NAME_FIELD varchar2(255 char),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
+        NAME_FIELD varchar(255),
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TEAMSPACE_APP (
-        ENTITY_ID number(19,0) not null,
-        installed number(1,0),
-        type varchar2(32 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        installed bit,
+        type varchar(32),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TEAMSPACE_APP_2_PROPERTY (
-        teamspace_app_id number(19,0) not null,
-        app_properties_id number(19,0) not null,
+        teamspace_app_id bigint not null,
+        app_properties_id bigint not null,
         primary key (teamspace_app_id, app_properties_id)
     );
 
     create table RS_TEAMSPACE_APP_2_PROPERTY_A (
-        REV number(10,0) not null,
-        teamspace_app_id number(19,0) not null,
-        app_properties_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        teamspace_app_id bigint not null,
+        app_properties_id bigint not null,
+        revtype smallint,
         primary key (REV, teamspace_app_id, app_properties_id)
     );
 
     create table RS_TEAMSPACE_APP_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        installed number(1,0),
-        type varchar2(32 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        installed bit,
+        type varchar(32),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TEAMSPACE_APP_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        NAME_FIELD varchar2(32 char),
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        NAME_FIELD varchar(32),
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TEAMSPACE_APP_PROPERTY_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        NAME_FIELD varchar2(32 char),
-        value clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        NAME_FIELD varchar(32),
+        value varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TEAMSPACE_MEMBER (
-        ENTITY_ID number(19,0) not null,
-        role number(10,0),
-        ENTITY_VERSION number(19,0),
-        folk_id number(19,0),
-        team_space_id number(19,0),
+        ENTITY_ID bigint not null,
+        role int,
+        ENTITY_VERSION bigint,
+        folk_id bigint,
+        team_space_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TEAMSPACE_MEMBER_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        role number(10,0),
-        folk_id number(19,0),
-        team_space_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        role int,
+        folk_id bigint,
+        team_space_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TEXT_PARAM_DEF (
-        default_value varchar2(255 char),
-        height number(10,0),
-        return_null_when_empty number(1,0) not null,
-        return_type number(10,0),
-        validator_regex varchar2(255 char),
-        width number(10,0),
-        id number(19,0) not null,
+        default_value varchar(255),
+        height int,
+        return_null_when_empty bit not null,
+        return_type int,
+        validator_regex varchar(255),
+        width int,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TEXT_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        default_value varchar2(255 char),
-        height number(10,0),
-        return_null_when_empty number(1,0),
-        return_type number(10,0),
-        validator_regex varchar2(255 char),
-        width number(10,0),
+        id bigint not null,
+        REV int not null,
+        default_value varchar(255),
+        height int,
+        return_null_when_empty bit,
+        return_type int,
+        validator_regex varchar(255),
+        width int,
         primary key (id, REV)
     );
 
     create table RS_TEXT_PARAM_INST (
-        value varchar2(4000 char),
-        id number(19,0) not null,
+        value varchar(4000),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TEXT_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        value varchar2(4000 char),
+        id bigint not null,
+        REV int not null,
+        value varchar(4000),
         primary key (id, REV)
     );
 
     create table RS_TS_DISK_FOLDER (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TS_DISK_FOLDER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_TS_DISK_GENERAL_REFERENCE (
-        description clob,
-        NAME_FIELD varchar2(128 char) not null,
-        id number(19,0) not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_TS_DISK_GENERAL_REFERENCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (id, REV)
     );
 
     create table RS_TS_DISK_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        parent_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        parent_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_TS_DISK_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        parent_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        parent_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_TS_DISK_REPORT_REFERENCE (
-        hardlink number(1,0),
-        id number(19,0) not null,
-        report_id number(19,0),
+        hardlink bit,
+        id bigint not null,
+        report_id bigint,
         primary key (id)
     );
 
     create table RS_TS_DISK_REPORT_REFERENCE_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        hardlink number(1,0),
-        report_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        hardlink bit,
+        report_id bigint,
         primary key (id, REV)
     );
 
     create table RS_TS_DISK_ROOT (
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        id number(19,0) not null,
-        team_space_id number(19,0),
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        id bigint not null,
+        team_space_id bigint,
         primary key (id)
     );
 
     create table RS_TS_DISK_ROOT_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        team_space_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        team_space_id bigint,
         primary key (id, REV)
     );
 
     create table RS_USER (
-        email varchar2(320 char),
-        firstname varchar2(128 char),
-        lastname varchar2(128 char),
-        password varchar2(40 char),
-        sex number(10,0),
-        super_user number(1,0),
-        title varchar2(40 char),
-        username varchar2(128 char),
-        id number(19,0) not null,
+        email varchar(320),
+        firstname varchar(128),
+        lastname varchar(128),
+        password varchar(40),
+        sex int,
+        super_user bit,
+        title varchar(40),
+        username varchar(128),
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_USERMANAGER_NODE (
-        ENTITY_ID number(19,0) not null,
-        created_on timestamp,
-        flags number(19,0) not null,
-        last_updated timestamp,
-        position number(10,0) not null,
-        ENTITY_VERSION number(19,0),
-        guid varchar2(128 char),
-        origin varchar2(1024 char),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        created_on datetime2,
+        flags bigint not null,
+        last_updated datetime2,
+        position int not null,
+        ENTITY_VERSION bigint,
+        guid varchar(128),
+        origin varchar(1024),
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_USERMANAGER_NODE_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        created_on timestamp,
-        flags number(19,0),
-        last_updated timestamp,
-        guid varchar2(128 char),
-        origin varchar2(1024 char),
-        parent_id number(19,0),
-        acl_id number(19,0),
-        owner_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        created_on datetime2,
+        flags bigint,
+        last_updated datetime2,
+        guid varchar(128),
+        origin varchar(1024),
+        parent_id bigint,
+        acl_id bigint,
+        owner_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_USERVAR_DEF (
-        ENTITY_ID number(19,0) not null,
-        description clob,
-        NAME_FIELD varchar2(128 char),
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_USERVAR_DEF_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        description clob,
-        NAME_FIELD varchar2(128 char),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        description varchar(MAX),
+        NAME_FIELD varchar(128),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_USERVAR_INST (
-        ENTITY_ID number(19,0) not null,
-        ENTITY_VERSION number(19,0),
-        definition_id number(19,0),
-        folk_id number(19,0),
+        ENTITY_ID bigint not null,
+        ENTITY_VERSION bigint,
+        definition_id bigint,
+        folk_id bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_USERVAR_INST_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        definition_id number(19,0),
-        folk_id number(19,0),
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        definition_id bigint,
+        folk_id bigint,
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_USERVAR_PARAM_DEF (
-        id number(19,0) not null,
-        user_variable_definition_id number(19,0),
+        id bigint not null,
+        user_variable_definition_id bigint,
         primary key (id)
     );
 
     create table RS_USERVAR_PARAM_DEF_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        user_variable_definition_id number(19,0),
+        id bigint not null,
+        REV int not null,
+        user_variable_definition_id bigint,
         primary key (id, REV)
     );
 
     create table RS_USERVAR_PARAM_INST (
-        id number(19,0) not null,
+        id bigint not null,
         primary key (id)
     );
 
     create table RS_USERVAR_PARAM_INST_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
+        id bigint not null,
+        REV int not null,
         primary key (id, REV)
     );
 
     create table RS_USER_2_PROPERTY (
-        user_id number(19,0) not null,
-        properties_id number(19,0) not null,
+        user_id bigint not null,
+        properties_id bigint not null,
         primary key (user_id, properties_id)
     );
 
     create table RS_USER_2_PROPERTY_A (
-        REV number(10,0) not null,
-        user_id number(19,0) not null,
-        properties_id number(19,0) not null,
-        revtype number(3,0),
+        REV int not null,
+        user_id bigint not null,
+        properties_id bigint not null,
+        revtype smallint,
         primary key (REV, user_id, properties_id)
     );
 
     create table RS_USER_A (
-        id number(19,0) not null,
-        REV number(10,0) not null,
-        email varchar2(320 char),
-        firstname varchar2(128 char),
-        lastname varchar2(128 char),
-        password varchar2(40 char),
-        sex number(10,0),
-        super_user number(1,0),
-        title varchar2(40 char),
-        username varchar2(128 char),
+        id bigint not null,
+        REV int not null,
+        email varchar(320),
+        firstname varchar(128),
+        lastname varchar(128),
+        password varchar(40),
+        sex int,
+        super_user bit,
+        title varchar(40),
+        username varchar(128),
         primary key (id, REV)
     );
 
     create table RS_USER_PROPERTY (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(64 char) not null,
-        value clob,
-        ENTITY_VERSION number(19,0),
+        ENTITY_ID bigint not null,
+        KEY_FIELD varchar(64) not null,
+        value varchar(MAX),
+        ENTITY_VERSION bigint,
         primary key (ENTITY_ID)
     );
 
     create table RS_USER_PROPERTY_A (
-        ENTITY_ID number(19,0) not null,
-        REV number(10,0) not null,
-        revtype number(3,0),
-        KEY_FIELD varchar2(64 char),
-        value clob,
+        ENTITY_ID bigint not null,
+        REV int not null,
+        revtype smallint,
+        KEY_FIELD varchar(64),
+        value varchar(MAX),
         primary key (ENTITY_ID, REV)
     );
 
     create table RS_WEEKLY_CONFIG_2_DAYS (
-        weekly_config_id number(19,0) not null,
-        weekly_days number(10,0)
+        weekly_config_id bigint not null,
+        weekly_days int
     );
 
     alter table RS_ACE 
@@ -3187,6 +3514,16 @@
         add constraint FK_d3h61x0jj6odxbw47jokodxdg 
         foreign key (id, REV) 
         references RS_COLUMN_A;
+
+    alter table RS_AMAZONS3_DATASINK 
+        add constraint FK_r0yv801n79q8n9ffd6l7ujfqi 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_AMAZONS3_DATASINK_A 
+        add constraint FK_q5mx2sxrph8yon2cexa4fes1o 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_AUDIT_LOG_PROPERTY 
         add constraint FK_8e9xv91kk1t0ggo9ugi62mgh5 
@@ -3287,6 +3624,16 @@
         add constraint FK_1bpxqr8t7ufnjccmvu2qbd30p 
         foreign key (id, REV) 
         references RS_PARAMETER_INSTANCE_A;
+
+    alter table RS_BOX_DATASINK 
+        add constraint FK_cwpsjbnc974jrwl8gqstlrmun 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_BOX_DATASINK_A 
+        add constraint FK_ideliifqxmlvc3919g6qpbui6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_COLUMN 
         add constraint FK_9penq6b0e48w9huiubm93ekyu 
@@ -3949,6 +4296,26 @@
         foreign key (id, REV) 
         references RS_DATABASE_DATASOURCE_A;
 
+    alter table RS_DROPBOX_DATASINK 
+        add constraint FK_f5397vj4k1gqecemgt60q49sp 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_DROPBOX_DATASINK_A 
+        add constraint FK_hqgvpa9jwr5lc3sh8k5epmca9 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
+    alter table RS_EMAIL_DATASINK 
+        add constraint FK_jw2wod139ruynb5ybuvp4ga0g 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_EMAIL_DATASINK_A 
+        add constraint FK_fdyvyu0og77uspkoumt1d9ow6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_EXEC_REPORT_AS_FILE_REF 
         add constraint FK_gulivudewy37o651onwppy6ev 
         foreign key (compiled_report_id) 
@@ -4212,6 +4579,16 @@
         foreign key (REV) 
         references RS_REVISION;
 
+    alter table RS_FTPS_DATASINK 
+        add constraint FK_8cjv4243um9mf28x006jirl4t 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_FTPS_DATASINK_A 
+        add constraint FK_3so0l158gnbxltk0iiim6ptwc 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_FTP_DATASINK 
         add constraint FK_kveuhnqco33ihxub8f2lwnmhn 
         foreign key (id) 
@@ -4239,6 +4616,16 @@
         add constraint FK_8fug0i9mif04uhv4ftcf4ipim 
         foreign key (REV) 
         references RS_REVISION;
+
+    alter table RS_GOOGLEDRIVE_DATASINK 
+        add constraint FK_2cptk46cpjxx6o0p532svam80 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_GOOGLEDRIVE_DATASINK_A 
+        add constraint FK_6yyv6o9ttanoy0ojxe4olhqip 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_GRID_EDT_REPORT 
         add constraint FK_1atoumh9rfbprvj4niwr25tm 
@@ -4483,6 +4870,16 @@
         foreign key (REV) 
         references RS_REVISION;
 
+    alter table RS_LOCALFILESYSTEM_DATASINK 
+        add constraint FK_93e6ojk9bnk0trukr2tjo402j 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_LOCALFILESYSTEM_DATASINK_A 
+        add constraint FK_dyhmaic8bnneodxioujr44fqa 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_MONDRIAN_DATASOURCE 
         add constraint FK_ntwogjogyo0kdttpvnqlu4i0e 
         foreign key (id) 
@@ -4502,6 +4899,16 @@
         add constraint FK_2suyjl7dstmvdp4ktpuhwjamt 
         foreign key (id, REV) 
         references RS_DATASOURCE_DEF_CONFIG_A;
+
+    alter table RS_ONEDRIVE_DATASINK 
+        add constraint FK_4vl5j7rn7asrvr8hdu9kgexgw 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_ONEDRIVE_DATASINK_A 
+        add constraint FK_8sqemig61wqr6agdnj34dgcj1 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_ORGANISATIONAL_UNIT 
         add constraint FK_snfmro84ormfh6hvieufac3yp 
@@ -4746,8 +5153,68 @@
         foreign key (id, REV) 
         references RS_SAIKU_REPORT_A;
 
+    alter table RS_SAMBA_DATASINK 
+        add constraint FK_dknkucfem9tc5qi4s04cdsxcr 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_SAMBA_DATASINK_A 
+        add constraint FK_3u5vytf57dwcnktpetcsrojhm 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add constraint FK_ia9bb2g8cvk88x04kfe0ljlf0 
+        foreign key (amazon_s3datasink_id) 
+        references RS_AMAZONS3_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add constraint FK_2rhydeo5gnbom36y75tvyxgj1 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add constraint FK_sfcsp0ofcrodvgmg6emr6jft7 
+        foreign key (box_datasink_id) 
+        references RS_BOX_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add constraint FK_2r4hcx50kcddo9isd7jwncij 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add constraint FK_9ieq0baht2dqghmr4payotf41 
+        foreign key (dropbox_datasink_id) 
+        references RS_DROPBOX_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add constraint FK_cl3w10c7j44g58mln4ks8ybt4 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add constraint FK_47iywmbvtiyiv846gocecs68w 
+        foreign key (email_datasink_id) 
+        references RS_EMAIL_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add constraint FK_lt3hlr1iynyjn2hhexwlqbt35 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
     alter table RS_SCHED_ACTION_AS_FILE 
         add constraint FK_3ugo18pvdsa297ovygqk9ir2d 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add constraint FK_ga2e1oyugomv4u191e4vqc2ao 
+        foreign key (ftps_datasink_id) 
+        references RS_FTPS_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add constraint FK_98dgdtqq2wk6g08f4jsjlm5fa 
         foreign key (id) 
         references RS_SCHED_ACTION;
 
@@ -4758,6 +5225,56 @@
 
     alter table RS_SCHED_ACTION_AS_FTP_FILE 
         add constraint FK_cumgqtqnj7e0hrj021w5oj29d 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add constraint FK_59jobhlgyowygn9iw2f1q8e28 
+        foreign key (google_drive_datasink_id) 
+        references RS_GOOGLEDRIVE_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add constraint FK_68bykusrfjc8scgfeu8m2rl9y 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add constraint FK_akm5wdplmp6egjo5olrsqmc08 
+        foreign key (local_file_system_datas_id) 
+        references RS_LOCALFILESYSTEM_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add constraint FK_j0m4ornrg0dxpiopsllehvhpl 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add constraint FK_a6ce3nu7ay07s9x7tpgdhio06 
+        foreign key (one_drive_datasink_id) 
+        references RS_ONEDRIVE_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add constraint FK_7k4n8nxv5bs3klcff63db08f0 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add constraint FK_1kmwgssjb0seqn2k21l3bvwp6 
+        foreign key (samba_datasink_id) 
+        references RS_SAMBA_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add constraint FK_681fx3rsgu6c2kb9dx9rd169g 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add constraint FK_qyny293qjddj88wymwpd394tm 
+        foreign key (scp_datasink_id) 
+        references RS_SCP_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add constraint FK_610jue5qkk90wsemwyqhn35j7 
         foreign key (id) 
         references RS_SCHED_ACTION;
 
@@ -4975,6 +5492,16 @@
         add constraint FK_gryn0egsnupgq9sy6dusq1ijf 
         foreign key (id) 
         references RS_SCHED_TRIG_DATE;
+
+    alter table RS_SCP_DATASINK 
+        add constraint FK_1lbk7taapkt9w12kcq7bjqq11 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_SCP_DATASINK_A 
+        add constraint FK_sdahdvpgtkitu7xqamkc5wbv 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_SCRIPT_DATASOURCE 
         add constraint FK_irdvekiotse14yohth374g23 
@@ -5484,15 +6011,15 @@
         foreign key (weekly_config_id) 
         references RS_DATE_TRIGGER_CONFIG;
 
-    create table RS_HIBERNATE_SEQUENCE ( next_val number(19,0) );
+    create table RS_HIBERNATE_SEQUENCE ( next_val bigint );
     insert into RS_HIBERNATE_SEQUENCE values ( 1 );
 
     create table RS_SCHEMAINFO (
-        ENTITY_ID number(19,0) not null,
-        KEY_FIELD varchar2(128 char) not null,
-        value clob,
+        ENTITY_ID bigint identity not null,
+        KEY_FIELD varchar(128) not null,
+        value varchar(MAX),
         primary key (ENTITY_ID)
     );
-    insert into RS_SCHEMAINFO(ENTITY_ID, KEY_FIELD, value) VALUES((select max(i.ENTITY_ID)+1 ENTITY_ID from (select ENTITY_ID from RS_SCHEMAINFO union select 1 ENTITY_ID from dual)i), 'created', to_char(sysdate, 'YYYY-MM-DD HH24:MI:SS'));
-    insert into RS_SCHEMAINFO(ENTITY_ID, KEY_FIELD, value) VALUES((select max(i.ENTITY_ID)+1 ENTITY_ID from (select ENTITY_ID from RS_SCHEMAINFO union select 1 ENTITY_ID from dual)i), 'version', 'RS3.4.0-6036');
-    insert into RS_SCHEMAINFO(ENTITY_ID, KEY_FIELD, value) VALUES((select max(i.ENTITY_ID)+1 ENTITY_ID from (select ENTITY_ID from RS_SCHEMAINFO union select 1 ENTITY_ID from dual)i), 'schemaversion', 'RS3.0-18');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('created', format(getdate(), 'yyyy-MM-dd HH:mm:ss'));
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('version', 'RS4.0.0-6053');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('schemaversion', 'RS3.0-21');

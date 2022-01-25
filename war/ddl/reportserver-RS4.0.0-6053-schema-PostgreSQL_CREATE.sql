@@ -75,6 +75,29 @@
         primary key (id, REV)
     );
 
+    create table RS_AMAZONS3_DATASINK (
+        app_key text,
+        bucket_name text,
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key text,
+        storage_class varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_AMAZONS3_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        app_key text,
+        bucket_name text,
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key text,
+        storage_class varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_AUDIT_LOG_ENTRY (
         ENTITY_ID int8 not null,
         action varchar(64),
@@ -204,6 +227,25 @@
     create table RS_BLATEXT_PARAM_INST_A (
         id int8 not null,
         REV int4 not null,
+        primary key (id, REV)
+    );
+
+    create table RS_BOX_DATASINK (
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_BOX_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
         primary key (id, REV)
     );
 
@@ -1105,10 +1147,10 @@
         weeklyn int4,
         dailyn int4,
         pattern int4,
-        yearly_day int4,
-        yearly_nth int4,
         monthly_day int4,
         monthly_nth int4,
+        yearly_day int4,
+        yearly_nth int4,
         primary key (ENTITY_ID)
     );
 
@@ -1140,6 +1182,58 @@
         key_source varchar(255),
         key_source_param_name varchar(255),
         mapping_source varchar(255),
+        primary key (id, REV)
+    );
+
+    create table RS_DROPBOX_DATASINK (
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_DROPBOX_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        primary key (id, REV)
+    );
+
+    create table RS_EMAIL_DATASINK (
+        encryption_policy varchar(255),
+        force_sender boolean not null,
+        host varchar(1024),
+        password varchar(255),
+        port int4 not null,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable boolean not null,
+        tls_enable boolean not null,
+        tls_require boolean not null,
+        username varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_EMAIL_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        encryption_policy varchar(255),
+        force_sender boolean,
+        host varchar(1024),
+        password varchar(255),
+        port int4,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable boolean,
+        tls_enable boolean,
+        tls_require boolean,
+        username varchar(255),
         primary key (id, REV)
     );
 
@@ -1494,8 +1588,36 @@
         primary key (ENTITY_ID, REV)
     );
 
+    create table RS_FTPS_DATASINK (
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int4 not null,
+        username varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_FTPS_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port int4,
+        username varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_FTP_DATASINK (
         folder varchar(1024),
+        ftp_mode varchar(255),
         host varchar(1024),
         password varchar(255),
         port int4 not null,
@@ -1508,6 +1630,7 @@
         id int8 not null,
         REV int4 not null,
         folder varchar(1024),
+        ftp_mode varchar(255),
         host varchar(1024),
         password varchar(255),
         port int4,
@@ -1547,6 +1670,25 @@
         NAME_FIELD varchar(255),
         value varchar(255),
         primary key (ENTITY_ID, REV)
+    );
+
+    create table RS_GOOGLEDRIVE_DATASINK (
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_GOOGLEDRIVE_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        app_key text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        primary key (id, REV)
     );
 
     create table RS_GRID_EDT_REPORT (
@@ -1748,7 +1890,6 @@
     );
 
     create table RS_JXLS_REPORT (
-        jxls_one boolean not null,
         id int8 not null,
         report_file_id int8,
         primary key (id)
@@ -1757,7 +1898,6 @@
     create table RS_JXLS_REPORT_A (
         id int8 not null,
         REV int4 not null,
-        jxls_one boolean,
         report_file_id int8,
         primary key (id, REV)
     );
@@ -1825,6 +1965,21 @@
         primary key (REV, list_user_var_instanc_id, value)
     );
 
+    create table RS_LOCALFILESYSTEM_DATASINK (
+        folder varchar(1024),
+        path varchar(1024),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_LOCALFILESYSTEM_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        folder varchar(1024),
+        path varchar(1024),
+        primary key (id, REV)
+    );
+
     create table RS_MONDRIAN_DATASOURCE (
         mondrian3 boolean not null,
         mondrian_schema text,
@@ -1858,6 +2013,29 @@
         id int8 not null,
         REV int4 not null,
         cube_name varchar(255),
+        primary key (id, REV)
+    );
+
+    create table RS_ONEDRIVE_DATASINK (
+        app_key text,
+        base_root text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        tenant_id varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_ONEDRIVE_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        app_key text,
+        base_root text,
+        folder varchar(1024),
+        refresh_token text,
+        secret_key text,
+        tenant_id varchar(255),
         primary key (id, REV)
     );
 
@@ -2206,6 +2384,29 @@
         primary key (id, REV)
     );
 
+    create table RS_SAMBA_DATASINK (
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int4 not null,
+        username varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_SAMBA_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int4,
+        username varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_SCHEDULER_JOB_HISTORY (
         ENTITY_ID int8 not null,
         ENTITY_VERSION int8,
@@ -2218,6 +2419,43 @@
         primary key (ENTITY_ID)
     );
 
+    create table RS_SCHED_ACTION_AS_AMAZONS3_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        amazon_s3datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_BOX_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        box_datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_DROPBOX_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        dropbox_datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_EMAIL_FILE (
+        compressed boolean,
+        message text,
+        NAME_FIELD varchar(255),
+        subject varchar(255),
+        id int8 not null,
+        email_datasink_id int8,
+        primary key (id)
+    );
+
     create table RS_SCHED_ACTION_AS_FILE (
         description varchar(255),
         folder_id int8,
@@ -2227,7 +2465,17 @@
         primary key (id)
     );
 
+    create table RS_SCHED_ACTION_AS_FTPS_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        ftps_datasink_id int8,
+        primary key (id)
+    );
+
     create table RS_SCHED_ACTION_AS_FTP_FILE (
+        compressed boolean,
         folder varchar(255),
         NAME_FIELD varchar(255),
         id int8 not null,
@@ -2235,7 +2483,53 @@
         primary key (id)
     );
 
+    create table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        google_drive_datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        local_file_system_datas_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_ONEDRIVE_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        one_drive_datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_SAMBA_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        samba_datasink_id int8,
+        primary key (id)
+    );
+
+    create table RS_SCHED_ACTION_AS_SCP_FILE (
+        compressed boolean,
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id int8 not null,
+        scp_datasink_id int8,
+        primary key (id)
+    );
+
     create table RS_SCHED_ACTION_AS_SFTP_FILE (
+        compressed boolean,
         folder varchar(255),
         NAME_FIELD varchar(255),
         id int8 not null,
@@ -2441,6 +2735,33 @@
         primary key (id)
     );
 
+    create table RS_SCP_DATASINK (
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int4 not null,
+        private_key oid,
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        id int8 not null,
+        primary key (id)
+    );
+
+    create table RS_SCP_DATASINK_A (
+        id int8 not null,
+        REV int4 not null,
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port int4,
+        private_key oid,
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        primary key (id, REV)
+    );
+
     create table RS_SCRIPT_DATASOURCE (
         database_cache int4 not null,
         define_at_target boolean not null,
@@ -2574,10 +2895,13 @@
     );
 
     create table RS_SFTP_DATASINK (
+        authentication_type varchar(255),
         folder varchar(1024),
         host varchar(1024),
         password varchar(255),
         port int4 not null,
+        private_key oid,
+        private_key_passphrase varchar(255),
         username varchar(255),
         id int8 not null,
         primary key (id)
@@ -2586,10 +2910,13 @@
     create table RS_SFTP_DATASINK_A (
         id int8 not null,
         REV int4 not null,
+        authentication_type varchar(255),
         folder varchar(1024),
         host varchar(1024),
         password varchar(255),
         port int4,
+        private_key oid,
+        private_key_passphrase varchar(255),
         username varchar(255),
         primary key (id, REV)
     );
@@ -3188,6 +3515,16 @@
         foreign key (id, REV) 
         references RS_COLUMN_A;
 
+    alter table RS_AMAZONS3_DATASINK 
+        add constraint FK_r0yv801n79q8n9ffd6l7ujfqi 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_AMAZONS3_DATASINK_A 
+        add constraint FK_q5mx2sxrph8yon2cexa4fes1o 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_AUDIT_LOG_PROPERTY 
         add constraint FK_8e9xv91kk1t0ggo9ugi62mgh5 
         foreign key (LOG_ENTRY_ID) 
@@ -3287,6 +3624,16 @@
         add constraint FK_1bpxqr8t7ufnjccmvu2qbd30p 
         foreign key (id, REV) 
         references RS_PARAMETER_INSTANCE_A;
+
+    alter table RS_BOX_DATASINK 
+        add constraint FK_cwpsjbnc974jrwl8gqstlrmun 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_BOX_DATASINK_A 
+        add constraint FK_ideliifqxmlvc3919g6qpbui6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_COLUMN 
         add constraint FK_9penq6b0e48w9huiubm93ekyu 
@@ -3949,6 +4296,26 @@
         foreign key (id, REV) 
         references RS_DATABASE_DATASOURCE_A;
 
+    alter table RS_DROPBOX_DATASINK 
+        add constraint FK_f5397vj4k1gqecemgt60q49sp 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_DROPBOX_DATASINK_A 
+        add constraint FK_hqgvpa9jwr5lc3sh8k5epmca9 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
+    alter table RS_EMAIL_DATASINK 
+        add constraint FK_jw2wod139ruynb5ybuvp4ga0g 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_EMAIL_DATASINK_A 
+        add constraint FK_fdyvyu0og77uspkoumt1d9ow6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_EXEC_REPORT_AS_FILE_REF 
         add constraint FK_gulivudewy37o651onwppy6ev 
         foreign key (compiled_report_id) 
@@ -4212,6 +4579,16 @@
         foreign key (REV) 
         references RS_REVISION;
 
+    alter table RS_FTPS_DATASINK 
+        add constraint FK_8cjv4243um9mf28x006jirl4t 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_FTPS_DATASINK_A 
+        add constraint FK_3so0l158gnbxltk0iiim6ptwc 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_FTP_DATASINK 
         add constraint FK_kveuhnqco33ihxub8f2lwnmhn 
         foreign key (id) 
@@ -4239,6 +4616,16 @@
         add constraint FK_8fug0i9mif04uhv4ftcf4ipim 
         foreign key (REV) 
         references RS_REVISION;
+
+    alter table RS_GOOGLEDRIVE_DATASINK 
+        add constraint FK_2cptk46cpjxx6o0p532svam80 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_GOOGLEDRIVE_DATASINK_A 
+        add constraint FK_6yyv6o9ttanoy0ojxe4olhqip 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_GRID_EDT_REPORT 
         add constraint FK_1atoumh9rfbprvj4niwr25tm 
@@ -4483,6 +4870,16 @@
         foreign key (REV) 
         references RS_REVISION;
 
+    alter table RS_LOCALFILESYSTEM_DATASINK 
+        add constraint FK_93e6ojk9bnk0trukr2tjo402j 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_LOCALFILESYSTEM_DATASINK_A 
+        add constraint FK_dyhmaic8bnneodxioujr44fqa 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
     alter table RS_MONDRIAN_DATASOURCE 
         add constraint FK_ntwogjogyo0kdttpvnqlu4i0e 
         foreign key (id) 
@@ -4502,6 +4899,16 @@
         add constraint FK_2suyjl7dstmvdp4ktpuhwjamt 
         foreign key (id, REV) 
         references RS_DATASOURCE_DEF_CONFIG_A;
+
+    alter table RS_ONEDRIVE_DATASINK 
+        add constraint FK_4vl5j7rn7asrvr8hdu9kgexgw 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_ONEDRIVE_DATASINK_A 
+        add constraint FK_8sqemig61wqr6agdnj34dgcj1 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_ORGANISATIONAL_UNIT 
         add constraint FK_snfmro84ormfh6hvieufac3yp 
@@ -4746,8 +5153,68 @@
         foreign key (id, REV) 
         references RS_SAIKU_REPORT_A;
 
+    alter table RS_SAMBA_DATASINK 
+        add constraint FK_dknkucfem9tc5qi4s04cdsxcr 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_SAMBA_DATASINK_A 
+        add constraint FK_3u5vytf57dwcnktpetcsrojhm 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add constraint FK_ia9bb2g8cvk88x04kfe0ljlf0 
+        foreign key (amazon_s3datasink_id) 
+        references RS_AMAZONS3_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add constraint FK_2rhydeo5gnbom36y75tvyxgj1 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add constraint FK_sfcsp0ofcrodvgmg6emr6jft7 
+        foreign key (box_datasink_id) 
+        references RS_BOX_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add constraint FK_2r4hcx50kcddo9isd7jwncij 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add constraint FK_9ieq0baht2dqghmr4payotf41 
+        foreign key (dropbox_datasink_id) 
+        references RS_DROPBOX_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add constraint FK_cl3w10c7j44g58mln4ks8ybt4 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add constraint FK_47iywmbvtiyiv846gocecs68w 
+        foreign key (email_datasink_id) 
+        references RS_EMAIL_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add constraint FK_lt3hlr1iynyjn2hhexwlqbt35 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
     alter table RS_SCHED_ACTION_AS_FILE 
         add constraint FK_3ugo18pvdsa297ovygqk9ir2d 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add constraint FK_ga2e1oyugomv4u191e4vqc2ao 
+        foreign key (ftps_datasink_id) 
+        references RS_FTPS_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add constraint FK_98dgdtqq2wk6g08f4jsjlm5fa 
         foreign key (id) 
         references RS_SCHED_ACTION;
 
@@ -4758,6 +5225,56 @@
 
     alter table RS_SCHED_ACTION_AS_FTP_FILE 
         add constraint FK_cumgqtqnj7e0hrj021w5oj29d 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add constraint FK_59jobhlgyowygn9iw2f1q8e28 
+        foreign key (google_drive_datasink_id) 
+        references RS_GOOGLEDRIVE_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add constraint FK_68bykusrfjc8scgfeu8m2rl9y 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add constraint FK_akm5wdplmp6egjo5olrsqmc08 
+        foreign key (local_file_system_datas_id) 
+        references RS_LOCALFILESYSTEM_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add constraint FK_j0m4ornrg0dxpiopsllehvhpl 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add constraint FK_a6ce3nu7ay07s9x7tpgdhio06 
+        foreign key (one_drive_datasink_id) 
+        references RS_ONEDRIVE_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add constraint FK_7k4n8nxv5bs3klcff63db08f0 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add constraint FK_1kmwgssjb0seqn2k21l3bvwp6 
+        foreign key (samba_datasink_id) 
+        references RS_SAMBA_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add constraint FK_681fx3rsgu6c2kb9dx9rd169g 
+        foreign key (id) 
+        references RS_SCHED_ACTION;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add constraint FK_qyny293qjddj88wymwpd394tm 
+        foreign key (scp_datasink_id) 
+        references RS_SCP_DATASINK;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add constraint FK_610jue5qkk90wsemwyqhn35j7 
         foreign key (id) 
         references RS_SCHED_ACTION;
 
@@ -4975,6 +5492,16 @@
         add constraint FK_gryn0egsnupgq9sy6dusq1ijf 
         foreign key (id) 
         references RS_SCHED_TRIG_DATE;
+
+    alter table RS_SCP_DATASINK 
+        add constraint FK_1lbk7taapkt9w12kcq7bjqq11 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION;
+
+    alter table RS_SCP_DATASINK_A 
+        add constraint FK_sdahdvpgtkitu7xqamkc5wbv 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A;
 
     alter table RS_SCRIPT_DATASOURCE 
         add constraint FK_irdvekiotse14yohth374g23 
@@ -5494,5 +6021,5 @@
         primary key (ENTITY_ID)
     );
     insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('created', to_char(now(), 'YYYY-MM-DD HH24:MI:SS'));
-    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('version', 'RS3.4.0-6036');
-    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('schemaversion', 'RS3.0-18');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('version', 'RS4.0.0-6053');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('schemaversion', 'RS3.0-21');

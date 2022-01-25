@@ -19,6 +19,10 @@
 
     drop table RS_ADD_COLUMN_SPEC_A;
 
+    drop table RS_AMAZONS3_DATASINK;
+
+    drop table RS_AMAZONS3_DATASINK_A;
+
     drop table RS_AUDIT_LOG_ENTRY;
 
     drop table RS_AUDIT_LOG_PROPERTY;
@@ -54,6 +58,10 @@
     drop table RS_BLATEXT_PARAM_INST;
 
     drop table RS_BLATEXT_PARAM_INST_A;
+
+    drop table RS_BOX_DATASINK;
+
+    drop table RS_BOX_DATASINK_A;
 
     drop table RS_COLUMN;
 
@@ -273,6 +281,14 @@
 
     drop table RS_DB_BUNDLE_DATASOURCE_A;
 
+    drop table RS_DROPBOX_DATASINK;
+
+    drop table RS_DROPBOX_DATASINK_A;
+
+    drop table RS_EMAIL_DATASINK;
+
+    drop table RS_EMAIL_DATASINK_A;
+
     drop table RS_EXEC_REPORT_AS_FILE_REF;
 
     drop table RS_EXEC_REPORT_AS_FILE_REF_A;
@@ -359,6 +375,10 @@
 
     drop table RS_FILTER_SPEC_A;
 
+    drop table RS_FTPS_DATASINK;
+
+    drop table RS_FTPS_DATASINK_A;
+
     drop table RS_FTP_DATASINK;
 
     drop table RS_FTP_DATASINK_A;
@@ -370,6 +390,10 @@
     drop table RS_GLOBAL_CONSTANT;
 
     drop table RS_GLOBAL_CONSTANT_A;
+
+    drop table RS_GOOGLEDRIVE_DATASINK;
+
+    drop table RS_GOOGLEDRIVE_DATASINK_A;
 
     drop table RS_GRID_EDT_REPORT;
 
@@ -455,6 +479,10 @@
 
     drop table RS_LIST_USERVARIABLE_INST_VL_A;
 
+    drop table RS_LOCALFILESYSTEM_DATASINK;
+
+    drop table RS_LOCALFILESYSTEM_DATASINK_A;
+
     drop table RS_MONDRIAN_DATASOURCE;
 
     drop table RS_MONDRIAN_DATASOURCE_A;
@@ -462,6 +490,10 @@
     drop table RS_MONDRIAN_DATASOURCE_CFG;
 
     drop table RS_MONDRIAN_DATASOURCE_CFG_A;
+
+    drop table RS_ONEDRIVE_DATASINK;
+
+    drop table RS_ONEDRIVE_DATASINK_A;
 
     drop table RS_ORGANISATIONAL_UNIT;
 
@@ -547,13 +579,37 @@
 
     drop table RS_SAIKU_REPORT_VARIANT_A;
 
+    drop table RS_SAMBA_DATASINK;
+
+    drop table RS_SAMBA_DATASINK_A;
+
     drop table RS_SCHEDULER_JOB_HISTORY;
 
     drop table RS_SCHED_ACTION;
 
+    drop table RS_SCHED_ACTION_AS_AMAZONS3_FILE;
+
+    drop table RS_SCHED_ACTION_AS_BOX_FILE;
+
+    drop table RS_SCHED_ACTION_AS_DROPBOX_FILE;
+
+    drop table RS_SCHED_ACTION_AS_EMAIL_FILE;
+
     drop table RS_SCHED_ACTION_AS_FILE;
 
+    drop table RS_SCHED_ACTION_AS_FTPS_FILE;
+
     drop table RS_SCHED_ACTION_AS_FTP_FILE;
+
+    drop table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE;
+
+    drop table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM;
+
+    drop table RS_SCHED_ACTION_AS_ONEDRIVE_FILE;
+
+    drop table RS_SCHED_ACTION_AS_SAMBA_FILE;
+
+    drop table RS_SCHED_ACTION_AS_SCP_FILE;
 
     drop table RS_SCHED_ACTION_AS_SFTP_FILE;
 
@@ -610,6 +666,10 @@
     drop table RS_SCHED_TRIG_YEARLY_AT_DATE;
 
     drop table RS_SCHED_TRIG_YEAR_NAMED_DAY;
+
+    drop table RS_SCP_DATASINK;
+
+    drop table RS_SCP_DATASINK_A;
 
     drop table RS_SCRIPT_DATASOURCE;
 

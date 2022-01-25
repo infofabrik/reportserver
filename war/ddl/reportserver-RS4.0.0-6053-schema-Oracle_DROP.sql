@@ -19,6 +19,10 @@
 
     drop table RS_ADD_COLUMN_SPEC_A cascade constraints;
 
+    drop table RS_AMAZONS3_DATASINK cascade constraints;
+
+    drop table RS_AMAZONS3_DATASINK_A cascade constraints;
+
     drop table RS_AUDIT_LOG_ENTRY cascade constraints;
 
     drop table RS_AUDIT_LOG_PROPERTY cascade constraints;
@@ -54,6 +58,10 @@
     drop table RS_BLATEXT_PARAM_INST cascade constraints;
 
     drop table RS_BLATEXT_PARAM_INST_A cascade constraints;
+
+    drop table RS_BOX_DATASINK cascade constraints;
+
+    drop table RS_BOX_DATASINK_A cascade constraints;
 
     drop table RS_COLUMN cascade constraints;
 
@@ -273,6 +281,14 @@
 
     drop table RS_DB_BUNDLE_DATASOURCE_A cascade constraints;
 
+    drop table RS_DROPBOX_DATASINK cascade constraints;
+
+    drop table RS_DROPBOX_DATASINK_A cascade constraints;
+
+    drop table RS_EMAIL_DATASINK cascade constraints;
+
+    drop table RS_EMAIL_DATASINK_A cascade constraints;
+
     drop table RS_EXEC_REPORT_AS_FILE_REF cascade constraints;
 
     drop table RS_EXEC_REPORT_AS_FILE_REF_A cascade constraints;
@@ -359,6 +375,10 @@
 
     drop table RS_FILTER_SPEC_A cascade constraints;
 
+    drop table RS_FTPS_DATASINK cascade constraints;
+
+    drop table RS_FTPS_DATASINK_A cascade constraints;
+
     drop table RS_FTP_DATASINK cascade constraints;
 
     drop table RS_FTP_DATASINK_A cascade constraints;
@@ -370,6 +390,10 @@
     drop table RS_GLOBAL_CONSTANT cascade constraints;
 
     drop table RS_GLOBAL_CONSTANT_A cascade constraints;
+
+    drop table RS_GOOGLEDRIVE_DATASINK cascade constraints;
+
+    drop table RS_GOOGLEDRIVE_DATASINK_A cascade constraints;
 
     drop table RS_GRID_EDT_REPORT cascade constraints;
 
@@ -455,6 +479,10 @@
 
     drop table RS_LIST_USERVARIABLE_INST_VL_A cascade constraints;
 
+    drop table RS_LOCALFILESYSTEM_DATASINK cascade constraints;
+
+    drop table RS_LOCALFILESYSTEM_DATASINK_A cascade constraints;
+
     drop table RS_MONDRIAN_DATASOURCE cascade constraints;
 
     drop table RS_MONDRIAN_DATASOURCE_A cascade constraints;
@@ -462,6 +490,10 @@
     drop table RS_MONDRIAN_DATASOURCE_CFG cascade constraints;
 
     drop table RS_MONDRIAN_DATASOURCE_CFG_A cascade constraints;
+
+    drop table RS_ONEDRIVE_DATASINK cascade constraints;
+
+    drop table RS_ONEDRIVE_DATASINK_A cascade constraints;
 
     drop table RS_ORGANISATIONAL_UNIT cascade constraints;
 
@@ -547,13 +579,37 @@
 
     drop table RS_SAIKU_REPORT_VARIANT_A cascade constraints;
 
+    drop table RS_SAMBA_DATASINK cascade constraints;
+
+    drop table RS_SAMBA_DATASINK_A cascade constraints;
+
     drop table RS_SCHEDULER_JOB_HISTORY cascade constraints;
 
     drop table RS_SCHED_ACTION cascade constraints;
 
+    drop table RS_SCHED_ACTION_AS_AMAZONS3_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_BOX_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_DROPBOX_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_EMAIL_FILE cascade constraints;
+
     drop table RS_SCHED_ACTION_AS_FILE cascade constraints;
 
+    drop table RS_SCHED_ACTION_AS_FTPS_FILE cascade constraints;
+
     drop table RS_SCHED_ACTION_AS_FTP_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_ONEDRIVE_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_SAMBA_FILE cascade constraints;
+
+    drop table RS_SCHED_ACTION_AS_SCP_FILE cascade constraints;
 
     drop table RS_SCHED_ACTION_AS_SFTP_FILE cascade constraints;
 
@@ -610,6 +666,10 @@
     drop table RS_SCHED_TRIG_YEARLY_AT_DATE cascade constraints;
 
     drop table RS_SCHED_TRIG_YEAR_NAMED_DAY cascade constraints;
+
+    drop table RS_SCP_DATASINK cascade constraints;
+
+    drop table RS_SCP_DATASINK_A cascade constraints;
 
     drop table RS_SCRIPT_DATASOURCE cascade constraints;
 

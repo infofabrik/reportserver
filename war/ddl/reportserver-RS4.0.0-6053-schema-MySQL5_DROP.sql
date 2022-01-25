@@ -39,6 +39,14 @@
         drop 
         foreign key FK_d3h61x0jj6odxbw47jokodxdg;
 
+    alter table RS_AMAZONS3_DATASINK 
+        drop 
+        foreign key FK_r0yv801n79q8n9ffd6l7ujfqi;
+
+    alter table RS_AMAZONS3_DATASINK_A 
+        drop 
+        foreign key FK_q5mx2sxrph8yon2cexa4fes1o;
+
     alter table RS_AUDIT_LOG_PROPERTY 
         drop 
         foreign key FK_8e9xv91kk1t0ggo9ugi62mgh5;
@@ -118,6 +126,14 @@
     alter table RS_BLATEXT_PARAM_INST_A 
         drop 
         foreign key FK_1bpxqr8t7ufnjccmvu2qbd30p;
+
+    alter table RS_BOX_DATASINK 
+        drop 
+        foreign key FK_cwpsjbnc974jrwl8gqstlrmun;
+
+    alter table RS_BOX_DATASINK_A 
+        drop 
+        foreign key FK_ideliifqxmlvc3919g6qpbui6;
 
     alter table RS_COLUMN 
         drop 
@@ -631,6 +647,22 @@
         drop 
         foreign key FK_cgjqqnqn2d2t1660s7ibwfhlc;
 
+    alter table RS_DROPBOX_DATASINK 
+        drop 
+        foreign key FK_f5397vj4k1gqecemgt60q49sp;
+
+    alter table RS_DROPBOX_DATASINK_A 
+        drop 
+        foreign key FK_hqgvpa9jwr5lc3sh8k5epmca9;
+
+    alter table RS_EMAIL_DATASINK 
+        drop 
+        foreign key FK_jw2wod139ruynb5ybuvp4ga0g;
+
+    alter table RS_EMAIL_DATASINK_A 
+        drop 
+        foreign key FK_fdyvyu0og77uspkoumt1d9ow6;
+
     alter table RS_EXEC_REPORT_AS_FILE_REF 
         drop 
         foreign key FK_gulivudewy37o651onwppy6ev;
@@ -827,6 +859,14 @@
         drop 
         foreign key FK_qybc3epbcimwvelvwf2av5usl;
 
+    alter table RS_FTPS_DATASINK 
+        drop 
+        foreign key FK_8cjv4243um9mf28x006jirl4t;
+
+    alter table RS_FTPS_DATASINK_A 
+        drop 
+        foreign key FK_3so0l158gnbxltk0iiim6ptwc;
+
     alter table RS_FTP_DATASINK 
         drop 
         foreign key FK_kveuhnqco33ihxub8f2lwnmhn;
@@ -846,6 +886,14 @@
     alter table RS_GLOBAL_CONSTANT_A 
         drop 
         foreign key FK_8fug0i9mif04uhv4ftcf4ipim;
+
+    alter table RS_GOOGLEDRIVE_DATASINK 
+        drop 
+        foreign key FK_2cptk46cpjxx6o0p532svam80;
+
+    alter table RS_GOOGLEDRIVE_DATASINK_A 
+        drop 
+        foreign key FK_6yyv6o9ttanoy0ojxe4olhqip;
 
     alter table RS_GRID_EDT_REPORT 
         drop 
@@ -1039,6 +1087,14 @@
         drop 
         foreign key FK_jqciaxerxrc6us5owylr1ug7v;
 
+    alter table RS_LOCALFILESYSTEM_DATASINK 
+        drop 
+        foreign key FK_93e6ojk9bnk0trukr2tjo402j;
+
+    alter table RS_LOCALFILESYSTEM_DATASINK_A 
+        drop 
+        foreign key FK_dyhmaic8bnneodxioujr44fqa;
+
     alter table RS_MONDRIAN_DATASOURCE 
         drop 
         foreign key FK_ntwogjogyo0kdttpvnqlu4i0e;
@@ -1054,6 +1110,14 @@
     alter table RS_MONDRIAN_DATASOURCE_CFG_A 
         drop 
         foreign key FK_2suyjl7dstmvdp4ktpuhwjamt;
+
+    alter table RS_ONEDRIVE_DATASINK 
+        drop 
+        foreign key FK_4vl5j7rn7asrvr8hdu9kgexgw;
+
+    alter table RS_ONEDRIVE_DATASINK_A 
+        drop 
+        foreign key FK_8sqemig61wqr6agdnj34dgcj1;
 
     alter table RS_ORGANISATIONAL_UNIT 
         drop 
@@ -1235,9 +1299,57 @@
         drop 
         foreign key FK_m5ee077dapfeqvwhtv750scqm;
 
+    alter table RS_SAMBA_DATASINK 
+        drop 
+        foreign key FK_dknkucfem9tc5qi4s04cdsxcr;
+
+    alter table RS_SAMBA_DATASINK_A 
+        drop 
+        foreign key FK_3u5vytf57dwcnktpetcsrojhm;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        drop 
+        foreign key FK_ia9bb2g8cvk88x04kfe0ljlf0;
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        drop 
+        foreign key FK_2rhydeo5gnbom36y75tvyxgj1;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        drop 
+        foreign key FK_sfcsp0ofcrodvgmg6emr6jft7;
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        drop 
+        foreign key FK_2r4hcx50kcddo9isd7jwncij;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        drop 
+        foreign key FK_9ieq0baht2dqghmr4payotf41;
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        drop 
+        foreign key FK_cl3w10c7j44g58mln4ks8ybt4;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        drop 
+        foreign key FK_47iywmbvtiyiv846gocecs68w;
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        drop 
+        foreign key FK_lt3hlr1iynyjn2hhexwlqbt35;
+
     alter table RS_SCHED_ACTION_AS_FILE 
         drop 
         foreign key FK_3ugo18pvdsa297ovygqk9ir2d;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        drop 
+        foreign key FK_ga2e1oyugomv4u191e4vqc2ao;
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        drop 
+        foreign key FK_98dgdtqq2wk6g08f4jsjlm5fa;
 
     alter table RS_SCHED_ACTION_AS_FTP_FILE 
         drop 
@@ -1246,6 +1358,46 @@
     alter table RS_SCHED_ACTION_AS_FTP_FILE 
         drop 
         foreign key FK_cumgqtqnj7e0hrj021w5oj29d;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        drop 
+        foreign key FK_59jobhlgyowygn9iw2f1q8e28;
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        drop 
+        foreign key FK_68bykusrfjc8scgfeu8m2rl9y;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        drop 
+        foreign key FK_akm5wdplmp6egjo5olrsqmc08;
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        drop 
+        foreign key FK_j0m4ornrg0dxpiopsllehvhpl;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        drop 
+        foreign key FK_a6ce3nu7ay07s9x7tpgdhio06;
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        drop 
+        foreign key FK_7k4n8nxv5bs3klcff63db08f0;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        drop 
+        foreign key FK_1kmwgssjb0seqn2k21l3bvwp6;
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        drop 
+        foreign key FK_681fx3rsgu6c2kb9dx9rd169g;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        drop 
+        foreign key FK_qyny293qjddj88wymwpd394tm;
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        drop 
+        foreign key FK_610jue5qkk90wsemwyqhn35j7;
 
     alter table RS_SCHED_ACTION_AS_SFTP_FILE 
         drop 
@@ -1406,6 +1558,14 @@
     alter table RS_SCHED_TRIG_YEAR_NAMED_DAY 
         drop 
         foreign key FK_gryn0egsnupgq9sy6dusq1ijf;
+
+    alter table RS_SCP_DATASINK 
+        drop 
+        foreign key FK_1lbk7taapkt9w12kcq7bjqq11;
+
+    alter table RS_SCP_DATASINK_A 
+        drop 
+        foreign key FK_sdahdvpgtkitu7xqamkc5wbv;
 
     alter table RS_SCRIPT_DATASOURCE 
         drop 
@@ -1819,6 +1979,10 @@
 
     drop table if exists RS_ADD_COLUMN_SPEC_A;
 
+    drop table if exists RS_AMAZONS3_DATASINK;
+
+    drop table if exists RS_AMAZONS3_DATASINK_A;
+
     drop table if exists RS_AUDIT_LOG_ENTRY;
 
     drop table if exists RS_AUDIT_LOG_PROPERTY;
@@ -1854,6 +2018,10 @@
     drop table if exists RS_BLATEXT_PARAM_INST;
 
     drop table if exists RS_BLATEXT_PARAM_INST_A;
+
+    drop table if exists RS_BOX_DATASINK;
+
+    drop table if exists RS_BOX_DATASINK_A;
 
     drop table if exists RS_COLUMN;
 
@@ -2073,6 +2241,14 @@
 
     drop table if exists RS_DB_BUNDLE_DATASOURCE_A;
 
+    drop table if exists RS_DROPBOX_DATASINK;
+
+    drop table if exists RS_DROPBOX_DATASINK_A;
+
+    drop table if exists RS_EMAIL_DATASINK;
+
+    drop table if exists RS_EMAIL_DATASINK_A;
+
     drop table if exists RS_EXEC_REPORT_AS_FILE_REF;
 
     drop table if exists RS_EXEC_REPORT_AS_FILE_REF_A;
@@ -2159,6 +2335,10 @@
 
     drop table if exists RS_FILTER_SPEC_A;
 
+    drop table if exists RS_FTPS_DATASINK;
+
+    drop table if exists RS_FTPS_DATASINK_A;
+
     drop table if exists RS_FTP_DATASINK;
 
     drop table if exists RS_FTP_DATASINK_A;
@@ -2170,6 +2350,10 @@
     drop table if exists RS_GLOBAL_CONSTANT;
 
     drop table if exists RS_GLOBAL_CONSTANT_A;
+
+    drop table if exists RS_GOOGLEDRIVE_DATASINK;
+
+    drop table if exists RS_GOOGLEDRIVE_DATASINK_A;
 
     drop table if exists RS_GRID_EDT_REPORT;
 
@@ -2255,6 +2439,10 @@
 
     drop table if exists RS_LIST_USERVARIABLE_INST_VL_A;
 
+    drop table if exists RS_LOCALFILESYSTEM_DATASINK;
+
+    drop table if exists RS_LOCALFILESYSTEM_DATASINK_A;
+
     drop table if exists RS_MONDRIAN_DATASOURCE;
 
     drop table if exists RS_MONDRIAN_DATASOURCE_A;
@@ -2262,6 +2450,10 @@
     drop table if exists RS_MONDRIAN_DATASOURCE_CFG;
 
     drop table if exists RS_MONDRIAN_DATASOURCE_CFG_A;
+
+    drop table if exists RS_ONEDRIVE_DATASINK;
+
+    drop table if exists RS_ONEDRIVE_DATASINK_A;
 
     drop table if exists RS_ORGANISATIONAL_UNIT;
 
@@ -2347,13 +2539,37 @@
 
     drop table if exists RS_SAIKU_REPORT_VARIANT_A;
 
+    drop table if exists RS_SAMBA_DATASINK;
+
+    drop table if exists RS_SAMBA_DATASINK_A;
+
     drop table if exists RS_SCHEDULER_JOB_HISTORY;
 
     drop table if exists RS_SCHED_ACTION;
 
+    drop table if exists RS_SCHED_ACTION_AS_AMAZONS3_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_BOX_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_DROPBOX_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_EMAIL_FILE;
+
     drop table if exists RS_SCHED_ACTION_AS_FILE;
 
+    drop table if exists RS_SCHED_ACTION_AS_FTPS_FILE;
+
     drop table if exists RS_SCHED_ACTION_AS_FTP_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM;
+
+    drop table if exists RS_SCHED_ACTION_AS_ONEDRIVE_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_SAMBA_FILE;
+
+    drop table if exists RS_SCHED_ACTION_AS_SCP_FILE;
 
     drop table if exists RS_SCHED_ACTION_AS_SFTP_FILE;
 
@@ -2410,6 +2626,10 @@
     drop table if exists RS_SCHED_TRIG_YEARLY_AT_DATE;
 
     drop table if exists RS_SCHED_TRIG_YEAR_NAMED_DAY;
+
+    drop table if exists RS_SCP_DATASINK;
+
+    drop table if exists RS_SCP_DATASINK_A;
 
     drop table if exists RS_SCRIPT_DATASOURCE;
 

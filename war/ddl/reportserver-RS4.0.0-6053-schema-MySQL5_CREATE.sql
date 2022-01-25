@@ -80,6 +80,29 @@
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_AMAZONS3_DATASINK (
+        app_key longtext,
+        bucket_name longtext,
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key longtext,
+        storage_class varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_AMAZONS3_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        app_key longtext,
+        bucket_name longtext,
+        folder varchar(1024),
+        region_name varchar(1024),
+        secret_key longtext,
+        storage_class varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_AUDIT_LOG_ENTRY (
         ENTITY_ID bigint not null auto_increment,
         action varchar(64),
@@ -209,6 +232,25 @@
     create table RS_BLATEXT_PARAM_INST_A (
         id bigint not null,
         REV integer not null,
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_BOX_DATASINK (
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_BOX_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
@@ -1110,10 +1152,10 @@
         weeklyn integer,
         dailyn integer,
         pattern integer,
-        yearly_day integer,
-        yearly_nth integer,
         monthly_day integer,
         monthly_nth integer,
+        yearly_day integer,
+        yearly_nth integer,
         primary key (ENTITY_ID)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
@@ -1145,6 +1187,58 @@
         key_source varchar(255),
         key_source_param_name varchar(255),
         mapping_source varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_DROPBOX_DATASINK (
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_DROPBOX_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_EMAIL_DATASINK (
+        encryption_policy varchar(255),
+        force_sender BIT(1) not null,
+        host varchar(1024),
+        password varchar(255),
+        port integer not null,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable BIT(1) not null,
+        tls_enable BIT(1) not null,
+        tls_require BIT(1) not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_EMAIL_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        encryption_policy varchar(255),
+        force_sender BIT(1),
+        host varchar(1024),
+        password varchar(255),
+        port integer,
+        sender varchar(255),
+        sender_name varchar(255),
+        ssl_enable BIT(1),
+        tls_enable BIT(1),
+        tls_require BIT(1),
+        username varchar(255),
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
@@ -1499,8 +1593,36 @@
         primary key (ENTITY_ID, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_FTPS_DATASINK (
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port integer not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_FTPS_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        authentication_type varchar(255),
+        data_channel_protect_level varchar(255),
+        folder varchar(1024),
+        ftp_mode varchar(255),
+        host varchar(1024),
+        password varchar(255),
+        port integer,
+        username varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_FTP_DATASINK (
         folder varchar(1024),
+        ftp_mode varchar(255),
         host varchar(1024),
         password varchar(255),
         port integer not null,
@@ -1513,6 +1635,7 @@
         id bigint not null,
         REV integer not null,
         folder varchar(1024),
+        ftp_mode varchar(255),
         host varchar(1024),
         password varchar(255),
         port integer,
@@ -1552,6 +1675,25 @@
         NAME_FIELD varchar(255),
         value varchar(255),
         primary key (ENTITY_ID, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_GOOGLEDRIVE_DATASINK (
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_GOOGLEDRIVE_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        app_key longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
     create table RS_GRID_EDT_REPORT (
@@ -1753,7 +1895,6 @@
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
     create table RS_JXLS_REPORT (
-        jxls_one BIT(1) not null,
         id bigint not null,
         report_file_id bigint,
         primary key (id)
@@ -1762,7 +1903,6 @@
     create table RS_JXLS_REPORT_A (
         id bigint not null,
         REV integer not null,
-        jxls_one BIT(1),
         report_file_id bigint,
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
@@ -1830,6 +1970,21 @@
         primary key (REV, list_user_var_instanc_id, value)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_LOCALFILESYSTEM_DATASINK (
+        folder varchar(1024),
+        path varchar(1024),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_LOCALFILESYSTEM_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        folder varchar(1024),
+        path varchar(1024),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_MONDRIAN_DATASOURCE (
         mondrian3 BIT(1) not null,
         mondrian_schema longtext,
@@ -1863,6 +2018,29 @@
         id bigint not null,
         REV integer not null,
         cube_name varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_ONEDRIVE_DATASINK (
+        app_key longtext,
+        base_root longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        tenant_id varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_ONEDRIVE_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        app_key longtext,
+        base_root longtext,
+        folder varchar(1024),
+        refresh_token longtext,
+        secret_key longtext,
+        tenant_id varchar(255),
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
@@ -2211,6 +2389,29 @@
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_SAMBA_DATASINK (
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port integer not null,
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SAMBA_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        domain varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port integer,
+        username varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_SCHEDULER_JOB_HISTORY (
         ENTITY_ID bigint not null auto_increment,
         ENTITY_VERSION bigint,
@@ -2223,6 +2424,43 @@
         primary key (ENTITY_ID)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_SCHED_ACTION_AS_AMAZONS3_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        amazon_s3datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_BOX_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        box_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_DROPBOX_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        dropbox_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_EMAIL_FILE (
+        compressed BIT(1),
+        message longtext,
+        NAME_FIELD varchar(255),
+        subject varchar(255),
+        id bigint not null,
+        email_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_SCHED_ACTION_AS_FILE (
         description varchar(255),
         folder_id bigint,
@@ -2232,7 +2470,17 @@
         primary key (id)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_SCHED_ACTION_AS_FTPS_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        ftps_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_SCHED_ACTION_AS_FTP_FILE (
+        compressed BIT(1),
         folder varchar(255),
         NAME_FIELD varchar(255),
         id bigint not null,
@@ -2240,7 +2488,53 @@
         primary key (id)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        google_drive_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        local_file_system_datas_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_ONEDRIVE_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        one_drive_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_SAMBA_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        samba_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCHED_ACTION_AS_SCP_FILE (
+        compressed BIT(1),
+        folder varchar(255),
+        NAME_FIELD varchar(255),
+        id bigint not null,
+        scp_datasink_id bigint,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_SCHED_ACTION_AS_SFTP_FILE (
+        compressed BIT(1),
         folder varchar(255),
         NAME_FIELD varchar(255),
         id bigint not null,
@@ -2446,6 +2740,33 @@
         primary key (id)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
+    create table RS_SCP_DATASINK (
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port integer not null,
+        private_key longblob,
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        id bigint not null,
+        primary key (id)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
+    create table RS_SCP_DATASINK_A (
+        id bigint not null,
+        REV integer not null,
+        authentication_type varchar(255),
+        folder varchar(1024),
+        host varchar(1024),
+        password varchar(255),
+        port integer,
+        private_key longblob,
+        private_key_passphrase varchar(255),
+        username varchar(255),
+        primary key (id, REV)
+    ) CHARACTER SET utf8 COLLATE utf8_bin;
+
     create table RS_SCRIPT_DATASOURCE (
         database_cache integer not null,
         define_at_target BIT(1) not null,
@@ -2579,10 +2900,13 @@
     ) CHARACTER SET utf8 COLLATE utf8_bin;
 
     create table RS_SFTP_DATASINK (
+        authentication_type varchar(255),
         folder varchar(1024),
         host varchar(1024),
         password varchar(255),
         port integer not null,
+        private_key longblob,
+        private_key_passphrase varchar(255),
         username varchar(255),
         id bigint not null,
         primary key (id)
@@ -2591,10 +2915,13 @@
     create table RS_SFTP_DATASINK_A (
         id bigint not null,
         REV integer not null,
+        authentication_type varchar(255),
         folder varchar(1024),
         host varchar(1024),
         password varchar(255),
         port integer,
+        private_key longblob,
+        private_key_passphrase varchar(255),
         username varchar(255),
         primary key (id, REV)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
@@ -3203,6 +3530,18 @@
         foreign key (id, REV) 
         references RS_COLUMN_A (ENTITY_ID, REV);
 
+    alter table RS_AMAZONS3_DATASINK 
+        add index FK_r0yv801n79q8n9ffd6l7ujfqi (id), 
+        add constraint FK_r0yv801n79q8n9ffd6l7ujfqi 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_AMAZONS3_DATASINK_A 
+        add index FK_q5mx2sxrph8yon2cexa4fes1o (id, REV), 
+        add constraint FK_q5mx2sxrph8yon2cexa4fes1o 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
     alter table RS_AUDIT_LOG_PROPERTY 
         add index FK_8e9xv91kk1t0ggo9ugi62mgh5 (LOG_ENTRY_ID), 
         add constraint FK_8e9xv91kk1t0ggo9ugi62mgh5 
@@ -3322,6 +3661,18 @@
         add constraint FK_1bpxqr8t7ufnjccmvu2qbd30p 
         foreign key (id, REV) 
         references RS_PARAMETER_INSTANCE_A (ENTITY_ID, REV);
+
+    alter table RS_BOX_DATASINK 
+        add index FK_cwpsjbnc974jrwl8gqstlrmun (id), 
+        add constraint FK_cwpsjbnc974jrwl8gqstlrmun 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_BOX_DATASINK_A 
+        add index FK_ideliifqxmlvc3919g6qpbui6 (id, REV), 
+        add constraint FK_ideliifqxmlvc3919g6qpbui6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
 
     alter table RS_COLUMN 
         add index FK_9penq6b0e48w9huiubm93ekyu (filter_id), 
@@ -4112,6 +4463,30 @@
         foreign key (id, REV) 
         references RS_DATABASE_DATASOURCE_A (id, REV);
 
+    alter table RS_DROPBOX_DATASINK 
+        add index FK_f5397vj4k1gqecemgt60q49sp (id), 
+        add constraint FK_f5397vj4k1gqecemgt60q49sp 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_DROPBOX_DATASINK_A 
+        add index FK_hqgvpa9jwr5lc3sh8k5epmca9 (id, REV), 
+        add constraint FK_hqgvpa9jwr5lc3sh8k5epmca9 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
+    alter table RS_EMAIL_DATASINK 
+        add index FK_jw2wod139ruynb5ybuvp4ga0g (id), 
+        add constraint FK_jw2wod139ruynb5ybuvp4ga0g 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_EMAIL_DATASINK_A 
+        add index FK_fdyvyu0og77uspkoumt1d9ow6 (id, REV), 
+        add constraint FK_fdyvyu0og77uspkoumt1d9ow6 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
     alter table RS_EXEC_REPORT_AS_FILE_REF 
         add index FK_gulivudewy37o651onwppy6ev (compiled_report_id), 
         add constraint FK_gulivudewy37o651onwppy6ev 
@@ -4424,6 +4799,18 @@
         foreign key (REV) 
         references RS_REVISION (ENTITY_ID);
 
+    alter table RS_FTPS_DATASINK 
+        add index FK_8cjv4243um9mf28x006jirl4t (id), 
+        add constraint FK_8cjv4243um9mf28x006jirl4t 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_FTPS_DATASINK_A 
+        add index FK_3so0l158gnbxltk0iiim6ptwc (id, REV), 
+        add constraint FK_3so0l158gnbxltk0iiim6ptwc 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
     alter table RS_FTP_DATASINK 
         add index FK_kveuhnqco33ihxub8f2lwnmhn (id), 
         add constraint FK_kveuhnqco33ihxub8f2lwnmhn 
@@ -4456,6 +4843,18 @@
         add constraint FK_8fug0i9mif04uhv4ftcf4ipim 
         foreign key (REV) 
         references RS_REVISION (ENTITY_ID);
+
+    alter table RS_GOOGLEDRIVE_DATASINK 
+        add index FK_2cptk46cpjxx6o0p532svam80 (id), 
+        add constraint FK_2cptk46cpjxx6o0p532svam80 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_GOOGLEDRIVE_DATASINK_A 
+        add index FK_6yyv6o9ttanoy0ojxe4olhqip (id, REV), 
+        add constraint FK_6yyv6o9ttanoy0ojxe4olhqip 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
 
     alter table RS_GRID_EDT_REPORT 
         add index FK_1atoumh9rfbprvj4niwr25tm (script_id), 
@@ -4748,6 +5147,18 @@
         foreign key (REV) 
         references RS_REVISION (ENTITY_ID);
 
+    alter table RS_LOCALFILESYSTEM_DATASINK 
+        add index FK_93e6ojk9bnk0trukr2tjo402j (id), 
+        add constraint FK_93e6ojk9bnk0trukr2tjo402j 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_LOCALFILESYSTEM_DATASINK_A 
+        add index FK_dyhmaic8bnneodxioujr44fqa (id, REV), 
+        add constraint FK_dyhmaic8bnneodxioujr44fqa 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
     alter table RS_MONDRIAN_DATASOURCE 
         add index FK_ntwogjogyo0kdttpvnqlu4i0e (id), 
         add constraint FK_ntwogjogyo0kdttpvnqlu4i0e 
@@ -4771,6 +5182,18 @@
         add constraint FK_2suyjl7dstmvdp4ktpuhwjamt 
         foreign key (id, REV) 
         references RS_DATASOURCE_DEF_CONFIG_A (ENTITY_ID, REV);
+
+    alter table RS_ONEDRIVE_DATASINK 
+        add index FK_4vl5j7rn7asrvr8hdu9kgexgw (id), 
+        add constraint FK_4vl5j7rn7asrvr8hdu9kgexgw 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_ONEDRIVE_DATASINK_A 
+        add index FK_8sqemig61wqr6agdnj34dgcj1 (id, REV), 
+        add constraint FK_8sqemig61wqr6agdnj34dgcj1 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
 
     alter table RS_ORGANISATIONAL_UNIT 
         add index FK_snfmro84ormfh6hvieufac3yp (id), 
@@ -5060,9 +5483,81 @@
         foreign key (id, REV) 
         references RS_SAIKU_REPORT_A (id, REV);
 
+    alter table RS_SAMBA_DATASINK 
+        add index FK_dknkucfem9tc5qi4s04cdsxcr (id), 
+        add constraint FK_dknkucfem9tc5qi4s04cdsxcr 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_SAMBA_DATASINK_A 
+        add index FK_3u5vytf57dwcnktpetcsrojhm (id, REV), 
+        add constraint FK_3u5vytf57dwcnktpetcsrojhm 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add index FK_ia9bb2g8cvk88x04kfe0ljlf0 (amazon_s3datasink_id), 
+        add constraint FK_ia9bb2g8cvk88x04kfe0ljlf0 
+        foreign key (amazon_s3datasink_id) 
+        references RS_AMAZONS3_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_AMAZONS3_FILE 
+        add index FK_2rhydeo5gnbom36y75tvyxgj1 (id), 
+        add constraint FK_2rhydeo5gnbom36y75tvyxgj1 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add index FK_sfcsp0ofcrodvgmg6emr6jft7 (box_datasink_id), 
+        add constraint FK_sfcsp0ofcrodvgmg6emr6jft7 
+        foreign key (box_datasink_id) 
+        references RS_BOX_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_BOX_FILE 
+        add index FK_2r4hcx50kcddo9isd7jwncij (id), 
+        add constraint FK_2r4hcx50kcddo9isd7jwncij 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add index FK_9ieq0baht2dqghmr4payotf41 (dropbox_datasink_id), 
+        add constraint FK_9ieq0baht2dqghmr4payotf41 
+        foreign key (dropbox_datasink_id) 
+        references RS_DROPBOX_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_DROPBOX_FILE 
+        add index FK_cl3w10c7j44g58mln4ks8ybt4 (id), 
+        add constraint FK_cl3w10c7j44g58mln4ks8ybt4 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add index FK_47iywmbvtiyiv846gocecs68w (email_datasink_id), 
+        add constraint FK_47iywmbvtiyiv846gocecs68w 
+        foreign key (email_datasink_id) 
+        references RS_EMAIL_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_EMAIL_FILE 
+        add index FK_lt3hlr1iynyjn2hhexwlqbt35 (id), 
+        add constraint FK_lt3hlr1iynyjn2hhexwlqbt35 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
     alter table RS_SCHED_ACTION_AS_FILE 
         add index FK_3ugo18pvdsa297ovygqk9ir2d (id), 
         add constraint FK_3ugo18pvdsa297ovygqk9ir2d 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add index FK_ga2e1oyugomv4u191e4vqc2ao (ftps_datasink_id), 
+        add constraint FK_ga2e1oyugomv4u191e4vqc2ao 
+        foreign key (ftps_datasink_id) 
+        references RS_FTPS_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_FTPS_FILE 
+        add index FK_98dgdtqq2wk6g08f4jsjlm5fa (id), 
+        add constraint FK_98dgdtqq2wk6g08f4jsjlm5fa 
         foreign key (id) 
         references RS_SCHED_ACTION (ENTITY_ID);
 
@@ -5075,6 +5570,66 @@
     alter table RS_SCHED_ACTION_AS_FTP_FILE 
         add index FK_cumgqtqnj7e0hrj021w5oj29d (id), 
         add constraint FK_cumgqtqnj7e0hrj021w5oj29d 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add index FK_59jobhlgyowygn9iw2f1q8e28 (google_drive_datasink_id), 
+        add constraint FK_59jobhlgyowygn9iw2f1q8e28 
+        foreign key (google_drive_datasink_id) 
+        references RS_GOOGLEDRIVE_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_GOOGLEDRIVE_FILE 
+        add index FK_68bykusrfjc8scgfeu8m2rl9y (id), 
+        add constraint FK_68bykusrfjc8scgfeu8m2rl9y 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add index FK_akm5wdplmp6egjo5olrsqmc08 (local_file_system_datas_id), 
+        add constraint FK_akm5wdplmp6egjo5olrsqmc08 
+        foreign key (local_file_system_datas_id) 
+        references RS_LOCALFILESYSTEM_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_LOCAL_FILE_SYSTEM 
+        add index FK_j0m4ornrg0dxpiopsllehvhpl (id), 
+        add constraint FK_j0m4ornrg0dxpiopsllehvhpl 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add index FK_a6ce3nu7ay07s9x7tpgdhio06 (one_drive_datasink_id), 
+        add constraint FK_a6ce3nu7ay07s9x7tpgdhio06 
+        foreign key (one_drive_datasink_id) 
+        references RS_ONEDRIVE_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_ONEDRIVE_FILE 
+        add index FK_7k4n8nxv5bs3klcff63db08f0 (id), 
+        add constraint FK_7k4n8nxv5bs3klcff63db08f0 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add index FK_1kmwgssjb0seqn2k21l3bvwp6 (samba_datasink_id), 
+        add constraint FK_1kmwgssjb0seqn2k21l3bvwp6 
+        foreign key (samba_datasink_id) 
+        references RS_SAMBA_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_SAMBA_FILE 
+        add index FK_681fx3rsgu6c2kb9dx9rd169g (id), 
+        add constraint FK_681fx3rsgu6c2kb9dx9rd169g 
+        foreign key (id) 
+        references RS_SCHED_ACTION (ENTITY_ID);
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add index FK_qyny293qjddj88wymwpd394tm (scp_datasink_id), 
+        add constraint FK_qyny293qjddj88wymwpd394tm 
+        foreign key (scp_datasink_id) 
+        references RS_SCP_DATASINK (id);
+
+    alter table RS_SCHED_ACTION_AS_SCP_FILE 
+        add index FK_610jue5qkk90wsemwyqhn35j7 (id), 
+        add constraint FK_610jue5qkk90wsemwyqhn35j7 
         foreign key (id) 
         references RS_SCHED_ACTION (ENTITY_ID);
 
@@ -5332,6 +5887,18 @@
         add constraint FK_gryn0egsnupgq9sy6dusq1ijf 
         foreign key (id) 
         references RS_SCHED_TRIG_DATE (id);
+
+    alter table RS_SCP_DATASINK 
+        add index FK_1lbk7taapkt9w12kcq7bjqq11 (id), 
+        add constraint FK_1lbk7taapkt9w12kcq7bjqq11 
+        foreign key (id) 
+        references RS_DATASINK_DEFINITION (id);
+
+    alter table RS_SCP_DATASINK_A 
+        add index FK_sdahdvpgtkitu7xqamkc5wbv (id, REV), 
+        add constraint FK_sdahdvpgtkitu7xqamkc5wbv 
+        foreign key (id, REV) 
+        references RS_DATASINK_DEFINITION_A (id, REV);
 
     alter table RS_SCRIPT_DATASOURCE 
         add index FK_irdvekiotse14yohth374g23 (script_id), 
@@ -5949,5 +6516,5 @@
         primary key (ENTITY_ID)
     ) CHARACTER SET utf8 COLLATE utf8_bin;
     insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('created', date_format(now(), '%Y-%m-%d %T'));
-    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('version', 'RS3.4.0-6036');
-    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('schemaversion', 'RS3.0-18');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('version', 'RS4.0.0-6053');
+    insert into RS_SCHEMAINFO(KEY_FIELD, value) VALUES('schemaversion', 'RS3.0-21');
