@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.Optional;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -48,21 +49,19 @@ public class DemoContentInstallTask implements DbInstallationTask {
 
                if (Boolean.valueOf(props.getProperty("democontent.install", "false"))) {
                   PackagedScriptHelper helper = packagedScriptHelper.get();
-                  File demobuilderFile = null;
-                  ;
-                  for (File f : helper.listPackages()) {
-                     if (f.getName().startsWith("demobuilder-"))
-                        demobuilderFile = f;
-                  }
-                  if (null == demobuilderFile)
+                  Optional<File> demobuilderFile = helper.listPackages()
+                        .stream()
+                        .filter(f -> f.getName().startsWith("demobuilder-"))
+                        .findAny();
+                  if (! demobuilderFile.isPresent())
                      return;
 
-                  if (helper.validateZip(demobuilderFile, false)) {
+                  if (helper.validateZip(demobuilderFile.get(), false)) {
 
-                     logger.info("Executing package: " + demobuilderFile.getAbsolutePath());
+                     logger.info("Executing package: " + demobuilderFile.get().getAbsolutePath());
                      FileServerFolder targetDir = null;
                      try {
-                        targetDir = helper.extractPackageTemporarily(new FileInputStream(demobuilderFile));
+                        targetDir = helper.extractPackageTemporarily(new FileInputStream(demobuilderFile.get()));
                         helper.executePackage(targetDir);
                      } catch (FileNotFoundException e) {
                         e.printStackTrace();
