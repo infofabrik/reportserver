@@ -34,5 +34,11 @@ public interface UserManagerMessages extends Messages {
    String accountInhibitionLabel();
 
    String accountExpirationDate();
+   
+   String membership();
+   
+   String indirect();
+   
+   String direct();
 
 }

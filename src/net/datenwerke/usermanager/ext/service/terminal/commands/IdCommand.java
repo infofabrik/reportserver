@@ -1,7 +1,6 @@
 package net.datenwerke.usermanager.ext.service.terminal.commands;
 
 import static java.util.Comparator.comparing;
-import static java.util.stream.Collectors.toList;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -10,7 +9,6 @@ import java.util.List;
 
 import com.google.inject.Inject;
 
-import net.datenwerke.gf.service.history.HistoryLink;
 import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
@@ -36,7 +34,7 @@ public class IdCommand implements TerminalCommandHook {
 
    public static final String BASE_COMMAND = "id";
 
-   private final UserManagerService userService;
+   private final UserManagerService userManagerService;
 
    private final BsiPasswordPolicyService bsiPasswordPolicyService;
    
@@ -48,7 +46,7 @@ public class IdCommand implements TerminalCommandHook {
          BsiPasswordPolicyService bsiPasswordPolicyService,
          HistoryService historyService
          ) {
-      this.userService = userService;
+      this.userManagerService = userService;
       this.bsiPasswordPolicyService = bsiPasswordPolicyService;
       this.historyService = historyService;
    }
@@ -80,67 +78,68 @@ public class IdCommand implements TerminalCommandHook {
          throw new IllegalArgumentException("Please enter the username");
 
       String username = arguments.remove(0);
-      User user = userService.getUserByName(username);
+      User user = userManagerService.getUserByName(username);
       if (null == user)
          throw new IllegalArgumentException("Username not found");
 
-      RSTableModel userInfo = new RSTableModel();
-      TableDefinition td = new TableDefinition(Arrays.asList("User-Info", ""),
+      RSTableModel userInfoTable = new RSTableModel();
+      TableDefinition userInfoDef = new TableDefinition(Arrays.asList("User-Info", ""),
             Arrays.asList(String.class, String.class));
-      userInfo.setTableDefinition(td);
+      userInfoTable.setTableDefinition(userInfoDef);
 
-      userInfo.addDataRow(
+      userInfoTable.addDataRow(
             new RSStringTableRow("Title", Sex.Male.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderMale()
                   : Sex.Female.equals(user.getSex()) ? UserManagerMessages.INSTANCE.genderFemale() : ""));
-      userInfo.addDataRow(new RSStringTableRow("ID", user.getId() + ""));
-      userInfo.addDataRow(new RSStringTableRow("Username", user.getUsername()));
-      userInfo.addDataRow(new RSStringTableRow("First name", null != user.getFirstname() ? user.getFirstname() : ""));
-      userInfo.addDataRow(new RSStringTableRow("Last name", null != user.getLastname() ? user.getLastname() : ""));
-      userInfo.addDataRow(new RSStringTableRow("E-mail", null != user.getEmail() ? user.getEmail() : ""));
+      userInfoTable.addDataRow(new RSStringTableRow("ID", user.getId() + ""));
+      userInfoTable.addDataRow(new RSStringTableRow("Username", user.getUsername()));
+      userInfoTable.addDataRow(new RSStringTableRow("First name", null != user.getFirstname() ? user.getFirstname() : ""));
+      userInfoTable.addDataRow(new RSStringTableRow("Last name", null != user.getLastname() ? user.getLastname() : ""));
+      userInfoTable.addDataRow(new RSStringTableRow("E-mail", null != user.getEmail() ? user.getEmail() : ""));
 
       BsiPasswordPolicyUserMetadata metadata = bsiPasswordPolicyService.getUserMetadata(user);
 
       if (null != metadata.getAccountInhibited())
-         userInfo.addDataRow(new RSStringTableRow("Account Inhibition", String.valueOf(metadata.getAccountInhibited())));
+         userInfoTable.addDataRow(new RSStringTableRow("Account Inhibition", String.valueOf(metadata.getAccountInhibited())));
       else
-         userInfo.addDataRow(new RSStringTableRow("Account Inhibition", "false"));
+         userInfoTable.addDataRow(new RSStringTableRow("Account Inhibition", "false"));
 
       if (null != metadata.getAccountExpirationDate())
-         userInfo.addDataRow(new RSStringTableRow("Accoung Expires",
+         userInfoTable.addDataRow(new RSStringTableRow("Accoung Expires",
                new SimpleDateFormat("dd.MM.yyyy").format(metadata.getAccountExpirationDate())));
       else
-         userInfo.addDataRow(new RSStringTableRow("Accoung Expires", ""));
+         userInfoTable.addDataRow(new RSStringTableRow("Accoung Expires", ""));
 
       RSTableModel groupsTable = new RSTableModel();
-      TableDefinition groupTitle = new TableDefinition(Arrays.asList("Groups"),
-            Arrays.asList(String.class, String.class));
-      groupsTable.setTableDefinition(groupTitle);
+      TableDefinition groupsDef = new TableDefinition(Arrays.asList("Groups"),
+            Arrays.asList(String.class, Long.class, String.class));
+      groupsTable.setTableDefinition(groupsDef);
 
-      Collection<Group> groups = userService.getReferencedGroups(user);
-      if (groups.isEmpty()) {
+      Collection<Group> allGroups = userManagerService.getReferencedGroups(user);
+      Collection<Group> indirectGroups = userManagerService.getIndirectGroups(user);
+      if (allGroups.isEmpty()) {
          groupsTable.addDataRow(new RSStringTableRow("This user is not present in any group", " "));
       } else {
-         groupsTable.addDataRow(new RSStringTableRow("Group", "Group Id"));
-         List<Group> sortedGroups = groups
-               .stream()
-               .sorted(comparing(Group::getName))
-               .collect(toList());
-         sortedGroups
-               .forEach(group -> groupsTable.addDataRow(new RSStringTableRow(group.getName(), group.getId() + "")));
+         groupsTable.addDataRow(new RSStringTableRow("Group", "Group Id", "Membership"));
+         allGroups
+            .stream()
+            .sorted(comparing(Group::getName))
+            .forEach(group -> groupsTable.addDataRow(
+                  new RSStringTableRow(group.getName(), group.getId() + "", 
+                        indirectGroups.contains(group)? "indirect": "direct")));
       }
 
       RSTableModel ouTable = new RSTableModel();
-      TableDefinition organisationalUnitTitle = new TableDefinition(Arrays.asList("Organisational Unit"),
-            Arrays.asList(String.class, String.class));
-      ouTable.setTableDefinition(organisationalUnitTitle);
+      TableDefinition ouDef = new TableDefinition(Arrays.asList("Organisational Unit"),
+            Arrays.asList(String.class));
+      ouTable.setTableDefinition(ouDef);
 
       OrganisationalUnit ou = ((OrganisationalUnit) user.getParent());
-      List<HistoryLink> ouPath = historyService.buildLinksFor(ou);
 
-      ouPath.forEach(link -> ouTable
+      historyService.buildLinksFor(ou)
+         .forEach(link -> ouTable
             .addDataRow(new RSStringTableRow(link.getObjectCaption() + "/" + user.getUsername())));
 
-      result.addResultTable(userInfo);
+      result.addResultTable(userInfoTable);
       result.addResultTable(groupsTable);
       result.addResultTable(ouTable);
 

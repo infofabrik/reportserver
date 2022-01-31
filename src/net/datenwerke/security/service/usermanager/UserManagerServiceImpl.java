@@ -389,8 +389,28 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
 
    @Override
    public Set<OrganisationalUnit> getOUs(Collection<Long> ids) {
-      return ids.stream().map(this::getNodeById).filter(node -> node instanceof OrganisationalUnit)
-            .map(node -> (OrganisationalUnit) node).collect(toSet());
+      return ids
+            .stream()
+            .map(this::getNodeById)
+            .filter(node -> node instanceof OrganisationalUnit)
+            .map(node -> (OrganisationalUnit) node)
+            .collect(toSet());
+   }
+
+   @Override
+   public Collection<Group> getDirectGroups(User user) {
+      return user.getGroups();
+   }
+
+   @Override
+   public Collection<Group> getIndirectGroups(final User user) {
+      final Collection<Group> directGroups = getDirectGroups(user);
+      final Collection<Group> allGroups = getReferencedGroups(user);
+      
+      return allGroups
+         .stream()
+         .filter(group -> !directGroups.contains(group))
+         .collect(toSet());
    }
 
 }

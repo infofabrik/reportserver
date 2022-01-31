@@ -265,18 +265,29 @@ public class UserManagerRpcServiceImpl extends SecuredRemoteServiceServlet imple
    @Transactional(rollbackOn = { Exception.class })
    public SafeHtml getUserGroupDetailsAsHtml(UserDto userDto) throws ServerCallFailedException {
       User user = (User) dtoService.loadPoso(userDto);
-      Collection<Group> groups = userService.getReferencedGroups(user);
-      if (groups.isEmpty())
+      Collection<Group> allGroups = userService.getReferencedGroups(user);
+      Collection<Group> indirectGroups = userService.getIndirectGroups(user);
+      if (allGroups.isEmpty())
          return null;
-      List<Group> sortedGroups = groups
+      List<Group> sortedGroups = allGroups
             .stream()
             .sorted(comparing(Group::getName))
             .collect(toList());
       final SafeHtmlBuilder builder = new SafeHtmlBuilder();
-      builder.appendHtmlConstant("<ul>");
-      sortedGroups.forEach(group -> builder.appendHtmlConstant("<li>")
-            .appendEscaped(group.getName() + " (" + group.getId() + ")").appendHtmlConstant("</li>"));
-      builder.appendHtmlConstant("</ul>");
+      builder
+         .appendHtmlConstant("<table style=\"width:100%\"><tr><th>")
+         .appendEscaped("Group")
+         .appendHtmlConstant("</th><th>")
+         .appendEscaped(UserManagerMessages.INSTANCE.membership())
+         .appendHtmlConstant("</th><th>");
+      sortedGroups.forEach(group -> builder
+            .appendHtmlConstant("<tr><td>")
+            .appendEscaped(group.getName() + " (" + group.getId() + ")")
+            .appendHtmlConstant("</td><td>")
+            .appendEscaped(indirectGroups.contains(group) ? UserManagerMessages.INSTANCE.indirect()
+                  : UserManagerMessages.INSTANCE.direct())
+            .appendHtmlConstant("</td></tr>"));
+      builder.appendHtmlConstant("</table>");
       return builder.toSafeHtml();
    }
    

@@ -159,7 +159,7 @@ public interface UserManagerService extends TreeDBManager<AbstractUserManagerNod
    /**
     * Returns all groups in which the user is a direct or indirect member.
     * 
-    * @param user
+    * @param user the user to fetch all groups from
     */
    Collection<Group> getReferencedGroups(User user);
 
@@ -169,5 +169,19 @@ public interface UserManagerService extends TreeDBManager<AbstractUserManagerNod
     * @param node
     */
    Set<User> getAllTransitiveUsers(AbstractUserManagerNode node);
+   
+   /**
+    * Returns groups in which the user is a direct member.
+    * 
+    * @param user the user to fetch direct groups from
+    */
+   Collection<Group> getDirectGroups(User user);
+   
+   /**
+    * Returns groups in which the user is an indirect member.
+    * 
+    * @param user the user to fetch indirect groups from
+    */
+   Collection<Group> getIndirectGroups(User user);
 
 }
