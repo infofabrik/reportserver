@@ -1,6 +1,7 @@
 package net.datenwerke.rs.adminutils.service.logs.terminal.commands;
 
 import static java.util.Comparator.comparing;
+import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowConsumer;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
@@ -53,10 +54,34 @@ public class ListLogFilesCommand implements TerminalCommandHook {
    }
 
    @Override
-   @CliHelpMessage(messageClass = AdminUtilsMessages.class, name = BASE_COMMAND, description = "commandListlogfiles_description", args = {
-         @Argument(flag = "s", hasValue = true, valueName = "sort", description = "commandListlogfiles_sub_flagS", mandatory = false),
-         @Argument(flag = "f", hasValue = true, valueName = "filter", description = "commandListlogfiles_sub_flagF", mandatory = false),
-         @Argument(flag = "e", hasValue = false, valueName = "email", description = "commandListlogfiles_sub_flagE", mandatory = false) })
+   @CliHelpMessage(
+         messageClass = AdminUtilsMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandListlogfiles_description", 
+         args = {
+               @Argument(
+                     flag = "s", 
+                     hasValue = true, 
+                     valueName = "sort", 
+                     description = "commandListlogfiles_sub_flagS", 
+                     mandatory = false
+                     ),
+               @Argument(
+                     flag = "f", 
+                     hasValue = true, 
+                     valueName = "filter", 
+                     description = "commandListlogfiles_sub_flagF", 
+                     mandatory = false
+                     ),
+               @Argument(
+                     flag = "e", 
+                     hasValue = false, 
+                     valueName = "email", 
+                     description = "commandListlogfiles_sub_flagE", 
+                     mandatory = false
+                     ) 
+               }
+         )
    public CommandResult execute(final CommandParser parser, TerminalSession session) throws TerminalException {
       Path logPath = Paths.get(logFilesServiceProvider.get().getLogDirectory());
       if (!Files.exists(logPath))
@@ -84,14 +109,13 @@ public class ListLogFilesCommand implements TerminalCommandHook {
       CommandResult result = new CommandResult();
 
       try {
-         final Comparator<Path> sortingComparator = sorting.stream()
-               .map(rethrowFunction(sort -> getPathComparator(sort))).reduce(Comparator::thenComparing).get(); // sorting
-                                                                                                               // is
-                                                                                                               // never
-                                                                                                               // empty
+         final Comparator<Path> sortingComparator = sorting
+               .stream()
+               .map(rethrowFunction(sort -> getPathComparator(sort)))
+               .reduce(Comparator::thenComparing).get(); // sorting
 
-         final String filter = parser.hasOption("f", argStr) ? String.valueOf(parser.parse(argStr).valueOf("f")) : ".*"; // default:
-                                                                                                                         // everything
+         // default: everything (*)
+         final String filter = parser.hasOption("f", argStr) ? String.valueOf(parser.parse(argStr).valueOf("f")) : ".*"; 
 
          RSTableModel table = new RSTableModel();
          TableDefinition td = new TableDefinition(Arrays.asList("Name", "Last modified", "Size"),
@@ -101,8 +125,11 @@ public class ListLogFilesCommand implements TerminalCommandHook {
          final Predicate<Path> matchesFilename = path -> path.getFileName().toString().matches(filter);
 
          try (Stream<Path> stream = Files.list(logPath)) {
-            List<Path> files = stream.filter(matchesFilename).filter(f -> !Files.isDirectory(f))
-                  .sorted(sortingComparator).collect(Collectors.toList());
+            List<Path> files = stream
+                  .filter(matchesFilename)
+                  .filter(f -> !Files.isDirectory(f))
+                  .sorted(sortingComparator)
+                  .collect(toList());
 
             if (email)
                logFilesServiceProvider.get().emailLogFiles(files, filter);
