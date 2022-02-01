@@ -39,5 +39,15 @@ public interface SecurityMessages extends Messages {
    String writeRightAbbreviation();
 
    String writeRightName();
+   
+   String commandHaspermission_description();
+   
+   String commandHaspermission_user();
+   
+   String commandHaspermission_target();
+   
+   String commandHaspermission_right();
+   
+   String commandHaspermission_flagG();
 
 }
