@@ -8,6 +8,7 @@
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src-entityservices"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/metamodel"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/xdocreport-src"/>
+        <wb-resource deploy-path="/" source-path="/war"/>
         <property name="context-root" value="reportserver-github"/>
         <property name="java-output-path" value="/reportserver-github/bin"/>
     </wb-module>
