@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="reportserver-github">
+        <wb-resource deploy-path="/" source-path="/src/main/webapp" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/commons-src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/gxt-src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/spudsoft-birt-emitter-src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/saiku-src"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src-entityservices"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/metamodel"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/xdocreport-src"/>
+        <property name="context-root" value="reportserver-github"/>
+        <property name="java-output-path" value="/reportserver-github/bin"/>
+    </wb-module>
+</project-modules>
