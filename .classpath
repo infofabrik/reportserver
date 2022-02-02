@@ -70,7 +70,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-servlet-2.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-slf4j-0.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user-2.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-chart-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gxt-theme-neptune-4.0.2.jar"/>
@@ -88,8 +87,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-server-1.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jersey-servlet-1.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jettison-1.3.5.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jetty-jndi-8.1.12.v20130726.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jetty-plus-8.1.12.v20130726.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jlfgr-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jopt-simple-5.0.4.jar"/>
@@ -129,7 +126,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-ext-1.3.04.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="con" path="GROOVY_DSL_SUPPORT"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.11.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/ecj-3.21.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/antlr-runtime-3.5.2.jar"/>
