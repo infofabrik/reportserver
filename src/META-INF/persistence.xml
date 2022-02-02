@@ -227,8 +227,6 @@
 			<!--<property name="hibernate.default_schema" value=""/>-->
 			<property name="hibernate.connection.autocommit" value="false"/>
 
-            <property name="hibernate.hbm2ddl.auto" value=""/>
-            
             <property name="hibernate.id.generator.stored_last_used" value="false"/>
         
         	<!-- Naming -->

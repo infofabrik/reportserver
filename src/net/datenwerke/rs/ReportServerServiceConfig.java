@@ -5,17 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
-import org.apache.commons.configuration2.HierarchicalConfiguration;
-import org.apache.commons.configuration2.XMLConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.io.FileHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -274,8 +268,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
    }
 
    private Injector doGetInjector() {
-      preStartCheck();
-
       /* check for enterprise */
       boolean enterpriseAvailable = checkForEnterprise();
 
@@ -651,40 +643,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new LateInitModule(),
 
       });
-   }
-
-   private void preStartCheck() {
-      try {
-         FileBasedConfigurationBuilder<XMLConfiguration> builder = new FileBasedConfigurationBuilder<XMLConfiguration>(
-               XMLConfiguration.class).configure(new Parameters().xml().setFileName("META-INF/persistence.xml"));
-
-         XMLConfiguration config = builder.getConfiguration();
-         List fields = config.configurationsAt("persistence-unit.properties.property");
-         for (Iterator it = fields.iterator(); it.hasNext();) {
-            HierarchicalConfiguration sub = (HierarchicalConfiguration) it.next();
-            if ("hibernate.hbm2ddl.auto".equals(sub.getString("[@name]"))) {
-               if ("create".equals(sub.getString("[@value]"))) {
-                  XMLConfiguration createConf = null;
-                  try {
-                     FileBasedConfigurationBuilder<XMLConfiguration> builderForceCreate = new FileBasedConfigurationBuilder<XMLConfiguration>(
-                           XMLConfiguration.class).configure(new Parameters().xml().setFileName("forcecreate.txt"));
-                     createConf = builderForceCreate.getConfiguration();
-                     FileHandler handler = new FileHandler(createConf);
-                     handler.save();
-                  } catch (Exception e) {
-                     throw new RuntimeException(
-                           "Schema creation is activated in one of the persistence configurations but the forcecreate property is not set. As this might compromise the database ReportServer will not start until the issue is resolved.");
-                  }
-                  if (null == createConf || !"true".equals(createConf.getString("createschema")))
-                     throw new RuntimeException(
-                           "Schema creation is activated in one of the persistence configurations but the forcecreate property is not set. As this might compromise the database ReportServer will not start until the issue is resolved.");
-               }
-            }
-         }
-      } catch (Exception e) {
-         throw new RuntimeException("ReportServer does not want to start under these circumstances: " + e.getMessage(),
-               e);
-      }
    }
 
 }
