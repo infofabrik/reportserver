@@ -8,7 +8,6 @@ import javax.inject.Inject;
 
 import com.google.inject.Provider;
 
-import net.datenwerke.security.service.security.locale.SecurityMessages;
 import net.datenwerke.rs.teamspace.service.teamspace.security.rights.TeamSpaceAdministrator;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -24,6 +23,8 @@ import net.datenwerke.rsenterprise.license.service.annotations.EnterpriseChecked
 import net.datenwerke.security.service.security.GenericSecurityTargetMarker;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityServiceSecuree;
+import net.datenwerke.security.service.security.SecurityTarget;
+import net.datenwerke.security.service.security.locale.SecurityMessages;
 import net.datenwerke.security.service.security.rights.Delete;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.GrantAccess;
@@ -96,26 +97,27 @@ public class HaspermissionCommand implements TerminalCommandHook {
       
       final boolean generic = parser.hasOption("g", argStr);
       
-      if (!generic)
-         throw new IllegalArgumentException("Only checking generic rights is currently supported");
-
       try {
          User user = getSingleObject(userQuery, session, User.class);
          
-         Class<?> target = null;
+         Class<? extends Right> right = getRightClass(rightString);
+         
+         boolean hasRight = false;
          if (generic) {
-            target = Class.forName(targetQuery);
+            Class<?> target = Class.forName(targetQuery);
             Arrays.stream(target.getInterfaces())
                .filter(i -> i.equals(GenericSecurityTargetMarker.class))
                .findAny()
                .orElseThrow(() -> new IllegalArgumentException(targetQuery + " is not a generic target"));
-         } 
-         
-         Class<? extends Right> right = getRightClass(rightString);
-         
-         boolean hasRight = securityServiceProvider.get().checkRights(user, target, SecurityServiceSecuree.class, right);
+            
+            hasRight = securityServiceProvider.get().checkRights(user, target, SecurityServiceSecuree.class, right);
+         } else {
+            SecurityTarget entity = getSingleObject(targetQuery, session, SecurityTarget.class);
+            hasRight = securityServiceProvider.get().checkRights(user, entity, SecurityServiceSecuree.class, right);
+         }
          
          return new CommandResult(hasRight+ "");
+         
       } catch (ClassNotFoundException e) {
          throw new IllegalArgumentException("Target not found: " + targetQuery);
       } catch (Exception e) {
@@ -133,7 +135,8 @@ public class HaspermissionCommand implements TerminalCommandHook {
          .orElseThrow(() -> new IllegalArgumentException("not a valid right: " + asString));
    }
    
-   private <T> T getSingleObject(String query, TerminalSession session, Class<? extends T> clazz) throws ObjectResolverException {
+   private <T> T getSingleObject(String query, TerminalSession session, Class<? extends T> clazz)
+         throws ObjectResolverException {
       Collection<Object> resolvedDatasource = session.getObjectResolver().getObjects(query, Read.class);
       if (1 != resolvedDatasource.size())
          throw new IllegalArgumentException("query must be resolved to exactly one object: \"" + query + "\"");
