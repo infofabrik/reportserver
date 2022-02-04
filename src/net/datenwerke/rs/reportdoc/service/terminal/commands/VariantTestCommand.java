@@ -36,9 +36,23 @@ public class VariantTestCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(messageClass = ReportDocumentationMessages.class, name = BASE_COMMAND, description = "commandVariantTest_description", nonOptArgs = {
-         @NonOptArgument(name = "datasource", description = "commandVariantTest_description_arg_datasource", varArgs = true),
-         @NonOptArgument(name = "report", description = "commandVariantTest_description_arg_report", mandatory = true) })
+   @CliHelpMessage(
+         messageClass = ReportDocumentationMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandVariantTest_description", 
+         nonOptArgs = {
+            @NonOptArgument(
+                  name = "datasource", 
+                  description = "commandVariantTest_description_arg_datasource", 
+                  varArgs = true
+                  ),
+            @NonOptArgument(
+                  name = "report", 
+                  description = "commandVariantTest_description_arg_report", 
+                  mandatory = true
+                  ) 
+            }
+         )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws ObjectResolverException {
       CommandResult result = new CommandResult(ReportDocumentationMessages.INSTANCE.creatingPdf());
