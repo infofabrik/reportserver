@@ -243,5 +243,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.28.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/icu4j-58.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
