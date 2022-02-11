@@ -54,4 +54,8 @@ public class SftpSendToFormConfiguratorHooker implements DatasinkSendToFormConfi
       return true;
    }
 
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 }

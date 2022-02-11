@@ -81,5 +81,10 @@ public class EmailDatasinkSendToFormConfiguratorHooker implements DatasinkSendTo
    public boolean isFolderedDatasink() {
       return false;
    }
+   
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 
 }

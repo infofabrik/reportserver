@@ -215,6 +215,7 @@ import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultTagDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportStringTemplateDto;
@@ -576,6 +577,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.scriptreport.client.scriptreport.parameters.dto.ScriptParameterInstanceDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto)
 			return ((net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto)
+			return ((net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto)
 			return ((net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportStringTemplateDto)
@@ -1048,6 +1051,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.search.client.search.dto.SearchResultTagDto();
 		if(net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto();
+		if(net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto();
 		if(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto();
 		if(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto.class.equals(dtoClass))
@@ -1552,6 +1557,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.search.client.search.dto.SearchResultTagDto();
 		if("net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto();
+		if("net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto();
 		if("net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto();
 		if("net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto".equals(dtoClassName))
@@ -2326,6 +2333,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.search.client.search.dto.posomap.SearchResultTagDto2PosoMap.class;
 		if(net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto.class.equals(dtoClass))
 			return net.datenwerke.rs.search.client.search.dto.posomap.SearchResultTagTypeDto2PosoMap.class;
+		if(net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.posomap.TableDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto.class.equals(dtoClass))
 			return net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.posomap.RECTableTemplateDto2PosoMap.class;
 		if(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto.class.equals(dtoClass))
@@ -2821,6 +2830,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.parameters.dto.ScriptParameterInstanceDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto)
 			return true;
@@ -3561,6 +3572,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.search.client.search.dto.SearchResultTagDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto.class.equals(dtoType))
 			return true;
@@ -4451,6 +4464,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.search.client.search.dto.SearchResultTagDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto".equals(dtoClassName))
 			return true;

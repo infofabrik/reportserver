@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform;
+package net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform;
 
 import java.util.Arrays;
 
@@ -14,26 +14,28 @@ import net.datenwerke.gf.client.treedb.selection.SingleTreeSelectionField;
 import net.datenwerke.gf.client.treedb.simpleform.SFFCGenericTreeNode;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
-import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
-import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkContainerProviderDto;
-import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasourceDao;
+import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIService;
+import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerProviderDto;
+import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
 
 /**
  * 
  *
  */
-public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
+public class DatasourceSelectionFieldProvider extends FormFieldProviderHookImpl {
 
-   private final DatasinkUIService datasinkService;
+   private final DatasourceUIService datasourceService;
 
-   private DatasinkSelectionField datasinkFieldCreator;
+   private DatasourceSelectionField datasourceFieldCreator;
 
    @Inject
-   public DatasinkSimpleFormProvider(DatasinkUIService datasinkService) {
+   public DatasourceSelectionFieldProvider(
+         DatasourceUIService datasourceService
+         ) {
 
       /* store objects */
-      this.datasinkService = datasinkService;
+      this.datasourceService = datasourceService;
    }
 
    @Override
@@ -41,7 +43,7 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
       if (configs.length == 0 || !(configs[0] instanceof SFFCGenericTreeNode))
          return false;
 
-      return type.equals(DatasinkSelectionField.class);
+      return type.equals(DatasourceSelectionField.class);
    }
 
    @Override
@@ -50,45 +52,45 @@ public class DatasinkSimpleFormProvider extends FormFieldProviderHookImpl {
 
       Container wrapper = new VerticalLayoutContainer();
 
-      SFFCDatasinkDao datasinkDao = getDatasinkDaoProvider();
-      datasinkFieldCreator = datasinkService.getSelectionField(datasinkDao.getDatasinkDaoProvider(),
-            datasinkDao.getIcon(), wrapper, config.getTreeForPopup());
+      SFFCDatasourceDao datasourceDao = getDatasourceDaoProvider();
+      datasourceFieldCreator = datasourceService.getSelectionField(datasourceDao.getIcon(),
+            wrapper, config.getTreeForPopup());
 
       FieldLabel label = new FieldLabel();
       if (null != form.getSField(name).getFieldLayoutConfig().getLabelText())
          label.setText(form.getSField(name).getFieldLayoutConfig().getLabelText());
       if (null != form.getSField(name).getFieldLayoutConfig().getLabelAlign())
          label.setLabelAlign(form.getSField(name).getFieldLayoutConfig().getLabelAlign());
-      datasinkFieldCreator.setFieldLabel(label);
+      datasourceFieldCreator.setFieldLabel(label);
 
-      datasinkFieldCreator.addSelectionField();
-      datasinkFieldCreator.getSelectionField().setTreePanel(config.getTreeForPopup());
+      datasourceFieldCreator.addSelectionField();
+      datasourceFieldCreator.getSelectionField().setTreePanel(config.getTreeForPopup());
 
-      datasinkFieldCreator
-            .addValueChangeHandler(event -> ValueChangeEvent.fire(DatasinkSimpleFormProvider.this, event.getValue()));
+      datasourceFieldCreator
+            .addValueChangeHandler(event -> ValueChangeEvent.fire(DatasourceSelectionFieldProvider.this, event.getValue()));
 
-      installBlankValidation(datasinkFieldCreator.getSelectionField());
+      installBlankValidation(datasourceFieldCreator.getSelectionField());
 
       return wrapper;
    }
 
-   private SFFCDatasinkDao getDatasinkDaoProvider() {
-      return Arrays.stream(configs).filter(config -> config instanceof SFFCDatasinkDao)
-            .map(config -> ((SFFCDatasinkDao) config)).findAny()
-            .orElseThrow(() -> new IllegalStateException("No SFFCDatasinkDao!"));
+   private SFFCDatasourceDao getDatasourceDaoProvider() {
+      return Arrays.stream(configs).filter(config -> config instanceof SFFCDatasourceDao)
+            .map(config -> ((SFFCDatasourceDao) config)).findAny()
+            .orElseThrow(() -> new IllegalStateException("No SFFCDatasourceDao!"));
    }
 
    public void addFieldBindings(Object model, ValueProvider vp, Widget field) {
-      /* get datasink container */
-      DatasinkContainerProviderDto datasinkContainerProvider = (DatasinkContainerProviderDto) model;
+      /* get datasource container */
+      DatasourceContainerProviderDto datasourceContainerProvider = (DatasourceContainerProviderDto) model;
 
       /* ask creator to init form binding */
-      datasinkFieldCreator.initFormBinding(datasinkContainerProvider);
+      datasourceFieldCreator.initFormBinding(datasourceContainerProvider);
    }
 
    @Override
    public Object getValue(Widget field) {
-      return datasinkFieldCreator.getDatasinkContainer().getDatasink();
+      return datasourceFieldCreator.getDatasourceContainer().getDatasource();
    }
 
    public void removeFieldBindings(Object model, Widget field) {

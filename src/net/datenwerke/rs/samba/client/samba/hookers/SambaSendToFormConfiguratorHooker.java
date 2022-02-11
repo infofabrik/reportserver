@@ -54,4 +54,9 @@ public class SambaSendToFormConfiguratorHooker implements DatasinkSendToFormConf
       return true;
    }
 
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
+
 }

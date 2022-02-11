@@ -23,5 +23,7 @@ public interface DatasinkSendToFormConfiguratorHook extends Hook {
    int getWindowHeight();
 
    boolean isFolderedDatasink();
+   
+   boolean isCanCompress();
 
 }

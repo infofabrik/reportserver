@@ -15,6 +15,7 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.DatasourceSelectionFieldProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.DatasourceSimpleFormProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceManagerAdminViewTree;
@@ -36,6 +37,7 @@ public class DatasourceUIStartup {
    @Inject
    public DatasourceUIStartup(final HookHandlerService hookHandler,
          Provider<DatasourceSimpleFormProvider> datasourceSimpleFormProvider,
+         Provider<DatasourceSelectionFieldProvider> datasourceSelectionFieldProvider,
 
          final WaitOnEventUIService waitOnEventService, final DatasourceUIService datasourceService,
 
@@ -54,6 +56,7 @@ public class DatasourceUIStartup {
 
       /* attach Hooks */
       hookHandler.attachHooker(FormFieldProviderHook.class, datasourceSimpleFormProvider);
+      hookHandler.attachHooker(FormFieldProviderHook.class, datasourceSelectionFieldProvider);
 
       /* attach security target domains */
       hookHandler.attachHooker(GenericTargetProviderHook.class,

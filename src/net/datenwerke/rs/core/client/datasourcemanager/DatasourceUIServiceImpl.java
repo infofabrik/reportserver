@@ -14,6 +14,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionFieldFactory;
 import net.datenwerke.rs.core.client.datasourcemanager.hooks.DatasourceDefinitionConfigProviderHook;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 
@@ -62,6 +63,12 @@ public class DatasourceUIServiceImpl implements DatasourceUIService {
 
    public DatasourceSelectionField getSelectionField(Container container, Provider<UITree> datasourceTreeProvider) {
       return fieldFactory.create(true, container, datasourceTreeProvider.get(), datasourceDao, new Class[] {});
+   }
+
+   @Override
+   public DatasourceSelectionField getSelectionField(BaseIcon icon, Container container, UITree datasinkTreeProvider,
+         Class<? extends DatasourceDefinitionDto>... types) {
+      return fieldFactory.create(false, container, datasinkTreeProvider, datasourceDao, types);
    }
 
 }

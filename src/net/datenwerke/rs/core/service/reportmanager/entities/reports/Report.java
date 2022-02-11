@@ -72,12 +72,39 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 @Table(name = "REPORT")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.reportmanager.dto.reports", createDecorator = true, dtoImplementInterfaces = DatasourceContainerProviderDto.class, poso2DtoPostProcessors = Report2DtoPostProcessor.class, dto2PosoSupervisor = Dto2ReportSupervisor.class, dto2PosoPostProcessors = Dto2ReportPostProcessor.class, typeDescriptionMsg = ReportmanagerMessages.class, typeDescriptionKey = "reportLabel", additionalFields = {
-      @AdditionalField(name = "temporaryUid", type = String.class),
-      @AdditionalField(name = "parentReportKey", type = String.class),
-      @AdditionalField(name = "parentReportName", type = String.class),
-      @AdditionalField(name = "parentReportDescription", type = String.class),
-      @AdditionalField(name = "parentReportProperties", type = HashSet.class, generics = ReportPropertyDto.class) })
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.core.client.reportmanager.dto.reports", 
+      createDecorator = true, 
+      dtoImplementInterfaces = DatasourceContainerProviderDto.class, 
+      poso2DtoPostProcessors = Report2DtoPostProcessor.class, 
+      dto2PosoSupervisor = Dto2ReportSupervisor.class, 
+      dto2PosoPostProcessors = Dto2ReportPostProcessor.class, 
+      typeDescriptionMsg = ReportmanagerMessages.class, 
+      typeDescriptionKey = "reportLabel", 
+      additionalFields = {
+         @AdditionalField(
+               name = "temporaryUid", 
+               type = String.class
+               ),
+         @AdditionalField(
+               name = "parentReportKey", 
+               type = String.class
+               ),
+         @AdditionalField(
+               name = "parentReportName", 
+               type = String.class
+               ),
+         @AdditionalField(
+               name = "parentReportDescription", 
+               type = String.class
+               ),
+         @AdditionalField(
+               name = "parentReportProperties", 
+               type = HashSet.class, 
+               generics = ReportPropertyDto.class
+               ) 
+         }
+      )
 @EntityDiffGuides(guides = {
       @EntityDiffGuide(name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, ignoreId = true, ignoreVersion = true, whitelist = {
             "parameterDefinitions", "parameterInstances", "datasourceContainer" }) })

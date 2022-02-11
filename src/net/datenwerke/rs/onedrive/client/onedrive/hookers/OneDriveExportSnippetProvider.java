@@ -1,6 +1,6 @@
 package net.datenwerke.rs.onedrive.client.onedrive.hookers;
 
-import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider.extractSingleTreeSelectionField;
+import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSelectionFieldProvider.extractSingleTreeSelectionField;
 
 import java.util.Collection;
 

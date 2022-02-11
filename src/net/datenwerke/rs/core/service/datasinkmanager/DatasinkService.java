@@ -4,6 +4,8 @@ import java.util.Map;
 import java.util.Optional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
+import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
@@ -61,9 +63,9 @@ public interface DatasinkService {
     * Sends a report to the specified datasink, defined in a given
     * {@link DatasinkDefinition} datasink.
     * 
-    * @param report               the report to send. May be a String or a byte
-    *                             array
-    * @param datasink             the {@link DatasinkDefinition} to send
+    * @param report               the report to send. May be a String, a byte array
+    *                             or a {@link TableDBDataSource}
+    * @param datasink             the {@link TableReport} to send
     * @param basicDatasinkService the service
     * @param config               configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export

@@ -7,6 +7,7 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.rs.core.client.datasourcemanager.config.DatasourceDefinitionConfigConfigurator;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
+import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 /**
  * 
@@ -21,4 +22,7 @@ public interface DatasourceUIService {
 
    public DatasourceSelectionField getSelectionField(Container container, Provider<UITree> datasourceTreeProvider);
 
+   public DatasourceSelectionField getSelectionField(
+         BaseIcon icon, Container container, UITree datasinkTreeProvider,
+         Class<? extends DatasourceDefinitionDto>... types);
 }

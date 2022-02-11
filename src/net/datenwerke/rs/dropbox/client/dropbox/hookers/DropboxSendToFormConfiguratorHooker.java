@@ -54,5 +54,10 @@ public class DropboxSendToFormConfiguratorHooker implements DatasinkSendToFormCo
    public boolean isFolderedDatasink() {
       return true;
    }
+   
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 
 }

@@ -53,5 +53,10 @@ public class ScpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
    public boolean isFolderedDatasink() {
       return true;
    }
+   
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 
 }

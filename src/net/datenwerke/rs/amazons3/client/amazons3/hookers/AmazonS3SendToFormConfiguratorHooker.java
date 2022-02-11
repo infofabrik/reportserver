@@ -54,4 +54,8 @@ public class AmazonS3SendToFormConfiguratorHooker implements DatasinkSendToFormC
       return true;
    }
 
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 }

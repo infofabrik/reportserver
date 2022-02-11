@@ -15,7 +15,7 @@ import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider;
+import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSelectionFieldProvider;
 import net.datenwerke.rs.core.client.datasinkmanager.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkManagerAdminViewTree;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.treehooker.DatasinkManagerTreeConfigurationHooker;
@@ -35,7 +35,7 @@ public class DatasinkUIStartup {
 
    @Inject
    public DatasinkUIStartup(final HookHandlerService hookHandler,
-         Provider<DatasinkSimpleFormProvider> datasinkSimpleFormProvider,
+         Provider<DatasinkSelectionFieldProvider> datasinkSimpleFormProvider,
 
          final WaitOnEventUIService waitOnEventService, final DatasinkUIService datasinkService,
 

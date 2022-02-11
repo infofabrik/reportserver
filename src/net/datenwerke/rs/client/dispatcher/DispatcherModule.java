@@ -79,6 +79,7 @@ import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scripting.client.scripting.ScriptingUiModule;
 import net.datenwerke.rs.scriptreport.client.scriptreport.ScriptReportUiModule;
 import net.datenwerke.rs.search.client.search.SearchUiModule;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.TableDatasinkUiModule;
 import net.datenwerke.rs.tabletemplate.client.engines.TableTemplateEngineUiModule;
 import net.datenwerke.rs.tabletemplate.client.tabletemplate.TableTemplateUIModule;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIModule;
@@ -124,6 +125,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new GoogleDriveUiModule());
       install(new BoxUiModule());
       install(new AmazonS3UiModule());
+      install(new TableDatasinkUiModule());
       install(new SambaUiModule());
       install(new ScpUiModule());
       install(new LocalFileSystemUiModule());

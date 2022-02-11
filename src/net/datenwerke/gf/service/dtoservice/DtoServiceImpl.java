@@ -271,6 +271,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.search.service.search.results.SearchResultList.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.SearchResultList2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.search.service.search.results.SearchResultTag.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.SearchResultTag2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.search.service.search.results.SearchResultTagType.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.SearchResultTagType2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink.class, injector.getInstance(net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.dtogen.TableDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tabletemplate.service.tabletemplate.config.RECTableTemplate.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.config.dtogen.RECTableTemplate2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportByteTemplate.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.dtogen.TableReportByteTemplate2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.dtogen.TableReportStringTemplate2DtoGenerator.class));
@@ -514,6 +515,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.search.client.search.dto.SearchResultListDto.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.Dto2SearchResultListGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.search.client.search.dto.SearchResultTagDto.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.Dto2SearchResultTagGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto.class, injector.getInstance(net.datenwerke.rs.search.service.search.results.dtogen.Dto2SearchResultTagTypeGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto.class, injector.getInstance(net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.dtogen.Dto2TableDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.config.dtogen.Dto2RECTableTemplateGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.dtogen.Dto2TableReportByteTemplateGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportStringTemplateDto.class, injector.getInstance(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.dtogen.Dto2TableReportStringTemplateGenerator.class));
@@ -922,6 +924,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.search.client.search.dto.decorator.SearchResultListDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.search.client.search.dto.SearchResultTagDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.search.client.search.dto.SearchResultTagTypeDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.RECTableTemplateDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportByteTemplateDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.tabletemplate.client.tabletemplate.dto.TableReportStringTemplateDto.class);
@@ -1266,6 +1269,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.search.service.search.results.SearchResultList.class);
 		posoClassLookup.add(net.datenwerke.rs.search.service.search.results.SearchResultTag.class);
 		posoClassLookup.add(net.datenwerke.rs.search.service.search.results.SearchResultTagType.class);
+		posoClassLookup.add(net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.tabletemplate.service.tabletemplate.config.RECTableTemplate.class);
 		posoClassLookup.add(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportByteTemplate.class);
 		posoClassLookup.add(net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate.class);

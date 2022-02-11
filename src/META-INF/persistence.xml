@@ -177,6 +177,7 @@
           <class>net.datenwerke.rs.core.service.reportmanager.entities.ReportFolder</class>
           <class>net.datenwerke.rs.base.ext.service.parameters.fileselection.UploadedParameterFile</class>
           <class>net.datenwerke.rs.tabletemplate.service.tabletemplate.entities.TableReportStringTemplate</class>
+          <class>net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractJob</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.DashboardContainer</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.DailyWorkdayTrigger</class>
@@ -203,6 +204,7 @@
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpsFileAction</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportMetadata</class>
           <class>net.datenwerke.rs.base.service.datasources.connectors.DatasourceConnectorConfig</class>
+          <class>net.datenwerke.rs.tabledatasink.service.tabledatasink.action.ScheduleAsTableDatasinkFileAction</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
           <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>
           <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>

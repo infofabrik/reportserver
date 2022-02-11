@@ -191,6 +191,8 @@ import net.datenwerke.rs.scp.server.scp.ScpRpcServiceImpl;
 import net.datenwerke.rs.scp.service.scp.ScpModule;
 import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
+import net.datenwerke.rs.tabledatasink.server.tabledatasink.TableDatasinkRpcServiceImpl;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkModule;
 import net.datenwerke.rs.teamspace.server.teamspace.TeamSpaceRpcServiceImpl;
 import net.datenwerke.rs.teamspace.service.teamspace.TeamSpaceModule;
 import net.datenwerke.rs.terminal.server.terminal.TerminalRpcServiceImpl;
@@ -238,7 +240,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2022-02-03-10-29-42";
+   public static final String CODE_VERSION = "2022-02-09-12-55-23";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";
@@ -424,6 +426,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "googledrive").with(GoogleDriveRpcServiceImpl.class);
             serve(BASE_URL + "box").with(BoxRpcServiceImpl.class);
             serve(BASE_URL + "amazons3").with(AmazonS3RpcServiceImpl.class);
+            serve(BASE_URL + "tabledatasink").with(TableDatasinkRpcServiceImpl.class);
 
             serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
             serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
@@ -546,31 +549,47 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
    }
 
    protected List<Module> getModules() {
-      return Arrays.asList(new Module[] { new DwAsyncModule(),
+      return Arrays.asList(new Module[] { 
+            new DwAsyncModule(),
 
-            new GWTStacktraceModule(), new DwGwtFrameworkModule(), new ReportServerModule(), new LocalizationModule(),
+            new GWTStacktraceModule(), 
+            new DwGwtFrameworkModule(), 
+            new ReportServerModule(), 
+            new LocalizationModule(),
             /*
              * ConfigModule must be loaded before the crypto module is loaded, since the
              * crypto params are loaded there, eventually in an external config file.
              */
             new ConfigModule(),
 
-            new SecurityModule(), new PasswordPolicyModule(), new ChallengeResponseModule(), new RsSchedulerModule(),
+            new SecurityModule(), 
+            new PasswordPolicyModule(), 
+            new ChallengeResponseModule(), 
+            new RsSchedulerModule(),
 
-            new RsCoreModule(), new RsBaseModule(), new RsBaseExtModule(),
+            new RsCoreModule(), 
+            new RsBaseModule(), 
+            new RsBaseExtModule(),
 
             /* in alphabetical order */
-            new JpaEventLoggerModule(), new AuthenticatorModule(), new ReportDocumentationModule(),
+            new JpaEventLoggerModule(), 
+            new AuthenticatorModule(), 
+            new ReportDocumentationModule(),
             new GenRightsModule(),
 
-            new CryptoModule(), new DashboardModule(), new DatasourceModule(), new DatasinkModule(),
-            new DBHelperModule(), new DtoModule(),
+            new CryptoModule(), 
+            new DashboardModule(), 
+            new DatasourceModule(), 
+            new DatasinkModule(),
+            new DBHelperModule(), 
+            new DtoModule(),
 
             new ConditionModule(),
 
             new DemoDataModule(),
 
-            new EntityClonerModule(), new ExportMetadataModule(),
+            new EntityClonerModule(), 
+            new ExportMetadataModule(),
 
             new FilterReplacementsModule(),
 
@@ -578,49 +597,77 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new GlobalConstantsModule(),
 
-            new HookHandlerModule(), new ExImportModule(), new RsExImportModule(),
+            new HookHandlerModule(), 
+            new ExImportModule(), 
+            new RsExImportModule(),
 
-            new JasperToTableModule(), new JuelModule(),
+            new JasperToTableModule(), 
+            new JuelModule(),
 
-            new MailModule(), new BirtModule(), new ComputedColumnsModule(),
+            new MailModule(), 
+            new BirtModule(),
+            new ComputedColumnsModule(),
 
             new RsIncubatorModule(),
 
-            new NotifyModule(), new ParameterModule(),
+            new NotifyModule(), 
+            new ParameterModule(),
 
             new FileServerModule(),
 
             new ReportManagerModule(),
 
-            new ActivateUserModule(), new HistoryModule(),
+            new ActivateUserModule(), 
+            new HistoryModule(),
 
             new MaintenanceModule(),
 
             new RemoteAccessModule(),
 
-            new SaikuModule(), new net.datenwerke.rs.legacysaiku.service.saiku.SaikuModule(), new SearchModule(),
+            new SaikuModule(), 
+            new net.datenwerke.rs.legacysaiku.service.saiku.SaikuModule(), 
+            new SearchModule(),
             new SimpleQueryModule(),
 
-            new TeamSpaceModule(), new TerminalModule(), new TsDiskModule(),
+            new TeamSpaceModule(), 
+            new TerminalModule(), 
+            new TsDiskModule(),
 
-            new LogFilesModule(), new SystemConsoleModule(),
+            new LogFilesModule(), 
+            new SystemConsoleModule(),
 
-            new TreeDBModule(), new TreeDbExtModule(),
+            new TreeDBModule(), 
+            new TreeDbExtModule(),
 
-            new UserManagerModule(), new UserManagerExtModule(),
+            new UserManagerModule(), 
+            new UserManagerExtModule(),
 
-            new UserManagerExtModule(), new UserVariableModule(), new VersioningModule(), new XmlRsUtilsModule(),
+            new UserManagerExtModule(), 
+            new UserVariableModule(), 
+            new VersioningModule(), 
+            new XmlRsUtilsModule(),
             new ZipUtilsModule(),
 
             new CompiledReportStoreModule(),
 
-            new OutputFormatAuthModule(), new ScheduleAsFileModule(), new FtpModule(), new LocalFileSystemModule(),
-            new EmailDatasinkModule(), new ReportPropertiesModule(),
+            new OutputFormatAuthModule(), 
+            new ScheduleAsFileModule(), 
+            new FtpModule(), 
+            new LocalFileSystemModule(),
+            new EmailDatasinkModule(), 
+            new ReportPropertiesModule(),
 
             new DatasourceTesterModule(),
 
-            new SambaModule(), new DropboxModule(), new OneDriveModule(), new GoogleDriveModule(), new BoxModule(),
-            new AmazonS3Module(), new ScpModule(),
+            new SambaModule(), 
+            new DropboxModule(), 
+            new OneDriveModule(), 
+            new GoogleDriveModule(), 
+            new BoxModule(),
+            new AmazonS3Module(), 
+            new TableDatasinkModule(),
+            
+            new ScpModule(),
 
             new LdapModule(),
 
@@ -632,7 +679,9 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             new ReportServerInstallationModule(),
 
-            new ManPageModule(), new SuModule(), new PropertiesModule(),
+            new ManPageModule(), 
+            new SuModule(), 
+            new PropertiesModule(),
 
             new RsInstallModule(),
 

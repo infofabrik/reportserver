@@ -804,8 +804,11 @@ public class SimpleForm extends DwContentPanel {
    public static FormFieldProviderHook getResponsibleHooker(final Class<?> type,
          final SimpleFormFieldConfiguration... configs) {
 
-      return hookService.getHookers(FormFieldProviderHook.class).stream()
-            .filter(provider -> provider.consumes(type, configs)).findAny().orElse(null);
+      return hookService.getHookers(FormFieldProviderHook.class)
+            .stream()
+            .filter(provider -> provider.consumes(type, configs))
+            .findAny()
+            .orElse(null);
    }
 
    public void addFieldMenu(String key, Menu menu) {

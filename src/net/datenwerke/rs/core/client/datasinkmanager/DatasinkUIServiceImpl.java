@@ -1,6 +1,6 @@
 package net.datenwerke.rs.core.client.datasinkmanager;
 
-import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSimpleFormProvider.extractSingleTreeSelectionField;
+import static net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSelectionFieldProvider.extractSingleTreeSelectionField;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -111,11 +111,14 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
    }
 
    @Override
-   public void displaySendToDatasinkDialog(final Class<? extends DatasinkDefinitionDto> datasinkType,
+   public void displaySendToDatasinkDialog(
+         final Class<? extends DatasinkDefinitionDto> datasinkType,
          final String filename, final Provider<UITree> treeProvider,
-         final Provider<? extends HasDefaultDatasink> datasinkDaoProvider, final AbstractNodeDto toExport,
+         final Provider<? extends HasDefaultDatasink> datasinkDaoProvider, 
+         final AbstractNodeDto toExport,
          final Optional<ReportExecutorInformation> reportInfo,
-         final AsyncCallback<Map<String, Object>> onSelectHandler) {
+         final AsyncCallback<Map<String, Object>> onSelectHandler
+         ) {
       if (!(toExport instanceof AbstractFileServerNodeDto) && !(toExport instanceof ReportDto))
          throw new IllegalArgumentException(toExport.getClass() + " not supported");
 
@@ -123,8 +126,10 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
          throw new IllegalArgumentException("Report info not available");
 
       final Optional<DatasinkSendToFormConfiguratorHook> formConfiguratorOpt = hookHandlerService
-            .getHookers(DatasinkSendToFormConfiguratorHook.class).stream()
-            .filter(hooker -> hooker.consumes(datasinkType)).findAny();
+            .getHookers(DatasinkSendToFormConfiguratorHook.class)
+            .stream()
+            .filter(hooker -> hooker.consumes(datasinkType))
+            .findAny();
       if (!formConfiguratorOpt.isPresent())
          throw new IllegalStateException("no form configurator found for datasink " + datasinkType);
       final DatasinkSendToFormConfiguratorHook formConfigurator = formConfiguratorOpt.get();
@@ -217,16 +222,18 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
 
       final ObjectHolder<String> compressedKey = new ObjectHolder<>();
 
-      if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto) {
-         compressedKey.set(form.addField(Boolean.class, "", new SFFCBoolean() {
-            @Override
-            public String getBoxLabel() {
-               if (toExport instanceof FileServerFileDto)
-                  return FileServerMessages.INSTANCE.fileCompress();
-               else
-                  return SchedulerMessages.INSTANCE.reportCompress();
-            }
-         }));
+      if (formConfigurator.isCanCompress()) {
+         if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto) {
+            compressedKey.set(form.addField(Boolean.class, "", new SFFCBoolean() {
+               @Override
+               public String getBoxLabel() {
+                  if (toExport instanceof FileServerFileDto)
+                     return FileServerMessages.INSTANCE.fileCompress();
+                  else
+                     return SchedulerMessages.INSTANCE.reportCompress();
+               }
+            }));
+         }
       }
 
       wrapper.setWidget(formWrapper);
@@ -281,8 +288,10 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                return;
             }
 
-            hookHandlerService.getHookers(PrepareReportModelForStorageOrExecutionHook.class).stream()
-                  .filter(hooker -> hooker.consumes((ReportDto) toExport)).forEach(hooker -> hooker
+            hookHandlerService.getHookers(PrepareReportModelForStorageOrExecutionHook.class)
+               .stream()
+               .filter(hooker -> hooker.consumes((ReportDto) toExport))
+               .forEach(hooker -> hooker
                         .prepareForExecutionOrStorage((ReportDto) toExport, reportInfo.get().getExecuteReportToken()));
          }
 
@@ -299,10 +308,14 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
             values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey.get())).trim());
          if (toExport instanceof ReportDto)
             values.put(DatasinkUIModule.REPORT_FORMAT_KEY, ((ExportTypeSelection) form.getValue(formatKey.get())));
-         if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto)
-            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) form.getValue(compressedKey.get()));
-         else
-            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) true);
+         if (formConfigurator.isCanCompress()) {
+            if (toExport instanceof FileServerFileDto || toExport instanceof ReportDto)
+               values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, (boolean) form.getValue(compressedKey.get()));
+            else
+               values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, true);
+         } else {
+            values.put(DatasinkUIModule.DATASINK_COMPRESSED_KEY, false);
+         }
 
          /* add additional values */
          Optional<Map<String, Object>> additionalValues = formConfigurator.getAdditionalFieldsValues(form);

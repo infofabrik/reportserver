@@ -54,4 +54,8 @@ public class LocalFileSystemSendToFormConfiguratorHooker implements DatasinkSend
       return true;
    }
 
+   @Override
+   public boolean isCanCompress() {
+      return true;
+   }
 }
