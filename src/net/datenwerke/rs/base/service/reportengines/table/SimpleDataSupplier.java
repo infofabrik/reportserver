@@ -51,9 +51,12 @@ public class SimpleDataSupplier {
    private final DatasourceTransformationService datasourceTransformationService;
 
    @Inject
-   public SimpleDataSupplier(Provider<RSTableOutputGenerator> outputGeneratorProvider,
-         EntityClonerService entityClonerService, ParameterSetFactory parameterSetFactory,
-         DatasourceTransformationService datasourceTransformationService) {
+   public SimpleDataSupplier(
+         Provider<RSTableOutputGenerator> outputGeneratorProvider,
+         EntityClonerService entityClonerService, 
+         ParameterSetFactory parameterSetFactory,
+         DatasourceTransformationService datasourceTransformationService
+         ) {
 
       /* store objects */
       this.outputGeneratorProvider = outputGeneratorProvider;
