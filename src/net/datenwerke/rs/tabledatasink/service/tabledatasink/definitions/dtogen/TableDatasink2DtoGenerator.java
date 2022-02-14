@@ -73,6 +73,9 @@ public class TableDatasink2DtoGenerator implements Poso2DtoGenerator<TableDatasi
 
 		}
 		if(here.compareTo(DtoView.NORMAL) >= 0){
+			/*  set batchSize */
+			dto.setBatchSize(poso.getBatchSize() );
+
 			/*  set copyPrimaryKeys */
 			dto.setCopyPrimaryKeys(poso.isCopyPrimaryKeys() );
 

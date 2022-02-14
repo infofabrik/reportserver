@@ -12,6 +12,7 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
+import com.sencha.gxt.widget.core.client.form.IntegerField;
 import com.sencha.gxt.widget.core.client.form.TextArea;
 import com.sencha.gxt.widget.core.client.form.TextField;
 
@@ -39,7 +40,8 @@ public class TableDatasinkForm extends FormView {
    private TextArea descriptionField;
    private TextField tableNameField;
    private TextField primaryKeysField;
-   private CheckBox copyPrimaryKeys;
+   private CheckBox copyPrimaryKeysField;
+   private IntegerField batchSizeField;
    
    @Inject
    public TableDatasinkForm(
@@ -91,14 +93,22 @@ public class TableDatasinkForm extends FormView {
       BoxLayoutData primaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       primaryKeysData.setFlex(2);
       primaryKeysData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(primaryKeysField, ";-separated list of primary keys of destination table"));
+      fieldWrapper.add(new FieldLabel(primaryKeysField, ";-separated list of primary keys in destination table"));
       
-      /* primary keys */
-      copyPrimaryKeys = new CheckBox();
+      /* copy primary keys */
+      copyPrimaryKeysField = new CheckBox();
       BoxLayoutData copyPrimaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       copyPrimaryKeysData.setFlex(2);
       copyPrimaryKeysData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(copyPrimaryKeys, "Copy destination primary keys"));
+      fieldWrapper.add(new FieldLabel(copyPrimaryKeysField, "Copy primary keys"));
+      
+      /* batch size */
+      batchSizeField = new IntegerField();
+      batchSizeField.setWidth(300);
+      BoxLayoutData batchSizeData = new BoxLayoutData(new Margins(0, 5, 0, 0));
+      batchSizeData.setFlex(2);
+      batchSizeData.setMinSize(54);
+      fieldWrapper.add(new FieldLabel(batchSizeField, "Batch size"));
       
       form.add(fieldWrapper);
    }
@@ -111,7 +121,8 @@ public class TableDatasinkForm extends FormView {
       binding.addHtmlSafeStringBinding(descriptionField, model, TableDatasinkDtoPA.INSTANCE.description());
       binding.addHtmlSafeStringBinding(tableNameField, model, TableDatasinkDtoPA.INSTANCE.tableName());
       binding.addHtmlSafeStringBinding(primaryKeysField, model, TableDatasinkDtoPA.INSTANCE.primaryKeys());
-      binding.addHtmlSafeStringBinding(copyPrimaryKeys, model, TableDatasinkDtoPA.INSTANCE.copyPrimaryKeys());
+      binding.addHtmlSafeStringBinding(copyPrimaryKeysField, model, TableDatasinkDtoPA.INSTANCE.copyPrimaryKeys());
+      binding.addHtmlSafeStringBinding(batchSizeField, model, TableDatasinkDtoPA.INSTANCE.batchSize());
    }
    
    @Override

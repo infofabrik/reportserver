@@ -24,6 +24,7 @@ public interface TableDatasinkDtoPA extends DatasinkDefinitionDtoPA {
 
 
 	/* Properties */
+	public ValueProvider<TableDatasinkDto,Integer> batchSize();
 	public ValueProvider<TableDatasinkDto,Boolean> copyPrimaryKeys();
 	public ValueProvider<TableDatasinkDto,DatasourceContainerDto> datasourceContainer();
 	public ValueProvider<TableDatasinkDto,String> primaryKeys();

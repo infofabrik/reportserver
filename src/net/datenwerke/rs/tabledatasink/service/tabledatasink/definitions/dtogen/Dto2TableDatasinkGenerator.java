@@ -106,6 +106,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergePlainDto2Poso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set batchSize */
+		try{
+			poso.setBatchSize(dto.getBatchSize() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set copyPrimaryKeys */
 		try{
 			poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
@@ -148,6 +154,14 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergeProxy2Poso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set batchSize */
+		if(dto.isBatchSizeModified()){
+			try{
+				poso.setBatchSize(dto.getBatchSize() );
+			} catch(NullPointerException e){
+			}
+		}
+
 		/*  set copyPrimaryKeys */
 		if(dto.isCopyPrimaryKeysModified()){
 			try{
@@ -211,6 +225,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergePlainDto2UnmanagedPoso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set batchSize */
+		try{
+			poso.setBatchSize(dto.getBatchSize() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set copyPrimaryKeys */
 		try{
 			poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
@@ -242,6 +262,14 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergeProxy2UnmanagedPoso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set batchSize */
+		if(dto.isBatchSizeModified()){
+			try{
+				poso.setBatchSize(dto.getBatchSize() );
+			} catch(NullPointerException e){
+			}
+		}
+
 		/*  set copyPrimaryKeys */
 		if(dto.isCopyPrimaryKeysModified()){
 			try{

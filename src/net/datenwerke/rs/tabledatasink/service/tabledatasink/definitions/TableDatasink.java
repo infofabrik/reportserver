@@ -67,6 +67,18 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
    @Field
    private boolean copyPrimaryKeys;
    
+   @ExposeToClient
+   @Field
+   private int batchSize = 100;
+   
+   public int getBatchSize() {
+      return batchSize;
+   }
+
+   public void setBatchSize(int batchSize) {
+      this.batchSize = batchSize;
+   }
+
    public String getPrimaryKeys() {
       return primaryKeys;
    }

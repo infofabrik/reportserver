@@ -37,6 +37,42 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 
 
 	/* Fields */
+	private int batchSize;
+	private  boolean batchSize_m;
+	public static final String PROPERTY_BATCH_SIZE = "dpi-tabledatasink-batchsize";
+
+	private transient static PropertyAccessor<TableDatasinkDto, Integer> batchSize_pa = new PropertyAccessor<TableDatasinkDto, Integer>() {
+		@Override
+		public void setValue(TableDatasinkDto container, Integer object) {
+			container.setBatchSize(object);
+		}
+
+		@Override
+		public Integer getValue(TableDatasinkDto container) {
+			return container.getBatchSize();
+		}
+
+		@Override
+		public Class<?> getType() {
+			return Integer.class;
+		}
+
+		@Override
+		public String getPath() {
+			return "batchSize";
+		}
+
+		@Override
+		public void setModified(TableDatasinkDto container, boolean modified) {
+			container.batchSize_m = modified;
+		}
+
+		@Override
+		public boolean isModified(TableDatasinkDto container) {
+			return container.isBatchSizeModified();
+		}
+	};
+
 	private boolean copyPrimaryKeys;
 	private  boolean copyPrimaryKeys_m;
 	public static final String PROPERTY_COPY_PRIMARY_KEYS = "dpi-tabledatasink-copyprimarykeys";
@@ -185,6 +221,55 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 	public TableDatasinkDto() {
 		super();
 	}
+
+	public int getBatchSize()  {
+		if(! isDtoProxy()){
+			return this.batchSize;
+		}
+
+		if(isBatchSizeModified())
+			return this.batchSize;
+
+		if(! GWT.isClient())
+			return 0;
+
+		int _value = dtoManager.getProperty(this, instantiatePropertyAccess().batchSize());
+
+		return _value;
+	}
+
+
+	public void setBatchSize(int batchSize)  {
+		/* old value */
+		int oldValue = 0;
+		if(GWT.isClient())
+			oldValue = getBatchSize();
+
+		/* set new value */
+		this.batchSize = batchSize;
+
+		if(! GWT.isClient())
+			return;
+
+		if(isTrackChanges())
+			addChange(new ChangeTracker(batchSize_pa, oldValue, batchSize, this.batchSize_m));
+
+		/* set indicator */
+		this.batchSize_m = true;
+
+		this.fireObjectChangedEvent(TableDatasinkDtoPA.INSTANCE.batchSize(), oldValue);
+	}
+
+
+	public boolean isBatchSizeModified()  {
+		return batchSize_m;
+	}
+
+
+	public static PropertyAccessor<TableDatasinkDto, Integer> getBatchSizePropertyAccessor()  {
+		return batchSize_pa;
+	}
+
 
 	public boolean isCopyPrimaryKeys()  {
 		if(! isDtoProxy()){
@@ -439,6 +524,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 	}
 
 	public void clearModified()  {
+		this.batchSize = 0;
+		this.batchSize_m = false;
 		this.copyPrimaryKeys = false;
 		this.copyPrimaryKeys_m = false;
 		this.datasourceContainer = null;
@@ -452,6 +539,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 
 	public boolean isModified()  {
 		if(super.isModified())
+			return true;
+		if(batchSize_m)
 			return true;
 		if(copyPrimaryKeys_m)
 			return true;
@@ -467,6 +556,7 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
+		list.add(batchSize_pa);
 		list.add(copyPrimaryKeys_pa);
 		list.add(datasourceContainer_pa);
 		list.add(primaryKeys_pa);
@@ -477,6 +567,8 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 
 	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
+		if(batchSize_m)
+			list.add(batchSize_pa);
 		if(copyPrimaryKeys_m)
 			list.add(copyPrimaryKeys_pa);
 		if(datasourceContainer_m)
@@ -492,6 +584,7 @@ public class TableDatasinkDto extends DatasinkDefinitionDto implements Datasourc
 	public List<PropertyAccessor> getPropertyAccessorsByView(net.datenwerke.gxtdto.client.dtomanager.DtoView view)  {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.NORMAL) >= 0){
+			list.add(batchSize_pa);
 			list.add(copyPrimaryKeys_pa);
 			list.add(datasourceContainer_pa);
 			list.add(primaryKeys_pa);
