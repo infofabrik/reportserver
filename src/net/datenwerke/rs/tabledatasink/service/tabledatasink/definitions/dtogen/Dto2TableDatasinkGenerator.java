@@ -106,6 +106,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergePlainDto2Poso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set copyPrimaryKeys */
+		try{
+			poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set datasourceContainer */
 		DatasourceContainerDto tmpDto_datasourceContainer = dto.getDatasourceContainer();
 		if(null != tmpDto_datasourceContainer && null != tmpDto_datasourceContainer.getId()){
@@ -133,12 +139,23 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 		/*  set name */
 		poso.setName(dto.getName() );
 
+		/*  set primaryKeys */
+		poso.setPrimaryKeys(dto.getPrimaryKeys() );
+
 		/*  set tableName */
 		poso.setTableName(dto.getTableName() );
 
 	}
 
 	protected void mergeProxy2Poso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set copyPrimaryKeys */
+		if(dto.isCopyPrimaryKeysModified()){
+			try{
+				poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
+			} catch(NullPointerException e){
+			}
+		}
+
 		/*  set datasourceContainer */
 		if(dto.isDatasourceContainerModified()){
 			DatasourceContainerDto tmpDto_datasourceContainer = dto.getDatasourceContainer();
@@ -174,6 +191,11 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 			poso.setName(dto.getName() );
 		}
 
+		/*  set primaryKeys */
+		if(dto.isPrimaryKeysModified()){
+			poso.setPrimaryKeys(dto.getPrimaryKeys() );
+		}
+
 		/*  set tableName */
 		if(dto.isTableNameModified()){
 			poso.setTableName(dto.getTableName() );
@@ -189,6 +211,12 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 	}
 
 	protected void mergePlainDto2UnmanagedPoso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set copyPrimaryKeys */
+		try{
+			poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
+		} catch(NullPointerException e){
+		}
+
 		/*  set datasourceContainer */
 		DatasourceContainerDto tmpDto_datasourceContainer = dto.getDatasourceContainer();
 		poso.setDatasourceContainer((DatasourceContainer)dtoServiceProvider.get().createUnmanagedPoso(tmpDto_datasourceContainer));
@@ -205,12 +233,23 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 		/*  set name */
 		poso.setName(dto.getName() );
 
+		/*  set primaryKeys */
+		poso.setPrimaryKeys(dto.getPrimaryKeys() );
+
 		/*  set tableName */
 		poso.setTableName(dto.getTableName() );
 
 	}
 
 	protected void mergeProxy2UnmanagedPoso(TableDatasinkDto dto, final TableDatasink poso)  throws ExpectedException {
+		/*  set copyPrimaryKeys */
+		if(dto.isCopyPrimaryKeysModified()){
+			try{
+				poso.setCopyPrimaryKeys(dto.isCopyPrimaryKeys() );
+			} catch(NullPointerException e){
+			}
+		}
+
 		/*  set datasourceContainer */
 		if(dto.isDatasourceContainerModified()){
 			DatasourceContainerDto tmpDto_datasourceContainer = dto.getDatasourceContainer();
@@ -233,6 +272,11 @@ public class Dto2TableDatasinkGenerator implements Dto2PosoGenerator<TableDatasi
 		/*  set name */
 		if(dto.isNameModified()){
 			poso.setName(dto.getName() );
+		}
+
+		/*  set primaryKeys */
+		if(dto.isPrimaryKeysModified()){
+			poso.setPrimaryKeys(dto.getPrimaryKeys() );
 		}
 
 		/*  set tableName */

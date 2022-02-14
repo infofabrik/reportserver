@@ -1,5 +1,6 @@
 package net.datenwerke.rs.tabledatasink.client.tabledatasink.ui;
 
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.util.Margins;
@@ -37,6 +38,8 @@ public class TableDatasinkForm extends FormView {
    private TextField nameField;
    private TextArea descriptionField;
    private TextField tableNameField;
+   private TextField primaryKeysField;
+   private CheckBox copyPrimaryKeys;
    
    @Inject
    public TableDatasinkForm(
@@ -80,7 +83,22 @@ public class TableDatasinkForm extends FormView {
       BoxLayoutData tableNameData = new BoxLayoutData(new Margins(0, 5, 0, 0));
       tableNameData.setFlex(2);
       tableNameData.setMinSize(54);
-      fieldWrapper.add(new FieldLabel(tableNameField, "Table name"));
+      fieldWrapper.add(new FieldLabel(tableNameField, "Destination table name"));
+      
+      /* primary keys */
+      primaryKeysField = new TextField();
+      primaryKeysField.setWidth(300);
+      BoxLayoutData primaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
+      primaryKeysData.setFlex(2);
+      primaryKeysData.setMinSize(54);
+      fieldWrapper.add(new FieldLabel(primaryKeysField, ";-separated list of primary keys of destination table"));
+      
+      /* primary keys */
+      copyPrimaryKeys = new CheckBox();
+      BoxLayoutData copyPrimaryKeysData = new BoxLayoutData(new Margins(0, 5, 0, 0));
+      copyPrimaryKeysData.setFlex(2);
+      copyPrimaryKeysData.setMinSize(54);
+      fieldWrapper.add(new FieldLabel(copyPrimaryKeys, "Copy destination primary keys"));
       
       form.add(fieldWrapper);
    }
@@ -92,6 +110,8 @@ public class TableDatasinkForm extends FormView {
       binding.addHtmlSafeStringBinding(nameField, model, TableDatasinkDtoPA.INSTANCE.name());
       binding.addHtmlSafeStringBinding(descriptionField, model, TableDatasinkDtoPA.INSTANCE.description());
       binding.addHtmlSafeStringBinding(tableNameField, model, TableDatasinkDtoPA.INSTANCE.tableName());
+      binding.addHtmlSafeStringBinding(primaryKeysField, model, TableDatasinkDtoPA.INSTANCE.primaryKeys());
+      binding.addHtmlSafeStringBinding(copyPrimaryKeys, model, TableDatasinkDtoPA.INSTANCE.copyPrimaryKeys());
    }
    
    @Override

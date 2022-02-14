@@ -73,6 +73,9 @@ public class TableDatasink2DtoGenerator implements Poso2DtoGenerator<TableDatasi
 
 		}
 		if(here.compareTo(DtoView.NORMAL) >= 0){
+			/*  set copyPrimaryKeys */
+			dto.setCopyPrimaryKeys(poso.isCopyPrimaryKeys() );
+
 			/*  set datasourceContainer */
 			Object tmpDtoDatasourceContainerDtogetDatasourceContainer = dtoServiceProvider.get().createDto(poso.getDatasourceContainer(), here, referenced);
 			dto.setDatasourceContainer((DatasourceContainerDto)tmpDtoDatasourceContainerDtogetDatasourceContainer);
@@ -86,6 +89,9 @@ public class TableDatasink2DtoGenerator implements Poso2DtoGenerator<TableDatasi
 
 			/*  set flags */
 			dto.setFlags(poso.getFlags() );
+
+			/*  set primaryKeys */
+			dto.setPrimaryKeys(StringEscapeUtils.escapeXml(StringUtils.left(poso.getPrimaryKeys(),8192)));
 
 			/*  set tableName */
 			dto.setTableName(StringEscapeUtils.escapeXml(StringUtils.left(poso.getTableName(),8192)));

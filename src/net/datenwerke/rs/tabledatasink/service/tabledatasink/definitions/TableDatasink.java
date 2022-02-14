@@ -6,11 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
-import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
-
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -23,7 +19,6 @@ import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceConta
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.locale.TableDatasinkMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
-import net.datenwerke.security.service.crypto.pbe.PbeService;
 
 /**
  * Used to define Table datasinks that can be used in ReportServer to send
@@ -50,9 +45,6 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
     */
    private static final long serialVersionUID = 3831194855989908242L;
 
-   @Inject
-   protected static Provider<PbeService> pbeServiceProvider;
-
    @ExposeToClient
    @EnclosedEntity
    @OneToOne(
@@ -66,6 +58,31 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
    @Column(length = 1024)
    private String tableName;
    
+   @ExposeToClient
+   @Field
+   @Column(length = 2048)
+   private String primaryKeys;
+   
+   @ExposeToClient
+   @Field
+   private boolean copyPrimaryKeys;
+   
+   public String getPrimaryKeys() {
+      return primaryKeys;
+   }
+
+   public void setPrimaryKeys(String primaryKeys) {
+      this.primaryKeys = primaryKeys;
+   }
+
+   public boolean isCopyPrimaryKeys() {
+      return copyPrimaryKeys;
+   }
+
+   public void setCopyPrimaryKeys(boolean copyPrimaryKeys) {
+      this.copyPrimaryKeys = copyPrimaryKeys;
+   }
+
    public DatasourceContainer getDatasourceContainer() {
       return datasourceContainer;
    }
