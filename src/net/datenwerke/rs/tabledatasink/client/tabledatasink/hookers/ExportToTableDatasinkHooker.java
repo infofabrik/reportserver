@@ -13,6 +13,7 @@ import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIModule;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkUIService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
@@ -40,9 +41,12 @@ public class ExportToTableDatasinkHooker implements ExportExternalEntryProviderH
    private final Provider<DatasinkUIService> datasinkUiServiceProvider;
 
    @Inject
-   public ExportToTableDatasinkHooker(@DatasinkTreeTableDatasink Provider<UITree> treeProvider,
-         Provider<TableDatasinkDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider) {
+   public ExportToTableDatasinkHooker(
+         @DatasinkTreeTableDatasink Provider<UITree> treeProvider,
+         Provider<TableDatasinkDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;
@@ -52,7 +56,7 @@ public class ExportToTableDatasinkHooker implements ExportExternalEntryProviderH
    @Override
    public void getMenuEntry(final Menu menu, final ReportDto report, final ReportExecutorInformation info,
          final ReportExecutorMainPanel mainPanel) {
-      if (enterpriseServiceProvider.get().isEnterprise()) {
+      if (enterpriseServiceProvider.get().isEnterprise() && report instanceof TableReportDto) {
          datasinkDaoProvider.get().getStorageEnabledConfigs(new AsyncCallback<Map<StorageType, Boolean>>() {
 
             @Override

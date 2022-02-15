@@ -19,6 +19,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
@@ -169,7 +170,7 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
    @Override
    public boolean appliesFor(ReportDto report, Collection<ReportViewConfiguration> configs) {
-      return true;
+      return report instanceof TableReportDto;
    }
 
 }

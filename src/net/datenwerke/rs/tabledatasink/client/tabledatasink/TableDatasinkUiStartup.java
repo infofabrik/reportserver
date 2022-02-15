@@ -12,11 +12,9 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.hooks.DatasinkDefinitionConfigProviderHook;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
-import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooks.FileExportExternalEntryProviderHook;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.ExportToTableDatasinkHooker;
-import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.FileExportToTableDatasinkHooker;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.TableDatasinkConfigProviderHooker;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.TableDatasinkExportSnippetProvider;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.TableDatasinkSendToFormConfiguratorHooker;
@@ -28,7 +26,6 @@ public class TableDatasinkUiStartup {
    @Inject
    public TableDatasinkUiStartup(
          final Provider<ExportToTableDatasinkHooker> exportToTableDatasinkHooker,
-         final Provider<FileExportToTableDatasinkHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler, 
          final WaitOnEventUIService waitOnEventService,
          final TableDatasinkDao dao,
@@ -46,7 +43,6 @@ public class TableDatasinkUiStartup {
 
       /* Send-to hookers */
       hookHandler.attachHooker(ExportExternalEntryProviderHook.class, exportToTableDatasinkHooker, PRIO);
-      hookHandler.attachHooker(FileExportExternalEntryProviderHook.class, fileExportToDatasinkHooker, PRIO);
 
       waitOnEventService.callbackOnEvent(LoginService.REPORTSERVER_EVENT_AFTER_ANY_LOGIN, ticket -> {
          waitOnEventService.signalProcessingDone(ticket);
