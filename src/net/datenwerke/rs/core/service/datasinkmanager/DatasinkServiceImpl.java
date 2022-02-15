@@ -30,21 +30,28 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class DatasinkServiceImpl implements DatasinkService {
 
    private final Provider<ConfigService> configServiceProvider;
    private final DtoService dtoService;
    private final ZipUtilsService zipUtilsService;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
    @Inject
-   public DatasinkServiceImpl(Provider<ConfigService> configServiceProvider, DtoService dtoService,
-         ZipUtilsService zipUtilsService) {
+   public DatasinkServiceImpl(
+         Provider<ConfigService> configServiceProvider, DtoService dtoService,
+         ZipUtilsService zipUtilsService,
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
       this.configServiceProvider = configServiceProvider;
       this.dtoService = dtoService;
       this.zipUtilsService = zipUtilsService;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -79,14 +86,14 @@ public class DatasinkServiceImpl implements DatasinkService {
          throw new IllegalStateException("datasink is disabled: " + basicDatasinkService);
       exportIntoDatasink(
             "ReportServer " + basicDatasinkService.getDatasinkPropertyName() + " Datasink Test "
-                  + dateFormat.format(Calendar.getInstance().getTime()),
+                  + dateFormat.format(Calendar.getInstance().getTime()), authenticatorServiceProvider.get().getCurrentUser(),
             datasinkDefinition, basicDatasinkService, config);
    }
 
    @Override
-   public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition,
+   public void exportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
          BasicDatasinkService basicDatasinkService, DatasinkConfiguration config) throws DatasinkExportException {
-      basicDatasinkService.doExportIntoDatasink(report, datasinkDefinition, config);
+      basicDatasinkService.doExportIntoDatasink(report, user, datasinkDefinition, config);
    }
 
    @Override
@@ -151,7 +158,8 @@ public class DatasinkServiceImpl implements DatasinkService {
 
    private void exportIntoDatasink(BasicDatasinkService basicDatasinkService, String folder,
          DatasinkDefinition datasink, String filename, byte[] os) throws DatasinkExportException {
-      exportIntoDatasink(os, datasink, basicDatasinkService, new DatasinkFilenameFolderConfig() {
+      exportIntoDatasink(os, authenticatorServiceProvider.get().getCurrentUser(), 
+            datasink, basicDatasinkService, new DatasinkFilenameFolderConfig() {
 
          @Override
          public String getFilename() {

@@ -7,6 +7,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfigurat
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class DummyBoxServiceImpl implements BoxService {
 
@@ -31,8 +32,8 @@ public class DummyBoxServiceImpl implements BoxService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
-         throws DatasinkExportException {
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
+         DatasinkConfiguration config) throws DatasinkExportException {
    }
 
 }

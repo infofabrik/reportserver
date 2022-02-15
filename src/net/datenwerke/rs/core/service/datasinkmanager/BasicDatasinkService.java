@@ -6,6 +6,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfigurat
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface BasicDatasinkService {
 
@@ -15,8 +16,8 @@ public interface BasicDatasinkService {
 
    StorageType getSchedulingStorageType();
 
-   void doExportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
-         throws DatasinkExportException;
+   void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
+         DatasinkConfiguration config) throws DatasinkExportException;
 
    Optional<? extends DatasinkDefinition> getDefaultDatasink();
 }

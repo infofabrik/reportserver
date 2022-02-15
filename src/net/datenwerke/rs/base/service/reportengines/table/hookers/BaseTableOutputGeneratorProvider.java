@@ -18,6 +18,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.generator.PdfTa
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.RSTableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.RSTableSimpleBeanOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.SimpleJxlsTemplateOutputGenerator;
+import net.datenwerke.rs.base.service.reportengines.table.output.generator.StreamTableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.TableOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.XLSOutputGenerator;
 import net.datenwerke.rs.base.service.reportengines.table.output.generator.XLSStreamOutputGenerator;
@@ -37,17 +38,27 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
    private final Provider<MetaDataOutputGenerator> metadata;
    private final Provider<DataCountOutputGenerator> datacount;
    private final Provider<PdfTableOutputGenerator> pdf;
+   private final Provider<StreamTableOutputGenerator> streamTable;
 
    private final ConfigService configService;
 
    @Inject
-   public BaseTableOutputGeneratorProvider(Provider<RSTableOutputGenerator> table,
-         Provider<RSTableSimpleBeanOutputGenerator> bean, Provider<XLSStreamOutputGenerator> xlsStream,
-         Provider<SimpleJxlsTemplateOutputGenerator> jxls, Provider<XLSOutputGenerator> xls,
-         Provider<HTMLOutputGenerator> html, Provider<CSVOutputGenerator> csv, Provider<JSONOutputGenerator> json,
-         Provider<CompactJSONOutputGenerator> jsonc, Provider<MetaDataOutputGenerator> metadata,
-         Provider<DataCountOutputGenerator> datacount, Provider<PdfTableOutputGenerator> pdf,
-         ConfigService configService) {
+   public BaseTableOutputGeneratorProvider(
+         Provider<RSTableOutputGenerator> table,
+         Provider<RSTableSimpleBeanOutputGenerator> bean, 
+         Provider<XLSStreamOutputGenerator> xlsStream,
+         Provider<SimpleJxlsTemplateOutputGenerator> jxls, 
+         Provider<XLSOutputGenerator> xls,
+         Provider<HTMLOutputGenerator> html, 
+         Provider<CSVOutputGenerator> csv, 
+         Provider<JSONOutputGenerator> json,
+         Provider<CompactJSONOutputGenerator> jsonc, 
+         Provider<MetaDataOutputGenerator> metadata,
+         Provider<DataCountOutputGenerator> datacount, 
+         Provider<PdfTableOutputGenerator> pdf,
+         Provider<StreamTableOutputGenerator> streamTable, 
+         ConfigService configService
+         ) {
       super();
       this.table = table;
       this.bean = bean;
@@ -61,6 +72,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
       this.metadata = metadata;
       this.datacount = datacount;
       this.pdf = pdf;
+      this.streamTable = streamTable;
       this.configService = configService;
    }
 
@@ -78,6 +90,7 @@ public class BaseTableOutputGeneratorProvider implements TableOutputGeneratorPro
       generators.add(datacount.get());
       generators.add(pdf.get());
       generators.add(jxls.get());
+      generators.add(streamTable.get());
 
       if (configService.getConfigFailsafe("exportfilemd/excelexport.cf").getBoolean("xls.stream", true))
          generators.add(xlsStream.get());

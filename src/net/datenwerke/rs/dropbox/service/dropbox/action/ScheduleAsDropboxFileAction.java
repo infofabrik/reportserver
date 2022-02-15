@@ -114,7 +114,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), dropboxDatasink, dropboxService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), dropboxDatasink, dropboxService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -131,7 +131,8 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), dropboxDatasink, dropboxService,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), 
+                  dropboxDatasink, dropboxService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

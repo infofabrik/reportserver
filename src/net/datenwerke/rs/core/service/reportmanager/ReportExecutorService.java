@@ -38,6 +38,7 @@ public interface ReportExecutorService {
    public static final String OUTPUT_FORMAT_TEXT = "TEXT";
    public static final String OUTPUT_FORMAT_XML = "XML";
    public static final String METADATA_FORMAT_PLAIN = "METADATA_PLAIN";
+   public static final String OUTPUT_FORMAT_STREAM_TABLE = "RS_STREAM_TABLE"; //$NON-NLS-1$
 
    public void isExecutable(Report report, String outputFormat, ReportExecutionConfig... configs)
          throws ReportExecutorException;

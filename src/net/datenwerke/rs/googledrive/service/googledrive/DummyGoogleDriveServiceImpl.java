@@ -7,6 +7,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
 
@@ -31,7 +32,7 @@ public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
          throws DatasinkExportException {
    }
 

@@ -14,8 +14,10 @@ public class ParameterSetFactory {
    private final Provider<Injector> injectorProvider;
 
    @Inject
-   public ParameterSetFactory(Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<Injector> injectorProvider) {
+   public ParameterSetFactory(
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<Injector> injectorProvider
+         ) {
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.injectorProvider = injectorProvider;
    }

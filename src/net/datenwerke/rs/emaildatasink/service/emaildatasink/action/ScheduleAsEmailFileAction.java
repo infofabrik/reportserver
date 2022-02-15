@@ -129,7 +129,8 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), emailDatasink, emailDatasinkService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
+                     emailDatasink, emailDatasinkService,
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -160,7 +161,8 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), emailDatasink,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
+                  emailDatasink,
                   emailDatasinkService, new DatasinkEmailConfig() {
 
                      @Override

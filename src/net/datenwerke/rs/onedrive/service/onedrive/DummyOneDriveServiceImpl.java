@@ -7,6 +7,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class DummyOneDriveServiceImpl implements OneDriveService {
 
@@ -31,8 +32,8 @@ public class DummyOneDriveServiceImpl implements OneDriveService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
-         throws DatasinkExportException {
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
+         DatasinkConfiguration config) throws DatasinkExportException {
    }
 
 }

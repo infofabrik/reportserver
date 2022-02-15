@@ -42,6 +42,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -64,13 +65,22 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
-   public LocalFileSystemRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService,
-         DtoService dtoService, ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, LocalFileSystemService localFileSystemService,
-         ExceptionServices exceptionServices, ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider) {
+   public LocalFileSystemRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService,
+         DtoService dtoService, 
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         LocalFileSystemService localFileSystemService,
+         ExceptionServices exceptionServices, 
+         ZipUtilsService zipUtilsService,
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -82,6 +92,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Transactional(rollbackOn = { Exception.class })
@@ -122,7 +133,9 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), localFileSystemDatasink,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
+                     authenticatorServiceProvider.get().getCurrentUser(),
+                     localFileSystemDatasink,
                      localFileSystemService, new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -138,7 +151,9 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), localFileSystemDatasink,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
+                  authenticatorServiceProvider.get().getCurrentUser(), 
+                  localFileSystemDatasink,
                   localFileSystemService, new DatasinkFilenameFolderConfig() {
 
                      @Override

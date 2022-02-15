@@ -114,7 +114,7 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), oneDriveDatasink, oneDriveService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), oneDriveDatasink, oneDriveService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -131,7 +131,8 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), oneDriveDatasink, oneDriveService,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
+                  oneDriveDatasink, oneDriveService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

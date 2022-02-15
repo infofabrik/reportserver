@@ -41,6 +41,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -62,12 +63,22 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
-   public OneDriveRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, OneDriveService oneDriveService, ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
+   public OneDriveRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         OneDriveService oneDriveService, 
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, 
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -79,6 +90,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -117,7 +129,9 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), oneDriveDatasink, oneDriveService,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
+                     authenticatorServiceProvider.get().getCurrentUser(),
+                     oneDriveDatasink, oneDriveService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -134,7 +148,9 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), oneDriveDatasink, oneDriveService,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
+                  authenticatorServiceProvider.get().getCurrentUser(),
+                  oneDriveDatasink, oneDriveService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

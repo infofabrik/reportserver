@@ -83,12 +83,20 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
-   public EmailDatasinkRpcServiceImpl(ReportService reportService, EmailDatasinkService emailDatasinkService,
-         DtoService dtoService, ReportExecutorService reportExecutorService, ReportDtoService reportDtoService,
-         SecurityService securityService, HookHandlerService hookHandlerService, ExceptionServices exceptionServices,
-         UserManagerService userManagerService, ZipUtilsService zipUtilsService,
+   public EmailDatasinkRpcServiceImpl(
+         ReportService reportService, 
+         EmailDatasinkService emailDatasinkService,
+         DtoService dtoService, 
+         ReportExecutorService reportExecutorService, 
+         ReportDtoService reportDtoService,
+         SecurityService securityService, 
+         HookHandlerService hookHandlerService, 
+         ExceptionServices exceptionServices,
+         UserManagerService userManagerService, 
+         ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider) {
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
       this.reportService = reportService;
       this.emailDatasinkService = emailDatasinkService;
       this.dtoService = dtoService;
@@ -143,7 +151,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), emailDatasink, emailDatasinkService,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), authenticatorServiceProvider.get().getCurrentUser(),
+                     emailDatasink, emailDatasinkService,
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -174,7 +183,9 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), emailDatasink, emailDatasinkService,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
+                  authenticatorServiceProvider.get().getCurrentUser(),
+                  emailDatasink, emailDatasinkService,
                   new DatasinkEmailConfig() {
 
                      @Override
@@ -349,7 +360,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
       List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
             .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
-      datasinkServiceProvider.get().exportIntoDatasink(os, datasink, basicDatasinkService, new DatasinkEmailConfig() {
+      datasinkServiceProvider.get().exportIntoDatasink(os, authenticatorServiceProvider.get().getCurrentUser(),
+            datasink, basicDatasinkService, new DatasinkEmailConfig() {
 
          @Override
          public String getFilename() {

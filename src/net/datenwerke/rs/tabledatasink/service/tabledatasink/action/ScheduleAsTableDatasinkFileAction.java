@@ -76,7 +76,7 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
 
    private void sendViaTableDatasink(ReportExecuteJob rJob) throws ActionExecutionException {
       try {
-         datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), tableDatasink,
+         datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), tableDatasink,
                tableDatasinkService, null);
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to table datasink", e);

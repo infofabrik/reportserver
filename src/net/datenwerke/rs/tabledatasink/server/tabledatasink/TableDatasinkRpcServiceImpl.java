@@ -1,6 +1,5 @@
 package net.datenwerke.rs.tabledatasink.server.tabledatasink;
 
-import java.sql.Connection;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -11,14 +10,10 @@ import javax.inject.Singleton;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.dbpool.DbPoolService;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
-import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
-import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
-import net.datenwerke.rs.base.service.dbhelper.DBHelperService;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
@@ -27,7 +22,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
-import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
@@ -36,8 +30,8 @@ import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.rpc.TableDatasinkRpcService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -52,38 +46,30 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
    private final ReportService reportService;
    private final DtoService dtoService;
-   private final ReportExecutorService reportExecutorService;
    private final ReportDtoService reportDtoService;
    private final TableDatasinkService tableDatasinkService;
    private final SecurityService securityService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final DbPoolService dbPoolService;
-   private final DBHelperService dbHelperService;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public TableDatasinkRpcServiceImpl(
          ReportService reportService, 
          ReportDtoService reportDtoService,
          DtoService dtoService, 
-         ReportExecutorService reportExecutorService, 
          SecurityService securityService,
-         HookHandlerService hookHandlerService, 
          TableDatasinkService tableDatasinkService,
-         ExceptionServices exceptionServices, 
          Provider<DatasinkService> datasinkServiceProvider,
-         DbPoolService dbPoolService,
-         DBHelperService dbHelperService
+         Provider<AuthenticatorService> authenticatorServiceProvider
          ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
       this.dtoService = dtoService;
-      this.reportExecutorService = reportExecutorService;
       this.securityService = securityService;
       this.tableDatasinkService = tableDatasinkService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.dbPoolService = dbPoolService;
-      this.dbHelperService = dbHelperService;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -124,8 +110,6 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       if (!(toExecute instanceof TableReport)) 
          throw new IllegalArgumentException("Not a dynamic list");
       
-      DatabaseDatasource dstDatasource = (DatabaseDatasource) dstDatasourceContainer.getDatasource();
-      
       TableReport tableReport = (TableReport) toExecute;
       
       Objects.requireNonNull(tableReport.getDatasourceContainer().getDatasource());
@@ -133,11 +117,8 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          throw new IllegalArgumentException("Only database datasources are currently supported");
       
       try {
-//         Connection connection = (Connection) dbPoolService.getConnection(dstDatasource.getConnectionConfig()).get();
-//         TableDBDataSource tableDBDatasource = new TableDBDataSource(connection, srcQuery, tableDatasink,
-//               dbHelperService.getDatabaseHelper(connection));
-         
-         datasinkServiceProvider.get().exportIntoDatasink(tableReport, tableDatasink, tableDatasinkService, null);
+         datasinkServiceProvider.get().exportIntoDatasink(tableReport, authenticatorServiceProvider.get().getCurrentUser(),
+               tableDatasink, tableDatasinkService, null);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Table Datasink: " + e.getMessage(), e);
       }

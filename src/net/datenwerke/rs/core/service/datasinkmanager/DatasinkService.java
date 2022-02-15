@@ -12,6 +12,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface DatasinkService {
 
@@ -65,13 +66,14 @@ public interface DatasinkService {
     * 
     * @param report               the report to send. May be a String, a byte array
     *                             or a {@link TableDBDataSource}
+    * @param user                 the {@link User} executing the report
     * @param datasink             the {@link TableReport} to send
     * @param basicDatasinkService the service
     * @param config               configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, DatasinkDefinition datasink, BasicDatasinkService basicDatasinkService,
-         DatasinkConfiguration config) throws DatasinkExportException;
+   void exportIntoDatasink(Object report, User user, DatasinkDefinition datasink,
+         BasicDatasinkService basicDatasinkService, DatasinkConfiguration config) throws DatasinkExportException;
 
    Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);
 

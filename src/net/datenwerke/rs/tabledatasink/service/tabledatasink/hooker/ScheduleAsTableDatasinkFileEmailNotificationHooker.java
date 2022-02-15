@@ -43,11 +43,11 @@ public class ScheduleAsTableDatasinkFileEmailNotificationHooker extends Schedule
    public static final String PROPERTY_EXCEPTION = "exception";
    public static final String PROPERTY_EXCEPTIONST = "trace";
 
-   public static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionAmazonS3.subject";
-   public static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionAmazonS3.text";
+   public static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionTableDatasink.subject";
+   public static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionTableDatasink.text";
 
-   private static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_DISABLED = "scheduler.fileactionAmazonS3[@disabled]";
-   private static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_HTML = "scheduler.fileactionAmazonS3[@html]";
+   private static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_DISABLED = "scheduler.fileactionTableDatasink[@disabled]";
+   private static final String PROPERTY_TABLE_DATASINK_NOTIFICATION_HTML = "scheduler.fileactionTableDatasink[@html]";
 
    private Configuration config;
    private MailService mailService;

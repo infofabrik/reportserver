@@ -41,6 +41,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -63,12 +64,22 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
-   public FtpsRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, FtpsService ftpsService, ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
+   public FtpsRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         FtpsService ftpsService, 
+         ExceptionServices exceptionServices,
+         ZipUtilsService zipUtilsService, 
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -80,6 +91,7 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
@@ -131,7 +143,9 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), ftpsDatasink, ftpsService,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
+                     authenticatorServiceProvider.get().getCurrentUser(),
+                     ftpsDatasink, ftpsService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -147,7 +161,9 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), ftpsDatasink, ftpsService,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
+                  authenticatorServiceProvider.get().getCurrentUser(),
+                  ftpsDatasink, ftpsService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

@@ -22,6 +22,7 @@ import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSON;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSONC;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JXLS;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2PDF;
+import net.datenwerke.rs.base.client.reportengines.table.execute.Table2StreamTable;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.CubifyHooker;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.TableReportConfigHooker;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.TableReportPreExportHooker;
@@ -55,26 +56,37 @@ public class BaseReportEngineUiStartup {
          final Provider<TableReportViewStatusBarInfoHooker> statusBarInfoHooker,
          final Provider<JasperReportViewStatusBarInfoHooker> jasperStatusBarInfoHooker,
 
-         final Provider<CubifyHooker> cubifyHooker, final Provider<CubeExportHooker> cubeExportHooker,
+         final Provider<CubifyHooker> cubifyHooker, 
+         final Provider<CubeExportHooker> cubeExportHooker,
 
-         final Provider<GeoLocationEnhancer> geoLocationEnhancer, final Provider<LinkToEnhancer> linkToEnhancer,
+         final Provider<GeoLocationEnhancer> geoLocationEnhancer, 
+         final Provider<LinkToEnhancer> linkToEnhancer,
 
          final ReportObjectInfo ReportObjectInfo,
 
-         final JasperReportConfigHooker jasperReportConfigHooker, final TableReportConfigHooker tableReportConfigHooker,
+         final JasperReportConfigHooker jasperReportConfigHooker, 
+         final TableReportConfigHooker tableReportConfigHooker,
 
-         final Provider<Table2HTML> table2HTML, final Provider<Table2JSON> table2JSON,
-         final Provider<Table2JSONC> table2JSONC, final Provider<Table2CSV> table2CSV,
-         final Provider<Table2PDF> table2PDF, final Provider<Table2Excel> table2Excel,
+         final Provider<Table2HTML> table2HTML, 
+         final Provider<Table2JSON> table2JSON,
+         final Provider<Table2JSONC> table2JSONC, 
+         final Provider<Table2CSV> table2CSV,
+         final Provider<Table2PDF> table2PDF, 
+         final Provider<Table2Excel> table2Excel,
          final Provider<Table2JXLS> table2JXLS,
+         final Provider<Table2StreamTable> table2StreamTable,
 
-         final Provider<Jasper2HTML> jasper2HTML, final Provider<Jasper2PDF> jasper2PDF,
-         final Provider<Jasper2Excel> jasper2Excel, final Provider<Jasper2RTF> jasper2RTF,
+         final Provider<Jasper2HTML> jasper2HTML, 
+         final Provider<Jasper2PDF> jasper2PDF,
+         final Provider<Jasper2Excel> jasper2Excel, 
+         final Provider<Jasper2RTF> jasper2RTF,
 
          final Provider<TableReportPreExportHooker> preExportHooker,
 
          final Provider<EnterpriseUiService> enterpriseServiceProvider,
-         final Provider<WaitOnEventUIService> waitOnEventServiceProvider) {
+         final Provider<WaitOnEventUIService> waitOnEventServiceProvider
+         
+         ) {
 
       /* icon provider */
       hookHandler.attachHooker(ReportTypeConfigHook.class, tableReportConfigHooker, 10);
@@ -127,12 +139,17 @@ public class BaseReportEngineUiStartup {
             HookHandlerService.PRIORITY_LOWER + 40);
       hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSONC),
             HookHandlerService.PRIORITY_LOWER + 50);
+      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSONC),
+            HookHandlerService.PRIORITY_LOWER + 60);
 
       waitOnEventServiceProvider.get()
             .callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN, ticket -> {
                if (enterpriseServiceProvider.get().isEnterprise())
                   hookHandler.attachHooker(ReportExporterExportReportHook.class,
                         new ReportExporterExportReportHook(table2JXLS), HookHandlerService.PRIORITY_LOWER + 30);
+               
+               hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2StreamTable),
+                     HookHandlerService.PRIORITY_LOWER + 70);
 
                waitOnEventServiceProvider.get().signalProcessingDone(ticket);
             });

@@ -19,6 +19,7 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEma
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.misc.MimeUtils;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class EmailDatasinkServiceImpl implements EmailDatasinkService {
 
@@ -41,7 +42,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       Objects.requireNonNull(datasink, "datasink is null!");
       if (!(config instanceof DatasinkEmailConfig))

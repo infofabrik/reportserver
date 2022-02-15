@@ -112,7 +112,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), ftpDatasink, ftpService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), ftpDatasink, ftpService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -128,7 +128,8 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), ftpDatasink, ftpService,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), 
+                  rJob.getExecutor(), ftpDatasink, ftpService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

@@ -14,25 +14,27 @@ import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportE
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultFtpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class FtpServiceImpl implements FtpService {
 
    private final Provider<DatasinkService> datasinkServiceProvider;
-
    private final Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider;
-
    private final Provider<FtpSenderService> ftpSenderServiceProvider;
 
    @Inject
-   public FtpServiceImpl(@DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
-         Provider<DatasinkService> datasinkServiceProvider, Provider<FtpSenderService> ftpSenderServiceProvider) {
+   public FtpServiceImpl(
+         @DefaultFtpDatasink Provider<Optional<FtpDatasink>> defaultFtpDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider, 
+         Provider<FtpSenderService> ftpSenderServiceProvider
+         ) {
       this.defaultFtpDatasinkProvider = defaultFtpDatasinkProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.ftpSenderServiceProvider = ftpSenderServiceProvider;
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftp is disabled");

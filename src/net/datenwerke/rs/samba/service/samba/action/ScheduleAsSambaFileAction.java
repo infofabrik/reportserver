@@ -112,7 +112,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), sambaDatasink, sambaService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sambaDatasink, sambaService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -129,7 +129,8 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), sambaDatasink, sambaService,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
+                  sambaDatasink, sambaService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

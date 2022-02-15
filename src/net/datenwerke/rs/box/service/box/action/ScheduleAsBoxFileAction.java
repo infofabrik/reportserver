@@ -113,7 +113,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), boxDatasink, boxService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), boxDatasink, boxService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -129,7 +129,8 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), boxDatasink, boxService,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
+                  boxDatasink, boxService,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

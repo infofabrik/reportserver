@@ -89,15 +89,16 @@ public class SimpleDataSupplier {
          ds.close();
       }
    }
-
-   public TableDefinition getInfo(DatasourceContainerProvider container, Column... columns)
+   
+   public TableDefinition getInfo(DatasourceContainerProvider container, User user, Column... columns)
          throws ReportExecutorException {
       ParameterSet ps = null;
       if (container instanceof ParameterContainerNode) {
          if (container instanceof Report)
-            ps = parameterSetFactory.create((Report) container);
+            ps = parameterSetFactory.create(user, (Report) container);
          else
-            ps = parameterSetFactory.create();
+            ps = parameterSetFactory.create(user, null);
+         
          ps.addAll(((ParameterContainerNode) container).getParameterInstances());
       }
 
@@ -135,6 +136,22 @@ public class SimpleDataSupplier {
    public RSTableModel getData(DatasourceContainerProvider container, ParameterSet parameters, Integer offset,
          Integer limit) throws ReportExecutorException {
       return getData(container, parameters, offset, limit, null, null);
+   }
+
+   public RSTableModel getData(DatasourceContainerProvider container, User user, Integer offset,
+         Integer limit, TableDatasourceConfig config, DataConsumer consumer) throws ReportExecutorException {
+   
+      ParameterSet ps = null;
+      if (container instanceof ParameterContainerNode) {
+         if (container instanceof Report)
+            ps = parameterSetFactory.create(user, (Report) container);
+         else
+            ps = parameterSetFactory.create(user, null);
+         ps.addAll(((ParameterContainerNode) container).getParameterInstances());
+         
+      }
+      
+      return getData(container, ps, offset, limit, config, consumer);
    }
 
    public RSTableModel getData(DatasourceContainerProvider container, ParameterSet parameters, Integer offset,

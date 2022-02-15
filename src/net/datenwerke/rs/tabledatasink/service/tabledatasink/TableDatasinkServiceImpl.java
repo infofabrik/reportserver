@@ -18,6 +18,7 @@ import net.datenwerke.rs.tabledatasink.service.tabledatasink.annotations.Default
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rsenterprise.license.service.annotations.EnterpriseChecked;
 import net.datenwerke.rsenterprise.license.service.annotations.EnterpriseCheckedBypass;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 @EnterpriseChecked
 public class TableDatasinkServiceImpl implements TableDatasinkService {
@@ -57,7 +58,7 @@ public class TableDatasinkServiceImpl implements TableDatasinkService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("Table datasinks are disabled");
@@ -83,7 +84,7 @@ public class TableDatasinkServiceImpl implements TableDatasinkService {
          throw new IllegalArgumentException("Table '" + tableName + "' does not exist");
       
       try {
-         datasourceEEServiceProvider.get().exportIntoTable((TableReport) report, tableDatasink);
+         datasourceEEServiceProvider.get().exportIntoTable((TableReport) report, user, tableDatasink);
       } catch (Exception e) {
          throw new DatasinkExportException(e);
       }

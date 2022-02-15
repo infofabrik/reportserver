@@ -81,7 +81,7 @@ public class ComputedColumnsRpcServiceImpl extends SecuredRemoteServiceServlet i
       reference.setReference(computedColumn);
 
       try {
-         TableDefinition definition = dataSupplyer.getInfo(referenceReport, reference);
+         TableDefinition definition = dataSupplyer.getInfo(referenceReport, null, reference);
          return definition.getSqlColumnTypes().get(definition.size() - 1);
       } catch (Exception e) {
          throw new ExpectedException(e);

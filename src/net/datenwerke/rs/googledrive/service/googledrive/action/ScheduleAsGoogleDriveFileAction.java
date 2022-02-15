@@ -114,7 +114,7 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), googleDriveDatasink, googleDriveService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), googleDriveDatasink, googleDriveService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -131,7 +131,9 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), googleDriveDatasink,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(),
+                  rJob.getExecutor(),
+                  googleDriveDatasink,
                   googleDriveService, new DatasinkFilenameFolderConfig() {
 
                      @Override

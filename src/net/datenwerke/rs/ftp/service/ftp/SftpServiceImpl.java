@@ -14,6 +14,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportE
 import net.datenwerke.rs.ftp.service.ftp.annotations.DefaultSftpDatasink;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 public class SftpServiceImpl implements SftpService {
 
@@ -22,15 +23,18 @@ public class SftpServiceImpl implements SftpService {
    private final Provider<FtpSenderService> ftpSenderService;
 
    @Inject
-   public SftpServiceImpl(@DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
-         Provider<DatasinkService> datasinkServiceProvider, Provider<FtpSenderService> ftpSenderService) {
+   public SftpServiceImpl(
+         @DefaultSftpDatasink Provider<Optional<SftpDatasink>> defaultSftpDatasinkProvider,
+         Provider<DatasinkService> datasinkServiceProvider, 
+         Provider<FtpSenderService> ftpSenderService
+         ) {
       this.defaultSftpDatasinkProvider = defaultSftpDatasinkProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.ftpSenderService = ftpSenderService;
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("sftp is disabled");

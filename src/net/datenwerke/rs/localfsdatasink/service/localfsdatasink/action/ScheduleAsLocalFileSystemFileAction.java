@@ -113,7 +113,8 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), localFileSystemDatasink, localFileSystemService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
+                     localFileSystemDatasink, localFileSystemService,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -129,7 +130,8 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
             }
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), localFileSystemDatasink,
+            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
+                  localFileSystemDatasink,
                   localFileSystemService, new DatasinkFilenameFolderConfig() {
 
                      @Override
