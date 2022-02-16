@@ -34,6 +34,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinitionSendToConfig;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.hookers.TableDatasinkExportSnippetProvider;
 import net.datenwerke.rs.utils.misc.Nullable;
 
 public class SchedulerExportConfigurationForm extends DwContentPanel
@@ -43,13 +44,13 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
 
    private final HookHandlerService hookHandler;
 
-   private Map<ScheduleExportSnippetProviderHook, SimpleForm> formMap = new IdentityHashMap<ScheduleExportSnippetProviderHook, SimpleForm>();
+   private Map<ScheduleExportSnippetProviderHook, SimpleForm> formMap = new IdentityHashMap<>();
 
    private List<ScheduleExportSnippetProviderHook> snippetProviders;
 
    private ArrayList<SendToClientConfig> sendToConfigs;
-   private Map<String, SimpleForm> sendToForms = new HashMap<String, SimpleForm>();
-   private Map<String, SimpleForm> sendToActivationForms = new HashMap<String, SimpleForm>();
+   private Map<String, SimpleForm> sendToForms = new HashMap<>();
+   private Map<String, SimpleForm> sendToActivationForms = new HashMap<>();
 
    private ReportScheduleDefinition definition;
    private Collection<ReportViewConfiguration> configs;
@@ -57,11 +58,15 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    private SimpleMultiForm form;
 
    private ReportDto report;
+   private String outputFormat;
 
    @Inject
-   public SchedulerExportConfigurationForm(HookHandlerService hookHandler,
-         @Assisted Collection<ReportViewConfiguration> configs, @Assisted ArrayList<SendToClientConfig> sendToConfigs,
-         @Nullable @Assisted ReportScheduleDefinition definition) {
+   public SchedulerExportConfigurationForm(
+         HookHandlerService hookHandler,
+         @Assisted Collection<ReportViewConfiguration> configs, 
+         @Assisted ArrayList<SendToClientConfig> sendToConfigs,
+         @Nullable @Assisted ReportScheduleDefinition definition
+         ) {
       super();
 
       /* store objects */
@@ -88,17 +93,20 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
 
       this.snippetProviders = hookHandler.getHookers(ScheduleExportSnippetProviderHook.class);
 
-      snippetProviders.stream().filter(hooker -> hooker.appliesFor(report, configs)).forEach(hooker -> {
-         final SimpleForm xform = SimpleForm.getInlineInstance();
-         xform.addClassName("rs-scheduler-export-action-subform");
-
-         hooker.configureSimpleForm(xform, report, configs);
-         formMap.put(hooker, xform);
-
-         hooker.loadFields(xform, definition, report);
-
-         form.addSubForm(xform);
-      });
+      snippetProviders
+         .stream()
+         .filter(hooker -> hooker.appliesFor(report, configs))
+         .filter(this::filter)
+         .forEach(hooker -> {
+            final SimpleForm xform = SimpleForm.getInlineInstance();
+            xform.addClassName("rs-scheduler-export-action-subform");
+   
+            hooker.configureSimpleForm(xform, report, configs);
+            formMap.put(hooker, xform);
+   
+            hooker.loadFields(xform, definition, report);
+            form.addSubForm(xform);
+         });
 
       /* send-to configs */
       sendToConfigs.forEach(sendToConfig -> {
@@ -125,8 +133,10 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
                if (null != definition) {
                   final Map<String, String> values = definition.getSendToConfig(sendToConfig.getId()).getValues();
                   if (null != values) {
-                     detailForm.getFieldKeys().stream().filter(field -> values.containsKey(field))
-                           .forEach(field -> detailForm.setValue(field, values.get(field)));
+                     detailForm.getFieldKeys()
+                        .stream()
+                        .filter(field -> values.containsKey(field))
+                        .forEach(field -> detailForm.setValue(field, values.get(field)));
                   }
                }
 
@@ -236,7 +246,11 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    @Override
    public void onPageChange(final int pageNr, final Widget page) {
       if (page instanceof JobReportConfigurationForm) {
-         final ReportDto report = ((JobReportConfigurationForm) page).getReport();
+         JobReportConfigurationForm jobReportConfigForm = (JobReportConfigurationForm) page;
+         
+         outputFormat = jobReportConfigForm.getOutputFormat();
+         
+         final ReportDto report = jobReportConfigForm.getReport();
 
          if (report != this.report)
             initForm(report);
@@ -244,8 +258,18 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
          this.report = report;
       }
 
-      snippetProviders.stream().filter(hooker -> hooker.appliesFor(report, configs))
-            .forEach(hooker -> hooker.onWizardPageChange(pageNr, page, formMap.get(hooker), definition, report));
+      snippetProviders
+         .stream()
+         .filter(this::filter)
+         .filter(hooker -> hooker.appliesFor(report, configs))
+         .forEach(hooker -> hooker.onWizardPageChange(pageNr, page, formMap.get(hooker), definition, report));
+   }
+   
+   private boolean filter(ScheduleExportSnippetProviderHook hooker) {
+      if ("RS_STREAM_TABLE".equals(outputFormat))
+         return hooker instanceof TableDatasinkExportSnippetProvider;
+      else
+         return !(hooker instanceof TableDatasinkExportSnippetProvider);
    }
 
 }

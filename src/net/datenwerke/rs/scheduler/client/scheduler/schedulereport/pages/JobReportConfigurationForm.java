@@ -113,13 +113,19 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
    final List<ScheduleConfigWizardPageProviderHook> advancedPages;
 
    @Inject
-   public JobReportConfigurationForm(ReportExecutorUIService reportExecutorService,
-         ReportDocumentationUiService reportDocService, ReportExporterUIService reportExporterService,
-         ReportManagerTreeLoaderDao reportLoaderDao, ReportExecutorDao reportExecutorDao,
-         Provider<ReportSelectionDialog> reportDialogProvider, HookHandlerService hookHandler,
-         @Assisted Optional<ReportDto> report, @Assisted Collection<ReportViewConfiguration> configs,
+   public JobReportConfigurationForm(
+         ReportExecutorUIService reportExecutorService,
+         ReportDocumentationUiService reportDocService, 
+         ReportExporterUIService reportExporterService,
+         ReportManagerTreeLoaderDao reportLoaderDao, 
+         ReportExecutorDao reportExecutorDao,
+         Provider<ReportSelectionDialog> reportDialogProvider, 
+         HookHandlerService hookHandler,
+         @Assisted Optional<ReportDto> report, 
+         @Assisted Collection<ReportViewConfiguration> configs,
          @Nullable @Assisted ReportScheduleDefinition definition,
-         @Assisted List<ScheduleConfigWizardPageProviderHook> advancedPages) {
+         @Assisted List<ScheduleConfigWizardPageProviderHook> advancedPages
+         ) {
 
       super();
       this.reportExecutorService = reportExecutorService;

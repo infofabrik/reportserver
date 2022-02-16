@@ -136,6 +136,9 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
 
       final SingleTreeSelectionField tableField = extractSingleTreeSelectionField(form.getField(tableDatasinkKey));
 
+      if (null == definition)
+         form.setValue(isExportAsFileKey, true);
+         
       if (null != definition) {
          form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsTableDatasinkFileInformation info = definition
