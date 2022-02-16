@@ -113,7 +113,8 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
    @Override
    public void displaySendToDatasinkDialog(
          final Class<? extends DatasinkDefinitionDto> datasinkType,
-         final String filename, final Provider<UITree> treeProvider,
+         final String filename, 
+         final Provider<UITree> treeProvider,
          final Provider<? extends HasDefaultDatasink> datasinkDaoProvider, 
          final AbstractNodeDto toExport,
          final Optional<ReportExecutorInformation> reportInfo,
@@ -205,6 +206,11 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                   @Override
                   public String getExecuteReportToken() {
                      return reportInfo.get().getExecuteReportToken();
+                  }
+
+                  @Override
+                  public Optional<Class<? extends DatasinkDefinitionDto>> getDatasinkType() {
+                     return Optional.of(datasinkType);
                   }
                }));
       }

@@ -1,5 +1,7 @@
 package net.datenwerke.rs.core.service.reportmanager.engine.basereports;
 
+import java.util.Objects;
+
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 
 public class CompiledStreamTableReport implements CompiledReport {
@@ -29,32 +31,22 @@ public class CompiledStreamTableReport implements CompiledReport {
 
    @Override
    public int hashCode() {
-      final int prime = 31;
-      int result = 1;
-      result = prime * result + ((report == null) ? 0 : report.hashCode());
-      return result;
+      return Objects.hashCode(report);
    }
 
    @Override
    public boolean equals(Object obj) {
-      if (this == obj) {
+      if (obj == this)
          return true;
-      }
-      if (obj == null) {
+      if (obj == null)
+         return false;
+      
+      if (obj instanceof CompiledStreamTableReport) {
+         final CompiledStreamTableReport other = (CompiledStreamTableReport) obj;
+         return Objects.equals(report, other.report);
+      } else {
          return false;
       }
-      if (!(obj instanceof CompiledStreamTableReport)) {
-         return false;
-      }
-      CompiledStreamTableReport other = (CompiledStreamTableReport) obj;
-      if (report == null) {
-         if (other.report != null) {
-            return false;
-         }
-      } else if (!report.equals(other.report)) {
-         return false;
-      }
-      return true;
    }
 
    @Override

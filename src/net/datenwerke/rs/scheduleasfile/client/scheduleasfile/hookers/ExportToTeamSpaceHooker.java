@@ -1,6 +1,7 @@
 package net.datenwerke.rs.scheduleasfile.client.scheduleasfile.hookers;
 
 import java.util.Collection;
+import java.util.Optional;
 
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
@@ -22,6 +23,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFC
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.PrepareReportModelForStorageOrExecutionHook;
@@ -84,6 +86,11 @@ public class ExportToTeamSpaceHooker implements ExportExternalEntryProviderHook 
                @Override
                public String getExecuteReportToken() {
                   return info.getExecuteReportToken();
+               }
+
+               @Override
+               public Optional<Class<? extends DatasinkDefinitionDto>> getDatasinkType() {
+                  return Optional.empty();
                }
             });
 

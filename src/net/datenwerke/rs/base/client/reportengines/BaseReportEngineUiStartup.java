@@ -139,8 +139,6 @@ public class BaseReportEngineUiStartup {
             HookHandlerService.PRIORITY_LOWER + 40);
       hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSONC),
             HookHandlerService.PRIORITY_LOWER + 50);
-      hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2JSONC),
-            HookHandlerService.PRIORITY_LOWER + 60);
 
       waitOnEventServiceProvider.get()
             .callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN, ticket -> {
@@ -149,7 +147,7 @@ public class BaseReportEngineUiStartup {
                         new ReportExporterExportReportHook(table2JXLS), HookHandlerService.PRIORITY_LOWER + 30);
                
                hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2StreamTable),
-                     HookHandlerService.PRIORITY_LOWER + 70);
+                     HookHandlerService.PRIORITY_LOWER + 60);
 
                waitOnEventServiceProvider.get().signalProcessingDone(ticket);
             });

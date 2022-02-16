@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.logical.shared.ValueChangeHandler;
@@ -22,6 +23,7 @@ import com.sencha.gxt.widget.core.client.form.Radio;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleFormFieldConfiguration;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHookImpl;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIService;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
@@ -44,8 +46,6 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 
    @Inject
    public ExportTypeSelectionProvider(ReportExporterUIService reportExporterService) {
-
-      /* store obejcts */
       this.reportExporterService = reportExporterService;
    }
 
@@ -74,7 +74,11 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
       for (final ReportExporter exporter : exporters) {
          if (!exporter.canBeScheduled())
             continue;
-
+         
+         Optional<Class<? extends DatasinkDefinitionDto>> datasinkType = config.getDatasinkType();
+         if (datasinkType.isPresent() && ! exporter.supportsDatasink(datasinkType.get()))
+            continue;
+         
          String name = exporter.getExportTitle();
 
          final Radio radio = new Radio();

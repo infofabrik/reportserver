@@ -6,6 +6,7 @@ import com.google.gwt.http.client.Request;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 
@@ -15,36 +16,38 @@ public interface ReportExporter {
       void success();
    }
 
-   public boolean consumesConfiguration(ReportDto report);
+   boolean consumesConfiguration(ReportDto report);
 
-   public boolean consumes(ReportDto report);
+   boolean consumes(ReportDto report);
 
-   public Request export(ReportDto report, String executorToken);
+   Request export(ReportDto report, String executorToken);
 
-   public void displayConfiguration(ReportDto report, String executorToken, boolean allowAutomaticConfig,
+   void displayConfiguration(ReportDto report, String executorToken, boolean allowAutomaticConfig,
          ConfigurationFinishedCallback callack);
 
-   public boolean isConfigured();
+   boolean isConfigured();
 
-   public List<ReportExecutionConfigDto> getConfiguration();
+   List<ReportExecutionConfigDto> getConfiguration();
 
-   public String getExportTitle();
+   String getExportTitle();
 
-   public String getExportDescription();
+   String getExportDescription();
 
-   public ImageResource getIcon();
+   ImageResource getIcon();
 
-   public String getOutputFormat();
+   String getOutputFormat();
 
-   public boolean hasConfiguration();
+   boolean hasConfiguration();
 
-   public void configureFrom(List<ReportExecutionConfigDto> exportConfiguration);
+   void configureFrom(List<ReportExecutionConfigDto> exportConfiguration);
 
-   public boolean wantsToBeTop(ReportDto report);
+   boolean wantsToBeTop(ReportDto report);
 
-   public Request prepareExportForPreview(ReportDto report, String executorToken, AsyncCallback<Void> callback);
+   Request prepareExportForPreview(ReportDto report, String executorToken, AsyncCallback<Void> callback);
 
    boolean canBeScheduled();
 
    boolean isSkipDownload();
+   
+   boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType);
 }

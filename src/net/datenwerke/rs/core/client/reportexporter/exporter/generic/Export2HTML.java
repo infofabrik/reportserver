@@ -2,9 +2,11 @@ package net.datenwerke.rs.core.client.reportexporter.exporter.generic;
 
 import com.google.gwt.resources.client.ImageResource;
 
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public abstract class Export2HTML extends ReportExporterImpl {
@@ -37,5 +39,10 @@ public abstract class Export2HTML extends ReportExporterImpl {
    @Override
    public boolean hasConfiguration() {
       return false;
+   }
+   
+   @Override
+   public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
+      return ! datasinkType.equals(TableDatasinkDto.class);
    }
 }

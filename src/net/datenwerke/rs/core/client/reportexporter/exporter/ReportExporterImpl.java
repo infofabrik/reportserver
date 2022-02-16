@@ -17,6 +17,7 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.servercommunication.callback.ModalAsyncCallback;
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorUIService;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterDao;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIService;
@@ -24,6 +25,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportexporter.hooks.ReportExporterPreExportHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
 
 /**
  * 
@@ -185,4 +187,8 @@ public abstract class ReportExporterImpl implements ReportExporter {
       return false;
    }
 
+   @Override
+   public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
+      return ! datasinkType.equals(TableDatasinkDto.class);
+   }
 }

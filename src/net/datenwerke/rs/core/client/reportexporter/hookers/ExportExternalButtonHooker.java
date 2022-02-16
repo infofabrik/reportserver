@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.core.client.JsonUtils;
 import com.google.gwt.event.logical.shared.SelectionEvent;
@@ -37,6 +38,7 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.DwToolBar;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewToolbarHook;
@@ -142,6 +144,11 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
                                        @Override
                                        public String getExecuteReportToken() {
                                           return info.getExecuteReportToken();
+                                       }
+
+                                       @Override
+                                       public Optional<Class<? extends DatasinkDefinitionDto>> getDatasinkType() {
+                                          return Optional.empty();
                                        }
                                     });
                               formatForm.loadFields();

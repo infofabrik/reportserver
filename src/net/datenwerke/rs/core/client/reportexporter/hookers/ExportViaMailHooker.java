@@ -2,6 +2,7 @@ package net.datenwerke.rs.core.client.reportexporter.hookers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 import com.sencha.gxt.widget.core.client.container.MarginData;
@@ -20,6 +21,7 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.impl.SFFC
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.servercommunication.callback.NotamCallback;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.helper.simpleform.ExportTypeSelection;
 import net.datenwerke.rs.core.client.helper.simpleform.config.SFFCExportTypeSelector;
 import net.datenwerke.rs.core.client.reportexecutor.hooks.PrepareReportModelForStorageOrExecutionHook;
@@ -76,6 +78,11 @@ public class ExportViaMailHooker implements ExportExternalEntryProviderHook {
                @Override
                public String getExecuteReportToken() {
                   return info.getExecuteReportToken();
+               }
+
+               @Override
+               public Optional<Class<? extends DatasinkDefinitionDto>> getDatasinkType() {
+                  return Optional.empty();
                }
             });
       final String rcptKey = form.addField(StrippedDownUser.class, ReportExporterMessages.INSTANCE.selectUserLabel());

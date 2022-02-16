@@ -196,5 +196,5 @@ public class Saiku2ChartHTML extends ReportExporterImpl {
    public boolean hasConfiguration() {
       return true;
    }
-
+   
 }
