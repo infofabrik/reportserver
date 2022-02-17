@@ -240,6 +240,9 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
 
    @Override
    public int getPageHeight() {
+      if ("RS_STREAM_TABLE".equals(outputFormat))
+         return 265;
+      
       return 505;
    }
 
