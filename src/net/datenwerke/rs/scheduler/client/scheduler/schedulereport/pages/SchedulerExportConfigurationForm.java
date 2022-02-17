@@ -254,10 +254,7 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
          outputFormat = jobReportConfigForm.getOutputFormat();
          
          final ReportDto report = jobReportConfigForm.getReport();
-
-         if (report != this.report)
-            initForm(report);
-
+         initForm(report);
          this.report = report;
       }
 
