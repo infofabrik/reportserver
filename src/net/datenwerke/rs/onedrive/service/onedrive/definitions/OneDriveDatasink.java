@@ -196,7 +196,9 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
 
    @Override
    public String buildAuthorizationUrl(AuthorizationUrlBuilder authorizationUrlBuilder) {
-      return authorizationUrlBuilder.scope("offline_access files.readwrite.all").build();
+      return authorizationUrlBuilder
+            .scope("offline_access files.readwrite.all user.read Group.Read.All")
+            .build();
    }
 
 }
