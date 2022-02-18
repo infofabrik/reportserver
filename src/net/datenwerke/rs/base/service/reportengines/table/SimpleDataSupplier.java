@@ -139,7 +139,8 @@ public class SimpleDataSupplier {
    }
 
    public RSTableModel getData(DatasourceContainerProvider container, User user, Integer offset,
-         Integer limit, TableDatasourceConfig config, DataConsumer consumer) throws ReportExecutorException {
+         Integer limit, TableDatasourceConfig config, DataConsumer consumer, Column... columns) 
+               throws ReportExecutorException {
    
       ParameterSet ps = null;
       if (container instanceof ParameterContainerNode) {
@@ -151,11 +152,11 @@ public class SimpleDataSupplier {
          
       }
       
-      return getData(container, ps, offset, limit, config, consumer);
+      return getData(container, ps, offset, limit, config, consumer, columns);
    }
 
    public RSTableModel getData(DatasourceContainerProvider container, ParameterSet parameters, Integer offset,
-         Integer limit, TableDatasourceConfig config, DataConsumer consumer) throws ReportExecutorException {
+         Integer limit, TableDatasourceConfig config, DataConsumer consumer, Column... columns) throws ReportExecutorException {
       /* try to generate parameter set if none is given */
       if (null == parameters)
          parameters = parameterSetFactory.safeCreate();
@@ -165,6 +166,9 @@ public class SimpleDataSupplier {
 
       if (null == ds)
          throw new ReportExecutorException("Could not load datasource");
+      
+      if (null != columns)
+         ds.applyColumnConfiguration(Arrays.asList(columns));
 
       try {
          if (null != config)
