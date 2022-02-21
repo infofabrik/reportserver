@@ -11,13 +11,14 @@ import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTreeFactory;
 import net.datenwerke.gf.client.treedb.TreeDBUIService;
 import net.datenwerke.gf.client.treedb.stores.EnhancedTreeStore;
 import net.datenwerke.gxtdto.client.dtomanager.Dto2PosoMapper;
+import net.datenwerke.rs.base.client.datasources.dto.posomap.DatabaseDatasourceDto2PosoMap;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceTreeLoaderDao;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceTreeManagerDao;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.posomap.DatasourceFolderDto2PosoMap;
 
-public class FolderTreeProvider implements Provider<ManagerHelperTree> {
+public class DatabaseDatasourcesTreeProvider implements Provider<ManagerHelperTree> {
 
    private final TreeDBUIService treeDBUIService;
    private final DatasourceTreeLoaderDao datasourceTreeLoader;
@@ -25,8 +26,12 @@ public class FolderTreeProvider implements Provider<ManagerHelperTree> {
    private final ManagerHelperTreeFactory treeFactory;
 
    @Inject
-   public FolderTreeProvider(TreeDBUIService treeDBUIService, DatasourceTreeLoaderDao datasourceTreeLoader,
-         DatasourceTreeManagerDao datasourceTreeManager, ManagerHelperTreeFactory treeFactory) {
+   public DatabaseDatasourcesTreeProvider(
+         TreeDBUIService treeDBUIService, 
+         DatasourceTreeLoaderDao datasourceTreeLoader,
+         DatasourceTreeManagerDao datasourceTreeManager, 
+         ManagerHelperTreeFactory treeFactory
+         ) {
 
       this.treeDBUIService = treeDBUIService;
       this.datasourceTreeLoader = datasourceTreeLoader;
@@ -38,6 +43,8 @@ public class FolderTreeProvider implements Provider<ManagerHelperTree> {
       /* store */
       List<Dto2PosoMapper> filters = new ArrayList<>();
       filters.add(new DatasourceFolderDto2PosoMap());
+      filters.add(new DatabaseDatasourceDto2PosoMap());
+
       EnhancedTreeStore store = treeDBUIService.getUITreeStore(AbstractDatasourceManagerNodeDto.class,
             datasourceTreeLoader, false, filters);
 

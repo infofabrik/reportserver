@@ -9,8 +9,10 @@ import net.datenwerke.rs.adminutils.client.systemconsole.memory.hooks.MemoryInfo
 public class MemoryConsoleUiStartup {
 
    @Inject
-   public MemoryConsoleUiStartup(final HookHandlerService hookHandler,
-         MemoryInfoSystemConsoleHooker generalTargetDomain) {
+   public MemoryConsoleUiStartup(
+         final HookHandlerService hookHandler,
+         MemoryInfoSystemConsoleHooker generalTargetDomain
+         ) {
 
       hookHandler.attachHooker(SystemConsoleViewDomainHook.class, generalTargetDomain,
             HookHandlerService.PRIORITY_HIGH + 10);

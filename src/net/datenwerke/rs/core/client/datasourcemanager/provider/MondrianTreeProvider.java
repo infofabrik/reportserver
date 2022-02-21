@@ -26,8 +26,12 @@ public class MondrianTreeProvider implements Provider<ManagerHelperTree> {
    private final ManagerHelperTreeFactory treeFactory;
 
    @Inject
-   public MondrianTreeProvider(TreeDBUIService treeDBUIService, DatasourceTreeLoaderDao datasourceTreeLoader,
-         DatasourceTreeManagerDao datasourceTreeManager, ManagerHelperTreeFactory treeFactory) {
+   public MondrianTreeProvider(
+         TreeDBUIService treeDBUIService, 
+         DatasourceTreeLoaderDao datasourceTreeLoader,
+         DatasourceTreeManagerDao datasourceTreeManager, 
+         ManagerHelperTreeFactory treeFactory
+         ) {
 
       this.treeDBUIService = treeDBUIService;
       this.datasourceTreeLoader = datasourceTreeLoader;
@@ -37,7 +41,7 @@ public class MondrianTreeProvider implements Provider<ManagerHelperTree> {
 
    public ManagerHelperTree get() {
       /* store */
-      List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
+      List<Dto2PosoMapper> filters = new ArrayList<>();
       filters.add(new DatasourceFolderDto2PosoMap());
       filters.add(new MondrianDatasourceDto2PosoMap());
 

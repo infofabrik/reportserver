@@ -42,7 +42,7 @@ public class NoMondrianTreeProvider implements Provider<ManagerHelperTree> {
 
    public ManagerHelperTree get() {
       /* store */
-      List<Dto2PosoMapper> filters = new ArrayList<Dto2PosoMapper>();
+      List<Dto2PosoMapper> filters = new ArrayList<>();
       filters.add(new DatasourceFolderDto2PosoMap());
 
       filters.add(new BirtReportDatasourceDefinitionDto2PosoMap());

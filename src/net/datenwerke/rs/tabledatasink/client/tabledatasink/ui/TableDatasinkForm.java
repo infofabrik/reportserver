@@ -24,7 +24,7 @@ import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIService;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerProviderDto;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionField;
-import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeBasic;
+import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeOnlyDatabaseDatasources;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.pa.TableDatasinkDtoPA;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 
@@ -46,7 +46,7 @@ public class TableDatasinkForm extends FormView {
    @Inject
    public TableDatasinkForm(
          DatasourceUIService datasourceService,
-         @DatasourceTreeBasic Provider<UITree> datasourceTreeProvider
+         @DatasourceTreeOnlyDatabaseDatasources Provider<UITree> datasourceTreeProvider
          ) {
 
       /* store objects */

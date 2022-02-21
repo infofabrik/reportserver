@@ -7,6 +7,7 @@ import com.google.inject.Singleton;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.DatasourceSelectionFieldFactory;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.BasicTreeProvider;
+import net.datenwerke.rs.core.client.datasourcemanager.provider.DatabaseDatasourcesTreeProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.FolderTreeProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.FullTreeProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.MondrianTreeProvider;
@@ -16,6 +17,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.Data
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFolders;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeFull;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeNoMondrian;
+import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeOnlyDatabaseDatasources;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeOnlyMondrian;
 
 /**
@@ -38,6 +40,8 @@ public class DatasourceUIModule extends AbstractGinModule {
       bind(UITree.class).annotatedWith(DatasourceTreeFull.class).toProvider(FullTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasourceTreeFolders.class).toProvider(FolderTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasourceTreeOnlyMondrian.class).toProvider(MondrianTreeProvider.class);
+      bind(UITree.class).annotatedWith(DatasourceTreeOnlyDatabaseDatasources.class)
+            .toProvider(DatabaseDatasourcesTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasourceTreeNoMondrian.class).toProvider(NoMondrianTreeProvider.class);
       bind(UITree.class).annotatedWith(DatasourceManagerAdminViewTree.class).toProvider(FullTreeProvider.class)
             .in(Singleton.class);
