@@ -11,10 +11,7 @@ import com.google.inject.Provider;
 
 import eu.bitwalker.useragentutils.UserAgent;
 import net.datenwerke.rs.license.service.LicenseService;
-import net.datenwerke.rsenterprise.license.service.annotations.EnterpriseChecked;
-import net.datenwerke.security.service.security.SecurityService;
 
-@EnterpriseChecked
 public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    private final RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
@@ -24,9 +21,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<LicenseService> licenseServiceProvider;
 
    @Inject
-   public GeneralInfoServiceImpl(Provider<ServletContext> servletContextProvider,
-         Provider<HttpServletRequest> servletRequestProvider, Provider<SecurityService> securityServiceProvider,
-         Provider<LicenseService> licenseServiceProvider) {
+   public GeneralInfoServiceImpl(
+         Provider<ServletContext> servletContextProvider,
+         Provider<HttpServletRequest> servletRequestProvider, 
+         Provider<LicenseService> licenseServiceProvider
+         ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
       this.licenseServiceProvider = licenseServiceProvider;
