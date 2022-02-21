@@ -19,7 +19,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Non
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-import net.datenwerke.rsenterprise.license.service.annotations.EnterpriseChecked;
 import net.datenwerke.security.service.security.GenericSecurityTargetMarker;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.SecurityServiceSecuree;
@@ -51,7 +50,6 @@ public class HaspermissionCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @EnterpriseChecked
    @CliHelpMessage(
          messageClass = SecurityMessages.class, 
          name = BASE_COMMAND, 
