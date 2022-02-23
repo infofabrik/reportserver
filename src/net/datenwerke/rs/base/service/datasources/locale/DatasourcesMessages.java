@@ -50,4 +50,12 @@ public interface DatasourcesMessages extends Messages {
    String commandColumnsExist_table();
    
    String commandColumnsExist_columns();
+   
+   String commandColumnMetadata_description();
+   
+   String commandColumnMetadata_datasource();
+   
+   String commandColumnMetadata_table();
+   
+   
 }
