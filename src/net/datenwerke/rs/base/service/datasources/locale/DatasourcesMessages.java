@@ -37,9 +37,17 @@ public interface DatasourcesMessages extends Messages {
    
    String commandCopyTableContents_batchSize();
    
-   String commandTableexists_description();
+   String commandTableExists_description();
    
-   String commandTableexists_datasource();
+   String commandTableExists_datasource();
    
-   String commandTableexists_table();
+   String commandTableExists_table();
+   
+   String commandColumnsExist_description();
+   
+   String commandColumnsExist_datasource();
+   
+   String commandColumnsExist_table();
+   
+   String commandColumnsExist_columns();
 }

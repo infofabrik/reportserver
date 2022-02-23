@@ -60,13 +60,13 @@ public class VariantTestCommand implements TerminalCommandHook {
       String reportQuery = null;
       List<String> datasourceQueries = new ArrayList<>();
       if (arguments.isEmpty())
-         throw new IllegalArgumentException("Please enter arguments");
+         throw new IllegalArgumentException("No arguments entered");
       if (1 == arguments.size())
          reportQuery = arguments.get(0);
       else if (arguments.size() > 1) {
          reportQuery = arguments.get(arguments.size() - 1);
          for (String arg : arguments)
-            if (arguments.get(arguments.size() - 1) != arg)
+            if (!reportQuery.equals(arg))
                datasourceQueries.add(arg);
       }
 
