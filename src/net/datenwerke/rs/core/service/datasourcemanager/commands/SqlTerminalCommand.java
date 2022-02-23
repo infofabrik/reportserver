@@ -1,4 +1,4 @@
-package net.datenwerke.rs.incubator.service.misc.terminal.commands;
+package net.datenwerke.rs.core.service.datasourcemanager.commands;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -48,8 +48,6 @@ public class SqlTerminalCommand implements InteractiveCommandHook {
 
    @Inject
    public SqlTerminalCommand(DbPoolService dbPoolService) {
-
-      /* store objects */
       this.dbPoolService = dbPoolService;
    }
 
@@ -58,8 +56,18 @@ public class SqlTerminalCommand implements InteractiveCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(messageClass = DatasourcesMessages.class, name = BASE_COMMAND, description = "commandSql_description", nonOptArgs = {
-         @NonOptArgument(name = "datasource", description = "commandSql_datasource") })
+   @CliHelpMessage(
+         messageClass = DatasourcesMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandSql_description", 
+         nonOptArgs = {
+               @NonOptArgument(
+                     name = "datasource", 
+                     description = "commandSql_datasource",
+                     mandatory = true
+                     ) 
+               }
+         )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) {
       List<String> arguments = parser.getNonOptionArguments();
