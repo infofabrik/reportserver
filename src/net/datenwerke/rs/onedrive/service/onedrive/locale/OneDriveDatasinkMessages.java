@@ -9,5 +9,12 @@ public interface OneDriveDatasinkMessages extends Messages {
          .getMessages(OneDriveDatasinkMessages.class);
 
    String oneDriveDatasinkTypeName();
+   String commandOnedrive_description();
+   String commandOnedrive_pathonedrivedatasink();
+   String commandOnedrive_accesstoken();
+   String commandOnedriveGroup_description();
+   String commandOnedriveGroupGetmygroups_description();
+   String commandOnedriveGroupGetdrivesof_description();
+   String commandOnedriveGroupGetdrivesof_groupid();
 
 }
