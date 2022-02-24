@@ -9,7 +9,11 @@ import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.ColumnMetadataCommand;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.ColumnsExistCommand;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.CopyTableContentsCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.commands.SqlTerminalCommand;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.TableExistsCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceFolder;
 import net.datenwerke.rs.core.service.datasourcemanager.eventhandlers.HandleDatasourceForceRemoveEventHandler;
@@ -23,14 +27,18 @@ public class DatasourceStartup {
 
    @Inject
    public DatasourceStartup(
-         HookHandlerService hookHandler, 
-         EventBus eventBus,
+         final HookHandlerService hookHandler, 
+         final EventBus eventBus,
          final Provider<SecurityService> securityServiceProvider,
          final @ReportServerDatasourceDefinitions Provider<Set<Class<? extends DatasourceDefinition>>> installedDataSourceDefinitions,
 
          Provider<DatasourceManagerHistoryUrlBuilderHooker> datasourceManagerUrlBuilder,
          HandleDatasourceForceRemoveEventHandler handleDatasourceForceRemoveHandler,
-         Provider<SqlTerminalCommand> sqlCommand
+         Provider<SqlTerminalCommand> sqlCommand,
+         Provider<CopyTableContentsCommand> copyTableContentsCommandProvider,
+         Provider<TableExistsCommand> tableExistsCommandProvider,
+         Provider<ColumnsExistCommand> columnsExistCommandProvider,
+         Provider<ColumnMetadataCommand> columnMetadataCommandProvider
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasourceDefinition.class,
@@ -41,19 +49,19 @@ public class DatasourceStartup {
       
       /* commands */
       hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);
+      hookHandler.attachHooker(TerminalCommandHook.class, copyTableContentsCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, tableExistsCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, columnsExistCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, columnMetadataCommandProvider);
 
       /* register security targets */
-      hookHandler.attachHooker(ConfigDoneHook.class, new ConfigDoneHook() {
+      hookHandler.attachHooker(ConfigDoneHook.class, () -> {
+         /* secure folder */
+         securityServiceProvider.get().registerSecurityTarget(DatasourceFolder.class);
 
-         @Override
-         public void configDone() {
-            /* secure folder */
-            securityServiceProvider.get().registerSecurityTarget(DatasourceFolder.class);
-
-            /* secure datasource definition entities */
-            for (Class<? extends DatasourceDefinition> dClass : installedDataSourceDefinitions.get())
-               securityServiceProvider.get().registerSecurityTarget(dClass);
-         }
+         /* secure datasource definition entities */
+         installedDataSourceDefinitions.get()
+            .forEach(dClass -> securityServiceProvider.get().registerSecurityTarget(dClass));
       });
    }
 }
