@@ -1,5 +1,6 @@
 package net.datenwerke.rs.onedrive.service.onedrive;
 
+import java.io.IOException;
 import java.util.Optional;
 
 import com.github.scribejava.core.model.Response;
@@ -40,17 +41,17 @@ public class DummyOneDriveServiceImpl implements OneDriveService {
    }
 
    @Override
-   public OneDriveDatasink getOneDriveDatasink(String query, TerminalSession session) {
+   public OneDriveDatasink getOneDriveDatasink(String query, TerminalSession session) throws IllegalArgumentException {
       return null;
    }
 
    @Override
-   public Response[] groupGetMyGroups(OneDriveDatasink oneDriveDatasink, Optional<String> optionalAccessToken) {
+   public Response[] groupGetMyGroups(OneDriveDatasink oneDriveDatasink, Optional<String> optionalAccessToken) throws IOException {
       return null;
    }
 
    @Override
-   public Response groupGetDrivesOf(OneDriveDatasink oneDriveDatasink, String groupId, Optional<String> optionalAccessToken) {
+   public Response groupGetDrivesOf(OneDriveDatasink oneDriveDatasink, String groupId, Optional<String> optionalAccessToken) throws IOException {
       return null;
    }
 
