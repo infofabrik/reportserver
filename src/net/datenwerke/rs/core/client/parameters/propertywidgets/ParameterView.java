@@ -3,6 +3,7 @@ package net.datenwerke.rs.core.client.parameters.propertywidgets;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -47,6 +48,8 @@ public class ParameterView extends ReportExecutorMainPanelView implements Desele
 
    private List<ParameterDefinitionDto> parameterDefinitions;
    private Set<ParameterInstanceDto> parameterInstances;
+   
+   private Set<List<Object>> parametersChanged = new HashSet<>();
 
    private ReportDto report;
 
@@ -200,8 +203,16 @@ public class ParameterView extends ReportExecutorMainPanelView implements Desele
                               throw new IllegalArgumentException(
                                     "Should have a configurator for this parameter definition"); //$NON-NLS-1$
 
-                           /* update form */
-                           configurator.dependeeInstanceChanged(instance, aDefinition, relevantInstances);
+                           /* update form only when value (manually) changes, not in first load */
+                           List<Object> paramCache = new ArrayList<>();
+                           paramCache.add(aDefinition);
+                           paramCache.add(relevantInstances);
+                           
+                           if (parametersChanged.contains(paramCache))
+                              configurator.dependeeInstanceChanged(instance, aDefinition, relevantInstances);
+                           
+                           parametersChanged.add(paramCache);
+                           
                            Widget editWidget = configurator.getEditComponentForInstance(instance, aDefinition,
                                  relevantInstances, false, fLabelWidth, getExecuteReportToken(), report);
 
