@@ -1,5 +1,7 @@
 package net.datenwerke.rs.ldap.service.ldap;
 
+import java.util.List;
+
 import javax.naming.directory.SearchResult;
 
 import net.datenwerke.rs.ldap.service.ldap.exceptions.LdapException;
@@ -12,6 +14,11 @@ public class DummyLdapServiceImpl implements LdapService {
 
    @Override
    public String getStringAttribute(SearchResult sr, String attributeName) throws LdapException {
+      return null;
+   }
+
+   @Override
+   public List<String> testFilter() throws LdapException {
       return null;
    }
 

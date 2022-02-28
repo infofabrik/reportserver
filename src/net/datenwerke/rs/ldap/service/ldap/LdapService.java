@@ -1,5 +1,7 @@
 package net.datenwerke.rs.ldap.service.ldap;
 
+import java.util.List;
+
 import javax.naming.directory.SearchResult;
 
 import com.google.inject.ImplementedBy;
@@ -58,4 +60,12 @@ public interface LdapService {
     *                       during attribute retrieval
     */
    String getStringAttribute(SearchResult sr, String attributeName) throws LdapException;
+
+   /**
+    * Returns a list with the nodes found with the LDAP filter installed.
+    * 
+    * @return the nodes found
+    * @throws LdapException if an error happens during node retrieval
+    */
+   List<String> testFilter() throws LdapException;
 }
