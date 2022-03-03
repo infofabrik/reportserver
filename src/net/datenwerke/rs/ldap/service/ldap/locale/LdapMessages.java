@@ -12,4 +12,6 @@ public interface LdapMessages extends Messages {
    String commandLdaptest_description();
    
    String commandLdaptest_sub_filter_description();
+   
+   String commandLdaptest_sub_users_description();
 }

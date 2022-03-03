@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.HashSet;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.resources.client.ImageResource;
