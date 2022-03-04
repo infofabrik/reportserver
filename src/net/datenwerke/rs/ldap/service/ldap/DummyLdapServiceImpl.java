@@ -28,4 +28,14 @@ public class DummyLdapServiceImpl implements LdapService {
       return null;
    }
 
+   @Override
+   public List<Map<String, String>> testGroups() throws LdapException {
+      return null;
+   }
+
+   @Override
+   public List<Map<String, String>> testOrganisationalUnits() throws LdapException {
+      return null;
+   }
+
 }

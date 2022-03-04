@@ -10,7 +10,7 @@ public interface OneDriveDatasinkMessages extends Messages {
 
    String oneDriveDatasinkTypeName();
    String commandOnedrive_description();
-   String commandOnedrive_pathonedrivedatasink();
+   String commandOnedrive_datasink();
    String commandOnedrive_accesstoken();
    String commandOnedriveGroup_description();
    String commandOnedriveGroupGetmygroups_description();

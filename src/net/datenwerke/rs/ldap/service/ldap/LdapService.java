@@ -32,11 +32,20 @@ public interface LdapService {
 
    public static final String PROPERTY_OBJECT_CLASS = "objectClass";
    public static final String PROPERTY_GUID = "guid";
-   public static final String PROPERTY_OU_OBJECT_CLASS = "ouObjectClass";
-   public static final String PROPERTY_OU_NAME = "ouName";
-   public static final String PROPERTY_GROUP_OBJECT_CLASS = "groupObjectClass";
-   public static final String PROPERTY_GROUP_NAME = "groupName";
-   public static final String PROPERTY_GROUP_MEMBER = "groupMember";
+   
+   /* Organisational unit properties: [property name, path, default] */
+   public static final List<String> PROPERTY_OU_OBJECT_CLASS = new ArrayList<>(
+         Arrays.asList("ouObjectClass", "attributes.organizationalUnit.objectClass", "organizationalUnit"));
+   public static final List<String> PROPERTY_OU_NAME = new ArrayList<>(
+         Arrays.asList("ouName", "attributes.organizationalUnit.name", "name"));
+   
+   /* Group properties: [property name, path, default] */
+   public static final List<String> PROPERTY_GROUP_OBJECT_CLASS = new ArrayList<>(
+         Arrays.asList("groupObjectClass", "attributes.group.objectClass", "group"));
+   public static final List<String> PROPERTY_GROUP_NAME = new ArrayList<>(
+         Arrays.asList("groupName", "attributes.group.name", "name"));
+   public static final List<String> PROPERTY_GROUP_MEMBER = new ArrayList<>(
+         Arrays.asList("groupMember", "attributes.group.member", "member"));
    
    /* User properties: [property name, path, default] */
    public static final List<String> PROPERTY_USER_OBJECT_CLASS = new ArrayList<>(
@@ -80,5 +89,27 @@ public interface LdapService {
     */
    List<String> testFilter() throws LdapException;
    
+   /**
+    * Returns a list with the LDAP users found.
+    * 
+    * @return the users found
+    * @throws LdapException if an error happens during node retrieval
+    */
    List<Map<String, String>> testUsers() throws LdapException;
+   
+   /**
+    * Returns a list with the LDAP groups found.
+    * 
+    * @return the groups found
+    * @throws LdapException if an error happens during node retrieval
+    */
+   List<Map<String, String>> testGroups() throws LdapException;
+   
+   /**
+    * Returns a list with the LDAP organisational units found.
+    * 
+    * @return the organisational units found
+    * @throws LdapException if an error happens during node retrieval
+    */
+   List<Map<String, String>> testOrganisationalUnits() throws LdapException;
 }
