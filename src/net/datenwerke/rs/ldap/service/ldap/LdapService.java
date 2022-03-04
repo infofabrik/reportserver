@@ -16,22 +16,37 @@ public interface LdapService {
 
    public static final String CONFIG_FILE = "sso/ldap.cf";
 
-   public static final String PROPERTY_HOST = "provider.host";
-   public static final String PROPERTY_PORT = "provider.port";
+   /* [path, default] */
+   public static final List<String> PROPERTY_HOST = new ArrayList<>(
+         Arrays.asList("provider.host", "directory.example.com"));
+   public static final List<Object> PROPERTY_PORT = new ArrayList<>(
+         Arrays.asList("provider.port", 389));
 
-   public static final String PROPERTY_ENCRYPTION_PROTOCOL = "security.encryption";
-   public static final String PROPERTY_PRINCIPAL = "security.principal";
-   public static final String PROPERTY_CREDENTIALS = "security.credentials";
+   public static final List<String> PROPERTY_ENCRYPTION_PROTOCOL = new ArrayList<>(
+         Arrays.asList("security.encryption", "none"));
+   public static final List<String> PROPERTY_PRINCIPAL = new ArrayList<>(
+         Arrays.asList("security.principal", "CN=ldaptest,CN=Users,DC=directory,DC=example,DC=com"));
+   public static final List<String> PROPERTY_CREDENTIALS = new ArrayList<>(
+         Arrays.asList("security.credentials", "ldaptest"));
 
-   public static final String PROPERTY_BASE = "base";
-   public static final String PROPERTY_FILTER = "filter";
-   public static final String PROPERTY_EXTERNAL_DIR = "externalDir";
-   public static final String PROPERTY_WRITE_PROTECTION = "writeProtection";
-   public static final String PROPERTY_INCLUDE_NAMESPACE = "includeNamespace";
-   public static final String PROPERTY_LOG_RESULTING_TREE = "logResultingTree";
+   public static final List<String> PROPERTY_BASE = new ArrayList<>(
+         Arrays.asList("base", "OU=EXAMPLE,DC=directory,DC=example,DC=com"));
+   public static final List<String> PROPERTY_FILTER = new ArrayList<>(
+         Arrays.asList("filter", "(|(objectClass=organizationalUnit)(objectClass=user)(objectClass=group))"));
+   public static final List<String> PROPERTY_EXTERNAL_DIR = new ArrayList<>(
+         Arrays.asList("externalDir", "/usermanager/external"));
+   public static final List<Object> PROPERTY_WRITE_PROTECTION = new ArrayList<>(
+         Arrays.asList("writeProtection", true));
+   public static final List<Object> PROPERTY_INCLUDE_NAMESPACE = new ArrayList<>(
+         Arrays.asList("includeNamespace", false));
+   public static final List<Object> PROPERTY_LOG_RESULTING_TREE = new ArrayList<>(
+         Arrays.asList("logResultingTree", false));
 
-   public static final String PROPERTY_OBJECT_CLASS = "objectClass";
-   public static final String PROPERTY_GUID = "guid";
+   /* Object properties: [property name, path, default] */
+   public static final List<String> PROPERTY_OBJECT_CLASS = new ArrayList<>(
+         Arrays.asList("objectClass", "attributes.objectClass", "objectClass"));
+   public static final List<String> PROPERTY_GUID = new ArrayList<>(
+         Arrays.asList("guid", "attributes.guid", "objectGUID"));
    
    /* Organisational unit properties: [property name, path, default] */
    public static final List<String> PROPERTY_OU_OBJECT_CLASS = new ArrayList<>(
