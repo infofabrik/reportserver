@@ -12,6 +12,7 @@ import net.datenwerke.rs.terminal.service.terminal.basecommands.EnvCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.HelloWorldCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.HqlTerminalCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.MeminfoCommand;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.SsltestCommand;
 import net.datenwerke.rs.terminal.service.terminal.hijacker.data.SplitTableResultHijacker;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalSessionHijackHook;
@@ -24,14 +25,21 @@ public class TerminalStartup {
    @Inject
    public TerminalStartup(HookHandlerService hookHandler,
 
-         Provider<DescCommand> descCommandProvider, Provider<ElizaCommand> elizaCommandProvider,
-         Provider<HelloWorldCommand> helloWorldCommandProvider, Provider<EnvCommand> envCommandProvider,
-         Provider<HqlTerminalCommand> hqlCommandProvider, Provider<MeminfoCommand> meminfoCommandProvider,
-         Provider<EchoCommand> echoCommandProvider, Provider<CatCommand> catCommandProvider,
+         Provider<DescCommand> descCommandProvider, 
+         Provider<ElizaCommand> elizaCommandProvider,
+         Provider<HelloWorldCommand> helloWorldCommandProvider, 
+         Provider<EnvCommand> envCommandProvider,
+         Provider<HqlTerminalCommand> hqlCommandProvider, 
+         Provider<MeminfoCommand> meminfoCommandProvider,
+         Provider<EchoCommand> echoCommandProvider, 
+         Provider<CatCommand> catCommandProvider,
+         Provider<SsltestCommand> ssltestCommandProvider,
 
-         Provider<InBackgroundOperator> inBgOperator, Provider<PipeOperator> pipeOperator,
+         Provider<InBackgroundOperator> inBgOperator, 
+         Provider<PipeOperator> pipeOperator,
 
-         Provider<SplitTableResultHijacker> splitTableResultHijacker) {
+         Provider<SplitTableResultHijacker> splitTableResultHijacker
+         ) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, descCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, elizaCommandProvider);
@@ -41,6 +49,7 @@ public class TerminalStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, meminfoCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, echoCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, catCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, ssltestCommandProvider);
 
       hookHandler.attachHooker(TerminalCommandOperator.class, inBgOperator);
       hookHandler.attachHooker(TerminalCommandOperator.class, pipeOperator);

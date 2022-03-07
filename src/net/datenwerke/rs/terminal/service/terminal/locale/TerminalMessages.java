@@ -44,4 +44,10 @@ public interface TerminalMessages extends Messages {
    String cannotCatObject();
 
    String commandEnv_description();
+   
+   String commandSsltest_description();
+   
+   String commandSsltest_host();
+   
+   String commandSsltest_port();
 }

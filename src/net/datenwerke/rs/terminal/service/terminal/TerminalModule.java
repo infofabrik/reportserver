@@ -21,6 +21,7 @@ public class TerminalModule extends AbstractReportServerModule {
    protected void configure() {
       bind(TerminalService.class).to(TerminalServiceImpl.class).in(Singleton.class);
       bind(TerminalSessionMap.class).in(ServletScopes.SESSION);
+      bind(SslHelperService.class).to(SslHelperServiceImpl.class);
 
       /* submodules */
       install(new VirtualFileSystemModule());
