@@ -1,10 +1,13 @@
-package net.datenwerke.rs.fileserver.service.fileserver.terminal.operators;
+package net.datenwerke.rs.core.service.datasinkmanager.terminal.operators;
+
+import java.util.Collection;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 
-import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
-import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfig;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfigImpl;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
@@ -12,34 +15,31 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
-import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
-import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.rights.Write;
+import net.datenwerke.security.service.security.rights.Execute;
+import net.datenwerke.security.service.security.rights.Read;
 
-public class WriteIntoFileOperator implements TerminalCommandOperator {
+public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
 
-   private enum Mode {
-      CREATE, APPEND
-   }
-
-   private final FileServerService fileService;
    private final SecurityService securityService;
-
-   private Mode mode;
+   private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
-   public WriteIntoFileOperator(FileServerService fileService, SecurityService securityService) {
-      this.fileService = fileService;
+   public WriteIntoDatasinkOperator(
+         SecurityService securityService,
+         Provider<DatasinkService> datasinkServiceProvider
+         ) {
       this.securityService = securityService;
+      this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
    public Integer consumes(String command, CommandParser parser, ExecuteCommandConfig config) {
       int maxPos = getMaxOpPos(command, parser);
       String rawCommand = parser.getRawCommand();
-      if (maxPos > 0 && !rawCommand.contains(">>>"))
+      if (maxPos > 0 && rawCommand.contains(">>>"))
          return maxPos;
       return null;
    }
@@ -54,10 +54,8 @@ public class WriteIntoFileOperator implements TerminalCommandOperator {
          if ('\"' == c && lastChar != '\\')
             seenQuotes++;
          else if ('>' == c && lastChar == '>' && seenQuotes % 2 == 0) {
-            mode = Mode.APPEND;
             maxPos = pos - 1;
          } else if ('>' == c && seenQuotes % 2 == 0) {
-            mode = Mode.CREATE;
             maxPos = pos;
          }
 
@@ -71,27 +69,16 @@ public class WriteIntoFileOperator implements TerminalCommandOperator {
          TerminalSession session) throws TerminalException {
       int maxPos = getMaxOpPos(command, parser);
 
-      String firstCommand = command.substring(0, maxPos - 1);
+      String firstCommand = command.substring(0, maxPos - 2);
       try {
-         String fileLocation = command.substring(mode == Mode.APPEND ? maxPos + 1 : maxPos).trim();
+         String fileLocation = command.substring(maxPos + 2).trim();
          if (fileLocation.trim().equals(""))
-            throw new TerminalException("Invalid file operator position");
+            throw new TerminalException("Invalid datasink operator position");
+         
+         DatasinkDefinition datasink = getDatasink(fileLocation, session);
 
-         VFSLocation location = session.getFileSystem().getLocation(fileLocation);
-
-         FileServerFile file = (FileServerFile) location.getObject();
-
-         if (null == file) {
-            FileServerFolder folder = (FileServerFolder) location.getParentLocation().getObject();
-            if (null == folder)
-               throw new TerminalException("Could not open location");
-
-            file = fileService.createFileAtLocation(location);
-            fileService.persist(file);
-         }
-
-         /* check write rights */
-         securityService.assertRights(file, Write.class);
+         /* check rights */
+         securityService.assertRights(datasink, Read.class, Execute.class);
 
          CommandResult result = session.execute(firstCommand, new ExecuteCommandConfigImpl() {
             @Override
@@ -115,31 +102,37 @@ public class WriteIntoFileOperator implements TerminalCommandOperator {
                return false;
             }
          });
+         
+         Object data = null;
 
-         if (result.containsByteData() && mode != Mode.APPEND) {
-            file.setData(result.getByteData());
+         if (result.containsByteData()) {
+            data = result.getByteData();
          } else {
-            String data = null != file.getData() ? new String(file.getData()) : "";
-
             String resultString = null == result ? "" : result.toString();
-            if (mode == Mode.APPEND)
-               data += resultString;
-            else
-               data = resultString;
-
-            file.setData(data.getBytes());
+            data = resultString;
          }
 
-         fileService.merge(file);
+         datasinkServiceProvider.get().exportIntoDatasink(data, datasink);
 
-         CommandResult newResult = new CommandResult();
-         newResult.setCommitTransaction(true);
+         CommandResult newResult = new CommandResult("Data successfully sent to datasink");
          return newResult;
       } catch (IndexOutOfBoundsException e) {
          throw new TerminalException("Invalid file operator position");
-      } catch (VFSException e) {
-         throw new TerminalException("Could not open location: ", e);
+      } catch (Exception e) {
+         throw new TerminalException(e);
       }
+   }
+   
+   private DatasinkDefinition getDatasink(String query, TerminalSession session) throws ObjectResolverException {
+      Collection<Object> resolvedDatasink = session.getObjectResolver().getObjects(query, Read.class, Execute.class);
+      if (1 != resolvedDatasink.size())
+         throw new IllegalArgumentException("datasink must be resolved to exactly one object: \"" + query + "\"");
+      Object asObject = resolvedDatasink.iterator().next();
+      if (!(asObject instanceof DatasinkDefinition))
+         throw new IllegalArgumentException("not a DatasinkDefinition: \"" + query + "\"");
+      if (asObject instanceof TableDatasink)
+         throw new IllegalArgumentException("table datasinks not allowed: \"" + query + "\"");
+      return (DatasinkDefinition) asObject;
    }
 
 }

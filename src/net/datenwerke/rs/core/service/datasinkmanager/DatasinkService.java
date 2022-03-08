@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.rs.base.service.datasources.table.impl.TableDBDataSource;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
@@ -52,33 +51,55 @@ public interface DatasinkService {
     * Issues a datasink test request by creating a simple text file and sending it
     * to the specified directory in the specified datasink.
     * 
-    * @param datasinkDefinition   the {@link DatasinkDefinition} to test
-    * @param basicDatasinkService the service
-    * @param config               the datasink export configuration
+    * @param datasinkDefinition the {@link DatasinkDefinition} to test
+    * @param config             the datasink export configuration
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void testDatasink(DatasinkDefinition datasinkDefinition, BasicDatasinkService basicDatasinkService,
-         DatasinkConfiguration config) throws DatasinkExportException;
+   void testDatasink(DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
+         throws DatasinkExportException;
 
    /**
-    * Sends a report to the specified datasink, defined in a given
+    * Sends a data to the specified datasink, defined in a given
     * {@link DatasinkDefinition} datasink.
     * 
-    * @param report               the report to send. May be a String, a byte array
-    *                             or a {@link TableDBDataSource}
-    * @param user                 the {@link User} executing the report
-    * @param datasink             the {@link TableReport} to send
-    * @param basicDatasinkService the service
-    * @param config               configuration of the export
+    * @param report   the data to send. May be a String, a byte array or a
+    *                 {@link TableDBDataSource}
+    * @param user     the {@link User}
+    * @param datasink the {@link DatasinkDefinition} to send
+    * @param config   configuration of the export
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, User user, DatasinkDefinition datasink,
-         BasicDatasinkService basicDatasinkService, DatasinkConfiguration config) throws DatasinkExportException;
+   void exportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
+         throws DatasinkExportException;
+
+   /**
+    * Sends a data to the specified datasink, defined in a given
+    * {@link DatasinkDefinition} datasink.
+    * 
+    * @param report   the data to send. May be a String, a byte array or a
+    *                 {@link TableDBDataSource}
+    * @param datasink the {@link DatasinkDefinition} to send
+    * @param config   configuration of the export
+    * @throws DatasinkExportException if an error occurs during datasink export
+    */
+   void exportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
+         throws DatasinkExportException;
+   
+   /**
+    * Sends a data to the specified datasink, defined in a given
+    * {@link DatasinkDefinition} datasink. Uses datasink default configuration.
+    * 
+    * @param report   the data to send. May be a String, a byte array or a
+    *                 {@link TableDBDataSource}
+    * @param datasink the {@link DatasinkDefinition} to send
+    * @throws DatasinkExportException if an error occurs during datasink export
+    */
+   void exportIntoDatasink(Object report, DatasinkDefinition datasink)
+         throws DatasinkExportException;
 
    Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);
 
-   void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto,
-         BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed)
-         throws ServerCallFailedException;
+   void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto, String filename,
+         String folder, boolean compressed) throws ServerCallFailedException;
 
 }

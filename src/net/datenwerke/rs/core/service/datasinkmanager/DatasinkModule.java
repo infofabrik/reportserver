@@ -39,8 +39,10 @@ public class DatasinkModule extends AbstractReportServerModule {
    @ReportServerDatasinkDefinitions
    @Inject
    public Set<Class<? extends DatasinkDefinition>> provideDatasinkDefinitions(HookHandlerService hookHandler) {
-      return hookHandler.getHookers(DatasinkProviderHook.class).stream()
-            .flatMap(dsProvider -> dsProvider.getDatasinks().stream()).collect(toSet());
+      return hookHandler.getHookers(DatasinkProviderHook.class)
+            .stream()
+            .flatMap(dsProvider -> dsProvider.getDatasinks().stream())
+            .collect(toSet());
    }
 
 }

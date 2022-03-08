@@ -42,7 +42,6 @@ import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -65,7 +64,6 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public ScpRpcServiceImpl(
@@ -78,8 +76,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
          ScpService scpService, 
          ExceptionServices exceptionServices,
          ZipUtilsService zipUtilsService, 
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -92,7 +89,6 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -132,8 +128,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     authenticatorServiceProvider.get().getCurrentUser(),
-                     scpDatasink, scpService,
+                     scpDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -151,8 +146,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
-                  authenticatorServiceProvider.get().getCurrentUser(),
-                  scpDatasink, scpService,
+                  scpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -193,7 +187,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       securityService.assertRights(scpDatasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(scpDatasink, scpService, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().testDatasink(scpDatasink, new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {
@@ -235,7 +229,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, scpService, filename, folder,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename, folder,
             compressed);
    }
 

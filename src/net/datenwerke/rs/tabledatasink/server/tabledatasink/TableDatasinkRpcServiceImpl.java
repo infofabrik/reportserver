@@ -31,7 +31,6 @@ import net.datenwerke.rs.tabledatasink.client.tabledatasink.rpc.TableDatasinkRpc
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -50,7 +49,6 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final TableDatasinkService tableDatasinkService;
    private final SecurityService securityService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public TableDatasinkRpcServiceImpl(
@@ -59,8 +57,7 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          DtoService dtoService, 
          SecurityService securityService,
          TableDatasinkService tableDatasinkService,
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -69,7 +66,6 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       this.securityService = securityService;
       this.tableDatasinkService = tableDatasinkService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -117,8 +113,8 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          throw new IllegalArgumentException("Only database datasources are currently supported");
       
       try {
-         datasinkServiceProvider.get().exportIntoDatasink(tableReport, authenticatorServiceProvider.get().getCurrentUser(),
-               tableDatasink, tableDatasinkService, null);
+         datasinkServiceProvider.get().exportIntoDatasink(tableReport,
+               tableDatasink, null);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Table Datasink: " + e.getMessage(), e);
       }
@@ -148,7 +144,7 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, tableDatasinkService, filename,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename,
             folder, compressed);
 
    }

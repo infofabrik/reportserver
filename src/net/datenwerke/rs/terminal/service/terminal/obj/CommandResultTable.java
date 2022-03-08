@@ -30,9 +30,12 @@ public class CommandResultTable extends CommandResultEntry {
 
    @Override
    public String toString() {
-      if (table.getData().isEmpty())
-         return "";
       StringBuffer buf = new StringBuffer();
+      buf.append(table.toString());
+      buf.append('\n');
+      
+      if (table.getData().isEmpty())
+         return buf.toString();
 
       for (RSTableRow row : table.getData()) {
          boolean first = true;

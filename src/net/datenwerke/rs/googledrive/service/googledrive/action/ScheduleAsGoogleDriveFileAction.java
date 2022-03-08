@@ -17,7 +17,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -35,10 +34,6 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private GoogleDriveService googleDriveService;
 
    @Transient
    @Inject
@@ -82,7 +77,8 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(googleDriveService) || !datasinkService.isSchedulingEnabled(googleDriveService))
+      if (!datasinkService.isEnabled(googleDriveDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(googleDriveDatasink.getDatasinkService()))
          throw new ActionExecutionException("Google Drive scheduling is disabled");
 
       report = rJob.getReport();
@@ -114,7 +110,7 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), googleDriveDatasink, googleDriveService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), googleDriveDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -134,7 +130,7 @@ public class ScheduleAsGoogleDriveFileAction extends AbstractAction {
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(),
                   rJob.getExecutor(),
                   googleDriveDatasink,
-                  googleDriveService, new DatasinkFilenameFolderConfig() {
+                  new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFilename() {

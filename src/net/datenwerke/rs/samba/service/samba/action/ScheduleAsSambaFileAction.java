@@ -17,7 +17,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -35,9 +34,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   @Transient
-   @Inject
-   private SambaService sambaService;
+   
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -80,7 +77,8 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(sambaService) || !datasinkService.isSchedulingEnabled(sambaService))
+      if (!datasinkService.isEnabled(sambaDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(sambaDatasink.getDatasinkService()))
          throw new ActionExecutionException("samba scheduling is disabled");
 
       report = rJob.getReport();
@@ -112,7 +110,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sambaDatasink, sambaService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sambaDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -130,7 +128,7 @@ public class ScheduleAsSambaFileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  sambaDatasink, sambaService,
+                  sambaDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

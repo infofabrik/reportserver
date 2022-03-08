@@ -22,9 +22,13 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.box.service.box.BoxService;
 import net.datenwerke.rs.box.service.box.definitions.dtogen.BoxDatasink2DtoPostProcessor;
 import net.datenwerke.rs.box.service.box.locale.BoxDatasinkMessages;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -68,6 +72,9 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
 
    @Inject
    protected static Provider<PbeService> pbeServiceProvider;
+   
+   @Inject
+   protected static Provider<BoxService> basicDatasinkService;
 
    @ExposeToClient
    @Field
@@ -179,6 +186,27 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
       additionalParameters.put("access_type", "offline");
       additionalParameters.put("prompt", "consent");
       return authorizationUrlBuilder.additionalParams(additionalParameters).build();
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFolder() {
+            return folder;
+         }
+
+         @Override
+         public String getFilename() {
+            return "export.txt";
+         }
+      };
    }
 
 }

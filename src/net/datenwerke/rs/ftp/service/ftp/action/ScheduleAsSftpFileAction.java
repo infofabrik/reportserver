@@ -19,7 +19,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.ftp.service.ftp.SftpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -37,9 +36,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   @Transient
-   @Inject
-   private SftpService sftpService;
+   
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -82,7 +79,8 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(sftpService) || !datasinkService.isSchedulingEnabled(sftpService))
+      if (!datasinkService.isEnabled(sftpDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(sftpDatasink.getDatasinkService()))
          throw new ActionExecutionException("sftp scheduling is disabled");
 
       report = rJob.getReport();
@@ -119,7 +117,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
             throw new ActionExecutionException(e);
          }
          try {
-            datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sftpDatasink, sftpService,
+            datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sftpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -139,7 +137,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
          String filenameScheduling = filename += "." + rJob.getExecutedReport().getFileExtension();
          try {
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), 
-                  rJob.getExecutor(), sftpDatasink, sftpService,
+                  rJob.getExecutor(), sftpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

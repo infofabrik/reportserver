@@ -41,7 +41,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -64,7 +63,6 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public AmazonS3RpcServiceImpl(
@@ -77,8 +75,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
          AmazonS3Service amazonS3Service, 
          ExceptionServices exceptionServices,
          ZipUtilsService zipUtilsService, 
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -91,7 +88,6 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -131,8 +127,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), authenticatorServiceProvider.get().getCurrentUser(),
-                     amazonS3Datasink, amazonS3Service,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(),
+                     amazonS3Datasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -149,8 +145,8 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), authenticatorServiceProvider.get().getCurrentUser(), 
-                  amazonS3Datasink, amazonS3Service,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
+                  amazonS3Datasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -191,7 +187,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       securityService.assertRights(amazonS3Datasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(amazonS3Datasink, amazonS3Service,
+         datasinkServiceProvider.get().testDatasink(amazonS3Datasink,
                new DatasinkFilenameFolderConfig() {
 
                   @Override
@@ -233,7 +229,7 @@ public class AmazonS3RpcServiceImpl extends SecuredRemoteServiceServlet implemen
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, amazonS3Service, filename,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename,
             folder, compressed);
 
    }

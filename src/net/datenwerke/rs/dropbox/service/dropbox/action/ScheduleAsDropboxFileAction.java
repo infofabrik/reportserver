@@ -17,7 +17,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -35,10 +34,6 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private DropboxService dropboxService;
 
    @Transient
    @Inject
@@ -82,7 +77,8 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(dropboxService) || !datasinkService.isSchedulingEnabled(dropboxService))
+      if (!datasinkService.isEnabled(dropboxDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(dropboxDatasink.getDatasinkService()))
          throw new ActionExecutionException("Dropbox scheduling is disabled");
 
       report = rJob.getReport();
@@ -114,7 +110,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), dropboxDatasink, dropboxService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), dropboxDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -132,7 +128,7 @@ public class ScheduleAsDropboxFileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), 
-                  dropboxDatasink, dropboxService,
+                  dropboxDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

@@ -15,9 +15,13 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.HostDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.dtogen.SambaDatasink2DtoPostProcessor;
 import net.datenwerke.rs.samba.service.samba.locale.SambaMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -57,6 +61,9 @@ public class SambaDatasink extends DatasinkDefinition implements HostDatasink, F
 
    @Inject
    protected static Provider<PbeService> pbeServiceProvider;
+   
+   @Inject
+   protected static Provider<SambaService> basicDatasinkService;
 
    @ExposeToClient
    @Field
@@ -156,6 +163,27 @@ public class SambaDatasink extends DatasinkDefinition implements HostDatasink, F
       byte[] encrypted = encryptionService.encrypt(password);
 
       this.password = new String(Hex.encodeHex(encrypted));
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFolder() {
+            return folder;
+         }
+
+         @Override
+         public String getFilename() {
+            return "export.txt";
+         }
+      };
    }
 
 }

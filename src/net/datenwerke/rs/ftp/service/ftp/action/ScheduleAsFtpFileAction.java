@@ -17,7 +17,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.ftp.service.ftp.FtpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -35,9 +34,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   @Transient
-   @Inject
-   private FtpService ftpService;
+   
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -80,7 +77,8 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(ftpService) || !datasinkService.isSchedulingEnabled(ftpService))
+      if (!datasinkService.isEnabled(ftpDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(ftpDatasink.getDatasinkService()))
          throw new ActionExecutionException("ftp scheduling is disabled");
 
       report = rJob.getReport();
@@ -112,7 +110,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), ftpDatasink, ftpService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), ftpDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -129,7 +127,7 @@ public class ScheduleAsFtpFileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), 
-                  rJob.getExecutor(), ftpDatasink, ftpService,
+                  rJob.getExecutor(), ftpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

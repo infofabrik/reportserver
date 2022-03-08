@@ -1,5 +1,8 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions;
 
+import java.util.Arrays;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -15,12 +18,18 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
+import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.dtogen.EmailDatasink2DtoPostProcessor;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.locale.EmailDatasinkMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
+import net.datenwerke.security.service.usermanager.entities.User;
 
 /**
  * Used to define Email datasinks that can be used in ReportServer to send
@@ -55,6 +64,12 @@ public class EmailDatasink extends DatasinkDefinition {
 
    @Inject
    protected static Provider<PbeService> pbeServiceProvider;
+   
+   @Inject
+   protected static Provider<EmailDatasinkService> basicDatasinkService;
+   
+   @Inject
+   protected static Provider<AuthenticatorService> authenticationService;
 
    @ExposeToClient
    @Field
@@ -208,6 +223,42 @@ public class EmailDatasink extends DatasinkDefinition {
       byte[] encrypted = encryptionService.encrypt(password);
 
       this.password = new String(Hex.encodeHex(encrypted));
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkEmailConfig() {
+
+         @Override
+         public String getFilename() {
+            return "export.txt";
+         }
+
+         @Override
+         public boolean isSendSyncEmail() {
+            return true;
+         }
+
+         @Override
+         public String getSubject() {
+            return "ReportServer export";
+         }
+
+         @Override
+         public List<User> getRecipients() {
+            return Arrays.asList(authenticationService.get().getCurrentUser());
+         }
+
+         @Override
+         public String getBody() {
+            return "ReportServer export attached";
+         }
+      };
    }
 
 }

@@ -47,28 +47,38 @@ import net.datenwerke.security.service.security.SecurityService;
 public class FileServerStartup {
 
    @Inject
-   public FileServerStartup(HookHandlerService hookHandler, SecurityService securityService,
+   public FileServerStartup(
+         HookHandlerService hookHandler, 
+         SecurityService securityService,
 
-         Provider<FileServerExporter> exporterProvider, Provider<FileServerImporter> importerProvider,
-         Provider<ExportAllFilesHooker> exportAllFiles, Provider<ImportAllFilesHooker> importAllFiles,
+         Provider<FileServerExporter> exporterProvider, 
+         Provider<FileServerImporter> importerProvider,
+         Provider<ExportAllFilesHooker> exportAllFiles, 
+         Provider<ImportAllFilesHooker> importAllFiles,
 
          Provider<HttpFileServerImportConfigurationHooker> httpImport,
 
-         Provider<CreateTextFileCommand> createTextFileCommand, Provider<EditTextFileCommand> editTextFileCommand,
-         Provider<ZipCommand> zipCommand, Provider<UnzipCommand> unzipCommand,
+         Provider<CreateTextFileCommand> createTextFileCommand, 
+         Provider<EditTextFileCommand> editTextFileCommand,
+         Provider<ZipCommand> zipCommand, 
+         Provider<UnzipCommand> unzipCommand,
 
-         Provider<DirModCommand> dirModCommandProvider, Provider<WebAccessSubCommand> webAccessCommandProvider,
+         Provider<DirModCommand> dirModCommandProvider, 
+         Provider<WebAccessSubCommand> webAccessCommandProvider,
 
-         Provider<LfsCommand> lfsCommand, Provider<LfsExportSubCommand> lfsExportCommand,
+         Provider<LfsCommand> lfsCommand, 
+         Provider<LfsExportSubCommand> lfsExportCommand,
          Provider<LfsImportSubCommand> lfsImportCommand,
 
          Provider<FileServerHistoryUrlBuilderHooker> urlBuilder,
 
          Provider<FileServerFileUploadHooker> fileServerFileUploader,
 
-         Provider<WriteIntoFileOperator> writeIntoFileOperator, RsfsUrlStreamHandler rsfsUrlStreamHandler,
+         Provider<WriteIntoFileOperator> writeIntoFileOperator, 
+         RsfsUrlStreamHandler rsfsUrlStreamHandler,
 
-         CatCommandHandlerHooker catCommandHooker) {
+         CatCommandHandlerHooker catCommandHooker
+         ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));

@@ -44,7 +44,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -69,7 +68,6 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
    private final Provider<DatasinkService> datasinkServiceProvider;
    private final Provider<SftpService> sftpServiceProvider;
    private final Provider<FtpsService> ftpsServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public FtpRpcServiceImpl(
@@ -84,8 +82,7 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider,
          Provider<SftpService> sftpServiceProvider, 
-         Provider<FtpsService> ftpsServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<FtpsService> ftpsServiceProvider
          ) {
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -99,7 +96,6 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       this.datasinkServiceProvider = datasinkServiceProvider;
       this.sftpServiceProvider = sftpServiceProvider;
       this.ftpsServiceProvider = ftpsServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -139,8 +135,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), authenticatorServiceProvider.get().getCurrentUser(),
-                     ftpDatasink, ftpService,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(),
+                     ftpDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -156,8 +152,8 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), authenticatorServiceProvider.get().getCurrentUser(),
-                  ftpDatasink, ftpService,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
+                  ftpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -196,7 +192,7 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       securityService.assertRights(ftpDatasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(ftpDatasink, ftpService, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().testDatasink(ftpDatasink, new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {
@@ -237,7 +233,7 @@ public class FtpRpcServiceImpl extends SecuredRemoteServiceServlet implements Ft
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, ftpService, filename, folder,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename, folder,
             compressed);
 
    }

@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.AmazonS3Datasink;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
@@ -35,10 +34,6 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private AmazonS3Service amazonS3Service;
 
    @Transient
    @Inject
@@ -82,7 +77,8 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(amazonS3Service) || !datasinkService.isSchedulingEnabled(amazonS3Service))
+      if (!datasinkService.isEnabled(amazonS3Datasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(amazonS3Datasink.getDatasinkService()))
          throw new ActionExecutionException("AmazonS3 scheduling is disabled");
 
       report = rJob.getReport();
@@ -114,7 +110,7 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), amazonS3Datasink, amazonS3Service,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), amazonS3Datasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -132,7 +128,7 @@ public class ScheduleAsAmazonS3FileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  amazonS3Datasink, amazonS3Service,
+                  amazonS3Datasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

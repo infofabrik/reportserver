@@ -8,14 +8,20 @@ import javax.persistence.Table;
 
 import org.hibernate.envers.Audited;
 
+import com.google.inject.Inject;
+import com.google.inject.Provider;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerProviderDto;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainerProvider;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.locale.TableDatasinkMessages;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
@@ -44,6 +50,9 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
     * 
     */
    private static final long serialVersionUID = 3831194855989908242L;
+   
+   @Inject
+   protected static Provider<TableDatasinkService> basicDatasinkService;
 
    @ExposeToClient
    @EnclosedEntity
@@ -109,6 +118,17 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
    
    public void setTableName(String tableName) {
       this.tableName = tableName;
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkConfiguration() {
+      };
    }
 
 }

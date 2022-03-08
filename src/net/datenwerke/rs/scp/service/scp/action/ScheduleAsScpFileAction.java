@@ -18,7 +18,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
-import net.datenwerke.rs.scp.service.scp.ScpService;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
@@ -35,10 +34,6 @@ public class ScheduleAsScpFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private ScpService scpService;
 
    @Transient
    @Inject
@@ -82,7 +77,8 @@ public class ScheduleAsScpFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(scpService) || !datasinkService.isSchedulingEnabled(scpService))
+      if (!datasinkService.isEnabled(scpDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(scpDatasink.getDatasinkService()))
          throw new ActionExecutionException("scp scheduling is disabled");
 
       report = rJob.getReport();
@@ -114,7 +110,7 @@ public class ScheduleAsScpFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),  scpDatasink, scpService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),  scpDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -132,7 +128,7 @@ public class ScheduleAsScpFileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  scpDatasink, scpService,
+                  scpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

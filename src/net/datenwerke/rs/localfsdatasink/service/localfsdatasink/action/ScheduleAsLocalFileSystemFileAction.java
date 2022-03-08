@@ -17,7 +17,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
@@ -35,9 +34,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-   @Transient
-   @Inject
-   private LocalFileSystemService localFileSystemService;
+   
    @Transient
    @Inject
    private DatasinkService datasinkService;
@@ -80,8 +77,8 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(localFileSystemService)
-            || !datasinkService.isSchedulingEnabled(localFileSystemService))
+      if (!datasinkService.isEnabled(localFileSystemDatasink.getDatasinkService())
+            || !datasinkService.isSchedulingEnabled(localFileSystemDatasink.getDatasinkService()))
          throw new ActionExecutionException("Local File System scheduling is disabled");
 
       report = rJob.getReport();
@@ -114,7 +111,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
                datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
-                     localFileSystemDatasink, localFileSystemService,
+                     localFileSystemDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -132,7 +129,7 @@ public class ScheduleAsLocalFileSystemFileAction extends AbstractAction {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
                   localFileSystemDatasink,
-                  localFileSystemService, new DatasinkFilenameFolderConfig() {
+                  new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFolder() {

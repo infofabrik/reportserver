@@ -22,8 +22,12 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.DropboxDatasink2DtoPostProcessor;
 import net.datenwerke.rs.dropbox.service.dropbox.locale.DropboxDatasinkMessages;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
@@ -67,6 +71,9 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
 
    @Inject
    protected static Provider<PbeService> pbeServiceProvider;
+   
+   @Inject
+   protected static Provider<DropboxService> basicDatasinkService;
 
    @ExposeToClient
    @Field
@@ -177,6 +184,27 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
       Map<String, String> additionalParameters = new HashMap<>();
       additionalParameters.put("token_access_type", "offline");
       return authorizationUrlBuilder.additionalParams(additionalParameters).build();
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFolder() {
+            return folder;
+         }
+
+         @Override
+         public String getFilename() {
+            return "export.txt";
+         }
+      };
    }
 
 }

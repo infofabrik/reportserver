@@ -18,6 +18,8 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
+import net.datenwerke.rs.core.service.datasinkmanager.HasBasicDatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.HasDefaultConfiguration;
 import net.datenwerke.rs.utils.instancedescription.annotations.Description;
 import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 
@@ -29,8 +31,14 @@ import net.datenwerke.rs.utils.instancedescription.annotations.Title;
 @Table(name = "DATASINK_DEFINITION")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.datasinkmanager.dto", abstractDto = true, typeDescriptionMsg = DatasinksMessages.class, typeDescriptionKey = "datasink")
-abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode {
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.core.client.datasinkmanager.dto", 
+      abstractDto = true, 
+      typeDescriptionMsg = DatasinksMessages.class, 
+      typeDescriptionKey = "datasink"
+      )
+abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode
+      implements HasBasicDatasinkService, HasDefaultConfiguration {
 
    /**
     * 

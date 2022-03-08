@@ -20,7 +20,6 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
-import net.datenwerke.rs.emaildatasink.service.emaildatasink.EmailDatasinkService;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.configs.DatasinkEmailConfig;
 import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
@@ -43,10 +42,6 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private EmailDatasinkService emailDatasinkService;
 
    @Transient
    @Inject
@@ -95,8 +90,8 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(emailDatasinkService)
-            || !datasinkService.isSchedulingEnabled(emailDatasinkService))
+      if (!datasinkService.isEnabled(emailDatasink.getDatasinkService())
+            || !datasinkService.isSchedulingEnabled(emailDatasink.getDatasinkService()))
          throw new ActionExecutionException("email scheduling is disabled");
 
       report = rJob.getReport();
@@ -130,7 +125,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
                datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
-                     emailDatasink, emailDatasinkService,
+                     emailDatasink,
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -163,7 +158,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
                   emailDatasink,
-                  emailDatasinkService, new DatasinkEmailConfig() {
+                  new DatasinkEmailConfig() {
 
                      @Override
                      public String getFilename() {

@@ -13,6 +13,8 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder;
 import net.datenwerke.rs.core.service.datasinkmanager.eventhandlers.HandleDatasinkForceRemoveEventHandler;
 import net.datenwerke.rs.core.service.datasinkmanager.history.DatasinkManagerHistoryUrlBuilderHooker;
+import net.datenwerke.rs.core.service.datasinkmanager.terminal.operators.WriteIntoDatasinkOperator;
+import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.ForceRemoveEntityEvent;
 import net.datenwerke.security.service.security.SecurityService;
@@ -20,15 +22,21 @@ import net.datenwerke.security.service.security.SecurityService;
 public class DatasinkStartup {
 
    @Inject
-   public DatasinkStartup(HookHandlerService hookHandler, EventBus eventBus,
+   public DatasinkStartup(
+         HookHandlerService hookHandler, 
+         EventBus eventBus,
          final Provider<SecurityService> securityServiceProvider,
-         final @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDataSinkDefinitions,
+         final @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDatasinkDefinitions,
 
          Provider<DatasinkManagerHistoryUrlBuilderHooker> datasinkManagerUrlBuilder,
-         HandleDatasinkForceRemoveEventHandler handleDatasinkForceRemoveHandler) {
+         HandleDatasinkForceRemoveEventHandler handleDatasinkForceRemoveHandler,
+         Provider<WriteIntoDatasinkOperator> writeIntoDatasinkOperator 
+         ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasinkDefinition.class,
             handleDatasinkForceRemoveHandler);
+      
+      hookHandler.attachHooker(TerminalCommandOperator.class, writeIntoDatasinkOperator);
 
       /* history */
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, datasinkManagerUrlBuilder);
@@ -42,7 +50,7 @@ public class DatasinkStartup {
             securityServiceProvider.get().registerSecurityTarget(DatasinkFolder.class);
 
             /* secure datasink definition entities */
-            for (Class<? extends DatasinkDefinition> dClass : installedDataSinkDefinitions.get())
+            for (Class<? extends DatasinkDefinition> dClass : installedDatasinkDefinitions.get())
                securityServiceProvider.get().registerSecurityTarget(dClass);
          }
       });

@@ -151,8 +151,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), authenticatorServiceProvider.get().getCurrentUser(),
-                     emailDatasink, emailDatasinkService,
+               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(),
+                     emailDatasink,
                      new DatasinkEmailConfig() {
 
                         @Override
@@ -183,9 +183,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             }
          } else {
             String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
-                  authenticatorServiceProvider.get().getCurrentUser(),
-                  emailDatasink, emailDatasinkService,
+            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
+                  emailDatasink,
                   new DatasinkEmailConfig() {
 
                      @Override
@@ -241,7 +240,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
       try {
          String emailText = "ReportServer Email Datasink Test";
-         datasinkServiceProvider.get().testDatasink(emailDatasink, emailDatasinkService, new DatasinkEmailConfig() {
+         datasinkServiceProvider.get().testDatasink(emailDatasink, new DatasinkEmailConfig() {
 
             @Override
             public String getFilename() {
@@ -360,8 +359,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
 
       List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
             .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
-      datasinkServiceProvider.get().exportIntoDatasink(os, authenticatorServiceProvider.get().getCurrentUser(),
-            datasink, basicDatasinkService, new DatasinkEmailConfig() {
+      datasinkServiceProvider.get().exportIntoDatasink(os, datasink,
+            new DatasinkEmailConfig() {
 
          @Override
          public String getFilename() {

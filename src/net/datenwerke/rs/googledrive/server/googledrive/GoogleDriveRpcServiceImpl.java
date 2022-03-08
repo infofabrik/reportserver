@@ -41,7 +41,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -64,7 +63,6 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public GoogleDriveRpcServiceImpl(
@@ -77,8 +75,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
          GoogleDriveService googleDriveService,
          ExceptionServices exceptionServices, 
          ZipUtilsService zipUtilsService,
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -91,7 +88,6 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    @Override
@@ -131,9 +127,8 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     authenticatorServiceProvider.get().getCurrentUser(),
                      googleDriveDatasink,
-                     googleDriveService, new DatasinkFilenameFolderConfig() {
+                     new DatasinkFilenameFolderConfig() {
 
                         @Override
                         public String getFilename() {
@@ -150,9 +145,8 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
-                  authenticatorServiceProvider.get().getCurrentUser(),
                   googleDriveDatasink,
-                  googleDriveService, new DatasinkFilenameFolderConfig() {
+                  new DatasinkFilenameFolderConfig() {
 
                      @Override
                      public String getFilename() {
@@ -193,7 +187,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       securityService.assertRights(googleDriveDatasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(googleDriveDatasink, googleDriveService,
+         datasinkServiceProvider.get().testDatasink(googleDriveDatasink,
                new DatasinkFilenameFolderConfig() {
 
                   @Override
@@ -236,7 +230,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, googleDriveService, filename,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename,
             folder, compressed);
    }
 }

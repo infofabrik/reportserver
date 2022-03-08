@@ -41,7 +41,6 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
-import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
@@ -64,7 +63,6 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    private final ExceptionServices exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
-   private final Provider<AuthenticatorService> authenticatorServiceProvider;
 
    @Inject
    public SftpRpcServiceImpl(
@@ -77,8 +75,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
          SftpService sftpService, 
          ExceptionServices exceptionServices,
          ZipUtilsService zipUtilsService, 
-         Provider<DatasinkService> datasinkServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -91,7 +88,6 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       this.exceptionServices = exceptionServices;
       this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
-      this.authenticatorServiceProvider = authenticatorServiceProvider;
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
@@ -138,8 +134,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
                      zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
                      os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     authenticatorServiceProvider.get().getCurrentUser(),
-                     sftpDatasink, sftpService,
+                     sftpDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -156,8 +151,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
          } else {
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
-                  authenticatorServiceProvider.get().getCurrentUser(),
-                  sftpDatasink, sftpService,
+                  sftpDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override
@@ -190,7 +184,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       securityService.assertRights(sftpDatasink, Read.class, Execute.class);
 
       try {
-         datasinkServiceProvider.get().testDatasink(sftpDatasink, sftpService, new DatasinkFilenameFolderConfig() {
+         datasinkServiceProvider.get().testDatasink(sftpDatasink, new DatasinkFilenameFolderConfig() {
 
             @Override
             public String getFilename() {
@@ -231,7 +225,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, sftpService, filename, folder,
+      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename, folder,
             compressed);
    }
 }

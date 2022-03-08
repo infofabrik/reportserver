@@ -14,7 +14,6 @@ import javax.persistence.Transient;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.box.service.box.BoxService;
 import net.datenwerke.rs.box.service.box.definitions.BoxDatasink;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
@@ -34,10 +33,6 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private BoxService boxService;
 
    @Transient
    @Inject
@@ -81,7 +76,8 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(boxService) || !datasinkService.isSchedulingEnabled(boxService))
+      if (!datasinkService.isEnabled(boxDatasink.getDatasinkService()) 
+            || !datasinkService.isSchedulingEnabled(boxDatasink.getDatasinkService()))
          throw new ActionExecutionException("Box scheduling is disabled");
 
       report = rJob.getReport();
@@ -113,7 +109,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
                zipUtilsService.createZip(
                      zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
                      os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), boxDatasink, boxService,
+               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), boxDatasink,
                      new DatasinkFilenameFolderConfig() {
 
                         @Override
@@ -130,7 +126,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
          } else {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  boxDatasink, boxService,
+                  boxDatasink,
                   new DatasinkFilenameFolderConfig() {
 
                      @Override

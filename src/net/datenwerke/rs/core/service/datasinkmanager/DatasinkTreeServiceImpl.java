@@ -41,12 +41,12 @@ public class DatasinkTreeServiceImpl extends SecuredTreeDBManagerImpl<AbstractDa
 
    @Inject
    public DatasinkTreeServiceImpl(Provider<EntityManager> entityManagerProvider,
-         @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDataSourceDefinitions,
+         @ReportServerDatasinkDefinitions Provider<Set<Class<? extends DatasinkDefinition>>> installedDatasinkDefinitions,
          Provider<ConfigService> configServiceProvider) {
 
       /* store objects */
       this.entityManagerProvider = entityManagerProvider;
-      this.installedDatasinkDefinitions = installedDataSourceDefinitions;
+      this.installedDatasinkDefinitions = installedDatasinkDefinitions;
       this.configServiceProvider = configServiceProvider;
    }
 

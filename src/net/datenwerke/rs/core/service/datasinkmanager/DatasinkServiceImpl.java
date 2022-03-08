@@ -80,20 +80,34 @@ public class DatasinkServiceImpl implements DatasinkService {
    }
 
    @Override
-   public void testDatasink(DatasinkDefinition datasinkDefinition, BasicDatasinkService basicDatasinkService,
-         DatasinkConfiguration config) throws DatasinkExportException {
-      if (!isEnabled(basicDatasinkService))
-         throw new IllegalStateException("datasink is disabled: " + basicDatasinkService);
+   public void testDatasink(DatasinkDefinition datasinkDefinition, DatasinkConfiguration config) 
+         throws DatasinkExportException {
+      BasicDatasinkService datasinkService = datasinkDefinition.getDatasinkService();
+      if (!isEnabled(datasinkService))
+         throw new IllegalStateException("datasink is disabled: " + datasinkService);
       exportIntoDatasink(
-            "ReportServer " + basicDatasinkService.getDatasinkPropertyName() + " Datasink Test "
-                  + dateFormat.format(Calendar.getInstance().getTime()), authenticatorServiceProvider.get().getCurrentUser(),
-            datasinkDefinition, basicDatasinkService, config);
+            "ReportServer " + datasinkService.getDatasinkPropertyName() + " Datasink Test "
+                  + dateFormat.format(Calendar.getInstance().getTime()),
+            datasinkDefinition, config);
    }
 
    @Override
    public void exportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
-         BasicDatasinkService basicDatasinkService, DatasinkConfiguration config) throws DatasinkExportException {
-      basicDatasinkService.doExportIntoDatasink(report, user, datasinkDefinition, config);
+         DatasinkConfiguration config) throws DatasinkExportException {
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, user, datasinkDefinition, config);
+   }
+   
+   @Override
+   public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition,
+         DatasinkConfiguration config) throws DatasinkExportException {
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, authenticatorServiceProvider.get().getCurrentUser(), 
+            datasinkDefinition, config);
+   }
+   
+   @Override
+   public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition) throws DatasinkExportException {
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, authenticatorServiceProvider.get().getCurrentUser(), 
+            datasinkDefinition, datasinkDefinition.getDefaultConfiguration());
    }
 
    @Override
@@ -103,7 +117,7 @@ public class DatasinkServiceImpl implements DatasinkService {
 
    @Override
    public void exportFileIntoDatasink(AbstractFileServerNodeDto fileDto, DatasinkDefinitionDto datasinkDto,
-         BasicDatasinkService basicDatasinkService, String filename, String folder, boolean compressed)
+         String filename, String folder, boolean compressed)
          throws ServerCallFailedException {
       DatasinkDefinition datasink = (DatasinkDefinition) dtoService.loadPoso(datasinkDto);
       if (fileDto instanceof FileServerFileDto) { // when a given object is of type file
@@ -123,10 +137,10 @@ public class DatasinkServiceImpl implements DatasinkService {
                   zipUtilsService.createZip(
                         zipUtilsService.cleanFilename(filenameWithoutExtension + originalFileExtension), reportObj, os);
 
-                  exportIntoDatasink(basicDatasinkService, folder, datasink, zipFilename, os.toByteArray());
+                  exportIntoDatasink(folder, datasink, zipFilename, os.toByteArray());
                }
             } else {
-               exportIntoDatasink(basicDatasinkService, folder, datasink, filename + originalFileExtension,
+               exportIntoDatasink(folder, datasink, filename + originalFileExtension,
                      fileObj.getData());
             }
          } catch (Exception e) {
@@ -147,7 +161,7 @@ public class DatasinkServiceImpl implements DatasinkService {
                      return false;
                   }
                });
-               exportIntoDatasink(basicDatasinkService, folder, datasink, zipFilename, os.toByteArray());
+               exportIntoDatasink(folder, datasink, zipFilename, os.toByteArray());
             }
 
          } catch (Exception e) {
@@ -156,10 +170,10 @@ public class DatasinkServiceImpl implements DatasinkService {
       }
    }
 
-   private void exportIntoDatasink(BasicDatasinkService basicDatasinkService, String folder,
+   private void exportIntoDatasink(String folder,
          DatasinkDefinition datasink, String filename, byte[] os) throws DatasinkExportException {
       exportIntoDatasink(os, authenticatorServiceProvider.get().getCurrentUser(), 
-            datasink, basicDatasinkService, new DatasinkFilenameFolderConfig() {
+            datasink, new DatasinkFilenameFolderConfig() {
 
          @Override
          public String getFilename() {

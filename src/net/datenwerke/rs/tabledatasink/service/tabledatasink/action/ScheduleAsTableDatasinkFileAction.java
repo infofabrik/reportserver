@@ -13,7 +13,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
-import net.datenwerke.rs.tabledatasink.service.tabledatasink.TableDatasinkService;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
@@ -29,10 +28,6 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
    @Transient
    @Inject
    private Provider<SimpleJuel> simpleJuelProvider;
-
-   @Transient
-   @Inject
-   private TableDatasinkService tableDatasinkService;
 
    @Transient
    @Inject
@@ -58,8 +53,8 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
       if (null == rJob.getExecutedReport())
          return;
 
-      if (!datasinkService.isEnabled(tableDatasinkService)
-            || !datasinkService.isSchedulingEnabled(tableDatasinkService))
+      if (!datasinkService.isEnabled(tableDatasink.getDatasinkService())
+            || !datasinkService.isSchedulingEnabled(tableDatasink.getDatasinkService()))
          throw new ActionExecutionException("Table datasink scheduling is disabled");
 
       report = rJob.getReport();
@@ -77,7 +72,7 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
    private void sendViaTableDatasink(ReportExecuteJob rJob) throws ActionExecutionException {
       try {
          datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), tableDatasink,
-               tableDatasinkService, null);
+               null);
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to table datasink", e);
       }

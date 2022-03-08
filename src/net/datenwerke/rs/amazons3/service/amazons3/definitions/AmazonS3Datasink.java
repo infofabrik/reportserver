@@ -16,9 +16,13 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
+import net.datenwerke.rs.amazons3.service.amazons3.AmazonS3Service;
 import net.datenwerke.rs.amazons3.service.amazons3.definitions.dtogen.AmazonS3Datasink2DtoPostProcessor;
 import net.datenwerke.rs.amazons3.service.amazons3.locale.AmazonS3DatasinkMessages;
+import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.FolderedDatasink;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
@@ -57,6 +61,9 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
 
    @Inject
    protected static Provider<PbeService> pbeServiceProvider;
+   
+   @Inject
+   protected static Provider<AmazonS3Service> basicDatasinkService;
 
    @ExposeToClient
    @Field
@@ -156,6 +163,28 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
       byte[] encrypted = encryptionService.encrypt(secretKey);
 
       this.secretKey = new String(Hex.encodeHex(encrypted));
+   }
+
+   @Override
+   public BasicDatasinkService getDatasinkService() {
+      return basicDatasinkService.get();
+   }
+
+   @Override
+   public DatasinkConfiguration getDefaultConfiguration() {
+      return new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFilename() {
+            return "export.txt";
+         }
+
+         @Override
+         public String getFolder() {
+            return folder;
+         }
+
+      };
    }
 
 }
