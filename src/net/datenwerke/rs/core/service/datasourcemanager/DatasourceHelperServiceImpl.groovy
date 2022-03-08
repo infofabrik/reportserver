@@ -5,6 +5,7 @@ import javax.inject.Inject
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
+import net.datenwerke.rs.base.service.dbhelper.DBHelperService
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier
 import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier.DataConsumer
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column
@@ -25,6 +26,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    final SimpleDataSupplier simpleDataSupplier
    final ParameterSetFactory parameterSetFactory
    final DatasourceBundleService datasourceBundleService
+   final DBHelperService dbHelperService
    
    @Inject
    DatasourceHelperServiceImpl(
@@ -32,13 +34,15 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       DbPoolService dbPoolService,
       SimpleDataSupplier simpleDataSupplier,
       ParameterSetFactory parameterSetFactory,
-      DatasourceBundleService datasourceBundleService
+      DatasourceBundleService datasourceBundleService,
+      DBHelperService dbHelperService
    ) {
       this.terminalSession = terminalSession
       this.dbPoolService = dbPoolService
       this.simpleDataSupplier = simpleDataSupplier
       this.parameterSetFactory = parameterSetFactory
       this.datasourceBundleService = datasourceBundleService
+      this.dbHelperService = dbHelperService
    }
 
    @Override
@@ -192,6 +196,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
             
             colDefinition.COLUMN_NAME =  metaResultSet.getString 'COLUMN_NAME'
             colDefinition.TYPE_NAME =  metaResultSet.getString 'TYPE_NAME'
+            colDefinition.RS_TYPE = dbHelperService.getDatabaseHelper(conn).mapSQLTypeToJava(metaResultSet.getInt('DATA_TYPE')).simpleName
             colDefinition.COLUMN_SIZE =  metaResultSet.getInt 'COLUMN_SIZE'
             colDefinition.DECIMAL_DIGITS =  metaResultSet.getInt 'DECIMAL_DIGITS'
             colDefinition.ORDINAL_POSITION =  metaResultSet.getInt 'ORDINAL_POSITION'
