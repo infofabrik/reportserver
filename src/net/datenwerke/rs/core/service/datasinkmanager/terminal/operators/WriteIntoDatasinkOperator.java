@@ -1,7 +1,5 @@
 package net.datenwerke.rs.core.service.datasinkmanager.terminal.operators;
 
-import java.util.Collection;
-
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -10,12 +8,12 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfig;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfigImpl;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.operator.TerminalCommandOperator;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -25,14 +23,17 @@ public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
 
    private final SecurityService securityService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
 
    @Inject
    public WriteIntoDatasinkOperator(
          SecurityService securityService,
-         Provider<DatasinkService> datasinkServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<TerminalService> terminalServiceProvider
          ) {
       this.securityService = securityService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -75,7 +76,10 @@ public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
          if (fileLocation.trim().equals(""))
             throw new TerminalException("Invalid datasink operator position");
          
-         DatasinkDefinition datasink = getDatasink(fileLocation, session);
+         DatasinkDefinition datasink = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(
+               DatasinkDefinition.class, fileLocation, session, Read.class, Execute.class);
+         if (datasink instanceof TableDatasink)
+            throw new IllegalArgumentException("Table datasinks not allowed: \"" + fileLocation + "\"");
 
          /* check rights */
          securityService.assertRights(datasink, Read.class, Execute.class);
@@ -123,16 +127,4 @@ public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
       }
    }
    
-   private DatasinkDefinition getDatasink(String query, TerminalSession session) throws ObjectResolverException {
-      Collection<Object> resolvedDatasink = session.getObjectResolver().getObjects(query, Read.class, Execute.class);
-      if (1 != resolvedDatasink.size())
-         throw new IllegalArgumentException("datasink must be resolved to exactly one object: \"" + query + "\"");
-      Object asObject = resolvedDatasink.iterator().next();
-      if (!(asObject instanceof DatasinkDefinition))
-         throw new IllegalArgumentException("not a DatasinkDefinition: \"" + query + "\"");
-      if (asObject instanceof TableDatasink)
-         throw new IllegalArgumentException("table datasinks not allowed: \"" + query + "\"");
-      return (DatasinkDefinition) asObject;
-   }
-
 }
