@@ -13,6 +13,7 @@ import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemManagerHook;
+import net.datenwerke.security.service.security.rights.Right;
 
 /**
  * 
@@ -113,6 +114,18 @@ public class TerminalServiceImpl implements TerminalService {
          return obj;
       }
       return null;
+   }
+
+   @Override
+   public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
+         Class<? extends Right>... rights) throws ObjectResolverException {
+      Collection<Object> resolvedDatasource = session.getObjectResolver().getObjects(query, rights);
+      if (1 != resolvedDatasource.size())
+         throw new IllegalArgumentException("Query must be resolved to exactly one object: \"" + query + "\"");
+      Object asObject = resolvedDatasource.iterator().next();
+      if (!(type.isInstance(asObject)))
+         throw new IllegalArgumentException("Incorrect type found: \"" + type + ", " + query + "\"");
+      return (T) asObject;
    }
 
 }

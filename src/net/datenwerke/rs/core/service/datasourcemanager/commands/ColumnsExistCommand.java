@@ -3,7 +3,6 @@ package net.datenwerke.rs.core.service.datasourcemanager.commands;
 import static java.util.stream.Collectors.toList;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.List;
 import java.util.stream.IntStream;
 
@@ -17,6 +16,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.RSString
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceHelperService;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -25,7 +25,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class ColumnsExistCommand implements TerminalCommandHook {
@@ -33,12 +32,15 @@ public class ColumnsExistCommand implements TerminalCommandHook {
    public static final String BASE_COMMAND = "columnsExist";
 
    private final Provider<DatasourceHelperService> datasourceServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
 
    @Inject
    public ColumnsExistCommand(
-         Provider<DatasourceHelperService> datasourceServiceProvider
+         Provider<DatasourceHelperService> datasourceServiceProvider,
+         Provider<TerminalService> terminalServiceProvider
          ) {
       this.datasourceServiceProvider = datasourceServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -82,7 +84,8 @@ public class ColumnsExistCommand implements TerminalCommandHook {
          .collect(toList());
       
       try {
-         DatabaseDatasource datasource = getDatasource(datasourceQuery, session);
+         DatabaseDatasource datasource = terminalServiceProvider.get()
+               .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
          List<String> nonExisting = datasourceServiceProvider.get().getNonExistingColumns(datasource, table, cols);
          if (nonExisting.isEmpty())
             return new CommandResult(true+"");
@@ -106,14 +109,4 @@ public class ColumnsExistCommand implements TerminalCommandHook {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
    }
    
-   private DatabaseDatasource getDatasource(String query, TerminalSession session) throws ObjectResolverException {
-      Collection<Object> resolvedDatasource = session.getObjectResolver().getObjects(query, Read.class);
-      if (1 != resolvedDatasource.size())
-         throw new IllegalArgumentException("datasource must be resolved to exactly one object: \"" + query + "\"");
-      Object asObject = resolvedDatasource.iterator().next();
-      if (!(asObject instanceof DatabaseDatasource))
-         throw new IllegalArgumentException("not a DatabaseDatasource: \"" + query + "\"");
-      return (DatabaseDatasource) asObject;
-   }
-
 }

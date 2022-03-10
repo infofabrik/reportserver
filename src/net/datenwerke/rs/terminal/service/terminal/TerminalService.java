@@ -6,6 +6,7 @@ import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundExc
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemManagerHook;
+import net.datenwerke.security.service.security.rights.Right;
 
 public interface TerminalService {
 
@@ -47,5 +48,8 @@ public interface TerminalService {
    public Collection<Object> getObjectsByLocation(String location) throws ObjectResolverException;
 
    TerminalSession getUnscopedTerminalSession();
+   
+   public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
+         Class<? extends Right>... rights) throws ObjectResolverException;
 
 }
