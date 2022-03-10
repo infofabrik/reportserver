@@ -9,9 +9,10 @@ import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.lifecycle.hooks.ConfigDoneHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.datasourcemanager.annotations.ReportServerDatasourceDefinitions;
-import net.datenwerke.rs.core.service.datasourcemanager.commands.ColumnMetadataCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.commands.ColumnsExistCommand;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.ColumnsMetadataCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.commands.CopyTableContentsCommand;
+import net.datenwerke.rs.core.service.datasourcemanager.commands.DatasourceMetadataCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.commands.SqlTerminalCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.commands.TableExistsCommand;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
@@ -38,7 +39,8 @@ public class DatasourceStartup {
          Provider<CopyTableContentsCommand> copyTableContentsCommandProvider,
          Provider<TableExistsCommand> tableExistsCommandProvider,
          Provider<ColumnsExistCommand> columnsExistCommandProvider,
-         Provider<ColumnMetadataCommand> columnMetadataCommandProvider
+         Provider<ColumnsMetadataCommand> columnsMetadataCommandProvider,
+         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider
          ) {
 
       eventBus.attachObjectEventHandler(ForceRemoveEntityEvent.class, DatasourceDefinition.class,
@@ -52,7 +54,9 @@ public class DatasourceStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, copyTableContentsCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, tableExistsCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, columnsExistCommandProvider);
-      hookHandler.attachHooker(TerminalCommandHook.class, columnMetadataCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, columnsMetadataCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, datasourceMetadataCommandProvider);
+
 
       /* register security targets */
       hookHandler.attachHooker(ConfigDoneHook.class, () -> {

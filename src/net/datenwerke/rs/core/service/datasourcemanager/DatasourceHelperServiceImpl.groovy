@@ -1,5 +1,9 @@
 package net.datenwerke.rs.core.service.datasourcemanager
 
+import java.lang.reflect.Method
+import java.sql.DatabaseMetaData
+import java.util.stream.IntStream
+
 import javax.inject.Inject
 
 import groovy.sql.Sql
@@ -181,6 +185,12 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
    @Override
    public List<Map<String, Object>> getColumnMetadata(DatabaseDatasource datasource, String table) {
+      return getColumnMetadata(datasource, table, new ArrayList<String>())
+   }
+   
+   @Override
+   public List<Map<String, Object>> getColumnMetadata(DatabaseDatasource datasource, String table, 
+      List<String> additionalColumns) {
       if (! tableExists(datasource, table))
          throw new IllegalArgumentException("Table '$table' not found")
          
@@ -191,22 +201,121 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          def sql = new Sql(conn)
 
          def metaResultSet = conn.metaData.getColumns(null, null, table, null)
+         def returnTypes = databaseMetaDataGetColumnsReturnTypes()
+         Closure metaFetcher = { colDefinition, col -> 
+            switch(returnTypes[col]) {
+               case String:
+                  colDefinition[col] = metaResultSet.getString(col)
+                  break
+               case Integer:
+                  colDefinition[col] = metaResultSet.getInt(col)
+                  break
+               case Short:
+                  colDefinition[col] = metaResultSet.getShort(col)
+                  break
+               default:
+                  colDefinition[col] = "$col is not a column meta data"
+            }
+         }
          while (metaResultSet.next()) {
             def colDefinition = [:]
+            metaFetcher colDefinition, 'COLUMN_NAME'
+            metaFetcher colDefinition, 'TYPE_NAME'
+            colDefinition.RS_TYPE = dbHelperService.getDatabaseHelper(conn)
+                  .mapSQLTypeToJava(metaResultSet.getInt('DATA_TYPE')).simpleName
+            metaFetcher colDefinition, 'COLUMN_SIZE'
+            metaFetcher colDefinition, 'DECIMAL_DIGITS'
+            metaFetcher colDefinition, 'ORDINAL_POSITION'
+            metaFetcher colDefinition, 'IS_NULLABLE'
+            metaFetcher colDefinition, 'IS_AUTOINCREMENT'
+            additionalColumns.each { metaFetcher colDefinition, it }
             
-            colDefinition.COLUMN_NAME =  metaResultSet.getString 'COLUMN_NAME'
-            colDefinition.TYPE_NAME =  metaResultSet.getString 'TYPE_NAME'
-            colDefinition.RS_TYPE = dbHelperService.getDatabaseHelper(conn).mapSQLTypeToJava(metaResultSet.getInt('DATA_TYPE')).simpleName
-            colDefinition.COLUMN_SIZE =  metaResultSet.getInt 'COLUMN_SIZE'
-            colDefinition.DECIMAL_DIGITS =  metaResultSet.getInt 'DECIMAL_DIGITS'
-            colDefinition.ORDINAL_POSITION =  metaResultSet.getInt 'ORDINAL_POSITION'
-            colDefinition.IS_NULLABLE =  metaResultSet.getString 'IS_NULLABLE'
-            colDefinition.IS_AUTOINCREMENT =  metaResultSet.getString 'IS_AUTOINCREMENT'
-            
-            metadata << colDefinition  
+            metadata << colDefinition
          }
       }
       metadata
    }
+  
+   
+   private def databaseMetaDataGetColumnsReturnTypes() {
+      [
+         TABLE_CAT          :   String,
+         TABLE_SCHEM        :   String,
+         TABLE_NAME         :   String,
+         COLUMN_NAME        :   String,
+         DATA_TYPE          :   Integer,
+         TYPE_NAME          :   String,
+         COLUMN_SIZE        :   Integer,
+         BUFFER_LENGTH      :   String,
+         DECIMAL_DIGITS     :   Integer,
+         NUM_PREC_RADIX     :   Integer,
+         NULLABLE           :   Integer,
+         REMARKS            :   String,
+         COLUMN_DEF         :   String,
+         SQL_DATA_TYPE      :   Integer,
+         SQL_DATETIME_SUB   :   Integer,
+         CHAR_OCTET_LENGTH  :   Integer,
+         ORDINAL_POSITION   :   Integer,
+         IS_NULLABLE        :   String,
+         SCOPE_CATALOG      :   String,
+         SCOPE_SCHEMA       :   String,
+         SCOPE_TABLE        :   String,
+         SOURCE_DATA_TYPE   :   Short,
+         IS_AUTOINCREMENT   :   String,
+         IS_GENERATEDCOLUMN :   String
+      ]
+   }
+   
+   @Override
+   Object fetchDatasourceMetadata(DatabaseDatasource datasource, String methodName, List<String> args) {
+      dbPoolService.getConnection(datasource.connectionConfig).get().withCloseable { conn ->
+         assert conn
 
+         Class<DatabaseMetaData> connMetaData = conn.metaData.class
+         Method[] connMetaDataGetMethods = connMetaData.getMethods()
+         List<Method> nameMatchingMethods = getMethodByName(connMetaDataGetMethods, methodName)
+         List<Method> nameAndArgsMatchingMethods = nameMatchingMethods.stream()
+            .filter{method -> method.getParameterCount() == args.size()}
+            .toList()
+         if(nameAndArgsMatchingMethods.size() == 0) {
+            throw new Exception("No method matching arg size and name")
+         } else if (nameAndArgsMatchingMethods.size() > 1) {
+            throw new Exception("Too many methods matching arg size and name")
+         }
+         Method method = nameAndArgsMatchingMethods[0]
+         List<Object> convertedArgs = convertArgsToParamTypes(method, args)
+         return method.invoke(conn.metaData, *convertedArgs)        
+      }
+   }
+   
+   private List<Method> getMethodByName(Method[] methods, String methodName) {
+      def matchingMethods = methods.stream()
+         .filter{ method -> method.name.equals(methodName)}
+         .toList()
+      return matchingMethods
+   }
+   
+   private List<Object>convertArgsToParamTypes(Method method, List<String> args) {
+      Class<?>[] types = method.getParameterTypes()
+      List<Object> convertedArgs= IntStream.range(0,types.length)
+            .mapToObj{i -> mapArgToClass(types[i], args[i])}
+            .toList()    
+      return convertedArgs
+   }
+   
+   private Object mapArgToClass(Class<?> classObj, String arg){
+      if(arg.equals("null"))
+         return null
+      switch(classObj.simpleName) {
+         case("boolean"):
+            return arg.toBoolean()
+         case("String"):
+            return arg
+         case("int"):
+            return arg.toInteger()
+         default:
+            throw new Exception("unknown parameter type detected")
+      }
+   }
+   
 }

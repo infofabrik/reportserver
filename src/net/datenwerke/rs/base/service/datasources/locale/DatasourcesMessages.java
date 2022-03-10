@@ -57,5 +57,15 @@ public interface DatasourcesMessages extends Messages {
    
    String commandColumnMetadata_table();
    
+   String commandColumnMetadata_columns();
+   
+   String commandDatasourceMetadata_description();
+   
+   String commandDatasourceMetadata_datasource();
+   
+   String commandDatasourceMetadata_methodName();
+   
+   String commandDatasourceMetadata_methodArg();
+   
    
 }

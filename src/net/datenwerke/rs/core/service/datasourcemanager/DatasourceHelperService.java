@@ -31,4 +31,19 @@ public interface DatasourceHelperService {
    void exportIntoTable(TableReport tableReport, User user, TableDatasink dstTableDatasink);
    
    List<Map<String,Object>> getColumnMetadata(DatabaseDatasource datasource, String table);
+   
+   List<Map<String, Object>> getColumnMetadata(DatabaseDatasource datasource, String table, List<String> additionalColumns);
+   
+   /**
+    * Dynamically calls a method from the class DatabaseMetaData. Any method is call-able. The call fails if argument count and name
+    * does not match exactly one method of said class. The call fails as well if the args cannot be converted into the needed parameter types.
+    * If "null" is passed as a String in args it will be evaluated to null as an Object. Boolean and Integer are converted using 
+    * String.toBoolean() and String.toInteger()
+    *  
+    * @param datasource the datasource
+    * @param methodName the name of the method
+    * @param args the arguments passed into the method
+    * @return an object of the type returntype from the called method
+    */
+   Object fetchDatasourceMetadata(DatabaseDatasource datasource, String methodName, List<String> args);
 }
