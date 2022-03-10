@@ -1,7 +1,8 @@
 package net.datenwerke.rs.core.service.datasourcemanager.commands;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
@@ -16,6 +17,7 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.RSString
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.core.service.datasourcemanager.DatasourceHelperService;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -24,20 +26,22 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.security.service.security.rights.Read;
 
-public class ColumnMetadataCommand implements TerminalCommandHook {
+public class ColumnsMetadataCommand implements TerminalCommandHook {
 
-   public static final String BASE_COMMAND = "columnMetadata";
+   public static final String BASE_COMMAND = "columnsMetadata";
 
    private final Provider<DatasourceHelperService> datasourceServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
 
    @Inject
-   public ColumnMetadataCommand(
-         Provider<DatasourceHelperService> datasourceServiceProvider
+   public ColumnsMetadataCommand(
+         Provider<DatasourceHelperService> datasourceServiceProvider,
+         Provider<TerminalService> terminalServiceProvider
          ) {
       this.datasourceServiceProvider = datasourceServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
    }
 
    @Override
@@ -59,21 +63,32 @@ public class ColumnMetadataCommand implements TerminalCommandHook {
                      name = "table", 
                      description = "commandColumnMetadata_table", 
                      mandatory = true
+                     ),
+               @NonOptArgument(
+                     name = "column", 
+                     description = "commandColumnMetadata_columns", 
+                     varArgs = true
                      )
                }
          )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
-      List<?> nonOptionArguments = parser.getNonOptionArguments();
+      List<String> nonOptionArguments = parser.getNonOptionArguments();
       if (nonOptionArguments.size() < 2)
          throw new IllegalArgumentException("at least 2 arguments required");
          
       String datasourceQuery = (String) nonOptionArguments.get(0);
       String table = (String) nonOptionArguments.get(1);
       
+      List<String> cols = 
+            IntStream.range(2, nonOptionArguments.size())
+            .mapToObj(i -> nonOptionArguments.get(i))
+            .collect(toList());
+      
       try {
-         DatabaseDatasource datasource = getDatasource(datasourceQuery, session);
-         List<Map<String, Object>> metadata = datasourceServiceProvider.get().getColumnMetadata(datasource, table);
+         DatabaseDatasource datasource = terminalServiceProvider.get()
+               .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
+         List<Map<String, Object>> metadata = datasourceServiceProvider.get().getColumnMetadata(datasource, table, cols);
          return createResult(metadata);
       } catch (Exception e) {
          throw new TerminalException(e);
@@ -111,14 +126,4 @@ public class ColumnMetadataCommand implements TerminalCommandHook {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
    }
    
-   private DatabaseDatasource getDatasource(String query, TerminalSession session) throws ObjectResolverException {
-      Collection<Object> resolvedDatasource = session.getObjectResolver().getObjects(query, Read.class);
-      if (1 != resolvedDatasource.size())
-         throw new IllegalArgumentException("datasource must be resolved to exactly one object: \"" + query + "\"");
-      Object asObject = resolvedDatasource.iterator().next();
-      if (!(asObject instanceof DatabaseDatasource))
-         throw new IllegalArgumentException("not a DatabaseDatasource: \"" + query + "\"");
-      return (DatabaseDatasource) asObject;
-   }
-
 }
