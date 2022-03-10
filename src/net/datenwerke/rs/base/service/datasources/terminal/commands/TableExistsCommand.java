@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.datasourcemanager.commands;
+package net.datenwerke.rs.base.service.datasources.terminal.commands;
 
 import java.util.List;
 
@@ -6,9 +6,9 @@ import javax.inject.Inject;
 
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
-import net.datenwerke.rs.core.service.datasourcemanager.DatasourceHelperService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;

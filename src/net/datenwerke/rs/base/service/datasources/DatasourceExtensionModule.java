@@ -16,7 +16,8 @@ public class DatasourceExtensionModule extends AbstractReportServerModule {
       bind(DatasourceExtensionStartup.class).asEagerSingleton();
       bind(StatementManagerService.class).to(StatementManagerServiceImpl.class);
       bind(DatasourceTransformationService.class).to(DatasourceTransformationServiceImpl.class);
-
+      bind(DatasourceHelperService.class).to(DatasourceHelperServiceImpl.class);
+      
       /* install private modules */
       install(new TableDatasourceModule());
 

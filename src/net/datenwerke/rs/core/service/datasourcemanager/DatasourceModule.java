@@ -27,7 +27,6 @@ public class DatasourceModule extends AbstractReportServerModule {
    @Override
    protected void configure() {
       bind(DatasourceService.class).to(DatasourceServiceImpl.class).in(Scopes.SINGLETON);
-      bind(DatasourceHelperService.class).to(DatasourceHelperServiceImpl.class);
 
       /* startup */
       bind(DatasourceStartup.class).asEagerSingleton();

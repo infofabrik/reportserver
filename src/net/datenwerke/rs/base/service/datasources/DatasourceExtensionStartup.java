@@ -13,6 +13,12 @@ import net.datenwerke.rs.base.service.datasources.statementmanager.db.MonetDbSta
 import net.datenwerke.rs.base.service.datasources.statementmanager.hooks.StatementCancellationHook;
 import net.datenwerke.rs.base.service.datasources.table.hookers.QueryCommentAdderHooker;
 import net.datenwerke.rs.base.service.datasources.table.impl.hooks.TableDbDatasourceOpenedHook;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsExistCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsMetadataCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.CopyTableContentsCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.DatasourceMetadataCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.SqlTerminalCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.TableExistsCommand;
 import net.datenwerke.rs.base.service.datasources.transformers.DataSourceDefinitionTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.birtreport.Birt2ConnectionTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.birtreport.Birt2JdbcDatasourceTransformer;
@@ -29,22 +35,30 @@ import net.datenwerke.rs.base.service.datasources.transformers.database.Database
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2JdbcDatasourceTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2TableTransformer;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
 
 public class DatasourceExtensionStartup {
 
    @Inject
-   public DatasourceExtensionStartup(HookHandlerService hookHandler, EventBus eventBus,
-         Provider<BaseDatasourceProviderHooker> databaseProvider, StandardConnectionHook connectionHooker,
-         QueryCommentAdderHooker commentAdder, HandleCsvDatasourceMergeEvents csvDatasourceMergeHandler,
+   public DatasourceExtensionStartup(HookHandlerService hookHandler, 
+         EventBus eventBus,
+         Provider<BaseDatasourceProviderHooker> databaseProvider, 
+         StandardConnectionHook connectionHooker,
+         QueryCommentAdderHooker commentAdder, 
+         HandleCsvDatasourceMergeEvents csvDatasourceMergeHandler,
 
-         Birt2TableTransformer birt2TableTransformer, Birt2ConnectionTransformer birt2ConnectionTransformer,
+         Birt2TableTransformer birt2TableTransformer, 
+         Birt2ConnectionTransformer birt2ConnectionTransformer,
          Birt2JdbcDatasourceTransformer birt2JdbcDatasourceTransformer,
 
-         Csv2InputStreamTransformer csv2InputStreamTransformer, Csv2JasperTransformer csv2JasperTransformer,
-         Csv2TableTransformer csv2TableTransformer, Csv2ConnectionTransformer csv2ConnectionTransformer,
-         Csv2JdcbDatasourceTransformer csv2JdbcDatasourceTransformer, Csv2QueryTransformer csv2QueryTransformer,
+         Csv2InputStreamTransformer csv2InputStreamTransformer, 
+         Csv2JasperTransformer csv2JasperTransformer,
+         Csv2TableTransformer csv2TableTransformer, 
+         Csv2ConnectionTransformer csv2ConnectionTransformer,
+         Csv2JdcbDatasourceTransformer csv2JdbcDatasourceTransformer, 
+         Csv2QueryTransformer csv2QueryTransformer,
          Csv2TempTableResultTransformer csv2TempTableResultTransformer,
 
          Database2JasperTransformer database2JasperTransformer,
@@ -52,7 +66,16 @@ public class DatasourceExtensionStartup {
          Database2JdbcDatasourceTransformer database2JdbcDatasourceTransformer,
          Database2TableTransformer database2TableTransformer,
 
-         Provider<MonetDbStatementCancler> monetDbCancler) {
+         Provider<MonetDbStatementCancler> monetDbCancler,
+         
+         Provider<SqlTerminalCommand> sqlCommand,
+         Provider<CopyTableContentsCommand> copyTableContentsCommandProvider,
+         Provider<TableExistsCommand> tableExistsCommandProvider,
+         Provider<ColumnsExistCommand> columnsExistCommandProvider,
+         Provider<ColumnsMetadataCommand> columnsMetadataCommandProvider,
+         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider
+         
+         ) {
 
       hookHandler.attachHooker(DatasourceProviderHook.class, databaseProvider);
       hookHandler.attachHooker(TableDbDatasourceOpenedHook.class, commentAdder);
@@ -76,6 +99,14 @@ public class DatasourceExtensionStartup {
       hookHandler.attachHooker(DataSourceDefinitionTransformer.class, database2TableTransformer);
 
       eventBus.attachObjectEventHandler(MergeEntityEvent.class, CsvDatasource.class, csvDatasourceMergeHandler);
+      
+      /* commands */
+      hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);
+      hookHandler.attachHooker(TerminalCommandHook.class, copyTableContentsCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, tableExistsCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, columnsExistCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, columnsMetadataCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, datasourceMetadataCommandProvider);
 
       hookHandler.attachHooker(StatementCancellationHook.class, monetDbCancler);
    }

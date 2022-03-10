@@ -124,7 +124,8 @@ public class TerminalServiceImpl implements TerminalService {
          throw new IllegalArgumentException("Query must be resolved to exactly one object: \"" + query + "\"");
       Object asObject = resolvedDatasource.iterator().next();
       if (!(type.isInstance(asObject)))
-         throw new IllegalArgumentException("Incorrect type found: \"" + type + ", " + query + "\"");
+         throw new IllegalArgumentException(
+               "Incorrect type found. Required type: \"" + type.getSimpleName() + ", " + query + "\"");
       return (T) asObject;
    }
 

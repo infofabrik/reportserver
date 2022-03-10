@@ -1,23 +1,22 @@
-package net.datenwerke.rs.core.service.datasourcemanager.commands;
+package net.datenwerke.rs.base.service.datasources.terminal.commands;
 
 import static java.util.stream.Collectors.toList;
 
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
-import net.datenwerke.rs.core.service.datasourcemanager.DatasourceHelperService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -29,16 +28,15 @@ import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.security.rights.Read;
 
-public class DatasourceMetadataCommand implements TerminalCommandHook{
-   
-   public static final String BASE_COMMAND = "datasourceMetadata";
-   
+public class ColumnsMetadataCommand implements TerminalCommandHook {
+
+   public static final String BASE_COMMAND = "columnsMetadata";
+
    private final Provider<DatasourceHelperService> datasourceServiceProvider;
-   
    private final Provider<TerminalService> terminalServiceProvider;
-   
+
    @Inject
-   public DatasourceMetadataCommand(
+   public ColumnsMetadataCommand(
          Provider<DatasourceHelperService> datasourceServiceProvider,
          Provider<TerminalService> terminalServiceProvider
          ) {
@@ -46,31 +44,29 @@ public class DatasourceMetadataCommand implements TerminalCommandHook{
       this.terminalServiceProvider = terminalServiceProvider;
    }
 
-
    @Override
    public boolean consumes(CommandParser parser, TerminalSession session) {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-
    @CliHelpMessage(
          messageClass = DatasourcesMessages.class, 
          name = BASE_COMMAND, 
-         description = "commandDatasourceMetadata_description", 
+         description = "commandColumnMetadata_description", 
          nonOptArgs = {
                @NonOptArgument(
                      name = "datasource", 
-                     description = "commandDatasourceMetadata_datasource", 
+                     description = "commandColumnMetadata_datasource", 
                      mandatory = true
                      ),
                @NonOptArgument(
-                     name = "methodName", 
-                     description = "commandDatasourceMetadata_methodName", 
+                     name = "table", 
+                     description = "commandColumnMetadata_table", 
                      mandatory = true
                      ),
                @NonOptArgument(
-                     name = "arg", 
-                     description = "commandDatasourceMetadata_methodArg", 
+                     name = "column", 
+                     description = "commandColumnMetadata_columns", 
                      varArgs = true
                      )
                }
@@ -80,63 +76,50 @@ public class DatasourceMetadataCommand implements TerminalCommandHook{
       List<String> nonOptionArguments = parser.getNonOptionArguments();
       if (nonOptionArguments.size() < 2)
          throw new IllegalArgumentException("at least 2 arguments required");
+         
       String datasourceQuery = (String) nonOptionArguments.get(0);
-      String methodName = (String) nonOptionArguments.get(1);
-      List<String> args;
-      if (nonOptionArguments.size() == 2) {
-         args = new ArrayList<String>();
-      } else {
-         args = IntStream.range(2, nonOptionArguments.size())
-               .mapToObj(i -> nonOptionArguments.get(i))
-               .collect(toList());
-      }
+      String table = (String) nonOptionArguments.get(1);
       
+      List<String> cols = 
+            IntStream.range(2, nonOptionArguments.size())
+            .mapToObj(i -> nonOptionArguments.get(i))
+            .collect(toList());
       
       try {
          DatabaseDatasource datasource = terminalServiceProvider.get()
                .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Object result = datasourceServiceProvider.get().fetchDatasourceMetadata(datasource, methodName, args);
-         return generateCommandResult(result);
+         List<Map<String, Object>> metadata = datasourceServiceProvider.get().getColumnMetadata(datasource, table, cols);
+         return createResult(metadata);
       } catch (Exception e) {
          throw new TerminalException(e);
       }
    }
 
-
-   private CommandResult generateCommandResult(Object result) throws TerminalException {
-      if (result instanceof ResultSet) {
-         ResultSet rs = (ResultSet) result;
-         try {
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            List<String> columnNames= new ArrayList<>();
-            List<Class<?>> types= new ArrayList<>();
-            for(int i = 0; i < columnCount; i++) {
-               columnNames.add(metaData.getColumnName(i+1));
-               types.add(String.class);
-            }
-            TableDefinition td = new TableDefinition(columnNames,types);
-            RSTableModel table = new RSTableModel(td);
-            while (rs.next()) {
-               List<String> values = new ArrayList<>();
-               for (int i = 0; i < columnCount; i++) {
-                  try {
-                     values.add(rs.getObject(i + 1).toString());
-                  } catch (Exception e) {
-                     values.add("null");
-                  }
-               }
-               table.addDataRow(new RSStringTableRow(values));
-            }
-            return new CommandResult(table);
-         } catch (SQLException e) {
-            throw new TerminalException(e);
-         }
-      } else {
-         return new CommandResult(result.toString());
-      }
+   private CommandResult createResult(List<Map<String, Object>> metadata) {
+      if (0 == metadata.size())
+         return new CommandResult("no columns found");
+      
+      Map<String,Object> firstColumn = metadata.get(0);
+      List<String> headers = new ArrayList<>();
+      List<Class<?>> types = new ArrayList<>();
+      firstColumn.keySet().forEach(headers::add);
+      
+      CommandResult result = new CommandResult();
+      RSTableModel metadataTable = new RSTableModel();
+      TableDefinition metaDef = new TableDefinition(headers, types);
+      metadataTable.setTableDefinition(metaDef);
+      result.addResultTable(metadataTable);
+      metadata.forEach(columnMetadata -> {
+         List<String> vals = new ArrayList<>();
+         IntStream.range(0, columnMetadata.size()).forEach(i -> {
+            String header = headers.get(i);
+            Object val = columnMetadata.get(header);
+            vals.add(null == val? null+"": val.toString());
+         });
+         metadataTable.addDataRow(new RSStringTableRow(vals));
+      });
+      return result;
    }
-
 
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {

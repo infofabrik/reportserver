@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.datasourcemanager.commands;
+package net.datenwerke.rs.base.service.datasources.terminal.commands;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

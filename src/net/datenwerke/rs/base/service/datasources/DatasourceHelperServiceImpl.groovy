@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.datasourcemanager
+package net.datenwerke.rs.base.service.datasources
 
 import java.lang.reflect.Method
 import java.sql.DatabaseMetaData
