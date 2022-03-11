@@ -25,6 +25,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfigurat
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -176,7 +177,7 @@ public class AmazonS3Datasink extends DatasinkDefinition implements FolderedData
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
 
          @Override

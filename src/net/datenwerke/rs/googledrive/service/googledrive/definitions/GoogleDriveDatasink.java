@@ -32,6 +32,7 @@ import net.datenwerke.rs.googledrive.service.googledrive.definitions.dtogen.Goog
 import net.datenwerke.rs.googledrive.service.googledrive.locale.GoogleDriveDatasinkMessages;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -205,7 +206,7 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

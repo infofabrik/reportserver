@@ -25,6 +25,7 @@ import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.dtogen.SambaDatasink2DtoPostProcessor;
 import net.datenwerke.rs.samba.service.samba.locale.SambaMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -181,7 +182,7 @@ public class SambaDatasink extends DatasinkDefinition implements HostDatasink, F
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

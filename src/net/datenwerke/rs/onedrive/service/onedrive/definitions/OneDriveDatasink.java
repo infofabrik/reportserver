@@ -29,6 +29,7 @@ import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoPostProcessor;
 import net.datenwerke.rs.onedrive.service.onedrive.locale.OneDriveDatasinkMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -224,7 +225,7 @@ public class OneDriveDatasink extends DatasinkDefinition implements OAuthAuthent
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

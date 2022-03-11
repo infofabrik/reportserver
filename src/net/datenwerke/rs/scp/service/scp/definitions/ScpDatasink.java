@@ -28,6 +28,7 @@ import net.datenwerke.rs.scp.service.scp.ScpService;
 import net.datenwerke.rs.scp.service.scp.definitions.dtogen.ScpDatasink2DtoPostProcessor;
 import net.datenwerke.rs.scp.service.scp.locale.ScpMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -255,7 +256,7 @@ public class ScpDatasink extends DatasinkDefinition implements HostDatasink, Fol
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

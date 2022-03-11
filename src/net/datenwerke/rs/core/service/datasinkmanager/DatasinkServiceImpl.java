@@ -4,8 +4,6 @@ import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROP
 import static net.datenwerke.rs.core.service.datasinkmanager.DatasinkModule.PROPERTY_DEFAULT_SCHEDULING_ENABLED;
 
 import java.io.ByteArrayOutputStream;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -28,6 +26,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
@@ -39,8 +38,6 @@ public class DatasinkServiceImpl implements DatasinkService {
    private final DtoService dtoService;
    private final ZipUtilsService zipUtilsService;
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
-
-   private final SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
 
    @Inject
    public DatasinkServiceImpl(
@@ -87,7 +84,7 @@ public class DatasinkServiceImpl implements DatasinkService {
          throw new IllegalStateException("datasink is disabled: " + datasinkService);
       exportIntoDatasink(
             "ReportServer " + datasinkService.getDatasinkPropertyName() + " Datasink Test "
-                  + dateFormat.format(Calendar.getInstance().getTime()),
+                  + DateUtils.formatCurrentDate(),
             datasinkDefinition, config);
    }
 

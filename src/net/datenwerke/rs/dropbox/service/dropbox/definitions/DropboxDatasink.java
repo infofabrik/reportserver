@@ -32,6 +32,7 @@ import net.datenwerke.rs.dropbox.service.dropbox.definitions.dtogen.DropboxDatas
 import net.datenwerke.rs.dropbox.service.dropbox.locale.DropboxDatasinkMessages;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -202,7 +203,7 @@ public class DropboxDatasink extends DatasinkDefinition implements OAuthAuthenti
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

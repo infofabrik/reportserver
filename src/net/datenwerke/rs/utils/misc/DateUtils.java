@@ -116,4 +116,9 @@ public class DateUtils {
       cal.set(Calendar.YEAR, 1970);
       return cal.getTime();
    }
+   
+   public static String formatCurrentDate() {
+      return formatDate(Calendar.getInstance().getTime(), "yyyy-MM-dd hh:mm:ss");
+   }
+   
 }

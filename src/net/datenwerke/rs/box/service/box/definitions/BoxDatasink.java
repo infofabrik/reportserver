@@ -32,6 +32,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFo
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.oauth.service.oauth.OAuthAuthenticatable;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -204,7 +205,7 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

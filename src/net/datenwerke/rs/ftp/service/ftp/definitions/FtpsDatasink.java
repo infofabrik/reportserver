@@ -25,6 +25,7 @@ import net.datenwerke.rs.ftp.service.ftp.FtpsService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.dtogen.FtpsDatasink2DtoPostProcessor;
 import net.datenwerke.rs.ftp.service.ftp.locale.FtpMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.security.service.crypto.pbe.PbeService;
 import net.datenwerke.security.service.crypto.pbe.encrypt.EncryptionService;
 
@@ -211,7 +212,7 @@ public class FtpsDatasink extends DatasinkDefinition implements HostDatasink, Fo
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }
