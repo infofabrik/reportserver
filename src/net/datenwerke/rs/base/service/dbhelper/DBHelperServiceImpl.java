@@ -30,8 +30,10 @@ public class DBHelperServiceImpl implements DBHelperService {
       if (null == descriptor)
          return null;
 
-      return helperProvider.get().stream()
-            .filter(helper -> descriptor.toLowerCase().equals(helper.getDescriptor().toLowerCase())).findAny()
+      return helperProvider.get()
+            .stream()
+            .filter(helper -> descriptor.toLowerCase().equals(helper.getDescriptor().toLowerCase()))
+            .findAny()
             .orElse(null);
    }
 
@@ -45,8 +47,11 @@ public class DBHelperServiceImpl implements DBHelperService {
          return null;
 
       try {
-         return helperProvider.get().stream().filter(rethrowPredicate(helper -> conn.getMetaData()
-               .getDatabaseProductName().toLowerCase().startsWith((helper.getName().toLowerCase())))).findAny()
+         return helperProvider.get()
+               .stream()
+               .filter(rethrowPredicate(helper ->
+                  conn.getMetaData().getDatabaseProductName().toLowerCase().startsWith((helper.getName().toLowerCase()))))
+               .findAny()
                .orElse(null);
       } catch (SQLException e) {
       }

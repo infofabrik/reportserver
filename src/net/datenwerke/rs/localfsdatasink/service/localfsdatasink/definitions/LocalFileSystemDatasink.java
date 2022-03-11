@@ -21,6 +21,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinitio
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.locale.LocalFileSystemMessages;
 import net.datenwerke.rs.utils.instancedescription.annotations.InstanceDescription;
+import net.datenwerke.rs.utils.misc.DateUtils;
 
 /**
  * Used to define local file system datasinks that can be used in ReportServer
@@ -91,7 +92,7 @@ public class LocalFileSystemDatasink extends DatasinkDefinition implements Folde
 
          @Override
          public String getFilename() {
-            return "export.txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
          }
       };
    }

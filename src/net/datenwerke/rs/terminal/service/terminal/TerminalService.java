@@ -1,8 +1,11 @@
 package net.datenwerke.rs.terminal.service.terminal;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Collection;
 
 import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundException;
+import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.exceptions.VFSException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.hooks.VirtualFileSystemManagerHook;
@@ -51,5 +54,6 @@ public interface TerminalService {
    
    public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
          Class<? extends Right>... rights) throws ObjectResolverException;
-
+   
+   public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
 }

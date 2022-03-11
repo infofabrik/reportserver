@@ -3,10 +3,11 @@ package net.datenwerke.rs.base.service.datasources.terminal.commands;
 import static java.util.stream.Collectors.toList;
 
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import com.google.inject.Inject;
@@ -15,9 +16,6 @@ import com.google.inject.Provider;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
-import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -91,12 +89,15 @@ public class DatasourceMetadataCommand implements TerminalCommandHook{
                .collect(toList());
       }
       
+      Map<String, List<String>> methodDescriptions = new HashMap<>();
+      methodDescriptions.put(methodName, args);
+      
       
       try {
          DatabaseDatasource datasource = terminalServiceProvider.get()
                .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Object result = datasourceServiceProvider.get().fetchDatasourceMetadata(datasource, methodName, args);
-         return generateCommandResult(result);
+         Map<String, Object> results = datasourceServiceProvider.get().fetchDatasourceMetadata(datasource, methodDescriptions);
+         return generateCommandResult(results.get(methodName));
       } catch (Exception e) {
          throw new TerminalException(e);
       }
@@ -107,28 +108,7 @@ public class DatasourceMetadataCommand implements TerminalCommandHook{
       if (result instanceof ResultSet) {
          ResultSet rs = (ResultSet) result;
          try {
-            ResultSetMetaData metaData = rs.getMetaData();
-            int columnCount = metaData.getColumnCount();
-            List<String> columnNames= new ArrayList<>();
-            List<Class<?>> types= new ArrayList<>();
-            for(int i = 0; i < columnCount; i++) {
-               columnNames.add(metaData.getColumnName(i+1));
-               types.add(String.class);
-            }
-            TableDefinition td = new TableDefinition(columnNames,types);
-            RSTableModel table = new RSTableModel(td);
-            while (rs.next()) {
-               List<String> values = new ArrayList<>();
-               for (int i = 0; i < columnCount; i++) {
-                  try {
-                     values.add(rs.getObject(i + 1).toString());
-                  } catch (Exception e) {
-                     values.add("null");
-                  }
-               }
-               table.addDataRow(new RSStringTableRow(values));
-            }
-            return new CommandResult(table);
+            return terminalServiceProvider.get().convertResultSetToCommandResult(rs);
          } catch (SQLException e) {
             throw new TerminalException(e);
          }

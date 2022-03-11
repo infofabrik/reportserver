@@ -1,13 +1,22 @@
 package net.datenwerke.rs.terminal.service.terminal;
 
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import org.hibernate.proxy.HibernateProxy;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
+import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundException;
+import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VirtualFileSystemDeamon;
@@ -129,4 +138,29 @@ public class TerminalServiceImpl implements TerminalService {
       return (T) asObject;
    }
 
+   @Override
+   public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException {
+      ResultSetMetaData metaData = rs.getMetaData();
+      int columnCount = metaData.getColumnCount();
+      List<String> columnNames = new ArrayList<>();
+      List<Class<?>> types = new ArrayList<>();
+      for (int i = 0; i < columnCount; i++) {
+         columnNames.add(metaData.getColumnName(i + 1));
+         types.add(String.class);
+      }
+      TableDefinition td = new TableDefinition(columnNames, types);
+      RSTableModel table = new RSTableModel(td);
+      while (rs.next()) {
+         List<String> values = new ArrayList<>();
+         for (int i = 0; i < columnCount; i++) {
+            try {
+               values.add(rs.getObject(i + 1).toString());
+            } catch (Exception e) {
+               values.add("null");
+            }
+         }
+         table.addDataRow(new RSStringTableRow(values));
+      }
+      return new CommandResult(table);
+   }
 }

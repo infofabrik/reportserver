@@ -1,51 +1,26 @@
 package net.datenwerke.rs.base.service.datasources
 
-import java.lang.reflect.Method
 import java.sql.DatabaseMetaData
-import java.util.stream.IntStream
 
 import javax.inject.Inject
 
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
+import net.datenwerke.rs.base.service.datasources.definitions.MethodMetadata
 import net.datenwerke.rs.base.service.dbhelper.DBHelperService
-import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier
-import net.datenwerke.rs.base.service.reportengines.table.SimpleDataSupplier.DataConsumer
-import net.datenwerke.rs.base.service.reportengines.table.entities.Column
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport
-import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition
-import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant
-import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory
-import net.datenwerke.rs.dsbundle.service.dsbundle.DatasourceBundleService
-import net.datenwerke.rs.dsbundle.service.dsbundle.entities.DatabaseBundle
-import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink
-import net.datenwerke.rs.terminal.service.terminal.TerminalSession
-import net.datenwerke.security.service.usermanager.entities.User
 
 class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
-   final TerminalSession terminalSession
-   final DbPoolService dbPoolService
-   final SimpleDataSupplier simpleDataSupplier
-   final ParameterSetFactory parameterSetFactory
-   final DatasourceBundleService datasourceBundleService
-   final DBHelperService dbHelperService
+   private final DbPoolService dbPoolService
+   private final DBHelperService dbHelperService
    
    @Inject
    DatasourceHelperServiceImpl(
-      TerminalSession terminalSession,
       DbPoolService dbPoolService,
-      SimpleDataSupplier simpleDataSupplier,
-      ParameterSetFactory parameterSetFactory,
-      DatasourceBundleService datasourceBundleService,
       DBHelperService dbHelperService
    ) {
-      this.terminalSession = terminalSession
       this.dbPoolService = dbPoolService
-      this.simpleDataSupplier = simpleDataSupplier
-      this.parameterSetFactory = parameterSetFactory
-      this.datasourceBundleService = datasourceBundleService
       this.dbHelperService = dbHelperService
    }
 
@@ -123,64 +98,6 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          def notContained = columns.inject([]) { result, col -> ! allColumns.contains(col.toUpperCase())? result << col: result }
          notContained
       }
-   }
-
-   @Override
-   public void exportIntoTable(TableReport tableReport, User user, TableDatasink dstTableDatasink) {
-      def srcDatasource = tableReport.datasourceContainer.datasource
-      def dstDatasource = dstTableDatasink.datasourceContainer.datasource
-      
-      if (dstDatasource instanceof DatabaseBundle) {
-         /* init parameter set */
-         def parameterSet = parameterSetFactory.create user, tableReport
-         parameterSet.addAll tableReport.parameterInstances
-         dstDatasource = datasourceBundleService.getEffectiveDatasource dstTableDatasink, parameterSet 
-      }
-      def dstTable = dstTableDatasink.tableName
-      def primaryKeys = dstTableDatasink.primaryKeys.split(';') as List
-      
-      if (! tableExists(dstDatasource, dstTable))
-         throw new IllegalArgumentException("Table '$dstTable' does not exist")
-         
-      def nonExistingColumns = getNonExistingColumns dstDatasource, dstTable, primaryKeys
-      if (! nonExistingColumns.isEmpty() )
-         throw new IllegalArgumentException("The following columns were not found in table '$dstTable': $nonExistingColumns")
-         
-//      println "Exporting ds '$srcDatasource' into '$dstTable'"
-         
-      def exportIntoTableHelper = new ExportIntoTableHelper()
-      
-      if (!(tableReport instanceof ReportVariant))
-         tableReport.selectAllColumns = true
-         
-      TableDefinition tableDef = simpleDataSupplier.getInfo(tableReport, user, tableReport.columns as Column[])
-      
-//      println "Columns: $tableDef.columnNames"
-      
-      def copyPrimaryKeys = dstTableDatasink.copyPrimaryKeys
-      def batchSize = dstTableDatasink.batchSize
-      
-      def insertStmt = exportIntoTableHelper.prepareInsertStmt(tableDef, dstTable, primaryKeys, copyPrimaryKeys)
-//      println insertStmt
-      
-      dbPoolService
-         .getConnection(dstDatasource.connectionConfig).get().withCloseable { dstConn ->
-            Sql dstSql = new Sql(dstConn)
-
-            assert dstSql
-
-            dstSql.withTransaction {
-               dstSql.withBatch(batchSize, insertStmt) { stmt ->
-                  def dataConsumer = [
-                     consumeRow: {  exportIntoTableHelper.insertRow(it, stmt, tableDef, primaryKeys, copyPrimaryKeys) },
-                     allConsumed: {  }
-                  ] as DataConsumer
-                  simpleDataSupplier.getData(tableReport, user, null, null, null, dataConsumer, 
-                     tableReport.columns as Column[])
-               }
-            }
-         }
-
    }
 
    @Override
@@ -267,55 +184,21 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   Object fetchDatasourceMetadata(DatabaseDatasource datasource, String methodName, List<String> args) {
+   Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource, Map<String, List<String>> methodDescriptions) {
       dbPoolService.getConnection(datasource.connectionConfig).get().withCloseable { conn ->
          assert conn
 
-         Class<DatabaseMetaData> connMetaData = conn.metaData.class
-         Method[] connMetaDataGetMethods = connMetaData.getMethods()
-         List<Method> nameMatchingMethods = getMethodByName(connMetaDataGetMethods, methodName)
-         List<Method> nameAndArgsMatchingMethods = nameMatchingMethods.stream()
-            .filter{method -> method.getParameterCount() == args.size()}
-            .toList()
-         if(nameAndArgsMatchingMethods.size() == 0) {
-            throw new Exception("No method matching arg size and name")
-         } else if (nameAndArgsMatchingMethods.size() > 1) {
-            throw new Exception("Too many methods matching arg size and name")
+         Map<String, MethodMetadata<DatabaseMetaData>> methodsMap = [:]
+         Map<String, Object> results = [:]
+
+         methodDescriptions.keySet().forEach{ key ->
+            methodsMap.put(key, new MethodMetadata(conn.metaData.class, key, methodDescriptions.get(key)))
          }
-         Method method = nameAndArgsMatchingMethods[0]
-         List<Object> convertedArgs = convertArgsToParamTypes(method, args)
-         return method.invoke(conn.metaData, *convertedArgs)        
+
+         methodsMap.keySet().forEach{ key ->
+            results.put(key, methodsMap.get(key).invokeMethodOn(conn.metaData))
+         }
+         return results
       }
    }
-   
-   private List<Method> getMethodByName(Method[] methods, String methodName) {
-      def matchingMethods = methods.stream()
-         .filter{ method -> method.name.equals(methodName)}
-         .toList()
-      return matchingMethods
-   }
-   
-   private List<Object>convertArgsToParamTypes(Method method, List<String> args) {
-      Class<?>[] types = method.getParameterTypes()
-      List<Object> convertedArgs= IntStream.range(0,types.length)
-            .mapToObj{i -> mapArgToClass(types[i], args[i])}
-            .toList()    
-      return convertedArgs
-   }
-   
-   private Object mapArgToClass(Class<?> classObj, String arg){
-      if(arg.equals("null"))
-         return null
-      switch(classObj.simpleName) {
-         case("boolean"):
-            return arg.toBoolean()
-         case("String"):
-            return arg
-         case("int"):
-            return arg.toInteger()
-         default:
-            throw new Exception("unknown parameter type detected")
-      }
-   }
-   
 }
