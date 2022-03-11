@@ -118,9 +118,9 @@ public class ScheduleAsTableDatasinkFileEmailNotificationHooker extends Schedule
       datamap.put("msgs", msgs);
 
       String subjectTemplate = config.getString(PROPERTY_TABLE_DATASINK_NOTIFICATION_SUBJECT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionAmazonS3MsgSubject"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionTableDatasinkMsgSubject"));
       String messageTemplate = config.getString(PROPERTY_TABLE_DATASINK_NOTIFICATION_TEXT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionAmazonS3MsgText"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionTableDatasinkMsgText"));
 
       MailTemplate mailTemplate = new MailTemplate();
       mailTemplate.setHtml(config.getBoolean(PROPERTY_TABLE_DATASINK_NOTIFICATION_HTML, false));

@@ -125,9 +125,9 @@ public class ScheduleAsLocalFileSystemEmailNotificationHooker extends SchedulerE
       datamap.put("msgs", msgs);
 
       String subjectTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_SUBJECT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpMsgSubject"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionLocalFileSystemMsgSubject"));
       String messageTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_TEXT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionFtpMsgText"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionLocalFileSystemMsgText"));
 
       MailTemplate mailTemplate = new MailTemplate();
       mailTemplate.setHtml(config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false));
