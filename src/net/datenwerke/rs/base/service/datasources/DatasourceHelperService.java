@@ -46,4 +46,21 @@ public interface DatasourceHelperService {
     */
    Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
          Map<String, List<String>> methodDescriptions);
+   
+   /**
+    * Fetches general metadata information about a given datasource. Information about
+    * which data is acquired getDatasourceInfoDefinition() provides a config map
+    * @param datasource the datasource 
+    * @return
+    */
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource);
+   
+   /**
+    * Provides a config map about which information is fetched when using fetchDatasourceMetadata()
+    * This map has 4 keys: 'generalInfo', 'urlInfo', 'functionsSection', 'supportsSection'.
+    * Each key points to another Map of type <String,String> with the structure 'method description' -> 'method name'
+    * @return the config map
+    */
+   Map<String, Object> getDatasourceInfoDefinition();
+  
 }

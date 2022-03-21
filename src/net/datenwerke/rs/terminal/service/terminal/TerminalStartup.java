@@ -13,6 +13,9 @@ import net.datenwerke.rs.terminal.service.terminal.basecommands.HelloWorldComman
 import net.datenwerke.rs.terminal.service.terminal.basecommands.HqlTerminalCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.MeminfoCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.SsltestCommand;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.infocommand.InfoCommand;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.infocommand.InfoDatasourceSubcommand;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.infocommand.InfoSubcommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hijacker.data.SplitTableResultHijacker;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalSessionHijackHook;
@@ -34,6 +37,9 @@ public class TerminalStartup {
          Provider<EchoCommand> echoCommandProvider, 
          Provider<CatCommand> catCommandProvider,
          Provider<SsltestCommand> ssltestCommandProvider,
+         Provider<InfoCommand> infoCommandProvider,
+         Provider<InfoDatasourceSubcommand> infoDatasourceSubcommandProvider,
+         
 
          Provider<InBackgroundOperator> inBgOperator, 
          Provider<PipeOperator> pipeOperator,
@@ -50,6 +56,8 @@ public class TerminalStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, echoCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, catCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, ssltestCommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, infoCommandProvider);
+      hookHandler.attachHooker(InfoSubcommandHook.class, infoDatasourceSubcommandProvider);
 
       hookHandler.attachHooker(TerminalCommandOperator.class, inBgOperator);
       hookHandler.attachHooker(TerminalCommandOperator.class, pipeOperator);

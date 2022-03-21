@@ -1,4 +1,4 @@
-package net.datenwerke.rs.base.service.datasources.definitions;
+package net.datenwerke.rs.utils.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;

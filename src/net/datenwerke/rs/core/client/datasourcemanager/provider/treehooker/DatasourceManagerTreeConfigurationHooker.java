@@ -10,6 +10,7 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -71,6 +72,7 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
          dsMenu.add(new DeleteMenuItem(treeHandler));
+         dsMenu.add(new InfoMenuItem());
       }
    }
 

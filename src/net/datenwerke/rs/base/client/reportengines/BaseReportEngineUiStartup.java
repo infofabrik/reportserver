@@ -22,7 +22,6 @@ import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSON;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JSONC;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2JXLS;
 import net.datenwerke.rs.base.client.reportengines.table.execute.Table2PDF;
-import net.datenwerke.rs.base.client.reportengines.table.execute.Table2StreamTable;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.CubifyHooker;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.TableReportConfigHooker;
 import net.datenwerke.rs.base.client.reportengines.table.hookers.TableReportPreExportHooker;
@@ -74,7 +73,6 @@ public class BaseReportEngineUiStartup {
          final Provider<Table2PDF> table2PDF, 
          final Provider<Table2Excel> table2Excel,
          final Provider<Table2JXLS> table2JXLS,
-         final Provider<Table2StreamTable> table2StreamTable,
 
          final Provider<Jasper2HTML> jasper2HTML, 
          final Provider<Jasper2PDF> jasper2PDF,
@@ -142,12 +140,10 @@ public class BaseReportEngineUiStartup {
 
       waitOnEventServiceProvider.get()
             .callbackOnEvent(EnterpriseCheckUiModule.REPORTSERVER_ENTERPRISE_DETERMINED_AFTER_LOGIN, ticket -> {
-               if (enterpriseServiceProvider.get().isEnterprise())
+               if (enterpriseServiceProvider.get().isEnterprise()) {
                   hookHandler.attachHooker(ReportExporterExportReportHook.class,
                         new ReportExporterExportReportHook(table2JXLS), HookHandlerService.PRIORITY_LOWER + 30);
-               
-               hookHandler.attachHooker(ReportExporterExportReportHook.class, new ReportExporterExportReportHook(table2StreamTable),
-                     HookHandlerService.PRIORITY_LOWER + 60);
+               }
 
                waitOnEventServiceProvider.get().signalProcessingDone(ticket);
             });

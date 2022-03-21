@@ -174,7 +174,7 @@ public class SimpleDataSupplier {
          if (null != config)
             ds.applyConfig(config);
 
-         /* paramters ? */
+         /* parameters ? */
          if (null != parameters)
             ds.applyParameters(parameters);
 

@@ -1,5 +1,6 @@
 package net.datenwerke.rs.base.service.datasources
 
+import java.lang.reflect.Method
 import java.sql.DatabaseMetaData
 
 import javax.inject.Inject
@@ -7,8 +8,8 @@ import javax.inject.Inject
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
-import net.datenwerke.rs.base.service.datasources.definitions.MethodMetadata
 import net.datenwerke.rs.base.service.dbhelper.DBHelperService
+import net.datenwerke.rs.utils.reflection.MethodMetadata
 
 class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
@@ -201,4 +202,64 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          return results
       }
    }
+   
+   @Override
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource) {
+      def allMethods = [:]
+      getDatasourceGeneralInfoDefinition().values().each{v -> allMethods.put(v, new ArrayList<String>())}
+      getDatasourceUrlInfoDefinition().values().each{v -> allMethods.put(v, new ArrayList<String>())}
+      getDatasourceFunctionsInfoDefinition().values().each{v -> allMethods.put(v, new ArrayList<String>())}
+      getDatasourceSupportsInfoDefinition().values().each{v -> allMethods.put(v, new ArrayList<String>())}
+      return fetchDatasourceMetadata(datasource, allMethods)
+   }
+   
+   @Override
+   public Map<String, Object> getDatasourceInfoDefinition(){
+      def datasourceInfoDefintion = [:]
+      datasourceInfoDefintion.put("generalInfo", getDatasourceGeneralInfoDefinition())
+      datasourceInfoDefintion.put("urlInfo", getDatasourceUrlInfoDefinition())
+      datasourceInfoDefintion.put("functionsSection", getDatasourceFunctionsInfoDefinition())
+      datasourceInfoDefintion.put("supportsSection", getDatasourceSupportsInfoDefinition())
+      return datasourceInfoDefintion
+   }
+   
+   
+   public Map<String, String> getDatasourceGeneralInfoDefinition() {
+      [
+         "Database name"        : "getDatabaseProductName",
+         "Database version"     : "getDatabaseProductVersion",
+         "Driver name"          : "getDriverName",
+         "Driver version"       : "getDriverVersion",
+         "JDBC major version"   : "getJDBCMajorVersion",
+         "JDBC minor version"   : "getJDBCMinorVersion"
+      ]
+   }
+   
+   public Map<String, String> getDatasourceUrlInfoDefinition() {
+      [
+      "JDBC URL"    : "getURL",
+      "User name"   : "getUserName"
+      ]
+   }
+   
+   public Map<String, String> getDatasourceFunctionsInfoDefinition() {
+      [
+      "Numeric functions"       : "getNumericFunctions",
+      "String functions"        : "getStringFunctions",
+      "Time and date functions" : "getTimeDateFunctions",
+      "System functions"        : "getSystemFunctions"
+      ]
+   }
+   
+   public Map<String, String> getDatasourceSupportsInfoDefinition() {
+      def supportsSection = [:]
+      Method[] methods = DatabaseMetaData.class.getMethods();
+      Arrays.asList(methods).stream()
+            .filter{method -> method.getParameterCount() == 0}
+            .map{method -> method.getName()}
+            .filter{name -> name.startsWith("supports")}
+            .each{name -> supportsSection.put(name, name)}
+      supportsSection      
+   }
+   
 }

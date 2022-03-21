@@ -1,11 +1,8 @@
-package net.datenwerke.rs.base.service.datasources.terminal.commands;
+package net.datenwerke.rs.terminal.service.terminal.basecommands.infocommand;
 
-import java.lang.reflect.Method;
-import java.sql.DatabaseMetaData;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,31 +19,40 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
-import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
+import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.security.rights.Read;
 
-public class IdDatasourceCommand  implements TerminalCommandHook{
-   
-   public static final String BASE_COMMAND = "idDatasource";
+public class InfoDatasourceSubcommand implements InfoSubcommandHook{
+public static final String BASE_COMMAND = "datasource";
    
    private final Provider<DatasourceHelperService> datasourceServiceProvider;
    
    private final Provider<TerminalService> terminalServiceProvider;
    
-   private Map<String, String> generalInfomation = new HashMap<>();
-   private Map<String, String> urlInfomation = new HashMap<>();
-   private Map<String, String> functionsSection = new HashMap<>();
-   private Map<String, String> supportsSection = new HashMap<>();
+   private Map<String, String> generalInfo;
+   private Map<String, String> urlInfo;
+   private Map<String, String> functionsSection;
+   private Map<String, String> supportsSection;
    
    @Inject
-   public IdDatasourceCommand(
+   public InfoDatasourceSubcommand(
          Provider<DatasourceHelperService> datasourceServiceProvider,
          Provider<TerminalService> terminalServiceProvider
          ) {
       this.datasourceServiceProvider = datasourceServiceProvider;
       this.terminalServiceProvider = terminalServiceProvider;
-      initMaps();
+      initMaps(datasourceServiceProvider.get().getDatasourceInfoDefinition());
+   }
+
+
+   private void initMaps(Map<String, Object> datasourceInfoDefinition) {
+      generalInfo = (Map<String, String>) datasourceInfoDefinition.get("generalInfo");
+      urlInfo = (Map<String, String>) datasourceInfoDefinition.get("urlInfo");
+      functionsSection = (Map<String, String>) datasourceInfoDefinition.get("functionsSection");
+      supportsSection = (Map<String, String>) datasourceInfoDefinition.get("supportsSection");
    }
 
 
@@ -55,8 +61,21 @@ public class IdDatasourceCommand  implements TerminalCommandHook{
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
    
-
+   @CliHelpMessage(
+         messageClass = TerminalMessages.class, 
+         name = BASE_COMMAND, description = "commandInfoDatasource_desc",
+         nonOptArgs = {
+               @NonOptArgument(
+               name = "datasource", 
+               description = "commandInfoDatasource_datasource",
+               mandatory = true
+               )
+         })
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> nonOptionArguments = parser.getNonOptionArguments();
@@ -64,21 +83,12 @@ public class IdDatasourceCommand  implements TerminalCommandHook{
          throw new IllegalArgumentException("exactly 1 argument required");
       String datasourceQuery = (String) nonOptionArguments.get(0);
       
-      Map<String, List<String>> methodDescriptions = new HashMap<>();
-      
-      List<String> methodNames = new ArrayList<String>();
-      methodNames.addAll(generalInfomation.values());
-      methodNames.addAll(urlInfomation.values());
-      methodNames.addAll(functionsSection.values());
-      methodNames.addAll(supportsSection.values());
-      
-      methodNames.forEach(name -> methodDescriptions.put(name, new ArrayList<String>()));
       
       
       try {
          DatabaseDatasource datasource = terminalServiceProvider.get()
                .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Map<String, Object> results = datasourceServiceProvider.get().fetchDatasourceMetadata(datasource, methodDescriptions);
+         Map<String, Object> results = datasourceServiceProvider.get().fetchInfoDatasourceMetadata(datasource);
          return generateCommandResult(results);
       } catch (Exception e) {
          throw new TerminalException(e);
@@ -88,8 +98,8 @@ public class IdDatasourceCommand  implements TerminalCommandHook{
 
    private CommandResult generateCommandResult(Map<String, Object> results)  {
       ArrayList<RSTableModel> resultTables = new ArrayList<RSTableModel>();
-      resultTables.add(generateRsTableModel(generalInfomation, "General information", results));
-      resultTables.add(generateRsTableModel(urlInfomation, "URL information", results));
+      resultTables.add(generateRsTableModel(generalInfo, "General information", results));
+      resultTables.add(generateRsTableModel(urlInfo, "URL information", results));
       resultTables.add(generateRsTableModel(functionsSection, "Functions section", results));
       resultTables.add(generateRsTableModel(supportsSection, "Supports section", results));
       
@@ -113,30 +123,5 @@ public class IdDatasourceCommand  implements TerminalCommandHook{
 
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
-   }
-   
-   private void initMaps() {
-      generalInfomation.put("Database name", "getDatabaseProductName");
-      generalInfomation.put("Database version", "getDatabaseProductVersion");
-      generalInfomation.put("Driver name", "getDriverName");
-      generalInfomation.put("Driver version", "getDriverVersion");
-      generalInfomation.put("JDBC major version", "getJDBCMajorVersion");
-      generalInfomation.put("JDBC minor version", "getJDBCMinorVersion");
-      
-      urlInfomation.put("DBMS URL", "getURL");
-      urlInfomation.put("User name", "getUserName");
-
-      functionsSection.put("Numeric functions", "getNumericFunctions");
-      functionsSection.put("String functions", "getStringFunctions");
-      functionsSection.put("Time and date functions", "getTimeDateFunctions");
-      functionsSection.put("System functions", "getSystemFunctions");
-      
-      Method[] methods = DatabaseMetaData.class.getMethods();
-      Arrays.asList(methods).stream()
-            .filter(method -> method.getParameterCount() == 0)
-            .map(method -> method.getName())
-            .filter(name -> name.startsWith("supports"))
-            .forEach(name -> supportsSection.put(name, name));
    }
 }

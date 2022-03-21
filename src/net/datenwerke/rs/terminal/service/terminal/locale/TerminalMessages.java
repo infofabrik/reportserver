@@ -50,4 +50,10 @@ public interface TerminalMessages extends Messages {
    String commandSsltest_host();
    
    String commandSsltest_port();
+   
+   String commandInfo_desc();
+   
+   String commandInfoDatasource_desc();
+   
+   String commandInfoDatasource_datasource();
 }

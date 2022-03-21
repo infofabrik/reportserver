@@ -17,7 +17,6 @@ import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsExist
 import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsMetadataCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.CopyTableContentsCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.DatasourceMetadataCommand;
-import net.datenwerke.rs.base.service.datasources.terminal.commands.IdDatasourceCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.SqlTerminalCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.TableExistsCommand;
 import net.datenwerke.rs.base.service.datasources.transformers.DataSourceDefinitionTransformer;
@@ -74,8 +73,7 @@ public class DatasourceExtensionStartup {
          Provider<TableExistsCommand> tableExistsCommandProvider,
          Provider<ColumnsExistCommand> columnsExistCommandProvider,
          Provider<ColumnsMetadataCommand> columnsMetadataCommandProvider,
-         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider,
-         Provider<IdDatasourceCommand> idDatasourceCommandProvider
+         Provider<DatasourceMetadataCommand> datasourceMetadataCommandProvider
          
          ) {
 
@@ -109,7 +107,6 @@ public class DatasourceExtensionStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, columnsExistCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, columnsMetadataCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, datasourceMetadataCommandProvider);
-      hookHandler.attachHooker(TerminalCommandHook.class, idDatasourceCommandProvider);
 
       hookHandler.attachHooker(StatementCancellationHook.class, monetDbCancler);
    }
