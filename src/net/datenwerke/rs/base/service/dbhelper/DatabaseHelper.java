@@ -399,6 +399,7 @@ abstract public class DatabaseHelper {
          return Time.class;
       case Types.TIMESTAMP:
       case -102: // Oracle: Timestamp with Local Timezone
+      case -155: // MSSQL: DateTimeOffset
          return Timestamp.class;
       case Types.CLOB:
          return Clob.class;
