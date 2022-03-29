@@ -1,5 +1,7 @@
 package net.datenwerke.rs.fileserver.service.fileserver.terminal.operators;
 
+import java.util.function.Consumer;
+
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
@@ -45,32 +47,21 @@ public class WriteIntoFileOperator implements TerminalCommandOperator {
    }
 
    private int getMaxOpPos(String command, CommandParser parser) {
-      int pos = 0;
-      int maxPos = 0;
-      char lastChar = '-';
-      int seenQuotes = 0;
-      for (char c : parser.getRawCommand().toCharArray()) {
-         pos++;
-         if ('\"' == c && lastChar != '\\')
-            seenQuotes++;
-         else if ('>' == c && lastChar == '>' && seenQuotes % 2 == 0) {
+      Consumer<Boolean> callback = even -> {
+         if (even)
             mode = Mode.APPEND;
-            maxPos = pos - 1;
-         } else if ('>' == c && seenQuotes % 2 == 0) {
+         else
             mode = Mode.CREATE;
-            maxPos = pos;
-         }
-
-         lastChar = c;
-      }
-      return maxPos;
+      };
+      
+      return new WriteIntoOperatorHelper().getMaxOpPos(parser.getRawCommand(), callback);
    }
 
    @Override
    public CommandResult execute(String command, CommandParser parser, ExecuteCommandConfig config,
          TerminalSession session) throws TerminalException {
       int maxPos = getMaxOpPos(command, parser);
-
+      
       String firstCommand = command.substring(0, maxPos - 1);
       try {
          String fileLocation = command.substring(mode == Mode.APPEND ? maxPos + 1 : maxPos).trim();

@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.fileserver.service.fileserver.terminal.operators.WriteIntoOperatorHelper;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfig;
 import net.datenwerke.rs.terminal.service.terminal.ExecuteCommandConfigImpl;
@@ -46,23 +47,7 @@ public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
    }
 
    private int getMaxOpPos(String command, CommandParser parser) {
-      int pos = 0;
-      int maxPos = 0;
-      char lastChar = '-';
-      int seenQuotes = 0;
-      for (char c : parser.getRawCommand().toCharArray()) {
-         pos++;
-         if ('\"' == c && lastChar != '\\')
-            seenQuotes++;
-         else if ('>' == c && lastChar == '>' && seenQuotes % 2 == 0) {
-            maxPos = pos - 1;
-         } else if ('>' == c && seenQuotes % 2 == 0) {
-            maxPos = pos;
-         }
-
-         lastChar = c;
-      }
-      return maxPos;
+      return new WriteIntoOperatorHelper().getMaxOpPos(parser.getRawCommand(), even -> {});
    }
 
    @Override
