@@ -88,6 +88,10 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.simpleform.SFFCTsTeamSpaceSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
+import net.datenwerke.security.client.security.dto.DeleteDto;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
+import net.datenwerke.security.client.security.dto.WriteDto;
+import net.datenwerke.security.client.treedb.dto.decorator.SecuredAbstractNodeDtoDec;
 import net.datenwerke.treedb.client.treedb.dto.AbstractNodeDto;
 import net.datenwerke.treedb.client.treedb.locale.TreedbMessages;
 
@@ -482,7 +486,17 @@ public class ReportVariantsView extends AbstractEmbeddingTabbedComponentsView {
       contextMenu.add(new SeparatorMenuItem());
       contextMenu.add(generateExportItem());
       contextMenu.add(new SeparatorMenuItem());
-      contextMenu.add(generateDeleteReportMenuItem());
+      AbstractNodeDto selectedItem = getSelectedNode();
+      boolean enableDelete = (!(selectedItem instanceof SecuredAbstractNodeDtoDec)
+            || !((SecuredAbstractNodeDtoDec) selectedItem).isAccessRightsLoaded()
+            || (((SecuredAbstractNodeDtoDec) selectedItem).hasAccessRight(DeleteDto.class)
+                  && ((SecuredAbstractNodeDtoDec) selectedItem).hasAccessRight(WriteDto.class)
+                  && ((SecuredAbstractNodeDtoDec) selectedItem).hasAccessRight(ExecuteDto.class)));
+      MenuItem deleteItem = generateDeleteReportMenuItem();
+      contextMenu.add(deleteItem);
+      if (! enableDelete) 
+         deleteItem.disable();
+      
       contextMenu.add(new SeparatorMenuItem());
       contextMenu.add(generateInfoMenuItem());
       contextMenu.add(generateImportIntoTsMenuItem());
