@@ -137,6 +137,7 @@ import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderInteger
 import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderLong;
 import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderString;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.security.dto.ExecuteDto;
 import net.datenwerke.security.client.security.dto.WriteDto;
 
 public class GridEditorReportPreviewView extends AbstractReportPreviewView
@@ -378,7 +379,7 @@ public class GridEditorReportPreviewView extends AbstractReportPreviewView
       toolbar.add(revertButton);
 
       /* save */
-      if (report.hasAccessRight(WriteDto.class)) {
+      if (report.hasAccessRight(WriteDto.class) && report.hasAccessRight(ExecuteDto.class)) {
          DwTextButton saveButton = new DwTextButton(BaseMessages.INSTANCE.save(), BaseIcon.CHECK);
          saveButton.addSelectHandler(event -> {
             if (editing.isEditing()) {

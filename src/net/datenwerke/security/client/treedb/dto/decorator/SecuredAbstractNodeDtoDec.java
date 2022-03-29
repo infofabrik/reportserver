@@ -37,28 +37,28 @@ abstract public class SecuredAbstractNodeDtoDec extends SecuredAbstractNodeDto {
       return dtoManager.unproxy(this).isAccessRightsLoaded();
    }
 
-   public boolean hasAccessRight(Class<? extends RightDto> right) {
+   public boolean hasAccessRight(final Class<? extends RightDto> right) {
       Collection<RightDto> availableRights = getAvailableAccessRights();
       if (null == availableRights)
          return false;
-
-      for (RightDto r : availableRights)
-         if (r.getClass().equals(right))
-            return true;
-
-      return false;
+      
+      return availableRights
+         .stream()
+         .filter(r -> r.getClass().equals(right))
+         .findAny()
+         .isPresent();
    }
 
-   public boolean hasInheritedAccessRight(Class<? extends RightDto> right) {
+   public boolean hasInheritedAccessRight(final Class<? extends RightDto> right) {
       Collection<RightDto> availableRights = getAvailableInheritedAccessRights();
       if (null == availableRights)
          return false;
 
-      for (RightDto r : availableRights)
-         if (r.getClass().equals(right))
-            return true;
-
-      return false;
+      return availableRights
+         .stream()
+         .filter(r -> r.getClass().equals(right))
+         .findAny()
+         .isPresent();
    }
 
 }

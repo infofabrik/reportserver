@@ -4,7 +4,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.inject.Inject;
 import com.sencha.gxt.core.client.util.Format;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
@@ -28,7 +27,6 @@ import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
 
-import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow.OnButtonClickHandler;
@@ -60,6 +58,7 @@ import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.helper.simpleform.SFFCTsTeamSpaceSelector;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.locale.TsFavoriteMessages;
 import net.datenwerke.security.client.security.dto.ExecuteDto;
+import net.datenwerke.security.client.security.dto.WriteDto;
 
 /**
  * 
@@ -67,17 +66,8 @@ import net.datenwerke.security.client.security.dto.ExecuteDto;
  */
 public class ReportViewVariantStorerHooker implements VariantStorerHook {
 
-   private final LoginService loginService;
-
    private ExecutorEventHandler eventHandler;
    private VariantStorerConfig config;
-
-   @Inject
-   public ReportViewVariantStorerHooker(LoginService loginService) {
-
-      /* store objects */
-      this.loginService = loginService;
-   }
 
    @Override
    public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, ReportDto report,
@@ -88,7 +78,7 @@ public class ReportViewVariantStorerHooker implements VariantStorerHook {
    @Override
    public boolean reportPreviewViewToolbarHook_addRight(ToolBar toolbar, ReportDto report,
          ReportExecutorInformation info, ReportExecutorMainPanel mainPanel) {
-      if (!report.hasAccessRight(ExecuteDto.class))
+      if (! report.hasAccessRight(WriteDto.class) || ! report.hasAccessRight(ExecuteDto.class))
          return false;
 
       /* store variant */
