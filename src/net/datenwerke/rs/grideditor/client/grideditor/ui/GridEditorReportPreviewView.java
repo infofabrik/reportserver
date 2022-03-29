@@ -137,6 +137,7 @@ import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderInteger
 import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderLong;
 import net.datenwerke.rs.grideditor.client.grideditor.vp.RowValueProviderString;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.security.client.security.dto.WriteDto;
 
 public class GridEditorReportPreviewView extends AbstractReportPreviewView
       implements PageablePreviewView, CloseableAware {
@@ -377,57 +378,59 @@ public class GridEditorReportPreviewView extends AbstractReportPreviewView
       toolbar.add(revertButton);
 
       /* save */
-      DwTextButton saveButton = new DwTextButton(BaseMessages.INSTANCE.save(), BaseIcon.CHECK);
-      saveButton.addSelectHandler(event -> {
-         if (editing.isEditing()) {
-            if (editing.isErrorSummary())
-               return;
-            editing.completeEditing();
-         }
-
-         wrapper.mask(BaseMessages.INSTANCE.storingMsg());
-         List<GridEditorRecordDto> modified = new ArrayList<GridEditorRecordDto>();
-         List<GridEditorRecordDto> modifiedOriginals = new ArrayList<GridEditorRecordDto>();
-         for (Record r : store.getModifiedRecords()) {
-            GridEditorRecordDto model = (GridEditorRecordDto) r.getModel();
-            modified.add(model);
-
-            /* clone model and add it */
-            int id = model.getId();
-            List<GridEditorRecordEntryDto> clonedData = new ArrayList<GridEditorRecordEntryDto>();
-            for (int i = 0; i < model.getData().size(); i++)
-               clonedData.add(((GridEditorRecordEntryDtoDec) model.getData().get(i)).copy());
-            GridEditorRecordDtoDec clone = new GridEditorRecordDtoDec();
-            clone.setId(id);
-            clone.setData(clonedData);
-            modifiedOriginals.add(clone);
-         }
-
-         /* remove new from modified */
-         modified = modified.stream().filter(rec -> !newRecords.contains(rec)).collect(Collectors.toList());
-
-         /* commit changes */
-         store.commitChanges();
-
-         /* make server call */
-         gridEditorDao.commitChanges(report, executeToken, modified, modifiedOriginals, deletedRecords, newRecords,
-               new RsAsyncCallback<Void>() {
-                  @Override
-                  public void onSuccess(Void result) {
-                     /* unmask and reload */
-                     wrapper.unmask();
-                     deletedRecords.clear();
-                     newRecords.clear();
-                     reload();
-                  }
-
-                  @Override
-                  public void onFailure(Throwable caught) {
-                     wrapper.unmask();
-                  }
-               });
-      });
-      toolbar.add(saveButton);
+      if (report.hasAccessRight(WriteDto.class)) {
+         DwTextButton saveButton = new DwTextButton(BaseMessages.INSTANCE.save(), BaseIcon.CHECK);
+         saveButton.addSelectHandler(event -> {
+            if (editing.isEditing()) {
+               if (editing.isErrorSummary())
+                  return;
+               editing.completeEditing();
+            }
+   
+            wrapper.mask(BaseMessages.INSTANCE.storingMsg());
+            List<GridEditorRecordDto> modified = new ArrayList<GridEditorRecordDto>();
+            List<GridEditorRecordDto> modifiedOriginals = new ArrayList<GridEditorRecordDto>();
+            for (Record r : store.getModifiedRecords()) {
+               GridEditorRecordDto model = (GridEditorRecordDto) r.getModel();
+               modified.add(model);
+   
+               /* clone model and add it */
+               int id = model.getId();
+               List<GridEditorRecordEntryDto> clonedData = new ArrayList<GridEditorRecordEntryDto>();
+               for (int i = 0; i < model.getData().size(); i++)
+                  clonedData.add(((GridEditorRecordEntryDtoDec) model.getData().get(i)).copy());
+               GridEditorRecordDtoDec clone = new GridEditorRecordDtoDec();
+               clone.setId(id);
+               clone.setData(clonedData);
+               modifiedOriginals.add(clone);
+            }
+   
+            /* remove new from modified */
+            modified = modified.stream().filter(rec -> !newRecords.contains(rec)).collect(Collectors.toList());
+   
+            /* commit changes */
+            store.commitChanges();
+   
+            /* make server call */
+            gridEditorDao.commitChanges(report, executeToken, modified, modifiedOriginals, deletedRecords, newRecords,
+                  new RsAsyncCallback<Void>() {
+                     @Override
+                     public void onSuccess(Void result) {
+                        /* unmask and reload */
+                        wrapper.unmask();
+                        deletedRecords.clear();
+                        newRecords.clear();
+                        reload();
+                     }
+   
+                     @Override
+                     public void onFailure(Throwable caught) {
+                        wrapper.unmask();
+                     }
+                  });
+         });
+         toolbar.add(saveButton);
+      }
 
       return toolbar;
    }
