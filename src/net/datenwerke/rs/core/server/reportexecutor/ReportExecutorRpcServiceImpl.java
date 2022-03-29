@@ -474,22 +474,12 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
 
    @Override
    public Integer getDefaultColumnWidth() throws ServerCallFailedException {
-      Integer cfgVal = null;
-      Integer fallbackValue = 200;
-
-      cfgVal = configService.getConfigFailsafe("ui/previews.cf").getInt(PREVIEW_DEFAULT_COLUMN_WIDTH, fallbackValue);
-
-      return cfgVal;
+      return configService.getConfigFailsafe("ui/previews.cf").getInt(PREVIEW_DEFAULT_COLUMN_WIDTH, 200);
    }
 
    @Override
    public Integer getMaxColumnWidth() throws ServerCallFailedException {
-      Integer cfgVal = null;
-      Integer fallbackValue = 1000;
-
-      cfgVal = configService.getConfigFailsafe("ui/previews.cf").getInt(PREVIEW_MAX_COLUMN_WIDTH, fallbackValue);
-
-      return cfgVal;
+      return configService.getConfigFailsafe("ui/previews.cf").getInt(PREVIEW_MAX_COLUMN_WIDTH, 1000);
    }
 
 }
