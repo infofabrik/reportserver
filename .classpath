@@ -14,23 +14,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/asm-4.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/avalon-framework-api-4.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/avalon-framework-impl-4.3.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-anim-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-awt-util-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-bridge-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-css-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-dom-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-ext-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-extension-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-gvt-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-parser-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-script-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svg-dom-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svggen-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.8.0-20180626.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cal10n-api-0.8.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/cglib-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-beanutils-1.9.4.jar"/>
@@ -40,8 +23,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-dbcp-1.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-digester-2.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.4.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl-2.0.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl3-3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang-2.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-lang3-3.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-logging-1.2.jar"/>
@@ -56,8 +37,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/eigenbase-xom-1.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/failureaccess-1.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/flute-1.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fontbox-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/geronimo-jta_1.1_spec-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gin-3.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-4.2.3.jar"/>
@@ -111,7 +90,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.dom.svg-1.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/osgi-over-slf4j-1.7.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20200713.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
@@ -131,7 +109,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/serializer-2.7.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/wmf2svg-0.9.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-2.7.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.3.jar"/>
 	<classpathentry kind="src" path="xdocreport-src"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.converter-2.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.core-2.0.2.jar"/>
@@ -218,18 +195,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.5.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jandex-2.4.2.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.4.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-databind-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-dataformat-xml-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-base-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-json-provider-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-module-jaxb-annotations-2.13.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.19.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.19.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.19.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/stax2-api-4.2.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/woodstox-core-6.2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.1.jar"/>
@@ -244,5 +209,47 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-anim-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-awt-util-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-bridge-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-constants-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-css-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-dom-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-ext-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-extension-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-gvt-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-i18n-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-parser-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-script-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-shared-resources-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svg-dom-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svggen-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.14.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.9.0-20220315.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl3-3.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fontbox-2.0.24.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-events-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-util-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-core-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-databind-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-base-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-jaxrs-json-provider-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-module-jaxb-annotations-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.24.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/pfjgraphics.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/qdox-1.12.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.7.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-core-1.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-xml-1.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.12.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
