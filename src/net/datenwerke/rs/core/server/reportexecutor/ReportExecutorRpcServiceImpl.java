@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.inject.Provider;
-import javax.persistence.EntityManager;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -51,7 +50,6 @@ import net.datenwerke.rs.core.service.reportmanager.hooks.ReportExecutorExecuteA
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
-import net.datenwerke.rs.utils.properties.ApplicationPropertiesService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -60,6 +58,7 @@ import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Delete;
 import net.datenwerke.security.service.security.rights.Execute;
+import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.UserPropertiesService;
 import net.datenwerke.security.service.usermanager.entities.User;
@@ -90,14 +89,11 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    private final HookHandlerService hookHandler;
    private final SecurityService securityService;
    private final ReportDtoService reportDtoService;
-   private final ApplicationPropertiesService applicationPropertiesService;
    private final UserPropertiesService userPropertiesService;
    private final Provider<AuthenticatorService> authenticatorService;
    protected final Provider<ReportSessionCache> sessionCacheProvider;
 
    private UserManagerService userManagerService;
-
-   private Provider<EntityManager> entityManagerProvider;
 
    private ConfigService configService;
 
@@ -106,13 +102,21 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    private EntityClonerService entityCloner;
 
    @Inject
-   public ReportExecutorRpcServiceImpl(ReportExecutorService reportExecutor, ReportService reportService,
-         ReportDtoService reportDtoService, DtoService dtoService, HookHandlerService hookHandler,
-         SecurityService securityService, ApplicationPropertiesService applicationPropertiesService,
-         UserPropertiesService userPropertiesService, Provider<AuthenticatorService> authenticatorService,
-         UserManagerService userManagerService, Provider<EntityManager> emp, ConfigService configService,
-         EntityClonerService entityCloner, Provider<HttpServletRequest> servletRequest,
-         Provider<ReportSessionCache> sessionCacheProvider) {
+   public ReportExecutorRpcServiceImpl(
+         ReportExecutorService reportExecutor, 
+         ReportService reportService,
+         ReportDtoService reportDtoService, 
+         DtoService dtoService, 
+         HookHandlerService hookHandler,
+         SecurityService securityService, 
+         UserPropertiesService userPropertiesService, 
+         Provider<AuthenticatorService> authenticatorService,
+         UserManagerService userManagerService, 
+         ConfigService configService,
+         EntityClonerService entityCloner, 
+         Provider<HttpServletRequest> servletRequest,
+         Provider<ReportSessionCache> sessionCacheProvider
+         ) {
 
       this.reportExecutor = reportExecutor;
       this.reportService = reportService;
@@ -120,11 +124,9 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
       this.dtoService = dtoService;
       this.hookHandler = hookHandler;
       this.securityService = securityService;
-      this.applicationPropertiesService = applicationPropertiesService;
       this.userPropertiesService = userPropertiesService;
       this.authenticatorService = authenticatorService;
       this.userManagerService = userManagerService;
-      entityManagerProvider = emp;
       this.configService = configService;
       this.entityCloner = entityCloner;
       this.servletRequest = servletRequest;
@@ -138,7 +140,7 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
       Report referenceReport = (Report) reportService.getReportById(reportDto.getId());
 
       /* check permissions */
-      securityService.assertRights(referenceReport, Execute.class);
+      securityService.assertRights(referenceReport, Write.class, Execute.class);
 
       /* create variant */
       Report adjustedReport = (Report) dtoService.createUnmanagedPoso(reportDto);
@@ -168,7 +170,7 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
          throw new IllegalArgumentException("Report is not a variant"); //$NON-NLS-1$
 
       /* test rights */
-      securityService.assertRights(referenceVariant.getParent(), Execute.class);
+      securityService.assertRights(referenceVariant.getParent(), Write.class, Execute.class);
 
       /* validate the passed report */
       // TODO: validation
@@ -193,7 +195,7 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
       Report referenceVariant = (Report) reportService.getReportById(reportVariantDto.getId());
 
       /* test rights */
-      securityService.assertRights(referenceVariant.getParent(), Delete.class, Execute.class);
+      securityService.assertRights(referenceVariant.getParent(), Write.class, Delete.class, Execute.class);
 
       reportService.remove(referenceVariant);
    }

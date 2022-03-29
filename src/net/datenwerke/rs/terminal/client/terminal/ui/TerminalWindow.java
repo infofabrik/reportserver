@@ -134,6 +134,7 @@ public class TerminalWindow extends DwWindow {
 
       resources.css().ensureInjected();
       addClassName("rs-terminal");
+      addClassName("rs-text-wrapping");
    }
 
    protected void initSession() {

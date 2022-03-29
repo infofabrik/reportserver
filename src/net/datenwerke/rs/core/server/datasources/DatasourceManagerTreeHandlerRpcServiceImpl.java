@@ -82,9 +82,14 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    }
 
    @Override
-   public Map<String, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) {
+   public Map<String, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) throws ServerCallFailedException {
       DatabaseDatasource src = (DatabaseDatasource) dtoService.loadPoso(datasourceDto);
-      Map<String, Object> datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src);
+      Map<String, Object> datasourceInfo;
+      try {
+         datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src);
+      } catch (Exception e) {
+         throw new ServerCallFailedException("Could not retrieve datasource metadata",e);
+      }
       Map<String, SafeHtml> result = new HashMap<>();
       datasourceHelperService.getDatasourceInfoDefinition().forEach((key, mapSpecficInfoDef) -> {
          Map<String, String> specificInfoDef = (Map<String, String>) mapSpecficInfoDef;
@@ -94,22 +99,19 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    }
    
    private SafeHtml buildTableInfo(Map<String, Object> datasourceInfo, Map<String, String> info) {
+      String tdOpenTag = "<td class=\"rs-text-wrapping\">";
+
       SafeHtmlBuilder builder = new SafeHtmlBuilder();
       builder = builder
-            .appendHtmlConstant("<table style=\"width:100%\">")
-            .appendHtmlConstant("<tr>")
-            .appendHtmlConstant("<th>").appendEscaped("Description").appendHtmlConstant("</th>")
-            .appendHtmlConstant("<th>")
-            .appendHtmlConstant("</th>")
-            .appendHtmlConstant("</tr>");
+            .appendHtmlConstant("<table style=\"width:90%; table-layout:fixed\">");
 
       for(String key : info.keySet()) {
          
          String result = datasourceInfo.get(info.get(key)).toString();
          builder = builder
                .appendHtmlConstant("<tr>")
-               .appendHtmlConstant("<td>").appendEscaped(key + ":").appendHtmlConstant("</td>")
-               .appendHtmlConstant("<td>").appendEscaped(result).appendHtmlConstant("</td>")
+               .appendHtmlConstant(tdOpenTag).appendEscaped(key + ":").appendHtmlConstant("</td>")
+               .appendHtmlConstant(tdOpenTag).appendEscaped(result).appendHtmlConstant("</td>")
                .appendHtmlConstant("</tr>");       
       }
       builder = builder.appendHtmlConstant("</table>");

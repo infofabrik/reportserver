@@ -14,6 +14,6 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionD
 public interface DatasourceRpcService extends RemoteService {
    public DatasourceDefinitionDto getDefaultDatasource() throws ServerCallFailedException;
 
-   Map<String, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto);
+   Map<String, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) throws ServerCallFailedException;
 
 }

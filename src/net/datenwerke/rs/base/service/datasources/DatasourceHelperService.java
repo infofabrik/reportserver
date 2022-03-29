@@ -1,5 +1,6 @@
 package net.datenwerke.rs.base.service.datasources;
 
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
@@ -45,15 +46,15 @@ public interface DatasourceHelperService {
     *         return-object of called method
     */
    Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
-         Map<String, List<String>> methodDescriptions);
+         Map<String, List<String>> methodDescriptions) throws SQLException;
    
    /**
     * Fetches general metadata information about a given datasource. Information about
     * which data is acquired getDatasourceInfoDefinition() provides a config map
     * @param datasource the datasource 
-    * @return
+    * @return the map containing <methodname, result>
     */
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource);
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource) throws SQLException;
    
    /**
     * Provides a config map about which information is fetched when using fetchDatasourceMetadata()
