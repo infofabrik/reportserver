@@ -1,14 +1,19 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.Map;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
+import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
+import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -22,10 +27,16 @@ public class EnvCommand implements TerminalCommandHook {
 
    public static final String BASE_COMMAND = "env";
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
+   private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
+   private final Provider<TempTableService> tempTableServiceProvider;
 
    @Inject
-   public EnvCommand(Provider<GeneralInfoService> generalInfoServiceProvider) {
+   public EnvCommand(Provider<GeneralInfoService> generalInfoServiceProvider, 
+         Provider<DatasourceHelperService> datasourceHelperServiceProvider,
+         Provider<TempTableService> tempTableServiceProvider) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
+      this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
+      this.tempTableServiceProvider = tempTableServiceProvider;
    }
 
    @Override
@@ -42,7 +53,7 @@ public class EnvCommand implements TerminalCommandHook {
 
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("General Info", ""),
-            Arrays.asList(String.class, String.class, String.class));
+            Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
 
       table.addDataRow(new RSStringTableRow("Version", generalInfoService.getRsVersion()));
@@ -54,7 +65,11 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Browser version", generalInfoService.getBrowserVersion()));
 
       result.addResultTable(table);
-
+      try {
+         result.addResultTable(getInternalDbInformationAsTable());
+      } catch (SQLException e) {
+         throw new TerminalException(e);
+      }
       return result;
    }
 
@@ -62,5 +77,40 @@ public class EnvCommand implements TerminalCommandHook {
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
    }
+   
+   private RSTableModel getInternalDbInformationAsTable() throws SQLException {
+      RSTableModel table = new RSTableModel();
+      TableDefinition td = new TableDefinition(Arrays.asList("Internal datasource info", ""),
+            Arrays.asList(String.class, String.class));
+      table.setTableDefinition(td);
 
+      DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
+      if (null == internalDbDatasource) {
+         table.addDataRow(new RSStringTableRow(
+               "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.",
+               ""));
+         return table;
+      }
+      
+      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
+      
+      Map<String, Object> datasourceInfoDefinition = datasourceHelperService.getDatasourceInfoDefinition();
+      Map<String, String> generalInfo = (Map<String, String>) datasourceInfoDefinition.get("generalInfo");
+      Map<String, String> urlInfo = (Map<String, String>) datasourceInfoDefinition.get("urlInfo");
+      Map<String, Object> datasourceMetadata = datasourceHelperService.fetchInfoDatasourceMetadata(internalDbDatasource);
+      
+      addInternalDbInfoToTable(table, generalInfo, datasourceMetadata);
+      addInternalDbInfoToTable(table, urlInfo, datasourceMetadata);
+      
+      return table;
+   }
+   
+   private void addInternalDbInfoToTable(RSTableModel table, Map<String, String> infoDefinition,
+         Map<String, Object> datasourceMetadata) {
+      infoDefinition.forEach(
+            (methodDesc, methodName) -> {
+               String result = datasourceMetadata.get(methodName).toString();
+               table.addDataRow(new RSStringTableRow(methodDesc, result));
+            });
+   }
 }
