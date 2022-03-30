@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -98,20 +99,26 @@ public static final String BASE_COMMAND = "datasource";
 
    private CommandResult generateCommandResult(Map<String, Object> results)  {
       ArrayList<RSTableModel> resultTables = new ArrayList<RSTableModel>();
-      resultTables.add(generateRsTableModel(generalInfo, "General information", results));
-      resultTables.add(generateRsTableModel(urlInfo, "URL information", results));
-      resultTables.add(generateRsTableModel(functionsSection, "Functions section", results));
-      resultTables.add(generateRsTableModel(supportsSection, "Supports section", results));
+      resultTables
+            .add(generateRsTableModel(generalInfo, "General information", results, Optional.of(Arrays.asList(100, 0))));
+      resultTables.add(generateRsTableModel(urlInfo, "URL information", results, Optional.of(Arrays.asList(100, 0))));
+      resultTables.add(
+            generateRsTableModel(functionsSection, "Functions section", results, Optional.of(Arrays.asList(100, 0))));
+      resultTables.add(generateRsTableModel(supportsSection, "Supports section", results, Optional.empty()));
       
       CommandResult commandResult = new CommandResult();
       resultTables.forEach(table -> commandResult.addResultTable(table));
       return commandResult;
    }
    
-   RSTableModel generateRsTableModel(Map<String, String> tableMeta, String header, Map<String, Object> results) {
+   RSTableModel generateRsTableModel(Map<String, String> tableMeta, String header, Map<String, Object> results,
+         Optional<List<Integer>> colWidths) {
       RSTableModel tableModel = new RSTableModel();
       TableDefinition tableDefinition = new TableDefinition(Arrays.asList(header, ""),
             Arrays.asList(String.class, String.class));
+      if (colWidths.isPresent())
+         tableDefinition.setDisplaySizes(colWidths.get());
+      
       tableModel.setTableDefinition(tableDefinition);
       List<String> keyList = new ArrayList<String>((tableMeta.keySet()));
       Collections.sort(keyList);

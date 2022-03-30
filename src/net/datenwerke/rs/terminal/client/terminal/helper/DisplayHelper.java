@@ -170,6 +170,8 @@ public class DisplayHelper {
       }
 
       RSTableModelDto tableModel = table.getTable();
+      List<Integer> displaySizes = tableModel.getTableDefinition().getDisplaySizes();
+      
       int i = 1;
       for (RSTableRowDto row : tableModel.getData()) {
          i++;
@@ -178,8 +180,15 @@ public class DisplayHelper {
                      : resources.css().rsTerminalTableRowOdd() + " rs-terminal-tab-odd") + "\">");
 
          if (row instanceof RSStringTableRowDto) {
+            int counter = 0;
             for (String data : ((RSStringTableRowDto) row).getStringRow()) {
-               builder.appendHtmlConstant("<td>");
+               if (0 != displaySizes.get(counter))
+                  builder.appendHtmlConstant("<td style=\"width:" + displaySizes.get(counter) + "px;\">");
+               else 
+                  builder.appendHtmlConstant("<td>");
+               
+               counter++;
+               
                builder.appendEscaped(data);
                builder.appendHtmlConstant("</td>");
             }

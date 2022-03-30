@@ -54,6 +54,7 @@ public class EnvCommand implements TerminalCommandHook {
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("General Info", ""),
             Arrays.asList(String.class, String.class));
+      td.setDisplaySizes(Arrays.asList(100, 0));
       table.setTableDefinition(td);
 
       table.addDataRow(new RSStringTableRow("Version", generalInfoService.getRsVersion()));
@@ -83,6 +84,7 @@ public class EnvCommand implements TerminalCommandHook {
       TableDefinition td = new TableDefinition(Arrays.asList("Internal datasource info", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
+      td.setDisplaySizes(Arrays.asList(100, 0));
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
