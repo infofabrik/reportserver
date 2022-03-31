@@ -188,11 +188,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/icu4j-58.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sandbox-1.26-jaspersoft-2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.5.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.5.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.5.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.5.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jandex-2.4.2.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jboss-logging-3.4.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.1.jar"/>
@@ -251,5 +246,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-xml-1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-1.4.01.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.7.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.7.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.7.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.7.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
