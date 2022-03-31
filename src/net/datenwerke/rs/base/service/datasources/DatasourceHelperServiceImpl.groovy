@@ -237,28 +237,28 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    
    public Map<String, String> getDatasourceUrlInfoDefinition() {
       [
-      "JDBC URL"    : "getURL",
-      "User name"   : "getUserName"
+         "JDBC URL"        : "getURL",
+         "JDBC username"   : "getUserName"
       ]
    }
    
    public Map<String, String> getDatasourceFunctionsInfoDefinition() {
       [
-      "Numeric functions"       : "getNumericFunctions",
-      "String functions"        : "getStringFunctions",
-      "Time and date functions" : "getTimeDateFunctions",
-      "System functions"        : "getSystemFunctions"
+         "Numeric functions"       : "getNumericFunctions",
+         "String functions"        : "getStringFunctions",
+         "Time and date functions" : "getTimeDateFunctions",
+         "System functions"        : "getSystemFunctions"
       ]
    }
    
    public Map<String, String> getDatasourceSupportsInfoDefinition() {
       def supportsSection = [:]
       Method[] methods = DatabaseMetaData.class.getMethods();
-      Arrays.asList(methods).stream()
-            .filter{method -> method.getParameterCount() == 0}
-            .map{method -> method.getName()}
-            .filter{name -> name.startsWith("supports")}
-            .each{name -> supportsSection.put(name, name)}
+      methods
+         .findAll{method -> method.parameterCount == 0}
+         .collect{method -> method.name}
+         .findAll{name -> name.startsWith('supports')}
+         .each{name -> supportsSection.put(name, name)}
       supportsSection      
    }
    

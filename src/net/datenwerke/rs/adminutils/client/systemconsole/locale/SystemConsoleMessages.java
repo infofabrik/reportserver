@@ -64,5 +64,23 @@ public interface SystemConsoleMessages extends Messages {
    public String total();
 
    public String maximum();
+   
+   public String internalDb();
+
+   public String internalDbName();
+
+   public String internalDbVersion();
+
+   public String internalDbDriverName();
+
+   public String internalDbDriverVersion();
+
+   public String internalDbJdbcMajorVersion();
+
+   public String internalDbJdbcMinorVersion();
+
+   public String internalDbJdbcUrl();
+
+   public String internalDbUsername();
 
 }

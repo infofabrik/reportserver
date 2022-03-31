@@ -1,5 +1,9 @@
 package net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.ui;
 
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Optional;
+
 import com.google.gwt.core.client.Scheduler;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -79,78 +83,51 @@ public class GeneralInfoPanel extends DwContentPanel {
       form.setLabelAlign(LabelAlign.LEFT);
 
       form.setLabelWidth(150);
+      
+      Map<Optional<String>, String> generalInfo = new LinkedHashMap<>();
+      generalInfo.put(Optional.of(result.getRsVersion()), SystemConsoleMessages.INSTANCE.versionLabel());
+      generalInfo.put(Optional.of(result.getJavaVersion()), SystemConsoleMessages.INSTANCE.javaVersionLabel());
+      generalInfo.put(Optional.of(result.getVmArguments()), "JVM Args");
+      generalInfo.put(Optional.of(result.getApplicationServer()), SystemConsoleMessages.INSTANCE.applicationServerLabel());
+      generalInfo.put(Optional.of(result.getOsVersion()), SystemConsoleMessages.INSTANCE.operationSystemLabel());      
+      generalInfo.forEach((value, description) -> addFieldToForm(value, description, form));
 
-      /* version */
-      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.versionLabel(), new SFFCStaticLabel() {
+      Map<Optional<String>, String> browserInfo = new LinkedHashMap<>();
+      browserInfo.put(Optional.of(result.getBrowserName()), SystemConsoleMessages.INSTANCE.browserNameLabel());
+      browserInfo.put(Optional.of(result.getBrowserVersion()), SystemConsoleMessages.INSTANCE.browserVersionLabel());
+      browserInfo.forEach((value, description) -> addFieldToForm(value, description, form));
+      
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      
+      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.internalDb(), new SFFCStaticLabel() {
          @Override
          public String getLabel() {
-            return result.getRsVersion();
+            return "";
          }
       });
 
-      /* Java version */
-      if (null != result.getJavaVersion()) {
-         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.javaVersionLabel(), new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return result.getJavaVersion();
-            }
-         });
-      }
-
-      /* Vm Arguments */
-      if (null != result.getVmArguments()) {
-         form.addField(StaticLabel.class, "JVM Args", new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return result.getVmArguments();
-            }
-         });
-      }
-
-      /* Application server */
-      if (null != result.getApplicationServer()) {
-         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.applicationServerLabel(),
-               new SFFCStaticLabel() {
-                  @Override
-                  public String getLabel() {
-                     return result.getApplicationServer();
-                  }
-               });
-      }
-
-      /* Operation system */
-      if (null != result.getOsVersion()) {
-         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.operationSystemLabel(), new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return result.getOsVersion();
-            }
-         });
-      }
-
-      form.addField(Separator.class, new SFFCSpace());
-
-      /* Browser name */
-      if (null != result.getBrowserName()) {
-         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserNameLabel(), new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return result.getBrowserName();
-            }
-         });
-      }
-
-      /* Browser version */
-      if (null != result.getBrowserVersion()) {
-         form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.browserVersionLabel(), new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return result.getBrowserVersion();
-            }
-         });
-      }
-
+      Map<Optional<String>, String> internalDbInfo = new LinkedHashMap<>();
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbId()), BaseMessages.INSTANCE.id());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatasourceName()), BaseMessages.INSTANCE.name());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatabaseName()),
+            SystemConsoleMessages.INSTANCE.internalDbName());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbVersion()),
+            SystemConsoleMessages.INSTANCE.internalDbVersion());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverName()),
+            SystemConsoleMessages.INSTANCE.internalDbDriverName());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverVersion()),
+            SystemConsoleMessages.INSTANCE.internalDbDriverVersion());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMajorVersion()),
+            SystemConsoleMessages.INSTANCE.internalDbJdbcMajorVersion());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMinorVersion()),
+            SystemConsoleMessages.INSTANCE.internalDbJdbcMinorVersion());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcUrl()),
+            SystemConsoleMessages.INSTANCE.internalDbJdbcUrl());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbUsername()),
+            SystemConsoleMessages.INSTANCE.internalDbUsername());
+      internalDbInfo.forEach((value, description) -> addFieldToForm(value, description, form));
+      
       form.loadFields();
 
       wrapper.add(form, new VerticalLayoutData(1, -1, new Margins(10)));
@@ -159,5 +136,15 @@ public class GeneralInfoPanel extends DwContentPanel {
 
       Scheduler.get().scheduleDeferred(forceLayoutCommand);
    }
-
+   
+   private void addFieldToForm(Optional<String> value, String description, SimpleForm form) {
+      if (value.isPresent()) {
+         form.addField(StaticLabel.class, description, new SFFCStaticLabel() {
+            @Override
+            public String getLabel() {
+               return value.get().replace(";", "; ");
+            }
+         });
+      }
+   }
 }
