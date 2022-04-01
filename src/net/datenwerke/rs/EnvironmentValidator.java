@@ -8,6 +8,7 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.sql.Connection;
+import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -330,8 +331,21 @@ public class EnvironmentValidator extends HttpServlet {
             resultSet.close();
             stmt.close();
          }
+         sb.append("\r\n\r\n");
+         sb.append("### Internal datasource metadata ###\r\n");
+         DatabaseMetaData metaData = conn.getMetaData();
+         sb.append("Database name: " + metaData.getDatabaseProductName()).append("\r\n");
+         sb.append("Database version: " + metaData.getDatabaseProductVersion()).append("\r\n");
+         sb.append("Driver name: " + metaData.getDriverName()).append("\r\n");
+         sb.append("Driver version: " + metaData.getDriverVersion()).append("\r\n");
+         sb.append("JDBC major version: " + metaData.getJDBCMajorVersion()).append("\r\n");
+         sb.append("JDBC minor version: " + metaData.getJDBCMinorVersion()).append("\r\n");
+         sb.append("JDBC URL: " + metaData.getURL()).append("\r\n");
+         sb.append("JDBC username: " + metaData.getUserName()).append("\r\n");
          sb.append("\r\n");
 
+
+         
       } catch (Exception e) {
          sb.append("Failed (").append(e.getMessage()).append(")\r\n");
          return false;
