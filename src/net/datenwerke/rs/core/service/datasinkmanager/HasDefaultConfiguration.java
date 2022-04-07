@@ -6,5 +6,5 @@ public interface HasDefaultConfiguration {
    
    public static final String DEFAULT_EXPORT_FILENAME = "export-";
    
-   DatasinkConfiguration getDefaultConfiguration();
+   DatasinkConfiguration getDefaultConfiguration(String fileEnding);
 }

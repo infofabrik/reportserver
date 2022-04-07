@@ -195,7 +195,7 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
    }
 
    @Override
-   public DatasinkConfiguration getDefaultConfiguration() {
+   public DatasinkConfiguration getDefaultConfiguration(String fileEnding) {
       return new DatasinkFilenameFolderConfig() {
 
          @Override
@@ -205,7 +205,7 @@ public class BoxDatasink extends DatasinkDefinition implements OAuthAuthenticata
 
          @Override
          public String getFilename() {
-            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + fileEnding;
          }
       };
    }

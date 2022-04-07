@@ -101,7 +101,7 @@ public class WriteIntoDatasinkOperator implements TerminalCommandOperator {
             data = resultString;
          }
 
-         datasinkServiceProvider.get().exportIntoDatasink(data, datasink);
+         datasinkServiceProvider.get().exportIntoDatasink(data, datasink, ".txt");
 
          CommandResult newResult = new CommandResult("Data successfully sent to datasink");
          return newResult;

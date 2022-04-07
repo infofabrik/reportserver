@@ -114,7 +114,7 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       
       try {
          datasinkServiceProvider.get().exportIntoDatasink(tableReport,
-               tableDatasink, null);
+               tableDatasink, (String)null);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Table Datasink: " + e.getMessage(), e);
       }

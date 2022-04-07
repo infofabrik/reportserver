@@ -89,22 +89,23 @@ public class DatasinkServiceImpl implements DatasinkService {
    }
 
    @Override
-   public void exportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
+   public void exportIntoDatasink(Object data, User user, DatasinkDefinition datasinkDefinition,
          DatasinkConfiguration config) throws DatasinkExportException {
-      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, user, datasinkDefinition, config);
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(data, user, datasinkDefinition, config);
    }
    
    @Override
-   public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition,
+   public void exportIntoDatasink(Object data, DatasinkDefinition datasinkDefinition,
          DatasinkConfiguration config) throws DatasinkExportException {
-      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, authenticatorServiceProvider.get().getCurrentUser(), 
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(data, authenticatorServiceProvider.get().getCurrentUser(), 
             datasinkDefinition, config);
    }
    
    @Override
-   public void exportIntoDatasink(Object report, DatasinkDefinition datasinkDefinition) throws DatasinkExportException {
-      datasinkDefinition.getDatasinkService().doExportIntoDatasink(report, authenticatorServiceProvider.get().getCurrentUser(), 
-            datasinkDefinition, datasinkDefinition.getDefaultConfiguration());
+   public void exportIntoDatasink(Object data, DatasinkDefinition datasinkDefinition, String fileEnding)
+         throws DatasinkExportException {
+      datasinkDefinition.getDatasinkService().doExportIntoDatasink(data, authenticatorServiceProvider.get().getCurrentUser(), 
+            datasinkDefinition, datasinkDefinition.getDefaultConfiguration(fileEnding));
    }
 
    @Override

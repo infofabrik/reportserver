@@ -126,7 +126,7 @@ public class TableDatasink extends DatasinkDefinition implements DatasourceConta
    }
 
    @Override
-   public DatasinkConfiguration getDefaultConfiguration() {
+   public DatasinkConfiguration getDefaultConfiguration(String fileEnding) {
       return new DatasinkConfiguration() {
       };
    }

@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowConsumer;
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,7 +17,6 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import javax.mail.MessagingException;
@@ -31,6 +31,10 @@ import net.datenwerke.rs.adminutils.service.logs.LogFilesService;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
+import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -39,18 +43,36 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Arg
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.zip.ZipUtilsService;
+import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.rights.Execute;
+import net.datenwerke.security.service.security.rights.Read;
 
 public class ListLogFilesCommand implements TerminalCommandHook {
 
    public static final String BASE_COMMAND = "listlogfiles";
 
    private final Provider<LogFilesService> logFilesServiceProvider;
+   private final Provider<TerminalService> terminalServiceProvider;
+   private final Provider<SecurityService> securityServiceProvider;
+   private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<ZipUtilsService> zipUtilsServiceProvider;
 
    private final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
 
    @Inject
-   public ListLogFilesCommand(Provider<LogFilesService> logFilesServiceProvider) {
+   public ListLogFilesCommand(
+         Provider<LogFilesService> logFilesServiceProvider,
+         Provider<TerminalService> terminalServiceProvider,
+         Provider<SecurityService> securityServiceProvider,
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<ZipUtilsService> zipUtilsServiceProvider
+         ) {
       this.logFilesServiceProvider = logFilesServiceProvider;
+      this.terminalServiceProvider = terminalServiceProvider;
+      this.securityServiceProvider = securityServiceProvider;
+      this.datasinkServiceProvider = datasinkServiceProvider;
+      this.zipUtilsServiceProvider = zipUtilsServiceProvider;
    }
 
    @Override
@@ -79,6 +101,13 @@ public class ListLogFilesCommand implements TerminalCommandHook {
                      valueName = "email", 
                      description = "commandListlogfiles_sub_flagE", 
                      mandatory = false
+                     ),
+               @Argument(
+                     flag = "d", 
+                     hasValue = true, 
+                     valueName = "email", 
+                     description = "commandListlogfiles_sub_flagD", 
+                     mandatory = false
                      ) 
                }
          )
@@ -87,15 +116,19 @@ public class ListLogFilesCommand implements TerminalCommandHook {
       if (!Files.exists(logPath))
          throw new IllegalArgumentException("no valid log file directory configured");
 
-      final String argStr = "s:f:e";
+      final String argStr = "s:f:ed:";
 
-      final boolean email = parser.hasOption("e", argStr);
+      final boolean sendToEmail = parser.hasOption("e", argStr);
+      final boolean sendToDatasink = parser.hasOption("d", argStr);
 
       final String sortExpression = parser.hasOption("s", argStr) ? String.valueOf(parser.parse(argStr).valueOf("s"))
             : "1"; // default: name ascending
 
-      final List<Integer> sorting = Arrays.stream(sortExpression.split(";")).map(String::trim).map(Integer::parseInt)
-            .collect(Collectors.toList());
+      final List<Integer> sorting = Arrays
+            .stream(sortExpression.split(";"))
+            .map(String::trim)
+            .map(Integer::parseInt)
+            .collect(toList());
 
       if (0 == sorting.size())
          throw new IllegalArgumentException("Minimum 1 sorting field");
@@ -131,8 +164,13 @@ public class ListLogFilesCommand implements TerminalCommandHook {
                   .sorted(sortingComparator)
                   .collect(toList());
 
-            if (email)
+            if (sendToEmail)
                logFilesServiceProvider.get().emailLogFiles(files, filter);
+            
+            if (sendToDatasink) {
+               sendToDatasink(String.valueOf(parser.parse(argStr).valueOf("d")), session, files);
+               
+            }
 
             final SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
 
@@ -145,9 +183,27 @@ public class ListLogFilesCommand implements TerminalCommandHook {
 
       } catch (IOException | MessagingException e) {
          throw new TerminalException("Cound not list log files: ", e);
+      } catch (Exception e) {
+         throw new TerminalException(e);
       }
 
       return result;
+   }
+   
+   private void sendToDatasink(String datasinkExpression, TerminalSession session, List<Path> files) throws Exception {
+      DatasinkDefinition datasink = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(
+            DatasinkDefinition.class, datasinkExpression, session, Read.class, Execute.class);
+      if (datasink instanceof TableDatasink)
+         throw new IllegalArgumentException("Table datasinks not allowed: \"" + datasinkExpression + "\"");
+      
+      /* check rights */
+      securityServiceProvider.get().assertRights(datasink, Read.class, Execute.class);
+      
+      try (final ByteArrayOutputStream out = new ByteArrayOutputStream()) {
+         zipUtilsServiceProvider.get().createZip(files, out);
+         
+         datasinkServiceProvider.get().exportIntoDatasink(out.toByteArray(), datasink, ".zip");
+      }
    }
 
    private Comparator<Path> getPathComparator(int sortColumn) throws IOException {

@@ -84,17 +84,19 @@ public interface DatasinkService {
     */
    void exportIntoDatasink(Object report, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException;
-   
+
    /**
     * Sends a data to the specified datasink, defined in a given
     * {@link DatasinkDefinition} datasink. Uses datasink default configuration.
     * 
-    * @param report   the data to send. May be a String, a byte array or a
-    *                 {@link TableDBDataSource}
-    * @param datasink the {@link DatasinkDefinition} to send
+    * @param report     the data to send. May be a String, a byte array or a
+    *                   {@link TableDBDataSource}
+    * @param datasink   the {@link DatasinkDefinition} to send
+    * @param fileEnding the ending of the file to export, e.g. ".txt" for text
+    *                   files
     * @throws DatasinkExportException if an error occurs during datasink export
     */
-   void exportIntoDatasink(Object report, DatasinkDefinition datasink)
+   void exportIntoDatasink(Object report, DatasinkDefinition datasink, String fileEnding)
          throws DatasinkExportException;
 
    Optional<? extends DatasinkDefinition> getDefaultDatasink(BasicDatasinkService basicDatasinkService);

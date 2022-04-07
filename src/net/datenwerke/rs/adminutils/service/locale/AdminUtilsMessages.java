@@ -14,6 +14,8 @@ public interface AdminUtilsMessages extends Messages {
    String commandListlogfiles_sub_flagF();
 
    String commandListlogfiles_sub_flagE();
+   
+   String commandListlogfiles_sub_flagD();
 
    String commandViewLogFile_description();
 

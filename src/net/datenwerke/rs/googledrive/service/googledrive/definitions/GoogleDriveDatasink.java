@@ -196,7 +196,7 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
    }
 
    @Override
-   public DatasinkConfiguration getDefaultConfiguration() {
+   public DatasinkConfiguration getDefaultConfiguration(String fileEnding) {
       return new DatasinkFilenameFolderConfig() {
 
          @Override
@@ -206,7 +206,7 @@ public class GoogleDriveDatasink extends DatasinkDefinition implements OAuthAuth
 
          @Override
          public String getFilename() {
-            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + fileEnding;
          }
       };
    }

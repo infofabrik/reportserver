@@ -47,10 +47,13 @@ public class LogFilesServiceImpl implements LogFilesService {
    private final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
 
    @Inject
-   public LogFilesServiceImpl(Provider<ConfigService> configServiceProvider,
-         Provider<AuthenticatorService> authenticatorServiceProvider, Provider<MailService> mailServiceProvider,
+   public LogFilesServiceImpl(
+         Provider<ConfigService> configServiceProvider,
+         Provider<AuthenticatorService> authenticatorServiceProvider, 
+         Provider<MailService> mailServiceProvider,
          Provider<MailBuilderFactory> mailBuilderFactoryProvider,
-         Provider<RemoteMessageService> remoteMessageServiceProvider) {
+         Provider<RemoteMessageService> remoteMessageServiceProvider
+         ) {
       this.configServiceProvider = configServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.mailServiceProvider = mailServiceProvider;
@@ -112,9 +115,12 @@ public class LogFilesServiceImpl implements LogFilesService {
       replacements.put("user", UserForJuel.createInstance(currentUser));
       replacements.put("filter", filter);
 
-      SimpleMail mail = mailBuilderFactoryProvider.get().create(subject, body, Arrays.asList(currentUser))
-            .withFileAttachments(files).withZippedAttachments(filenameDesc + ".zip")
-            .withTemplateReplacements(replacements).build();
+      SimpleMail mail = mailBuilderFactoryProvider.get()
+            .create(subject, body, Arrays.asList(currentUser))
+            .withFileAttachments(files)
+            .withZippedAttachments(filenameDesc + ".zip")
+            .withTemplateReplacements(replacements)
+            .build();
 
       mailServiceProvider.get().sendMail(mail);
    }

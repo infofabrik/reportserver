@@ -232,12 +232,12 @@ public class EmailDatasink extends DatasinkDefinition {
    }
 
    @Override
-   public DatasinkConfiguration getDefaultConfiguration() {
+   public DatasinkConfiguration getDefaultConfiguration(String fileEnding) {
       return new DatasinkEmailConfig() {
 
          @Override
          public String getFilename() {
-            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + ".txt";
+            return DEFAULT_EXPORT_FILENAME + DateUtils.formatCurrentDate() + fileEnding;
          }
 
          @Override
