@@ -170,7 +170,11 @@ public class DisplayHelper {
       }
 
       RSTableModelDto tableModel = table.getTable();
-      List<Integer> displaySizes = tableModel.getTableDefinition().getDisplaySizes();
+      final boolean hasDisplaySizes = null != tableModel.getTableDefinition() 
+            && null != tableModel.getTableDefinition().getDisplaySizes();
+      List<Integer> displaySizes = null;
+      if (hasDisplaySizes)
+         displaySizes = tableModel.getTableDefinition().getDisplaySizes();
       
       int i = 1;
       for (RSTableRowDto row : tableModel.getData()) {
@@ -182,7 +186,7 @@ public class DisplayHelper {
          if (row instanceof RSStringTableRowDto) {
             int counter = 0;
             for (String data : ((RSStringTableRowDto) row).getStringRow()) {
-               if (0 != displaySizes.get(counter))
+               if (hasDisplaySizes && 0 != displaySizes.get(counter))
                   builder.appendHtmlConstant("<td style=\"width:" + displaySizes.get(counter) + "px;\">");
                else 
                   builder.appendHtmlConstant("<td>");
