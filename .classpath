@@ -148,7 +148,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-ex-1.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/txw2-2.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.mail-1.6.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.9.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.32.jar"/>
@@ -251,5 +250,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.7.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.7.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.7.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
