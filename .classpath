@@ -146,7 +146,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/stax-ex-1.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/txw2-2.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.mail-1.6.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-2.7.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-vfs2-2.9.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.32.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.32.jar"/>
@@ -250,5 +249,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.212.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-3.0.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
