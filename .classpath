@@ -89,7 +89,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.dom.smil-1.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.dom.svg-1.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/osgi-over-slf4j-1.7.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20200713.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-4.1.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-4.1.2.jar"/>
@@ -251,5 +250,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.7.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.9.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20211018.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
