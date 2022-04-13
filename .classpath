@@ -173,7 +173,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-8.11.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-8.11.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-8.11.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.210.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.28.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
@@ -250,5 +249,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.71.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.212.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
