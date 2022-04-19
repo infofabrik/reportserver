@@ -18,6 +18,8 @@ public interface SystemConsoleMessages extends Messages {
    public String javaVersionLabel();
 
    public String applicationServerLabel();
+   
+   public String maxMemoryLabel();
 
    public String operationSystemLabel();
 

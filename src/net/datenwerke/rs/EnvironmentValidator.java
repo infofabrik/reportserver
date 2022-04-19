@@ -14,6 +14,7 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -234,6 +235,10 @@ public class EnvironmentValidator extends HttpServlet {
 
       List<String> arguments = runtimeMxBean.getInputArguments();
       sb.append("VM Args: " + String.join(" ", arguments) + "\r\n");
+      
+      Runtime runtime = Runtime.getRuntime();
+      int mb = 1024 * 1024;
+      sb.append("Max memory: " + NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) +  " MB\r\n");
    }
 
    private static void writeVersionInfo(StringBuilder sb) {

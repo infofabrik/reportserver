@@ -13,6 +13,7 @@ public class GeneralInfoDto implements Serializable {
    private String javaVersion;
    private String vmArguments;
    private String applicationServer;
+   private String maxMemory;
    private String osVersion;
    private String browserName;
    private String browserVersion;
@@ -69,6 +70,14 @@ public class GeneralInfoDto implements Serializable {
 
    public void setApplicationServer(String applicationServer) {
       this.applicationServer = applicationServer;
+   }
+   
+   public String getMaxMemory() {
+      return maxMemory;
+   }
+   
+   public void setMaxMemory(String maxMemory) {
+      this.maxMemory = maxMemory;
    }
 
    public String getRsVersion() {

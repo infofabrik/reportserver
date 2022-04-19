@@ -89,6 +89,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.put(Optional.of(result.getJavaVersion()), SystemConsoleMessages.INSTANCE.javaVersionLabel());
       generalInfo.put(Optional.of(result.getVmArguments()), "JVM Args");
       generalInfo.put(Optional.of(result.getApplicationServer()), SystemConsoleMessages.INSTANCE.applicationServerLabel());
+      generalInfo.put(Optional.of(result.getMaxMemory()), SystemConsoleMessages.INSTANCE.maxMemoryLabel());
       generalInfo.put(Optional.of(result.getOsVersion()), SystemConsoleMessages.INSTANCE.operationSystemLabel());      
       generalInfo.forEach((value, description) -> addFieldToForm(value, description, form));
 

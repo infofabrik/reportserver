@@ -1,6 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
 import java.sql.SQLException;
+import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Map;
 
@@ -31,9 +32,11 @@ public class EnvCommand implements TerminalCommandHook {
    private final Provider<TempTableService> tempTableServiceProvider;
 
    @Inject
-   public EnvCommand(Provider<GeneralInfoService> generalInfoServiceProvider, 
+   public EnvCommand(
+         Provider<GeneralInfoService> generalInfoServiceProvider, 
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-         Provider<TempTableService> tempTableServiceProvider) {
+         Provider<TempTableService> tempTableServiceProvider
+         ) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
       this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
       this.tempTableServiceProvider = tempTableServiceProvider;
@@ -45,7 +48,11 @@ public class EnvCommand implements TerminalCommandHook {
    }
 
    @Override
-   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandEnv_description")
+   @CliHelpMessage(
+         messageClass = TerminalMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandEnv_description"
+         )
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       CommandResult result = new CommandResult();
 
@@ -57,10 +64,15 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(100, 0));
       table.setTableDefinition(td);
 
+      Runtime runtime = Runtime.getRuntime();
+      int mb = 1024 * 1024;
+      
       table.addDataRow(new RSStringTableRow("Version", generalInfoService.getRsVersion()));
       table.addDataRow(new RSStringTableRow("Java version", generalInfoService.getJavaVersion()));
       table.addDataRow(new RSStringTableRow("JVM Args", generalInfoService.getVmArguments()));
       table.addDataRow(new RSStringTableRow("Application server", generalInfoService.getApplicationServer()));
+      table.addDataRow(new RSStringTableRow("Max memory",
+            NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB"));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
       table.addDataRow(new RSStringTableRow("Browser", generalInfoService.getBrowserName()));
       table.addDataRow(new RSStringTableRow("Browser version", generalInfoService.getBrowserVersion()));
