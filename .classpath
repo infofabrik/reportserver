@@ -107,9 +107,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/serializer-2.7.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/wmf2svg-0.9.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-2.7.2.jar"/>
-	<classpathentry kind="src" path="xdocreport-src"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/velocity-engine-core-2.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-java8-8.3.1.jar"/>
@@ -230,7 +228,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.7.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.7.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.7.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.9.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20211018.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.71.jar"/>
@@ -244,11 +241,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-ext-1.7.36.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.converter-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.core-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.document.docx-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.document-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template.velocity-2.0.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fr.opensagres.xdocreport.template-2.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
