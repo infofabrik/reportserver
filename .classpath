@@ -143,7 +143,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.8.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-cli-1.5.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.28.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-10.6.jar"/>
@@ -241,5 +240,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.8.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.8.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.3.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.29.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
