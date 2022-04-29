@@ -212,7 +212,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-fonts-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jasperreports-functions-6.18.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.24.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/pfjgraphics.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/qdox-1.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-core-1.4.1.jar"/>
