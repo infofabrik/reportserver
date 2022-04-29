@@ -30,11 +30,6 @@ public class Teradata extends DatabaseHelper {
    }
 
    @Override
-   public String createDummyQuery() {
-      return "select 1 as dummy";
-   }
-
-   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new TeradataLimitQuery(nestedQuery, queryBuilder);
    }

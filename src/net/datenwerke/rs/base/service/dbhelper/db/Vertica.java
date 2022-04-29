@@ -23,9 +23,4 @@ public class Vertica extends DatabaseHelper {
       return DB_NAME;
    }
 
-   @Override
-   public String createDummyQuery() {
-      return "select 1 from dual";
-   }
-
 }
