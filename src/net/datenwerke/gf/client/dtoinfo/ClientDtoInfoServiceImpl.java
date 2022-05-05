@@ -188,6 +188,7 @@ import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
 import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto;
 import net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto;
+import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
 import net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto;
 import net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceConfigDto;
@@ -553,6 +554,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto)
 			return ((net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto)
+			return ((net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto)
 			return ((net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceConfigDto)
@@ -997,6 +1000,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto();
+		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto();
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto();
 		if(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class.equals(dtoClass))
@@ -1503,6 +1508,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto();
 		if("net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto();
+		if("net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto();
 		if("net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto();
 		if("net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto".equals(dtoClassName))
@@ -2259,6 +2266,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.posomap.LocalFileSystemDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.onedrive.client.onedrive.dto.posomap.OneDriveDatasinkDto2PosoMap.class;
+		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.printer.client.printer.dto.posomap.PrinterDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.reportdoc.client.dto.posomap.DeployAnalyzeCommandResultExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class.equals(dtoClass))
@@ -2806,6 +2815,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto)
 			return true;
@@ -3498,6 +3509,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class.equals(dtoType))
 			return true;
@@ -4390,6 +4403,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto".equals(dtoClassName))
 			return true;

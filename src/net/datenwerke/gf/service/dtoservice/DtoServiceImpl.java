@@ -243,6 +243,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.JxlsReportVariant2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink.class, injector.getInstance(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.dtogen.LocalFileSystemDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink.class, injector.getInstance(net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.OneDriveDatasink2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink.class, injector.getInstance(net.datenwerke.rs.printer.service.printer.definitions.dtogen.PrinterDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.reportdoc.service.terminal.commands.DeployAnalyzeCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.DeployAnalyzeCommandResultExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.reportdoc.service.terminal.commands.VariantTestCommandResultExtension.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.VariantTestCommandResultExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.saiku.service.datasource.MondrianDatasource.class, injector.getInstance(net.datenwerke.rs.saiku.service.datasource.dtogen.MondrianDatasource2DtoGenerator.class));
@@ -487,6 +488,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.Dto2JxlsReportVariantGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class, injector.getInstance(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.dtogen.Dto2LocalFileSystemDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class, injector.getInstance(net.datenwerke.rs.onedrive.service.onedrive.definitions.dtogen.Dto2OneDriveDatasinkGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class, injector.getInstance(net.datenwerke.rs.printer.service.printer.definitions.dtogen.Dto2PrinterDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.Dto2DeployAnalyzeCommandResultExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class, injector.getInstance(net.datenwerke.rs.reportdoc.service.terminal.commands.dtogen.Dto2VariantTestCommandResultExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto.class, injector.getInstance(net.datenwerke.rs.saiku.service.datasource.dtogen.Dto2MondrianDatasourceGenerator.class));
@@ -887,6 +889,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportVariantDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.localfsdatasink.client.localfsdatasink.dto.LocalFileSystemDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.onedrive.client.onedrive.dto.OneDriveDatasinkDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.reportdoc.client.dto.DeployAnalyzeCommandResultExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.reportdoc.client.dto.VariantTestCommandResultExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto.class);
@@ -1241,6 +1244,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant.class);
 		posoClassLookup.add(net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink.class);
+		posoClassLookup.add(net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.reportdoc.service.terminal.commands.DeployAnalyzeCommandResultExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.reportdoc.service.terminal.commands.VariantTestCommandResultExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.saiku.service.datasource.MondrianDatasource.class);
