@@ -21,6 +21,8 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.sendto.SendToClientConfig;
+import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
+import net.datenwerke.rs.printer.client.printer.hookers.PrinterExportSnippetProvider;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinitionSendToConfig;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
@@ -178,10 +180,16 @@ public class SchedulerExportConfigurationForm extends DwContentPanel
    }
    
    private boolean filter(ScheduleExportSnippetProviderHook hooker) {
-      if ("RS_STREAM_TABLE".equals(outputFormat))
+      if (ReportExecutorService.OUTPUT_FORMAT_STREAM_TABLE.equals(outputFormat))
          return hooker instanceof TableDatasinkExportSnippetProvider;
-      else
-         return !(hooker instanceof TableDatasinkExportSnippetProvider);
+      else {
+         if (! ReportExecutorService.OUTPUT_FORMAT_PDF.equals(outputFormat)) 
+            return ! (hooker instanceof PrinterExportSnippetProvider) 
+                  && ! (hooker instanceof TableDatasinkExportSnippetProvider);
+         else
+            return ! (hooker instanceof TableDatasinkExportSnippetProvider);
+      }
+         
    }
 
 }
