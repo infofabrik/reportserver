@@ -19,7 +19,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllow
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
-import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -29,31 +28,26 @@ import net.datenwerke.rs.printer.client.printer.PrinterUiModule;
 import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
 import net.datenwerke.rs.printer.client.printer.dto.ScheduleAsPrinterFileInformation;
 import net.datenwerke.rs.printer.client.printer.provider.annotations.DatasinkTreePrinter;
-import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.locale.ScheduleAsFileMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
-import net.datenwerke.rs.scheduler.client.scheduler.locale.SchedulerMessages;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereport.pages.JobMetadataConfigurationForm;
-import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.ScheduleAsTableDatasinkFileInformation;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class PrinterExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
    private String isExportAsFileKey;
-   private String folderKey;
    private String nameKey;
    private String printerKey;
-   private String compressedKey;
 
    private final Provider<UITree> treeProvider;
    private final Provider<PrinterDao> datasinkDaoProvider;
-   private final DatasinkTreeManagerDao datasinkTreeManager;
 
    @Inject
-   public PrinterExportSnippetProvider(@DatasinkTreePrinter Provider<UITree> treeProvider,
-         DatasinkTreeManagerDao datasinkTreeManager, Provider<PrinterDao> datasinkDaoProvider) {
+   public PrinterExportSnippetProvider(
+         @DatasinkTreePrinter Provider<UITree> treeProvider,
+         Provider<PrinterDao> datasinkDaoProvider
+         ) {
       this.treeProvider = treeProvider;
-      this.datasinkTreeManager = datasinkTreeManager;
       this.datasinkDaoProvider = datasinkDaoProvider;
    }
 
@@ -93,13 +87,6 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
          }
       });
 
-      folderKey = xform.addField(String.class, ScheduleAsFileMessages.INSTANCE.folder(), new SFFCAllowBlank() {
-         @Override
-         public boolean allowBlank() {
-            return false;
-         }
-      });
-
       xform.endRow();
       xform.setFieldWidth(530);
 
@@ -111,17 +98,9 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
       });
 
       xform.setLabelAlign(LabelAlign.LEFT);
-      compressedKey = xform.addField(Boolean.class, "", new SFFCBoolean() {
-         @Override
-         public String getBoxLabel() {
-            return SchedulerMessages.INSTANCE.reportCompress();
-         }
-      });
 
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(folderKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(printerKey));
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(compressedKey));
 
    }
 
@@ -153,17 +132,12 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
 
       final SingleTreeSelectionField printerField = extractSingleTreeSelectionField(form.getField(printerKey));
 
-      if (null == definition)
-         form.setValue(isExportAsFileKey, true);
-         
       if (null != definition) {
          form.setValue(nameKey, "${now} - " + definition.getTitle());
-         ScheduleAsTableDatasinkFileInformation info = definition
-               .getAdditionalInfo(ScheduleAsTableDatasinkFileInformation.class);
+         ScheduleAsPrinterFileInformation info = definition.getAdditionalInfo(ScheduleAsPrinterFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
-            form.setValue(nameKey, info.getName());
-            printerField.setValue(info.getTableDatasinkDto());
+            printerField.setValue(info.getPrinterDatasinkDto());
          }
       }
    }

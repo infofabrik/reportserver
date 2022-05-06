@@ -2,7 +2,6 @@ package net.datenwerke.rs.printer.server.printer;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -17,10 +16,6 @@ import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedExcep
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
-import net.datenwerke.rs.printer.client.printer.rpc.PrinterRpcService;
-import net.datenwerke.rs.printer.service.printer.PrinterService;
-import net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTestFailedException;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
@@ -38,9 +33,12 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
+import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
+import net.datenwerke.rs.printer.client.printer.rpc.PrinterRpcService;
+import net.datenwerke.rs.printer.service.printer.PrinterService;
+import net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionServices;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -59,17 +57,23 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
    private final ReportExecutorService reportExecutorService;
    private final ReportDtoService reportDtoService;
    private final HookHandlerService hookHandlerService;
-   private final PrinterService printerService;
    private final SecurityService securityService;
    private final ExceptionServices exceptionServices;
-   private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<PrinterService> printerServiceProvider;
 
    @Inject
-   public PrinterRpcServiceImpl(ReportService reportService, ReportDtoService reportDtoService, DtoService dtoService,
-         ReportExecutorService reportExecutorService, SecurityService securityService,
-         HookHandlerService hookHandlerService, PrinterService printerService, ExceptionServices exceptionServices,
-         ZipUtilsService zipUtilsService, Provider<DatasinkService> datasinkServiceProvider) {
+   public PrinterRpcServiceImpl(
+         ReportService reportService, 
+         ReportDtoService reportDtoService, 
+         DtoService dtoService,
+         ReportExecutorService reportExecutorService, 
+         SecurityService securityService,
+         HookHandlerService hookHandlerService, 
+         ExceptionServices exceptionServices,
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<PrinterService> printerServiceProvider
+         ) {
 
       this.reportService = reportService;
       this.reportDtoService = reportDtoService;
@@ -77,10 +81,9 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
       this.reportExecutorService = reportExecutorService;
       this.securityService = securityService;
       this.hookHandlerService = hookHandlerService;
-      this.printerService = printerService;
       this.exceptionServices = exceptionServices;
-      this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.printerServiceProvider = printerServiceProvider;
    }
 
    @Override
@@ -113,45 +116,21 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), printerDatasink,
-                     new DatasinkFilenameFolderConfig() {
+         String filename = name + "." + cReport.getFileExtension();
+         datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), printerDatasink,
+               new DatasinkFilenameFolderConfig() {
 
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
+                  @Override
+                  public String getFilename() {
+                     return filename;
+                  }
 
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
 
-                     });
-            }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), printerDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFilename() {
-                        return filename;
-                     }
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                  });
-         }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Printer datasink: " + e.getMessage(), e);
       }
@@ -167,7 +146,7 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
 
    @Override
    public Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException {
-      return datasinkServiceProvider.get().getEnabledConfigs(printerService);
+      return datasinkServiceProvider.get().getEnabledConfigs(printerServiceProvider.get());
    }
 
    @Override
@@ -193,7 +172,7 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
    public DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException {
 
       Optional<? extends DatasinkDefinition> defaultDatasink = datasinkServiceProvider.get()
-            .getDefaultDatasink(printerService);
+            .getDefaultDatasink(printerServiceProvider.get());
       if (!defaultDatasink.isPresent())
          return null;
 
@@ -211,6 +190,11 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
       datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename, folder, compressed);
 
+   }
+
+   @Override
+   public List<String> getAvailablePrinters() throws ServerCallFailedException {
+      return printerServiceProvider.get().getAvailablePrinters();
    }
 
 }

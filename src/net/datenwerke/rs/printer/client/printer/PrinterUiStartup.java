@@ -1,5 +1,6 @@
 package net.datenwerke.rs.printer.client.printer;
 
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -7,6 +8,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gf.client.managerhelper.hooks.MainPanelViewToolbarConfiguratorHook;
+import net.datenwerke.gxtdto.client.dialog.error.DetailErrorDialog;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -28,13 +30,18 @@ public class PrinterUiStartup {
    private static final int PRIO = HookHandlerService.PRIORITY_LOW + 60;
 
    @Inject
-   public PrinterUiStartup(final Provider<PrinterSendToFormConfiguratorHooker> sendToConfigHookProvider,
+   public PrinterUiStartup(
+         final Provider<PrinterSendToFormConfiguratorHooker> sendToConfigHookProvider,
          final Provider<PrinterDatasinkConfigProviderHooker> printerTreeConfiguratorProvider,
-         final HookHandlerService hookHandler, final Provider<ExportToPrinterHooker> exportToPrinterHooker,
+         final HookHandlerService hookHandler, 
+         final Provider<ExportToPrinterHooker> exportToPrinterHooker,
          final Provider<FileExportToPrinterHooker> fileExportToDatasinkHooker,
          final PrinterDatasinkTesterToolbarConfigurator printerTestToolbarConfigurator,
-         final WaitOnEventUIService waitOnEventService, final PrinterUiService printerUiService,
-         final Provider<PrinterExportSnippetProvider> printerExportSnippetProvider, final PrinterDao dao) {
+         final WaitOnEventUIService waitOnEventService, 
+         final PrinterUiService printerUiService,
+         final Provider<PrinterExportSnippetProvider> printerExportSnippetProvider, 
+         final PrinterDao dao
+         ) {
 
       /* send to form configurator */
       hookHandler.attachHooker(DatasinkSendToFormConfiguratorHook.class, sendToConfigHookProvider.get());
@@ -67,8 +74,22 @@ public class PrinterUiStartup {
                super.onFailure(caught);
             }
          });
+         
+         /* call server to get available printers */
+         dao.getAvailablePrinters(new RsAsyncCallback<List<String>>() {
+            @Override
+            public void onSuccess(List<String> result) {
+               ((PrinterUiServiceImpl) printerUiService).setAvailablePrinters(result);
+            }
+
+            @Override
+            public void onFailure(Throwable caught) {
+               new DetailErrorDialog(caught).show();
+            }
+         });
 
       });
+      
    }
 
 }

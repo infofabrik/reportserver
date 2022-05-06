@@ -17,7 +17,7 @@ import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
 import net.datenwerke.rs.printer.client.printer.rpc.PrinterRpcServiceAsync;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
-public class PrinterDao extends Dao implements HasDefaultDatasink{
+public class PrinterDao extends Dao implements HasDefaultDatasink {
    
    private final PrinterRpcServiceAsync rpcService;
 
@@ -50,6 +50,10 @@ public class PrinterDao extends Dao implements HasDefaultDatasink{
    @Override
    public void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback) {
       rpcService.getDefaultDatasink(transformAndKeepCallback(callback));
+   }
+   
+   public void getAvailablePrinters(AsyncCallback<List<String>> callback) {
+      rpcService.getAvailablePrinters(transformAndKeepCallback(callback));
    }
 
 

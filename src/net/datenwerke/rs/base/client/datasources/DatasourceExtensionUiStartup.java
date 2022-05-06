@@ -31,7 +31,7 @@ public class DatasourceExtensionUiStartup {
          Provider<ArgumentDatasourceConnectorConfigHooker> argumentDatasourceConfigHooker,
 
          BaseDatasourceDao baseDatasourceDao, 
-         final BaseDatasourceUiService datasourcService
+         final BaseDatasourceUiService datasourceService
          ) {
 
       /* datasources */
@@ -50,7 +50,7 @@ public class DatasourceExtensionUiStartup {
       baseDatasourceDao.getDBHelperList(new RsAsyncCallback<ArrayList<DatabaseHelperDto>>() {
          @Override
          public void onSuccess(ArrayList<DatabaseHelperDto> result) {
-            datasourcService.setDatabaseHelpers(result);
+            datasourceService.setDatabaseHelpers(result);
          }
 
          @Override

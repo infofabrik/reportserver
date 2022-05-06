@@ -234,4 +234,6 @@ public interface BaseMessages extends Messages {
    String amazonS3Region();
 
    String amazonS3StorageClass();
+   
+   String printerName();
 }

@@ -29,4 +29,6 @@ public interface PrinterRpcService extends RemoteService {
 
    void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
          String filename, String folder, boolean compressed) throws ServerCallFailedException;
+   
+   List<String> getAvailablePrinters() throws ServerCallFailedException;
 }

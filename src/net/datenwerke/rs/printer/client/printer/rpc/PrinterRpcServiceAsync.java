@@ -28,4 +28,5 @@ public interface PrinterRpcServiceAsync {
    void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
          String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
 
+   void getAvailablePrinters(AsyncCallback<List<String>> callback);
 }
