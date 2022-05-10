@@ -28,5 +28,5 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
    AbstractFileServerNode getNodeByPath(String path);
 
    AbstractFileServerNode getNodeByPath(String path, boolean checkRights);
-
+   
 }

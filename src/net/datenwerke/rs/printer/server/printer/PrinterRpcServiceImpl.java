@@ -2,6 +2,7 @@ package net.datenwerke.rs.printer.server.printer;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,10 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.RECReportExecu
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
+import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.shared.fileserver.FileServerFileHelper;
 import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
 import net.datenwerke.rs.printer.client.printer.rpc.PrinterRpcService;
 import net.datenwerke.rs.printer.service.printer.PrinterService;
@@ -188,10 +193,27 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
-      datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto, filename, folder, compressed);
-
+      
+      if (abstractNodeDto instanceof FileServerFileDto) {
+         DatasinkDefinition datasink = (DatasinkDefinition) dtoService.loadPoso(datasinkDto);
+         FileServerFile fileObj = (FileServerFile) dtoService.loadPoso(abstractNodeDto);
+         if (! new FileServerFileHelper().isTextFile(fileObj.getName(), fileObj.getContentType()))
+            throw new ServerCallFailedException("Only printing text files is supported");
+         
+         if (null == fileObj.getData())
+            throw new ServerCallFailedException("File content is empty");
+         
+         try {
+            datasinkServiceProvider.get().exportIntoDatasink(new String(fileObj.getData(), StandardCharsets.UTF_8), datasink,
+                  new DatasinkConfiguration(){});
+         } catch (Exception e) {
+            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
+         }
+      } else if (abstractNodeDto instanceof FileServerFolderDto) {
+         throw new ServerCallFailedException("Sending folders to printer datasink is not supported");
+      }
    }
-
+   
    @Override
    public List<String> getAvailablePrinters() throws ServerCallFailedException {
       return printerServiceProvider.get().getAvailablePrinters();

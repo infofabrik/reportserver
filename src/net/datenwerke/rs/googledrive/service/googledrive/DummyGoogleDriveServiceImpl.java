@@ -32,7 +32,7 @@ public class DummyGoogleDriveServiceImpl implements GoogleDriveService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasinkDefinition, DatasinkConfiguration config)
          throws DatasinkExportException {
    }
 

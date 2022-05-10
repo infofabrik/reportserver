@@ -54,7 +54,7 @@ public class FtpSenderServiceImpl implements FtpSenderService {
    }
 
    @Override
-   public void sendToFtpServer(StorageType storageType, Object report, HostDatasink basicDatasink,
+   public void sendToFtpServer(StorageType storageType, Object data, HostDatasink basicDatasink,
          DatasinkConfiguration config) throws IOException {
       Objects.requireNonNull(basicDatasink, "datasink is null!");
       if (!(config instanceof DatasinkFilenameFolderConfig))
@@ -80,7 +80,7 @@ public class FtpSenderServiceImpl implements FtpSenderService {
       if (null == host || host.trim().contentEquals("") || null == username || username.trim().contentEquals(""))
          throw new IllegalArgumentException(storageType.name() + " server is not configured correctly");
 
-      try (InputStream bis = reportServiceProvider.get().createInputStream(report)) {
+      try (InputStream bis = reportServiceProvider.get().createInputStream(data)) {
 
          DefaultFileSystemManager fsmanager = (DefaultFileSystemManager) VFS.getManager();
 
