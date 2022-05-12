@@ -213,7 +213,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-ext-1.7.36.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.8.Final.jar"/>
@@ -237,5 +236,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.29.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.19.4.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
