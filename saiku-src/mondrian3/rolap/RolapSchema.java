@@ -23,7 +23,7 @@ import mondrian3.spi.impl.Scripts;
 import mondrian3.util.ByteString;
 import mondrian3.util.ClassResolver;
 
-import org.apache.commons.vfs.FileSystemException;
+import org.apache.commons.vfs2.FileSystemException;
 import org.apache.log4j.Logger;
 
 import org.eigenbase.xom.*;

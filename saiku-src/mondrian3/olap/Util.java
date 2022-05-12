@@ -21,8 +21,8 @@ import mondrian3.util.*;
 
 import org.apache.commons.collections.keyvalue.AbstractMapEntry;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.vfs.*;
-import org.apache.commons.vfs.provider.http.HttpFileObject;
+import org.apache.commons.vfs2.*;
+import org.apache.commons.vfs2.provider.http.HttpFileObject;
 import org.apache.log4j.Logger;
 
 import org.eigenbase.xom.XOMUtil;

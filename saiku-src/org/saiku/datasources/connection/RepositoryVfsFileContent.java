@@ -1,15 +1,16 @@
 package org.saiku.datasources.connection;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.security.cert.Certificate;
 import java.util.Map;
-import org.apache.commons.vfs.FileContent;
-import org.apache.commons.vfs.FileContentInfo;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.RandomAccessContent;
-import org.apache.commons.vfs.util.RandomAccessMode;
+import org.apache.commons.vfs2.FileContent;
+import org.apache.commons.vfs2.FileContentInfo;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.RandomAccessContent;
+import org.apache.commons.vfs2.util.RandomAccessMode;
 
 class RepositoryVfsFileContent
         implements FileContent
@@ -135,4 +136,24 @@ class RepositoryVfsFileContent
     {
         return false;
     }
+
+   @Override
+   public long write(FileContent arg0) throws IOException {
+      return 0;
+   }
+
+   @Override
+   public long write(FileObject arg0) throws IOException {
+      return 0;
+   }
+
+   @Override
+   public long write(OutputStream arg0) throws IOException {
+      return 0;
+   }
+
+   @Override
+   public long write(OutputStream arg0, int arg1) throws IOException {
+      return 0;
+   }
 }

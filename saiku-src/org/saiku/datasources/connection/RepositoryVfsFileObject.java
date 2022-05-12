@@ -7,17 +7,18 @@ import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.List;
 
-import org.apache.commons.vfs.FileContent;
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileObject;
-import org.apache.commons.vfs.FileSelector;
-import org.apache.commons.vfs.FileSystem;
-import org.apache.commons.vfs.FileSystemException;
-import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.NameScope;
-import org.apache.commons.vfs.operations.FileOperations;
+import org.apache.commons.vfs2.FileContent;
+import org.apache.commons.vfs2.FileName;
+import org.apache.commons.vfs2.FileObject;
+import org.apache.commons.vfs2.FileSelector;
+import org.apache.commons.vfs2.FileSystem;
+import org.apache.commons.vfs2.FileSystemException;
+import org.apache.commons.vfs2.FileType;
+import org.apache.commons.vfs2.NameScope;
+import org.apache.commons.vfs2.operations.FileOperations;
 import org.saiku.service.datasource.IDatasourceManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -246,7 +247,56 @@ public class RepositoryVfsFileObject
 
 	@Override
 	public FileOperations getFileOperations() throws FileSystemException {
-		// TODO Auto-generated method stub
 		return null;
 	}
+
+   @Override
+   public int compareTo(FileObject arg0) {
+      return 0;
+   }
+
+   @Override
+   public Iterator<FileObject> iterator() {
+      return null;
+   }
+
+   @Override
+   public int deleteAll() throws FileSystemException {
+      return 0;
+   }
+
+   @Override
+   public String getPublicURIString() {
+      return null;
+   }
+
+   @Override
+   public boolean isExecutable() throws FileSystemException {
+      return false;
+   }
+
+   @Override
+   public boolean isFile() throws FileSystemException {
+      return false;
+   }
+
+   @Override
+   public boolean isFolder() throws FileSystemException {
+      return false;
+   }
+
+   @Override
+   public boolean setExecutable(boolean arg0, boolean arg1) throws FileSystemException {
+      return false;
+   }
+
+   @Override
+   public boolean setReadable(boolean arg0, boolean arg1) throws FileSystemException {
+      return false;
+   }
+
+   @Override
+   public boolean setWritable(boolean arg0, boolean arg1) throws FileSystemException {
+      return false;
+   }
 }

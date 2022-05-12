@@ -7,18 +7,18 @@
 // Copyright (C) 2005-2013 Pentaho
 // All Rights Reserved.
 */
-package mondrian3.udf;
+package mondrian.udf;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.OutOfRangeException;
 import org.apache.log4j.Logger;
 
-import mondrian3.olap.Evaluator;
-import mondrian3.olap.Syntax;
-import mondrian3.olap.fun.MondrianEvaluationException;
-import mondrian3.olap.type.NumericType;
-import mondrian3.olap.type.Type;
-import mondrian3.spi.UserDefinedFunction;
+import mondrian.olap.Evaluator;
+import mondrian.olap.Syntax;
+import mondrian.olap.fun.MondrianEvaluationException;
+import mondrian.olap.type.NumericType;
+import mondrian.olap.type.Type;
+import mondrian.spi.UserDefinedFunction;
 
 
 /**

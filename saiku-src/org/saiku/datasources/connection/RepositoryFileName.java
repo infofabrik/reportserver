@@ -1,8 +1,8 @@
 package org.saiku.datasources.connection;
 
-import org.apache.commons.vfs.FileName;
-import org.apache.commons.vfs.FileType;
-import org.apache.commons.vfs.provider.AbstractFileName;
+import org.apache.commons.vfs2.FileName;
+import org.apache.commons.vfs2.FileType;
+import org.apache.commons.vfs2.provider.AbstractFileName;
 
 public class RepositoryFileName
         extends AbstractFileName
@@ -26,4 +26,8 @@ public class RepositoryFileName
 	protected FileName createName(String arg0) {
 		return null;
 	}
+
+   @Override
+   protected void appendRootUri(StringBuilder arg0, boolean arg1) {
+   }
 }

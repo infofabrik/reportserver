@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
+import java.net.URISyntaxException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -26,6 +27,7 @@ import org.apache.batik.transcoder.print.PrintTranscoder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fop.apps.Fop;
 import org.apache.fop.apps.FopFactory;
+import org.apache.fop.apps.FopFactoryBuilder;
 import org.apache.fop.apps.MimeConstants;
 import org.saiku.service.util.exception.SaikuServiceException;
 import org.saiku.service.util.export.PdfPerformanceLogger;
@@ -193,27 +195,37 @@ public class PdfReport {
     }
 
     private byte[] fo2Pdf(org.w3c.dom.Document foDocument, String styleSheet, Rectangle size) {
-        FopFactory fopFactory = FopFactory.newInstance();
+       FopFactoryBuilder builder = null;
+       try {
+           builder = new FopFactoryBuilder(this.getClass().getResource("fop_config.xml").toURI());
+       } catch (URISyntaxException e) {
+           e.printStackTrace();
+       }
+       builder.setStrictFOValidation(false);
 
-        try {
-            ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
-            Transformer transformer = getTransformer(styleSheet);
-            Source src = new DOMSource(foDocument);
-            Result res = new SAXResult(fop.getDefaultHandler());
+       try {
+           // Specify an external configuration file, to ease user changes, like adding custom fonts
+           FopFactory fopFactory = builder.build();
 
-            if (transformer != null) {
-                transformer.setParameter("page_height", (size.getHeight() / 72) + "in");
-                transformer.setParameter("page_width", (size.getWidth() / 72) + "in");
-                transformer.transform(src, res);
-            }
+           ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-            return out.toByteArray();
+           Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+           Transformer transformer = getTransformer(styleSheet);
+           Source src = new DOMSource(foDocument);
+           Result res = new SAXResult(fop.getDefaultHandler());
 
-        } catch (Exception ex) {
-            return null;
-        }
+           if (transformer != null) {
+               transformer.setParameter("page_height", (size.getHeight() / 72) + "in");
+               transformer.setParameter("page_width", (size.getWidth() / 72) + "in");
+               transformer.transform(src, res);
+           }
+
+           return out.toByteArray();
+
+       } catch (Exception ex) {
+           return null;
+       }
     }
 
     private Transformer getTransformer(String styleSheet) {

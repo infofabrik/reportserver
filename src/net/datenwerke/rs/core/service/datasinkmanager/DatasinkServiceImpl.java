@@ -142,7 +142,7 @@ public class DatasinkServiceImpl implements DatasinkService {
                      fileObj.getData());
             }
          } catch (Exception e) {
-            throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
+            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
          }
       } else if (fileDto instanceof FileServerFolderDto) {
          FileServerFolder folderObj = (FileServerFolder) dtoService.loadPoso(fileDto);
@@ -163,7 +163,7 @@ public class DatasinkServiceImpl implements DatasinkService {
             }
 
          } catch (Exception e) {
-            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
+            throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
          }
       }
    }

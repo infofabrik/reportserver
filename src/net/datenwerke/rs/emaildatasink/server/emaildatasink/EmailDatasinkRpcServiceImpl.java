@@ -325,7 +325,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
                      fileObj.getData(), subject, message, recipients);
             }
          } catch (Exception e) {
-            throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
+            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
          }
       } else if (abstractNodeDto instanceof FileServerFolderDto) {
          FileServerFolder folderObj = (FileServerFolder) dtoService.loadPoso(abstractNodeDto);
@@ -347,7 +347,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
             }
 
          } catch (Exception e) {
-            throw new ServerCallFailedException("Could not send the file: " + e.getMessage(), e);
+            throw new ServerCallFailedException("Could not send the folder: " + e.getMessage(), e);
          }
       }
 
