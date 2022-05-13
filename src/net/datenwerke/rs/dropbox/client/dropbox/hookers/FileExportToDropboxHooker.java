@@ -38,9 +38,13 @@ public class FileExportToDropboxHooker implements FileExportExternalEntryProvide
    private Provider<DropboxUiService> dropboxUiService;
 
    @Inject
-   public FileExportToDropboxHooker(@DatasinkTreeDropbox Provider<UITree> treeProvider,
-         Provider<DropboxDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<DropboxUiService> dropboxUiService) {
+   public FileExportToDropboxHooker(
+         @DatasinkTreeDropbox Provider<UITree> treeProvider,
+         Provider<DropboxDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, 
+         Provider<DropboxUiService> dropboxUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

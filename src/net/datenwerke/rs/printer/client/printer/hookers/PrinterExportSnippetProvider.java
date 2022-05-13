@@ -18,7 +18,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
@@ -36,7 +35,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 public class PrinterExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
    private String isExportAsFileKey;
-   private String nameKey;
    private String printerKey;
 
    private final Provider<UITree> treeProvider;
@@ -90,16 +88,8 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
       xform.endRow();
       xform.setFieldWidth(530);
 
-      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
-         @Override
-         public boolean allowBlank() {
-            return false;
-         }
-      });
-
       xform.setLabelAlign(LabelAlign.LEFT);
 
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(printerKey));
 
    }
@@ -133,7 +123,6 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
       final SingleTreeSelectionField printerField = extractSingleTreeSelectionField(form.getField(printerKey));
 
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsPrinterFileInformation info = definition.getAdditionalInfo(ScheduleAsPrinterFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
@@ -147,11 +136,6 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
          ReportDto report) {
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
-
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
    }
 
    @Override

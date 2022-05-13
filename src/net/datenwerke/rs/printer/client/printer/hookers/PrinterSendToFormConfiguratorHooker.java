@@ -8,10 +8,9 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
-import net.datenwerke.rs.printer.client.printer.PrinterUiModule;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
-import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiService;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
+import net.datenwerke.rs.printer.client.printer.PrinterUiModule;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class PrinterSendToFormConfiguratorHooker implements DatasinkSendToFormConfiguratorHook {
@@ -46,7 +45,7 @@ public class PrinterSendToFormConfiguratorHooker implements DatasinkSendToFormCo
 
    @Override
    public int getWindowHeight() {
-      return FileServerUiService.DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT;
+      return 290;
    }
 
    @Override
@@ -56,6 +55,11 @@ public class PrinterSendToFormConfiguratorHooker implements DatasinkSendToFormCo
 
    @Override
    public boolean isCanCompress() {
+      return false;
+   }
+   
+   @Override
+   public boolean isAllowNameConfiguration() {
       return false;
    }
 }

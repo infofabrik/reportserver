@@ -38,9 +38,13 @@ public class FileExportToPrinterHooker implements FileExportExternalEntryProvide
    private final Provider<PrinterUiService> printerUiService;
 
    @Inject
-   public FileExportToPrinterHooker(@DatasinkTreePrinter Provider<UITree> treeProvider,
-         Provider<PrinterDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<PrinterUiService> printerUiService) {
+   public FileExportToPrinterHooker(
+         @DatasinkTreePrinter Provider<UITree> treeProvider,
+         Provider<PrinterDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, 
+         Provider<PrinterUiService> printerUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

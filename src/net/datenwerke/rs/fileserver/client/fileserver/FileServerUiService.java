@@ -6,7 +6,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 
 public interface FileServerUiService {
 
-   public final static int DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT = 360;
+   public final static int DEFAULT_FILE_SEND_TO_WINDOW_HEIGHT = 370;
 
    void editFileDirectly(FileServerFileDto file, boolean editable, boolean refreshable, boolean emailable,
          boolean scrollToEnd);
