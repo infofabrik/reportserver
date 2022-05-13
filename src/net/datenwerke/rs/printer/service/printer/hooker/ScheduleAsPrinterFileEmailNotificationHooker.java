@@ -34,11 +34,8 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class ScheduleAsPrinterFileEmailNotificationHooker extends SchedulerExecutionHookAdapter {
 
-   private static final String PROPERTY_FOLDER = "folder";
-   private static final String PROPERTY_NAME = "name";
    private static final String PROPERTY_REPORT = "report";
    private static final String PROPERTY_JOB = "job";
-   private static final String PROPERTY_FILENAME = "filename";
    private static final String PROPERTY_EXECUTOR = "executor";
    private static final String PROPERTY_SCHEDULED_BY = "scheduledBy";
    private static final String PROPERTY_OWNERS = "owners";
@@ -46,11 +43,11 @@ public class ScheduleAsPrinterFileEmailNotificationHooker extends SchedulerExecu
    public static final String PROPERTY_EXCEPTION = "exception";
    public static final String PROPERTY_EXCEPTIONST = "trace";
 
-   public static final String PROPERTY_PRINTER_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionAmazonS3.subject";
-   public static final String PROPERTY_PRINTER_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionAmazonS3.text";
+   public static final String PROPERTY_PRINTER_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionPrinter.subject";
+   public static final String PROPERTY_PRINTER_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionPrinter.text";
 
-   private static final String PROPERTY_PRINTER_NOTIFICATION_DISABLED = "scheduler.fileactionAmazonS3[@disabled]";
-   private static final String PROPERTY_PRINTER_NOTIFICATION_HTML = "scheduler.fileactionAmazonS3[@html]";
+   private static final String PROPERTY_PRINTER_NOTIFICATION_DISABLED = "scheduler.fileactionPrinter[@disabled]";
+   private static final String PROPERTY_PRINTER_NOTIFICATION_HTML = "scheduler.fileactionPrinter[@html]";
 
    private Configuration config;
    private MailService mailService;
@@ -58,8 +55,10 @@ public class ScheduleAsPrinterFileEmailNotificationHooker extends SchedulerExecu
    private RemoteMessageService remoteMessageService;
 
    @Inject
-   public ScheduleAsPrinterFileEmailNotificationHooker(@SchedulerModuleProperties Configuration config,
-         MailService mailService, RemoteMessageService remoteMessageService) {
+   public ScheduleAsPrinterFileEmailNotificationHooker(
+         @SchedulerModuleProperties Configuration config,
+         MailService mailService, RemoteMessageService remoteMessageService
+         ) {
 
       this.config = config;
       this.mailService = mailService;
@@ -121,9 +120,9 @@ public class ScheduleAsPrinterFileEmailNotificationHooker extends SchedulerExecu
       datamap.put("msgs", msgs);
 
       String subjectTemplate = config.getString(PROPERTY_PRINTER_NOTIFICATION_SUBJECT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionAmazonS3MsgSubject"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionPrinterDatasinkMsgSubject"));
       String messageTemplate = config.getString(PROPERTY_PRINTER_NOTIFICATION_TEXT_SUCCESS,
-            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionAmazonS3MsgText"));
+            msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionPrinterDatasinkMsgText"));
 
       MailTemplate mailTemplate = new MailTemplate();
       mailTemplate.setHtml(config.getBoolean(PROPERTY_PRINTER_NOTIFICATION_HTML, false));

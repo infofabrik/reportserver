@@ -13,15 +13,6 @@ public class ScheduleAsTableDatasinkFileInformation implements AdditionalSchedul
     */
 
    private TableDatasinkDto tableDatasinkDto;
-   private String name;
-
-   public String getName() {
-      return name;
-   }
-
-   public void setName(String name) {
-      this.name = name;
-   }
 
    public TableDatasinkDto getTableDatasinkDto() {
       return tableDatasinkDto;
