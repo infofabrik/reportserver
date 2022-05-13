@@ -44,7 +44,7 @@ public class PrinterDatasinkForm extends SimpleFormView {
 
       /* printer name */
       form.addField(List.class, PrinterDatasinkDtoPA.INSTANCE.printerName(),
-            BaseMessages.INSTANCE.printerName(), new SFFCStaticDropdownList<String>() {
+            DatasinksMessages.INSTANCE.printerName(), new SFFCStaticDropdownList<String>() {
                public Map<String, String> getValues() {
                   return printerUiService.getAvailablePrinters()
                         .stream()
