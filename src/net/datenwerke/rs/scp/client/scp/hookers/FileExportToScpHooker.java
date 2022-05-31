@@ -38,13 +38,9 @@ public class FileExportToScpHooker implements FileExportExternalEntryProviderHoo
    private final Provider<ScpUiService> scpUiService;
 
    @Inject
-   public FileExportToScpHooker(
-         @DatasinkTreeScp Provider<UITree> treeProvider, 
-         Provider<ScpDao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider, 
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<ScpUiService> scpUiService
-         ) {
+   public FileExportToScpHooker(@DatasinkTreeScp Provider<UITree> treeProvider, Provider<ScpDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider, Provider<DatasinkUIService> datasinkUiServiceProvider,
+         Provider<ScpUiService> scpUiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

@@ -35,11 +35,11 @@ public class DropboxDatasinkForm extends SimpleFormView {
       form.addField(String.class, DropboxDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
 
       /* app key */
-      form.addField(String.class, DropboxDatasinkDtoPA.INSTANCE.appKey(), DatasinksMessages.INSTANCE.appKey());
+      form.addField(String.class, DropboxDatasinkDtoPA.INSTANCE.appKey(), BaseMessages.INSTANCE.appKey());
 
       /* secret key */
       String secretKey = form.addField(String.class, DropboxDatasinkDtoPA.INSTANCE.secretKey(),
-            DatasinksMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
+            BaseMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
                @Override
                public Boolean isPasswordSet() {
                   return ((DropboxDatasinkDto) getSelectedNode()).isHasSecretKey();

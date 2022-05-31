@@ -16,7 +16,7 @@ public interface BasicDatasinkService {
 
    StorageType getSchedulingStorageType();
 
-   void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasinkDefinition,
+   void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
          DatasinkConfiguration config) throws DatasinkExportException;
 
    Optional<? extends DatasinkDefinition> getDefaultDatasink();

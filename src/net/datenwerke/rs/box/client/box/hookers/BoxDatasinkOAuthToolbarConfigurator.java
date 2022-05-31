@@ -13,6 +13,7 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.SimpleFormView;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
+import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.utilityservices.UtilsUIService;
 import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.rs.box.client.box.BoxDao;
@@ -47,7 +48,7 @@ public class BoxDatasinkOAuthToolbarConfigurator implements MainPanelViewToolbar
       if (!(selectedNode instanceof BoxDatasinkDto))
          return;
       DwTextButton oauthBtn = toolbarUtils
-            .createSmallButtonLeft(DatasinksMessages.INSTANCE.datasinkOauth2AuthenticationSetup(), BaseIcon.SIGN_IN);
+            .createSmallButtonLeft(BaseMessages.INSTANCE.datasinkOauth2AuthenticationSetup(), BaseIcon.SIGN_IN);
 
       final BoxDatasinkDto boxDatasinkDto = (BoxDatasinkDto) selectedNode;
       oauthBtn.addSelectHandler(event -> displayAuthorizationDialog(boxDatasinkDto));
@@ -63,23 +64,23 @@ public class BoxDatasinkOAuthToolbarConfigurator implements MainPanelViewToolbar
          public void onSuccess(OAuthAuthenticationUriInfo result) {
 
             final DwWindow window = new DwWindow();
-            window.setHeading(DatasinksMessages.INSTANCE.datasinkOauth2AuthenticationSetup());
+            window.setHeading(BaseMessages.INSTANCE.datasinkOauth2AuthenticationSetup());
             window.setSize(600, 190);
 
             VerticalLayoutContainer hlc = new VerticalLayoutContainer();
             window.add(hlc, new MarginData(10));
 
-            Label textNote = new Label(DatasinksMessages.INSTANCE.oauthNote1());
+            Label textNote = new Label(BaseMessages.INSTANCE.oauthNote1());
             hlc.add(textNote);
 
-            Label textRedirection = new Label(DatasinksMessages.INSTANCE.oauthNote2());
+            Label textRedirection = new Label(BaseMessages.INSTANCE.oauthNote2());
             hlc.add(textRedirection);
 
             String redirectUri = result.getRedirectUri();
             Label textRedirectUri = new Label(redirectUri);
             hlc.add(textRedirectUri);
 
-            DwTextButton authenticationBtn = new DwTextButton(DatasinksMessages.INSTANCE.oauthStart());
+            DwTextButton authenticationBtn = new DwTextButton(BaseMessages.INSTANCE.oauthStart());
             authenticationBtn
                   .addSelectHandler(event -> utilsUiService.redirectWithoutAsking(result.getAuthenticationUri()));
 

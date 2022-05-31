@@ -32,12 +32,9 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    private final Provider<Optional<EmailDatasink>> defaultDatasinkProvider;
 
    @Inject
-   public EmailDatasinkServiceImpl(
-         Provider<MailBuilderFactory> mailBuilderFactoryProvider,
-         Provider<MailService> mailServiceProvider, 
-         Provider<MimeUtils> mimeUtilsProvider,
-         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider
-         ) {
+   public EmailDatasinkServiceImpl(Provider<MailBuilderFactory> mailBuilderFactoryProvider,
+         Provider<MailService> mailServiceProvider, Provider<MimeUtils> mimeUtilsProvider,
+         @DefaultEmailDatasink Provider<Optional<EmailDatasink>> defaultDatasinkProvider) {
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.mimeUtilsProvider = mimeUtilsProvider;
@@ -45,7 +42,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       Objects.requireNonNull(datasink, "datasink is null!");
       if (!(config instanceof DatasinkEmailConfig))
@@ -62,7 +59,7 @@ public class EmailDatasinkServiceImpl implements EmailDatasinkService {
          SimpleMail mail = mailBuilderFactoryProvider.get()
                .create(emailConfig.getSubject(), emailConfig.getBody(), emailConfig.getRecipients())
                .withEmailDatasink(emailDatasink)
-               .withAttachments(Arrays.asList(new SimpleAttachment(data,
+               .withAttachments(Arrays.asList(new SimpleAttachment(report,
                      mimeUtilsProvider.get().getMimeTypeByExtension(emailConfig.getFilename()),
                      emailConfig.getFilename())))
                .build();

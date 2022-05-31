@@ -35,6 +35,11 @@ public class MsSQL extends DatabaseHelper {
    }
 
    @Override
+   public String createDummyQuery() {
+      return "SELECT 1 as A";
+   }
+
+   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new MsSQLLimitQuery(nestedQuery, queryBuilder);
    }

@@ -40,6 +40,8 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
    @Transient
    private Report report;
 
+   private String name;
+
    @Override
    public void execute(AbstractJob job) throws ActionExecutionException {
       if (!(job instanceof ReportExecuteJob))
@@ -59,6 +61,9 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
 
       sendViaTableDatasink(rJob);
 
+      if (null == name || name.trim().isEmpty())
+         throw new ActionExecutionException("name is empty");
+
       if (null == tableDatasink)
          throw new ActionExecutionException("Table datasink is empty");
 
@@ -71,6 +76,14 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
       } catch (Exception e) {
          throw new ActionExecutionException("report could not be sent to table datasink", e);
       }
+   }
+
+   public String getName() {
+      return name;
+   }
+
+   public void setName(String name) {
+      this.name = name;
    }
 
    public Report getReport() {

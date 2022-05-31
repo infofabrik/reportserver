@@ -60,8 +60,4 @@ public class DropboxSendToFormConfiguratorHooker implements DatasinkSendToFormCo
       return true;
    }
 
-   @Override
-   public boolean isAllowNameConfiguration() {
-      return true;
-   }
 }

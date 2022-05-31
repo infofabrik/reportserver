@@ -34,7 +34,7 @@ public class SftpServiceImpl implements SftpService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("sftp is disabled");
@@ -44,7 +44,7 @@ public class SftpServiceImpl implements SftpService {
       SftpDatasink sftpDatasink = (SftpDatasink) datasink;
 
       try {
-         ftpSenderService.get().sendToFtpServer(StorageType.SFTP, data, sftpDatasink, config);
+         ftpSenderService.get().sendToFtpServer(StorageType.SFTP, report, sftpDatasink, config);
       } catch (IOException e) {
          throw new DatasinkExportException("An error occurred during datasink export", e);
       }

@@ -16,6 +16,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexecutor.locale.ReportexecutorMessages;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterDao;
 import net.datenwerke.rs.core.client.reportexporter.dto.RECCsvDto;
@@ -25,6 +26,7 @@ import net.datenwerke.rs.core.client.reportexporter.dto.pa.RECCsvDtoPA;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public abstract class Export2CSV extends ReportExporterImpl {
@@ -147,4 +149,9 @@ public abstract class Export2CSV extends ReportExporterImpl {
       return true;
    }
    
+   @Override
+   public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
+      return ! datasinkType.equals(TableDatasinkDto.class);
+   }
+
 }

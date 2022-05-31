@@ -88,7 +88,7 @@ public class FtpsDatasinkForm extends SimpleFormView {
       form.setFieldWidth(0.3);
 
       // active / passive mode
-      form.addField(List.class, FtpsDatasinkDtoPA.INSTANCE.ftpMode(), DatasinksMessages.INSTANCE.mode(),
+      form.addField(List.class, FtpsDatasinkDtoPA.INSTANCE.ftpMode(), BaseMessages.INSTANCE.mode(),
             new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
@@ -97,8 +97,8 @@ public class FtpsDatasinkForm extends SimpleFormView {
                public Map<String, String> getValues() {
                   if (null == map) {
                      map = new HashMap<>();
-                     map.put(DatasinksMessages.INSTANCE.active(), FtpsDatasinkConfigProviderHooker.ACTIVE_MODE);
-                     map.put(DatasinksMessages.INSTANCE.passive(), FtpsDatasinkConfigProviderHooker.PASSIVE_MODE);
+                     map.put(BaseMessages.INSTANCE.active(), FtpsDatasinkConfigProviderHooker.ACTIVE_MODE);
+                     map.put(BaseMessages.INSTANCE.passive(), FtpsDatasinkConfigProviderHooker.PASSIVE_MODE);
                   }
 
                   return map;
@@ -107,7 +107,7 @@ public class FtpsDatasinkForm extends SimpleFormView {
 
       // dataChannelProtectionLevel
       form.addField(List.class, FtpsDatasinkDtoPA.INSTANCE.dataChannelProtectionLevel(),
-            DatasinksMessages.INSTANCE.protectionLevel(), new SFFCStaticDropdownList<String>() {
+            BaseMessages.INSTANCE.protectionLevel(), new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
 

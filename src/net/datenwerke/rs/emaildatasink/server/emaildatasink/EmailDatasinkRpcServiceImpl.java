@@ -357,11 +357,8 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          DatasinkDefinition datasink, String filename, byte[] os, String subject, String message,
          List<StrippedDownUser> recipients) throws DatasinkExportException {
 
-      List<User> recipientUsers = recipients
-            .stream()
-            .map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
-            .filter(user -> null != user.getEmail() && !"".equals(user.getEmail()))
-            .collect(toList());
+      List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
+            .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
       datasinkServiceProvider.get().exportIntoDatasink(os, datasink,
             new DatasinkEmailConfig() {
 

@@ -27,4 +27,9 @@ public class HSQL extends DatabaseHelper {
       return DB_NAME;
    }
 
+   @Override
+   public String createDummyQuery() {
+      return "SELECT 1 FROM INFORMATION_SCHEMA.SYSTEM_USERS WHERE 1=0"; //$NON-NLS-1$
+   }
+
 }

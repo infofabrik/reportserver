@@ -38,13 +38,9 @@ public class FileExportToAmazonS3Hooker implements FileExportExternalEntryProvid
    private final Provider<AmazonS3UiService> amazonS3UiService;
 
    @Inject
-   public FileExportToAmazonS3Hooker(
-         @DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
-         Provider<AmazonS3Dao> datasinkDaoProvider, 
-         Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, 
-         Provider<AmazonS3UiService> amazonS3UiService
-         ) {
+   public FileExportToAmazonS3Hooker(@DatasinkTreeAmazonS3 Provider<UITree> treeProvider,
+         Provider<AmazonS3Dao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<AmazonS3UiService> amazonS3UiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

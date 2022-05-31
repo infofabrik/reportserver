@@ -32,7 +32,7 @@ public class DummyScpServiceImpl implements ScpService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasinkDefinition,
+   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasinkDefinition,
          DatasinkConfiguration config) throws DatasinkExportException {
    }
 

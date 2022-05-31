@@ -24,6 +24,11 @@ public class GoogleBigQuery extends DatabaseHelper {
    }
 
    @Override
+   public String createDummyQuery() {
+      return "select 1";
+   }
+
+   @Override
    public String getIdentifierQuoteChar() {
       return "";
    }

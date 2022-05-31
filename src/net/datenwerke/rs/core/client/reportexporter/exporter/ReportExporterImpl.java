@@ -25,7 +25,6 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportexporter.hooks.ReportExporterPreExportHook;
 import net.datenwerke.rs.core.client.reportexporter.locale.ReportExporterMessages;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.printer.client.printer.dto.PrinterDatasinkDto;
 import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
 
 /**
@@ -190,6 +189,6 @@ public abstract class ReportExporterImpl implements ReportExporter {
 
    @Override
    public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
-      return ! datasinkType.equals(TableDatasinkDto.class) && ! datasinkType.equals(PrinterDatasinkDto.class);
+      return ! datasinkType.equals(TableDatasinkDto.class);
    }
 }

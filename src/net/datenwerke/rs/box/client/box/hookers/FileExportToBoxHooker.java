@@ -38,13 +38,9 @@ public class FileExportToBoxHooker implements FileExportExternalEntryProviderHoo
    private final Provider<BoxUiService> boxUiService;
 
    @Inject
-   public FileExportToBoxHooker(
-         @DatasinkTreeBox Provider<UITree> treeProvider, 
-         Provider<BoxDao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider, 
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<BoxUiService> boxUiService
-         ) {
+   public FileExportToBoxHooker(@DatasinkTreeBox Provider<UITree> treeProvider, Provider<BoxDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider, Provider<DatasinkUIService> datasinkUiServiceProvider,
+         Provider<BoxUiService> boxUiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

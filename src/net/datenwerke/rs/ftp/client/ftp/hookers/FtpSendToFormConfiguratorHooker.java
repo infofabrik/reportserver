@@ -59,8 +59,4 @@ public class FtpSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
       return true;
    }
 
-   @Override
-   public boolean isAllowNameConfiguration() {
-      return true;
-   }
 }

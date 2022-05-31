@@ -215,16 +215,13 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
                }));
       }
 
-      final ObjectHolder<String> nameKey = new ObjectHolder<>();
-      if (formConfigurator.isAllowNameConfiguration()) {
-         nameKey.set(form.addField(String.class, ScheduleAsFileMessages.INSTANCE.nameLabel(),
-               new SFFCAllowBlank() {
-            @Override
-            public boolean allowBlank() {
-               return false;
-            }
-         }));
-      }
+      final String nameKey = form.addField(String.class, ScheduleAsFileMessages.INSTANCE.nameLabel(),
+            new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+            });
 
       /* add additional fields */
       formConfigurator.installAdditionalFields(form);
@@ -249,12 +246,10 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
       window.add(wrapper, new MarginData(10));
 
       /* set properties */
-      if (formConfigurator.isAllowNameConfiguration()) {
-         if (filename.contains("."))
-            form.setValue(nameKey.get(), filename.substring(0, filename.lastIndexOf(".")));
-         else
-            form.setValue(nameKey.get(), filename);
-      }
+      if (filename.contains("."))
+         form.setValue(nameKey, filename.substring(0, filename.lastIndexOf(".")));
+      else
+         form.setValue(nameKey, filename);
 
       /* load fields */
       form.loadFields();
@@ -314,8 +309,7 @@ public class DatasinkUIServiceImpl implements DatasinkUIService {
 
          Map<String, Object> values = new HashMap<>();
          values.put(DatasinkUIModule.DATASINK_KEY, form.getValue(datasinkKey));
-         if (formConfigurator.isAllowNameConfiguration())
-            values.put(DatasinkUIModule.DATASINK_FILENAME, ((String) form.getValue(nameKey.get())).trim());
+         values.put(DatasinkUIModule.DATASINK_FILENAME, ((String) form.getValue(nameKey)).trim());
          if (formConfigurator.isFolderedDatasink())
             values.put(DatasinkUIModule.DATASINK_FOLDER, ((String) form.getValue(folderKey.get())).trim());
          if (toExport instanceof ReportDto)

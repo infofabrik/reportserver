@@ -58,10 +58,5 @@ public class OneDriveSendToFormConfiguratorHooker implements DatasinkSendToFormC
    public boolean isCanCompress() {
       return true;
    }
-   
-   @Override
-   public boolean isAllowNameConfiguration() {
-      return true;
-   }
 
 }

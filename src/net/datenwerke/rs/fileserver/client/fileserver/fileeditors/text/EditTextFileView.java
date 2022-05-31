@@ -7,7 +7,6 @@ import net.datenwerke.gf.client.managerhelper.mainpanel.MainPanelView;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.decorator.FileServerFileDtoDec;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
-import net.datenwerke.rs.fileserver.shared.fileserver.FileServerFileHelper;
 
 public class EditTextFileView implements EditFileServerFileHook {
 
@@ -24,8 +23,12 @@ public class EditTextFileView implements EditFileServerFileHook {
             return true;
          return false;
       }
-      
-      return new FileServerFileHelper().isTextFile(file.getName(), file.getContentType());
+
+      if (null != file.getName() && file.getName().endsWith("rs"))
+         return true;
+
+      return (file.getContentType().startsWith("text") || file.getContentType().endsWith("xml")
+            || file.getContentType().contains("groovy"));
    }
 
    @Override

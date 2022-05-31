@@ -319,6 +319,10 @@ abstract public class DatabaseHelper {
       return buf.toString();
    }
 
+   public String createDummyQuery() {
+      return "SELECT * FROM DUAL"; //$NON-NLS-1$
+   }
+
    public boolean containsWildcard(String data) {
       return data.contains("%") || data.contains("_");
    }

@@ -1,9 +1,8 @@
 package net.datenwerke.rs.base.client.datasources.ui;
 
-import static java.util.stream.Collectors.toMap;
-
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.google.gwt.user.client.ui.Widget;
 import com.google.inject.Inject;
@@ -39,9 +38,7 @@ public class DatabaseDatasourceForm extends SimpleFormView {
    private final BaseDatasourceUiService baseDatasourceService;
 
    @Inject
-   public DatabaseDatasourceForm(
-         BaseDatasourceUiService baseDatasourceService
-         ) {
+   public DatabaseDatasourceForm(BaseDatasourceUiService baseDatasourceService) {
       super();
 
       /* store objects */
@@ -64,9 +61,8 @@ public class DatabaseDatasourceForm extends SimpleFormView {
       form.addField(List.class, DatabaseDatasourceDtoPA.INSTANCE.databaseDescriptor(),
             DatasourcesMessages.INSTANCE.database(), new SFFCStaticDropdownList<String>() {
                public Map<String, String> getValues() {
-                  return baseDatasourceService.getDatabaseHelpers()
-                        .stream()
-                        .collect(toMap(databaseHelper -> {
+                  return baseDatasourceService.getDatabaseHelpers().stream()
+                        .collect(Collectors.toMap(databaseHelper -> {
                            String name = databaseHelper.getName();
                            if (!databaseHelper.isJdbcDriverAvailable())
                               name += " " + BaseDatasourceMessages.INSTANCE.jdbcDriverIsNotAvailable();

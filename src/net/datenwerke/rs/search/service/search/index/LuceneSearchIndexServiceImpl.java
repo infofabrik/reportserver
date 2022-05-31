@@ -2,6 +2,7 @@ package net.datenwerke.rs.search.service.search.index;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import javax.inject.Singleton;
 import javax.persistence.EntityManager;
 import javax.servlet.ServletContext;
 
+import org.apache.commons.io.FileUtils;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.standard.StandardAnalyzer;
 import org.apache.lucene.document.Document;
@@ -76,6 +78,9 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
 
       try {
          Path luceneIndexPath = Paths.get(servletContextProvider.get().getRealPath("/WEB-INF/lucene_index"));
+         // this is necessary for correct Lucene upgrades
+         if (Files.exists(luceneIndexPath))
+            FileUtils.deleteDirectory(luceneIndexPath.toFile());
          indexDir = FSDirectory.open(luceneIndexPath);
          iwc = new IndexWriterConfig(analyzer);
          iwc.setOpenMode(OpenMode.CREATE);

@@ -38,13 +38,9 @@ public class FileExportToFtpHooker implements FileExportExternalEntryProviderHoo
    private final Provider<FtpUiService> ftpUiService;
 
    @Inject
-   public FileExportToFtpHooker(
-         @DatasinkTreeFtp Provider<UITree> treeProvider, 
-         Provider<FtpDao> datasinkDaoProvider,
-         Provider<EnterpriseUiService> enterpriseServiceProvider, 
-         Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<FtpUiService> ftpUiService
-         ) {
+   public FileExportToFtpHooker(@DatasinkTreeFtp Provider<UITree> treeProvider, Provider<FtpDao> datasinkDaoProvider,
+         Provider<EnterpriseUiService> enterpriseServiceProvider, Provider<DatasinkUIService> datasinkUiServiceProvider,
+         Provider<FtpUiService> ftpUiService) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

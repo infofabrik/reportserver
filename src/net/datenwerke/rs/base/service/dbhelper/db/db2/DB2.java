@@ -33,6 +33,11 @@ public class DB2 extends DatabaseHelper {
    }
 
    @Override
+   public String createDummyQuery() {
+      return "select * from sysibm.sysdummy1";
+   }
+
+   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new DB2LimitQuery(nestedQuery, queryBuilder);
    }

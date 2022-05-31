@@ -74,27 +74,27 @@ public class EmailDatasinkForm extends SimpleFormView {
       form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.sslEnable(), "SSL");
 
       /* tls */
-      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.tlsEnable(), DatasinksMessages.INSTANCE.tlsEnable());
+      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.tlsEnable(), BaseMessages.INSTANCE.tlsEnable());
 
       /* tls */
-      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.tlsRequire(), DatasinksMessages.INSTANCE.tlsRequire());
+      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.tlsRequire(), BaseMessages.INSTANCE.tlsRequire());
 
       form.endRow();
 
       form.setFieldWidth(400);
       form.beginFloatRow();
 
-      form.addField(String.class, EmailDatasinkDtoPA.INSTANCE.sender(), DatasinksMessages.INSTANCE.sender());
+      form.addField(String.class, EmailDatasinkDtoPA.INSTANCE.sender(), BaseMessages.INSTANCE.sender());
 
-      form.addField(String.class, EmailDatasinkDtoPA.INSTANCE.senderName(), DatasinksMessages.INSTANCE.senderName());
+      form.addField(String.class, EmailDatasinkDtoPA.INSTANCE.senderName(), BaseMessages.INSTANCE.senderName());
 
-      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.forceSender(), DatasinksMessages.INSTANCE.forceSender());
+      form.addField(Boolean.class, EmailDatasinkDtoPA.INSTANCE.forceSender(), BaseMessages.INSTANCE.forceSender());
 
       form.endRow();
 
       // encryption policy
       form.addField(List.class, EmailDatasinkDtoPA.INSTANCE.encryptionPolicy(),
-            DatasinksMessages.INSTANCE.encryptionPolicy(), new SFFCStaticDropdownList<String>() {
+            BaseMessages.INSTANCE.encryptionPolicy(), new SFFCStaticDropdownList<String>() {
 
                private Map<String, String> map;
 
