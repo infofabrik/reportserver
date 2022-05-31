@@ -237,5 +237,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.9.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.9.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.9.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.11.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.1-jre.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
