@@ -208,10 +208,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-ext-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.9.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.8.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.8.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.8.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.8.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.3.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.2.jar"/>
@@ -237,5 +233,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.6.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.30.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.11.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.9.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.9.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.9.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.9.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
