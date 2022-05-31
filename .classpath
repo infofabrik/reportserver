@@ -195,7 +195,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/castor-xml-1.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jackson-annotations-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-1.4.01.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.9.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20211018.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.71.jar"/>
@@ -214,7 +213,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.8.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.8.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.29.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.2.jar"/>
@@ -237,5 +235,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-3.0.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.3.6.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.30.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.11.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
