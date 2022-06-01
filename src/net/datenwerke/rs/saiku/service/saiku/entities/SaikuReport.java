@@ -12,7 +12,6 @@ import com.google.inject.Injector;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
-import net.datenwerke.gf.base.service.annotations.Field;
 import net.datenwerke.gf.base.service.annotations.Indexed;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.saiku.client.saiku.locale.SaikuMessages;
@@ -43,7 +42,6 @@ public class SaikuReport extends Report {
 
    @Lob
    @Type(type = "net.datenwerke.rs.utils.hibernate.RsClobType")
-   @Field
    @ExposeToClient(allowArbitraryLobSize = true, disableHtmlEncode = true, exposeValueToClient = false)
    private String queryXml;
 

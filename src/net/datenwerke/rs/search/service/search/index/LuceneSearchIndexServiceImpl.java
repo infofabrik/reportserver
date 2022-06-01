@@ -103,7 +103,7 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
          logger.warn("error flushing search index", e);
       }
    }
-
+   
    @Override
    public void addToIndex(Object o) {
       if (null == o)
@@ -121,6 +121,7 @@ public class LuceneSearchIndexServiceImpl implements SearchIndexService {
                   && !f.getAnnotation(net.datenwerke.gf.base.service.annotations.Field.class).name().isEmpty()) {
                name = f.getAnnotation(net.datenwerke.gf.base.service.annotations.Field.class).name();
             }
+            
             Object val = f.get(unproxied);
             if (null != val) {
                String sval = String.valueOf(f.get(unproxied));
