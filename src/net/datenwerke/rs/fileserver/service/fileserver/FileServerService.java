@@ -2,6 +2,7 @@ package net.datenwerke.rs.fileserver.service.fileserver;
 
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
 import net.datenwerke.treedb.service.treedb.TreeDBManager;
 
@@ -24,6 +25,24 @@ public interface FileServerService extends TreeDBManager<AbstractFileServerNode>
    FileServerFile createFileAtLocation(VFSLocation location);
 
    FileServerFile createFileAtLocation(VFSLocation location, boolean checkRights);
+   
+   /**
+    * Checks rights.
+    * 
+    * @param location
+    */
+   FileServerFolder createFolderAtLocation(String location);
+
+   FileServerFolder createFolderAtLocation(String location, boolean checkRights);
+
+   /**
+    * Checks rights.
+    * 
+    * @param location
+    */
+   FileServerFolder createFolderAtLocation(VFSLocation location);
+
+   FileServerFolder createFolderAtLocation(VFSLocation location, boolean checkRights);
 
    AbstractFileServerNode getNodeByPath(String path);
 

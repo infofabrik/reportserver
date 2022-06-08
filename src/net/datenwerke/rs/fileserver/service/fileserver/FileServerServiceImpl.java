@@ -108,19 +108,38 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
    public FileServerFile createFileAtLocation(VFSLocation location) {
       return createFileAtLocation(location, true);
    }
+   
+   @Override
+   public FileServerFolder createFolderAtLocation(VFSLocation location) {
+      return createFolderAtLocation(location, true);
+   }
 
    @Override
    public FileServerFile createFileAtLocation(VFSLocation location, boolean checkRights) {
       return createFileAtLocation(location.getAbsolutePath(), checkRights);
+   }
+   
+   @Override
+   public FileServerFolder createFolderAtLocation(VFSLocation location, boolean checkRights) {
+      return createFolderAtLocation(location.getAbsolutePath(), checkRights);
    }
 
    @Override
    public FileServerFile createFileAtLocation(String locationPath) {
       return createFileAtLocation(locationPath, true);
    }
+   
+   @Override
+   public FileServerFolder createFolderAtLocation(String locationPath) {
+      return createFolderAtLocation(locationPath, true);
+   }
 
    @Override
-   public FileServerFile createFileAtLocation(String locationPath, boolean checkRights) {
+   public FileServerFolder createFolderAtLocation(String locationPath, boolean checkRights) {
+      return (FileServerFolder) doCreateNodeAtLocation(locationPath, checkRights, true);
+   }
+   
+   private AbstractFileServerNode doCreateNodeAtLocation(String locationPath, boolean checkRights, boolean isFolder) {
       PathHelper helper = new PathHelper(locationPath);
 
       Iterator<String> paths = helper.getPathways().iterator();
@@ -145,7 +164,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
 
             if (null == newParent) {
                if (checkRights && !securityService.checkActions(parent, InsertAction.class))
-                  throw new ViolatedSecurityException("Cannot create file at: " + parent);
+                  throw new ViolatedSecurityException("Cannot create node at: " + parent);
 
                newParent = new FileServerFolder();
                newParent.setName(path);
@@ -164,23 +183,44 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
             } catch (ObjectResolverException e) {
             }
 
-            if (null != obj && !(obj instanceof FileServerFile))
-               throw new IllegalArgumentException("Expected null or file");
-            if (null != obj && (obj instanceof FileServerFile))
-               return (FileServerFile) obj;
+            if (isFolder) {
+               if (null != obj && !(obj instanceof FileServerFolder))
+                  throw new IllegalArgumentException("Expected null or folder");
+               if (null != obj && (obj instanceof FileServerFolder))
+                  return (FileServerFolder) obj;
+            } else {
+               if (null != obj && !(obj instanceof FileServerFile))
+                  throw new IllegalArgumentException("Expected null or file");
+               if (null != obj && (obj instanceof FileServerFile))
+                  return (FileServerFile) obj;
+            }
 
             if (checkRights && !securityService.checkActions(parent, InsertAction.class))
-               throw new ViolatedSecurityException("Cannot create file at: " + parent);
+               throw new ViolatedSecurityException("Cannot create node at: " + parent);
 
-            FileServerFile file = new FileServerFile();
-            file.setName(path);
-            parent.addChild(file);
-            persist(file);
+            AbstractFileServerNode node = null;
+            if (isFolder) {
+               FileServerFolder folder = new FileServerFolder();
+               folder.setName(path);
+               node = folder;
+            } else {
+               FileServerFile file = new FileServerFile();
+               file.setName(path);
+               node = file;
+            }
+            parent.addChild(node);
+            persist(node);
             merge(parent);
-            return file;
+            return node;
          }
       }
       return null;
    }
+   
+   @Override
+   public FileServerFile createFileAtLocation(String locationPath, boolean checkRights) {
+      return (FileServerFile) doCreateNodeAtLocation(locationPath, checkRights, false);
+   }
+
 
 }

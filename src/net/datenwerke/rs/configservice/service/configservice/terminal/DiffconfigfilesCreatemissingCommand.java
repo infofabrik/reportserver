@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 
@@ -35,8 +34,12 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
    private static final String REGEX_TO_MATCH_SLASHFILENAME_STRING = "/(?:.(?!/))+$";
 
    @Inject
-   public DiffconfigfilesCreatemissingCommand(HistoryService historyService, FileServerService fileServerService,
-         ConfigService configService, SecurityService securityService) {
+   public DiffconfigfilesCreatemissingCommand(
+         HistoryService historyService, 
+         FileServerService fileServerService,
+         ConfigService configService, 
+         SecurityService securityService
+         ) {
       super(historyService, fileServerService, configService, securityService, BASE_COMMAND);
    }
 
@@ -59,7 +62,9 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
          configService.extractBasicConfigFilesTo(super.tmpDirName);
          missingConfigFileLinks = findMissingConfigFiles(super.tmpConfigFolder);
          moveMissingConfigFiles(missingConfigFileLinks);
-         newFilesInActualConfig = missingConfigFileLinks.stream().map(fileLink -> findFileInActualConfig(fileLink))
+         newFilesInActualConfig = missingConfigFileLinks
+               .stream()
+               .map(fileLink -> findFileInActualConfig(fileLink))
                .collect(toList());
       } catch (Exception e) {
          throw new TerminalException("the config files could not be calculated: " + e.getMessage(), e);
@@ -72,7 +77,9 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
    private void moveMissingConfigFiles(List<HistoryLink> missingConfigFileLinks) {
       missingConfigFileLinks.forEach(link -> {
          AbstractFileServerNode fileToMove = fileServerService.getNodeByPath(getFilePathFromHistoryLink(link), false);
-         AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(getDstFolderPathFromHistoryLink(link),
+         String dstFolderPath = getDstFolderPathFromHistoryLink(link);
+         fileServerService.createFolderAtLocation("/fileserver/" + dstFolderPath);
+         AbstractFileServerNode dstFolder = fileServerService.getNodeByPath(dstFolderPath,
                false);
          fileServerService.copy(fileToMove, dstFolder, true);
       });
@@ -92,11 +99,12 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
          return new CommandResult("No missing files detected - no files were copied");
       CommandResult commandResult = new CommandResult();
       List<CommandResultHyperlink> hyperLinkEntries = copiedFiles.stream()
-            .map(file -> historyService.buildLinksFor(file)).map(listHistoryLinks -> listHistoryLinks.get(0))
+            .map(file -> historyService.buildLinksFor(file))
+            .map(listHistoryLinks -> listHistoryLinks.get(0))
             .map(historyLink -> new CommandResultHyperlink(
                   historyLink.getObjectCaption() + " (" + historyLink.getHistoryLinkBuilderId() + ")",
                   historyLink.getLink()))
-            .collect(Collectors.toList());
+            .collect(toList());
 
       commandResult.addEntry(new CommandResultLine(
             "The following files were detected as missing and copied to their expected location:"));
@@ -113,7 +121,9 @@ public class DiffconfigfilesCreatemissingCommand extends DiffconfigfilesSubComma
 
       FileServerFolder expectedFolder = (FileServerFolder) fileServerService.getNodeByPath(dstFolderPath, false);
       List<FileServerFile> files = expectedFolder.getChildrenOfType(FileServerFile.class);
-      Optional<FileServerFile> findAny = files.stream().filter(file -> file.getName().equals(expectedFileName))
+      Optional<FileServerFile> findAny = files
+            .stream()
+            .filter(file -> file.getName().equals(expectedFileName))
             .findAny();
       if (!findAny.isPresent())
          throw new IllegalArgumentException("Not found: " + expectedFileName);
