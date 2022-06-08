@@ -27,7 +27,7 @@ public class ScriptReportExporter implements ReportExporterProviderHook {
       if (!(report instanceof ScriptReportDto))
          return new ArrayList<ReportExporter>();
 
-      List<ReportExporter> exporters = new ArrayList<ReportExporter>();
+      List<ReportExporter> exporters = new ArrayList<>();
 
       ScriptReportDto sReport = (ScriptReportDto) report;
       for (final String format : sReport.getExportFormats()) {
@@ -40,7 +40,7 @@ public class ScriptReportExporter implements ReportExporterProviderHook {
 
             @Override
             public boolean hasConfiguration() {
-               return true;
+               return false;
             }
 
             @Override
