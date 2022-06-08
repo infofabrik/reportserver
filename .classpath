@@ -111,7 +111,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mchange-commons-java-0.2.20.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/checker-qual-3.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.7.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.0.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.21.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/itext-2.1.7.js9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-io-2.11.0.jar"/>
@@ -209,19 +208,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xdocreport-2.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-validator-6.2.3.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-java-8.0.29.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.19.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.2.0.jar"/>
@@ -239,5 +225,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.9.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.1-jre.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-astbuilder-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-cli-picocli-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-datetime-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-dateutil-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-json-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-jsr223-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-macro-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-nio-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-servlet-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
