@@ -23,6 +23,7 @@
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport</class>
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.action.ScheduleAsOneDriveFileAction</class>
+          <class>net.datenwerke.rs.printer.service.printer.action.ScheduleAsPrinterFileAction</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.WeeklyConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReportVariant</class>
           <class>net.datenwerke.rs.base.service.parameters.datetime.DateTimeParameterDefinition</class>
@@ -157,6 +158,7 @@
           <class>net.datenwerke.rs.utils.eventlogger.entities.LogProperty</class>
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.config.YearlyNthDayOfWeekConfig</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.history.ExecutionLogEntry</class>
+          <class>net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink</class>
           <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasource</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportServerSideStringProperty</class>
           <class>net.datenwerke.rs.ftp.service.ftp.definitions.FtpDatasink</class>

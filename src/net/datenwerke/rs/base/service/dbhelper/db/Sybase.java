@@ -29,11 +29,6 @@ public class Sybase extends DatabaseHelper {
    }
 
    @Override
-   public String createDummyQuery() {
-      return "select 1 dummy from dummy";
-   }
-
-   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new LimitQuery(nestedQuery, queryBuilder) {
          @Override

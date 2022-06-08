@@ -38,9 +38,13 @@ public class FileExportToSambaHooker implements FileExportExternalEntryProviderH
    private final Provider<SambaUiService> sambaUiService;
 
    @Inject
-   public FileExportToSambaHooker(@DatasinkTreeSamba Provider<UITree> treeProvider,
-         Provider<SambaDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<SambaUiService> sambaUiService) {
+   public FileExportToSambaHooker(
+         @DatasinkTreeSamba Provider<UITree> treeProvider,
+         Provider<SambaDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, 
+         Provider<SambaUiService> sambaUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

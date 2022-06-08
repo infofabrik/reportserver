@@ -38,10 +38,13 @@ public class FileExportToLocalFileSystemHooker implements FileExportExternalEntr
    private final Provider<LocalFileSystemUiService> localFileSystemUiService;
 
    @Inject
-   public FileExportToLocalFileSystemHooker(@DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
-         Provider<LocalFileSystemDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
+   public FileExportToLocalFileSystemHooker(
+         @DatasinkTreeLocalFileSystem Provider<UITree> treeProvider,
+         Provider<LocalFileSystemDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
          Provider<DatasinkUIService> datasinkUiServiceProvider,
-         Provider<LocalFileSystemUiService> localFileSystemUiService) {
+         Provider<LocalFileSystemUiService> localFileSystemUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

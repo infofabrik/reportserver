@@ -29,11 +29,6 @@ public class Informix extends DatabaseHelper {
    }
 
    @Override
-   public String createDummyQuery() {
-      return "SELECT * FROM sysmaster:SYSDUAL";
-   }
-
-   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new InformixLimitQuery(nestedQuery, queryBuilder);
    }

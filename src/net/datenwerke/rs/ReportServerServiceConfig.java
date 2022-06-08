@@ -173,6 +173,8 @@ import net.datenwerke.rs.passwordpolicy.server.ActivateUserRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.server.LostPasswordRpcServiceImpl;
 import net.datenwerke.rs.passwordpolicy.service.PasswordPolicyModule;
 import net.datenwerke.rs.passwordpolicy.service.activateuser.ActivateUserModule;
+import net.datenwerke.rs.printer.server.printer.PrinterRpcServiceImpl;
+import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
@@ -425,6 +427,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "googledrive").with(GoogleDriveRpcServiceImpl.class);
             serve(BASE_URL + "box").with(BoxRpcServiceImpl.class);
             serve(BASE_URL + "amazons3").with(AmazonS3RpcServiceImpl.class);
+            serve(BASE_URL + "printer").with(PrinterRpcServiceImpl.class);
             serve(BASE_URL + "tabledatasink").with(TableDatasinkRpcServiceImpl.class);
 
             serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
@@ -663,7 +666,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new OneDriveModule(), 
             new GoogleDriveModule(), 
             new BoxModule(),
-            new AmazonS3Module(), 
+            new AmazonS3Module(),
+            new PrinterModule(),
             new TableDatasinkModule(),
             
             new ScpModule(),

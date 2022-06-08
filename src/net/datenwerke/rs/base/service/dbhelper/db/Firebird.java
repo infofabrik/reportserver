@@ -29,11 +29,6 @@ public class Firebird extends DatabaseHelper {
    }
 
    @Override
-   public String createDummyQuery() {
-      return "select 1 dummy from rdb$database";
-   }
-
-   @Override
    public LimitQuery getNewLimitQuery(Query nestedQuery, QueryBuilder queryBuilder) {
       return new LimitQuery(nestedQuery, queryBuilder) {
          @Override

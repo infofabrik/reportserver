@@ -59,4 +59,9 @@ public class BoxSendToFormConfiguratorHooker implements DatasinkSendToFormConfig
       return true;
    }
 
+   @Override
+   public boolean isAllowNameConfiguration() {
+      return true;
+   }
+
 }

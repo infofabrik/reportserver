@@ -31,20 +31,20 @@ public class OneDriveDatasinkForm extends SimpleFormView {
       form.setFieldWidth(750);
 
       /* tenant id */
-      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.tenantId(), BaseMessages.INSTANCE.tenantId());
+      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.tenantId(), DatasinksMessages.INSTANCE.tenantId());
 
       /* base root */
-      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.baseRoot(), BaseMessages.INSTANCE.baseRoot());
+      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.baseRoot(), DatasinksMessages.INSTANCE.baseRoot());
 
       /* folder */
       form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
 
       /* app key */
-      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.appKey(), BaseMessages.INSTANCE.appKey());
+      form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.appKey(), DatasinksMessages.INSTANCE.appKey());
 
       /* secret key */
       String secretKey = form.addField(String.class, OneDriveDatasinkDtoPA.INSTANCE.secretKey(),
-            BaseMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
+            DatasinksMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
                @Override
                public Boolean isPasswordSet() {
                   return ((OneDriveDatasinkDto) getSelectedNode()).isHasSecretKey();

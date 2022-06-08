@@ -38,9 +38,13 @@ public class FileExportToGoogleDriveHooker implements FileExportExternalEntryPro
    private final Provider<GoogleDriveUiService> googleDriveUiService;
 
    @Inject
-   public FileExportToGoogleDriveHooker(@DatasinkTreeGoogleDrive Provider<UITree> treeProvider,
-         Provider<GoogleDriveDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<GoogleDriveUiService> googleDriveUiService) {
+   public FileExportToGoogleDriveHooker(
+         @DatasinkTreeGoogleDrive Provider<UITree> treeProvider,
+         Provider<GoogleDriveDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, 
+         Provider<GoogleDriveUiService> googleDriveUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

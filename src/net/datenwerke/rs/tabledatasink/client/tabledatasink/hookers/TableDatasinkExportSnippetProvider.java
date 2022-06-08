@@ -18,7 +18,6 @@ import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
-import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.datasinkmanager.DatasinkTreeManagerDao;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
@@ -38,7 +37,6 @@ import net.datenwerke.rs.theme.client.icon.BaseIcon;
 public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippetProviderHook {
 
    private String isExportAsFileKey;
-   private String nameKey;
    private String tableDatasinkKey;
 
    private final Provider<UITree> treeProvider;
@@ -93,16 +91,8 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
       xform.endRow();
       xform.setFieldWidth(530);
 
-      nameKey = xform.addField(String.class, BaseMessages.INSTANCE.propertyName(), new SFFCAllowBlank() {
-         @Override
-         public boolean allowBlank() {
-            return false;
-         }
-      });
-
       xform.setLabelAlign(LabelAlign.LEFT);
 
-      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(nameKey));
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(tableDatasinkKey));
 
    }
@@ -119,7 +109,6 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
          return;
 
       ScheduleAsTableDatasinkFileInformation info = new ScheduleAsTableDatasinkFileInformation();
-      info.setName((String) simpleForm.getValue(nameKey));
       info.setTableDatasinkDto((TableDatasinkDto) simpleForm.getValue(tableDatasinkKey));
 
       configDto.addAdditionalInfo(info);
@@ -140,12 +129,10 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
          form.setValue(isExportAsFileKey, true);
          
       if (null != definition) {
-         form.setValue(nameKey, "${now} - " + definition.getTitle());
          ScheduleAsTableDatasinkFileInformation info = definition
                .getAdditionalInfo(ScheduleAsTableDatasinkFileInformation.class);
          if (null != info) {
             form.setValue(isExportAsFileKey, true);
-            form.setValue(nameKey, info.getName());
             tableField.setValue(info.getTableDatasinkDto());
          }
       }
@@ -157,18 +144,6 @@ public class TableDatasinkExportSnippetProvider implements ScheduleExportSnippet
          ReportDto report) {
       if (!(page instanceof JobMetadataConfigurationForm))
          return;
-
-      JobMetadataConfigurationForm metadataForm = (JobMetadataConfigurationForm) page;
-
-      String jobTitle = metadataForm.getTitleValue();
-      form.setValue(nameKey, "${now} - " + jobTitle);
-      if (null != definition) {
-         ScheduleAsTableDatasinkFileInformation info = definition
-               .getAdditionalInfo(ScheduleAsTableDatasinkFileInformation.class);
-         if (null != info)
-            form.setValue(nameKey, info.getName());
-      }
-
    }
 
    @Override

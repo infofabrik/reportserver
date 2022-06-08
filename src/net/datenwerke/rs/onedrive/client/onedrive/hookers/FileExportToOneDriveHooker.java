@@ -38,9 +38,13 @@ public class FileExportToOneDriveHooker implements FileExportExternalEntryProvid
    private final Provider<OneDriveUiService> oneDriveUiService;
 
    @Inject
-   public FileExportToOneDriveHooker(@DatasinkTreeOneDrive Provider<UITree> treeProvider,
-         Provider<OneDriveDao> datasinkDaoProvider, Provider<EnterpriseUiService> enterpriseServiceProvider,
-         Provider<DatasinkUIService> datasinkUiServiceProvider, Provider<OneDriveUiService> oneDriveUiService) {
+   public FileExportToOneDriveHooker(
+         @DatasinkTreeOneDrive Provider<UITree> treeProvider,
+         Provider<OneDriveDao> datasinkDaoProvider, 
+         Provider<EnterpriseUiService> enterpriseServiceProvider,
+         Provider<DatasinkUIService> datasinkUiServiceProvider, 
+         Provider<OneDriveUiService> oneDriveUiService
+         ) {
       this.treeProvider = treeProvider;
       this.datasinkDaoProvider = datasinkDaoProvider;
       this.enterpriseServiceProvider = enterpriseServiceProvider;

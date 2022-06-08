@@ -131,6 +131,7 @@
 	<source path="rs/googledrive/client"/>
 	<source path="rs/box/client"/>
 	<source path="rs/amazons3/client"/>
+	<source path="rs/printer/client"/>
 	<source path="rs/tabledatasink/client"/>
 	<source path="rs/scp/client"/>
 	<source path="rs/localfsdatasink/client"/>

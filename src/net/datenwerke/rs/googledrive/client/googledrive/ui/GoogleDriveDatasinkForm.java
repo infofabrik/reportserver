@@ -35,11 +35,11 @@ public class GoogleDriveDatasinkForm extends SimpleFormView {
       form.addField(String.class, GoogleDriveDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
 
       /* app key */
-      form.addField(String.class, GoogleDriveDatasinkDtoPA.INSTANCE.appKey(), BaseMessages.INSTANCE.appKey());
+      form.addField(String.class, GoogleDriveDatasinkDtoPA.INSTANCE.appKey(), DatasinksMessages.INSTANCE.appKey());
 
       /* secret key */
       String secretKey = form.addField(String.class, GoogleDriveDatasinkDtoPA.INSTANCE.secretKey(),
-            BaseMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
+            DatasinksMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
                @Override
                public Boolean isPasswordSet() {
                   return ((GoogleDriveDatasinkDto) getSelectedNode()).isHasSecretKey();

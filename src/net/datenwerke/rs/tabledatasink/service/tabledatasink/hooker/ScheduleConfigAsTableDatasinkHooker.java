@@ -5,14 +5,14 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ExpectedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
-import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
-import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.ScheduleAsTableDatasinkFileInformation;
-import net.datenwerke.rs.tabledatasink.service.tabledatasink.action.ScheduleAsTableDatasinkFileAction;
-import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportScheduleDefinition;
 import net.datenwerke.rs.scheduler.service.scheduler.exceptions.InvalidConfigurationException;
 import net.datenwerke.rs.scheduler.service.scheduler.hooks.ScheduleConfigProviderHook;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.ScheduleAsTableDatasinkFileInformation;
+import net.datenwerke.rs.tabledatasink.client.tabledatasink.dto.TableDatasinkDto;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.action.ScheduleAsTableDatasinkFileAction;
+import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionNotSupportedException;
 
 public class ScheduleConfigAsTableDatasinkHooker implements ScheduleConfigProviderHook {
@@ -39,12 +39,9 @@ public class ScheduleConfigAsTableDatasinkHooker implements ScheduleConfigProvid
 
       if (null == info.getTableDatasinkDto())
          throw new InvalidConfigurationException("No Table datasink specified");
-      if (null == info.getName() || info.getName().trim().isEmpty())
-         throw new InvalidConfigurationException("No name specified");
 
       ScheduleAsTableDatasinkFileAction action = actionProvider.get();
 
-      action.setName(info.getName());
       action.setTableDatasink((TableDatasink) dtoServiceProvider.get().loadPoso(info.getTableDatasinkDto()));
       try {
          job.addAction(action);
@@ -62,13 +59,10 @@ public class ScheduleConfigAsTableDatasinkHooker implements ScheduleConfigProvid
 
       ScheduleAsTableDatasinkFileInformation info = new ScheduleAsTableDatasinkFileInformation();
 
-      info.setName(action.getName());
       info.setTableDatasinkDto((TableDatasinkDto) dtoServiceProvider.get().createDto(action.getTableDatasink()));
 
       if (null == info.getTableDatasinkDto())
          throw new IllegalArgumentException("No Table datasink specified");
-      if (null == info.getName() || info.getName().trim().isEmpty())
-         throw new IllegalArgumentException("No name specified");
 
       rsd.addAdditionalInfo(info);
 

@@ -35,11 +35,11 @@ public class BoxDatasinkForm extends SimpleFormView {
       form.addField(String.class, BoxDatasinkDtoPA.INSTANCE.folder(), BaseMessages.INSTANCE.folder());
 
       /* app key */
-      form.addField(String.class, BoxDatasinkDtoPA.INSTANCE.appKey(), BaseMessages.INSTANCE.appKey());
+      form.addField(String.class, BoxDatasinkDtoPA.INSTANCE.appKey(), DatasinksMessages.INSTANCE.appKey());
 
       /* secret key */
       String secretKey = form.addField(String.class, BoxDatasinkDtoPA.INSTANCE.secretKey(),
-            BaseMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
+            DatasinksMessages.INSTANCE.secretKey(), new SFFCPasswordField() {
                @Override
                public Boolean isPasswordSet() {
                   return ((BoxDatasinkDto) getSelectedNode()).isHasSecretKey();

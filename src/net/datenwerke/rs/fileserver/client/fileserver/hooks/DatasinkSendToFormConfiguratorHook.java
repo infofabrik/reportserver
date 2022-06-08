@@ -25,5 +25,7 @@ public interface DatasinkSendToFormConfiguratorHook extends Hook {
    boolean isFolderedDatasink();
    
    boolean isCanCompress();
+   
+   boolean isAllowNameConfiguration();
 
 }

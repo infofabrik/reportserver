@@ -68,6 +68,7 @@ import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.LocalFileSystemU
 import net.datenwerke.rs.onedrive.client.onedrive.OneDriveUiModule;
 import net.datenwerke.rs.passwordpolicy.client.PasswordPolicyUIModule;
 import net.datenwerke.rs.passwordpolicy.client.lostpassword.LostPasswordUIModule;
+import net.datenwerke.rs.printer.client.printer.PrinterUiModule;
 import net.datenwerke.rs.remoteaccess.client.RemoteAccessUiModule;
 import net.datenwerke.rs.reportdoc.client.ReportDocumentationUIModule;
 import net.datenwerke.rs.saiku.client.saiku.SaikuUiModule;
@@ -125,6 +126,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new GoogleDriveUiModule());
       install(new BoxUiModule());
       install(new AmazonS3UiModule());
+      install(new PrinterUiModule());
       install(new TableDatasinkUiModule());
       install(new SambaUiModule());
       install(new ScpUiModule());

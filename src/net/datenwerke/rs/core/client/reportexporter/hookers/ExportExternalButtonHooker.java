@@ -66,17 +66,19 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
 
    private final HookHandlerService hookHandler;
    private final ToolbarService toolbarService;
-   private final ReportExporterUIService reportExporterService;
    private final SendToDao sendToDao;
 
    @Inject
-   public ExportExternalButtonHooker(HookHandlerService hookHandler, ToolbarService toolbarService,
-         ReportExporterUIService reportExporterService, SendToDao sendToDao) {
+   public ExportExternalButtonHooker(
+         HookHandlerService hookHandler, 
+         ToolbarService toolbarService,
+         ReportExporterUIService reportExporterService, 
+         SendToDao sendToDao
+         ) {
 
       /* store objects */
       this.hookHandler = hookHandler;
       this.toolbarService = toolbarService;
-      this.reportExporterService = reportExporterService;
       this.sendToDao = sendToDao;
    }
 
@@ -172,7 +174,6 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
                               configWindow.setHeight(formConfig.getHeight());
                               configWindow.setHeading(config.getTitle());
 
-                              final SimpleForm form;
                               try {
                                  detailForm = SimpleForm.fromJson((SimpleFormJsonConfig) formConfig.getForm().cast());
                                  detailForm.setHeaderVisible(false);

@@ -34,7 +34,7 @@ public class FtpsServiceImpl implements FtpsService {
    }
 
    @Override
-   public void doExportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
+   public void doExportIntoDatasink(Object data, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException {
       if (!datasinkServiceProvider.get().isEnabled(this))
          throw new IllegalStateException("ftps is disabled");
@@ -44,7 +44,7 @@ public class FtpsServiceImpl implements FtpsService {
       FtpsDatasink ftpsDatasink = (FtpsDatasink) datasink;
 
       try {
-         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, report, ftpsDatasink, config);
+         ftpSenderServiceProvider.get().sendToFtpServer(StorageType.FTPS, data, ftpsDatasink, config);
       } catch (IOException e) {
          throw new DatasinkExportException("An error occurred during datasink export", e);
       }

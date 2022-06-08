@@ -8,7 +8,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 
 public interface FtpSenderService {
 
-   void sendToFtpServer(StorageType storageType, Object report, HostDatasink basicDatasink,
+   void sendToFtpServer(StorageType storageType, Object data, HostDatasink basicDatasink,
          DatasinkConfiguration config) throws IOException;
 
 }

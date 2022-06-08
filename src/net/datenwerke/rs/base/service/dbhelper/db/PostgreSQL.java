@@ -29,11 +29,6 @@ public class PostgreSQL extends DatabaseHelper {
    }
 
    @Override
-   public String createDummyQuery() {
-      return "SELECT 1+1";
-   }
-
-   @Override
    public String getName() {
       return DB_NAME;
    }
