@@ -18,8 +18,11 @@ import net.datenwerke.gxtdto.client.forms.simpleform.conditions.FieldEquals;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCAllowBlank;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBoolean;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCDatasinkDao;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticLabel;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.StaticLabel;
 import net.datenwerke.rs.core.client.datasinkmanager.HasDefaultDatasink;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.DatasinkSelectionField;
+import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.printer.client.printer.PrinterDao;
@@ -87,10 +90,18 @@ public class PrinterExportSnippetProvider implements ScheduleExportSnippetProvid
 
       xform.endRow();
       xform.setFieldWidth(530);
+      
+      String warningKey = xform.addField(StaticLabel.class, new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return DatasinksMessages.INSTANCE.printerWarning();
+         }
+      });
 
       xform.setLabelAlign(LabelAlign.LEFT);
 
       xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(printerKey));
+      xform.addCondition(isExportAsFileKey, new FieldEquals(true), new ShowHideFieldAction(warningKey));
 
    }
 

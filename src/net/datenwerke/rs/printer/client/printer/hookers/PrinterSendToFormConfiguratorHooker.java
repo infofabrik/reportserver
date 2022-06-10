@@ -8,7 +8,10 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.client.login.LoginService;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCStaticLabel;
+import net.datenwerke.gxtdto.client.forms.simpleform.providers.dummy.StaticLabel;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
+import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.DatasinkSendToFormConfiguratorHook;
 import net.datenwerke.rs.printer.client.printer.PrinterUiModule;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -26,6 +29,12 @@ public class PrinterSendToFormConfiguratorHooker implements DatasinkSendToFormCo
 
    @Override
    public void installAdditionalFields(SimpleForm form) {
+      form.addField(StaticLabel.class, new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return DatasinksMessages.INSTANCE.printerWarning();
+         }
+      });
    }
 
    @Override
@@ -45,7 +54,7 @@ public class PrinterSendToFormConfiguratorHooker implements DatasinkSendToFormCo
 
    @Override
    public int getWindowHeight() {
-      return 290;
+      return 330;
    }
 
    @Override

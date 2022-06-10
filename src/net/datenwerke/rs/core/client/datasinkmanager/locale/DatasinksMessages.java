@@ -106,5 +106,7 @@ public interface DatasinksMessages extends Messages {
    String amazonS3StorageClass();
    
    String printerName();
+   
+   String printerWarning();
 
 }

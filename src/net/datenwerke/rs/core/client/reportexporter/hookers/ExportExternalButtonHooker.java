@@ -17,8 +17,6 @@ import com.sencha.gxt.widget.core.client.box.AlertMessageBox;
 import com.sencha.gxt.widget.core.client.button.TextButton;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
@@ -45,7 +43,6 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportExecutorViewTool
 import net.datenwerke.rs.core.client.reportexecutor.reportdispatcher.InlineReportView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorInformation;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexporter.ReportExporterUIService;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportexporter.hooks.ExportExternalEntryProviderHook;
@@ -85,10 +82,12 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
    @Override
    public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
          final ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
-      for (ReportViewConfiguration config : mainPanel.getViewConfigs())
-         if (config instanceof InlineReportView)
-            return false;
-
+      
+      if (mainPanel.getViewConfigs()
+         .stream()
+         .anyMatch(config -> config instanceof InlineReportView))
+         return false;
+      
       DwTextButton exportBtn = toolbarService.createSmallButtonLeft(ReportExporterMessages.INSTANCE.sendToLabel(),
             BaseIcon.EXPORT);
       exportBtn.setArrowAlign(ButtonArrowAlign.RIGHT);
@@ -98,9 +97,9 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
 
       exportBtn.setMenu(menu);
 
-      for (final ExportExternalEntryProviderHook hooker : hookHandler.getHookers(ExportExternalEntryProviderHook.class))
-         hooker.getMenuEntry(menu, report, info, mainPanel);
-
+      hookHandler.getHookers(ExportExternalEntryProviderHook.class)
+         .forEach(hooker -> hooker.getMenuEntry(menu, report, info, mainPanel));
+      
       sendToDao.loadClientConfigsFor(report, new RsAsyncCallback<ArrayList<SendToClientConfig>>() {
          @Override
          public void onSuccess(ArrayList<SendToClientConfig> result) {
@@ -120,7 +119,7 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
                            sendTo(report, config, info.getExecuteReportToken(), mainPanel);
                         else {
                            final Window configWindow = new DwWindow();
-                           configWindow.setWidth(400);
+                           configWindow.setWidth(100);
                            configWindow.setHeight(210);
                            configWindow.setHeading(config.getTitle());
 
@@ -195,42 +194,32 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
                            tbar.add(new FillToolItem());
 
                            TextButton cancel = new TextButton(BaseMessages.INSTANCE.cancel());
-                           cancel.addSelectHandler(new SelectHandler() {
-
-                              @Override
-                              public void onSelect(SelectEvent event) {
-                                 configWindow.hide();
-                              }
-                           });
+                           cancel.addSelectHandler(selectEvent -> configWindow.hide());
                            tbar.add(cancel);
 
                            TextButton submit = new TextButton(BaseMessages.INSTANCE.submit());
-                           submit.addSelectHandler(new SelectHandler() {
+                           submit.addSelectHandler(selectEvent -> {
+                              ExportTypeSelection type = null == formatForm ? null
+                                    : (ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY);
 
-                              @Override
-                              public void onSelect(SelectEvent event) {
-                                 ExportTypeSelection type = null == formatForm ? null
-                                       : (ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY);
-
-                                 if (null != type && !type.isConfigured()) {
-                                    new AlertMessageBox(BaseMessages.INSTANCE.error(),
-                                          ReportExporterMessages.INSTANCE.exportTypeNotConfigured()).show();
-                                    return;
-                                 }
-
-                                 configWindow.hide();
-
-                                 String format = null == formatForm ? null
-                                       : ((ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY)).getOutputFormat();
-                                 List<ReportExecutionConfigDto> formatConfig = null == formatForm ? null
-                                       : ((ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY))
-                                             .getExportConfiguration();
-
-                                 Map<String, String> values = null == detailForm ? new HashMap<String, String>()
-                                       : detailForm.getStringValueMap();
-                                 sendTo(report, config, format, formatConfig, values, info.getExecuteReportToken(),
-                                       mainPanel);
+                              if (null != type && !type.isConfigured()) {
+                                 new AlertMessageBox(BaseMessages.INSTANCE.error(),
+                                       ReportExporterMessages.INSTANCE.exportTypeNotConfigured()).show();
+                                 return;
                               }
+
+                              configWindow.hide();
+
+                              String format = null == formatForm ? null
+                                    : ((ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY)).getOutputFormat();
+                              List<ReportExecutionConfigDto> formatConfig = null == formatForm ? null
+                                    : ((ExportTypeSelection) formatForm.getValue(FORMAT_FORM_KEY))
+                                          .getExportConfiguration();
+
+                              Map<String, String> values = null == detailForm ? new HashMap<>()
+                                    : detailForm.getStringValueMap();
+                              sendTo(report, config, format, formatConfig, values, info.getExecuteReportToken(),
+                                    mainPanel);
                            });
                            tbar.add(submit);
 
@@ -261,7 +250,6 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
             new RsAsyncCallback<String>() {
                public void onSuccess(String result) {
                   Info.display(BaseMessages.INSTANCE.ok(), result);
-
                   mainPanel.unmask();
                };
 
@@ -282,7 +270,6 @@ public class ExportExternalButtonHooker implements ReportExecutorViewToolbarHook
 
    @Override
    public void reportPreviewViewToolbarHook_reportUpdated(ReportDto report, ReportExecutorInformation info) {
-
    }
 
 }
