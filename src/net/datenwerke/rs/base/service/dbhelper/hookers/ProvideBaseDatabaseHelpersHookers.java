@@ -15,6 +15,7 @@ import net.datenwerke.rs.base.service.dbhelper.db.MariaDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MonetDB;
 import net.datenwerke.rs.base.service.dbhelper.db.MySQL;
 import net.datenwerke.rs.base.service.dbhelper.db.PostgreSQL;
+import net.datenwerke.rs.base.service.dbhelper.db.SQLite;
 import net.datenwerke.rs.base.service.dbhelper.db.Sybase;
 import net.datenwerke.rs.base.service.dbhelper.db.Vertica;
 import net.datenwerke.rs.base.service.dbhelper.db.db2.DB2;
@@ -29,10 +30,24 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
    private final Collection<DatabaseHelper> helpers;
 
    @Inject
-   public ProvideBaseDatabaseHelpersHookers(DB2 db2, H2 h2, Firebird firebird, MariaDB mariaDb, MsSQL mssql,
-         MySQL mysql, MonetDB monetdb, Oracle oracle, HSQL hsql, PostgreSQL postgres, Informix informix,
-         Vertica vertica, Sybase sybase, GoogleBigQuery googleBigQuery, AmazonRedshift amazonRedshift,
-         Teradata teradata) {
+   public ProvideBaseDatabaseHelpersHookers(
+         DB2 db2, H2 h2, 
+         Firebird firebird, 
+         MariaDB mariaDb, 
+         MsSQL mssql,
+         MySQL mysql,
+         MonetDB monetdb, 
+         Oracle oracle, 
+         HSQL hsql, 
+         PostgreSQL postgres, 
+         Informix informix,
+         Vertica vertica, 
+         Sybase sybase, 
+         GoogleBigQuery googleBigQuery, 
+         AmazonRedshift amazonRedshift,
+         Teradata teradata,
+         SQLite sqlite
+         ) {
 
       helpers = new ArrayList<DatabaseHelper>();
       helpers.add(db2);
@@ -51,6 +66,7 @@ public class ProvideBaseDatabaseHelpersHookers implements DatabaseHelperProvider
       helpers.add(googleBigQuery);
       helpers.add(amazonRedshift);
       helpers.add(teradata);
+      helpers.add(sqlite);
    }
 
    @Override

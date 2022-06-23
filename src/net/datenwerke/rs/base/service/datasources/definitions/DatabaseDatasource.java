@@ -164,16 +164,19 @@ public class DatabaseDatasource extends DatasourceDefinition implements Paramete
 
    public ConnectionPoolConfig getConnectionConfig() {
       ConnectionPoolConfigImpl config = connectionConfigFactoryProvider.get().create(getId());
+      
+      DatabaseHelper dbHelper = dbHelperServiceProvider.get().getDatabaseHelper(getDatabaseDescriptor());
 
       config.setUsername(getUsername());
       config.setPassword(getPassword());
       config.setJdbcUrl(getUrl());
       config.setDatasourceId(getId());
       config.setDatasourceName(getName());
-      config.setDriver(dbHelperServiceProvider.get().getDatabaseHelper(getDatabaseDescriptor()).getDriver());
+      config.setDriver(dbHelper.getDriver());
       config.setLastUpdated(getLastUpdated());
       config.setJdbcProperties(parseJdbcProperties());
-
+      config.setCanChangeReadOnlyFlagAfterConnectionCreation(dbHelper.canChangeReadOnlyFlagAfterConnectionCreation());
+      
       return config;
    }
 

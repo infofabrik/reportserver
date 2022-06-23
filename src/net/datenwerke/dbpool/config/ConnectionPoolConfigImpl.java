@@ -28,6 +28,8 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
    protected String username;
    protected String password = "";
    protected String jdbcUrl;
+   
+   protected boolean canChangeReadOnlyFlagAfterConnectionCreation = true;
 
    protected boolean mightChange = true;
 
@@ -197,6 +199,15 @@ public class ConnectionPoolConfigImpl implements ConnectionPoolConfig {
 
    public void setDatasourceName(String datasourceName) {
       this.datasourceName = datasourceName;
+   }
+   
+   public void setCanChangeReadOnlyFlagAfterConnectionCreation(boolean canChangeReadOnly) {
+      this.canChangeReadOnlyFlagAfterConnectionCreation = canChangeReadOnly;
+   }
+
+   @Override
+   public boolean canChangeReadOnlyFlagAfterConnectionCreation() {
+      return canChangeReadOnlyFlagAfterConnectionCreation;
    }
 
 }

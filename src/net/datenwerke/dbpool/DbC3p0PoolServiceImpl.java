@@ -161,7 +161,7 @@ public class DbC3p0PoolServiceImpl extends DbPoolServiceImpl<ComboPooledDataSour
 
                try {
                   final Connection connection = pool.getConnection();
-                  configureConnection(connection, connConfig);
+                  configureConnection(connection, connConfig, poolConfig);
 
                   done = true;
 
@@ -240,7 +240,7 @@ public class DbC3p0PoolServiceImpl extends DbPoolServiceImpl<ComboPooledDataSour
       /* first set jdbc properties */
       if (null != config.getJdbcProperties())
          pool.setProperties(config.getJdbcProperties());
-
+      
       try {
          pool.setDriverClass(config.getDriver());
       } catch (PropertyVetoException e) {
@@ -273,8 +273,9 @@ public class DbC3p0PoolServiceImpl extends DbPoolServiceImpl<ComboPooledDataSour
       return update;
    }
 
-   protected void configureConnection(Connection conn, ConnectionConfig connConfig) throws SQLException {
-      if (null != connConfig && connConfig.isReadOnly())
+   protected void configureConnection(Connection conn, ConnectionConfig connConfig, ConnectionPoolConfig config)
+         throws SQLException {
+      if (null != connConfig && connConfig.isReadOnly() && config.canChangeReadOnlyFlagAfterConnectionCreation())
          conn.setReadOnly(true);
 
       DatabaseMetaData metaData = conn.getMetaData();

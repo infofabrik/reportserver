@@ -516,5 +516,9 @@ abstract public class DatabaseHelper {
    public OrQueryCondition getNewOrQueryCondition(QryCondition first, QryCondition second) {
       return new OrQueryCondition(first, second);
    }
+   
+   public boolean canChangeReadOnlyFlagAfterConnectionCreation() {
+      return true;
+   }
 
 }

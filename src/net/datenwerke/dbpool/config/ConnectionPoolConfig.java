@@ -27,4 +27,13 @@ public interface ConnectionPoolConfig {
 
    Properties getJdbcProperties();
 
+   /**
+    * Some dbs, e.g. SQLite, cannot change the readOnly flag after establishing a
+    * connection. This has to be set before the connection is created, e.g. with
+    * open_mode=1 JDBC property.
+    * 
+    * @return true if readOnly flag can be change after connection establishment.
+    */
+   boolean canChangeReadOnlyFlagAfterConnectionCreation();
+
 }

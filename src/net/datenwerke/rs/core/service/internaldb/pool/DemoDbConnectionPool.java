@@ -72,4 +72,10 @@ public class DemoDbConnectionPool implements ConnectionPoolConfig {
    public String getDatasourceName() {
       return datasourceName;
    }
+
+   @Override
+   public boolean canChangeReadOnlyFlagAfterConnectionCreation() {
+      return true;
+   }
+
 }
