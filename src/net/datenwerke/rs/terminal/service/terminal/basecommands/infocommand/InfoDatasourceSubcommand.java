@@ -122,11 +122,12 @@ public static final String BASE_COMMAND = "datasource";
       tableModel.setTableDefinition(tableDefinition);
       List<String> keyList = new ArrayList<String>((tableMeta.keySet()));
       Collections.sort(keyList);
-      keyList.forEach(
-            key -> tableModel.addDataRow(new RSStringTableRow(key, results.get(tableMeta.get(key)).toString())));
+      keyList.forEach(key -> {
+         Object res = results.get(tableMeta.get(key));
+         tableModel.addDataRow(new RSStringTableRow(key, null == res? "null": res.toString()));
+      });
       return tableModel;
    }
-
 
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {

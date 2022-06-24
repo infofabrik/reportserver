@@ -88,11 +88,12 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
       try {
          datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src);
       } catch (Exception e) {
-         throw new ServerCallFailedException("Could not retrieve datasource metadata",e);
+         throw new ServerCallFailedException("Could not retrieve datasource metadata", e);
       }
       Map<String, SafeHtml> result = new HashMap<>();
-      datasourceHelperService.getDatasourceInfoDefinition().forEach((key, mapSpecficInfoDef) -> {
-         Map<String, String> specificInfoDef = (Map<String, String>) mapSpecficInfoDef;
+      datasourceHelperService.getDatasourceInfoDefinition()
+      .forEach((key, mapSpecificInfoDef) -> {
+         Map<String, String> specificInfoDef = (Map<String, String>) mapSpecificInfoDef;
          result.put(key, buildTableInfo(datasourceInfo, specificInfoDef));
       });
    return result;
@@ -107,7 +108,8 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
 
       for(String key : info.keySet()) {
          
-         String result = datasourceInfo.get(info.get(key)).toString();
+         Object res = datasourceInfo.get(info.get(key));
+         String result = null == res? "null": res.toString();
          builder = builder
                .appendHtmlConstant("<tr>")
                .appendHtmlConstant(tdOpenTag).appendEscaped(key + ":").appendHtmlConstant("</td>")
