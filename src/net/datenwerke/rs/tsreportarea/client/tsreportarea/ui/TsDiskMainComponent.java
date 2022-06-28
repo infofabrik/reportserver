@@ -581,10 +581,10 @@ public class TsDiskMainComponent extends DwBorderContainer {
             mainToolbar.add(importReportBtn);
             importReportBtn.addSelectHandler(event -> importDialogCreator.get().displayDialog(TsDiskMainComponent.this));
             
-            DwTextButton addFileBtn = toolbarService.createSmallButtonLeft(TsFavoriteMessages.INSTANCE.uploadFileText(),
-                  BaseIcon.FOLDER_ADD);
-            mainToolbar.add(addFileBtn);
-            addFileBtn.addSelectHandler(event -> displayAddFileDialog());
+            DwTextButton uploadFileBtn = toolbarService.createSmallButtonLeft(TsFavoriteMessages.INSTANCE.uploadFileText(),
+                  BaseIcon.REPORT_ADD);
+            mainToolbar.add(uploadFileBtn);
+            uploadFileBtn.addSelectHandler(event -> displayUploadFileDialog());
          }
       }
 
@@ -610,10 +610,7 @@ public class TsDiskMainComponent extends DwBorderContainer {
       /* refresh */
       DwTextButton refreshBtn = toolbarService.createSmallButtonLeft(BaseIcon.REFRESH);
       refreshBtn.addSelectHandler(event -> {
-         if (null != currentFolder)
-            folderOpened(currentFolder);
-         else
-            folderOpened(null);
+         refreshList();
       });
 
       mainToolbar.add(refreshBtn);
@@ -649,6 +646,13 @@ public class TsDiskMainComponent extends DwBorderContainer {
             currentView = listView;
          });
       }
+   }
+   
+   protected void refreshList() {
+      if (null != currentFolder)
+         folderOpened(currentFolder);
+      else
+         folderOpened(null);
    }
 
    protected void sendChangedViewNotice(String viewId) {
@@ -740,7 +744,7 @@ public class TsDiskMainComponent extends DwBorderContainer {
       dialog.show();
    }
    
-   public void displayAddFileDialog() {
+   public void displayUploadFileDialog() {
       final DwWindow dialog = DwWindow.newAutoSizeDialog(400);
       dialog.setHeading(TsFavoriteMessages.INSTANCE.addFolderText());
       dialog.setHeaderIcon(BaseIcon.FOLDER_ADD);
@@ -795,13 +799,23 @@ public class TsDiskMainComponent extends DwBorderContainer {
       /* bind dummy */
       final TsDiskFolderDto dummy = new TsDiskFolderDto();
       form.bind(dummy);
+      
+      form.addSubmitCompleteHandler(submitCompleteEvent -> {
+         form.unmask();
+         dialog.hide();
+         refreshList();
+         InfoConfig infoConfig = new DefaultInfoConfig(TsFavoriteMessages.INSTANCE.uploadFileText(),
+               TsFavoriteMessages.INSTANCE.uploadFileSuccess());
+         infoConfig.setWidth(350);
+         Info.display(infoConfig);
+      });
 
       /* add buttons */
       DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
       dialog.getButtonBar().add(cancelBtn);
       cancelBtn.addSelectHandler(event -> dialog.hide());
 
-      DwTextButton submitBtn = new DwTextButton(TsFavoriteMessages.INSTANCE.addFolderText());
+      DwTextButton submitBtn = new DwTextButton(TsFavoriteMessages.INSTANCE.uploadFileText());
       dialog.getButtonBar().add(submitBtn);
       submitBtn.addSelectHandler(event -> {
          if (form.isValid()) {
@@ -829,11 +843,11 @@ public class TsDiskMainComponent extends DwBorderContainer {
                      form.getValue(descriptionField));
             }
             form.submit();
-//               dialog.hide();
             InfoConfig infoConfig = new DefaultInfoConfig(TsFavoriteMessages.INSTANCE.uploadFileText(),
                   TsFavoriteMessages.INSTANCE.uploadFileUploading());
             infoConfig.setWidth(350);
             Info.display(infoConfig);
+            form.mask(BaseMessages.INSTANCE.loadingMsg());
          }
       });
 

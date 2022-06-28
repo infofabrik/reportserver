@@ -97,4 +97,6 @@ public interface TsFavoriteMessages extends Messages {
    
    String uploadFileUploading();
    
+   String uploadFileSuccess();
+   
 }

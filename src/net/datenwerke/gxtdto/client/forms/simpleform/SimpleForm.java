@@ -39,6 +39,7 @@ import com.sencha.gxt.widget.core.client.container.HorizontalLayoutContainer.Hor
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
+import com.sencha.gxt.widget.core.client.event.SubmitCompleteEvent.SubmitCompleteHandler;
 import com.sencha.gxt.widget.core.client.form.Field;
 import com.sencha.gxt.widget.core.client.form.FieldSet;
 import com.sencha.gxt.widget.core.client.form.FormPanel;
@@ -1171,6 +1172,10 @@ public class SimpleForm extends DwContentPanel {
 
    public void submit() {
       mainForm.submit();
+   }
+   
+   public HandlerRegistration addSubmitCompleteHandler(SubmitCompleteHandler handler) {
+      return mainForm.addSubmitCompleteHandler(handler);
    }
 
    public void setSize(int width, int height) {
