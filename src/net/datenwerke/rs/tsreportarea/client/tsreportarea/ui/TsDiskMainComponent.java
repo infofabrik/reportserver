@@ -746,8 +746,8 @@ public class TsDiskMainComponent extends DwBorderContainer {
    
    public void displayUploadFileDialog() {
       final DwWindow dialog = DwWindow.newAutoSizeDialog(400);
-      dialog.setHeading(TsFavoriteMessages.INSTANCE.addFolderText());
-      dialog.setHeaderIcon(BaseIcon.FOLDER_ADD);
+      dialog.setHeading(TsFavoriteMessages.INSTANCE.uploadFileText());
+      dialog.setHeaderIcon(BaseIcon.REPORT_ADD);
       dialog.setModal(true);
       dialog.setSize(430, 360);
 
