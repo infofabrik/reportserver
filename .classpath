@@ -243,5 +243,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/snakeyaml-1.27.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlresolver-4.2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlresolver-4.2.0-data.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.36.0.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
