@@ -91,4 +91,10 @@ public interface TsFavoriteMessages extends Messages {
 
    String referencedBy();
 
+   String uploadFileText();
+   
+   String uploadFileEmpty();
+   
+   String uploadFileUploading();
+   
 }

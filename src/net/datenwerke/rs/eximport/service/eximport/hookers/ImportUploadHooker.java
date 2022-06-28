@@ -41,7 +41,7 @@ public class ImportUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       String fileName = uploadedFile.getFileName();

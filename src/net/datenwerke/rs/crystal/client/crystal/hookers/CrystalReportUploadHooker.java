@@ -21,8 +21,10 @@ public class CrystalReportUploadHooker implements FileUploadHandlerHook {
    private Provider<ReportService> reportServiceProvider;
 
    @Inject
-   public CrystalReportUploadHooker(Provider<SecurityService> securityServiceProvider,
-         Provider<ReportService> reportServiceProvider) {
+   public CrystalReportUploadHooker(
+         Provider<SecurityService> securityServiceProvider,
+         Provider<ReportService> reportServiceProvider
+         ) {
       this.securityServiceProvider = securityServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
    }
@@ -33,7 +35,7 @@ public class CrystalReportUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long reportId = Long.valueOf(metadataMap.get(CrystalUiModule.UPLOAD_REPORT_ID_FIELD));

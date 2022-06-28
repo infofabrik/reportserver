@@ -2,13 +2,14 @@ package net.datenwerke.gf.service.upload;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import net.datenwerke.gf.client.fileselection.dto.SelectedFileWrapper;
 import net.datenwerke.gf.client.upload.dto.UploadResponse;
 
 public interface FileUploadService {
 
-   public String uploadOccured(UploadedFile uploadedFile);
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context);
 
    public String extractContentTypeFromHtml5Upload(String data);
 

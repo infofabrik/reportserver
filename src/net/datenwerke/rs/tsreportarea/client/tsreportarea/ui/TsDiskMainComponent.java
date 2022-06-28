@@ -6,12 +6,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.DoubleClickEvent;
-import com.google.gwt.event.dom.client.DoubleClickHandler;
-import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Widget;
@@ -21,7 +20,6 @@ import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.core.client.util.DelayedTask;
 import com.sencha.gxt.core.client.util.Margins;
 import com.sencha.gxt.data.client.loader.RpcProxy;
-import com.sencha.gxt.data.shared.IconProvider;
 import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.Store.StoreSortInfo;
 import com.sencha.gxt.dnd.core.client.DndDragCancelEvent;
@@ -34,13 +32,12 @@ import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.container.MarginData;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.FormPanel.LabelAlign;
+import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
+import com.sencha.gxt.widget.core.client.info.Info;
+import com.sencha.gxt.widget.core.client.info.InfoConfig;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.SeparatorMenuItem;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 import com.sencha.gxt.widget.core.client.toolbar.ToolBar;
@@ -52,6 +49,12 @@ import net.datenwerke.gf.client.treedb.TreeDBUIService;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.UiTreeFactory;
 import net.datenwerke.gf.client.treedb.stores.EnhancedTreeStore;
+import net.datenwerke.gf.client.upload.FileUploadUIModule;
+import net.datenwerke.gf.client.upload.FileUploadUiService;
+import net.datenwerke.gf.client.upload.dto.FileToUpload;
+import net.datenwerke.gf.client.upload.dto.UploadProperties;
+import net.datenwerke.gf.client.upload.simpleform.FileUpload;
+import net.datenwerke.gf.client.upload.simpleform.SFFCFileUpload;
 import net.datenwerke.gxtdto.client.baseex.widget.DwContentPanel;
 import net.datenwerke.gxtdto.client.baseex.widget.DwWindow;
 import net.datenwerke.gxtdto.client.baseex.widget.btn.DwTextButton;
@@ -79,6 +82,8 @@ import net.datenwerke.gxtdto.client.utilityservices.toolbar.ToolbarService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
+import net.datenwerke.rs.fileserver.client.fileserver.FileServerUiModule;
+import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIModule;
 import net.datenwerke.rs.teamspace.client.teamspace.TeamSpaceUIService;
 import net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
@@ -152,19 +157,30 @@ public class TsDiskMainComponent extends DwBorderContainer {
 
    private UITree tree;
 
-   private Map<String, TsDiskListView> views = new HashMap<String, TsDiskListView>();
+   private Map<String, TsDiskListView> views = new HashMap<>();
    private TsDiskListView currentView;
 
    private VerticalLayoutContainer listPanelContainer;
    private VerticalLayoutContainer detailPanelContainer;
+   
+   private final Provider<FileUploadUiService> fileUploadServiceProvider;
 
    @Inject
-   public TsDiskMainComponent(ClipboardUiService clipboardService, LoginService loginService,
-         TreeDBUIService treeDBUIService, HookHandlerService hookHandlerService, TsDiskDao favoriteDao,
-         TsDiskTreeLoaderDao treeLoaderDao, TsDiskTreeManagerDao treeManagerDao,
+   public TsDiskMainComponent(
+         ClipboardUiService clipboardService, 
+         LoginService loginService,
+         TreeDBUIService treeDBUIService, 
+         HookHandlerService hookHandlerService, 
+         TsDiskDao favoriteDao,
+         TsDiskTreeLoaderDao treeLoaderDao, 
+         TsDiskTreeManagerDao treeManagerDao,
          Provider<ImportReportDialogCreator> importDialogCreator,
-         Provider<ObjectPreviewTabPanel> objectInformationPanelProvider, ToolbarService toolbarService,
-         TeamSpaceUIService teamSpaceService, UiTreeFactory uiTreeFactory) {
+         Provider<ObjectPreviewTabPanel> objectInformationPanelProvider, 
+         ToolbarService toolbarService,
+         TeamSpaceUIService teamSpaceService, 
+         UiTreeFactory uiTreeFactory,
+         Provider<FileUploadUiService> fileUploadServiceProvider
+         ) {
 
       /* store objects */
       this.clipboardService = clipboardService;
@@ -179,6 +195,7 @@ public class TsDiskMainComponent extends DwBorderContainer {
       this.toolbarService = toolbarService;
       this.teamSpaceService = teamSpaceService;
       this.uiTreeFactory = uiTreeFactory;
+      this.fileUploadServiceProvider = fileUploadServiceProvider;
 
       /* init */
       initializeUI();
@@ -348,41 +365,33 @@ public class TsDiskMainComponent extends DwBorderContainer {
 
       TreeSelectionModel<AbstractNodeDto> treeSelectionModel = new TreeSelectionModel<AbstractNodeDto>();
       treeSelectionModel.setSelectionMode(SelectionMode.SINGLE);
-      treeSelectionModel.addSelectionChangedHandler(new SelectionChangedHandler<AbstractNodeDto>() {
-         @Override
-         public void onSelectionChanged(SelectionChangedEvent<AbstractNodeDto> se) {
-            if (inDrag || null == se.getSelection() || se.getSelection().isEmpty())
-               return;
+      treeSelectionModel.addSelectionChangedHandler(se -> {
+         if (inDrag || null == se.getSelection() || se.getSelection().isEmpty())
+            return;
 
-            final AbstractTsDiskNodeDto item = (AbstractTsDiskNodeDto) se.getSelection().get(0);
-            if ((null != item && item.equals(currentFolder)) || (null == item && null == currentFolder))
-               return;
+         final AbstractTsDiskNodeDto item = (AbstractTsDiskNodeDto) se.getSelection().get(0);
+         if ((null != item && item.equals(currentFolder)) || (null == item && null == currentFolder))
+            return;
 
-            DelayedTask task = new DelayedTask() {
-               @Override
-               public void onExecute() {
-                  if (!isInDrag())
-                     itemOpened(item);
-               }
-            };
+         DelayedTask task = new DelayedTask() {
+            @Override
+            public void onExecute() {
+               if (!isInDrag())
+                  itemOpened(item);
+            }
+         };
 
-            if (null != se.getSelection().get(0))
-               task.delay(200);
-            else
-               task.cancel();
-         }
+         if (null != se.getSelection().get(0))
+            task.delay(200);
+         else
+            task.cancel();
       });
 
       tree.setSelectionModel(treeSelectionModel);
       tree.setAutoLoad(false);
 
       /* icons */
-      tree.setIconProvider(new IconProvider<AbstractNodeDto>() {
-         @Override
-         public ImageResource getIcon(AbstractNodeDto model) {
-            return BaseIcon.FOLDER_O.toImageResource();
-         }
-      });
+      tree.setIconProvider(model -> BaseIcon.FOLDER_O.toImageResource());
 
       /* menu */
       setMenuChanger(treePanel, new ItemSelector() {
@@ -408,34 +417,19 @@ public class TsDiskMainComponent extends DwBorderContainer {
       /* expand all button */
       DwTextButton expandAllButton = new DwTextButton(BaseIcon.EXPAND_ALL);
       expandAllButton.setToolTip(BaseMessages.INSTANCE.expandAll());
-      expandAllButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            tree.expandAll();
-         }
-      });
+      expandAllButton.addSelectHandler(event -> tree.expandAll());
       explorerToolbar.add(expandAllButton);
 
       /* collapse all button */
       DwTextButton collapseAllButton = new DwTextButton(BaseIcon.COLLAPSE_ALL);
       collapseAllButton.setToolTip(BaseMessages.INSTANCE.collapseAll());
-      collapseAllButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            tree.collapseAll();
-         }
-      });
+      collapseAllButton.addSelectHandler(event -> tree.collapseAll());
       explorerToolbar.add(collapseAllButton);
 
       /* reload button */
       DwTextButton reloadButton = new DwTextButton(BaseIcon.REFRESH);
       reloadButton.setToolTip(BaseMessages.INSTANCE.refresh());
-      reloadButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            refreshTree();
-         }
-      });
+      reloadButton.addSelectHandler(event -> refreshTree());
       explorerToolbar.add(reloadButton);
 
       /* drag drop */
@@ -545,8 +539,7 @@ public class TsDiskMainComponent extends DwBorderContainer {
 
       /* remove from list store */
       if (!newParent.equals(currentFolder))
-         for (AbstractTsDiskNodeDto model : nodes)
-            listStore.remove(model);
+         nodes.forEach(model -> listStore.remove(model));
 
       treeManagerDao.moveNodesAppend(new ArrayList<AbstractNodeDto>(nodes), newParent,
             new NotamCallback<List<AbstractNodeDto>>(TsFavoriteMessages.INSTANCE.movedNodes()));
@@ -580,23 +573,18 @@ public class TsDiskMainComponent extends DwBorderContainer {
          DwTextButton addFolderBtn = toolbarService.createSmallButtonLeft(TsFavoriteMessages.INSTANCE.addFolderText(),
                BaseIcon.FOLDER_ADD);
          mainToolbar.add(addFolderBtn);
-         addFolderBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               displayAddFolderDialog();
-            }
-         });
+         addFolderBtn.addSelectHandler(event -> displayAddFolderDialog());
 
          if (teamSpaceService.isManager(currentSpace)) {
             DwTextButton importReportBtn = toolbarService
                   .createSmallButtonLeft(TsFavoriteMessages.INSTANCE.importReportText(), BaseIcon.REPORT_ADD);
             mainToolbar.add(importReportBtn);
-            importReportBtn.addSelectHandler(new SelectHandler() {
-               @Override
-               public void onSelect(SelectEvent event) {
-                  importDialogCreator.get().displayDialog(TsDiskMainComponent.this);
-               }
-            });
+            importReportBtn.addSelectHandler(event -> importDialogCreator.get().displayDialog(TsDiskMainComponent.this));
+            
+            DwTextButton addFileBtn = toolbarService.createSmallButtonLeft(TsFavoriteMessages.INSTANCE.uploadFileText(),
+                  BaseIcon.FOLDER_ADD);
+            mainToolbar.add(addFileBtn);
+            addFileBtn.addSelectHandler(event -> displayAddFileDialog());
          }
       }
 
@@ -621,14 +609,11 @@ public class TsDiskMainComponent extends DwBorderContainer {
 
       /* refresh */
       DwTextButton refreshBtn = toolbarService.createSmallButtonLeft(BaseIcon.REFRESH);
-      refreshBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            if (null != currentFolder)
-               folderOpened(currentFolder);
-            else
-               folderOpened(null);
-         }
+      refreshBtn.addSelectHandler(event -> {
+         if (null != currentFolder)
+            folderOpened(currentFolder);
+         else
+            folderOpened(null);
       });
 
       mainToolbar.add(refreshBtn);
@@ -657,14 +642,11 @@ public class TsDiskMainComponent extends DwBorderContainer {
          viewBtn.setIcon(view.getViewIcon());
          mainToolbar.add(viewBtn);
 
-         viewBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               listCardContainer.setActiveWidget(component);
-               sendChangedViewNotice(viewId);
+         viewBtn.addSelectHandler(event -> {
+            listCardContainer.setActiveWidget(component);
+            sendChangedViewNotice(viewId);
 
-               currentView = listView;
-            }
+            currentView = listView;
          });
       }
    }
@@ -738,28 +720,120 @@ public class TsDiskMainComponent extends DwBorderContainer {
       /* add buttons */
       DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
       dialog.getButtonBar().add(cancelBtn);
-      cancelBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            dialog.hide();
-         }
-      });
+      cancelBtn.addSelectHandler(event -> dialog.hide());
 
       DwTextButton submitBtn = new DwTextButton(TsFavoriteMessages.INSTANCE.addFolderText());
       dialog.getButtonBar().add(submitBtn);
-      submitBtn.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            if (form.isValid()) {
-               dialog.mask(BaseMessages.INSTANCE.storingMsg());
-               favoriteDao.createFolder(currentSpace, currentFolder, dummy, new RsAsyncCallback<TsDiskFolderDto>() {
-                  @Override
-                  public void onSuccess(TsDiskFolderDto result) {
-                     listStore.add(result);
-                     dialog.hide();
-                  }
-               });
+      submitBtn.addSelectHandler(event -> {
+         if (form.isValid()) {
+            dialog.mask(BaseMessages.INSTANCE.storingMsg());
+            favoriteDao.createFolder(currentSpace, currentFolder, dummy, new RsAsyncCallback<TsDiskFolderDto>() {
+               @Override
+               public void onSuccess(TsDiskFolderDto result) {
+                  listStore.add(result);
+                  dialog.hide();
+               }
+            });
+         }
+      });
+
+      dialog.show();
+   }
+   
+   public void displayAddFileDialog() {
+      final DwWindow dialog = DwWindow.newAutoSizeDialog(400);
+      dialog.setHeading(TsFavoriteMessages.INSTANCE.addFolderText());
+      dialog.setHeaderIcon(BaseIcon.FOLDER_ADD);
+      dialog.setModal(true);
+      dialog.setSize(430, 360);
+
+      /* create form */
+      final SimpleForm form = SimpleForm.getInlineInstance();
+      fileUploadServiceProvider.get().prepareForUpload(form);
+      dialog.add(form, new MarginData(10));
+      form.setLabelAlign(LabelAlign.LEFT);
+
+      final String nameField = form.addField(String.class, TsDiskFolderDtoPA.INSTANCE.name(),
+            TsFavoriteMessages.INSTANCE.newFolderNameLabel(),            
+            new SFFCAllowBlank() {
+               @Override
+               public boolean allowBlank() {
+                  return false;
+               }
+            }, new SFFCPlaceHolder() {
+
+               @Override
+               public String getPlaceholder() {
+                  return BaseMessages.INSTANCE.unnamed();
+               }
+            });
+      
+      /* upload */
+      final String uploadField = form.addField(FileUpload.class, FileServerUiModule.UPLOAD_SERVLET_KEY_UPLOAD,
+            "File", new SFFCFileUpload() {
+               @Override
+               public UploadProperties getProperties() {
+                  UploadProperties uploadProperties = new UploadProperties("file",
+                        TeamSpaceUIModule.TEAMSPACE_FILE_IMPORT_HANDLER_ID);
+                  return uploadProperties;
+               }
+
+               @Override
+               public boolean enableHTML5() {
+                  return true;
+               }
+
+               @Override
+               public void filesUploaded(List<FileToUpload> list) {
+               }
+
+            });
+
+      final String descriptionField = form.addField(String.class, TsDiskFolderDtoPA.INSTANCE.description(),
+            TsFavoriteMessages.INSTANCE.newFolderDescriptionLabel(), new SFFCTextAreaImpl(80));
+
+      /* bind dummy */
+      final TsDiskFolderDto dummy = new TsDiskFolderDto();
+      form.bind(dummy);
+
+      /* add buttons */
+      DwTextButton cancelBtn = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      dialog.getButtonBar().add(cancelBtn);
+      cancelBtn.addSelectHandler(event -> dialog.hide());
+
+      DwTextButton submitBtn = new DwTextButton(TsFavoriteMessages.INSTANCE.addFolderText());
+      dialog.getButtonBar().add(submitBtn);
+      submitBtn.addSelectHandler(event -> {
+         if (form.isValid()) {
+            if (null == form.getValue(uploadField)) {
+               InfoConfig infoConfig = new DefaultInfoConfig(TsFavoriteMessages.INSTANCE.uploadFileText(),
+                     TsFavoriteMessages.INSTANCE.uploadFileEmpty());
+               infoConfig.setWidth(350);
+               Info.display(infoConfig);
+               return;
             }
+            form.addHidden(
+                  FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX + TeamSpaceUIModule.TEAMSPACE_IMPORT_TEAMSPACE_ID,
+                  currentSpace.getId());
+            if (null != currentFolder) {
+               form.addHidden(
+                     FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX + TeamSpaceUIModule.TEAMSPACE_IMPORT_FOLDER_ID,
+                     currentFolder.getId());
+            }
+            form.addHidden(
+                  FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX + TeamSpaceUIModule.TEAMSPACE_IMPORT_NAME,
+                  form.getValue(nameField));
+            if (null != form.getValue(descriptionField)) {
+               form.addHidden(
+                     FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX + TeamSpaceUIModule.TEAMSPACE_IMPORT_DESCRIPTION,
+                     form.getValue(descriptionField));
+            }
+            form.submit();
+//               dialog.hide();
+            InfoConfig infoConfig = new DefaultInfoConfig(TsFavoriteMessages.INSTANCE.uploadFileText(),
+                  TsFavoriteMessages.INSTANCE.uploadFileUploading());
+            infoConfig.setWidth(350);
+            Info.display(infoConfig);
          }
       });
 
@@ -779,15 +853,11 @@ public class TsDiskMainComponent extends DwBorderContainer {
       infoPanel.setBottomTabs(true);
       infoPanel.displayInformationOn(item);
 
-      infoPanel.getHeader().addDomHandler(new DoubleClickHandler() {
-
-         @Override
-         public void onDoubleClick(DoubleClickEvent event) {
-            if (listPanel.isCollapsed())
-               listPanel.expand();
-            else
-               listPanel.collapse();
-         }
+      infoPanel.getHeader().addDomHandler(event -> {
+         if (listPanel.isCollapsed())
+            listPanel.expand();
+         else
+            listPanel.collapse();
       }, DoubleClickEvent.getType());
 
       if (infoPanel.hasItems()) {
@@ -805,15 +875,16 @@ public class TsDiskMainComponent extends DwBorderContainer {
          generalReferenceOpenend((TsDiskGeneralReferenceDto) item);
    }
 
-   private void generalReferenceOpenend(TsDiskGeneralReferenceDto item) {
+   private void generalReferenceOpenend(final TsDiskGeneralReferenceDto item) {
       History.newItem(TsDiskUIModule.TEAMSPACE_OPEN_ITEM_HISTORY_TOKEN + "/id:" + item.getId(), false);
 
-      for (GeneralReferenceHandlerHook hooker : hookHandlerService.getHookers(GeneralReferenceHandlerHook.class)) {
-         if (hooker.consumes(item)) {
-            hooker.handle(item, this);
-            break;
-         }
-      }
+      Optional<GeneralReferenceHandlerHook> responsibleHooker = hookHandlerService.getHookers(GeneralReferenceHandlerHook.class)
+         .stream()
+         .filter(hooker -> hooker.consumes(item))
+         .findAny();
+      
+      if (responsibleHooker.isPresent())
+         responsibleHooker.get().handle(item, this);
    }
 
    public void folderOpened(TsDiskFolderDto folder) {
@@ -870,14 +941,15 @@ public class TsDiskMainComponent extends DwBorderContainer {
       return currentSpace;
    }
 
-   public AbstractTsDiskNodeDto getModelById(Long id) {
+   public AbstractTsDiskNodeDto getModelById(final Long id) {
       if (null == id)
          return null;
-      for (AbstractTsDiskNodeDto model : listStore.getAll()) {
-         if (id.equals(model.getId()))
-            return model;
-      }
-      return null;
+      
+      return listStore.getAll()
+         .stream()
+         .filter(model -> id.equals(model.getId()))
+         .findAny()
+         .orElse(null);
    }
 
    public void importReport(ReportDto report, boolean copyReport, boolean reference) {

@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -39,13 +40,16 @@ public class FileUploadServiceImpl implements FileUploadService {
    }
 
    @Override
-   public String uploadOccured(final UploadedFile uploadedFile) {
+   public String uploadOccured(final UploadedFile uploadedFile, Map<String,String> context) {
 
-      final Optional<FileUploadHandlerHook> filtered = hookHandlerService.getHookers(FileUploadHandlerHook.class)
-            .stream().filter(h -> h.consumes(uploadedFile.getHandler())).findAny();
+      final Optional<FileUploadHandlerHook> filtered = 
+            hookHandlerService.getHookers(FileUploadHandlerHook.class)
+            .stream()
+            .filter(h -> h.consumes(uploadedFile.getHandler()))
+            .findAny();
 
       if (filtered.isPresent())
-         return filtered.get().uploadOccured(uploadedFile);
+         return filtered.get().uploadOccured(uploadedFile, context);
 
       throw new IllegalStateException("No handler found for: " + uploadedFile.getHandler());
    }

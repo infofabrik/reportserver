@@ -1,7 +1,6 @@
 package net.datenwerke.rs.base.service.datasources
 
 import java.sql.DatabaseMetaData
-import java.sql.SQLFeatureNotSupportedException
 
 import javax.inject.Inject
 

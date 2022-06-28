@@ -183,6 +183,7 @@ import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
 import net.datenwerke.rs.samba.service.samba.SambaModule;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.ScheduleAsFileUiModule;
+import net.datenwerke.rs.scheduleasfile.server.scheduleasfile.ExportScheduledAsDiskFileServlet;
 import net.datenwerke.rs.scheduleasfile.server.scheduleasfile.ExportScheduledAsFileReportServlet;
 import net.datenwerke.rs.scheduleasfile.server.scheduleasfile.ScheduleAsFileRpcServiceImpl;
 import net.datenwerke.rs.scheduleasfile.service.scheduleasfile.ScheduleAsFileModule;
@@ -410,6 +411,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "logfiles").with(LogFilesRpcServiceImpl.class); //$NON-NLS-1$
 
             serve(BASE_URL + ScheduleAsFileUiModule.EXPORT_SERVLET).with(ExportScheduledAsFileReportServlet.class);
+            serve(BASE_URL + ScheduleAsFileUiModule.DISK_FILE_EXPORT_SERVLET).with(ExportScheduledAsDiskFileServlet.class);
             serve(BASE_URL + "ts/scheduelasfile").with(ScheduleAsFileRpcServiceImpl.class);
 
             serve(BASE_URL + "ftp").with(FtpRpcServiceImpl.class);

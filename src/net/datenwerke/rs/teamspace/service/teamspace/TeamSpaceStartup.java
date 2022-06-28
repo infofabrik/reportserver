@@ -5,6 +5,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
+import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
@@ -15,6 +16,7 @@ import net.datenwerke.rs.teamspace.service.teamspace.eximport.TeamSpaceImporter;
 import net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers.ExportAllTeamspacesHooker;
 import net.datenwerke.rs.teamspace.service.teamspace.eximport.hookers.ImportAllTeamspacesHooker;
 import net.datenwerke.rs.teamspace.service.teamspace.genrights.TeamSpaceSecurityTarget;
+import net.datenwerke.rs.teamspace.service.teamspace.hooks.FileIntoTeamSpaceUploadHooker;
 import net.datenwerke.rs.teamspace.service.teamspace.hooks.TeamspaceModSubCommandHook;
 import net.datenwerke.rs.teamspace.service.teamspace.security.TeamSpaceSecuree;
 import net.datenwerke.rs.teamspace.service.teamspace.terminal.commands.AddMembersSubCommand;
@@ -34,20 +36,27 @@ import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerN
 public class TeamSpaceStartup {
 
    @Inject
-   public TeamSpaceStartup(HookHandlerService hookHandler, SecurityService securityService, EventBus eventBus,
+   public TeamSpaceStartup(HookHandlerService hookHandler, 
+         SecurityService securityService, 
+         EventBus eventBus,
 
          UserNodeRemoveEventHandler userNodeRemoveEventHandler,
          UserNodeForceRemoveEventHandler userNodeForceRemoveEventHandler,
 
          Provider<TeamspaceModCommand> teamspaceModProvider,
 
-         Provider<TeamSpaceExporter> exporterProvider, Provider<TeamSpaceImporter> importerProvider,
+         Provider<TeamSpaceExporter> exporterProvider, 
+         Provider<TeamSpaceImporter> importerProvider,
          Provider<ExportAllTeamspacesHooker> exportAllTeamspaces,
          Provider<ImportAllTeamspacesHooker> importAllTeamspaces,
 
          Provider<AddMembersSubCommand> addMembersToTeamspaceProvider,
          Provider<SetRoleSubCommand> setRoleInTeamspaceProvider,
-         final Provider<TeamSpaceService> teamSpaceServiceProvider) {
+         final Provider<TeamSpaceService> teamSpaceServiceProvider,
+         Provider<FileIntoTeamSpaceUploadHooker> fileIntoTeamSpaceUploadHooker
+         ) {
+      
+      hookHandler.attachHooker(FileUploadHandlerHook.class, fileIntoTeamSpaceUploadHooker);
 
       eventBus.attachObjectEventHandler(RemoveEntityEvent.class, AbstractUserManagerNode.class,
             userNodeRemoveEventHandler);

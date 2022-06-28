@@ -101,7 +101,7 @@ public class ExecutedReportFileReference extends TsDiskGeneralReference {
    }
 
    @Override
-   public String getDataContentType() {
+   public String getContentType() {
       CompiledReport report = compiledReport.getCompiledReport();
       if (null == report)
          return null;

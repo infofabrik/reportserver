@@ -70,14 +70,29 @@ public class FileUploadServlet extends SecuredHttpServlet {
       // Create a new file upload handler
       FileItemFactory factory = new DiskFileItemFactory();
       ServletFileUpload upload = new ServletFileUpload(factory);
-
+      
       Map<String, UploadedFile> uploadedFiles = new HashMap<String, UploadedFile>();
-
+      Map<String,String> context = new HashMap<>();
+      
       try {
          // Parse the request
          List<FileItem> items = upload.parseRequest(request);
+         
          if (null == items || items.isEmpty())
             out.println("no items"); //$NON-NLS-1$
+         
+         /* context */
+         for (FileItem item : items) {
+            String fieldName = item.getFieldName();
+
+            if (item.isFormField()) {
+               if (fieldName.startsWith(FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX)) { // context
+                  String id = item.getFieldName().substring(FileUploadUIModule.UPLOAD_FILE_CONTEXT_PREFIX.length());
+                  String value = item.getString();
+                  context.put(id, value);
+               }
+            }
+         }
 
          /* find upload ids */
          for (FileItem item : items) {
@@ -188,7 +203,7 @@ public class FileUploadServlet extends SecuredHttpServlet {
             }
          }
       } catch (IOException e) {
-         logger.log(Level.INFO, "uplaod error", e);
+         logger.log(Level.INFO, "upload error", e);
          e.printStackTrace(out);
       } catch (FileUploadException e) {
          logger.log(Level.INFO, "upload error", e);
@@ -200,7 +215,7 @@ public class FileUploadServlet extends SecuredHttpServlet {
       for (String id : uploadedFiles.keySet()) {
          UploadedFile uploadedFile = uploadedFiles.get(id);
          if (uploadedFile.getLength() > 0) {
-            responseText = fileUploadService.uploadOccured(uploadedFile);
+            responseText = fileUploadService.uploadOccured(uploadedFile, context);
          }
       }
 

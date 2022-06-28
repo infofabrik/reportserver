@@ -15,6 +15,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.hookers.TeamSpaceE
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.objectinfo.ExecutedReportObjectInfoHooker;
 import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetProviderHook;
 import net.datenwerke.rs.scheduler.client.scheduler.schedulereportlist.hooks.ScheduledReportListFilter;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.hookers.TsDiskFileHandler;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.GeneralReferenceHandlerHook;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.hooks.TsFavoriteMenuHook;
 
@@ -33,7 +34,9 @@ public class ScheduleAsFileUiStartup {
 
          final Provider<ExportToTeamSpaceHooker> exportToTeamSpaceHooker,
 
-         final WaitOnEventUIService waitOnEventService) {
+         final WaitOnEventUIService waitOnEventService,
+         final Provider<TsDiskFileHandler> handleTeamSpaceDiskFileProvider
+         ) {
 
       hookHandler.attachHooker(ScheduledReportListFilter.class, teamSpaceFilter);
 
@@ -45,6 +48,8 @@ public class ScheduleAsFileUiStartup {
             HookHandlerService.PRIORITY_HIGH + 10);
 
       hookHandler.attachHooker(GeneralReferenceHandlerHook.class, handleExecutedFileProvider);
+      
+      hookHandler.attachHooker(GeneralReferenceHandlerHook.class, handleTeamSpaceDiskFileProvider);
 
       hookHandler.attachHooker(TsFavoriteMenuHook.class, tsMenuDownloadHooker);
 

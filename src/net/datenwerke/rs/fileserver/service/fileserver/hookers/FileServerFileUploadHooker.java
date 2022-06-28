@@ -35,7 +35,7 @@ public class FileServerFileUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long fileId = Long.valueOf(metadataMap.get(FileServerUiModule.UPLOAD_FILE_ID_FIELD));

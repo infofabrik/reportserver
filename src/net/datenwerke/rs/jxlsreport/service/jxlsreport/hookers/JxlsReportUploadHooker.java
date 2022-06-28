@@ -26,8 +26,11 @@ public class JxlsReportUploadHooker implements FileUploadHandlerHook {
    private final Provider<JxlsReportService> jxlsReportServiceProvider;
 
    @Inject
-   public JxlsReportUploadHooker(Provider<SecurityService> securityServiceProvider,
-         Provider<ReportService> reportServiceProvider, Provider<JxlsReportService> jxlsReportServiceProvider) {
+   public JxlsReportUploadHooker(
+         Provider<SecurityService> securityServiceProvider,
+         Provider<ReportService> reportServiceProvider, 
+         Provider<JxlsReportService> jxlsReportServiceProvider
+         ) {
       this.securityServiceProvider = securityServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
       this.jxlsReportServiceProvider = jxlsReportServiceProvider;
@@ -39,7 +42,7 @@ public class JxlsReportUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long reportId = Long.valueOf(metadataMap.get(JxlsReportUiModule.UPLOAD_REPORT_ID_FIELD));

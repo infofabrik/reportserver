@@ -80,7 +80,7 @@ public abstract class TsDiskGeneralReference extends AbstractTsDiskNode {
    }
 
    @Transient
-   public String getDataContentType() {
+   public String getContentType() {
       return null;
    }
 

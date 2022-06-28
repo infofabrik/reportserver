@@ -25,9 +25,12 @@ public class JasperReportMasterUploadHooker implements FileUploadHandlerHook {
    private final Provider<JasperUtilsService> jasperReportManagerProvider;
 
    @Inject
-   public JasperReportMasterUploadHooker(Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<SecurityService> securityServiceProvider, Provider<ReportService> reportServiceProvider,
-         Provider<JasperUtilsService> jasperReportManagerProvider) {
+   public JasperReportMasterUploadHooker(
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<SecurityService> securityServiceProvider, 
+         Provider<ReportService> reportServiceProvider,
+         Provider<JasperUtilsService> jasperReportManagerProvider
+         ) {
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
@@ -40,7 +43,7 @@ public class JasperReportMasterUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long reportId = Long.valueOf(metadataMap.get(JasperUiModule.META_REPORT_ID));

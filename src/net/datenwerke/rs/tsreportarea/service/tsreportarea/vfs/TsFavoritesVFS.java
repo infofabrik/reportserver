@@ -112,7 +112,7 @@ public class TsFavoritesVFS extends TreeBasedVirtualFileSystem<AbstractTsDiskNod
       checkRead(node);
 
       if (node instanceof TsDiskGeneralReference)
-         return ((TsDiskGeneralReference) node).getDataContentType();
+         return ((TsDiskGeneralReference) node).getContentType();
 
       return null;
    }

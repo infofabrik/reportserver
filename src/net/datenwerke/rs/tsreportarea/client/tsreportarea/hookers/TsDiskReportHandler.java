@@ -33,8 +33,12 @@ public class TsDiskReportHandler implements GeneralReferenceHandlerHook {
    private final TsDiskTreeManagerDao treeManagerDao;
 
    @Inject
-   public TsDiskReportHandler(ReportExecutorUIService reportExecutorService, TeamSpaceUIService teamSpaceService,
-         TsDiskDao favoriteDao, TsDiskTreeManagerDao treeManagerDao) {
+   public TsDiskReportHandler(
+         ReportExecutorUIService reportExecutorService, 
+         TeamSpaceUIService teamSpaceService,
+         TsDiskDao favoriteDao, 
+         TsDiskTreeManagerDao treeManagerDao
+         ) {
       this.reportExecutorService = reportExecutorService;
       this.teamSpaceService = teamSpaceService;
       this.favoriteDao = favoriteDao;

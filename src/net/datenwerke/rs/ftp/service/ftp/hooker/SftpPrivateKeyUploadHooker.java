@@ -21,8 +21,10 @@ public class SftpPrivateKeyUploadHooker implements FileUploadHandlerHook {
    private final Provider<DatasinkTreeService> datasinkServiceProvider;
 
    @Inject
-   public SftpPrivateKeyUploadHooker(Provider<SecurityService> securityServiceProvider,
-         Provider<DatasinkTreeService> datasinkServiceProvider) {
+   public SftpPrivateKeyUploadHooker(
+         Provider<SecurityService> securityServiceProvider,
+         Provider<DatasinkTreeService> datasinkServiceProvider
+         ) {
       this.securityServiceProvider = securityServiceProvider;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }
@@ -33,7 +35,7 @@ public class SftpPrivateKeyUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long datasinkId = Long.valueOf(metadataMap.get(FtpUiModule.SFTP_UPLOAD_DATASINK_ID_FIELD));

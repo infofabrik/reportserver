@@ -134,7 +134,7 @@ public class PrinterDatasinkDto extends DatasinkDefinitionDto {
 
 	@Override
 	public BaseIcon toIcon()  {
-		return BaseIcon.from("upload");
+		return BaseIcon.from("print");
 	}
 
 	@Override

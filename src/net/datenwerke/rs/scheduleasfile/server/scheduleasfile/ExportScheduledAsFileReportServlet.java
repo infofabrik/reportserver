@@ -42,9 +42,12 @@ public class ExportScheduledAsFileReportServlet extends SecuredHttpServlet {
    protected final Provider<HttpUtils> httpUtilsProvider;
 
    @Inject
-   public ExportScheduledAsFileReportServlet(Provider<ReportServerService> reportServerServiceProvider,
-         Provider<TeamSpaceService> teamSpaceServiceProvider, Provider<TsDiskService> tsDiskServiceProvider,
-         Provider<HttpUtils> httpUtilsProvider) {
+   public ExportScheduledAsFileReportServlet(
+         Provider<ReportServerService> reportServerServiceProvider,
+         Provider<TeamSpaceService> teamSpaceServiceProvider, 
+         Provider<TsDiskService> tsDiskServiceProvider,
+         Provider<HttpUtils> httpUtilsProvider
+         ) {
 
       /* store objects */
       this.reportServerServiceProvider = reportServerServiceProvider;

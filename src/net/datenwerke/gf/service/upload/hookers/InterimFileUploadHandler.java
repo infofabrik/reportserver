@@ -1,5 +1,7 @@
 package net.datenwerke.gf.service.upload.hookers;
 
+import java.util.Map;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.google.inject.Inject;
@@ -25,7 +27,7 @@ public class InterimFileUploadHandler implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       try {
          UploadResponse uploadInterimFile = fileUploadService.uploadInterimFile(uploadedFile);
 

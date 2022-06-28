@@ -25,9 +25,12 @@ public class BirtReportUploadHooker implements FileUploadHandlerHook {
    private final Provider<BirtReportService> birtReportServiceProvider;
 
    @Inject
-   public BirtReportUploadHooker(Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<SecurityService> securityServiceProvider, Provider<ReportService> reportServiceProvider,
-         Provider<BirtReportService> birtReportServiceProvider) {
+   public BirtReportUploadHooker(
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<SecurityService> securityServiceProvider, 
+         Provider<ReportService> reportServiceProvider,
+         Provider<BirtReportService> birtReportServiceProvider
+         ) {
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.securityServiceProvider = securityServiceProvider;
       this.reportServiceProvider = reportServiceProvider;
@@ -40,7 +43,7 @@ public class BirtReportUploadHooker implements FileUploadHandlerHook {
    }
 
    @Override
-   public String uploadOccured(UploadedFile uploadedFile) {
+   public String uploadOccured(UploadedFile uploadedFile, Map<String,String> context) {
       Map<String, String> metadataMap = uploadedFile.getMetadata();
 
       long reportId = Long.valueOf(metadataMap.get(BirtUiModule.UPLOAD_REPORT_ID_FIELD));

@@ -242,6 +242,7 @@ import net.datenwerke.rs.terminal.client.terminal.dto.CreOverlayDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.InteractiveResultModifierDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto;
 import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto;
@@ -600,6 +601,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceMemberDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto)
 			return ((net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto)
+			return ((net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto)
 			return ((net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto)
@@ -1104,6 +1107,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.terminal.client.terminal.dto.InteractiveResultModifierDto();
 		if(net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto();
+		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec();
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto();
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskReportReferenceDtoDec.class.equals(dtoClass))
@@ -1612,6 +1617,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.terminal.client.terminal.dto.InteractiveResultModifierDto();
 		if("net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.terminal.client.terminal.dto.PressKeyResultModifierDto();
+		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec();
 		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto();
 		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskReportReferenceDtoDec".equals(dtoClassName))
@@ -2426,6 +2433,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.AbstractTsDiskNodeDto2PosoMap.class;
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec.class.equals(dtoClass))
 			return net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.AbstractTsDiskNodeDto2PosoMap.class;
+		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto.class.equals(dtoClass))
+			return net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.TsDiskFileReferenceDto2PosoMap.class;
+		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec.class.equals(dtoClass))
+			return net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.TsDiskFileReferenceDto2PosoMap.class;
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto.class.equals(dtoClass))
 			return net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.posomap.TsDiskFolderDto2PosoMap.class;
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskGeneralReferenceDto.class.equals(dtoClass))
@@ -2861,6 +2872,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.teamspace.client.teamspace.dto.TeamSpaceMemberDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto)
 			return true;
@@ -3669,6 +3682,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto.class.equals(dtoType))
 			return true;
@@ -4563,6 +4580,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.AbstractTsDiskNodeDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.AbstractTsDiskNodeDtoDec".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFileReferenceDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.decorator.TsDiskFileReferenceDtoDec".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskFolderDto".equals(dtoClassName))
 			return true;

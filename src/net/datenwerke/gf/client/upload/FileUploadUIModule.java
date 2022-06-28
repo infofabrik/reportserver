@@ -14,6 +14,7 @@ public class FileUploadUIModule extends AbstractGinModule {
    public static final String UPLOAD_FILE_XHR_CONTENT_PREFIX = UPLOAD_FILE_PREFIX + "_xhr_";
    public static final String UPLOAD_FILE_XHR_LENGTH_PREFIX = UPLOAD_FILE_PREFIX + "_xhrlength_";
    public static final String UPLOAD_FILE_XHR_NAME_PREFIX = UPLOAD_FILE_PREFIX + "_xhrname_";
+   public static final String UPLOAD_FILE_CONTEXT_PREFIX = UPLOAD_FILE_PREFIX + "_context_";
 
    public static final String UPLOAD_SUCCESSFUL_PREFIX = "RS_UPLOAD_SUCCESS:";
 
