@@ -1,7 +1,8 @@
 package net.datenwerke.gf.server.history;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
-import java.util.stream.Collectors;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -41,8 +42,10 @@ public class HistoryRpcServiceImpl extends SecuredRemoteServiceServlet implement
 
       securityService.assertRights(obj, Read.class);
 
-      return historyService.buildLinksFor(obj).stream().map(link -> (HistoryLinkDto) dtoService.createDto(link))
-            .collect(Collectors.toList());
+      return historyService.buildLinksFor(obj)
+            .stream()
+            .map(link -> (HistoryLinkDto) dtoService.createDto(link))
+            .collect(toList());
    }
 
 }

@@ -34,7 +34,7 @@ public class ReportInSchedulerObjectInfo implements ObjectInfoAdditionalInfoProv
 
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
-      final DwContentPanel panel = window.addDelayedSimpelInfoPanel(SchedulerMessages.INSTANCE.scheduler());
+      final DwContentPanel panel = window.addDelayedSimpleInfoPanel(SchedulerMessages.INSTANCE.scheduler());
 
       schedulerDao.getReportJobListAsHtml((ReportDto) object, new RsAsyncCallback<SafeHtml>() {
          @Override

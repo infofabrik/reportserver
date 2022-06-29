@@ -32,8 +32,6 @@ import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer;
 import com.sencha.gxt.widget.core.client.container.VerticalLayoutContainer.VerticalLayoutData;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.RowDoubleClickEvent.RowDoubleClickHandler;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.form.StoreFilterField;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
@@ -162,24 +160,17 @@ public class SelectionPopup<M> extends DwWindow {
       borderContainer.setCenterWidget(selectionComponent, centerData);
 
       /* create buttons */
-      DwTextButton cnlButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
-      cnlButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            hide();
-            SelectionPopup.this.cancelSelected();
-         }
+      DwTextButton cancelButton = new DwTextButton(BaseMessages.INSTANCE.cancel());
+      cancelButton.addSelectHandler(event -> {
+         hide();
+         SelectionPopup.this.cancelSelected();
       });
-      addButton(cnlButton);
+      addButton(cancelButton);
 
       DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.apply());
-      okButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            hide();
-            SelectionPopup.this.itemsSelected(new ArrayList<M>(selectedItemsStore.getAll()));
-         }
+      okButton.addSelectHandler(event -> {
+         hide();
+         SelectionPopup.this.itemsSelected(new ArrayList<M>(selectedItemsStore.getAll()));
       });
       addButton(okButton);
    }
@@ -258,26 +249,16 @@ public class SelectionPopup<M> extends DwWindow {
       vContainer.add(toolbar, new VerticalLayoutData(1, -1));
 
       DwTextButton removeButton = new DwTextButton(BaseMessages.INSTANCE.remove(), BaseIcon.DELETE);
-      removeButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            List<M> selectedItems = grid.getSelectionModel().getSelectedItems();
-            for (M node : selectedItems)
-               if (null != selectedItemsStore.findModel(node))
-                  selectedItemsStore.remove(node);
-         }
+      removeButton.addSelectHandler(event -> {
+         grid.getSelectionModel().getSelectedItems()
+            .stream()
+            .filter(node -> null != selectedItemsStore.findModel(node))
+            .forEach(selectedItemsStore::remove);
       });
       toolbar.add(removeButton);
 
       DwTextButton removeAllButton = new DwTextButton(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
-      removeAllButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            selectedItemsStore.clear();
-         }
-      });
+      removeAllButton.addSelectHandler(event -> selectedItemsStore.clear());
       toolbar.add(removeAllButton);
 
       /* add grid */
@@ -323,18 +304,15 @@ public class SelectionPopup<M> extends DwWindow {
       toolbar.add(new FillToolItem());
 
       addAllButton = new DwTextButton(FormsMessages.INSTANCE.addAll(), BaseIcon.CHECK);
-      addAllButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            /* build new Set of selected */
-            List<M> newSelection = new ArrayList<M>(selectedItemsStore.getAll());
-            for (M model : allItemsStore.getAll())
-               if (!newSelection.contains(model))
-                  newSelection.add(model);
+      addAllButton.addSelectHandler(event -> {
+         /* build new Set of selected */
+         List<M> newSelection = new ArrayList<M>(selectedItemsStore.getAll());
+         for (M model : allItemsStore.getAll())
+            if (!newSelection.contains(model))
+               newSelection.add(model);
 
-            selectedItemsStore.clear();
-            selectedItemsStore.addAll(convertModelsForSelection(newSelection));
-         }
+         selectedItemsStore.clear();
+         selectedItemsStore.addAll(convertModelsForSelection(newSelection));
       });
       addAllButton.disable();
       toolbar.add(addAllButton);

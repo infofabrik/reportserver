@@ -18,8 +18,6 @@ import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.loader.ListLoadConfig;
 import com.sencha.gxt.data.shared.loader.ListLoadResult;
 import com.sencha.gxt.data.shared.loader.ListLoader;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem;
 
@@ -98,12 +96,7 @@ public class ColumnSelector extends SelectionPopup<ColumnDto> {
    @Override
    protected void initSelectionToolbar(DwToolBar toolbar) {
       DwTextButton refresh = new DwTextButton(BaseIcon.REFRESH);
-      refresh.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            loadData();
-         }
-      });
+      refresh.addSelectHandler(event -> loadData());
       toolbar.add(refresh);
       toolbar.add(new SeparatorToolItem());
    }
@@ -115,10 +108,11 @@ public class ColumnSelector extends SelectionPopup<ColumnDto> {
       /* update additional columns */
       if (!displayAdditionalColumns)
          return;
-
-      for (ColumnDto column : new ArrayList<ColumnDto>(allItemsStore.getAll()))
-         if (column instanceof AdditionalColumnSpecDto)
-            allItemsStore.remove(column);
+      
+      allItemsStore.getAll()
+         .stream()
+         .filter(column -> column instanceof AdditionalColumnSpecDto)
+         .forEach(allItemsStore::remove);
 
       allItemsStore.addAll(report.getAdditionalColumns());
    }
@@ -161,7 +155,7 @@ public class ColumnSelector extends SelectionPopup<ColumnDto> {
        * note .. this cannot be put into a static variable since the messages are not
        * loaded directly at startup
        */
-      HashMap<ValueProvider<ColumnDto, String>, String> displayPropertiesRight = new LinkedHashMap<ValueProvider<ColumnDto, String>, String>();
+      Map<ValueProvider<ColumnDto, String>, String> displayPropertiesRight = new LinkedHashMap<>();
 
       displayPropertiesRight.put(ColumnDtoPA.INSTANCE.name(), FilterMessages.INSTANCE.column());
 
@@ -173,12 +167,7 @@ public class ColumnSelector extends SelectionPopup<ColumnDto> {
       super.initTools();
 
       if (null != closeBtn) {
-         closeBtn.addSelectHandler(new SelectHandler() {
-            @Override
-            public void onSelect(SelectEvent event) {
-               cancelSelected();
-            }
-         });
+         closeBtn.addSelectHandler(event -> cancelSelected());
       }
    }
 

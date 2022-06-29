@@ -31,7 +31,7 @@ public class UserDetailsObjectInfo implements ObjectInfoAdditionalInfoProvider {
 
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
-      final DwContentPanel panel = window.addDelayedSimpelInfoPanel(UsermanagerMessages.INSTANCE.userDetails());
+      final DwContentPanel panel = window.addDelayedSimpleInfoPanel(UsermanagerMessages.INSTANCE.userDetails());
       userManagerDao.getUserDetailsAsHtml((UserDto) object, new RsAsyncCallback<SafeHtml>() {
          @Override
          public void onSuccess(SafeHtml result) {

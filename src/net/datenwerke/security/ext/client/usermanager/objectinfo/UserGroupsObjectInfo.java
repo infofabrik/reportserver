@@ -32,7 +32,7 @@ public class UserGroupsObjectInfo implements ObjectInfoAdditionalInfoProvider {
 
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
-      final DwContentPanel panel = window.addDelayedSimpelInfoPanel(UsermanagerMessages.INSTANCE.groups());
+      final DwContentPanel panel = window.addDelayedSimpleInfoPanel(UsermanagerMessages.INSTANCE.groups());
       userManagerDao.getUserGroupDetailsAsHtml((UserDto) object, new RsAsyncCallback<SafeHtml>() {
 
          @Override

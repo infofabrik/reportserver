@@ -1,6 +1,7 @@
 package net.datenwerke.gxtdto.client.objectinformation;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
@@ -10,13 +11,20 @@ import com.google.gwt.resources.client.ImageResource;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 import com.sencha.gxt.core.client.XTemplates;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactories;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactory;
 import com.sencha.gxt.core.client.XTemplates.FormatterFactoryMethod;
+import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
+import net.datenwerke.gf.client.history.HistoryDao;
+import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
+import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
+import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoAdditionalInfoProvider;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
@@ -78,17 +86,23 @@ public class ObjectInfoPanelService {
 
    private final HookHandlerService hookHandler;
    private final Provider<InfoWindow> infoWindowProvider;
+   private final Provider<HistoryDao> historyDao;
 
    @Inject
-   public ObjectInfoPanelService(HookHandlerService hookHandler, Provider<InfoWindow> infoWindowProvider) {
+   public ObjectInfoPanelService(
+         HookHandlerService hookHandler, 
+         Provider<InfoWindow> infoWindowProvider,
+         Provider<HistoryDao> historyDao
+         ) {
 
       /* store objects */
       this.hookHandler = hookHandler;
       this.infoWindowProvider = infoWindowProvider;
+      this.historyDao = historyDao;
    }
 
    public void displayInformationOn(final Object object) {
-      InfoWindow window = infoWindowProvider.get();
+      final InfoWindow window = infoWindowProvider.get();
 
       ObjectInfoPanelServiceTemplates template = GWT.create(ObjectInfoPanelServiceTemplates.class);
 
@@ -113,7 +127,7 @@ public class ObjectInfoPanelService {
       window.setHeading(ObjectInfoMessages.INSTANCE.infoOn());
       window.getHeader().setIcon(keyProvider.getIconSmall(object));
 
-      Map<String, String> data = new HashMap<String, String>();
+      final Map<String, String> data = new HashMap<String, String>();
       data.put(BaseMessages.INSTANCE.name(), keyProvider.getName(object));
       data.put(BaseMessages.INSTANCE.description(), keyProvider.getDescription(object));
       if (object instanceof AbstractNodeDto) {
@@ -124,13 +138,29 @@ public class ObjectInfoPanelService {
             : DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(keyProvider.getCreatedOn(object)));
       data.put(BaseMessages.INSTANCE.changedOn(), null == keyProvider.getLastUpdatedOn(object) ? ""
             : DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(keyProvider.getLastUpdatedOn(object)));
-      window.addSimpelDataInfoPanel(ObjectInfoMessages.INSTANCE.general(), data);
+      final DwFlowContainer fieldWrapper = window.addDelayedSimpleDataInfoPanel(ObjectInfoMessages.INSTANCE.general());
+      
+      historyDao.get().getLinksFor((Dto)object, new RsAsyncCallback<List<HistoryLinkDto>>() {
+         @Override
+         public void onSuccess(List<HistoryLinkDto> result) {
+            if (null != result && !result.isEmpty()) {
+               data.put(BaseMessages.INSTANCE.path(),
+                     result.get(0).getObjectCaption() + " (" + result.get(0).getHistoryLinkBuilderId() + ")");
+            }
+            
+            data.forEach((key, val) -> {
+               FieldLabel field = new FieldLabel(new Label(val), key);
+               fieldWrapper.add(field);
+            });
 
-      for (ObjectInfoAdditionalInfoProvider infoProvider : hookHandler
-            .getHookers(ObjectInfoAdditionalInfoProvider.class))
-         if (infoProvider.consumes(object))
-            infoProvider.addInfoFor(object, window);
-
+         }
+      });
+      
+      hookHandler.getHookers(ObjectInfoAdditionalInfoProvider.class)
+         .stream()
+         .filter(infoProvider -> infoProvider.consumes(object))
+         .forEach(infoProvider -> infoProvider.addInfoFor(object, window));
+      
       window.show();
    }
 

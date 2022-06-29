@@ -38,7 +38,7 @@ public class DatabaseDatasourceAdditionalObjectInfo implements ObjectInfoAdditio
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
       Map<String, DwContentPanel> panels = new HashMap<>();
-      getConfigMap().keySet().forEach(key -> panels.put(key, window.addDelayedSimpelInfoPanel(key)));
+      getConfigMap().keySet().forEach(key -> panels.put(key, window.addDelayedSimpleInfoPanel(key)));
       panels.keySet().forEach(key -> {
          DwContentPanel dwContentPanel = panels.get(key);
          dwContentPanel.clear();

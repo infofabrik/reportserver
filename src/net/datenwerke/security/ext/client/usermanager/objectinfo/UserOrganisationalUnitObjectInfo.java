@@ -31,7 +31,7 @@ public class UserOrganisationalUnitObjectInfo implements ObjectInfoAdditionalInf
 
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
-      final DwContentPanel panel = window.addDelayedSimpelInfoPanel(UserManagerMessages.INSTANCE.ou());
+      final DwContentPanel panel = window.addDelayedSimpleInfoPanel(UserManagerMessages.INSTANCE.ou());
       userManagerDao.getOrganisationalUnitDetailsAsHtml((UserDto) object, new RsAsyncCallback<SafeHtml>() {
 
          @Override

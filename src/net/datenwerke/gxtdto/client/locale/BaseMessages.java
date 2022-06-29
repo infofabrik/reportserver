@@ -188,5 +188,7 @@ public interface BaseMessages extends Messages {
    String password();
 
    String clearPassword();
+   
+   String path();
 
 }

@@ -39,7 +39,7 @@ public class ReportInTeamSpaceObjectInfo implements ObjectInfoAdditionalInfoProv
 
    @Override
    public void addInfoFor(Object object, InfoWindow window) {
-      final DwContentPanel panel = window.addDelayedSimpelInfoPanel("TeamSpace");
+      final DwContentPanel panel = window.addDelayedSimpleInfoPanel("TeamSpace");
 
       favoriteDao.getTeamSpacesWithPathsThatLinkToAsHtml((ReportDto) object, new RsAsyncCallback<SafeHtml>() {
          @Override

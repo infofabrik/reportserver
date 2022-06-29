@@ -64,7 +64,7 @@ public class InfoWindow extends DwWindow {
       setHeight(height + 25);
    }
 
-   public void addSimpelDataInfoPanel(String header, Map<String, String> data) {
+   public void addSimpleDataInfoPanel(String header, Map<String, String> data) {
       DwContentPanel wrapper = new DwContentPanel();
       wrapper.setHeading(header);
       wrapper.expand();
@@ -87,7 +87,7 @@ public class InfoWindow extends DwWindow {
       setHeight(height + 25);
    }
 
-   public FormPanel addDelayedSimpelDataInfoPanel(String header) {
+   public DwFlowContainer addDelayedSimpleDataInfoPanel(String header) {
       DwContentPanel wrapper = new DwContentPanel();
       wrapper.setHeading(header);
 
@@ -102,10 +102,10 @@ public class InfoWindow extends DwWindow {
 
       setHeight(height + 25);
 
-      return panel;
+      return fieldWrapper;
    }
 
-   public DwContentPanel addDelayedSimpelInfoPanel(String header) {
+   public DwContentPanel addDelayedSimpleInfoPanel(String header) {
       DwContentPanel panel = new DwContentPanel();
       panel.setAnimCollapse(false);
       panel.add(new Label(BaseMessages.INSTANCE.loadingMsg()));
