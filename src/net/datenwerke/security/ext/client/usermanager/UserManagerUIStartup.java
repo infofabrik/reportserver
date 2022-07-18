@@ -26,6 +26,7 @@ import net.datenwerke.security.client.security.hooks.GenericTargetProviderHook;
 import net.datenwerke.security.ext.client.usermanager.helper.simpleform.StrippedDownUserProvider;
 import net.datenwerke.security.ext.client.usermanager.helper.simpleform.UserProvider;
 import net.datenwerke.security.ext.client.usermanager.hookers.MainPanelViewProviderHooker;
+import net.datenwerke.security.ext.client.usermanager.objectinfo.GroupObjectInfo;
 import net.datenwerke.security.ext.client.usermanager.objectinfo.UserDetailsObjectInfo;
 import net.datenwerke.security.ext.client.usermanager.objectinfo.UserGroupsObjectInfo;
 import net.datenwerke.security.ext.client.usermanager.objectinfo.UserObjectInfo;
@@ -64,6 +65,8 @@ public class UserManagerUIStartup {
          final UserGroupsObjectInfo userGroupsObjectInfo,
          
          final UserOrganisationalUnitObjectInfo userOrganisationalUnitObjectInfo,
+         
+         final GroupObjectInfo groupObjectInfo,
 
          final Provider<UserProvider> simpleFormUserProvider,
          Provider<StrippedDownUserProvider> strippedDownUserProvider,
@@ -79,6 +82,8 @@ public class UserManagerUIStartup {
       hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userDetailsObjectInfo);
       hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userGroupsObjectInfo);
       hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, userOrganisationalUnitObjectInfo);
+      
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, groupObjectInfo);
 
       /* attach security target domains */
       hookHandler.attachHooker(GenericTargetProviderHook.class,

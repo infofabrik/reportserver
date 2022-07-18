@@ -14,6 +14,7 @@ import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DownloadMenuItem.DownloadMenuUrlGenerator;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -94,6 +95,7 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       fileMenu.add(new DeleteMenuItem(treeHandler));
       fileMenu.add(new SeparatorMenuItem());
       fileMenu.add(new DownloadMenuItem(new DownloadHelper()));
+      fileMenu.add(new InfoMenuItem());
       MenuItem fileSendToItem = generateSendToMenu();
       fileMenu.add(fileSendToItem);
 

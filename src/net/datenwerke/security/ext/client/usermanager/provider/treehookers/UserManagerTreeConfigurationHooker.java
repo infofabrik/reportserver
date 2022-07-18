@@ -67,6 +67,7 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem.disable();
       groupMenu.add(inserItem);
       groupMenu.add(new DeleteMenuItem(treeHandler));
+      groupMenu.add(new InfoMenuItem());
 
       /* OU */
       Menu ouMenu = menuProvider.createOrGetMenuFor(OrganisationalUnitDto.class);

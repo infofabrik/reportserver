@@ -13,6 +13,7 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gf.client.treedb.selection.hooks.AddSelectionFieldMenuItemHook;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
@@ -23,6 +24,7 @@ import net.datenwerke.rs.fileserver.client.fileserver.fileeditors.text.EditTextF
 import net.datenwerke.rs.fileserver.client.fileserver.hookers.EditFileFromSelectionWidgetHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
+import net.datenwerke.rs.fileserver.client.fileserver.objectinfo.FileServerFileObjectInfo;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerManagerAdminViewTree;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooker.FileServerManagerTreeConfigurationHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.security.FileServerManagerGenericTargetIdentifier;
@@ -54,6 +56,8 @@ public class FileServerUiStartup {
          final Provider<EditTextFileView> editTextFileProvider,
 
          final FileServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
+         
+         final FileServerFileObjectInfo fileServerFileObjectInfo,
 
          @FileServerManagerAdminViewTree Provider<UITree> fileManagerTree, HistoryUiService historyService,
          EventBus eventBus, Provider<FileServerManagerPanel> fileManagerAdminPanel) {
@@ -78,6 +82,9 @@ public class FileServerUiStartup {
 
       /* config tree */
       hookHandler.attachHooker(TreeConfiguratorHook.class, treeConfigurator);
+      
+      /* object info */
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, fileServerFileObjectInfo);
 
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,
