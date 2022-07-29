@@ -456,4 +456,12 @@ public interface SchedulerMessages extends Messages {
    String fileactionAmazonS3MsgSubject();
 
    String fileactionAmazonS3MsgText();
+   
+   String fileactionPrinterDatasinkMsgSubject();
+   
+   String fileactionPrinterDatasinkMsgText();
+   
+   String fileactionScriptDatasinkMsgSubject();
+   
+   String fileactionScriptDatasinkMsgText();
 }

@@ -45,11 +45,11 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
    public static final String PROPERTY_EXCEPTION = "exception";
    public static final String PROPERTY_EXCEPTIONST = "trace";
 
-   public static final String PROPERTY_FILE_SYSTEM_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionLocalFilesystem.subject";
-   public static final String PROPERTY_FILE_SYSTEM_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionLocalFilesystem.text";
+   public static final String PROPERTY_SCRIPT_DATASINK_NOTIFICATION_SUBJECT_SUCCESS = "scheduler.fileactionScriptDatasink.subject";
+   public static final String PROPERTY_SCRIPT_DATASINK_NOTIFICATION_TEXT_SUCCESS = "scheduler.fileactionScriptDatasink.text";
 
-   private static final String PROPERTY_FILE_SYSTEM_NOTIFICATION_DISABLED = "scheduler.fileactionLocalFilesystem[@disabled]";
-   private static final String PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML = "scheduler.fileactionLocalFilesystem[@html]";
+   private static final String PROPERTY_SCRIPT_DATASINK_NOTIFICATION_DISABLED = "scheduler.fileactionScriptDatasink[@disabled]";
+   private static final String PROPERTY_SCRIPT_DATASINK_NOTIFICATION_HTML = "scheduler.fileactionScriptDatasink[@html]";
 
    private Configuration config;
    private MailService mailService;
@@ -85,7 +85,7 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
 
    private void sendmail(ScheduleAsScriptDatasinkFileAction action, ReportExecuteJob job, Exception e)
          throws MessagingException {
-      if (config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_DISABLED, false))
+      if (config.getBoolean(PROPERTY_SCRIPT_DATASINK_NOTIFICATION_DISABLED, false))
          return;
 
       List<User> recipients = ((ReportExecuteJob) job).getRecipients();
@@ -102,7 +102,7 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
       datamap.put(PROPERTY_SCHEDULED_BY, UserForJuel.createInstance(job.getScheduledBy()));
 
       datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
-            config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false)));
+            config.getBoolean(PROPERTY_SCRIPT_DATASINK_NOTIFICATION_HTML, false)));
 
       datamap.put(PROPERTY_NAME, action.getFilename());
       datamap.put(PROPERTY_FILENAME, action.getFilename());
@@ -121,13 +121,13 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
       HashMap<String, HashMap<String, String>> msgs = remoteMessageService.getMessages(currentLanguage);
       datamap.put("msgs", msgs);
 
-      String subjectTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_SUBJECT_SUCCESS,
+      String subjectTemplate = config.getString(PROPERTY_SCRIPT_DATASINK_NOTIFICATION_SUBJECT_SUCCESS,
             msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionScriptDatasinkMsgSubject"));
-      String messageTemplate = config.getString(PROPERTY_FILE_SYSTEM_NOTIFICATION_TEXT_SUCCESS,
+      String messageTemplate = config.getString(PROPERTY_SCRIPT_DATASINK_NOTIFICATION_TEXT_SUCCESS,
             msgs.get(SchedulerMessages.class.getCanonicalName()).get("fileactionScriptDatasinkMsgText"));
 
       MailTemplate mailTemplate = new MailTemplate();
-      mailTemplate.setHtml(config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false));
+      mailTemplate.setHtml(config.getBoolean(PROPERTY_SCRIPT_DATASINK_NOTIFICATION_HTML, false));
       mailTemplate.setSubjectTemplate(subjectTemplate);
       mailTemplate.setMessageTemplate(messageTemplate);
       mailTemplate.setDataMap(datamap);
@@ -137,7 +137,6 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
             mailService.getEmailList(recipients).stream().toArray(Address[]::new));
 
       mailService.sendMail(simpleMail);
-
    }
 
 }
