@@ -41,13 +41,10 @@ public class ScheduleConfigAsScriptDatasinkHooker implements ScheduleConfigProvi
          throw new InvalidConfigurationException("No script datasink specified");
       if (null == info.getName() || info.getName().trim().isEmpty())
          throw new InvalidConfigurationException("No name specified");
-      if (null == info.getFolder() || info.getFolder().trim().isEmpty())
-         throw new InvalidConfigurationException("No folder specified");
 
       ScheduleAsScriptDatasinkFileAction action = actionProvider.get();
 
       action.setName(info.getName());
-      action.setFolder(info.getFolder());
       action.setCompressed(info.isCompressed());
       action.setScriptDatasink(
             (ScriptDatasink) dtoServiceProvider.get().loadPoso(info.getScriptDatasinkDto()));
@@ -68,7 +65,6 @@ public class ScheduleConfigAsScriptDatasinkHooker implements ScheduleConfigProvi
       ScheduleAsScriptDatasinkInformation info = new ScheduleAsScriptDatasinkInformation();
 
       info.setName(action.getName());
-      info.setFolder(action.getFolder());
       info.setCompressed(action.isCompressed());
       info.setScriptDatasinkDto(
             (ScriptDatasinkDto) dtoServiceProvider.get().createDto(action.getScriptDatasink()));
@@ -77,8 +73,6 @@ public class ScheduleConfigAsScriptDatasinkHooker implements ScheduleConfigProvi
          throw new IllegalArgumentException("No script datasink specified");
       if (null == info.getName() || info.getName().trim().isEmpty())
          throw new IllegalArgumentException("No name specified");
-      if (null == info.getFolder() || info.getFolder().trim().isEmpty())
-         throw new IllegalArgumentException("No folder specified");
 
       rsd.addAdditionalInfo(info);
 

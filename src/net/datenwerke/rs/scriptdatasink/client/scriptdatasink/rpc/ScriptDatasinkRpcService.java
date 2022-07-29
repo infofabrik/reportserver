@@ -18,7 +18,7 @@ import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasink
 public interface ScriptDatasinkRpcService extends RemoteService {
 
    void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         String format, List<ReportExecutionConfigDto> configs, String name, boolean compressed)
          throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
@@ -29,5 +29,5 @@ public interface ScriptDatasinkRpcService extends RemoteService {
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
 
    void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
-         String filename, String folder, boolean compressed) throws ServerCallFailedException;
+         String filename, boolean compressed) throws ServerCallFailedException;
 }

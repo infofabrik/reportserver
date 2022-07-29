@@ -92,7 +92,6 @@ public class ExportToScriptDatasinkHooker implements ExportExternalEntryProvider
                   datasinkDaoProvider.get().exportReportIntoDatasink(report, info.getExecuteReportToken(),
                         (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY), formatType.getOutputFormat(),
                         formatType.getExportConfiguration(), (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
-                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
                         (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }

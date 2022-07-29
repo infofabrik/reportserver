@@ -25,7 +25,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
-import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
@@ -95,7 +94,7 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
    @Transactional(rollbackOn = { Exception.class })
    @Override
    public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         String format, List<ReportExecutionConfigDto> configs, String name, boolean compressed)
          throws ServerCallFailedException {
       if (!(datasinkDto instanceof ScriptDatasinkDto))
          throw new IllegalArgumentException("Not a script datasink");
@@ -132,13 +131,7 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
                      os);
                datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
                      scriptDatasink,
-                     new DatasinkFilenameFolderConfig() {
-
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
+                     new DatasinkFilenameConfig() {
                         @Override
                         public String getFilename() {
                            return filename;
@@ -149,13 +142,7 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
             String filename = name + "." + cReport.getFileExtension();
             datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
                   scriptDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
+                  new DatasinkFilenameConfig() {
                      @Override
                      public String getFilename() {
                         return filename;
@@ -222,12 +209,12 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
 
    @Override
    public void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
-         String filename, String folder, boolean compressed) throws ServerCallFailedException {
+         String filename, boolean compressed) throws ServerCallFailedException {
       /* check rights */
       securityService.assertRights(abstractNodeDto, Read.class);
       securityService.assertRights(datasinkDto, Read.class, Execute.class);
       datasinkServiceProvider.get().exportFileIntoDatasink(abstractNodeDto, datasinkDto,
-            filename, folder, compressed);
+            filename, null, compressed);
    }
 
 }

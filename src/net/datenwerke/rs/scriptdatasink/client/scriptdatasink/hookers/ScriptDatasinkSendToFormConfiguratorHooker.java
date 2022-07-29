@@ -51,7 +51,7 @@ public class ScriptDatasinkSendToFormConfiguratorHooker implements DatasinkSendT
 
    @Override
    public boolean isFolderedDatasink() {
-      return true;
+      return false;
    }
 
    @Override

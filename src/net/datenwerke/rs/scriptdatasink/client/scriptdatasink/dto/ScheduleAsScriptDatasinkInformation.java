@@ -11,7 +11,6 @@ public class ScheduleAsScriptDatasinkInformation implements AdditionalScheduleIn
 
    private ScriptDatasinkDto scriptDatasinkDto;
    private String name;
-   private String folder;
    private boolean compressed;
 
    public ScriptDatasinkDto getScriptDatasinkDto() {
@@ -28,14 +27,6 @@ public class ScheduleAsScriptDatasinkInformation implements AdditionalScheduleIn
 
    public void setName(String name) {
       this.name = name;
-   }
-
-   public String getFolder() {
-      return folder;
-   }
-
-   public void setFolder(String folder) {
-      this.folder = folder;
    }
 
    public boolean isCompressed() {

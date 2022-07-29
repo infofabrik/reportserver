@@ -15,7 +15,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
-import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink;
@@ -50,7 +50,6 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
    private String filename;
 
    private String name;
-   private String folder;
 
    private Boolean compressed = false;
 
@@ -95,9 +94,6 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
       if (null == scriptDatasink)
          throw new ActionExecutionException("Script datasink is empty");
 
-      if (null == folder || folder.trim().isEmpty())
-         throw new ActionExecutionException("folder is empty");
-
    }
 
    private void sendViaScriptDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
@@ -112,13 +108,7 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
                      os);
                datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
                      scriptDatasink,
-                     new DatasinkFilenameFolderConfig() {
-
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
+                     new DatasinkFilenameConfig() {
                         @Override
                         public String getFilename() {
                            return filenameScheduling;
@@ -129,13 +119,7 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
             String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
             datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
                   scriptDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
+                  new DatasinkFilenameConfig() {
                      @Override
                      public String getFilename() {
                         return filenameScheduling;
@@ -143,7 +127,7 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
                   });
          }
       } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to Script Datasink", e);
+         throw new ActionExecutionException("report could not be sent to script datasink", e);
       }
    }
 
@@ -157,14 +141,6 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
 
    public String getFilename() {
       return filename;
-   }
-
-   public String getFolder() {
-      return folder;
-   }
-
-   public void setFolder(String folder) {
-      this.folder = folder;
    }
 
    public Report getReport() {

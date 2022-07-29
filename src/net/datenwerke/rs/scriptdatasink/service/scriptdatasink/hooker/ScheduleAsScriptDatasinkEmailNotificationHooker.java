@@ -34,7 +34,6 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerExecutionHookAdapter {
 
-   private static final String PROPERTY_FOLDER = "folder";
    private static final String PROPERTY_NAME = "name";
    private static final String PROPERTY_REPORT = "report";
    private static final String PROPERTY_JOB = "job";
@@ -105,7 +104,6 @@ public class ScheduleAsScriptDatasinkEmailNotificationHooker extends SchedulerEx
       datamap.put(PROPERTY_OWNERS, UserListForJuelPrinter.createInstance(new ArrayList<>(job.getOwners()),
             config.getBoolean(PROPERTY_FILE_SYSTEM_NOTIFICATION_HTML, false)));
 
-      datamap.put(PROPERTY_FOLDER, action.getFolder());
       datamap.put(PROPERTY_NAME, action.getFilename());
       datamap.put(PROPERTY_FILENAME, action.getFilename());
 
