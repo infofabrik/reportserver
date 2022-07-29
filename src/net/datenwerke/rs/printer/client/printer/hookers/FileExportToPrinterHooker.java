@@ -80,7 +80,6 @@ public class FileExportToPrinterHooker implements FileExportExternalEntryProvide
                   datasinkDaoProvider.get().exportFileIntoDatasink(toExport,
                         (DatasinkDefinitionDto) result.get(DatasinkUIModule.DATASINK_KEY),
                         (String) result.get(DatasinkUIModule.DATASINK_FILENAME),
-                        (String) result.get(DatasinkUIModule.DATASINK_FOLDER),
                         (Boolean) result.get(DatasinkUIModule.DATASINK_COMPRESSED_KEY),
                         new NotamCallback<Void>(ScheduleAsFileMessages.INSTANCE.dataSent()));
                }

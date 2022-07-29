@@ -16,7 +16,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface PrinterRpcServiceAsync {
 
    void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed,
+         String format, List<ReportExecutionConfigDto> configs, String name, boolean compressed,
          AsyncCallback<Void> callback);
 
    void getStorageEnabledConfigs(AsyncCallback<Map<StorageType, Boolean>> callback);
@@ -26,7 +26,7 @@ public interface PrinterRpcServiceAsync {
    void getDefaultDatasink(AsyncCallback<DatasinkDefinitionDto> callback);
 
    void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
-         String filename, String folder, boolean compressed, AsyncCallback<Void> callback);
+         String filename, boolean compressed, AsyncCallback<Void> callback);
 
    void getAvailablePrinters(AsyncCallback<List<String>> callback);
 }

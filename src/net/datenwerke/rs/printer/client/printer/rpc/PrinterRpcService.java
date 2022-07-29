@@ -18,7 +18,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 public interface PrinterRpcService extends RemoteService {
 
    void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
+         String format, List<ReportExecutionConfigDto> configs, String name, boolean compressed)
          throws ServerCallFailedException;
 
    Map<StorageType, Boolean> getStorageEnabledConfigs() throws ServerCallFailedException;
@@ -28,7 +28,7 @@ public interface PrinterRpcService extends RemoteService {
    DatasinkDefinitionDto getDefaultDatasink() throws ServerCallFailedException;
 
    void exportFileIntoDatasink(AbstractFileServerNodeDto abstractNodeDto, DatasinkDefinitionDto datasinkDto,
-         String filename, String folder, boolean compressed) throws ServerCallFailedException;
+         String filename, boolean compressed) throws ServerCallFailedException;
    
    List<String> getAvailablePrinters() throws ServerCallFailedException;
 }
