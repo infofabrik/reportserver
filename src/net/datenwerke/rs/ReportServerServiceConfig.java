@@ -191,6 +191,8 @@ import net.datenwerke.rs.scheduler.server.scheduler.SchedulerRpcServiceImpl;
 import net.datenwerke.rs.scheduler.service.scheduler.RsSchedulerModule;
 import net.datenwerke.rs.scp.server.scp.ScpRpcServiceImpl;
 import net.datenwerke.rs.scp.service.scp.ScpModule;
+import net.datenwerke.rs.scriptdatasink.server.scriptdatasink.ScriptDatasinkRpcServiceImpl;
+import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.ScriptDatasinkModule;
 import net.datenwerke.rs.search.server.search.SearchRpcServiceImpl;
 import net.datenwerke.rs.search.service.search.SearchModule;
 import net.datenwerke.rs.tabledatasink.server.tabledatasink.TableDatasinkRpcServiceImpl;
@@ -431,6 +433,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "amazons3").with(AmazonS3RpcServiceImpl.class);
             serve(BASE_URL + "printer").with(PrinterRpcServiceImpl.class);
             serve(BASE_URL + "tabledatasink").with(TableDatasinkRpcServiceImpl.class);
+            serve(BASE_URL + "scriptdatasink").with(ScriptDatasinkRpcServiceImpl.class);
 
             serve(BASE_URL + "localfilesystem").with(LocalFileSystemRpcServiceImpl.class);
             serve(BASE_URL + "email").with(EmailDatasinkRpcServiceImpl.class);
@@ -671,6 +674,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new AmazonS3Module(),
             new PrinterModule(),
             new TableDatasinkModule(),
+            new ScriptDatasinkModule(),
             
             new ScpModule(),
 

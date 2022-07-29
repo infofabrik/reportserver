@@ -124,6 +124,7 @@
           <class>net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.ColumnFilter</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder</class>
+          <class>net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.dagets.UrlDadget</class>
           <class>net.datenwerke.rs.base.service.parameters.separator.SeparatorParameterInstance</class>
           <class>net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition</class>
@@ -174,6 +175,7 @@
           <class>net.datenwerke.rs.computedcolumns.service.computedcolumns.entities.ComputedColumn</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardManagerNode</class>
           <class>net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink</class>
+          <class>net.datenwerke.rs.scriptdatasink.service.scriptdatasink.action.ScheduleAsScriptDatasinkFileAction</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.filters.Filter</class>
           <class>net.datenwerke.rs.globalconstants.service.globalconstants.entities.GlobalConstant</class>
           <class>net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskFileReference</class>

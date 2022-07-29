@@ -256,6 +256,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scheduleasfile.service.scheduleasfile.filter.TeamSpaceReportJobFilter.class, injector.getInstance(net.datenwerke.rs.scheduleasfile.service.scheduleasfile.filter.dtogen.TeamSpaceReportJobFilter2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter.class, injector.getInstance(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.dtogen.ReportServerJobFilter2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink.class, injector.getInstance(net.datenwerke.rs.scp.service.scp.definitions.dtogen.ScpDatasink2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink.class, injector.getInstance(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.dtogen.ScriptDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuEntryExtension.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddMenuEntryExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuSeparatorEntryExtension.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddMenuSeparatorEntryExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddReportExportFormatProvider.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddReportExportFormatProvider2DtoGenerator.class));
@@ -502,6 +503,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto.class, injector.getInstance(net.datenwerke.rs.scheduleasfile.service.scheduleasfile.filter.dtogen.Dto2TeamSpaceReportJobFilterGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class, injector.getInstance(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.dtogen.Dto2ReportServerJobFilterGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class, injector.getInstance(net.datenwerke.rs.scp.service.scp.definitions.dtogen.Dto2ScpDatasinkGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class, injector.getInstance(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.dtogen.Dto2ScriptDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddMenuEntryExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddMenuSeparatorEntryExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddReportExportFormatProviderGenerator.class));
@@ -908,6 +910,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto.class);
@@ -1261,6 +1264,7 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.scheduleasfile.service.scheduleasfile.filter.TeamSpaceReportJobFilter.class);
 		posoClassLookup.add(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter.class);
 		posoClassLookup.add(net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink.class);
+		posoClassLookup.add(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuEntryExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuSeparatorEntryExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddReportExportFormatProvider.class);

@@ -201,6 +201,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReport
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpaceReportJobFilterDto;
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
+import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto;
@@ -571,6 +572,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto)
 			return ((net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto)
+			return ((net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return ((net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportVariantDto)
@@ -1029,6 +1032,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto();
 		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
+		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -1539,6 +1544,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto();
 		if("net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
+		if("net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto".equals(dtoClassName))
@@ -2307,6 +2314,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.scheduler.client.scheduler.dto.posomap.ReportServerJobFilterDto2PosoMap.class;
 		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scp.client.scp.dto.posomap.ScpDatasinkDto2PosoMap.class;
+		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoClass))
+			return net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.posomap.ScriptDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scripting.client.scripting.dto.posomap.AddMenuEntryExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -2842,6 +2851,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.scheduleasfile.client.scheduleasfile.dto.ExecutedReportFileReferenceDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return true;
@@ -3556,6 +3567,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoType))
 			return true;
@@ -4454,6 +4467,8 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return true;

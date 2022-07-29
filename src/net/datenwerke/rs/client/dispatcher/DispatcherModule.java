@@ -77,6 +77,7 @@ import net.datenwerke.rs.samba.client.samba.SambaUiModule;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.ScheduleAsFileUiModule;
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerUIModule;
 import net.datenwerke.rs.scp.client.scp.ScpUiModule;
+import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.ScriptDatasinkUiModule;
 import net.datenwerke.rs.scripting.client.scripting.ScriptingUiModule;
 import net.datenwerke.rs.scriptreport.client.scriptreport.ScriptReportUiModule;
 import net.datenwerke.rs.search.client.search.SearchUiModule;
@@ -131,6 +132,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new SambaUiModule());
       install(new ScpUiModule());
       install(new LocalFileSystemUiModule());
+      install(new ScriptDatasinkUiModule());
       install(new EmailDatasinkUiModule());
       install(new FileServerUiModule());
       install(new LogFilesUiModule());
