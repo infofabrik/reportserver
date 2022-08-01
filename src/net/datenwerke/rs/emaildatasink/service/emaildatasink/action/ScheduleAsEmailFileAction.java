@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.Lob;
@@ -48,7 +49,7 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    private DatasinkService datasinkService;
 
    @EnclosedEntity
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    private EmailDatasink emailDatasink;
 
    private Boolean compressed = false;

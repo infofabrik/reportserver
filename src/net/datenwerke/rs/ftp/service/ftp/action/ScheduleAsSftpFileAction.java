@@ -7,6 +7,7 @@ import java.util.Calendar;
 import java.util.Collections;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -42,7 +43,7 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
    private DatasinkService datasinkService;
 
    @EnclosedEntity
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    private SftpDatasink sftpDatasink;
 
    @Transient

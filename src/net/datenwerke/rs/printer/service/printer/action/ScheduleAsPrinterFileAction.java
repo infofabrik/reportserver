@@ -1,6 +1,7 @@
 package net.datenwerke.rs.printer.service.printer.action;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -29,7 +30,7 @@ public class ScheduleAsPrinterFileAction extends AbstractAction {
    private DatasinkService datasinkService;
 
    @EnclosedEntity
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    private PrinterDatasink printerDatasink;
 
    @Transient

@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.OneToOne;
@@ -39,7 +40,7 @@ public class ScheduleAsBoxFileAction extends AbstractAction {
    private DatasinkService datasinkService;
 
    @EnclosedEntity
-   @OneToOne
+   @OneToOne(fetch = FetchType.LAZY)
    private BoxDatasink boxDatasink;
 
    @Transient
