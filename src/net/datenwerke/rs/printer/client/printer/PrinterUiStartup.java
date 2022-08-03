@@ -27,7 +27,7 @@ import net.datenwerke.rs.scheduler.client.scheduler.hooks.ScheduleExportSnippetP
 
 public class PrinterUiStartup {
 
-   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 60;
+   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 70;
 
    @Inject
    public PrinterUiStartup(

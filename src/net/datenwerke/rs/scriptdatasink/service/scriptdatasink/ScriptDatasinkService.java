@@ -8,5 +8,6 @@ import net.datenwerke.rs.core.service.datasinkmanager.BasicDatasinkService;
 public interface ScriptDatasinkService extends BasicDatasinkService {
 
    String DATASINK_CONFIG = "datasinkConfiguration";
+   String DATASINK_DATA = "data";
 
 }

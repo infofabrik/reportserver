@@ -25,7 +25,7 @@ import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.hookers.ScriptData
 
 public class ScriptDatasinkUiStartup {
 
-   private static final int PRIO = HookHandlerService.PRIORITY_LOW + 35;
+   private static final int PRIO = HookHandlerService.PRIORITY_LOWER;
 
    @Inject
    public ScriptDatasinkUiStartup(
@@ -33,7 +33,8 @@ public class ScriptDatasinkUiStartup {
          final Provider<FileExportToScriptDatasinkHooker> fileExportToDatasinkHooker,
          final HookHandlerService hookHandler,
          final Provider<ScriptDatasinkConfigProviderHooker> scriptDatasinkTreeConfiguratorProvider,
-         final WaitOnEventUIService waitOnEventService, final ScriptDatasinkDao dao,
+         final WaitOnEventUIService waitOnEventService, 
+         final ScriptDatasinkDao dao,
          final Provider<ScriptDatasinkExportSnippetProvider> scriptDatasinkExportSnippetProvider,
          final ScriptDatasinkTesterToolbarConfigurator scriptDatasinkTestToolbarConfigurator,
          final ScriptDatasinkUiService scriptDatasinkUiService,
