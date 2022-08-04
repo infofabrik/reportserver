@@ -13,7 +13,6 @@ import net.datenwerke.gf.client.upload.FileUploadUiService;
 import net.datenwerke.gf.client.upload.dto.UploadProperties;
 import net.datenwerke.gf.client.upload.filter.FileUploadFilter;
 import net.datenwerke.gxtdto.client.forms.binding.FormBinding;
-import net.datenwerke.rs.base.client.reportengines.jasper.locale.JasperMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIService;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceTreeNoMondrian;
 import net.datenwerke.rs.core.client.reportmanager.ui.forms.AbstractReportForm;
@@ -34,7 +33,7 @@ public class JxlsReportForm extends AbstractReportForm {
       @Override
       public String doProcess(String name, long size, String base64) {
          boolean error = null == name || !(name.toLowerCase().endsWith(".xlsx") || name.toLowerCase().endsWith(".xls"));
-         return error ? JasperMessages.INSTANCE.fileMustBeJrxml() : null;
+         return error ? JxlsReportMessages.INSTANCE.fileMustBeExcel(".xlsx, .xls") : null;
       }
    };
 

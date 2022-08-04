@@ -14,5 +14,7 @@ public interface JxlsReportMessages extends Messages {
    String templateUpload();
 
    String fileName();
+   
+   String fileMustBeExcel(String accepted);
 
 }
