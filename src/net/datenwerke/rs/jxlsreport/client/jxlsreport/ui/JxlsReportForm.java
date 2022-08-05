@@ -32,8 +32,10 @@ public class JxlsReportForm extends AbstractReportForm {
    private static FileUploadFilter uploadFilter = new FileUploadFilter() {
       @Override
       public String doProcess(String name, long size, String base64) {
-         boolean error = null == name || !(name.toLowerCase().endsWith(".xlsx") || name.toLowerCase().endsWith(".xls"));
-         return error ? JxlsReportMessages.INSTANCE.fileMustBeExcel(".xlsx, .xls") : null;
+         String lowerCaseName = name.toLowerCase();
+         boolean error = null == name || !(lowerCaseName.endsWith(".xlsx") || lowerCaseName.endsWith(".xls") 
+               || lowerCaseName.endsWith(".xlsm"));
+         return error ? JxlsReportMessages.INSTANCE.fileMustBeExcel(".xlsx, .xls, .xlsm") : null;
       }
    };
 
