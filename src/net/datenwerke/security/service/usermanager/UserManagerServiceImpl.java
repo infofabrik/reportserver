@@ -413,4 +413,13 @@ public class UserManagerServiceImpl extends SecuredTreeDBManagerImpl<AbstractUse
          .collect(toSet());
    }
 
+   @Override
+   public User getUserOrNull(String username) {
+      try {
+         return getUserByName(username);
+      } catch (NoResultException ex) {
+         return null;
+      }
+   }
+
 }

@@ -107,7 +107,7 @@ public class MailReportAction extends AbstractAction {
    @Transient
    private String smptTrace;
 
-   private boolean compressed = false;
+   private boolean compressed;
 
    public void setCompressed(boolean compressed) {
       this.compressed = compressed;

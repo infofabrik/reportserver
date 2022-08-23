@@ -1,7 +1,5 @@
 package net.datenwerke.rs.authenticator.service.pam;
 
-import javax.persistence.NoResultException;
-
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.authenticator.client.login.dto.UserPasswordAuthToken;
@@ -20,11 +18,15 @@ public class UserPasswordPAM implements ReportServerPAM {
    private final PasswordHasher passwordHasher;
 
    @Inject
-   public UserPasswordPAM(UserManagerService userManagerService, PasswordHasher passwordHasher) {
+   public UserPasswordPAM(
+         UserManagerService userManagerService, 
+         PasswordHasher passwordHasher
+         ) {
       this.userManagerService = userManagerService;
       this.passwordHasher = passwordHasher;
    }
-
+   
+   @Override
    public AuthenticationResult authenticate(AuthToken[] tokens) {
       for (Object token : tokens) {
          if (token instanceof UserPasswordAuthToken) {
@@ -34,7 +36,7 @@ public class UserPasswordPAM implements ReportServerPAM {
             if (null != u) {
                return new AuthenticationResult(true, u);
             } else {
-               User usr = getUserOrNull(credentials.getUsername());
+               User usr = userManagerService.getUserOrNull(credentials.getUsername());
                return new AuthenticationResult(false, usr);
             }
          }
@@ -43,16 +45,8 @@ public class UserPasswordPAM implements ReportServerPAM {
       return new AuthenticationResult(!isAuthoritative(), null);
    }
 
-   protected User getUserOrNull(String username) {
-      try {
-         return userManagerService.getUserByName(username);
-      } catch (NoResultException ex) {
-         return null;
-      }
-   }
-
    public User authenticate(String username, String cleartextPassword) {
-      User user = getUserOrNull(username);
+      User user = userManagerService.getUserOrNull(username);
 
       if (null == user)
          return null;
@@ -63,6 +57,7 @@ public class UserPasswordPAM implements ReportServerPAM {
          return null;
    }
 
+   @Override
    public String getClientModuleName() {
       return CLIENT_MODULE_NAME;
    }
