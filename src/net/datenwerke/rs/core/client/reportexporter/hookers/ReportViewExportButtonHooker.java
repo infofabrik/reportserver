@@ -56,7 +56,7 @@ public class ReportViewExportButtonHooker implements ReportExecutorViewToolbarHo
    @Override
    public boolean reportPreviewViewToolbarHook_addLeft(ToolBar toolbar, final ReportDto report,
          final ReportExecutorInformation info, final ReportExecutorMainPanel mainPanel) {
-      exporters = reportExporterService.getCleanedUpAvailableExporters(report);
+      exporters = reportExporterService.getCleanedUpAvailableExporters(report, true);
       if (exporters.isEmpty())
          return false;
 

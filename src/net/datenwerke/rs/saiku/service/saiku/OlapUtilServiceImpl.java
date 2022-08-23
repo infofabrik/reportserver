@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toList;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -62,6 +61,7 @@ import mondrian.olap4j.SaikuMondrianHelper;
 import mondrian.rolap.RolapConnection;
 import mondrian.rolap.RolapSchema;
 import mondrian.rolap.RolapSchema.MondrianSchemaException;
+import mondrian.olap4j.MondrianOlap4jDriver;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
@@ -339,9 +339,8 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       }
 
       /* load driver and get connection */
-      Class.forName(driver);
-
-      OlapConnection connection = (OlapConnection) DriverManager.getConnection(url, props);
+      MondrianOlap4jDriver mondrianOlap4jDriver = new MondrianOlap4jDriver();
+      OlapConnection connection = (OlapConnection) mondrianOlap4jDriver.connect(url, props);
 
       /* allow hook to adapt connection */
       Optional<OlapConnectionHook> olapConnHook = hookHandlerService.getHookers(OlapConnectionHook.class).stream()

@@ -71,7 +71,7 @@ public interface DatasourcesMessages extends Messages {
 
    String defaultDatasource();
 
-   String mondrian3();
+   String mondrian8();
    
    String objectInfoGeneralInfo();
    

@@ -1,0 +1,77 @@
+/*
+* This software is subject to the terms of the Eclipse Public License v1.0
+* Agreement, available at the following URL:
+* http://www.eclipse.org/legal/epl-v10.html.
+* You must accept the terms of that agreement to use this software.
+*
+* Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
+*/
+
+package mondrian8.calc.impl;
+
+import mondrian8.calc.*;
+import mondrian8.olap.Evaluator;
+import mondrian8.olap.Exp;
+import mondrian8.olap.type.SetType;
+
+/**
+ * Adapter which computes a set expression and converts it to any list or
+ * iterable type.
+ *
+ * @author jhyde
+ * @since Nov 7, 2008
+ */
+public abstract class GenericIterCalc
+    extends AbstractCalc
+    implements ListCalc, IterCalc
+{
+    /**
+     * Creates a GenericIterCalc without specifying child calculated
+     * expressions.
+     *
+     * <p>Subclass should override {@link #getCalcs()}.
+     *
+     * @param exp Source expression
+     */
+    protected GenericIterCalc(Exp exp) {
+        super(exp, null);
+    }
+
+    /**
+     * Creates an GenericIterCalc.
+     *
+     * @param exp Source expression
+     * @param calcs Child compiled expressions
+     */
+    protected GenericIterCalc(Exp exp, Calc[] calcs) {
+        super(exp, calcs);
+    }
+
+    public SetType getType() {
+        return (SetType) type;
+    }
+
+    public TupleList evaluateList(Evaluator evaluator) {
+        Object o = evaluate(evaluator);
+        if (o instanceof TupleList) {
+            return (TupleList) o;
+        } else {
+            // Iterable
+            final TupleIterable iterable = (TupleIterable) o;
+            TupleList tupleList =
+                TupleCollections.createList(iterable.getArity());
+            TupleCursor cursor = iterable.tupleCursor();
+            while (cursor.forward()) {
+                tupleList.addCurrent(cursor);
+            }
+            return tupleList;
+        }
+    }
+
+    public TupleIterable evaluateIterable(Evaluator evaluator) {
+        Object o = evaluate(evaluator);
+        return (TupleIterable) o;
+    }
+}
+
+// End GenericIterCalc.java

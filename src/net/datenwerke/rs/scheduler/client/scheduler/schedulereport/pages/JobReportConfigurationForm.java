@@ -296,7 +296,7 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
       final DwTextButton formatConfigBtn = new DwTextButton(SchedulerMessages.INSTANCE.formatConfig(), BaseIcon.COG);
       formatConfigBtn.addStyleName("rs-export-type-conf-btn");
 
-      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
+      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report, false);
       exporterMap = new HashMap<>();
       boolean showConfigBtn = false;
       boolean first = true;
@@ -464,7 +464,7 @@ public class JobReportConfigurationForm extends DwContentPanel implements Valida
             if (!(result instanceof ReportDto))
                return;
 
-            reportExporterService.getCleanedUpAvailableExporters((ReportDto) result).forEach(exporter -> {
+            reportExporterService.getCleanedUpAvailableExporters((ReportDto) result, false).forEach(exporter -> {
                MenuItem subExportItem = new DwMenuItem(exporter.getExportTitle(), exporter.getIcon());
                subMenu.add(subExportItem);
                subExportItem.addSelectionHandler(event -> {

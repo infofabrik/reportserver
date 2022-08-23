@@ -19,7 +19,7 @@ package org.legacysaiku.olap.query;
 import java.util.Map;
 import java.util.Properties;
 
-import mondrian3.rolap.RolapConnection;
+import mondrian8.rolap.RolapConnection;
 
 import org.olap4j.Axis;
 import org.olap4j.CellSet;

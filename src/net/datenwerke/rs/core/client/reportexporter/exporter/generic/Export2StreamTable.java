@@ -44,4 +44,9 @@ public abstract class Export2StreamTable extends ReportExporterImpl {
    public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
       return datasinkType.equals(TableDatasinkDto.class);
    }
+   
+   @Override
+   public boolean showInExportList() {
+      return false;
+   }
 }

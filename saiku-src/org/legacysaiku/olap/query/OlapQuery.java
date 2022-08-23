@@ -22,7 +22,7 @@ import java.math.BigDecimal;
 import java.util.Map;
 import java.util.Properties;
 
-import mondrian3.rolap.RolapConnection;
+import mondrian8.rolap.RolapConnection;
 
 import org.apache.commons.lang3.StringUtils;
 import org.olap4j.Axis;

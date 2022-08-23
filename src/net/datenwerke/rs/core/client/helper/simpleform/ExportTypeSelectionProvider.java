@@ -63,7 +63,7 @@ public class ExportTypeSelectionProvider extends FormFieldProviderHookImpl {
 
       final DwTextButton formatConfigBtn = new DwTextButton(ReportExporterMessages.INSTANCE.formatConfigLabel());
 
-      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(config.getReport());
+      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(config.getReport(), false);
       exporterMap = new HashMap<Radio, ReportExporter>();
       boolean first = true;
 

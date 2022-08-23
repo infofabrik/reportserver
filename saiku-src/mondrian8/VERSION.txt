@@ -1,0 +1,5 @@
+Title: mondrian
+Version: 8.3.0.27-1593
+VersionMajor: 8
+VersionMinor: 000
+Vendor: Pentaho

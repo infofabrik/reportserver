@@ -50,4 +50,6 @@ public interface ReportExporter {
    boolean isSkipDownload();
    
    boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType);
+   
+   boolean showInExportList();
 }

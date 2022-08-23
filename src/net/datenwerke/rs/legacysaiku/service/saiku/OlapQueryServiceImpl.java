@@ -80,7 +80,7 @@ import org.olap4j.query.SortOrder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import mondrian3.rolap.RolapConnection;
+import mondrian8.rolap.RolapConnection;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.base.service.reportengines.table.utils.RSTableToXLS;

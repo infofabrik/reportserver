@@ -1,7 +1,5 @@
 package net.datenwerke.rs.authenticator.cr.service.pam;
 
-import javax.persistence.NoResultException;
-
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.authenticator.client.login.dto.ChallengeResponseAuthToken;
@@ -37,7 +35,7 @@ public class ChallengeResponsePAM implements ReportServerPAM {
             if (null != u) {
                return new AuthenticationResult(true, u);
             } else {
-               User usr = getUserOrNull(crToken.getUsername());
+               User usr = userManagerService.getUserOrNull(crToken.getUsername());
                AuthenticationResult result = new AuthenticationResult(false, usr);
                return result;
             }
@@ -48,7 +46,7 @@ public class ChallengeResponsePAM implements ReportServerPAM {
    }
 
    private User authenticate(String username, ChallengeResponseContainer container) {
-      User user = getUserOrNull(username);
+      User user = userManagerService.getUserOrNull(username);
 
       if (null == user)
          return null;
@@ -59,14 +57,6 @@ public class ChallengeResponsePAM implements ReportServerPAM {
          return user;
       } else
          return null;
-   }
-
-   private User getUserOrNull(String username) {
-      try {
-         return userManagerService.getUserByName(username);
-      } catch (NoResultException ex) {
-         return null;
-      }
    }
 
    @Override

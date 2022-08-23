@@ -71,7 +71,7 @@ public class MenuExportHooker implements TsFavoriteMenuHook {
                   return;
 
                for (final ReportExporter exporter : reportExporterService
-                     .getCleanedUpAvailableExporters((ReportDto) result)) {
+                     .getCleanedUpAvailableExporters((ReportDto) result, false)) {
                   MenuItem subExportItem = new DwMenuItem(exporter.getExportTitle(), exporter.getIcon());
                   subMenu.add(subExportItem);
                   subExportItem.addSelectionHandler(event -> {

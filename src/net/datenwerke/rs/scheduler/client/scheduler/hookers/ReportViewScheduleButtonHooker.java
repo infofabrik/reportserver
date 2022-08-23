@@ -76,7 +76,7 @@ public class ReportViewScheduleButtonHooker implements ReportExecutorViewToolbar
          return false;
 
       /* only if report can be exported */
-      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report);
+      List<ReportExporter> exporters = reportExporterService.getCleanedUpAvailableExporters(report, false);
       if (!exporters.iterator().hasNext())
          return false;
 

@@ -18,7 +18,7 @@ package org.legacysaiku.datasources.connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-import mondrian3.rolap.RolapConnection;
+import mondrian8.rolap.RolapConnection;
 
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapWrapper;
@@ -60,7 +60,7 @@ public class SaikuOlapConnection implements ISaikuConnection {
 		if (url.length() > 0 && url.charAt(url.length()-1) != ';') {
 			url += ";";
 		}
-		if (driver.equals("mondrian3.olap4j.MondrianOlap4jDriver")) {
+		if (driver.equals("mondrian8.olap4j.MondrianOlap4jDriver")) {
 			if (username != null && username.length() > 0) {
 				url += "JdbcUser=" + username + ";";
 			}

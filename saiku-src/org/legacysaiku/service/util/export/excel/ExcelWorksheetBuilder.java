@@ -298,7 +298,7 @@ public class ExcelWorksheetBuilder {
             numberCSClone.cloneStyleFrom(numberCS);
             DataFormat fmt = excelWorkbook.createDataFormat();
             
-            // the format string can contain macro values such as "Standard" from mondrian3.util.Format
+            // the format string can contain macro values such as "Standard" from mondrian8.util.Format
             // try and look it up, otherwise use the given one
             formatString = FormatUtil.getFormatString(formatString);
             short dataFormat = fmt.getFormat(formatString);

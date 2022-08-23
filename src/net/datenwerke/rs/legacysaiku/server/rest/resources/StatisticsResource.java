@@ -6,12 +6,12 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import mondrian3.olap.MondrianServer;
-import mondrian3.olap.MondrianServer.MondrianVersion;
-import mondrian3.server.monitor.ConnectionInfo;
-import mondrian3.server.monitor.Monitor;
-import mondrian3.server.monitor.ServerInfo;
-import mondrian3.server.monitor.StatementInfo;
+import mondrian8.olap.MondrianServer;
+import mondrian8.olap.MondrianServer.MondrianVersion;
+import mondrian8.server.monitor.ConnectionInfo;
+import mondrian8.server.monitor.Monitor;
+import mondrian8.server.monitor.ServerInfo;
+import mondrian8.server.monitor.StatementInfo;
 
 @Path("/legacysaiku/statistics")
 public class StatisticsResource {
@@ -22,9 +22,9 @@ public class StatisticsResource {
 //	StringWriter saikuWriter = new StringWriter();
 //	
 //	public StatisticsResource() {
-//		setupLog("mondrian3.sql", "DEBUG", sqlWriter);
-//		setupLog("mondrian3.mdx", "DEBUG", mdxWriter);
-//		setupLog("mondrian3.profile", "DEBUG", profileWriter);
+//		setupLog("mondrian8.sql", "DEBUG", sqlWriter);
+//		setupLog("mondrian8.mdx", "DEBUG", mdxWriter);
+//		setupLog("mondrian8.profile", "DEBUG", profileWriter);
 //		setupLog("org.legacysaiku.service", "INFO", saikuWriter);
 //		System.out.println("##########################SETUP LOG");
 //		
@@ -53,10 +53,10 @@ public class StatisticsResource {
          final Monitor monitor = mondrianServer.getMonitor();
          final ServerInfo server = monitor.getServer();
 
-         int statementCurrentlyOpenCount = server.statementCurrentlyOpenCount();
-         int connectionCurrentlyOpenCount = server.connectionCurrentlyOpenCount();
-         int sqlStatementCurrentlyOpenCount = server.sqlStatementCurrentlyOpenCount();
-         int statementCurrentlyExecutingCount = server.statementCurrentlyExecutingCount();
+         int statementCurrentlyOpenCount = server.getSqlStatementCurrentlyOpenCount();
+         int connectionCurrentlyOpenCount = server.getConnectionCurrentlyOpenCount();
+         int sqlStatementCurrentlyOpenCount = server.getSqlStatementCurrentlyOpenCount();
+         int statementCurrentlyExecutingCount = server.getStatementCurrentlyExecutingCount();
          float avgCellDimensionality = ((float) server.cellCoordinateCount / (float) server.cellCount);
 
          final List<ConnectionInfo> connections = monitor.getConnections();

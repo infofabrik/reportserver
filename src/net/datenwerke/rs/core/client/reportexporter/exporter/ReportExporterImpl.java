@@ -192,4 +192,10 @@ public abstract class ReportExporterImpl implements ReportExporter {
    public boolean supportsDatasink(Class<? extends DatasinkDefinitionDto> datasinkType) {
       return ! datasinkType.equals(TableDatasinkDto.class) && ! datasinkType.equals(PrinterDatasinkDto.class);
    }
+   
+   @Override
+   public boolean showInExportList() {
+      return true;
+   }
+   
 }

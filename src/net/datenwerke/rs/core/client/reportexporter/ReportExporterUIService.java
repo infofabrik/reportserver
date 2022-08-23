@@ -15,8 +15,11 @@ public interface ReportExporterUIService {
     * report which are allowed and in the right order.
     * 
     * @param report
+    * @param removeHiddenInExportList if true, removes the exporters for which
+    *                                 {@link ReportExporter#showInExportList()} is
+    *                                 false.
     */
-   public List<ReportExporter> getCleanedUpAvailableExporters(ReportDto report);
+   public List<ReportExporter> getCleanedUpAvailableExporters(ReportDto report, boolean removeHiddenInExportList);
 
    /**
     * Returns all exporters that are able to export the report in practice

@@ -42,10 +42,10 @@ import org.xml.sax.InputSource;
 
 import com.google.inject.Provider;
 
-import mondrian3.olap.CacheControl;
-import mondrian3.olap4j.MondrianOlap4jDriver;
-import mondrian3.rolap.RolapConnection;
-import mondrian3.rolap.RolapSchema;
+import mondrian8.olap.CacheControl;
+import mondrian8.olap4j.MondrianOlap4jDriver;
+import mondrian8.rolap.RolapConnection;
+import mondrian8.rolap.RolapSchema;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
@@ -343,13 +343,13 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
          try {
             final OlapConnection con = getOlapConnection((SaikuReport) report);
-            final RolapConnection rolapConnection = con.unwrap(mondrian3.rolap.RolapConnection.class);
+            final RolapConnection rolapConnection = con.unwrap(mondrian8.rolap.RolapConnection.class);
             final RolapSchema rolapSchema = rolapConnection.getSchema();
             final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
             final Cube reportCube = getCube((SaikuReport) report);
             Arrays.stream(rolapSchema.getCubes()).filter(cube -> reportCube.getName().equals(cube.getName()))
-                  .map(mondrian3.olap.Cube::getSchema).findAny().ifPresent(cacheControl::flushSchema);
+                  .map(mondrian8.olap.Cube::getSchema).findAny().ifPresent(cacheControl::flushSchema);
 
          } catch (Exception e) {
             throw new RuntimeException(e);
@@ -364,11 +364,11 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    public void flushCache(MondrianDatasource datasource) {
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
-         final RolapConnection rolapConnection = con.unwrap(mondrian3.rolap.RolapConnection.class);
+         final RolapConnection rolapConnection = con.unwrap(mondrian8.rolap.RolapConnection.class);
          final RolapSchema rolapSchema = rolapConnection.getSchema();
          final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
-         Arrays.stream(rolapSchema.getCubes()).map(mondrian3.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
+         Arrays.stream(rolapSchema.getCubes()).map(mondrian8.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
 
       } catch (Exception e) {
          throw new RuntimeException(e);
@@ -379,7 +379,7 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
-         con.unwrap(mondrian3.rolap.RolapConnection.class).getSchema();
+         con.unwrap(mondrian8.rolap.RolapConnection.class).getSchema();
 
       } catch (Exception e) {
          throw new ConnectionTestFailedException(

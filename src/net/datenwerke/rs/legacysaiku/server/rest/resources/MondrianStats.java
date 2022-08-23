@@ -2,10 +2,10 @@ package net.datenwerke.rs.legacysaiku.server.rest.resources;
 
 import java.util.List;
 
-import mondrian3.olap.MondrianServer.MondrianVersion;
-import mondrian3.server.monitor.ConnectionInfo;
-import mondrian3.server.monitor.ServerInfo;
-import mondrian3.server.monitor.StatementInfo;
+import mondrian8.olap.MondrianServer.MondrianVersion;
+import mondrian8.server.monitor.ConnectionInfo;
+import mondrian8.server.monitor.ServerInfo;
+import mondrian8.server.monitor.StatementInfo;
 
 public class MondrianStats {
 

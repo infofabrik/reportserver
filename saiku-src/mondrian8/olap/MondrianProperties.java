@@ -1,0 +1,207 @@
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
+package mondrian8.olap;
+
+import java.util.Properties;
+import java.io.File;
+import org.eigenbase.util.property.DoubleProperty;
+import org.eigenbase.util.property.IntegerProperty;
+import org.eigenbase.util.property.BooleanProperty;
+import org.eigenbase.util.property.StringProperty;
+
+public class MondrianProperties extends MondrianPropertiesBase
+{
+    private static final MondrianProperties instance;
+    public final transient StringProperty AggregateRuleTag;
+    public final transient StringProperty AggregateRules;
+    public final transient StringProperty AlertNativeEvaluationUnsupported;
+    public final transient BooleanProperty CaseSensitive;
+    public final transient StringProperty CatalogURL;
+    public final transient IntegerProperty CellBatchSize;
+    public final transient IntegerProperty CheckCancelOrTimeoutInterval;
+    public final transient BooleanProperty ChooseAggregateByVolume;
+    public final transient BooleanProperty CompareSiblingsByOrderKey;
+    public final transient IntegerProperty CrossJoinOptimizerSize;
+    public final transient StringProperty CurrentMemberWithCompoundSlicerAlert;
+    public final transient StringProperty DataSourceResolverClass;
+    public final transient BooleanProperty DisableCaching;
+    public final transient BooleanProperty DisableLocalSegmentCache;
+    @Deprecated
+    public final transient BooleanProperty EnableCacheHitCounters;
+    public final transient BooleanProperty EnableDrillThrough;
+    public final transient BooleanProperty EnableExpCache;
+    public final transient BooleanProperty EnableGroupingSets;
+    public final transient BooleanProperty EnableInMemoryRollup;
+    public final transient BooleanProperty EnableNativeCrossJoin;
+    public final transient BooleanProperty EnableNativeFilter;
+    public final transient BooleanProperty EnableNativeNonEmpty;
+    public final transient BooleanProperty EnableNativeTopCount;
+    public final transient BooleanProperty EnableNonEmptyOnAllAxis;
+    public final transient BooleanProperty EnableRolapCubeMemberCache;
+    public final transient BooleanProperty EnableTotalCount;
+    public final transient BooleanProperty EnableTriggers;
+    public final transient IntegerProperty ExecutionHistorySize;
+    public final transient StringProperty ExpCompilerClass;
+    public final transient BooleanProperty ExpandNonNative;
+    public final transient BooleanProperty FilterChildlessSnowflakeMembers;
+    public final transient StringProperty FoodmartJdbcURL;
+    public final transient BooleanProperty GenerateAggregateSql;
+    public final transient BooleanProperty GenerateFormattedSql;
+    public final transient IntegerProperty HighCardChunkSize;
+    public final transient BooleanProperty IgnoreInvalidMembers;
+    public final transient BooleanProperty IgnoreInvalidMembersDuringQuery;
+    public final transient BooleanProperty IgnoreMeasureForNonJoiningDimension;
+    public final transient IntegerProperty IterationLimit;
+    public final transient IntegerProperty Iterations;
+    public final transient StringProperty JdbcDrivers;
+    public final transient StringProperty JdbcFactoryClass;
+    public final transient IntegerProperty LevelPreCacheThreshold;
+    public final transient StringProperty LocalePropFile;
+    public final transient IntegerProperty MaxConstraints;
+    public final transient IntegerProperty MaxEvalDepth;
+    public final transient IntegerProperty MaxRows;
+    public final transient BooleanProperty MemoryMonitor;
+    public final transient StringProperty MemoryMonitorClass;
+    public final transient IntegerProperty MemoryMonitorThreshold;
+    public final transient IntegerProperty NativizeMaxResults;
+    public final transient IntegerProperty NativizeMinThreshold;
+    public final transient BooleanProperty NeedDimensionPrefix;
+    public final transient BooleanProperty NullDenominatorProducesNull;
+    public final transient StringProperty NullMemberRepresentation;
+    public final transient BooleanProperty OptimizePredicates;
+    public final transient StringProperty PropertyValueMapFactoryClass;
+    public final transient StringProperty QueryFileDirectory;
+    public final transient StringProperty QueryFilePattern;
+    public final transient IntegerProperty QueryLimit;
+    public final transient IntegerProperty QueryTimeout;
+    public final transient BooleanProperty ReadAggregates;
+    public final transient IntegerProperty ResultLimit;
+    public final transient IntegerProperty RolapConnectionShepherdNbThreads;
+    public final transient StringProperty RolapConnectionShepherdThreadPollingInterval;
+    public final transient StringProperty SegmentCache;
+    public final transient IntegerProperty SegmentCacheManagerNumberCacheThreads;
+    public final transient IntegerProperty SegmentCacheManagerNumberSqlThreads;
+    public final transient StringProperty SolveOrderMode;
+    public final transient IntegerProperty SparseSegmentCountThreshold;
+    public final transient DoubleProperty SparseSegmentDensityThreshold;
+    public final transient StringProperty SqlMemberSourceValuePoolFactoryClass;
+    public final transient BooleanProperty SsasCompatibleNaming;
+    public final transient StringProperty StatisticsProviders;
+    public final transient StringProperty TestClass;
+    public final transient StringProperty TestConnectString;
+    public final transient IntegerProperty TestExpDependencies;
+    public final transient StringProperty TestHighCardinalityDimensionList;
+    public final transient StringProperty TestJdbcPassword;
+    public final transient StringProperty TestJdbcUser;
+    public final transient StringProperty TestName;
+    public final transient IntegerProperty TestSeed;
+    public final transient IntegerProperty TimeLimit;
+    public final transient BooleanProperty UseAggregates;
+    public final transient IntegerProperty VUsers;
+    public final transient BooleanProperty Warmup;
+    public final transient StringProperty WarnIfNoPatternForDialect;
+    public final transient StringProperty XmlaSchemaRefreshInterval;
+    
+    private MondrianProperties() {
+        super(new FilePropertySource(new File("mondrian8.properties")));
+        this.AggregateRuleTag = new StringProperty((Properties)this, "mondrian8.rolap.aggregates.rule.tag", "default");
+        this.AggregateRules = new StringProperty((Properties)this, "mondrian8.rolap.aggregates.rules", "/DefaultRules.xml");
+        this.AlertNativeEvaluationUnsupported = new StringProperty((Properties)this, "mondrian8.native.unsupported.alert", "OFF");
+        this.CaseSensitive = new BooleanProperty((Properties)this, "mondrian8.olap.case.sensitive", false);
+        this.CatalogURL = new StringProperty((Properties)this, "mondrian8.catalogURL", (String)null);
+        this.CellBatchSize = new IntegerProperty((Properties)this, "mondrian8.rolap.cellBatchSize", -1);
+        this.CheckCancelOrTimeoutInterval = new IntegerProperty((Properties)this, "mondrian8.util.checkCancelOrTimeoutInterval", 1000);
+        this.ChooseAggregateByVolume = new BooleanProperty((Properties)this, "mondrian8.rolap.aggregates.ChooseByVolume", false);
+        this.CompareSiblingsByOrderKey = new BooleanProperty((Properties)this, "mondrian8.rolap.compareSiblingsByOrderKey", false);
+        this.CrossJoinOptimizerSize = new IntegerProperty((Properties)this, "mondrian8.olap.fun.crossjoin.optimizer.size", 0);
+        this.CurrentMemberWithCompoundSlicerAlert = new StringProperty((Properties)this, "mondrian8.olap.fun.currentmemberwithcompoundslicer.alert", "ERROR");
+        this.DataSourceResolverClass = new StringProperty((Properties)this, "mondrian8.spi.dataSourceResolverClass", (String)null);
+        this.DisableCaching = new BooleanProperty((Properties)this, "mondrian8.rolap.star.disableCaching", false);
+        this.DisableLocalSegmentCache = new BooleanProperty((Properties)this, "mondrian8.rolap.star.disableLocalSegmentCache", false);
+        this.EnableCacheHitCounters = new BooleanProperty((Properties)this, "mondrian8.rolap.agg.enableCacheHitCounters", false);
+        this.EnableDrillThrough = new BooleanProperty((Properties)this, "mondrian8.drillthrough.enable", true);
+        this.EnableExpCache = new BooleanProperty((Properties)this, "mondrian8.expCache.enable", true);
+        this.EnableGroupingSets = new BooleanProperty((Properties)this, "mondrian8.rolap.groupingsets.enable", false);
+        this.EnableInMemoryRollup = new BooleanProperty((Properties)this, "mondrian8.rolap.EnableInMemoryRollup", true);
+        this.EnableNativeCrossJoin = new BooleanProperty((Properties)this, "mondrian8.native.crossjoin.enable", true);
+        this.EnableNativeFilter = new BooleanProperty((Properties)this, "mondrian8.native.filter.enable", true);
+        this.EnableNativeNonEmpty = new BooleanProperty((Properties)this, "mondrian8.native.nonempty.enable", true);
+        this.EnableNativeTopCount = new BooleanProperty((Properties)this, "mondrian8.native.topcount.enable", true);
+        this.EnableNonEmptyOnAllAxis = new BooleanProperty((Properties)this, "mondrian8.rolap.nonempty", false);
+        this.EnableRolapCubeMemberCache = new BooleanProperty((Properties)this, "mondrian8.rolap.EnableRolapCubeMemberCache", true);
+        this.EnableTotalCount = new BooleanProperty((Properties)this, "mondrian8.xmla.drillthroughTotalCount.enable", true);
+        this.EnableTriggers = new BooleanProperty((Properties)this, "mondrian8.olap.triggers.enable", true);
+        this.ExecutionHistorySize = new IntegerProperty((Properties)this, "mondrian8.server.monitor.executionHistorySize", 1000);
+        this.ExpCompilerClass = new StringProperty((Properties)this, "mondrian8.calc.ExpCompiler.class", (String)null);
+        this.ExpandNonNative = new BooleanProperty((Properties)this, "mondrian8.native.ExpandNonNative", false);
+        this.FilterChildlessSnowflakeMembers = new BooleanProperty((Properties)this, "mondrian8.rolap.FilterChildlessSnowflakeMembers", true);
+        this.FoodmartJdbcURL = new StringProperty((Properties)this, "mondrian8.foodmart.jdbcURL", "jdbc:odbc:MondrianFoodMart");
+        this.GenerateAggregateSql = new BooleanProperty((Properties)this, "mondrian8.rolap.aggregates.generateSql", false);
+        this.GenerateFormattedSql = new BooleanProperty((Properties)this, "mondrian8.rolap.generate.formatted.sql", false);
+        this.HighCardChunkSize = new IntegerProperty((Properties)this, "mondrian8.result.highCardChunkSize", 1);
+        this.IgnoreInvalidMembers = new BooleanProperty((Properties)this, "mondrian8.rolap.ignoreInvalidMembers", false);
+        this.IgnoreInvalidMembersDuringQuery = new BooleanProperty((Properties)this, "mondrian8.rolap.ignoreInvalidMembersDuringQuery", false);
+        this.IgnoreMeasureForNonJoiningDimension = new BooleanProperty((Properties)this, "mondrian8.olap.agg.IgnoreMeasureForNonJoiningDimension", false);
+        this.IterationLimit = new IntegerProperty((Properties)this, "mondrian8.rolap.iterationLimit", 0);
+        this.Iterations = new IntegerProperty((Properties)this, "mondrian8.test.Iterations", 1);
+        this.JdbcDrivers = new StringProperty((Properties)this, "mondrian8.jdbcDrivers", "sun.jdbc.odbc.JdbcOdbcDriver,org.hsqldb.jdbcDriver,oracle.jdbc.OracleDriver,com.mysql.jdbc.Driver");
+        this.JdbcFactoryClass = new StringProperty((Properties)this, "mondrian8.rolap.aggregates.jdbcFactoryClass", (String)null);
+        this.LevelPreCacheThreshold = new IntegerProperty((Properties)this, "mondrian8.rolap.precache.threshold", 300);
+        this.LocalePropFile = new StringProperty((Properties)this, "mondrian8.rolap.localePropFile", (String)null);
+        this.MaxConstraints = new IntegerProperty((Properties)this, "mondrian8.rolap.maxConstraints", 1000);
+        this.MaxEvalDepth = new IntegerProperty((Properties)this, "mondrian8.rolap.evaluate.MaxEvalDepth", 10);
+        this.MaxRows = new IntegerProperty((Properties)this, "mondrian8.xmla.drillthroughMaxRows", 1000);
+        this.MemoryMonitor = new BooleanProperty((Properties)this, "mondrian8.util.memoryMonitor.enable", false);
+        this.MemoryMonitorClass = new StringProperty((Properties)this, "mondrian8.util.MemoryMonitor.class", (String)null);
+        this.MemoryMonitorThreshold = new IntegerProperty((Properties)this, "mondrian8.util.memoryMonitor.percentage.threshold", 90);
+        this.NativizeMaxResults = new IntegerProperty((Properties)this, "mondrian8.native.NativizeMaxResults", 150000);
+        this.NativizeMinThreshold = new IntegerProperty((Properties)this, "mondrian8.native.NativizeMinThreshold", 100000);
+        this.NeedDimensionPrefix = new BooleanProperty((Properties)this, "mondrian8.olap.elements.NeedDimensionPrefix", false);
+        this.NullDenominatorProducesNull = new BooleanProperty((Properties)this, "mondrian8.olap.NullDenominatorProducesNull", false);
+        this.NullMemberRepresentation = new StringProperty((Properties)this, "mondrian8.olap.NullMemberRepresentation", "#null");
+        this.OptimizePredicates = new BooleanProperty((Properties)this, "mondrian8.rolap.aggregates.optimizePredicates", true);
+        this.PropertyValueMapFactoryClass = new StringProperty((Properties)this, "mondrian8.rolap.RolapMember.PropertyValueMapFactory.class", (String)null);
+        this.QueryFileDirectory = new StringProperty((Properties)this, "mondrian8.test.QueryFileDirectory", (String)null);
+        this.QueryFilePattern = new StringProperty((Properties)this, "mondrian8.test.QueryFilePattern", (String)null);
+        this.QueryLimit = new IntegerProperty((Properties)this, "mondrian8.query.limit", 40);
+        this.QueryTimeout = new IntegerProperty((Properties)this, "mondrian8.rolap.queryTimeout", 0);
+        this.ReadAggregates = new BooleanProperty((Properties)this, "mondrian8.rolap.aggregates.Read", false);
+        this.ResultLimit = new IntegerProperty((Properties)this, "mondrian8.result.limit", 0);
+        this.RolapConnectionShepherdNbThreads = new IntegerProperty((Properties)this, "mondrian8.rolap.maxQueryThreads", 20);
+        this.RolapConnectionShepherdThreadPollingInterval = new StringProperty((Properties)this, "mondrian8.rolap.shepherdThreadPollingInterval", "1000ms");
+        this.SegmentCache = new StringProperty((Properties)this, "mondrian8.rolap.SegmentCache", (String)null);
+        this.SegmentCacheManagerNumberCacheThreads = new IntegerProperty((Properties)this, "mondrian8.rolap.maxCacheThreads", 100);
+        this.SegmentCacheManagerNumberSqlThreads = new IntegerProperty((Properties)this, "mondrian8.rolap.maxSqlThreads", 100);
+        this.SolveOrderMode = new StringProperty((Properties)this, "mondrian8.rolap.SolveOrderMode", "ABSOLUTE");
+        this.SparseSegmentCountThreshold = new IntegerProperty((Properties)this, "mondrian8.rolap.SparseSegmentValueThreshold", 1000);
+        this.SparseSegmentDensityThreshold = new DoubleProperty((Properties)this, "mondrian8.rolap.SparseSegmentDensityThreshold", 0.5);
+        this.SqlMemberSourceValuePoolFactoryClass = new StringProperty((Properties)this, "mondrian8.rolap.SqlMemberSource.ValuePoolFactory.class", (String)null);
+        this.SsasCompatibleNaming = new BooleanProperty((Properties)this, "mondrian8.olap.SsasCompatibleNaming", false);
+        this.StatisticsProviders = new StringProperty((Properties)this, "mondrian8.statistics.providers", (String)null);
+        this.TestClass = new StringProperty((Properties)this, "mondrian8.test.Class", (String)null);
+        this.TestConnectString = new StringProperty((Properties)this, "mondrian8.test.connectString", (String)null);
+        this.TestExpDependencies = new IntegerProperty((Properties)this, "mondrian8.test.ExpDependencies", 0);
+        this.TestHighCardinalityDimensionList = new StringProperty((Properties)this, "mondrian8.test.highCardDimensions", (String)null);
+        this.TestJdbcPassword = new StringProperty((Properties)this, "mondrian8.foodmart.jdbcPassword", (String)null);
+        this.TestJdbcUser = new StringProperty((Properties)this, "mondrian8.foodmart.jdbcUser", (String)null);
+        this.TestName = new StringProperty((Properties)this, "mondrian8.test.Name", (String)null);
+        this.TestSeed = new IntegerProperty((Properties)this, "mondrian8.test.random.seed", 1234);
+        this.TimeLimit = new IntegerProperty((Properties)this, "mondrian8.test.TimeLimit", 0);
+        this.UseAggregates = new BooleanProperty((Properties)this, "mondrian8.rolap.aggregates.Use", false);
+        this.VUsers = new IntegerProperty((Properties)this, "mondrian8.test.VUsers", 1);
+        this.Warmup = new BooleanProperty((Properties)this, "mondrian8.test.Warmup", false);
+        this.WarnIfNoPatternForDialect = new StringProperty((Properties)this, "mondrian8.test.WarnIfNoPatternForDialect", "NONE");
+        this.XmlaSchemaRefreshInterval = new StringProperty((Properties)this, "mondrian8.xmla.SchemaRefreshInterval", "3000ms");
+        this.populate();
+    }
+    
+    public static MondrianProperties instance() {
+        return MondrianProperties.instance;
+    }
+    
+    static {
+        instance = new MondrianProperties();
+    }
+}

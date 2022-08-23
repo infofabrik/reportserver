@@ -34,7 +34,7 @@ public class ReportExporterUIServiceImpl implements ReportExporterUIService {
    }
 
    @Override
-   public List<ReportExporter> getCleanedUpAvailableExporters(ReportDto report) {
+   public List<ReportExporter> getCleanedUpAvailableExporters(ReportDto report, boolean removeHiddenInExportList) {
       List<ReportExporter> exporters = getAvailableExporters(report);
 
       Iterator<ReportExporter> exporterIt = exporters.iterator();
@@ -46,6 +46,17 @@ public class ReportExporterUIServiceImpl implements ReportExporterUIService {
          ReportExporter exporter = exporterIt.next();
          for (VetoReportExporterHook vetoer : hookHandler.getHookers(VetoReportExporterHook.class)) {
             if (vetoer.doesVetoExporter(exporter, report)) {
+               exporterIt.remove();
+               break;
+            }
+         }
+      }
+      /* remove the ones that should not be shown in export list */
+      if (removeHiddenInExportList) {
+         exporterIt = exporters.iterator();
+         while (exporterIt.hasNext()) {
+            ReportExporter exporter = exporterIt.next();
+            if (!exporter.showInExportList()) {
                exporterIt.remove();
                break;
             }

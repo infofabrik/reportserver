@@ -21,7 +21,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import mondrian3.olap4j.SaikuMondrianHelper;
+import mondrian8.olap4j.SaikuMondrianHelper;
 
 import org.apache.commons.lang3.StringUtils;
 import org.olap4j.OlapConnection;
