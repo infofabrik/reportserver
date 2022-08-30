@@ -69,7 +69,7 @@ public class ScheduleConfigAsLocalFileSystemHooker implements ScheduleConfigProv
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setLocalFileSystemDatasinkDto(
             (LocalFileSystemDatasinkDto) dtoServiceProvider.get().createDto(action.getLocalFileSystemDatasink()));
 

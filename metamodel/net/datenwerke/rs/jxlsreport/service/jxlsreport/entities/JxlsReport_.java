@@ -8,7 +8,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 @StaticMetamodel(JxlsReport.class)
 public abstract class JxlsReport_ extends net.datenwerke.rs.core.service.reportmanager.entities.reports.Report_ {
 
-	public static volatile SingularAttribute<JxlsReport, Boolean> jxlsOne;
 	public static volatile SingularAttribute<JxlsReport, JxlsReportFile> reportFile;
 
 }

@@ -67,7 +67,7 @@ public class ScheduleConfigAsSambaFileHooker implements ScheduleConfigProviderHo
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setSambaDatasinkDto((SambaDatasinkDto) dtoServiceProvider.get().createDto(action.getSambaDatasink()));
 
       if (null == info.getSambaDatasinkDto())

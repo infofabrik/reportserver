@@ -12,6 +12,7 @@ public abstract class ScheduleAsSambaFileAction_ extends net.datenwerke.schedule
 	public static volatile SingularAttribute<ScheduleAsSambaFileAction, String> folder;
 	public static volatile SingularAttribute<ScheduleAsSambaFileAction, String> name;
 	public static volatile SingularAttribute<ScheduleAsSambaFileAction, SambaDatasink> sambaDatasink;
+	public static volatile SingularAttribute<ScheduleAsSambaFileAction, Boolean> compressed;
 
 }
 

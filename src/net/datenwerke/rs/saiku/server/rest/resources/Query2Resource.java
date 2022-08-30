@@ -25,6 +25,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.servlet.ServletException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -61,8 +63,6 @@ import org.slf4j.LoggerFactory;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
-import com.google.inject.Inject;
-import com.google.inject.Provider;
 
 import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
 import net.datenwerke.rs.saiku.server.rest.util.RestUtil;

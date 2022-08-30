@@ -8,6 +8,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @GeneratedType("net.datenwerke.entityservices.metadatagenerator.EntityMetadataProcessor")
 public class SambaDatasink__ extends net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
+	public static final String basicDatasinkService = "basicDatasinkService";
 	public static final String domain = "domain";
 	public static final String folder = "folder";
 	public static final String host = "host";

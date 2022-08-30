@@ -17,6 +17,7 @@ package net.datenwerke.rs.saiku.server.rest.resources;
 
 import java.util.List;
 
+import javax.inject.Inject;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
@@ -29,8 +30,6 @@ import org.saiku.service.PlatformUtilsService;
 import org.saiku.service.util.dto.Plugin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import com.google.inject.Inject;
 
 /**
  * Info Resource to get platform information.

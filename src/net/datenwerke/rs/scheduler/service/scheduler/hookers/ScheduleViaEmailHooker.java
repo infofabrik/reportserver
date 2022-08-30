@@ -57,7 +57,7 @@ public class ScheduleViaEmailHooker implements ScheduleConfigProviderHook {
 
       info.setSubject(action.getSubject());
       info.setMessage(action.getMessage());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
 
       rsd.addAdditionalInfo(info);
    }

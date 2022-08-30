@@ -16,10 +16,11 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Guice;
 import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Scopes;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
-import com.sun.jersey.api.json.JSONConfiguration;
-import com.sun.jersey.guice.spi.container.servlet.GuiceContainer;
+
+import org.glassfish.jersey.servlet.ServletContainer;
 
 import net.datenwerke.async.DwAsyncModule;
 import net.datenwerke.dbpool.DbPoolModule;
@@ -244,12 +245,14 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2022-08-18-14-06-26";
+   public static final String CODE_VERSION = "2022-08-29-15-57-59";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";
    private static final String ENTERPRISE_MODULE_CONFIG_SERVLETS_METHOD = "configureServlets";
    private static final String ENTERPRISE_CHECK_SERVLET = "net.datenwerke.rsenterprise.main.server.EnterpriseCheckRpcServiceImpl";
+   
+   static Injector injector;
 
    static {
       LogSetupHelper.InitRsLogging();
@@ -297,6 +300,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
       injector.injectMembers(this);
 
       injectorInitialized();
+      
+      ReportServerServiceConfig.injector = injector;
 
       return injector;
    }
@@ -547,10 +552,15 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
             serve(BASE_URL + "trace").with(TracerServlet.class);
             serve(BASE_URL + "version").with(VersionInfoServlet.class);
+            
+            bind(ServletContainer.class).in(Scopes.SINGLETON);
+            Map<String, String> params = new HashMap<>();
+            params.put("javax.ws.rs.Application", "net.datenwerke.rs.JerseyConfig");
+            serve(BASE_URL + "rest/*").with(ServletContainer.class, params);
 
-            Map<String, String> jerseyParams = new HashMap<String, String>();
-            jerseyParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
-            serve(BASE_URL + "rest/*").with(GuiceContainer.class, jerseyParams);
+//            Map<String, String> jerseyParams = new HashMap<String, String>();
+//            jerseyParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
+//            serve(BASE_URL + "rest/*").with(GuiceContainer.class, jerseyParams);
          }
       };
    }

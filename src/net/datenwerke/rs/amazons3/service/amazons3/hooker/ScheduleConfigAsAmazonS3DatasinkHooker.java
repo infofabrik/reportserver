@@ -67,7 +67,7 @@ public class ScheduleConfigAsAmazonS3DatasinkHooker implements ScheduleConfigPro
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setAmazonS3DatasinkDto(
             (AmazonS3DatasinkDto) dtoServiceProvider.get().createDto(action.getAmazonS3Datasink()));
 

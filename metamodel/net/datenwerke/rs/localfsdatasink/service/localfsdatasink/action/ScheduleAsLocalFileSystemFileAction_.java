@@ -12,6 +12,7 @@ public abstract class ScheduleAsLocalFileSystemFileAction_ extends net.datenwerk
 	public static volatile SingularAttribute<ScheduleAsLocalFileSystemFileAction, String> folder;
 	public static volatile SingularAttribute<ScheduleAsLocalFileSystemFileAction, String> name;
 	public static volatile SingularAttribute<ScheduleAsLocalFileSystemFileAction, LocalFileSystemDatasink> localFileSystemDatasink;
+	public static volatile SingularAttribute<ScheduleAsLocalFileSystemFileAction, Boolean> compressed;
 
 }
 

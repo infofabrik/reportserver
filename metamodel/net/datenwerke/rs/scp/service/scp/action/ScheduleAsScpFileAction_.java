@@ -12,6 +12,7 @@ public abstract class ScheduleAsScpFileAction_ extends net.datenwerke.scheduler.
 	public static volatile SingularAttribute<ScheduleAsScpFileAction, ScpDatasink> scpDatasink;
 	public static volatile SingularAttribute<ScheduleAsScpFileAction, String> folder;
 	public static volatile SingularAttribute<ScheduleAsScpFileAction, String> name;
+	public static volatile SingularAttribute<ScheduleAsScpFileAction, Boolean> compressed;
 
 }
 

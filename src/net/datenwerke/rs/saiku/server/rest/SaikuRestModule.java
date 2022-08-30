@@ -1,12 +1,11 @@
 package net.datenwerke.rs.saiku.server.rest;
 
+import org.glassfish.jersey.server.ResourceConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
-import com.sun.jersey.api.core.ClassNamesResourceConfig;
 
-import net.datenwerke.rs.saiku.server.rest.resources.AdminResource;
 import net.datenwerke.rs.saiku.server.rest.resources.BasicRepositoryResource2;
 import net.datenwerke.rs.saiku.server.rest.resources.DataSourceResource;
 import net.datenwerke.rs.saiku.server.rest.resources.ExporterResource;
@@ -28,7 +27,7 @@ public class SaikuRestModule extends AbstractModule {
       /* register rest resources */
 //		ResourceConfig rc = new PackagesResourceConfig(this.getClass().getPackage().getName());
 
-      ClassNamesResourceConfig cnrc = new ClassNamesResourceConfig(AdminResource.class, BasicRepositoryResource2.class,
+      ResourceConfig cnrc = new ResourceConfig(BasicRepositoryResource2.class,
             DataSourceResource.class, ExporterResource.class, FilterRepositoryResource.class, InfoResource.class,
             License.class, OlapDiscoverResource.class, Query2Resource.class, SessionResource.class,
             SaikuI18nResource.class, StatisticsResource.class);

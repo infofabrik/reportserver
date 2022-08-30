@@ -8,6 +8,8 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @GeneratedType("net.datenwerke.entityservices.metadatagenerator.EntityMetadataProcessor")
 public class EmailDatasink__ extends net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
+	public static final String authenticationService = "authenticationService";
+	public static final String basicDatasinkService = "basicDatasinkService";
 	public static final String encryptionPolicy = "encryptionPolicy";
 	public static final String forceSender = "forceSender";
 	public static final String host = "host";

@@ -68,7 +68,7 @@ public class ScheduleConfigAsScpFileHooker implements ScheduleConfigProviderHook
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setScpDatasinkDto((ScpDatasinkDto) dtoServiceProvider.get().createDto(action.getScpDatasink()));
 
       if (null == info.getScpDatasinkDto())

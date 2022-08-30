@@ -9,6 +9,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 public class FtpsDatasink__ extends net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
 	public static final String authenticationType = "authenticationType";
+	public static final String basicDatasinkService = "basicDatasinkService";
 	public static final String dataChannelProtectionLevel = "dataChannelProtectionLevel";
 	public static final String folder = "folder";
 	public static final String ftpMode = "ftpMode";

@@ -67,7 +67,7 @@ public class ScheduleConfigAsFtpFileHooker implements ScheduleConfigProviderHook
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setFtpDatasinkDto((FtpDatasinkDto) dtoServiceProvider.get().createDto(action.getFtpDatasink()));
 
       if (null == info.getFtpDatasinkDto())

@@ -67,7 +67,7 @@ public class ScheduleConfigAsBoxDatasinkHooker implements ScheduleConfigProvider
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setBoxDatasinkDto((BoxDatasinkDto) dtoServiceProvider.get().createDto(action.getBoxDatasink()));
 
       if (null == info.getBoxDatasinkDto())

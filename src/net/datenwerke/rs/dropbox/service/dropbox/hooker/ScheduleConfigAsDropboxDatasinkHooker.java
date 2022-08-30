@@ -67,7 +67,7 @@ public class ScheduleConfigAsDropboxDatasinkHooker implements ScheduleConfigProv
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setDropboxDatasinkDto((DropboxDatasinkDto) dtoServiceProvider.get().createDto(action.getDropboxDatasink()));
 
       if (null == info.getDropboxDatasinkDto())

@@ -67,7 +67,7 @@ public class ScheduleConfigAsSftpFileHooker implements ScheduleConfigProviderHoo
 
       info.setName(action.getName());
       info.setFolder(action.getFolder());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setSftpDatasinkDto((SftpDatasinkDto) dtoServiceProvider.get().createDto(action.getSftpDatasink()));
 
       if (null == info.getSftpDatasinkDto())

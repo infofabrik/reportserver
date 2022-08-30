@@ -15,13 +15,11 @@
  */
 package net.datenwerke.rs.saiku.server.rest.resources;
 
-import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
-import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
@@ -39,7 +37,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.google.inject.Provider;
-import com.sun.jersey.core.header.FormDataContentDisposition;
 
 import net.datenwerke.rs.saiku.service.saiku.SaikuSessionContainer;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
@@ -415,85 +412,6 @@ public class BasicRepositoryResource2 implements Serializable {
       // " to " + target + " ( " + e.getMessage() + ")").type("text/plain").build();
       // }
       // */
-      throw new RuntimeException("not implemented");
-
-   }
-
-   /**
-    * Upload a zip archive to the server.
-    * 
-    * @param test                Not used.
-    * @param uploadedInputStream File Info
-    * @param fileDetail          File Info
-    * @param directory           Location
-    * @return A response status 200
-    */
-   @POST
-   @Path("/zipupload")
-   @Consumes(MediaType.MULTIPART_FORM_DATA)
-   public Response uploadArchiveZip(@QueryParam("test") String test, InputStream uploadedInputStream,
-         FormDataContentDisposition fileDetail, String directory) {
-//	public Response uploadArchiveZip(
-//			@QueryParam("test") String test,
-//			@FormDataParam("file") InputStream uploadedInputStream,
-//			@FormDataParam("file") FormDataContentDisposition fileDetail,
-//			@FormDataParam("directory") String directory)
-//	{
-      // String zipFile = fileDetail.getFileName();
-      // String output = "";
-      // try {
-      // if (StringUtils.isBlank(zipFile))
-      // throw new Exception("You must specify a zip file to upload");
-      //
-      // output = "Uploding file: " + zipFile + " ...\r\n";
-      // ZipInputStream zis = new ZipInputStream(uploadedInputStream);
-      // ZipEntry ze = zis.getNextEntry();
-      // byte[] doc = null;
-      // boolean isFile = false;
-      // if (ze == null) {
-      // doc = IOUtils.toByteArray(uploadedInputStream);
-      // isFile = true;
-      // }
-      // while (ze != null || doc != null) {
-      // String fileName = null;
-      // if (!isFile) {
-      // fileName = ze.getName();
-      // doc = IOUtils.toByteArray(zis);
-      // } else {
-      // fileName = zipFile;
-      // }
-      //
-      // output += "Saving " + fileName + "... ";
-      // String fullPath = (StringUtils.isNotBlank(directory)) ? directory + "/" +
-      // fileName : fileName;
-      //
-      // String content = new String(doc);
-      // Response r = saveResource(fullPath, content);
-      // doc = null;
-      //
-      // if (Status.OK.getStatusCode() != r.getStatus()) {
-      // output += " ERROR: " + r.getEntity().toString() + "\r\n";
-      // } else {
-      // output += " OK\r\n";
-      // }
-      // if (!isFile)
-      // ze = zis.getNextEntry();
-      // }
-      //
-      // if (!isFile) {
-      // zis.closeEntry();
-      // zis.close();
-      // }
-      // uploadedInputStream.close();
-      //
-      // output += " SUCCESSFUL!\r\n";
-      // return Response.ok(output).build();
-      //
-      // } catch(Exception e){
-      // log.error("Cannot unzip resources " + zipFile ,e);
-      // String error = ExceptionUtils.getRootCauseMessage(e);
-      // return Response.serverError().entity(output + "\r\n" + error).build();
-      // }
       throw new RuntimeException("not implemented");
 
    }

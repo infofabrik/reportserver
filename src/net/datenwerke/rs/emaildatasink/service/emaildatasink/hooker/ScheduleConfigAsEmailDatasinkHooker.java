@@ -71,7 +71,7 @@ public class ScheduleConfigAsEmailDatasinkHooker implements ScheduleConfigProvid
       info.setSubject(action.getSubject());
       info.setMessage(action.getMessage());
       info.setName(action.getName());
-      info.setCompressed(action.isCompressed());
+      info.setCompressed(Boolean.TRUE.equals(action.isCompressed()));
       info.setEmailDatasinkDto((EmailDatasinkDto) dtoServiceProvider.get().createDto(action.getEmailDatasink()));
 
       if (null == info.getEmailDatasinkDto())
