@@ -11,13 +11,14 @@ public class JerseyConfig extends ResourceConfig {
 
    @Inject
    public JerseyConfig(ServiceLocator locator) {
-       packages("net.datenwerke.rs.saiku.server.rest", "net.datenwerke.rs.legacysaiku.server.rest");
+       packages(
+             "net.datenwerke.rs.saiku.server.rest", 
+             "net.datenwerke.rs.legacysaiku.server.rest", 
+             "net.datenwerke.rs.rest"
+             );
 
        GuiceBridge.getGuiceBridge().initializeGuiceBridge(locator);
-       // add your Guice modules.
-//       Injector injector = Guice.createInjector(new GuiceModule());
        GuiceIntoHK2Bridge guiceBridge = locator.getService(GuiceIntoHK2Bridge.class);
        guiceBridge.bridgeGuiceInjector(ReportServerServiceConfig.injector);
-       
    }
 }

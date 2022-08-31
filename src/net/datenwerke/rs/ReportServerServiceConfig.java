@@ -557,10 +557,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             Map<String, String> params = new HashMap<>();
             params.put("javax.ws.rs.Application", "net.datenwerke.rs.JerseyConfig");
             serve(BASE_URL + "rest/*").with(ServletContainer.class, params);
-
-//            Map<String, String> jerseyParams = new HashMap<String, String>();
-//            jerseyParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
-//            serve(BASE_URL + "rest/*").with(GuiceContainer.class, jerseyParams);
          }
       };
    }

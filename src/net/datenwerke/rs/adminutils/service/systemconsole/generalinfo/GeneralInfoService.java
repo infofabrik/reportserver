@@ -1,5 +1,7 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
+import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
+
 public interface GeneralInfoService {
 
    String getJavaVersion();
@@ -15,4 +17,6 @@ public interface GeneralInfoService {
    String getBrowserVersion();
 
    String getRsVersion();
+   
+   GeneralInfoDto getGeneralInfo();
 }
