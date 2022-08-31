@@ -10,6 +10,7 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
+import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -57,6 +58,7 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new SeparatorMenuItem());
+      folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
 
       /* File */
@@ -66,6 +68,8 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       fileMenu.add(insertItem);
       fileMenu.add(new DuplicateMenuItem(treeHandler));
       fileMenu.add(new DeleteMenuItem(treeHandler));
+      fileMenu.add(new SeparatorMenuItem());
+      fileMenu.add(new InfoMenuItem());
 
       /* File */
       Menu dashboardMenu = menuProvider.createOrGetMenuFor(DashboardNodeDto.class);
@@ -74,6 +78,8 @@ public class DashboardManagerTreeConfigurationHooker implements TreeConfigurator
       dashboardMenu.add(insertItem);
       dashboardMenu.add(new DuplicateMenuItem(treeHandler));
       dashboardMenu.add(new DeleteMenuItem(treeHandler));
+      dashboardMenu.add(new SeparatorMenuItem());
+      dashboardMenu.add(new InfoMenuItem());
    }
 
    private MenuItem generateInsertMenu() {

@@ -1,14 +1,12 @@
 package net.datenwerke.security.ext.client.usermanager.objectinfo;
 
-import java.util.Date;
-
 import com.google.gwt.resources.client.ImageResource;
 
-import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProviderImpl;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.GeneralObjectInfoImpl;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.security.client.usermanager.dto.GroupDto;
 
-public class GroupObjectInfo extends ObjectInfoKeyInfoProviderImpl<GroupDto>{
+public class GroupObjectInfo extends GeneralObjectInfoImpl<GroupDto>{
 
    @Override
    public boolean consumes(Object object) {
@@ -21,23 +19,8 @@ public class GroupObjectInfo extends ObjectInfoKeyInfoProviderImpl<GroupDto>{
    }
 
    @Override
-   protected String doGetDescription(GroupDto object) {
-      return object.getDescription();
-   }
-
-   @Override
    protected String doGetType(GroupDto object) {
       return null;
-   }
-
-   @Override
-   protected Date doGetLastUpdatedOn(GroupDto object) {
-      return object.getLastUpdated();
-   }
-
-   @Override
-   protected Date doGetCreatedOn(GroupDto object) {
-      return object.getCreatedOn();
    }
 
    @Override
