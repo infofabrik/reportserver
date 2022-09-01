@@ -2,6 +2,7 @@ package net.datenwerke.rs.rest.service.rest;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +39,9 @@ public class RestInterceptorService implements InterceptionService {
    public List<MethodInterceptor> getMethodInterceptors(Method method)
    {
       List<MethodInterceptor> ret = new ArrayList<>();
-      if (method.isAnnotationPresent(RestAuthentication.class))
+      if (method.isAnnotationPresent(RestAuthentication.class)
+            || (method.getDeclaringClass().isAnnotationPresent(RestAuthentication.class)
+                  && !method.isAnnotationPresent(RestAuthentication.class) && Modifier.isPublic(method.getModifiers())))
          ret.add(interceptorProvider.get());
       return ret;
    }

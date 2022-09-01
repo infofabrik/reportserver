@@ -13,10 +13,12 @@ import javax.ws.rs.core.Response;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.adminutils.service.systemconsole.genrights.SystemConsoleSecurityTarget;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
+import net.datenwerke.rs.rest.service.rest.annotations.RestAuthenticationBypass;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
 
 @Path("/general-info")
+@RestAuthentication
 public class GeneralInfoResource {
 
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
@@ -36,13 +38,13 @@ public class GeneralInfoResource {
    
    @GET
    @Produces(MediaType.APPLICATION_JSON)
-   @RestAuthentication
    public Response getGeneralInfo() {
       securityServiceProvider.get().assertRights(SystemConsoleSecurityTarget.class, Read.class);
       
       return Response.ok().entity(generalInfoServiceProvider.get().getGeneralInfo()).build();
    }
    
+   @RestAuthenticationBypass
    public HttpServletRequest getRequest() {
       return request;
    }

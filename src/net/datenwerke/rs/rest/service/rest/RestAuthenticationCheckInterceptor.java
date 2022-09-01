@@ -12,6 +12,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.server.reportexport.helper.ApiKeyHelper;
+import net.datenwerke.rs.rest.service.rest.annotations.RestAuthenticationBypass;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -25,6 +26,10 @@ public class RestAuthenticationCheckInterceptor implements MethodInterceptor {
    
    public Object invoke(MethodInvocation invocation) throws Throwable {
       try {
+         
+         if (invocation.getMethod().isAnnotationPresent(RestAuthenticationBypass.class))
+            return invocation.proceed();
+         
          Method getRequest = invocation.getThis().getClass().getDeclaredMethod("getRequest");
          HttpServletRequest request = (HttpServletRequest) getRequest.invoke(invocation.getThis());
          
