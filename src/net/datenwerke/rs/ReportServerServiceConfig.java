@@ -101,6 +101,7 @@ import net.datenwerke.rs.core.server.imageservice.ImageServlet;
 import net.datenwerke.rs.core.server.parameters.ParameterRpcServiceImpl;
 import net.datenwerke.rs.core.server.reportexecutor.JasperPreviewProvider;
 import net.datenwerke.rs.core.server.reportexecutor.ReportExecutorRpcServiceImpl;
+import net.datenwerke.rs.core.server.reportexport.HttpAuthExecuteServlet;
 import net.datenwerke.rs.core.server.reportexport.ReportExportRpcServiceImpl;
 import net.datenwerke.rs.core.server.reportexport.ReportExportServlet;
 import net.datenwerke.rs.core.server.reportmanager.ReportManagerTreeHandlerImpl;
@@ -145,7 +146,6 @@ import net.datenwerke.rs.globalconstants.server.globalconstants.GlobalConstantsR
 import net.datenwerke.rs.globalconstants.service.GlobalConstantsModule;
 import net.datenwerke.rs.googledrive.server.googledrive.GoogleDriveRpcServiceImpl;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveModule;
-import net.datenwerke.rs.incubator.server.httpauthexecute.HttpAuthExecuteServlet;
 import net.datenwerke.rs.incubator.server.jaspertotable.JasperToTableRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.jasperutils.JasperUtilsRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.reportmetadata.ReportMetadataRpcServiceImpl;

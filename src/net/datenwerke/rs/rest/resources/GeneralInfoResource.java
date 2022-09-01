@@ -10,10 +10,9 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.adminutils.service.systemconsole.genrights.SystemConsoleSecurityTarget;
-import net.datenwerke.rs.rest.ApiKeyHelper;
+import net.datenwerke.rs.core.server.reportexport.helper.ApiKeyHelper;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
@@ -24,7 +23,7 @@ public class GeneralInfoResource {
 
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
-   private final Provider<ApiKeyHelper> apiKeyHelperService;
+   private final Provider<ApiKeyHelper> apiKeyHelperProvider;
    private final Provider<SecurityService> securityServiceProvider;
    
    @Context
@@ -34,12 +33,12 @@ public class GeneralInfoResource {
    public GeneralInfoResource(
          Provider<GeneralInfoService> generalInfoServiceProvider,
          Provider<AuthenticatorService> authenticatorServiceProvider,
-         Provider<ApiKeyHelper> apiKeyHelperService,
+         Provider<ApiKeyHelper> apiKeyHelperProvider,
          Provider<SecurityService> securityServiceProvider
          ) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
-      this.apiKeyHelperService = apiKeyHelperService;
+      this.apiKeyHelperProvider = apiKeyHelperProvider;
       this.securityServiceProvider = securityServiceProvider;
    }
    
@@ -47,22 +46,27 @@ public class GeneralInfoResource {
    @Produces(MediaType.APPLICATION_JSON)
    public Response getGeneralInfo() {
       try {
-         final User user = apiKeyHelperService.get().getUser(request);
+         final ApiKeyHelper apiKeyHelper = apiKeyHelperProvider.get();
+         String apikey = apiKeyHelper.readApiKeyFromBearer(request);
+         if (null == apikey)
+            apikey = request.getParameter("apikey");
+         final User user = apiKeyHelper.getUser(request, apikey);
          if (null != user) {
-            authenticatorServiceProvider.get().setAuthenticatedInThread(user.getId());
-            securityServiceProvider.get().assertRights(SystemConsoleSecurityTarget.class, Read.class);
-
-            return Response.ok().entity(generalInfoServiceProvider.get().getGeneralInfo()).build();
-         } 
+            try {
+               authenticatorServiceProvider.get().setAuthenticatedInThread(user.getId());
+               securityServiceProvider.get().assertRights(SystemConsoleSecurityTarget.class, Read.class);
+   
+               return Response.ok().entity(generalInfoServiceProvider.get().getGeneralInfo()).build();
+            } finally {
+               authenticatorServiceProvider.get().logoffUserInThread();
+            }
+         } else {
+            return Response.status(Response.Status.UNAUTHORIZED).build();
+         }
          
       } catch (Exception e) {
          return Response.status(Response.Status.UNAUTHORIZED).build();
-      } finally {
-         if (authenticatorServiceProvider.get().isAuthenticated())
-            authenticatorServiceProvider.get().logoffUserInThread();
       }
-      
-      return Response.status(Response.Status.UNAUTHORIZED).build();
    }
    
 }

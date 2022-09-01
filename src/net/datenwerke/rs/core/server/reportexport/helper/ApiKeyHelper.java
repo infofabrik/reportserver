@@ -1,4 +1,4 @@
-package net.datenwerke.rs.rest;
+package net.datenwerke.rs.core.server.reportexport.helper;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -25,9 +25,8 @@ public class ApiKeyHelper {
       this.userManagerProvider = userManagerProvider;
    }
    
-   public User getUser(HttpServletRequest httpRequest) {
+   public User getUser(HttpServletRequest httpRequest, String reqApikey) {
       String username = httpRequest.getParameter(AUTH_USER);
-      String reqApikey = getApiKey(httpRequest);
       
       AbstractUserManagerNode umn = userManagerProvider.get().getUserByName(username);
       if (umn instanceof HibernateProxy)
@@ -47,7 +46,7 @@ public class ApiKeyHelper {
       return null;
    }
 
-   private String getApiKey(HttpServletRequest httpRequest) {
+   public String readApiKeyFromBearer(HttpServletRequest httpRequest) {
       String apiKey = null;
 
       String authHeader = httpRequest.getHeader("Authorization");
