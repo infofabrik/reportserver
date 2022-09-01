@@ -10,6 +10,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
+import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -19,8 +20,6 @@ import com.google.inject.Module;
 import com.google.inject.Scopes;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
-
-import org.glassfish.jersey.servlet.ServletContainer;
 
 import net.datenwerke.async.DwAsyncModule;
 import net.datenwerke.dbpool.DbPoolModule;
@@ -179,6 +178,7 @@ import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
+import net.datenwerke.rs.rest.service.rest.RestModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
@@ -683,6 +683,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new ScriptDatasinkModule(),
             
             new ScpModule(),
+            
+            new RestModule(),
 
             new AliasCmdModule(),
 
