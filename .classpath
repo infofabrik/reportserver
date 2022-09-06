@@ -59,7 +59,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsch-0.1.55.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsp-api-2.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr305-3.0.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jsr311-api-1.1.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jtidy-r938.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-api-2.2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/juel-impl-2.2.7.jar"/>
