@@ -25,7 +25,6 @@ import net.datenwerke.rs.fileserver.client.fileserver.hookers.EditFileFromSelect
 import net.datenwerke.rs.fileserver.client.fileserver.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.hooks.EditFileServerFileHook;
 import net.datenwerke.rs.fileserver.client.fileserver.objectinfo.FileServerFileObjectInfo;
-import net.datenwerke.rs.fileserver.client.fileserver.objectinfo.FileServerFolderObjectInfo;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerManagerAdminViewTree;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.treehooker.FileServerManagerTreeConfigurationHooker;
 import net.datenwerke.rs.fileserver.client.fileserver.security.FileServerManagerGenericTargetIdentifier;
@@ -59,8 +58,6 @@ public class FileServerUiStartup {
          final FileServerManagerViewSecurityTargetDomainHooker securityTargetDomain,
          
          final FileServerFileObjectInfo fileServerFileObjectInfo,
-         
-         final FileServerFolderObjectInfo fileServerFolderObjectInfo,
 
          @FileServerManagerAdminViewTree Provider<UITree> fileManagerTree, HistoryUiService historyService,
          EventBus eventBus, Provider<FileServerManagerPanel> fileManagerAdminPanel) {
@@ -88,7 +85,6 @@ public class FileServerUiStartup {
       
       /* object info */
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, fileServerFileObjectInfo);
-      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, fileServerFolderObjectInfo);
 
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS,

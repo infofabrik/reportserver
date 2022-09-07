@@ -1,16 +1,18 @@
 package net.datenwerke.rs.core.client.reportmanager.objectinfo;
 
+import java.util.Date;
+
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 
-import net.datenwerke.gxtdto.client.objectinformation.hooks.GeneralObjectInfoImpl;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProviderImpl;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportmanager.dto.interfaces.ReportVariantDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.client.reportmanager.hooks.ReportTypeConfigHook;
 import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 
-public final class ReportObjectInfo extends GeneralObjectInfoImpl<ReportDto> {
+public final class ReportObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportDto> {
 
    private final HookHandlerService hookHandler;
 
@@ -22,6 +24,21 @@ public final class ReportObjectInfo extends GeneralObjectInfoImpl<ReportDto> {
    @Override
    protected String doGetName(ReportDto report) {
       return report.getName();
+   }
+
+   @Override
+   protected String doGetDescription(ReportDto report) {
+      return report.getDescription();
+   }
+
+   @Override
+   protected Date doGetLastUpdatedOn(ReportDto object) {
+      return object.getLastUpdated();
+   }
+
+   @Override
+   protected Date doGetCreatedOn(ReportDto object) {
+      return object.getCreatedOn();
    }
 
    @Override

@@ -82,7 +82,6 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       folderMenu.add(new SeparatorMenuItem());
       folderMenu.add(new ReloadMenuItem());
       folderMenu.add(new SeparatorMenuItem());
-      folderMenu.add(new InfoMenuItem());
       folderMenu.add(new DownloadMenuItem(new DownloadHelper()));
       MenuItem folderSendToItem = generateSendToMenu();
       folderMenu.add(folderSendToItem);
@@ -95,8 +94,8 @@ public class FileServerManagerTreeConfigurationHooker implements TreeConfigurato
       fileMenu.add(new DuplicateMenuItem(treeHandler));
       fileMenu.add(new DeleteMenuItem(treeHandler));
       fileMenu.add(new SeparatorMenuItem());
-      fileMenu.add(new InfoMenuItem());
       fileMenu.add(new DownloadMenuItem(new DownloadHelper()));
+      fileMenu.add(new InfoMenuItem());
       MenuItem fileSendToItem = generateSendToMenu();
       fileMenu.add(fileSendToItem);
 

@@ -10,7 +10,6 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.managerhelper.tree.ManagerHelperTree;
 import net.datenwerke.gf.client.treedb.helper.menu.DeleteMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.DuplicateMenuItem;
-import net.datenwerke.gf.client.treedb.helper.menu.InfoMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.InsertMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.ReloadMenuItem;
 import net.datenwerke.gf.client.treedb.helper.menu.TreeDBUIMenuProvider;
@@ -60,7 +59,6 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new SeparatorMenuItem());
-      folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
 
       /* Specific datasinks */
@@ -72,8 +70,6 @@ public class DatasinkManagerTreeConfigurationHooker implements TreeConfiguratorH
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
          dsMenu.add(new DeleteMenuItem(treeHandler));
-         dsMenu.add(new SeparatorMenuItem());
-         dsMenu.add(new InfoMenuItem());
       }
    }
 

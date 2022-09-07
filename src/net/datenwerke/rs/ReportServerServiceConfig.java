@@ -10,7 +10,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
-import org.glassfish.jersey.servlet.ServletContainer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,6 +19,8 @@ import com.google.inject.Module;
 import com.google.inject.Scopes;
 import com.google.inject.persist.PersistFilter;
 import com.google.inject.servlet.ServletModule;
+
+import org.glassfish.jersey.servlet.ServletContainer;
 
 import net.datenwerke.async.DwAsyncModule;
 import net.datenwerke.dbpool.DbPoolModule;
@@ -100,7 +101,6 @@ import net.datenwerke.rs.core.server.imageservice.ImageServlet;
 import net.datenwerke.rs.core.server.parameters.ParameterRpcServiceImpl;
 import net.datenwerke.rs.core.server.reportexecutor.JasperPreviewProvider;
 import net.datenwerke.rs.core.server.reportexecutor.ReportExecutorRpcServiceImpl;
-import net.datenwerke.rs.core.server.reportexport.HttpAuthExecuteServlet;
 import net.datenwerke.rs.core.server.reportexport.ReportExportRpcServiceImpl;
 import net.datenwerke.rs.core.server.reportexport.ReportExportServlet;
 import net.datenwerke.rs.core.server.reportmanager.ReportManagerTreeHandlerImpl;
@@ -145,6 +145,7 @@ import net.datenwerke.rs.globalconstants.server.globalconstants.GlobalConstantsR
 import net.datenwerke.rs.globalconstants.service.GlobalConstantsModule;
 import net.datenwerke.rs.googledrive.server.googledrive.GoogleDriveRpcServiceImpl;
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveModule;
+import net.datenwerke.rs.incubator.server.httpauthexecute.HttpAuthExecuteServlet;
 import net.datenwerke.rs.incubator.server.jaspertotable.JasperToTableRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.jasperutils.JasperUtilsRpcServiceImpl;
 import net.datenwerke.rs.incubator.server.reportmetadata.ReportMetadataRpcServiceImpl;
@@ -178,7 +179,6 @@ import net.datenwerke.rs.printer.service.printer.PrinterModule;
 import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
-import net.datenwerke.rs.rest.service.rest.RestModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
@@ -245,7 +245,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2022-08-29-15-57-59";
+   public static final String CODE_VERSION = "2022-09-06-22-15-35";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";
@@ -557,6 +557,10 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             Map<String, String> params = new HashMap<>();
             params.put("javax.ws.rs.Application", "net.datenwerke.rs.JerseyConfig");
             serve(BASE_URL + "rest/*").with(ServletContainer.class, params);
+
+//            Map<String, String> jerseyParams = new HashMap<String, String>();
+//            jerseyParams.put(JSONConfiguration.FEATURE_POJO_MAPPING, "true");
+//            serve(BASE_URL + "rest/*").with(GuiceContainer.class, jerseyParams);
          }
       };
    }
@@ -683,8 +687,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new ScriptDatasinkModule(),
             
             new ScpModule(),
-            
-            new RestModule(),
 
             new AliasCmdModule(),
 

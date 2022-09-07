@@ -23,7 +23,6 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreePostSelectAsyncHook;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
-import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.SynchronousCallbackOnEventTrigger;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventTicket;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
@@ -44,9 +43,6 @@ import net.datenwerke.rs.dashboard.client.dashboard.hookers.MarkNodeAsFavoriteHo
 import net.datenwerke.rs.dashboard.client.dashboard.hookers.UserProfileDashboardPropertiesHooker;
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.DadgetProcessorHook;
 import net.datenwerke.rs.dashboard.client.dashboard.hooks.DashboardToolbarHook;
-import net.datenwerke.rs.dashboard.client.dashboard.objectinfo.DadgetObjectInfo;
-import net.datenwerke.rs.dashboard.client.dashboard.objectinfo.DashboardFolderObjectInfo;
-import net.datenwerke.rs.dashboard.client.dashboard.objectinfo.DashboardObjectInfo;
 import net.datenwerke.rs.dashboard.client.dashboard.provider.annotations.DashboardManagerAdminViewTree;
 import net.datenwerke.rs.dashboard.client.dashboard.provider.treehooker.DashboardManagerTreeConfigurationHooker;
 import net.datenwerke.rs.dashboard.client.dashboard.security.DashboardAdminGenericTargetIdentifier;
@@ -98,10 +94,6 @@ public class DashboardUiStartup {
          final Provider<DashboardClientMainModule> mainModuleProvider,
 
          final Provider<DashboardInlineDispatcher> dashboardDispatcher,
-         
-         final DashboardObjectInfo dashboardObjectInfo,
-         final DadgetObjectInfo dadgetObjectInfo,
-         final DashboardFolderObjectInfo dashboardFolderObjectInfo,
 
          Provider<DashboardProvider> dashboardProvider) {
 
@@ -116,10 +108,6 @@ public class DashboardUiStartup {
 
       /* dispatch */
       hookHandler.attachHooker(DispatcherTakeOverHook.class, dashboardDispatcher);
-      
-      /* object info */
-      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, dashboardObjectInfo);
-      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, dashboardFolderObjectInfo);
 
       /* request callback after login and check for rights */
       waitOnEventService.callbackOnEvent(SecurityUIService.REPORTSERVER_EVENT_GENERIC_RIGHTS_LOADED,

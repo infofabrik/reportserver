@@ -67,7 +67,6 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       inserItem.disable();
       groupMenu.add(inserItem);
       groupMenu.add(new DeleteMenuItem(treeHandler));
-      groupMenu.add(new SeparatorMenuItem());
       groupMenu.add(new InfoMenuItem());
 
       /* OU */
@@ -76,7 +75,6 @@ public class UserManagerTreeConfigurationHooker implements TreeConfiguratorHook 
       ouMenu.add(inserItem);
       ouMenu.add(new DeleteMenuItem(treeHandler));
       ouMenu.add(new SeparatorMenuItem());
-      ouMenu.add(new InfoMenuItem());
       ouMenu.add(new ReloadMenuItem());
    }
 

@@ -61,7 +61,6 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
       folderMenu.add(insertItem);
       folderMenu.add(new DeleteMenuItem(treeHandler));
       folderMenu.add(new SeparatorMenuItem());
-      folderMenu.add(new InfoMenuItem());
       folderMenu.add(new ReloadMenuItem());
 
       /* DSDDB-specific context menu */
@@ -73,7 +72,6 @@ public class DatasourceManagerTreeConfigurationHooker implements TreeConfigurato
          dsMenu.add(insertItem);
          dsMenu.add(new DuplicateMenuItem(treeHandler));
          dsMenu.add(new DeleteMenuItem(treeHandler));
-         dsMenu.add(new SeparatorMenuItem());
          dsMenu.add(new InfoMenuItem());
       }
    }
