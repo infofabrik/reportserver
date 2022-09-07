@@ -36,4 +36,6 @@ public interface TreeDBManager<A extends AbstractNode<A>> {
    A updateFlags(A node, long flags);
 
    public boolean isFolder(A node);
+   
+   List<A> getChildrenWithName(A node, String name);
 }

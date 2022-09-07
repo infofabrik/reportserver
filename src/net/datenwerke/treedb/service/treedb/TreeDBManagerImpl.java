@@ -1,5 +1,7 @@
 package net.datenwerke.treedb.service.treedb;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import org.hibernate.proxy.HibernateProxy;
@@ -167,4 +169,12 @@ public abstract class TreeDBManagerImpl<A extends AbstractNode<A>> implements Tr
       return null;
    }
 
+   
+   @Override
+   public List<A> getChildrenWithName(A node, String name) {
+      return node.getChildren()
+            .stream()
+            .filter(child -> name.equals(child.getNodeName()))
+            .collect(toList());
+   }
 }

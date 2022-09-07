@@ -13,10 +13,13 @@ import net.datenwerke.gf.client.managerhelper.hooks.TreeConfiguratorHook;
 import net.datenwerke.gf.client.treedb.TreeDBHistoryCallback;
 import net.datenwerke.gf.client.treedb.UITree;
 import net.datenwerke.gxtdto.client.forms.simpleform.hooks.FormFieldProviderHook;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProvider;
 import net.datenwerke.gxtdto.client.waitonevent.WaitOnEventUIService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.datasinkmanager.helper.forms.simpleform.DatasinkSelectionFieldProvider;
 import net.datenwerke.rs.core.client.datasinkmanager.hookers.MainPanelViewProviderHooker;
+import net.datenwerke.rs.core.client.datasinkmanager.objectinfo.DatasinkFolderObjectInfo;
+import net.datenwerke.rs.core.client.datasinkmanager.objectinfo.DatasinkObjectInfo;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.annotations.DatasinkManagerAdminViewTree;
 import net.datenwerke.rs.core.client.datasinkmanager.provider.treehooker.DatasinkManagerTreeConfigurationHooker;
 import net.datenwerke.rs.core.client.datasinkmanager.security.DatasinkManagerGenericTargetIdentifier;
@@ -45,6 +48,9 @@ public class DatasinkUIStartup {
          final SecurityUIService securityService,
 
          final DatasinkManagerTreeConfigurationHooker treeConfigurator,
+         
+         final DatasinkObjectInfo datasinkObjectInfo,
+         final DatasinkFolderObjectInfo datasinkFolderObjectInfo,
 
          HistoryUiService historyService, @DatasinkManagerAdminViewTree Provider<UITree> datasinkManagerTree,
          EventBus eventBus, Provider<DatasinkManagerPanel> datasinkManagerAdminPanel) {
@@ -62,7 +68,11 @@ public class DatasinkUIStartup {
 
       /* attach views */
       hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
-
+      
+      /* object info */
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasinkObjectInfo);
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasinkFolderObjectInfo);
+      
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
          if (securityService.hasRight(DatasinkManagerGenericTargetIdentifier.class, ReadDto.class))

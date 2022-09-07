@@ -1,14 +1,12 @@
 package net.datenwerke.rs.core.client.reportmanager.objectinfo;
 
-import java.util.Date;
-
 import com.google.gwt.resources.client.ImageResource;
 
-import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoKeyInfoProviderImpl;
+import net.datenwerke.gxtdto.client.objectinformation.hooks.GeneralObjectInfoImpl;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
-public class FolderObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportFolderDto> {
+public class FolderObjectInfo extends GeneralObjectInfoImpl<ReportFolderDto> {
 
    @Override
    public boolean consumes(Object object) {
@@ -21,11 +19,6 @@ public class FolderObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportFolder
    }
 
    @Override
-   protected String doGetDescription(ReportFolderDto folder) {
-      return folder.getDescription();
-   }
-
-   @Override
    protected String doGetType(ReportFolderDto folder) {
       return "Ordner";
    }
@@ -34,15 +27,4 @@ public class FolderObjectInfo extends ObjectInfoKeyInfoProviderImpl<ReportFolder
    public ImageResource doGetIconSmall(ReportFolderDto object) {
       return BaseIcon.FOLDER_O.toImageResource();
    }
-
-   @Override
-   protected Date doGetLastUpdatedOn(ReportFolderDto object) {
-      return object.getLastUpdated();
-   }
-
-   @Override
-   protected Date doGetCreatedOn(ReportFolderDto object) {
-      return object.getCreatedOn();
-   }
-
 }

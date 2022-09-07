@@ -36,4 +36,5 @@ public interface TreeDBService {
 
    public <A extends AbstractNode<?>> Class<? extends TreeDBManager<? extends A>> getManagerClassForNode(
          Class<A> nodeType);
+   
 }

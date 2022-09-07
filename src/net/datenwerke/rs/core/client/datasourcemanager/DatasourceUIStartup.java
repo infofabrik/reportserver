@@ -21,6 +21,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.D
 import net.datenwerke.rs.core.client.datasourcemanager.helper.forms.simpleform.DatasourceSimpleFormProvider;
 import net.datenwerke.rs.core.client.datasourcemanager.hookers.MainPanelViewProviderHooker;
 import net.datenwerke.rs.core.client.datasourcemanager.objectinfo.DatabaseDatasourceAdditionalObjectInfo;
+import net.datenwerke.rs.core.client.datasourcemanager.objectinfo.DatasourceFolderObjectInfo;
 import net.datenwerke.rs.core.client.datasourcemanager.objectinfo.DatasourceObjectInfo;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.annotations.DatasourceManagerAdminViewTree;
 import net.datenwerke.rs.core.client.datasourcemanager.provider.treehooker.DatasourceManagerTreeConfigurationHooker;
@@ -51,9 +52,10 @@ public class DatasourceUIStartup {
          final SecurityUIService securityService,
 
          final DatasourceManagerTreeConfigurationHooker treeConfigurator,
-         
+           
          final DatasourceObjectInfo datasourceObjectInfo,
          final DatabaseDatasourceAdditionalObjectInfo datasourceAdditionalObjectInfo,
+         final DatasourceFolderObjectInfo datasourceFolderObjectInfo,
 
          HistoryUiService historyService, @DatasourceManagerAdminViewTree Provider<UITree> datasourceManagerTree,
          EventBus eventBus, Provider<DatasourceManagerPanel> datasourceManagerAdminPanel) {
@@ -72,8 +74,11 @@ public class DatasourceUIStartup {
 
       /* attach views */
       hookHandler.attachHooker(MainPanelViewProviderHook.class, mainPanelViewProvider);
+      
+      /* object info */
       hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasourceObjectInfo);
       hookHandler.attachHooker(ObjectInfoAdditionalInfoProvider.class, datasourceAdditionalObjectInfo);
+      hookHandler.attachHooker(ObjectInfoKeyInfoProvider.class, datasourceFolderObjectInfo);
       
       /* test if user has rights to see datasource manager admin view */
       waitOnEventService.callbackOnEvent(AdministrationUIService.REPORTSERVER_EVENT_HAS_ADMIN_RIGHTS, ticket -> {
