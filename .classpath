@@ -51,7 +51,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javax.inject-1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jaxb-svg11-1.0.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcommon-1.0.23.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/jdom-1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jettison-1.3.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jfreechart-1.0.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jlfgr-1.0.jar"/>
@@ -256,5 +255,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.11.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.39.2.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/jdom2-2.0.6.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
