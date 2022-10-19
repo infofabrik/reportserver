@@ -4,19 +4,19 @@ import net.datenwerke.rs.rest.objects.RestAbstractNode
 import net.datenwerke.security.service.usermanager.entities.Group
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit
 
-class RestOrganisationalUnit extends RestOrganisationalUnitInfo {
+class RestOrganisationalUnitInfo extends RestAbstractNode {
    
-   List<RestAbstractNode> children
+   String description
+   String name
    
-   public static RestOrganisationalUnit fromOrganisationalUnit(OrganisationalUnit ou) {
-      RestOrganisationalUnit restOu = new RestOrganisationalUnit()
+   public static RestOrganisationalUnitInfo fromOrganisationalUnit(OrganisationalUnit ou) {
+      RestOrganisationalUnitInfo restOu = new RestOrganisationalUnitInfo()
 
       restOu.with {
          id = ou.id
          clazz = OrganisationalUnit
          description = ou.description
          name = ou.name
-         children = []
       }
 
       return restOu

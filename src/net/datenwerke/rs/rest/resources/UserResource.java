@@ -1,6 +1,7 @@
 package net.datenwerke.rs.rest.resources;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import javax.inject.Inject;
@@ -17,9 +18,9 @@ import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.proxy.HibernateProxy;
 
-import net.datenwerke.rs.rest.objects.RestAbstractNode;
 import net.datenwerke.rs.rest.objects.usermanager.RestGroup;
 import net.datenwerke.rs.rest.objects.usermanager.RestOrganisationalUnit;
+import net.datenwerke.rs.rest.objects.usermanager.RestOrganisationalUnitInfo;
 import net.datenwerke.rs.rest.objects.usermanager.RestUser;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
 import net.datenwerke.security.service.usermanager.UserManagerService;
@@ -49,22 +50,31 @@ public class UserResource extends RsRestResource {
    @Path("/{path:.*}")
    public Response getUsers(@PathParam("path") String path) {
       
-      List<RestAbstractNode> result = new ArrayList<>();
-      
       final UserManagerService userManagerService = userManagerServiceProvider.get();
       
       String[] pathNodes = path.split("/");
       AbstractUserManagerNode next = userManagerService.getRoots().get(0);
+      RestOrganisationalUnit restLast = null;
       for (int i = 0; i< pathNodes.length; i++) {
          String pathNode = pathNodes[i];
          boolean last = i == pathNodes.length-1;
          
          if (!pathNode.equals("User Root")) {
             List<AbstractUserManagerNode> nodesWithName = userManagerService.getChildrenWithName(next, pathNode);
-            if (1 != nodesWithName.size()) 
-               return Response.status(Status.NOT_FOUND).build();
-            
-            next = nodesWithName.get(0);
+            if (1 != nodesWithName.size()) {
+               // try with username in case it is a user
+               List<AbstractUserManagerNode> childrenWithUsername = next.getChildren()
+                     .stream()
+                     .filter(child -> child instanceof User)
+                     .filter(child -> pathNode.equals(((User)child).getUsername()))
+                     .collect(toList());
+               if (1 != childrenWithUsername.size()) 
+                  return Response.status(Status.NOT_FOUND).build();
+               else
+                  next = childrenWithUsername.get(0);
+            } else {
+               next = nodesWithName.get(0);
+            }
          }
          
          if (next instanceof HibernateProxy)
@@ -77,27 +87,35 @@ public class UserResource extends RsRestResource {
          if (!last)
             continue;
          
-         if (!(next instanceof OrganisationalUnit))
-            return Response.ok().entity("TODO: !OrganisationalUnit").build();
+         if (!(next instanceof OrganisationalUnit)) {
+            if (next instanceof Group) {
+               RestGroup restGroup = RestGroup.fromGroup((Group)next);
+               return Response.ok().entity(restGroup).build();
+            } else if (next instanceof User) {
+               RestUser restUser = RestUser.fromUser((User)next);
+               return Response.ok().entity(restUser).build();
+            }
+         }
          
+         restLast = RestOrganisationalUnit.fromOrganisationalUnit((OrganisationalUnit)next);
          List<AbstractUserManagerNode> children = next.getChildren();
          
          for (AbstractUserManagerNode child: children) {
             if (child instanceof User) {
                RestUser restUser = RestUser.fromUser((User)child);
-               result.add(restUser);
+               restLast.getChildren().add(restUser);
             } else if (child instanceof OrganisationalUnit) {
-               RestOrganisationalUnit restOu = RestOrganisationalUnit
+               RestOrganisationalUnitInfo restOu = RestOrganisationalUnitInfo
                      .fromOrganisationalUnit((OrganisationalUnit) child);
-               result.add(restOu);
+               restLast.getChildren().add(restOu);
             } else if (child instanceof Group) {
                RestGroup restGroup = RestGroup.fromGroup((Group)child);
-               result.add(restGroup);
+               restLast.getChildren().add(restGroup);
             }
          }
       }
       
-      return Response.ok().entity(result).build();
+      return Response.ok().entity(restLast).build();
    }
 
 }

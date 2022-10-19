@@ -4,6 +4,7 @@ import com.google.gwt.resources.client.ImageResource;
 
 import net.datenwerke.gxtdto.client.objectinformation.hooks.GeneralObjectInfoImpl;
 import net.datenwerke.rs.core.client.reportmanager.dto.ReportFolderDto;
+import net.datenwerke.rs.core.client.reportmanager.locale.ReportmanagerMessages;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 
 public class FolderObjectInfo extends GeneralObjectInfoImpl<ReportFolderDto> {
@@ -20,7 +21,7 @@ public class FolderObjectInfo extends GeneralObjectInfoImpl<ReportFolderDto> {
 
    @Override
    protected String doGetType(ReportFolderDto folder) {
-      return "Ordner";
+      return ReportmanagerMessages.INSTANCE.folder();
    }
 
    @Override

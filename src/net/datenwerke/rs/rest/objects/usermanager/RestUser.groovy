@@ -23,7 +23,7 @@ public class RestUser extends RestAbstractNode {
          lastname = user.lastname
          sex = user.sex.toString()
          email = user.email
-         username = user.name
+         username = user.username
       }
 
       return restUser

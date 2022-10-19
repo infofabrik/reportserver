@@ -9,6 +9,7 @@ import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.authenticator.client.login.rpc.LoginHandler;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.security.client.login.AuthToken;
@@ -31,15 +32,17 @@ public class LoginHandlerImpl extends SecuredRemoteServiceServlet implements Log
    private final Provider<AuthenticatorService> authenticatorService;
    private final ConfigService configService;
    private final DtoService dtoService;
+   private final HookHandlerService hookHandlerService;
 
    @Inject
    public LoginHandlerImpl(Provider<AuthenticatorService> authenticatorService, ConfigService configService,
-         DtoService dtoService) {
+         DtoService dtoService, HookHandlerService hookHandlerService) {
       super();
 
       this.authenticatorService = authenticatorService;
       this.configService = configService;
       this.dtoService = dtoService;
+      this.hookHandlerService = hookHandlerService;
    }
 
    @Override
