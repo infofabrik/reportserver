@@ -20,6 +20,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.utils.localization.annotations.AvailableLocales;
 import net.datenwerke.rs.utils.localization.annotations.CurrentLocale;
 import net.datenwerke.rs.utils.localization.annotations.DefaultLocale;
@@ -59,6 +60,9 @@ public class LocalizationServiceImpl implements Serializable {
 
    @Inject
    private static Provider<UserLocale> userLocale;
+   
+   @Inject
+   private static Provider<I18nToolsService> i18nToolsServiceProvider;
 
    /**
     * Caches instanzes of Messages
@@ -237,12 +241,12 @@ public class LocalizationServiceImpl implements Serializable {
          if (null != userLocale && !"".equals(userLocale))
             locale = userLocale;
 
-         return Locale.forLanguageTag(locale);
+         return new Locale(locale, i18nToolsServiceProvider.get().getRegion());
       } catch (Exception e) {
          // swallow
       }
 
-      return Locale.ENGLISH;
+      return new Locale("en", i18nToolsServiceProvider.get().getRegion());
    }
 
    /**

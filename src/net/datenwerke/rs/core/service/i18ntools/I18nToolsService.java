@@ -34,5 +34,7 @@ public interface I18nToolsService {
    String getDefaultDateFormat();
 
    FormatPatterns getFormatPatterns();
+   
+   String getRegion();
 
 }

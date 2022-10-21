@@ -172,4 +172,11 @@ public class I18nToolsServiceImpl implements I18nToolsService {
       return patterns;
    }
 
+   @Override
+   public String getRegion() {
+      Configuration cfg = configService.get().getConfigFailsafe(LocalizationModule.CONFIG_FILE);
+      
+      return cfg.getString("localization.region", "US");
+   }
+
 }

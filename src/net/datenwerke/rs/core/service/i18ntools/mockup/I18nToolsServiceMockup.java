@@ -86,4 +86,10 @@ public class I18nToolsServiceMockup implements I18nToolsService {
       return null;
    }
 
+   @Override
+   public String getRegion() {
+      // TODO Auto-generated method stub
+      return null;
+   }
+
 }
