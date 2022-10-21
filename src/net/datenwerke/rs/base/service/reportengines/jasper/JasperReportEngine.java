@@ -41,6 +41,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.usermanager.entities.User;
 import net.sf.jasperreports.engine.DefaultJasperReportsContext;
 import net.sf.jasperreports.engine.JRDataSource;
@@ -151,6 +152,9 @@ public class JasperReportEngine extends ReportEngine<JRDataSource, JasperOutputG
 
          /* get parameter map */
          Map<String, Object> parameterMap = parameters.getParameterMapSimple();
+         
+         /* add locale */
+         parameterMap.put("REPORT_LOCALE", LocalizationServiceImpl.getLocale());
 
          /* final context */
          final DefaultJasperReportsContext context = DefaultJasperReportsContext.getInstance();
