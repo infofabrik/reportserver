@@ -61,6 +61,7 @@ import mondrian.olap4j.SaikuMondrianHelper;
 import mondrian.rolap.RolapConnection;
 import mondrian.rolap.RolapSchema;
 import mondrian.rolap.RolapSchema.MondrianSchemaException;
+import mondrian.rolap.RolapConnectionProperties;
 import mondrian.olap4j.MondrianOlap4jDriver;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -78,6 +79,7 @@ import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionHook;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionPropertiesHook;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 public class OlapUtilServiceImpl implements OlapUtilService {
@@ -272,6 +274,10 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
       String driver = props.getProperty(ISaikuConnection.DRIVER_KEY);
 
+      /* set reportserver locale if no locale specified */
+      if (!props.containsKey(RolapConnectionProperties.Locale.name())) 
+         props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
+      
       if (XMLA_DRIVER.equals(driver)) {
          /* use fields if no property defined */
          if (!props.containsKey(XMLA_USERNAME_KEY) && null != mondrianDatasource.getUsername()
