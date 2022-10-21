@@ -45,6 +45,7 @@ import com.google.inject.Provider;
 import mondrian8.olap.CacheControl;
 import mondrian8.olap4j.MondrianOlap4jDriver;
 import mondrian8.rolap.RolapConnection;
+import mondrian8.rolap.RolapConnectionProperties;
 import mondrian8.rolap.RolapSchema;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
@@ -61,6 +62,7 @@ import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig;
 import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 public class OlapUtilServiceImpl implements OlapUtilService {
@@ -167,6 +169,10 @@ public class OlapUtilServiceImpl implements OlapUtilService {
          String replacedMondrianSchema = replaceParametersInQuery(parameterSet, pMap, mondrianSchema, resetParameters);
          props.setProperty("CatalogContent", replacedMondrianSchema);
       }
+      
+      /* set reportserver locale if no locale specified */
+      if (!props.containsKey(RolapConnectionProperties.Locale.name())) 
+         props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
 
       /* use fields if no property defined */
       if (!props.containsKey(USERNAME_KEY) && null != mondrianDatasource.getUsername()) {
