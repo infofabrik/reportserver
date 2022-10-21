@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='reportservertheme'>
+
+
+	<!-- GXT Theme -->
+	<!-- <inherits name='com.sencha.gxt.theme.blue.Blue' /> -->
+	<!-- <inherits name='com.sencha.gxt.theme.gray.Gray' /> -->
+	<!-- Be sure to include Neptunes gxt-theme-neptune.jar in the classpath -->
+	<inherits name='com.sencha.gxt.theme.neptune.Theme' />
+	<stylesheet src="reset.css" />
+
+	<!-- Tree -->
+	<replace-with class="net.datenwerke.rs.theme.client.tree.RsTreeAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.tree.Tree.TreeAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.tools.RsToolIcons">
+		<when-type-is class="com.sencha.gxt.widget.core.client.button.Tools" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.tools.RsIconButtonAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.button.IconButton.IconButtonAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.panel.RsContentPanelAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.ContentPanel.ContentPanelAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.form.RsTextFieldAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.TextInputCell.TextFieldAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.form.RsTextAreaAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.TextAreaInputCell.TextAreaAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.tab.RsTabPanelAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.TabPanel.TabPanelAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.tab.RsTabPanelBottomAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.TabPanel.TabPanelBottomAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.button.RsButtonCellAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.ButtonCell.ButtonCellAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.toolbar.RsSeparatorToolItemAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.toolbar.SeparatorToolItem.SeparatorToolItemAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.container.RsBoderLayoutAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.container.BorderLayoutContainer.BorderLayoutAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.panel.RsCollapsePanelAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.CollapsePanel.CollapsePanelAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.menu.RsMenuItemAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.menu.MenuItem.MenuItemAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.menu.RsMenuAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.menu.Menu.MenuAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.menu.RsHeaderMenuItemAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.menu.HeaderMenuItem.HeaderMenuItemAppearance" />
+	</replace-with>
+
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.grid.RsColumnHeaderAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.grid.ColumnHeader.ColumnHeaderAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.grid.RsGridAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.grid.GridView.GridAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.window.RsWindowAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.Window.WindowAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsTriggerFieldAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.TriggerFieldCell.TriggerFieldAppearance" />
+	</replace-with>
+
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsTwinTriggerFieldAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.TwinTriggerFieldCell.TwinTriggerFieldAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsCheckboxAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.CheckBoxCell.CheckBoxAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.field.RsRadioAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.RadioCell.RadioAppearance" />
+	</replace-with>
+
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.listview.RsListViewAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.ListView.ListViewAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.info.RsInfoAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.info.Info.InfoAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.info.RsDefaultInfoConfigAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.info.DefaultInfoConfig.DefaultInfoConfigAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsUploadFieldAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.form.FileUploadField.FileUploadFieldAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsStoreFilterFieldAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.form.StoreFilterField.StoreFilterFieldAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.toolbar.RsPagingToolbarAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.toolbar.PagingToolBar.PagingToolBarAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.container.RsMessageBoxAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.box.MessageBox.MessageBoxAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.mask.RsMaskAppearance">
+		<when-type-is class="com.sencha.gxt.core.client.dom.Mask.MaskAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.widget.RsSplitBarAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.SplitBar.SplitBarAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.field.RsDateCellAppearance">
+		<when-type-is
+			class="com.sencha.gxt.cell.core.client.form.DateCell.DateCellAppearance" />
+	</replace-with>
+
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.widget.RsDatePickerAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.DatePicker.DatePickerAppearance" />
+	</replace-with>
+
+	<replace-with class="net.datenwerke.rs.theme.client.tips.RsTipAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.tips.Tip.TipAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.tips.RsErrorTipAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.form.error.SideErrorHandler.SideErrorTooltipAppearance" />
+	</replace-with>
+
+	<replace-with
+		class="net.datenwerke.rs.theme.client.fieldset.RsFieldSetAppearance">
+		<when-type-is
+			class="com.sencha.gxt.widget.core.client.form.FieldSet.FieldSetAppearance" />
+	</replace-with>
+
+</module>

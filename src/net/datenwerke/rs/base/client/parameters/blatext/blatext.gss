@@ -1,0 +1,12 @@
+.rs-parameter-text {
+  font-size: 9pt;
+  padding: 4px;
+  margin: 7px;
+}
+
+.rs-parameter-text ul {
+    list-style: disc inside none;
+}
+.rs-parameter-text ol {
+    list-style: decimal inside none;
+}   

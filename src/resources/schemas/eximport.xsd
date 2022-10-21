@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified" 
+	targetNamespace="http://reportserver.datenwerke.net/eximport" 
+	xmlns:xml="http://www.w3.org/XML/1998/namespace"
+	xmlns:eximport="http://reportserver.datenwerke.net/eximport">
+  <xs:import namespace="http://www.w3.org/XML/1998/namespace" schemaLocation="xml.xsd"/>
+  <xs:element name="reportServerExport">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="eximport:head"/>
+        <xs:element ref="eximport:data"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="head">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element ref="eximport:name"/>
+        <xs:element ref="eximport:description"/>
+        <xs:element ref="eximport:date"/>
+        <xs:element ref="eximport:reportServerVersion"/>
+        <xs:element ref="eximport:converted" minOccurs="0" maxOccurs="1"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="name" type="xs:string"/>
+  <xs:element name="description">
+    <xs:complexType/>
+  </xs:element>
+  <xs:element name="date" type="xs:string"/>
+  <xs:element name="reportServerVersion" type="xs:string"/>
+  <xs:element name="converted">
+    <xs:complexType>
+      <xs:attribute name="destinationVersion" use="required"/>
+      <xs:attribute name="sourceVersion" use="required" type="xs:decimal"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="data">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="eximport:exporterData"/>
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="exporterData">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="eximport:exportedItem"/>
+      </xs:sequence>
+      <xs:attribute name="exporterType" use="required"/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="exportedItem">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element maxOccurs="unbounded" ref="eximport:itemProperty"/>
+      </xs:sequence>
+      <xs:attribute name="type" use="required"/>
+      <xs:attribute ref="xml:id" use="required"/>
+      <xs:anyAttribute/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="itemProperty">
+    <xs:complexType mixed="true">
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element ref="eximport:itemProperty"/>
+        <xs:element ref="eximport:collectionValue"/>
+      </xs:choice>
+      <xs:attribute name="exporterType"/>
+      <xs:attribute name="isCollection" type="xs:boolean"/>
+      <xs:attribute name="isEnclosed" type="xs:boolean"/>
+      <xs:attribute name="isOptionalReference" type="xs:boolean"/>
+      <xs:attribute name="name" use="required" type="xs:string"/>
+      <xs:attribute name="propertyType" type="xs:string"/>
+      <xs:attribute name="referenceId"/>
+      <xs:attribute name="type" use="required" type="xs:string"/>
+      <xs:attribute name="value"/>
+      <xs:attribute ref="xml:id" use="optional"/>
+      <xs:anyAttribute/>
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="collectionValue">
+    <xs:complexType mixed="true">
+      <xs:sequence>
+        <xs:element minOccurs="0" maxOccurs="unbounded" ref="eximport:itemProperty"/>
+      </xs:sequence>
+      <xs:attribute name="definitionKey" type="xs:string"/>
+      <xs:attribute name="exporterType"/>
+      <xs:attribute name="isEnclosed" type="xs:boolean"/>
+      <xs:attribute name="isOptionalReference" type="xs:boolean"/>
+      <xs:attribute name="referenceId"/>
+      <xs:attribute name="type" use="required" type="xs:string"/>
+      <xs:attribute ref="xml:id" use="optional"/>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

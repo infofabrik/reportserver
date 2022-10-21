@@ -1,0 +1,65 @@
+#
+# file: persistence.properties
+# description: This file contains the database settings for ReportServer
+
+
+# Credentials
+# hibernate.connection.username=root
+# hibernate.connection.password=root
+
+
+# MySQL 
+# hibernate.dialect=net.datenwerke.rs.utils.hibernate.MySQL5Dialect
+# hibernate.connection.driver_class=com.mysql.cj.jdbc.Driver
+# hibernate.connection.url=jdbc:mysql://localhost:3306/reportserver
+
+
+# MariaDb 
+# hibernate.dialect=net.datenwerke.rs.utils.hibernate.MariaDbDialect
+# hibernate.connection.driver_class=org.mariadb.jdbc.Driver
+# hibernate.connection.url=jdbc:mariadb://localhost:3306/reportserver
+
+
+# PostgreSQL
+# hibernate.dialect=net.datenwerke.rs.utils.hibernate.PostgreSQLDialect
+# hibernate.connection.driver_class=org.postgresql.Driver
+# hibernate.connection.url=jdbc:postgresql://localhost/reportserver
+
+
+# Oracle
+#
+# Select ONE of the following dialects depending on your Oracle version
+#
+# 	hibernate.dialect=net.datenwerke.rs.utils.hibernate.Oracle10gDialect
+# 	hibernate.dialect=net.datenwerke.rs.utils.hibernate.Oracle12cDialect
+#
+# hibernate.connection.driver_class=oracle.jdbc.driver.OracleDriver
+# hibernate.connection.url=jdbc:oracle:thin:@localhost:1521:reportserver
+# hibernate.default_schema=
+
+
+# SQL Server
+# hibernate.dialect=net.datenwerke.rs.utils.hibernate.SQLServer2008Dialect
+# hibernate.connection.driver_class=com.microsoft.sqlserver.jdbc.SQLServerDriver
+# hibernate.connection.url=jdbc:sqlserver://localhost;databaseName=reportserver
+
+
+# DB2
+# hibernate.dialect=net.datenwerke.rs.utils.hibernate.DB2Dialect
+# hibernate.connection.driver_class=com.ibm.db2.jcc.DB2Driver
+# hibernate.connection.url=jdbc:db2://localhost:50000/TEST
+
+
+# Connection pool settings.
+# Hibernate uses the C3P0 connection pool. The following properties allow to 
+# configure C3P0 as used by Hibernate. Note that this does not have any effect 
+# on the connection pool used by ReportServer for handling reporting.
+#
+# If no changes are made here, then the default settings are active
+#
+# hibernate.c3p0.acquire_increment=5
+# hibernate.c3p0.idle_test_period=60
+# hibernate.c3p0.timeout=3600
+# hibernate.c3p0.max_size=30
+# hibernate.c3p0.max_statements=0
+# hibernate.c3p0.min_size=5

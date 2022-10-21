@@ -1,0 +1,10 @@
+.rs-parameter-horizontal-separator {
+    display: block;
+    width: 80%;
+    border-bottom: 1px solid #666;
+    
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}

@@ -1,0 +1,169 @@
+@def BACKGROUND_COLOR value('theme.grid.columnHeader.backgroundColor');
+@def FONT_FAMILY value('theme.grid.columnHeader.text.family');
+@def FONT_SIZE value('theme.grid.columnHeader.text.size');
+@def TEXT_COLOR value('theme.grid.columnHeader.text.color');
+@def FONT_WEIGHT value('theme.grid.columnHeader.text.weight');
+@def LINE_HEIGHT value('theme.grid.columnHeader.lineHeight');
+@def PADDING value('theme.grid.columnHeader.padding');
+@def GRADIENT value('theme.grid.columnHeader.gradient');
+@def OVER_BACKGROUND_COLOR value('theme.grid.columnHeader.overBackgroundColor');
+@def OVER_GRADIENT value('theme.grid.columnHeader.overGradient');
+@def BORDER_WIDTH value('theme.grid.columnHeader.borderWidth', 'px');
+@def BORDER_COLOR value('theme.grid.columnHeader.borderColor');
+@def BORDER_STYLE value('theme.grid.columnHeader.borderStyle');
+@def MENU_WIDTH value('theme.grid.columnHeader.menuButtonWidth', 'px');
+@def MENU_BACKGROUND_COLOR value('theme.grid.columnHeader.menuBackgroundColor');
+@def MENU_GRADIENT value('theme.grid.columnHeader.menuGradient');
+@def MENU_BORDER_WIDTH value('theme.grid.columnHeader.menuBorder.toString');
+@def MENU_BORDER_STYLE value('theme.grid.columnHeader.menuBorder.style');
+@def MENU_BORDER_COLOR value('theme.grid.columnHeader.menuBorder.color');
+@def MENU_HOVER_GRADIENT value('theme.grid.columnHeader.menuHoverGradient');
+@def MENU_HOVER_BORDER_WIDTH value('theme.grid.columnHeader.menuHoverBorder.toString');
+@def MENU_HOVER_BORDER_STYLE value('theme.grid.columnHeader.menuHoverBorder.style');
+@def MENU_HOVER_BORDER_COLOR value('theme.grid.columnHeader.menuHoverBorder.color');
+@def MENU_ACTIVE_BACKGROUND_COLOR value('theme.grid.columnHeader.menuActiveBackgroundColor');
+@def MENU_ACTIVE_GRADIENT value('theme.grid.columnHeader.menuActiveGradient');
+@def MENU_ACTIVE_BORDER_WIDTH value('theme.grid.columnHeader.menuActiveBorder.toString');
+@def MENU_ACTIVE_BORDER_STYLE value('theme.grid.columnHeader.menuActiveBorder.style');
+@def MENU_ACTIVE_BORDER_COLOR value('theme.grid.columnHeader.menuActiveBorder.color');
+
+@def HEADER_URL value('columnHeaderBtn.getSafeUri.asString','');
+
+.headerInner {
+}
+
+.header {
+  cursor: default;
+  padding: 0 0 0 0;
+  overflow: hidden;
+  background: BACKGROUND_COLOR;
+  /* @alternate */ background: -webkit-linear-gradient(top, GRADIENT);
+  /* @alternate */ background: -ms-linear-gradient(top, GRADIENT);
+  /* @alternate */ background: linear-gradient(to bottom, GRADIENT);
+  border-style: BORDER_STYLE;
+  border-width: BORDER_WIDTH 0 0;
+  border-color: BORDER_COLOR;
+}
+
+.headRow .head {
+  line-height: LINE_HEIGHT;
+  vertical-align: top;
+  -moz-outline: none;
+  -moz-user-focus: normal;
+  outline: 0 none;
+  font-family: FONT_FAMILY;
+  font-size: FONT_SIZE;
+  font-weight: FONT_WEIGHT;
+  color: TEXT_COLOR;
+  border-style: BORDER_STYLE;
+  border-color: BORDER_COLOR;
+  border-width: 0 BORDER_WIDTH BORDER_WIDTH 0;
+}
+
+.headInner {
+  overflow: hidden;
+  zoom: 1;
+  padding: PADDING;
+  cursor: inherit;
+  position: relative;
+  vertical-align: middle;
+  /* @alternate */ overflow: hidden;
+  -o-text-overflow: ellipsis;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.head {
+  -moz-user-select: none;
+  -khtml-user-select: none;
+  -webkit-user-select: ignore;
+}
+
+.headButton {
+  background: url(HEADER_URL) no-repeat center center MENU_BACKGROUND_COLOR; /* IE8 */
+  /* @alternate */ background: url(HEADER_URL) no-repeat center center, -webkit-linear-gradient(top, MENU_GRADIENT); /* Chrome10+,Safari5.1+ */
+  /* @alternate */ background: url(HEADER_URL) no-repeat center center, -ms-linear-gradient(top, MENU_GRADIENT); /* IE10+ */
+  /* @alternate */ background: url(HEADER_URL) no-repeat center center, linear-gradient(to bottom, MENU_GRADIENT); /* W3C */
+
+  border-width: MENU_BORDER_WIDTH;
+  border-style: MENU_BORDER_STYLE;
+  border-color: MENU_BORDER_COLOR;
+  background-position: center center;
+  display: none;
+  position: absolute;
+  width: MENU_WIDTH;
+  right: 0;
+  top: 0;
+  z-index: 2;
+  cursor: pointer;
+  outline: none;
+}
+
+.headOver .headButton, 
+.headMenuOpen .headButton {
+  display: block;
+}
+
+.headOver .headButton {
+  border-width: MENU_HOVER_BORDER_WIDTH;
+  border-style: MENU_HOVER_BORDER_STYLE;
+  border-color: MENU_HOVER_BORDER_COLOR;
+}
+
+.headMenuOpen .headButton {
+  border-width: MENU_ACTIVE_BORDER_WIDTH;
+  border-style: MENU_ACTIVE_BORDER_STYLE;
+  border-color: MENU_ACTIVE_BORDER_COLOR;
+}
+
+.headOver .headInner, 
+.headMenuOpen .headInner {
+  background: OVER_BACKGROUND_COLOR;
+  /* @alternate */ background: -webkit-linear-gradient(top, OVER_GRADIENT);
+  /* @alternate */ background: -ms-linear-gradient(top, OVER_GRADIENT);
+  /* @alternate */ background: linear-gradient(to bottom, OVER_GRADIENT);
+}
+.sortIcon {
+  background-repeat: no-repeat;
+  background: none !important;
+  display: none;
+  margin-left: 3px;
+  vertical-align: middle;
+  width: 0px;
+  height: 0px;
+}
+
+.sortAsc .sortIcon, .sortDesc .sortIcon {
+  display: inline;
+
+}
+
+.sortDesc span:after{
+  content: "\f15e";
+font-family: FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: none !important;
+  padding-left: 10px;
+}
+
+.sortAsc span:after{
+  content: "\f15d";
+  font-family: FontAwesome;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: none !important;
+  padding-left: 10px;
+}
+
+.columnMoveTop {
+  gwt-sprite: "columnMoveTop";
+}
+
+.columnMoveBottom {
+  gwt-sprite: "columnMoveBottom";
+}
