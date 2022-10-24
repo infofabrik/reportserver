@@ -45,7 +45,7 @@ public class LocaleInfoParameterReplacement extends ParameterSetReplacementProvi
       }
       reps.put(RS_LOCALE_SYS, new ParameterValueImpl(RS_LOCALE_SYS, defaultLocale.get(), String.class));
       reps.put(RS_LOCALE,
-            new ParameterValueImpl(RS_LOCALE, localizationService.getLocale().toLanguageTag(), String.class));
+            new ParameterValueImpl(RS_LOCALE, localizationService.getLocale().toString(), String.class));
 
       return reps;
    }
