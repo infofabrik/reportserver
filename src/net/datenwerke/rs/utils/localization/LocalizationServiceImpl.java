@@ -241,12 +241,11 @@ public class LocalizationServiceImpl implements Serializable {
          if (null != userLocale && !"".equals(userLocale))
             locale = userLocale;
 
-         return new Locale(locale, i18nToolsServiceProvider.get().getRegion());
       } catch (Exception e) {
          // swallow
       }
 
-      return new Locale("en", i18nToolsServiceProvider.get().getRegion());
+      return new Locale(locale, i18nToolsServiceProvider.get().getRegion());
    }
 
    /**
