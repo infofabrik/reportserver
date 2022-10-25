@@ -240,11 +240,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.17.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-api-2.19.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-core-2.19.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.4.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-3.0.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mysql-connector-j-8.0.31.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.css.sac-1.3.1.v200903091627.jar"/>
@@ -259,5 +254,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.9.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/woodstox-core-6.3.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
