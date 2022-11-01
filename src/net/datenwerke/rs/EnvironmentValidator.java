@@ -20,6 +20,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -239,6 +240,7 @@ public class EnvironmentValidator extends HttpServlet {
       Runtime runtime = Runtime.getRuntime();
       int mb = 1024 * 1024;
       sb.append("Max memory: " + NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) +  " MB\r\n");
+      sb.append("JVM Locale: " + Locale.getDefault().toString() + "\r\n");
    }
 
    private static void writeVersionInfo(StringBuilder sb) {
