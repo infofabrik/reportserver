@@ -120,7 +120,7 @@ public class ReportServiceImpl extends SecuredTreeDBManagerImpl<AbstractReportMa
          path = "/" + ReportManagerVFS.FILESYSTEM_NAME + "/" + path;
 
       try {
-         Object object = terminalService.getObjectByLocation(path, checkRights);
+         Object object = terminalService.getObjectByQuery(path, checkRights);
          if (object instanceof AbstractReportManagerNode)
             return (AbstractReportManagerNode) object;
          return null;

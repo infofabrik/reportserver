@@ -65,7 +65,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
          path = "/" + FileServerVfs.FILESYSTEM_NAME + "/" + path;
 
       try {
-         Object object = terminalService.getObjectByLocation(path, checkRights);
+         Object object = terminalService.getObjectByQuery(path, checkRights);
          if (object instanceof AbstractFileServerNode)
             return (AbstractFileServerNode) object;
          return null;
@@ -158,7 +158,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
          if (paths.hasNext()) {
             FileServerFolder newParent = null;
             try {
-               newParent = (FileServerFolder) terminalService.getObjectByLocation(currentPath);
+               newParent = (FileServerFolder) terminalService.getObjectByQuery(currentPath);
             } catch (ObjectResolverException e) {
             }
 
@@ -179,7 +179,7 @@ public class FileServerServiceImpl extends SecuredTreeDBManagerImpl<AbstractFile
          } else {
             Object obj = null;
             try {
-               obj = terminalService.getObjectByLocation(currentPath);
+               obj = terminalService.getObjectByQuery(currentPath);
             } catch (ObjectResolverException e) {
             }
 

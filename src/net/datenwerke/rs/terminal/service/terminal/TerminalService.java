@@ -36,24 +36,58 @@ public interface TerminalService {
     */
    public void closeTerminalSession(String sessionId);
 
-   public Object getObjectByLocation(Class<? extends VirtualFileSystemManagerHook> vfs, String location)
+   public Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfs, String location)
          throws VFSException;
 
-   public Object getObjectByLocation(String location) throws ObjectResolverException;
+   /**
+    * Fetch a single object by an object resolver query. Permissions are checked.
+    * 
+    * @param location the object resolver query
+    * @return the object found
+    * @throws ObjectResolverException if the query is not valid or something
+    *                                 happens during query execution
+    */
+   public Object getObjectByQuery(String location) throws ObjectResolverException;
 
-   public Object getObjectByLocation(String location, boolean checkRights) throws ObjectResolverException;
+   /**
+    * Fetch a single object by an object resolver query.
+    * 
+    * @param location    the object resolver query
+    * @param checkRights if permissions should be checked
+    * @return the object found
+    * @throws ObjectResolverException if the query is not valid or something
+    *                                 happens during query execution
+    */
+   public Object getObjectByQuery(String location, boolean checkRights) throws ObjectResolverException;
 
-   Object getObjectByLocation(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location,
+   Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location,
          boolean checkRights) throws VFSException;
 
-   public Collection<Object> getObjectsByLocation(String location, boolean checkRights) throws ObjectResolverException;
+   /**
+    * Fetch objects by an object resolver query.
+    * 
+    * @param location    the object resolver query
+    * @param checkRights if permissions should be checked
+    * @return the objects found
+    * @throws ObjectResolverException if the query is not valid or something
+    *                                 happens during query execution
+    */
+   public Collection<Object> getObjectsByQuery(String location, boolean checkRights) throws ObjectResolverException;
 
-   public Collection<Object> getObjectsByLocation(String location) throws ObjectResolverException;
+   /**
+    * Fetch objects by an object resolver query. Permissions are checked.
+    * 
+    * @param location the object resolver query
+    * @return the objects found
+    * @throws ObjectResolverException if the query is not valid or something
+    *                                 happens during query execution
+    */
+   public Collection<Object> getObjectsByQuery(String location) throws ObjectResolverException;
 
    TerminalSession getUnscopedTerminalSession();
-   
+
    public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
          Class<? extends Right>... rights) throws ObjectResolverException;
-   
+
    public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
 }

@@ -76,7 +76,7 @@ public class ManPageServiceImpl implements ManPageService {
 
          Object object = null;
          for (String loc : locales) {
-            object = terminalService.getObjectByLocation(
+            object = terminalService.getObjectByQuery(
                   "/fileserver/doc/" + identifier + (loc.isEmpty() ? "" : "." + loc) + ".man", false);
             if (null != object) {
                break;

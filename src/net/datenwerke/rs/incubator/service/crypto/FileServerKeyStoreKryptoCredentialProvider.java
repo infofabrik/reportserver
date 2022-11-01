@@ -27,7 +27,7 @@ public class FileServerKeyStoreKryptoCredentialProvider extends KeyStoreCredenti
    @Override
    public KeyStore getKeyStore(String location, String type, String secret) {
       try {
-         Object obj = terminalService.getObjectByLocation(location, false);
+         Object obj = terminalService.getObjectByQuery(location, false);
          KeyStore keyStore = KeyStore.getInstance(type);
          keyStore.load(new ByteArrayInputStream(((FileServerFile) obj).getData()), secret.toCharArray());
          return keyStore;

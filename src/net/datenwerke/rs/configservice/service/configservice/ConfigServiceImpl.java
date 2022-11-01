@@ -97,7 +97,7 @@ public class ConfigServiceImpl implements ConfigService {
    @Override
    public String getConfigAsXml(String identifier) {
       try {
-         Object object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
+         Object object = terminalService.getObjectByQuery("/fileserver/etc/" + identifier, false);
          if (null == object || !(object instanceof FileServerFile))
             throw new ConfigFileNotFoundException("Could not find config for " + identifier);
 
@@ -116,7 +116,7 @@ public class ConfigServiceImpl implements ConfigService {
    @Override
    public String getConfigAsXmlFailsafe(String identifier) {
       try {
-         Object object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
+         Object object = terminalService.getObjectByQuery("/fileserver/etc/" + identifier, false);
          if (null == object || !(object instanceof FileServerFile))
             throw new ConfigFileNotFoundException("Could not find config for " + identifier);
 
@@ -171,7 +171,7 @@ public class ConfigServiceImpl implements ConfigService {
       try {
          Object object = null;
          try {
-            object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
+            object = terminalService.getObjectByQuery("/fileserver/etc/" + identifier, false);
          } catch (ObjectResolverException e) {
          }
          if (null == object) {

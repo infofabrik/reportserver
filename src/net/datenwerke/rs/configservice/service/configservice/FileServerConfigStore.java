@@ -26,7 +26,7 @@ public class FileServerConfigStore extends AbstractConfigStore {
    public HierarchicalConfiguration loadConfig(String identifier) throws ConfigurationException {
       try {
          /* get fileserver node */
-         Object object = terminalService.getObjectByLocation("/fileserver/etc/" + identifier, false);
+         Object object = terminalService.getObjectByQuery("/fileserver/etc/" + identifier, false);
          if (null == object || !(object instanceof FileServerFile))
             return null;
 

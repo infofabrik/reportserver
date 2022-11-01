@@ -68,13 +68,13 @@ public class TerminalServiceImpl implements TerminalService {
    }
 
    @Override
-   public Object getObjectByLocation(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location)
+   public Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location)
          throws VFSException {
-      return getObjectByLocation(vfsManager, location, true);
+      return getObjectByQuery(vfsManager, location, true);
    }
 
    @Override
-   public Object getObjectByLocation(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location,
+   public Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location,
          boolean checkRights) throws VFSException {
       TerminalSession session = terminalSessionProvider.get();
 
@@ -95,12 +95,12 @@ public class TerminalServiceImpl implements TerminalService {
    }
 
    @Override
-   public Collection<Object> getObjectsByLocation(String location) throws ObjectResolverException {
-      return getObjectsByLocation(location, true);
+   public Collection<Object> getObjectsByQuery(String location) throws ObjectResolverException {
+      return getObjectsByQuery(location, true);
    }
 
    @Override
-   public Collection<Object> getObjectsByLocation(String location, boolean checkRights) throws ObjectResolverException {
+   public Collection<Object> getObjectsByQuery(String location, boolean checkRights) throws ObjectResolverException {
       TerminalSession session = terminalSessionProvider.get();
       if (!checkRights)
          session.setCheckRights(checkRights);
@@ -109,13 +109,13 @@ public class TerminalServiceImpl implements TerminalService {
    }
 
    @Override
-   public Object getObjectByLocation(String location) throws ObjectResolverException {
-      return getObjectByLocation(location, true);
+   public Object getObjectByQuery(String location) throws ObjectResolverException {
+      return getObjectByQuery(location, true);
    }
 
    @Override
-   public Object getObjectByLocation(String location, boolean checkRights) throws ObjectResolverException {
-      Collection<Object> objects = getObjectsByLocation(location, checkRights);
+   public Object getObjectByQuery(String location, boolean checkRights) throws ObjectResolverException {
+      Collection<Object> objects = getObjectsByQuery(location, checkRights);
       if (null != objects && objects.size() > 0) {
          Object obj = objects.iterator().next();
          if (obj instanceof HibernateProxy)

@@ -1,8 +1,9 @@
 package net.datenwerke.rs.terminal.service.terminal.objresolver;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -50,40 +51,50 @@ public class ObjectResolverDeamon implements TerminalSessionDeamonHook {
    public void autocomplete(AutocompleteHelper autoHelper) {
       // we do no autocompletion
    }
-
-   public Collection<Object> getObjects(Collection<String> locationStrings, Class<? extends Securee> securee,
-         Class<? extends Right>... rights) throws ObjectResolverException {
-      Collection<Object> filtered = new ArrayList<>();
-
-      for (String locationStr : locationStrings) {
-         for (ObjectResolverHook objectResolver : hookHandler.getHookers(ObjectResolverHook.class)) {
-            if (objectResolver.consumes(locationStr, terminalSession)) {
-               Collection<Object> objects = objectResolver.getObjects(locationStr, terminalSession);
-               if (null == objects || (objects instanceof Collection && objects.contains(null)))
-                  continue;
-
-               if (rights.length > 0) {
-                  for (Object obj : objects) {
-                     if (!(obj instanceof SecurityTarget)
-                           || securityService.checkRights((SecurityTarget) obj, securee, rights)) {
-                        if (obj instanceof HibernateProxy)
-                           obj = ((HibernateProxy) obj).getHibernateLazyInitializer().getImplementation();
-                        filtered.add(obj);
-                     }
-                  }
-               } else {
-                  for (Object obj : objects) {
-                     if (obj instanceof HibernateProxy)
-                        obj = ((HibernateProxy) obj).getHibernateLazyInitializer().getImplementation();
-                     filtered.add(obj);
-                  }
-               }
-
-            }
-         }
+   
+   private boolean checkRights(Object obj, Class<? extends Securee> securee,
+         Class<? extends Right>... rights) {
+      if (!(obj instanceof SecurityTarget)
+            || securityService.checkRights((SecurityTarget) obj, securee, rights)) {
+         return true;
+      } else {
+         return false;
       }
-
-      return filtered;
+   }
+   
+   private Collection<Object> doGetObjects(final String locationStr, final Class<? extends Securee> securee,
+         final Class<? extends Right>... rights) throws ObjectResolverException {
+      return hookHandler.getHookers(ObjectResolverHook.class)
+         .stream()
+         .filter(objectResolver -> objectResolver.consumes(locationStr, terminalSession))
+         .map(rethrowFunction(objectResolver -> objectResolver.getObjects(locationStr, terminalSession)))
+         .filter(objects -> null != objects)
+         .filter(objects -> !(objects instanceof Collection && objects.contains(null)))
+         .flatMap(Collection::stream)
+         .map(obj -> {
+            if (obj instanceof HibernateProxy)
+               return ((HibernateProxy) obj).getHibernateLazyInitializer().getImplementation();
+            else
+               return obj;
+         })
+         .filter(obj -> {
+            if (rights.length > 0)
+               return checkRights(obj, securee, rights);
+            else
+               return true;
+         })
+         .collect(toList());
+   }
+   
+   public Collection<Object> getObjects(final Collection<String> locationStrings, final Class<? extends Securee> securee,
+         final Class<? extends Right>... rights) throws ObjectResolverException {
+      Collection<Object> res = locationStrings
+            .stream()
+            .map(rethrowFunction(locationStr -> doGetObjects(locationStr, securee, rights)))
+            .flatMap(Collection::stream)
+            .collect(toList());
+      
+      return res;
    }
 
    public Collection<Object> getObjects(Collection<String> locationStrings, Class<? extends Right>... rights)
