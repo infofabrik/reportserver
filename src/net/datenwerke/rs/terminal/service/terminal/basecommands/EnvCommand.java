@@ -3,6 +3,7 @@ package net.datenwerke.rs.terminal.service.terminal.basecommands;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -75,6 +76,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Max memory",
             NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB"));
       table.addDataRow(new RSStringTableRow("Locale", LocalizationServiceImpl.getLocale().toString()));
+      table.addDataRow(new RSStringTableRow("JVM Locale", Locale.getDefault().toString()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
       table.addDataRow(new RSStringTableRow("Browser", generalInfoService.getBrowserName()));
       table.addDataRow(new RSStringTableRow("Browser version", generalInfoService.getBrowserVersion()));
