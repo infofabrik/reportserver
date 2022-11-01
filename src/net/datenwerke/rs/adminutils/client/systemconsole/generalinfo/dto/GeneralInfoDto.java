@@ -17,6 +17,8 @@ public class GeneralInfoDto implements Serializable {
    private String osVersion;
    private String browserName;
    private String browserVersion;
+   private String locale;
+   private String jvmLocale;
    
    private String internalDbId;
    private String internalDbDatasourceName;
@@ -30,6 +32,22 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbUsername;
 
    public GeneralInfoDto() {
+   }
+   
+   public String getLocale() {
+      return locale;
+   }
+
+   public void setLocale(String locale) {
+      this.locale = locale;
+   }
+   
+   public String getJvmLocale() {
+      return jvmLocale;
+   }
+
+   public void setJvmLocale(String jvmLocale) {
+      this.jvmLocale = jvmLocale;
    }
    
    public String getBrowserName() {

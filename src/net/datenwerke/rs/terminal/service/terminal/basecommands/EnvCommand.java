@@ -3,7 +3,6 @@ package net.datenwerke.rs.terminal.service.terminal.basecommands;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -24,7 +23,6 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
-import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 public class EnvCommand implements TerminalCommandHook {
 
@@ -75,8 +73,8 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Application server", generalInfoService.getApplicationServer()));
       table.addDataRow(new RSStringTableRow("Max memory",
             NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB"));
-      table.addDataRow(new RSStringTableRow("Locale", LocalizationServiceImpl.getLocale().toString()));
-      table.addDataRow(new RSStringTableRow("JVM Locale", Locale.getDefault().toString()));
+      table.addDataRow(new RSStringTableRow("Locale", generalInfoService.getLocale()));
+      table.addDataRow(new RSStringTableRow("JVM Locale", generalInfoService.getJvmLocale()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
       table.addDataRow(new RSStringTableRow("Browser", generalInfoService.getBrowserName()));
       table.addDataRow(new RSStringTableRow("Browser version", generalInfoService.getBrowserVersion()));

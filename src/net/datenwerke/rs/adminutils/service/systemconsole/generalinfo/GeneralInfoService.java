@@ -18,5 +18,9 @@ public interface GeneralInfoService {
 
    String getRsVersion();
    
+   String getLocale();
+   
+   String getJvmLocale();
+   
    GeneralInfoDto getGeneralInfo();
 }

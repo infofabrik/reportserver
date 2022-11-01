@@ -4,6 +4,7 @@ import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.ServletContext;
@@ -19,6 +20,7 @@ import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 public class GeneralInfoServiceImpl implements GeneralInfoService {
 
@@ -109,6 +111,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setOsVersion(getOsVersion());
       info.setBrowserName(getBrowserName());
       info.setBrowserVersion(getBrowserVersion());
+      info.setLocale(getLocale());
+      info.setJvmLocale(getJvmLocale());
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
@@ -134,6 +138,16 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       }
       
       return info;
+   }
+
+   @Override
+   public String getLocale() {
+      return LocalizationServiceImpl.getLocale().toString();
+   }
+
+   @Override
+   public String getJvmLocale() {
+      return Locale.getDefault().toString();
    }
 
 }
