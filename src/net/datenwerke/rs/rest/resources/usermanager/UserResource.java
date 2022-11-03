@@ -1,8 +1,9 @@
-package net.datenwerke.rs.rest.resources;
+package net.datenwerke.rs.rest.resources.usermanager;
 
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -18,14 +19,12 @@ import javax.ws.rs.core.Response.Status;
 
 import org.hibernate.proxy.HibernateProxy;
 
-import net.datenwerke.rs.rest.objects.usermanager.RestGroup;
 import net.datenwerke.rs.rest.objects.usermanager.RestOrganisationalUnit;
-import net.datenwerke.rs.rest.objects.usermanager.RestOrganisationalUnitInfo;
-import net.datenwerke.rs.rest.objects.usermanager.RestUser;
+import net.datenwerke.rs.rest.resources.RsRestResource;
+import net.datenwerke.rs.rest.service.rest.RestUtilService;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
-import net.datenwerke.security.service.usermanager.entities.Group;
 import net.datenwerke.security.service.usermanager.entities.OrganisationalUnit;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -37,12 +36,15 @@ public class UserResource extends RsRestResource {
    private HttpServletRequest request;
    
    private final Provider<UserManagerService> userManagerServiceProvider;
+   private final Provider<RestUtilService> restUtilServiceProvider;
    
    @Inject
    public UserResource( 
-         Provider<UserManagerService> userManagerServiceProvider
+         Provider<UserManagerService> userManagerServiceProvider,
+         Provider<RestUtilService> restUtilServiceProvider
          ) {
       this.userManagerServiceProvider = userManagerServiceProvider;
+      this.restUtilServiceProvider = restUtilServiceProvider;
    }
    
    @GET
@@ -87,32 +89,16 @@ public class UserResource extends RsRestResource {
          if (!last)
             continue;
          
-         if (!(next instanceof OrganisationalUnit)) {
-            if (next instanceof Group) {
-               RestGroup restGroup = RestGroup.fromGroup((Group)next);
-               return Response.ok().entity(restGroup).build();
-            } else if (next instanceof User) {
-               RestUser restUser = RestUser.fromUser((User)next);
-               return Response.ok().entity(restUser).build();
-            }
-         }
+         if (!(next instanceof OrganisationalUnit)) 
+            return Response.ok().entity(restUtilServiceProvider.get().toRestObject(next)).build();
          
-         restLast = RestOrganisationalUnit.fromOrganisationalUnit((OrganisationalUnit)next);
-         List<AbstractUserManagerNode> children = next.getChildren();
+         restLast = (RestOrganisationalUnit) restUtilServiceProvider.get().toDetailedRestObject(next);
          
-         for (AbstractUserManagerNode child: children) {
-            if (child instanceof User) {
-               RestUser restUser = RestUser.fromUser((User)child);
-               restLast.getChildren().add(restUser);
-            } else if (child instanceof OrganisationalUnit) {
-               RestOrganisationalUnitInfo restOu = RestOrganisationalUnitInfo
-                     .fromOrganisationalUnit((OrganisationalUnit) child);
-               restLast.getChildren().add(restOu);
-            } else if (child instanceof Group) {
-               RestGroup restGroup = RestGroup.fromGroup((Group)child);
-               restLast.getChildren().add(restGroup);
-            }
-         }
+         restLast.getChildren().addAll(
+               next.getChildren()
+               .stream()
+               .map(child -> restUtilServiceProvider.get().toRestObject(child))
+               .collect(Collectors.toList()));
       }
       
       return Response.ok().entity(restLast).build();

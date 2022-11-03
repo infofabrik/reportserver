@@ -179,6 +179,7 @@ import net.datenwerke.rs.remoteaccess.service.RemoteAccessModule;
 import net.datenwerke.rs.reportdoc.server.ReportDocumentationServlet;
 import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
 import net.datenwerke.rs.rest.service.rest.RestModule;
+import net.datenwerke.rs.rest.service.rest.usermanager.RestUserManagerModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
@@ -685,6 +686,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new ScpModule(),
             
             new RestModule(),
+            new RestUserManagerModule(),
 
             new AliasCmdModule(),
 

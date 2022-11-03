@@ -3,7 +3,6 @@ package net.datenwerke.rs.rest.service.rest;
 import com.google.inject.AbstractModule;
 import com.google.inject.matcher.Matchers;
 
-import net.datenwerke.rs.rest.resources.GeneralInfoResource;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
 import net.datenwerke.rs.utils.guice.GuiceMatchers;
 
@@ -12,7 +11,7 @@ public class RestModule extends AbstractModule {
    @Override
    protected void configure() {
       
-      bind(GeneralInfoResource.class);
+      bind(RestUtilService.class).to(RestUtilServiceImpl.class);
       
       RestAuthenticationCheckInterceptor restAuthenticationInterceptor = new RestAuthenticationCheckInterceptor();
       bindInterceptor(Matchers.any(), Matchers.annotatedWith(RestAuthentication.class), restAuthenticationInterceptor);
@@ -21,5 +20,5 @@ public class RestModule extends AbstractModule {
             restAuthenticationInterceptor);
       requestInjection(restAuthenticationInterceptor);
    }
-
+   
 }
