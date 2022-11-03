@@ -2,11 +2,9 @@ package net.datenwerke.rs.rest.resources;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -22,9 +20,6 @@ public class GeneralInfoResource extends RsRestResource {
 
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
    private final Provider<SecurityService> securityServiceProvider;
-   
-   @Context
-   private HttpServletRequest request;
    
    @Inject
    public GeneralInfoResource(

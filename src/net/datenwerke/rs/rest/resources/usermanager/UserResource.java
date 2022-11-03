@@ -3,16 +3,13 @@ package net.datenwerke.rs.rest.resources.usermanager;
 import static java.util.stream.Collectors.toList;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
-import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -31,9 +28,6 @@ import net.datenwerke.security.service.usermanager.entities.User;
 @Path("/users")
 @RestAuthentication
 public class UserResource extends RsRestResource {
-   
-   @Context
-   private HttpServletRequest request;
    
    private final Provider<UserManagerService> userManagerServiceProvider;
    private final Provider<RestUtilService> restUtilServiceProvider;
@@ -98,7 +92,7 @@ public class UserResource extends RsRestResource {
                next.getChildren()
                .stream()
                .map(child -> restUtilServiceProvider.get().toRestObject(child))
-               .collect(Collectors.toList()));
+               .collect(toList()));
       }
       
       return Response.ok().entity(restLast).build();
