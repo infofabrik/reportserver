@@ -11,8 +11,12 @@ import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 @RemoteServiceRelativePath("legacysaiku")
 public interface SaikuRpcService extends RemoteService {
 
-   public void stashReport(String token, SaikuReportDto report) throws ServerCallFailedException;
+   void stashReport(String token, SaikuReportDto report) throws ServerCallFailedException;
 
    ListLoadResult<String> loadCubesFor(MondrianDatasourceDto datasourceDefinitionDto, SaikuReportDto saikuReportDto)
          throws ServerCallFailedException;
+
+   void clearCache(MondrianDatasourceDto datasourceDefinitionDto) throws ServerCallFailedException;
+
+   boolean testConnection(MondrianDatasourceDto datasourceDto) throws ServerCallFailedException;
 }

@@ -8,12 +8,12 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.SaikuOutputGeneratorProviderHook;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuCSVOutputGenerator;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuChartHTMLOutputGenerator;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuHTMLOutputGenerator;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuPDFOutputGenerator;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuXLSOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuCSVOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuChartHTMLOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuHTMLOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuPDFOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuXLSOutputGenerator;
 
 public class BaseSaikuOutputGeneratorProvider implements SaikuOutputGeneratorProviderHook {
 

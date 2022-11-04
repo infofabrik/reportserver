@@ -17,7 +17,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDt
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportexporter.exporter.ReportExporterImpl;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.legacysaiku.client.saiku.locale.SaikuMessages;
+import net.datenwerke.rs.saiku.client.saiku.locale.SaikuMessages;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.decorator.RECSaikuChartDtoDec;

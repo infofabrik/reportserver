@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.toList;
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.StringWriter;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,6 +13,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Properties;
 
 import javax.inject.Inject;
@@ -26,15 +28,27 @@ import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
 
-import org.legacysaiku.datasources.connection.ISaikuConnection;
+import org.apache.commons.lang3.StringUtils;
 import org.olap4j.OlapConnection;
 import org.olap4j.OlapException;
+import org.olap4j.mdx.IdentifierNode;
 import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Hierarchy;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Measure;
 import org.olap4j.metadata.Member;
+import org.saiku.datasources.connection.ISaikuConnection;
+import org.saiku.olap.dto.SaikuDimension;
+import org.saiku.olap.dto.SaikuHierarchy;
+import org.saiku.olap.dto.SaikuMember;
+import org.saiku.olap.dto.SimpleCubeElement;
+import org.saiku.olap.util.ObjectUtil;
+import org.saiku.olap.util.exception.SaikuOlapException;
+import org.saiku.service.util.MondrianDictionary;
+import org.saiku.service.util.exception.SaikuServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -42,11 +56,12 @@ import org.xml.sax.InputSource;
 
 import com.google.inject.Provider;
 
-import mondrian8.olap.CacheControl;
-import mondrian8.olap4j.MondrianOlap4jDriver;
-import mondrian8.rolap.RolapConnection;
-import mondrian8.rolap.RolapConnectionProperties;
-import mondrian8.rolap.RolapSchema;
+import mondrian9.olap.CacheControl;
+import mondrian9.olap4j.SaikuMondrianHelper;
+import mondrian9.rolap.RolapConnection;
+import mondrian9.rolap.RolapConnectionProperties;
+import mondrian9.rolap.RolapSchema;
+import mondrian9.olap4j.MondrianOlap4jDriver;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
@@ -57,32 +72,44 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImpl;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.OlapConnectionHook;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig;
 import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.OlapConnectionHook;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionPropertiesHook;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 public class OlapUtilServiceImpl implements OlapUtilService {
 
+   private static final Logger log = LoggerFactory.getLogger(OlapUtilServiceImpl.class);
+
+   private static final String XMLA_DRIVER = "org.olap4j.driver.xmla.XmlaOlap4jDriver";
+
    private static final String USERNAME_KEY = "jdbcUser";
    private static final String PASSWORD_KEY = "jdbcPassword";
 
-   private HookHandlerService hookHandlerService;
-   private JdbcService jdbcService;
+   private static final String XMLA_USERNAME_KEY = "User";
+   private static final String XMLA_PASSWORD_KEY = "Password";
 
+   private final HookHandlerService hookHandlerService;
+   private final JdbcService jdbcService;
    private final Provider<AuthenticatorService> authenticatorService;
+
    private final Provider<ParameterSetFactory> parameterSetFactory;
+
+   private final Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService;
 
    @Inject
    public OlapUtilServiceImpl(HookHandlerService hookHandlerService, JdbcService jdbcService,
-         Provider<ParameterSetFactory> parameterSetFactory, Provider<AuthenticatorService> authenticatorService) {
+         Provider<ParameterSetFactory> parameterSetFactory, Provider<AuthenticatorService> authenticatorService,
+         Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService) {
       this.hookHandlerService = hookHandlerService;
       this.jdbcService = jdbcService;
       this.parameterSetFactory = parameterSetFactory;
       this.authenticatorService = authenticatorService;
+      this.oldOlapUtilService = oldOlapUtilService;
    }
 
    @Override
@@ -96,12 +123,10 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    @Override
    public Cube getCube(final SaikuReport report) throws ClassNotFoundException, IOException, SQLException {
-      for (OlapCubeCacheHook cache : hookHandlerService.getHookers(OlapCubeCacheHook.class)) {
-         Cube cube = cache.getCubeFromCache(report);
-         if (null != cube)
-            return cube;
-         break; // only one cache
-      }
+      Optional<Cube> cachedCube = hookHandlerService.getHookers(OlapCubeCacheHook.class).stream()
+            .map(cache -> cache.getCubeFromCache(report)).findAny(); // only one cache
+      if (cachedCube.isPresent())
+         return cachedCube.get();
 
       DatasourceContainer dsc = report.getDatasourceContainer();
       MondrianDatasource datasource = (MondrianDatasource) dsc.getDatasource();
@@ -118,118 +143,47 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    }
 
    @Override
-   public List<String> getCubes(MondrianDatasource datasource, SaikuReport saikuReport)
+   public List<String> getCubes(final MondrianDatasource datasource, final SaikuReport report)
          throws ClassNotFoundException, IOException, SQLException {
-      OlapConnection olapConnection = getOlapConnection(datasource, saikuReport, false);
-
-      return olapConnection.getOlapSchema().getCubes().stream().map(Cube::getName).collect(toList());
+      return getOlapConnection(datasource, report, false).getOlapSchema().getCubes().stream().map(Cube::getName)
+            .collect(toList());
    }
 
    @Override
-   public List<Dimension> getAllDimensions(Cube cube) {
+   public List<Dimension> getAllDimensions(final Cube cube) {
       return cube.getDimensions().stream()
             .filter(dim -> !dim.getName().equals("Measures") && !dim.getUniqueName().equals("[Measures]"))
             .collect(toList());
    }
 
    @Override
-   public List<Member> getAllMeasures(Cube cube) throws OlapException {
-      List<Member> measures = new ArrayList<Member>();
-      for (Measure measure : cube.getMeasures()) {
-         if (measure.isVisible()) {
-            measures.add(measure);
-         }
-      }
-      if (measures.size() == 0) {
+   public List<SaikuHierarchy> getAllDimensionHierarchies(Cube cube, String dimensionName) {
+      SaikuDimension dim = getDimension(cube, dimensionName);
+      if (dim == null)
+         throw new SaikuServiceException("Cannot find dimension ( " + dimensionName + ") for cube ( " + cube + " )");
+
+      return dim.getHierarchies();
+   }
+
+   @Override
+   public SaikuDimension getDimension(Cube cube, String dimensionName) {
+      Dimension dim = cube.getDimensions().get(dimensionName);
+      if (dim != null)
+         return ObjectUtil.convert(dim);
+
+      return null;
+   }
+
+   @Override
+   public List<Member> getAllMeasures(final Cube cube) throws OlapException {
+      List<Member> measures = cube.getMeasures().stream().filter(Measure::isVisible).collect(toList());
+
+      if (0 == measures.size()) {
          Hierarchy hierarchy = cube.getDimensions().get("Measures").getDefaultHierarchy();
          measures = hierarchy.getRootMembers();
       }
 
       return measures;
-   }
-
-   @Override
-   public OlapConnection getOlapConnection(MondrianDatasource mondrianDatasource, SaikuReport report,
-         boolean resetParameters) throws IOException, ClassNotFoundException, SQLException {
-      Properties props = new Properties();
-      props.load(new StringReader(mondrianDatasource.getProperties()));
-
-      if (null != mondrianDatasource.getMondrianSchema()) {
-         /* init parameter set */
-         ParameterSet parameterSet = parameterSetFactory.get().create(authenticatorService.get().getCurrentUser(),
-               report);
-         if (null != report)
-            parameterSet.addAll(report.getParameterInstances());
-
-         Map<String, ParameterValue> pMap = new HashMap<>();
-         if (null != parameterSet)
-            pMap = parameterSet.getParameterMap();
-
-         String mondrianSchema = mondrianDatasource.getMondrianSchema();
-         String replacedMondrianSchema = replaceParametersInQuery(parameterSet, pMap, mondrianSchema, resetParameters);
-         props.setProperty("CatalogContent", replacedMondrianSchema);
-      }
-      
-      /* set reportserver locale if no locale specified */
-      if (!props.containsKey(RolapConnectionProperties.Locale.name())) 
-         props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
-
-      /* use fields if no property defined */
-      if (!props.containsKey(USERNAME_KEY) && null != mondrianDatasource.getUsername()) {
-         props.setProperty(USERNAME_KEY, mondrianDatasource.getUsername());
-      }
-      if (!props.containsKey(PASSWORD_KEY) && null != mondrianDatasource.getPassword()) {
-         props.setProperty(PASSWORD_KEY, mondrianDatasource.getPassword());
-      }
-      if (!props.containsKey(ISaikuConnection.URL_KEY) && null != mondrianDatasource.getUrl()) {
-         props.setProperty(ISaikuConnection.URL_KEY, jdbcService.adaptJdbcUrl(mondrianDatasource.getUrl()));
-      }
-
-      String url = props.getProperty(ISaikuConnection.URL_KEY);
-
-      if (url.length() > 0 && url.charAt(url.length() - 1) != ';') {
-         url += ";";
-      }
-
-      MondrianOlap4jDriver mondrianOlap4jDriver = new MondrianOlap4jDriver();
-      OlapConnection connection = (OlapConnection) mondrianOlap4jDriver.connect(url, props);
-
-      for (OlapConnectionHook och : hookHandlerService.getHookers(OlapConnectionHook.class)) {
-         connection = och.postprocessConnection(connection);
-      }
-
-      return connection.unwrap(OlapConnection.class);
-   }
-
-   @Override
-   public List<Member> getAllMembers(Cube cube, String dimensionName, String hierarchyName, String levelName)
-         throws OlapException {
-      Dimension dim = cube.getDimensions().get(dimensionName);
-      if (dim != null) {
-         Hierarchy h = dim.getHierarchies().get(hierarchyName);
-         if (h == null) {
-            for (Hierarchy hlist : dim.getHierarchies()) {
-               if (hlist.getUniqueName().equals(hierarchyName) || hlist.getName().equals(hierarchyName)) {
-                  h = hlist;
-               }
-            }
-         }
-
-         if (h != null) {
-            Level l = h.getLevels().get(levelName);
-            if (l == null) {
-               for (Level lvl : h.getLevels()) {
-                  if (lvl.getUniqueName().equals(levelName) || lvl.getName().equals(levelName)) {
-                     return lvl.getMembers();
-                  }
-               }
-            } else {
-               return l.getMembers();
-            }
-
-         }
-      }
-      return new ArrayList<Member>();
    }
 
    @Override
@@ -306,6 +260,211 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    }
 
    @Override
+   public OlapConnection getOlapConnection(MondrianDatasource mondrianDatasource, SaikuReport report,
+         boolean resetParameters) throws IOException, ClassNotFoundException, SQLException {
+      Properties props = new Properties();
+      props.load(new StringReader(mondrianDatasource.getProperties()));
+
+      if (null != mondrianDatasource.getMondrianSchema()) {
+         /* init parameter set */
+         ParameterSet parameterSet = parameterSetFactory.get().create(authenticatorService.get().getCurrentUser(),
+               report);
+         if (null != report)
+            parameterSet.addAll(report.getParameterInstances());
+
+         Map<String, ParameterValue> pMap = new HashMap<>();
+         if (null != parameterSet)
+            pMap = parameterSet.getParameterMap();
+
+         String mondrianSchema = mondrianDatasource.getMondrianSchema();
+         String replacedMondrianSchema = replaceParametersInQuery(parameterSet, pMap, mondrianSchema, resetParameters);
+         props.setProperty("CatalogContent", replacedMondrianSchema);
+      }
+      
+      /* set reportserver locale if no locale specified */
+      if (!props.containsKey(RolapConnectionProperties.Locale.name())) 
+    	  props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
+
+      /* use fields if no property defined */
+      if (!props.containsKey(USERNAME_KEY) && null != mondrianDatasource.getUsername()) {
+         props.setProperty(USERNAME_KEY, mondrianDatasource.getUsername());
+      }
+      if (!props.containsKey(PASSWORD_KEY) && null != mondrianDatasource.getPassword()) {
+         props.setProperty(PASSWORD_KEY, mondrianDatasource.getPassword());
+      }
+      if (!props.containsKey(ISaikuConnection.URL_KEY) && null != mondrianDatasource.getUrl()) {
+         props.setProperty(ISaikuConnection.URL_KEY, jdbcService.adaptJdbcUrl(mondrianDatasource.getUrl()));
+      }
+
+      String url = props.getProperty(ISaikuConnection.URL_KEY);
+
+      if (url.length() > 0 && url.charAt(url.length() - 1) != ';') {
+         url += ";";
+      }
+
+      MondrianOlap4jDriver mondrianOlap4jDriver = new MondrianOlap4jDriver();
+      OlapConnection connection = (OlapConnection) mondrianOlap4jDriver.connect(url, props);
+
+      for (OlapConnectionHook och : hookHandlerService.getHookers(OlapConnectionHook.class)) {
+         connection = och.postprocessConnection(mondrianDatasource, connection);
+      }
+
+      return connection.unwrap(OlapConnection.class);
+   }
+
+   @Override
+   public List<Member> getAllMembers(Cube cube, String dimensionName, String hierarchyName, String levelName)
+         throws OlapException {
+      Dimension dim = cube.getDimensions().get(dimensionName);
+      if (dim != null) {
+         Hierarchy h = dim.getHierarchies().get(hierarchyName);
+         if (h == null) {
+            for (Hierarchy hlist : dim.getHierarchies()) {
+               if (hlist.getUniqueName().equals(hierarchyName) || hlist.getName().equals(hierarchyName)) {
+                  h = hlist;
+               }
+            }
+         }
+
+         if (h != null) {
+            Level l = h.getLevels().get(levelName);
+            if (l == null) {
+               for (Level lvl : h.getLevels()) {
+                  if (lvl.getUniqueName().equals(levelName) || lvl.getName().equals(levelName)) {
+                     return lvl.getMembers();
+                  }
+               }
+            } else {
+               return l.getMembers();
+            }
+
+         }
+      }
+      return new ArrayList<Member>();
+   }
+
+   @Override
+   public SaikuMember getMember(Cube cube, String uniqueMemberName) {
+      try {
+         Member m = cube.lookupMember(IdentifierNode.parseIdentifier(uniqueMemberName).getSegmentList());
+         if (m != null) {
+            return ObjectUtil.convert(m);
+         }
+         return null;
+      } catch (Exception e) {
+         throw new RuntimeException("Cannot find member: " + uniqueMemberName + " in cube:" + cube.getName(), e);
+      }
+   }
+
+   @Override
+   public List<SimpleCubeElement> getAllMembers(Cube cube, String hierarchy, String level) {
+      return getAllMembers(cube, hierarchy, level, null, -1);
+   }
+
+   @Override
+   public List<SimpleCubeElement> getAllMembers(Cube nativeCube, String hierarchy, String level, String searchString,
+         int searchLimit) {
+      try {
+         OlapConnection con = nativeCube.getSchema().getCatalog().getDatabase().getOlapConnection();
+         Hierarchy h = findHierarchy(hierarchy, nativeCube);
+
+         boolean search = StringUtils.isNotBlank(searchString);
+         int found = 0;
+         List<SimpleCubeElement> simpleMembers;
+         if (h != null) {
+            Level l = h.getLevels().get(level);
+            if (l == null) {
+               for (Level lvl : h.getLevels()) {
+                  if (lvl.getUniqueName().equals(level) || lvl.getName().equals(level)) {
+                     l = lvl;
+                     break;
+                  }
+               }
+            }
+            if (l == null) {
+               throw new SaikuOlapException(
+                     "Cannot find level " + level + " in hierarchy " + hierarchy + " of cube " + nativeCube.getName());
+            }
+            if (isMondrian(nativeCube)) {
+               if (SaikuMondrianHelper.hasAnnotation(l, MondrianDictionary.SQLMemberLookup)) {
+                  if (search) {
+                     ResultSet rs = SaikuMondrianHelper.getSQLMemberLookup(con, MondrianDictionary.SQLMemberLookup, l,
+                           searchString);
+                     simpleMembers = ObjectUtil.convert2simple(rs);
+                     log.debug("Found " + simpleMembers.size() + " members using SQL lookup for level " + level);
+                     return simpleMembers;
+                  } else {
+                     return new ArrayList<>();
+                  }
+               }
+
+            }
+            if (search || searchLimit > 0) {
+               List<Member> foundMembers = new ArrayList<>();
+               List<Member> lokuplist;
+               if (SaikuMondrianHelper.isMondrianConnection(con)
+                     && SaikuMondrianHelper.getMondrianServer(con).getVersion().getMajorVersion() >= 4) {
+                  lokuplist = SaikuMondrianHelper.getMDXMemberLookup(con, nativeCube.getName(), l);
+               } else {
+                  lokuplist = l.getMembers();
+               }
+               for (Member m : lokuplist) {
+                  if (search) {
+                     if (m.getName().toLowerCase().contains(searchString)
+                           || m.getCaption().toLowerCase().contains(searchString)) {
+                        foundMembers.add(m);
+                        found++;
+                     }
+                  } else {
+                     foundMembers.add(m);
+                     found++;
+                  }
+                  if (searchLimit > 0 && found >= searchLimit) {
+                     break;
+                  }
+               }
+               simpleMembers = ObjectUtil.convert2Simple(foundMembers);
+            } else {
+               List<Member> lookuplist = null;
+               if (SaikuMondrianHelper.isMondrianConnection(con)
+                     && SaikuMondrianHelper.getMondrianServer(con).getVersion().getMajorVersion() >= 4) {
+                  lookuplist = SaikuMondrianHelper.getMDXMemberLookup(con, nativeCube.getName(), l);
+               } else {
+                  lookuplist = l.getMembers();
+               }
+               simpleMembers = ObjectUtil.convert2Simple(lookuplist);
+            }
+            return simpleMembers;
+         }
+      } catch (Exception e) {
+         throw new SaikuServiceException("Cannot get all members", e);
+      }
+
+      return new ArrayList<>();
+
+   }
+
+   @Override
+   public Map<String, Object> getProperties(Cube c) {
+      Map<String, Object> properties = new HashMap<>();
+      try {
+         OlapConnection con = c.getSchema().getCatalog().getDatabase().getOlapConnection();
+         properties.put("saiku.olap.query.drillthrough", c.isDrillThroughEnabled());
+         properties.put("org.saiku.query.explain", con.isWrapperFor(RolapConnection.class));
+
+         try {
+            Boolean isScenario = (c.getDimensions().get("Scenario") != null);
+            properties.put("org.saiku.connection.scenario", isScenario);
+         } catch (Exception e) {
+            properties.put("org.saiku.connection.scenario", false);
+         }
+      } catch (Exception e) {
+         throw new SaikuServiceException(e);
+      }
+      return properties;
+   }
+
+   @Override
    public List<Level> getAllLevels(Cube cube, String dimensionName, String hierarchyName) throws OlapException {
       Dimension dim = cube.getDimensions().get(dimensionName);
       if (dim != null) {
@@ -343,19 +502,43 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       return Collections.EMPTY_LIST;
    }
 
+   private boolean isMondrian(Cube cube) {
+      OlapConnection con = cube.getSchema().getCatalog().getDatabase().getOlapConnection();
+      try {
+         return con.isWrapperFor(RolapConnection.class);
+      } catch (SQLException e) {
+         log.error("SQLException", e.getNextException());
+      }
+      return false;
+   }
+
+   private Hierarchy findHierarchy(String name, Cube cube) {
+      Hierarchy h = cube.getHierarchies().get(name);
+      if (h != null) {
+         return h;
+      }
+
+      for (Hierarchy hierarchy : cube.getHierarchies()) {
+         if (hierarchy.getUniqueName().equals(name)) {
+            return hierarchy;
+         }
+      }
+      return null;
+   }
+
    @Override
    public void flushCache(Report report) {
       if (report instanceof SaikuReport) {
 
          try {
             final OlapConnection con = getOlapConnection((SaikuReport) report);
-            final RolapConnection rolapConnection = con.unwrap(mondrian8.rolap.RolapConnection.class);
+            final RolapConnection rolapConnection = con.unwrap(mondrian9.rolap.RolapConnection.class);
             final RolapSchema rolapSchema = rolapConnection.getSchema();
             final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
             final Cube reportCube = getCube((SaikuReport) report);
             Arrays.stream(rolapSchema.getCubes()).filter(cube -> reportCube.getName().equals(cube.getName()))
-                  .map(mondrian8.olap.Cube::getSchema).findAny().ifPresent(cacheControl::flushSchema);
+                  .map(mondrian9.olap.Cube::getSchema).findAny().ifPresent(cacheControl::flushSchema);
 
          } catch (Exception e) {
             throw new RuntimeException(e);
@@ -370,11 +553,11 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    public void flushCache(MondrianDatasource datasource) {
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
-         final RolapConnection rolapConnection = con.unwrap(mondrian8.rolap.RolapConnection.class);
+         final RolapConnection rolapConnection = con.unwrap(mondrian9.rolap.RolapConnection.class);
          final RolapSchema rolapSchema = rolapConnection.getSchema();
          final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
-         Arrays.stream(rolapSchema.getCubes()).map(mondrian8.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
+         Arrays.stream(rolapSchema.getCubes()).map(mondrian9.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
 
       } catch (Exception e) {
          throw new RuntimeException(e);
@@ -385,7 +568,7 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
-         con.unwrap(mondrian8.rolap.RolapConnection.class).getSchema();
+         con.unwrap(mondrian9.rolap.RolapConnection.class).getSchema();
 
       } catch (Exception e) {
          throw new ConnectionTestFailedException(
@@ -394,4 +577,5 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
       return true;
    }
+
 }

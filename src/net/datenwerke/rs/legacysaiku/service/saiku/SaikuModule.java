@@ -6,8 +6,8 @@ import com.google.inject.multibindings.Multibinder;
 import net.datenwerke.rs.legacysaiku.server.rest.SaikuRestModule;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.SaikuReportService;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.SaikuReportServiceImpl;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuMetadataExporter;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.metadata.SaikuPlainMetadataExporter;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.metadata.SaikuMetadataExporter;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.metadata.SaikuPlainMetadataExporter;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 
 public class SaikuModule extends AbstractModule {
@@ -24,7 +24,7 @@ public class SaikuModule extends AbstractModule {
       metadataExporterBinder.addBinding().to(SaikuPlainMetadataExporter.class);
 
       bind(OlapUtilService.class).to(OlapUtilServiceImpl.class);
-      bind(OlapQueryService.class).to(OlapQueryServiceImpl.class);
+      bind(ThinQueryService.class).to(ThinQueryServiceImpl.class);
       bind(SaikuReportService.class).to(SaikuReportServiceImpl.class);
       bind(SaikuStartup.class).asEagerSingleton();
 

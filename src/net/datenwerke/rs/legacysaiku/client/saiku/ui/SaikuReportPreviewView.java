@@ -19,7 +19,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.client.reportexecutor.ReportExecutorDao;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.legacysaiku.client.saiku.SaikuDao;
+import net.datenwerke.rs.saiku.client.saiku.SaikuDao;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class SaikuReportPreviewView extends AbstractReportPreviewView {

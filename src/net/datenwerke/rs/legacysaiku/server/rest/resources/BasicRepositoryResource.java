@@ -13,7 +13,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
-import net.datenwerke.rs.legacysaiku.server.rest.objects.SavedQuery;
+import net.datenwerke.rs.saiku.server.rest.objects.SavedQuery;
 
 @Path("/legacysaiku/{username}/repository")
 @XmlAccessorType(XmlAccessType.NONE)

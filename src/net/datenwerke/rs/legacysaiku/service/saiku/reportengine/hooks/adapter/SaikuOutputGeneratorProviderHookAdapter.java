@@ -5,7 +5,7 @@ import java.util.HashSet;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.SaikuOutputGeneratorProviderHook;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
+import net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator.SaikuOutputGenerator;
 
 /**
  * This file was automatically created by DtoAnnotationProcessor, version 0.1

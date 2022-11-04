@@ -1,34 +1,39 @@
 package net.datenwerke.rs.legacysaiku.server.rest;
 
 import org.glassfish.jersey.server.ResourceConfig;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.AbstractModule;
 
-import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicRepositoryResource2;
-import net.datenwerke.rs.legacysaiku.server.rest.resources.BasicTagRepositoryResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.DataSourceResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.ExporterResource;
+import net.datenwerke.rs.legacysaiku.server.rest.resources.InfoResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.OlapDiscoverResource;
-import net.datenwerke.rs.legacysaiku.server.rest.resources.QueryResource;
+import net.datenwerke.rs.legacysaiku.server.rest.resources.Query2Resource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.SaikuI18nResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.SessionResource;
 import net.datenwerke.rs.legacysaiku.server.rest.resources.StatisticsResource;
 
 public class SaikuRestModule extends AbstractModule {
 
+   private static final Logger log = LoggerFactory.getLogger(SaikuRestModule.class);
+
    @Override
    protected void configure() {
       /* register rest resources */
 //		ResourceConfig rc = new PackagesResourceConfig(this.getClass().getPackage().getName());
 
-      ResourceConfig cnrc = new ResourceConfig(BasicRepositoryResource.class,
-            BasicRepositoryResource2.class, BasicTagRepositoryResource.class, DataSourceResource.class,
-            ExporterResource.class, OlapDiscoverResource.class, QueryResource.class, SessionResource.class,
-            StatisticsResource.class, SaikuI18nResource.class);
+      ResourceConfig cnrc = new ResourceConfig(BasicRepositoryResource2.class,
+            DataSourceResource.class, ExporterResource.class, InfoResource.class,
+            OlapDiscoverResource.class, Query2Resource.class, SessionResource.class,
+            SaikuI18nResource.class, StatisticsResource.class);
 
       for (Class<?> resource : cnrc.getClasses()) {
+         log.info("try to bind: " + resource.getName());
          bind(resource);
+         log.info("done binding: " + resource.getName());
       }
    }
 

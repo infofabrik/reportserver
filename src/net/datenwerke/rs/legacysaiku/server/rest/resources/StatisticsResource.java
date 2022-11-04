@@ -1,18 +1,24 @@
 package net.datenwerke.rs.legacysaiku.server.rest.resources;
 
+//import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 
-import mondrian8.olap.MondrianServer;
-import mondrian8.olap.MondrianServer.MondrianVersion;
-import mondrian8.server.monitor.ConnectionInfo;
-import mondrian8.server.monitor.Monitor;
-import mondrian8.server.monitor.ServerInfo;
-import mondrian8.server.monitor.StatementInfo;
+import mondrian9.olap.MondrianServer;
+import mondrian9.olap.MondrianServer.MondrianVersion;
+import mondrian9.server.monitor.ConnectionInfo;
+import mondrian9.server.monitor.Monitor;
+import mondrian9.server.monitor.ServerInfo;
+import mondrian9.server.monitor.StatementInfo;
 
+/**
+ * Mondrian Server Info and Stats Endpoints.
+ */
+//@Component
 @Path("/legacysaiku/statistics")
 public class StatisticsResource {
 
@@ -22,15 +28,15 @@ public class StatisticsResource {
 //	StringWriter saikuWriter = new StringWriter();
 //	
 //	public StatisticsResource() {
-//		setupLog("mondrian8.sql", "DEBUG", sqlWriter);
-//		setupLog("mondrian8.mdx", "DEBUG", mdxWriter);
-//		setupLog("mondrian8.profile", "DEBUG", profileWriter);
-//		setupLog("org.legacysaiku.service", "INFO", saikuWriter);
+//		setupLog("mondrian9.sql", "DEBUG", sqlWriter);
+//		setupLog("mondrian9.mdx", "DEBUG", mdxWriter);
+//		setupLog("mondrian9.profile", "DEBUG", profileWriter);
+//		setupLog("org.saiku.service", "INFO", saikuWriter);
 //		System.out.println("##########################SETUP LOG");
 //		
 //		
 //	}
-
+	
 //	private void setupLog(String category, String level, StringWriter writer) {
 //		Logger pkgLogger = Logger.getRootLogger().getLoggerRepository().getLogger(category);
 //		pkgLogger.setLevel(Level.toLevel(level));
@@ -41,50 +47,84 @@ public class StatisticsResource {
 //		Logger.getRootLogger().addAppender(appender);
 //	}
 
-   @GET
-   @Produces({ "application/json" })
-   @Path("/mondrian")
-   public MondrianStats getMondrianStats() {
+  /**
+   * Get Mondrian Stats
+   * @summary Get Mondrian stats
+   * @return A selection of Mondrian stats.
+   */
+	@GET
+	@Produces({"application/json" })
+	@Path("/mondrian")
+	public MondrianStats getMondrianStats() {
+		
+		MondrianServer mondrianServer = MondrianServer.forId(null);
+		if (mondrianServer != null) {
+			MondrianVersion mv = mondrianServer.getVersion();
+			
+			final Monitor monitor = mondrianServer.getMonitor();
+	        final ServerInfo server = monitor.getServer();
+	        
+	        int statementCurrentlyOpenCount = 0;//server.statementCurrentlyOpenCount();
+	        int connectionCurrentlyOpenCount =0;// server.connectionCurrentlyOpenCount();
+	        int sqlStatementCurrentlyOpenCount = 0;//server.sqlStatementCurrentlyOpenCount();
+	        int statementCurrentlyExecutingCount = 0;//server.statementCurrentlyExecutingCount();
+	        float avgCellDimensionality =  ((float) server.cellCoordinateCount / (float) server.cellCount);
+	        
+	        final List<ConnectionInfo> connections = monitor.getConnections();
+	        final List<StatementInfo> statements = monitor.getStatements();
+	        
+	        return new MondrianStats(
+	        		server,
+	        		mv,
+	        		statementCurrentlyOpenCount,
+	        		connectionCurrentlyOpenCount,
+	        		sqlStatementCurrentlyOpenCount,
+	        		statementCurrentlyExecutingCount,
+	        		avgCellDimensionality,
+	        		connections,
+	        		statements
+	        		);
+		}
+		
+		return null;
+	}
 
-      MondrianServer mondrianServer = MondrianServer.forId(null);
-      if (mondrianServer != null) {
-         MondrianVersion mv = mondrianServer.getVersion();
 
-         final Monitor monitor = mondrianServer.getMonitor();
-         final ServerInfo server = monitor.getServer();
+  /**
+   * Get Mondrian Server Info
+   * @summary Get Mondrian Info
+   * @return Server Info
+   */
+	@GET
+	@Produces({"application/json" })
+	@Path("/mondrian/server")
+	public ServerInfo getMondrianServer() {
+		MondrianServer mondrianServer = MondrianServer.forId(null);
+		if (mondrianServer != null) {
+			MondrianVersion mv = mondrianServer.getVersion();
+			
+			final Monitor monitor = mondrianServer.getMonitor();
+		  return monitor.getServer();
+		}
+		return null;
+	}
 
-         int statementCurrentlyOpenCount = server.getSqlStatementCurrentlyOpenCount();
-         int connectionCurrentlyOpenCount = server.getConnectionCurrentlyOpenCount();
-         int sqlStatementCurrentlyOpenCount = server.getSqlStatementCurrentlyOpenCount();
-         int statementCurrentlyExecutingCount = server.getStatementCurrentlyExecutingCount();
-         float avgCellDimensionality = ((float) server.cellCoordinateCount / (float) server.cellCount);
+  /**
+   * Get Mondrian Server Info
+   * @summary Get Mondrian Info
+   * @return Server Info
+   */
+  @GET
+  @Produces({"application/json" })
+  @Path("/mondrian/server/version")
+  public MondrianVersion getMondrianServerVersion() {
+	MondrianServer mondrianServer = MondrianServer.forId(null);
+	if (mondrianServer != null) {
 
-         final List<ConnectionInfo> connections = monitor.getConnections();
-         final List<StatementInfo> statements = monitor.getStatements();
-
-         return new MondrianStats(server, mv, statementCurrentlyOpenCount, connectionCurrentlyOpenCount,
-               sqlStatementCurrentlyOpenCount, statementCurrentlyExecutingCount, avgCellDimensionality, connections,
-               statements);
-      }
-
-      return null;
-   }
-
-   @GET
-   @Produces({ "application/json" })
-   @Path("/mondrian/server")
-   public ServerInfo getMondrianServer() {
-      MondrianServer mondrianServer = MondrianServer.forId(null);
-      if (mondrianServer != null) {
-         MondrianVersion mv = mondrianServer.getVersion();
-
-         final Monitor monitor = mondrianServer.getMonitor();
-         final ServerInfo server = monitor.getServer();
-         return server;
-      }
-      return null;
-   }
-
+	  return mondrianServer.getVersion();
+	}
+	return null;
+  }
 //	@GET
 //	@Produces({"text/plain" })
 //	@Path("/log/sql")
@@ -108,9 +148,10 @@ public class StatisticsResource {
 //	
 //	@GET
 //	@Produces({"text/plain" })
-//	@Path("/log/saiku")
+//	@Path("/log/legacysaiku")
 //	public String getSaikuLog() {
 //		return saikuWriter.toString();
 //	}
-
+	
+	
 }

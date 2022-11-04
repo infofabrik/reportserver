@@ -11,6 +11,10 @@ import org.olap4j.metadata.Cube;
 import org.olap4j.metadata.Dimension;
 import org.olap4j.metadata.Level;
 import org.olap4j.metadata.Member;
+import org.saiku.olap.dto.SaikuDimension;
+import org.saiku.olap.dto.SaikuHierarchy;
+import org.saiku.olap.dto.SaikuMember;
+import org.saiku.olap.dto.SimpleCubeElement;
 
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
@@ -41,8 +45,21 @@ public interface OlapUtilService {
 
    List<Member> getHierarchyRootMembers(Cube cube, String hierarchyName) throws OlapException;
 
-   List<String> getCubes(MondrianDatasource datasource, SaikuReport saikuReport)
+   List<String> getCubes(MondrianDatasource datasource, SaikuReport report)
          throws ClassNotFoundException, IOException, SQLException;
+
+   Map<String, Object> getProperties(Cube cube);
+
+   List<SaikuHierarchy> getAllDimensionHierarchies(Cube cube, String dimensionName);
+
+   SaikuDimension getDimension(Cube cube, String dimensionName);
+
+   List<SimpleCubeElement> getAllMembers(Cube cube, String hierarchy, String level);
+
+   List<SimpleCubeElement> getAllMembers(Cube nativeCube, String hierarchy, String level, String searchString,
+         int searchLimit);
+
+   SaikuMember getMember(Cube cube, String uniqueMemberName);
 
    /**
     * Clears the Mondrian Cache of the given report.

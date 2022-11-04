@@ -12,7 +12,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 
-import net.datenwerke.rs.legacysaiku.server.rest.objects.repository.IRepositoryObject;
+import org.saiku.repository.IRepositoryObject;
+
 
 public interface ISaikuRepository {
 

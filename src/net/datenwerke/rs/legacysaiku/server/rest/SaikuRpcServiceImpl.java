@@ -17,7 +17,7 @@ import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.legacysaiku.client.saiku.SaikuRpcService;
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
-import net.datenwerke.rs.legacysaiku.service.saiku.SaikuSessionContainer;
+import net.datenwerke.rs.saiku.service.saiku.SaikuSessionContainer;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
@@ -98,5 +98,17 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
          throw new ServerCallFailedException(e);
       }
    }
+
+	@Override
+	public void clearCache(MondrianDatasourceDto datasourceDefinitionDto) throws ServerCallFailedException {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public boolean testConnection(MondrianDatasourceDto datasourceDto) throws ServerCallFailedException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
 }

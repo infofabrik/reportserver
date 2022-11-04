@@ -22,9 +22,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 
 import org.apache.commons.lang3.StringUtils;
-import org.legacysaiku.web.svg.Converter;
+import org.saiku.web.svg.Converter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.saiku.server.rest.resources.Query2Resource;
 
 @Path("/legacysaiku/{username}/export")
 @XmlAccessorType(XmlAccessType.NONE)
@@ -36,9 +38,9 @@ public class ExporterResource {
 
    private ISaikuRepository repository;
 
-   private QueryResource queryResource;
+   private Query2Resource queryResource;
 
-   public void setQueryResource(QueryResource qr) {
+   public void setQueryResource(Query2Resource qr) {
       this.queryResource = qr;
    }
 
