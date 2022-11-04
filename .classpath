@@ -159,7 +159,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-2.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jxls-poi-2.12.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mimepull-1.9.13.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-8.3.0.27-R-services.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/osgi-resource-locator-1.0.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/owasp-java-html-sanitizer-20220608.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/Saxon-HE-11.4.jar"/>
@@ -181,25 +180,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/txw2-2.3.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-interpretive-11.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xalan-serializer-11.0.0.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-anim-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-awt-util-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-bridge-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-codec-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-constants-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-css-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-dom-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-ext-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-extension-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-gvt-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-i18n-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-parser-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-script-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-shared-resources-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svg-dom-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svggen-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.15.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.15.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-text-1.10.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fontbox-2.0.27.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-4.0.6.jar"/>
@@ -258,5 +238,23 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user-2.8.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/liquibase-core-4.17.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/snakeyaml-1.33.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-9.4.0.0-281-services.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-anim-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-awt-util-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-bridge-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-constants-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-css-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-dom-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-ext-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-gvt-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-i18n-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-parser-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-script-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-shared-resources-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svg-dom-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-svggen-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.16.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.16.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
