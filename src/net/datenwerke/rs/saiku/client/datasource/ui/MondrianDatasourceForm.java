@@ -113,7 +113,7 @@ public class MondrianDatasourceForm extends SimpleFormView {
             }, SFFCNoHtmlDecode.INSTANCE);
 
       form.addField(Boolean.class, MondrianDatasourceDtoPA.INSTANCE.mondrian3(),
-            DatasourcesMessages.INSTANCE.mondrian8());
+            "Mondrian 9");
 
       form.addField(String.class, MondrianDatasourceDtoPA.INSTANCE.mondrianSchema(),
             SaikuMessages.INSTANCE.propertySchema(), new SFFCCodeMirror() {
