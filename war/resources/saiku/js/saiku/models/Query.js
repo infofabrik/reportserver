@@ -47,6 +47,9 @@ var Query = Backbone.Model.extend({
         this.action = new QueryAction({}, { query: this });
         this.result = new Result({ limit: Settings.RESULT_LIMIT }, { query: this });
         this.scenario = new QueryScenario({}, { query: this });
+
+        // A flag to tell who changed selection members
+        this.updatedSelectionFromModal = false;
     },
 
     parse: function(response) {
@@ -65,28 +68,62 @@ var Query = Backbone.Model.extend({
     },
 
     getProperty: function(key) {
-	    if (!this.model.properties) {
-	    errorMessage = '<span class="i18n">You need to enter some MDX statement to execute.PAMAPAM</span>';
-	    }
-    
+		 if (!this.model.properties) {
+		    errorMessage = '<span class="i18n">You need to enter some MDX statement to execute.PAMAPAM</span>';
+		}
         return this.model.properties[key];
     },
 
+    syncSelectionsModalAndUpdateParameters: function() {
+        if (this.updatedSelectionFromModal) {
+            var mParameters = this.helper.model().parameters;
+            for (var mKey in mParameters) {
+                var mVal       = mParameters[mKey];
+                var selections = this.helper.getSelectionsForParameter(mKey);
+
+                mVal = selections.map(function(sel) { return sel.caption; }).join();
+                mParameters[mKey] = mVal;
+            }
+        } else {
+            var mParameters = this.helper.model().parameters;
+            for (var mKey in mParameters) {
+                var mVal       = mParameters[mKey];
+                var mLevel     = this.helper.getLevelForParameter(mKey);
+                var selections = this.helper.getSelectionsForParameter(mKey);
+
+                if (mVal !== null && mVal !== undefined) {
+                    this.helper.setSelectionsForParameter(mKey, _.filter(selections, function(sel) {
+                        var containsParam = false;
+                        _.each(mVal.split(','), function (v) {
+                            if (sel.caption === v) {
+                                containsParam = true;
+                                return false;
+                            }
+                        });
+                        return containsParam;
+                    }));
+                }
+            }
+        }
+
+        this.updatedSelectionFromModal = false;
+    },
+
     run: function(force, mdx) {
+        this.syncSelectionsModalAndUpdateParameters();
+
         var self = this;
         // Check for automatic execution
         Saiku.ui.unblock();
         if (typeof this.model.properties != "undefined" && this.model.properties['saiku.olap.query.automatic_execution'] === false &&
-			(force === false || force === undefined || force === null)) {
+			(force === false || force === undefined || force === null)) {			
             return;
         }
-        
-     	if (typeof this.model.properties == "undefined") {
+        if (typeof this.model.properties == "undefined") {
 	    	var errorMessage = '<span class="i18n">Error creating query: The current variant only supports Mondrian 3. Either RESET the variant or switch the report datasource.</span>';
 	        $(this.workspace.processing).html(errorMessage).show();
 	    	return;
 	    }
-        
         this.workspace.unblock();
 
         $(this.workspace.el).find(".workspace_results_info").empty();
@@ -151,6 +188,8 @@ var Query = Backbone.Model.extend({
         TODO: i wonder if we should clean up the model (name and captions etc.)
         delete this.model.queryModel.axes['FILTER'].name;
 */
+        //console.log('query', JSON.stringify(exModel));
+
         this.result.save({},{ contentType: "application/json", data: JSON.stringify(exModel), error: function() {
             Saiku.ui.unblock();
             var errorMessage = '<span class="i18n">Error executing query. Please check the server logs or contact your administrator!</span>';

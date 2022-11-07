@@ -24,7 +24,6 @@ public class SaikuModule extends AbstractModule {
       metadataExporterBinder.addBinding().to(SaikuPlainMetadataExporter.class);
 
       bind(OlapUtilService.class).to(OlapUtilServiceImpl.class);
-      bind(ThinQueryService.class).to(ThinQueryServiceImpl.class);
       bind(SaikuReportService.class).to(SaikuReportServiceImpl.class);
       bind(SaikuStartup.class).asEagerSingleton();
 

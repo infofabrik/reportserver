@@ -56,12 +56,12 @@ import org.xml.sax.InputSource;
 
 import com.google.inject.Provider;
 
+import mondrian.rolap.RolapConnectionProperties;
 import mondrian9.olap.CacheControl;
+import mondrian9.olap4j.MondrianOlap4jDriver;
 import mondrian9.olap4j.SaikuMondrianHelper;
 import mondrian9.rolap.RolapConnection;
-import mondrian9.rolap.RolapConnectionProperties;
 import mondrian9.rolap.RolapSchema;
-import mondrian9.olap4j.MondrianOlap4jDriver;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
@@ -72,13 +72,12 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImpl;
+import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.OlapConnectionHook;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig;
 import net.datenwerke.rs.saiku.service.hooks.OlapCubeCacheHook;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
-import net.datenwerke.rs.legacysaiku.service.saiku.reportengine.hooks.OlapConnectionHook;
-import net.datenwerke.rs.saiku.service.saiku.reportengine.hooks.OlapConnectionPropertiesHook;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
 public class OlapUtilServiceImpl implements OlapUtilService {
@@ -283,7 +282,7 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       
       /* set reportserver locale if no locale specified */
       if (!props.containsKey(RolapConnectionProperties.Locale.name())) 
-    	  props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
+         props.setProperty(RolapConnectionProperties.Locale.name(), LocalizationServiceImpl.getLocale().toString());
 
       /* use fields if no property defined */
       if (!props.containsKey(USERNAME_KEY) && null != mondrianDatasource.getUsername()) {

@@ -63,6 +63,7 @@ import org.saiku.olap.query2.ThinAxis;
 import org.saiku.olap.query2.ThinCalculatedMember;
 import org.saiku.olap.query2.ThinHierarchy;
 import org.saiku.olap.query2.ThinLevel;
+import org.saiku.olap.query2.ThinMeasure;
 import org.saiku.olap.query2.ThinMember;
 import org.saiku.olap.query2.ThinQuery;
 import org.saiku.olap.query2.ThinQueryModel;
@@ -102,7 +103,7 @@ import com.google.inject.Inject;
 import com.google.inject.OutOfScopeException;
 import com.google.inject.ProvisionException;
 
-import mondrian.olap4j.SaikuMondrianHelper;
+import mondrian9.olap4j.SaikuMondrianHelper;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
@@ -110,6 +111,7 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.hooks.SaikuMdxQueryAdapterHook;
 import net.datenwerke.rs.saiku.service.hooks.SaikuQueryParameterAdapterHook;
+import net.datenwerke.rs.saiku.service.saiku.SaikuContextMap;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
@@ -448,6 +450,17 @@ public class ThinQueryServiceImpl implements ThinQueryService {
             ThinQuery tqAfter = Thin.convert(q, old.getCube(), hookHandler, report);
             tqAfter.getQueryModel().setCalculatedMembers(cms);
             getEnabledCMembers(old.getQueryModel(), tqAfter.getQueryModel());
+            
+            // Set measures aggregators
+            for (ThinMeasure measure : tqAfter.getQueryModel().getDetails().getMeasures()) {
+                for (ThinMeasure oldMeasure : old.getQueryModel().getDetails().getMeasures()) {
+                    if (measure.getUniqueName().equals(oldMeasure.getUniqueName())) {
+                        measure.getAggregators().addAll(oldMeasure.getAggregators());
+                        break;
+                    }
+                }
+            }
+            
             old.setQueryModel(tqAfter.getQueryModel());
             old.setMdx(tqAfter.getMdx());
          }
@@ -460,6 +473,8 @@ public class ThinQueryServiceImpl implements ThinQueryService {
                qc.store(ObjectKey.QUERY, old);
             }
          } catch (OutOfScopeException | ProvisionException e) {
+        	 String f = e.getMessage();
+        	 String h;
          }
 
          String mdx = old.getMdx();
@@ -470,12 +485,46 @@ public class ThinQueryServiceImpl implements ThinQueryService {
          // olapDiscoverService.getProperties(old.getCube());
          Map<String, Object> cubeProperties = olapUtilService.getProperties(cub);
          old.getProperties().putAll(cubeProperties);
-
+         
+         /**
+          * TODO NASTY HACK REMOVE IN NEXT RELEASE
+          */
+         old = removeDupSelections(old);
          return old;
       } catch (Exception e) {
          throw new RuntimeException("Could not update query", e);
       }
    }
+   
+   private ThinQuery removeDupSelections(ThinQuery old) {
+
+      Map<AxisLocation, ThinAxis> map = old.getQueryModel().getAxes();
+      for (Map.Entry<AxisLocation, ThinAxis> entry : map.entrySet()) {
+          for (ThinHierarchy h : entry.getValue().getHierarchies()) {
+              Map<String, ThinLevel> map2 = h.getLevels();
+              for (Map.Entry<String, ThinLevel> levelentry : map2.entrySet()) {
+                  List<ThinMember> members = levelentry.getValue().getSelection().getMembers();
+
+                  List<ThinMember> uniqueMembers = new ArrayList<>();
+                  Map<String, ThinMember> temp = new HashMap<>();
+                  for (ThinMember tm : members) {
+                      temp.put(tm.getUniqueName(), tm);
+                  }
+
+                  for (ThinMember tm : members) {
+                      if (temp.containsKey(tm.getUniqueName())) {
+                          uniqueMembers.add(tm);
+                          temp.remove(tm.getUniqueName());
+                      }
+                  }
+
+                  levelentry.getValue().getSelection().setMembers(uniqueMembers);
+              }
+          }
+      }
+      return old;
+  }
+   
    //
    // public void deleteQuery(String queryName) {
    // try {
@@ -538,10 +587,9 @@ public class ThinQueryServiceImpl implements ThinQueryService {
          if (ThinQuery.Type.QUERYMODEL.equals(tq.getType())) {
             filterHierarchies = tq.getQueryModel().getAxes().get(AxisLocation.FILTER).getHierarchies();
          }
-         if (type.toLowerCase().equals("xls")) {
+         if (type.equalsIgnoreCase("xls")) {
             return ExcelExporter.exportExcel(table, formatter, filterHierarchies);
-         }
-         if (type.toLowerCase().equals("csv")) {
+         } else if (type.equalsIgnoreCase("csv")) {
             return CsvExporter.exportCsv(rs, SaikuProperties.webExportCsvDelimiter,
                   SaikuProperties.webExportCsvTextEscape, "\r\n", true, formatter);
          }
@@ -762,6 +810,7 @@ public class ThinQueryServiceImpl implements ThinQueryService {
                            }
                            if (m.getLevel().getUniqueName().equals(levelName)
                                  || m.getLevel().getName().equals(levelName)) {
+                              Member.Type t = m.getMemberType();
                               mset.add(m);
                            }
                         }
@@ -799,8 +848,9 @@ public class ThinQueryServiceImpl implements ThinQueryService {
 
          QueryDetails details = query.getDetails();
          Measure[] selectedMeasures = new Measure[details.getMeasures().size()];
-         for (int i = 0; i < selectedMeasures.length; i++)
+         for (int i = 0; i < selectedMeasures.length; i++) {
             selectedMeasures[i] = details.getMeasures().get(i);
+         }
          result.setSelectedMeasures(selectedMeasures);
 
          int rowsIndex = 0;
@@ -824,11 +874,8 @@ public class ThinQueryServiceImpl implements ThinQueryService {
             }
             List<String> aggs = query.getAggregators(axisInfos[second].axis.getAxisOrdinal().name());
             String totalFunctionName = aggs != null && aggs.size() > 0 ? aggs.get(0) : null;
-            aggregators[0] = StringUtils.isNotBlank(totalFunctionName)
-                  ? TotalAggregator.newInstanceByFunctionName(totalFunctionName)
-                  : null;
-            builder = new TotalsListsBuilder(selectedMeasures, aggregators, cellSet, axisInfos[index],
-                  axisInfos[second]);
+            aggregators[0] = TotalAggregator.newInstanceByFunctionName(totalFunctionName);
+            builder = new TotalsListsBuilder(selectedMeasures, aggregators, cellSet, axisInfos[index], axisInfos[second], tq);
             totals[index] = builder.buildTotalsLists();
          }
          result.setLeftOffset(axisInfos[0].maxDepth);
@@ -919,8 +966,15 @@ public class ThinQueryServiceImpl implements ThinQueryService {
                   QueryHierarchy qh = query.getHierarchy(m.getHierarchy());
                   if (qh.getHierarchy().getDimension().getName().equals("Measures")) {
                      Measure measure = query.getMeasure(m.getName());
-                     if (!query.getDetails().getMeasures().contains(measure)) {
-                        query.getDetails().add(measure);
+                     boolean contains = false;
+                     for (Measure existMeasure : query.getDetails().getMeasures()) {
+                         if (existMeasure.getUniqueName().equals(measure.getUniqueName())) {
+                             contains = true;
+                             break;
+                         }
+                     }
+                     if (!contains) {
+                         query.getDetails().add(measure);
                      }
 
                   } else {

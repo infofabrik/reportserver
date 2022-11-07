@@ -17,49 +17,59 @@ package net.datenwerke.rs.saiku.server.rest.objects.resultset;
 
 import java.util.Properties;
 
-public class Cell {
 
-   private String value;
-   private String type;
-   private final Properties properties = new Properties();
+public class Cell  {
+
+	private String value;
+	private String type;
+	private final Properties properties = new Properties();
 //	private Properties metaproperties;
 
-   public enum Type {
-      ROW_HEADER, ROW_HEADER_HEADER, COLUMN_HEADER, DATA_CELL, EMPTY, UNKNOWN, ERROR
-   }
+	
+	public enum Type {
+		ROW_HEADER,
+		ROW_HEADER_HEADER,
+		COLUMN_HEADER,
+		DATA_CELL,
+		EMPTY,
+		UNKNOWN,
+		ERROR
+	}
+	
+	public Cell() {
+	}
+	
+	public Cell(String value) {
+		this(value,Type.EMPTY);
+	}
+	
+	public Cell(String value, Properties properties, Type type) {
+		this.value = value;
+		this.properties.putAll(properties);
+		this.type = type.toString();
+	}
+	
+	public Cell(String value, Type type) {
+		this.value = value;
+		this.type = type.toString();
+	}
+	
+	public String getValue() {
+		return value;
+	}
 
-   public Cell() {
-   }
-
-   public Cell(String value) {
-      this(value, Type.EMPTY);
-   }
-
-   public Cell(String value, Properties properties, Type type) {
-      this.value = value;
-      this.properties.putAll(properties);
-      this.type = type.toString();
-   }
-
-   public Cell(String value, Type type) {
-      this.value = value;
-      this.type = type.toString();
-   }
-
-   public String getValue() {
-      return value;
-   }
-
-   public Properties getProperties() {
-      return properties;
-   }
+	public Properties getProperties() {
+		return properties;
+	}
 //
 //	public Properties getMetaproperties() {
 //		return metaproperties;
 //	}
 
-   public String getType() {
-      return type;
-   }
+	public String getType() {
+		return type;
+	}
 
+	
+	
 }

@@ -20,12 +20,20 @@
 var Toolbar = Backbone.View.extend({
     tagName: "div",
 
+    buttons: false,
+
     events: {
         'click a' : 'call',
         'click #logo': 'site'
     },
 
     template: function() {
+		var paramsURI = Saiku.URLParams.paramsURI();
+
+		if (Saiku.URLParams.contains({ hide_workspace_icons: paramsURI.hide_workspace_icons })) {
+			this.buttons =  paramsURI.hide_workspace_icons;
+
+		}
         return _.template( $("#template-toolbar").html() )({data: this});
     },
 
@@ -40,6 +48,9 @@ var Toolbar = Backbone.View.extend({
             self.render();
         }
         else{
+            //self.logo = "<h1 id='logo'>"+
+            //    "<a href='http://www.meteorite.bi/' title='Saiku - Next Generation Open Source Analytics' target='_blank' class='sprite'>Saiku</a>"+
+            //    "</h1>";
             self.logo = "<h1 id='logo'>ReportServer</h1>";
             self.render();
         }
@@ -51,6 +62,7 @@ var Toolbar = Backbone.View.extend({
 
         // Trigger render event on toolbar so plugins can register buttons
         Saiku.events.trigger('toolbar:render', { toolbar: this });
+
 
         return this;
     },
@@ -97,22 +109,25 @@ var Toolbar = Backbone.View.extend({
      * Clear the current session and show the login window
      */
     logout: function() {
-        Saiku.session.logout();
+					Saiku.session.logout();
+
     },
 
     /**
      * Show the credits dialog
      */
     about: function() {
-        (new AboutModal()).render().open();
-        return false;
+
+			(new AboutModal()).render().open();
+			return false;
+
     },
 
     /**
      * Go to the issue tracker
      */
     issue_tracker: function() {
-    	//window.open('http://jira.meteorite.bi/');
+        //window.open('http://jira.meteorite.bi/');
         return false;
     },
 
@@ -120,8 +135,10 @@ var Toolbar = Backbone.View.extend({
 	 * Go to the help
 	 */
 	help: function() {
-		window.open('http://wiki.meteorite.bi/display/SAIK/Saiku+Documentation');
-		return false;
+
+			window.open('http://saiku-documentation.readthedocs.io/en/latest');
+			return false;
+
 	},
 
     /**

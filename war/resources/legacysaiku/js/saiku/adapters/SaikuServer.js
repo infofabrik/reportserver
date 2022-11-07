@@ -17,8 +17,9 @@
 /**
  * Base 64 module
  */
-;(function (window) {
 
+;(function (window) {
+  /*jshint -W030 */
   var
     characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=',
     fromCharCode = String.fromCharCode,
@@ -77,8 +78,7 @@ Backbone.sync = function(method, model, options) {
     
     // Generate AJAX action
     var type = methodMap[method];
-    var url = Settings.REST_URL
-        + (_.isFunction(model.url) ? model.url() : model.url);
+    var url = Settings.REST_URL + (_.isFunction(model.url) ? model.url() : model.url);
     
     // Prepare for failure
     if (typeof Settings.ERRORS == "undefined") {
@@ -95,7 +95,7 @@ Backbone.sync = function(method, model, options) {
     };
     var statuscode = {
       0: function() {
-    	  errorLogout();
+        errorLogout();
       },
       401: function() {
         errorLogout();
@@ -103,13 +103,12 @@ Backbone.sync = function(method, model, options) {
     };
 
     var failure = function(jqXHR, textStatus, errorThrown) {
-      /* display error message */
-      window.frameElement.setAttribute("data-rspivoterror", "true");
-            
+      if (!isIE && typeof console != "undefined" && console && console.error) {
+        console.error("Error performing " + type + " on " + url);
+        console.error(errorThrown);
+      }
       if (options.error) {
         options.error(jqXHR, textStatus, errorThrown);
-      } else {
-    	 Saiku.ui.block(errorThrown);  
       }
     };
 
@@ -118,16 +117,16 @@ Backbone.sync = function(method, model, options) {
       Saiku.ui.unblock();  
       options.success(data, textStatus, jqXHR);
     };
-    var async = true
+    var async = true;
     if (options.async === false) {
       async = false;
     }
-    var dataType = 'json'
+    var dataType = 'json';
     if (typeof options.dataType != "undefined") {
       dataType = options.dataType;
     }
 
-    var contentType = 'application/x-www-form-urlencoded'
+    var contentType = 'application/x-www-form-urlencoded';
     if (typeof options.contentType != "undefined") {
       contentType = options.contentType;
     }
@@ -146,7 +145,8 @@ Backbone.sync = function(method, model, options) {
       success:      success,
       statusCode:   statuscode, 
       error:        failure,
-      async:        async
+      async:        async//,
+      //processData:  false
       /*
       beforeSend:   function(request) {
         if (!Settings.PLUGIN) {
@@ -157,11 +157,13 @@ Backbone.sync = function(method, model, options) {
           }
       } */
     };
-    
-    
+
+    if(options.processData === false){
+        params.processData = false;
+    }
     // For older servers, emulate HTTP by mimicking the HTTP method with `_method`
     // And an `X-HTTP-Method-Override` header.
-    if (Settings.BIPLUGIN || Backbone.emulateHTTP) {
+    if ((Settings.BIPLUGIN && !Settings.BIPLUGIN5) || Backbone.emulateHTTP) {
       if (type === 'PUT' || type === 'DELETE') {
         if (Backbone.emulateHTTP) params.data._method = type;
         params.type = 'POST';

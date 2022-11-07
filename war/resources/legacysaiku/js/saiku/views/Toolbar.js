@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,84 +13,139 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- 
+
 /**
  * The global toolbar
  */
 var Toolbar = Backbone.View.extend({
     tagName: "div",
-    
+
+    buttons: false,
+
     events: {
-        'click #new_query': 'new_query',
-        'click #open_query': 'open_query',
-        'click #logout': 'logout',
-        'click #about': 'about',
-        'click #issue_tracker': 'issue_tracker'
+        'click a' : 'call',
+        'click #logo': 'site'
     },
-    
+
     template: function() {
-        return _.template( $("#template-toolbar").html() )(this);
+		var paramsURI = Saiku.URLParams.paramsURI();
+
+		if (Saiku.URLParams.contains({ hide_workspace_icons: paramsURI.hide_workspace_icons })) {
+			this.buttons =  paramsURI.hide_workspace_icons;
+
+		}
+        return _.template( $("#template-toolbar").html() )({data: this});
     },
-    
+
     initialize: function() {
-        this.render();
+        _.extend(this, Backbone.Events);
+        _.bindAll(this, "call");
+        var self = this;
+        if(Settings.LOGO){
+            self.logo = "<h1 id='logo_override'>"+
+                "<img src='"+Settings.LOGO+"'/>"+
+                "</h1>";
+            self.render();
+        }
+        else{
+            //self.logo = "<h1 id='logo'>"+
+            //    "<a href='http://www.meteorite.bi/' title='Saiku - Next Generation Open Source Analytics' target='_blank' class='sprite'>Saiku</a>"+
+            //    "</h1>";
+            self.logo = "<h1 id='logo'>ReportServer</h1>";
+            self.render();
+        }
     },
-    
+
     render: function() {
         $(this.el).attr('id', 'toolbar')
             .html(this.template());
-        
+
         // Trigger render event on toolbar so plugins can register buttons
         Saiku.events.trigger('toolbar:render', { toolbar: this });
-        
+
+
         return this;
     },
-    
+
+    call: function(e) {
+        var target = $(e.target);
+        var callback = target.attr('href').replace('#', '');
+        if(this[callback]) {
+            this[callback](e);
+        }
+        e.preventDefault();
+    },
     /**
      * Add a new tab to the interface
      */
     new_query: function() {
-        Saiku.tabs.add(new Workspace());
+        if(typeof ga!= 'undefined'){
+		ga('send', 'event', 'MainToolbar', 'New Query');
+        }
+        var wspace = new Workspace();
+        Saiku.tabs.add(wspace);
+        Saiku.events.trigger('toolbar:new_query', this, wspace);
         return false;
     },
-    
+
     /**
      * Open a query from the repository into a new tab
      */
     open_query: function() {
-        var dialog = _.detect(Saiku.tabs._tabs, function(tab) {
+        var tab = _.find(Saiku.tabs._tabs, function(tab) {
             return tab.content instanceof OpenQuery;
         });
-        
-        if (dialog) {
-            dialog.select();
+
+        if (tab) {
+            tab.select();
         } else {
             Saiku.tabs.add(new OpenQuery());
         }
-        
+
         return false;
     },
-    
+
     /**
      * Clear the current session and show the login window
      */
     logout: function() {
-        Saiku.session.logout();
+					Saiku.session.logout();
+
     },
-    
+
     /**
      * Show the credits dialog
      */
     about: function() {
-        (new AboutModal).render().open();
-        return false;
+
+			(new AboutModal()).render().open();
+			return false;
+
     },
-    
+
     /**
      * Go to the issue tracker
      */
     issue_tracker: function() {
-        window.open('https://github.com/OSBI/saiku/issues/new');
+        //window.open('http://jira.meteorite.bi/');
+        return false;
+    },
+
+	/**
+	 * Go to the help
+	 */
+	help: function() {
+
+			window.open('http://saiku-documentation.readthedocs.io/en/latest');
+			return false;
+
+	},
+
+    /**
+     * Force go to the Meteorite BI site
+     */
+    site: function() {
+        //window.open('http://www.meteorite.bi/');
         return false;
     }
 });

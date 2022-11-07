@@ -36,10 +36,10 @@ var AddFolderModal = Modal.extend({
         this.success = args.success;
         this.path = args.path;
         this.message = "<form id='add_folder'>" +
-            "<label for='name'>To add a new folder, " + 
-            "please type a name in the text box below:</label><br />" +
-            "<input type='text' class='newfolder' name='name'" +
-            "</form>"
+            "<label class='i18n' for='name'>To add a new folder, " + 
+            "please type a name in the text box below:</label>" +
+            "<input type='text' class='form-control newfolder' name='name' />" +
+            "</form>";
 
         _.extend(this.options, {
             title: "Add Folder"
@@ -47,13 +47,11 @@ var AddFolderModal = Modal.extend({
 
         
         // fix event listening in IE < 9
-        if($.browser.msie && $.browser.version < 9) {
+        if(isIE && isIE < 9) {
             $(this.el).find('form').on('submit', this.save);    
         }
 
     },
-    
-    type: "save",
 
     save: function( event ) {
         event.preventDefault( );

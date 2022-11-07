@@ -9,90 +9,99 @@ import mondrian.server.monitor.StatementInfo;
 
 public class MondrianStats {
 
-   private final ServerInfo server;
-   private final MondrianVersion mondrianVersion;
-   private final int openConnectionCount;
-   private final int openMdxStatementCount;
-   private final int openSqlStatementCount;
-   private final int executingMdxStatementCount;
-   private final float avgCellDimensionality;
-   private final List<ConnectionInfo> connections;
-   private final List<StatementInfo> statements;
+	private final ServerInfo server;
+	private final MondrianVersion mondrianVersion;
+	private final int openConnectionCount;
+	private final int openMdxStatementCount;
+	private final int openSqlStatementCount;
+	private final int executingMdxStatementCount;
+	private final float avgCellDimensionality;
+	private final List<ConnectionInfo> connections;
+	private final List<StatementInfo> statements;
 
-   public MondrianStats(ServerInfo server, MondrianVersion mv, int statementCurrentlyOpenCount,
-         int connectionCurrentlyOpenCount, int sqlStatementCurrentlyOpenCount, int statementCurrentlyExecutingCount,
-         float avgCellDimensionality, List<ConnectionInfo> connections, List<StatementInfo> statements) {
+	public MondrianStats(
+			ServerInfo server, 
+			MondrianVersion mv, 
+			int statementCurrentlyOpenCount,
+			int connectionCurrentlyOpenCount,
+			int sqlStatementCurrentlyOpenCount,
+			int statementCurrentlyExecutingCount, 
+			float avgCellDimensionality,
+			List<ConnectionInfo> connections, 
+			List<StatementInfo> statements) 
+	{
+		
+		this.server = server;
+		this.mondrianVersion = mv;
+		this.openConnectionCount = connectionCurrentlyOpenCount;
+		this.openMdxStatementCount = statementCurrentlyOpenCount;
+		this.openSqlStatementCount = sqlStatementCurrentlyOpenCount;
+		this.executingMdxStatementCount = statementCurrentlyExecutingCount;
+		this.avgCellDimensionality = avgCellDimensionality;
+		this.connections = connections;
+		this.statements = statements;
+		
+		
+		
+		
+	}
 
-      this.server = server;
-      this.mondrianVersion = mv;
-      this.openConnectionCount = connectionCurrentlyOpenCount;
-      this.openMdxStatementCount = statementCurrentlyOpenCount;
-      this.openSqlStatementCount = sqlStatementCurrentlyOpenCount;
-      this.executingMdxStatementCount = statementCurrentlyExecutingCount;
-      this.avgCellDimensionality = avgCellDimensionality;
-      this.connections = connections;
-      this.statements = statements;
+	/**
+	 * @return the server
+	 */
+	public ServerInfo getServer() {
+		return server;
+	}
 
-   }
+	/**
+	 * @return the openConnectionCount
+	 */
+	public int getOpenConnectionCount() {
+		return openConnectionCount;
+	}
 
-   /**
-    * @return the server
-    */
-   public ServerInfo getServer() {
-      return server;
-   }
+	/**
+	 * @return the openMdxStatementCount
+	 */
+	public int getOpenMdxStatementCount() {
+		return openMdxStatementCount;
+	}
 
-   /**
-    * @return the openConnectionCount
-    */
-   public int getOpenConnectionCount() {
-      return openConnectionCount;
-   }
+	/**
+	 * @return the openSqlStatementCount
+	 */
+	public int getOpenSqlStatementCount() {
+		return openSqlStatementCount;
+	}
 
-   /**
-    * @return the openMdxStatementCount
-    */
-   public int getOpenMdxStatementCount() {
-      return openMdxStatementCount;
-   }
+	/**
+	 * @return the executingMdxStatementCount
+	 */
+	public int getExecutingMdxStatementCount() {
+		return executingMdxStatementCount;
+	}
 
-   /**
-    * @return the openSqlStatementCount
-    */
-   public int getOpenSqlStatementCount() {
-      return openSqlStatementCount;
-   }
+	/**
+	 * @return the avgCellDimensionality
+	 */
+	public float getAvgCellDimensionality() {
+		return avgCellDimensionality;
+	}
 
-   /**
-    * @return the executingMdxStatementCount
-    */
-   public int getExecutingMdxStatementCount() {
-      return executingMdxStatementCount;
-   }
+	/**
+	 * @return the connections
+	 */
+	public List<ConnectionInfo> getConnections() {
+		return connections;
+	}
 
-   /**
-    * @return the avgCellDimensionality
-    */
-   public float getAvgCellDimensionality() {
-      return avgCellDimensionality;
-   }
+	/**
+	 * @return the statements
+	 */
+	public List<StatementInfo> getStatements() {
+		return statements;
+	}
 
-   /**
-    * @return the connections
-    */
-   public List<ConnectionInfo> getConnections() {
-      return connections;
-   }
-
-   /**
-    * @return the statements
-    */
-   public List<StatementInfo> getStatements() {
-      return statements;
-   }
-
-   public MondrianVersion getVersion() {
-      return mondrianVersion;
-   }
+  public MondrianVersion getVersion() { return mondrianVersion; }
 
 }

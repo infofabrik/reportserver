@@ -57,9 +57,6 @@ import org.saiku.olap.util.SaikuProperties;
 import org.saiku.service.util.exception.SaikuServiceException;
 import org.saiku.web.export.JSConverter;
 import org.saiku.web.export.PdfReport;
-
-import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
-import net.datenwerke.rs.saiku.server.rest.util.RestUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -68,8 +65,10 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.type.CollectionType;
 
 import net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService;
+import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
+import net.datenwerke.rs.saiku.server.rest.util.RestUtil;
 import net.datenwerke.rs.saiku.service.saiku.SaikuSessionContainer;
-import net.datenwerke.rs.legacysaiku.service.saiku.ThinQueryService;
+import net.datenwerke.rs.saiku.service.saiku.ThinQueryService;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;

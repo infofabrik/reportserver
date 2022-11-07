@@ -1,28 +1,47 @@
 <!DOCTYPE html>
 <html>
     <head>
-		<link rel="stylesheet" href="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/tipsy.css" type="text/css" />
-		<script type="text/javascript" src="../resources/legacysaiku/js/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/jquery/jquery-ui.min.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/jquery.tipsy.js"></script>
-		<script type="text/javascript" src="../resources/js/purl.js"></script>
+		<style>
+		 /*##TIPSY.CSS##*/
+		</style>
 		
-		<script type="text/javascript" src="../resources/legacysaiku/js/backbone/underscore.js"></script>
-        <script type="text/javascript" src="../resources/legacysaiku/js/backbone/json2.js"></script>
-        <script type="text/javascript" src="../resources/legacysaiku/js/backbone/backbone.js"></script>
-		
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/protovis.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/protovis-msie.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/tipsy.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/def.js"></script>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/pvc-r2.0.js"></script>
-	
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/Settings.js"></script>
+		<script type="text/javascript">
+		 /*##JQUERY##*/
+		 
+		 /*##JQUERY-UI##*/
+		 
+		 /*##TIPSY.JS##*/
+		 
+		 /*##PURL##*/
+		 
+		 /*##UNDERSCORE##*/
+		 
+		 /*##JSON2##*/
+		 
+		 /*##BACKBONE##*/
+		 
+		 /*##PROTOVIS##*/
+		 
+		 /*##PROTOVIS-IE##*/
+		 
+		 /*##TIPSY.PLUGIN##*/
+		 
+		 /*##DEF##*/
+		 
+		 /*##PVC##*/
+		 
+		 /*##SETTINGS##*/
+		 
+		 /*##SAIKU-RENDERER##*/
+		 
+		 /*##SAIKU-CHART-RENDERER##*/
+		</script>
 		
     </head>
     <body>
-		<script type="text/javascript" src="../resources/legacysaiku/js/saiku/plugins/CCC_Chart/plugin.js"></script>
-		
+    	<script>
+    	 /*##PLUGIN##*/
+    	</script>
 
 		<script>
 		$(function(){
@@ -50,7 +69,7 @@
 				line
 				pie
 				heatgrid
-				steckedBar100
+				stackedBar100
 				area
 				dot
 				waterfall
@@ -59,9 +78,10 @@
 			if(typeof(chartView[type]) != "function") {
 				type = "/*##TYPE##*/";
 			}
-			chartView[type]();
+		//	chartView[type]();
 			
 			chartView.render_view();
+			chartView.renderer.switch_chart(type);
 			chartView.show();
 		});
 		</script>

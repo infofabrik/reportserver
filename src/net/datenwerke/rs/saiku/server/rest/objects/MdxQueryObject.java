@@ -17,18 +17,18 @@ package net.datenwerke.rs.saiku.server.rest.objects;
 
 public class MdxQueryObject {
 
-   private String mdx;
+	private String mdx;
 
-   public MdxQueryObject(String mdx) {
-      this.mdx = mdx;
-   }
+	public MdxQueryObject(String mdx) {
+		this.mdx = mdx;
+	}
+	
+	public String getMdx() {
+		return mdx;
+	}
 
-   public String getMdx() {
-      return mdx;
-   }
-
-   public void setMdx(String mdx) {
-      this.mdx = mdx;
-   }
-
+	public void setMdx(String mdx) {
+		this.mdx = mdx;
+	}
+	
 }

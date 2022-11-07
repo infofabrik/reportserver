@@ -29,10 +29,14 @@ var Result = Backbone.Model.extend({
     
     parse: function(response) {
         // Show the UI if hidden
-        $(this.workspace).unblock();
-        Saiku.ui.unblock();
+        this.query.workspace.unblock();
+        this.query.workspace.processing.hide();
         this.result = response;
+        if (!response.error) {
+            this.query.model = _.extend({}, response.query);
+        }
         this.firstRun = true;
+
         this.query.workspace.trigger('query:result', {
             workspace: this.query.workspace,
             data: response
@@ -44,11 +48,12 @@ var Result = Backbone.Model.extend({
         return this.firstRun;
     },
     
-    lastresult: function () {
-        return this.result;
+    lastresult: function() {
+            return this.result;
     },
     
     url: function() {
-        return encodeURI(this.query.url() + "/result/" + this.query.get('formatter'));
+        //return encodeURI(this.query.url() + "/result/" + this.query.getProperty('formatter'));
+        return "api/" + Saiku.session.username + "/query/execute";
     }
 });

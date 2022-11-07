@@ -159,12 +159,14 @@ var DrillthroughModal = Modal.extend({
 			selections += $(this).val();
 		});
 
-		var maxrows = $(this.el).find('.maxrows').val();
+		var maxrows = parseInt($(this.el).find('.maxrows').val(), 10);
+		maxrows = !Number.isNaN(maxrows) ? maxrows : '';
 		var params = "?maxrows=" + maxrows;
 		params = params + (typeof this.position !== "undefined" ? "&position=" + this.position : "" );
 		params += "&returns=" + selections;
 		if (this.action == "export") {
 			var location = Settings.REST_URL +
+				//"api/query/" +
 				"api/" + Saiku.session.username + "/query/" +
 				this.query.id + "/drillthrough/export/csv" + params;
 			this.close();
@@ -189,11 +191,14 @@ var DrillthroughModal = Modal.extend({
 
 		//table.render({ data: response }, true);
 
+    if (typeof html === 'undefined' || html === '' || !html) {
+    	html = '<h3 style="text-align:center;">Your drill through returned 0 rows. Nothing to display!</h3>';
+    }
 
 		Saiku.ui.unblock();
-		var html = '<div id="fancy_results" class="workspace_results" style="overflow:visible">' + html + '</div>';
+		var htmlfancy = '<div id="fancy_results" class="workspace_results" style="overflow:visible">' + html + '</div>';
 		this.remove();
-		$.fancybox(html
+		$.fancybox(htmlfancy
 			,
 			{
 				'autoDimensions'    : false,

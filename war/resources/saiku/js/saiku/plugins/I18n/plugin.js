@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -13,7 +13,7 @@
  *   See the License for the specific language governing permissions and
  *   limitations under the License.
  */
- 
+
 /**
  * The user's current locale
  */
@@ -29,7 +29,7 @@ Saiku.i18n = {
         }
     },
     automatic_i18n: function () {
-    	// Load language file if it isn't English
+        // Load language file if it isn't English
 
         var paramsURI = Saiku.URLParams.paramsURI();
 
@@ -41,25 +41,26 @@ Saiku.i18n = {
         else if (Settings.I18N_LOCALE !== 'en') {
             Saiku.i18n.locale = Settings.I18N_LOCALE;
         }
-        // Load language file if add a parameter `lang` in URL. 
+        // Load language file if add a parameter `lang` in URL.
         // for example: ?lang=cn
         else if (_.has(paramsURI, 'lang')) {
             Saiku.i18n.locale = paramsURI['lang'];
         }
-        
-//        if (Saiku.i18n.locale != "en") {
-//            $.ajax({
-//                url: "js/saiku/plugins/I18n/po/" + Saiku.i18n.locale + ".json",
-//                type: 'GET',
-//                dataType: 'json',
-//                success: function (data) {
-//                    Saiku.i18n.po_file = data;
-//                    Saiku.i18n.translate();
-//                }
-//            });
-//        }
-        
-        var localeUrl = Settings.REST_MOUNT_POINT + "i18n/" + Saiku.i18n.locale + "/";
+
+/*
+        if (Saiku.i18n.locale != "en") {
+            $.ajax({
+                url: "js/saiku/plugins/I18n/po/" + Saiku.i18n.locale + ".json",
+                type: 'GET',
+                dataType: 'json',
+                success: function (data) {
+                    Saiku.i18n.po_file = data;
+                    Saiku.i18n.translate();
+                }
+            });
+        }
+*/
+		var localeUrl = Settings.REST_MOUNT_POINT + "i18n/" + Saiku.i18n.locale + "/";
         if(Settings.FORCE_SAIKU_LANG == 'true')
         	localeUrl = "js/saiku/plugins/I18n/po/" + Saiku.i18n.locale + ".json";
         
@@ -73,7 +74,6 @@ Saiku.i18n = {
         		Saiku.i18n.translate();
         	}
         });
-
         return true;
     },
     elements: [],
@@ -112,13 +112,13 @@ function recursive_menu_translate(object, po_file) {
             }
         }
     }
-	
+
 	if (typeof object.items != "undefined") {
 		$.each(object.items, function(key, item){
 	    	recursive_menu_translate(item, po_file);
 		});
 	}
-};		
+};
 
 /**
  * jQuery plugin for i18n
@@ -131,8 +131,17 @@ function recursive_menu_translate(object, po_file) {
 		// If no PO file is provided, then don't translate anything
 		if (! po_file)
 			return this;
-		
+
 		// If key is not found, return original language
+		/*
+		var translate = function(key, po_file) {
+			if (typeof po_file[key] == "undefined") {
+				return "";
+			} else {
+				return po_file[key];
+			}
+		};
+		*/
 		var translate = Saiku.i18n.getTranslation;
 
 		// Iterate over UI elements that need to be translated
@@ -154,13 +163,13 @@ function recursive_menu_translate(object, po_file) {
 					element.removeClass('i18n');
 				}
 			}
-			
+
 			// Translate title
 			if (element.attr('title')) {
                 // console.log("title:" + element.attr('title'));
 
 				translated_title = translate( element.attr('title'), po_file );
-                if (Saiku.i18n.elements.indexOf && 
+                if (Saiku.i18n.elements.indexOf &&
                     Saiku.i18n.elements.indexOf(element.attr('title')) === -1) {
                     Saiku.i18n.elements.push(element.attr('title'));
                 }
@@ -173,8 +182,6 @@ function recursive_menu_translate(object, po_file) {
 
 			// Translate label
 			if (element.attr('label')) {
-                // console.log("label:" + element.attr('label'));
-
 				translated_label = translate( element.attr('label'), po_file );
                 if (Saiku.i18n.elements.indexOf && 
                     Saiku.i18n.elements.indexOf(element.attr('label')) === -1) {
@@ -201,11 +208,11 @@ function recursive_menu_translate(object, po_file) {
                     element.removeClass('i18n');
                 }
             }
-			
-			if (element.attr('value')) {
+
+			if (element.attr('value') && element.prop('tagName').toLowerCase() !== 'option') {
                 // console.log("value:" + element.attr('value'));
                 translated_value = translate( element.attr('value'), po_file );
-                if (Saiku.i18n.elements.indexOf && 
+                if (Saiku.i18n.elements.indexOf &&
                     Saiku.i18n.elements.indexOf(element.attr('value')) === -1) {
                     Saiku.i18n.elements.push(element.attr('value'));
                 }
@@ -215,7 +222,7 @@ function recursive_menu_translate(object, po_file) {
 					element.removeClass('i18n');
 				}
 			}
-			
+
 			// Remove class so this element isn't repeatedly translated
 			if (element.hasClass('i18n')) {
 			    element.addClass('i18n_failed');
@@ -223,18 +230,18 @@ function recursive_menu_translate(object, po_file) {
 			element.addClass('i18n_translated');
 		});
 	};
-	
+
 	$.fn.un_i18n = function() {
 		// Iterate over UI elements to replace the original text
 		return $.each(this, function() {
 			element = $(this);
-			
+
 			if (element.text())
 				element.text(element.data('original'));
-			
+
 			if (element.attr('title'))
 				element.attr({ 'title': element.data('original') });
-			
+
 			element.addClass('i18n');
 			element.removeClass('i18n_translated')
 			    .removeClass('i18n_failed');
@@ -291,11 +298,11 @@ var TranslationTab = Backbone.View.extend({
             'padding': '20px'
         });
     },
-    
+
     mark: function(event) {
         $(event.target).addClass('changed');
     },
-    
+
     submit: function() {
         var translation = { locale: Saiku.i18n.locale };
         $(this.el).find('.changed').each(function(element) {
@@ -310,7 +317,7 @@ var TranslationTab = Backbone.View.extend({
         }, 1000);
         return false;
     },
-    
+
     adjust: function() {
         $(this.el).height($("body").height() - 87);
     }
@@ -325,19 +332,19 @@ Saiku.i18n.automatic_i18n();
 /**
  * Bind to new workspace
  */
-Saiku.events.bind('session:new', function() {    
+Saiku.events.bind('session:new', function() {
     // Translate elements already rendered
     Saiku.i18n.translate();
-    
+
     // Translate new workspaces
     Saiku.session.bind('tab:add', Saiku.i18n.translate);
 
-    /** 
+    /**
      * Add translate button
      */
     if (Saiku.i18n.locale != "en" && Saiku.session.isAdmin) {
         var $link = $("<a />").text(Saiku.i18n.locale)
-            .attr({ 
+            .attr({
                 href: "#translate",
                 title: "Improve this translation"
             })
@@ -353,7 +360,7 @@ Saiku.events.bind('session:new', function() {
  * Initialize Loggly input for user-provided translations
  */
 if (window.logger) {
-    window.Translate = new logger({ 
+    window.Translate = new logger({
         url: Settings.TELEMETRY_SERVER + '/input/translations'
     });
 }

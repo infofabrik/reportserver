@@ -25,8 +25,9 @@ var Session = Backbone.Model.extend({
     password: null,
     sessionid: null,
     upgradeTimeout: null,
-    isAdmin: false,
+    isAdmin: Settings.ORBIS_AUTH.hazelcast_enabled,
     id: null,
+	atemptedToLoginByCookie: false,
     initialize: function(args, options) {
         // Attach a custom event bus to this model
         _.extend(this, Backbone.Events);
@@ -48,16 +49,27 @@ var Session = Backbone.Model.extend({
     },
 
     check_session: function() {
-        if (this.sessionid === null || this.username === null || this.password === null) {
+		// This authentication cookie is used only by Orbis authentication strategy
+		if (this.sessionid === null || this.username === null || this.password === null) {
 			var that = this;
             this.clear();
             Saiku.ui.block("Check Session....");
-            this.fetch({ success: this.process_session, error: this.brute_force });
+           this.fetch({ success: this.process_session, error: this.brute_force });
         } else {
             this.username = encodeURIComponent(options.username);
             this.load_session();
         }
     },
+
+	getCookie: function(name) {
+		var value = "; " + document.cookie;
+		var parts = value.split("; " + name + "=");
+        
+		if (parts.length == 2) {
+            var cookieVal = parts.pop().split(";").shift();
+            return cookieVal;
+        }
+	},
 
 	/**
 	 * This is a complete hack to get the BI platform plugin working.
@@ -101,8 +113,8 @@ var Session = Backbone.Model.extend({
                 Saiku.i18n.locale = this.language;
                 Saiku.i18n.automatic_i18n();
             }
-            /*    
-            var license =new License();
+            /* 
+                var license =new License();
 
                 license.fetch_license('api/license/', function(opt) {
                     if (opt.status === 'success') {
@@ -120,8 +132,8 @@ var Session = Backbone.Model.extend({
                     }
 
                 });
-			*/
 
+			*/
             this.load_session();
         }
 
@@ -174,6 +186,7 @@ var Session = Backbone.Model.extend({
     },
 
     url: function() {
+        //return "session";
         return this.username + "/session";
     }
 });

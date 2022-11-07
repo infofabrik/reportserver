@@ -43,11 +43,13 @@ import org.slf4j.LoggerFactory;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 
+
 /**
  * Saiku Session Endpoints
  */
+//@Component
 @Path("/saiku/{username}/session")
-public class SessionResource {
+public class SessionResource  {
 
    private static final Logger log = LoggerFactory.getLogger(SessionResource.class);
 
@@ -60,7 +62,9 @@ public class SessionResource {
       this.authenticatorService = authenticatorService;
       this.localizationService = localizationService;
    }
-
+   
+//	private static final Logger log = LoggerFactory.getLogger(SessionResource.class);
+//
 //	private ISessionService sessionService;
 //    private UserService userService;
 //
@@ -76,68 +80,69 @@ public class SessionResource {
 //        userService = us;
 //    }
 
-   /**
-    * Login to Saiku
-    * 
-    * @param req      Servlet request
-    * @param username Username
-    * @param password Password
-    * @return A 200 response
-    */
-   @POST
-   @Consumes("application/x-www-form-urlencoded")
-   public Response login(@Context HttpServletRequest req, @FormParam("username") String username,
-         @FormParam("password") String password) {
-      if (!authenticatorService.get().isAuthenticated())
-         throw new IllegalStateException("not authenticated");
-
-      try {
+  /**
+   * Login to Saiku
+   * @summary Login
+   * @param req Servlet request
+   * @param username Username
+   * @param password Password
+   * @return A 200 response
+   */
+    @POST
+	@Consumes("application/x-www-form-urlencoded")
+	public Response login(
+	      @Context HttpServletRequest req, @FormParam("username") String username,
+	         @FormParam("password") String password) 
+	{
+		try {
 //		  sessionService.login(req, username, password);
-         return Response.ok("{}").build();
-      } catch (Exception e) {
-         log.debug("Error logging in:" + username, e);
-         return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage()).build();
-      }
-   }
+		  return Response.ok().build();
+		}
+		catch (Exception e) {
+			log.debug("Error logging in:" + username, e);
+			return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage()).build();
+		}
+	}
 
-   /**
-    * Clear logged in users session.
-    * 
-    * @param req      Servlet request
-    * @param username Username
-    * @param password Password
-    * @return A 200 response
-    */
-   @POST
-   @Path("/clear")
-   @Consumes("application/x-www-form-urlencoded")
-   public Response clearSession(@Context HttpServletRequest req, @FormParam("username") String username,
-         @FormParam("password") String password) {
-      if (!authenticatorService.get().isAuthenticated())
-         throw new IllegalStateException("not authenticated");
-
-      try {
+  /**
+   * Clear logged in users session.
+   * @summary Login
+   * @param req Servlet request
+   * @param username Username
+   * @param password Password
+   * @return A 200 response
+   */
+  @POST
+  @Path("/clear")
+  @Consumes("application/x-www-form-urlencoded")
+  public Response clearSession(
+        @Context HttpServletRequest req, @FormParam("username") String username,
+        @FormParam("password") String password)
+  {
+     if (!authenticatorService.get().isAuthenticated())
+        throw new IllegalStateException("not authenticated");
+     
+	try {
 //	  sessionService.clearSessions(req, username, password);
-         // TODO:SAIKU
-         return Response.ok("Session cleared").build();
-      } catch (Exception e) {
-         log.debug("Error clearing sessions for:" + username, e);
-         return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage()).build();
-      }
-   }
+	  return Response.ok("Session cleared").build();
+	}
+	catch (Exception e) {
+	  log.debug("Error clearing sessions for:" + username, e);
+	  return Response.status(Status.INTERNAL_SERVER_ERROR).entity(e.getLocalizedMessage()).build();
+	}
+  }
 
-   /**
-    * Get the session in the request
-    * 
-    * @param req The servlet request
-    * @return A reponse with a session map
-    */
-   @GET
-   @Consumes("application/x-www-form-urlencoded")
-   @Produces(MediaType.APPLICATION_JSON)
+  /**
+   * Get the session in the request
+   * @summary Get session
+   * @param req The servlet request
+   * @return A reponse with a session map
+   */
+	@GET
+	@Consumes("application/x-www-form-urlencoded")
+	@Produces(MediaType.APPLICATION_JSON)
 //    @ReturnType("java.util.Map<String, Object>")
-//    public Response getSession(@Context HttpServletRequest req) {
-   public Response getSession(@Context HttpServletRequest req, @PathParam("username") String username) {
+    public Response getSession(@Context HttpServletRequest req, @PathParam("username") String username) {
 
 //	  Map<String, Object> sess = null;
 //	  try {
@@ -166,41 +171,38 @@ public class SessionResource {
 //        catch (Exception e){
 //            //TODO detect if plugin or not.
 //        }
+//
+//        return Response.ok().entity(sess).build();
+	   if (!authenticatorService.get().isAuthenticated())
+	         throw new IllegalStateException("not authenticated");
 
-      if (!authenticatorService.get().isAuthenticated())
-         throw new IllegalStateException("not authenticated");
+	      Map<String, Object> session = new HashMap<String, Object>();
 
-      Map<String, Object> session = new HashMap<String, Object>();
+	      session.put("language", localizationService.getUserLocal());
+	      session.put("username", username); // username identifies a saiku session -> ReportExecuteToken
+	      session.put("sessionid", UUID.randomUUID().toString());
 
-      session.put("language", localizationService.getUserLocal());
-      session.put("username", username); // username identifies a saiku session -> ReportExecuteToken
-      session.put("sessionid", UUID.randomUUID().toString());
+	      List<String> roles = new ArrayList<String>();
+	      roles.add("ROLE_USER");
+	      session.put("roles", roles);
 
-      List<String> roles = new ArrayList<String>();
-      roles.add("ROLE_USER");
-      session.put("roles", roles);
+	      return Response.ok().entity(session).build();
+	}
 
-      return Response.ok().entity(session).build();
-   }
-
-   /**
-    * Logout of the Session
-    * 
-    * @param req The servlet request
-    * @return A 200 response.
-    */
-   @DELETE
-   public Response logout(@Context HttpServletRequest req) {
-      if (!authenticatorService.get().isAuthenticated())
-         throw new IllegalStateException("not authenticated");
-
+  /**
+   * Logout of the Session
+   * @summary Logout
+   * @param req The servlet request
+   * @return A 200 response.
+   */
+	@DELETE
+	public Response logout(@Context HttpServletRequest req) 
+	{
 //		sessionService.logout(req);
-      // NewCookie terminate = new
-      // NewCookie(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY,
-      // null);
+//		//		NewCookie terminate = new NewCookie(TokenBasedRememberMeServices.SPRING_SECURITY_REMEMBER_ME_COOKIE_KEY, null);
 
-      return Response.ok().build();
+		return Response.ok().build();
+	}
 
-   }
 
 }

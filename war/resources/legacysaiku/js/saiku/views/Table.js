@@ -1,4 +1,4 @@
-/*  
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -18,56 +18,226 @@
  * Class which handles table rendering of resultsets
  */
 var Table = Backbone.View.extend({
-    tagName: "table",
-
+    className: 'table_wrapper',
     events: {
         'click th.row' : 'clicked_cell',
-        'click th.col' : 'clicked_cell'
+        'click th.col' : 'clicked_cell',
+        'click span.expander' : 'expand_row'
     },
 
     initialize: function(args) {
         this.workspace = args.workspace;
-        
+        this.renderer = new SaikuTableRenderer();
+
         // Bind table rendering to query result event
-        _.bindAll(this, "render", "process_data");
+        _.bindAll(this, "render", "process_data", "collapse" ,"expand");
         this.workspace.bind('query:result', this.render);
-    },
-    
+        this.id = _.uniqueId("table_");
+        $(this.el).attr('id', this.id);
+  },
+
+
+  expand_row: function (event) {
+    var self = this;
+    var $targetSpan = $(event.currentTarget);
+    if ($targetSpan.hasClass('expanded')) {
+      self.collapse(event, $targetSpan);
+    } else {
+      self.expand(event, $targetSpan);
+    }
+    event.stopPropagation();
+    event.preventDefault();
+  },
+
+  collapse: function (event, $targetSpan) {
+    var self = this;
+    var $targetDiv = $(event.currentTarget).parent();
+    var $targetRow = $targetDiv.parent().parent();
+    $targetSpan.html('&#9658;');
+    $targetSpan.removeClass('expanded');
+    $targetSpan.addClass('collapsed');
+    var pos = $targetDiv.attr('rel').split(':');
+    var row = parseInt(pos[0]);
+    var col = parseInt(pos[1]);
+
+    var cell = self.workspace.query.result.lastresult().cellset[row][col];
+    var $rowIterator = $targetRow.next();
+    row++;
+    var hasColspan = $targetRow.find('td[colspan],th[colspan]').length > 0;
+    if (self.workspace.toolbar.$el.find('.group_parents').hasClass('on')) {
+      if(!hasColspan){
+        self.collapseAndHide($targetRow, $rowIterator, row, col);
+      } else {
+        self.justCollapse($rowIterator, $targetDiv);
+      }
+    } else {
+      if(!hasColspan){
+        self.collapseAndHide($targetRow, $rowIterator, row, col);
+      } else {
+        self.justCollapse($rowIterator, $targetDiv);
+      }
+    }
+  },
+
+  justCollapse : function($rowIterator, $targetDiv){
+    var nextRowSame = true;
+    var tdIndex = $targetDiv.parent().children().index($targetDiv);
+    while (nextRowSame) {
+      if($($rowIterator.find('th,td')[tdIndex]).hasClass('row_null')){
+        $rowIterator.hide();
+        $rowIterator = $rowIterator.next();
+      } else {
+        nextRowSame = false;
+      }
+    }
+  },
+
+  collapseAndHide : function($targetRow, $rowIterator, row, col){
+    var self = this;
+    var nextRowSame = true;
+    var cells = $targetRow.find('th, td');
+    for (var i = col + 1; i < cells.length; i++) {
+      $(cells[i]).find('div').hide();
+    }
+    // group_parents = true
+    while (nextRowSame) {
+      if ($rowIterator.length > 0) {
+        var isLast = $rowIterator.find('th,td');
+        if (isLast.length > 0 && $(isLast[col]).hasClass('row_total_corner')) {
+          nextRowSame = false;
+          var targetRowDataValues = $targetRow.find('div.datadiv');
+          var summaryDataValues = $rowIterator.find('td.data');
+          for (var i = 0; i < targetRowDataValues.length; i++) {
+            var div = '<span class="totalSpan">' + $(summaryDataValues[i]).html() + '</span>';
+            $(targetRowDataValues[i]).parent().addClass('total');
+            $(targetRowDataValues[i]).parent().html($(targetRowDataValues[i]).wrap('<p/>').parent().html() + div);
+          }
+          $rowIterator.hide();
+          break;
+        } else {
+          for (var i = 0; i <= col; i++) {
+            var isLast = $rowIterator.find('th,td');
+            var thisIsTotal = false;
+            for(var j = 0 ; j < col && j < isLast.length; j ++){
+              if($(isLast[j]).hasClass('row_total_corner')){
+                thisIsTotal = true;
+                nextRowSame = false;
+              }
+            }
+            if (row < self.workspace.query.result.lastresult().cellset.length && self.workspace.query.result.lastresult().cellset[row][i].value != self.workspace.query.result.lastresult().cellset[row - 1][i].value && !thisIsTotal) {
+              var $lastTotalRow = null;
+              while ($rowIterator.find('.row_total_corner').length != 0) {
+                $rowIterator.hide();
+                $lastTotalRow = $rowIterator;
+                $rowIterator = $rowIterator.next();
+              }
+              if ($lastTotalRow != null) {
+                var targetRowDataValues = $targetRow.find('div.datadiv');
+                var summaryDataValues = $lastTotalRow.find('td.data');
+                for (var i = 0; i < targetRowDataValues.length; i++) {
+                  var div = '<span class="totalSpan">' + $(summaryDataValues[i]).html() + '</span>';
+                  $(targetRowDataValues[i]).parent().addClass('total');
+                  $(targetRowDataValues[i]).parent().html($(targetRowDataValues[i]).wrap('<p/>').parent().html() + div);
+                }
+              }
+              nextRowSame = false;
+              break;
+            }
+          }
+          if (!nextRowSame) {
+            break;
+          }
+        }
+        if ($rowIterator.find('.row_total_corner').length == 0) {
+          row++;
+        }
+        $rowIterator.hide();
+        $rowIterator = $rowIterator.next();
+      } else {
+        break;
+      }
+    }
+  },
+
+  expand: function (event, $targetSpan, row, col) {
+    var self = this;
+
+    var $targetDiv = $(event.currentTarget).parent();
+    var pos = $targetDiv.attr('rel').split(':');
+    var row = parseInt(pos[0]);
+    var col = parseInt(pos[1]);
+
+    $targetSpan.html('&#9660;');
+    $targetSpan.removeClass('collapsed');
+    $targetSpan.addClass('expanded');
+    var $targetDiv = $(event.currentTarget).parent();
+    var $targetRow = $targetDiv.parent().parent();
+
+    var targetRowDataValues = $targetRow.find('th, td');
+    for (var i = 0; i < targetRowDataValues.length; i++) {
+      var dataCell = $(targetRowDataValues[i]).find('div');
+      if (dataCell.length > 0) {
+        $(dataCell).show();
+      }
+      $targetRow.find('.total').removeClass('total');
+      $targetRow.find('.totalSpan').remove();
+    }
+    $targetRow.find('span.collapsed').removeClass('collapsed').addClass('expanded').html('&#9660;');
+
+    var $rowIterator = $targetRow.next();
+    while ($rowIterator.length > 0 && ($($rowIterator.find('th,td')[col]).hasClass("row_null") || $($rowIterator.find('th,td')[col]).hasClass("row_total_corner"))) {
+      $rowIterator.find('span.collapsed').removeClass('collapsed').addClass('expanded').html('&#9660;');
+      $rowIterator.find('.totalSpan').remove();
+      $rowIterator.find('div:hidden').show();
+
+      if ($rowIterator.css('display') == 'none') {
+        $rowIterator.show();
+      } else {
+        break;
+      }
+      $rowIterator = $rowIterator.next();
+    }
+  },
+
     clicked_cell: function(event) {
         var self = this;
-        
-        if (this.workspace.query.get('type') != 'QM' || Settings.MODE == "table") {
-            return false;
+
+		//return false;
+        if (/*this.workspace.query.get('type') != 'QM' ||*/ Settings.MODE == "table") {
+            //return false;
+        }
+        if ($(this.workspace.el).find( ".workspace_results.ui-selectable" ).length > 0) {
+            $(this.workspace.el).find( ".workspace_results" ).selectable( "destroy" );
         }
 
-        $target = ($(event.target).hasClass('row') || $(event.target).hasClass('col') ) ?
+        var $target = ($(event.target).hasClass('row') || $(event.target).hasClass('col') ) ?
             $(event.target).find('div') : $(event.target);
-        
-    $body = $(document);
-    //$body.off('.contextMenu .contextMenuAutoHide');
-    //$('.context-menu-list').remove();
+
+    var $body = $(document);
     $.contextMenu('destroy', '.row, .col');
     $.contextMenu({
         appendTo: $target,
-        selector: '.row, .col', 
+        selector: '.row, .col',
         ignoreRightClick: true,
          build: function($trigger, e) {
-            $target = $(e.currentTarget).find('div');
-            var axis = $(e.currentTarget).hasClass('rows') ? "ROWS" : "COLUMNS"
+            var $target = $(e.currentTarget).find('div');
+            var axis = $(e.currentTarget).hasClass('row') ? "ROWS" : "COLUMNS";
             var pos = $target.attr('rel').split(':');
-            var row = parseInt(pos[0])
-            var col = parseInt(pos[1])
+            var row = parseInt(pos[0]);
+            var col = parseInt(pos[1]);
             var cell = self.workspace.query.result.lastresult().cellset[row][col];
             var query = self.workspace.query;
             var schema = query.get('schema');
-            var cube = query.get('connection') + "/" + 
-                query.get('catalog') + "/"
-                + ((schema == "" || schema == null) ? "null" : schema) 
-                + "/" + query.get('cube');
+            var cube = query.get('connection') + "/" +
+                query.get('catalog') + "/" +
+                ((schema === "" || schema === null) ? "null" : schema) +
+                "/" + query.get('cube');
 
             var d = cell.properties.dimension;
             var h = cell.properties.hierarchy;
             var l = cell.properties.level;
+            var l_caption = "";
+			 var l_name = "";
 
             var keep_payload = JSON.stringify(
                 {
@@ -75,40 +245,45 @@ var Table = Backbone.View.extend({
                     "uniquename"    : l,
                     "type"          : "level",
                     "action"        : "delete"
-                }) 
-            + "," +JSON.stringify(
+                }) +
+                "," + JSON.stringify(
                 {
                     "hierarchy"     :  h,
                     "uniquename"    : cell.properties.uniquename,
                     "type"          : "member",
                     "action"        : "add"
-                }       
+                }
             );
 
             var children_payload = cell.properties.uniquename;
 
             var levels = [];
             var items = {};
-            var dimensions = Saiku.session.sessionworkspace.dimensions[cube].get('data');
-            if (typeof dimensions == "undefined") {
-                Saiku.session.sessionworkspace.dimensions[cube].fetch({async : false});
-                dimensions = Saiku.session.sessionworkspace.dimensions[cube].get('data');
-            }
-            var dimsel = {};
+			 var key = self.workspace.selected_cube;
+			 var cubeModel = Saiku.session.sessionworkspace.cube[key];
+
+			 var dimensions;
+			 if (!cubeModel || !dimensions || !measures) {
+				 if (typeof localStorage !== "undefined" && localStorage && localStorage.getItem("cube." + key) !== null) {
+					 Saiku.session.sessionworkspace.cube[key] = new Cube(JSON.parse(localStorage.getItem("cube." + key)));
+				 } else {
+					 Saiku.session.sessionworkspace.cube[key] = new Cube({ key: key });
+					 Saiku.session.sessionworkspace.cube[key].fetch({ async : false });
+				 }
+				 dimensions = Saiku.session.sessionworkspace.cube[key].get('data').dimensions;
+			 }
             var used_levels = [];
 
-            self.workspace.query.action.get("/axis/" + axis + "/dimension/" + encodeURIComponent(d), { 
-                        success: function(response, model) {
-                            dimsel = model;
-                        },
-                        async: false
-            });
+             var v1 = self.workspace.query.helper.getHierarchy(h);
+             var v2;
 
-            _.each(dimsel.selections, function(selection) {
-                if(_.indexOf(used_levels, selection.levelUniqueName) == -1)
-                    used_levels.push(selection.levelUniqueName);
-
-            });
+             if (v1) {
+                 v2 =
+                 _.each(v1.levels, function(level){
+                     var lev = h+".["+level.name+"]";
+                    used_levels.push(lev);
+                 });
+             }
 
             _.each(dimensions, function(dimension) {
                 if (dimension.name == d) {
@@ -135,7 +310,11 @@ var Table = Backbone.View.extend({
                                             action        : "delete"
                                         })
                                     };
-                                    
+
+                                }
+                                if (level.uniqueName == l) {
+                                    l_caption = level.caption;
+                                    l_name = level.name;
                                 }
                                 items["keep-" + level.name] = items[level.name];
                                 items["include-" + level.name] = JSON.parse(JSON.stringify(items[level.name]));
@@ -145,70 +324,142 @@ var Table = Backbone.View.extend({
                     });
                 }
             });
-            items["keeponly"] = { payload: keep_payload }
-            items["getchildren"] = { payload: children_payload }
-            
+            items.keeponly = { payload: keep_payload };
+            items.getchildren = { payload: children_payload };
+            if (items.hasOwnProperty("remove-" + l_name) && items.hasOwnProperty("include-" + l_name)) {
+                items.showall = { payload: items["remove-" + l_name].payload + ", " + items["include-" + l_name].payload};
+            }
 
-            
+
+
             var lvlitems = function(prefix) {
                 var ritems = {};
-                for (key in items) {
-                    if (prefix != null && prefix.length < key.length && key.substr(0, prefix.length) == prefix) {
+                for (var key in items) {
+                    if (prefix !== null && prefix.length < key.length && key.substr(0, prefix.length) == prefix) {
                             ritems[key] = items[key];
                     }
                 }
                 return ritems;
-            }
+            };
 
             var member = $target.html();
 
             var citems = {
                     "name" : {name: "<b>" + member + "</b>", disabled: true },
                     "sep1": "---------",
-                    "keeponly": {name: Saiku.i18n.getTranslation("Keep Only"), payload: keep_payload }
+                    "keeponly": {name: "Keep Only", i18n: true, payload: keep_payload }
             };
             if (d != "Measures") {
-                citems["getchildren"] = {name: Saiku.i18n.getTranslation("Show Children"), payload: children_payload }
-                citems["fold1key"] = {
-                        name: Saiku.i18n.getTranslation("Include Level"),
+                //citems.getchildren = {name: "Show Children", i18n: true, payload: children_payload };
+                citems.fold1key = {
+                        name: "Include Level", i18n: true,
                         items: lvlitems("include-")
                     };
-                citems["fold2key"] = {
-                        name: Saiku.i18n.getTranslation("Keep and Include Level"),
+                citems.fold2key = {
+                        name: "Keep and Include Level", i18n: true,
                         items: lvlitems("keep-")
                     };
-                citems["fold3key"] = {
-                        name: Saiku.i18n.getTranslation("Remove Level"),
+                citems.fold3key = {
+                        name: "Remove Level", i18n: true,
                         items: lvlitems("remove-")
                     };
+                citems.filterlevel = {
+                    name: "Filter Level", i18n: true
+                };
+                /*if (items.showall) {
+                    citems.showall  =  { name: "Remove Filters", i18n: true };
+                }*/
             }
-
-
+            $.each(citems, function(key, item){
+            	recursive_menu_translate(item, Saiku.i18n.po_file);
+            });
             return {
                 callback: function(key, options) {
-                    var url = '/axis/' + axis + '/dimension/' + encodeURIComponent(d);
-                    var children = false;
-                    if (key.indexOf("children") > 0) {
-                        url = '/axis/' + axis + '/dimension/' + encodeURIComponent(d) + "/children";
-                        children = true;
-                    }
-                    if (children) {
-                        self.workspace.query.set({ 'formatter' : 'flat' });
-                    }
-                    self.workspace.query.action.put(url, { success: self.workspace.sync_query,
-                        data: children ?
-                            {
-                                member: items[key].payload
+                    var updates = [];
+
+                    if(key === "keeponly") {
+
+                        //self.workspace.query.helper.removeLevel(h, k);
+                        var hierarchy = self.workspace.query.helper.getHierarchy(h);
+						if (hierarchy && hierarchy.levels.hasOwnProperty(l_name)|| h == "[Measures]") {
+                            if(h=="[Measures]"){
+                                var measure = {
+                                    caption: cell.value,
+                                    name: cell.value,
+                                    type: 'EXACT',
+                                    uniqueName: cell.properties.uniquename
+                                };
+
+                                self.workspace.query.helper.clearMeasures();
+                                self.workspace.query.helper.includeMeasure(measure);
+                                self.workspace.sync_query();
+                                self.workspace.query.run();
                             }
-                            :
-                            {
-                                selections: "[" + items[key].payload + "]"
-                            }
-                    });
-                    
+							else {
+								updates.push({
+									uniqueName: cell.properties.uniquename,
+									caption: cell.properties.uniquename
+								});
+								hierarchy.levels[l_name].selection = {"type": "INCLUSION", "members": updates};
+								self.workspace.drop_zones.synchronize_query();
+								self.workspace.query.run(true);
+							}
+                        }
+                    }
+                    else if(key === "filterlevel"){
+                        var lname = cell.properties.level.substring(cell.properties.level.lastIndexOf(".")+1);
+                        lname = lname.replace("[","").replace("]","");
+                        (new SelectionsModal({
+                            target: $target,
+                            name: "Filter Level",
+                            key: cell.properties.hierarchy+"/"+lname,
+                            workspace: self.workspace,
+                            axis: "ROWS"
+                        })).open();
+                    }
+                    else if(key.substring(0,key.indexOf("-")) === "remove"){
+                        var k = key.substring(key.indexOf("-") + 1);
+
+                        if (Settings.ALLOW_PARAMETERS) {
+                            self.workspace.query.helper.removeParameter(h, k);
+                            self.workspace.$el.find('.parameter_input').empty();
+                        }
+
+                        self.workspace.query.helper.removeLevel(h, k);
+                        self.workspace.drop_zones.synchronize_query();
+                        self.workspace.query.run(true);
+
+                    }
+                    else if(key.substring(0,key.indexOf("-")) === "keep"){
+
+
+                        //Keep and Include
+                        var k = key.substring(key.indexOf("-") + 1);
+
+                        //self.workspace.query.helper.removeLevel(h, k);
+                        var hierarchy = self.workspace.query.helper.getHierarchy(h);
+                        if (hierarchy && hierarchy.levels.hasOwnProperty(l_caption)) {
+                            updates.push({
+                                uniqueName: cell.properties.uniquename,
+                                caption: cell.properties.uniquename
+                            });
+                            hierarchy.levels[l_caption].selection = {"type": "INCLUSION", "members": updates};
+                            self.workspace.query.helper.includeLevel(axis, h, k, null);
+                            self.workspace.drop_zones.synchronize_query();
+                            self.workspace.query.run(true);
+                        }
+                    }
+                    else if(key.substring(0,key.indexOf("-")) === "include"){
+                        //Include
+                        var k =  key.substring(key.indexOf("-") + 1);
+                        self.workspace.query.helper.includeLevel(axis, h, k, null);
+                        self.workspace.drop_zones.synchronize_query();
+                        self.workspace.query.run(true);
+                    }
+
                 },
                 items: citems
-            } 
+            };
         }
     });
     $target.contextMenu();
@@ -219,171 +470,84 @@ var Table = Backbone.View.extend({
 
     render: function(args, block) {
 
-        if (typeof args == "undefined" || typeof args.data == "undefined" || 
+        if (typeof args == "undefined" || typeof args.data == "undefined" ||
             ($(this.workspace.el).is(':visible') && !$(this.el).is(':visible'))) {
             return;
         }
 
-        if (args.data != null && args.data.error != null) {
-            return;
-        }        
-        // Check to see if there is data
-        if (args.data == null || (args.data.cellset && args.data.cellset.length === 0)) {
+        if (args.data !== null && args.data.error !== null) {
             return;
         }
-
-        $(this.el).html('<tr><td>Rendering ' + args.data.width + ' columns and ' + args.data.height + ' rows...</td></tr>');
+        // Check to see if there is data
+        if (args.data === null || (args.data.height && args.data.height === 0)) {
+            return;
+        }
+        this.clearOut();
+        $(this.el).html('Rendering ' + args.data.width + ' columns and ' + args.data.height + ' rows...');
 
         // Render the table without blocking the UI thread
-        if (block === true) {
-            this.process_data(args.data.cellset);
-        } else {
-            _.delay(this.process_data, 0, args.data.cellset);
+        _.delay(this.process_data, 2, args.data);
+    },
+
+    clearOut: function() {
+        // Do some clearing in the renderer
+        this.renderer.clear();
+        $(this.workspace.el).find( ".workspace_results" ).unbind('scroll');
+        var element = document.getElementById(this.id);
+        if(element == null){
+            this.workspace.tab.select();
+            var element = document.getElementById(this.id);
+        }
+        var table = element.firstChild;
+        if (table) {
+            element.removeChild(table);
         }
 
     },
 
     process_data: function(data) {
+        var hideEmptyRows = (Settings.HIDE_EMPTY_ROWS && this.workspace.query.getProperty('saiku.olap.query.nonempty'));
 
-        var contents = "";
-        var table = data ? data : [];
-        var colSpan;
-        var colValue;
-        var isHeaderLowestLvl;
-        var isBody = false;
-        var firstColumn;
-        var isLastColumn, isLastRow;
-        var nextHeader;
-        var processedRowHeader = false;
-        var lowestRowLvl = 0;
-        var rowGroups = [];
-
-        for (var row = 0; row < table.length; row++) {
-            colSpan = 1;
-            colValue = "";
-            isHeaderLowestLvl = false;
-            isLastColumn = false;
-            isLastRow = false;
-            headerStarted = false;
-
-            contents += "<tr>";
-
-            for (var col = 0; col < table[row].length; col++) {
-                var header = data[row][col];
-
-                // If the cell is a column header and is null (top left of table)
-                if (header.type === "COLUMN_HEADER" && header.value === "null" && (firstColumn == null || col < firstColumn)) {
-                    contents += '<th class="all_null"><div>&nbsp;</div></th>';
-                } // If the cell is a column header and isn't null (column header of table)
-                else if (header.type === "COLUMN_HEADER") {
-                    if (firstColumn == null) {
-                        firstColumn = col;
-                    }
-                    if (table[row].length == col+1)
-                        isLastColumn = true;
-                    else
-                        nextHeader = data[row][col+1];
-
-
-                    if (isLastColumn) {
-                        // Last column in a row....
-                        contents += '<th class="col" style="text-align: center;" colspan="' + colSpan + '" title="' + header.value + '"><div rel="' + row + ":" + col +'">' + header.value + '</div></th>';
-                    } else {
-                        // All the rest...
-                        var groupChange = (col > 1 && row > 1 && !isHeaderLowestLvl && col > firstColumn) ?
-                            data[row-1][col+1].value != data[row-1][col].value
-                            : false;
-                        var maxColspan = colSpan > 999 ? true : false;
-                        if (header.value != nextHeader.value || isHeaderLowestLvl || groupChange || maxColspan) {
-                            if (header.value == "null") {
-                                contents += '<th class="col_null" colspan="' + colSpan + '"><div>&nbsp;</div></th>';
-                            } else {
-                                contents += '<th class="col" style="text-align: center;" colspan="' + (colSpan == 0 ? 1 : colSpan) + '" title="' + header.value + '"><div rel="' + row + ":" + col +'">' + header.value + '</div></th>';
-                            }
-                            colSpan = 1;
-                        } else {
-                            colSpan++;
-                        }
-                    }
-                } // If the cell is a row header and is null (grouped row header)
-                else if (header.type === "ROW_HEADER" && header.value === "null") {
-                    contents += '<th class="row_null"><div>&nbsp;</div></th>';
-                } // If the cell is a row header and isn't null (last row header)
-                else if (header.type === "ROW_HEADER") {
-                    if (lowestRowLvl == col)
-                        isHeaderLowestLvl = true;
-                    else
-                        nextHeader = data[row][col+1];
-
-                    var previousRow = data[row - 1];
-
-                    var same = !isHeaderLowestLvl && (col == 0 || previousRow[col-1].value == data[row][col-1].value) && header.value === previousRow[col].value;
-                    var value = (same ? "<div>&nbsp;</div>" : '<div rel="' + row + ":" + col +'">' + header.value + '</div>');
-                    var cssclass = (same ? "row_null" : "row");
-                    var colspan = 0;
-
-                    if (!isHeaderLowestLvl && (typeof nextHeader == "undefined" || nextHeader.value === "null")) {
-                        colspan = 1;
-                        var group = header.properties.dimension;
-                        var level = header.properties.level;
-                        var groupWidth = (group in rowGroups ? rowGroups[group].length - rowGroups[group].indexOf(level) : 1);
-                        for (var k = col + 1; colspan < groupWidth && k <= (lowestRowLvl+1) && data[row][k] !== "null"; k++) {
-                            colspan = k - col;
-                        }
-                        col = col + colspan -1;
-                    }
-                    contents += '<th class="' + cssclass + '" ' + (colspan > 0 ? ' colspan="' + colspan + '"' : "") + '>' + value + '</th>';
-                }
-                else if (header.type === "ROW_HEADER_HEADER") {
-                    contents += '<th class="row_header"><div>' + header.value + '</div></th>';
-                    isHeaderLowestLvl = true;
-                    processedRowHeader = true;
-                    lowestRowLvl = col;
-                    if (header.properties.hasOwnProperty("dimension")) {
-                        var group = header.properties.dimension;
-                        if (!(group in rowGroups)) {
-                            rowGroups[group] = [];
-                        }
-                        rowGroups[group].push(header.properties.level);
-                    }
-                } // If the cell is a normal data cell
-                else if (header.type === "DATA_CELL") {
-                    var color = "";
-                    var val = header.value;
-                    var arrow = "";
-                    if (header.properties.hasOwnProperty('image')) {
-                        var img_height = header.properties.hasOwnProperty('image_height') ? " height='" + header.properties.image_height + "'" : "";
-                        var img_width = header.properties.hasOwnProperty('image_width') ? " width='" + header.properties.image_width + "'" : "";
-                        val = "<img " + img_height + " " + img_width + " style='padding-left: 5px' src='" + header.properties.image + "' border='0'>";
-                    }
-
-                    if (header.properties.hasOwnProperty('style')) {
-                        color = " style='background-color: " + header.properties.style + "' ";
-                    }
-                    if (header.properties.hasOwnProperty('link')) {
-                        val = "<a target='__blank' href='" + header.properties.link + "'>" + val + "</a>";
-                    }
-                    if (header.properties.hasOwnProperty('arrow')) {
-                        arrow = "<img height='10' width='10' style='padding-left: 5px' src='/images/arrow-" + header.properties.arrow + ".gif' border='0'>";
-                    }
-
-                    contents += '<td class="data" ' + color + '><div alt="' + header.properties.raw + '" rel="' + header.properties.position + '">' + val + arrow + '</div></td>';
-                }
-            }
-            contents += "</tr>";
-            
-        }
         this.workspace.processing.hide();
         this.workspace.adjust();
         // Append the table
-        $(this.el).html(contents);
+        this.clearOut();
+        $(this.el).html('<table></table>');
+        var contents = this.renderer.render(data, {
+            hideEmpty:          hideEmptyRows,
+            htmlObject:         $(this.el).find('table'),
+            batch:              Settings.TABLE_LAZY,
+            batchSize:          Settings.TABLE_LAZY_SIZE,
+            batchIntervalSize:  Settings.TABLE_LAZY_LOAD_ITEMS,
+            batchIntervalTime:  Settings.TABLE_LAZY_LOAD_TIME
+        });
         this.post_process();
     },
 
     post_process: function() {
         if (this.workspace.query.get('type') == 'QM' && Settings.MODE != "view") {
-            $(this.el).find('th.row, th.col').addClass('headerhighlight');
+            $(this.el).addClass('headerhighlight');
+        } else {
+            $(this.el).removeClass('headerhighlight');
         }
+        /*
+        var tipOptions = {
+          delayIn: 200,
+          delayOut:80,
+          offset:  2,
+          html:    true,
+          gravity: "nw",
+          fade:    false,
+          followMouse: true,
+          corners: true,
+          arrow:   false,
+          opacity: 1
+    };
+
+        $(this.el).find('th.row, th.col').tipsy(tipOptions);
+        */
+        $(this.el).find(".i18n").i18n(Saiku.i18n.po_file);
         this.workspace.trigger('table:rendered', this);
+
     }
 });

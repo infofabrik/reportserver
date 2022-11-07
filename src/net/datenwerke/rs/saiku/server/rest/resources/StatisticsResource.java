@@ -1,5 +1,7 @@
 package net.datenwerke.rs.saiku.server.rest.resources;
 
+//import org.springframework.stereotype.Component;
+
 import java.util.List;
 
 import javax.ws.rs.GET;
@@ -16,6 +18,7 @@ import mondrian.server.monitor.StatementInfo;
 /**
  * Mondrian Server Info and Stats Endpoints.
  */
+//@Component
 @Path("/saiku/statistics")
 public class StatisticsResource {
 
@@ -33,7 +36,7 @@ public class StatisticsResource {
 //		
 //		
 //	}
-
+	
 //	private void setupLog(String category, String level, StringWriter writer) {
 //		Logger pkgLogger = Logger.getRootLogger().getLoggerRepository().getLogger(category);
 //		pkgLogger.setLevel(Level.toLevel(level));
@@ -44,75 +47,84 @@ public class StatisticsResource {
 //		Logger.getRootLogger().addAppender(appender);
 //	}
 
-   /**
-    * Get Mondrian Stats
-    * 
-    * @return A selection of Mondrian stats.
-    */
-   @GET
-   @Produces({ "application/json" })
-   @Path("/mondrian")
-   public MondrianStats getMondrianStats() {
+  /**
+   * Get Mondrian Stats
+   * @summary Get Mondrian stats
+   * @return A selection of Mondrian stats.
+   */
+	@GET
+	@Produces({"application/json" })
+	@Path("/mondrian")
+	public MondrianStats getMondrianStats() {
+		
+		MondrianServer mondrianServer = MondrianServer.forId(null);
+		if (mondrianServer != null) {
+			MondrianVersion mv = mondrianServer.getVersion();
+			
+			final Monitor monitor = mondrianServer.getMonitor();
+	        final ServerInfo server = monitor.getServer();
+	        
+	        int statementCurrentlyOpenCount = 0;//server.statementCurrentlyOpenCount();
+	        int connectionCurrentlyOpenCount =0;// server.connectionCurrentlyOpenCount();
+	        int sqlStatementCurrentlyOpenCount = 0;//server.sqlStatementCurrentlyOpenCount();
+	        int statementCurrentlyExecutingCount = 0;//server.statementCurrentlyExecutingCount();
+	        float avgCellDimensionality =  ((float) server.cellCoordinateCount / (float) server.cellCount);
+	        
+	        final List<ConnectionInfo> connections = monitor.getConnections();
+	        final List<StatementInfo> statements = monitor.getStatements();
+	        
+	        return new MondrianStats(
+	        		server,
+	        		mv,
+	        		statementCurrentlyOpenCount,
+	        		connectionCurrentlyOpenCount,
+	        		sqlStatementCurrentlyOpenCount,
+	        		statementCurrentlyExecutingCount,
+	        		avgCellDimensionality,
+	        		connections,
+	        		statements
+	        		);
+		}
+		
+		return null;
+	}
 
-      MondrianServer mondrianServer = MondrianServer.forId(null);
-      if (mondrianServer != null) {
-         MondrianVersion mv = mondrianServer.getVersion();
 
-         final Monitor monitor = mondrianServer.getMonitor();
-         final ServerInfo server = monitor.getServer();
+  /**
+   * Get Mondrian Server Info
+   * @summary Get Mondrian Info
+   * @return Server Info
+   */
+	@GET
+	@Produces({"application/json" })
+	@Path("/mondrian/server")
+	public ServerInfo getMondrianServer() {
+		MondrianServer mondrianServer = MondrianServer.forId(null);
+		if (mondrianServer != null) {
+			MondrianVersion mv = mondrianServer.getVersion();
+			
+			final Monitor monitor = mondrianServer.getMonitor();
+		  return monitor.getServer();
+		}
+		return null;
+	}
 
-         int statementCurrentlyOpenCount = 0;// server.statementCurrentlyOpenCount();
-         int connectionCurrentlyOpenCount = 0;// server.connectionCurrentlyOpenCount();
-         int sqlStatementCurrentlyOpenCount = 0;// server.sqlStatementCurrentlyOpenCount();
-         int statementCurrentlyExecutingCount = 0;// server.statementCurrentlyExecutingCount();
-         float avgCellDimensionality = ((float) server.cellCoordinateCount / (float) server.cellCount);
+  /**
+   * Get Mondrian Server Info
+   * @summary Get Mondrian Info
+   * @return Server Info
+   */
+  @GET
+  @Produces({"application/json" })
+  @Path("/mondrian/server/version")
+  public MondrianVersion getMondrianServerVersion() {
+	MondrianServer mondrianServer = MondrianServer.forId(null);
+	if (mondrianServer != null) {
 
-         final List<ConnectionInfo> connections = monitor.getConnections();
-         final List<StatementInfo> statements = monitor.getStatements();
-
-         return new MondrianStats(server, mv, statementCurrentlyOpenCount, connectionCurrentlyOpenCount,
-               sqlStatementCurrentlyOpenCount, statementCurrentlyExecutingCount, avgCellDimensionality, connections,
-               statements);
-      }
-
-      return null;
-   }
-
-   /**
-    * Get Mondrian Server Info
-    * 
-    * @return Server Info
-    */
-   @GET
-   @Produces({ "application/json" })
-   @Path("/mondrian/server")
-   public ServerInfo getMondrianServer() {
-      MondrianServer mondrianServer = MondrianServer.forId(null);
-      if (mondrianServer != null) {
-         MondrianVersion mv = mondrianServer.getVersion();
-
-         final Monitor monitor = mondrianServer.getMonitor();
-         return monitor.getServer();
-      }
-      return null;
-   }
-
-   /**
-    * Get Mondrian Server Info
-    * 
-    * @return Server Info
-    */
-   @GET
-   @Produces({ "application/json" })
-   @Path("/mondrian/server/version")
-   public MondrianVersion getMondrianServerVersion() {
-      MondrianServer mondrianServer = MondrianServer.forId(null);
-      if (mondrianServer != null) {
-
-         return mondrianServer.getVersion();
-      }
-      return null;
-   }
+	  return mondrianServer.getVersion();
+	}
+	return null;
+  }
 //	@GET
 //	@Produces({"text/plain" })
 //	@Path("/log/sql")
@@ -140,5 +152,6 @@ public class StatisticsResource {
 //	public String getSaikuLog() {
 //		return saikuWriter.toString();
 //	}
-
+	
+	
 }

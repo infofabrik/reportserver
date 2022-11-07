@@ -118,9 +118,14 @@
 <script src="js/qtip/imagesloaded.pkg.min.js"></script>
 <script src="js/qtip/jquery.qtip.min.js"></script>
 <script type="text/javascript" src="js/tourist/tourist.js"></script>
+<!--<script type="text/javascript" src="js/ozpIwc/ozpIwc-client.min.js"></script>
+<script type="text/javascript" src="js/intro/intro.min.js"></script>-->
 <!-- Loggly error logging service -->
 <script type="text/javascript" src="js/logger/janky.post.min.js"></script>
 <script type="text/javascript" src="js/logger/Logger.js" defer></script>
+
+<!-- D3 Library -->
+<!--<script src="js/d3/d3.v3.min.js"></script>-->
 
 <!-- Saiku Project -->
 <script type="text/javascript" src="js/saiku/Settings.js"></script>
@@ -200,6 +205,7 @@
 -->
 
 <script type="text/javascript" src="js/saiku/plugins/I18n/plugin.js"></script>
+<!--<script type="text/javascript" src="js/saiku/plugins/Intro/plugin.js"></script>-->
 <!-- Saiku plugins -->
 
 
@@ -209,10 +215,20 @@
 -->
 
 <!-- CCC dependencies -->
+<!--<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/jquery.tipsy.js"></script>
+<link type="text/css" href="js/saiku/plugins/CCC_Chart2/tipsy.css" rel="stylesheet" media="screen" />
+<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/protovis.js"></script>
+<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/protovis-msie.js"></script>
+<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/tipsy.js"></script>
+<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/def.js"></script>
+<!--<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/cdo.js"></script>
+<script type="text/javascript" src="js/saiku/plugins/CCC_Chart2/pvc.js"></script>-->
+
+<!-- CCC dependencies -->
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/def.js"></script>
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/protovis.js"></script>
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/protovis-msie.js"></script>
-<!-- <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/cdo.js"></script> -->
+<!-- <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/cdo.js"></script>-->
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/pvc.js"></script>
 
 <script type="text/javascript" src="js/saiku/plugins/CCC_Chart/jquery.tipsy.js"></script>
@@ -242,7 +258,6 @@
                     <li><a id='about' href='#about' title='About' class='about i18n sprite'></a></li>
                     <li class='separator'>&nbsp;</li>
                     <li><a id='help_icon' href='#help' target='_blank' title='Help' class='help i18n sprite'></a></li>
-
                     <li class='separator'>&nbsp;</li>
 <!--                    <li><a id='issue_tracker' href='#issue_tracker' title='Issue Tracker' class='bug i18n sprite'></a></li>-->
             </ul>
@@ -251,7 +266,7 @@
         </script>
 
 <script type="text/x-jquery-tmpl" id="template-upgrade">
-            <div style="display: none !important;" class="upgradeheader">
+			<div style="display: none !important;" class="upgradeheader">            
             </div>
         </script>
 <script type="text/x-jquery-tmpl" id="template-logincount">
@@ -321,7 +336,7 @@
                 <% _.each(g, function(group, key) { %>
                     <% if(key != "null") { %>
                     <li class='parent_dimension'>
-					<% if(! Settings.RS_COLLAPSE_MEASURES) { %>
+                    <% if(! Settings.RS_COLLAPSE_MEASURES) { %>
                     <span class="root expand sprite"></span>
                       <a class="folder_expand i18n sprite" href="#" title="<%= key %>"><%= key %></a>
 					<% } else { %>
@@ -331,17 +346,11 @@
                         <ul>
                         <% _.each(group, function(measure) { %>
                         <% if (typeof measure["visible"] == "undefined" || measure["visible"]) { %>
-                       		<% if(! Settings.RS_COLLAPSE_MEASURES) { %>
-								<li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
-        		                        measure="<%= measure.name %>" type="EXACT"
-                		            class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
-                        		</li>
-							<% } else { %>
-								<li class="d_measure" style="display:none"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
-                                	measure="<%= measure.name %>" type="EXACT"
-                            		class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
-                        		</li>
-							<% } %>
+                        <li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
+                                measure="<%= measure.name %>" type="EXACT"
+                            class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
+                        </li>
+
                         <% } %>
                         <% }); %>
                         </ul>
@@ -353,10 +362,17 @@
                         <ul>
                     <% _.each(group, function(measure) { %>
 
-                        <li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
-                                measure="<%= measure.name %>" type="EXACT"
-                            class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
-                        </li>
+                        <% if(! Settings.RS_COLLAPSE_MEASURES) { %>
+								<li class="d_measure"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
+        		                        measure="<%= measure.name %>" type="EXACT"
+                		            class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
+                        		</li>
+							<% } else { %>
+								<li class="d_measure" style="display:none"><a title="<%= measure.description ? measure.description : measure.uniqueName %>"
+                                	measure="<%= measure.name %>" type="EXACT"
+                            		class="measure" href="#Measures/member/<%= encodeURIComponent(measure.uniqueName) %>"><%= measure.caption %></a>
+                        		</li>
+							<% } %>
 
                         <% }); %>
                       </ul>
@@ -506,16 +522,16 @@
             <li><a href="#open_query" style="display: none !important;"
                 class="i18n open button sprite"
                 title="Open query"></a></li>
-            <li><a href="#save_query"  style="display: none !important;"
+            <li><a href="#save_query" style="display: none !important;"
                 class="i18n save button disabled_toolbar sprite"
                 title="Save query"></a></li>
-            <li style="display: none !important;"><a href="#new_query"
+			<li style="display: none !important;"><a href="#new_query"
                 class="i18n new disabled_toolbar button sprite" 
                 title="Reset query"></a></li>
             <li><a href="#edit_query"
                 class="i18n edit button on disabled_toolbar sprite"
                 title="Edit query"></a></li>
-            <li class="seperator"><a href="#run_query"
+ 	        <li class="seperator"><a href="#run_query"
                 class="i18n run button disabled_toolbar sprite"
                 title="Run query"></a></li>
             <li><a href="#automatic_execution"
@@ -564,20 +580,20 @@ title="Drill across on cell"></a></li>
             <li><a href="#export_drillthrough"
                 class="i18n table_mode drillthrough_export button disabled_toolbar sprite"
                 title="Export Drill-Through on cell to CSV"></a></li>
-            <li class="seperator"><a href="#export_xls"  style="display: none !important;"
+            <li class="seperator"><a href="#export_xls" style="display: none !important;"
                 class="i18n export_xls button disabled_toolbar sprite"
                 title="Export XLS"></a></li>
-            <li><a href="#export_csv"  style="display: none !important;"
+            <li><a href="#export_csv" style="display: none !important;"
                 class="i18n export_csv button disabled_toolbar sprite"
                 title="Export CSV"></a></li>
-            <li><a href="#export_pdf"  style="display: none !important;"
+            <li><a href="#export_pdf" style="display: none !important;"
                 class="i18n export_pdf button disabled_toolbar sprite"
                 title="EXPERIMENTAL: Export PDF"></a></li>
             <li><a href="#switch_to_mdx"
                 class="i18n switch_to_mdx button disabled_toolbar"
                 title="Switch to MDX Mode"></a></li>
             <% if (Settings.BIPLUGIN5 == true) { %>
-            <li class="seperator"  style="display: none !important;"><a href="#about"  style="display: none !important;"
+            <li class="seperator"  style="display: none !important;"><a href="#about"  style="display: none !important;"	
                 class="i18n about button sprite"
                 title="About"></a></li>
              <% } %>
@@ -651,6 +667,12 @@ title="Drill across on cell"></a></li>
             <li><a href="#pie"
                 class="i18n pie chartoption button disabled_toolbar"
                 title="Pie"></a></li>
+            <!-- <li><a href="#radar"
+                class="i18n radar chartoption button disabled_toolbar"
+                title="Radar"></a></li>
+            <li><a href="#timewheel"
+                class="i18n timewheel chartoption button disabled_toolbar"
+                title="Time Wheel"></a></li> -->
            <!-- <li><a href="#chart_editor"
                 class="i18n custom_chart button disabled_toolbar"
                 title="Custom">Custom</a></li> -->
@@ -679,7 +701,7 @@ title="Drill across on cell"></a></li>
                 </div>
             </div>
 
-            <div class="sidebar queries" style="width: 300px">
+			 <div class="sidebar queries" style="width: 300px">
                 <h3 class="top" style="padding-top:3px;padding-bottom:2px;">
                 <div class="form-inline">
                     <label class="i18n">Search:</label> &nbsp;
@@ -811,6 +833,22 @@ title="Drill across on cell"></a></li>
 
             <div class="autocomplete"></div>
         </script>
+<!-- 
+<script type="text/x-jquery-tmpl" id="template-selections-totals">
+    <div class="totals_container per_metrics_container">
+        <strong><%= measure.name %> - </strong>
+        <label for="show_totals" class="i18n">Sub totals</label>
+        <select class="form-control show_totals_select">
+            <option class="i18n" value="nil" selected="selected">None</option>
+            <option class="i18n" value="sum">Sum</option>
+            <option class="i18n" value="min">Min</option>
+            <option class="i18n" value="max">Max</option>
+            <option class="i18n" value="avg">Avg</option>
+        </select>
+        &nbsp;
+    </div>
+</script>
+ -->
 <script type="text/x-jquery-tmpl" id="template-selections-options">
             <ul>
             <li class="i18n all_options"><input type="checkbox" class="check_all_option"

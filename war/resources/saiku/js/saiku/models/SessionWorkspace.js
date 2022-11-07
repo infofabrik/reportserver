@@ -1,4 +1,8 @@
-/*  
+/**
+ * Patched version of SessionWorkspace with no default splash screen
+ */
+
+/*
  *   Copyright 2012 OSBI Ltd
  *
  *   Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,7 +25,7 @@
  * @returns {Session}
  */
 var SessionWorkspace = Backbone.Model.extend({
-        
+
     initialize: function(args, options) {
         // Attach a custom event bus to this model
         _.extend(this, Backbone.Events);
@@ -39,10 +43,11 @@ var SessionWorkspace = Backbone.Model.extend({
                 localStorage.clear();
                 localStorage.setItem('saiku-version', Settings.VERSION);
             }
-        }        
+        }
         Saiku.ui.block("Loading datasources....");
+        //this.fetch({success:this.process_datasources},{});
         this.fetch({success:this.process_datasources, error:this.on_error},{});
-        
+
     },
 
     refresh: function() {
@@ -53,13 +58,14 @@ var SessionWorkspace = Backbone.Model.extend({
         this.clear();
 
         if(typeof localStorage !== "undefined" && localStorage) {
-          localStorage.setItem('saiku-version', Settings.VERSION);  
+          localStorage.setItem('saiku-version', Settings.VERSION);
         }
 
+        //this.fetch({success:this.process_datasources},{});
         Saiku.ui.block("Loading datasources....");
         this.fetch({success:this.process_datasources, error:this.on_error},{});
     },
-        
+
     destroy: function() {
         if (typeof localStorage !== "undefined" && localStorage) {
             localStorage.clear();
@@ -168,7 +174,7 @@ var SessionWorkspace = Backbone.Model.extend({
             var paramsURI = Saiku.URLParams.paramsURI();
 
             if (!(_.has(paramsURI, 'splash'))) {
-                paramsURI.splash = true;
+                paramsURI.splash = false; // PATCHED
             }
             else if (_.has(paramsURI, 'splash') && paramsURI.splash ||
                 _.has(paramsURI, 'splash') && paramsURI.splash === null) {
@@ -273,34 +279,44 @@ var SessionWorkspace = Backbone.Model.extend({
                 }
 
                 everythingLoaded = setInterval(function() {
-                    if (typeof window.DashboardViewTab !== 'undefined') {
+                    console.log('window.DashboardViewTab', window.DashboardViewTab);
+                    console.log('typeof window.DashboardViewTab', typeof window.DashboardViewTab);
+
+                    if (Saiku.Dashboards === undefined) {
+                        // Running on Saiku CE
                         clearInterval(everythingLoaded);
                         addDefaultReport();
+                    } else {
+                        // Running on Saiku EE
+                        if (typeof window.DashboardViewTab !== 'undefined') {
+                            clearInterval(everythingLoaded);
+                            addDefaultReport();
+                        }
                     }
                 }, 100);
             }
             else {
                 // Saiku.splash.render();
-//                if (!Settings.INITIAL_QUERY && paramsURI.splash) {
-//                    Saiku.tabs.add(new SplashScreen());
-//                }
-//                else if(!Settings.INITIAL_QUERY) {
-            	// ALWAYS SHOW WORKSPACE
+                //if (!Settings.INITIAL_QUERY && paramsURI.splash) {
+               //    Saiku.tabs.add(new SplashScreen());
+                //}
+                //else if(!Settings.INITIAL_QUERY) {
+                // ALWAYS SHOW WORKSPACE
                     Saiku.tabs.add(new Workspace());
-//                }
+                //}
                 //if (!Settings.INITIAL_QUERY) {
                 //    Saiku.tabs.add(new Workspace());
-                //} 
-            }
-        }
-        else {
-            if (!Settings.INITIAL_QUERY) {
-                Saiku.tabs.add(new Workspace());
+                //}
+   //         }
+     //   }
+       // else {
+         //   if (!Settings.INITIAL_QUERY) {
+           //     Saiku.tabs.add(new Workspace());
             }
         }
     },
-    
-    prefetch_dimensions: function() {        
+
+    prefetch_dimensions: function() {
         for(var i = 0, iLen = this.connections.length; i < iLen; i++) {
             var connection = this.connections[i];
             for(var j = 0, jLen = connection.catalogs.length; j < jLen; j++) {
@@ -313,13 +329,13 @@ var SessionWorkspace = Backbone.Model.extend({
                             ((schema.name === "" || schema.name === null) ? "null" : schema.name) +
                             "/" + encodeURIComponent(cube.name);
 
-                        if (typeof localStorage !== "undefined" && localStorage && 
+                        if (typeof localStorage !== "undefined" && localStorage &&
                             localStorage.getItem("cube." + key) !== null) {
                             this.cube[key] = new Cube(JSON.parse(localStorage.getItem("cube." + key)));
                         } else {
                             this.cube[key] = new Cube({ key: key });
                             if (Settings.DIMENSION_PREFETCH === true) {
-                                Saiku.ui.block("Load cube....");
+                            	Saiku.ui.block("Load cube....");
                                 this.cube[key].fetch();
                             }
                         }
@@ -327,14 +343,14 @@ var SessionWorkspace = Backbone.Model.extend({
                 }
             }
         }
-        
+
         // Start routing
         if (!this.initialized && Backbone.history) {
             Backbone.history.start();
             this.initialized = true;
         }
     },
-    
+
     url: function() {
         if (this.first) {
             this.first = false;

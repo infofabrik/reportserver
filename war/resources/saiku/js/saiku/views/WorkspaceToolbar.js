@@ -497,7 +497,7 @@ var WorkspaceToolbar = Backbone.View.extend({
 		if(this.workspace.query.name!=undefined){
 			var filename = this.workspace.query.name.substring(this.workspace.query.name.lastIndexOf('/')+1).slice(0, -5);
 			window.location = Settings.REST_URL +
-			this.workspace.query.url() + "/export/xls/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + encodeURIComponent(filename)+"xls";
+			this.workspace.query.url() + "/export/xls/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + "\"" + encodeURIComponent(filename)+"xls" + "\"";
 		}
 		else{
 			window.location = Settings.REST_URL +
@@ -511,7 +511,7 @@ var WorkspaceToolbar = Backbone.View.extend({
 		if(this.workspace.query.name!=undefined){
 			var filename = this.workspace.query.name.substring(this.workspace.query.name.lastIndexOf('/')+1).slice(0, -6);
 			window.location = Settings.REST_URL +
-			this.workspace.query.url() + "/export/csv/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + encodeURIComponent(filename);
+			this.workspace.query.url() + "/export/csv/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + "\"" + encodeURIComponent(filename) + "\"";
 		}
 		else{
 			window.location = Settings.REST_URL +
@@ -525,7 +525,7 @@ var WorkspaceToolbar = Backbone.View.extend({
 		if(this.workspace.query.name!=undefined){
 			var filename = this.workspace.query.name.substring(this.workspace.query.name.lastIndexOf('/')+1).slice(0, -6);
 			window.location = Settings.REST_URL +
-			this.workspace.query.url() + "/export/pdf/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + encodeURIComponent(filename);
+			this.workspace.query.url() + "/export/pdf/" + this.workspace.query.getProperty('saiku.olap.result.formatter')+"?exportname=" + "\"" + encodeURIComponent(filename) + "\"";
 		}
 		else{
 			window.location = Settings.REST_URL +
@@ -541,7 +541,6 @@ var WorkspaceToolbar = Backbone.View.extend({
         if ($(this.workspace.el).find( ".workspace_results tbody.ui-selectable" ).length > 0) {
             $(this.workspace.el).find( ".workspace_results tbody" ).selectable( "destroy" );
         }
-
 
         $(this.el).find('.run').attr('href','#run_mdx');
         $(this.el).find('.run, .save, .open, .new, .edit').removeClass('disabled_toolbar');
@@ -628,8 +627,6 @@ var WorkspaceToolbar = Backbone.View.extend({
 
         }
 
-
-
         if (this.workspace.dimension_list) {
             $(this.workspace.el).find('.sidebar_inner ul li a')
                 .css({fontWeight: "normal"}).parent('li').removeClass('ui-draggable ui-draggable-disabled ui-state-disabled');
@@ -640,12 +637,14 @@ var WorkspaceToolbar = Backbone.View.extend({
                 .removeClass('disabled_toolbar');
 
         $(this.workspace.table.el).empty();
+
+        if (this.workspace.timeSeriesFilter) {
+            $(this.workspace.timeSeriesFilter.el).empty();
+        }
+
         this.workspace.adjust();
         this.post_mdx_transform();
-
     },
-
-
 
     post_mdx_transform: function() {
         var self = this;

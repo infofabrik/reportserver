@@ -18,87 +18,58 @@
  * The "about us" dialog
  */
 var AboutModal = Modal.extend({
-    type: 'info',
+    type: 'login',
+
+    message: '<div class="about-us">' +
+                 '<div class="header">' +
+                     '<span>' + Settings.VERSION + '<span>' +
+                     '<a href="http://saiku.meteorite.bi" target="_blank">http://saiku.meteorite.bi</a>' +
+                 '</div>' +
+                 '<div class="license-info">' +
+                     '<h3>License Info</h3>' +
+                     '<ul>' +
+                         '<li class="label">Type: <span class="item license-type"></span></li>' +
+                         '<li class="label item-license-expiration" hidden>Expires: <span class="item license-expiration"></span></li>' +
+                         '<li class="label">Number of users: <span class="item license-user-limit"></span></li>' +
+                         '<li class="label">Licensed to: <span class="item license-name"></span> - <span class="item license-email"></span></li>' +
+                         '<li><a href="http://www.meteorite.bi/saiku-pricing" target="_blank">Order more licenses here</a></li>' +
+                     '</ul>' +
+                 '</div>' +
+                 '<div class="footer">' +
+                     '<span>Want to help? <a href="https://www.paypal.com/uk/cgi-bin/webscr?cmd=_flow&SESSION=YV5t-PRrJWXJ1nMw9KlOlfrivAY32xkbYXJ1sGaCkmEIEZgLPBXuP_FKQL0&dispatch=5885d80a13c0db1f8e263663d3faee8dc3f308debf7330dd8d0b0a9f21afd7d3&rapidsState=Donation__DonationFlow___StateDonationLogin&rapidsStateSignature=16fabaac8c6b9c132f78003cf605e5237537aa2b" target="_blank">Make a donation</a> or <a href="https://github.com/OSBI/saiku" target="_blank">contribute to the code!</a></span>' +
+                     '<span>Powered by <img src="images/src/meteorite_free.png" width="20px"> <a href="http://www.meteorite.bi/services/consulting" target="_blank">www.meteorite.bi</a></span>' +
+                 '</div>' +
+             '</div>',
 
     events: {
-        'click a' : 'close'
+        'click .dialog_footer a' : 'call'
     },
 
-    message: Settings.VERSION + '<br>ReportServer Saiku',
+    initialize: function(args) {
+        _.extend(this, args);
 
-    initialize: function() {
         this.options.title = '<span class="i18n">About</span> ' + Settings.VERSION;
+
+        this.bind('open', function() {
+            this.render_license_info();
+        });
     },
 
-    ObjectLength_Modern: function( object ) {
-    return Object.keys(object).length;
-    },
+    render_license_info: function() {
+        var licenseType = Settings.LICENSE.licenseType === 'community_edition'
+            ? 'Open Source License'
+            : Settings.LICENSE.licenseType;
+        var expiration;
 
-    ObjectLength_Legacy: function( object ) {
-    var length = 0;
-    for( var key in object ) {
-        if( object.hasOwnProperty(key) ) {
-            ++length;
-        }
-    }
-    return length;
-    },
-
-
-    render: function() {
-        $(this.el).html(this.template())
-            .addClass("dialog_" + this.type)
-            .dialog(this.options);
-
-        var uiDialogTitle = $('.ui-dialog-title');
-        uiDialogTitle.html(this.options.title);
-        uiDialogTitle.addClass('i18n');
-        Saiku.i18n.translate();
-        license = new License();
-
-        if(Settings.LICENSE.expiration != undefined) {
-            yourEpoch = parseFloat(Settings.LICENSE.expiration);
-            var yourDate = new Date(yourEpoch);
-            $(this.el).find(".licenseexpr").text(yourDate.toLocaleDateString());
-        }
-        if(Settings.LICENSE.licenseType != undefined) {
-            $(this.el).find(".licensetype").text(Settings.LICENSE.licenseType);
-            $(this.el).find(".licensename").text(Settings.LICENSE.name);
-            $(this.el).find(".licenseuserlimit").text(Settings.LICENSE.userLimit);
-            $(this.el).find(".licenseemail").text(Settings.LICENSE.email);
-        }
-        else{
-            $(this.el).find(".licensetype").text("Open Source License");
-        }
-        ObjectLength =
-            Object.keys ? this.ObjectLength_Modern : this.ObjectLength_Legacy;
-
-        if(Settings.LICENSEQUOTA != undefined && ObjectLength(Settings.LICENSEQUOTA) > 0 ) {
-            var tbl_body = "";
-            var odd_even = false;
-            $.each(Settings.LICENSEQUOTA, function () {
-                var tbl_row = "";
-                $.each(this, function (k, v) {
-                    tbl_row += "<td>" + v + "</td>";
-                });
-                tbl_body += "<tr class=\"" + ( odd_even ? "odd" : "even") + "\">" + tbl_row + "</tr>";
-                odd_even = !odd_even;
-            });
-
-            $(this.el).find("#quotareplace").replaceWith(tbl_body);
-
-        }
-        else{
-            $(this.el).find("#licensetable").hide();
+        if (Settings.LICENSE.expiration) {
+            expiration = new Date(parseFloat(Settings.LICENSE.expiration));
+            this.$el.find('.item-license-expiration').show();
+            this.$el.find('.license-expiration').text(expiration.toLocaleDateString());
         }
 
-        return this;
-    },
-
-    close: function(event) {
-        if (event.target.hash === '#close') {
-            event.preventDefault();
-        }
-        this.$el.dialog('destroy').remove();
+        this.$el.find('.license-type').text(licenseType);
+        this.$el.find('.license-user-limit').text(Settings.LICENSE.userLimit);
+        this.$el.find('.license-name').text(Settings.LICENSE.name);
+        this.$el.find('.license-email').text(Settings.LICENSE.email);
     }
 });

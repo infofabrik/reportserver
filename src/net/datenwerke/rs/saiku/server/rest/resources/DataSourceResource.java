@@ -15,18 +15,35 @@
  */
 package net.datenwerke.rs.saiku.server.rest.resources;
 
+//import org.saiku.datasources.datasource.SaikuDatasource;
+//import org.saiku.service.datasource.DatasourceService;
+//import org.saiku.service.util.exception.SaikuServiceException;
+//import org.saiku.web.rest.objects.DataSourceMapper;
+//
+//import com.qmino.miredot.annotations.ReturnType;
 import javax.ws.rs.Path;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//import org.springframework.stereotype.Component;
+//
+//import java.util.ArrayList;
+//import java.util.Collection;
+//import java.util.Iterator;
+//import java.util.Map;
+//
+//import javax.ws.rs.*;
+//import javax.ws.rs.core.Response;
+//import javax.ws.rs.core.Response.Status;
 
 /**
  * Data Source Manipulation Utility Endpoints
  */
+//@Component
 @Path("/saiku/{username}/org.saiku.datasources")
 public class DataSourceResource {
 
-   private static final Logger log = LoggerFactory.getLogger(DataSourceResource.class);
+    private static final Logger log = LoggerFactory.getLogger(DataSourceResource.class);
 //    private DatasourceService datasourceService;
 //
 //    public void setDatasourceService(DatasourceService ds) {

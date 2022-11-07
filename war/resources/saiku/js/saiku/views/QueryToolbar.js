@@ -107,7 +107,16 @@ var QueryToolbar = Backbone.View.extend({
                         this.workspace.query.setProperty('saiku.ui.render.type', c);
                     }
                     else {
-                        c = $(this.el).find('ul.chart li').not('.chart_editor').find('a.on').attr('href').replace('#', '');
+                        var type = $(this.el).find('ul.chart li').not('.chart_editor').find('a.on').attr('href');
+
+                        if (type) {
+                            c = type.replace('#', '');
+                        }
+                        else {
+                            // default
+                            c = 'stackedBar';
+                        }
+
                         this.workspace.query.setProperty('saiku.ui.render.type', c);
                     }
                 }
@@ -243,7 +252,8 @@ var QueryToolbar = Backbone.View.extend({
 
     run_row_viz: function(args) {
         if (this.render_mode == "table" && this.spark_mode !== null) {
-        	var that = this;
+            //this.render_row_viz(this.spark_mode);
+            var that = this;
         	setTimeout(function(){// arno: need timeout in order give table toime to render first
         		that.render_row_viz(that.spark_mode);
         	}, 100);
