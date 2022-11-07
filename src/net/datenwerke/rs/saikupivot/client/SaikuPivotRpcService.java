@@ -13,6 +13,6 @@ public interface SaikuPivotRpcService extends RemoteService {
 
    public String cubeExport(String token, TableReportDto report) throws ServerCallFailedException;
 
-   public String cubeExportMondrian3(String token, TableReportDto report) throws ServerCallFailedException;
+   public String cubeExportMondrian9(String token, TableReportDto report) throws ServerCallFailedException;
 
 }

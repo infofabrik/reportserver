@@ -11,6 +11,6 @@ public interface SaikuPivotRpcServiceAsync {
 
    void cubeExport(String token, TableReportDto report, AsyncCallback<String> callback);
 
-   void cubeExportMondrian3(String token, TableReportDto report, AsyncCallback<String> callback);
+   void cubeExportMondrian9(String token, TableReportDto report, AsyncCallback<String> callback);
 
 }

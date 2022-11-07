@@ -72,14 +72,14 @@ public class CubeExportHooker implements ReportExecutorViewToolbarHook {
 
       exportBtn.setMenu(menu);
 
-      MenuItem mondrian3Item = new DwMenuItem("Mondrian 3");
-      menu.add(mondrian3Item);
-      mondrian3Item.addSelectionHandler(new SelectionHandler<Item>() {
+      MenuItem mondrian9Item = new DwMenuItem("Mondrian 9");
+      menu.add(mondrian9Item);
+      mondrian9Item.addSelectionHandler(new SelectionHandler<Item>() {
 
          @Override
          public void onSelection(SelectionEvent<Item> event) {
             startProgress();
-            saikuPivotDao.cubeExportMondrian3(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
+            saikuPivotDao.cubeExportMondrian9(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
                   new RsAsyncCallback<String>() {
                      @Override
                      public void onSuccess(String result) {
