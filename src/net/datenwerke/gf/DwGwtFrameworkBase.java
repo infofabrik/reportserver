@@ -33,23 +33,23 @@ public abstract class DwGwtFrameworkBase extends GuiceServletContextListener imp
    protected EventBus eventBus;
 
    @Override
-   public void sessionCreated(HttpSessionEvent event) {
+   public void sessionCreated(final HttpSessionEvent event) {
       /* make sure listener is listening for proper closing events */
       event.getSession().setAttribute("__xx_dw_gwt_fr_sessionListener",
             new LifecycleBindingListener(hookHandler, eventBus));
 
       eventBus.fireEvent(new InitSessionEvent());
 
-      for (SessionHook hook : hookHandler.getHookers(SessionHook.class))
-         hook.sessionCreated(event);
+      hookHandler.getHookers(SessionHook.class)
+         .forEach(hook -> hook.sessionCreated(event));
    }
 
    @Override
-   public void sessionDestroyed(HttpSessionEvent event) {
+   public void sessionDestroyed(final HttpSessionEvent event) {
       // event in lifecycle listener
 
-      for (SessionHook hook : hookHandler.getHookers(SessionHook.class))
-         hook.sessionDestroyed(event);
+      hookHandler.getHookers(SessionHook.class)
+         .forEach(hook -> hook.sessionDestroyed(event));
    }
 
    @Override

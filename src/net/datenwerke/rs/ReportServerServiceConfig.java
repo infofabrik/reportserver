@@ -181,6 +181,7 @@ import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
 import net.datenwerke.rs.rest.service.rest.RestModule;
 import net.datenwerke.rs.rest.service.rest.usermanager.RestUserManagerModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
+import net.datenwerke.rs.saiku.service.saiku.SaikuChartColorsFilter;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
 import net.datenwerke.rs.samba.service.samba.SambaModule;
@@ -348,7 +349,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
          protected void configureServlets() {
             filter("/ReportServer.html").through(NoCacheFilter.class);
             filter("/reportserver.nocache.js").through(NoCacheFilter.class);
-
+            
             filter("/*").through(PersistFilter.class);
 
 //				filter("/ReportServer.html").through(SpnegoSsoFilter.class);
