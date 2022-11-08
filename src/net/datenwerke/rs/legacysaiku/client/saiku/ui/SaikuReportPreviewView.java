@@ -52,7 +52,7 @@ public class SaikuReportPreviewView extends AbstractReportPreviewView {
 
       boolean isConfigurationProtected = report.isConfigurationProtected();
 
-      final Frame iframe = new Frame("resources/legacysaiku/index.html?username=" + getExecuteReportToken()
+      final Frame iframe = new Frame("resources/saiku/index.html?username=" + getExecuteReportToken()
             + "&password=none&hideparents=" + ((SaikuReportDto) report).isHideParents()
             + "&RS_SHOW_RESET=true&RS_CONFIGURATION_PROTECTED=" + isConfigurationProtected);
       iframe.setHeight("100%");

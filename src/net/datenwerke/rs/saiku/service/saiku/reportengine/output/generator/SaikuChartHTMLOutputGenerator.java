@@ -1,6 +1,7 @@
 package net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator;
 
-import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -57,38 +58,35 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
       }
 
       try {
-         InputStream tpluri = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/charttemplate.html");
+         String tplfile = "resources/saiku/charttemplate.html";
+         URL resource = getClass().getClassLoader().getResource("reportserver.properties");
+         URI tpluri = resource.toURI().resolve("../../" + tplfile);
+         
+         URI tipsyCss = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/tipsy.css"); 
+         URI jQuery = resource.toURI().resolve("../../resources/saiku/js/jquery/jquery.min.js");
+         URI jQueryUi = resource.toURI().resolve("../../resources/saiku/js/jquery/jquery-ui.min.js");
+         URI tipsyJs = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/jquery.tipsy.js");
+         URI purlJs = resource.toURI().resolve("../../resources/js/purl.js");
+         URI underscore = resource.toURI().resolve("../../resources/saiku/js/backbone/underscore.js");
+         URI json2 = resource.toURI().resolve("../../resources/saiku/js/backbone/json2.js");
+         URI backbone = resource.toURI().resolve("../../resources/saiku/js/backbone/backbone.js");
 
-         InputStream tipsyCss = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/tipsy.css");
-         InputStream jQuery = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/jquery.min.js");
-         InputStream jQueryUi = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/jquery-ui.min.js");
-         InputStream tipsyJs = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/jquery.tipsy.js");
-         InputStream purlJs = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/purl.js");
-         InputStream underscore = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/underscore.js");
-         InputStream json2 = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/json2.js");
-         InputStream backbone = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/backbone.js");
+         URI protovis = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/protovis.js");
+         URI protovisIE = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/protovis-msie.js");
+         URI tipsyPlugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/tipsy.js");
+         URI defPlugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/def.js");
+         URI pvcPlugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/pvc-d.js");
 
-         InputStream protovis = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/protovis.js");
-         InputStream protovisIE = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/protovis-msie.js");
-         InputStream tipsyPlugin = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/tipsy.js");
-         InputStream defPlugin = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/def.js");
-         InputStream pvcPlugin = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/pvc-d.js");
+         URI settings = resource.toURI().resolve("../../resources/saiku/js/saiku/Settings.js");
+     
+         URI plugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/plugin.js");
+         
+         URI saikuRenderer = resource.toURI().resolve("../../resources/saiku/js/saiku/render/SaikuRenderer.js");
+         URI saikuChartRenderer = resource.toURI().resolve("../../resources/saiku/js/saiku/render/SaikuChartRenderer.js");
+         
+         
+         String tpl = IOUtils.toString(tpluri.toURL().openStream());
 
-         InputStream settings = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/Settings.js");
-
-         InputStream plugin = getClass().getClassLoader().getResourceAsStream("resources/saiku/render/plugin.js");
-
-         InputStream saikuRenderer = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/SaikuRenderer.js");
-         InputStream saikuChartRenderer = getClass().getClassLoader()
-               .getResourceAsStream("resources/saiku/render/SaikuChartRenderer.js");
-
-         String tpl = IOUtils.toString(tpluri);
          tpl = tpl.replace("/*##DATA##*/", json);
          tpl = tpl.replace("/*##TYPE##*/", type);
 
@@ -114,26 +112,26 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
          CompiledHTMLSaikuReport htmlReport = new CompiledHTMLSaikuReport(tpl);
          return htmlReport;
 
-//			System.out.println(htmlReport.getReport());
-//			ITextRenderer renderer = new ITextRenderer();
-//			try {
-//				pdfUtils.configureFontResolver(renderer.getFontResolver());
-//				String html = (String) htmlReport.getReport();
-//				renderer.setDocumentFromString(html);
-//				
-//				ByteArrayOutputStream os = new ByteArrayOutputStream();
-//				renderer.layout();
-//				renderer.createPDF(os);
+//          System.out.println(htmlReport.getReport());
+//          ITextRenderer renderer = new ITextRenderer();
+//          try {
+//              pdfUtils.configureFontResolver(renderer.getFontResolver());
+//              String html = (String) htmlReport.getReport();
+//              renderer.setDocumentFromString(html);
+//              
+//              ByteArrayOutputStream os = new ByteArrayOutputStream();
+//              renderer.layout();
+//              renderer.createPDF(os);
 //
-//				byte[] cReport = os instanceof ByteArrayOutputStream ? ((ByteArrayOutputStream)os).toByteArray() : null;
+//              byte[] cReport = os instanceof ByteArrayOutputStream ? ((ByteArrayOutputStream)os).toByteArray() : null;
 //
-//				return new CompiledPDFSaikuReport(cReport);
-//			} catch (DocumentException e) {
-//				throw new ReportExecutorRuntimeException(e);
-//			} catch (IOException e) {
-//				throw new ReportExecutorRuntimeException(e);
-//			}
-//			
+//              return new CompiledPDFSaikuReport(cReport);
+//          } catch (DocumentException e) {
+//              throw new ReportExecutorRuntimeException(e);
+//          } catch (IOException e) {
+//              throw new ReportExecutorRuntimeException(e);
+//          }
+//          
       } catch (Exception e) {
          throw new ReportExecutorException(e);
       }

@@ -1,17 +1,3 @@
-/*
-var SaikuRendererRegistry = {
-
-};
-
-SaikuRendererRegistry.prototype.register = function(key, data, options) {
-    if (this.hasOwnProperty(key)) {
-        return new SaikuRendererRegistry[key](data, options);
-    } else {
-        throw("No renderer with name '" + key + "' registered!");
-    }
-};
-*/
-
 var SaikuRendererOptions = {
     mode: null,
     dataMode: null,
@@ -26,9 +12,15 @@ var SaikuRenderer = function(data, options) {
     if (typeof Backbone !== "undefined") {
         _.extend(this, Backbone.Events);
     }
+    if (data) {
+        this._data = data;
+        this.processData(data, options);
+        this._hasProcessed = true;
+    }
 
-this.render = function(data, options) {
-    var r = null;
+};
+
+SaikuRenderer.prototype.render = function(data, options) {
     if (typeof Backbone !== "undefined") {
         this.trigger('render:start', this );
     }
@@ -36,14 +28,14 @@ this.render = function(data, options) {
     if (!this.hasProcessedData()) {
         this.processData(data, options);
     }
-    r = this._render(data, options);
+    var r = this._render(data, options);
     if (typeof Backbone !== "undefined") {
         this.trigger('render:end', this );
     }
     return r;
 };
 
-this.processData = function(data, options) {
+SaikuRenderer.prototype.processData = function(data, options) {
     if (typeof Backbone !== "undefined") {
         this.trigger('processData:start', this );
     }
@@ -52,18 +44,11 @@ this.processData = function(data, options) {
         this.trigger('processData:end', this );
     }
 };
-this.hasProcessedData = function() {
+SaikuRenderer.prototype.hasProcessedData = function() {
     return this._hasProcessed;
 };
 
 
-this._render = function(data, options) {};
-this._processData = function(data, options) {};
+SaikuRenderer.prototype._render = function(data, options) {};
+SaikuRenderer.prototype._processData = function(data, options) {};
 
-if (data) {
-        this._data = data;
-        this.processData(data, options);
-        this._hasProcessed = true;
-}
-
-};
