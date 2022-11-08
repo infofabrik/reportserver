@@ -18,8 +18,10 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
+import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.saiku.server.rest.objects.resultset.QueryResult;
 import net.datenwerke.rs.saiku.server.rest.util.RestUtil;
+import net.datenwerke.rs.saiku.service.saiku.SaikuChartColorsService;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledHTMLSaikuReport;
@@ -30,10 +32,19 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
 
    @Inject
    protected PdfUtils pdfUtils;
-
+   
+   private final LicenseService licenseService;
+   private final SaikuChartColorsService saikuChartColorsService;
+   
    @Inject
-   public SaikuChartHTMLOutputGenerator(HookHandlerService hookHandler) {
+   public SaikuChartHTMLOutputGenerator(
+         HookHandlerService hookHandler,
+         LicenseService licenseService,
+         SaikuChartColorsService saikuChartColorsService
+         ) {
       super(hookHandler);
+      this.licenseService = licenseService;
+      this.saikuChartColorsService = saikuChartColorsService;
    }
 
    @Override
@@ -77,8 +88,17 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
          URI defPlugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/def.js");
          URI pvcPlugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/pvc-d.js");
 
+         
          URI settings = resource.toURI().resolve("../../resources/saiku/js/saiku/Settings.js");
+         String settingsString = IOUtils.toString(settings);
      
+         if (licenseService.isEnterprise()) {
+            String colors = saikuChartColorsService.getChartColors();
+            if (null == colors)
+               colors = SaikuModule.SAIKU_CHARTS_DEFAULT_COLOR;
+            settingsString = settingsString + "Settings.CHART_COLORS = [" + colors + "];";
+         }
+         
          URI plugin = resource.toURI().resolve("../../resources/saiku/js/saiku/plugins/CCC_Chart/plugin.js");
          
          URI saikuRenderer = resource.toURI().resolve("../../resources/saiku/js/saiku/render/SaikuRenderer.js");
@@ -103,7 +123,7 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
          tpl = tpl.replace("/*##TIPSY.PLUGIN##*/", IOUtils.toString(tipsyPlugin));
          tpl = tpl.replace("/*##DEF##*/", IOUtils.toString(defPlugin));
          tpl = tpl.replace("/*##PVC##*/", IOUtils.toString(pvcPlugin));
-         tpl = tpl.replace("/*##SETTINGS##*/", IOUtils.toString(settings));
+         tpl = tpl.replace("/*##SETTINGS##*/", settingsString);
          tpl = tpl.replace("/*##PLUGIN##*/", IOUtils.toString(plugin));
 
          tpl = tpl.replace("/*##SAIKU-RENDERER##*/", IOUtils.toString(saikuRenderer));
