@@ -1,25 +1,60 @@
 package org.saiku.service.olap.totals.aggregators;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
-
+import mondrian.util.Format;
 import org.olap4j.Cell;
 import org.olap4j.metadata.Measure;
 import org.saiku.olap.util.SaikuProperties;
 
-import mondrian.util.Format;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public abstract class TotalAggregator {
-  private static final Map<String, TotalAggregator> all;
+  private static final Map<String, TotalAggregatorFactory> all;
+
+  private static interface TotalAggregatorFactory {
+    TotalAggregator create();
+  }
 
   static {
-    Map<String, TotalAggregator> tmp = new HashMap<>();
-    tmp.put( "sum", new SumAggregator( null ) );
-    tmp.put( "max", new MaxAggregator( null ) );
-    tmp.put( "min", new MinAggregator( null ) );
-    tmp.put( "avg", new AvgAggregator( null ) );
-    tmp.put( "deep_avg", new DeepAvgAggregator( null ) );
+    Map<String, TotalAggregatorFactory> tmp = new HashMap<>();
+
+    tmp.put( "not", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return null;
+      }
+    });
+
+    tmp.put( "nil", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return new BlankAggregator( null );
+      }
+    });
+
+    tmp.put( "sum", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return new SumAggregator( null );
+      }      
+    });
+
+    tmp.put( "max", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return new MaxAggregator( null );
+      }      
+    });
+
+    tmp.put( "min", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return new MinAggregator( null );
+      }      
+    });
+
+    tmp.put( "avg", new TotalAggregatorFactory() {
+      public TotalAggregator create() {
+        return new AvgAggregator( null );
+      }      
+    });
+
     all = Collections.unmodifiableMap( tmp );
   }
 
@@ -83,6 +118,10 @@ public abstract class TotalAggregator {
   }
 
   public static TotalAggregator newInstanceByFunctionName( final String functionName ) {
-    return all.get( functionName );
+    if (functionName == null || functionName.trim().length() == 0) {
+      return all.get("not").create();
+    }
+
+    return all.get(functionName).create();
   }
 }

@@ -254,7 +254,7 @@ public class OlapQuery implements IQuery {
         return query.getName();
     }
 
-    public synchronized CellSet execute() throws Exception {
+    public CellSet execute() throws Exception {
         try {
             if (statement != null) {
                 statement.close();
@@ -435,16 +435,16 @@ public class OlapQuery implements IQuery {
         return cellset;
     }
 
-    public synchronized void setStatement(OlapStatement os) {
+    public void setStatement(OlapStatement os) {
         this.statement = os;
 
     }
 
-    public synchronized OlapStatement getStatement() {
+    public OlapStatement getStatement() {
         return this.statement;
     }
 
-    public synchronized void cancel() throws Exception {
+    public void cancel() throws Exception {
         if (this.statement != null && !this.statement.isClosed()) {
             statement.cancel();
             statement.close();

@@ -54,9 +54,7 @@ public class SaikuDefaultXmlaServlet extends DefaultXmlaServlet{
 //        WebApplicationContextUtils
 //            .getWebApplicationContext(context);
 //    connections = (IConnectionManager) applicationContext.getBean("connectionManager");
-    
     throw new RuntimeException("not implemented");
-    //TODO:SAIKU
   }
   @Override
   protected XmlaHandler.ConnectionFactory createConnectionFactory(ServletConfig servletConfig) throws ServletException {

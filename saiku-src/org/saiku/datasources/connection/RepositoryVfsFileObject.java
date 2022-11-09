@@ -1,12 +1,10 @@
 package org.saiku.datasources.connection;
 
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.Iterator;
 import java.util.List;
 
@@ -242,61 +240,72 @@ public class RepositoryVfsFileObject
 //            }
 //        }
 //        return inputStream;
-    	throw new RuntimeException("not implemented");
+    	 throw new RuntimeException("not implemented");
     }
 
 	@Override
-	public FileOperations getFileOperations() throws FileSystemException {
+	public int compareTo(FileObject o) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Iterator<FileObject> iterator() {
+		// TODO Auto-generated method stub
 		return null;
 	}
 
-   @Override
-   public int compareTo(FileObject arg0) {
-      return 0;
-   }
+	@Override
+	public int deleteAll() throws FileSystemException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public Iterator<FileObject> iterator() {
-      return null;
-   }
+	@Override
+	public FileOperations getFileOperations() throws FileSystemException {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-   @Override
-   public int deleteAll() throws FileSystemException {
-      return 0;
-   }
+	@Override
+	public String getPublicURIString() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
-   @Override
-   public String getPublicURIString() {
-      return null;
-   }
+	@Override
+	public boolean isExecutable() throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-   @Override
-   public boolean isExecutable() throws FileSystemException {
-      return false;
-   }
+	@Override
+	public boolean isFile() throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-   @Override
-   public boolean isFile() throws FileSystemException {
-      return false;
-   }
+	@Override
+	public boolean isFolder() throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-   @Override
-   public boolean isFolder() throws FileSystemException {
-      return false;
-   }
+	@Override
+	public boolean setExecutable(boolean arg0, boolean arg1) throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-   @Override
-   public boolean setExecutable(boolean arg0, boolean arg1) throws FileSystemException {
-      return false;
-   }
+	@Override
+	public boolean setReadable(boolean arg0, boolean arg1) throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 
-   @Override
-   public boolean setReadable(boolean arg0, boolean arg1) throws FileSystemException {
-      return false;
-   }
-
-   @Override
-   public boolean setWritable(boolean arg0, boolean arg1) throws FileSystemException {
-      return false;
-   }
+	@Override
+	public boolean setWritable(boolean arg0, boolean arg1) throws FileSystemException {
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

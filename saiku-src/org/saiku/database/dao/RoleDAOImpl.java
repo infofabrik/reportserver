@@ -2,7 +2,6 @@ package org.saiku.database.dao;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.saiku.database.dao.RoleDAO;
 import org.saiku.database.dto.Role;
 
 /**
@@ -10,6 +9,7 @@ import org.saiku.database.dto.Role;
  */
 public class RoleDAOImpl implements RoleDAO {
 
+//  @Autowired
   private SessionFactory sessionFactory;
 
   private Session getCurrentSession() {

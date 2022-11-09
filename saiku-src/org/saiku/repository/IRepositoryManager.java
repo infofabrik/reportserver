@@ -15,6 +15,16 @@
  */
 package org.saiku.repository;
 
+
+//import org.saiku.datasources.connection.RepositoryFile;
+//import org.saiku.service.user.UserService;
+//
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.util.List;
+
+//import javax.jcr.RepositoryException;
+
 /**
  * Repository Manager Interface
  */
@@ -25,11 +35,11 @@ public interface IRepositoryManager {
 //
 //  void createUser( String u ) throws RepositoryException;
 //
-//  javax.jcr.NodeIterator getHomeFolders() throws RepositoryException;
+//  Object getHomeFolders() throws RepositoryException;
 //
-//  javax.jcr.Node getHomeFolder( String directory ) throws RepositoryException;
+//  Object getHomeFolder( String directory ) throws RepositoryException;
 //
-//  javax.jcr.Node getFolder( String user, String directory ) throws RepositoryException;
+//  Object getFolder( String user, String directory ) throws RepositoryException;
 //
 //  void shutdown();
 //
@@ -41,16 +51,16 @@ public interface IRepositoryManager {
 //
 //  boolean moveFolder(String user, String folder, String source, String target) throws RepositoryException;
 //
-//    javax.jcr.Node saveFile(Object file, String path, String user, String type, List<String> roles) throws RepositoryException;
+//    Object saveFile(Object file, String path, String user, String type, List<String> roles) throws RepositoryException;
 //
 //    void removeFile(String path, String user, List<String> roles) throws RepositoryException;
 //
 //    void moveFile(String source, String target, String user, List<String> roles) throws RepositoryException;
 //
 //
-//    javax.jcr.Node saveInternalFile(Object file, String path, String type) throws RepositoryException;
+//    Object saveInternalFile(Object file, String path, String type) throws RepositoryException;
 //
-//    javax.jcr.Node saveBinaryInternalFile(InputStream file, String path, String type) throws RepositoryException;
+//  Object saveBinaryInternalFile(InputStream file, String path, String type) throws RepositoryException;
 //
 //    String getFile(String s, String username, List<String> roles) throws RepositoryException;
 //

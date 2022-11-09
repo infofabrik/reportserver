@@ -15,9 +15,10 @@
  */
 package org.saiku.olap.util;
 
-import org.apache.commons.lang3.LocaleUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -251,18 +252,7 @@ public class SaikuProperties extends Properties {
   public static final Boolean olapConvertQuery = getPropBoolean( "saiku.olap.convert.query", "false" );
 
   private static Locale getLocale() {
-    String locale = null;
-    try {
-      locale = getPropString( "saiku.format.default.locale", null );
-      if ( locale != null ) {
-        return LocaleUtils.toLocale( locale );
-      }
-    } catch ( Exception e ) {
-      log.warn( "Property: saiku.format.default.locale with value: " + locale
-        + ", cannot be used for a Locale, falling back to default locale: " + Locale.getDefault(), e );
-    }
-
-    return Locale.getDefault();
+    return LocalizationServiceImpl.getLocale();
   }
 
   private static Boolean getPropBoolean( String key, String defaultValue ) {

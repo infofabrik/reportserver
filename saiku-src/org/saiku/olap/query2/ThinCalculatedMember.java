@@ -1,9 +1,9 @@
 package org.saiku.olap.query2;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.HashMap;
 import java.util.Map;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
  * Created by bugg on 15/09/15.

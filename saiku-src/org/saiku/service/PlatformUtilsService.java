@@ -1,7 +1,13 @@
 package org.saiku.service;
 
-import org.saiku.service.util.dto.Plugin;
+//import org.saiku.service.util.dto.Plugin;
+//import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.File;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
+
+import org.saiku.service.util.dto.Plugin;
 
 /**
  * Created by bugg on 30/04/14.
@@ -10,6 +16,7 @@ public class PlatformUtilsService {
 
   private String filePath;
 
+//  @Autowired
   public void setPath(String path) {
     this.filePath = path;
   }
@@ -47,12 +54,9 @@ public class PlatformUtilsService {
 //        }
 //      }
 //    }
-    
-	  l.add( new Plugin( "Chart", "", "js/saiku/plugins/CCC_Chart/plugin.js" ) );
-	  l.add( new Plugin( "Statistics", "", "js/saiku/plugins/Statistics/plugin.js" ) );
-	  l.add( new Plugin( "ReportServer", "", "js/saiku/plugins/ReportServer/plugin.js" ) );
-
-    
+    l.add( new Plugin( "Chart", "", "js/saiku/plugins/CCC_Chart/plugin.js" ) );
+ 	l.add( new Plugin( "Statistics", "", "js/saiku/plugins/Statistics/plugin.js" ) );
+    l.add( new Plugin( "ReportServer", "", "js/saiku/plugins/ReportServer/plugin.js" ) );
     return l;
   }
 }

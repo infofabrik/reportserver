@@ -1,14 +1,40 @@
 package org.saiku.service.util.export.excel;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.TreeMap;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFPalette;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.SpreadsheetVersion;
-import org.apache.poi.ss.usermodel.*;
+//import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.usermodel.BorderStyle;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.Font;
+import org.apache.poi.ss.usermodel.HorizontalAlignment;
+import org.apache.poi.ss.usermodel.IndexedColors;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.VerticalAlignment;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.util.CellRangeAddress;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.olap4j.metadata.Measure;
 import org.saiku.olap.dto.resultset.AbstractBaseCell;
 import org.saiku.olap.dto.resultset.CellDataSet;
 import org.saiku.olap.dto.resultset.DataCell;
@@ -22,13 +48,15 @@ import org.saiku.service.olap.totals.aggregators.TotalAggregator;
 import org.saiku.service.util.exception.SaikuServiceException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.olap4j.metadata.Measure;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.text.SimpleDateFormat;
-import java.util.*;
+//import java.awt.*;
+//import java.awt.Color;
+//import java.io.ByteArrayOutputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.text.SimpleDateFormat;
+//import java.util.*;
+//import java.util.List;
 
 /**
  * Created with IntelliJ IDEA. User: sramazzina Date: 21/06/12 Time: 7.35 To
@@ -79,7 +107,7 @@ public class ExcelWorksheetBuilder {
     }
 
     private void init(CellDataSet table, List<ThinHierarchy> filters, ExcelBuilderOptions options) {
-    	this.table = table;
+        this.table = table;
         this.options = options;
         queryFilters = filters;
         maxRows = SpreadsheetVersion.EXCEL2007.getMaxRows();
@@ -96,8 +124,6 @@ public class ExcelWorksheetBuilder {
         } else {
             excelWorkbook = new XSSFWorkbook();
         }
-
-        CreationHelper createHelper = excelWorkbook.getCreationHelper();
 
         colorCodesMap = new HashMap<>();
         this.sheetName = options.sheetName;
@@ -124,6 +150,7 @@ public class ExcelWorksheetBuilder {
         basicCS = excelWorkbook.createCellStyle();
         basicCS.setFont(font);
         basicCS.setAlignment(HorizontalAlignment.LEFT);
+        basicCS.setVerticalAlignment(VerticalAlignment.TOP);
         setCellBordersColor(basicCS);
 
         Font totalsFont = excelWorkbook.createFont();
@@ -136,18 +163,19 @@ public class ExcelWorksheetBuilder {
         totalsCS.setAlignment(HorizontalAlignment.RIGHT);
         setCellBordersColor(totalsCS);
 
+        // Setting the default styling for number cells
         numberCS = excelWorkbook.createCellStyle();
         numberCS.setFont(font);
         numberCS.setAlignment(HorizontalAlignment.RIGHT);
-        setCellBordersColor(numberCS);
+
         /*
          * justasg: Let's set default format, used if measure has no format at
-		 * all. More info:
-		 * http://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/
-		 * BuiltinFormats.html#getBuiltinFormat(int) If we don't have default
-		 * format, it will output values up to maximum detail, i.e.
-		 * 121212.3456789 and we like them as 121,212.346
-		 */
+         * all. More info:
+         * http://poi.apache.org/apidocs/org/apache/poi/ss/usermodel/
+         * BuiltinFormats.html#getBuiltinFormat(int) If we don't have default
+         * format, it will output values up to maximum detail, i.e.
+         * 121212.3456789 and we like them as 121,212.346
+         */
         DataFormat fmt = excelWorkbook.createDataFormat();
         short dataFormat = fmt.getFormat(SaikuProperties.webExportExcelDefaultNumberFormat);
         numberCS.setDataFormat(dataFormat);
@@ -193,6 +221,7 @@ public class ExcelWorksheetBuilder {
         int lastHeaderRow = buildExcelTableHeader(startRow);
         Long header = (new Date()).getTime();
         addExcelTableRows(lastHeaderRow);
+        addTotalsSummary(lastHeaderRow);
         Long content = (new Date()).getTime();
         finalizeExcelSheet(startRow);
         Long finalizing = (new Date()).getTime();
@@ -207,6 +236,91 @@ public class ExcelWorksheetBuilder {
             throw new SaikuServiceException("Error creating excel export for query", e);
         }
         return bout.toByteArray();
+    }
+
+    private void checkRowLimit(int rowIndex) {
+        if ((rowIndex + 1) > maxRows) {
+            log.warn("Excel sheet is truncated, only outputting " + maxRows + " rows of " + (rowIndex + 1));
+        }
+    }
+
+    private void addTotalsSummary(int startingRow) {
+        int rowIndex = startingRow + rowsetBody.length + 2; // Lines offset after data, in order to add summary
+        checkRowLimit(rowIndex);
+
+        // Columns summary
+        if (colScanTotals.keySet().size() > 0) {
+            Row row = workbookSheet.createRow(rowIndex);
+            Cell cell = row.createCell(0);
+            cell.setCellStyle(lighterHeaderCellCS);
+            cell.setCellValue("Columns");
+
+            for (Integer colKey : colScanTotals.keySet()) {
+                TotalAggregator[][] colAggregator = colScanTotals.get(colKey);
+
+                if (colAggregator == null) continue;
+
+                for (int x = 0; x < colAggregator.length; x++) {
+                    rowIndex++;
+                    checkRowLimit(rowIndex);
+
+                    Measure measure = this.table.getSelectedMeasures()[x];
+
+                    TotalAggregator agg = colAggregator[x][0];
+                    row = workbookSheet.createRow(rowIndex);
+
+                    // Measure name
+                    cell = row.createCell(0);
+                    cell.setCellStyle(lighterHeaderCellCS);
+                    cell.setCellValue(measure.getCaption() +  ":");
+
+                    // Measure aggregator
+                    cell = row.createCell(1);
+                    cell.setCellStyle(basicCS);
+                    cell.setCellValue(agg.getClass().getSimpleName().substring(0, 3));
+                }
+            }
+        }
+
+        // Rows summary
+        if (rowScanTotals.keySet().size() > 0) {
+            rowIndex++;
+            checkRowLimit(rowIndex);
+
+            Row row = workbookSheet.createRow(rowIndex);
+            Cell cell = row.createCell(0);
+            cell.setCellStyle(lighterHeaderCellCS);
+            cell.setCellValue("Rows");
+
+            for (Integer rowKey : rowScanTotals.keySet()) {
+                TotalAggregator[][] rowAggregator = rowScanTotals.get(rowKey);
+
+                if (rowAggregator == null) continue;
+
+                for (int x = 0; x < rowAggregator.length; x++) {
+                    for (int y = 0; y < this.table.getSelectedMeasures().length; y++) {
+                        rowIndex++;
+                        checkRowLimit(rowIndex);
+
+                        Measure measure = this.table.getSelectedMeasures()[y];
+                        TotalAggregator agg = rowAggregator[x][y];
+
+                        row = workbookSheet.createRow(rowIndex);
+
+                        // Measure name
+                        cell = row.createCell(0);
+                        cell.setCellStyle(lighterHeaderCellCS);
+                        cell.setCellValue(measure.getCaption() +  ":");
+
+                        // Measure aggregator
+                        cell = row.createCell(1);
+                        cell.setCellStyle(basicCS);
+                        cell.setCellValue(agg.getClass().getSimpleName().substring(0, 3));
+                    }
+                }
+            }
+        }
+
     }
 
     private void finalizeExcelSheet(int startRow) {
@@ -328,6 +442,8 @@ public class ExcelWorksheetBuilder {
 
         Row sheetRow = null;
         Cell cell = null;
+        Map<Integer, String> tmpCellUniqueValueByColumn = new HashMap<>();
+        Map<Integer, Map<Integer, Boolean>> mergeRowsByColumn = new HashMap<>();
 
         if ((startingRow + rowsetBody.length) > maxRows) {
             log.warn("Excel sheet is truncated, only outputting " + maxRows + " rows of "
@@ -342,12 +458,20 @@ public class ExcelWorksheetBuilder {
 
         for (int x = 0; (x + startingRow) < maxRows && x < rowsetBody.length; x++) {
 
-            sheetRow = workbookSheet.createRow(x + startingRow);
+            int excelRowIndex = x + startingRow;
+            sheetRow = workbookSheet.createRow(excelRowIndex);
 
             int column = 0;
             for (int y = 0; y < maxColumns && y < rowsetBody[x].length; y++) {
                 cell = sheetRow.createCell(column);
-                String value = rowsetBody[x][y].getFormattedValue();
+
+                AbstractBaseCell baseCell = rowsetBody[x][y];
+
+                //Detect merge cells
+                findMergeCells(baseCell, excelRowIndex, y, mergeRowsByColumn, tmpCellUniqueValueByColumn);
+
+                String value = baseCell.getFormattedValue();
+
                 if (value == null && options.repeatValues) {
                     // If the row cells has a null values it means the value is
                     // repeated in the data internally
@@ -356,16 +480,21 @@ public class ExcelWorksheetBuilder {
                     // get it from the same position in the prev row
                     value = workbookSheet.getRow(sheetRow.getRowNum() - 1).getCell(column).getStringCellValue();
                 }
-                if (rowsetBody[x][y] instanceof DataCell && ((DataCell) rowsetBody[x][y]).getRawNumber() != null) {
-                    Number numberValue = ((DataCell) rowsetBody[x][y]).getRawNumber();
-                    cell.setCellValue(numberValue.doubleValue());
-                    applyCellFormatting(cell, x, y);
-                } else {
-                    cell.setCellStyle(basicCS);
-                    cell.setCellValue(value);
+
+                cell.setCellStyle(basicCS);
+                cell.setCellValue(value);
+                // Use rawNumber only is there is a formatString
+                if (rowsetBody[x][y] instanceof DataCell) {
+                    DataCell dataCell = (DataCell) rowsetBody[x][y];
+                    String formatString = dataCell.getFormatString();
+                    if ((dataCell.getRawNumber() != null) && (formatString != null) && !formatString.trim().isEmpty()) {
+                        Number numberValue = dataCell.getRawNumber();
+                        cell.setCellValue(numberValue.doubleValue());
+                        applyCellFormatting(cell, dataCell);
+                    }
                 }
 
-                //Set column sub totals
+                //Set column sub totalstotals
                 column = setColTotalAggregationCell(colScanTotals, sheetRow, x, column, true, false);
 
                 //Set column grand totals
@@ -380,7 +509,10 @@ public class ExcelWorksheetBuilder {
         }
 
         //Set row grand totals
-        setRowTotalAggregationCell(rowScanTotals, rowCount - 1, 0, true); // DW: ADAPTE
+        setRowTotalAggregationCell(rowScanTotals, rowCount, 0, true);
+
+        //Add merge cells
+        addMergedRegions(mergeRowsByColumn);
     }
 
     private void scanRowAndColumnAggregations(List<TotalNode>[] rowTotalsLists, Map<Integer, TotalAggregator[][]> rowScanTotals, List<TotalNode>[] colTotalsLists, Map<Integer, TotalAggregator[][]> colScanTotals) {
@@ -476,40 +608,27 @@ public class ExcelWorksheetBuilder {
 
     private int setColTotalAggregationCell(Map<Integer, TotalAggregator[][]> scanTotals, Row sheetRow, int x, int column, boolean setValue, boolean grandTotal) {
         column++;
+
         if (!scanTotals.isEmpty()) {
             TotalAggregator[][] aggregatorsTable = scanTotals.get(column);
+
             if (aggregatorsTable != null) {
-            	if (grandTotal) {
-                    int shift = 0;
-                    for (Integer colKey : colScanTotals.keySet()) {
-                        TotalAggregator[][] colAggregator = colScanTotals.get(colKey);
-
-                        if (colAggregator == null) continue;
-
-						for (int x1 = 0; x1 < colAggregator.length; x1++) {
-							Measure measure = this.table.getSelectedMeasures()[x1];
-
-							Cell cell = sheetRow.createCell(column + shift);
-							String value = measure.getCaption() + " Grand Total";
-							cell.setCellValue(value);
-							cell.setCellStyle(totalsCS);
-							shift++;
-						}
-                    }
-                }
                 if (setValue) {
-                    int shift = 0;
+                    if (grandTotal) {
+                        setGrandTotalLabel(sheetRow.getRowNum() - 1, column, true);
+                    }
+
                     for (TotalAggregator[] aggregators : aggregatorsTable) {
-                        Cell cell = sheetRow.createCell(column+shift);
+                        Cell cell = sheetRow.createCell(column);
                         String value = aggregators[x].getFormattedValue();
                         cell.setCellValue(value);
                         cell.setCellStyle(totalsCS);
-                        shift++;
+                        column++;
                     }
-                } 
-                column++;
+                }
             }
         }
+
         return column;
     }
 
@@ -532,76 +651,74 @@ public class ExcelWorksheetBuilder {
         }
     }
 
-    private void applyCellFormatting(Cell cell, int x, int y) {
-        String formatString;
-        formatString = ((DataCell) rowsetBody[x][y]).getFormatString();
-        if ((formatString != null) && (formatString.trim().length() > 0)) {
+	/**
+	 * Apply exact number format to excel Cell from its DataCell. Caller checks
+	 * the DataCell rawNumber and formatString are correct.
+	 * 
+	 * @param cell The excel cell to apply formatting
+	 * @param dataCell The source
+	 */
+    private void applyCellFormatting(Cell cell, DataCell dataCell) {
+        /*
+        * Previously, the CellStyles were being kept on a hash map for reuse,
+        * but the key used was just the formatString (not considering the
+        * colours), so, if many cells shared the same formatString but using
+        * different colours, all those cells would have the last cell colour.
+        */
+        String formatString = dataCell.getFormatString();
+        CellStyle numberCSClone = excelWorkbook.createCellStyle();
 
-            String formatKey = "" + formatString;
-            if (!cellStyles.containsKey(formatKey)) {
-                // Inherit formatting from cube schema FORMAT_STRING
-                CellStyle numberCSClone = excelWorkbook.createCellStyle();
-                numberCSClone.cloneStyleFrom(numberCS);
-                DataFormat fmt = excelWorkbook.createDataFormat();
+        numberCSClone.cloneStyleFrom(numberCS);
 
-                // the format string can contain macro values such as "Standard"
-                // from mondrian.util.Format
-                // try and look it up, otherwise use the given one
-                formatString = FormatUtil.getFormatString(formatString);
-                try {
-                    short dataFormat = fmt.getFormat(formatString);
-                    numberCSClone.setDataFormat(dataFormat);
-                } catch (Exception e) {
-                    // we tried to apply the mondrian format, but probably
-                    // failed, so lets use the standard one
-                    // short dataFormat =
-                    // fmt.getFormat(SaikuProperties.webExportExcelDefaultNumberFormat);
-                    // numberCSClone.setDataFormat(dataFormat);
-                }
-                cellStyles.put(formatKey, numberCSClone);
-            }
+        try {
+            formatString = FormatUtil.getFormatString(formatString);
+            DataFormat fmt = excelWorkbook.createDataFormat();
+            short dataFormat = fmt.getFormat(formatString);
+            numberCSClone.setDataFormat(dataFormat);
+        } catch (Exception ex) {
 
-            CellStyle numberCSClone = cellStyles.get(formatKey);
-
-            // Check for cell background
-            Map<String, String> properties = ((DataCell) rowsetBody[x][y]).getProperties();
-            if (properties.containsKey("style")) {
-                String colorCode = properties.get("style");
-                short colorCodeIndex = getColorFromCustomPalette(colorCode);
-                if (colorCodeIndex != -1) {
-                    numberCSClone.setFillForegroundColor(colorCodeIndex);
-                    numberCSClone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                } else if (customColorsPalette == null) {
-                    try {
-
-                        if (cssColorCodesProperties != null && cssColorCodesProperties.containsKey(colorCode)) {
-                            colorCode = cssColorCodesProperties.getProperty(colorCode);
-                        }
-
-                        int redCode = Integer.parseInt(colorCode.substring(1, 3), 16);
-                        int greenCode = Integer.parseInt(colorCode.substring(3, 5), 16);
-                        int blueCode = Integer.parseInt(colorCode.substring(5, 7), 16);
-                        numberCSClone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-                        ((XSSFCellStyle) numberCSClone).setFillForegroundColor(
-                                new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
-                        ((XSSFCellStyle) numberCSClone).setFillBackgroundColor(
-                                new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
-                    } catch (Exception e) {
-                        // we tried to set the color, no luck, lets continue
-                        // without
-                    }
-
-                }
-            } else {
-
-                numberCSClone.setFillForegroundColor(numberCS.getFillForegroundColor());
-                numberCSClone.setFillBackgroundColor(numberCS.getFillBackgroundColor());
-            }
-            cell.setCellStyle(numberCSClone);
-        } else {
-            cell.setCellStyle(numberCS);
         }
 
+        // Check for cell background
+        Map<String, String> properties = dataCell.getProperties();
+
+        // Just style the cell if it contains a value
+        if (dataCell.getRawNumber() != null && properties.containsKey("style")) {
+            String colorCode = properties.get("style");
+            short colorCodeIndex = getColorFromCustomPalette(colorCode);
+
+            if (colorCodeIndex != -1) {
+                numberCSClone.setFillForegroundColor(colorCodeIndex);
+                numberCSClone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+            } else if (customColorsPalette == null) {
+                try {
+
+                    if (cssColorCodesProperties != null && cssColorCodesProperties.containsKey(colorCode)) {
+                        colorCode = cssColorCodesProperties.getProperty(colorCode);
+                    }
+
+                    int redCode   = Integer.parseInt(colorCode.substring(1, 3), 16);
+                    int greenCode = Integer.parseInt(colorCode.substring(3, 5), 16);
+                    int blueCode  = Integer.parseInt(colorCode.substring(5, 7), 16);
+
+                    numberCSClone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+
+                    ((XSSFCellStyle) numberCSClone).setFillForegroundColor(
+                            new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
+                    ((XSSFCellStyle) numberCSClone).setFillBackgroundColor(
+                            new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
+                } catch (Exception e) {
+                    // we tried to set the color, no luck, lets continue
+                    // without
+                }
+
+            }
+        } else {
+            numberCSClone.setFillForegroundColor(numberCS.getFillForegroundColor());
+            numberCSClone.setFillBackgroundColor(numberCS.getFillBackgroundColor());
+        }
+
+        cell.setCellStyle(numberCSClone);
     }
 
     private short getColorFromCustomPalette(String style) {
@@ -714,7 +831,7 @@ public class ExcelWorksheetBuilder {
                 }
 
                 //Set sub total column space
-                int nextColumn = setColTotalAggregationCell(colScanTotals, sheetRow, x, column, false, x==rowsetHeader.length-1?true:false);
+                int nextColumn = setColTotalAggregationCell(colScanTotals, sheetRow, x, column, false, false);
                 if (column != nextColumn - 1) {
                     startSameFromPos++;
                 }
@@ -726,21 +843,16 @@ public class ExcelWorksheetBuilder {
         }
 
         if (topLeftCornerHeight > 0 && topLeftCornerWidth > 0) {
-        	CellRangeAddress regionToMerge = new CellRangeAddress(startRow, startRow + topLeftCornerHeight - 1, 0, topLeftCornerWidth - 1);
-        	if (regionToMerge.getNumberOfCells() > 1)
-        		workbookSheet.addMergedRegion(regionToMerge);
+            workbookSheet.addMergedRegion(
+                    new CellRangeAddress(startRow, startRow + topLeftCornerHeight - 1, 0, topLeftCornerWidth - 1));
         }
 
         if (mergedItemsConfig.size() > 0) {
             for (ExcelMergedRegionItemConfig item : mergedItemsConfig) {
                 int lastCol = item.getStartX() + item.getWidth() - 1;
                 lastCol = lastCol >= maxColumns ? maxColumns - 1 : lastCol;
-                
-                CellRangeAddress regionToMerge = new CellRangeAddress(item.getStartY(),
-                        item.getStartY() + item.getHeight(), item.getStartX(), lastCol);
-                
-                if (regionToMerge.getNumberOfCells() > 1)
-                	workbookSheet.addMergedRegion(regionToMerge);
+                workbookSheet.addMergedRegion(new CellRangeAddress(item.getStartY(),
+                        item.getStartY() + item.getHeight(), item.getStartX(), lastCol));
             }
         }
 
@@ -821,8 +933,83 @@ public class ExcelWorksheetBuilder {
      * @return
      */
     private int findTopLeftCornerHeight() {
-
         return rowsetHeader.length > 0 ? rowsetHeader.length - 1 : 0;
     }
 
+    /**
+     * @param mergeRowsByColumn merged indexes
+     */
+    private void addMergedRegions(Map<Integer, Map<Integer, Boolean>> mergeRowsByColumn) {
+        if (mergeRowsByColumn != null) {
+            for (Map.Entry<Integer, Map<Integer, Boolean>> e : mergeRowsByColumn.entrySet()) {
+
+                int col = e.getKey();
+
+                Map<Integer, Boolean> rows = e.getValue();
+
+                if (rows != null) {
+
+                    int mergeCount = 1;
+                    for (Map.Entry<Integer, Boolean> rowEntry : rows.entrySet()) {
+
+                        int row = rowEntry.getKey();
+
+                        boolean current = rowEntry.getValue();
+
+                        Boolean next = rows.get(rowEntry.getKey() + 1);
+
+                        if (current) {
+                            if (next == null || !next) {
+                                workbookSheet.addMergedRegion(new CellRangeAddress(row - mergeCount, row, col, col));
+                            }
+                            mergeCount++;
+                        } else {
+                            mergeCount = 1;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * @param baseCell                   current cell
+     * @param excelRowIndex              row index
+     * @param y                          column
+     * @param mergeRowsByColumn          merge indexes store
+     * @param tmpCellUniqueValueByColumn tmp map to compare previews value(max possible value = columns size)
+     */
+    private void findMergeCells(AbstractBaseCell baseCell,
+                                int excelRowIndex,
+                                int y,
+                                Map<Integer, Map<Integer, Boolean>> mergeRowsByColumn,
+                                Map<Integer, String> tmpCellUniqueValueByColumn) {
+        if (baseCell instanceof MemberCell) {
+
+            MemberCell memberCell = (MemberCell) baseCell;
+
+            Map<Integer, Boolean> rowMerge = mergeRowsByColumn.get(y);
+            if (rowMerge == null) {
+                rowMerge = new TreeMap<>();
+                mergeRowsByColumn.put(y, rowMerge);
+            }
+
+            //Compare preview and current cells
+            String previousValue = tmpCellUniqueValueByColumn.get(y);
+
+            Map<Integer, Boolean> previousColumn = mergeRowsByColumn.get(y - 1);
+
+            boolean merge = previousValue != null && previousValue.equals(memberCell.getUniqueName());
+
+            if (previousColumn != null) {
+                Boolean previewColumnCellmergeValue = previousColumn.get(excelRowIndex);
+                if ((previewColumnCellmergeValue != null) && (!previewColumnCellmergeValue) && merge) {
+                    merge = false;
+                }
+            }
+            rowMerge.put(excelRowIndex, merge);
+
+            tmpCellUniqueValueByColumn.put(y, memberCell.getUniqueName());
+        }
+    }
 }

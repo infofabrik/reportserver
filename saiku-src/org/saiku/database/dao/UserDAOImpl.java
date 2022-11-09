@@ -1,19 +1,19 @@
 package org.saiku.database.dao;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.saiku.database.dao.UserDAO;
 import org.saiku.database.dto.User;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by bugg on 01/05/14.
  */
 public class UserDAOImpl implements UserDAO {
 
+//  @Autowired
   private SessionFactory sessionFactory;
 
   private Session openSession() {

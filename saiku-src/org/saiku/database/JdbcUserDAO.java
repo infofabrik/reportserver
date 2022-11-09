@@ -1,5 +1,15 @@
 package org.saiku.database;
 
+//import org.apache.commons.lang3.ArrayUtils;
+//
+//import org.saiku.UserDAO;
+//import org.saiku.database.dto.SaikuUser;
+//
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.jdbc.core.RowMapper;
+//import org.springframework.jdbc.core.support.JdbcDaoSupport;
+//import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.ResultSet;
@@ -16,6 +26,7 @@ import org.saiku.UserDAO;
 import org.saiku.database.dto.SaikuUser;
 
 public class JdbcUserDAO
+//        extends JdbcDaoSupport
         implements UserDAO
 {
 
@@ -23,6 +34,7 @@ public class JdbcUserDAO
     private final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 //    private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+//    @Autowired
     private ServletContext servletContext;
 
 
@@ -173,7 +185,7 @@ public class JdbcUserDAO
     }
 
     private static final class UserMapper
-            
+//            implements RowMapper
     {
         public Object mapRow(ResultSet rs, int rowNum)
                 throws SQLException

@@ -9,7 +9,7 @@ public class RepositoryFileName
 {
     public RepositoryFileName(String fileRef, FileType fileType)
     {
-    	super("repo", fileRef, fileType);
+        super("repo", fileRef, fileType);
     }
 
     public FileName createName(String s, FileType fileType)
@@ -19,15 +19,9 @@ public class RepositoryFileName
 
     protected void appendRootUri(StringBuffer stringBuffer, boolean b) {}
 
-	protected void appendRootUri(StringBuffer arg0) {
+	@Override
+	protected void appendRootUri(StringBuilder arg0, boolean arg1) {
+		// TODO Auto-generated method stub
 		
 	}
-
-	protected FileName createName(String arg0) {
-		return null;
-	}
-
-   @Override
-   protected void appendRootUri(StringBuilder arg0, boolean arg1) {
-   }
 }

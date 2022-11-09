@@ -137,23 +137,27 @@ class RepositoryVfsFileContent
         return false;
     }
 
-   @Override
-   public long write(FileContent arg0) throws IOException {
-      return 0;
-   }
+	@Override
+	public long write(FileContent arg0) throws IOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public long write(FileObject arg0) throws IOException {
-      return 0;
-   }
+	@Override
+	public long write(FileObject arg0) throws IOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public long write(OutputStream arg0) throws IOException {
-      return 0;
-   }
+	@Override
+	public long write(OutputStream arg0) throws IOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
-   @Override
-   public long write(OutputStream arg0, int arg1) throws IOException {
-      return 0;
-   }
+	@Override
+	public long write(OutputStream arg0, int arg1) throws IOException {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }

@@ -16,54 +16,108 @@
 
 package org.saiku.web.service;
 
-import java.util.HashMap;
+import org.apache.commons.lang3.StringUtils;
 import java.util.Map;
-
+import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 
 import org.saiku.service.ISessionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
 public class SessionService implements ISessionService {
 
 	private static final Logger log = LoggerFactory.getLogger(SessionService.class);
 
 //	private AuthenticationManager authenticationManager;
+//	private AuthorisationPredicate authorisationPredicate;
 
-	Map<Object,Map<String,Object>> sessionHolder = new HashMap<Object,Map<String,Object>>();
+	private final Map<Object,Map<String,Object>> sessionHolder = new HashMap<>();
 
-	private Boolean anonymous = false;
-	
-	public void setAllowAnonymous(Boolean allow) {
-		this.anonymous  = allow;
-	}
-
-
-//	/* (non-Javadoc)
-//	 * @see org.saiku.web.service.ISessionService#setAuthenticationManager(org.springframework.security.authentication.AuthenticationManager)
-//	 */
-//	public void setAuthenticationManager(AuthenticationManager auth) {
-//		this.authenticationManager = auth;
+//	private Boolean anonymous = false;
+//	private ScopedRepo sessionRepo;
+//	private Boolean orbisAuthEnabled = false;
+//
+//	public void setAllowAnonymous(Boolean allow) {
+//		this.anonymous  = allow;
+//	}
+//
+//	private ILicenseUtils l;
+//
+//	public ILicenseUtils getL() {
+//		return l;
+//	}
+//
+//	public void setL(ILicenseUtils l) {
+//		this.l = l;
 //	}
 
 	/* (non-Javadoc)
-	 * @see org.saiku.web.service.ISessionService#login(javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
-	 */
-	public Map<String, Object> login(HttpServletRequest req, String username, String password ) {
-//		if (authenticationManager != null) {
-//			authenticate(req, username, password);
+         * @see org.saiku.web.service.ISessionService#setAuthenticationManager(org.springframework.security.authentication.AuthenticationManager)
+         */
+//	public void setAuthenticationManager(AuthenticationManager auth) {
+//		this.authenticationManager = auth;
+//	}
+//
+//	public void setAuthorisationPredicate(AuthorisationPredicate authorisationPredicate)
+//	{
+//		this.authorisationPredicate = authorisationPredicate;
+//	}
+//
+//	/* (non-Javadoc)
+//	 * @see org.saiku.web.service.ISessionService#login(javax.servlet.http.HttpServletRequest, java.lang.String, java.lang.String)
+//	 */
+//	public Map<String, Object> login(HttpServletRequest req, String username, String password ) throws LicenseException {
+//		Object sl = null;
+//		String notice = null;
+//		HttpSession session = ((HttpServletRequest)req).getSession(true);
+//		session.getId();
+//		sessionRepo.setSession(session);
+//		try {
+//			sl = l.getLicense();
+//		} catch (Exception e) {
+//			log.debug("Could not process license", e);
+//			throw new LicenseException("Error fetching license. Get a free license from http://licensing.meteorite.bi. You can upload it at /upload.html");
 //		}
-//		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {			
-//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//			Object p = auth.getPrincipal();
-//			createSession(auth, username, password);
-//			return sessionHolder.get(p);
+//
+//		if (sl != null) {
+//
+//			try {
+//				l.validateLicense();
+//			} catch (RepositoryException | IOException | ClassNotFoundException e) {
+//				log.debug("Repository Exception, couldn't get license", e);
+//				throw new LicenseException("Error fetching license. Please check your logs.");
+//			}
+//
+//			try {
+//				if (l.getLicense() instanceof SaikuLicense2) {
+//
+//                    if (authenticationManager != null) {
+//                        authenticate(req, username, password);
+//                    }
+//                    if (SecurityContextHolder.getContext() != null
+//                        && SecurityContextHolder.getContext().getAuthentication() != null) {
+//                        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//
+//                        if (authorisationPredicate.isAuthorised(auth)) {
+//                            Object p = auth.getPrincipal();
+//                            createSession(auth, username, password);
+//                            return sessionHolder.get(p);
+//                        } else {
+//                            log.info(username + " failed authorisation. Rejecting login");
+//                            throw new RuntimeException("Authorisation failed for: " + username);
+//                        }
+//                    }
+//                    return new HashMap<>();
+//                }
+//			} catch (IOException | ClassNotFoundException | RepositoryException e) {
+//				log.debug("Repository Exception, couldn't get license", e);
+//				throw new LicenseException("Error fetching license. Please check your logs.");
+//			}
 //		}
-		return new HashMap<String, Object>();
-	}
-
+//		return null;
+//	}
+//
 //	private void createSession(Authentication auth, String username, String password) {
 //
 //		if (auth ==  null || !auth.isAuthenticated()) {
@@ -77,7 +131,7 @@ public class SessionService implements ISessionService {
 //		boolean isAnonOk = (!isAnonymous || (isAnonymous && anonymous));
 //			
 //		if (isAnonOk && auth.isAuthenticated() && p != null && !sessionHolder.containsKey(p)) {
-//			Map<String, Object> session = new HashMap<String, Object>();
+//			Map<String, Object> session = new HashMap<>();
 //			
 //			if (isAnonymous) {
 //				log.debug("Creating Session for Anonymous User");
@@ -92,8 +146,8 @@ public class SessionService implements ISessionService {
 //				session.put("password", password);		
 //			}
 //			session.put("sessionid", UUID.randomUUID().toString());
-//			
-//			List<String> roles = new ArrayList<String>();
+//			session.put("authid", RequestContextHolder.currentRequestAttributes().getSessionId());
+//			List<String> roles = new ArrayList<>();
 //			for (GrantedAuthority ga : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
 //				roles.add(ga.getAuthority());
 //			}
@@ -101,8 +155,9 @@ public class SessionService implements ISessionService {
 //			
 //			sessionHolder.put(p, session);
 //		}
+
 //	}
-//
+
 //	private String getUsername(Object p) {
 //		
 //		if (p instanceof UserDetails) {
@@ -121,10 +176,13 @@ public class SessionService implements ISessionService {
 //				sessionHolder.remove(p);
 //			}
 //		}
+//
 //		SecurityContextHolder.getContext().setAuthentication(null);
-//		SecurityContextHolder.clearContext(); 
+//		SecurityContextHolder.clearContext();
+//
 //		HttpSession session = req.getSession(false);
-//		if (session != null) {
+//
+//		if (session != null && !orbisAuthEnabled) { // Just invalidate if not under orbis authentication workflow
 //			session.invalidate();
 //		}
 	}
@@ -150,18 +208,6 @@ public class SessionService implements ISessionService {
 	 * @see org.saiku.web.service.ISessionService#getSession(javax.servlet.http.HttpServletRequest)
 	 */
 	public Map<String,Object> getSession() {
-//		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {			
-//			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-//			Object p = auth.getPrincipal();
-//			createSession(auth, null, null);
-//			if (sessionHolder.containsKey(p)) {
-//				Map<String,Object> r = new HashMap<String,Object>();
-//				r.putAll(sessionHolder.get(p)); 
-//				r.remove("password");
-//				return r;
-//			}
-//
-//		}
 		return new HashMap<String,Object>();
 	}
 	
@@ -169,21 +215,47 @@ public class SessionService implements ISessionService {
 //		if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {			
 //			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 //			Object p = auth.getPrincipal();
-//			createSession(auth, null, null);
+//			//createSession(auth, null, null);
 //			if (sessionHolder.containsKey(p)) {
-//				Map<String,Object> r = new HashMap<String,Object>();
+//				Map<String,Object> r = new HashMap<>();
 //				r.putAll(sessionHolder.get(p)); 
 //				return r;
 //			}
 //
 //		}
+//		return new HashMap<>();
 		return new HashMap<String,Object>();
 	}
 
+  public void clearSessions(HttpServletRequest req, String username, String password) throws Exception {
+//	if (authenticationManager != null) {
+//	  authenticate(req, username, password);
+//	}
+//	if (SecurityContextHolder.getContext() != null && SecurityContextHolder.getContext().getAuthentication() != null) {
+//	  Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+//	  Object p = auth.getPrincipal();
+//	  if (sessionHolder.containsKey(p)) {
+//		sessionHolder.remove(p);
+//	  }
+//	}
 
-	@Override
-	public void clearSessions(HttpServletRequest req, String username, String password) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
+
+  }
+
+  public Map<String, Object> login(HttpServletRequest req, String username, String password ) {
+	  return new HashMap<String, Object>();
+  }
+
+
+//	public void setSessionRepo(org.saiku.repository.ScopedRepo sessionRepo) {
+//		this.sessionRepo = sessionRepo;
+//	}
+//
+//	public Boolean isOrbisAuthEnabled() {
+//		return orbisAuthEnabled;
+//	}
+//
+//	public void setOrbisAuthEnabled(Boolean orbisAuthEnabled) {
+//		this.orbisAuthEnabled = orbisAuthEnabled;
+//	}
 }

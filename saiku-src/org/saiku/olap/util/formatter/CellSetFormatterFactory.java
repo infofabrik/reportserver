@@ -1,20 +1,19 @@
 package org.saiku.olap.util.formatter;
 
-import org.saiku.service.util.exception.SaikuServiceException;
-
-import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import net.datenwerke.rs.saiku.service.saiku.ThinQueryServiceImpl;
-
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
+import org.saiku.service.util.exception.SaikuServiceException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import net.datenwerke.rs.saiku.service.saiku.ThinQueryService;
+
 public class CellSetFormatterFactory {
 
-	private static final Logger log = LoggerFactory.getLogger(ThinQueryServiceImpl.class);
+	private static final Logger log = LoggerFactory.getLogger(ThinQueryService.class);
 
 	private Map<String, String> formatters = new HashMap<>();
 

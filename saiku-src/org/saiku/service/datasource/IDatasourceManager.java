@@ -24,6 +24,7 @@ import org.saiku.datasources.connection.RepositoryFile;
 import org.saiku.datasources.datasource.SaikuDatasource;
 import org.saiku.repository.AclEntry;
 import org.saiku.repository.IRepositoryObject;
+import org.saiku.service.importer.JujuSource;
 import org.saiku.service.user.UserService;
 
 public interface IDatasourceManager {
@@ -59,9 +60,9 @@ public interface IDatasourceManager {
 
   String getFileData(String file, String username, List<String> roles);
 
-  String getInternalFileData(String file);// throws RepositoryException;
+  String getInternalFileData(String file); // throws RepositoryException;
 
-  InputStream getBinaryInternalFileData(String file);// throws RepositoryException;
+  InputStream getBinaryInternalFileData(String file); // throws RepositoryException;
 
   String saveFile(String path, Object content, String user, List<String> roles);
 
@@ -133,4 +134,8 @@ public interface IDatasourceManager {
   void setExternalPropertiesFile(String file);
 
   String[] getAvailablePropertiesKeys();
+
+  List<JujuSource> getJujuDatasources();
+  
+  String getType();
 }

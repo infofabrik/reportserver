@@ -28,9 +28,5 @@ public class SaikuMeasure extends SaikuMember {
   public String getMeasureGroup() {
     return measureGroup;
   }
-  
-  public void setMeasureGroup(String measureGroup) {
-	  this.measureGroup = measureGroup;
-  }
 
 }

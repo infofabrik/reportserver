@@ -1,24 +1,18 @@
 package org.saiku.olap.query2;
 
-import java.io.Serializable;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.commons.lang3.StringUtils;
 import org.saiku.olap.dto.SaikuCube;
 import org.saiku.olap.query2.util.ServiceUtil;
 import org.saiku.service.util.ISaikuQuery;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-public class ThinQuery implements ISaikuQuery, Serializable {
-	
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -8779790895226230299L;
-	
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+public class ThinQuery implements ISaikuQuery {
 	
 	private ThinQueryModel queryModel;
 	private SaikuCube cube;
@@ -243,5 +237,10 @@ public class ThinQuery implements ISaikuQuery, Serializable {
 	 */
 	public void setQueryType(String queryType) {
 		this.queryType = queryType;
+	}
+
+	@JsonIgnore
+	public ThinLevel getLevel(String name) {
+		return this.getQueryModel().getLevel(name);
 	}
 }

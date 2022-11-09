@@ -1,39 +1,29 @@
-/*  
- *   Copyright 2014 Paul Stoellberger
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package org.saiku.query.mdx;
 
-import java.util.List;
-
 import org.olap4j.mdx.ParseTreeNode;
+import java.util.List;
 import org.olap4j.mdx.parser.MdxParser;
 
-
-public interface IFilterFunction {
-	
-	public MdxFunctionType getFunctionType();
-	public List<ParseTreeNode> getArguments(MdxParser parser);	
-	public ParseTreeNode visit(MdxParser parser, ParseTreeNode parent);
-
-	public enum MdxFunctionType {
-		Filter,
-		TopCount,
-		TopPercent,
-		TopSum,
-		BottomCount,
-		BottomPercent,
-		BottomSum;
-	}
+public interface IFilterFunction
+{
+    MdxFunctionType getFunctionType();
+    
+    List<ParseTreeNode> getArguments(final MdxParser p0);
+    
+    ParseTreeNode visit(final MdxParser p0, final ParseTreeNode p1);
+    
+    public enum MdxFunctionType
+    {
+        Filter, 
+        TopCount, 
+        TopPercent, 
+        TopSum, 
+        BottomCount, 
+        BottomPercent, 
+        BottomSum;
+    }
 }

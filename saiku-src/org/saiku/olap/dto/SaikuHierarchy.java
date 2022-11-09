@@ -20,79 +20,53 @@ import java.util.List;
 
 public class SaikuHierarchy extends AbstractSaikuObject {
 
-	private String caption;
-	private String dimensionUniqueName;
-	private List<SaikuLevel> levels;
-	private List<SaikuMember> rootmembers;
-	private String description;
-	private boolean visible;
+  private String caption;
+  private String dimensionUniqueName;
+  private List<SaikuLevel> levels;
+  private List<SaikuMember> rootmembers;
+  private String description;
+  private boolean visible;
 
-	public SaikuHierarchy() {
-		super( null, null );
-		throw new RuntimeException( "Unsupported Constructor. Serialization only" );
-	}
+  public SaikuHierarchy() {
+    super( null, null );
+    throw new RuntimeException( "Unsupported Constructor. Serialization only" );
+  }
 
-	public SaikuHierarchy( String name, String uniqueName, String caption, String description, String dimensionUniqueName,
-			boolean visible, List<SaikuLevel> levels, List<SaikuMember> rootmembers ) {
-		super( uniqueName, name );
-		this.caption = caption;
-		this.dimensionUniqueName = dimensionUniqueName;
-		this.levels = levels;
-		this.rootmembers = rootmembers;
-		this.description = description;
-		this.visible = visible;
-	}
+  public SaikuHierarchy( String name, String uniqueName, String caption, String description, String dimensionUniqueName,
+                         boolean visible, List<SaikuLevel> levels, List<SaikuMember> rootmembers ) {
+    super( uniqueName, name );
+    this.caption = caption;
+    this.dimensionUniqueName = dimensionUniqueName;
+    this.levels = levels;
+    this.rootmembers = rootmembers;
+    this.description = description;
+    this.visible = visible;
+  }
 
-	public String getCaption() {
-		return caption;
-	}
+  public String getCaption() {
+    return caption;
+  }
 
-	public String getDimensionUniqueName() {
-		return dimensionUniqueName;
-	}
+  public String getDimensionUniqueName() {
+    return dimensionUniqueName;
+  }
 
-	public List<SaikuLevel> getLevels() {
-		return levels;
-	}
+  public List<SaikuLevel> getLevels() {
+    return levels;
+  }
 
-	public List<SaikuMember> getRootMembers() {
-		return this.rootmembers;
-	}
+  public List<SaikuMember> getRootMembers() {
+    return this.rootmembers;
+  }
 
-	/**
-	 * @return the description
-	 */
-	public String getDescription() {
-		return description;
-	}
+  /**
+   * @return the description
+   */
+  public String getDescription() {
+    return description;
+  }
 
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-
-	public void setDimensionUniqueName(String dimensionUniqueName) {
-		this.dimensionUniqueName = dimensionUniqueName;
-	}
-
-	public void setLevels(List<SaikuLevel> levels) {
-		this.levels = levels;
-	}
-
-	public void setRootmembers(List<SaikuMember> rootmembers) {
-		this.rootmembers = rootmembers;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-
+  public boolean isVisible() {
+    return visible;
+  }
 }

@@ -31,6 +31,7 @@ class TripleDesPasswordEncoder {
      * {@inheritDoc}
      */
     public String encode( String rawPass)
+//            throws DataAccessException
     {
         Object salt = null;
         // The password may be empty. Not recommended, but.....

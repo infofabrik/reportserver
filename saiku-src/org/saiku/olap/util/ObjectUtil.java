@@ -222,16 +222,16 @@ public class ObjectUtil {
   public static List<SaikuMember> convertMembers(@NotNull Collection<Member> members) {
     List<SaikuMember> memberList = new ArrayList<>();
     for (Member m : members) {
-    	// DW ADD
-    	if(m instanceof Measure)
-    		memberList.add(convertMeasure((Measure) m));
-    	else
-    		memberList.add(convert(m));
+       // infofabrik patch start
+       if (m instanceof Measure)
+          memberList.add(convertMeasure((Measure)m));
+       else
+          memberList.add(convert(m));
+       // infofabrik patch end
     }
     return memberList;
   }
 
-  
   @NotNull
   private static List<SaikuSelection> convertSelections(@NotNull List<Selection> selections,
                                                         @NotNull QueryDimension dim, @NotNull IQuery query) {

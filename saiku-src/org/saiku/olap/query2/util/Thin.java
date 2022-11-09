@@ -1,18 +1,18 @@
 package org.saiku.olap.query2.util;
 
+import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-
-import org.apache.commons.lang3.StringUtils;
 import org.olap4j.Axis;
 import org.olap4j.impl.NamedListImpl;
 import org.olap4j.metadata.Measure;
 import org.olap4j.metadata.Member;
 import org.olap4j.metadata.NamedList;
+
 import org.saiku.olap.dto.SaikuCube;
 import org.saiku.olap.query2.ThinAxis;
 import org.saiku.olap.query2.ThinCalculatedMeasure;
@@ -56,22 +56,35 @@ import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
 
 public class Thin {
 	
-	public static ThinQuery convert(Query query, SaikuCube cube, HookHandlerService hookHandler, SaikuReport report) throws Exception {
+   public static ThinQuery convert(Query query, SaikuCube cube, HookHandlerService hookHandler, SaikuReport report) throws Exception {
+	      ThinQuery tq = new ThinQuery(query.getName(), cube);
+	      ThinQueryModel tqm = convert(query, tq);
+	      tq.setQueryModel(tqm);
+	      
+	      if (query.getParameters() != null) {
+	          query.retrieveParameters();
+	          
+	          Map<String, String> parameters = query.getParameters();
+	          if (parameters != null) {
+	              /* allow to adapt parameters and allow to use juel */
+	              for(SaikuQueryParameterAdapterHook adapter : hookHandler.getHookers(SaikuQueryParameterAdapterHook.class))
+	                  adapter.adaptParameters(parameters, report);
+	          }
+	          
+	          tq.setParameters(parameters);
+	      }
+	      tq.setMdx(query.getMdx());
+	      return tq;
+	  }
+	
+	public static ThinQuery convert(Query query, SaikuCube cube) throws Exception {
 		ThinQuery tq = new ThinQuery(query.getName(), cube);
 		ThinQueryModel tqm = convert(query, tq);
 		tq.setQueryModel(tqm);
 		
 		if (query.getParameters() != null) {
 			query.retrieveParameters();
-			
-			Map<String, String> parameters = query.getParameters();
-			if (parameters != null) {
-				/* allow to adapt parameters and allow to use juel */
-				for(SaikuQueryParameterAdapterHook adapter : hookHandler.getHookers(SaikuQueryParameterAdapterHook.class))
-					adapter.adaptParameters(parameters, report);
-			}
-			
-			tq.setParameters(parameters);
+			tq.setParameters(query.getParameters());
 		}
 		tq.setMdx(query.getMdx());
 		return tq;
@@ -145,7 +158,7 @@ public class Thin {
 		ThinDetails.Location location = ThinDetails.Location.valueOf(details.getLocation().toString());
 		AxisLocation axis = AxisLocation.valueOf(details.getAxis().toString());
 		List<ThinMeasure> measures = new ArrayList<>();
-		if (details != null && details.getMeasures().size() > 0) {
+		if (details.getMeasures().size() > 0) {
 			for (Measure m : details.getMeasures()) {
 				ThinMeasure.Type type = Type.EXACT;
 				if (m instanceof CalculatedMeasure) {
@@ -224,10 +237,10 @@ public class Thin {
 	}
 
 	private static ThinLevel convertLevel(QueryLevel ql, ThinQuery tq) {
-		List<ThinMember> inclusions = convertMembers(ql.getInclusions());
-		List<ThinMember> exclusions = convertMembers(ql.getExclusions());
-		ThinMember rangeStart = convertMember(ql.getRangeStart());
-		ThinMember rangeEnd = convertMember(ql.getRangeEnd());
+		List<ThinMember> inclusions = convertMembers(ql.getInclusions(), tq);
+		List<ThinMember> exclusions = convertMembers(ql.getExclusions(), tq);
+		ThinMember rangeStart = convertMember(ql.getRangeStart(), tq);
+		ThinMember rangeEnd = convertMember(ql.getRangeEnd(), tq);
 		ThinSelection ts = new ThinSelection(ThinSelection.Type.INCLUSION, null);
 		
 		if (inclusions.size() > 0) {
@@ -241,7 +254,7 @@ public class Thin {
 			ts = new ThinSelection(ThinSelection.Type.RANGE, range);
 		}
 		
-		if (ql.hasParameter() && ts != null) {
+		if (ql.hasParameter()) {
 			ts.setParameterName(ql.getParameterName());
 			tq.addParameter(ql.getParameterName());
 		}
@@ -251,19 +264,25 @@ public class Thin {
 		return l;
 	}
 
-	private static List<ThinMember> convertMembers(List<Member> members) {
+	private static List<ThinMember> convertMembers(List<Member> members, ThinQuery tq) {
 		List<ThinMember> ms = new ArrayList<>();
 		if (members != null) {
 			for (Member m : members) {
-				ms.add(convertMember(m));
+				ms.add(convertMember(m, tq));
 			}
 		}
 		return ms;
 	}
 	
-	private static ThinMember convertMember(Member m) {
+	private static ThinMember convertMember(Member m, ThinQuery tq) {
 		if (m != null) {
-			return new ThinMember(m.getName(), m.getUniqueName(), m.getCaption());
+			String type = null;
+			if(m instanceof CalculatedMember){
+				type = "calculatedmember";
+			}
+			ThinMember tm = new ThinMember(m.getName(), m.getUniqueName(), m.getCaption());
+			tm.setType(type);
+			return tm;
 		}
 		return null;
 	}

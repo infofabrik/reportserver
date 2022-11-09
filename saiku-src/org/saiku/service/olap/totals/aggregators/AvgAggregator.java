@@ -56,34 +56,21 @@ public class AvgAggregator extends TotalAggregator {
   public void addData( Cell cell ) {
     Object value = cell.getValue();
     if ( value instanceof Number ) {
-    	
-    	/* RS-2662: we don't use this property since it is either null for saiku reports
-    	 * or incorrect for pivot reports.
-    	 */
-    	
-//      Integer count = (Integer) cell.getPropertyValue( DRILLTHROUGH_COUNT );
-//      double doubleVal;
-//      try {
-//        doubleVal = cell.getDoubleValue();
-//      } catch ( OlapException e ) {
-//        throw new RuntimeException( e );
-//      }
-//      if ( count.longValue() > -1 ) {
-//        this.count += count.longValue();
-//        accumulator += doubleVal * count.doubleValue();
-//      } else {
-//        this.count++;
-//        accumulator += doubleVal;
-//      }
+      Integer count = (Integer) cell.getPropertyValue( DRILLTHROUGH_COUNT );
+      double doubleVal;
+      try {
+        doubleVal = cell.getDoubleValue();
+      } catch ( OlapException e ) {
+        throw new RuntimeException( e );
+      }
+      if ( count.longValue() > -1 ) {
+        this.count += count.longValue();
+        accumulator += doubleVal * count.doubleValue();
+      } else {
+        this.count++;
+        accumulator += doubleVal;
+      }
 
-    	double doubleVal;
-    	try {
-	        doubleVal = cell.getDoubleValue();
-	      } catch ( OlapException e ) {
-	        throw new RuntimeException( e );
-	      }	      
-    	this.count++;
-    	accumulator += doubleVal;
     }
   }
 

@@ -16,6 +16,8 @@
 
 package org.saiku.service.datasource;
 
+//import org.apache.commons.lang.StringUtils;
+//import org.apache.commons.lang.SystemUtils;^
 import java.io.InputStream;
 import java.util.Collections;
 import java.util.HashMap;
@@ -23,20 +25,60 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
+import javax.servlet.http.HttpSession;
+
 import org.saiku.database.dto.MondrianSchema;
+//import org.saiku.datasources.connection.IConnectionManager;
 import org.saiku.datasources.connection.RepositoryFile;
 import org.saiku.datasources.datasource.SaikuDatasource;
+//import org.saiku.repository.*;
 import org.saiku.repository.AclEntry;
+import org.saiku.repository.DataSource;
 import org.saiku.repository.IRepositoryObject;
+import org.saiku.service.importer.JujuSource;
+import org.saiku.service.importer.LegacyImporter;
+import org.saiku.service.importer.LegacyImporterImpl;
 import org.saiku.service.user.UserService;
+//import org.saiku.service.util.exception.SaikuServiceException;
+
 import org.saiku.service.util.security.authentication.PasswordProvider;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
+//import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.security.core.Authentication;
+//import org.springframework.security.core.context.SecurityContextHolder;
+//import org.springframework.security.core.session.SessionRegistry;
+//import org.springframework.web.context.request.RequestContextHolder;
+//import org.springframework.web.context.request.ServletRequestAttributes;
+//
+//import java.io.File;
+//import java.io.FileInputStream;
+//import java.io.IOException;
+//import java.io.InputStream;
+//import java.util.*;
+//
+//import javax.jcr.PathNotFoundException;
+//import javax.jcr.RepositoryException;
+//import javax.servlet.http.HttpServletRequest;
+//import javax.servlet.http.HttpSession;
+//
+//import org.springframework.context.ApplicationListener;
+//import org.springframework.security.web.session.HttpSessionCreatedEvent;
+
 
 /**
  * A Datasource Manager for the Saiku Repository API layer.
  */
-public class RepositoryDatasourceManager implements IDatasourceManager {
-    private final Map<String, SaikuDatasource> datasources =
-            Collections.synchronizedMap(new HashMap<String, SaikuDatasource>());
+public class RepositoryDatasourceManager implements IDatasourceManager
+{
+//, ApplicationListener<HttpSessionCreatedEvent> {
+//    private static final String ORBIS_WORKSPACE_DIR = "workspace";
+//    private static final String SAIKU_AUTH_PRINCIPAL = "SAIKU_AUTH_PRINCIPAL";
+//    
+    private final Map<String, SaikuDatasource> datasources = Collections.synchronizedMap(new HashMap<String, SaikuDatasource>());
+//    public IConnectionManager connectionManager;
+//    private ScopedRepo sessionRegistry;
+//    private boolean workspaces;
 //    private UserService userService;
 //    private static final Logger log = LoggerFactory.getLogger(RepositoryDatasourceManager.class);
 //    private String configurationpath;
@@ -52,130 +94,53 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //    private String earthquakeschema;
 //    private String defaultRole;
 //    private String externalparameters;
+//    private String type;
+//    private String separator = "/";
+//    private String host;
+//    private String port;
+//    private String username;
+//    private String password;
+//    private String database;
+    
+//    public void setConnectionManager(IConnectionManager connectionManager) {
+//      this.connectionManager = connectionManager;
+//    }
+//  
+//    // Whenever a new Spring Security Session
+//    public void onApplicationEvent(HttpSessionCreatedEvent sessionEvent) {
+//      // Reload the datasources
+//      loadDatasources(checkForExternalDataSourceProperties());
+//    }
 
     public void load() {
 //        Properties ext = checkForExternalDataSourceProperties();
-//        irm = JackRabbitRepositoryManager.getJackRabbitRepositoryManager(configurationpath, datadir, repopasswordprovider.getPassword(),
-//            oldpassword, defaultRole);
+//
+//        // Instantiate the appropriate repository manager 
+//        if (type.equals("marklogic")) {
+//            irm = MarkLogicRepositoryManager.getMarkLogicRepositoryManager(host, Integer.parseInt(port), username, password, database, cleanse(datadir), sessionRegistry, workspaces);
+//        } else if (type.equals("classpath")) {
+//            separator = "/";
+//            log.debug("init datadir= "+datadir);
+//            irm = ClassPathRepositoryManager.getClassPathRepositoryManager(cleanse(datadir), defaultRole, sessionRegistry, workspaces);
+//            log.debug("2nd init datadir= "+datadir);
+//        } else {
+//            irm = JackRabbitRepositoryManager.getJackRabbitRepositoryManager(configurationpath, datadir, repopasswordprovider.getPassword(),
+//                    oldpassword, defaultRole, sessionRegistry, workspaces);
+//        }
+//
+//        // Perform the repository manager startup routines
 //        try {
 //            irm.start(userService);
-//            this.saveInternalFile("/etc/.repo_version", "d20f0bea-681a-11e5-9d70-feff819cdc9f", null);
+//            this.saveInternalFile("/etc" + separator + ".repo_version", "d20f0bea-681a-11e5-9d70-feff819cdc9f", null);
 //        } catch (RepositoryException e) {
 //            log.error("Could not start repo", e);
 //        }
-//        datasources.clear();
-//        try {
 //
-//            List<DataSource> exporteddatasources = null;
-//            try {
-//                exporteddatasources = irm.getAllDataSources();
-//            } catch (RepositoryException e1) {
-//                log.error("Could not export data sources", e1);
-//            }
+//        // Load the datasources
+//        loadDatasources(ext);
+//    }
 //
-//            if (exporteddatasources != null) {
-//                for (DataSource file : exporteddatasources) {
-//                    if (file.getName() != null && file.getType() != null) {
-//                        Properties props = new Properties();
-//                        if(file.getDriver()!= null) {
-//                            props.put("driver", file.getDriver());
-//                        }
-//                        else if(file.getPropertyKey()!=null && ext.containsKey("datasource."+file.getPropertyKey()+".driver")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".driver");
-//                            props.put("driver", p);
-//                        }
-//                        if(file.getPropertyKey()!=null &&
-//                           ext.containsKey("datasource."+file.getPropertyKey()+".location")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".location");
-//                            if(ext.containsKey("datasource."+file.getPropertyKey()+".schemaoverride")){
-//                                String[] spl = p.split(";");
-//                                spl[1]="Catalog=mondrian://"+file.getSchema();
-//                                StringBuilder sb = new StringBuilder();
-//                                for(String str: spl){
-//                                    sb.append(str+";");
-//                                }
-//                                props.put("location",sb.toString());
-//                            }
-//                            else {
-//                                props.put("location", p);
-//                            }
-//                        }
-//                        else if(file.getLocation()!=null) {
-//                            props.put("location", file.getLocation());
-//                        }
-//                        if(file.getUsername()!=null && file.getPropertyKey()==null) {
-//                            props.put("username", file.getUsername());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".username")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".username");
-//                            props.put("username", p);
-//                        }
-//                        if(file.getPassword()!=null && file.getPropertyKey()==null) {
-//                            props.put("password", file.getPassword());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".password")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".password");
-//                            props.put("password", p);
-//                        }
-//                        if(file.getPath()!=null) {
-//                            props.put("path", file.getPath());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".path")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".path");
-//                            props.put("path", p);
-//                        }
-//                        if(file.getId()!=null) {
-//                            props.put("id", file.getId());
-//                        }
-//                        if(file.getSecurityenabled()!=null) {
-//                          props.put("security.enabled", file.getSecurityenabled());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".security.enabled")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.enabled");
-//                            props.put("security.enabled", p);
-//                        }
-//                        if(file.getSecuritytype()!=null) {
-//                          props.put("security.type", file.getSecuritytype());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".security.type")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.type");
-//                            props.put("security.type", p);
-//                        }
-//                        if(file.getSecuritymapping()!=null) {
-//                          props.put("security.mapping", file.getSecuritymapping());
-//                        }
-//                        else if(file.getPropertyKey()!=null &&
-//                                ext.containsKey("datasource."+file.getPropertyKey()+".security.mapping")){
-//                            String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.mapping");
-//                            props.put("security.mapping", p);
-//                        }
-//                        if(file.getAdvanced()!=null){
-//                          props.put("advanced", file.getAdvanced());
-//                        }
-//                        if(file.getPropertyKey()!=null){
-//                            props.put("propertykey", file.getPropertyKey());
-//                        }
-//                        SaikuDatasource.Type t = SaikuDatasource.Type.valueOf(file.getType().toUpperCase());
-//                        SaikuDatasource ds = new SaikuDatasource(file.getName(), t, props);
-//                        datasources.put(file.getName(), ds);
-//                    }
-//                }
-//            }
-//
-//
-//        } catch (Exception e) {
-//            throw new SaikuServiceException(e.getMessage(), e);
-//        }
-    	
-    	throw new RuntimeException("not implemented");
-    }
-
-    public Properties checkForExternalDataSourceProperties(){
+//    public Properties checkForExternalDataSourceProperties() {
 //        Properties p = new Properties();
 //        InputStream input;
 //
@@ -189,9 +154,10 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //        return p;
     	
     	throw new RuntimeException("not implemented");
+
     }
 
-    public String[] getAvailablePropertiesKeys(){
+    public String[] getAvailablePropertiesKeys() {
 //        Properties p = new Properties();
 //        InputStream input;
 //
@@ -205,13 +171,13 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //        String[] arr = p.keySet().toArray(new String[p.keySet().size()]);
 //
 //        ArrayList<String> newlist = new ArrayList<>();
-//        for(String str: arr){
+//        for (String str : arr) {
 //            String[] s = str.split("\\.");
 //            newlist.add(s[1]);
 //        }
 //        Set<String> unique = new HashSet<>(newlist);
 //
-//        return  unique.toArray(new String[unique.size()]);
+//        return unique.toArray(new String[unique.size()]);
     	
     	throw new RuntimeException("not implemented");
     }
@@ -223,15 +189,102 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     public SaikuDatasource addDatasource(SaikuDatasource datasource) throws Exception {
 //        DataSource ds = new DataSource(datasource);
 //
-//            irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
-//            datasources.put(datasource.getName(), datasource);
+//        if (ds.getCsv() != null && ds.getCsv().equals("true")) {
+//            if(this.workspaces) {
+//                String s = this.getworkspacedir();
+//                
+//                if (s.endsWith("/")) {
+//                    s = s.substring(0, s.length() - 1);
+//                }
+//                
+//                if (ds.getName().startsWith(s)) {
+//                    ds.setName(ds.getName().replace(s + "_", ""));
+//                }
+//            }
+//
+//            String split[] = ds.getLocation().split("=");
+//            String loc = split[2];
+//            if(split[2].startsWith("mondrian:")){
+//                split[2] = "mondrian:/"+getDatadir() + "/datasources/" + ds.getName() + "-csv.json;Catalog";
+//            }
+//            else {
+//                split[2] = getDatadir() + "/datasources/" + ds.getName() + "-csv.json;Catalog";
+//            }
+//            for (int i = 0; i < split.length - 1; i++) {
+//                split[i] = split[i] + "=";
+//            }
+//            ds.setLocation(StringUtils.join(split));
+//
+//            log.debug("LOC IS: " + loc);
+//            String path = loc.substring(0, loc.lastIndexOf(";"));
+//
+//            log.debug("PATH IS: " + path);
+//            path = path.replace("\\", "/");
+//
+//            log.debug("Trimmed path is: " + path);
+//            if(!datadir.equals("${CLASSPATH_REPO_PATH_UNPARSED}")) {
+//                path = path.replaceFirst(datadir, "");
+//            }
+//            
+//            // When using Jackrabbit, paths should follow JCR standards
+//            if (this.type.equals("jackrabbit") || this.type.equals("marklogic")) {
+//              if (!path.startsWith("mondrian://")) {
+//                if (this.type.equals("marklogic")) {
+//                  path = "mondrian:/" + path;
+//                } else {
+//                  String oldHomePrefix = "/homes/";
+//                  String newHomePrefix = "mondrian://homes/home:";
+//                  
+//                  path = newHomePrefix + path.substring(oldHomePrefix.length());
+//                }
+//              }
+//            }
+//            
+//            boolean f = true;
+//            
+//            if (new File(getDatadir() + separator + path).exists() && new File(getDatadir() + separator + path).isDirectory()) {
+//                f = false;
+//            }
+//            if(!path.startsWith("mondrian:")) {
+//                irm.saveInternalFile(this.getCSVJson(f, ds.getName(), getDatadir() + path),
+//                    separator + "datasources" + separator + ds.getName() + "-csv.json", null);
+//
+//            }
+//            else{
+//                irm.saveInternalFile(this.getCSVJson(f, ds.getName(), path),
+//                    separator + "datasources" + separator + ds.getName() + "-csv.json", null);
+//
+//            }
+//            irm.saveDataSource(ds, separator + "datasources" + separator + ds.getName() + ".sds", "fixme");
+//            
+//            String name = ds.getName();
+//            
+//            // Adding the connection before refreshing it
+//            SaikuDatasource sds = new SaikuDatasource(name, SaikuDatasource.Type.OLAP, datasource.getProperties());
+//            datasources.put(ds.getName(), sds);
+//
+//            // In a workspace environment it is necessary to prefix the datasource name with the workspace name
+//            connectionManager.refreshConnection(name);
+//        } else {
+//            irm.saveDataSource(ds, separator + "datasources" + separator + ds.getName() + ".sds", "fixme");
+//
+//        }
+//
+//        String name = ds.getName();
+//        SaikuDatasource sds = new SaikuDatasource(name, SaikuDatasource.Type.OLAP, datasource.getProperties());
+//        
+//        // It stores the datasource name prefixed with the workspace name
+//        datasources.put(name, sds);
 //
 //        return datasource;
+    	
     	throw new RuntimeException("not implemented");
     }
 
     public SaikuDatasource setDatasource(SaikuDatasource datasource) throws Exception {
-        return addDatasource(datasource);
+//        return addDatasource(datasource);
+    	
+    	throw new RuntimeException("not implemented");
     }
 
     public List<SaikuDatasource> addDatasources(List<SaikuDatasource> dsources) {
@@ -239,11 +292,11 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            DataSource ds = new DataSource(datasource);
 //
 //            try {
-//                irm.saveDataSource(ds, "/datasources/" + ds.getName() + ".sds", "fixme");
+//                irm.saveDataSource(ds, separator + "datasources" + separator + ds.getName() + ".sds", "fixme");
 //                datasources.put(datasource.getName(), datasource);
 //
 //            } catch (RepositoryException e) {
-//                log.error("Could not add data source"+ datasource.getName(), e);
+//                log.error("Could not add data source" + datasource.getName(), e);
 //            }
 //
 //        }
@@ -260,15 +313,20 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //        }
 //
 //        if (ds != null) {
-//            for(DataSource data : ds){
-//                if(data.getId().equals(datasourceId)){
+//            for (DataSource data : ds) {
+//                if (data.getId().equals(datasourceId)) {
 //                    datasources.remove(data.getName());
-//                    irm.deleteFile(data.getPath());
+//                    String path = data.getPath();
+//                    if(!datadir.equals("${CLASSPATH_REPO_PATH_UNPARSED}")) {
+//                        path = path.replaceFirst(datadir, "");
+//                    }
+//                    irm.deleteFile(path);
 //                    return true;
 //                }
 //            }
 //        }
 //        return false;
+    	
     	throw new RuntimeException("not implemented");
     }
 
@@ -281,24 +339,40 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //        }
 //
 //        if (s != null) {
-//            for(MondrianSchema data : s){
-//                if(data.getName().equals(schemaName)){
+//            for (MondrianSchema data : s) {
+//                if (data.getName().equals(schemaName)) {
 //                    irm.deleteFile(data.getPath());
 //                    break;
 //                }
 //            }
 //            return true;
-//        }
-//        else{
+//        } else {
 //            return false;
 //        }
-
+    	
     	throw new RuntimeException("not implemented");
+
 
     }
 
     public Map<String, SaikuDatasource> getDatasources() {
-//    	return datasources;
+/*        if (workspaces) {
+            Map<String, SaikuDatasource> newdslist = new HashMap<>();
+            for (Map.Entry<String, SaikuDatasource> entry : datasources.entrySet()) {
+
+                String s = getworkspacedir();
+                if (s.endsWith("/")) {
+                    s = s.substring(0, s.length() - 1);
+                }
+                if (entry.getKey().startsWith(s)) {
+                    newdslist.put(entry.getKey(), entry.getValue());
+                }
+            }
+            return newdslist;
+        } else {
+            return datasources;
+        }*/
+      // return datasources;
     	throw new RuntimeException("not implemented");
     }
 
@@ -309,12 +383,11 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 
     @Override
     public SaikuDatasource getDatasource(String datasourceName, boolean refresh) {
-//        if(!refresh) {
-//            if(datasources.size()>0) {
+//        if (!refresh) {
+//            if (datasources.size() > 0) {
 //                return datasources.get(datasourceName);
 //            }
-//        }
-//        else{
+//        } else {
 //            return getDatasource(datasourceName);
 //        }
 //        return null;
@@ -322,57 +395,54 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
     }
 
     public void addSchema(String file, String path, String name) throws Exception {
-//            irm.saveInternalFile(file, path, "nt:mondrianschema");
+//        irm.saveInternalFile(file, path, "nt:mondrianschema");
     	throw new RuntimeException("not implemented");
-    }
 
-    public List<MondrianSchema> getMondrianSchema() {
+    }
+//
+//    public List<MondrianSchema> getMondrianSchema() {
 //        try {
 //            return irm.getAllSchema();
 //        } catch (RepositoryException e) {
 //            log.error("Could not get all Schema", e);
 //        }
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public MondrianSchema getMondrianSchema(String catalog) {
-        //return irm.getMondrianSchema();
+//    }
+//
+//    public MondrianSchema getMondrianSchema(String catalog) {
+//        //return irm.getMondrianSchema();
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public RepositoryFile getFile(String file) {
+//    }
+//
+//    public RepositoryFile getFile(String file) {
 //        return irm.getFile(file);
-    	throw new RuntimeException("not implemented");
-    }
-
-
-    public String getFileData(String file, String username, List<String> roles) {
+//    }
+//
+//
+//    public String getFileData(String file, String username, List<String> roles) {
 //        try {
 //            return irm.getFile(file, username, roles);
 //        } catch (RepositoryException e) {
-//            log.error("Could not get file "+file, e);
+//            log.error("Could not get file " + file, e);
 //        }
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getInternalFileData(String file) {// throws RepositoryException {
-
-//            return irm.getInternalFile(file);
+//    }
 //
-    	throw new RuntimeException("not implemented");
-    }
-
-    public InputStream getBinaryInternalFileData(String file){ // throws RepositoryException {
+//    public String getInternalFileData(String file) throws RepositoryException {
+//
+//        return irm.getInternalFile(file);
+//
+//
+//    }
+//
+//    public InputStream getBinaryInternalFileData(String file) throws RepositoryException {
 //
 //        return irm.getBinaryInternalFile(file);
-
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String saveFile(String path, Object content, String user, List<String> roles) {
+//
+//
+//    }
+//
+//    public String saveFile(String path, Object content, String user, List<String> roles) {
 //        try {
 //            irm.saveFile(content, path, user, "nt:saikufiles", roles);
 //            return "Save Okay";
@@ -380,10 +450,9 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            log.error("Save Failed", e);
 //            return "Save Failed: " + e.getLocalizedMessage();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String removeFile(String path, String user, List<String> roles) {
+//    }
+//
+//    public String removeFile(String path, String user, List<String> roles) {
 //        try {
 //            irm.removeFile(path, user, roles);
 //            return "Remove Okay";
@@ -391,10 +460,9 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            log.error("Save Failed", e);
 //            return "Save Failed: " + e.getLocalizedMessage();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String moveFile(String source, String target, String user, List<String> roles) {
+//    }
+//
+//    public String moveFile(String source, String target, String user, List<String> roles) {
 //        try {
 //            irm.moveFile(source, target, user, roles);
 //            return "Move Okay";
@@ -402,10 +470,9 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            log.error("Move Failed", e);
 //            return "Move Failed: " + e.getLocalizedMessage();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String saveInternalFile(String path, Object content, String type) {
+//    }
+//
+//    public String saveInternalFile(String path, Object content, String type) {
 //        try {
 //            irm.saveInternalFile(content, path, type);
 //            return "Save Okay";
@@ -413,10 +480,9 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            e.printStackTrace();
 //            return "Save Failed: " + e.getLocalizedMessage();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String saveBinaryInternalFile(String path, InputStream content, String type) {
+//    }
+//
+//    public String saveBinaryInternalFile(String path, InputStream content, String type) {
 //        try {
 //            irm.saveBinaryInternalFile(content, path, type);
 //            return "Save Okay";
@@ -424,88 +490,78 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            e.printStackTrace();
 //            return "Save Failed: " + e.getLocalizedMessage();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-    public void removeInternalFile(String filePath) {
-//        try{
+//    }
+//
+//    public void removeInternalFile(String filePath) {
+//        try {
 //            irm.removeInternalFile(filePath);
-//        } catch(RepositoryException e) {
+//        } catch (RepositoryException e) {
 //            log.error("Remove file failed: " + filePath);
 //            e.printStackTrace();
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles) {
+//    }
+//
+//    public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles) {
 //        return irm.getAllFiles(type, username, roles);
-    	throw new RuntimeException("not implemented");
-    }
-
-    public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles, String path) {
+//    }
+//
+//    public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles, String path) {
 //        try {
 //            return irm.getAllFiles(type, username, roles, path);
 //        } catch (RepositoryException e) {
 //            log.error("Get failed", e);
 //        }
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-
-    public void createUser(String username){
+//    }
+//
+//
+//    public void createUser(String username) {
 //        try {
 //            irm.createUser(username);
 //        } catch (RepositoryException e) {
 //            log.error("Create User Failed", e);
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void deleteFolder(String folder) {
+//    }
+//
+//    public void deleteFolder(String folder) {
 //        try {
 //            irm.deleteFolder(folder);
 //        } catch (RepositoryException e) {
 //            log.error("Delete User Failed", e);
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public AclEntry getACL(String object, String username, List<String> roles) {
+//    }
+//
+//    public AclEntry getACL(String object, String username, List<String> roles) {
 //        return irm.getACL(object, username, roles);
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setACL(String object, String acl, String username, List<String> roles) {
+//    }
+//
+//    public void setACL(String object, String acl, String username, List<String> roles) {
 //        try {
 //            irm.setACL(object, acl, username, roles);
 //        } catch (RepositoryException e) {
 //            log.error("Set ACL Failed", e);
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-
-    public void setUserService(UserService userService) {
+//    }
+//
+//
+//    public void setUserService(UserService userService) {
 //        this.userService = userService;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public List<MondrianSchema> getInternalFilesOfFileType(String type){
+//    }
+//
+//    public List<MondrianSchema> getInternalFilesOfFileType(String type) {
 //        try {
 //            return irm.getInternalFilesOfFileType(type);
 //        } catch (RepositoryException e) {
 //            log.error("Get internal file failed", e);
 //        }
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void createFileMixin(String type) { // throws RepositoryException {
+//    }
+//
+//    public void createFileMixin(String type) throws RepositoryException {
 //        irm.createFileMixin(type);
-    	throw new RuntimeException("not implemented");
-    }
-
-    public byte[] exportRepository(){
+//    }
+//
+//    public byte[] exportRepository() {
 //        try {
 //            return irm.exportRepository();
 //
@@ -515,154 +571,666 @@ public class RepositoryDatasourceManager implements IDatasourceManager {
 //            log.error("could not export repository IO issue", e);
 //        }
 //        return null;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void restoreRepository(byte[] data) {
+//    }
+//
+//    public void restoreRepository(byte[] data) {
 //        try {
 //            irm.restoreRepository(data);
-//        }
-//        catch (Exception e){
+//        } catch (Exception e) {
 //            log.error("Could not restore export", e);
 //        }
-    	throw new RuntimeException("not implemented");
-    }
-
-    public boolean hasHomeDirectory(String name) {
-//        try{
-//            Node eturn = irm.getHomeFolder(name);
+//    }
+//
+//    public boolean hasHomeDirectory(String name) {
+//        try {
+//            Object eturn = irm.getHomeFolder(name);
 //            return eturn != null;
-//        } catch(PathNotFoundException e) {
+//        } catch (PathNotFoundException e) {
 //            return false;
 //        } catch (RepositoryException e) {
 //            log.error("could not get home directory");
 //        }
 //        return false;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void restoreLegacyFiles(byte[] data) {
+//    }
+//
+//    public void restoreLegacyFiles(byte[] data) {
 //        LegacyImporter l = new LegacyImporterImpl(null);
 //        l.importLegacyReports(irm, data);
-    	throw new RuntimeException("not implemented");
-    }
-
-    public Object getRepository() {
+//    }
+//
+//    public Object getRepository() {
 //        return irm.getRepositoryObject();
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setConfigurationpath(String configurationpath) {
+//    }
+//
+//    public void setConfigurationpath(String configurationpath) {
 //        this.configurationpath = configurationpath;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getConfigurationpath() {
+//    }
+//
+//    public String getConfigurationpath() {
 //        return configurationpath;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setDatadir(String datadir) {
+//    }
+//
+//    public void setDatadir(String datadir) {
+//            datadir=datadir.replaceFirst(":", ":/");
+//
 //        this.datadir = datadir;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getDatadir() {
-//        return datadir;
-        throw new RuntimeException("not implemented");
-    }
-
-    public void setFoodmartdir(String foodmartdir) {
+//    }
+//
+//    public String getDatadir() {
+//        if (this.type.equals("classpath")) {
+//            if (this.workspaces) {
+//                try {
+//                    if (getSession().getAttribute(ORBIS_WORKSPACE_DIR) != null) {
+//                        String workspace = (String) getSession().getAttribute(ORBIS_WORKSPACE_DIR);
+//                        if (!workspace.equals("")) {
+//                            workspace = cleanse(workspace);
+//                        }
+//                        log.debug("Workspace directory set to:" + datadir + workspace);
+//                        return cleanse(datadir) + workspace;
+//                    } else {
+//                        log.debug("Workspace directory set to:" + datadir + "unknown/");
+//                        return cleanse(datadir) + "unknown/";
+//                    }
+//
+//                } catch (Exception e) {
+//                    return cleanse(datadir) + "/unknown/";
+//                }
+//            } else {
+//                return cleanse(datadir);
+//            }
+//        } else {
+//            return "/";
+//        }
+//    }
+//    
+//    private String getCookieUsername() {
+//      String cookieUsername = null;
+//      javax.servlet.http.HttpSession session = getSession(); // Use a variable instead of a method call for debugging purposes
+//      
+//      if (session != null && workspaces && session.getAttribute(SAIKU_AUTH_PRINCIPAL) != null) {
+//        cookieUsername = (String) session.getAttribute(SAIKU_AUTH_PRINCIPAL);
+//      }
+//      
+//      if (cookieUsername != null && cookieUsername.trim().length() == 0) {
+//        cookieUsername = null;
+//      }
+//      
+//      return cookieUsername;
+//    }
+//
+//    private String getworkspacedir() {
+//        try {
+//            if (this.workspaces && getSession().getAttribute(ORBIS_WORKSPACE_DIR) != null) {
+//                String workspace = (String) getSession().getAttribute(ORBIS_WORKSPACE_DIR);
+//                if (!workspace.equals("")) {
+//                    workspace = cleanse(workspace);
+//                }
+//                log.debug("Workspace directory set to:" + workspace);
+//                return workspace;
+//            } else if (this.workspaces) {
+//                log.debug("Workspace directory set to: unknown/");
+//                return "unknown/";
+//            } else {
+//                return "";
+//            }
+//
+//        } catch (Exception e) {
+//            return "unknown/";
+//        }
+//    }
+//
+//    private String cleanse(String workspace) {
+//        workspace = workspace.replace("\\", "/");
+//        if (!workspace.endsWith("/")) {
+//            return workspace + "/";
+//        }
+//        return workspace;
+//    }
+//
+//    public void setFoodmartdir(String foodmartdir) {
 //        this.foodmartdir = foodmartdir;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getFoodmartdir() {
+//    }
+//
+//    public String getFoodmartdir() {
 //        return foodmartdir;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setFoodmartschema(String foodmartschema) {
+//    }
+//
+//    public void setFoodmartschema(String foodmartschema) {
 //        this.foodmartschema = foodmartschema;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getFoodmartschema() {
+//    }
+//
+//    public String getFoodmartschema() {
 //        return foodmartschema;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setFoodmarturl(String foodmarturl) {
+//    }
+//
+//    public void setFoodmarturl(String foodmarturl) {
 //        this.foodmarturl = foodmarturl;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getFoodmarturl() {
+//    }
+//
+//    public String getFoodmarturl() {
 //        return foodmarturl;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getEarthquakeUrl() {
+//    }
+//
+//    public String getEarthquakeUrl() {
 //        return earthquakeurl;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getEarthquakeDir() {
+//    }
+//
+//    public String getEarthquakeDir() {
 //        return earthquakedir;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getEarthquakeSchema() {
+//    }
+//
+//    public String getEarthquakeSchema() {
 //        return earthquakeschema;
-    	throw new RuntimeException("not implemented");
-    }
-
-
-    public void setEarthquakeUrl(String earthquakeurl) {
+//    }
+//
+//
+//    public void setEarthquakeUrl(String earthquakeurl) {
 //        this.earthquakeurl = earthquakeurl;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setEarthquakeDir(String earthquakedir) {
+//    }
+//
+//    public void setEarthquakeDir(String earthquakedir) {
 //        this.earthquakedir = earthquakedir;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setEarthquakeSchema(String earthquakeschema) {
+//    }
+//
+//    public void setEarthquakeSchema(String earthquakeschema) {
 //        this.earthquakeschema = earthquakeschema;
-    	throw new RuntimeException("not implemented");
-    }
-
-    @Override
-    public void setExternalPropertiesFile(String file) {
+//    }
+//
+//    @Override
+//    public void setExternalPropertiesFile(String file) {
 //        this.externalparameters = file;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setRepoPasswordProvider(PasswordProvider passwordProvider){
+//    }
+//
+//    public void setRepoPasswordProvider(PasswordProvider passwordProvider) {
 //        this.repopasswordprovider = passwordProvider;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public PasswordProvider getRepopasswordprovider(){
+//    }
+//
+//    public PasswordProvider getRepopasswordprovider() {
 //        return repopasswordprovider;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setOldRepoPassword(String password){
+//    }
+//
+//    public void setOldRepoPassword(String password) {
 //        this.oldpassword = password;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public String getOldRepopassword(){
+//    }
+//
+//    public String getOldRepopassword() {
 //        return oldpassword;
-    	throw new RuntimeException("not implemented");
-    }
-
-    public void setDefaultRole(String defaultRole)
-    {
+//    }
+//
+//    public void setDefaultRole(String defaultRole) {
 //        this.defaultRole = defaultRole;
-    	throw new RuntimeException("not implemented");
-    }
+//    }
+//
+//    public void setType(String type) {
+//        this.type = type;
+//    }
+//    
+//    public String getType() {
+//      return this.type;
+//    }
+//
+//    private String getCSVJson(boolean file, String name, String path) {
+//
+//        String p;
+//        if (!file) {
+//            p = "directory: '" + path + "'\n";
+//
+//
+//            return "{\n" +
+//                    "version: '1.0',\n" +
+//                    "defaultSchema: '" + name + "',\n" +
+//                    "schemas: [\n" +
+//                    "{\n" +
+//                    "name: '" + name + "',\n" +
+//                    "type: 'custom',\n" +
+//                    "factory: 'org.apache.calcite.adapter.csv.CsvSchemaFactory',\n" +
+//                    "operand: {\n" +
+//                    p +
+//                    "}\n" +
+//                    "}\n" +
+//                    "]\n" +
+//                    "}";
+//
+//        } else {
+//            p = "file: '" + path + "',";
+//            return "{\n" +
+//                    "version: '1.0',\n" +
+//                    "defaultSchema: '" + name + "',\n" +
+//                    "schemas: [\n" +
+//                    "{\n" +
+//                    "name: '" + name + "',\n" +
+//                    "tables:[{\n" +
+//                    "name: '" + name + "1',\n" +
+//                    "type: 'custom',\n" +
+//                    "factory: 'org.apache.calcite.adapter.csv.CsvTableFactory',\n" +
+//                    "operand: {\n" +
+//                    p +
+//                    "flavor: 'scannable'\n" +
+//                    "}\n" +
+//                    "}]}\n" +
+//                    "]\n" +
+//                    "}";
+//
+//        }
+//    }
+//
+//    public HttpSession getSession() {
+//        return sessionRegistry.getSession();
+//    }
+//
+//    public void setSessionRegistry(ScopedRepo sessionRegistry) {
+//        this.sessionRegistry = sessionRegistry;
+//    }
+//
+//
+//    public void setWorkspaces(String workspaces) {
+//        this.workspaces = Boolean.parseBoolean(workspaces);
+//    }
+//
+//    public List<JujuSource> getJujuDatasources() {
+//                LegacyImporter l = new LegacyImporterImpl(null);
+//                return l.importJujuDatasources();
+//        }
+//
+//    public String getHost() {
+//        return host;
+//    }
+//
+//    public void setHost(String host) {
+//        this.host = host;
+//    }
+//
+//    public String getPort() {
+//        return port;
+//    }
+//
+//    public void setPort(String port) {
+//        this.port = port;
+//    }
+//
+//    public String getUsername() {
+//        return username;
+//    }
+//
+//    public void setUsername(String username) {
+//        this.username = username;
+//    }
+//
+//    public String getPassword() {
+//        return password;
+//    }
+//
+//    public void setPassword(String password) {
+//        this.password = password;
+//    }
+//
+//    public String getDatabase() {
+//        return database;
+//    }
+//
+//    public void setDatabase(String database) {
+//        this.database = database;
+//    }
+//    
+//    private void loadDatasources(Properties ext) {
+//      datasources.clear();
+//      
+//      List<DataSource> exporteddatasources = null;
+//  
+//      try {
+//        exporteddatasources = irm.getAllDataSources();
+//      } catch (RepositoryException e1) {
+//        log.error("Could not export data sources", e1);
+//      }
+//  
+//      if (exporteddatasources != null) {
+//        int i = 0;
+//        while (i < exporteddatasources.size()) {
+//          DataSource file = exporteddatasources.get(i);
+//  
+//          try {
+//            if (file.getName() != null && file.getType() != null) {
+//  
+//              SaikuDatasource.Type t = SaikuDatasource.Type.valueOf(file.getType().toUpperCase());
+//              SaikuDatasource ds = new SaikuDatasource(file.getName(), t, setupDataSourceProperties(file, ext));
+//              datasources.put(file.getName(), ds);
+//            }
+//          } catch (Exception e) {
+//            // throw new SaikuServiceException("Failed to add datasource", e);
+//            log.error("Failed to add datasource", e);
+//          }
+//          i++;
+//        }
+//      }
+//    }
+//    
+//    private Properties setupDataSourceProperties(DataSource file, Properties ext) {
+//      Properties props = new Properties();
+//      
+//      // DataSource driver
+//      if (file.getDriver() != null) {
+//        props.put("driver", file.getDriver());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".driver")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".driver");
+//        props.put("driver", p);
+//      }
+//
+//      // DataSource location
+//      if (file.getPropertyKey() != null && ext.containsKey("datasource." + file.getPropertyKey() + ".location")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".location");
+//        if (ext.containsKey("datasource." + file.getPropertyKey() + ".schemaoverride")) {
+//          String[] spl = p.split(";");
+//          spl[1] = "Catalog=mondrian://" + file.getSchema();
+//          StringBuilder sb = new StringBuilder();
+//          for (String str : spl) {
+//            sb.append(str + ";");
+//          }
+//          props.put("location", sb.toString());
+//        } else {
+//          props.put("location", p);
+//        }
+//      } else if (file.getLocation() != null) {
+//        props.put("location", file.getLocation());
+//      }
+//      
+//      // DataSource username
+//      if (file.getUsername() != null && file.getPropertyKey() == null) {
+//        props.put("username", file.getUsername());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".username")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".username");
+//        props.put("username", p);
+//      }
+//      
+//      // DataSource password
+//      if (file.getPassword() != null && file.getPropertyKey() == null) {
+//        props.put("password", file.getPassword());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".password")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".password");
+//        props.put("password", p);
+//      }
+//      
+//      // DataSource path
+//      if (file.getPath() != null) {
+//        props.put("path", file.getPath());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".path")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".path");
+//        props.put("path", p);
+//      }
+//      
+//      // DataSource id
+//      if (file.getId() != null) {
+//        props.put("id", file.getId());
+//      }
+//      
+//      // Some security properties
+//      if (file.getSecurityenabled() != null) {
+//        props.put("security.enabled", file.getSecurityenabled());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".security.enabled")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.enabled");
+//        props.put("security.enabled", p);
+//      }
+//      
+//      if (file.getSecuritytype() != null) {
+//        props.put("security.type", file.getSecuritytype());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".security.type")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.type");
+//        props.put("security.type", p);
+//      }
+//      
+//      if (file.getSecuritymapping() != null) {
+//        props.put("security.mapping", file.getSecuritymapping());
+//      } else if (file.getPropertyKey() != null
+//          && ext.containsKey("datasource." + file.getPropertyKey() + ".security.mapping")) {
+//        String p = ext.getProperty("datasource." + file.getPropertyKey() + ".security.mapping");
+//        props.put("security.mapping", p);
+//      }
+//      
+//      if (file.getAdvanced() != null) {
+//        props.put("advanced", file.getAdvanced());
+//      }
+//      
+//      // CSV flag
+//      if (file.getCsv() != null) {
+//        props.put("csv", file.getCsv());
+//      }
+//      
+//      if (file.getEnabled() != null) {
+//        props.put("enabled", file.getEnabled());
+//      }
+//      
+//      if (file.getPropertyKey() != null) {
+//        props.put("propertykey", file.getPropertyKey());
+//      }
+//      
+//      return props;
+//    }
+
+
+	public List<MondrianSchema> getMondrianSchema() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public MondrianSchema getMondrianSchema(String catalog) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public RepositoryFile getFile(String file) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getFileData(String file, String username, List<String> roles) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public String getInternalFileData(String file) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public InputStream getBinaryInternalFileData(String file) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public String saveFile(String path, Object content, String user, List<String> roles) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String removeFile(String path, String user, List<String> roles) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String moveFile(String source, String target, String user, List<String> roles) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String saveInternalFile(String path, Object content, String type) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String saveBinaryInternalFile(String path, InputStream content, String type) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void removeInternalFile(String filePath) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public List<IRepositoryObject> getFiles(List<String> type, String username, List<String> roles, String path) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void createUser(String user) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public void deleteFolder(String folder) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public AclEntry getACL(String object, String username, List<String> roles) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public void setACL(String object, String acl, String username, List<String> roles) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setUserService(UserService userService) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public List<MondrianSchema> getInternalFilesOfFileType(String type) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void createFileMixin(String type) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public byte[] exportRepository() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void restoreRepository(byte[] data) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public boolean hasHomeDirectory(String name) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void restoreLegacyFiles(byte[] data) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getFoodmartschema() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setFoodmartschema(String schema) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setFoodmartdir(String dir) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getFoodmartdir() {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public String getDatadir() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setDatadir(String dir) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setFoodmarturl(String foodmarturl) {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getFoodmarturl() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getEarthquakeUrl() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getEarthquakeDir() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getEarthquakeSchema() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public void setEarthquakeUrl(String earthquakeUrl) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public void setEarthquakeDir(String earthquakeDir) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public void setEarthquakeSchema(String earthquakeSchema) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public void setExternalPropertiesFile(String file) {
+		throw new RuntimeException("not implemented");
+		
+	}
+
+
+	public List<JujuSource> getJujuDatasources() {
+		throw new RuntimeException("not implemented");
+	}
+
+
+	public String getType() {
+		throw new RuntimeException("not implemented");
+	}
 }
 

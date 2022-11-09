@@ -1,5 +1,10 @@
 package org.saiku.web.export;
 
+//import com.lowagie.text.Document;
+//import com.lowagie.text.PageSize;
+//import com.lowagie.text.Rectangle;
+//import com.lowagie.text.pdf.PdfContentByte;
+//import com.lowagie.text.pdf.PdfWriter;
 import java.awt.Graphics2D;
 import java.awt.print.PageFormat;
 import java.awt.print.Paper;
@@ -9,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringReader;
 import java.net.URISyntaxException;
+//import org.apache.avalon.framework.configuration.ConfigurationException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -21,11 +27,11 @@ import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.sax.SAXResult;
-
 import org.apache.batik.transcoder.TranscoderInput;
 import org.apache.batik.transcoder.print.PrintTranscoder;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.fop.apps.Fop;
+//import org.apache.fop.apps.FopConfParser;
 import org.apache.fop.apps.FopFactory;
 import org.apache.fop.apps.FopFactoryBuilder;
 import org.apache.fop.apps.MimeConstants;
@@ -33,6 +39,26 @@ import org.saiku.service.util.exception.SaikuServiceException;
 import org.saiku.service.util.export.PdfPerformanceLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+//import org.apache.avalon.framework.configuration.Configuration;
+//import org.apache.avalon.framework.configuration.DefaultConfigurationBuilder;
+//
+//import javax.xml.parsers.DocumentBuilder;
+//import javax.xml.parsers.DocumentBuilderFactory;
+//import javax.xml.transform.Result;
+//import javax.xml.transform.Source;
+//import javax.xml.transform.Transformer;
+//import javax.xml.transform.TransformerFactory;
+//import javax.xml.transform.dom.DOMSource;
+//import javax.xml.transform.sax.SAXResult;
+//import javax.xml.transform.stream.StreamResult;
+//import java.awt.*;
+//import java.awt.print.PageFormat;
+//import java.awt.print.Paper;
+//import java.io.*;
+//import java.text.DateFormat;
+//import java.text.SimpleDateFormat;
+//import java.util.Date;
+//import org.xml.sax.SAXException;
 
 import com.lowagie.text.Document;
 import com.lowagie.text.PageSize;
@@ -160,6 +186,7 @@ public class PdfReport {
         String htmlContent = generateContentAsHtmlString(queryResult);
         org.w3c.dom.Document htmlDom = DomConverter.getDom(htmlContent);
         org.w3c.dom.Document foDoc = FoConverter.getFo(htmlDom);
+
         byte[] formattedPdfContent = fo2Pdf(foDoc, null, queryResultSize);
         tryWritingContentToPdfStream(pdf, formattedPdfContent);
 
@@ -195,37 +222,37 @@ public class PdfReport {
     }
 
     private byte[] fo2Pdf(org.w3c.dom.Document foDocument, String styleSheet, Rectangle size) {
-       FopFactoryBuilder builder = null;
-       try {
-           builder = new FopFactoryBuilder(this.getClass().getResource("fop_config.xml").toURI());
-       } catch (URISyntaxException e) {
-           e.printStackTrace();
-       }
-       builder.setStrictFOValidation(false);
+        FopFactoryBuilder builder = null;
+        try {
+            builder = new FopFactoryBuilder(this.getClass().getResource("fop_config.xml").toURI());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        builder.setStrictFOValidation(false);
 
 
-       try {
-           // Specify an external configuration file, to ease user changes, like adding custom fonts
-           FopFactory fopFactory = builder.build();
+        try {
+            // Specify an external configuration file, to ease user changes, like adding custom fonts
+            FopFactory fopFactory = builder.build();
 
-           ByteArrayOutputStream out = new ByteArrayOutputStream();
+            ByteArrayOutputStream out = new ByteArrayOutputStream();
 
-           Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
-           Transformer transformer = getTransformer(styleSheet);
-           Source src = new DOMSource(foDocument);
-           Result res = new SAXResult(fop.getDefaultHandler());
+            Fop fop = fopFactory.newFop(MimeConstants.MIME_PDF, out);
+            Transformer transformer = getTransformer(styleSheet);
+            Source src = new DOMSource(foDocument);
+            Result res = new SAXResult(fop.getDefaultHandler());
 
-           if (transformer != null) {
-               transformer.setParameter("page_height", (size.getHeight() / 72) + "in");
-               transformer.setParameter("page_width", (size.getWidth() / 72) + "in");
-               transformer.transform(src, res);
-           }
+            if (transformer != null) {
+                transformer.setParameter("page_height", (size.getHeight() / 72) + "in");
+                transformer.setParameter("page_width", (size.getWidth() / 72) + "in");
+                transformer.transform(src, res);
+            }
 
-           return out.toByteArray();
+            return out.toByteArray();
 
-       } catch (Exception ex) {
-           return null;
-       }
+        } catch (Exception ex) {
+            return null;
+        }
     }
 
     private Transformer getTransformer(String styleSheet) {

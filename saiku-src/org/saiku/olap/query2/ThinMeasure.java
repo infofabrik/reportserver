@@ -1,4 +1,5 @@
 package org.saiku.olap.query2;
+
 import java.util.ArrayList;
 import java.util.List;
 

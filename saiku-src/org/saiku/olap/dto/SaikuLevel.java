@@ -24,115 +24,82 @@ import java.util.Map;
  */
 public class SaikuLevel extends AbstractSaikuObject {
 
-	private final Map<String, String> annotations;
-	private String levelType;
-	private String caption;
-	private String hierarchyUniqueName;
-	private String dimensionUniqueName;
-	//private transient List<SaikuMember> members;
-	private boolean visible;
-	private String description;
+  private final Map<String, String> annotations;
+  private String levelType;
+  private String caption;
+  private String hierarchyUniqueName;
+  private String dimensionUniqueName;
+  //private transient List<SaikuMember> members;
+  private boolean visible;
+  private String description;
 
-	public SaikuLevel(String name, String uniqueName, String caption, String description, String s, String uniqueName1,
-			boolean visible) {
-		super(null, null);
-		throw new RuntimeException("Unsupported Constructor. Serialization only");
-	}
-
-
-	public SaikuLevel(
-			String name,
-			String uniqueName,
-			String caption,
-			String description,
-			String dimensionUniqueName,
-			String hierarchyUniqueName,
-			boolean visible,
-			String levelType,
-			Map<String, String> annotations) {
-		super(uniqueName, name);
-		this.caption = caption;
-		this.hierarchyUniqueName = hierarchyUniqueName;
-		this.dimensionUniqueName = dimensionUniqueName;
-		this.visible = visible;
-		this.description = description;
-		this.annotations = annotations;
-		if(levelType!=null) {
-			this.levelType = levelType;
-		}
-		//this.members = members;
-	}
-
-	public String getCaption() {
-		return caption;
-	}
-
-	public String getHierarchyUniqueName() {
-		return hierarchyUniqueName;
-	}
-
-	public String getDimensionUniqueName() {
-		return dimensionUniqueName;
-	}
-
-	public boolean isVisible() {
-		return visible;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public Map<String, String> getAnnotations() {
-		Map<String, String> m = null;
-		if (annotations != null) {
-			m = new HashMap<>();
-			for (Map.Entry<String, String> entry : annotations.entrySet()) {
-				m.put(entry.getKey(), entry.getValue());
-			}
-		}
+  public SaikuLevel(String name, String uniqueName, String caption, String description, String s, String uniqueName1,
+                    boolean visible) {
+    super(null, null);
+    throw new RuntimeException("Unsupported Constructor. Serialization only");
+  }
 
 
-		return m;
-	}
+  public SaikuLevel(
+      String name,
+      String uniqueName,
+      String caption,
+      String description,
+      String dimensionUniqueName,
+      String hierarchyUniqueName,
+      boolean visible,
+      String levelType,
+      Map<String, String> annotations) {
+    super(uniqueName, name);
+    this.caption = caption;
+    this.hierarchyUniqueName = hierarchyUniqueName;
+    this.dimensionUniqueName = dimensionUniqueName;
+    this.visible = visible;
+    this.description = description;
+    this.annotations = annotations;
+    if(levelType!=null) {
+      this.levelType = levelType;
+    }
+    //this.members = members;
+  }
 
-	public String getLevelType() {
-		return levelType;
-	}
-	//public List<SaikuMember> getMembers() {
-	//return members;
-	//}
+  public String getCaption() {
+    return caption;
+  }
+
+  public String getHierarchyUniqueName() {
+    return hierarchyUniqueName;
+  }
+
+  public String getDimensionUniqueName() {
+    return dimensionUniqueName;
+  }
+
+  public boolean isVisible() {
+    return visible;
+  }
+
+  public String getDescription() {
+    return description;
+  }
+
+  public Map<String, String> getAnnotations() {
+    Map<String, String> m = null;
+    if (annotations != null) {
+      m = new HashMap<>();
+      for (Map.Entry<String, String> entry : annotations.entrySet()) {
+        m.put(entry.getKey(), entry.getValue());
+      }
+    }
 
 
-	public void setLevelType(String levelType) {
-		this.levelType = levelType;
-	}
+    return m;
+  }
 
-
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-
-
-	public void setHierarchyUniqueName(String hierarchyUniqueName) {
-		this.hierarchyUniqueName = hierarchyUniqueName;
-	}
-
-
-	public void setDimensionUniqueName(String dimensionUniqueName) {
-		this.dimensionUniqueName = dimensionUniqueName;
-	}
-
-
-	public void setVisible(boolean visible) {
-		this.visible = visible;
-	}
-
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-
-
+  public String getLevelType() {
+    return levelType;
+  }
+  //public List<SaikuMember> getMembers() {
+  //return members;
+  //}
 }

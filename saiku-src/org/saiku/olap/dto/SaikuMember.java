@@ -90,26 +90,4 @@ public class SaikuMember extends AbstractSaikuObject {
   public void setCalculated(Boolean calculated) {
     this.calculated = calculated;
   }
-
-  public void setCaption(String caption) {
-	  this.caption = caption;
-  }
-
-  public void setDimensionUniqueName(String dimensionUniqueName) {
-	  this.dimensionUniqueName = dimensionUniqueName;
-  }
-
-  public void setDescription(String description) {
-	  this.description = description;
-  }
-
-  public void setLevelUniqueName(String levelUniqueName) {
-	  this.levelUniqueName = levelUniqueName;
-  }
-
-  public void setHierarchyUniqueName(String hierarchyUniqueName) {
-	  this.hierarchyUniqueName = hierarchyUniqueName;
-  }
-
-
 }

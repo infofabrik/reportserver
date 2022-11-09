@@ -15,6 +15,16 @@
  */
 
 package org.saiku.olap.util;
+//
+//import org.saiku.datasources.connection.IConnectionManager;
+//import org.saiku.olap.util.exception.SaikuOlapException;
+//
+//import org.olap4j.OlapConnection;
+//import org.olap4j.OlapException;
+//import org.olap4j.impl.Olap4jUtil;
+//import org.olap4j.metadata.Database;
+//import org.springframework.web.context.WebApplicationContext;
+//import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -22,7 +32,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
+ 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -65,9 +75,7 @@ public class SaikuXmlaServlet extends Olap4jXmlaServlet {
 //        WebApplicationContextUtils
 //            .getWebApplicationContext(context);
 //    connections = (IConnectionManager) applicationContext.getBean("connectionManager");
-    
     throw new RuntimeException("not implemented");
-    //TODO:SAIKU
   }
 
   @Override

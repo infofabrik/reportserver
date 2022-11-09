@@ -1,95 +1,79 @@
-/*  
- *   Copyright 2014 Paul Stoellberger
- *
- *   Licensed under the Apache License, Version 2.0 (the "License");
- *   you may not use this file except in compliance with the License.
- *   You may obtain a copy of the License at
- *
- *       http://www.apache.org/licenses/LICENSE-2.0
- *
- *   Unless required by applicable law or agreed to in writing, software
- *   distributed under the License is distributed on an "AS IS" BASIS,
- *   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *   See the License for the specific language governing permissions and
- *   limitations under the License.
- */
+// 
+// Decompiled by Procyon v0.5.36
+// 
+
 package org.saiku.query;
 
-import org.olap4j.Axis;
-import org.olap4j.impl.Named;
-import org.olap4j.metadata.Measure;
-
 import java.util.ArrayList;
+import org.olap4j.Axis;
+import org.olap4j.metadata.Measure;
 import java.util.List;
+import org.olap4j.impl.Named;
 
-public class QueryDetails implements Named {
-
-	protected List<Measure> measures = new ArrayList<Measure>();
-	
-	private Location location = Location.BOTTOM;
-	
-	private Axis axis;
-
-	private Query query;
-
-
-  public enum Location {
-		TOP,
-		BOTTOM
-	}
-	
-	public QueryDetails(Query query, Axis axis) {
-		this.axis = axis;
-		this.query = query;
-	}
-	
-	public void add(Measure measure) {
-		if (!measures.contains(measure)) {
-			measures.add(measure);
-		}
-	}
-
-
-  public void set(Measure measure, int position) {
-		if (!measures.contains(measure)) {
-			measures.add(position, measure);
-		} else {
-			int oldindex = measures.indexOf(measure);
-			if (oldindex <= position) {
-				measures.add(position, measure);
-				measures.remove(oldindex);
-			}
-		}
-	}
-	
-	public void remove(Measure measure) {
-		measures.remove(measure);
-	}
-	
-	
-	public List<Measure> getMeasures() {
-		return measures;
-	}
-	
-	public Location getLocation() {
-		return location;
-	}
-
-	public void setLocation(Location location) {
-		this.location = location;
-	}
-	
-	public Axis getAxis() {
-		return axis;
-	}
-	
-	public void setAxis(Axis axis) {
-		this.axis = axis;
-	}
-
-	@Override
-	public String getName() {
-		return "DETAILS";
-	}
-
+public class QueryDetails implements Named
+{
+    protected List<Measure> measures;
+    private Location location;
+    private Axis axis;
+    private Query query;
+    
+    public QueryDetails(final Query query, final Axis axis) {
+        this.measures = new ArrayList<Measure>();
+        this.location = Location.BOTTOM;
+        this.axis = axis;
+        this.query = query;
+    }
+    
+    public void add(final Measure measure) {
+        if (!this.measures.contains(measure)) {
+            this.measures.add(measure);
+        }
+    }
+    
+    public void set(final Measure measure, final int position) {
+        if (!this.measures.contains(measure)) {
+            this.measures.add(position, measure);
+        }
+        else {
+            final int oldindex = this.measures.indexOf(measure);
+            if (oldindex <= position) {
+                this.measures.add(position, measure);
+                this.measures.remove(oldindex);
+            }
+        }
+    }
+    
+    public void remove(final Measure measure) {
+        this.measures.remove(measure);
+    }
+    
+    public List<Measure> getMeasures() {
+        return this.measures;
+    }
+    
+    public Location getLocation() {
+        return this.location;
+    }
+    
+    public void setLocation(final Location location) {
+        this.location = location;
+    }
+    
+    public Axis getAxis() {
+        return this.axis;
+    }
+    
+    public void setAxis(final Axis axis) {
+        this.axis = axis;
+    }
+    
+    public String getName() {
+        return "DETAILS";
+    }
+    
+    public enum Location
+    {
+        TOP, 
+        BOTTOM;
+    }
 }
