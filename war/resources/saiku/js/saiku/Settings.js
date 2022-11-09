@@ -134,10 +134,10 @@ var Settings = {
         enabled: false,
         cookieName: 'COOKIE_NAME'
     },
+    EMPTY_VALUE_CHARACTER: '',
     /*
     SHOW_USER_MANAGEMENT: true,
     SHOW_REFRESH_NONADMIN: false,
-    EMPTY_VALUE_CHARACTER: '-',
     HIDE_EMPTY_ROWS: true,
     MEASURE_GROUPS_COLLAPSED: false,
     ORBIS_AUTH: {
