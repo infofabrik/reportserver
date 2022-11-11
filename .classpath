@@ -131,7 +131,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-ext-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.9.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/protobuf-java-3.19.4.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/error_prone_annotations-2.11.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guava-31.1-jre.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/h2-2.1.214.jar"/>
