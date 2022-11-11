@@ -96,7 +96,7 @@ public class SessionResource  {
 	{
 		try {
 //		  sessionService.login(req, username, password);
-		  return Response.ok().build();
+		  return Response.ok("{}").build();
 		}
 		catch (Exception e) {
 			log.debug("Error logging in:" + username, e);
