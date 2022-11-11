@@ -54,24 +54,14 @@ public class AvgAggregator extends TotalAggregator {
   private long count = 0;
 
   public void addData( Cell cell ) {
-    Object value = cell.getValue();
-    if ( value instanceof Number ) {
-      Integer count = (Integer) cell.getPropertyValue( DRILLTHROUGH_COUNT );
-      double doubleVal;
-      try {
-        doubleVal = cell.getDoubleValue();
-      } catch ( OlapException e ) {
-        throw new RuntimeException( e );
-      }
-      if ( count.longValue() > -1 ) {
-        this.count += count.longValue();
-        accumulator += doubleVal * count.doubleValue();
-      } else {
-        this.count++;
-        accumulator += doubleVal;
-      }
-
-    }
+     double doubleVal;
+     try {
+         doubleVal = cell.getDoubleValue();
+       } catch ( OlapException e ) {
+         throw new RuntimeException( e );
+       }       
+     this.count++;
+     accumulator += doubleVal;
   }
 
   @Override
