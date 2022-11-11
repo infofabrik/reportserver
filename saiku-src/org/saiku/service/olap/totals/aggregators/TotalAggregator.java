@@ -1,13 +1,14 @@
 package org.saiku.service.olap.totals.aggregators;
 
-import mondrian.util.Format;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.olap4j.Cell;
 import org.olap4j.metadata.Measure;
 import org.saiku.olap.util.SaikuProperties;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Map;
+import mondrian.util.Format;
 
 public abstract class TotalAggregator {
   private static final Map<String, TotalAggregatorFactory> all;
@@ -54,6 +55,12 @@ public abstract class TotalAggregator {
         return new AvgAggregator( null );
       }      
     });
+    
+    tmp.put( "deepavg", new TotalAggregatorFactory() {
+       public TotalAggregator create() {
+         return new DeepAvgAggregator( null );
+       }      
+     });
 
     all = Collections.unmodifiableMap( tmp );
   }

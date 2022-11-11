@@ -628,7 +628,7 @@ var WorkspaceDropZone = Backbone.View.extend({
                                 "show_totals_max": {name: "Max", i18n: true},
                                 //"show_totals_avg": {name: "Avg", i18n: true}
                                 "show_totals_avg": {name: "Avg", i18n: true},
-                                "show_totals_deep_avg": {name: "Deep Avg", i18n: true}
+                                "show_totals_deepavg": {name: "Deep Avg", i18n: true}
                             }}
                         }},
                         "cancel" : { name: "Cancel", i18n: true }
@@ -647,6 +647,7 @@ var WorkspaceDropZone = Backbone.View.extend({
                     fold.items["show_totals_min_" + measure.name] = {name: self.formatAggregatorName("Min",  "min", a, measure), i18n: true};
                     fold.items["show_totals_max_" + measure.name] = {name: self.formatAggregatorName("Max",  "max", a, measure), i18n: true};
                     fold.items["show_totals_avg_" + measure.name] = {name: self.formatAggregatorName("Avg",  "avg", a, measure), i18n: true};
+					fold.items["show_totals_deepavg_" + measure.name] = {name: self.formatAggregatorName("Deep Avg",  "deepavg", a, measure), i18n: true};
 
                     citems.fold_totals.items[foldName] = fold;
                 });
