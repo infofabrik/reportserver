@@ -4,8 +4,6 @@ import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.inject.Inject;
 import com.sencha.gxt.cell.core.client.ButtonCell.ButtonArrowAlign;
-import com.sencha.gxt.widget.core.client.event.SelectEvent;
-import com.sencha.gxt.widget.core.client.event.SelectEvent.SelectHandler;
 import com.sencha.gxt.widget.core.client.info.DefaultInfoConfig;
 import com.sencha.gxt.widget.core.client.info.Info;
 import com.sencha.gxt.widget.core.client.info.InfoConfig;
@@ -44,8 +42,12 @@ public class CubeExportHooker implements ReportExecutorViewToolbarHook {
    private final SaikuPivotDao saikuPivotDao;
 
    @Inject
-   public CubeExportHooker(ToolbarService toolbarService, EnterpriseUiService enterpriseService,
-         ReportExecutorUIService reportExecutorService, SaikuPivotDao saikuPivotDao) {
+   public CubeExportHooker(
+         ToolbarService toolbarService, 
+         EnterpriseUiService enterpriseService,
+         ReportExecutorUIService reportExecutorService, 
+         SaikuPivotDao saikuPivotDao
+         ) {
       super();
       this.toolbarService = toolbarService;
       this.enterpriseService = enterpriseService;
@@ -72,31 +74,9 @@ public class CubeExportHooker implements ReportExecutorViewToolbarHook {
 
       exportBtn.setMenu(menu);
 
-      MenuItem mondrian9Item = new DwMenuItem("Mondrian 9");
-      menu.add(mondrian9Item);
-      mondrian9Item.addSelectionHandler(new SelectionHandler<Item>() {
-
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            startProgress();
-            saikuPivotDao.cubeExportMondrian9(reportExecutorService.createExecuteReportToken(tableReport), tableReport,
-                  new RsAsyncCallback<String>() {
-                     @Override
-                     public void onSuccess(String result) {
-                        displayQuickExportResult(result);
-                     }
-
-                     @Override
-                     public void onFailure(Throwable caught) {
-                        new DetailErrorDialog(caught).show();
-                     }
-                  });
-         }
-      });
-
-      MenuItem mondrian4Item = new DwMenuItem("Mondrian 4");
-      menu.add(mondrian4Item);
-      mondrian4Item.addSelectionHandler(new SelectionHandler<Item>() {
+      MenuItem mondrianItem = new DwMenuItem("Mondrian");
+      menu.add(mondrianItem);
+      mondrianItem.addSelectionHandler(new SelectionHandler<Item>() {
 
          @Override
          public void onSelection(SelectionEvent<Item> event) {
@@ -156,13 +136,7 @@ public class CubeExportHooker implements ReportExecutorViewToolbarHook {
       form.loadFields();
 
       DwTextButton closeBtn = new DwTextButton(BaseMessages.INSTANCE.close());
-      closeBtn.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            window.hide();
-         }
-      });
+      closeBtn.addSelectHandler(event -> window.hide());
       window.addButton(closeBtn);
 
       window.show();

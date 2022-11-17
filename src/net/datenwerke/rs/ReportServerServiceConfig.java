@@ -476,7 +476,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + "reportmetadata").with(ReportMetadataRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "reportproperties").with(ReportPropertiesRpcServiceImpl.class); //$NON-NLS-1$
             serve(BASE_URL + "userproperties").with(UserPropertiesRpcServiceImpl.class); //$NON-NLS-1$
-            serve(BASE_URL + "legacysaiku").with(net.datenwerke.rs.legacysaiku.server.rest.SaikuRpcServiceImpl.class);
             serve(BASE_URL + "saiku").with(SaikuRpcServiceImpl.class);
 
             serve(BASE_URL + "rstheme").with(RsThemeServlet.class); //$NON-NLS-1$
@@ -640,7 +639,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             new RemoteAccessModule(),
 
             new SaikuModule(), 
-            new net.datenwerke.rs.legacysaiku.service.saiku.SaikuModule(), 
             new SearchModule(),
             new SimpleQueryModule(),
 

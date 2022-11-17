@@ -118,8 +118,6 @@
 	<source path="rs/remoteaccess/shared"/>
 	<source path="rs/saiku/client"/>
 	<source path="rs/saiku/shared"/>
-	<source path="rs/legacysaiku/client"/>
-	<source path="rs/legacysaiku/shared"/>
 	<source path="rs/saikupivot/client"/>
 	<source path="rs/scheduleasfile/client"/>
 	<source path="rs/scheduleasfile/shared"/>

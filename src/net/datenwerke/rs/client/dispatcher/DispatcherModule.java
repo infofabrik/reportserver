@@ -209,7 +209,6 @@ public class DispatcherModule extends AbstractGinModule {
       install(new DatasourceTesterUIModule());
 
       install(new SaikuUiModule());
-      install(new net.datenwerke.rs.legacysaiku.client.saiku.SaikuUiModule());
 
       install(new SaikuPivotUiModule());
       install(new GridEditorUiModule());

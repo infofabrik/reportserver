@@ -23,7 +23,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.datasources.transformers.DatasourceTransformationService;
-import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngine;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -31,7 +31,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException;
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorRuntimeException;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
-import net.datenwerke.rs.saiku.service.datasource.MondrianDatasource;
 import net.datenwerke.rs.saiku.service.saiku.OlapUtilService;
 import net.datenwerke.rs.saiku.service.saiku.ThinQueryService;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
@@ -129,11 +128,11 @@ public class SaikuReportEngine extends ReportEngine<Connection, SaikuOutputGener
 
    @Override
    public boolean consumes(Report report) {
-      if (!(report instanceof SaikuReport))
-         return false;
+      if (report instanceof SaikuReport) {
+         return true;
+      }
 
-      DatasourceContainer datasourceContainer = ((SaikuReport) report).getDatasourceContainer();
-      return !((MondrianDatasource) datasourceContainer.getDatasource()).isMondrian3();
+      return report instanceof TableReport && ((TableReport) report).isCubeFlag();
    }
 
    @Override

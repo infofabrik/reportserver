@@ -25,8 +25,4 @@ public class SaikuPivotDao extends Dao {
       rpcService.cubeExport(token, report, transformAndKeepCallback(callback));
    }
 
-   public void cubeExportMondrian9(String token, TableReportDto report, AsyncCallback<String> callback) {
-      rpcService.cubeExportMondrian9(token, report, transformAndKeepCallback(callback));
-   }
-
 }

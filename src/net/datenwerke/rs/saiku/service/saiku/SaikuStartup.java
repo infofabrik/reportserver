@@ -10,12 +10,14 @@ import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProvider
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportEngineProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.ReportTypeProviderHook;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantCreatorHook;
+import net.datenwerke.rs.core.service.reportmanager.hooks.VariantToBeStoredHook;
 import net.datenwerke.rs.saiku.service.hooker.MondrianDatasourceProviderHooker;
 import net.datenwerke.rs.saiku.service.hooker.ReportExportViaSessionHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuClientConfigExposerHooker;
 import net.datenwerke.rs.saiku.service.hooker.SaikuJuelParameterAdapter;
 import net.datenwerke.rs.saiku.service.hooker.SaikuReportTypeProviderHooker;
 import net.datenwerke.rs.saiku.service.hooker.VariantCreatedAdjustSaikuQueryHooker;
+import net.datenwerke.rs.saiku.service.hooker.VariantStoreHooker;
 import net.datenwerke.rs.saiku.service.hooks.SaikuQueryParameterAdapterHook;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.BaseSaikuOutputGeneratorProvider;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.hookers.SaikuReportEngineProviderHooker;
@@ -27,7 +29,7 @@ public class SaikuStartup {
    public SaikuStartup(HookHandlerService hookHandler, MondrianDatasourceProviderHooker mondrianDatasourceProvider,
          SaikuReportEngineProviderHooker saikuReportEngineProviderHooker,
          ReportExportViaSessionHooker reportExportViaSessionHooker,
-
+         VariantStoreHooker variantStoreHooker, 
          SaikuReportTypeProviderHooker saikuReportTypeProviderHooker,
          VariantCreatedAdjustSaikuQueryHooker adjustSaikuQueryHooker,
 
@@ -41,6 +43,7 @@ public class SaikuStartup {
       hookHandler.attachHooker(DatasourceProviderHook.class, mondrianDatasourceProvider);
       hookHandler.attachHooker(ReportExportViaSessionHook.class, reportExportViaSessionHooker);
       hookHandler.attachHooker(VariantCreatorHook.class, adjustSaikuQueryHooker);
+      hookHandler.attachHooker(VariantToBeStoredHook.class, variantStoreHooker);
 
       hookHandler.attachHooker(ReportTypeProviderHook.class, saikuReportTypeProviderHooker);
 
@@ -53,3 +56,4 @@ public class SaikuStartup {
             HookHandlerService.PRIORITY_LOW);
    }
 }
+

@@ -57,12 +57,11 @@ import org.xml.sax.InputSource;
 import com.google.inject.Provider;
 
 import mondrian.olap.CacheControl;
+import mondrian.olap4j.MondrianOlap4jDriver;
 import mondrian.olap4j.SaikuMondrianHelper;
 import mondrian.rolap.RolapConnection;
-import mondrian.rolap.RolapSchema;
-import mondrian.rolap.RolapSchema.MondrianSchemaException;
 import mondrian.rolap.RolapConnectionProperties;
-import mondrian.olap4j.MondrianOlap4jDriver;
+import mondrian.rolap.RolapSchema;
 import net.datenwerke.dbpool.JdbcService;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.adminutils.client.datasourcetester.ConnectionTestFailedException;
@@ -100,17 +99,15 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    private final Provider<ParameterSetFactory> parameterSetFactory;
 
-   private final Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService;
 
    @Inject
    public OlapUtilServiceImpl(HookHandlerService hookHandlerService, JdbcService jdbcService,
-         Provider<ParameterSetFactory> parameterSetFactory, Provider<AuthenticatorService> authenticatorService,
-         Provider<net.datenwerke.rs.legacysaiku.service.saiku.OlapUtilService> oldOlapUtilService) {
+         Provider<ParameterSetFactory> parameterSetFactory, Provider<AuthenticatorService> authenticatorService
+         ) {
       this.hookHandlerService = hookHandlerService;
       this.jdbcService = jdbcService;
       this.parameterSetFactory = parameterSetFactory;
       this.authenticatorService = authenticatorService;
-      this.oldOlapUtilService = oldOlapUtilService;
    }
 
    @Override
@@ -146,9 +143,6 @@ public class OlapUtilServiceImpl implements OlapUtilService {
    @Override
    public List<String> getCubes(final MondrianDatasource datasource, final SaikuReport report)
          throws ClassNotFoundException, IOException, SQLException {
-      if (datasource.isMondrian3())
-         return oldOlapUtilService.get().getCubes(datasource, report);
-
       return getOlapConnection(datasource, report, false).getOlapSchema().getCubes().stream().map(Cube::getName)
             .collect(toList());
    }
@@ -576,10 +570,6 @@ public class OlapUtilServiceImpl implements OlapUtilService {
       if (report instanceof SaikuReport) {
 
          MondrianDatasource mondrianDatasource = (MondrianDatasource) report.getDatasourceContainer().getDatasource();
-         if (mondrianDatasource.isMondrian3()) {
-            oldOlapUtilService.get().flushCache(report);
-            return;
-         }
 
          try {
             final OlapConnection con = getOlapConnection((SaikuReport) report);
@@ -601,12 +591,6 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    @Override
    public void flushCache(MondrianDatasource datasource) {
-
-      if (datasource.isMondrian3()) {
-         oldOlapUtilService.get().flushCache(datasource);
-         return;
-      }
-
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
          final RolapConnection rolapConnection = con.unwrap(mondrian.rolap.RolapConnection.class);
@@ -614,9 +598,6 @@ public class OlapUtilServiceImpl implements OlapUtilService {
          final CacheControl cacheControl = rolapConnection.getCacheControl(null);
 
          Arrays.stream(rolapSchema.getCubes()).map(mondrian.olap.Cube::getSchema).forEach(cacheControl::flushSchema);
-
-      } catch (MondrianSchemaException e) {
-         // the cache cannot be flush with $!{params} causing an invalid syntax
       } catch (Exception e) {
          throw new RuntimeException(e);
       }
@@ -624,10 +605,6 @@ public class OlapUtilServiceImpl implements OlapUtilService {
 
    @Override
    public boolean testConnection(MondrianDatasource datasource) throws ConnectionTestFailedException {
-
-      if (datasource.isMondrian3())
-         return oldOlapUtilService.get().testConnection(datasource);
-
       try {
          final OlapConnection con = getOlapConnection(datasource, null, true);
          con.unwrap(mondrian.rolap.RolapConnection.class).getSchema();

@@ -16,7 +16,6 @@ public class JerseyConfig extends ResourceConfig {
       register(new RestInterceptorBinder());
       packages(
             "net.datenwerke.rs.saiku.server.rest", 
-            "net.datenwerke.rs.legacysaiku.server.rest",
             "net.datenwerke.rs.rest");
 
       GuiceBridge.getGuiceBridge().initializeGuiceBridge(locator);

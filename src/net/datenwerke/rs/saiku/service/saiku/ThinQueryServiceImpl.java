@@ -103,7 +103,7 @@ import com.google.inject.Inject;
 import com.google.inject.OutOfScopeException;
 import com.google.inject.ProvisionException;
 
-import mondrian9.olap4j.SaikuMondrianHelper;
+import mondrian.olap4j.SaikuMondrianHelper;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;

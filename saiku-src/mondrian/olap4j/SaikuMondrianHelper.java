@@ -127,35 +127,21 @@ public class SaikuMondrianHelper {
 		return a.containsKey(key);
 	}
 
-  	public boolean isHanger(org.olap4j.metadata.Dimension dimension){
-	  if(isMondrian(dimension)){
-		RolapCubeDimension dim = (RolapCubeDimension) dimension;
-		return DimensionLookup.getHanger(dim);
-	  }
-		return false;
+	// infofabrik start
+	public boolean isHanger(org.olap4j.metadata.Dimension dimension){
+  	   return false; // dont use hanging dimensions
+    }
+
+	public static String getMeasureGroup(Measure measure){
+	   return ""; // dont use any measure groups
 	}
 
-  public static String getMeasureGroup(Measure measure){
-	if(isMondrian(measure)){
-	  MondrianOlap4jMeasure	m = (MondrianOlap4jMeasure) measure;
+	private static boolean isHanger(RolapCubeDimension dimension){
+	   return false; // dont use hanging dimensions
 
-	  try {
-		return ((RolapBaseCubeMeasure) m.member).getMeasureGroup().getName();
-	  }
-	  catch(Exception e){
-		return "";
-	  }
-	  catch(Error e2){
-		return "";
-	  }
 	}
-	return null;
-  }
-
-  private static boolean isHanger(RolapCubeDimension dimension){
-	  return DimensionLookup.getHanger(dimension);
-
-  }
+	// infofabrik end
+	
 	public  static ResultSet getSQLMemberLookup(OlapConnection con, String annotation, Level level, String search) throws SQLException {
 		if (hasAnnotation(level, annotation)) {
 			Map<String, Annotation> ann = getAnnotations(level);
@@ -224,6 +210,14 @@ return null;
 //					
 //		}
 //	}
+
+	public static OlapElement getChildLevel(Level l){
+		if(l instanceof MondrianOlap4jLevel){
+			return ((RolapCubeLevel)((MondrianOlap4jLevel) l).getOlapElement()).getChildLevel();
+
+		}
+		return null;
+	}
 
 
 }

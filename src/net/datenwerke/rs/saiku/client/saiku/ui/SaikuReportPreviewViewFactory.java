@@ -5,13 +5,12 @@ import java.util.Collection;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceContainerDto;
+import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.PreviewViewFactory;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
-import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
 import net.datenwerke.rs.saiku.client.saiku.dto.SaikuReportDto;
 
 public class SaikuReportPreviewViewFactory extends PreviewViewFactory {
@@ -34,11 +33,11 @@ public class SaikuReportPreviewViewFactory extends PreviewViewFactory {
 
    @Override
    public boolean consumes(ReportDto report) {
-      if (!(report instanceof SaikuReportDto))
-         return false;
+      if (report instanceof SaikuReportDto) {
+         return true;
+      }
 
-      DatasourceContainerDto datasourceContainer = report.getDatasourceContainer();
-      return !((MondrianDatasourceDto) datasourceContainer.getDatasource()).isMondrian3();
+      return report instanceof TableReportDto && ((TableReportDto) report).isCubeFlag();
    }
 
 }

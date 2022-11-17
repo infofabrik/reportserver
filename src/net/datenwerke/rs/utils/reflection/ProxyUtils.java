@@ -6,7 +6,7 @@ public class ProxyUtils {
 
    public static final String ENHANCED_BY_CGLIB_CLASSNAME_SNIPPET = "$$EnhancerByCGLIB$$"; //$NON-NLS-1$
    public static final String ENHANCED_BY_GUICE_CLASSNAME_SNIPPET = "$$EnhancerByGuice$$"; //$NON-NLS-1$
-   public static final String ENHANCED_BY_HIBERNATE_CLASSNAME_SNIPPET = "_$$_javassist_"; //$NON-NLS-1$
+   public static final String ENHANCED_BY_HIBERNATE_CLASSNAME_SNIPPET = "$HibernateProxy$"; //$NON-NLS-1$
 
    public boolean compareClasses(Class<?> typeA, Class<?> typeB) {
       if (null == typeA && null == typeB)

@@ -1,17 +1,18 @@
 /*
-// This software is subject to the terms of the Eclipse Public License v1.0
-// Agreement, available at the following URL:
-// http://www.eclipse.org/legal/epl-v10.html.
-// You must accept the terms of that agreement to use this software.
-//
-// Copyright (C) 2005-2013 Pentaho
-// All Rights Reserved.
+* This software is subject to the terms of the Eclipse Public License v1.0
+* Agreement, available at the following URL:
+* http://www.eclipse.org/legal/epl-v10.html.
+* You must accept the terms of that agreement to use this software.
+*
+* Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
 */
+
 package mondrian.udf;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
 import org.apache.commons.math3.exception.OutOfRangeException;
-import org.apache.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import mondrian.olap.Evaluator;
 import mondrian.olap.Syntax;
@@ -42,7 +43,7 @@ import mondrian.spi.UserDefinedFunction;
  */
 public class InverseNormalUdf implements UserDefinedFunction {
     private static final Logger LOGGER =
-        Logger.getLogger(InverseNormalUdf.class);
+        LogManager.getLogger(InverseNormalUdf.class);
 
 
     // the zero arg constructor sets the mean equal to zero and standard
