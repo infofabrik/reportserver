@@ -116,11 +116,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/qdox-1.12.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-1.4.01.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.71.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.71.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.71.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcprov-jdk18on-1.71.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/bcutil-jdk18on-1.71.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/slf4j-api-1.7.36.jar"/>
@@ -248,5 +243,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-9.4.0.0-281.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/opencsv-5.7.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.39.4.0.jar"/>
+	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/bcmail-jdk18on-1.72.jar"/>
+	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/bcpg-jdk18on-1.72.jar"/>
+	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/bcpkix-jdk18on-1.72.jar"/>
+	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/bcprov-jdk18on-1.72.jar"/>
+	<classpathentry kind="lib" path="/ReportServer/war/WEB-INF/lib/bcutil-jdk18on-1.72.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
