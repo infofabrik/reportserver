@@ -1,11 +1,11 @@
 package net.datenwerke.rs.utils.localization;
 
+import static net.bytebuddy.matcher.ElementMatchers.isAbstract;
+import static net.bytebuddy.matcher.ElementMatchers.returns;
+
 import java.io.InputStream;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
-import java.text.MessageFormat;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -19,15 +19,14 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.bytebuddy.ByteBuddy;
+import net.bytebuddy.implementation.MethodDelegation;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.utils.localization.annotations.AvailableLocales;
 import net.datenwerke.rs.utils.localization.annotations.CurrentLocale;
 import net.datenwerke.rs.utils.localization.annotations.DefaultLocale;
 import net.datenwerke.rs.utils.localization.hooks.LocaleChangedNotificationHook;
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.MethodInterceptor;
-import net.sf.cglib.proxy.MethodProxy;
 
 /**
  * Offers localization similar to the default GWT i18n implementation, but on
@@ -65,18 +64,21 @@ public class LocalizationServiceImpl implements Serializable {
    private static Provider<I18nToolsService> i18nToolsServiceProvider;
 
    /**
-    * Caches instanzes of Messages
+    * Caches instances of Messages
     */
    private static HashMap<Class<? extends Messages>, Messages> cache = new HashMap<Class<? extends Messages>, Messages>();
 
    /**
     * Retrieves (and creates) an implementation of the supplied Message interface,
-    * where all methods are implemented to return the values speciefied in the
-    * current locales propterty file
+    * where all methods are implemented to return the values specified in the
+    * current locales property file
     */
    public static <T extends Messages> T getMessages(Class<T> msgInterface) {
       if (!cache.containsKey(msgInterface))
-         cache.put(msgInterface, createMessages(msgInterface, null));
+         try {
+            cache.put(msgInterface, createMessages(msgInterface, null));
+         } catch (InstantiationException | IllegalAccessException e) {
+         }
 
       return (T) cache.get(msgInterface);
    }
@@ -91,18 +93,18 @@ public class LocalizationServiceImpl implements Serializable {
    }
 
    public static <T extends Messages> String getMessage(Class<T> msgInterface, String msg) {
-      if (!cache.containsKey(msgInterface))
-         cache.put(msgInterface, createMessages(msgInterface, null));
-
-      T msgInstance = (T) cache.get(msgInterface);
-
       try {
+         if (!cache.containsKey(msgInterface))
+            cache.put(msgInterface, createMessages(msgInterface, null));
+
+         T msgInstance = (T) cache.get(msgInterface);
          return (String) msgInstance.getClass().getMethod(msg).invoke(msgInstance);
       } catch (SecurityException e) {
       } catch (NoSuchMethodException e) {
       } catch (IllegalArgumentException e) {
       } catch (IllegalAccessException e) {
       } catch (InvocationTargetException e) {
+      } catch (InstantiationException e) {
       }
 
       return "";
@@ -114,55 +116,23 @@ public class LocalizationServiceImpl implements Serializable {
     * 
     * @param <T>
     * @param msgInterface
+    * @throws IllegalAccessException 
+    * @throws InstantiationException 
     */
    @SuppressWarnings("unchecked")
    public static <T extends Messages> T createMessages(final Class<T> msgInterface,
-         final Map<String, ? extends Map> xmappings) {
-      /* default */
-      Enhancer enhancer = new Enhancer();
-      enhancer.setInterfaces(new Class[] { msgInterface, Messages.class });
-      enhancer.setCallback(new MethodInterceptor() {
-
-         private Map<String, ? extends Map> mappings = xmappings;
-
-         public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) throws Throwable {
-
-            /* load mapping */
-            if (null == mappings)
-               mappings = getMappings(msgInterface);
-
-            if (!Modifier.isAbstract(method.getModifiers()))
-               return proxy.invokeSuper(proxy, args);
-            else {
-               Class<?> type = method.getReturnType();
-               String key = method.getName();
-
-               /* try to find locale */
-               String locale = DEFAULT_KEY.get();
-               try {
-                  /* override with different local */
-                  String userLocale = currentLocaleProvider.get();
-                  if (null != userLocale && !"".equals(userLocale))
-                     locale = userLocale;
-               } catch (Exception e) {
-                  // swallow
-               }
-
-               if (type.equals(String.class)) {
-                  if (args.length == 0) {
-                     return getMapping(mappings, locale, key, obj);
-                  } else {
-                     String template = getMapping(mappings, locale, key, obj);
-                     return MessageFormat.format(template, args);
-                  }
-               } else {
-                  return null;
-               }
-            }
-         }
-      });
-
-      return (T) enhancer.create();
+         final Map<String, ? extends Map> xmappings) throws InstantiationException, IllegalAccessException {
+      Class<?> dynamicType = new ByteBuddy()
+            .subclass(Object.class)
+            .implement(msgInterface)
+            .method(isAbstract()
+                  .and(returns(String.class)))
+            .intercept(MethodDelegation.to(new LocalizationInterceptor(xmappings)))
+            .make()
+            .load(LocalizationServiceImpl.class.getClassLoader())
+            .getLoaded();
+           
+      return (T) dynamicType.newInstance();
    }
 
    protected static String getMapping(Map<String, ? extends Map> mappings, String locale, String key, Object obj) {
@@ -187,13 +157,13 @@ public class LocalizationServiceImpl implements Serializable {
     * 
     * @param msgInterface
     */
-   protected static Map<String, Properties> getMappings(Class<?> msgInterface) {
+   protected static Map<String, Properties> getMappings(final Class<?> msgInterface) {
       /* load mapping */
-      Map<String, Properties> mapping = new HashMap<String, Properties>();
+      final Map<String, Properties> mapping = new HashMap<>();
 
       /* add locales */
-      for (String locale : getAvailableLocales())
-         addToMapping(msgInterface, locale, mapping);
+      getAvailableLocales()
+         .forEach(locale -> addToMapping(msgInterface, locale, mapping));
 
       return mapping;
    }
@@ -271,5 +241,5 @@ public class LocalizationServiceImpl implements Serializable {
    public String getUserTimezone() {
       return userLocale.get().getUserTimezone();
    }
-
+   
 }

@@ -50,7 +50,7 @@ import net.datenwerke.security.service.usermanager.UserPropertiesService;
  * <h2>3rd-Party</h2>
  * <ul>
  * <li><a href="http://code.google.com/p/google-guice/">Google Guice</a></li>
- * <li><a href="http://cglib.sourceforge.net/">CGLib</a></li>
+ * <li><a href="https://bytebuddy.net/">ByteBuddy</a></li>
  * <li><a href="http://code.google.com/intl/de-DE/webtoolkit/">Google
  * GWT</a></li>
  * </ul>

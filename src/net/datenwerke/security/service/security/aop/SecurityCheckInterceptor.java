@@ -56,7 +56,7 @@ public class SecurityCheckInterceptor implements MethodInterceptor {
    private DtoService dtoGenerator;
 
    @Inject
-   private ProxyUtils cgLibUtils;
+   private ProxyUtils proxyUtils;
 
    @Inject
    private Injector injector;
@@ -431,7 +431,7 @@ public class SecurityCheckInterceptor implements MethodInterceptor {
    }
 
    private boolean isInheritedMethod(Class<?> declaringClass, Class<?> targetClass) {
-      if (cgLibUtils.compareClasses(declaringClass, targetClass))
+      if (proxyUtils.compareClasses(declaringClass, targetClass))
          return false;
       return declaringClass.isAssignableFrom(targetClass);
    }
