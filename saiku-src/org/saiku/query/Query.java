@@ -186,16 +186,16 @@ public class Query
         return this.axes;
     }
     
-    public CalculatedMember createCalculatedMember(final QueryHierarchy hierarchy, final String name, final String formula, final Map<Property, Object> properties, final boolean mondrian3) {
+    public CalculatedMember createCalculatedMember(final QueryHierarchy hierarchy, final String name, final String formula, final Map<Property, Object> properties) {
         final Hierarchy h = hierarchy.getHierarchy();
-        final CalculatedMember cm = new CalculatedMember(h.getDimension(), h, name, name, null, Member.Type.FORMULA, formula, null, mondrian3);
+        final CalculatedMember cm = new CalculatedMember(h.getDimension(), h, name, name, null, Member.Type.FORMULA, formula, null);
         this.addCalculatedMember(hierarchy, cm);
         return cm;
     }
     
-    public CalculatedMember createCalculatedMember(final QueryHierarchy hierarchy, final Member parentMember, final String name, final String formula, final Map<Property, Object> properties, final boolean mondrian3) {
+    public CalculatedMember createCalculatedMember(final QueryHierarchy hierarchy, final Member parentMember, final String name, final String formula, final Map<Property, Object> properties) {
         final Hierarchy h = hierarchy.getHierarchy();
-        final CalculatedMember cm = new CalculatedMember(h.getDimension(), h, name, name, parentMember, Member.Type.FORMULA, formula, null, mondrian3);
+        final CalculatedMember cm = new CalculatedMember(h.getDimension(), h, name, name, parentMember, Member.Type.FORMULA, formula, null);
         this.addCalculatedMember(hierarchy, cm);
         return cm;
     }

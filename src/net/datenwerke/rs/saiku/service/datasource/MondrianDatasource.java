@@ -44,9 +44,6 @@ public class MondrianDatasource extends DatasourceDefinition {
    @ExposeToClient
    private String username;
 
-   @ExposeToClient(view = DtoView.MINIMAL)
-   private boolean mondrian3;
-
    @ExposeToClient(exposeValueToClient = false, mergeDtoValueBack = true)
    private String password;
 
@@ -72,14 +69,6 @@ public class MondrianDatasource extends DatasourceDefinition {
 
    public void setUrl(String url) {
       this.url = url;
-   }
-
-   public boolean isMondrian3() {
-      return mondrian3;
-   }
-
-   public void setMondrian3(boolean mondrian3) {
-      this.mondrian3 = mondrian3;
    }
 
    public String getUsername() {

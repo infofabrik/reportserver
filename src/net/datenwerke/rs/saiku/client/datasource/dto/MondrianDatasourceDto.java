@@ -31,42 +31,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 
 
 	/* Fields */
-	private boolean mondrian3;
-	private  boolean mondrian3_m;
-	public static final String PROPERTY_MONDRIAN3 = "dpi-mondriandatasource-mondrian3";
-
-	private transient static PropertyAccessor<MondrianDatasourceDto, Boolean> mondrian3_pa = new PropertyAccessor<MondrianDatasourceDto, Boolean>() {
-		@Override
-		public void setValue(MondrianDatasourceDto container, Boolean object) {
-			container.setMondrian3(object);
-		}
-
-		@Override
-		public Boolean getValue(MondrianDatasourceDto container) {
-			return container.isMondrian3();
-		}
-
-		@Override
-		public Class<?> getType() {
-			return Boolean.class;
-		}
-
-		@Override
-		public String getPath() {
-			return "mondrian3";
-		}
-
-		@Override
-		public void setModified(MondrianDatasourceDto container, boolean modified) {
-			container.mondrian3_m = modified;
-		}
-
-		@Override
-		public boolean isModified(MondrianDatasourceDto container) {
-			return container.isMondrian3Modified();
-		}
-	};
-
 	private String mondrianSchema;
 	private  boolean mondrianSchema_m;
 	public static final String PROPERTY_MONDRIAN_SCHEMA = "dpi-mondriandatasource-mondrianschema";
@@ -287,55 +251,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 	public MondrianDatasourceDto() {
 		super();
 	}
-
-	public boolean isMondrian3()  {
-		if(! isDtoProxy()){
-			return this.mondrian3;
-		}
-
-		if(isMondrian3Modified())
-			return this.mondrian3;
-
-		if(! GWT.isClient())
-			return false;
-
-		boolean _value = dtoManager.getProperty(this, instantiatePropertyAccess().mondrian3());
-
-		return _value;
-	}
-
-
-	public void setMondrian3(boolean mondrian3)  {
-		/* old value */
-		boolean oldValue = false;
-		if(GWT.isClient())
-			oldValue = isMondrian3();
-
-		/* set new value */
-		this.mondrian3 = mondrian3;
-
-		if(! GWT.isClient())
-			return;
-
-		if(isTrackChanges())
-			addChange(new ChangeTracker(mondrian3_pa, oldValue, mondrian3, this.mondrian3_m));
-
-		/* set indicator */
-		this.mondrian3_m = true;
-
-		this.fireObjectChangedEvent(MondrianDatasourceDtoPA.INSTANCE.mondrian3(), oldValue);
-	}
-
-
-	public boolean isMondrian3Modified()  {
-		return mondrian3_m;
-	}
-
-
-	public static PropertyAccessor<MondrianDatasourceDto, Boolean> getMondrian3PropertyAccessor()  {
-		return mondrian3_pa;
-	}
-
 
 	public String getMondrianSchema()  {
 		if(! isDtoProxy()){
@@ -673,8 +588,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 	}
 
 	public void clearModified()  {
-		this.mondrian3 = false;
-		this.mondrian3_m = false;
 		this.mondrianSchema = null;
 		this.mondrianSchema_m = false;
 		this.password = null;
@@ -692,8 +605,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 
 	public boolean isModified()  {
 		if(super.isModified())
-			return true;
-		if(mondrian3_m)
 			return true;
 		if(mondrianSchema_m)
 			return true;
@@ -713,7 +624,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 
 	public List<PropertyAccessor> getPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getPropertyAccessors();
-		list.add(mondrian3_pa);
 		list.add(mondrianSchema_pa);
 		list.add(password_pa);
 		list.add(properties_pa);
@@ -726,8 +636,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 
 	public List<PropertyAccessor> getModifiedPropertyAccessors()  {
 		List<PropertyAccessor> list = super.getModifiedPropertyAccessors();
-		if(mondrian3_m)
-			list.add(mondrian3_pa);
 		if(mondrianSchema_m)
 			list.add(mondrianSchema_pa);
 		if(password_m)
@@ -747,7 +655,6 @@ public class MondrianDatasourceDto extends DatasourceDefinitionDto {
 	public List<PropertyAccessor> getPropertyAccessorsByView(net.datenwerke.gxtdto.client.dtomanager.DtoView view)  {
 		List<PropertyAccessor> list = super.getPropertyAccessorsByView(view);
 		if(view.compareTo(DtoView.MINIMAL) >= 0){
-			list.add(mondrian3_pa);
 			list.add(hasPassword_pa);
 		}
 		if(view.compareTo(DtoView.NORMAL) >= 0){

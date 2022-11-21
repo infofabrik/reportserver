@@ -113,12 +113,6 @@ public class Dto2MondrianDatasourceGenerator implements Dto2PosoGenerator<Mondri
 		} catch(NullPointerException e){
 		}
 
-		/*  set mondrian3 */
-		try{
-			poso.setMondrian3(dto.isMondrian3() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set mondrianSchema */
 		poso.setMondrianSchema(dto.getMondrianSchema() );
 
@@ -149,14 +143,6 @@ public class Dto2MondrianDatasourceGenerator implements Dto2PosoGenerator<Mondri
 		if(dto.isFlagsModified()){
 			try{
 				poso.setFlags(dto.getFlags() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set mondrian3 */
-		if(dto.isMondrian3Modified()){
-			try{
-				poso.setMondrian3(dto.isMondrian3() );
 			} catch(NullPointerException e){
 			}
 		}
@@ -210,12 +196,6 @@ public class Dto2MondrianDatasourceGenerator implements Dto2PosoGenerator<Mondri
 		} catch(NullPointerException e){
 		}
 
-		/*  set mondrian3 */
-		try{
-			poso.setMondrian3(dto.isMondrian3() );
-		} catch(NullPointerException e){
-		}
-
 		/*  set mondrianSchema */
 		poso.setMondrianSchema(dto.getMondrianSchema() );
 
@@ -246,14 +226,6 @@ public class Dto2MondrianDatasourceGenerator implements Dto2PosoGenerator<Mondri
 		if(dto.isFlagsModified()){
 			try{
 				poso.setFlags(dto.getFlags() );
-			} catch(NullPointerException e){
-			}
-		}
-
-		/*  set mondrian3 */
-		if(dto.isMondrian3Modified()){
-			try{
-				poso.setMondrian3(dto.isMondrian3() );
 			} catch(NullPointerException e){
 			}
 		}

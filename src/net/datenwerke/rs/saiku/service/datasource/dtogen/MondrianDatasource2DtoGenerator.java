@@ -60,9 +60,6 @@ public class MondrianDatasource2DtoGenerator implements Poso2DtoGenerator<Mondri
 			/*  set id */
 			dto.setId(poso.getId() );
 
-			/*  set mondrian3 */
-			dto.setMondrian3(poso.isMondrian3() );
-
 			/*  set name */
 			dto.setName(StringEscapeUtils.escapeXml(StringUtils.left(poso.getName(),8192)));
 

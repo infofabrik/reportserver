@@ -37,8 +37,8 @@ public class CalculatedMember implements Member, Named, Calculated
     private String description;
     private Level level;
     
-    public CalculatedMember(final Dimension dimension, final Hierarchy hierarchy, final String name, final String description, final Member parentMember, final Member.Type memberType, final String formula, final Map<String, String> properties, final String l, final boolean mondrian3) {
-        this(dimension, hierarchy, name, description, parentMember, memberType, formula, properties, mondrian3);
+    public CalculatedMember(final Dimension dimension, final Hierarchy hierarchy, final String name, final String description, final Member parentMember, final Member.Type memberType, final String formula, final Map<String, String> properties, final String l) {
+        this(dimension, hierarchy, name, description, parentMember, memberType, formula, properties);
         if (l != null && !l.equals("")) {
             for (final Level level : hierarchy.getLevels()) {
                 if (level.getUniqueName().equals(l)) {
@@ -51,7 +51,7 @@ public class CalculatedMember implements Member, Named, Calculated
         }
     }
     
-    public CalculatedMember(final Dimension dimension, final Hierarchy hierarchy, final String name, final String description, final Member parentMember, final Member.Type memberType, final String formula, final Map<String, String> properties, final boolean mondrian3) {
+    public CalculatedMember(final Dimension dimension, final Hierarchy hierarchy, final String name, final String description, final Member parentMember, final Member.Type memberType, final String formula, final Map<String, String> properties) {
         this.properties = new HashMap<String, String>();
         this.dimension = dimension;
         this.hierarchy = hierarchy;
@@ -61,12 +61,7 @@ public class CalculatedMember implements Member, Named, Calculated
         this.memberType = memberType;
         this.formula = formula;
         if (parentMember == null) {
-            if (mondrian3) {
-                this.uniqueName = IdentifierNode.ofNames(new String[] { hierarchy.getName(), name }).toString();
-            }
-            else {
-                this.uniqueName = IdentifierNode.ofNames(new String[] { hierarchy.getDimension().getName(), hierarchy.getName(), name }).toString();
-            }
+        	this.uniqueName = IdentifierNode.ofNames(new String[] { hierarchy.getName(), name }).toString();
         }
         else {
             final IdentifierNode parent = IdentifierNode.parseIdentifier(parentMember.getUniqueName());

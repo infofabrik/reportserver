@@ -24,7 +24,6 @@ public interface MondrianDatasourceDtoPA extends DatasourceDefinitionDtoPA {
 
 
 	/* Properties */
-	public ValueProvider<MondrianDatasourceDto,Boolean> mondrian3();
 	public ValueProvider<MondrianDatasourceDto,String> mondrianSchema();
 	public ValueProvider<MondrianDatasourceDto,String> password();
 	public ValueProvider<MondrianDatasourceDto,String> properties();
