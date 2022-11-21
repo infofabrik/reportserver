@@ -191,9 +191,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-java8-8.3.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.9.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.9.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.1.jar"/>
@@ -235,7 +232,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mariadb-java-client-3.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-9.4.0.0-281.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/opencsv-5.7.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.39.4.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcmail-jdk18on-1.72.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpg-jdk18on-1.72.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/bcpkix-jdk18on-1.72.jar"/>
@@ -245,5 +241,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-assistedinject-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-persist-5.1.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/guice-servlet-5.1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.39.4.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-common-2.9.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-core-2.9.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
