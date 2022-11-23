@@ -99,12 +99,7 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/picocli-4.6.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/birt-runtime-4.9.0-20220315.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-jexl3-3.2.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-events-2.7.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-util-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/qdox-1.12.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xml-apis-1.4.01.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcl-over-slf4j-1.7.36.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/log4j-over-slf4j-1.7.36.jar"/>
@@ -183,14 +178,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.css.sac-1.3.1.v200903091627.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/org.w3c.dom.smil-1.0.1.v200903091627.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/pdfbox-2.0.27.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-java8-8.3.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.4.1.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.4.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hsqldb-2.7.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/rs-schemaupdate-1.3.22.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-user-2.8.2.jar"/>
@@ -241,6 +228,18 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sshd-sftp-2.9.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/byte-buddy-1.12.19.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-compress-1.22.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/reportserverenterprise.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-2.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-events-2.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-util-2.8.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.4.2.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-java8-8.3.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlgraphics-commons-2.8.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
