@@ -75,8 +75,7 @@ public class SaikuReportEngine extends ReportEngine<Connection, SaikuOutputGener
          Cube cube = olapUtilService.getCube((SaikuReport) report);
          ThinQuery query = createQuery((SaikuReport) report, cube);
 
-         String formatterStr = query.getProperties().get("saiku.olap.result.formatter").toString();
-         ICellSetFormatter formatter = new CellSetFormatterFactory().forName(formatterStr);
+         ICellSetFormatter formatter = outputGenerator.getCellSetFormatter();
 
          CellSet cs = thinQueryService.executeInternalQuery(user, parameters, query, (SaikuReport) report, cube);
          CellDataSet cds = OlapResultSetUtil.cellSet2Matrix(cs, formatter);

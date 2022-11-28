@@ -1,5 +1,9 @@
 package net.datenwerke.rs.saiku.service.saiku.reportengine.output.generator;
 
+import org.saiku.olap.util.formatter.CellSetFormatter;
+import org.saiku.olap.util.formatter.FlattenedCellSetFormatter;
+import org.saiku.olap.util.formatter.ICellSetFormatter;
+
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
@@ -24,6 +28,13 @@ public abstract class SaikuOutputGeneratorImpl implements SaikuOutputGenerator {
    @Override
    public boolean isCatchAll() {
       return false;
+   }
+   
+   @Override
+   public ICellSetFormatter getCellSetFormatter() {
+      if (report.isHideParents())
+         return new FlattenedCellSetFormatter();
+      return new CellSetFormatter();
    }
 
    protected <R extends ReportExecutionConfig> R getConfig(Class<? extends R> type, ReportExecutionConfig... configs) {

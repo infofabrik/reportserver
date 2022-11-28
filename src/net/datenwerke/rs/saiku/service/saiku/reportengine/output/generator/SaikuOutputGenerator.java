@@ -19,6 +19,8 @@ public interface SaikuOutputGenerator extends ReportOutputGenerator {
    public CompiledRSSaikuReport exportReport(CellDataSet cellDataSet, CellSet cellset, List<ThinHierarchy> filters,
          ICellSetFormatter formatter, String outputFormat, ReportExecutionConfig... configs)
          throws ReportExecutorException;
+   
+   public ICellSetFormatter getCellSetFormatter();
 
    public void initialize(SaikuReport report, User user);
 }
