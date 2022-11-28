@@ -5,7 +5,6 @@ import java.util.Collection;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.base.client.reportengines.table.dto.TableReportDto;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanelView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
@@ -33,10 +32,7 @@ public class SaikuReportPreviewViewFactory extends PreviewViewFactory {
 
    @Override
    public boolean consumes(ReportDto report) {
-      if (!(report instanceof SaikuReportDto))
-         return false;
-
-      return report instanceof TableReportDto && ((TableReportDto) report).isCubeFlag();
+      return report instanceof SaikuReportDto;
    }
 
 }
