@@ -31,7 +31,6 @@ import net.datenwerke.rs.core.client.reportexecutor.hooks.ReportViewHook;
 import net.datenwerke.rs.core.client.reportexecutor.module.ReportExecuteAreaModule;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportExecutorMainPanel;
 import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewConfiguration;
-import net.datenwerke.rs.core.client.reportexecutor.ui.ReportViewFactory;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.AbstractReportPreviewView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.ImageReportPreviewView;
 import net.datenwerke.rs.core.client.reportexecutor.ui.preview.JsViewerReportPreviewView;
@@ -308,14 +307,14 @@ public class ReportExecutorUIServiceImpl implements ReportExecutorUIService {
    }
 
    @Override
-   public PreviewViewFactory getPreviewReportComponent(ReportDto report) {
-      for (ReportViewHook hooker : hookHandler.getHookers(ReportViewHook.class)) {
-         ReportViewFactory fact = hooker.getViewFactory();
-         if (fact instanceof PreviewViewFactory && fact.consumes(report)) {
-            return (PreviewViewFactory) fact;
-         }
-      }
-      return null;
+   public PreviewViewFactory getPreviewReportComponent(final ReportDto report) {
+      return hookHandler.getHookers(ReportViewHook.class)
+         .stream()
+         .map(ReportViewHook::getViewFactory)
+         .filter(factory -> factory instanceof PreviewViewFactory && factory.consumes(report))
+         .map(factory -> (PreviewViewFactory) factory)
+         .findAny()
+         .orElse(null);
    }
 
    @Override
