@@ -78,9 +78,11 @@ public class Fat {
 		  for (ThinCalculatedMember qcm : thinCms) {
 			  // TODO improve this
 			  String name = qcm.getHierarchyName();
+			  boolean mondrian3=false;
 			  if(SaikuMondrianHelper.getMondrianServer(q.getConnection()).getVersion().getMajorVersion()==3) {
 				  name = qcm.getHierarchyName().replaceAll("\\[", "");
 				  name = name.replaceAll("]", "");
+				  mondrian3 = true;
 			  }
 			  //Hierarchy h = q.getCube().getHierarchies().get(name);
 			  NamedList<Hierarchy> hs = q.getCube().getHierarchies();
@@ -114,7 +116,7 @@ public class Fat {
 							  parent,
 							  Member.Type.FORMULA,
 							  qcm.getFormula(),
-							  qcm.getProperties());
+							  qcm.getProperties(), mondrian3);
 
 			  q.addCalculatedMember(q.getHierarchy(h),cm);
 		  }
@@ -361,6 +363,11 @@ public class Fat {
 
 				member = q.getCube().lookupMember(nameParts);
 			}
+			boolean mondrian3 = false;
+			if(SaikuMondrianHelper.getMondrianServer(q.getConnection()).getVersion().getMajorVersion()==3) {
+
+				mondrian3 = true;
+			}
 
 			cm = new CalculatedMember(
 					q.getCube().getDimensions().get(cres.getDimension()),
@@ -370,7 +377,7 @@ public class Fat {
 					member,
 					Member.Type.FORMULA,
 					cres.getFormula(),
-					null,cres.getAssignedLevel());
+					null,cres.getAssignedLevel(), mondrian3);
 			String level = null;
 			if(cres.getAssignedLevel()!=null && !cres.getAssignedLevel().equals("")) {
 				String[] split = cres.getAssignedLevel().split("\\.\\[");

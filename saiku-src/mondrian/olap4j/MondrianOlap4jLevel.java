@@ -1,29 +1,21 @@
-/*
-* This software is subject to the terms of the Eclipse Public License v1.0
-* Agreement, available at the following URL:
-* http://www.eclipse.org/legal/epl-v10.html.
-* You must accept the terms of that agreement to use this software.
-*
-* Copyright (c) 2002-2017 Hitachi Vantara..  All rights reserved.
-*/
-
 package mondrian.olap4j;
-
-import mondrian.olap.*;
-import mondrian.rolap.RolapConnection;
-import mondrian.server.Locus;
 
 import org.olap4j.OlapException;
 import org.olap4j.impl.ArrayNamedListImpl;
 import org.olap4j.impl.Named;
-import org.olap4j.metadata.Dimension;
-import org.olap4j.metadata.Hierarchy;
-import org.olap4j.metadata.Level;
-import org.olap4j.metadata.Member;
 import org.olap4j.metadata.*;
-import org.olap4j.metadata.Property;
 
-import java.util.*;
+import java.util.AbstractList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+
+import mondrian.olap.Annotation;
+import mondrian.olap.OlapElement;
+import mondrian.olap.Role;
+import mondrian.olap.Util;
+import mondrian.rolap.RolapConnection;
+import mondrian.server.Locus;
 
 /**
  * Implementation of {@link Level}
@@ -201,12 +193,10 @@ public class MondrianOlap4jLevel
             OlapElement.LocalizedProperty.DESCRIPTION,
             olap4jSchema.getLocale());
     }
-    
-    /* infofabrik start */
+
     public Map<String, Annotation> getAnnotations(){
-       return level.getAnnotationMap();
-     }
-    /* infofabrik end */
+      return level.getAnnotationMap();
+    }
 
     public int getCardinality() {
         return level.getApproxRowCount();
