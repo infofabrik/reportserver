@@ -809,9 +809,14 @@ var CalculatedMemberModal = Modal.extend({
         else {
             format = this.$el.find('#cms-format option:selected').val();
         }
-
         if (typeof name === 'undefined' || name === '' || !name) {
             alertMsg += 'You have to enter a name for the member! ';
+        }
+        if (/[+-\/\\(){}\[\]<>!§$%&=?*#€¿&_\".,:;]/g.test(name)) {
+            alertMsg += 'You have to enter a name without special characters! ';
+        }
+        if (/^[0-9]+$/.test(name)) {
+            alertMsg += 'You have to enter a name with at least one letter ';
         }
         if (typeof formula === 'undefined' || formula === '' || !formula) {
             alertMsg += 'You have to enter a MDX formula for the calculated member! ';
