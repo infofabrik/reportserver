@@ -651,13 +651,13 @@ public class ExcelWorksheetBuilder {
         }
     }
 
-	/**
-	 * Apply exact number format to excel Cell from its DataCell. Caller checks
-	 * the DataCell rawNumber and formatString are correct.
-	 * 
-	 * @param cell The excel cell to apply formatting
-	 * @param dataCell The source
-	 */
+    /**
+     * Apply exact number format to excel Cell from its DataCell. Caller checks
+     * the DataCell rawNumber and formatString are correct.
+     * 
+     * @param cell The excel cell to apply formatting
+     * @param dataCell The source
+     */
     private void applyCellFormatting(Cell cell, DataCell dataCell) {
         /*
         * Previously, the CellStyles were being kept on a hash map for reuse,
@@ -704,9 +704,9 @@ public class ExcelWorksheetBuilder {
                     numberCSClone.setFillPattern(FillPatternType.SOLID_FOREGROUND);
 
                     ((XSSFCellStyle) numberCSClone).setFillForegroundColor(
-                            new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
+                          new XSSFColor(new byte[] { (byte)redCode, (byte) greenCode, (byte) blueCode}));
                     ((XSSFCellStyle) numberCSClone).setFillBackgroundColor(
-                            new XSSFColor(new java.awt.Color(redCode, greenCode, blueCode)));
+                          new XSSFColor(new byte[] { (byte)redCode, (byte) greenCode, (byte) blueCode}));
                 } catch (Exception e) {
                     // we tried to set the color, no luck, lets continue
                     // without

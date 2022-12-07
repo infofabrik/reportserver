@@ -23,15 +23,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.converter.AbstractExcelConverter;
+import org.apache.poi.hssf.converter.AbstractExcelUtils;
 import org.apache.poi.hssf.converter.ExcelToHtmlConverter;
-import org.apache.poi.hssf.converter.ExcelToHtmlUtils;
 import org.apache.poi.hwpf.converter.HtmlDocumentFacade;
 import org.apache.poi.ss.formula.eval.ErrorEval;
 import org.apache.poi.ss.usermodel.BorderStyle;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.util.CellRangeAddress;
-import org.apache.poi.util.POILogFactory;
-import org.apache.poi.util.POILogger;
 import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFCellStyle;
 import org.apache.poi.xssf.usermodel.XSSFColor;
@@ -40,6 +38,8 @@ import org.apache.poi.xssf.usermodel.XSSFRichTextString;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Text;
@@ -51,7 +51,7 @@ import org.w3c.dom.Text;
 public class XlsxToHtmlConverter extends AbstractExcelConverter {
    static final String EMPTY = "";
 
-   private static final POILogger logger = POILogFactory.getLogger(ExcelToHtmlConverter.class);
+   private final Logger logger = LoggerFactory.getLogger(ExcelToHtmlConverter.class);
 
    private String cssClassContainerCell = null;
 
@@ -83,7 +83,7 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
       StringBuilder style = new StringBuilder();
 
       style.append("white-space:pre-wrap;");
-      ExcelToHtmlUtils.appendAlign(style, cellStyle.getAlignment());
+      AbstractExcelUtils.appendAlign(style, cellStyle.getAlignment());
 
       if (cellStyle.getFillPattern() == FillPatternType.NO_FILL) {
          // no fill
@@ -114,9 +114,9 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
          return;
 
       StringBuilder borderStyle = new StringBuilder();
-      borderStyle.append(ExcelToHtmlUtils.getBorderWidth(xlsBorder));
+      borderStyle.append(AbstractExcelUtils.getBorderWidth(xlsBorder));
       borderStyle.append(' ');
-      borderStyle.append(ExcelToHtmlUtils.getBorderStyle(xlsBorder));
+      borderStyle.append(AbstractExcelUtils.getBorderStyle(xlsBorder));
 
       style.append("border-" + type + ":" + borderStyle + ";");
    }
@@ -206,7 +206,7 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
             value = ErrorEval.getText(cell.getErrorCellValue());
             break;
          default:
-            logger.log(POILogger.WARN,
+            logger.warn(
                   "Unexpected cell cachedFormulaResultType (" + cell.getCachedFormulaResultType() + ")");
             value = EMPTY;
             break;
@@ -225,7 +225,7 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
          value = ErrorEval.getText(cell.getErrorCellValue());
          break;
       default:
-         logger.log(POILogger.WARN, "Unexpected cell type (" + cell.getCellType() + ")");
+         logger.warn("Unexpected cell type (" + cell.getCellType() + ")");
          return true;
       }
 
@@ -284,7 +284,7 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
          innerDivStyle.append("overflow:hidden;max-height:");
          innerDivStyle.append(normalHeightPt);
          innerDivStyle.append("pt;white-space:nowrap;");
-         ExcelToHtmlUtils.appendAlign(innerDivStyle, cellStyle.getAlignment());
+         AbstractExcelUtils.appendAlign(innerDivStyle, cellStyle.getAlignment());
          htmlDocumentFacade.addStyleClass(outerDiv, cssClassPrefixDiv, innerDivStyle.toString());
 
          innerDiv.appendChild(text);
@@ -363,7 +363,7 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
          if (!isOutputHiddenColumns() && sheet.isColumnHidden(colIx))
             continue;
 
-         CellRangeAddress range = ExcelToHtmlUtils.getMergedRange(mergedRanges, row.getRowNum(), colIx);
+         CellRangeAddress range = AbstractExcelUtils.getMergedRange(mergedRanges, row.getRowNum(), colIx);
 
          if (range != null && (range.getFirstColumn() != colIx || range.getFirstRow() != row.getRowNum()))
             continue;
@@ -547,11 +547,11 @@ public class XlsxToHtmlConverter extends AbstractExcelConverter {
    }
 
    protected static int getColumnWidth(XSSFSheet sheet, int columnIndex) {
-      return ExcelToHtmlUtils.getColumnWidthInPx(sheet.getColumnWidth(columnIndex));
+      return AbstractExcelUtils.getColumnWidthInPx(sheet.getColumnWidth(columnIndex));
    }
 
    protected static int getDefaultColumnWidth(XSSFSheet sheet) {
-      return ExcelToHtmlUtils.getColumnWidthInPx(sheet.getDefaultColumnWidth());
+      return AbstractExcelUtils.getColumnWidthInPx(sheet.getDefaultColumnWidth());
    }
 
    public static CellRangeAddress[][] buildMergedRangesMap(XSSFSheet sheet) {
