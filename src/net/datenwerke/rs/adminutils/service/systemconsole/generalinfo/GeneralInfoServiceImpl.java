@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import eu.bitwalker.useragentutils.UserAgent;
-import eu.bitwalker.useragentutils.Version;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
@@ -69,23 +67,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getBrowserName() {
+   public String getUserAgent() {
       HttpServletRequest request = servletRequestProvider.get();
-      UserAgent agent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
-      String browserName = agent.getBrowser().getGroup().toString();
-      if (null != browserName)
-         browserName = browserName.substring(0, 1).toUpperCase() + browserName.substring(1).toLowerCase();
-      return browserName;
-   }
-
-   @Override
-   public String getBrowserVersion() {
-      HttpServletRequest request = servletRequestProvider.get();
-      UserAgent agent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
-      Version version = agent.getBrowserVersion();
-      if (null == version)
-         return null;
-      return version.getVersion();
+      return request.getHeader("User-Agent");
    }
 
    @Override
@@ -109,8 +93,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setApplicationServer(getApplicationServer());
       info.setMaxMemory(NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB");
       info.setOsVersion(getOsVersion());
-      info.setBrowserName(getBrowserName());
-      info.setBrowserVersion(getBrowserVersion());
+      info.setUserAgent(getUserAgent());
       info.setLocale(getLocale());
       info.setJvmLocale(getJvmLocale());
 

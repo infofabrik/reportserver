@@ -76,8 +76,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Locale", generalInfoService.getLocale()));
       table.addDataRow(new RSStringTableRow("JVM Locale", generalInfoService.getJvmLocale()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
-      table.addDataRow(new RSStringTableRow("Browser", generalInfoService.getBrowserName()));
-      table.addDataRow(new RSStringTableRow("Browser version", generalInfoService.getBrowserVersion()));
+      table.addDataRow(new RSStringTableRow("User Agent", generalInfoService.getUserAgent()));
 
       result.addResultTable(table);
       try {

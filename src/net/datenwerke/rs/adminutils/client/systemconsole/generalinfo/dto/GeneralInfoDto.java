@@ -15,8 +15,7 @@ public class GeneralInfoDto implements Serializable {
    private String applicationServer;
    private String maxMemory;
    private String osVersion;
-   private String browserName;
-   private String browserVersion;
+   private String userAgent;
    private String locale;
    private String jvmLocale;
    
@@ -50,12 +49,12 @@ public class GeneralInfoDto implements Serializable {
       this.jvmLocale = jvmLocale;
    }
    
-   public String getBrowserName() {
-      return browserName;
+   public String getUserAgent() {
+      return userAgent;
    }
 
-   public void setBrowserName(String name) {
-      this.browserName = name;
+   public void setUserAgent(String userAgent) {
+      this.userAgent = userAgent;
    }
 
    public String getOsVersion() {
@@ -106,14 +105,6 @@ public class GeneralInfoDto implements Serializable {
       this.rsVersion = rsVersion;
    }
 
-   public String getBrowserVersion() {
-      return browserVersion;
-   }
-
-   public void setBrowserVersion(String browserVersion) {
-      this.browserVersion = browserVersion;
-   }
-   
    public String getInternalDbId() {
       return internalDbId;
    }

@@ -96,8 +96,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.forEach((value, description) -> addFieldToForm(value, description, form));
 
       Map<Optional<String>, String> browserInfo = new LinkedHashMap<>();
-      browserInfo.put(Optional.of(result.getBrowserName()), SystemConsoleMessages.INSTANCE.browserNameLabel());
-      browserInfo.put(Optional.of(result.getBrowserVersion()), SystemConsoleMessages.INSTANCE.browserVersionLabel());
+      browserInfo.put(Optional.of(result.getUserAgent()), SystemConsoleMessages.INSTANCE.userAgentLabel());
       browserInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.addField(Separator.class, new SFFCSpace());

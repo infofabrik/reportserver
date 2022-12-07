@@ -23,9 +23,7 @@ public interface SystemConsoleMessages extends Messages {
 
    public String operationSystemLabel();
 
-   public String browserNameLabel();
-
-   public String browserVersionLabel();
+   public String userAgentLabel();
 
    public String jvmLiveMemory();
 

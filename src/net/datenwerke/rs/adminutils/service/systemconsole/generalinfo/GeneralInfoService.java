@@ -12,9 +12,7 @@ public interface GeneralInfoService {
 
    String getOsVersion();
 
-   String getBrowserName();
-
-   String getBrowserVersion();
+   String getUserAgent();
 
    String getRsVersion();
    
