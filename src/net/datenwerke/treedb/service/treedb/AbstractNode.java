@@ -332,14 +332,18 @@ public abstract class AbstractNode<N extends AbstractNode<N>> implements Seriali
       addChild(child, children.size() + 1);
    }
 
-   final public void addChild(N child, int position) {
+   final public void addChild(N childObj, int position) {
+      N child = childObj;
+      if (childObj instanceof HibernateProxy)
+         childObj = (N) ((HibernateProxy) childObj).getHibernateLazyInitializer().getImplementation();
+      
       /* make sure child is not denied */
       boolean foundInListOfDeniedChildren = false;
       for (Class<?> potentialChild : getDeniedChildren()) {
          try {
             potentialChild.cast(child);
             if (foundInListOfDeniedChildren)
-               throw new UnsupportedChildException(this.getClass(), child.getClass());
+               throw new UnsupportedChildException(this, child);
          } catch (ClassCastException e) {
          }
       }
@@ -355,7 +359,7 @@ public abstract class AbstractNode<N extends AbstractNode<N>> implements Seriali
          }
       }
       if (!foundInListOfAllowedChildren)
-         throw new UnsupportedChildException(this.getClass(), child.getClass());
+         throw new UnsupportedChildException(this, child);
 
       if (child.getParent() != null)
          child.getParent().removeChild(child);

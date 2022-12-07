@@ -10,8 +10,23 @@ public class UnsupportedChildException extends TreeDBRuntimeException {
     */
    private static final long serialVersionUID = -5119598342580086538L;
 
-   public UnsupportedChildException(Class<? extends AbstractNode> parent, Class<? extends AbstractNode> child) {
-      super(TreeDbMessages.INSTANCE.exceptionUnsupportedChild(child.getSimpleName(), parent.getSimpleName()));
+   public UnsupportedChildException(AbstractNode<?> parent, AbstractNode<?> child) {
+      super(TreeDbMessages.INSTANCE.exceptionUnsupportedChild(getNodeInfo(child),
+            getNodeInfo(parent)));
+   }
+   
+   private static String getNodeInfo(AbstractNode<?> node) {
+      StringBuilder sb = new StringBuilder();
+      sb.append("(class: ")
+         .append(node.getClass().getSimpleName())
+         .append(", ")
+         .append("id: ")
+         .append(node.getId())
+         .append(", ")
+         .append("name: ")
+         .append(node.getNodeName())
+         .append(")");
+      return sb.toString();
    }
 
 }
