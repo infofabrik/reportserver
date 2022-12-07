@@ -181,7 +181,6 @@ import net.datenwerke.rs.reportdoc.service.ReportDocumentationModule;
 import net.datenwerke.rs.rest.service.rest.RestModule;
 import net.datenwerke.rs.rest.service.rest.usermanager.RestUserManagerModule;
 import net.datenwerke.rs.saiku.server.rest.SaikuRpcServiceImpl;
-import net.datenwerke.rs.saiku.service.saiku.SaikuChartColorsFilter;
 import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.samba.server.samba.SambaRpcServiceImpl;
 import net.datenwerke.rs.samba.service.samba.SambaModule;
@@ -247,7 +246,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   public static final String CODE_VERSION = "2022-10-28-16-40-10";
+   public static final String CODE_VERSION = "2022-12-07-11-09-41";
 
    public static final String ENTERPRISE_MODULE_LOCATION = "net.datenwerke.rsenterprise.main.service.RsEnterpriseModule";
    private static final String ENTERPRISE_MODULE_LOAD_MODULE_METHOD = "getEnterpriseModules";

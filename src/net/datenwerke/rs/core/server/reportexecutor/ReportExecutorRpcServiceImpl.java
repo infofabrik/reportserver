@@ -12,9 +12,6 @@ import com.google.inject.Singleton;
 import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
-import eu.bitwalker.useragentutils.Browser;
-import eu.bitwalker.useragentutils.UserAgent;
-import eu.bitwalker.useragentutils.Version;
 import net.datenwerke.gf.client.history.HistoryLocation;
 import net.datenwerke.gxtdto.client.model.DwModel;
 import net.datenwerke.gxtdto.client.model.KeyValueBaseModel;
@@ -431,7 +428,7 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
    public String getPreviewMode() throws ServerCallFailedException {
       String usrVal = null;
       String cfgVal = null;
-      String autoVal = null;
+      String autoVal = "image";
 
       if (authenticatorService.get().isAuthenticated()) {
          User currentUser = authenticatorService.get().getCurrentUser();
@@ -444,15 +441,6 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
       cfgVal = configService.getConfigFailsafe("ui/previews.cf").getString(PREVIEW_MODE_CFG_KEY);
 
       HttpServletRequest request = servletRequest.get();
-      if (null != request) {
-         UserAgent agent = UserAgent.parseUserAgentString(request.getHeader("User-Agent"));
-
-         Browser browser = agent.getBrowser();
-         Version version = agent.getBrowserVersion();
-         if (Browser.IE.equals(browser.getGroup()) && version.compareTo(new Version("9.0", "", "")) < 0) {
-            autoVal = "image";
-         }
-      }
 
       String res = (null != usrVal) ? usrVal : (null != cfgVal) ? cfgVal : autoVal;
 

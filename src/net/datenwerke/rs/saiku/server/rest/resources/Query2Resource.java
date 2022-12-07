@@ -301,6 +301,10 @@ public class Query2Resource {
           }
 
           Cube cube = getCube(username);
+          
+          String formatter = (String) tq.getProperties().get("saiku.olap.result.formatter");
+          if (null != report)
+             report.setHideParents("flattened".equals(formatter));
 
           QueryResult qr = RestUtil.convert(thinQueryService.execute(username, tq, report, cube));
           ThinQuery tqAfter = thinQueryService.getContext(tq.getName()).getOlapQuery();

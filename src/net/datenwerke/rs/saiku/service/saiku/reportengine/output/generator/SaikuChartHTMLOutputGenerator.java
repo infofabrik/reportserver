@@ -26,6 +26,7 @@ import net.datenwerke.rs.saiku.service.saiku.SaikuModule;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.config.RECSaikuChart;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledHTMLSaikuReport;
 import net.datenwerke.rs.saiku.service.saiku.reportengine.output.object.CompiledRSSaikuReport;
+import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.rs.utils.misc.PdfUtils;
 
 public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
@@ -110,6 +111,7 @@ public class SaikuChartHTMLOutputGenerator extends SaikuOutputGeneratorImpl {
          tpl = tpl.replace("/*##DATA##*/", json);
          tpl = tpl.replace("/*##TYPE##*/", type);
 
+         tpl = tpl.replace("/*##RS_LOCALE##*/", LocalizationServiceImpl.getLocale().toString().replace("_", "-"));
          tpl = tpl.replace("/*##TIPSY.CSS##*/", IOUtils.toString(tipsyCss));
          tpl = tpl.replace("/*##JQUERY##*/", IOUtils.toString(jQuery));
          tpl = tpl.replace("/*##JQUERY-UI##*/", IOUtils.toString(jQueryUi));

@@ -178,7 +178,8 @@ public class SessionResource  {
 
 	      Map<String, Object> session = new HashMap<String, Object>();
 
-	      session.put("language", localizationService.getUserLocal());
+	      session.put("language", localizationService.getLocale().getLanguage());
+	      session.put("localecode", localizationService.getLocale().toString());
 	      session.put("username", username); // username identifies a saiku session -> ReportExecuteToken
 	      session.put("sessionid", UUID.randomUUID().toString());
 

@@ -18,23 +18,26 @@ public class ReportServerInstallationModule extends AbstractReportServerModule {
 
    @Provides
    @Inject
-   protected List<DbInstallationTask> provideDbInstallationTasks(ApplicationPropertiesService propertiesService,
+   protected List<DbInstallationTask> provideDbInstallationTasks(
+         ApplicationPropertiesService propertiesService,
          Provider<InstallBaseDataTask> baseDataTaskProvider,
          Provider<ExecutePackagedScriptsTask> executePackagedScriptsTask,
-         Provider<DemoDataInstallTask> demoDbInstallTask, Provider<DemoContentInstallTask> demoContentInstallTask,
-         Provider<InitConfigTask> initConfigTask, Provider<InstallMissingEntitiesTask> installMissingEntitiesTask) {
-      List<DbInstallationTask> tasks = new ArrayList<DbInstallationTask>();
+         Provider<DemoDataInstallTask> demoDbInstallTask, 
+         Provider<DemoContentInstallTask> demoContentInstallTask,
+         Provider<InitConfigTask> initConfigTask, 
+         Provider<InstallMissingEntitiesTask> installMissingEntitiesTask
+         ) {
+      List<DbInstallationTask> tasks = new ArrayList<>();
 
       if ("true".equals(propertiesService.getString("rs.install.basedata"))) {
          tasks.add(baseDataTaskProvider.get());
          tasks.add(executePackagedScriptsTask.get());
       }
 
-      if ("true".equals(propertiesService.getString("rs.install.demodata", "true"))) {
+      if ("true".equals(propertiesService.getString("rs.install.demodata", "false"))) {
          tasks.add(demoDbInstallTask.get());
          tasks.add(demoContentInstallTask.get());
       }
-      ;
 
       tasks.add(initConfigTask.get());
       tasks.add(installMissingEntitiesTask.get());

@@ -622,7 +622,7 @@ pv.Format.number = function() {
         var f = s[1] || "";
         f.length > maxf && (f = s[1] = f.substr(0, maxf));
         f.length < minf && (s[1] = f + new Array(minf - f.length + 1).join(padf));
-        return s.join(decimal);
+        return parseFloat(s.join(decimal).replace(',', '')).toLocaleString(Saiku.i18n.localecode);
     }
     var mini = 0, maxi = 1/0, mins = 0, minf = 0, maxf = 0, maxk = 1, padi = "0", padf = "0", padg = !0, decimal = ".", group = ",", np = "−", ns = "";
     format.format = format;

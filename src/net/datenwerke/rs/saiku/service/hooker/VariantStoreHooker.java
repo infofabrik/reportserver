@@ -3,8 +3,11 @@ package net.datenwerke.rs.saiku.service.hooker;
 import javax.inject.Inject;
 import javax.inject.Provider;
 
+import org.saiku.olap.query.IQuery;
 import org.saiku.olap.query2.ThinQuery;
 
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
+import net.datenwerke.rs.base.service.reportengines.table.entities.TableReportVariant;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.core.service.reportmanager.hooks.VariantToBeStoredHook;
 import net.datenwerke.rs.saiku.service.saiku.SaikuSessionContainer;
@@ -35,6 +38,20 @@ public class VariantStoreHooker implements VariantToBeStoredHook {
          String xml = tqService.toJSONString(query);
          variant.setQueryXml(xml);
          saikuSessionContainer.get().putQuery(query);
+      } else if (report instanceof TableReport && ((TableReport) report).isCubeFlag()) {
+         TableReportVariant variant = (TableReportVariant) report;
+
+         SaikuReport report2 = saikuSessionContainer.get().getReport(executerToken);
+         if (null == report2)
+            return;
+         ThinQuery query = saikuSessionContainer.get().getQueryForReport(report2);
+         if (null == query)
+            return;
+         
+         String xml = tqService.toJSONString(query);
+         variant.setCubeXml(xml);
+
+         variant.setHideParents(report2.isHideParents());
       }
    }
 }

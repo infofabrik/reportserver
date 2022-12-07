@@ -109,10 +109,16 @@ var Session = Backbone.Model.extend({
             this.isAdmin = response.isadmin;
             this.username = encodeURIComponent(response.username);
             this.language = response.language;
+            this.localecode = response.localecode;
             if (typeof this.language != "undefined" && this.language != Saiku.i18n.locale) {
                 Saiku.i18n.locale = this.language;
                 Saiku.i18n.automatic_i18n();
             }
+            
+            if (typeof this.localecode != "undefined" && this.localecode != Saiku.i18n.localecode) {
+            	Saiku.i18n.localecode = this.localecode.replace("_", "-");
+            }
+            
             /* 
                 var license =new License();
 
