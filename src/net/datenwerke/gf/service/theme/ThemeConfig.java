@@ -28,6 +28,10 @@ public class ThemeConfig {
       if (colorNames.containsKey(ref))
          colorMap.put(name, colorNames.get(ref));
    }
+   
+   public Map<String, String> getColorNames() {
+      return colorNames;
+   }
 
    public void addColorMapByName(String name, String refName) {
       colorMapRefName.put(name, refName);

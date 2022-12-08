@@ -69,4 +69,9 @@ public class ThemeServiceImpl implements ThemeService {
       }
    }
 
+   @Override
+   public ThemeConfig getThemeConfig() {
+      return null;
+   }
+
 }

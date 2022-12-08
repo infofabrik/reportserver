@@ -16,5 +16,7 @@ public interface ThemeService {
    byte[] getLogo();
 
    Map<String, String> getColorMap();
+   
+   ThemeConfig getThemeConfig();
 
 }
