@@ -335,7 +335,7 @@ public abstract class AbstractNode<N extends AbstractNode<N>> implements Seriali
    final public void addChild(N childObj, int position) {
       N child = childObj;
       if (childObj instanceof HibernateProxy)
-         childObj = (N) ((HibernateProxy) childObj).getHibernateLazyInitializer().getImplementation();
+         child = (N) ((HibernateProxy) childObj).getHibernateLazyInitializer().getImplementation();
       
       /* make sure child is not denied */
       boolean foundInListOfDeniedChildren = false;
