@@ -1,10 +1,11 @@
 package net.datenwerke.rs.core.service.reportmanager.output;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
+import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 
@@ -51,13 +52,12 @@ abstract public class AbstractReportOutputGeneratorManager<G extends ReportOutpu
     * Returns all registered generators
     */
    public List<G> getRegisteredOutputGenerators() {
-      List<G> generators = new ArrayList<G>();
-      for (ReportOutputGeneratorProvider<G> provider : hookHandler.getHookers(providerType)) {
-         Collection<G> genList = provider.provideGenerators();
-         if (null != genList)
-            generators.addAll(genList);
-      }
-      return generators;
+      return hookHandler.getHookers(providerType)
+         .stream()
+         .map(ReportOutputGeneratorProvider::provideGenerators)
+         .filter(Objects::nonNull)
+         .flatMap(Collection::stream)
+         .collect(toList());
    }
 
    /**
@@ -65,19 +65,16 @@ abstract public class AbstractReportOutputGeneratorManager<G extends ReportOutpu
     * 
     */
    public String[] getRegisteredOutputFormats() {
-      Set<String> formats = new HashSet<String>();
-
-      for (G g : getRegisteredOutputGenerators())
-         for (String format : g.getFormats())
-            formats.add(format);
-
-      return formats.toArray(new String[] {});
+      return getRegisteredOutputGenerators()
+         .stream()
+         .map(G::getFormats)
+         .flatMap(Arrays::stream)
+         .toArray(String[]::new);
    }
 
    public boolean hasCatchAllOutputGen() {
-      for (G g : getRegisteredOutputGenerators())
-         if (g.isCatchAll())
-            return true;
-      return false;
+      return getRegisteredOutputGenerators()
+         .stream()
+         .anyMatch(G::isCatchAll);
    }
 }

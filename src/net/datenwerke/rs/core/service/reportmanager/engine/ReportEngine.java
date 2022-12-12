@@ -125,7 +125,9 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
 
          final ReportExecutionConfig[] finalConfigs = configs;
          Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler
-               .getHookers(ReportEngineTakeOverExecutionHook.class).stream().filter(engineHooker -> engineHooker
+               .getHookers(ReportEngineTakeOverExecutionHook.class)
+               .stream()
+               .filter(engineHooker -> engineHooker
                      .takesOver(this, report, parameterSet, user, outputFormat, finalConfigs))
                .findAny();
          if (takeOverHook.isPresent())
