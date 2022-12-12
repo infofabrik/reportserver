@@ -13,7 +13,6 @@ import org.saiku.olap.query2.ThinHierarchy;
 import org.saiku.olap.query2.ThinQuery;
 import org.saiku.olap.query2.ThinQueryModel.AxisLocation;
 import org.saiku.olap.util.OlapResultSetUtil;
-import org.saiku.olap.util.formatter.CellSetFormatterFactory;
 import org.saiku.olap.util.formatter.FlattenedCellSetFormatter;
 import org.saiku.olap.util.formatter.ICellSetFormatter;
 import org.slf4j.Logger;
@@ -23,7 +22,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.base.service.datasources.transformers.DatasourceTransformationService;
-import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.core.service.reportmanager.engine.ReportEngine;
 import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutionConfig;
@@ -127,11 +125,7 @@ public class SaikuReportEngine extends ReportEngine<Connection, SaikuOutputGener
 
    @Override
    public boolean consumes(Report report) {
-      if (report instanceof SaikuReport) {
-         return true;
-      }
-
-      return report instanceof TableReport && ((TableReport) report).isCubeFlag();
+      return report instanceof SaikuReport;
    }
 
    @Override
