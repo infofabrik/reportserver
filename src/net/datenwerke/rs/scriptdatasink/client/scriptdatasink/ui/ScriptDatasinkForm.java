@@ -11,8 +11,8 @@ import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.rs.core.client.datasinkmanager.locale.DatasinksMessages;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.provider.annotations.FileServerTreeBasic;
-import net.datenwerke.rs.incubator.client.scriptdatasource.locale.ScriptDatasourceMessages;
 import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.pa.ScriptDatasinkDtoPA;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.locale.ScriptDatasourceMessages;
 
 public class ScriptDatasinkForm extends SimpleFormView {
 

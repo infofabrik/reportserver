@@ -108,6 +108,7 @@
 	<source path="rs/grideditor/client"/>
 	<source path="rs/grideditor/shared"/>
 	<source path="rs/incubator/client"/>
+	<source path="rs/scriptdatasource/client"/>
 	<source path="rs/incubator/shared"/>
 	<source path="rs/jxlsreport/client"/>
 	<source path="rs/jxlsreport/shared"/>

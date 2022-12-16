@@ -21,7 +21,7 @@ import net.datenwerke.rs.core.client.datasourcemanager.DatasourceUIModule;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.posomap.DatasourceFolderDto2PosoMap;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.posomap.DatabaseBundleDto2PosoMap;
-import net.datenwerke.rs.incubator.client.scriptdatasource.dto.posomap.ScriptDatasourceDto2PosoMap;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.posomap.ScriptDatasourceDto2PosoMap;
 
 public class NoMondrianTreeProvider implements Provider<ManagerHelperTree> {
 

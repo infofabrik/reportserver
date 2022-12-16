@@ -8,7 +8,6 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GeneratedType;
 @GeneratedType("net.datenwerke.entityservices.metadatagenerator.EntityMetadataProcessor")
 public class MondrianDatasource__ extends net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition__ implements net.datenwerke.entityservices.metadatagenerator.interfaces.EntityMetadataProvider {
 
-	public static final String mondrian3 = "mondrian3";
 	public static final String mondrianSchema = "mondrianSchema";
 	public static final String password = "password";
 	public static final String pbeServiceProvider = "pbeServiceProvider";

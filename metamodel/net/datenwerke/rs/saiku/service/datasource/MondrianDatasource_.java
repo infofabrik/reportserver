@@ -9,7 +9,6 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class MondrianDatasource_ extends net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition_ {
 
 	public static volatile SingularAttribute<MondrianDatasource, String> password;
-	public static volatile SingularAttribute<MondrianDatasource, Boolean> mondrian3;
 	public static volatile SingularAttribute<MondrianDatasource, String> mondrianSchema;
 	public static volatile SingularAttribute<MondrianDatasource, String> url;
 	public static volatile SingularAttribute<MondrianDatasource, String> properties;

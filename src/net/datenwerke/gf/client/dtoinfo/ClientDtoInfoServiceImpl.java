@@ -181,8 +181,6 @@ import net.datenwerke.rs.grideditor.client.grideditor.dto.TextBooleanEditorDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.TextDateEditorDto;
 import net.datenwerke.rs.grideditor.client.grideditor.dto.TextSelectionListEditorDto;
 import net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto;
-import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto;
-import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto;
 import net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto;
@@ -202,6 +200,8 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.filter.dto.TeamSpa
 import net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto;
 import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto;
 import net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto;
@@ -542,10 +542,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVariantDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto)
 			return ((net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto) dto).getId();
-		if(dto instanceof net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto)
-			return ((net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto) dto).getId();
-		if(dto instanceof net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto)
-			return ((net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto)
 			return ((net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto)
@@ -574,6 +570,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return ((net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto)
 			return ((net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto)
+			return ((net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto) dto).getId();
+		if(dto instanceof net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto)
+			return ((net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return ((net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto) dto).getId();
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportVariantDto)
@@ -992,10 +992,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorReportVariantDtoDec();
 		if(net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec();
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoClass))
-			return (X) new net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto();
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoClass))
-			return (X) new net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto();
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec();
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto.class.equals(dtoClass))
@@ -1034,6 +1030,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
 		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto();
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto();
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoClass))
+			return (X) new net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -1504,10 +1504,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorReportVariantDtoDec();
 		if("net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec();
-		if("net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto".equals(dtoClassName))
-			return (X) new net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto();
-		if("net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto".equals(dtoClassName))
-			return (X) new net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto();
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec();
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto".equals(dtoClassName))
@@ -1546,6 +1542,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return (X) new net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto();
 		if("net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto();
+		if("net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto();
+		if("net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto".equals(dtoClassName))
+			return (X) new net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return (X) new net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto();
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto".equals(dtoClassName))
@@ -2262,10 +2262,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.incubator.client.jaspertotable.dto.posomap.JasperToTableConfigDto2PosoMap.class;
 		if(net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec.class.equals(dtoClass))
 			return net.datenwerke.rs.incubator.client.jaspertotable.dto.posomap.JasperToTableConfigDto2PosoMap.class;
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoClass))
-			return net.datenwerke.rs.incubator.client.scriptdatasource.dto.posomap.ScriptDatasourceDto2PosoMap.class;
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoClass))
-			return net.datenwerke.rs.incubator.client.scriptdatasource.dto.posomap.ScriptDatasourceConfigDto2PosoMap.class;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto.class.equals(dtoClass))
 			return net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.posomap.JxlsReportDto2PosoMap.class;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec.class.equals(dtoClass))
@@ -2316,6 +2312,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return net.datenwerke.rs.scp.client.scp.dto.posomap.ScpDatasinkDto2PosoMap.class;
 		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.posomap.ScriptDatasinkDto2PosoMap.class;
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoClass))
+			return net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.posomap.ScriptDatasourceDto2PosoMap.class;
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoClass))
+			return net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.posomap.ScriptDatasourceConfigDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoClass))
 			return net.datenwerke.rs.scripting.client.scripting.dto.posomap.AddMenuEntryExtensionDto2PosoMap.class;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class.equals(dtoClass))
@@ -2822,10 +2822,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(dto instanceof net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto)
 			return true;
-		if(dto instanceof net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto)
-			return true;
-		if(dto instanceof net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto)
-			return true;
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto)
@@ -2853,6 +2849,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(dto instanceof net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto)
+			return true;
+		if(dto instanceof net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto)
 			return true;
 		if(dto instanceof net.datenwerke.rs.scriptreport.client.scriptreport.dto.ScriptReportDto)
 			return true;
@@ -3516,10 +3516,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if(net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec.class.equals(dtoType))
 			return true;
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoType))
-			return true;
-		if(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoType))
-			return true;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec.class.equals(dtoType))
@@ -3569,6 +3565,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto.class.equals(dtoType))
+			return true;
+		if(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class.equals(dtoType))
 			return true;
 		if(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class.equals(dtoType))
 			return true;
@@ -4416,10 +4416,6 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 			return true;
 		if("net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec".equals(dtoClassName))
 			return true;
-		if("net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto".equals(dtoClassName))
-			return true;
-		if("net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto".equals(dtoClassName))
-			return true;
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec".equals(dtoClassName))
@@ -4469,6 +4465,10 @@ public class ClientDtoInfoServiceImpl implements DtoInformationService, DtoMainI
 		if("net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto".equals(dtoClassName))
+			return true;
+		if("net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto".equals(dtoClassName))
 			return true;
 		if("net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto".equals(dtoClassName))
 			return true;

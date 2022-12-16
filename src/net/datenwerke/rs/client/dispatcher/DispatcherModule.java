@@ -78,6 +78,7 @@ import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.ScheduleAsFileUiMo
 import net.datenwerke.rs.scheduler.client.scheduler.SchedulerUIModule;
 import net.datenwerke.rs.scp.client.scp.ScpUiModule;
 import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.ScriptDatasinkUiModule;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.ScriptDatasourceUiModule;
 import net.datenwerke.rs.scripting.client.scripting.ScriptingUiModule;
 import net.datenwerke.rs.scriptreport.client.scriptreport.ScriptReportUiModule;
 import net.datenwerke.rs.search.client.search.SearchUiModule;
@@ -161,6 +162,7 @@ public class DispatcherModule extends AbstractGinModule {
       install(new TableTemplateEngineUiModule());
 
       install(new RsIncubatorUIModule());
+      install(new ScriptDatasourceUiModule());
 
       install(new SearchUiModule());
 

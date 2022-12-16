@@ -236,8 +236,6 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.GridEditorReport2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.GridEditorReportVariant2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig.class, injector.getInstance(net.datenwerke.rs.incubator.service.jaspertotable.entities.dtogen.JasperToTableConfig2DtoGenerator.class));
-		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasource.class, injector.getInstance(net.datenwerke.rs.incubator.service.scriptdatasource.entities.dtogen.ScriptDatasource2DtoGenerator.class));
-		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasourceConfig.class, injector.getInstance(net.datenwerke.rs.incubator.service.scriptdatasource.entities.dtogen.ScriptDatasourceConfig2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.JxlsReport2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.JxlsReportFile2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.JxlsReportVariant2DtoGenerator.class));
@@ -257,6 +255,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter.class, injector.getInstance(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.dtogen.ReportServerJobFilter2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink.class, injector.getInstance(net.datenwerke.rs.scp.service.scp.definitions.dtogen.ScpDatasink2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink.class, injector.getInstance(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.dtogen.ScriptDatasink2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasource.class, injector.getInstance(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.dtogen.ScriptDatasource2DtoGenerator.class));
+		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasourceConfig.class, injector.getInstance(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.dtogen.ScriptDatasourceConfig2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuEntryExtension.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddMenuEntryExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuSeparatorEntryExtension.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddMenuSeparatorEntryExtension2DtoGenerator.class));
 		dtoGeneratorByPosoLookup.put(net.datenwerke.rs.scripting.service.scripting.extensions.AddReportExportFormatProvider.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.AddReportExportFormatProvider2DtoGenerator.class));
@@ -483,8 +483,6 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportDto.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.Dto2GridEditorReportGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.grideditor.client.grideditor.dto.GridEditorReportVariantDto.class, injector.getInstance(net.datenwerke.rs.grideditor.service.grideditor.entities.dtogen.Dto2GridEditorReportVariantGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto.class, injector.getInstance(net.datenwerke.rs.incubator.service.jaspertotable.entities.dtogen.Dto2JasperToTableConfigGenerator.class));
-		dto2PosoGeneratorLookup.put(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto.class, injector.getInstance(net.datenwerke.rs.incubator.service.scriptdatasource.entities.dtogen.Dto2ScriptDatasourceGenerator.class));
-		dto2PosoGeneratorLookup.put(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class, injector.getInstance(net.datenwerke.rs.incubator.service.scriptdatasource.entities.dtogen.Dto2ScriptDatasourceConfigGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.Dto2JxlsReportGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.Dto2JxlsReportFileGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportVariantDto.class, injector.getInstance(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.dtogen.Dto2JxlsReportVariantGenerator.class));
@@ -504,6 +502,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class, injector.getInstance(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.dtogen.Dto2ReportServerJobFilterGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class, injector.getInstance(net.datenwerke.rs.scp.service.scp.definitions.dtogen.Dto2ScpDatasinkGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class, injector.getInstance(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.dtogen.Dto2ScriptDatasinkGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto.class, injector.getInstance(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.dtogen.Dto2ScriptDatasourceGenerator.class));
+		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class, injector.getInstance(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.dtogen.Dto2ScriptDatasourceConfigGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddMenuEntryExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddMenuSeparatorEntryExtensionGenerator.class));
 		dto2PosoGeneratorLookup.put(net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto.class, injector.getInstance(net.datenwerke.rs.scripting.service.scripting.extensions.dtogen.Dto2AddReportExportFormatProviderGenerator.class));
@@ -884,8 +884,6 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.grideditor.client.grideditor.dto.decorator.GridEditorReportVariantDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.incubator.client.jaspertotable.dto.JasperToTableConfigDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.incubator.client.jaspertotable.dto.decorator.JasperToTableConfigDtoDec.class);
-		dtoClassLookup.add(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto.class);
-		dtoClassLookup.add(net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.decorator.JxlsReportDtoDec.class);
 		dtoClassLookup.add(net.datenwerke.rs.jxlsreport.client.jxlsreport.dto.JxlsReportFileDto.class);
@@ -911,6 +909,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		dtoClassLookup.add(net.datenwerke.rs.scheduler.client.scheduler.dto.ReportServerJobFilterDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasinkDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto.class);
+		dtoClassLookup.add(net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceConfigDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuEntryExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddMenuSeparatorEntryExtensionDto.class);
 		dtoClassLookup.add(net.datenwerke.rs.scripting.client.scripting.dto.AddReportExportFormatProviderDto.class);
@@ -1244,8 +1244,6 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport.class);
 		posoClassLookup.add(net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReportVariant.class);
 		posoClassLookup.add(net.datenwerke.rs.incubator.service.jaspertotable.entities.JasperToTableConfig.class);
-		posoClassLookup.add(net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasource.class);
-		posoClassLookup.add(net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasourceConfig.class);
 		posoClassLookup.add(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReport.class);
 		posoClassLookup.add(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile.class);
 		posoClassLookup.add(net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportVariant.class);
@@ -1265,6 +1263,8 @@ public class DtoServiceImpl implements DtoMainService, DtoService {
 		posoClassLookup.add(net.datenwerke.rs.scheduler.service.scheduler.jobs.filter.ReportServerJobFilter.class);
 		posoClassLookup.add(net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink.class);
 		posoClassLookup.add(net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink.class);
+		posoClassLookup.add(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasource.class);
+		posoClassLookup.add(net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasourceConfig.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuEntryExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddMenuSeparatorEntryExtension.class);
 		posoClassLookup.add(net.datenwerke.rs.scripting.service.scripting.extensions.AddReportExportFormatProvider.class);

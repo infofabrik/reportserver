@@ -13,8 +13,8 @@ import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.Datasourc
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.im.dto.DatasourceManagerImportConfigDto;
 import net.datenwerke.rs.birt.client.datasources.dto.BirtReportDatasourceDefinitionDto;
 import net.datenwerke.rs.dsbundle.client.dsbundle.dto.DatabaseBundleDto;
-import net.datenwerke.rs.incubator.client.scriptdatasource.dto.ScriptDatasourceDto;
 import net.datenwerke.rs.saiku.client.datasource.dto.MondrianDatasourceDto;
+import net.datenwerke.rs.scriptdatasource.client.scriptdatasource.dto.ScriptDatasourceDto;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
 import net.datenwerke.treedb.ext.client.eximport.im.dto.ImportTreeModel;
 import net.datenwerke.treedb.ext.client.eximport.im.ui.ImporterItemsPanel;

@@ -19,7 +19,6 @@
           <class>net.datenwerke.scheduler.service.scheduler.triggers.complex.WeeklyTrigger</class>
           <class>net.datenwerke.rs.uservariables.service.variabletypes.list.ListUserVariableInstance</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.TableReport</class>
-          <class>net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasourceConfig</class>
           <class>net.datenwerke.rs.grideditor.service.grideditor.entities.GridEditorReport</class>
           <class>net.datenwerke.gf.service.properties.entities.Property</class>
           <class>net.datenwerke.rs.onedrive.service.onedrive.action.ScheduleAsOneDriveFileAction</class>
@@ -92,7 +91,6 @@
           <class>net.datenwerke.rs.jxlsreport.service.jxlsreport.entities.JxlsReportFile</class>
           <class>net.datenwerke.rs.core.service.reportmanager.entities.reports.ReportByteProperty</class>
           <class>net.datenwerke.rs.base.service.reportengines.jasper.entities.JasperReport</class>
-          <class>net.datenwerke.rs.incubator.service.scriptdatasource.entities.ScriptDatasource</class>
           <class>net.datenwerke.rs.dashboard.service.dashboard.entities.UserDashboard</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatCurrency</class>
           <class>net.datenwerke.security.service.security.entities.Ace</class>
@@ -153,6 +151,7 @@
           <class>net.datenwerke.rs.samba.service.samba.action.ScheduleAsSambaFileAction</class>
           <class>net.datenwerke.rs.uservariables.service.variabletypes.string.StringUserVariableDefinition</class>
           <class>net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkFolder</class>
+          <class>net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasource</class>
           <class>net.datenwerke.rs.ftp.service.ftp.action.ScheduleAsFtpFileAction</class>
           <class>net.datenwerke.rs.saiku.service.datasource.MondrianDatasourceConfig</class>
           <class>net.datenwerke.rs.base.service.parameters.string.TextParameterDefinition</class>
@@ -212,6 +211,7 @@
           <class>net.datenwerke.rs.tabledatasink.service.tabledatasink.action.ScheduleAsTableDatasinkFileAction</class>
           <class>net.datenwerke.rs.base.service.reportengines.table.entities.format.ColumnFormatDate</class>
           <class>net.datenwerke.rs.box.service.box.definitions.BoxDatasink</class>
+          <class>net.datenwerke.rs.scriptdatasource.service.scriptdatasource.entities.ScriptDatasourceConfig</class>
           <class>net.datenwerke.security.service.security.entities.AceAccessMap</class>
           <class>net.datenwerke.scheduler.service.scheduler.entities.AbstractTrigger</class>
           <class>net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode</class>
