@@ -3,7 +3,10 @@ package net.datenwerke.rs.terminal.service.terminal;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.AliasCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.CatCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.DescCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.EchoCommand;
@@ -28,23 +31,23 @@ public class TerminalStartup {
    @Inject
    public TerminalStartup(HookHandlerService hookHandler,
 
-         Provider<DescCommand> descCommandProvider, 
-         Provider<ElizaCommand> elizaCommandProvider,
-         Provider<HelloWorldCommand> helloWorldCommandProvider, 
-         Provider<EnvCommand> envCommandProvider,
-         Provider<HqlTerminalCommand> hqlCommandProvider, 
-         Provider<MeminfoCommand> meminfoCommandProvider,
-         Provider<EchoCommand> echoCommandProvider, 
-         Provider<CatCommand> catCommandProvider,
-         Provider<SsltestCommand> ssltestCommandProvider,
-         Provider<InfoCommand> infoCommandProvider,
-         Provider<InfoDatasourceSubcommand> infoDatasourceSubcommandProvider,
-         
+         final Provider<DescCommand> descCommandProvider, 
+         final Provider<ElizaCommand> elizaCommandProvider,
+         final Provider<HelloWorldCommand> helloWorldCommandProvider, 
+         final Provider<EnvCommand> envCommandProvider,
+         final Provider<HqlTerminalCommand> hqlCommandProvider, 
+         final Provider<MeminfoCommand> meminfoCommandProvider,
+         final Provider<EchoCommand> echoCommandProvider, 
+         final Provider<CatCommand> catCommandProvider,
+         final Provider<SsltestCommand> ssltestCommandProvider,
+         final Provider<InfoCommand> infoCommandProvider,
+         final Provider<InfoDatasourceSubcommand> infoDatasourceSubcommandProvider,
+         final Provider<AliasCommand> aliasCommandProvider,
 
-         Provider<InBackgroundOperator> inBgOperator, 
-         Provider<PipeOperator> pipeOperator,
+         final Provider<InBackgroundOperator> inBgOperator, 
+         final Provider<PipeOperator> pipeOperator,
 
-         Provider<SplitTableResultHijacker> splitTableResultHijacker
+         final Provider<SplitTableResultHijacker> splitTableResultHijacker
          ) {
 
       hookHandler.attachHooker(TerminalCommandHook.class, descCommandProvider);
@@ -58,10 +61,19 @@ public class TerminalStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, ssltestCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, infoCommandProvider);
       hookHandler.attachHooker(InfoSubcommandHook.class, infoDatasourceSubcommandProvider);
+      
+      /* alias command */
+      hookHandler.attachHooker(TerminalCommandHook.class, aliasCommandProvider.get(), HookHandlerService.PRIORITY_LOWER);
+      hookHandler.attachHooker(ReloadConfigNotificationHook.class, aliasCommandProvider.get(), HookHandlerService.PRIORITY_LOWER);
+
+      hookHandler.attachHooker(LateInitHook.class, () -> aliasCommandProvider.get().reloadConfig(),
+            HookHandlerService.PRIORITY_LOWER);
 
       hookHandler.attachHooker(TerminalCommandOperator.class, inBgOperator);
       hookHandler.attachHooker(TerminalCommandOperator.class, pipeOperator);
 
       hookHandler.attachHooker(TerminalSessionHijackHook.class, splitTableResultHijacker);
+      
+      
    }
 }
