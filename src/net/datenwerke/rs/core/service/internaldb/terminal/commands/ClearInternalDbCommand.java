@@ -3,10 +3,12 @@ package net.datenwerke.rs.core.service.internaldb.terminal.commands;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
+import net.datenwerke.rs.core.service.locale.CoreMessages;
 import net.datenwerke.rs.resultcache.ResultCacheService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 
@@ -28,6 +30,11 @@ public class ClearInternalDbCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
+   @CliHelpMessage(
+         messageClass = CoreMessages.class, 
+         name = BASE_COMMAND, 
+         description = "clearInternalDbCache_description"
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) {
       tempTableService.shutdown();
