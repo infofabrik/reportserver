@@ -1,4 +1,4 @@
-package net.datenwerke.rs.incubator.service.misc.terminal.internaldb;
+package net.datenwerke.rs.core.service.internaldb.terminal.commands;
 
 import com.google.inject.Inject;
 
