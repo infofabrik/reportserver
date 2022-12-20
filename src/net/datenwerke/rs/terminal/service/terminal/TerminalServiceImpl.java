@@ -4,8 +4,10 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.proxy.HibernateProxy;
 
@@ -162,5 +164,27 @@ public class TerminalServiceImpl implements TerminalService {
          table.addDataRow(new RSStringTableRow(values));
       }
       return new CommandResult(table);
+   }
+
+   @Override
+   public CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage,
+         Map<String, String> table) {
+      CommandResult result = new CommandResult();
+      result.addResultLine(title);
+      if (0 == table.size()) {
+         result.addResultLine(emptyTableMessage);
+         return result;
+      }
+      
+      RSTableModel model = new RSTableModel();
+      TableDefinition def = new TableDefinition(Arrays.asList(
+            "Key", "Value"),
+            Arrays.asList(String.class, String.class));
+      def.setDisplaySizes(Arrays.asList(100, 0));
+      model.setTableDefinition(def);
+      result.addResultTable(model);
+      table.forEach((key, val) -> model.addDataRow(new RSStringTableRow(key, val)));
+      
+      return result;
    }
 }
