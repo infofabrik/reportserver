@@ -26,4 +26,8 @@ public interface LdapMessages extends Messages {
    String commandLdaptest_sub_organisationalUnits_description();
    
    String commandLdaptest_sub_organisationalUnits_flagS();
+   
+   String commandLdapschema_description();
+   
+   String commandLdapschema_arg_objectClass();
 }
