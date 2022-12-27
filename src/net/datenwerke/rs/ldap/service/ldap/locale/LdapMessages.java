@@ -23,11 +23,17 @@ public interface LdapMessages extends Messages {
    
    String commandLdaptest_sub_guid_description();
    
-   String commandLdaptest_sub_organisationalUnits_description();
+   String commandLdaptest_sub_organizationalUnits_description();
    
-   String commandLdaptest_sub_organisationalUnits_flagS();
+   String commandLdaptest_sub_organizationalUnits_flagS();
    
    String commandLdapschema_description();
    
-   String commandLdapschema_arg_objectClass();
+   String commandLdapschema_sub_objectclassinfo_description();
+   
+   String commandLdapschema_sub_objectclassinfo_description_arg_objectclass();
+   
+   String commandLdapschema_sub_objectclasslist_description();
+   
+   String commandLdapinfo_description();
 }
