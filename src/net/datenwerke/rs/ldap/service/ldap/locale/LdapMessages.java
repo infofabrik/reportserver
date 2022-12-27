@@ -36,4 +36,8 @@ public interface LdapMessages extends Messages {
    String commandLdapschema_sub_objectclasslist_description();
    
    String commandLdapinfo_description();
+   
+   String commandLdapfilter_description();
+   
+   String commandLdapfilter_sub_flagI();
 }
