@@ -38,11 +38,11 @@ public abstract class SubCommandContainerImpl implements SubCommandContainer, Te
             subCommand.addAutoCompletEntries(autocompleteHelper, session);
          else {
             autocompleteHelper.addAutocompleteNamesForToken(2, 
-                  getSubCommands()
-                  .stream()
-                  .map(SubCommand::getBaseCommand)
-                  .collect(toList())
-                  );
+               getSubCommands()
+               .stream()
+               .map(SubCommand::getBaseCommand)
+               .collect(toList())
+               );
          }
       }
    }

@@ -10,10 +10,10 @@ public abstract class SubSubCommandContainerImpl extends SubCommandContainerImpl
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.addAutocompleteNamesForToken(3, 
-            getSubCommands()
-            .stream()
-            .map(SubCommand::getBaseCommand)
-            .collect(toList())
-            );
+         getSubCommands()
+         .stream()
+         .map(SubCommand::getBaseCommand)
+         .collect(toList())
+         );
    }
 }

@@ -1,12 +1,16 @@
 package net.datenwerke.rs.base.service.reportengines.table.output.object;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", generateDto2Poso = false)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.reportengines.table.dto", 
+      generateDto2Poso = false
+)
 public class RSStringTableRow extends RSTableRow {
 
    /**
@@ -15,7 +19,7 @@ public class RSStringTableRow extends RSTableRow {
    private static final long serialVersionUID = 121693743242964517L;
 
    @ExposeToClient(mergeDtoValueBack = false)
-   protected List<String> stringRow = new ArrayList<String>();
+   protected List<String> stringRow = new ArrayList<>();
 
    public RSStringTableRow() {
       super();
@@ -33,19 +37,16 @@ public class RSStringTableRow extends RSTableRow {
       setRow(row.toArray());
    }
 
-   public RSStringTableRow(RSTableRow row) {
-      for (Object cell : row.getRow())
-         stringRow.add(null == cell ? null : cell.toString());
+   public RSStringTableRow(final RSTableRow row) {
+      Arrays.stream(row.getRow())
+         .forEach(cell -> stringRow.add(null == cell ? "" : cell.toString() ));
    }
 
    @Override
    public void setRow(Object[] row) {
       this.row = row;
-
-      for (Object o : row) {
-         if (null != o)
-            stringRow.add(o.toString());
-      }
+      Arrays.stream(row)
+         .forEach(o -> stringRow.add(null != o ? o.toString(): ""));
    }
 
    public List<String> getStringRow() {
