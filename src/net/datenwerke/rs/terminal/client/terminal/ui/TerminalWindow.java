@@ -537,12 +537,19 @@ public class TerminalWindow extends DwWindow {
       if (null == resultText || "".equals(resultText.asString()))
          return;
 
+      String output = resultText.asString();
+      
+      /*
+       * Replace all tabs with 3 spaces
+       */
+      output = output.replaceAll("\t", "   ");
+      
       /*
        * Replace all but first white spaces. If we replace all whitespaces instead,
        * the browser does not break lines on space and the text is not being
        * completely shown on screen.
        */
-      String output = resultText.asString().replaceAll("(?<= ) ", "&nbsp;");
+      output = output.replaceAll("(?<= ) ", "&nbsp;");
       /*
        * In case we have more than one blank space directly after each other, both are
        * not rendered, so we replace both by &nbsp; in this case.
