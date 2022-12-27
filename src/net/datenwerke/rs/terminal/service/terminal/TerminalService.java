@@ -93,4 +93,5 @@ public interface TerminalService {
    public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
    
    CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage, Map<String, String> table);
+   
 }

@@ -37,7 +37,6 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.locale.BaseMessages;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.terminal.client.terminal.TerminalDao;
-import net.datenwerke.rs.terminal.client.terminal.TerminalUIModule;
 import net.datenwerke.rs.terminal.client.terminal.TerminalUIService;
 import net.datenwerke.rs.terminal.client.terminal.dto.AutocompleteResultDto;
 import net.datenwerke.rs.terminal.client.terminal.dto.CommandResultDto;
@@ -538,11 +537,22 @@ public class TerminalWindow extends DwWindow {
       if (null == resultText || "".equals(resultText.asString()))
          return;
 
+      /*
+       * Replace all but first white spaces. If we replace all whitespaces instead,
+       * the browser does not break lines on space and the text is not being
+       * completely shown on screen.
+       */
+      String output = resultText.asString().replaceAll("(?<= ) ", "&nbsp;");
+      /*
+       * In case we have more than one blank space directly after each other, both are
+       * not rendered, so we replace both by &nbsp; in this case.
+       */
+      output = output.replaceAll(" " + "&nbsp;", "&nbsp;&nbsp;");
+      
       if ("".equals(historyArea.getHTML()))
-         historyArea.setHTML(resultText.asString().replace(TerminalUIModule.BLANK_SPACE_TAG, "&nbsp;"));
+         historyArea.setHTML(output);
       else
-         historyArea.setHTML(historyArea.getHTML() + "<br/>"
-               + resultText.asString().replace(TerminalUIModule.BLANK_SPACE_TAG, "&nbsp;"));
+         historyArea.setHTML(historyArea.getHTML() + "<br/>" + output);
 
       inputPreTextPanel.clear();
       inputPreTextPanel.add(new Label(getInputPrefix()));

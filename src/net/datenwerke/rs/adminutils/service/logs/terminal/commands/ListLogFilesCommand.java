@@ -136,7 +136,10 @@ public class ListLogFilesCommand implements TerminalCommandHook {
       if (sorting.size() > 3)
          throw new IllegalArgumentException("Maximum 3 sorting fields");
 
-      if (sorting.stream().map(s -> (Boolean) Arrays.asList(1, 2, 3).contains(Math.abs(s))).anyMatch(p -> p == false))
+      if (sorting
+            .stream()
+            .map(s -> (Boolean) Arrays.asList(1, 2, 3).contains(Math.abs(s)))
+            .anyMatch(p -> p == false))
          throw new IllegalArgumentException("Sorting fields must be (-) 1, 2 or 3");
 
       CommandResult result = new CommandResult();

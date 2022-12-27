@@ -5,8 +5,6 @@ import com.google.inject.Singleton;
 
 public class TerminalUIModule extends AbstractGinModule {
 
-   public final static String BLANK_SPACE_TAG = "__RS_BLANK_SPACE__";
-
    @Override
    protected void configure() {
       /* service */
