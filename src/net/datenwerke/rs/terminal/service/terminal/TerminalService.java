@@ -3,6 +3,7 @@ package net.datenwerke.rs.terminal.service.terminal;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundException;
@@ -92,6 +93,8 @@ public interface TerminalService {
 
    public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
    
-   CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage, Map<String, String> table);
+   CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage, Map<String, Object> table);
+   
+   String sortAndJoin(List<String> list);
    
 }
