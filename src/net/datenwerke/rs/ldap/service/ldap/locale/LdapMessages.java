@@ -40,4 +40,8 @@ public interface LdapMessages extends Messages {
    String commandLdapfilter_description();
    
    String commandLdapfilter_sub_flagI();
+   
+   String commandLdapfilter_sub_flagN();
+   
+   String commandLdapguid_description();
 }
