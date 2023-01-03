@@ -44,4 +44,26 @@ public interface LdapMessages extends Messages {
    String commandLdapfilter_sub_flagN();
    
    String commandLdapguid_description();
+   
+   String commandLdapschema_sub_attributelist_description();
+   
+   String commandLdapschema_sub_attributeinfo_description();
+   
+   String commandLdapschema_sub_attributeinfo_description_arg_attribute();
+   
+   String commandLdapschema_sub_matchingrulelist_description();
+   
+   String commandLdapschema_sub_matchingruleinfo_description();
+   
+   String commandLdapschema_sub_matchingruleinfo_description_arg_matching_rule();
+   
+   String commandLdapschema_sub_syntaxrulelist_description();
+   
+   String commandLdapschema_sub_syntaxruleinfo_description();
+   
+   String commandLdapschema_sub_syntaxruleinfo_description_arg_oid();
+   
+   String commandLdapschema_sub_entry_description();
+   
+   
 }
