@@ -175,7 +175,7 @@ public class TerminalServiceImpl implements TerminalService {
       
       RSTableModel model = new RSTableModel()
       TableDefinition tableDef = new TableDefinition(['Key', 'Value'], [String, String])
-      tableDef.displaySizes = [100, 0]
+      tableDef.displaySizes = [180, 0]
       model.tableDefinition = tableDef
       result.addResultTable model
       table.each{key, val -> model.addDataRow(
@@ -186,7 +186,7 @@ public class TerminalServiceImpl implements TerminalService {
    
    @Override 
    public String sortAndJoin(List<String> list) {
-      return list?.sort(false)?.join(', ')
+      return list?.sort(false, {(it as String).toLowerCase(Locale.ROOT)})?.join(', ')
    }
 
 }
