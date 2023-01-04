@@ -1,10 +1,11 @@
 package net.datenwerke.rs.utils.reflection;
 
+import static java.util.stream.Collectors.toList;
+
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class  MethodMetadata <T>{
@@ -43,7 +44,7 @@ public class  MethodMetadata <T>{
       List<Method> matchingMethods = Arrays.asList(methods).stream()
             .filter(method -> method.getName().equals(name))
             .filter(method -> method.getParameterCount() == argsAsString.size())
-            .collect(Collectors.toList());
+            .collect(toList());
       if(matchingMethods.size() == 0) {
          throw new IllegalArgumentException("No method matching arg size and name");
       } else if (matchingMethods.size() > 1) {
@@ -56,7 +57,7 @@ public class  MethodMetadata <T>{
       Class<?>[] types = method.getParameterTypes();
       List<Object> parsedArgs = IntStream.range(0, types.length)
             .mapToObj(i -> mapArgToClass(types[i], argsAsString.get(i)))
-            .collect(Collectors.toList());
+            .collect(toList());
       return parsedArgs;
    }
    

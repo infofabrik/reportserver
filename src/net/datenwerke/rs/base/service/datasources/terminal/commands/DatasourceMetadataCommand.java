@@ -60,19 +60,19 @@ public class DatasourceMetadataCommand implements TerminalCommandHook{
                      name = "datasource", 
                      description = "commandDatasourceMetadata_datasource", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "methodName", 
                      description = "commandDatasourceMetadata_methodName", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "arg", 
                      description = "commandDatasourceMetadata_methodArg", 
                      varArgs = true
-                     )
-               }
-         )
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> nonOptionArguments = parser.getNonOptionArguments();

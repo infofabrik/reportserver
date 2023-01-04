@@ -95,7 +95,8 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          while (metaResultSet.next())
             allColumns << metaResultSet.getString('COLUMN_NAME').toUpperCase()
             
-         def notContained = columns.inject([]) { result, col -> ! allColumns.contains(col.toUpperCase())? result << col: result }
+         def notContained = columns.inject([]) { result, col -> 
+            ! allColumns.contains(col.toUpperCase(Locale.ROOT))? result << col: result }
          notContained
       }
    }
@@ -184,35 +185,28 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource, Map<String, List<String>> methodDescriptions) {
+   Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
+         Map<String, List<String>> methodDescriptions) {
       dbPoolService.getConnection(datasource.connectionConfig).get().withCloseable { conn ->
          assert conn
 
-         Map<String, MethodMetadata<DatabaseMetaData>> methodsMap = [:]
-         Map<String, Object> results = [:]
-
-         methodDescriptions.keySet().forEach{ key ->
-            methodsMap[key] = new MethodMetadata(conn.metaData.class, key, methodDescriptions.get(key))
-         }
-
-         methodsMap.keySet().forEach{ key ->
-            try {
-               def result = methodsMap.get(key).invokeMethodOn(conn.metaData)
-               results[key] = result
-            } catch (Exception e) {
+         return methodDescriptions
+            .collectEntries { key, value ->
+               [(key): new MethodMetadata(conn.metaData.class, key, methodDescriptions[key]).invokeMethodOn(conn.metaData)]
             }
-         }
-         return results
       }
    }
    
    @Override
    Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource) {
-      def allMethods = [:]
-      getDatasourceGeneralInfoDefinition().values().each{v -> allMethods.put(v, [])}
-      getDatasourceUrlInfoDefinition().values().each{v -> allMethods.put(v, [])}
-      getDatasourceFunctionsInfoDefinition().values().each{v -> allMethods.put(v, [])}
-      getDatasourceSupportsInfoDefinition().values().each{v -> allMethods.put(v, [])}
+      def allMethods = 
+         (
+            getDatasourceGeneralInfoDefinition().values() +
+            getDatasourceUrlInfoDefinition().values() + 
+            getDatasourceFunctionsInfoDefinition().values() + 
+            getDatasourceSupportsInfoDefinition().values() + 
+            getDatasourceSupportsInfoDefinition().values()
+         ).collectEntries { [(it): []] }
       return fetchDatasourceMetadata(datasource, allMethods)
    }
    
@@ -255,14 +249,11 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    public Map<String, String> getDatasourceSupportsInfoDefinition() {
-      def supportsSection = [:]
-      def methods = DatabaseMetaData.methods
-      methods
+      return DatabaseMetaData.methods
          .findAll{it.parameterCount == 0}
          .collect{it.name}
          .findAll{it.startsWith('supports')}
-         .each{supportsSection.put(it, it)}
-      supportsSection      
+         .collectEntries { [(it): it] }
    }
    
 }
