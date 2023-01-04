@@ -26,7 +26,7 @@ public class ConnectionPoolInfoSystemConsoleHooker implements SystemConsoleViewD
 
    @Override
    public ImageResource getNavigationIcon() {
-      return BaseIcon.DATABASE.toImageResource();
+      return BaseIcon.AGGREGATION.toImageResource();
    }
 
    @Override

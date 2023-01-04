@@ -26,7 +26,7 @@ public class MemoryInfoSystemConsoleHooker implements SystemConsoleViewDomainHoo
 
    @Override
    public ImageResource getNavigationIcon() {
-      return BaseIcon.AGGREGATION.toImageResource();
+      return BaseIcon.DATABASE.toImageResource();
    }
 
    @Override
