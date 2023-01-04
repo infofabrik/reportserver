@@ -47,11 +47,15 @@ public class IPRestrictionPAM implements ReportServerPAM {
       }
 
       logger.info("Blocked access from: " + remoteAddress);
-      return new AuthenticationResult(false, null);
+      return AuthenticationResult.cannotAuthenticate(isAuthoritative());
    }
 
    public String getClientModuleName() {
       return null;
+   }
+   
+   protected boolean isAuthoritative() {
+      return false;
    }
 
 }

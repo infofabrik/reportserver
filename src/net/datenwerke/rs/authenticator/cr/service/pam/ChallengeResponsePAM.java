@@ -19,8 +19,10 @@ public class ChallengeResponsePAM implements ReportServerPAM {
    private final ChallengeResponseService challengeResponseService;
 
    @Inject
-   public ChallengeResponsePAM(UserManagerService userManagerService,
-         ChallengeResponseService challengeResponseService) {
+   public ChallengeResponsePAM(
+         UserManagerService userManagerService,
+         ChallengeResponseService challengeResponseService
+         ) {
       this.userManagerService = userManagerService;
       this.challengeResponseService = challengeResponseService;
    }
@@ -32,17 +34,14 @@ public class ChallengeResponsePAM implements ReportServerPAM {
          if (token instanceof ChallengeResponseAuthToken) {
             ChallengeResponseAuthToken crToken = (ChallengeResponseAuthToken) token;
             User u = authenticate(crToken.getUsername(), crToken.getChallengeResponse());
-            if (null != u) {
-               return new AuthenticationResult(true, u);
-            } else {
-               User usr = userManagerService.getUserOrNull(crToken.getUsername());
-               AuthenticationResult result = new AuthenticationResult(false, usr);
-               return result;
-            }
+            if (null != u) 
+               return AuthenticationResult.grantAccess(u);
+            else 
+               return AuthenticationResult.cannotAuthenticate(isAuthoritative());
          }
       }
 
-      return new AuthenticationResult(false, null);
+      return AuthenticationResult.cannotAuthenticate(isAuthoritative());
    }
 
    private User authenticate(String username, ChallengeResponseContainer container) {
@@ -62,5 +61,9 @@ public class ChallengeResponsePAM implements ReportServerPAM {
    @Override
    public String getClientModuleName() {
       return CLIENT_MODULE_NAME;
+   }
+   
+   protected boolean isAuthoritative() {
+      return false;
    }
 }

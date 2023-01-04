@@ -33,16 +33,14 @@ public class UserPasswordPAM implements ReportServerPAM {
             UserPasswordAuthToken credentials = (UserPasswordAuthToken) token;
 
             User u = authenticate(credentials.getUsername(), credentials.getPassword());
-            if (null != u) {
-               return new AuthenticationResult(true, u);
-            } else {
-               User usr = userManagerService.getUserOrNull(credentials.getUsername());
-               return new AuthenticationResult(false, usr);
-            }
+            if (null != u) 
+               return AuthenticationResult.grantAccess(u);
+            else 
+               return AuthenticationResult.cannotAuthenticate(isAuthoritative());
          }
       }
 
-      return new AuthenticationResult(!isAuthoritative(), null);
+      return AuthenticationResult.cannotAuthenticate(isAuthoritative());
    }
 
    public User authenticate(String username, String cleartextPassword) {

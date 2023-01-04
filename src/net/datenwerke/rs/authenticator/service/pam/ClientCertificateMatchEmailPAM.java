@@ -108,7 +108,7 @@ public class ClientCertificateMatchEmailPAM implements ReportServerPAM {
             if (u != null) {
                if (debug)
                   System.out.println("user id: " + u.getId());
-               return new AuthenticationResult(true, u);
+               return AuthenticationResult.grantAccess(u);
             } else {
                if (debug)
                   System.out.println("No user. aborting certauth");
@@ -123,7 +123,7 @@ public class ClientCertificateMatchEmailPAM implements ReportServerPAM {
             System.out.println("no certificate. abort certauth");
       }
 
-      return new AuthenticationResult(!isAuthoritative(), null);
+      return AuthenticationResult.cannotAuthenticate(isAuthoritative());
    }
 
    @Override
