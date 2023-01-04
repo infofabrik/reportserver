@@ -1,14 +1,21 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
+import static java.util.stream.Collectors.joining;
+
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.sql.SQLException;
 import java.text.NumberFormat;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.net.ssl.SSLContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
@@ -96,6 +103,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setUserAgent(getUserAgent());
       info.setLocale(getLocale());
       info.setJvmLocale(getJvmLocale());
+      info.setSupportedSslProtocols(getSupportedSslProtocols().stream().collect(joining(", ")));
+      info.setDefaultSslProtocols(getDefaultSslProtocols().stream().collect(joining(", ")));
+      info.setEnabledSslProtocols(getEnabledSslProtocols().stream().collect(joining(", ")));
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
@@ -132,5 +142,34 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    public String getJvmLocale() {
       return Locale.getDefault().toString();
    }
+
+   @Override
+   public List<String> getSupportedSslProtocols() {
+      try {
+         return Arrays.asList(SSLContext.getDefault().getSupportedSSLParameters().getProtocols());
+      } catch (Exception e) {
+         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+      }
+   }
+
+   @Override
+   public List<String> getDefaultSslProtocols() {
+      try {
+         return Arrays.asList(SSLContext.getDefault().getDefaultSSLParameters().getProtocols());
+      } catch (Exception e) {
+         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+      }
+   }
+
+   @Override
+   public List<String> getEnabledSslProtocols() {
+      try {
+         return Arrays.asList(SSLContext.getDefault().createSSLEngine().getEnabledProtocols());
+      } catch (Exception e) {
+         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+      }
+   }
+   
+   
 
 }

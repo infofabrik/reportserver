@@ -130,6 +130,20 @@ public class GeneralInfoPanel extends DwContentPanel {
             SystemConsoleMessages.INSTANCE.internalDbUsername());
       internalDbInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(StaticLabel.class, "SSL", new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return "";
+         }
+      });
+      Map<Optional<String>, String> sslInfo = new LinkedHashMap<>();
+      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols()), "Supported SSL protocols");
+      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols()), "Default SSL protocols");
+      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols()), "Enabled SSL protocols");
+      sslInfo.forEach((value, description) -> addFieldToForm(value, description, form));
+      
       form.loadFields();
 
       wrapper.add(form, new VerticalLayoutData(1, -1, new Margins(10)));

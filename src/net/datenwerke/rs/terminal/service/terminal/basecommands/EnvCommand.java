@@ -1,5 +1,7 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
+import static java.util.stream.Collectors.joining;
+
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
@@ -81,6 +83,7 @@ public class EnvCommand implements TerminalCommandHook {
       result.addResultTable(table);
       try {
          result.addResultTable(getInternalDbInformationAsTable());
+         result.addResultTable(getSslInformationAsTable(generalInfoService));
       } catch (SQLException e) {
          throw new TerminalException(e);
       }
@@ -90,6 +93,20 @@ public class EnvCommand implements TerminalCommandHook {
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
+   
+   private RSTableModel getSslInformationAsTable(GeneralInfoService generalInfoService) throws SQLException {
+      RSTableModel table = new RSTableModel();
+      TableDefinition td = new TableDefinition(Arrays.asList("SSL", ""),
+            Arrays.asList(String.class, String.class));
+      table.setTableDefinition(td);
+      td.setDisplaySizes(Arrays.asList(100, 0));
+
+      table.addDataRow(new RSStringTableRow("Supported SSL protocols", generalInfoService.getSupportedSslProtocols().stream().collect(joining(", "))));
+      table.addDataRow(new RSStringTableRow("Default SSL protocols", generalInfoService.getDefaultSslProtocols().stream().collect(joining(", "))));
+      table.addDataRow(new RSStringTableRow("Enabled SSL protocols", generalInfoService.getEnabledSslProtocols().stream().collect(joining(", "))));
+      
+      return table;
    }
    
    private RSTableModel getInternalDbInformationAsTable() throws SQLException {

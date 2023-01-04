@@ -1,5 +1,7 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
+import java.util.List;
+
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 
 public interface GeneralInfoService {
@@ -13,6 +15,12 @@ public interface GeneralInfoService {
    String getOsVersion();
 
    String getUserAgent();
+
+   List<String> getSupportedSslProtocols();
+   
+   List<String> getDefaultSslProtocols();
+   
+   List<String> getEnabledSslProtocols();
 
    String getRsVersion();
    

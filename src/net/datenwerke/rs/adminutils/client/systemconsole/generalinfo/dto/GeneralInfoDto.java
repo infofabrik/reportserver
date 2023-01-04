@@ -29,6 +29,9 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbJdbcMinorVersion;
    private String internalDbJdbcUrl;
    private String internalDbUsername;
+   private String supportedSslProtocols;
+   private String defaultSslProtocols;
+   private String enabledSslProtocols;
 
    public GeneralInfoDto() {
    }
@@ -183,5 +186,29 @@ public class GeneralInfoDto implements Serializable {
    
    public void setInternalDbUsername(String internalDbUsername) {
       this.internalDbUsername = internalDbUsername;
+   }
+
+   public void setSupportedSslProtocols(String supportedSslProtocols) {
+      this.supportedSslProtocols = supportedSslProtocols;
+   }
+
+   public void setDefaultSslProtocols(String defaultSslProtocols) {
+      this.defaultSslProtocols = defaultSslProtocols;      
+   }
+
+   public void setEnabledSslProtocols(String enabledSslProtocols) {
+      this.enabledSslProtocols = enabledSslProtocols;
+   }
+
+   public String getSupportedSslProtocols() {
+      return this.supportedSslProtocols;
+   }
+   
+   public String getDefaultSslProtocols() {
+      return this.defaultSslProtocols;      
+   }
+   
+   public String getEnabledSslProtocols() {
+      return this.enabledSslProtocols;
    }
 }
