@@ -41,7 +41,7 @@ public interface TerminalService {
    Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfs, String location) throws VFSException;
 
    /**
-    * Fetch a single object by an object resolver query. Permissions are checked.
+    * Fetches a single object by an object resolver query. Permissions are checked.
     * 
     * @param location the object resolver query
     * @return the object found
@@ -51,7 +51,7 @@ public interface TerminalService {
    Object getObjectByQuery(String location) throws ObjectResolverException;
 
    /**
-    * Fetch a single object by an object resolver query.
+    * Fetches a single object by an object resolver query.
     * 
     * @param location    the object resolver query
     * @param checkRights if permissions should be checked
@@ -65,7 +65,7 @@ public interface TerminalService {
          boolean checkRights) throws VFSException;
 
    /**
-    * Fetch objects by an object resolver query.
+    * Fetches objects by an object resolver query.
     * 
     * @param location    the object resolver query
     * @param checkRights if permissions should be checked
@@ -97,14 +97,17 @@ public interface TerminalService {
     * map. The table contains the map keys as the first table column and their
     * corresponding values as the second table column.
     * 
-    * @param headline          headline of the {@link CommandResult}
+    * @param headlines         headlines of the {@link CommandResult}. Each
+    *                          headline is printed in a new row. Note that these
+    *                          are NOT the table headers.
     * @param emptyTableMessage message to show if the map is empty.
     * @param map               the map. Its keys map to the first table column of
     *                          the result, their corresponding values to its second
     *                          table column.
     * @return a {@link CommandResult} containing the given map as a table.
     */
-   CommandResult convertSimpleMapToCommandResult(String headline, String emptyTableMessage, Map<String, Object> map);
+   CommandResult convertSimpleMapToCommandResult(List<String> headlines, String emptyTableMessage,
+         Map<String, Object> map);
 
    /**
     * Creates a {@link CommandResult} that contains a table created from the given
@@ -114,15 +117,25 @@ public interface TerminalService {
     * table headers contain the given firstHeaders in first place and their order
     * is preserved. All firstHeaders must be contained in all maps.
     * 
-    * @param headline          headline of the {@link CommandResult}
+    * @param headlines         headlines of the {@link CommandResult}. Each
+    *                          headline is printed in a new row. Note that these
+    *                          are NOT the table headers.
     * @param emptyTableMessage message to shwo if the list of maps is empty.
     * @param mapList           the list of maps.
-    * @param firstHeaders      the ordered first headers to appear in the table
+    * @param firstKeys         the ordered first map keys to appear in the table
+    * @param keyToDisplayText  maps the map keys to a display text
     * @return a {@link CommandResult} containing the given list of maps as a table.
     */
-   CommandResult convertSimpleMapListToCommandResult(String headline, String emptyTableMessage,
-         List<Map<String, String>> mapList, List<String> firstHeaders);
+   CommandResult convertSimpleMapListToCommandResult(List<String> headlines, String emptyTableMessage,
+         List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText);
 
+   /**
+    * Sorts the given list alphabetically and returns a String which joins the list
+    * with ", "
+    * 
+    * @param list the list
+    * @return the converted string
+    */
    String sortAndJoin(List<String> list);
 
 }
