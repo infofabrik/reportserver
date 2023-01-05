@@ -87,30 +87,30 @@ public class ListLogFilesCommand implements TerminalCommandHook {
                      valueName = "sort", 
                      description = "commandListlogfiles_sub_flagS", 
                      mandatory = false
-                     ),
+               ),
                @Argument(
                      flag = "f", 
                      hasValue = true, 
                      valueName = "filter", 
                      description = "commandListlogfiles_sub_flagF", 
                      mandatory = false
-                     ),
+               ),
                @Argument(
                      flag = "e", 
                      hasValue = false, 
                      valueName = "email", 
                      description = "commandListlogfiles_sub_flagE", 
                      mandatory = false
-                     ),
+               ),
                @Argument(
                      flag = "d", 
                      hasValue = true, 
                      valueName = "email", 
                      description = "commandListlogfiles_sub_flagD", 
                      mandatory = false
-                     ) 
-               }
-         )
+               ) 
+         }
+   )
    public CommandResult execute(final CommandParser parser, TerminalSession session) throws TerminalException {
       Path logPath = Paths.get(logFilesServiceProvider.get().getLogDirectory());
       if (!Files.exists(logPath))

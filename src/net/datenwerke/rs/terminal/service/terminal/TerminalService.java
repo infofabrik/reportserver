@@ -20,7 +20,7 @@ public interface TerminalService {
     * 
     * @return The newly initialized {@link TerminalSession}
     */
-   public TerminalSession initTerminalSession();
+   TerminalSession initTerminalSession();
 
    /**
     * Returns the {@link TerminalSession} identified by the given <i>sessionId</i>
@@ -29,17 +29,16 @@ public interface TerminalService {
     * @return The {@link TerminalSession}
     * @throws SessionNotFoundException
     */
-   public TerminalSession getTerminalSession(String sessionId) throws SessionNotFoundException;
+   TerminalSession getTerminalSession(String sessionId) throws SessionNotFoundException;
 
    /**
     * Closes the {@link TerminalSession} identified by the given <i>sessionId</i>
     * 
     * @param sessionId The ID of the {@link TerminalSession}
     */
-   public void closeTerminalSession(String sessionId);
+   void closeTerminalSession(String sessionId);
 
-   public Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfs, String location)
-         throws VFSException;
+   Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfs, String location) throws VFSException;
 
    /**
     * Fetch a single object by an object resolver query. Permissions are checked.
@@ -49,7 +48,7 @@ public interface TerminalService {
     * @throws ObjectResolverException if the query is not valid or something
     *                                 happens during query execution
     */
-   public Object getObjectByQuery(String location) throws ObjectResolverException;
+   Object getObjectByQuery(String location) throws ObjectResolverException;
 
    /**
     * Fetch a single object by an object resolver query.
@@ -60,7 +59,7 @@ public interface TerminalService {
     * @throws ObjectResolverException if the query is not valid or something
     *                                 happens during query execution
     */
-   public Object getObjectByQuery(String location, boolean checkRights) throws ObjectResolverException;
+   Object getObjectByQuery(String location, boolean checkRights) throws ObjectResolverException;
 
    Object getObjectByQuery(Class<? extends VirtualFileSystemManagerHook> vfsManager, String location,
          boolean checkRights) throws VFSException;
@@ -74,7 +73,7 @@ public interface TerminalService {
     * @throws ObjectResolverException if the query is not valid or something
     *                                 happens during query execution
     */
-   public Collection<Object> getObjectsByQuery(String location, boolean checkRights) throws ObjectResolverException;
+   Collection<Object> getObjectsByQuery(String location, boolean checkRights) throws ObjectResolverException;
 
    /**
     * Fetch objects by an object resolver query. Permissions are checked.
@@ -84,17 +83,46 @@ public interface TerminalService {
     * @throws ObjectResolverException if the query is not valid or something
     *                                 happens during query execution
     */
-   public Collection<Object> getObjectsByQuery(String location) throws ObjectResolverException;
+   Collection<Object> getObjectsByQuery(String location) throws ObjectResolverException;
 
    TerminalSession getUnscopedTerminalSession();
 
-   public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
+   <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
          Class<? extends Right>... rights) throws ObjectResolverException;
 
-   public CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
-   
-   CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage, Map<String, Object> table);
-   
+   CommandResult convertResultSetToCommandResult(ResultSet rs) throws SQLException;
+
+   /**
+    * Creates a {@link CommandResult} that contains a table created from the given
+    * map. The table contains the map keys as the first table column and their
+    * corresponding values as the second table column.
+    * 
+    * @param headline          headline of the {@link CommandResult}
+    * @param emptyTableMessage message to show if the map is empty.
+    * @param map               the map. Its keys map to the first table column of
+    *                          the result, their corresponding values to its second
+    *                          table column.
+    * @return a {@link CommandResult} containing the given map as a table.
+    */
+   CommandResult convertSimpleMapToCommandResult(String headline, String emptyTableMessage, Map<String, Object> map);
+
+   /**
+    * Creates a {@link CommandResult} that contains a table created from the given
+    * list of maps. The map keys map to the table headers, their corresponding
+    * values map to the table values. All maps must have the same size. The order
+    * of the headers is not defined. If the firstHeaders attribute is given, the
+    * table headers contain the given firstHeaders in first place and their order
+    * is preserved. All firstHeaders must be contained in all maps.
+    * 
+    * @param headline          headline of the {@link CommandResult}
+    * @param emptyTableMessage message to shwo if the list of maps is empty.
+    * @param mapList           the list of maps.
+    * @param firstHeaders      the ordered first headers to appear in the table
+    * @return a {@link CommandResult} containing the given list of maps as a table.
+    */
+   CommandResult convertSimpleMapListToCommandResult(String headline, String emptyTableMessage,
+         List<Map<String, String>> mapList, List<String> firstHeaders);
+
    String sortAndJoin(List<String> list);
-   
+
 }

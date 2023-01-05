@@ -164,11 +164,10 @@ public class TerminalServiceImpl implements TerminalService {
    }
 
    @Override
-   public CommandResult convertSimpleTableToCommandResult(String title, String emptyTableMessage,
-         Map<String, Object> table) {
+   public CommandResult convertSimpleMapToCommandResult(String headline, String emptyTableMessage, Map<String, Object> map) {
       CommandResult result = new CommandResult()
-      result.addResultLine title
-      if (!table.size()) {
+      result.addResultLine headline
+      if (!map.size()) {
          result.addResultLine(emptyTableMessage)
          return result
       }
@@ -178,7 +177,7 @@ public class TerminalServiceImpl implements TerminalService {
       tableDef.displaySizes = [180, 0]
       model.tableDefinition = tableDef
       result.addResultTable model
-      table.each{key, val -> model.addDataRow(
+      map.each{key, val -> model.addDataRow(
          new RSStringTableRow(key, val instanceof List? sortAndJoin(val): val as String))}
 
       return result
@@ -187,6 +186,35 @@ public class TerminalServiceImpl implements TerminalService {
    @Override 
    public String sortAndJoin(List<String> list) {
       return list?.sort(false, {(it as String).toLowerCase(Locale.ROOT)})?.join(', ')
+   }
+
+   @Override
+   public CommandResult convertSimpleMapListToCommandResult(String headline, String emptyTableMessage,
+         List<Map<String, String>> mapList, List<String> firstHeaders) {
+      CommandResult result = new CommandResult()
+      result.addResultLine headline
+      if (!mapList.size()) {
+         result.addResultLine(emptyTableMessage)
+         return result
+      }
+      
+      // all maps must have the same size
+      assert mapList*.size().collect{ it == mapList[0].size() }.inject(true){ it, tmp -> it == tmp }
+      // all maps must contain the given firstHeaders
+      assert mapList.collect{ it.keySet().containsAll(firstHeaders) }.inject(true){ it, tmp -> it == tmp }
+      
+      RSTableModel model = new RSTableModel()
+      TableDefinition tableDef = new TableDefinition(firstHeaders + (mapList[0]*.key-firstHeaders), mapList[0]*.key.collect { String })
+      model.tableDefinition = tableDef
+      result.addResultTable model
+      mapList.each{ 
+         def vals = []
+         firstHeaders.each { header -> vals << it[header] }
+         it.findAll { key, val -> !(key in firstHeaders ) }.each{ key, val -> vals << val }
+         model.addDataRow(new RSStringTableRow(vals))
+      }
+      
+      return result
    }
 
 }
