@@ -3,6 +3,7 @@ package net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.ui;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
+import static java.util.stream.Collectors.joining;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.inject.Inject;
@@ -139,9 +140,9 @@ public class GeneralInfoPanel extends DwContentPanel {
          }
       });
       Map<Optional<String>, String> sslInfo = new LinkedHashMap<>();
-      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols()), SystemConsoleMessages.INSTANCE.supportedSslProtocols());
-      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols()), SystemConsoleMessages.INSTANCE.defaultSslProtocols());
-      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols()), SystemConsoleMessages.INSTANCE.enabledSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.supportedSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.defaultSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.enabledSslProtocols());
       sslInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.loadFields();

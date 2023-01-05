@@ -1,6 +1,7 @@
 package net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class GeneralInfoDto implements Serializable {
 
@@ -29,9 +30,9 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbJdbcMinorVersion;
    private String internalDbJdbcUrl;
    private String internalDbUsername;
-   private String supportedSslProtocols;
-   private String defaultSslProtocols;
-   private String enabledSslProtocols;
+   private List<String> supportedSslProtocols;
+   private List<String> defaultSslProtocols;
+   private List<String> enabledSslProtocols;
 
    public GeneralInfoDto() {
    }
@@ -188,27 +189,27 @@ public class GeneralInfoDto implements Serializable {
       this.internalDbUsername = internalDbUsername;
    }
 
-   public void setSupportedSslProtocols(String supportedSslProtocols) {
+   public void setSupportedSslProtocols(List<String> supportedSslProtocols) {
       this.supportedSslProtocols = supportedSslProtocols;
    }
 
-   public void setDefaultSslProtocols(String defaultSslProtocols) {
+   public void setDefaultSslProtocols(List<String> defaultSslProtocols) {
       this.defaultSslProtocols = defaultSslProtocols;      
    }
 
-   public void setEnabledSslProtocols(String enabledSslProtocols) {
+   public void setEnabledSslProtocols(List<String> enabledSslProtocols) {
       this.enabledSslProtocols = enabledSslProtocols;
    }
 
-   public String getSupportedSslProtocols() {
+   public List<String> getSupportedSslProtocols() {
       return this.supportedSslProtocols;
    }
    
-   public String getDefaultSslProtocols() {
+   public List<String> getDefaultSslProtocols() {
       return this.defaultSslProtocols;      
    }
    
-   public String getEnabledSslProtocols() {
+   public List<String> getEnabledSslProtocols() {
       return this.enabledSslProtocols;
    }
 }

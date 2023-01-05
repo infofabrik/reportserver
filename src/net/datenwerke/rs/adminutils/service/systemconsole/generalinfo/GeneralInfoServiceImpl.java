@@ -103,9 +103,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setUserAgent(getUserAgent());
       info.setLocale(getLocale());
       info.setJvmLocale(getJvmLocale());
-      info.setSupportedSslProtocols(getSupportedSslProtocols().stream().collect(joining(", ")));
-      info.setDefaultSslProtocols(getDefaultSslProtocols().stream().collect(joining(", ")));
-      info.setEnabledSslProtocols(getEnabledSslProtocols().stream().collect(joining(", ")));
+      info.setSupportedSslProtocols(getSupportedSslProtocols());
+      info.setDefaultSslProtocols(getDefaultSslProtocols());
+      info.setEnabledSslProtocols(getEnabledSslProtocols());
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
@@ -169,7 +169,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
       }
    }
-   
    
 
 }
