@@ -139,9 +139,9 @@ public class GeneralInfoPanel extends DwContentPanel {
          }
       });
       Map<Optional<String>, String> sslInfo = new LinkedHashMap<>();
-      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols()), "Supported SSL protocols");
-      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols()), "Default SSL protocols");
-      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols()), "Enabled SSL protocols");
+      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols()), SystemConsoleMessages.INSTANCE.supportedSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols()), SystemConsoleMessages.INSTANCE.defaultSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols()), SystemConsoleMessages.INSTANCE.enabledSslProtocols());
       sslInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.loadFields();
