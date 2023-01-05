@@ -67,5 +67,7 @@ public interface LdapMessages extends Messages {
    
    String commandLdaptest_sub_filter_sub_flagA();
    
+   String commandLdaptest_sub_users_sub_flagA();
+   
    
 }
