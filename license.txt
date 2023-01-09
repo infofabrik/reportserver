@@ -1,5 +1,5 @@
   ReportServer
-  Copyright (c) 2007 - 2021 InfoFabrik GmbH
+  Copyright (c) 2007 - 2023 InfoFabrik GmbH
   http://reportserver.net/
  
  
