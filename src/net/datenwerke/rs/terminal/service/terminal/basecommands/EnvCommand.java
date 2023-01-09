@@ -5,6 +5,7 @@ import static java.util.stream.Collectors.joining;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import com.google.inject.Inject;
@@ -75,6 +76,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Application server", generalInfoService.getApplicationServer()));
       table.addDataRow(new RSStringTableRow("Max memory",
             NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB"));
+      table.addDataRow(new RSStringTableRow("Groovy Version", generalInfoService.getGroovyVersion()));
       table.addDataRow(new RSStringTableRow("Locale", generalInfoService.getLocale()));
       table.addDataRow(new RSStringTableRow("JVM Locale", generalInfoService.getJvmLocale()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
@@ -82,6 +84,7 @@ public class EnvCommand implements TerminalCommandHook {
 
       result.addResultTable(table);
       try {
+         result.addResultTable(getPamsAsTable(generalInfoService));
          result.addResultTable(getInternalDbInformationAsTable());
          result.addResultTable(getSslInformationAsTable(generalInfoService));
       } catch (SQLException e) {
@@ -102,9 +105,29 @@ public class EnvCommand implements TerminalCommandHook {
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(100, 0));
 
-      table.addDataRow(new RSStringTableRow("Supported SSL protocols", generalInfoService.getSupportedSslProtocols().stream().collect(joining(", "))));
-      table.addDataRow(new RSStringTableRow("Default SSL protocols", generalInfoService.getDefaultSslProtocols().stream().collect(joining(", "))));
-      table.addDataRow(new RSStringTableRow("Enabled SSL protocols", generalInfoService.getEnabledSslProtocols().stream().collect(joining(", "))));
+      table.addDataRow(new RSStringTableRow("Supported SSL protocols",
+            generalInfoService.getSupportedSslProtocols().stream().collect(joining(", "))));
+      table.addDataRow(new RSStringTableRow("Default SSL protocols",
+            generalInfoService.getDefaultSslProtocols().stream().collect(joining(", "))));
+      table.addDataRow(new RSStringTableRow("Enabled SSL protocols",
+            generalInfoService.getEnabledSslProtocols().stream().collect(joining(", "))));
+
+      return table;
+   }
+   
+   private RSTableModel getPamsAsTable(GeneralInfoService generalInfoService) throws SQLException {
+      final RSTableModel table = new RSTableModel();
+      final TableDefinition td = new TableDefinition(Arrays.asList("Static PAM Configuration"),
+            Arrays.asList(String.class));
+      table.setTableDefinition(td);
+      
+      final List<String> staticPams = generalInfoService.getStaticPams();
+      if (staticPams.isEmpty()) {
+         table.addDataRow(new RSStringTableRow("No static PAM configured"));
+         return table;
+      }
+      
+      staticPams.forEach(pam -> table.addDataRow(new RSStringTableRow(pam)));
       
       return table;
    }
@@ -115,7 +138,7 @@ public class EnvCommand implements TerminalCommandHook {
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(100, 0));
-
+      
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
          table.addDataRow(new RSStringTableRow(

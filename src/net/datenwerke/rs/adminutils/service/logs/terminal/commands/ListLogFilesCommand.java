@@ -105,7 +105,7 @@ public class ListLogFilesCommand implements TerminalCommandHook {
                @Argument(
                      flag = "d", 
                      hasValue = true, 
-                     valueName = "email", 
+                     valueName = "datasink", 
                      description = "commandListlogfiles_sub_flagD", 
                      mandatory = false
                ) 
