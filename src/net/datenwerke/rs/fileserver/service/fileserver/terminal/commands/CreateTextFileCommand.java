@@ -5,11 +5,14 @@ import com.google.inject.Inject;
 import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
+import net.datenwerke.rs.fileserver.service.fileserver.locale.FileserverMessages;
 import net.datenwerke.rs.fileserver.service.fileserver.vfs.FileServerVfs;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
+import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.vfs.VFSLocation;
@@ -37,6 +40,18 @@ public class CreateTextFileCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
+   @CliHelpMessage(
+         messageClass = FileserverMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandCreateTextFile_description",
+         nonOptArgs = {
+               @NonOptArgument(
+                     name = "file", 
+                     description = "commandCreateTextFile_file", 
+                     mandatory = true
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       String completePath = parser.getArgumentNr(1);

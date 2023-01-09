@@ -27,4 +27,14 @@ public interface FileserverMessages extends Messages {
    String commandDirMod_description_arg_dirpath();
 
    String commandDirMod_description_arg_webaccess();
+   
+   String commandEditTextFile_description();
+   
+   String commandEditTextFile_file();
+   
+   String commandCreateTextFile_description();
+   
+   String commandCreateTextFile_file();
+   
+   
 }
