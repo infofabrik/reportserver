@@ -69,5 +69,13 @@ public interface LdapMessages extends Messages {
    
    String commandLdaptest_sub_users_sub_flagA();
    
+   String commandLdaptest_sub_groups_sub_flagA();
    
+   String commandLdaptest_sub_organizationalUnits_sub_flagA();
+   
+   String commandLdaptest_sub_guid_sub_flagA();
+   
+   String commandLdaptest_sub_orphans_sub_flagA();
+   
+   String commandLdaptest_sub_orphans_description();
 }
