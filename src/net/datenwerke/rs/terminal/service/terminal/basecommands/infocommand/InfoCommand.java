@@ -30,7 +30,11 @@ public class InfoCommand extends SubCommandContainerImpl {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
-   @CliHelpMessage(messageClass = TerminalMessages.class, name = BASE_COMMAND, description = "commandInfo_desc")
+   @CliHelpMessage(
+         messageClass = TerminalMessages.class, 
+         name = BASE_COMMAND, 
+         description = "commandInfo_desc"
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       return super.execute(parser, session);

@@ -130,12 +130,13 @@ public interface TerminalService {
          List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText);
 
    /**
-    * Sorts the given list alphabetically and returns a String which joins the list
-    * with ", "
+    * Joins the list with ", ". If sort is true, sorts the given list
+    * alphabetically
     * 
     * @param list the list
+    * @param sort if false, just joins without sorting
     * @return the converted string
     */
-   String sortAndJoin(List<String> list);
+   String join(List<String> list, boolean sort);
 
 }

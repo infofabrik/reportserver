@@ -1,5 +1,8 @@
 package net.datenwerke.gf.service.authenticator;
 
+import static java.util.stream.Collectors.toCollection;
+
+import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -39,31 +42,28 @@ public class AuthenticatorModule extends AbstractModule {
 
    @Inject
    @Provides
-   public Set<ReportServerPAM> providePAMs(ApplicationPropertiesService propertiesService,
-         HookHandlerService hookHandlerService, Injector injector) {
+   public Set<ReportServerPAM> providePAMs(final ApplicationPropertiesService propertiesService,
+         final HookHandlerService hookHandlerService, final Injector injector) {
       String authenticatorsString = propertiesService.getString(AUTHENTICATORS_PROPERTY_NAME);
 
-      LinkedHashSet<ReportServerPAM> pams = new LinkedHashSet<ReportServerPAM>();
+      hookHandlerService.getHookers(PAMHook.class).forEach(PAMHook::beforeStaticPamConfig);
 
-      for (PAMHook ph : hookHandlerService.getHookers(PAMHook.class)) {
-         ph.beforeStaticPamConfig(pams);
-      }
-
-      for (String className : authenticatorsString.split(":")) {
-         try {
-            if (!className.trim().isEmpty()) {
+      final LinkedHashSet<ReportServerPAM> pams = Arrays.stream(authenticatorsString.split(":"))
+         .filter(className -> !className.trim().isEmpty())
+         .map(className -> {
+            ReportServerPAM pamInstance = null;
+            try {
                Class<?> pamClass = Class.forName(className);
-               pams.add((ReportServerPAM) injector.getInstance(pamClass));
+               pamInstance = (ReportServerPAM) injector.getInstance(pamClass);
+            } catch (ClassNotFoundException e) {
+               logger.warn("Failed loading pam", e);
             }
-         } catch (ClassNotFoundException e) {
-            logger.warn("Failed loading pam", e);
-         }
-      }
-
-      for (PAMHook ph : hookHandlerService.getHookers(PAMHook.class)) {
-         ph.afterStaticPamConfig(pams);
-      }
-
+            return pamInstance;
+         })
+         .collect(toCollection(LinkedHashSet::new));
+         
+      hookHandlerService.getHookers(PAMHook.class).forEach(ph -> ph.afterStaticPamConfig(pams));
       return pams;
+         
    }
 }

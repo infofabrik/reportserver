@@ -179,14 +179,14 @@ public class TerminalServiceImpl implements TerminalService {
       model.tableDefinition = tableDef
       result.addResultTable model
       map.each{key, val -> model.addDataRow(
-         new RSStringTableRow(key, val instanceof List? sortAndJoin(val): val as String))}
+         new RSStringTableRow(key, val instanceof List? join(val, true): val as String))}
 
       return result
    }
    
    @Override 
-   public String sortAndJoin(List<String> list) {
-      return list?.sort(false, {(it as String).toLowerCase(Locale.ROOT)})?.join(', ')
+   public String join(List<String> list, boolean sort) {
+      return  (sort? list?.toSorted{(it as String).toLowerCase(Locale.ROOT)} : list)?.join(', ')
    }
 
    @Override
@@ -200,9 +200,10 @@ public class TerminalServiceImpl implements TerminalService {
       }
       
       // all maps must have the same size
-      assert mapList*.size().collect{ it == mapList[0].size() }.inject(true){ it, tmp -> it == tmp }
+      assert mapList*.size().toUnique().size() == 1
       // all maps must contain the given firstKeys
-      assert mapList.collect{ it.keySet().containsAll(firstKeys) }.inject(true){ it, tmp -> it == tmp }
+      def allContained = mapList.collect{ it.keySet().containsAll(firstKeys) }.toUnique()
+      assert allContained.size() == 1 && allContained[0]
       
       RSTableModel model = new RSTableModel()
       def allTableTitles = firstKeys + (mapList[0]*.key-firstKeys)

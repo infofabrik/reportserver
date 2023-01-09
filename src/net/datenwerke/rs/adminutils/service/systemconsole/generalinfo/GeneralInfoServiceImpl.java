@@ -1,31 +1,37 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
-import static java.util.stream.Collectors.joining;
+import static java.util.stream.Collectors.toList;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Set;
 
 import javax.net.ssl.SSLContext;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import groovy.lang.GroovySystem;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
 public class GeneralInfoServiceImpl implements GeneralInfoService {
 
@@ -36,6 +42,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<LicenseService> licenseServiceProvider;
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TempTableService> tempTableServiceProvider;
+   private final Provider<Set<ReportServerPAM>> pamProvider;
+   private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
 
    @Inject
    public GeneralInfoServiceImpl(
@@ -43,13 +51,15 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<HttpServletRequest> servletRequestProvider, 
          Provider<LicenseService> licenseServiceProvider,
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-         Provider<TempTableService> tempTableServiceProvider
+         Provider<TempTableService> tempTableServiceProvider,
+         Provider<Set<ReportServerPAM>> pamProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
       this.licenseServiceProvider = licenseServiceProvider;
       this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
       this.tempTableServiceProvider = tempTableServiceProvider;
+      this.pamProvider = pamProvider;
    }
 
    @Override
@@ -101,11 +111,13 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setMaxMemory(NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB");
       info.setOsVersion(getOsVersion());
       info.setUserAgent(getUserAgent());
+      info.setGroovyVersion(getGroovyVersion());
       info.setLocale(getLocale());
       info.setJvmLocale(getJvmLocale());
       info.setSupportedSslProtocols(getSupportedSslProtocols());
       info.setDefaultSslProtocols(getDefaultSslProtocols());
       info.setEnabledSslProtocols(getEnabledSslProtocols());
+      info.setStaticPams(getStaticPams());
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
@@ -148,7 +160,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       try {
          return Arrays.asList(SSLContext.getDefault().getSupportedSSLParameters().getProtocols());
       } catch (Exception e) {
-         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
+         return Collections.emptyList();
       }
    }
 
@@ -157,7 +170,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       try {
          return Arrays.asList(SSLContext.getDefault().getDefaultSSLParameters().getProtocols());
       } catch (Exception e) {
-         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
+         return Collections.emptyList();
       }
    }
 
@@ -166,9 +180,21 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       try {
          return Arrays.asList(SSLContext.getDefault().createSSLEngine().getEnabledProtocols());
       } catch (Exception e) {
-         throw new IllegalStateException(ExceptionUtils.getRootCauseMessage(e), e);
+         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
+         return Collections.emptyList();
       }
    }
    
+   @Override
+   public String getGroovyVersion() {
+      return GroovySystem.getVersion();
+   }
 
+   @Override
+   public List<String> getStaticPams() {
+      return pamProvider.get()
+         .stream()
+         .map(pam -> pam.getClass().getName())
+         .collect(toList());
+   }
 }

@@ -13,12 +13,14 @@ public interface SystemConsoleViewDomainHook extends Hook {
    /**
     * The text used in the navigation panel.
     */
-   public String getNavigationText();
+   String getNavigationText();
 
    /**
     * The icon used in the navigation panel
     */
-   public ImageResource getNavigationIcon();
+   ImageResource getNavigationIcon();
 
-   public Widget getMainWidget();
+   Widget getMainWidget();
+
+   boolean consumes();
 }

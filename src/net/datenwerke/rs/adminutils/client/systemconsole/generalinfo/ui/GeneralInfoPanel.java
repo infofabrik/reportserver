@@ -1,9 +1,10 @@
 package net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.ui;
 
+import static java.util.stream.Collectors.joining;
+
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Optional;
-import static java.util.stream.Collectors.joining;
 
 import com.google.gwt.core.client.Scheduler;
 import com.google.inject.Inject;
@@ -91,6 +92,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.put(Optional.of(result.getVmArguments()), "JVM Args");
       generalInfo.put(Optional.of(result.getApplicationServer()), SystemConsoleMessages.INSTANCE.applicationServerLabel());
       generalInfo.put(Optional.of(result.getMaxMemory()), SystemConsoleMessages.INSTANCE.maxMemoryLabel());
+      generalInfo.put(Optional.of(result.getGroovyVersion()), SystemConsoleMessages.INSTANCE.groovyVersionLabel());
       generalInfo.put(Optional.of(result.getLocale()), "Locale");
       generalInfo.put(Optional.of(result.getJvmLocale()), "JVM Locale");
       generalInfo.put(Optional.of(result.getOsVersion()), SystemConsoleMessages.INSTANCE.operationSystemLabel());      
@@ -99,6 +101,12 @@ public class GeneralInfoPanel extends DwContentPanel {
       Map<Optional<String>, String> browserInfo = new LinkedHashMap<>();
       browserInfo.put(Optional.of(result.getUserAgent()), SystemConsoleMessages.INSTANCE.userAgentLabel());
       browserInfo.forEach((value, description) -> addFieldToForm(value, description, form));
+      
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      Map<Optional<String>, String> pamsInfo = new LinkedHashMap<>();
+      pamsInfo.put(Optional.ofNullable(result.getStaticPams().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.staticPamsLabel());
+      pamsInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());

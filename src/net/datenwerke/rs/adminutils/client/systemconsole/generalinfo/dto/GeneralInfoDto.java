@@ -15,6 +15,7 @@ public class GeneralInfoDto implements Serializable {
    private String vmArguments;
    private String applicationServer;
    private String maxMemory;
+   private String groovyVersion;
    private String osVersion;
    private String userAgent;
    private String locale;
@@ -33,6 +34,7 @@ public class GeneralInfoDto implements Serializable {
    private List<String> supportedSslProtocols;
    private List<String> defaultSslProtocols;
    private List<String> enabledSslProtocols;
+   private List<String> staticPams;
 
    public GeneralInfoDto() {
    }
@@ -211,5 +213,21 @@ public class GeneralInfoDto implements Serializable {
    
    public List<String> getEnabledSslProtocols() {
       return this.enabledSslProtocols;
+   }
+
+   public List<String> getStaticPams() {
+      return this.staticPams;
+   }
+
+   public void setStaticPams(List<String> staticPams) {
+      this.staticPams = staticPams;
+   }
+
+   public String getGroovyVersion() {
+      return groovyVersion;
+   }
+
+   public void setGroovyVersion(String groovyVersion) {
+      this.groovyVersion = groovyVersion;
    }
 }

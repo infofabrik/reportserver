@@ -50,14 +50,14 @@ public class TableExistsCommand implements TerminalCommandHook {
                      name = "datasource", 
                      description = "commandTableExists_datasource", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "table", 
                      description = "commandTableExists_table", 
                      mandatory = true
-                     )
-               }
-         )
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<?> nonOptionArguments = parser.getNonOptionArguments();

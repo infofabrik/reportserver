@@ -34,4 +34,9 @@ public class GeneralInfoSystemConsoleHooker implements SystemConsoleViewDomainHo
       return mainWidgetProvider.get();
    }
 
+   @Override
+   public boolean consumes() {
+      return true;
+   }
+
 }

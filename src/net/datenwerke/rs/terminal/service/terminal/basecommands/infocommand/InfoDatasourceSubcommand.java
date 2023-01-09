@@ -69,14 +69,16 @@ public static final String BASE_COMMAND = "datasource";
    
    @CliHelpMessage(
          messageClass = TerminalMessages.class, 
-         name = BASE_COMMAND, description = "commandInfoDatasource_desc",
+         name = BASE_COMMAND, 
+         description = "commandInfoDatasource_desc",
          nonOptArgs = {
                @NonOptArgument(
-               name = "datasource", 
-               description = "commandInfoDatasource_datasource",
-               mandatory = true
+                  name = "datasource", 
+                  description = "commandInfoDatasource_datasource",
+                  mandatory = true
                )
-         })
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> nonOptionArguments = parser.getNonOptionArguments();

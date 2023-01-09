@@ -50,7 +50,7 @@ import net.datenwerke.rs.adminutils.server.datasourcetester.DatasourceTesterRPCS
 import net.datenwerke.rs.adminutils.server.logs.LogFilesRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.suuser.SuUserRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.connpool.ConnectionPoolConsoleDummyRpcServiceImpl;
-import net.datenwerke.rs.adminutils.server.systemconsole.generalinfo.GeneralInfoRpcDummyServiceImpl;
+import net.datenwerke.rs.adminutils.server.systemconsole.generalinfo.GeneralInfoRpcServiceImpl;
 import net.datenwerke.rs.adminutils.server.systemconsole.memory.MemoryConsoleDummyRpcServiceImpl;
 import net.datenwerke.rs.adminutils.service.SystemConsoleModule;
 import net.datenwerke.rs.adminutils.service.datasourcetester.DatasourceTesterModule;
@@ -369,7 +369,6 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             } else {
                /* servlets that are only here in community */
                serve(BASE_URL + "crystalutils").with(CrystalUtilsRpcDummyServiceImpl.class); //$NON-NLS-1$
-               serve(BASE_URL + "generalinfoconsole").with(GeneralInfoRpcDummyServiceImpl.class); //$NON-NLS-1$
                serve(BASE_URL + "memoryconsole").with(MemoryConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
                serve(BASE_URL + "connectionpoolconsole").with(ConnectionPoolConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
             }
@@ -420,6 +419,8 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             serve(BASE_URL + ScheduleAsFileUiModule.EXPORT_SERVLET).with(ExportScheduledAsFileReportServlet.class);
             serve(BASE_URL + ScheduleAsFileUiModule.DISK_FILE_EXPORT_SERVLET).with(ExportScheduledAsDiskFileServlet.class);
             serve(BASE_URL + "ts/scheduelasfile").with(ScheduleAsFileRpcServiceImpl.class);
+            
+            serve(BASE_URL + "generalinfoconsole").with(GeneralInfoRpcServiceImpl.class);
 
             serve(BASE_URL + "ftp").with(FtpRpcServiceImpl.class);
             serve(BASE_URL + "sftp").with(SftpRpcServiceImpl.class);

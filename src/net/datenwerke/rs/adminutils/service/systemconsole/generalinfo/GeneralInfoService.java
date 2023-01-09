@@ -21,6 +21,8 @@ public interface GeneralInfoService {
    List<String> getDefaultSslProtocols();
    
    List<String> getEnabledSslProtocols();
+   
+   List<String> getStaticPams();
 
    String getRsVersion();
    
@@ -29,4 +31,6 @@ public interface GeneralInfoService {
    String getJvmLocale();
    
    GeneralInfoDto getGeneralInfo();
+   
+   String getGroovyVersion();
 }

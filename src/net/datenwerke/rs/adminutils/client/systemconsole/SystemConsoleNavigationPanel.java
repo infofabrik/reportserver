@@ -1,7 +1,5 @@
 package net.datenwerke.rs.adminutils.client.systemconsole;
 
-import java.util.Collection;
-
 import com.google.inject.Inject;
 import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.Store.StoreSortInfo;
@@ -27,8 +25,11 @@ public class SystemConsoleNavigationPanel extends DwContentPanel {
    private final SystemConsoleMainPanel mainPanel;
 
    @Inject
-   public SystemConsoleNavigationPanel(HookHandlerService hookHandler, NavigationPanelHelper navPanelHelper,
-         SystemConsoleMainPanel mainPanel) {
+   public SystemConsoleNavigationPanel(
+         HookHandlerService hookHandler, 
+         NavigationPanelHelper navPanelHelper,
+         SystemConsoleMainPanel mainPanel
+         ) {
 
       /* store objects */
       this.hookHandler = hookHandler;
@@ -46,10 +47,10 @@ public class SystemConsoleNavigationPanel extends DwContentPanel {
       TreeStore<NavigationModelData<SystemConsoleViewDomainHook>> store = new TreeStore<>(
             new BasicObjectModelKeyProvider<>());
 
-      /* load data */
-      Collection<SystemConsoleViewDomainHook> domains = hookHandler.getHookers(SystemConsoleViewDomainHook.class);
-
-      domains.forEach(
+      hookHandler.getHookers(SystemConsoleViewDomainHook.class)
+         .stream()
+         .filter(SystemConsoleViewDomainHook::consumes)
+         .forEach(
             domain -> store.add(new NavigationModelData<SystemConsoleViewDomainHook>(domain.getNavigationText(),
                   domain.getNavigationIcon(), domain)));
 

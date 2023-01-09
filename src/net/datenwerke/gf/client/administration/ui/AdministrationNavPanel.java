@@ -1,6 +1,7 @@
 package net.datenwerke.gf.client.administration.ui;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.List;
 
 import com.google.gwt.event.shared.EventBus;
@@ -72,9 +73,10 @@ public class AdministrationNavPanel extends DwContentPanel {
 
    private void initModules() {
       /* load modules */
-      adminModules = new ArrayList<AdminModule>();
-      for (AdminModuleProviderHook hooker : hookHandler.getHookers(AdminModuleProviderHook.class))
-         adminModules.add(hooker.getModule());
+      adminModules = hookHandler.getHookers(AdminModuleProviderHook.class)
+            .stream()
+            .map(AdminModuleProviderHook::getModule)
+            .collect(toList());
    }
 
    private void initializeUI() {
