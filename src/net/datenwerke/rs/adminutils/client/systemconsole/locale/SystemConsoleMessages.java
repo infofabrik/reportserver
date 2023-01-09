@@ -17,6 +17,8 @@ public interface SystemConsoleMessages extends Messages {
 
    public String javaVersionLabel();
 
+   public String groovyVersionLabel();
+
    public String applicationServerLabel();
    
    public String maxMemoryLabel();
@@ -24,6 +26,8 @@ public interface SystemConsoleMessages extends Messages {
    public String operationSystemLabel();
 
    public String userAgentLabel();
+
+   public String staticPamsLabel();
 
    public String jvmLiveMemory();
 

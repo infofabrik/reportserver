@@ -25,7 +25,7 @@ public interface ScriptingMessages extends Messages {
 
    String commandExec_tFlag();
 
-   String commandExec_eFlag();
+   String commandExec_wFlag();
 
    String commandExec_execArgument();
 
