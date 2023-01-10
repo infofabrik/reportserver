@@ -49,7 +49,7 @@ public interface SecurityMessages extends Messages {
 
    String folk();
 
-   String fullAccess();
+   String selectAll();
 
    String generalSettings();
 
@@ -79,7 +79,7 @@ public interface SecurityMessages extends Messages {
 
    String newPassword();
 
-   String noAccess();
+   String deselectAll();
 
    String noInheritedACEs();
 

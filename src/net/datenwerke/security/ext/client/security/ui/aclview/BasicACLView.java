@@ -196,8 +196,7 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
    private Widget createInheritedACEGrid(final SecurityViewInformation information) {
       /* create store for aces */
       ListStore<AceDto> aceStore = new ListStore<AceDto>(acePa.dtoId());
-      for (AceDto ace : information.getInheritedAces())
-         aceStore.add((AceDtoDec) ace);
+      aceStore.addAll(information.getInheritedAces());
 
       /* configure columns */
       List<ColumnConfig<AceDto, ?>> columns = new ArrayList<ColumnConfig<AceDto, ?>>();
@@ -486,7 +485,7 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
             selectedACE.getAccesstype(), new SFFCStaticRadioList<AccessTypeDto>() {
                @Override
                public Map<String, AccessTypeDto> getValues() {
-                  Map<String, AccessTypeDto> map = new HashMap<String, AccessTypeDto>();
+                  Map<String, AccessTypeDto> map = new HashMap<>();
 
                   map.put(SecurityMessages.INSTANCE.allow(), AccessTypeDto.ALLOW);
                   map.put(SecurityMessages.INSTANCE.deny(), AccessTypeDto.DENY);
@@ -526,8 +525,8 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
                public Map<String, Integer> getValues() {
                   Map<String, Integer> map = new LinkedHashMap<String, Integer>();
 
-                  map.put(SecurityMessages.INSTANCE.fullAccess(), 0);
-                  map.put(SecurityMessages.INSTANCE.noAccess(), 1);
+                  map.put(SecurityMessages.INSTANCE.selectAll(), 0);
+                  map.put(SecurityMessages.INSTANCE.deselectAll(), 1);
 
                   return map;
                }
@@ -542,7 +541,6 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
 
             if (value < 0)
                return;
-
             for (SecureeDto securee : information.getAvailableSecurees()) {
                form.beginFieldset(securee.getName());
                for (RightDto right : securee.getRights()) {
@@ -585,12 +583,9 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
       window.addCancelButton();
 
       DwTextButton okButton = new DwTextButton(BaseMessages.INSTANCE.apply());
-      okButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            editACE(selectedACE, form, information);
-            window.hide();
-         }
+      okButton.addSelectHandler(event -> {
+         editACE(selectedACE, form, information);
+         window.hide();
       });
       window.addButton(okButton);
 
@@ -602,7 +597,7 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
       return "right_" + securee.getSecureeId() + right.getBitField(); //$NON-NLS-1$
    }
 
-   protected void editACE(AceDto selectedACE, SimpleForm form, SecurityViewInformation information) {
+   protected void editACE(final AceDto selectedACE, final SimpleForm form, final SecurityViewInformation information) {
       /* inherit basic properties */
       selectedACE.setFolk((AbstractUserManagerNodeDto) form.getValue(AceDto.PROPERTY_FOLK));
       selectedACE.setAccesstype((AccessTypeDto) form.getValue(AceDto.PROPERTY_ACCESSTYPE));
@@ -611,13 +606,13 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
                .setInheritancetype((InheritanceTypeDto) form.getValue(HierarchicalAceDto.PROPERTY_INHERITANCETYPE));
 
       /* inherit rights information */
-      for (SecureeDto securee : information.getAvailableSecurees()) {
+      for (final SecureeDto securee : information.getAvailableSecurees()) {
          AceAccessMapDtoDec accessMap = (AceAccessMapDtoDec) (((AceDtoDec) selectedACE)
                .getAccessMap(securee.getSecureeId()));
 
          /* remove all rights */
          accessMap.clearRights();
-
+         
          for (RightDto right : securee.getRights()) {
             String rightId = createRightId(securee, right);
 
@@ -643,8 +638,7 @@ public abstract class BasicACLView<T> extends VerticalLayoutContainer {
       doRemoveACEs(aces, new NotamCallback<Void>(SecurityMessages.INSTANCE.acesDeleted()) {
          @Override
          public void doOnSuccess(Void result) {
-            for (AceDto ace : aces)
-               aceStore.remove(ace);
+            aces.forEach(aceStore::remove);
          }
       });
    }

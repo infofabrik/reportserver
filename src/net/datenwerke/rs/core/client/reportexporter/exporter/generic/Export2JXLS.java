@@ -72,7 +72,7 @@ public abstract class Export2JXLS extends ReportExporterImpl {
             new RECJxlsDtoDec(), new SFFCStaticRadioList<Boolean>() {
                @Override
                public Map<String, Boolean> getValues() {
-                  Map<String, Boolean> map = new HashMap<String, Boolean>();
+                  Map<String, Boolean> map = new HashMap<>();
                   map.put(ReportexecutorMessages.INSTANCE.jxlsVariantTemplate(), false);
                   map.put(ReportexecutorMessages.INSTANCE.jxlsReportTemplate(), true);
                   return map;
