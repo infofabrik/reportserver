@@ -304,9 +304,6 @@ public class EnvironmentValidator extends HttpServlet {
       String username = jpaProperties.getProperty("hibernate.connection.username");
       sb.append("hibernate.connection.username: ").append(username).append("\r\n");
 
-      if (null != jpaProperties.getProperty("hibernate.connection.password"))
-         sb.append("hibernate.connection.password: ").append("**********").append("\r\n");
-
       String schema = jpaProperties.getProperty("hibernate.default_schema");
       sb.append("hibernate.default_schema: ").append(schema).append("\r\n");
 
@@ -426,7 +423,7 @@ public class EnvironmentValidator extends HttpServlet {
       return null;
    }
 
-   private static Connection openConnection() throws SQLException {
+   public static Connection openConnection() throws SQLException {
       String url = jpaProperties.getProperty("hibernate.connection.url");
       String username = jpaProperties.getProperty("hibernate.connection.username");
       String password = jpaProperties.getProperty("hibernate.connection.password");
@@ -851,7 +848,7 @@ public class EnvironmentValidator extends HttpServlet {
       new LibDirClasspathHelper(configDirService).loadLibs();
    }
 
-   private static Properties getJpaProperties() {
+   public static Properties getJpaProperties() {
       Properties jpaProperties = new Properties();
 
       try { /* persistence.xml */

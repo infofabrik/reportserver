@@ -2,15 +2,22 @@ package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
 import static java.util.stream.Collectors.joining;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
+
+import org.hibernate.dialect.Dialect;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.EnvironmentValidator;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
@@ -85,6 +92,7 @@ public class EnvCommand implements TerminalCommandHook {
       result.addResultTable(table);
       try {
          result.addResultTable(getPamsAsTable(generalInfoService));
+         result.addResultTable(getDbConfigAsTable());
          result.addResultTable(getInternalDbInformationAsTable());
          result.addResultTable(getSslInformationAsTable(generalInfoService));
       } catch (SQLException e) {
@@ -128,6 +136,66 @@ public class EnvCommand implements TerminalCommandHook {
       }
       
       staticPams.forEach(pam -> table.addDataRow(new RSStringTableRow(pam)));
+      
+      return table;
+   }
+   
+   private RSTableModel getDbConfigAsTable() throws SQLException {
+      RSTableModel table = new RSTableModel();
+      TableDefinition td = new TableDefinition(Arrays.asList("DB Config", ""),
+            Arrays.asList(String.class, String.class));
+      table.setTableDefinition(td);
+      td.setDisplaySizes(Arrays.asList(100, 0));      
+      
+      Properties jpaProperties = EnvironmentValidator.getJpaProperties();
+      table.addDataRow(new RSStringTableRow("hibernate.dialect", jpaProperties.getProperty("hibernate.dialect")));
+      table.addDataRow(new RSStringTableRow("hibernate.connection.driver_class", jpaProperties.getProperty("hibernate.connection.driver_class")));
+      table.addDataRow(new RSStringTableRow("hibernate.connection.url", jpaProperties.getProperty("hibernate.connection.url")));
+      table.addDataRow(new RSStringTableRow("hibernate.connection.username", jpaProperties.getProperty("hibernate.connection.username")));
+      table.addDataRow(new RSStringTableRow("hibernate.default_schema", "hibernate.default_schema"));
+
+      Class<?> dialectClass = null;
+      try {
+         dialectClass = Class.forName(jpaProperties.getProperty("hibernate.dialect"));
+      } catch (ClassNotFoundException e1) {
+      }
+      Connection conn = null;
+      try {
+         Dialect dialect = (Dialect) dialectClass.newInstance();
+         String query = dialect.getCurrentTimestampSelectString();
+         conn = EnvironmentValidator.openConnection();
+         PreparedStatement stmt = conn.prepareStatement(query);
+         ResultSet resultSet = stmt.executeQuery();
+         resultSet.close();
+         stmt.close();
+         table.addDataRow(new RSStringTableRow("Connection Test", "OK"));
+         try {
+            stmt = conn.prepareStatement(
+                  "SELECT * FROM RS_SCHEMAINFO WHERE KEY_FIELD = 'schemaversion' ORDER BY ENTITY_ID DESC");
+            resultSet = stmt.executeQuery();
+            if (resultSet.next()) {
+               table.addDataRow(new RSStringTableRow("Schema Version", resultSet.getString("value")));
+            } else {
+               table.addDataRow(new RSStringTableRow("Schema Version", "No version number found. Did you forget a commit during installation?"));
+            }
+         } catch (SQLException e) {
+            table.addDataRow(new RSStringTableRow("Schema Version", "Unknown (" + e.getMessage() + ")"));
+         } finally {
+            resultSet.close();
+            stmt.close();
+         }
+      }
+      catch (Exception e) {
+         table.addDataRow(new RSStringTableRow("Connection Test", "Failed (" + e.getMessage() + ")"));
+      } finally {
+         if (null != conn) {
+            try {
+               conn.close();
+            } catch (SQLException e) {
+               table.addDataRow(new RSStringTableRow("Connection Test", "Failed (" + e.getMessage() + ")"));
+            }
+         }
+      }
       
       return table;
    }
