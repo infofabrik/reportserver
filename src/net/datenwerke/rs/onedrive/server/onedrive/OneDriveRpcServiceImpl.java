@@ -38,7 +38,7 @@ import net.datenwerke.rs.onedrive.client.onedrive.rpc.OneDriveRpcService;
 import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -59,7 +59,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final HookHandlerService hookHandlerService;
    private final OneDriveService oneDriveService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -72,7 +72,7 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          OneDriveService oneDriveService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {

@@ -33,7 +33,7 @@ import net.datenwerke.rs.core.service.mail.SimpleMail;
 import net.datenwerke.rs.scheduler.service.scheduler.annotations.SchedulerModuleProperties;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
@@ -67,14 +67,14 @@ public class SchedulerNotificationHooker implements SchedulerExecutionHook, Sche
    private final Provider<EntityManager> entityManagerProvider;
    private final Injector injector;
    private final MailService mailService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final Configuration config;
 
    private RemoteMessageService remoteMessageService;
 
    @Inject
    public SchedulerNotificationHooker(@SchedulerModuleProperties Configuration config, Provider<EntityManager> emp,
-         Injector injector, MailService mailService, ExceptionServices exceptionServices,
+         Injector injector, MailService mailService, ExceptionService exceptionServices,
          RemoteMessageService remoteMessageService) {
 
       this.config = config;

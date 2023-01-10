@@ -11,7 +11,7 @@ import net.datenwerke.rs.adminutils.client.datasourcetester.rpc.DatasourceTester
 import net.datenwerke.rs.adminutils.service.datasourcetester.DatasourceTesterService;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.annotation.ArgumentVerification;
 import net.datenwerke.security.service.security.annotation.RightsVerification;
@@ -28,11 +28,11 @@ public class DatasourceTesterRPCServiceImpl extends SecuredRemoteServiceServlet 
    private static final long serialVersionUID = 3945467345321105023L;
 
    private final DtoService dtoService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final DatasourceTesterService datasourceTesterService;
 
    @Inject
-   public DatasourceTesterRPCServiceImpl(DtoService dtoService, ExceptionServices exceptionServices,
+   public DatasourceTesterRPCServiceImpl(DtoService dtoService, ExceptionService exceptionServices,
          DatasourceTesterService datasourceTesterService) {
 
       /* store objects */

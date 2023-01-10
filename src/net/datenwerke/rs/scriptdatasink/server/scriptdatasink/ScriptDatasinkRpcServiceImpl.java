@@ -39,7 +39,7 @@ import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.dto.ScriptDatasink
 import net.datenwerke.rs.scriptdatasink.client.scriptdatasink.rpc.ScriptDatasinkRpcService;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.ScriptDatasinkService;
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -61,7 +61,7 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
    private final HookHandlerService hookHandlerService;
    private final ScriptDatasinkService scriptDatasinkService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -74,7 +74,7 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          ScriptDatasinkService scriptDatasinkService,
-         ExceptionServices exceptionServices, 
+         ExceptionService exceptionServices, 
          ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider
          ) {

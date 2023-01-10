@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
 import com.google.inject.Inject;
 
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.scheduler.service.scheduler.annotations.StandardVetoDelay;
 import net.datenwerke.scheduler.service.scheduler.annotations.StandardVetoRandomDelay;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
@@ -45,7 +45,7 @@ public class SchedulerTask implements Callable<SchedulerTaskResult> {
 
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
-   private final ExceptionServices exceptionService;
+   private final ExceptionService exceptionService;
    private final HookHandlerService hookHandler;
    private final int standardDelayMinutes;
    private final int standardDelayRandomMinutes;
@@ -58,7 +58,7 @@ public class SchedulerTask implements Callable<SchedulerTaskResult> {
    private JobExecutionCompanion executionCompanion;
 
    @Inject
-   public SchedulerTask(ExceptionServices exceptionService, HookHandlerService hookHandler,
+   public SchedulerTask(ExceptionService exceptionService, HookHandlerService hookHandler,
 
          @StandardVetoDelay Integer standardDelayMinutes, @StandardVetoRandomDelay Integer standardDelayRandomMinutes) {
 

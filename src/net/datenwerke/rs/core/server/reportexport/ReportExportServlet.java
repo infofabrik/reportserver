@@ -57,7 +57,7 @@ import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.rs.utils.stream.shared.StreamUtil;
 import net.datenwerke.security.server.SecuredHttpServlet;
@@ -99,7 +99,7 @@ public class ReportExportServlet extends SecuredHttpServlet {
    protected final Provider<RsErrorHelper> errorHelperProvider;
    protected final ParameterSetFactory parameterSetFactory;
    protected final Provider<TempFileService> tempFileService;
-   protected final Provider<ExceptionServices> exceptionServices;
+   protected final Provider<ExceptionService> exceptionServices;
    protected final Provider<ConfigService> configService;
    protected final Provider<ReportSessionCache> sessionCacheProvider;
    protected final Provider<HttpUtils> httpUtilsProvider;
@@ -110,7 +110,7 @@ public class ReportExportServlet extends SecuredHttpServlet {
          Provider<ReportExecutorService> reportExecutor, Provider<ReportService> reportService,
          Provider<ReportServerService> reportServerService, Provider<RsErrorHelper> errorHelperProvider,
          ParameterSetFactory parameterSetFactory, Provider<TempFileService> tempFileService,
-         Provider<ExceptionServices> exceptionServices, Provider<ConfigService> configService,
+         Provider<ExceptionService> exceptionServices, Provider<ConfigService> configService,
          Provider<ReportSessionCache> sessionCacheProvider, Provider<HttpUtils> httpUtilsProvider) {
 
       super();

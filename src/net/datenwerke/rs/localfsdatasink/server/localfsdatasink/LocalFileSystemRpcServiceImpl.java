@@ -39,7 +39,7 @@ import net.datenwerke.rs.localfsdatasink.client.localfsdatasink.rpc.LocalFileSys
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.LocalFileSystemService;
 import net.datenwerke.rs.localfsdatasink.service.localfsdatasink.definitions.LocalFileSystemDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -61,7 +61,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
    private final HookHandlerService hookHandlerService;
    private final LocalFileSystemService localFileSystemService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -74,7 +74,7 @@ public class LocalFileSystemRpcServiceImpl extends SecuredRemoteServiceServlet i
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          LocalFileSystemService localFileSystemService,
-         ExceptionServices exceptionServices, 
+         ExceptionService exceptionServices, 
          ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider
          ) {

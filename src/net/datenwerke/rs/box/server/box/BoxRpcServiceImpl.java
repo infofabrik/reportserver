@@ -38,7 +38,7 @@ import net.datenwerke.rs.core.service.reportmanager.engine.config.ReportExecutio
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -59,7 +59,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    private final HookHandlerService hookHandlerService;
    private final BoxService boxService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -72,7 +72,7 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          BoxService boxService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {

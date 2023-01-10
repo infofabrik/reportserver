@@ -49,7 +49,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
 import net.datenwerke.security.client.usermanager.dto.ie.StrippedDownUser;
@@ -76,7 +76,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final ReportDtoService reportDtoService;
    private final SecurityService securityService;
    private final HookHandlerService hookHandlerService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final UserManagerService userManagerService;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
@@ -91,7 +91,7 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          ReportDtoService reportDtoService,
          SecurityService securityService, 
          HookHandlerService hookHandlerService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          UserManagerService userManagerService, 
          ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider,

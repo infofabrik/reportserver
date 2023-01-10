@@ -14,7 +14,7 @@ import net.datenwerke.gf.service.lateinit.LateInitHook;
 import net.datenwerke.rs.core.service.jarextension.ReportServerExtender;
 import net.datenwerke.rs.core.service.jarextension.events.ReoportServerExtenderLoadFailedEvent;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 
 public class ReportServerExtenderHooker implements LateInitHook {
 
@@ -22,11 +22,11 @@ public class ReportServerExtenderHooker implements LateInitHook {
 
    private final Provider<Injector> injectorProvider;
    private final Provider<EventBus> eventBusProvider;
-   private final Provider<ExceptionServices> exceptionServiceProvider;
+   private final Provider<ExceptionService> exceptionServiceProvider;
 
    @Inject
    public ReportServerExtenderHooker(Provider<Injector> injectorProvider, Provider<EventBus> eventBusProvider,
-         Provider<ExceptionServices> exceptionServiceProvider) {
+         Provider<ExceptionService> exceptionServiceProvider) {
       this.injectorProvider = injectorProvider;
       this.eventBusProvider = eventBusProvider;
       this.exceptionServiceProvider = exceptionServiceProvider;

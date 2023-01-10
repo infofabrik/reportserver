@@ -38,7 +38,7 @@ import net.datenwerke.rs.googledrive.client.googledrive.rpc.GoogleDriveRpcServic
 import net.datenwerke.rs.googledrive.service.googledrive.GoogleDriveService;
 import net.datenwerke.rs.googledrive.service.googledrive.definitions.GoogleDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -60,7 +60,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
    private final HookHandlerService hookHandlerService;
    private final GoogleDriveService googleDriveService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -73,7 +73,7 @@ public class GoogleDriveRpcServiceImpl extends SecuredRemoteServiceServlet imple
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          GoogleDriveService googleDriveService,
-         ExceptionServices exceptionServices, 
+         ExceptionService exceptionServices, 
          ZipUtilsService zipUtilsService,
          Provider<DatasinkService> datasinkServiceProvider
          ) {

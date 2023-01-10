@@ -28,7 +28,7 @@ import net.datenwerke.rs.saiku.service.locale.SaikuMessages;
 import net.datenwerke.rs.saiku.service.saiku.OlapUtilService;
 import net.datenwerke.rs.saiku.service.saiku.SaikuSessionContainer;
 import net.datenwerke.rs.saiku.service.saiku.entities.SaikuReport;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -51,13 +51,13 @@ public class SaikuRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final DtoService dtoService;
    private final OlapUtilService olapService;
    private final EntityUtils entityUtils;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
 
    @Inject
    public SaikuRpcServiceImpl(Provider<SecurityService> securityServiceProvider,
          Provider<SaikuSessionContainer> sessionContainer, OlapUtilService olapService,
          ReportDtoService reportDtoService, DtoService dtoService, EntityUtils entityUtils,
-         ExceptionServices exceptionServices) {
+         ExceptionService exceptionServices) {
       this.securityServiceProvider = securityServiceProvider;
       this.sessionContainer = sessionContainer;
       this.olapService = olapService;

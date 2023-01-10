@@ -157,7 +157,8 @@ public abstract class ReportEngine<D, G extends ReportOutputGenerator, E extends
          throws ReportExecutorException, ExpectedException {
 
       Optional<ReportEngineTakeOverExecutionHook> takeOverHook = hookHandler
-            .getHookers(ReportEngineTakeOverExecutionHook.class).stream()
+            .getHookers(ReportEngineTakeOverExecutionHook.class)
+            .stream()
             .filter(engineHooker -> engineHooker.takesOver(this, report, parameterSet, user, outputFormat, configs))
             .findAny();
 

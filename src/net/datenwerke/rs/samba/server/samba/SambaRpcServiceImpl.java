@@ -39,7 +39,7 @@ import net.datenwerke.rs.samba.client.samba.rpc.SambaRpcService;
 import net.datenwerke.rs.samba.service.samba.SambaService;
 import net.datenwerke.rs.samba.service.samba.definitions.SambaDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -61,7 +61,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
    private final HookHandlerService hookHandlerService;
    private final SambaService sambaService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -74,7 +74,7 @@ public class SambaRpcServiceImpl extends SecuredRemoteServiceServlet implements 
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          SambaService sambaService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {

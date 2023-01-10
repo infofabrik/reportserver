@@ -49,7 +49,7 @@ import net.datenwerke.rs.dsbundle.service.dsbundle.SimpleDatasourceBundleService
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.TsDiskServiceImpl;
 import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.UserManagerService;
 import net.datenwerke.security.service.usermanager.entities.User;
@@ -68,7 +68,7 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
    private final HookHandlerService hookHandler;
    private final EventBus eventBus;
-   private final Provider<ExceptionServices> exceptionServiceProvider;
+   private final Provider<ExceptionService> exceptionServiceProvider;
    private final Provider<SimpleDatasourceBundleService> bundleServiceProvider;
    private final Provider<TsDiskServiceImpl> tsDiskServiceProvider;
    private final Provider<JasperUtilsService> jasperUtilsServiceProvider;
@@ -82,13 +82,20 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
    private final ParameterSetFactory parameterSetFactory;
 
    @Inject
-   public ReportExecutorServiceImpl(@ReportEngines Provider<Set<Class<? extends ReportEngine>>> reportEnginesProvider,
-         Injector injector, Provider<AuthenticatorService> authenticatorServiceProvider, HookHandlerService hookHandler,
-         Provider<ExceptionServices> exceptionServiceProvider, EventBus eventBus,
+   public ReportExecutorServiceImpl(
+         @ReportEngines Provider<Set<Class<? extends ReportEngine>>> reportEnginesProvider,
+         Injector injector, 
+         Provider<AuthenticatorService> authenticatorServiceProvider, 
+         HookHandlerService hookHandler,
+         Provider<ExceptionService> exceptionServiceProvider, 
+         EventBus eventBus,
          Provider<SimpleDatasourceBundleService> bundleServiceProvider,
-         Provider<TsDiskServiceImpl> tsDiskServiceProvider, Provider<JasperUtilsService> jasperUtilsServiceProvider,
-         Provider<UserManagerService> userManagerServiceProvider, ParameterSetFactory parameterSetFactory,
-         Provider<FilterService> filterServiceProvider) {
+         Provider<TsDiskServiceImpl> tsDiskServiceProvider, 
+         Provider<JasperUtilsService> jasperUtilsServiceProvider,
+         Provider<UserManagerService> userManagerServiceProvider, 
+         ParameterSetFactory parameterSetFactory,
+         Provider<FilterService> filterServiceProvider
+         ) {
 
       /* store objects */
       this.injector = injector;
@@ -262,12 +269,15 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
             for (ReportExecutionNotificationHook notificee : notificees)
                notificee.notifyOfReportsUnsuccessfulExecution(e, report, parameterSet, user, outputFormat, configs);
          }
-
-         throw e;
+         final String details = exceptionServiceProvider.get().reportExecutionExceptionDetailsMessage(e, report, user,
+               outputFormat, uuid);
+         throw new ReportExecutorException(details, e);
       } catch (Exception e) {
-         logger.warn(e.getMessage(), e);
+         final String details = exceptionServiceProvider.get().reportExecutionExceptionDetailsMessage(e, report, user,
+               outputFormat, uuid);
+         logger.warn(details, e);
          ReportExecutorException rsre = new ReportExecutorException(
-               ReportManagerMessages.INSTANCE.exceptionReportCouldNotBeExecuted(e.getLocalizedMessage()), e);
+               ReportManagerMessages.INSTANCE.exceptionReportCouldNotBeExecuted(e.getLocalizedMessage()) + ", " + details, e);
 
          if (!dry) {
             /* fire event */
@@ -283,8 +293,10 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
 
          throw rsre;
       }
-
-      throw new IllegalArgumentException("Reporttype " + report.getClass().getName() + " seems not to be supported."); //$NON-NLS-1$ //$NON-NLS-2$
+      Exception iae = new IllegalArgumentException("Reporttype " + report.getClass().getName() + " seems not to be supported.");
+      final String details = exceptionServiceProvider.get().reportExecutionExceptionDetailsMessage(iae, report, user,
+            outputFormat, uuid);
+      throw new IllegalArgumentException(details); //$NON-NLS-1$ //$NON-NLS-2$
    }
 
    @Override

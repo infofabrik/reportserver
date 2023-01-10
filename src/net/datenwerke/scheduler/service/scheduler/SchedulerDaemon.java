@@ -15,7 +15,7 @@ import net.datenwerke.async.DwAsyncPool;
 import net.datenwerke.async.DwAsyncService;
 import net.datenwerke.async.configurations.FixedThreadPoolConfig;
 import net.datenwerke.rs.utils.eventbus.EventBus;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.scheduler.service.scheduler.annotations.SchedulerAsyncPoolName;
 import net.datenwerke.scheduler.service.scheduler.annotations.SchedulerCheckInterval;
 import net.datenwerke.scheduler.service.scheduler.annotations.SchedulerNrOfWorkingThreads;
@@ -38,7 +38,7 @@ public class SchedulerDaemon implements Runnable {
    private final Long waitBeforeForcedShutdown;
 
    private final EventBus eventBus;
-   private final ExceptionServices exceptionService;
+   private final ExceptionService exceptionService;
    private final DwAsyncService asyncService;
    private final Provider<SchedulerTask> taskProvider;
    private final Provider<UnitOfWork> unitOfWorkProvider;
@@ -54,7 +54,7 @@ public class SchedulerDaemon implements Runnable {
          @SchedulerNrOfWorkingThreads Integer nrOfWorkerThreads,
          @SchedulerWaitBeforeForcedShutdown Long waitBeforeForcedShutdown,
 
-         EventBus eventBus, ExceptionServices exceptionService, DwAsyncService asyncService,
+         EventBus eventBus, ExceptionService exceptionService, DwAsyncService asyncService,
          Provider<SchedulerTask> taskProvider, Provider<UnitOfWork> unitOfWorkProvider,
          SchedulerService schedulerService) {
 

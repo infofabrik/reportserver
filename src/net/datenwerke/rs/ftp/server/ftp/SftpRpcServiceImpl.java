@@ -38,7 +38,7 @@ import net.datenwerke.rs.ftp.client.ftp.rpc.SftpRpcService;
 import net.datenwerke.rs.ftp.service.ftp.SftpService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -60,7 +60,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
    private final HookHandlerService hookHandlerService;
    private final SftpService sftpService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -73,7 +73,7 @@ public class SftpRpcServiceImpl extends SecuredRemoteServiceServlet implements S
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          SftpService sftpService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {

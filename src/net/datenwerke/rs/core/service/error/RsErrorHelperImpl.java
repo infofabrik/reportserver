@@ -8,20 +8,20 @@ import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.RsCoreModule;
 import net.datenwerke.rs.core.service.reportserver.ServerInfoContainer;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
 public class RsErrorHelperImpl implements RsErrorHelper {
 
    private final Provider<SimpleJuel> juelProvider;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ConfigService configService;
    private final ServerInfoContainer serverInfo;
    private final RemoteMessageService remoteMessageService;
 
    @Inject
-   public RsErrorHelperImpl(Provider<SimpleJuel> juel, ExceptionServices exceptionServices, ConfigService configService,
+   public RsErrorHelperImpl(Provider<SimpleJuel> juel, ExceptionService exceptionServices, ConfigService configService,
          ServerInfoContainer serverInfo, RemoteMessageService remoteMessageService) {
 
       this.juelProvider = juel;

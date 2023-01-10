@@ -21,7 +21,7 @@ import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSetFactory;
 import net.datenwerke.rs.core.service.reportserver.ReportServerService;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.misc.HttpUtils;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
@@ -50,7 +50,7 @@ public class HttpAuthExecuteServlet extends ReportExportServlet {
          Provider<RsErrorHelper> errorHelperProvider,
          ParameterSetFactory parameterSetFactory, 
          Provider<TempFileService> tempFileService,
-         Provider<ExceptionServices> exceptionServices, 
+         Provider<ExceptionService> exceptionServices, 
          Provider<ReportSessionCache> sessionCacheProvider,
          Provider<HttpUtils> httpUtilsProvider,
          Provider<ApiKeyHelper> apiKeyHelperProvider

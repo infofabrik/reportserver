@@ -43,7 +43,7 @@ import net.datenwerke.rs.printer.client.printer.rpc.PrinterRpcService;
 import net.datenwerke.rs.printer.service.printer.PrinterService;
 import net.datenwerke.rs.printer.service.printer.definitions.PrinterDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -63,7 +63,7 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
    private final ReportDtoService reportDtoService;
    private final HookHandlerService hookHandlerService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final Provider<DatasinkService> datasinkServiceProvider;
    private final Provider<PrinterService> printerServiceProvider;
 
@@ -75,7 +75,7 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
          ReportExecutorService reportExecutorService, 
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          Provider<DatasinkService> datasinkServiceProvider,
          Provider<PrinterService> printerServiceProvider
          ) {

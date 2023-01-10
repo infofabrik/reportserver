@@ -39,7 +39,7 @@ import net.datenwerke.rs.scp.client.scp.dto.ScpDatasinkDto;
 import net.datenwerke.rs.scp.client.scp.rpc.ScpRpcService;
 import net.datenwerke.rs.scp.service.scp.ScpService;
 import net.datenwerke.rs.scp.service.scp.definitions.ScpDatasink;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -61,7 +61,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
    private final HookHandlerService hookHandlerService;
    private final ScpService scpService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -74,7 +74,7 @@ public class ScpRpcServiceImpl extends SecuredRemoteServiceServlet implements Sc
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          ScpService scpService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {

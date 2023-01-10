@@ -38,7 +38,7 @@ import net.datenwerke.rs.dropbox.service.dropbox.DropboxService;
 import net.datenwerke.rs.dropbox.service.dropbox.definitions.DropboxDatasink;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
-import net.datenwerke.rs.utils.exception.ExceptionServices;
+import net.datenwerke.rs.utils.exception.ExceptionService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
@@ -60,7 +60,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
    private final HookHandlerService hookHandlerService;
    private final DropboxService dropboxService;
    private final SecurityService securityService;
-   private final ExceptionServices exceptionServices;
+   private final ExceptionService exceptionServices;
    private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
@@ -73,7 +73,7 @@ public class DropboxRpcServiceImpl extends SecuredRemoteServiceServlet implement
          SecurityService securityService,
          HookHandlerService hookHandlerService, 
          DropboxService dropboxService, 
-         ExceptionServices exceptionServices,
+         ExceptionService exceptionServices,
          ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
