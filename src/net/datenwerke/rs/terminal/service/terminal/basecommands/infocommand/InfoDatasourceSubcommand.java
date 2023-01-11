@@ -91,7 +91,7 @@ public static final String BASE_COMMAND = "datasource";
       try {
          DatabaseDatasource datasource = terminalServiceProvider.get()
                .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Map<String, Object> results = datasourceServiceProvider.get().fetchInfoDatasourceMetadata(datasource);
+         Map<String, Object> results = datasourceServiceProvider.get().fetchInfoDatasourceMetadata(datasource, true, true, true, true);
          return generateCommandResult(results);
       } catch (Exception e) {
          throw new TerminalException(e);

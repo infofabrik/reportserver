@@ -7,7 +7,9 @@ import javax.inject.Inject
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
+import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig
 import net.datenwerke.rs.base.service.dbhelper.DBHelperService
+import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer
 import net.datenwerke.rs.utils.reflection.MethodMetadata
 
 class DatasourceHelperServiceImpl implements DatasourceHelperService {
@@ -198,14 +200,15 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource) {
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean generalInfo, boolean urlInfo,
+         boolean functionsInfo, boolean supportsInfo) {
       def allMethods = 
          (
-            getDatasourceGeneralInfoDefinition().values() +
-            getDatasourceUrlInfoDefinition().values() + 
-            getDatasourceFunctionsInfoDefinition().values() + 
-            getDatasourceSupportsInfoDefinition().values() + 
-            getDatasourceSupportsInfoDefinition().values()
+            (generalInfo? getDatasourceGeneralInfoDefinition().values() : [:]) +
+            (urlInfo? getDatasourceUrlInfoDefinition().values() : [:]) + 
+            (functionsInfo? getDatasourceFunctionsInfoDefinition().values() : [:]) + 
+            (supportsInfo? getDatasourceSupportsInfoDefinition().values() : [:])
+            - [:]
          ).collectEntries { [(it): []] }
       return fetchDatasourceMetadata(datasource, allMethods)
    }
@@ -220,6 +223,13 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       ]
    }
    
+   @Override
+   String getQuery(DatasourceContainer datasourceContainer) {
+      if (!(datasourceContainer?.datasourceConfig instanceof DatabaseDatasourceConfig))
+         throw new IllegalArgumentException('not a DatabaseDatasourceConfig')
+         
+      return datasourceContainer?.datasourceConfig?.query
+   }
    
    public Map<String, String> getDatasourceGeneralInfoDefinition() {
       [

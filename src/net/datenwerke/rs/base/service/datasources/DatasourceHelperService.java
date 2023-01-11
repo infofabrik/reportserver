@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 
 public interface DatasourceHelperService {
 
@@ -47,21 +48,32 @@ public interface DatasourceHelperService {
     */
    Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
          Map<String, List<String>> methodDescriptions) throws SQLException;
-   
+
    /**
-    * Fetches general metadata information about a given datasource. Information about
-    * which data is acquired getDatasourceInfoDefinition() provides a config map
-    * @param datasource the datasource 
+    * Fetches general metadata information about a given datasource. Information
+    * about which data is acquired getDatasourceInfoDefinition() provides a config
+    * map
+    * 
+    * @param datasource    the datasource
+    * @param generalInfo   if true, fetches general information
+    * @param urlInfo       if true, fetches URL information
+    * @param functionsInfo if true, fetches information on functions
+    * @param supportsInfo  if true, fechtes information on supports
     * @return the map containing <methodname, result>
     */
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource) throws SQLException;
-   
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean generalInfo, boolean urlInfo,
+         boolean functionsInfo, boolean supportsInfo) throws SQLException;
+
    /**
-    * Provides a config map about which information is fetched when using fetchDatasourceMetadata()
-    * This map has 4 keys: 'generalInfo', 'urlInfo', 'functionsSection', 'supportsSection'.
-    * Each key points to another Map of type <String,String> with the structure 'method description' -> 'method name'
+    * Provides a config map about which information is fetched when using
+    * fetchDatasourceMetadata() This map has 4 keys: 'generalInfo', 'urlInfo',
+    * 'functionsSection', 'supportsSection'. Each key points to another Map of type
+    * <String,String> with the structure 'method description' -> 'method name'
+    * 
     * @return the config map
     */
    Map<String, Object> getDatasourceInfoDefinition();
-  
+
+   String getQuery(DatasourceContainer datasourceContainer);
+
 }

@@ -138,7 +138,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       
       try {
          Map<String, Object> datasourceMetadata = datasourceHelperService
-               .fetchInfoDatasourceMetadata(internalDbDatasource);
+               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
          info.setInternalDbId(internalDbDatasource.getId()+"");
          info.setInternalDbDatasourceName(internalDbDatasource.getName());
          info.setInternalDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());

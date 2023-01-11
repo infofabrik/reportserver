@@ -86,7 +86,7 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
       DatabaseDatasource src = (DatabaseDatasource) dtoService.loadPoso(datasourceDto);
       Map<String, Object> datasourceInfo;
       try {
-         datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src);
+         datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src, true, true, true, true);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not retrieve datasource metadata", e);
       }

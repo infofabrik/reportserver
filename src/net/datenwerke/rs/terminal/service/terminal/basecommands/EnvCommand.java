@@ -220,7 +220,8 @@ public class EnvCommand implements TerminalCommandHook {
       Map<String, Object> datasourceInfoDefinition = datasourceHelperService.getDatasourceInfoDefinition();
       Map<String, String> generalInfo = (Map<String, String>) datasourceInfoDefinition.get("generalInfo");
       Map<String, String> urlInfo = (Map<String, String>) datasourceInfoDefinition.get("urlInfo");
-      Map<String, Object> datasourceMetadata = datasourceHelperService.fetchInfoDatasourceMetadata(internalDbDatasource);
+      Map<String, Object> datasourceMetadata = datasourceHelperService.fetchInfoDatasourceMetadata(internalDbDatasource,
+            true, true, true, true);
       
       table.addDataRow(new RSStringTableRow("ID", internalDbDatasource.getId()+""));
       table.addDataRow(new RSStringTableRow("Name", internalDbDatasource.getName()));
