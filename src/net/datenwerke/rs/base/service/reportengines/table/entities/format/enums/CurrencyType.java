@@ -864,7 +864,8 @@ public enum CurrencyType {
    private String region;
 
    @Inject
-   private static Provider<ConfigService> configService;
+   private static Provider<ConfigService> configServiceProvider;
+   
    public static final String CONFIG_FILE = "main/localization.cf";
    public static final String CURRENCY_LIST = "localization.currencies.currency";
 
@@ -894,7 +895,7 @@ public enum CurrencyType {
       HierarchicalConfiguration config = null;
       if (null == language || null == region) {
          try {
-            config = (HierarchicalConfiguration) ((ConfigService) configService.get()).getConfig(CONFIG_FILE);
+            config = (HierarchicalConfiguration) ((ConfigService) configServiceProvider.get()).getConfig(CONFIG_FILE);
             if (null == config)
                return new Locale("en", "US");
          } catch (Exception e) {

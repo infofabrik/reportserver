@@ -1,13 +1,26 @@
 package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo;
 
 import static java.util.stream.Collectors.toList;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_FORMATTED;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.FREE_IN_MB;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_FORMATTED;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.MAX_IN_MB;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.TOTAL;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.TOTAL_FORMATTED;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.TOTAL_IN_MB;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.USED;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.USED_FORMATTED;
+import static net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory.USED_IN_MB;
+import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -25,6 +38,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import groovy.lang.GroovySystem;
+import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
@@ -44,7 +58,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<TempTableService> tempTableServiceProvider;
    private final Provider<Set<ReportServerPAM>> pamProvider;
    private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
-
+   
    @Inject
    public GeneralInfoServiceImpl(
          Provider<ServletContext> servletContextProvider,
@@ -101,14 +115,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       
       GeneralInfoDto info = new GeneralInfoDto();
 
-      Runtime runtime = Runtime.getRuntime();
-      int mb = 1024 * 1024;
-
       info.setRsVersion(getRsVersion());
       info.setJavaVersion(getJavaVersion());
       info.setVmArguments(getVmArguments());
       info.setApplicationServer(getApplicationServer());
-      info.setMaxMemory(NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB");
+      info.setMaxMemory(getMemoryValues().get(MAX_FORMATTED)+ "");
       info.setOsVersion(getOsVersion());
       info.setUserAgent(getUserAgent());
       info.setGroovyVersion(getGroovyVersion());
@@ -197,4 +208,33 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          .map(pam -> pam.getClass().getName())
          .collect(toList());
    }
+
+   @Override
+   public Map<Memory, Object> getMemoryValues() {
+      final Map<Memory, Object> values = new HashMap<>();
+      final int mb = 1024 * 1024;
+      final Runtime runtime = Runtime.getRuntime();
+      final long total = runtime.totalMemory();
+      final long free = runtime.freeMemory();
+      final long max = runtime.maxMemory();
+      final long used = total - free;
+      
+      values.put(USED, used);
+      values.put(USED_IN_MB, used / mb);
+      values.put(USED_FORMATTED, byteCountToDisplaySize(used));
+      
+      values.put(TOTAL, total);
+      values.put(TOTAL_IN_MB, total / mb);
+      values.put(TOTAL_FORMATTED, byteCountToDisplaySize(total));
+      
+      values.put(FREE, free);
+      values.put(FREE_IN_MB, free / mb);
+      values.put(FREE_FORMATTED, byteCountToDisplaySize(free));
+      
+      values.put(MAX, max);
+      values.put(MAX_IN_MB, max / mb);
+      values.put(MAX_FORMATTED, byteCountToDisplaySize(max));
+      return values;
+   }
+
 }
