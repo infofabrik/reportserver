@@ -21,6 +21,13 @@ public class GeneralInfoDto implements Serializable {
    private String locale;
    private String jvmLocale;
    
+   private String hibernateDialect;
+   private String hibernateDriverClass;
+   private String hibernateConnectionUrl;
+   private String hibernateConnectionUsername;
+   private String hibernateDefaultSchema;
+   private String schemaVersion;
+   
    private String internalDbId;
    private String internalDbDatasourceName;
    private String internalDbDatabaseName;
@@ -230,4 +237,53 @@ public class GeneralInfoDto implements Serializable {
    public void setGroovyVersion(String groovyVersion) {
       this.groovyVersion = groovyVersion;
    }
+
+   public String getHibernateDialect() {
+      return hibernateDialect;
+   }
+
+   public void setHibernateDialect(String hibernateDialect) {
+      this.hibernateDialect = hibernateDialect;
+   }
+
+   public String getHibernateConnectionUsername() {
+      return hibernateConnectionUsername;
+   }
+
+   public void setHibernateConnectionUsername(String hibernateConnectionUsername) {
+      this.hibernateConnectionUsername = hibernateConnectionUsername;
+   }
+
+   public String getHibernateDefaultSchema() {
+      return hibernateDefaultSchema;
+   }
+
+   public void setHibernateDefaultSchema(String hibernateDefaultSchema) {
+      this.hibernateDefaultSchema = hibernateDefaultSchema;
+   }
+
+   public String getHibernateDriverClass() {
+      return hibernateDriverClass;
+   }
+
+   public void setHibernateDriverClass(String hibernateDriverClass) {
+      this.hibernateDriverClass = hibernateDriverClass;
+   }
+
+   public String getHibernateConnectionUrl() {
+      return hibernateConnectionUrl;
+   }
+
+   public void setHibernateConnectionUrl(String hibernateConnectionUrl) {
+      this.hibernateConnectionUrl = hibernateConnectionUrl;
+   }
+
+   public String getSchemaVersion() {
+      return schemaVersion;
+   }
+
+   public void setSchemaVersion(String hibernateSchemaVersion) {
+      this.schemaVersion = hibernateSchemaVersion;
+   }
+
 }

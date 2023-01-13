@@ -48,7 +48,7 @@ public class MeminfoCommand implements TerminalCommandHook {
       }
 
       RSTableModel table = new RSTableModel();
-      TableDefinition td = new TableDefinition(Arrays.asList("Heap utilization statistics", "MB"),
+      TableDefinition td = new TableDefinition(Arrays.asList("Heap utilization statistics", "Size"),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
 

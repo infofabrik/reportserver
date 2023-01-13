@@ -24,6 +24,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Properties;
 import java.util.Set;
 
 import javax.net.ssl.SSLContext;
@@ -38,6 +39,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import groovy.lang.GroovySystem;
+import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
@@ -57,6 +59,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TempTableService> tempTableServiceProvider;
    private final Provider<Set<ReportServerPAM>> pamProvider;
+   private Provider<EnvironmentValidatorHelperService> envServiceProvider;
    private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
    
    @Inject
@@ -66,7 +69,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<LicenseService> licenseServiceProvider,
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
          Provider<TempTableService> tempTableServiceProvider,
-         Provider<Set<ReportServerPAM>> pamProvider
+         Provider<Set<ReportServerPAM>> pamProvider,
+         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
@@ -74,6 +78,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
       this.tempTableServiceProvider = tempTableServiceProvider;
       this.pamProvider = pamProvider;
+      this.envServiceProvider = environmentValidatorHelperServiceProvider;
    }
 
    @Override
@@ -113,6 +118,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
       DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
       
+      EnvironmentValidatorHelperService envService = envServiceProvider.get();
+      Properties jpaProperties = envService.getJpaProperties();
+      
       GeneralInfoDto info = new GeneralInfoDto();
 
       info.setRsVersion(getRsVersion());
@@ -129,6 +137,18 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setDefaultSslProtocols(getDefaultSslProtocols());
       info.setEnabledSslProtocols(getEnabledSslProtocols());
       info.setStaticPams(getStaticPams());
+      
+      info.setHibernateDialect(jpaProperties.getProperty("hibernate.dialect"));
+      info.setHibernateDriverClass(jpaProperties.getProperty("hibernate.connection.driver_class"));
+      info.setHibernateConnectionUrl(jpaProperties.getProperty("hibernate.connection.url"));
+      info.setHibernateConnectionUsername(jpaProperties.getProperty("hibernate.connection.username"));
+      info.setHibernateDefaultSchema(jpaProperties.getProperty("hibernate.default_schema"));
+      
+      try {
+         info.setSchemaVersion(envService.getSchemaVersion());
+      } catch (SQLException e) {
+         info.setSchemaVersion("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      }
 
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {

@@ -84,7 +84,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       form.setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
       form.setLabelAlign(LabelAlign.LEFT);
 
-      form.setLabelWidth(150);
+      form.setLabelWidth(200);
       
       Map<Optional<String>, String> generalInfo = new LinkedHashMap<>();
       generalInfo.put(Optional.of(result.getRsVersion()), SystemConsoleMessages.INSTANCE.versionLabel());
@@ -105,8 +105,29 @@ public class GeneralInfoPanel extends DwContentPanel {
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());
       Map<Optional<String>, String> pamsInfo = new LinkedHashMap<>();
-      pamsInfo.put(Optional.ofNullable(result.getStaticPams().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.staticPamsLabel());
+      pamsInfo.put(Optional.ofNullable(result.getStaticPams().stream().collect(joining(", "))),
+            SystemConsoleMessages.INSTANCE.staticPamsLabel());
       pamsInfo.forEach((value, description) -> addFieldToForm(value, description, form));
+      
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      
+      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.dbConfig(), new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return "";
+         }
+      });
+      
+      Map<Optional<String>, String> dbConfigInfo = new LinkedHashMap<>();
+      dbConfigInfo.put(Optional.ofNullable(result.getHibernateDialect()), "hibernate.dialect");
+      dbConfigInfo.put(Optional.ofNullable(result.getHibernateDriverClass()), "hibernate.connection.driver_class");
+      dbConfigInfo.put(Optional.ofNullable(result.getHibernateConnectionUrl()), "hibernate.connection.url");
+      dbConfigInfo.put(Optional.ofNullable(result.getHibernateConnectionUsername()), "hibernate.connection.username");
+      dbConfigInfo.put(Optional.ofNullable(result.getHibernateDefaultSchema()), "hibernate.default_schema");
+      
+      dbConfigInfo.put(Optional.ofNullable(result.getSchemaVersion()), SystemConsoleMessages.INSTANCE.schemaVersion());   
+      dbConfigInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());
@@ -148,9 +169,12 @@ public class GeneralInfoPanel extends DwContentPanel {
          }
       });
       Map<Optional<String>, String> sslInfo = new LinkedHashMap<>();
-      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.supportedSslProtocols());
-      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.defaultSslProtocols());
-      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols().stream().collect(joining(", "))), SystemConsoleMessages.INSTANCE.enabledSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols().stream().collect(joining(", "))),
+            SystemConsoleMessages.INSTANCE.supportedSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols().stream().collect(joining(", "))),
+            SystemConsoleMessages.INSTANCE.defaultSslProtocols());
+      sslInfo.put(Optional.ofNullable(result.getEnabledSslProtocols().stream().collect(joining(", "))),
+            SystemConsoleMessages.INSTANCE.enabledSslProtocols());
       sslInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.loadFields();

@@ -18,6 +18,7 @@ public class ReportServerPUModule extends AbstractReportServerModule {
       bindConstant().annotatedWith(JpaUnit.class).to(JPA_UNIT_NAME); // $NON-NLS-1$
       bind(Properties.class).annotatedWith(JpaUnit.class).toInstance(jpaProperties);
       bind(ReportServerPUStartup.class).asEagerSingleton();
+      bind(EnvironmentValidatorHelperService.class).to(EnvironmentValidatorHelperServiceImpl.class);
 
       install(new JpaPersistModule(JPA_UNIT_NAME).properties(jpaProperties));
    }

@@ -2,22 +2,19 @@ package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
 import static java.util.stream.Collectors.joining;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.hibernate.dialect.Dialect;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.rs.EnvironmentValidator;
+import net.datenwerke.rs.EnvironmentValidatorHelperService;
+import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
@@ -40,16 +37,19 @@ public class EnvCommand implements TerminalCommandHook {
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TempTableService> tempTableServiceProvider;
+   private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
 
    @Inject
    public EnvCommand(
          Provider<GeneralInfoService> generalInfoServiceProvider, 
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-         Provider<TempTableService> tempTableServiceProvider
+         Provider<TempTableService> tempTableServiceProvider,
+         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider         
          ) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
       this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
       this.tempTableServiceProvider = tempTableServiceProvider;
+      this.envServiceProvider = environmentValidatorHelperServiceProvider;
    }
 
    @Override
@@ -74,15 +74,11 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(100, 0));
       table.setTableDefinition(td);
 
-      Runtime runtime = Runtime.getRuntime();
-      int mb = 1024 * 1024;
-      
       table.addDataRow(new RSStringTableRow("Version", generalInfoService.getRsVersion()));
       table.addDataRow(new RSStringTableRow("Java version", generalInfoService.getJavaVersion()));
       table.addDataRow(new RSStringTableRow("JVM Args", generalInfoService.getVmArguments()));
       table.addDataRow(new RSStringTableRow("Application server", generalInfoService.getApplicationServer()));
-      table.addDataRow(new RSStringTableRow("Max memory",
-            NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) + " MB"));
+      table.addDataRow(new RSStringTableRow("Max memory", generalInfoService.getMemoryValues().get(Memory.MAX_FORMATTED)+""));
       table.addDataRow(new RSStringTableRow("Groovy Version", generalInfoService.getGroovyVersion()));
       table.addDataRow(new RSStringTableRow("Locale", generalInfoService.getLocale()));
       table.addDataRow(new RSStringTableRow("JVM Locale", generalInfoService.getJvmLocale()));
@@ -111,7 +107,7 @@ public class EnvCommand implements TerminalCommandHook {
       TableDefinition td = new TableDefinition(Arrays.asList("SSL", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
-      td.setDisplaySizes(Arrays.asList(100, 0));
+      td.setDisplaySizes(Arrays.asList(150, 0));
 
       table.addDataRow(new RSStringTableRow("Supported SSL protocols",
             generalInfoService.getSupportedSslProtocols().stream().collect(joining(", "))));
@@ -140,61 +136,26 @@ public class EnvCommand implements TerminalCommandHook {
       return table;
    }
    
-   private RSTableModel getDbConfigAsTable() throws SQLException {
+   private RSTableModel getDbConfigAsTable() {
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("DB Config", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
-      td.setDisplaySizes(Arrays.asList(100, 0));      
-      
-      Properties jpaProperties = EnvironmentValidator.getJpaProperties();
+      td.setDisplaySizes(Arrays.asList(220, 0));      
+
+      EnvironmentValidatorHelperService envService = envServiceProvider.get();
+      Properties jpaProperties = envService.getJpaProperties();
       table.addDataRow(new RSStringTableRow("hibernate.dialect", jpaProperties.getProperty("hibernate.dialect")));
       table.addDataRow(new RSStringTableRow("hibernate.connection.driver_class", jpaProperties.getProperty("hibernate.connection.driver_class")));
       table.addDataRow(new RSStringTableRow("hibernate.connection.url", jpaProperties.getProperty("hibernate.connection.url")));
       table.addDataRow(new RSStringTableRow("hibernate.connection.username", jpaProperties.getProperty("hibernate.connection.username")));
-      table.addDataRow(new RSStringTableRow("hibernate.default_schema", "hibernate.default_schema"));
-
-      Class<?> dialectClass = null;
+      table.addDataRow(new RSStringTableRow("hibernate.default_schema", jpaProperties.getProperty("hibernate.default_schema")));
+     
       try {
-         dialectClass = Class.forName(jpaProperties.getProperty("hibernate.dialect"));
-      } catch (ClassNotFoundException e1) {
-      }
-      Connection conn = null;
-      try {
-         Dialect dialect = (Dialect) dialectClass.newInstance();
-         String query = dialect.getCurrentTimestampSelectString();
-         conn = EnvironmentValidator.openConnection();
-         PreparedStatement stmt = conn.prepareStatement(query);
-         ResultSet resultSet = stmt.executeQuery();
-         resultSet.close();
-         stmt.close();
-         table.addDataRow(new RSStringTableRow("Connection Test", "OK"));
-         try {
-            stmt = conn.prepareStatement(
-                  "SELECT * FROM RS_SCHEMAINFO WHERE KEY_FIELD = 'schemaversion' ORDER BY ENTITY_ID DESC");
-            resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-               table.addDataRow(new RSStringTableRow("Schema Version", resultSet.getString("value")));
-            } else {
-               table.addDataRow(new RSStringTableRow("Schema Version", "No version number found. Did you forget a commit during installation?"));
-            }
-         } catch (SQLException e) {
-            table.addDataRow(new RSStringTableRow("Schema Version", "Unknown (" + e.getMessage() + ")"));
-         } finally {
-            resultSet.close();
-            stmt.close();
-         }
-      }
-      catch (Exception e) {
-         table.addDataRow(new RSStringTableRow("Connection Test", "Failed (" + e.getMessage() + ")"));
-      } finally {
-         if (null != conn) {
-            try {
-               conn.close();
-            } catch (SQLException e) {
-               table.addDataRow(new RSStringTableRow("Connection Test", "Failed (" + e.getMessage() + ")"));
-            }
-         }
+         String schemaVersion = envService.getSchemaVersion();
+         table.addDataRow(new RSStringTableRow("Schema Version", schemaVersion)); 
+      } catch (SQLException e) {
+         table.addDataRow(new RSStringTableRow("Schema Version", "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")")); 
       }
       
       return table;
@@ -205,7 +166,7 @@ public class EnvCommand implements TerminalCommandHook {
       TableDefinition td = new TableDefinition(Arrays.asList("Internal datasource info", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
-      td.setDisplaySizes(Arrays.asList(100, 0));
+      td.setDisplaySizes(Arrays.asList(150, 0));
       
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {

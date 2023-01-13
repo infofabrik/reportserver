@@ -35,13 +35,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.xpath.XPath;
-import javax.xml.xpath.XPathException;
-import javax.xml.xpath.XPathFactory;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.hibernate.boot.registry.BootstrapServiceRegistry;
 import org.hibernate.boot.registry.BootstrapServiceRegistryBuilder;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
@@ -59,8 +56,6 @@ import org.hibernate.tool.hbm2ddl.SchemaValidator;
 import org.hibernate.tool.schema.spi.SchemaManagementException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 import com.google.common.base.Splitter;
 
@@ -68,8 +63,6 @@ import groovy.lang.GroovySystem;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirServiceImpl;
 import net.datenwerke.rs.configservice.service.configservice.LibDirClasspathHelper;
-import net.datenwerke.rs.utils.xml.SimpleNamespaceContext;
-import net.datenwerke.rs.utils.xml.XMLUtilsServiceImpl;
 
 /**
  * 
@@ -90,13 +83,11 @@ public class EnvironmentValidator extends HttpServlet {
 
    private static boolean hasError = false;
 
-   private static List<String> propkeys = Arrays.asList("hibernate.dialect", "hibernate.connection.driver_class",
-         "hibernate.connection.url", "hibernate.connection.username", "hibernate.connection.password",
-         "hibernate.default_schema");
-
    private static Properties jpaProperties;
 
    private static StringBuffer errorInfo = new StringBuffer();
+   
+   private static EnvironmentValidatorHelperService envService  = new EnvironmentValidatorHelperServiceImpl();
 
    public static boolean startup(boolean isEnterprise) {
       hasError = false;
@@ -112,7 +103,8 @@ public class EnvironmentValidator extends HttpServlet {
       writeConfigDetails(sb);
       sb.append("\r\n");
 
-      jpaProperties = getJpaProperties();
+      jpaProperties = envService.getJpaProperties();
+      
       loadCfgdirLibs();
 
       try {
@@ -309,7 +301,6 @@ public class EnvironmentValidator extends HttpServlet {
 
       sb.append("\r\n");
 
-      String schemaVersion = null;
       sb.append("Connection Test: ");
       Connection conn = null;
       try {
@@ -325,21 +316,12 @@ public class EnvironmentValidator extends HttpServlet {
 
          sb.append("Schema Version: ");
          try {
-            stmt = conn.prepareStatement(
-                  "SELECT * FROM RS_SCHEMAINFO WHERE KEY_FIELD = 'schemaversion' ORDER BY ENTITY_ID DESC");
-            resultSet = stmt.executeQuery();
-            if (resultSet.next()) {
-               schemaVersion = resultSet.getString("value");
-               sb.append(resultSet.getString("value"));
-            } else {
-               sb.append(sb.append("No version number found. Did you forget a commit during installation?"));
-            }
+            String schemaVersion = envService.getSchemaVersion();
+            sb.append(schemaVersion);
          } catch (SQLException e) {
-            sb.append("Unknown (").append(e.getMessage()).append(")");
-         } finally {
-            resultSet.close();
-            stmt.close();
+            sb.append("Schema Version : Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")"); 
          }
+
          sb.append("\r\n\r\n");
          sb.append("### Internal datasource metadata ###\r\n");
          DatabaseMetaData metaData = conn.getMetaData();
@@ -846,44 +828,7 @@ public class EnvironmentValidator extends HttpServlet {
    private static void loadCfgdirLibs() {
       ConfigDirService configDirService = new ConfigDirServiceImpl(null);
       new LibDirClasspathHelper(configDirService).loadLibs();
-   }
-
-   public static Properties getJpaProperties() {
-      Properties jpaProperties = new Properties();
-
-      try { /* persistence.xml */
-         InputStream pxmlstream = Thread.currentThread().getContextClassLoader()
-               .getResourceAsStream("META-INF/persistence.xml");
-         if (null != pxmlstream) {
-            XMLUtilsServiceImpl xml = new XMLUtilsServiceImpl(true);
-            Document pxml = xml.readInputStreamIntoJAXPDoc(pxmlstream);
-
-            XPathFactory factory = XPathFactory.newInstance();
-            XPath xpath = factory.newXPath();
-            xpath.setNamespaceContext(new SimpleNamespaceContext("p", "http://java.sun.com/xml/ns/persistence"));
-
-            for (String propkey : propkeys) {
-               String xpstr = "/p:persistence/p:persistence-unit[@name='" + ReportServerPUModule.JPA_UNIT_NAME
-                     + "']/p:properties/p:property[@name='" + propkey + "']/@value";
-               String val = xpath.evaluate(xpstr, pxml);
-               jpaProperties.setProperty(propkey, val);
-            }
-         }
-      } catch (ParserConfigurationException e1) {
-         e1.printStackTrace();
-      } catch (SAXException e1) {
-         e1.printStackTrace();
-      } catch (IOException e1) {
-         e1.printStackTrace();
-      } catch (XPathException e) {
-         e.printStackTrace();
-      }
-
-      ConfigDirService configDirService = new ConfigDirServiceImpl(null);
-      ReportServerPUStartup.loadPersistenceProperties(configDirService, jpaProperties);
-
-      return jpaProperties;
-   }
+   }   
 
    private static void writeBanner(StringBuilder sb) {
       sb.append("\r\n\r\n\r\n\r\n\r\n");

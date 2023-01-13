@@ -93,4 +93,8 @@ public interface SystemConsoleMessages extends Messages {
    
    public String enabledSslProtocols();
 
+   public String dbConfig();
+   
+   public String schemaVersion();
+
 }
