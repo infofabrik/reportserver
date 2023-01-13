@@ -50,6 +50,8 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType
 import javax.inject.Inject
 
 import org.apache.commons.lang3.exception.ExceptionUtils
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 import com.google.inject.Provider
 
@@ -70,6 +72,8 @@ public class ExceptionServiceImpl implements ExceptionService {
    private final Provider<ConfigService> configServiceProvider
    private final Provider<GeneralInfoService> generalInfoServiceProvider
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider
+   
+   private final Logger logger = LoggerFactory.getLogger(getClass().name)
     
    @Inject
    public ExceptionServiceImpl(
@@ -108,11 +112,20 @@ public class ExceptionServiceImpl implements ExceptionService {
       def propertyValues = new LinkedHashMap()
       def baseReport = report instanceof ReportVariant ? report.baseReport: null
       def datasource = report?.datasourceContainer?.datasource
-      properties.each {
-         setProperty(it.toUpperCase(Locale.ROOT) as LogProperty,
-               e, report, baseReport, datasource,
-               user, outputFormat, uuid, propertyValues)
-      }
+      properties
+         .findAll { 
+            try {
+               it.toUpperCase(Locale.ROOT) as LogProperty
+            } catch (IllegalArgumentException ex) {
+               logger.warn "Cannot parse property value: '$it' in '$CONFIG_FILE'", ex
+               return false
+            }
+         }
+         .each {
+            setProperty(it.toUpperCase(Locale.ROOT) as LogProperty,
+                  e, report, baseReport, datasource,
+                  user, outputFormat, uuid, propertyValues)
+         }
       propertyValues
    }
    
