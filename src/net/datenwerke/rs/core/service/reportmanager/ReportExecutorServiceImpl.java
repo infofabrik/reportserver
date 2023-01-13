@@ -271,13 +271,13 @@ public class ReportExecutorServiceImpl implements ReportExecutorService {
          }
          final String details = exceptionServiceProvider.get().reportExecutionExceptionDetailsMessage(e, report, user,
                outputFormat, uuid);
-         throw new ReportExecutorException(details, e);
+         throw new ReportExecutorException(e.getMessage(), details, e);
       } catch (Exception e) {
          final String details = exceptionServiceProvider.get().reportExecutionExceptionDetailsMessage(e, report, user,
                outputFormat, uuid);
-         logger.warn(details, e);
+         logger.warn("The report could not be executed: details: details: " + details, e);
          ReportExecutorException rsre = new ReportExecutorException(
-               ReportManagerMessages.INSTANCE.exceptionReportCouldNotBeExecuted(e.getLocalizedMessage()) + ", " + details, e);
+               ReportManagerMessages.INSTANCE.exceptionReportCouldNotBeExecuted(e.getLocalizedMessage()), details, e);
 
          if (!dry) {
             /* fire event */

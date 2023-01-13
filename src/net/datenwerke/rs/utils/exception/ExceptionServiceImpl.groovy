@@ -60,7 +60,9 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig
 import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report
+import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant
+import net.datenwerke.scheduler.service.scheduler.exceptions.JobExecutionException
 import net.datenwerke.security.service.usermanager.entities.User
 
 public class ExceptionServiceImpl implements ExceptionService {
@@ -82,10 +84,14 @@ public class ExceptionServiceImpl implements ExceptionService {
    
    @Override
    public String exceptionToString(Throwable e) {
+      def details = null
+      if ((e instanceof ReportExecutorException || e instanceof JobExecutionException) && e.details)
+         details = e.details
       Writer result = new StringWriter()
       PrintWriter printWriter = new PrintWriter(result)
       e.printStackTrace(printWriter)
-      return result.toString()
+      return (details? details + ' ': '') + result.toString()
+   
    }
 
    @Override
@@ -306,5 +312,13 @@ public class ExceptionServiceImpl implements ExceptionService {
          default:
             throw new IllegalArgumentException('not a memory property')
       }
+   }
+
+   @Override
+   public Optional<String> getReportExecutionExceptionDetailsMessage(Throwable e) {
+      if (e instanceof ReportExecutorException || e instanceof JobExecutionException)
+         return Optional.ofNullable(e.details)
+         
+      return Optional.empty()
    }
 }

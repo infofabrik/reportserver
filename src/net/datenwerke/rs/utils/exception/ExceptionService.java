@@ -1,11 +1,13 @@
 package net.datenwerke.rs.utils.exception;
 
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE;
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_ERROR;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_EXECUTING_USER;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_MEMORY;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_REPORT;
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_ERROR;
+
+import java.util.Optional;
 
 import com.google.inject.ImplementedBy;
 
@@ -65,5 +67,7 @@ public interface ExceptionService {
    String exceptionToString(Throwable e);
 
    String reportExecutionExceptionDetailsMessage(Throwable e, Report report, User user, String outputFormat, String uuid);
+   
+   Optional<String> getReportExecutionExceptionDetailsMessage(Throwable e);
 
 }

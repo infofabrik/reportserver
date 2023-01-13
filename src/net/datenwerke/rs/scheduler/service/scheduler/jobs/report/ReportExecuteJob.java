@@ -150,7 +150,7 @@ public class ReportExecuteJob extends ReportServerJob {
             authenticatorServiceProvider.get().logoffUserInThread();
          }
       } catch (ReportExecutorException e) {
-         throw new JobExecutionException(e);
+         throw new JobExecutionException(e, e.getDetails());
       } catch (ViolatedSecurityException e) {
          throw new JobExecutionException(e);
       }

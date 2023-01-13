@@ -16,6 +16,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.servlet.ServletException;
@@ -165,7 +166,8 @@ public class ReportExportServlet extends SecuredHttpServlet {
             throw new IllegalArgumentException("No id, key or path to identify the report");
          }
       } catch (Exception e) {
-         logger.warn(e.getMessage(), e);
+         final Optional<String> details = exceptionServices.get().getReportExecutionExceptionDetailsMessage(e);
+         logger.warn(e.getMessage() + (details.isPresent() ? ", details: " + details.get() : ""), e);
          try {
             displayErrorMessage(e, req, resp);
          } catch (Exception e2) {

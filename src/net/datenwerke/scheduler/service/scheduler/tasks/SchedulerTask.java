@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.Callable;
 
@@ -684,7 +685,8 @@ public class SchedulerTask implements Callable<SchedulerTaskResult> {
             }
          }
       } catch (Exception e) {
-         logger.warn("job execution failed", e);
+         final Optional<String> details = exceptionService.getReportExecutionExceptionDetailsMessage(e);
+         logger.warn("job execution failed " + (details.isPresent() ? ", details: " + details.get() : ""), e);
 
          /* denote that job ended not successfully */
          executionCompanion.beginInnerTransaction(this);
