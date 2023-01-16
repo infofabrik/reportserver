@@ -18,6 +18,7 @@ public class GeneralInfoDto implements Serializable {
    private String groovyVersion;
    private String osVersion;
    private String userAgent;
+   
    private String locale;
    private String jvmLocale;
    
@@ -31,6 +32,7 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbId;
    private String internalDbDatasourceName;
    private String internalDbDatabaseName;
+   private String internalDbPath;
    private String internalDbVersion;
    private String internalDbDriverName;
    private String internalDbDriverVersion;
@@ -38,9 +40,11 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbJdbcMinorVersion;
    private String internalDbJdbcUrl;
    private String internalDbUsername;
+   
    private List<String> supportedSslProtocols;
    private List<String> defaultSslProtocols;
    private List<String> enabledSslProtocols;
+   
    private List<String> staticPams;
 
    public GeneralInfoDto() {
@@ -124,6 +128,14 @@ public class GeneralInfoDto implements Serializable {
 
    public void setInternalDbId(String internalDbId) {
       this.internalDbId = internalDbId;
+   }
+   
+   public String getInternalDbPath() {
+      return internalDbPath;
+   }
+
+   public void setInternalDbPath(String internalDbPath) {
+      this.internalDbPath = internalDbPath;
    }
 
    public String getInternalDbDatasourceName() {

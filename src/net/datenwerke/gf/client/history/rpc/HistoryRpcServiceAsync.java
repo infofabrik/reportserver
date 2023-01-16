@@ -11,4 +11,6 @@ public interface HistoryRpcServiceAsync {
 
    void getLinksFor(Dto dto, AsyncCallback<List<HistoryLinkDto>> callback);
 
+   void getFormattedObjectPaths(Dto dto, AsyncCallback<List<String>> callback);
+
 }

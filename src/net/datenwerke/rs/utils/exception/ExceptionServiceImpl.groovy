@@ -12,6 +12,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_GENERAL_INFO
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_PATH
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DEFAULT_SSL_PROTOCOLS
@@ -56,6 +57,7 @@ import org.slf4j.LoggerFactory
 import com.google.inject.Provider
 
 import groovy.json.JsonBuilder
+import net.datenwerke.gf.service.history.HistoryService
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
@@ -72,6 +74,7 @@ public class ExceptionServiceImpl implements ExceptionService {
    private final Provider<ConfigService> configServiceProvider
    private final Provider<GeneralInfoService> generalInfoServiceProvider
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider
+   private final Provider<HistoryService> historyServiceProvider
    
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
     
@@ -79,11 +82,13 @@ public class ExceptionServiceImpl implements ExceptionService {
    public ExceptionServiceImpl(
       Provider<ConfigService> configServiceProvider,
       Provider<GeneralInfoService> generalInfoServiceProvider,
-      Provider<DatasourceHelperService> datasourceHelperServiceProvider
+      Provider<DatasourceHelperService> datasourceHelperServiceProvider,
+      Provider<HistoryService> historyServiceProvider
       ) {
          this.configServiceProvider = configServiceProvider
          this.generalInfoServiceProvider = generalInfoServiceProvider
          this.datasourceHelperServiceProvider = datasourceHelperServiceProvider
+         this.historyServiceProvider = historyServiceProvider
       }
    
    @Override
@@ -101,7 +106,7 @@ public class ExceptionServiceImpl implements ExceptionService {
    @Override
    public String reportExecutionExceptionDetailsMessage(Throwable e, Report report, User user, String outputFormat, String uuid) {
       def config = configServiceProvider.get().getConfigFailsafe(CONFIG_FILE)
-      def properties = config.getList(PROPERTIES) ?: getDefaultProperties().collect { it as String }
+      def properties = (config.getList(PROPERTIES) ?: getDefaultProperties().collect { it as String })*.trim()
          
       def propertiesString = new JsonBuilder(populatePropertyValues(properties, e, report, user, outputFormat, uuid)).toString()
       return "Report could not be executed. $propertiesString"
@@ -176,6 +181,13 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case DATASOURCE_NAME:
             propertyValues[property] = datasource?.name
+            break
+         case DATASOURCE_PATH:
+            def links = historyServiceProvider.get().getFormattedObjectPaths(datasource)
+            if (!datasource || links.empty)
+               propertyValues[property] = null
+            else
+               propertyValues[property] = links[0]
             break
          case DATASOURCE_TYPE:
             propertyValues[property] = datasource?.getClass()?.simpleName

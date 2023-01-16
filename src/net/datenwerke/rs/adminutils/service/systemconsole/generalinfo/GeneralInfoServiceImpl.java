@@ -39,6 +39,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import groovy.lang.GroovySystem;
+import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
@@ -59,7 +60,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TempTableService> tempTableServiceProvider;
    private final Provider<Set<ReportServerPAM>> pamProvider;
-   private Provider<EnvironmentValidatorHelperService> envServiceProvider;
+   private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
+   private final Provider<HistoryService> historyServiceProvider;
+   
    private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
    
    @Inject
@@ -70,7 +73,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
          Provider<TempTableService> tempTableServiceProvider,
          Provider<Set<ReportServerPAM>> pamProvider,
-         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider
+         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider,
+         Provider<HistoryService> historyServiceProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
@@ -79,6 +83,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.tempTableServiceProvider = tempTableServiceProvider;
       this.pamProvider = pamProvider;
       this.envServiceProvider = environmentValidatorHelperServiceProvider;
+      this.historyServiceProvider = historyServiceProvider;
    }
 
    @Override
@@ -157,9 +162,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       }
       
       try {
+         final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
          Map<String, Object> datasourceMetadata = datasourceHelperService
                .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
          info.setInternalDbId(internalDbDatasource.getId()+"");
+         info.setInternalDbPath(paths.isEmpty()? "path not found": paths.get(0));
          info.setInternalDbDatasourceName(internalDbDatasource.getName());
          info.setInternalDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
          info.setInternalDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());

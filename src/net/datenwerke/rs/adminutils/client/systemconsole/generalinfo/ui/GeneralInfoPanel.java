@@ -142,6 +142,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       Map<Optional<String>, String> internalDbInfo = new LinkedHashMap<>();
       internalDbInfo.put(Optional.ofNullable(result.getInternalDbId()), BaseMessages.INSTANCE.id());
       internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatasourceName()), BaseMessages.INSTANCE.name());
+      internalDbInfo.put(Optional.ofNullable(result.getInternalDbPath()), BaseMessages.INSTANCE.path());
       internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatabaseName()),
             SystemConsoleMessages.INSTANCE.internalDbName());
       internalDbInfo.put(Optional.ofNullable(result.getInternalDbVersion()),

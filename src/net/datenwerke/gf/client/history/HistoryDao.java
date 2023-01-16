@@ -23,4 +23,8 @@ public class HistoryDao extends Dao {
       rpcService.getLinksFor(dto, transformAndKeepCallback(callback));
    }
 
+   public void getFormattedObjectPaths(Dto dto, AsyncCallback<List<String>> callback) {
+      rpcService.getFormattedObjectPaths(dto, transformAndKeepCallback(callback));
+   }
+
 }

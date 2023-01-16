@@ -85,29 +85,38 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
          @AdditionalField(
                name = "temporaryUid", 
                type = String.class
-               ),
+         ),
          @AdditionalField(
                name = "parentReportKey", 
                type = String.class
-               ),
+         ),
          @AdditionalField(
                name = "parentReportName", 
                type = String.class
-               ),
+         ),
          @AdditionalField(
                name = "parentReportDescription", 
                type = String.class
-               ),
+         ),
          @AdditionalField(
                name = "parentReportProperties", 
                type = HashSet.class, 
                generics = ReportPropertyDto.class
-               ) 
-         }
-      )
-@EntityDiffGuides(guides = {
-      @EntityDiffGuide(name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, ignoreId = true, ignoreVersion = true, whitelist = {
-            "parameterDefinitions", "parameterInstances", "datasourceContainer" }) })
+         ) 
+      }
+)
+@EntityDiffGuides(
+      guides = {
+            @EntityDiffGuide(
+                  name = Report.ENTITY_DIFF_IDENTITCAL_FOR_EXECUTION, 
+                  ignoreId = true, 
+                  ignoreVersion = true, 
+                  whitelist = {
+                        "parameterDefinitions", "parameterInstances", "datasourceContainer" 
+                  }
+            ) 
+      }
+)
 abstract public class Report extends AbstractReportManagerNode
       implements ParameterContainerNode, DatasourceContainerProvider {
 

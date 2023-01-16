@@ -48,4 +48,13 @@ public class HistoryRpcServiceImpl extends SecuredRemoteServiceServlet implement
             .collect(toList());
    }
 
+   @Override
+   public List<String> getFormattedObjectPaths(Dto dto) {
+      Object obj = dtoService.loadPoso(dto);
+
+      securityService.assertRights(obj, Read.class);
+      
+      return historyService.getFormattedObjectPaths(obj);
+   }
+
 }

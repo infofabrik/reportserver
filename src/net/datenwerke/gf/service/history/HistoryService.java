@@ -18,5 +18,7 @@ public interface HistoryService {
    List<HistoryLink> buildLinksFor(Object o);
 
    List<HistoryLink> buildLinksForList(List<? extends Object> objects);
+   
+   List<String> getFormattedObjectPaths(Object o);
 
 }

@@ -13,6 +13,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
@@ -38,18 +39,21 @@ public class EnvCommand implements TerminalCommandHook {
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TempTableService> tempTableServiceProvider;
    private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
+   private final Provider<HistoryService> historyServiceProvider;
 
    @Inject
    public EnvCommand(
          Provider<GeneralInfoService> generalInfoServiceProvider, 
          Provider<DatasourceHelperService> datasourceHelperServiceProvider,
          Provider<TempTableService> tempTableServiceProvider,
-         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider         
+         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider ,
+         Provider<HistoryService> historyServiceProvider
          ) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
       this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
       this.tempTableServiceProvider = tempTableServiceProvider;
       this.envServiceProvider = environmentValidatorHelperServiceProvider;
+      this.historyServiceProvider = historyServiceProvider;
    }
 
    @Override
@@ -186,10 +190,18 @@ public class EnvCommand implements TerminalCommandHook {
       
       table.addDataRow(new RSStringTableRow("ID", internalDbDatasource.getId()+""));
       table.addDataRow(new RSStringTableRow("Name", internalDbDatasource.getName()));
+      table.addDataRow(new RSStringTableRow("Path", getPath(internalDbDatasource)));
       addInternalDbInfoToTable(table, generalInfo, datasourceMetadata);
       addInternalDbInfoToTable(table, urlInfo, datasourceMetadata);
       
       return table;
+   }
+   
+   private String getPath(DatabaseDatasource datasource) {
+      List<String> links = historyServiceProvider.get().getFormattedObjectPaths(datasource);
+      if (null == links || links.isEmpty())
+         return "path not found";
+      return links.get(0);
    }
    
    private void addInternalDbInfoToTable(RSTableModel table, Map<String, String> infoDefinition,

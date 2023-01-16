@@ -21,7 +21,6 @@ import com.sencha.gxt.core.client.XTemplates.FormatterFactoryMethod;
 import com.sencha.gxt.widget.core.client.form.FieldLabel;
 
 import net.datenwerke.gf.client.history.HistoryDao;
-import net.datenwerke.gf.client.history.dto.HistoryLinkDto;
 import net.datenwerke.gxtdto.client.baseex.widget.layout.DwFlowContainer;
 import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
@@ -127,7 +126,7 @@ public class ObjectInfoPanelService {
       window.setHeading(ObjectInfoMessages.INSTANCE.infoOn());
       window.getHeader().setIcon(keyProvider.getIconSmall(object));
 
-      final Map<String, String> data = new HashMap<String, String>();
+      final Map<String, String> data = new HashMap<>();
       data.put(BaseMessages.INSTANCE.name(), keyProvider.getName(object));
       data.put(BaseMessages.INSTANCE.description(), keyProvider.getDescription(object));
       if (object instanceof AbstractNodeDto) {
@@ -140,13 +139,10 @@ public class ObjectInfoPanelService {
             : DateTimeFormat.getFormat(PredefinedFormat.DATE_SHORT).format(keyProvider.getLastUpdatedOn(object)));
       final DwFlowContainer fieldWrapper = window.addDelayedSimpleDataInfoPanel(ObjectInfoMessages.INSTANCE.general());
       
-      historyDao.get().getLinksFor((Dto)object, new RsAsyncCallback<List<HistoryLinkDto>>() {
+      historyDao.get().getFormattedObjectPaths((Dto)object, new RsAsyncCallback<List<String>>() {
          @Override
-         public void onSuccess(List<HistoryLinkDto> result) {
-            if (null != result && !result.isEmpty()) {
-               data.put(BaseMessages.INSTANCE.path(),
-                     result.get(0).getObjectCaption() + " (" + result.get(0).getHistoryLinkBuilderId() + ")");
-            }
+         public void onSuccess(List<String> result) {
+            data.put(BaseMessages.INSTANCE.path(), result.get(0));
             
             data.forEach((key, val) -> {
                FieldLabel field = new FieldLabel(new Label(val), key);
