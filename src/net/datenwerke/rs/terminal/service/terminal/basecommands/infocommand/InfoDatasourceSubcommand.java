@@ -1,5 +1,10 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands.infocommand;
 
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_FUNCTIONS;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_SUPPORTS;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,11 +15,13 @@ import java.util.Optional;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
+import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
@@ -29,33 +36,28 @@ import net.datenwerke.security.service.security.rights.Read;
 public class InfoDatasourceSubcommand implements InfoSubcommandHook{
 public static final String BASE_COMMAND = "datasource";
    
-   private final Provider<DatasourceHelperService> datasourceServiceProvider;
-   
+   private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
    private final Provider<TerminalService> terminalServiceProvider;
    
-   private Map<String, String> generalInfo;
-   private Map<String, String> urlInfo;
-   private Map<String, String> functionsSection;
-   private Map<String, String> supportsSection;
+   private final Map<String, String> databaseInfo;
+   private final Map<String, String> jdbcUrlInfo;
+   private final Map<String, String> functionsSection;
+   private final Map<String, String> supportsSection;
    
    @Inject
    public InfoDatasourceSubcommand(
          Provider<DatasourceHelperService> datasourceServiceProvider,
          Provider<TerminalService> terminalServiceProvider
          ) {
-      this.datasourceServiceProvider = datasourceServiceProvider;
+      this.datasourceHelperServiceProvider = datasourceServiceProvider;
       this.terminalServiceProvider = terminalServiceProvider;
-      initMaps(datasourceServiceProvider.get().getDatasourceInfoDefinition());
+      final Map<DatasourceInfoType, Object> datasourceInfoDefinition = datasourceServiceProvider.get()
+            .getDatasourceInfoDefinition();
+      databaseInfo = (Map<String, String>) datasourceInfoDefinition.get(DATABASE);
+      jdbcUrlInfo = (Map<String, String>) datasourceInfoDefinition.get(JDBC_URL);
+      functionsSection = (Map<String, String>) datasourceInfoDefinition.get(DATABASE_FUNCTIONS);
+      supportsSection = (Map<String, String>) datasourceInfoDefinition.get(DATABASE_SUPPORTS);
    }
-
-
-   private void initMaps(Map<String, Object> datasourceInfoDefinition) {
-      generalInfo = (Map<String, String>) datasourceInfoDefinition.get("generalInfo");
-      urlInfo = (Map<String, String>) datasourceInfoDefinition.get("urlInfo");
-      functionsSection = (Map<String, String>) datasourceInfoDefinition.get("functionsSection");
-      supportsSection = (Map<String, String>) datasourceInfoDefinition.get("supportsSection");
-   }
-
 
    @Override
    public boolean consumes(CommandParser parser, TerminalSession session) {
@@ -85,48 +87,72 @@ public static final String BASE_COMMAND = "datasource";
       if (nonOptionArguments.size() != 1)
          throw new IllegalArgumentException("exactly 1 argument required");
       String datasourceQuery = (String) nonOptionArguments.get(0);
-      
-      
-      
       try {
          DatabaseDatasource datasource = terminalServiceProvider.get()
                .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Map<String, Object> results = datasourceServiceProvider.get().fetchInfoDatasourceMetadata(datasource, true, true, true, true);
-         return generateCommandResult(results);
+         Map<String, Object> results = datasourceHelperServiceProvider.get().fetchInfoDatasourceMetadata(datasource,
+               true, true, true, true);
+         return generateCommandResult(results, datasource);
       } catch (Exception e) {
          throw new TerminalException(e);
       }
    }
 
 
-   private CommandResult generateCommandResult(Map<String, Object> results)  {
-      ArrayList<RSTableModel> resultTables = new ArrayList<RSTableModel>();
+   private CommandResult generateCommandResult(Map<String, Object> results, DatasourceDefinition datasource) {
+      List<RSTableModel> resultTables = new ArrayList<>();
+      Map<String, Object> generalInformation = datasourceHelperServiceProvider.get().getGeneralInformation(datasource);
+      resultTables.add(generateGeneralInformationModel("General information", generalInformation));
       resultTables
-            .add(generateRsTableModel(generalInfo, "General information", results, Optional.of(Arrays.asList(100, 0))));
-      resultTables.add(generateRsTableModel(urlInfo, "URL information", results, Optional.of(Arrays.asList(100, 0))));
-      resultTables.add(
-            generateRsTableModel(functionsSection, "Functions section", results, Optional.of(Arrays.asList(100, 0))));
-      resultTables.add(generateRsTableModel(supportsSection, "Supports section", results, Optional.empty()));
-      
+            .add(generateTableModel(databaseInfo, "Database information", results, Optional.of(Arrays.asList(150, 0))));
+      resultTables
+            .add(generateTableModel(jdbcUrlInfo, "JDBC URL information", results, Optional.of(Arrays.asList(150, 0))));
+      resultTables.add(generateTableModel(functionsSection, "Database functions section", results,
+            Optional.of(Arrays.asList(150, 0))));
+      resultTables.add(generateTableModel(supportsSection, "Database supports section", results, Optional.empty()));
+
       CommandResult commandResult = new CommandResult();
       resultTables.forEach(table -> commandResult.addResultTable(table));
       return commandResult;
    }
    
-   RSTableModel generateRsTableModel(Map<String, String> tableMeta, String header, Map<String, Object> results,
+   private RSTableModel generateGeneralInformationModel(String header, Map<String,Object> results) {
+      RSTableModel tableModel = new RSTableModel();
+      TableDefinition tableDefinition = new TableDefinition(Arrays.asList(header, ""),
+            Arrays.asList(String.class, String.class));
+      tableModel.setTableDefinition(tableDefinition);
+      tableDefinition.setDisplaySizes(Arrays.asList(150, 0));
+      results.keySet().forEach(
+            key -> tableModel.addDataRow(
+                  new RSStringTableRow(key, format(results.get(key)))));
+      return tableModel;
+   }
+   
+   private String format(Object o) {
+      if (null == o)
+         return "";
+      
+      if (o instanceof String)
+         return (String) o;
+      else if (o instanceof List) 
+         return String.join(", ", (List)o);
+      else return o.toString();
+   }
+   
+   private RSTableModel generateTableModel(Map<String, String> tableMeta, String header, Map<String, Object> results,
          Optional<List<Integer>> colWidths) {
       RSTableModel tableModel = new RSTableModel();
       TableDefinition tableDefinition = new TableDefinition(Arrays.asList(header, ""),
             Arrays.asList(String.class, String.class));
       if (colWidths.isPresent())
          tableDefinition.setDisplaySizes(colWidths.get());
-      
+
       tableModel.setTableDefinition(tableDefinition);
-      List<String> keyList = new ArrayList<String>((tableMeta.keySet()));
+      List<String> keyList = new ArrayList<>((tableMeta.keySet()));
       Collections.sort(keyList);
       keyList.forEach(key -> {
          Object res = results.get(tableMeta.get(key));
-         tableModel.addDataRow(new RSStringTableRow(key, null == res? "null": res.toString()));
+         tableModel.addDataRow(new RSStringTableRow(key, null == res ? "null" : res.toString()));
       });
       return tableModel;
    }

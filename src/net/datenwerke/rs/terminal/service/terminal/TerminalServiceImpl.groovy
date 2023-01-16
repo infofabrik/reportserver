@@ -173,15 +173,22 @@ public class TerminalServiceImpl implements TerminalService {
          return result
       }
       
+      def model = convertSimpleMapToTableModel(map)
+      result.addResultTable model
+      
+      return result
+   }
+   
+   @Override
+   public RSTableModel convertSimpleMapToTableModel(Map<String, Object> map) {
       RSTableModel model = new RSTableModel()
       TableDefinition tableDef = new TableDefinition(['Key', 'Value'], [String, String])
       tableDef.displaySizes = [180, 0]
       model.tableDefinition = tableDef
-      result.addResultTable model
+      
       map.each{key, val -> model.addDataRow(
          new RSStringTableRow(key, val instanceof List? join(val, true): val as String))}
-
-      return result
+      return model
    }
    
    @Override 

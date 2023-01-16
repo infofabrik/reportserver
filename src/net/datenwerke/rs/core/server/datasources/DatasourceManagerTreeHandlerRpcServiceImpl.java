@@ -11,6 +11,7 @@ import com.google.inject.persist.Transactional;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
@@ -82,7 +83,7 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    }
 
    @Override
-   public Map<String, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) throws ServerCallFailedException {
+   public Map<DatasourceInfoType, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) throws ServerCallFailedException {
       DatabaseDatasource src = (DatabaseDatasource) dtoService.loadPoso(datasourceDto);
       Map<String, Object> datasourceInfo;
       try {
@@ -90,12 +91,12 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not retrieve datasource metadata", e);
       }
-      Map<String, SafeHtml> result = new HashMap<>();
+      Map<DatasourceInfoType, SafeHtml> result = new HashMap<>();
       datasourceHelperService.getDatasourceInfoDefinition()
-      .forEach((key, mapSpecificInfoDef) -> {
-         Map<String, String> specificInfoDef = (Map<String, String>) mapSpecificInfoDef;
-         result.put(key, buildTableInfo(datasourceInfo, specificInfoDef));
-      });
+         .forEach((key, mapSpecificInfoDef) -> {
+            Map<String, String> specificInfoDef = (Map<String, String>) mapSpecificInfoDef;
+            result.put(key, buildTableInfo(datasourceInfo, specificInfoDef));
+         });
    return result;
    }
    

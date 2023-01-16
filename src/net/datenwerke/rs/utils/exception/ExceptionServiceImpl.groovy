@@ -184,10 +184,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case DATASOURCE_PATH:
             def links = historyServiceProvider.get().getFormattedObjectPaths(datasource)
-            if (!datasource || links.empty)
-               propertyValues[property] = null
-            else
-               propertyValues[property] = links[0]
+            propertyValues[property] = (!datasource || links.empty)? null: links[0]
             break
          case DATASOURCE_TYPE:
             propertyValues[property] = datasource?.getClass()?.simpleName

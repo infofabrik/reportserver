@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.SessionNotFoundException;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.rs.terminal.service.terminal.objresolver.exceptions.ObjectResolverException;
@@ -108,6 +109,8 @@ public interface TerminalService {
     */
    CommandResult convertSimpleMapToCommandResult(List<String> headlines, String emptyTableMessage,
          Map<String, Object> map);
+   
+   RSTableModel convertSimpleMapToTableModel(Map<String, Object> map);
 
    /**
     * Creates a {@link CommandResult} that contains a table created from the given

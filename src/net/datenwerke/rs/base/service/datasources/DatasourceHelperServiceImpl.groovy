@@ -1,29 +1,40 @@
 package net.datenwerke.rs.base.service.datasources
 
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_FUNCTIONS
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_SUPPORTS
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL
+
 import java.sql.DatabaseMetaData
 
 import javax.inject.Inject
-
+import javax.inject.Provider
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
+import net.datenwerke.gf.service.history.HistoryService
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig
 import net.datenwerke.rs.base.service.dbhelper.DBHelperService
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer
+import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition
 import net.datenwerke.rs.utils.reflection.MethodMetadata
 
 class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
    private final DbPoolService dbPoolService
    private final DBHelperService dbHelperService
+   private final Provider<HistoryService> historyServiceProvider
    
    @Inject
    DatasourceHelperServiceImpl(
       DbPoolService dbPoolService,
-      DBHelperService dbHelperService
+      DBHelperService dbHelperService,
+      Provider<HistoryService> historyServiceProvider
    ) {
       this.dbPoolService = dbPoolService
       this.dbHelperService = dbHelperService
+      this.historyServiceProvider = historyServiceProvider
    }
 
    @Override
@@ -95,7 +106,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          def allColumns = []
          def metaResultSet = conn.metaData.getColumns(null, null, table, null)
          while (metaResultSet.next())
-            allColumns << metaResultSet.getString('COLUMN_NAME').toUpperCase()
+            allColumns << metaResultSet.getString('COLUMN_NAME').toUpperCase(Locale.ROOT)
             
          def notContained = columns.inject([]) { result, col -> 
             ! allColumns.contains(col.toUpperCase(Locale.ROOT))? result << col: result }
@@ -200,26 +211,26 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean generalInfo, boolean urlInfo,
-         boolean functionsInfo, boolean supportsInfo) {
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean datasourceInfo,
+         boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) {
       def allMethods = 
          (
-            (generalInfo? getDatasourceGeneralInfoDefinition().values() : [:]) +
-            (urlInfo? getDatasourceUrlInfoDefinition().values() : [:]) + 
-            (functionsInfo? getDatasourceFunctionsInfoDefinition().values() : [:]) + 
-            (supportsInfo? getDatasourceSupportsInfoDefinition().values() : [:])
+            (datasourceInfo? getDatabaseInfoDefinition().values() : [:]) +
+            (jdbcUrlInfo? getJDBCUrlInfoDefinition().values() : [:]) + 
+            (databaseFunctionsInfo? getDatabaseFunctionsInfoDefinition().values() : [:]) + 
+            (databaseSupportsInfo? getDatabaseSupportsInfoDefinition().values() : [:])
             - [:]
          ).collectEntries { [(it): []] }
       return fetchDatasourceMetadata(datasource, allMethods)
    }
    
    @Override
-   public Map<String, Object> getDatasourceInfoDefinition(){
+   public Map<DatasourceInfoType, Object> getDatasourceInfoDefinition(){
       [
-         'generalInfo'          :   getDatasourceGeneralInfoDefinition(),
-         'urlInfo'              :   getDatasourceUrlInfoDefinition(),
-         'functionsSection'     :   getDatasourceFunctionsInfoDefinition(),
-         'supportsSection'      :   getDatasourceSupportsInfoDefinition()
+         (DATABASE)                 :   getDatabaseInfoDefinition(),
+         (JDBC_URL)                 :   getJDBCUrlInfoDefinition(),
+         (DATABASE_FUNCTIONS)       :   getDatabaseFunctionsInfoDefinition(),
+         (DATABASE_SUPPORTS)        :   getDatabaseSupportsInfoDefinition()
       ]
    }
    
@@ -231,25 +242,25 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       return datasourceContainer?.datasourceConfig?.query
    }
    
-   public Map<String, String> getDatasourceGeneralInfoDefinition() {
+   public Map<String, String> getDatabaseInfoDefinition() {
       [
-         'Database name'        : 'getDatabaseProductName',
-         'Database version'     : 'getDatabaseProductVersion',
-         'Driver name'          : 'getDriverName',
-         'Driver version'       : 'getDriverVersion',
-         'JDBC major version'   : 'getJDBCMajorVersion',
-         'JDBC minor version'   : 'getJDBCMinorVersion'
+         'Database name'            : 'getDatabaseProductName',
+         'Database version'         : 'getDatabaseProductVersion',
+         'JDBC driver name'         : 'getDriverName',
+         'JDBC driver version'      : 'getDriverVersion',
+         'JDBC major version'       : 'getJDBCMajorVersion',
+         'JDBC minor version'       : 'getJDBCMinorVersion'
       ]
    }
    
-   public Map<String, String> getDatasourceUrlInfoDefinition() {
+   public Map<String, String> getJDBCUrlInfoDefinition() {
       [
-         'JDBC URL'        : 'getURL',
-         'JDBC username'   : 'getUserName'
+         'JDBC URL'         : 'getURL',
+         'JDBC username'    : 'getUserName'
       ]
    }
    
-   public Map<String, String> getDatasourceFunctionsInfoDefinition() {
+   public Map<String, String> getDatabaseFunctionsInfoDefinition() {
       [
          'Numeric functions'       : 'getNumericFunctions',
          'String functions'        : 'getStringFunctions',
@@ -258,12 +269,24 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       ]
    }
    
-   public Map<String, String> getDatasourceSupportsInfoDefinition() {
+   public Map<String, String> getDatabaseSupportsInfoDefinition() {
       return DatabaseMetaData.methods
          .findAll{it.parameterCount == 0}
          .collect{it.name}
          .findAll{it.startsWith('supports')}
          .collectEntries { [(it): it] }
+   }
+
+   @Override
+   public Map<String, Object> getGeneralInformation(DatasourceDefinition datasource) {
+      def generalInformation = new LinkedHashMap()
+      generalInformation['Name'] = datasource.name
+      generalInformation['Description'] = datasource.description
+      generalInformation['ID'] = datasource.id
+      generalInformation['Created on'] = datasource.createdOn
+      generalInformation['Changed on'] = datasource.lastUpdated
+      generalInformation['Path'] = historyServiceProvider.get().getFormattedObjectPaths(datasource)
+      return generalInformation
    }
    
 }

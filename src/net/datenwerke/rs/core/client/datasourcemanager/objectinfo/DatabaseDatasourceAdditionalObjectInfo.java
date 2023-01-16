@@ -1,5 +1,10 @@
 package net.datenwerke.rs.core.client.datasourcemanager.objectinfo;
 
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_FUNCTIONS;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE_SUPPORTS;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,6 +18,7 @@ import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.objectinformation.hooks.ObjectInfoAdditionalInfoProvider;
 import net.datenwerke.gxtdto.client.ui.helper.info.InfoWindow;
 import net.datenwerke.rs.adminutils.client.datasourcetester.DatasourceTesterDao;
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 import net.datenwerke.rs.core.client.datasourcemanager.DatasourceDao;
 import net.datenwerke.rs.core.client.datasourcemanager.locale.DatasourcesMessages;
@@ -52,19 +58,19 @@ public class DatabaseDatasourceAdditionalObjectInfo implements ObjectInfoAdditio
                @Override
                public void onSuccess(Boolean result) {                 
                   
-                  if(result) {
-                     datasourceDao.getDatasourceInfoDetailsAsHtml((DatabaseDatasourceDto) object, new RsAsyncCallback<Map<String, SafeHtml>>() {
-                        
-                        @Override
-                        public void onSuccess(Map<String, SafeHtml> result) {
-                           panels.keySet().forEach(key -> {
-                              DwContentPanel dwContentPanel = panels.get(key);;
-                              dwContentPanel.add(new HTML(result.get(getConfigMap().get(key))));
-                           });            
-                        }
-                        });
-                     } 
-                  else {
+                  if (result) {
+                     datasourceDao.getDatasourceInfoDetailsAsHtml((DatabaseDatasourceDto) object,
+                           new RsAsyncCallback<Map<DatasourceInfoType, SafeHtml>>() {
+
+                              @Override
+                              public void onSuccess(Map<DatasourceInfoType, SafeHtml> result) {
+                                 panels.keySet().forEach(key -> {
+                                    DwContentPanel dwContentPanel = panels.get(key);
+                                    dwContentPanel.add(new HTML(result.get(getConfigMap().get(key))));
+                                 });
+                              }
+                           });
+                  } else {
                      panels.keySet().forEach(key -> {
                         DwContentPanel dwContentPanel = panels.get(key);
                         dwContentPanel.add(new HTML("Could not retrieve datasource metadata"));
@@ -80,12 +86,12 @@ public class DatabaseDatasourceAdditionalObjectInfo implements ObjectInfoAdditio
             });     
    }
    
-   private Map<String, String> getConfigMap() {
-      Map<String, String> configMap = new HashMap<>();
-      configMap.put(DatasourcesMessages.INSTANCE.objectInfoGeneralInfo(), "generalInfo");
-      configMap.put(DatasourcesMessages.INSTANCE.objectInfoUrlInfo(), "urlInfo");
-      configMap.put(DatasourcesMessages.INSTANCE.objectInfoFuncstionsSection(), "functionsSection");
-      configMap.put(DatasourcesMessages.INSTANCE.objectInfoSupportsSection(), "supportsSection");
+   private Map<String, DatasourceInfoType> getConfigMap() {
+      final Map<String, DatasourceInfoType> configMap = new HashMap<>();
+      configMap.put(DatasourcesMessages.INSTANCE.objectInfoGeneralInfo(), DATABASE);
+      configMap.put(DatasourcesMessages.INSTANCE.objectInfoUrlInfo(), JDBC_URL);
+      configMap.put(DatasourcesMessages.INSTANCE.objectInfoFuncstionsSection(), DATABASE_FUNCTIONS);
+      configMap.put(DatasourcesMessages.INSTANCE.objectInfoSupportsSection(), DATABASE_SUPPORTS);
       return configMap;
    }
 

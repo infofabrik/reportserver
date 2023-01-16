@@ -4,8 +4,10 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.Map;
 
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
+import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 
 public interface DatasourceHelperService {
 
@@ -54,26 +56,28 @@ public interface DatasourceHelperService {
     * about which data is acquired getDatasourceInfoDefinition() provides a config
     * map
     * 
-    * @param datasource    the datasource
-    * @param generalInfo   if true, fetches general information
-    * @param urlInfo       if true, fetches URL information
-    * @param functionsInfo if true, fetches information on functions
-    * @param supportsInfo  if true, fechtes information on supports
+    * @param datasource            the datasource
+    * @param datasourceInfo        if true, fetches general information
+    * @param jdbcUrlInfo           if true, fetches URL information
+    * @param databaseFunctionsInfo if true, fetches information on functions
+    * @param databaseSupportsInfo  if true, fechtes information on supports
     * @return the map containing <methodname, result>
     */
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean generalInfo, boolean urlInfo,
-         boolean functionsInfo, boolean supportsInfo) throws SQLException;
+   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean datasourceInfo,
+         boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) throws SQLException;
 
    /**
-    * Provides a config map about which information is fetched when using
-    * fetchDatasourceMetadata() This map has 4 keys: 'generalInfo', 'urlInfo',
-    * 'functionsSection', 'supportsSection'. Each key points to another Map of type
+    * Provides a map containing what information is fetched when using
+    * fetchDatasourceMetadata(). This map has keys of type
+    * {@link DatasourceInfoType}. Each key points to another Map of type
     * <String,String> with the structure 'method description' -> 'method name'
     * 
     * @return the config map
     */
-   Map<String, Object> getDatasourceInfoDefinition();
+   Map<DatasourceInfoType, Object> getDatasourceInfoDefinition();
 
    String getQuery(DatasourceContainer datasourceContainer);
+   
+   Map<String, Object> getGeneralInformation(DatasourceDefinition datasource);
 
 }

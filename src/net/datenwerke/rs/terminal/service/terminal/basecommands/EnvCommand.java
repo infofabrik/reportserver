@@ -1,6 +1,8 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
 import static java.util.stream.Collectors.joining;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE;
+import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL;
 
 import java.sql.SQLException;
 import java.util.Arrays;
@@ -17,6 +19,7 @@ import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
+import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
@@ -150,11 +153,15 @@ public class EnvCommand implements TerminalCommandHook {
       EnvironmentValidatorHelperService envService = envServiceProvider.get();
       Properties jpaProperties = envService.getJpaProperties();
       table.addDataRow(new RSStringTableRow("hibernate.dialect", jpaProperties.getProperty("hibernate.dialect")));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.driver_class", jpaProperties.getProperty("hibernate.connection.driver_class")));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.url", jpaProperties.getProperty("hibernate.connection.url")));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.username", jpaProperties.getProperty("hibernate.connection.username")));
-      table.addDataRow(new RSStringTableRow("hibernate.default_schema", jpaProperties.getProperty("hibernate.default_schema")));
-     
+      table.addDataRow(new RSStringTableRow("hibernate.connection.driver_class",
+            jpaProperties.getProperty("hibernate.connection.driver_class")));
+      table.addDataRow(
+            new RSStringTableRow("hibernate.connection.url", jpaProperties.getProperty("hibernate.connection.url")));
+      table.addDataRow(new RSStringTableRow("hibernate.connection.username",
+            jpaProperties.getProperty("hibernate.connection.username")));
+      table.addDataRow(
+            new RSStringTableRow("hibernate.default_schema", jpaProperties.getProperty("hibernate.default_schema")));
+
       try {
          String schemaVersion = envService.getSchemaVersion();
          table.addDataRow(new RSStringTableRow("Schema Version", schemaVersion)); 
@@ -171,7 +178,7 @@ public class EnvCommand implements TerminalCommandHook {
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(150, 0));
-      
+
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
          table.addDataRow(new RSStringTableRow(
@@ -182,17 +189,18 @@ public class EnvCommand implements TerminalCommandHook {
       
       DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
       
-      Map<String, Object> datasourceInfoDefinition = datasourceHelperService.getDatasourceInfoDefinition();
-      Map<String, String> generalInfo = (Map<String, String>) datasourceInfoDefinition.get("generalInfo");
-      Map<String, String> urlInfo = (Map<String, String>) datasourceInfoDefinition.get("urlInfo");
+      final Map<DatasourceInfoType, Object> datasourceInfoDefinition = datasourceHelperService
+            .getDatasourceInfoDefinition();
+      Map<String, String> databaseInfo = (Map<String, String>) datasourceInfoDefinition.get(DATABASE);
+      Map<String, String> jdbcUrlInfo = (Map<String, String>) datasourceInfoDefinition.get(JDBC_URL);
       Map<String, Object> datasourceMetadata = datasourceHelperService.fetchInfoDatasourceMetadata(internalDbDatasource,
             true, true, true, true);
-      
-      table.addDataRow(new RSStringTableRow("ID", internalDbDatasource.getId()+""));
+
+      table.addDataRow(new RSStringTableRow("ID", internalDbDatasource.getId() + ""));
       table.addDataRow(new RSStringTableRow("Name", internalDbDatasource.getName()));
       table.addDataRow(new RSStringTableRow("Path", getPath(internalDbDatasource)));
-      addInternalDbInfoToTable(table, generalInfo, datasourceMetadata);
-      addInternalDbInfoToTable(table, urlInfo, datasourceMetadata);
+      addInternalDbInfoToTable(table, databaseInfo, datasourceMetadata);
+      addInternalDbInfoToTable(table, jdbcUrlInfo, datasourceMetadata);
       
       return table;
    }
