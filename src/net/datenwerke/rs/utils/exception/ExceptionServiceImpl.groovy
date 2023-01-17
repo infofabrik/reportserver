@@ -9,6 +9,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_KEY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_TYPE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIR
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_GENERAL_INFO
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
@@ -283,6 +284,9 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case APPLICATION_SERVER:
             propertyValues[property] = generalInfoService.applicationServer
+            break
+         case CONFIG_DIR:
+            propertyValues[property] = generalInfoService.configDir
             break
          case OS_VERSION:
             propertyValues[property] = generalInfoService.osVersion

@@ -144,22 +144,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       setHibernateProperties(info);
       setSchemaVersion(info);
       setInternalDb(info);
-      setConfigDir(info);
+      
+      info.setConfigDir(getConfigDir());
       
       return info;
-   }
-   
-   private void setConfigDir(GeneralInfoDto info) {
-      ConfigDirService configDirService = configDirServiceProvider.get();
-      StringBuilder sb = new StringBuilder();
-      sb.append(configDirService.isEnabled() ? configDirService.getConfigDir().getAbsolutePath() : "Not Configured");
-      
-      if (configDirService.isEnabled()) {
-         sb.append(" (")
-         .append(configDirService.getConfigDir().exists() && configDirService.getConfigDir().canRead() ? "OK)"
-               : "INACCESSIBLE)");
-      }
-      info.setConfigDir(sb.toString());
    }
    
    private void setInternalDb(GeneralInfoDto info) {
@@ -288,6 +276,20 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       values.put(MAX_IN_MB, max / mb);
       values.put(MAX_FORMATTED, byteCountToDisplaySize(max));
       return values;
+   }
+
+   @Override
+   public String getConfigDir() {
+      ConfigDirService configDirService = configDirServiceProvider.get();
+      StringBuilder sb = new StringBuilder();
+      sb.append(configDirService.isEnabled() ? configDirService.getConfigDir().getAbsolutePath() : "Not Configured");
+      
+      if (configDirService.isEnabled()) {
+         sb.append(" (")
+         .append(configDirService.getConfigDir().exists() && configDirService.getConfigDir().canRead() ? "OK)"
+               : "INACCESSIBLE)");
+      }
+      return sb.toString();
    }
 
 }

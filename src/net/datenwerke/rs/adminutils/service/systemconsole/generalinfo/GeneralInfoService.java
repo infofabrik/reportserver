@@ -37,4 +37,6 @@ public interface GeneralInfoService {
    String getGroovyVersion();
    
    Map<Memory, Object> getMemoryValues();
+   
+   String getConfigDir();
 }
