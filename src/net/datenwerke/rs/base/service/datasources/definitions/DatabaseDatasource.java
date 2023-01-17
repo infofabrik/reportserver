@@ -180,7 +180,7 @@ public class DatabaseDatasource extends DatasourceDefinition implements Paramete
       return config;
    }
 
-   protected Properties parseJdbcProperties() {
+   public Properties parseJdbcProperties() {
       if (null != jdbcProperties && !"".equals(jdbcProperties.trim())) {
          Properties props = new Properties();
          try {

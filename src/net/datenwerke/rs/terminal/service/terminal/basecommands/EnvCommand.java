@@ -148,27 +148,31 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(150, 0));
 
       table.addDataRow(new RSStringTableRow("Name", generalInfo.getInternalDbDatasourceName()));
-      if (null != generalInfo.getInternalDbId())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("ID", generalInfo.getInternalDbId()));
-      if (null != generalInfo.getInternalDbPath())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("Path",  generalInfo.getInternalDbPath()));
-      if (null != generalInfo.getInternalDbDatabaseName())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("Database name",  generalInfo.getInternalDbDatabaseName()));
-      if (null != generalInfo.getInternalDbVersion())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("Database version",  generalInfo.getInternalDbVersion()));
-      if (null != generalInfo.getInternalDbDriverName())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC driver name",  generalInfo.getInternalDbDriverName()));
-      if (null != generalInfo.getInternalDbDriverVersion())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC driver version",  generalInfo.getInternalDbDriverVersion()));
-      if (null != generalInfo.getInternalDbJdbcMajorVersion())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC major version",  generalInfo.getInternalDbJdbcMajorVersion()));
-      if (null != generalInfo.getInternalDbJdbcMinorVersion())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC minor version",  generalInfo.getInternalDbJdbcMinorVersion()));
-      if (null != generalInfo.getInternalDbJdbcUrl())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC URL",  generalInfo.getInternalDbJdbcUrl()));
-      if (null != generalInfo.getInternalDbUsername())
+      if (generalInfo.isInternalDbConfigured())
          table.addDataRow(new RSStringTableRow("JDBC username",  generalInfo.getInternalDbUsername()));
-      
+      if (generalInfo.isInternalDbConfigured())
+         table.addDataRow(new RSStringTableRow("JDBC properties",
+               null != generalInfo.getInternalDbJdbcProperties() ? generalInfo.getInternalDbJdbcProperties().toString()
+                     : null));
+
       return table;
    }
    

@@ -35,6 +35,7 @@ import org.apache.commons.lang3.exception.ExceptionUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -49,6 +50,7 @@ import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
 public class GeneralInfoServiceImpl implements GeneralInfoService {
@@ -156,6 +158,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
+         info.setInternalDbConfigured(false);
          info.setInternalDbDatasourceName(errorMsg);
          return;
       }
@@ -164,6 +167,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
          Map<String, Object> datasourceMetadata = datasourceHelperService
                .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
+         info.setInternalDbConfigured(true);
          info.setInternalDbId(internalDbDatasource.getId()+"");
          info.setInternalDbPath(paths.isEmpty()? "path not found": paths.get(0));
          info.setInternalDbDatasourceName(internalDbDatasource.getName());
@@ -175,6 +179,15 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          info.setInternalDbJdbcMinorVersion(datasourceMetadata.get("getJDBCMinorVersion").toString());
          info.setInternalDbJdbcUrl(datasourceMetadata.get("getURL").toString());
          info.setInternalDbUsername(datasourceMetadata.get("getUserName").toString());
+         try {
+            info.setInternalDbJdbcProperties(null != internalDbDatasource.parseJdbcProperties()
+                  ? PropertiesUtilService.convert(internalDbDatasource.parseJdbcProperties())
+                  : null);
+         } catch (Exception e) {
+            info.setInternalDbJdbcProperties(new HashMap<String,String>() {{
+               put("error", ExceptionUtils.getRootCauseMessage(e));
+            }});
+         }
       } catch (SQLException e) {
          info.setInternalDbDatasourceName(errorMsg);
       }

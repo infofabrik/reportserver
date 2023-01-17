@@ -2,6 +2,7 @@ package net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 
 public class GeneralInfoDto implements Serializable {
 
@@ -18,20 +19,21 @@ public class GeneralInfoDto implements Serializable {
    private String groovyVersion;
    private String osVersion;
    private String userAgent;
-   
+
    private String locale;
    private String jvmLocale;
-   
+
    private String hibernateDialect;
    private String hibernateDriverClass;
    private String hibernateConnectionUrl;
    private String hibernateConnectionUsername;
    private String hibernateDefaultSchema;
-   
+
    private String configDir;
-   
+
    private String schemaVersion;
-   
+
+   private boolean internalDbConfigured;
    private String internalDbId;
    private String internalDbDatasourceName;
    private String internalDbDatabaseName;
@@ -43,24 +45,41 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbJdbcMinorVersion;
    private String internalDbJdbcUrl;
    private String internalDbUsername;
-   
+   private Map<String, String> internalDbJdbcProperties;
+
    private List<String> supportedSslProtocols;
    private List<String> defaultSslProtocols;
    private List<String> enabledSslProtocols;
-   
+
    private List<String> staticPams;
 
    public GeneralInfoDto() {
    }
-   
+
+   public boolean isInternalDbConfigured() {
+      return internalDbConfigured;
+   }
+
+   public void setInternalDbConfigured(boolean internalDbConfigured) {
+      this.internalDbConfigured = internalDbConfigured;
+   }
+
+   public Map<String, String> getInternalDbJdbcProperties() {
+      return internalDbJdbcProperties;
+   }
+
+   public void setInternalDbJdbcProperties(Map<String, String> internalDbJdbcProperties) {
+      this.internalDbJdbcProperties = internalDbJdbcProperties;
+   }
+
    public String getConfigDir() {
       return configDir;
    }
-   
+
    public void setConfigDir(String configDir) {
       this.configDir = configDir;
    }
-   
+
    public String getLocale() {
       return locale;
    }
@@ -68,7 +87,7 @@ public class GeneralInfoDto implements Serializable {
    public void setLocale(String locale) {
       this.locale = locale;
    }
-   
+
    public String getJvmLocale() {
       return jvmLocale;
    }
@@ -76,7 +95,7 @@ public class GeneralInfoDto implements Serializable {
    public void setJvmLocale(String jvmLocale) {
       this.jvmLocale = jvmLocale;
    }
-   
+
    public String getUserAgent() {
       return userAgent;
    }
@@ -116,11 +135,11 @@ public class GeneralInfoDto implements Serializable {
    public void setApplicationServer(String applicationServer) {
       this.applicationServer = applicationServer;
    }
-   
+
    public String getMaxMemory() {
       return maxMemory;
    }
-   
+
    public void setMaxMemory(String maxMemory) {
       this.maxMemory = maxMemory;
    }
@@ -140,7 +159,7 @@ public class GeneralInfoDto implements Serializable {
    public void setInternalDbId(String internalDbId) {
       this.internalDbId = internalDbId;
    }
-   
+
    public String getInternalDbPath() {
       return internalDbPath;
    }
@@ -184,39 +203,39 @@ public class GeneralInfoDto implements Serializable {
    public String getInternalDbDriverVersion() {
       return internalDbDriverVersion;
    }
-   
+
    public void setInternalDbDriverVersion(String internalDbDriverVersion) {
       this.internalDbDriverVersion = internalDbDriverVersion;
    }
-   
+
    public String getInternalDbJdbcMajorVersion() {
       return internalDbJdbcMajorVersion;
    }
-   
+
    public void setInternalDbJdbcMajorVersion(String internalDbJdbcMajorVersion) {
       this.internalDbJdbcMajorVersion = internalDbJdbcMajorVersion;
    }
-   
+
    public String getInternalDbJdbcMinorVersion() {
       return internalDbJdbcMinorVersion;
    }
-   
+
    public void setInternalDbJdbcMinorVersion(String internalDbJdbcMinorVersion) {
       this.internalDbJdbcMinorVersion = internalDbJdbcMinorVersion;
    }
-   
+
    public String getInternalDbJdbcUrl() {
       return internalDbJdbcUrl;
    }
-   
+
    public void setInternalDbJdbcUrl(String internalDbJdbcUrl) {
       this.internalDbJdbcUrl = internalDbJdbcUrl;
    }
-   
+
    public String getInternalDbUsername() {
       return internalDbUsername;
    }
-   
+
    public void setInternalDbUsername(String internalDbUsername) {
       this.internalDbUsername = internalDbUsername;
    }
@@ -226,7 +245,7 @@ public class GeneralInfoDto implements Serializable {
    }
 
    public void setDefaultSslProtocols(List<String> defaultSslProtocols) {
-      this.defaultSslProtocols = defaultSslProtocols;      
+      this.defaultSslProtocols = defaultSslProtocols;
    }
 
    public void setEnabledSslProtocols(List<String> enabledSslProtocols) {
@@ -236,11 +255,11 @@ public class GeneralInfoDto implements Serializable {
    public List<String> getSupportedSslProtocols() {
       return this.supportedSslProtocols;
    }
-   
+
    public List<String> getDefaultSslProtocols() {
-      return this.defaultSslProtocols;      
+      return this.defaultSslProtocols;
    }
-   
+
    public List<String> getEnabledSslProtocols() {
       return this.enabledSslProtocols;
    }

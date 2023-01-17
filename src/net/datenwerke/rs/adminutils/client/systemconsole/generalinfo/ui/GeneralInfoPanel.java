@@ -193,7 +193,7 @@ public class GeneralInfoPanel extends DwContentPanel {
          form.addField(StaticLabel.class, description, new SFFCStaticLabel() {
             @Override
             public String getLabel() {
-               return value.get().replace(";", "; ");
+               return value.get();
             }
          });
       }
