@@ -86,7 +86,7 @@ public class GeneralInfoPanel extends DwContentPanel {
 
       form.setLabelWidth(200);
       
-      Map<Optional<String>, String> generalInfo = new LinkedHashMap<>();
+      Map<Optional<Object>, String> generalInfo = new LinkedHashMap<>();
       generalInfo.put(Optional.of(result.getRsVersion()), SystemConsoleMessages.INSTANCE.versionLabel());
       generalInfo.put(Optional.of(result.getJavaVersion()), SystemConsoleMessages.INSTANCE.javaVersionLabel());
       generalInfo.put(Optional.of(result.getVmArguments()), "JVM Args");
@@ -99,13 +99,13 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.put(Optional.of(result.getOsVersion()), SystemConsoleMessages.INSTANCE.operationSystemLabel());      
       generalInfo.forEach((value, description) -> addFieldToForm(value, description, form));
 
-      Map<Optional<String>, String> browserInfo = new LinkedHashMap<>();
+      Map<Optional<Object>, String> browserInfo = new LinkedHashMap<>();
       browserInfo.put(Optional.of(result.getUserAgent()), SystemConsoleMessages.INSTANCE.userAgentLabel());
       browserInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());
-      Map<Optional<String>, String> pamsInfo = new LinkedHashMap<>();
+      Map<Optional<Object>, String> pamsInfo = new LinkedHashMap<>();
       pamsInfo.put(Optional.ofNullable(result.getStaticPams().stream().collect(joining(", "))),
             SystemConsoleMessages.INSTANCE.staticPamsLabel());
       pamsInfo.forEach((value, description) -> addFieldToForm(value, description, form));
@@ -120,7 +120,7 @@ public class GeneralInfoPanel extends DwContentPanel {
          }
       });
       
-      Map<Optional<String>, String> dbConfigInfo = new LinkedHashMap<>();
+      Map<Optional<Object>, String> dbConfigInfo = new LinkedHashMap<>();
       dbConfigInfo.put(Optional.ofNullable(result.getHibernateDialect()), "hibernate.dialect");
       dbConfigInfo.put(Optional.ofNullable(result.getHibernateDriverClass()), "hibernate.connection.driver_class");
       dbConfigInfo.put(Optional.ofNullable(result.getHibernateConnectionUrl()), "hibernate.connection.url");
@@ -140,26 +140,40 @@ public class GeneralInfoPanel extends DwContentPanel {
          }
       });
 
-      Map<Optional<String>, String> internalDbInfo = new LinkedHashMap<>();
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbId()), BaseMessages.INSTANCE.id());
+      Map<Optional<Object>, String> internalDbInfo = new LinkedHashMap<>();
       internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatasourceName()), BaseMessages.INSTANCE.name());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbPath()), BaseMessages.INSTANCE.path());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatabaseName()),
-            SystemConsoleMessages.INSTANCE.internalDbName());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbVersion()),
-            SystemConsoleMessages.INSTANCE.internalDbVersion());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverName()),
-            SystemConsoleMessages.INSTANCE.internalDbDriverName());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverVersion()),
-            SystemConsoleMessages.INSTANCE.internalDbDriverVersion());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMajorVersion()),
-            SystemConsoleMessages.INSTANCE.internalDbJdbcMajorVersion());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMinorVersion()),
-            SystemConsoleMessages.INSTANCE.internalDbJdbcMinorVersion());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcUrl()),
-            SystemConsoleMessages.INSTANCE.internalDbJdbcUrl());
-      internalDbInfo.put(Optional.ofNullable(result.getInternalDbUsername()),
-            SystemConsoleMessages.INSTANCE.internalDbUsername());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbId()), BaseMessages.INSTANCE.id());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbPath()), BaseMessages.INSTANCE.path());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbDatabaseName()),
+               SystemConsoleMessages.INSTANCE.internalDbName());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbVersion()),
+               SystemConsoleMessages.INSTANCE.internalDbVersion());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverName()),
+               SystemConsoleMessages.INSTANCE.internalDbDriverName());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbDriverVersion()),
+               SystemConsoleMessages.INSTANCE.internalDbDriverVersion());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMajorVersion()),
+               SystemConsoleMessages.INSTANCE.internalDbJdbcMajorVersion());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcMinorVersion()),
+               SystemConsoleMessages.INSTANCE.internalDbJdbcMinorVersion());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcUrl()),
+               SystemConsoleMessages.INSTANCE.internalDbJdbcUrl());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbUsername()),
+               SystemConsoleMessages.INSTANCE.internalDbUsername());
+      if (result.isInternalDbConfigured())
+         internalDbInfo.put(Optional.ofNullable(result.getInternalDbJdbcProperties()),
+               SystemConsoleMessages.INSTANCE.internalDbJdbcProperties());
+      
       internalDbInfo.forEach((value, description) -> addFieldToForm(value, description, form));
       
       form.addField(Separator.class, new SFFCSpace());
@@ -170,7 +184,7 @@ public class GeneralInfoPanel extends DwContentPanel {
             return "";
          }
       });
-      Map<Optional<String>, String> sslInfo = new LinkedHashMap<>();
+      Map<Optional<Object>, String> sslInfo = new LinkedHashMap<>();
       sslInfo.put(Optional.ofNullable(result.getSupportedSslProtocols().stream().collect(joining(", "))),
             SystemConsoleMessages.INSTANCE.supportedSslProtocols());
       sslInfo.put(Optional.ofNullable(result.getDefaultSslProtocols().stream().collect(joining(", "))),
@@ -188,14 +202,12 @@ public class GeneralInfoPanel extends DwContentPanel {
       Scheduler.get().scheduleDeferred(forceLayoutCommand);
    }
    
-   private void addFieldToForm(Optional<String> value, String description, SimpleForm form) {
-      if (value.isPresent()) {
-         form.addField(StaticLabel.class, description, new SFFCStaticLabel() {
-            @Override
-            public String getLabel() {
-               return value.get();
-            }
-         });
-      }
+   private void addFieldToForm(Optional<Object> value, String description, SimpleForm form) {
+      form.addField(StaticLabel.class, description, new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return value.isPresent() ? value.get().toString(): "";
+         }
+      });
    }
 }

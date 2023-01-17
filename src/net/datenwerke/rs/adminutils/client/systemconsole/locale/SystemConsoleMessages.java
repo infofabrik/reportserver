@@ -87,6 +87,8 @@ public interface SystemConsoleMessages extends Messages {
 
    public String internalDbUsername();
    
+   public String internalDbJdbcProperties();
+   
    public String supportedSslProtocols();
    
    public String defaultSslProtocols();
