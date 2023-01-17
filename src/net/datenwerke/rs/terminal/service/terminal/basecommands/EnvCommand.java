@@ -1,31 +1,19 @@
 package net.datenwerke.rs.terminal.service.terminal.basecommands;
 
 import static java.util.stream.Collectors.joining;
-import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATABASE;
-import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL;
 
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Properties;
-
-import org.apache.commons.lang3.exception.ExceptionUtils;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
-import net.datenwerke.gf.service.history.HistoryService;
-import net.datenwerke.rs.EnvironmentValidatorHelperService;
-import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
+import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
-import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
-import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
-import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSStringTableRow;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableModel;
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
-import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
@@ -39,24 +27,12 @@ public class EnvCommand implements TerminalCommandHook {
 
    public static final String BASE_COMMAND = "env";
    private final Provider<GeneralInfoService> generalInfoServiceProvider;
-   private final Provider<DatasourceHelperService> datasourceHelperServiceProvider;
-   private final Provider<TempTableService> tempTableServiceProvider;
-   private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
-   private final Provider<HistoryService> historyServiceProvider;
 
    @Inject
    public EnvCommand(
-         Provider<GeneralInfoService> generalInfoServiceProvider, 
-         Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-         Provider<TempTableService> tempTableServiceProvider,
-         Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider ,
-         Provider<HistoryService> historyServiceProvider
+         Provider<GeneralInfoService> generalInfoServiceProvider
          ) {
       this.generalInfoServiceProvider = generalInfoServiceProvider;
-      this.datasourceHelperServiceProvider = datasourceHelperServiceProvider;
-      this.tempTableServiceProvider = tempTableServiceProvider;
-      this.envServiceProvider = environmentValidatorHelperServiceProvider;
-      this.historyServiceProvider = historyServiceProvider;
    }
 
    @Override
@@ -73,7 +49,7 @@ public class EnvCommand implements TerminalCommandHook {
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       CommandResult result = new CommandResult();
 
-      GeneralInfoService generalInfoService = generalInfoServiceProvider.get();
+      GeneralInfoDto generalInfo = generalInfoServiceProvider.get().getGeneralInfo();
 
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("General Info", ""),
@@ -81,23 +57,24 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(100, 0));
       table.setTableDefinition(td);
 
-      table.addDataRow(new RSStringTableRow("Version", generalInfoService.getRsVersion()));
-      table.addDataRow(new RSStringTableRow("Java version", generalInfoService.getJavaVersion()));
-      table.addDataRow(new RSStringTableRow("JVM Args", generalInfoService.getVmArguments()));
-      table.addDataRow(new RSStringTableRow("Application server", generalInfoService.getApplicationServer()));
-      table.addDataRow(new RSStringTableRow("Max memory", generalInfoService.getMemoryValues().get(Memory.MAX_FORMATTED)+""));
-      table.addDataRow(new RSStringTableRow("Groovy Version", generalInfoService.getGroovyVersion()));
-      table.addDataRow(new RSStringTableRow("Locale", generalInfoService.getLocale()));
-      table.addDataRow(new RSStringTableRow("JVM Locale", generalInfoService.getJvmLocale()));
-      table.addDataRow(new RSStringTableRow("Operation system", generalInfoService.getOsVersion()));
-      table.addDataRow(new RSStringTableRow("User Agent", generalInfoService.getUserAgent()));
+      table.addDataRow(new RSStringTableRow("Version", generalInfo.getRsVersion()));
+      table.addDataRow(new RSStringTableRow("Java version", generalInfo.getJavaVersion()));
+      table.addDataRow(new RSStringTableRow("JVM Args", generalInfo.getVmArguments()));
+      table.addDataRow(new RSStringTableRow("Application server", generalInfo.getApplicationServer()));
+      table.addDataRow(new RSStringTableRow("Max memory", generalInfo.getMaxMemory()));
+      table.addDataRow(new RSStringTableRow("Configuration directory", generalInfo.getConfigDir()));
+      table.addDataRow(new RSStringTableRow("Groovy version", generalInfo.getGroovyVersion()));
+      table.addDataRow(new RSStringTableRow("Locale", generalInfo.getLocale()));
+      table.addDataRow(new RSStringTableRow("JVM Locale", generalInfo.getJvmLocale()));
+      table.addDataRow(new RSStringTableRow("Operation system", generalInfo.getOsVersion()));
+      table.addDataRow(new RSStringTableRow("User agent", generalInfo.getUserAgent()));
 
       result.addResultTable(table);
       try {
-         result.addResultTable(getPamsAsTable(generalInfoService));
-         result.addResultTable(getDbConfigAsTable());
-         result.addResultTable(getInternalDbInformationAsTable());
-         result.addResultTable(getSslInformationAsTable(generalInfoService));
+         result.addResultTable(getPamsAsTable(generalInfo));
+         result.addResultTable(getDbConfigAsTable(generalInfo));
+         result.addResultTable(getInternalDbInformationAsTable(generalInfo));
+         result.addResultTable(getSslInformationAsTable(generalInfo));
       } catch (SQLException e) {
          throw new TerminalException(e);
       }
@@ -109,7 +86,7 @@ public class EnvCommand implements TerminalCommandHook {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
    }
    
-   private RSTableModel getSslInformationAsTable(GeneralInfoService generalInfoService) throws SQLException {
+   private RSTableModel getSslInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("SSL", ""),
             Arrays.asList(String.class, String.class));
@@ -117,22 +94,22 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(150, 0));
 
       table.addDataRow(new RSStringTableRow("Supported SSL protocols",
-            generalInfoService.getSupportedSslProtocols().stream().collect(joining(", "))));
+            generalInfo.getSupportedSslProtocols().stream().collect(joining(", "))));
       table.addDataRow(new RSStringTableRow("Default SSL protocols",
-            generalInfoService.getDefaultSslProtocols().stream().collect(joining(", "))));
+            generalInfo.getDefaultSslProtocols().stream().collect(joining(", "))));
       table.addDataRow(new RSStringTableRow("Enabled SSL protocols",
-            generalInfoService.getEnabledSslProtocols().stream().collect(joining(", "))));
+            generalInfo.getEnabledSslProtocols().stream().collect(joining(", "))));
 
       return table;
    }
    
-   private RSTableModel getPamsAsTable(GeneralInfoService generalInfoService) throws SQLException {
+   private RSTableModel getPamsAsTable(GeneralInfoDto generalInfo) throws SQLException {
       final RSTableModel table = new RSTableModel();
       final TableDefinition td = new TableDefinition(Arrays.asList("Static PAM Configuration"),
             Arrays.asList(String.class));
       table.setTableDefinition(td);
       
-      final List<String> staticPams = generalInfoService.getStaticPams();
+      final List<String> staticPams = generalInfo.getStaticPams();
       if (staticPams.isEmpty()) {
          table.addDataRow(new RSStringTableRow("No static PAM configured"));
          return table;
@@ -143,81 +120,56 @@ public class EnvCommand implements TerminalCommandHook {
       return table;
    }
    
-   private RSTableModel getDbConfigAsTable() {
+   private RSTableModel getDbConfigAsTable(GeneralInfoDto generalInfo) {
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("DB Config", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(220, 0));      
 
-      EnvironmentValidatorHelperService envService = envServiceProvider.get();
-      Properties jpaProperties = envService.getJpaProperties();
-      table.addDataRow(new RSStringTableRow("hibernate.dialect", jpaProperties.getProperty("hibernate.dialect")));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.driver_class",
-            jpaProperties.getProperty("hibernate.connection.driver_class")));
+      table.addDataRow(new RSStringTableRow("hibernate.dialect", generalInfo.getHibernateDialect()));
       table.addDataRow(
-            new RSStringTableRow("hibernate.connection.url", jpaProperties.getProperty("hibernate.connection.url")));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.username",
-            jpaProperties.getProperty("hibernate.connection.username")));
+            new RSStringTableRow("hibernate.connection.driver_class", generalInfo.getHibernateDriverClass()));
+      table.addDataRow(new RSStringTableRow("hibernate.connection.url", generalInfo.getHibernateConnectionUrl()));
       table.addDataRow(
-            new RSStringTableRow("hibernate.default_schema", jpaProperties.getProperty("hibernate.default_schema")));
+            new RSStringTableRow("hibernate.connection.username", generalInfo.getHibernateConnectionUsername()));
+      table.addDataRow(new RSStringTableRow("hibernate.default_schema", generalInfo.getHibernateDefaultSchema()));
 
-      try {
-         String schemaVersion = envService.getSchemaVersion();
-         table.addDataRow(new RSStringTableRow("Schema Version", schemaVersion)); 
-      } catch (SQLException e) {
-         table.addDataRow(new RSStringTableRow("Schema Version", "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")")); 
-      }
+      table.addDataRow(new RSStringTableRow("Schema Version", generalInfo.getSchemaVersion())); 
       
       return table;
    }
    
-   private RSTableModel getInternalDbInformationAsTable() throws SQLException {
+   private RSTableModel getInternalDbInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {
       RSTableModel table = new RSTableModel();
       TableDefinition td = new TableDefinition(Arrays.asList("Internal datasource info", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(150, 0));
 
-      DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
-      if (null == internalDbDatasource) {
-         table.addDataRow(new RSStringTableRow(
-               "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.",
-               ""));
-         return table;
-      }
-      
-      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
-      
-      final Map<DatasourceInfoType, Object> datasourceInfoDefinition = datasourceHelperService
-            .getDatasourceInfoDefinition();
-      Map<String, String> databaseInfo = (Map<String, String>) datasourceInfoDefinition.get(DATABASE);
-      Map<String, String> jdbcUrlInfo = (Map<String, String>) datasourceInfoDefinition.get(JDBC_URL);
-      Map<String, Object> datasourceMetadata = datasourceHelperService.fetchInfoDatasourceMetadata(internalDbDatasource,
-            true, true, true, true);
-
-      table.addDataRow(new RSStringTableRow("ID", internalDbDatasource.getId() + ""));
-      table.addDataRow(new RSStringTableRow("Name", internalDbDatasource.getName()));
-      table.addDataRow(new RSStringTableRow("Path", getPath(internalDbDatasource)));
-      addInternalDbInfoToTable(table, databaseInfo, datasourceMetadata);
-      addInternalDbInfoToTable(table, jdbcUrlInfo, datasourceMetadata);
+      table.addDataRow(new RSStringTableRow("Name", generalInfo.getInternalDbDatabaseName()));
+      if (null != generalInfo.getInternalDbId())
+         table.addDataRow(new RSStringTableRow("ID", generalInfo.getInternalDbId()));
+      if (null != generalInfo.getInternalDbPath())
+         table.addDataRow(new RSStringTableRow("Path",  generalInfo.getInternalDbPath()));
+      if (null != generalInfo.getInternalDbDatabaseName())
+         table.addDataRow(new RSStringTableRow("Database name",  generalInfo.getInternalDbDatabaseName()));
+      if (null != generalInfo.getInternalDbVersion())
+         table.addDataRow(new RSStringTableRow("Database version",  generalInfo.getInternalDbVersion()));
+      if (null != generalInfo.getInternalDbDriverName())
+         table.addDataRow(new RSStringTableRow("JDBC driver name",  generalInfo.getInternalDbDriverName()));
+      if (null != generalInfo.getInternalDbDriverVersion())
+         table.addDataRow(new RSStringTableRow("JDBC driver version",  generalInfo.getInternalDbDriverVersion()));
+      if (null != generalInfo.getInternalDbJdbcMajorVersion())
+         table.addDataRow(new RSStringTableRow("JDBC major version",  generalInfo.getInternalDbJdbcMajorVersion()));
+      if (null != generalInfo.getInternalDbJdbcMinorVersion())
+         table.addDataRow(new RSStringTableRow("JDBC minor version",  generalInfo.getInternalDbJdbcMinorVersion()));
+      if (null != generalInfo.getInternalDbJdbcUrl())
+         table.addDataRow(new RSStringTableRow("JDBC URL",  generalInfo.getInternalDbJdbcUrl()));
+      if (null != generalInfo.getInternalDbUsername())
+         table.addDataRow(new RSStringTableRow("JDBC username",  generalInfo.getInternalDbUsername()));
       
       return table;
    }
    
-   private String getPath(DatabaseDatasource datasource) {
-      List<String> links = historyServiceProvider.get().getFormattedObjectPaths(datasource);
-      if (null == links || links.isEmpty())
-         return "path not found";
-      return links.get(0);
-   }
-   
-   private void addInternalDbInfoToTable(RSTableModel table, Map<String, String> infoDefinition,
-         Map<String, Object> datasourceMetadata) {
-      infoDefinition.forEach(
-            (methodDesc, methodName) -> {
-               String result = datasourceMetadata.get(methodName).toString();
-               table.addDataRow(new RSStringTableRow(methodDesc, result));
-            });
-   }
 }

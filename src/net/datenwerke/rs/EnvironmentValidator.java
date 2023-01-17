@@ -1,6 +1,7 @@
 package net.datenwerke.rs;
 
 import static java.util.stream.Collectors.joining;
+import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -16,7 +17,6 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -234,8 +234,8 @@ public class EnvironmentValidator extends HttpServlet {
       sb.append("VM Args: " + String.join(" ", arguments) + "\r\n");
       
       Runtime runtime = Runtime.getRuntime();
-      int mb = 1024 * 1024;
-      sb.append("Max memory: " + NumberFormat.getIntegerInstance().format(runtime.maxMemory() / mb) +  " MB\r\n");
+      sb.append("Max memory: " + byteCountToDisplaySize(runtime.maxMemory())+ "\r\n");
+      
       sb.append("Groovy Version: " + GroovySystem.getVersion()).append("\r\n");
       sb.append("JVM Locale: " + Locale.getDefault().toString() + "\r\n");
    }
@@ -341,22 +341,24 @@ public class EnvironmentValidator extends HttpServlet {
          String enabledSslProtocols = "";
          
          try {
-            supportedSslProtocols =  Arrays.asList(SSLContext.getDefault().getSupportedSSLParameters().getProtocols()).stream().collect(joining(", "));            
+            supportedSslProtocols = Arrays.asList(SSLContext.getDefault().getSupportedSSLParameters().getProtocols())
+                  .stream().collect(joining(", "));
          } catch (Exception e) {
             logger.warn("Information about supported SSL protocols could not be loaded");
          }
-         sb.append("Supported SSL protocols: " + supportedSslProtocols).append("\r\n");            
-         
+         sb.append("Supported SSL protocols: " + supportedSslProtocols).append("\r\n");
+
          try {
-            defaultSslProtocols = Arrays.asList(SSLContext.getDefault().getDefaultSSLParameters().getProtocols()).stream().collect(joining(", "));
+            defaultSslProtocols = Arrays.asList(SSLContext.getDefault().getDefaultSSLParameters().getProtocols())
+                  .stream().collect(joining(", "));
          } catch (Exception e) {
             logger.warn("Information about default SSL protocols could not be loaded");
          }
          sb.append("Default SSL protocols: " + defaultSslProtocols).append("\r\n");
-         
-         
+
          try {
-            enabledSslProtocols = Arrays.asList(SSLContext.getDefault().createSSLEngine().getEnabledProtocols()).stream().collect(joining(", "));
+            enabledSslProtocols = Arrays.asList(SSLContext.getDefault().createSSLEngine().getEnabledProtocols())
+                  .stream().collect(joining(", "));
          } catch (Exception e) {
             logger.warn("Information about enabled SSL protocols could not be loaded");
          }

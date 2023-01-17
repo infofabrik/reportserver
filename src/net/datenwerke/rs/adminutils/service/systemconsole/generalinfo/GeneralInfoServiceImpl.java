@@ -45,6 +45,7 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
@@ -62,6 +63,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<Set<ReportServerPAM>> pamProvider;
    private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
    private final Provider<HistoryService> historyServiceProvider;
+   private final Provider<ConfigDirService> configDirServiceProvider;
    
    private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
    
@@ -74,7 +76,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<TempTableService> tempTableServiceProvider,
          Provider<Set<ReportServerPAM>> pamProvider,
          Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider,
-         Provider<HistoryService> historyServiceProvider
+         Provider<HistoryService> historyServiceProvider,
+         Provider<ConfigDirService> configDirServiceProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
@@ -84,6 +87,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.pamProvider = pamProvider;
       this.envServiceProvider = environmentValidatorHelperServiceProvider;
       this.historyServiceProvider = historyServiceProvider;
+      this.configDirServiceProvider = configDirServiceProvider;
    }
 
    @Override
@@ -120,12 +124,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public GeneralInfoDto getGeneralInfo() {
-      String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
-      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
-      
-      EnvironmentValidatorHelperService envService = envServiceProvider.get();
-      Properties jpaProperties = envService.getJpaProperties();
-      
       GeneralInfoDto info = new GeneralInfoDto();
 
       info.setRsVersion(getRsVersion());
@@ -143,22 +141,35 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setEnabledSslProtocols(getEnabledSslProtocols());
       info.setStaticPams(getStaticPams());
       
-      info.setHibernateDialect(jpaProperties.getProperty("hibernate.dialect"));
-      info.setHibernateDriverClass(jpaProperties.getProperty("hibernate.connection.driver_class"));
-      info.setHibernateConnectionUrl(jpaProperties.getProperty("hibernate.connection.url"));
-      info.setHibernateConnectionUsername(jpaProperties.getProperty("hibernate.connection.username"));
-      info.setHibernateDefaultSchema(jpaProperties.getProperty("hibernate.default_schema"));
+      setHibernateProperties(info);
+      setSchemaVersion(info);
+      setInternalDb(info);
+      setConfigDir(info);
       
-      try {
-         info.setSchemaVersion(envService.getSchemaVersion());
-      } catch (SQLException e) {
-         info.setSchemaVersion("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      return info;
+   }
+   
+   private void setConfigDir(GeneralInfoDto info) {
+      ConfigDirService configDirService = configDirServiceProvider.get();
+      StringBuilder sb = new StringBuilder();
+      sb.append(configDirService.isEnabled() ? configDirService.getConfigDir().getAbsolutePath() : "Not Configured");
+      
+      if (configDirService.isEnabled()) {
+         sb.append(" (")
+         .append(configDirService.getConfigDir().exists() && configDirService.getConfigDir().canRead() ? "OK)"
+               : "INACCESSIBLE)");
       }
-
+      info.setConfigDir(sb.toString());
+   }
+   
+   private void setInternalDb(GeneralInfoDto info) {
+      String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
+      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
+      
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
       if (null == internalDbDatasource) {
          info.setInternalDbDatasourceName(errorMsg);
-         return info;
+         return;
       }
       
       try {
@@ -179,8 +190,23 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       } catch (SQLException e) {
          info.setInternalDbDatasourceName(errorMsg);
       }
-      
-      return info;
+   }
+   
+   private void setSchemaVersion(GeneralInfoDto info) {
+      try {
+         info.setSchemaVersion(envServiceProvider.get().getSchemaVersion());
+      } catch (SQLException e) {
+         info.setSchemaVersion("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
+      }
+   }
+   
+   private void setHibernateProperties(GeneralInfoDto info) {
+      final Properties jpaProperties = envServiceProvider.get().getJpaProperties();
+      info.setHibernateDialect(jpaProperties.getProperty("hibernate.dialect"));
+      info.setHibernateDriverClass(jpaProperties.getProperty("hibernate.connection.driver_class"));
+      info.setHibernateConnectionUrl(jpaProperties.getProperty("hibernate.connection.url"));
+      info.setHibernateConnectionUsername(jpaProperties.getProperty("hibernate.connection.username"));
+      info.setHibernateDefaultSchema(jpaProperties.getProperty("hibernate.default_schema"));
    }
 
    @Override

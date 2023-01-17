@@ -27,6 +27,9 @@ public class GeneralInfoDto implements Serializable {
    private String hibernateConnectionUrl;
    private String hibernateConnectionUsername;
    private String hibernateDefaultSchema;
+   
+   private String configDir;
+   
    private String schemaVersion;
    
    private String internalDbId;
@@ -48,6 +51,14 @@ public class GeneralInfoDto implements Serializable {
    private List<String> staticPams;
 
    public GeneralInfoDto() {
+   }
+   
+   public String getConfigDir() {
+      return configDir;
+   }
+   
+   public void setConfigDir(String configDir) {
+      this.configDir = configDir;
    }
    
    public String getLocale() {
