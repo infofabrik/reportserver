@@ -92,6 +92,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.put(Optional.of(result.getVmArguments()), "JVM Args");
       generalInfo.put(Optional.of(result.getApplicationServer()), SystemConsoleMessages.INSTANCE.applicationServerLabel());
       generalInfo.put(Optional.of(result.getMaxMemory()), SystemConsoleMessages.INSTANCE.maxMemoryLabel());
+      generalInfo.put(Optional.of(result.getConfigDir()), SystemConsoleMessages.INSTANCE.configDirLabel());
       generalInfo.put(Optional.of(result.getGroovyVersion()), SystemConsoleMessages.INSTANCE.groovyVersionLabel());
       generalInfo.put(Optional.of(result.getLocale()), "Locale");
       generalInfo.put(Optional.of(result.getJvmLocale()), "JVM Locale");

@@ -147,7 +147,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(150, 0));
 
-      table.addDataRow(new RSStringTableRow("Name", generalInfo.getInternalDbDatabaseName()));
+      table.addDataRow(new RSStringTableRow("Name", generalInfo.getInternalDbDatasourceName()));
       if (null != generalInfo.getInternalDbId())
          table.addDataRow(new RSStringTableRow("ID", generalInfo.getInternalDbId()));
       if (null != generalInfo.getInternalDbPath())

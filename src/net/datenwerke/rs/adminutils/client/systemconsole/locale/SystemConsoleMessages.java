@@ -97,4 +97,6 @@ public interface SystemConsoleMessages extends Messages {
    
    public String schemaVersion();
 
+   public String configDirLabel();
+
 }
