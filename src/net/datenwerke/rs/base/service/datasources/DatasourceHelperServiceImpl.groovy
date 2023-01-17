@@ -211,8 +211,9 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean datasourceInfo,
+   Map<String, Object> fetchInfoDatasourceMetadata(DatasourceDefinition datasource, boolean datasourceInfo,
          boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) {
+         assert datasource instanceof DatabaseDatasource
       def allMethods = 
          (
             (datasourceInfo? getDatabaseInfoDefinition().values() : [:]) +
@@ -221,7 +222,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
             (databaseSupportsInfo? getDatabaseSupportsInfoDefinition().values() : [:])
             - [:]
          ).collectEntries { [(it): []] }
-      return fetchDatasourceMetadata(datasource, allMethods)
+      return fetchDatasourceMetadata((DatabaseDatasource)datasource, allMethods)
    }
    
    @Override

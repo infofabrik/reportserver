@@ -88,28 +88,34 @@ public static final String BASE_COMMAND = "datasource";
          throw new IllegalArgumentException("exactly 1 argument required");
       String datasourceQuery = (String) nonOptionArguments.get(0);
       try {
-         DatabaseDatasource datasource = terminalServiceProvider.get()
-               .getSingleObjectOfTypeByQuery(DatabaseDatasource.class, datasourceQuery, session, Read.class);
-         Map<String, Object> results = datasourceHelperServiceProvider.get().fetchInfoDatasourceMetadata(datasource,
-               true, true, true, true);
-         return generateCommandResult(results, datasource);
+         DatasourceDefinition datasource = terminalServiceProvider.get()
+               .getSingleObjectOfTypeByQuery(DatasourceDefinition.class, datasourceQuery, session, Read.class);
+         Map<String, Object> generalInformation = datasourceHelperServiceProvider.get().getGeneralInformation(datasource);
+         Map<String, Object> metadata = null;
+         if (datasource instanceof DatabaseDatasource) 
+            metadata = datasourceHelperServiceProvider.get().fetchInfoDatasourceMetadata(datasource, true, true, true,
+                  true);
+         return generateCommandResult(Optional.ofNullable(metadata), datasource, generalInformation);
       } catch (Exception e) {
          throw new TerminalException(e);
       }
    }
 
 
-   private CommandResult generateCommandResult(Map<String, Object> results, DatasourceDefinition datasource) {
+   private CommandResult generateCommandResult(Optional<Map<String, Object>> metadata, DatasourceDefinition datasource,
+         Map<String, Object> generalInformation) {
       List<RSTableModel> resultTables = new ArrayList<>();
-      Map<String, Object> generalInformation = datasourceHelperServiceProvider.get().getGeneralInformation(datasource);
       resultTables.add(generateGeneralInformationModel("General information", generalInformation));
-      resultTables
-            .add(generateTableModel(databaseInfo, "Database information", results, Optional.of(Arrays.asList(150, 0))));
-      resultTables
-            .add(generateTableModel(jdbcUrlInfo, "JDBC URL information", results, Optional.of(Arrays.asList(150, 0))));
-      resultTables.add(generateTableModel(functionsSection, "Database functions section", results,
-            Optional.of(Arrays.asList(150, 0))));
-      resultTables.add(generateTableModel(supportsSection, "Database supports section", results, Optional.empty()));
+      if (metadata.isPresent()) {
+         resultTables.add(generateTableModel(databaseInfo, "Database information", metadata.get(),
+               Optional.of(Arrays.asList(150, 0))));
+         resultTables.add(generateTableModel(jdbcUrlInfo, "JDBC URL information", metadata.get(),
+               Optional.of(Arrays.asList(150, 0))));
+         resultTables.add(generateTableModel(functionsSection, "Database functions section", metadata.get(),
+               Optional.of(Arrays.asList(150, 0))));
+         resultTables
+               .add(generateTableModel(supportsSection, "Database supports section", metadata.get(), Optional.empty()));
+      }
 
       CommandResult commandResult = new CommandResult();
       resultTables.forEach(table -> commandResult.addResultTable(table));

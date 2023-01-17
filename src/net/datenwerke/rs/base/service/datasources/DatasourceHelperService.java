@@ -63,7 +63,7 @@ public interface DatasourceHelperService {
     * @param databaseSupportsInfo  if true, fechtes information on supports
     * @return the map containing <methodname, result>
     */
-   Map<String, Object> fetchInfoDatasourceMetadata(DatabaseDatasource datasource, boolean datasourceInfo,
+   Map<String, Object> fetchInfoDatasourceMetadata(DatasourceDefinition datasource, boolean datasourceInfo,
          boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) throws SQLException;
 
    /**
