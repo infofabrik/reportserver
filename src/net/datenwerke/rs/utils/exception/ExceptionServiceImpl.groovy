@@ -10,11 +10,12 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIR
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_GENERAL_INFO
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_INFORMATION
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_JDBC_PROPERTIES
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_PATH
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_QUERY
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DEFAULT_SSL_PROTOCOLS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.ENABLED_SSL_PROTOCOLS
@@ -43,6 +44,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REP
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.STATIC_PAMS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.SUPPORTED_SSL_PROTOCOLS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE_DATABASE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_ERROR
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_EXECUTING_USER
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL
@@ -67,6 +69,7 @@ import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant
+import net.datenwerke.rs.utils.properties.PropertiesUtilService
 import net.datenwerke.scheduler.service.scheduler.exceptions.JobExecutionException
 import net.datenwerke.security.service.usermanager.entities.User
 
@@ -168,10 +171,35 @@ public class ExceptionServiceImpl implements ExceptionService {
             setMemoryProperty(property, propertyValues)
             break
          case TYPE_DATASOURCE:
-            setDatasourceProperty(property, report, datasource,propertyValues)
+            setDatasourceProperty(property, report, datasource, propertyValues)
+            break
+         case TYPE_DATASOURCE_DATABASE:
+            setDbDatasourceProperty(property, report, datasource, propertyValues)
             break
          default:
             throw new IllegalArgumentException("Property not found: '$property'")
+      }
+   }
+   
+   private def setDbDatasourceProperty(LogProperty property, Report report, datasource, Map propertyValues) {
+      if (! (datasource instanceof DatabaseDatasource))
+         return
+         
+      switch (property) {
+         case DATASOURCE_DATABASE_QUERY:
+            def datasourceConfig = report?.datasourceContainer?.datasourceConfig
+            propertyValues[property] = datasourceHelperServiceProvider.get().getQuery(report?.datasourceContainer)
+            break
+         case DATASOURCE_DATABASE_INFORMATION:
+            propertyValues[property] = formatGetters(datasourceHelperServiceProvider.get()
+               .fetchInfoDatasourceMetadata(datasource, true , true, false, false))
+            break
+         case DATASOURCE_DATABASE_JDBC_PROPERTIES:
+            def jdbcProperties = datasource?.parseJdbcProperties()
+            propertyValues[property] = jdbcProperties ? PropertiesUtilService.convert(jdbcProperties) as String: null
+            break
+         default:
+            throw new IllegalArgumentException('not a db datasource property')
       }
    }
    
@@ -189,16 +217,6 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case DATASOURCE_TYPE:
             propertyValues[property] = datasource?.getClass()?.simpleName
-            break
-         case DATASOURCE_QUERY:
-            def datasourceConfig = report?.datasourceContainer?.datasourceConfig
-               if (datasourceConfig instanceof DatabaseDatasourceConfig)
-                  propertyValues[property] = datasourceHelperServiceProvider.get().getQuery(report?.datasourceContainer)
-            break
-         case DATASOURCE_GENERAL_INFO:
-            if (datasource instanceof DatabaseDatasource)
-                  propertyValues[property] = formatGetters(datasourceHelperServiceProvider.get()
-                        .fetchInfoDatasourceMetadata(datasource, true , true, false, false)) 
             break
          default:
             throw new IllegalArgumentException('not a datasource property')

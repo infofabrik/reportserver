@@ -1,6 +1,7 @@
 package net.datenwerke.rs.utils.exception;
 
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE;
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE_DATABASE;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_ERROR;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_EXECUTING_USER;
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL;
@@ -21,7 +22,7 @@ public interface ExceptionService {
    public static final String PROPERTIES = "reportExecutionException.properties.property";
    
    public enum LogPropertyType {
-      TYPE_ERROR, TYPE_REPORT, TYPE_EXECUTING_USER, TYPE_GENERAL, TYPE_MEMORY, TYPE_DATASOURCE
+      TYPE_ERROR, TYPE_REPORT, TYPE_EXECUTING_USER, TYPE_GENERAL, TYPE_MEMORY, TYPE_DATASOURCE, TYPE_DATASOURCE_DATABASE
    }
    
    public enum LogProperty {
@@ -51,8 +52,11 @@ public interface ExceptionService {
       
       // datasource properties
       DATASOURCE_ID(TYPE_DATASOURCE), DATASOURCE_NAME(TYPE_DATASOURCE), DATASOURCE_PATH(TYPE_DATASOURCE),
-      DATASOURCE_TYPE(TYPE_DATASOURCE), 
-      DATASOURCE_QUERY(TYPE_DATASOURCE), DATASOURCE_GENERAL_INFO(TYPE_DATASOURCE); // DB datasources
+      DATASOURCE_TYPE(TYPE_DATASOURCE),
+      
+      // db datasource properties
+      DATASOURCE_DATABASE_QUERY(TYPE_DATASOURCE_DATABASE), DATASOURCE_DATABASE_INFORMATION(TYPE_DATASOURCE_DATABASE),
+      DATASOURCE_DATABASE_JDBC_PROPERTIES(TYPE_DATASOURCE_DATABASE);
       
       private final LogPropertyType type;
       
