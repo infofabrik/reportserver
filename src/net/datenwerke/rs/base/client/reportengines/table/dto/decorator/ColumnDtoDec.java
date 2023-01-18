@@ -89,6 +89,8 @@ public class ColumnDtoDec extends ColumnDto implements IdedDto {
       clone.setNullReplacementFormat(this.getNullReplacementFormat());
       clone.setSubtotalGroup(this.isSubtotalGroup());
       clone.setDimension(this.getDimension());
+      clone.setDefaultPreviewWidth(this.getDefaultPreviewWidth());
+      clone.setPreviewWidth(this.getPreviewWidth());
    }
 
    public boolean hasSomeFormat() {
