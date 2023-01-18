@@ -182,13 +182,22 @@ public class ExceptionServiceImpl implements ExceptionService {
    }
    
    private def setDbDatasourceProperty(LogProperty property, Report report, datasource, Map propertyValues) {
+      if (!datasource || !report) {
+         // set explicitly to null in this case
+         propertyValues[property] = null
+         return
+      }
+      
+      // do not set any value in this case
       if (! (datasource instanceof DatabaseDatasource))
          return
          
       switch (property) {
          case DATASOURCE_DATABASE_QUERY:
-            def datasourceConfig = report?.datasourceContainer?.datasourceConfig
-            propertyValues[property] = datasourceHelperServiceProvider.get().getQuery(report?.datasourceContainer)
+            def datasourceConfig = report.datasourceContainer?.datasourceConfig
+            propertyValues[property] = datasourceConfig?
+                datasourceHelperServiceProvider.get().getQuery(report.datasourceContainer)
+                : null
             break
          case DATASOURCE_DATABASE_INFORMATION:
             propertyValues[property] = formatGetters(datasourceHelperServiceProvider.get()
@@ -204,19 +213,25 @@ public class ExceptionServiceImpl implements ExceptionService {
    }
    
    private def setDatasourceProperty(LogProperty property, Report report, datasource, Map propertyValues) {
+      if (!datasource || !report) {
+         // set explicitly to null
+         propertyValues[property] = null
+         return
+      }
+      
       switch (property) {
          case DATASOURCE_ID:
-            propertyValues[property] = datasource?.id
+            propertyValues[property] = datasource.id
             break
          case DATASOURCE_NAME:
-            propertyValues[property] = datasource?.name
+            propertyValues[property] = datasource.name
             break
          case DATASOURCE_PATH:
             def links = historyServiceProvider.get().getFormattedObjectPaths(datasource)
-            propertyValues[property] = (!datasource || links.empty)? null: links[0]
+            propertyValues[property] = links.empty? null: links[0]
             break
          case DATASOURCE_TYPE:
-            propertyValues[property] = datasource?.getClass()?.simpleName
+            propertyValues[property] = datasource.getClass().simpleName
             break
          default:
             throw new IllegalArgumentException('not a datasource property')
@@ -232,6 +247,12 @@ public class ExceptionServiceImpl implements ExceptionService {
    
    private def setReportProperty(LogProperty property, Report report, Report baseReport, 
       String outputFormat, String uuid, Map propertyValues) {
+      if (!report) {
+         // set explicitly to null
+         propertyValues[property] = null
+         return
+      }
+      
       switch (property) {
          case REPORT_ID:
             propertyValues[property] = report.id ?: report.oldTransientId
@@ -273,6 +294,12 @@ public class ExceptionServiceImpl implements ExceptionService {
    }
    
    private def setUserProperty(LogProperty property, User user, Map propertyValues) {
+      if (!user) {
+         // set explicitly to null
+         propertyValues[property] = null
+         return
+      }
+      
       switch (property) {
          case EXECUTING_USER_ID:
             propertyValues[property] = user.id

@@ -212,7 +212,8 @@ public class TableReportEngine extends ReportEngine<TableDataSource, TableOutput
 
          return compiledReport;
       } finally {
-         ds.close();
+         if (null != ds)
+            ds.close();
       }
    }
 
