@@ -135,7 +135,7 @@ public class ExceptionServiceImpl implements ExceptionService {
                   e, report, baseReport, datasource,
                   user, outputFormat, uuid, propertyValues)
          }
-      propertyValues
+      propertyValues.collectEntries { key, val -> [key.toString().toLowerCase(Locale.ROOT), val] }
    }
    
    private def getDefaultProperties() {
