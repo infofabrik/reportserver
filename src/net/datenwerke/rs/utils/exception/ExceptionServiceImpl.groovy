@@ -200,8 +200,12 @@ public class ExceptionServiceImpl implements ExceptionService {
                 : null
             break
          case DATASOURCE_DATABASE_INFORMATION:
-            propertyValues[property] = formatGetters(datasourceHelperServiceProvider.get()
-               .fetchInfoDatasourceMetadata(datasource, true , true, false, false))
+            try {
+               propertyValues[property] = formatGetters(datasourceHelperServiceProvider.get()
+                  .fetchInfoDatasourceMetadata(datasource, true , true, false, false))
+            } catch (Exception e) {
+               propertyValues[property] = ExceptionUtils.getRootCauseMessage(e)
+            }
             break
          case DATASOURCE_DATABASE_JDBC_PROPERTIES:
             def jdbcProperties = datasource?.parseJdbcProperties()

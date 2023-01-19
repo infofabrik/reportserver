@@ -163,13 +163,13 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       }
       
       try {
-         final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
-         Map<String, Object> datasourceMetadata = datasourceHelperService
-               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
          info.setInternalDbConfigured(true);
          info.setInternalDbId(internalDbDatasource.getId()+"");
+         final List<String> paths = historyServiceProvider.get().getFormattedObjectPaths(internalDbDatasource);
          info.setInternalDbPath(paths.isEmpty()? "path not found": paths.get(0));
          info.setInternalDbDatasourceName(internalDbDatasource.getName());
+         Map<String, Object> datasourceMetadata = datasourceHelperService
+               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
          info.setInternalDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
          info.setInternalDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());
          info.setInternalDbDriverName(datasourceMetadata.get("getDriverName").toString());
@@ -187,8 +187,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
                put("error", ExceptionUtils.getRootCauseMessage(e));
             }});
          }
-      } catch (SQLException e) {
-         info.setInternalDbDatasourceName(errorMsg);
+      } catch (Exception e) {
+         info.setInternalDbDatasourceName(internalDbDatasource.getName() + ": " + ExceptionUtils.getRootCauseMessage(e));
       }
    }
    
@@ -222,7 +222,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public List<String> getSupportedSslProtocols() {
       try {
-         return Arrays.asList(SSLContext.getDefault().getSupportedSSLParameters().getProtocols());
+         String[] protocols = SSLContext.getDefault().getSupportedSSLParameters().getProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
       } catch (Exception e) {
          log.warn(ExceptionUtils.getRootCauseMessage(e)); 
          return Collections.emptyList();
@@ -232,7 +235,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public List<String> getDefaultSslProtocols() {
       try {
-         return Arrays.asList(SSLContext.getDefault().getDefaultSSLParameters().getProtocols());
+         String[] protocols = SSLContext.getDefault().getDefaultSSLParameters().getProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
       } catch (Exception e) {
          log.warn(ExceptionUtils.getRootCauseMessage(e)); 
          return Collections.emptyList();
@@ -242,7 +248,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public List<String> getEnabledSslProtocols() {
       try {
-         return Arrays.asList(SSLContext.getDefault().createSSLEngine().getEnabledProtocols());
+         String[] protocols = SSLContext.getDefault().createSSLEngine().getEnabledProtocols();
+         if (null == protocols)
+            return Collections.emptyList();
+         return Arrays.asList(protocols);
       } catch (Exception e) {
          log.warn(ExceptionUtils.getRootCauseMessage(e)); 
          return Collections.emptyList();

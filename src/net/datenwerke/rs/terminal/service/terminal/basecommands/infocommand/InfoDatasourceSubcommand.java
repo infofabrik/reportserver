@@ -12,6 +12,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import org.apache.commons.lang3.exception.ExceptionUtils;
+
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -97,7 +99,7 @@ public static final String BASE_COMMAND = "datasource";
                   true);
          return generateCommandResult(Optional.ofNullable(metadata), datasource, generalInformation);
       } catch (Exception e) {
-         throw new TerminalException(e);
+         throw new TerminalException(ExceptionUtils.getRootCauseMessage(e));
       }
    }
 
