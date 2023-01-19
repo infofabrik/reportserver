@@ -1,6 +1,7 @@
 package net.datenwerke.rs.base.client.reportengines.table.helpers;
 
-import java.util.ArrayList;
+import static java.util.stream.Collectors.toList;
+
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -229,11 +230,12 @@ public class ColumnSelector extends SelectionPopup<ColumnDto> {
    }
 
    @Override
-   protected List<? extends ColumnDto> convertModelsForSelection(List<ColumnDto> selection) {
-      List<ColumnDto> clones = new ArrayList<ColumnDto>();
-      for (ColumnDto col : selection)
-         clones.add(((ColumnDtoDec) col).cloneColumnForSelection());
-      return clones;
+   protected List<? extends ColumnDto> convertModelsForSelection(final List<ColumnDto> selection) {
+      return selection
+         .stream()
+         .map(col -> (ColumnDtoDec) col)
+         .map(ColumnDtoDec::cloneColumnForSelection)
+         .collect(toList());
    }
 
    @Override

@@ -179,14 +179,14 @@ public class TableReportEngine extends ReportEngine<TableDataSource, TableOutput
       TableDataSource ds = transformDatasource(TableDataSource.class, report, parameters);
 
       try {
+         Long id = null == orgReport.getId() ? orgReport.getOldTransientId() : orgReport.getId();
          if (null == ds)
-            throw new IllegalArgumentException("Could not find datasource for report");
+            throw new IllegalArgumentException("Could not find datasource for report with ID: '" + id + "'");
          configureDataSource(ds, (TableReport) report, parameters, configs, user);
 
          /* add comment */
          ds.addQueryComment("user: " + String.valueOf(user.getId()));
-         ds.addQueryComment("report: "
-               + String.valueOf(null == orgReport.getId() ? orgReport.getOldTransientId() : orgReport.getId()));
+         ds.addQueryComment("report: " + String.valueOf(id));
 
          /* get output format generator */
          TableOutputGenerator outputGenerator = outputGeneratorManager.getOutputGenerator(outputFormat);
