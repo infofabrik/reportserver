@@ -67,5 +67,41 @@ public interface DatasourcesMessages extends Messages {
    
    String commandDatasourceMetadata_methodArg();
    
+   String databaseName();
    
+   String databaseVersion();
+   
+   String jdbcDriverName();
+   
+   String jdbcDriverVersion();
+   
+   String jdbcMajorVersion();
+   
+   String jdbcMinorVersion();
+   
+   String jdbcUrl();
+   
+   String jdbcUsername();
+   
+   String numericFunctions();
+   
+   String stringFunctions();
+   
+   String timeAndDateFunctions();
+   
+   String systemFunctions();
+   
+   String name();
+   
+   String description();
+   
+   String id();
+   
+   String createdOn();
+   
+   String changedOn();
+   
+   String path();
+
+   String jdbcProperties();
 }
