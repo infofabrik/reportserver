@@ -53,8 +53,8 @@ public interface DatasourceHelperService {
 
    /**
     * Fetches general metadata information about a given datasource. Information
-    * about which data is acquired getDatasourceInfoDefinition() provides a config
-    * map
+    * about which data is acquired with {@link #getDatasourceInfoDefinition()},
+    * which provides a config map
     * 
     * @param datasource            the datasource
     * @param datasourceInfo        if true, fetches general information
@@ -74,10 +74,10 @@ public interface DatasourceHelperService {
     * 
     * @return the config map
     */
-   Map<DatasourceInfoType, Object> getDatasourceInfoDefinition();
+   Map<DatasourceInfoType, Map<String, String>> getDatasourceInfoDefinition();
 
    String getQuery(DatasourceContainer datasourceContainer);
-   
+
    Map<String, Object> getGeneralInformation(DatasourceDefinition datasource);
 
 }

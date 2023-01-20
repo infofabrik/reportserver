@@ -7,6 +7,18 @@ import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
 
 public interface GeneralInfoService {
+   
+   String getRequestURL();
+   
+   String getServerName();
+   
+   int getServerPort();
+   
+   String getScheme();
+   
+   String getContextPath();
+   
+   String getProtocol();
 
    String getJavaVersion();
 

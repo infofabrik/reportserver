@@ -15,6 +15,7 @@ import net.datenwerke.rs.base.client.datasources.DatasourceInfoType;
 import net.datenwerke.rs.base.client.datasources.dto.DatabaseDatasourceDto;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
+import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.DatasourceDefinitionDto;
 import net.datenwerke.rs.core.client.datasourcemanager.rpc.DatasourceRpcService;
 import net.datenwerke.rs.core.client.datasourcemanager.rpc.DatasourceTreeLoader;
@@ -23,6 +24,7 @@ import net.datenwerke.rs.core.service.datasourcemanager.DatasourceService;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
+import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.server.TreeDBManagerTreeHandler;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
@@ -44,8 +46,13 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    private final DatasourceHelperService datasourceHelperService;
 
    @Inject
-   public DatasourceManagerTreeHandlerRpcServiceImpl(DatasourceService datasourceService, DtoService dtoGenerator,
-         SecurityService securityService, EntityClonerService entityClonerService, DatasourceHelperService datasourceHelperService) {
+   public DatasourceManagerTreeHandlerRpcServiceImpl(
+         DatasourceService datasourceService, 
+         DtoService dtoGenerator,
+         SecurityService securityService, 
+         EntityClonerService entityClonerService,
+         DatasourceHelperService datasourceHelperService
+         ) {
 
       super(datasourceService, dtoGenerator, securityService, entityClonerService);
 
@@ -83,42 +90,52 @@ public class DatasourceManagerTreeHandlerRpcServiceImpl extends TreeDBManagerTre
    }
 
    @Override
-   public Map<DatasourceInfoType, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto) throws ServerCallFailedException {
-      DatabaseDatasource src = (DatabaseDatasource) dtoService.loadPoso(datasourceDto);
+   public Map<DatasourceInfoType, SafeHtml> getDatasourceInfoDetailsAsHtml(DatabaseDatasourceDto datasourceDto)
+         throws ServerCallFailedException {
+      DatabaseDatasource datasource = (DatabaseDatasource) dtoService.loadPoso(datasourceDto);
       Map<String, Object> datasourceInfo;
       try {
-         datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(src, true, true, true, true);
+         datasourceInfo = datasourceHelperService.fetchInfoDatasourceMetadata(datasource, true, true, true, true);
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not retrieve datasource metadata", e);
       }
       Map<DatasourceInfoType, SafeHtml> result = new HashMap<>();
-      datasourceHelperService.getDatasourceInfoDefinition()
-         .forEach((key, mapSpecificInfoDef) -> {
-            Map<String, String> specificInfoDef = (Map<String, String>) mapSpecificInfoDef;
-            result.put(key, buildTableInfo(datasourceInfo, specificInfoDef));
-         });
-   return result;
+      datasourceHelperService.getDatasourceInfoDefinition().forEach((key, mapSpecificInfoDef) -> {
+         Map<String, String> specificInfoDef = (Map<String, String>) mapSpecificInfoDef;
+         result.put(key, buildTableInfo(datasource, key, datasourceInfo, specificInfoDef));
+      });
+      return result;
    }
-   
-   private SafeHtml buildTableInfo(Map<String, Object> datasourceInfo, Map<String, String> info) {
+
+   private SafeHtml buildTableInfo(DatabaseDatasource datasource, DatasourceInfoType type, Map<String, Object> datasourceInfo,
+         Map<String, String> info) {
       String tdOpenTag = "<td class=\"rs-text-wrapping\">";
 
       SafeHtmlBuilder builder = new SafeHtmlBuilder();
-      builder = builder
-            .appendHtmlConstant("<table style=\"width:90%; table-layout:fixed\">");
+      builder = builder.appendHtmlConstant("<table style=\"width:90%; table-layout:fixed\">");
 
-      for(String key : info.keySet()) {
-         
+      for (String key : info.keySet()) {
          Object res = datasourceInfo.get(info.get(key));
-         String result = null == res? "null": res.toString();
+         String result = null == res ? "null" : res.toString();
          builder = builder
                .appendHtmlConstant("<tr>")
                .appendHtmlConstant(tdOpenTag).appendEscaped(key + ":").appendHtmlConstant("</td>")
                .appendHtmlConstant(tdOpenTag).appendEscaped(result).appendHtmlConstant("</td>")
-               .appendHtmlConstant("</tr>");       
+               .appendHtmlConstant("</tr>");  
+      }
+      if (type == DatasourceInfoType.DATABASE) {
+         String jdbcProperties = (null != datasource.parseJdbcProperties()
+               ? PropertiesUtilService.convert(datasource.parseJdbcProperties()).toString()
+               : "");
+         builder = builder
+               .appendHtmlConstant("<tr>")
+               .appendHtmlConstant(tdOpenTag)
+               .appendEscaped(DatasourcesMessages.INSTANCE.jdbcProperties() + ":").appendHtmlConstant("</td>")
+               .appendHtmlConstant(tdOpenTag).appendEscaped(jdbcProperties).appendHtmlConstant("</td>")
+               .appendHtmlConstant("</tr>");  
       }
       builder = builder.appendHtmlConstant("</table>");
-   return builder.toSafeHtml();
+      return builder.toSafeHtml();
    }
 
 }

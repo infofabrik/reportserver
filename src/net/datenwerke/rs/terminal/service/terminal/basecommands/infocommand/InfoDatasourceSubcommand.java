@@ -33,6 +33,7 @@ import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.Cli
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
 import net.datenwerke.rs.terminal.service.terminal.locale.TerminalMessages;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
+import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.service.security.rights.Read;
 
 public class InfoDatasourceSubcommand implements InfoSubcommandHook{
@@ -53,12 +54,12 @@ public static final String BASE_COMMAND = "datasource";
          ) {
       this.datasourceHelperServiceProvider = datasourceServiceProvider;
       this.terminalServiceProvider = terminalServiceProvider;
-      final Map<DatasourceInfoType, Object> datasourceInfoDefinition = datasourceServiceProvider.get()
+      final Map<DatasourceInfoType, Map<String, String>> datasourceInfoDefinition = datasourceServiceProvider.get()
             .getDatasourceInfoDefinition();
-      databaseInfo = (Map<String, String>) datasourceInfoDefinition.get(DATABASE);
-      jdbcUrlInfo = (Map<String, String>) datasourceInfoDefinition.get(JDBC_URL);
-      functionsSection = (Map<String, String>) datasourceInfoDefinition.get(DATABASE_FUNCTIONS);
-      supportsSection = (Map<String, String>) datasourceInfoDefinition.get(DATABASE_SUPPORTS);
+      databaseInfo = datasourceInfoDefinition.get(DATABASE);
+      jdbcUrlInfo = datasourceInfoDefinition.get(JDBC_URL);
+      functionsSection = datasourceInfoDefinition.get(DATABASE_FUNCTIONS);
+      supportsSection = datasourceInfoDefinition.get(DATABASE_SUPPORTS);
    }
 
    @Override
@@ -109,8 +110,16 @@ public static final String BASE_COMMAND = "datasource";
       List<RSTableModel> resultTables = new ArrayList<>();
       resultTables.add(generateGeneralInformationModel("General information", generalInformation));
       if (metadata.isPresent()) {
-         resultTables.add(generateTableModel(databaseInfo, "Database information", metadata.get(),
-               Optional.of(Arrays.asList(150, 0))));
+         RSTableModel databaseInfoModel = generateTableModel(databaseInfo, "Database information", metadata.get(),
+               Optional.of(Arrays.asList(150, 0)));
+         if (datasource instanceof DatabaseDatasource) {
+            DatabaseDatasource dbDatasource = ((DatabaseDatasource) datasource);
+             String jdbcProperties = (null != dbDatasource.parseJdbcProperties()
+                  ? PropertiesUtilService.convert(dbDatasource.parseJdbcProperties()).toString()
+                  : null);
+            databaseInfoModel.addDataRow(new RSStringTableRow("JDBC properties", jdbcProperties));
+         }
+         resultTables.add(databaseInfoModel);
          resultTables.add(generateTableModel(jdbcUrlInfo, "JDBC URL information", metadata.get(),
                Optional.of(Arrays.asList(150, 0))));
          resultTables.add(generateTableModel(functionsSection, "Database functions section", metadata.get(),

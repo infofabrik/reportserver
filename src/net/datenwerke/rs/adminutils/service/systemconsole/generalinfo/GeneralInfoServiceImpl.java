@@ -114,8 +114,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getUserAgent() {
-      HttpServletRequest request = servletRequestProvider.get();
-      return request.getHeader("User-Agent");
+      return servletRequestProvider.get().getHeader("User-Agent");
    }
 
    @Override
@@ -131,6 +130,12 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setJavaVersion(getJavaVersion());
       info.setVmArguments(getVmArguments());
       info.setApplicationServer(getApplicationServer());
+      info.setRequestURL(getRequestURL());
+      info.setServerName(getServerName());
+      info.setServerPort(getServerPort());
+      info.setScheme(getScheme());
+      info.setContextPath(getContextPath());
+      info.setProtocol(getProtocol());
       info.setMaxMemory(getMemoryValues().get(MAX_FORMATTED)+ "");
       info.setOsVersion(getOsVersion());
       info.setUserAgent(getUserAgent());
@@ -311,6 +316,36 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
                : "INACCESSIBLE)");
       }
       return sb.toString();
+   }
+
+   @Override
+   public String getServerName() {
+      return servletRequestProvider.get().getServerName();
+   }
+
+   @Override
+   public int getServerPort() {
+      return servletRequestProvider.get().getServerPort();
+   }
+
+   @Override
+   public String getRequestURL() {
+      return servletRequestProvider.get().getRequestURL().toString();
+   }
+
+   @Override
+   public String getScheme() {
+      return servletRequestProvider.get().getScheme();
+   }
+
+   @Override
+   public String getContextPath() {
+      return servletRequestProvider.get().getContextPath();
+   }
+
+   @Override
+   public String getProtocol() {
+      return servletRequestProvider.get().getProtocol();
    }
 
 }

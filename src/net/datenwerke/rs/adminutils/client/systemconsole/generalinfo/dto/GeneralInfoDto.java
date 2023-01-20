@@ -15,6 +15,12 @@ public class GeneralInfoDto implements Serializable {
    private String javaVersion;
    private String vmArguments;
    private String applicationServer;
+   private String requestURL;
+   private String serverName;
+   private int serverPort;
+   private String scheme;
+   private String contextPath;
+   private String protocol;
    private String maxMemory;
    private String groovyVersion;
    private String osVersion;
@@ -135,7 +141,55 @@ public class GeneralInfoDto implements Serializable {
    public void setApplicationServer(String applicationServer) {
       this.applicationServer = applicationServer;
    }
+   
+   public String getServerName() {
+      return serverName;
+   }
 
+   public void setServerName(String serverName) {
+      this.serverName = serverName;
+   }
+
+   public int getServerPort() {
+      return serverPort;
+   }
+
+   public void setServerPort(int serverPort) {
+      this.serverPort = serverPort;
+   }
+
+   public String getRequestURL() {
+      return requestURL;
+   }
+
+   public void setRequestURL(String requestURL) {
+      this.requestURL = requestURL;
+   }
+
+   public String getScheme() {
+      return scheme;
+   }
+
+   public void setScheme(String scheme) {
+      this.scheme = scheme;
+   }
+
+   public String getContextPath() {
+      return contextPath;
+   }
+
+   public void setContextPath(String contextPath) {
+      this.contextPath = contextPath;
+   }
+   
+   public String getProtocol() {
+      return protocol;
+   }
+
+   public void setProtocol(String protocol) {
+      this.protocol = protocol;
+   }
+   
    public String getMaxMemory() {
       return maxMemory;
    }

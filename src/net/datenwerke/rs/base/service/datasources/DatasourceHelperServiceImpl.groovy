@@ -9,12 +9,14 @@ import java.sql.DatabaseMetaData
 
 import javax.inject.Inject
 import javax.inject.Provider
+
 import groovy.sql.Sql
 import net.datenwerke.dbpool.DbPoolService
 import net.datenwerke.gf.service.history.HistoryService
 import net.datenwerke.rs.base.client.datasources.DatasourceInfoType
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig
+import net.datenwerke.rs.base.service.datasources.locale.DatasourcesMessages
 import net.datenwerke.rs.base.service.dbhelper.DBHelperService
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceDefinition
@@ -226,7 +228,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    @Override
-   public Map<DatasourceInfoType, Object> getDatasourceInfoDefinition(){
+   public Map<DatasourceInfoType, Map<String, String>> getDatasourceInfoDefinition(){
       [
          (DATABASE)                 :   getDatabaseInfoDefinition(),
          (JDBC_URL)                 :   getJDBCUrlInfoDefinition(),
@@ -244,30 +246,36 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
    }
    
    public Map<String, String> getDatabaseInfoDefinition() {
-      [
-         'Database name'            : 'getDatabaseProductName',
-         'Database version'         : 'getDatabaseProductVersion',
-         'JDBC driver name'         : 'getDriverName',
-         'JDBC driver version'      : 'getDriverVersion',
-         'JDBC major version'       : 'getJDBCMajorVersion',
-         'JDBC minor version'       : 'getJDBCMinorVersion'
+      def map = new LinkedHashMap()
+      map = [
+         (DatasourcesMessages.INSTANCE.databaseName())           : 'getDatabaseProductName',
+         (DatasourcesMessages.INSTANCE.databaseVersion())        : 'getDatabaseProductVersion',
+         (DatasourcesMessages.INSTANCE.jdbcDriverName())         : 'getDriverName',
+         (DatasourcesMessages.INSTANCE.jdbcDriverVersion())      : 'getDriverVersion',
+         (DatasourcesMessages.INSTANCE.jdbcMajorVersion())       : 'getJDBCMajorVersion',
+         (DatasourcesMessages.INSTANCE.jdbcMinorVersion())       : 'getJDBCMinorVersion'
       ]
+      map
    }
    
    public Map<String, String> getJDBCUrlInfoDefinition() {
-      [
-         'JDBC URL'         : 'getURL',
-         'JDBC username'    : 'getUserName'
+      def map = new LinkedHashMap()
+      map = [
+         (DatasourcesMessages.INSTANCE.jdbcUrl())           : 'getURL',
+         (DatasourcesMessages.INSTANCE.jdbcUsername())      : 'getUserName'
       ]
+      map
    }
    
    public Map<String, String> getDatabaseFunctionsInfoDefinition() {
-      [
-         'Numeric functions'       : 'getNumericFunctions',
-         'String functions'        : 'getStringFunctions',
-         'Time and date functions' : 'getTimeDateFunctions',
-         'System functions'        : 'getSystemFunctions'
+      def map = new LinkedHashMap()
+      map = [
+         (DatasourcesMessages.INSTANCE.numericFunctions())          : 'getNumericFunctions',
+         (DatasourcesMessages.INSTANCE.stringFunctions())           : 'getStringFunctions',
+         (DatasourcesMessages.INSTANCE.timeAndDateFunctions())      : 'getTimeDateFunctions',
+         (DatasourcesMessages.INSTANCE.systemFunctions())           : 'getSystemFunctions'
       ]
+      map
    }
    
    public Map<String, String> getDatabaseSupportsInfoDefinition() {
@@ -280,14 +288,16 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
    @Override
    public Map<String, Object> getGeneralInformation(DatasourceDefinition datasource) {
-      def generalInformation = new LinkedHashMap()
-      generalInformation['Name'] = datasource.name
-      generalInformation['Description'] = datasource.description
-      generalInformation['ID'] = datasource.id
-      generalInformation['Created on'] = datasource.createdOn
-      generalInformation['Changed on'] = datasource.lastUpdated
-      generalInformation['Path'] = historyServiceProvider.get().getFormattedObjectPaths(datasource)
-      return generalInformation
+      def map = new LinkedHashMap()
+      map = [
+         (DatasourcesMessages.INSTANCE.name()):             datasource.name,
+         (DatasourcesMessages.INSTANCE.description()):      datasource.description,
+         (DatasourcesMessages.INSTANCE.id()):               datasource.id,
+         (DatasourcesMessages.INSTANCE.createdOn()):        datasource.createdOn,
+         (DatasourcesMessages.INSTANCE.changedOn()):        datasource.lastUpdated,
+         (DatasourcesMessages.INSTANCE.path()):             historyServiceProvider.get().getFormattedObjectPaths(datasource)
+      ]
+      map
    }
    
 }
