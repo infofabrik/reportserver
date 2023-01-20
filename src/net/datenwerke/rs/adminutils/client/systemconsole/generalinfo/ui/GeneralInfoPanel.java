@@ -40,11 +40,13 @@ public class GeneralInfoPanel extends DwContentPanel {
    private VerticalLayoutContainer wrapper;
    
    private enum Type {
-      RS_VERSION, JAVA_VERSION, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT,
-      REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL, MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, OS_SYSTEM, USER_AGENT,
-      STATIC_PAMS, HIBERNATE_DIALECT, HIBERNATE_DRIVER_CLASS, HIBERNATE_URL, HIBERNATE_USERNAME, HIBERNATE_SCHEMA,
-      SCHEMA_VERSION, INTERNAL_DB_NAME, INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME,
-      INTERNAL_DB_DATABASE_VERSION, INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
+      RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE,
+      REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
+      MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
+      JVM_USER_TIMEZONE, JVM_FILE_ENCODING, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
+      HIBERNATE_DRIVER_CLASS, HIBERNATE_URL, HIBERNATE_USERNAME, HIBERNATE_SCHEMA, SCHEMA_VERSION, INTERNAL_DB_NAME,
+      INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME, INTERNAL_DB_DATABASE_VERSION,
+      INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
       INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
       SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS
    }
@@ -102,10 +104,16 @@ public class GeneralInfoPanel extends DwContentPanel {
             SystemConsoleMessages.INSTANCE.versionLabel(), Optional.of(result.getRsVersion())));
       generalInfo.put(Type.JAVA_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.javaVersionLabel(), Optional.of(result.getJavaVersion())));
+      generalInfo.put(Type.JAVA_HOME, new SimpleImmutableEntry<String, Optional<Object>>(
+            "Java home", Optional.of(result.getJavaHome())));
       generalInfo.put(Type.JAVA_VM_ARGUMENTS,
             new SimpleImmutableEntry<String, Optional<Object>>("JVM Args", Optional.of(result.getVmArguments())));
       generalInfo.put(Type.APPLICATION_SERVER, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.applicationServerLabel(), Optional.of(result.getApplicationServer())));
+      generalInfo.put(Type.CATALINA_HOME, new SimpleImmutableEntry<String, Optional<Object>>(
+            "Catalina home", Optional.of(result.getCatalinaHome())));
+      generalInfo.put(Type.CATALINA_BASE, new SimpleImmutableEntry<String, Optional<Object>>(
+            "Catalina base", Optional.of(result.getCatalinaBase())));
       generalInfo.put(Type.MAX_MEMORY, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.maxMemoryLabel(), Optional.of(result.getMaxMemory())));
       generalInfo.put(Type.CONFIG_DIR, new SimpleImmutableEntry<String, Optional<Object>>(
@@ -115,7 +123,15 @@ public class GeneralInfoPanel extends DwContentPanel {
       generalInfo.put(Type.LOCALE,
             new SimpleImmutableEntry<String, Optional<Object>>("Locale", Optional.of(result.getLocale())));
       generalInfo.put(Type.JVM_LOCALE,
-            new SimpleImmutableEntry<String, Optional<Object>>("JVM Locale", Optional.of(result.getJvmLocale())));
+            new SimpleImmutableEntry<String, Optional<Object>>("JVM locale", Optional.of(result.getJvmLocale())));
+      generalInfo.put(Type.JVM_USER_LANGUAGE, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jvmUserLanguage(), Optional.of(result.getJvmUserLanguage())));
+      generalInfo.put(Type.JVM_USER_COUNTRY, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jvmUserCountry(), Optional.of(result.getJvmUserCountry())));
+      generalInfo.put(Type.JVM_USER_TIMEZONE, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jvmUserTimezone(), Optional.of(result.getJvmUserTimezone())));
+      generalInfo.put(Type.JVM_FILE_ENCODING, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jvmFileEncoding(), Optional.of(result.getJvmFileEncoding())));
       generalInfo.put(Type.OS_SYSTEM, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.operationSystemLabel(), Optional.of(result.getOsVersion())));
       generalInfo.put(Type.USER_AGENT, new SimpleImmutableEntry<String, Optional<Object>>(

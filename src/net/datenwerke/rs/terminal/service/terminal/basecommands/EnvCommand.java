@@ -68,7 +68,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Configuration directory", generalInfo.getConfigDir()));
       table.addDataRow(new RSStringTableRow("Groovy version", generalInfo.getGroovyVersion()));
       table.addDataRow(new RSStringTableRow("Locale", generalInfo.getLocale()));
-      table.addDataRow(new RSStringTableRow("JVM Locale", generalInfo.getJvmLocale()));
+      table.addDataRow(new RSStringTableRow("JVM locale", generalInfo.getJvmLocale()));
       table.addDataRow(new RSStringTableRow("JVM user language", generalInfo.getJvmUserLanguage()));
       table.addDataRow(new RSStringTableRow("JVM user country", generalInfo.getJvmUserCountry()));
       table.addDataRow(new RSStringTableRow("JVM user timezone", generalInfo.getJvmUserTimezone()));

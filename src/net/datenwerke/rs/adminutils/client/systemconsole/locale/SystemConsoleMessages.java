@@ -113,4 +113,12 @@ public interface SystemConsoleMessages extends Messages {
    
    public String protocol();
 
+   public String jvmUserLanguage();
+   
+   public String jvmUserCountry();
+   
+   public String jvmUserTimezone();
+   
+   public String jvmFileEncoding();
+
 }
