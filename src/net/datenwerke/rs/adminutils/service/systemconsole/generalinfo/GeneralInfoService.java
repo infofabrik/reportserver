@@ -51,4 +51,18 @@ public interface GeneralInfoService {
    Map<Memory, Object> getMemoryValues();
    
    String getConfigDir();
+   
+   String getCatalinaHome();
+   
+   String getCatalinaBase();
+   
+   String getJvmUserTimezone();
+   
+   String getJvmUserCountry();
+   
+   String getJvmUserLanguage();
+   
+   String getJavaHome();
+   
+   String getJvmFileEncoding();
 }

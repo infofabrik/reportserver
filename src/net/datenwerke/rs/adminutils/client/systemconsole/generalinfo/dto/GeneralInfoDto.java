@@ -13,8 +13,11 @@ public class GeneralInfoDto implements Serializable {
 
    private String rsVersion;
    private String javaVersion;
+   private String javaHome;
    private String vmArguments;
    private String applicationServer;
+   private String catalinaHome;
+   private String catalinaBase;
    private String requestURL;
    private String serverName;
    private int serverPort;
@@ -28,6 +31,10 @@ public class GeneralInfoDto implements Serializable {
 
    private String locale;
    private String jvmLocale;
+   private String jvmUserLanguage;
+   private String jvmUserCountry;
+   private String jvmUserTimezone;
+   private String jvmFileEncoding;
 
    private String hibernateDialect;
    private String hibernateDriverClass;
@@ -60,6 +67,62 @@ public class GeneralInfoDto implements Serializable {
    private List<String> staticPams;
 
    public GeneralInfoDto() {
+   }
+   
+   public String getJavaHome() {
+      return javaHome;
+   }
+
+   public void setJavaHome(String javaHome) {
+      this.javaHome = javaHome;
+   }
+
+   public String getCatalinaHome() {
+      return catalinaHome;
+   }
+
+   public void setCatalinaHome(String catalinaHome) {
+      this.catalinaHome = catalinaHome;
+   }
+
+   public String getCatalinaBase() {
+      return catalinaBase;
+   }
+
+   public void setCatalinaBase(String catalinaBase) {
+      this.catalinaBase = catalinaBase;
+   }
+
+   public String getJvmUserLanguage() {
+      return jvmUserLanguage;
+   }
+
+   public void setJvmUserLanguage(String jvmUserLanguage) {
+      this.jvmUserLanguage = jvmUserLanguage;
+   }
+
+   public String getJvmUserCountry() {
+      return jvmUserCountry;
+   }
+
+   public void setJvmUserCountry(String jvmUserCountry) {
+      this.jvmUserCountry = jvmUserCountry;
+   }
+
+   public String getJvmUserTimezone() {
+      return jvmUserTimezone;
+   }
+
+   public void setJvmUserTimezone(String jvmUserTimezone) {
+      this.jvmUserTimezone = jvmUserTimezone;
+   }
+
+   public String getJvmFileEncoding() {
+      return jvmFileEncoding;
+   }
+
+   public void setJvmFileEncoding(String jvmFileEncoding) {
+      this.jvmFileEncoding = jvmFileEncoding;
    }
 
    public boolean isInternalDbConfigured() {

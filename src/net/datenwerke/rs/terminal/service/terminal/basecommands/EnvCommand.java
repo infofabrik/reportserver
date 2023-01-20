@@ -59,13 +59,20 @@ public class EnvCommand implements TerminalCommandHook {
 
       table.addDataRow(new RSStringTableRow("Version", generalInfo.getRsVersion()));
       table.addDataRow(new RSStringTableRow("Java version", generalInfo.getJavaVersion()));
+      table.addDataRow(new RSStringTableRow("Java home", generalInfo.getJavaHome()));
       table.addDataRow(new RSStringTableRow("JVM Args", generalInfo.getVmArguments()));
       table.addDataRow(new RSStringTableRow("Application server", generalInfo.getApplicationServer()));
+      table.addDataRow(new RSStringTableRow("Catalina home", generalInfo.getCatalinaHome()));
+      table.addDataRow(new RSStringTableRow("Catalina base", generalInfo.getCatalinaBase()));
       table.addDataRow(new RSStringTableRow("Max memory", generalInfo.getMaxMemory()));
       table.addDataRow(new RSStringTableRow("Configuration directory", generalInfo.getConfigDir()));
       table.addDataRow(new RSStringTableRow("Groovy version", generalInfo.getGroovyVersion()));
       table.addDataRow(new RSStringTableRow("Locale", generalInfo.getLocale()));
       table.addDataRow(new RSStringTableRow("JVM Locale", generalInfo.getJvmLocale()));
+      table.addDataRow(new RSStringTableRow("JVM user language", generalInfo.getJvmUserLanguage()));
+      table.addDataRow(new RSStringTableRow("JVM user country", generalInfo.getJvmUserCountry()));
+      table.addDataRow(new RSStringTableRow("JVM user timezone", generalInfo.getJvmUserTimezone()));
+      table.addDataRow(new RSStringTableRow("JVM file encoding", generalInfo.getJvmFileEncoding()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfo.getOsVersion()));
       table.addDataRow(new RSStringTableRow("User agent", generalInfo.getUserAgent()));
       table.addDataRow(new RSStringTableRow("Request URL", generalInfo.getRequestURL()));

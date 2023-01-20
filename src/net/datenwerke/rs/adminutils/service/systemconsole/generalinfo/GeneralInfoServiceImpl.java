@@ -94,13 +94,23 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getJavaVersion() {
-      return runtimeMxBean.getVmVendor() + " " + runtimeMxBean.getVmName() + " " + runtimeMxBean.getVmVersion() + " ("
-            + runtimeMxBean.getSpecVersion() + ")";
+      try {
+         return runtimeMxBean.getVmVendor() + " " + runtimeMxBean.getVmName() + " " + runtimeMxBean.getVmVersion() + " ("
+               + runtimeMxBean.getSpecVersion() + ")";
+      } catch (SecurityException e) {
+         log.warn("Cannot read java version", e);
+         return ExceptionUtils.getRootCauseMessage(e);
+      }
    }
 
    @Override
    public String getVmArguments() {
-      return String.join(" ", runtimeMxBean.getInputArguments());
+      try {
+         return String.join(" ", runtimeMxBean.getInputArguments());
+      } catch (SecurityException e) {
+         log.warn("Cannot read VM arguments", e);
+         return ExceptionUtils.getRootCauseMessage(e);
+      }
    }
 
    @Override
@@ -110,7 +120,22 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getOsVersion() {
-      return System.getProperty("os.name");
+      try {
+         String osVersion = runtimeMxBean.getSystemProperties().get("os.version");
+         String osArchitecture = runtimeMxBean.getSystemProperties().get("os.arch");
+         final StringBuilder sb = new StringBuilder();
+         sb.append(runtimeMxBean.getSystemProperties().get("os.name"));
+         if (null != osVersion) {
+            sb.append(" ").append(osVersion);
+         }
+         if (null != osArchitecture) {
+            sb.append(" (" + osArchitecture).append(")");
+         }
+         return sb.toString();
+      } catch (SecurityException e) {
+         log.warn("Cannot read OS version", e);
+         return ExceptionUtils.getRootCauseMessage(e);
+      }
    }
 
    @Override
@@ -146,6 +171,13 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setProtocol(getProtocol());
       info.setMaxMemory(getMemoryValues().get(MAX_FORMATTED)+ "");
       info.setOsVersion(getOsVersion());
+      info.setCatalinaHome(getCatalinaHome());
+      info.setCatalinaBase(getCatalinaBase());
+      info.setJvmUserTimezone(getJvmUserTimezone());
+      info.setJvmUserCountry(getJvmUserCountry());
+      info.setJvmUserLanguage(getJvmUserLanguage());
+      info.setJavaHome(getJavaHome());
+      info.setJvmFileEncoding(getJvmFileEncoding());
       info.setUserAgent(getUserAgent());
       info.setGroovyVersion(getGroovyVersion());
       info.setLocale(getLocale());
@@ -165,7 +197,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
    
    private void setInternalDb(GeneralInfoDto info) {
-      String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
+      final String errorMsg = "No internal database found. Check your /fileserver/etc/datasources/internaldb.cf configuration file.";
       DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
       
       DatabaseDatasource internalDbDatasource = tempTableServiceProvider.get().getInternalDbDatasource();
@@ -196,7 +228,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
                   ? PropertiesUtilService.convert(internalDbDatasource.parseJdbcProperties())
                   : null);
          } catch (Exception e) {
-            info.setInternalDbJdbcProperties(new HashMap<String,String>() {{
+            info.setInternalDbJdbcProperties(new HashMap<String,String>() {
+               private static final long serialVersionUID = 1L;
+            {
                put("error", ExceptionUtils.getRootCauseMessage(e));
             }});
          }
@@ -240,8 +274,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
             return Collections.emptyList();
          return Arrays.asList(protocols);
       } catch (Exception e) {
-         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
-         return Collections.emptyList();
+         log.warn("cannot read supported SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
       }
    }
 
@@ -253,8 +287,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
             return Collections.emptyList();
          return Arrays.asList(protocols);
       } catch (Exception e) {
-         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
-         return Collections.emptyList();
+         log.warn("cannot read default SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
       }
    }
 
@@ -266,8 +300,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
             return Collections.emptyList();
          return Arrays.asList(protocols);
       } catch (Exception e) {
-         log.warn(ExceptionUtils.getRootCauseMessage(e)); 
-         return Collections.emptyList();
+         log.warn("cannot read enabled SSL protocols", e); 
+         return Arrays.asList("Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")");
       }
    }
    
@@ -396,6 +430,50 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          // guice OutOfScopeException in scheduler
          return null;
       } 
+   }
+
+   @Override
+   public String getCatalinaHome() {
+      return readSystemProperty("catalina.home");
+   }
+
+   @Override
+   public String getCatalinaBase() {
+      return readSystemProperty("catalina.base");
+   }
+
+   @Override
+   public String getJvmUserTimezone() {
+      return readSystemProperty("user.timezone");
+   }
+
+   @Override
+   public String getJvmUserCountry() {
+      return readSystemProperty("user.country");
+   }
+
+   @Override
+   public String getJvmUserLanguage() {
+      return readSystemProperty("user.language");
+   }
+
+   @Override
+   public String getJavaHome() {
+      return readSystemProperty("java.home");
+   }
+
+   @Override
+   public String getJvmFileEncoding() {
+      return readSystemProperty("file.encoding");
+   }
+   
+   private String readSystemProperty(String property) {
+      try {
+         return runtimeMxBean.getSystemProperties().get(property);
+      } catch (SecurityException e) {
+         log.warn("Cannot read " + property, e);
+         return "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")";
+      }
    }
 
 }
