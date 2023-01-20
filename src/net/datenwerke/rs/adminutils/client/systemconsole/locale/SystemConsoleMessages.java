@@ -100,5 +100,17 @@ public interface SystemConsoleMessages extends Messages {
    public String schemaVersion();
 
    public String configDirLabel();
+   
+   public String requestUrl();
+   
+   public String scheme();
+   
+   public String serverName();
+   
+   public String serverPort();
+   
+   public String contextPath();
+   
+   public String protocol();
 
 }

@@ -40,12 +40,13 @@ public class GeneralInfoPanel extends DwContentPanel {
    private VerticalLayoutContainer wrapper;
    
    private enum Type {
-      RS_VERSION, JAVA_VERSION, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE,
-      JVM_LOCALE, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT, HIBERNATE_DRIVER_CLASS, HIBERNATE_URL,
-      HIBERNATE_USERNAME, HIBERNATE_SCHEMA, SCHEMA_VERSION, INTERNAL_DB_NAME, INTERNAL_DB_ID, INTERNAL_DB_PATH,
-      INTERNAL_DB_DATABASE_NAME, INTERNAL_DB_DATABASE_VERSION, INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION,
-      INTERNAL_DB_JDBC_MAJOR_VERSION, INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME,
-      INTERNAL_DB_JDBC_PROPERTIES, SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS
+      RS_VERSION, JAVA_VERSION, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, REQUEST_URL, SCHEME, SERVER_NAME, SERVER_PORT,
+      CONTEXT_PATH, PROTOCOL, MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, OS_SYSTEM, USER_AGENT,
+      STATIC_PAMS, HIBERNATE_DIALECT, HIBERNATE_DRIVER_CLASS, HIBERNATE_URL, HIBERNATE_USERNAME, HIBERNATE_SCHEMA,
+      SCHEMA_VERSION, INTERNAL_DB_NAME, INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME,
+      INTERNAL_DB_DATABASE_VERSION, INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
+      INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
+      SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS
    }
 
    @Inject
@@ -105,6 +106,18 @@ public class GeneralInfoPanel extends DwContentPanel {
             new SimpleImmutableEntry<String, Optional<Object>>("JVM Args", Optional.of(result.getVmArguments())));
       generalInfo.put(Type.APPLICATION_SERVER, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.applicationServerLabel(), Optional.of(result.getApplicationServer())));
+      generalInfo.put(Type.REQUEST_URL, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.requestUrl(), Optional.of(result.getRequestURL())));
+      generalInfo.put(Type.SCHEME, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.scheme(), Optional.of(result.getScheme())));
+      generalInfo.put(Type.SERVER_NAME, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.serverName(), Optional.of(result.getServerName())));
+      generalInfo.put(Type.SERVER_PORT, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.serverPort(), Optional.of(result.getServerPort())));
+      generalInfo.put(Type.CONTEXT_PATH, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.contextPath(), Optional.of(result.getContextPath())));
+      generalInfo.put(Type.PROTOCOL, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.protocol(), Optional.of(result.getProtocol())));
       generalInfo.put(Type.MAX_MEMORY, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.maxMemoryLabel(), Optional.of(result.getMaxMemory())));
       generalInfo.put(Type.CONFIG_DIR, new SimpleImmutableEntry<String, Optional<Object>>(
