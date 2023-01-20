@@ -61,12 +61,6 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Java version", generalInfo.getJavaVersion()));
       table.addDataRow(new RSStringTableRow("JVM Args", generalInfo.getVmArguments()));
       table.addDataRow(new RSStringTableRow("Application server", generalInfo.getApplicationServer()));
-      table.addDataRow(new RSStringTableRow("Request URL", generalInfo.getRequestURL()));
-      table.addDataRow(new RSStringTableRow("Scheme", generalInfo.getScheme()));
-      table.addDataRow(new RSStringTableRow("Server name", generalInfo.getServerName()));
-      table.addDataRow(new RSStringTableRow("Server port", generalInfo.getServerPort()+""));
-      table.addDataRow(new RSStringTableRow("Context path", generalInfo.getContextPath()));
-      table.addDataRow(new RSStringTableRow("Protocol", generalInfo.getProtocol()));
       table.addDataRow(new RSStringTableRow("Max memory", generalInfo.getMaxMemory()));
       table.addDataRow(new RSStringTableRow("Configuration directory", generalInfo.getConfigDir()));
       table.addDataRow(new RSStringTableRow("Groovy version", generalInfo.getGroovyVersion()));
@@ -74,6 +68,13 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("JVM Locale", generalInfo.getJvmLocale()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfo.getOsVersion()));
       table.addDataRow(new RSStringTableRow("User agent", generalInfo.getUserAgent()));
+      table.addDataRow(new RSStringTableRow("Request URL", generalInfo.getRequestURL()));
+      table.addDataRow(new RSStringTableRow("Request scheme", generalInfo.getScheme()));
+      table.addDataRow(new RSStringTableRow("Request server name", generalInfo.getServerName()));
+      table.addDataRow(new RSStringTableRow("Request server port",
+            generalInfo.getServerPort() != -1 ? generalInfo.getServerPort() + "" : ""));
+      table.addDataRow(new RSStringTableRow("Request context path", generalInfo.getContextPath()));
+      table.addDataRow(new RSStringTableRow("Request protocol", generalInfo.getProtocol()));
 
       result.addResultTable(table);
       try {

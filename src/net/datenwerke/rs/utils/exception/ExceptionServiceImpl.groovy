@@ -10,12 +10,13 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIR
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_CONTEXT_PATH
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_INFORMATION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_JDBC_PROPERTIES
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_PATH
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DEFAULT_SSL_PROTOCOLS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.ENABLED_SSL_PROTOCOLS
@@ -34,6 +35,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEM
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_TOTAL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_USED
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.OS_VERSION
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_PROTOCOL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORTSERVER_VERSION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_KEY
@@ -41,6 +43,10 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REP
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_OUTPUT_FORMAT
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_UUID
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_URL
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SCHEME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_NAME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_PORT
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.STATIC_PAMS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.SUPPORTED_SSL_PROTOCOLS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE
@@ -64,7 +70,6 @@ import net.datenwerke.gf.service.history.HistoryService
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
-import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig
 import net.datenwerke.rs.configservice.service.configservice.ConfigService
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report
 import net.datenwerke.rs.core.service.reportmanager.exceptions.ReportExecutorException
@@ -333,6 +338,24 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case APPLICATION_SERVER:
             propertyValues[property] = generalInfoService.applicationServer
+            break
+         case REQUEST_URL:
+            propertyValues[property] = generalInfoService.requestURL
+            break
+         case REQUEST_SCHEME:
+            propertyValues[property] = generalInfoService.scheme
+            break
+         case REQUEST_SERVER_NAME:
+            propertyValues[property] = generalInfoService.serverName
+            break
+         case REQUEST_SERVER_PORT:
+            propertyValues[property] = generalInfoService.serverPort
+            break
+         case REQUEST_CONTEXT_PATH:
+            propertyValues[property] = generalInfoService.contextPath
+            break
+         case REQUEST_PROTOCOL:
+            propertyValues[property] = generalInfoService.protocol
             break
          case CONFIG_DIR:
             propertyValues[property] = generalInfoService.configDir

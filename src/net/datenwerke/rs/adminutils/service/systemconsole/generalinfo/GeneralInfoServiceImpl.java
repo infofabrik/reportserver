@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 import com.google.inject.Provider;
+import com.google.inject.ProvisionException;
 
 import groovy.lang.GroovySystem;
 import net.datenwerke.gf.service.history.HistoryService;
@@ -114,7 +115,14 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getUserAgent() {
-      return servletRequestProvider.get().getHeader("User-Agent");
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getHeader("User-Agent");
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      } 
    }
 
    @Override
@@ -320,32 +328,74 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getServerName() {
-      return servletRequestProvider.get().getServerName();
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getServerName();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      }
    }
 
    @Override
    public int getServerPort() {
-      return servletRequestProvider.get().getServerPort();
+      try {
+         if (null == servletRequestProvider.get())
+            return -1;
+         return servletRequestProvider.get().getServerPort();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return -1;
+      }
    }
 
    @Override
    public String getRequestURL() {
-      return servletRequestProvider.get().getRequestURL().toString();
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getRequestURL().toString();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      }
    }
 
    @Override
    public String getScheme() {
-      return servletRequestProvider.get().getScheme();
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getScheme();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      }
    }
 
    @Override
    public String getContextPath() {
-      return servletRequestProvider.get().getContextPath();
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getContextPath();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      }
    }
 
    @Override
    public String getProtocol() {
-      return servletRequestProvider.get().getProtocol();
+      try {
+         if (null == servletRequestProvider.get())
+            return null;
+         return servletRequestProvider.get().getProtocol();
+      } catch (ProvisionException e) {
+         // guice OutOfScopeException in scheduler
+         return null;
+      } 
    }
 
 }
