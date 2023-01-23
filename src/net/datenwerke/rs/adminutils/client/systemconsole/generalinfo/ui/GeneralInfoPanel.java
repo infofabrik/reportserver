@@ -40,7 +40,7 @@ public class GeneralInfoPanel extends DwContentPanel {
    private VerticalLayoutContainer wrapper;
    
    private enum Type {
-      RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE, LOGS_DIRECTORY,
+      RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE, LOG_FILES_DIRECTORY,
       REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
       MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
       JVM_USER_TIMEZONE, JVM_FILE_ENCODING, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
@@ -92,7 +92,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       });
    }
 
-   protected void init(final GeneralInfoDto result) {
+   protected void init(final GeneralInfoDto generalInfoDto) {
       final SimpleForm form = SimpleForm.getNewInstance();
       form.setHeading(SystemConsoleMessages.INSTANCE.generalInfo());
       form.setLabelAlign(LabelAlign.LEFT);
@@ -101,56 +101,56 @@ public class GeneralInfoPanel extends DwContentPanel {
 
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> generalInfo = new LinkedHashMap<>();
       generalInfo.put(Type.RS_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.versionLabel(), Optional.of(result.getRsVersion())));
+            SystemConsoleMessages.INSTANCE.versionLabel(), Optional.of(generalInfoDto.getRsVersion())));
       generalInfo.put(Type.JAVA_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.javaVersionLabel(), Optional.of(result.getJavaVersion())));
+            SystemConsoleMessages.INSTANCE.javaVersionLabel(), Optional.of(generalInfoDto.getJavaVersion())));
       generalInfo.put(Type.JAVA_HOME, new SimpleImmutableEntry<String, Optional<Object>>(
-            "Java home", Optional.of(result.getJavaHome())));
+            "Java home", Optional.of(generalInfoDto.getJavaHome())));
       generalInfo.put(Type.JAVA_VM_ARGUMENTS,
-            new SimpleImmutableEntry<String, Optional<Object>>("JVM Args", Optional.of(result.getVmArguments())));
+            new SimpleImmutableEntry<String, Optional<Object>>("JVM Args", Optional.of(generalInfoDto.getVmArguments())));
       generalInfo.put(Type.APPLICATION_SERVER, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.applicationServerLabel(), Optional.of(result.getApplicationServer())));
+            SystemConsoleMessages.INSTANCE.applicationServerLabel(), Optional.of(generalInfoDto.getApplicationServer())));
       generalInfo.put(Type.CATALINA_HOME, new SimpleImmutableEntry<String, Optional<Object>>(
-            "Catalina home", Optional.of(result.getCatalinaHome())));
+            "Catalina home", Optional.of(generalInfoDto.getCatalinaHome())));
       generalInfo.put(Type.CATALINA_BASE, new SimpleImmutableEntry<String, Optional<Object>>(
-            "Catalina base", Optional.of(result.getCatalinaBase())));
-      generalInfo.put(Type.LOGS_DIRECTORY, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.logsDirectory(), Optional.of(result.getLogFilesDirectory())));
+            "Catalina base", Optional.of(generalInfoDto.getCatalinaBase())));
+      generalInfo.put(Type.LOG_FILES_DIRECTORY, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.logsDirectory(), Optional.of(generalInfoDto.getLogFilesDirectory())));
       generalInfo.put(Type.MAX_MEMORY, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.maxMemoryLabel(), Optional.of(result.getMaxMemory())));
+            SystemConsoleMessages.INSTANCE.maxMemoryLabel(), Optional.of(generalInfoDto.getMaxMemory())));
       generalInfo.put(Type.CONFIG_DIR, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.configDirLabel(), Optional.of(result.getConfigDir())));
+            SystemConsoleMessages.INSTANCE.configDirLabel(), Optional.of(generalInfoDto.getConfigDir())));
       generalInfo.put(Type.GROOVY_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.groovyVersionLabel(), Optional.of(result.getGroovyVersion())));
+            SystemConsoleMessages.INSTANCE.groovyVersionLabel(), Optional.of(generalInfoDto.getGroovyVersion())));
       generalInfo.put(Type.LOCALE,
-            new SimpleImmutableEntry<String, Optional<Object>>("Locale", Optional.of(result.getLocale())));
+            new SimpleImmutableEntry<String, Optional<Object>>("Locale", Optional.of(generalInfoDto.getLocale())));
       generalInfo.put(Type.JVM_LOCALE,
-            new SimpleImmutableEntry<String, Optional<Object>>("JVM locale", Optional.of(result.getJvmLocale())));
+            new SimpleImmutableEntry<String, Optional<Object>>("JVM locale", Optional.of(generalInfoDto.getJvmLocale())));
       generalInfo.put(Type.JVM_USER_LANGUAGE, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.jvmUserLanguage(), Optional.of(result.getJvmUserLanguage())));
+            SystemConsoleMessages.INSTANCE.jvmUserLanguage(), Optional.of(generalInfoDto.getJvmUserLanguage())));
       generalInfo.put(Type.JVM_USER_COUNTRY, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.jvmUserCountry(), Optional.of(result.getJvmUserCountry())));
+            SystemConsoleMessages.INSTANCE.jvmUserCountry(), Optional.of(generalInfoDto.getJvmUserCountry())));
       generalInfo.put(Type.JVM_USER_TIMEZONE, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.jvmUserTimezone(), Optional.of(result.getJvmUserTimezone())));
+            SystemConsoleMessages.INSTANCE.jvmUserTimezone(), Optional.of(generalInfoDto.getJvmUserTimezone())));
       generalInfo.put(Type.JVM_FILE_ENCODING, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.jvmFileEncoding(), Optional.of(result.getJvmFileEncoding())));
+            SystemConsoleMessages.INSTANCE.jvmFileEncoding(), Optional.of(generalInfoDto.getJvmFileEncoding())));
       generalInfo.put(Type.OS_SYSTEM, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.operationSystemLabel(), Optional.of(result.getOsVersion())));
+            SystemConsoleMessages.INSTANCE.operationSystemLabel(), Optional.of(generalInfoDto.getOsVersion())));
       generalInfo.put(Type.USER_AGENT, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.userAgentLabel(), Optional.of(result.getUserAgent())));
+            SystemConsoleMessages.INSTANCE.userAgentLabel(), Optional.of(generalInfoDto.getUserAgent())));
       generalInfo.put(Type.REQUEST_URL, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.requestUrl(), Optional.of(result.getRequestURL())));
+            SystemConsoleMessages.INSTANCE.requestUrl(), Optional.of(generalInfoDto.getRequestURL())));
       generalInfo.put(Type.REQUEST_SCHEME, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.scheme(), Optional.of(result.getScheme())));
+            SystemConsoleMessages.INSTANCE.scheme(), Optional.of(generalInfoDto.getScheme())));
       generalInfo.put(Type.REQUEST_SERVER_NAME, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.serverName(), Optional.of(result.getServerName())));
+            SystemConsoleMessages.INSTANCE.serverName(), Optional.of(generalInfoDto.getServerName())));
       generalInfo.put(Type.REQUEST_SERVER_PORT,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.serverPort(),
-                  result.getServerPort() != -1 ? Optional.of(result.getServerPort()) : Optional.empty()));
+                  generalInfoDto.getServerPort() != -1 ? Optional.of(generalInfoDto.getServerPort()) : Optional.empty()));
       generalInfo.put(Type.REQUEST_CONTEXT_PATH, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.contextPath(), Optional.of(result.getContextPath())));
+            SystemConsoleMessages.INSTANCE.contextPath(), Optional.of(generalInfoDto.getContextPath())));
       generalInfo.put(Type.REQUEST_PROTOCOL, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.protocol(), Optional.of(result.getProtocol())));
+            SystemConsoleMessages.INSTANCE.protocol(), Optional.of(generalInfoDto.getProtocol())));
       generalInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
 
       form.addField(Separator.class, new SFFCSpace());
@@ -159,7 +159,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> pamsInfo = new LinkedHashMap<>();
       pamsInfo.put(Type.STATIC_PAMS,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.staticPamsLabel(),
-                  Optional.ofNullable(result.getStaticPams().stream().collect(joining(", ")))));
+                  Optional.ofNullable(generalInfoDto.getStaticPams().stream().collect(joining(", ")))));
       pamsInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
 
       form.addField(Separator.class, new SFFCSpace());
@@ -174,18 +174,18 @@ public class GeneralInfoPanel extends DwContentPanel {
 
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> dbConfigInfo = new LinkedHashMap<>();
       dbConfigInfo.put(Type.HIBERNATE_DIALECT, new SimpleImmutableEntry<String, Optional<Object>>("hibernate.dialect",
-            Optional.ofNullable(result.getHibernateDialect())));
+            Optional.ofNullable(generalInfoDto.getHibernateDialect())));
       dbConfigInfo.put(Type.HIBERNATE_DRIVER_CLASS, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.driver_class", Optional.ofNullable(result.getHibernateDriverClass())));
+            "hibernate.connection.driver_class", Optional.ofNullable(generalInfoDto.getHibernateDriverClass())));
       dbConfigInfo.put(Type.HIBERNATE_URL, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.url", Optional.ofNullable(result.getHibernateConnectionUrl())));
+            "hibernate.connection.url", Optional.ofNullable(generalInfoDto.getHibernateConnectionUrl())));
       dbConfigInfo.put(Type.HIBERNATE_USERNAME, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.username", Optional.ofNullable(result.getHibernateConnectionUsername())));
+            "hibernate.connection.username", Optional.ofNullable(generalInfoDto.getHibernateConnectionUsername())));
       dbConfigInfo.put(Type.HIBERNATE_SCHEMA, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.default_schema", Optional.ofNullable(result.getHibernateDefaultSchema())));
+            "hibernate.default_schema", Optional.ofNullable(generalInfoDto.getHibernateDefaultSchema())));
 
       dbConfigInfo.put(Type.SCHEMA_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
-            SystemConsoleMessages.INSTANCE.schemaVersion(), Optional.ofNullable(result.getSchemaVersion())));
+            SystemConsoleMessages.INSTANCE.schemaVersion(), Optional.ofNullable(generalInfoDto.getSchemaVersion())));
       dbConfigInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
 
       form.addField(Separator.class, new SFFCSpace());
@@ -200,51 +200,51 @@ public class GeneralInfoPanel extends DwContentPanel {
 
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> internalDbInfo = new LinkedHashMap<>();
       internalDbInfo.put(Type.INTERNAL_DB_NAME, new SimpleImmutableEntry<String, Optional<Object>>(
-            BaseMessages.INSTANCE.name(), Optional.ofNullable(result.getInternalDbDatasourceName())));
-      if (result.isInternalDbConfigured())
+            BaseMessages.INSTANCE.name(), Optional.ofNullable(generalInfoDto.getInternalDbDatasourceName())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_ID, new SimpleImmutableEntry<String, Optional<Object>>(
-               BaseMessages.INSTANCE.id(), Optional.ofNullable(result.getInternalDbId())));
-      if (result.isInternalDbConfigured())
+               BaseMessages.INSTANCE.id(), Optional.ofNullable(generalInfoDto.getInternalDbId())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_PATH, new SimpleImmutableEntry<String, Optional<Object>>(
-               BaseMessages.INSTANCE.path(), Optional.ofNullable(result.getInternalDbPath())));
-      if (result.isInternalDbConfigured())
+               BaseMessages.INSTANCE.path(), Optional.ofNullable(generalInfoDto.getInternalDbPath())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_DATABASE_NAME,
                new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbName(),
-                     Optional.ofNullable(result.getInternalDbDatabaseName())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbDatabaseName())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_DATABASE_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
-               SystemConsoleMessages.INSTANCE.internalDbVersion(), Optional.ofNullable(result.getInternalDbVersion())));
-      if (result.isInternalDbConfigured())
+               SystemConsoleMessages.INSTANCE.internalDbVersion(), Optional.ofNullable(generalInfoDto.getInternalDbVersion())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_DRIVER_NAME,
                new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbDriverName(),
-                     Optional.ofNullable(result.getInternalDbDriverName())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbDriverName())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_DRIVER_VERSION,
                new SimpleImmutableEntry<String, Optional<Object>>(
                      SystemConsoleMessages.INSTANCE.internalDbDriverVersion(),
-                     Optional.ofNullable(result.getInternalDbDriverVersion())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbDriverVersion())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_JDBC_MAJOR_VERSION,
                new SimpleImmutableEntry<String, Optional<Object>>(
                      SystemConsoleMessages.INSTANCE.internalDbJdbcMajorVersion(),
-                     Optional.ofNullable(result.getInternalDbJdbcMajorVersion())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbJdbcMajorVersion())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_JDBC_MINOR_VERSION,
                new SimpleImmutableEntry<String, Optional<Object>>(
                      SystemConsoleMessages.INSTANCE.internalDbJdbcMinorVersion(),
-                     Optional.ofNullable(result.getInternalDbJdbcMinorVersion())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbJdbcMinorVersion())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_JDBC_URL, new SimpleImmutableEntry<String, Optional<Object>>(
-               SystemConsoleMessages.INSTANCE.internalDbJdbcUrl(), Optional.ofNullable(result.getInternalDbJdbcUrl())));
-      if (result.isInternalDbConfigured())
+               SystemConsoleMessages.INSTANCE.internalDbJdbcUrl(), Optional.ofNullable(generalInfoDto.getInternalDbJdbcUrl())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_USERNAME,
                new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbUsername(),
-                     Optional.ofNullable(result.getInternalDbUsername())));
-      if (result.isInternalDbConfigured())
+                     Optional.ofNullable(generalInfoDto.getInternalDbUsername())));
+      if (generalInfoDto.isInternalDbConfigured())
          internalDbInfo.put(Type.INTERNAL_DB_JDBC_PROPERTIES,
                new SimpleImmutableEntry<String, Optional<Object>>(
                      SystemConsoleMessages.INSTANCE.internalDbJdbcProperties(),
-                     Optional.ofNullable(result.getInternalDbJdbcProperties())));
+                     Optional.ofNullable(generalInfoDto.getInternalDbJdbcProperties())));
 
       internalDbInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
       
@@ -260,13 +260,13 @@ public class GeneralInfoPanel extends DwContentPanel {
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> sslInfo = new LinkedHashMap<>();
       sslInfo.put(Type.SUPPORTED_SSL_PROTOCOLS,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.supportedSslProtocols(),
-                  Optional.of(result.getSupportedSslProtocols().stream().collect(joining(", ")))));
+                  Optional.of(generalInfoDto.getSupportedSslProtocols().stream().collect(joining(", ")))));
       sslInfo.put(Type.DEFAULT_SSL_PROTOCOLS,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.defaultSslProtocols(),
-                  Optional.of(result.getDefaultSslProtocols().stream().collect(joining(", ")))));
+                  Optional.of(generalInfoDto.getDefaultSslProtocols().stream().collect(joining(", ")))));
       sslInfo.put(Type.ENABLED_SSL_PROTOCOLS,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.enabledSslProtocols(),
-                  Optional.of(result.getEnabledSslProtocols().stream().collect(joining(", ")))));
+                  Optional.of(generalInfoDto.getEnabledSslProtocols().stream().collect(joining(", ")))));
       sslInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
       
       form.loadFields();

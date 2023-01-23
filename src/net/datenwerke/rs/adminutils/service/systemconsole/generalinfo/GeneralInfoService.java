@@ -50,7 +50,7 @@ public interface GeneralInfoService {
    
    Map<Memory, Object> getMemoryValues();
    
-   String getConfigDir();
+   String getConfigDirectory();
    
    String getCatalinaHome();
    
@@ -65,4 +65,6 @@ public interface GeneralInfoService {
    String getJavaHome();
    
    String getJvmFileEncoding();
+   
+   String getLogFilesDirectory();
 }

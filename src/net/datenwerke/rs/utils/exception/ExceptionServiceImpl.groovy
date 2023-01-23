@@ -93,7 +93,6 @@ public class ExceptionServiceImpl implements ExceptionService {
    private final Provider<GeneralInfoService> generalInfoServiceProvider
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider
    private final Provider<HistoryService> historyServiceProvider
-   private final Provider<LogFilesService> logFilesServiceProvider
    
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
     
@@ -102,14 +101,12 @@ public class ExceptionServiceImpl implements ExceptionService {
       Provider<ConfigService> configServiceProvider,
       Provider<GeneralInfoService> generalInfoServiceProvider,
       Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-      Provider<HistoryService> historyServiceProvider,
-      Provider<LogFilesService> logFilesServiceProvider
+      Provider<HistoryService> historyServiceProvider
       ) {
          this.configServiceProvider = configServiceProvider
          this.generalInfoServiceProvider = generalInfoServiceProvider
          this.datasourceHelperServiceProvider = datasourceHelperServiceProvider
          this.historyServiceProvider = historyServiceProvider
-         this.logFilesServiceProvider = logFilesServiceProvider
       }
    
    @Override
@@ -361,7 +358,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.catalinaBase
             break
          case LOG_FILES_DIRECTORY:
-            propertyValues[property] = logFilesServiceProvider.get().logDirectory
+            propertyValues[property] = generalInfoService.logFilesDirectory
             break
          case REQUEST_URL:
             propertyValues[property] = generalInfoService.requestURL
@@ -382,7 +379,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.protocol
             break
          case CONFIG_DIRECTORY:
-            propertyValues[property] = generalInfoService.configDir
+            propertyValues[property] = generalInfoService.configDirectory
             break
          case OS_VERSION:
             propertyValues[property] = generalInfoService.osVersion

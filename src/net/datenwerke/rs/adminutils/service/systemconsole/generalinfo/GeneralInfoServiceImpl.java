@@ -17,6 +17,9 @@ import static net.datenwerke.rs.utils.file.RsFileUtils.byteCountToDisplaySize;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
@@ -177,7 +180,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setOsVersion(getOsVersion());
       info.setCatalinaHome(getCatalinaHome());
       info.setCatalinaBase(getCatalinaBase());
-      info.setLogFilesDirectory(logFilesServiceProvider.get().getLogDirectory());
+      info.setLogFilesDirectory(getLogFilesDirectory());
       info.setJvmUserTimezone(getJvmUserTimezone());
       info.setJvmUserCountry(getJvmUserCountry());
       info.setJvmUserLanguage(getJvmUserLanguage());
@@ -196,7 +199,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       setSchemaVersion(info);
       setInternalDb(info);
       
-      info.setConfigDir(getConfigDir());
+      info.setConfigDir(getConfigDirectory());
       
       return info;
    }
@@ -352,7 +355,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getConfigDir() {
+   public String getConfigDirectory() {
       ConfigDirService configDirService = configDirServiceProvider.get();
       StringBuilder sb = new StringBuilder();
       sb.append(configDirService.isEnabled() ? configDirService.getConfigDir().getAbsolutePath() : "Not Configured");
@@ -479,6 +482,18 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          log.warn("Cannot read " + property, e);
          return "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")";
       }
+   }
+
+   @Override
+   public String getLogFilesDirectory() {
+      Path logDir = Paths.get(logFilesServiceProvider.get().getLogDirectory());
+      StringBuilder sb = new StringBuilder();
+      sb.append(logDir.toAbsolutePath().toString());
+      
+      sb.append(" (")
+         .append((Files.exists(logDir) && Files.isReadable(logDir))? "OK)" : "INACCESSIBLE)");
+      
+      return sb.toString();
    }
 
 }
