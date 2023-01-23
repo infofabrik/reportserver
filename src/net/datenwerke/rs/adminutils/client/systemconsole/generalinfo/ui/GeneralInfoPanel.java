@@ -51,7 +51,9 @@ public class GeneralInfoPanel extends DwContentPanel {
       INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME, INTERNAL_DB_DATABASE_VERSION,
       INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
       INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
-      SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS
+      SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS,
+      
+      SFTP_SERVER_DISABLED, SFTP_SERVER_PORT, SFTP_SERVER_KEY
    }
 
    @Inject
@@ -272,6 +274,29 @@ public class GeneralInfoPanel extends DwContentPanel {
       
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());
+      
+      form.addField(StaticLabel.class, SystemConsoleMessages.INSTANCE.sftpServer(), new SFFCStaticLabel() {
+         @Override
+         public String getLabel() {
+            return "";
+         }
+      });
+      
+      final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> sftpInfo = new LinkedHashMap<>();
+      if (!generalInfoDto.isSftpEnabled()) {
+         sftpInfo.put(Type.SFTP_SERVER_DISABLED, new SimpleImmutableEntry<String, Optional<Object>>(
+               SystemConsoleMessages.INSTANCE.disabled(), Optional.of(true)));
+      } else {
+         sftpInfo.put(Type.SFTP_SERVER_KEY, new SimpleImmutableEntry<String, Optional<Object>>(
+               SystemConsoleMessages.INSTANCE.sftpKey(), Optional.ofNullable(generalInfoDto.getSftpKey())));
+         sftpInfo.put(Type.SFTP_SERVER_PORT, new SimpleImmutableEntry<String, Optional<Object>>(
+               SystemConsoleMessages.INSTANCE.sftpPort(), Optional.ofNullable(generalInfoDto.getSftpPort())));
+      }
+      sftpInfo.forEach((key, pair) -> addFieldToForm(pair.getKey(), pair.getValue(), form));
+      
+      form.addField(Separator.class, new SFFCSpace());
+      form.addField(Separator.class, new SFFCSpace());
+      
       form.addField(StaticLabel.class, "SSL", new SFFCStaticLabel() {
          @Override
          public String getLabel() {

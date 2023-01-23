@@ -67,4 +67,5 @@ public interface GeneralInfoService {
    String getJvmFileEncoding();
    
    String getLogFilesDirectory();
+   
 }

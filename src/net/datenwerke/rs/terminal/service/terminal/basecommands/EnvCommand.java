@@ -89,6 +89,7 @@ public class EnvCommand implements TerminalCommandHook {
          result.addResultTable(getPamsAsTable(generalInfo));
          result.addResultTable(getDbConfigAsTable(generalInfo));
          result.addResultTable(getInternalDbInformationAsTable(generalInfo));
+         result.addResultTable(getSftpInformationAsTable(generalInfo));
          result.addResultTable(getSslInformationAsTable(generalInfo));
       } catch (SQLException e) {
          throw new TerminalException(e);
@@ -99,6 +100,25 @@ public class EnvCommand implements TerminalCommandHook {
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
+   }
+   
+   private RSTableModel getSftpInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {
+      RSTableModel table = new RSTableModel();
+      TableDefinition td = new TableDefinition(Arrays.asList("SFTP server", ""),
+            Arrays.asList(String.class, String.class));
+      table.setTableDefinition(td);
+      td.setDisplaySizes(Arrays.asList(150, 0));
+
+      
+      if (!generalInfo.isSftpEnabled()) {
+         table.addDataRow(new RSStringTableRow("Disabled", ""));
+         return table;
+      }
+      
+      table.addDataRow(new RSStringTableRow("Key", generalInfo.getSftpKey()));
+      table.addDataRow(new RSStringTableRow("Port", generalInfo.getSftpPort() + ""));
+
+      return table;
    }
    
    private RSTableModel getSslInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {

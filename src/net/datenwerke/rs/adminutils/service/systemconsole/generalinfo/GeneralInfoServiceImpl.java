@@ -53,7 +53,11 @@ import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
+import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
+import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpEnabled;
+import net.datenwerke.rs.remoteaccess.service.sftp.annotations.SftpPort;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
+import net.datenwerke.rs.utils.misc.Nullable;
 import net.datenwerke.rs.utils.properties.PropertiesUtilService;
 import net.datenwerke.security.service.authenticator.ReportServerPAM;
 
@@ -72,6 +76,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<ConfigDirService> configDirServiceProvider;
    private final Provider<LogFilesService> logFilesServiceProvider;
    
+   private final Provider<String> sftpKeyLocation;
+   private final Provider<Integer> sftpPort;
+   private final Provider<Boolean> sftpEnabled;
+   
    private final Logger log = LoggerFactory.getLogger( getClass() );
    
    @Inject
@@ -85,7 +93,11 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider,
          Provider<HistoryService> historyServiceProvider,
          Provider<ConfigDirService> configDirServiceProvider,
-         Provider<LogFilesService> logFilesServiceProvider
+         Provider<LogFilesService> logFilesServiceProvider,
+         
+         @Nullable @KeyLocation Provider<String> sftpKeyLocation,
+         @SftpPort Provider<Integer> sftpPort, 
+         @SftpEnabled Provider<Boolean> sftpEnabled
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
@@ -97,6 +109,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.historyServiceProvider = historyServiceProvider;
       this.configDirServiceProvider = configDirServiceProvider;
       this.logFilesServiceProvider = logFilesServiceProvider;
+      
+      this.sftpKeyLocation = sftpKeyLocation;
+      this.sftpPort = sftpPort;
+      this.sftpEnabled = sftpEnabled;
    }
 
    @Override
@@ -198,10 +214,25 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       setHibernateProperties(info);
       setSchemaVersion(info);
       setInternalDb(info);
+      setSftp(info);
       
       info.setConfigDir(getConfigDirectory());
       
       return info;
+   }
+   
+   private void setSftp(GeneralInfoDto info) {
+      info.setSftpEnabled(sftpEnabled.get());
+      info.setSftpPort(sftpPort.get());
+      String keylo = sftpKeyLocation.get();
+      
+      if (keylo.contains(":")) {
+         info.setSftpKey("URL: " + keylo);
+      } else if (keylo.equals("$generated")) {
+         info.setSftpKey("Generated");
+      } else {
+         info.setSftpKey("File: " + getCheckedFilePath(Paths.get(keylo)));
+      }
    }
    
    private void setInternalDb(GeneralInfoDto info) {
@@ -374,17 +405,12 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getConfigDirectory() {
       ConfigDirService configDirService = configDirServiceProvider.get();
-      StringBuilder sb = new StringBuilder();
-      sb.append(configDirService.isEnabled() ? configDirService.getConfigDir().getAbsolutePath() : "Not Configured");
+      if (!configDirService.isEnabled())
+         return "Not Configured";
       
-      if (configDirService.isEnabled()) {
-         sb.append(" (")
-         .append(configDirService.getConfigDir().exists() && configDirService.getConfigDir().canRead() ? "OK)"
-               : "INACCESSIBLE)");
-      }
-      return sb.toString();
+      return getCheckedFilePath(configDirService.getConfigDir().toPath());
    }
-
+   
    @Override
    public String getServerName() {
       try {
@@ -504,11 +530,15 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getLogFilesDirectory() {
       Path logDir = Paths.get(logFilesServiceProvider.get().getLogDirectory());
+      return getCheckedFilePath(logDir);
+   }
+   
+   private String getCheckedFilePath(Path path) {
       StringBuilder sb = new StringBuilder();
-      sb.append(logDir.toAbsolutePath().toString());
+      sb.append(path.toAbsolutePath().toString());
       
       sb.append(" (")
-         .append((Files.exists(logDir) && Files.isReadable(logDir))? "OK)" : "INACCESSIBLE)");
+         .append((Files.exists(path) && Files.isReadable(path))? "OK)" : "INACCESSIBLE)");
       
       return sb.toString();
    }

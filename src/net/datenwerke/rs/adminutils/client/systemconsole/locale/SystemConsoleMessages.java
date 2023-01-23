@@ -122,5 +122,13 @@ public interface SystemConsoleMessages extends Messages {
    public String jvmFileEncoding();
    
    public String logsDirectory();
+   
+   public String sftpServer();
+   
+   public String sftpKey();
+   
+   public String sftpPort();
+   
+   public String disabled();
 
 }

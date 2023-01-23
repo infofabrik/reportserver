@@ -71,6 +71,10 @@ public class GeneralInfoDto implements Serializable {
    private List<String> enabledSslProtocols;
 
    private List<String> staticPams;
+   
+   private boolean sftpEnabled;
+   private String sftpKey;
+   private int sftpPort;
 
    public GeneralInfoDto() {
    }
@@ -498,5 +502,29 @@ public class GeneralInfoDto implements Serializable {
    public void setLogFilesDirectory(String logFilesDirectory) {
       this.logFilesDirectory = logFilesDirectory;
    }
+
+   public boolean isSftpEnabled() {
+      return sftpEnabled;
+   }
+
+   public void setSftpEnabled(boolean sftpEnabled) {
+      this.sftpEnabled = sftpEnabled;
+   }
    
+   public String getSftpKey() {
+      return sftpKey;
+   }
+
+   public void setSftpKey(String sftpKey) {
+      this.sftpKey = sftpKey;
+   }
+
+   public int getSftpPort() {
+      return sftpPort;
+   }
+
+   public void setSftpPort(int sftpPort) {
+      this.sftpPort = sftpPort;
+   }
+
 }
