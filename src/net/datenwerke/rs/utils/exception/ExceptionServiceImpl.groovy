@@ -9,8 +9,9 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BAS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_KEY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.BASE_REPORT_TYPE
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIR
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_CONTEXT_PATH
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_BASE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_HOME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CONFIG_DIRECTORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_INFORMATION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_JDBC_PROPERTIES
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
@@ -26,16 +27,21 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXECUTING_USER_LASTNAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.EXECUTING_USER_USERNAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.GROOVY_VERSION
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_HOME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_VERSION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_VM_ARGUMENTS
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_FILE_ENCODING
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_LOCALE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_COUNTRY
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_LANGUAGE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_TIMEZONE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOCALE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOG_FILES_DIRECTORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_FREE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_MAX
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_TOTAL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_USED
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.OS_VERSION
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_PROTOCOL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORTSERVER_VERSION
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_KEY
@@ -43,10 +49,12 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REP
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_OUTPUT_FORMAT
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REPORT_UUID
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_URL
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_CONTEXT_PATH
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_PROTOCOL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SCHEME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_NAME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_SERVER_PORT
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.REQUEST_URL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.STATIC_PAMS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.SUPPORTED_SSL_PROTOCOLS
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_DATASOURCE
@@ -56,13 +64,6 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_MEMORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_REPORT
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_HOME
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_HOME
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_BASE
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_LANGUAGE
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_COUNTRY
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_TIMEZONE
-import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_FILE_ENCODING
 
 import javax.inject.Inject
 
@@ -74,6 +75,7 @@ import com.google.inject.Provider
 
 import groovy.json.JsonBuilder
 import net.datenwerke.gf.service.history.HistoryService
+import net.datenwerke.rs.adminutils.service.logs.LogFilesService
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource
@@ -91,6 +93,7 @@ public class ExceptionServiceImpl implements ExceptionService {
    private final Provider<GeneralInfoService> generalInfoServiceProvider
    private final Provider<DatasourceHelperService> datasourceHelperServiceProvider
    private final Provider<HistoryService> historyServiceProvider
+   private final Provider<LogFilesService> logFilesServiceProvider
    
    private final Logger logger = LoggerFactory.getLogger(getClass().name)
     
@@ -99,12 +102,14 @@ public class ExceptionServiceImpl implements ExceptionService {
       Provider<ConfigService> configServiceProvider,
       Provider<GeneralInfoService> generalInfoServiceProvider,
       Provider<DatasourceHelperService> datasourceHelperServiceProvider,
-      Provider<HistoryService> historyServiceProvider
+      Provider<HistoryService> historyServiceProvider,
+      Provider<LogFilesService> logFilesServiceProvider
       ) {
          this.configServiceProvider = configServiceProvider
          this.generalInfoServiceProvider = generalInfoServiceProvider
          this.datasourceHelperServiceProvider = datasourceHelperServiceProvider
          this.historyServiceProvider = historyServiceProvider
+         this.logFilesServiceProvider = logFilesServiceProvider
       }
    
    @Override
@@ -355,6 +360,9 @@ public class ExceptionServiceImpl implements ExceptionService {
          case CATALINA_BASE:
             propertyValues[property] = generalInfoService.catalinaBase
             break
+         case LOG_FILES_DIRECTORY:
+            propertyValues[property] = logFilesServiceProvider.get().logDirectory
+            break
          case REQUEST_URL:
             propertyValues[property] = generalInfoService.requestURL
             break
@@ -373,7 +381,7 @@ public class ExceptionServiceImpl implements ExceptionService {
          case REQUEST_PROTOCOL:
             propertyValues[property] = generalInfoService.protocol
             break
-         case CONFIG_DIR:
+         case CONFIG_DIRECTORY:
             propertyValues[property] = generalInfoService.configDir
             break
          case OS_VERSION:
