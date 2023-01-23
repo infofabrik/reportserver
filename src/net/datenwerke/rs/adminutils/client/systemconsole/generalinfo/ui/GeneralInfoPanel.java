@@ -40,7 +40,7 @@ public class GeneralInfoPanel extends DwContentPanel {
    private VerticalLayoutContainer wrapper;
    
    private enum Type {
-      RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE,
+      RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE, LOGS_DIRECTORY,
       REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
       MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
       JVM_USER_TIMEZONE, JVM_FILE_ENCODING, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
@@ -114,6 +114,8 @@ public class GeneralInfoPanel extends DwContentPanel {
             "Catalina home", Optional.of(result.getCatalinaHome())));
       generalInfo.put(Type.CATALINA_BASE, new SimpleImmutableEntry<String, Optional<Object>>(
             "Catalina base", Optional.of(result.getCatalinaBase())));
+      generalInfo.put(Type.LOGS_DIRECTORY, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.logsDirectory(), Optional.of(result.getLogFilesDirectory())));
       generalInfo.put(Type.MAX_MEMORY, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.maxMemoryLabel(), Optional.of(result.getMaxMemory())));
       generalInfo.put(Type.CONFIG_DIR, new SimpleImmutableEntry<String, Optional<Object>>(

@@ -64,7 +64,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("Application server", generalInfo.getApplicationServer()));
       table.addDataRow(new RSStringTableRow("Catalina home", generalInfo.getCatalinaHome()));
       table.addDataRow(new RSStringTableRow("Catalina base", generalInfo.getCatalinaBase()));
-      table.addDataRow(new RSStringTableRow("Logs directory", generalInfo.getLogFilesDirectory()));
+      table.addDataRow(new RSStringTableRow("Log files directory", generalInfo.getLogFilesDirectory()));
       table.addDataRow(new RSStringTableRow("Max memory", generalInfo.getMaxMemory()));
       table.addDataRow(new RSStringTableRow("Configuration directory", generalInfo.getConfigDir()));
       table.addDataRow(new RSStringTableRow("Groovy version", generalInfo.getGroovyVersion()));

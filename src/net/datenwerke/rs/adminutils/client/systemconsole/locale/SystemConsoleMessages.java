@@ -120,5 +120,7 @@ public interface SystemConsoleMessages extends Messages {
    public String jvmUserTimezone();
    
    public String jvmFileEncoding();
+   
+   public String logsDirectory();
 
 }
