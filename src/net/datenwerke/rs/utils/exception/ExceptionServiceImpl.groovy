@@ -56,6 +56,13 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_GENERAL
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_MEMORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogPropertyType.TYPE_REPORT
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JAVA_HOME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_HOME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.CATALINA_BASE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_LANGUAGE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_COUNTRY
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_TIMEZONE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_FILE_ENCODING
 
 import javax.inject.Inject
 
@@ -333,11 +340,20 @@ public class ExceptionServiceImpl implements ExceptionService {
          case JAVA_VERSION:
             propertyValues[property] = generalInfoService.javaVersion
             break
+         case JAVA_HOME:
+            propertyValues[property] = generalInfoService.javaHome
+            break
          case JAVA_VM_ARGUMENTS:
             propertyValues[property] = generalInfoService.vmArguments
             break
          case APPLICATION_SERVER:
             propertyValues[property] = generalInfoService.applicationServer
+            break
+         case CATALINA_HOME:
+            propertyValues[property] = generalInfoService.catalinaHome
+            break
+         case CATALINA_BASE:
+            propertyValues[property] = generalInfoService.catalinaBase
             break
          case REQUEST_URL:
             propertyValues[property] = generalInfoService.requestURL
@@ -371,6 +387,18 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case JVM_LOCALE:
             propertyValues[property] = generalInfoService.jvmLocale
+            break
+         case JVM_USER_LANGUAGE:
+            propertyValues[property] = generalInfoService.jvmUserLanguage
+            break
+         case JVM_USER_COUNTRY:
+            propertyValues[property] = generalInfoService.jvmUserCountry
+            break
+         case JVM_USER_TIMEZONE:
+            propertyValues[property] = generalInfoService.jvmUserTimezone
+            break
+         case JVM_FILE_ENCODING:
+            propertyValues[property] = generalInfoService.jvmFileEncoding
             break
          case SUPPORTED_SSL_PROTOCOLS:
             propertyValues[property] = generalInfoService.supportedSslProtocols

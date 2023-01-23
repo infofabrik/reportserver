@@ -18,6 +18,7 @@ public class GeneralInfoDto implements Serializable {
    private String applicationServer;
    private String catalinaHome;
    private String catalinaBase;
+   private String logFilesDirectory;
    private String requestURL;
    private String serverName;
    private int serverPort;
@@ -445,4 +446,12 @@ public class GeneralInfoDto implements Serializable {
       this.schemaVersion = hibernateSchemaVersion;
    }
 
+   public String getLogFilesDirectory() {
+      return logFilesDirectory;
+   }
+
+   public void setLogFilesDirectory(String logFilesDirectory) {
+      this.logFilesDirectory = logFilesDirectory;
+   }
+   
 }

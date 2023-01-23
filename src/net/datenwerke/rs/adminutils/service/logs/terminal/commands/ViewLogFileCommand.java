@@ -33,7 +33,9 @@ public class ViewLogFileCommand implements TerminalCommandHook {
    private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    @Inject
-   public ViewLogFileCommand(Provider<LogFilesService> logFilesServiceProvider) {
+   public ViewLogFileCommand(
+         Provider<LogFilesService> logFilesServiceProvider
+         ) {
       this.logFilesServiceProvider = logFilesServiceProvider;
    }
 
@@ -80,7 +82,7 @@ public class ViewLogFileCommand implements TerminalCommandHook {
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
       autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
       if (consumes(autocompleteHelper.getParser(), session)) {
-         Path logPath = Paths.get(System.getProperty("catalina.home") + "/logs");
+         Path logPath = Paths.get(logFilesServiceProvider.get().getLogDirectory());
          if (!Files.exists(logPath))
             return;
 

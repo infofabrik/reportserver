@@ -24,6 +24,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gf.service.localization.RemoteMessageService;
 import net.datenwerke.rs.adminutils.service.locale.AdminUtilsMessages;
+import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.base.service.parameterreplacements.provider.UserForJuel;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.mail.MailBuilderFactory;
@@ -43,6 +44,7 @@ public class LogFilesServiceImpl implements LogFilesService {
    private final Provider<MailService> mailServiceProvider;
    private final Provider<MailBuilderFactory> mailBuilderFactoryProvider;
    private final Provider<RemoteMessageService> remoteMessageServiceProvider;
+   private final Provider<GeneralInfoService> generalInfoServiceProvider;
 
    private final String dateFormat = "yyyy-MM-dd-HH-mm-ss";
 
@@ -52,19 +54,21 @@ public class LogFilesServiceImpl implements LogFilesService {
          Provider<AuthenticatorService> authenticatorServiceProvider, 
          Provider<MailService> mailServiceProvider,
          Provider<MailBuilderFactory> mailBuilderFactoryProvider,
-         Provider<RemoteMessageService> remoteMessageServiceProvider
+         Provider<RemoteMessageService> remoteMessageServiceProvider,
+         Provider<GeneralInfoService> generalInfoServiceProvider
          ) {
       this.configServiceProvider = configServiceProvider;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
       this.mailServiceProvider = mailServiceProvider;
       this.mailBuilderFactoryProvider = mailBuilderFactoryProvider;
       this.remoteMessageServiceProvider = remoteMessageServiceProvider;
+      this.generalInfoServiceProvider = generalInfoServiceProvider;
    }
 
    @Override
    public String getLogDirectory() {
       return configServiceProvider.get().getConfigFailsafe(ReportServerService.CONFIG_FILE).getString("logdir",
-            System.getProperty("catalina.home") + "/logs");
+            generalInfoServiceProvider.get().getCatalinaHome() + "/logs");
    }
 
    @Override

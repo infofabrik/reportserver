@@ -44,6 +44,7 @@ import net.datenwerke.gf.service.history.HistoryService;
 import net.datenwerke.rs.EnvironmentValidatorHelperService;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.Memory;
 import net.datenwerke.rs.adminutils.client.systemconsole.generalinfo.dto.GeneralInfoDto;
+import net.datenwerke.rs.adminutils.service.logs.LogFilesService;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
@@ -66,8 +67,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<EnvironmentValidatorHelperService> envServiceProvider;
    private final Provider<HistoryService> historyServiceProvider;
    private final Provider<ConfigDirService> configDirServiceProvider;
+   private final Provider<LogFilesService> logFilesServiceProvider;
    
-   private static final Logger log = LoggerFactory.getLogger( GeneralInfoServiceImpl.class );
+   private final Logger log = LoggerFactory.getLogger( getClass() );
    
    @Inject
    public GeneralInfoServiceImpl(
@@ -79,7 +81,8 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<Set<ReportServerPAM>> pamProvider,
          Provider<EnvironmentValidatorHelperService> environmentValidatorHelperServiceProvider,
          Provider<HistoryService> historyServiceProvider,
-         Provider<ConfigDirService> configDirServiceProvider
+         Provider<ConfigDirService> configDirServiceProvider,
+         Provider<LogFilesService> logFilesServiceProvider
          ) {
       this.servletContextProvider = servletContextProvider;
       this.servletRequestProvider = servletRequestProvider;
@@ -90,6 +93,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.envServiceProvider = environmentValidatorHelperServiceProvider;
       this.historyServiceProvider = historyServiceProvider;
       this.configDirServiceProvider = configDirServiceProvider;
+      this.logFilesServiceProvider = logFilesServiceProvider;
    }
 
    @Override
@@ -121,10 +125,10 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    @Override
    public String getOsVersion() {
       try {
-         String osVersion = runtimeMxBean.getSystemProperties().get("os.version");
-         String osArchitecture = runtimeMxBean.getSystemProperties().get("os.arch");
+         String osVersion = readSystemProperty("os.version");
+         String osArchitecture = readSystemProperty("os.arch");
          final StringBuilder sb = new StringBuilder();
-         sb.append(runtimeMxBean.getSystemProperties().get("os.name"));
+         sb.append(readSystemProperty("os.name"));
          if (null != osVersion) {
             sb.append(" ").append(osVersion);
          }
@@ -173,6 +177,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setOsVersion(getOsVersion());
       info.setCatalinaHome(getCatalinaHome());
       info.setCatalinaBase(getCatalinaBase());
+      info.setLogFilesDirectory(logFilesServiceProvider.get().getLogDirectory());
       info.setJvmUserTimezone(getJvmUserTimezone());
       info.setJvmUserCountry(getJvmUserCountry());
       info.setJvmUserLanguage(getJvmUserLanguage());
