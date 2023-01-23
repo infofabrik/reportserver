@@ -44,7 +44,10 @@ public class GeneralInfoPanel extends DwContentPanel {
       REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
       MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
       JVM_USER_TIMEZONE, JVM_FILE_ENCODING, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
-      HIBERNATE_DRIVER_CLASS, HIBERNATE_URL, HIBERNATE_USERNAME, HIBERNATE_SCHEMA, SCHEMA_VERSION, INTERNAL_DB_NAME,
+      HIBERNATE_DB_DATABASE_NAME, HIBERNATE_DB_DATABASE_VERSION,
+      HIBERNATE_DB_DRIVER_NAME, HIBERNATE_DB_DRIVER_VERSION, HIBERNATE_DB_JDBC_MAJOR_VERSION,
+      HIBERNATE_DB_JDBC_MINOR_VERSION, HIBERNATE_DB_JDBC_URL, HIBERNATE_DB_JDBC_USERNAME,
+      HIBERNATE_SCHEMA, SCHEMA_VERSION, INTERNAL_DB_NAME,
       INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME, INTERNAL_DB_DATABASE_VERSION,
       INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
       INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
@@ -175,14 +178,33 @@ public class GeneralInfoPanel extends DwContentPanel {
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> dbConfigInfo = new LinkedHashMap<>();
       dbConfigInfo.put(Type.HIBERNATE_DIALECT, new SimpleImmutableEntry<String, Optional<Object>>("hibernate.dialect",
             Optional.ofNullable(generalInfoDto.getHibernateDialect())));
-      dbConfigInfo.put(Type.HIBERNATE_DRIVER_CLASS, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.driver_class", Optional.ofNullable(generalInfoDto.getHibernateDriverClass())));
-      dbConfigInfo.put(Type.HIBERNATE_URL, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.url", Optional.ofNullable(generalInfoDto.getHibernateConnectionUrl())));
-      dbConfigInfo.put(Type.HIBERNATE_USERNAME, new SimpleImmutableEntry<String, Optional<Object>>(
-            "hibernate.connection.username", Optional.ofNullable(generalInfoDto.getHibernateConnectionUsername())));
       dbConfigInfo.put(Type.HIBERNATE_SCHEMA, new SimpleImmutableEntry<String, Optional<Object>>(
             "hibernate.default_schema", Optional.ofNullable(generalInfoDto.getHibernateDefaultSchema())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_DATABASE_NAME,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbName(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbDatabaseName())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_DATABASE_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.internalDbVersion(), Optional.ofNullable(generalInfoDto.getHibernateDbVersion())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_DRIVER_NAME,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbDriverName(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbDriverName())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_DRIVER_VERSION,
+            new SimpleImmutableEntry<String, Optional<Object>>(
+                  SystemConsoleMessages.INSTANCE.internalDbDriverVersion(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbDriverVersion())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_JDBC_MAJOR_VERSION,
+            new SimpleImmutableEntry<String, Optional<Object>>(
+                  SystemConsoleMessages.INSTANCE.internalDbJdbcMajorVersion(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbJdbcMajorVersion())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_JDBC_MINOR_VERSION,
+            new SimpleImmutableEntry<String, Optional<Object>>(
+                  SystemConsoleMessages.INSTANCE.internalDbJdbcMinorVersion(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbJdbcMinorVersion())));
+      dbConfigInfo.put(Type.HIBERNATE_DB_JDBC_URL, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.internalDbJdbcUrl(), Optional.ofNullable(generalInfoDto.getHibernateDbJdbcUrl())));
+      dbConfigInfo.put(Type.INTERNAL_DB_USERNAME,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.internalDbUsername(),
+                  Optional.ofNullable(generalInfoDto.getHibernateDbJdbcUsername())));
 
       dbConfigInfo.put(Type.SCHEMA_VERSION, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.schemaVersion(), Optional.ofNullable(generalInfoDto.getSchemaVersion())));

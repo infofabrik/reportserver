@@ -143,12 +143,15 @@ public class EnvCommand implements TerminalCommandHook {
       td.setDisplaySizes(Arrays.asList(220, 0));      
 
       table.addDataRow(new RSStringTableRow("hibernate.dialect", generalInfo.getHibernateDialect()));
-      table.addDataRow(
-            new RSStringTableRow("hibernate.connection.driver_class", generalInfo.getHibernateDriverClass()));
-      table.addDataRow(new RSStringTableRow("hibernate.connection.url", generalInfo.getHibernateConnectionUrl()));
-      table.addDataRow(
-            new RSStringTableRow("hibernate.connection.username", generalInfo.getHibernateConnectionUsername()));
       table.addDataRow(new RSStringTableRow("hibernate.default_schema", generalInfo.getHibernateDefaultSchema()));
+      table.addDataRow(new RSStringTableRow("Database name",  generalInfo.getHibernateDbDatabaseName()));
+      table.addDataRow(new RSStringTableRow("Database version",  generalInfo.getHibernateDbVersion()));
+      table.addDataRow(new RSStringTableRow("JDBC driver name",  generalInfo.getHibernateDbDriverName()));
+      table.addDataRow(new RSStringTableRow("JDBC driver version",  generalInfo.getHibernateDbDriverVersion()));
+      table.addDataRow(new RSStringTableRow("JDBC major version",  generalInfo.getHibernateDbJdbcMajorVersion()));
+      table.addDataRow(new RSStringTableRow("JDBC minor version",  generalInfo.getHibernateDbJdbcMinorVersion()));
+      table.addDataRow(new RSStringTableRow("JDBC URL",  generalInfo.getHibernateDbJdbcUrl()));
+      table.addDataRow(new RSStringTableRow("JDBC username",  generalInfo.getHibernateDbJdbcUsername()));
 
       table.addDataRow(new RSStringTableRow("Schema Version", generalInfo.getSchemaVersion())); 
       

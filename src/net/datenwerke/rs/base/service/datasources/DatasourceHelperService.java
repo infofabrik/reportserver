@@ -50,6 +50,9 @@ public interface DatasourceHelperService {
     */
    Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
          Map<String, List<String>> methodDescriptions) throws SQLException;
+   
+   Map<String, Object> fetchDatasourceMetadata(String driverClass, String jdbcUrl, String jdbcUsername,
+         String jdbcPassword, Map<String, List<String>> methodDescriptions) throws SQLException;
 
    /**
     * Fetches general metadata information about a given datasource. Information
@@ -60,11 +63,15 @@ public interface DatasourceHelperService {
     * @param datasourceInfo        if true, fetches general information
     * @param jdbcUrlInfo           if true, fetches URL information
     * @param databaseFunctionsInfo if true, fetches information on functions
-    * @param databaseSupportsInfo  if true, fechtes information on supports
+    * @param databaseSupportsInfo  if true, fetches information on supports
     * @return the map containing <methodname, result>
     */
    Map<String, Object> fetchInfoDatasourceMetadata(DatasourceDefinition datasource, boolean datasourceInfo,
          boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) throws SQLException;
+   
+   Map<String, Object> fetchInfoDatasourceMetadata(String driverClass, String jdbcUrl, String jdbcUsername,
+         String jdbcPassword, boolean datasourceInfo, boolean jdbcUrlInfo, boolean databaseFunctionsInfo,
+         boolean databaseSupportsInfo) throws SQLException;
 
    /**
     * Provides a map containing what information is fetched when using
@@ -79,5 +86,5 @@ public interface DatasourceHelperService {
    String getQuery(DatasourceContainer datasourceContainer);
 
    Map<String, Object> getGeneralInformation(DatasourceDefinition datasource);
-
+   
 }

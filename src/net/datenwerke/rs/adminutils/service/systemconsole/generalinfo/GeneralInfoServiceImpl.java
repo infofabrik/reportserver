@@ -222,7 +222,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          info.setInternalDbPath(paths.isEmpty()? "path not found": paths.get(0));
          info.setInternalDbDatasourceName(internalDbDatasource.getName());
          Map<String, Object> datasourceMetadata = datasourceHelperService
-               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, true, true);
+               .fetchInfoDatasourceMetadata(internalDbDatasource, true, true, false, false);
          info.setInternalDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
          info.setInternalDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());
          info.setInternalDbDriverName(datasourceMetadata.get("getDriverName").toString());
@@ -258,10 +258,27 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private void setHibernateProperties(GeneralInfoDto info) {
       final Properties jpaProperties = envServiceProvider.get().getJpaProperties();
       info.setHibernateDialect(jpaProperties.getProperty("hibernate.dialect"));
-      info.setHibernateDriverClass(jpaProperties.getProperty("hibernate.connection.driver_class"));
-      info.setHibernateConnectionUrl(jpaProperties.getProperty("hibernate.connection.url"));
-      info.setHibernateConnectionUsername(jpaProperties.getProperty("hibernate.connection.username"));
       info.setHibernateDefaultSchema(jpaProperties.getProperty("hibernate.default_schema"));
+      
+      DatasourceHelperService datasourceHelperService = datasourceHelperServiceProvider.get();
+      
+      try {
+         Map<String, Object> datasourceMetadata = datasourceHelperService
+               .fetchInfoDatasourceMetadata(jpaProperties.getProperty("hibernate.connection.driver_class"), 
+                     jpaProperties.getProperty("hibernate.connection.url"),
+                     jpaProperties.getProperty("hibernate.connection.username"),
+                     jpaProperties.getProperty("hibernate.connection.password"), true, true, false, false);
+         info.setHibernateDbDatabaseName(datasourceMetadata.get("getDatabaseProductName").toString());
+         info.setHibernateDbVersion(datasourceMetadata.get("getDatabaseProductVersion").toString());
+         info.setHibernateDbDriverName(datasourceMetadata.get("getDriverName").toString());
+         info.setHibernateDbDriverVersion(datasourceMetadata.get("getDriverVersion").toString());
+         info.setHibernateDbJdbcMajorVersion(datasourceMetadata.get("getJDBCMajorVersion").toString());
+         info.setHibernateDbJdbcMinorVersion(datasourceMetadata.get("getJDBCMinorVersion").toString());
+         info.setHibernateDbJdbcUrl(datasourceMetadata.get("getURL").toString());
+         info.setHibernateDbJdbcUsername(datasourceMetadata.get("getUserName").toString());
+      } catch (Exception e) {
+         info.setHibernateDbDatabaseName(ExceptionUtils.getRootCauseMessage(e));
+      }
    }
 
    @Override

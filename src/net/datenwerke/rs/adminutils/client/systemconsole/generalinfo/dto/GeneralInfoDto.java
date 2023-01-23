@@ -38,10 +38,15 @@ public class GeneralInfoDto implements Serializable {
    private String jvmFileEncoding;
 
    private String hibernateDialect;
-   private String hibernateDriverClass;
-   private String hibernateConnectionUrl;
-   private String hibernateConnectionUsername;
    private String hibernateDefaultSchema;
+   private String hibernateDbDatabaseName;
+   private String hibernateDbVersion;
+   private String hibernateDbDriverName;
+   private String hibernateDbDriverVersion;
+   private String hibernateDbJdbcMajorVersion;
+   private String hibernateDbJdbcMinorVersion;
+   private String hibernateDbJdbcUrl;
+   private String hibernateDbJdbcUsername;
 
    private String configDir;
 
@@ -50,8 +55,8 @@ public class GeneralInfoDto implements Serializable {
    private boolean internalDbConfigured;
    private String internalDbId;
    private String internalDbDatasourceName;
-   private String internalDbDatabaseName;
    private String internalDbPath;
+   private String internalDbDatabaseName;
    private String internalDbVersion;
    private String internalDbDriverName;
    private String internalDbDriverVersion;
@@ -406,14 +411,6 @@ public class GeneralInfoDto implements Serializable {
       this.hibernateDialect = hibernateDialect;
    }
 
-   public String getHibernateConnectionUsername() {
-      return hibernateConnectionUsername;
-   }
-
-   public void setHibernateConnectionUsername(String hibernateConnectionUsername) {
-      this.hibernateConnectionUsername = hibernateConnectionUsername;
-   }
-
    public String getHibernateDefaultSchema() {
       return hibernateDefaultSchema;
    }
@@ -421,21 +418,69 @@ public class GeneralInfoDto implements Serializable {
    public void setHibernateDefaultSchema(String hibernateDefaultSchema) {
       this.hibernateDefaultSchema = hibernateDefaultSchema;
    }
-
-   public String getHibernateDriverClass() {
-      return hibernateDriverClass;
+   
+   public String getHibernateDbDatabaseName() {
+      return hibernateDbDatabaseName;
    }
 
-   public void setHibernateDriverClass(String hibernateDriverClass) {
-      this.hibernateDriverClass = hibernateDriverClass;
+   public void setHibernateDbDatabaseName(String hibernateDbDatabaseName) {
+      this.hibernateDbDatabaseName = hibernateDbDatabaseName;
    }
 
-   public String getHibernateConnectionUrl() {
-      return hibernateConnectionUrl;
+   public String getHibernateDbVersion() {
+      return hibernateDbVersion;
    }
 
-   public void setHibernateConnectionUrl(String hibernateConnectionUrl) {
-      this.hibernateConnectionUrl = hibernateConnectionUrl;
+   public void setHibernateDbVersion(String hibernateDbVersion) {
+      this.hibernateDbVersion = hibernateDbVersion;
+   }
+
+   public String getHibernateDbDriverName() {
+      return hibernateDbDriverName;
+   }
+
+   public void setHibernateDbDriverName(String hibernateDbDriverName) {
+      this.hibernateDbDriverName = hibernateDbDriverName;
+   }
+   
+   public String getHibernateDbDriverVersion() {
+      return hibernateDbDriverVersion;
+   }
+
+   public void setHibernateDbDriverVersion(String hibernateDbDriverVersion) {
+      this.hibernateDbDriverVersion = hibernateDbDriverVersion;
+   }
+
+   public String getHibernateDbJdbcMajorVersion() {
+      return hibernateDbJdbcMajorVersion;
+   }
+
+   public void setHibernateDbJdbcMajorVersion(String hibernateDbJdbcMajorVersion) {
+      this.hibernateDbJdbcMajorVersion = hibernateDbJdbcMajorVersion;
+   }
+
+   public String getHibernateDbJdbcMinorVersion() {
+      return hibernateDbJdbcMinorVersion;
+   }
+
+   public void setHibernateDbJdbcMinorVersion(String hibernateDbJdbcMinorVersion) {
+      this.hibernateDbJdbcMinorVersion = hibernateDbJdbcMinorVersion;
+   }
+
+   public String getHibernateDbJdbcUrl() {
+      return hibernateDbJdbcUrl;
+   }
+
+   public void setHibernateDbJdbcUrl(String hibernateDbJdbcUrl) {
+      this.hibernateDbJdbcUrl = hibernateDbJdbcUrl;
+   }
+
+   public String getHibernateDbJdbcUsername() {
+      return hibernateDbJdbcUsername;
+   }
+
+   public void setHibernateDbJdbcUsername(String hibernateDbJdbcUsername) {
+      this.hibernateDbJdbcUsername = hibernateDbJdbcUsername;
    }
 
    public String getSchemaVersion() {

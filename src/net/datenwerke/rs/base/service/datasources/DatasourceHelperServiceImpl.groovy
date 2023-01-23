@@ -6,6 +6,7 @@ import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.DATAB
 import static net.datenwerke.rs.base.client.datasources.DatasourceInfoType.JDBC_URL
 
 import java.sql.DatabaseMetaData
+import java.sql.SQLException
 
 import javax.inject.Inject
 import javax.inject.Provider
@@ -199,32 +200,59 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       ]
    }
    
+   private def collectMetadata(conn, Map<String, List<String>> methodDescriptions) {
+      methodDescriptions
+         .collectEntries { key, value ->
+            [(key): new MethodMetadata(conn.metaData.class, key, methodDescriptions[key]).invokeMethodOn(conn.metaData)]
+         }
+   }
+   
    @Override
    Map<String, Object> fetchDatasourceMetadata(DatabaseDatasource datasource,
          Map<String, List<String>> methodDescriptions) {
       dbPoolService.getConnection(datasource.connectionConfig).get().withCloseable { conn ->
          assert conn
-
-         return methodDescriptions
-            .collectEntries { key, value ->
-               [(key): new MethodMetadata(conn.metaData.class, key, methodDescriptions[key]).invokeMethodOn(conn.metaData)]
-            }
+         return collectMetadata(conn, methodDescriptions)
       }
+   }
+   
+   @Override
+   Map<String, Object> fetchDatasourceMetadata(String driverClass, String jdbcUrl, String jdbcUsername,
+         String jdbcPassword, Map<String, List<String>> methodDescriptions) {
+         
+      def db = [url:jdbcUrl, user:jdbcUsername, password:jdbcPassword, driver:driverClass]
+      Sql.newInstance(db.url, db.user, db.password, db.driver).withCloseable { sql ->
+         assert sql
+         assert sql.connection
+         return collectMetadata(sql.connection, methodDescriptions)
+      }
+   }
+   
+   private def getMethods(boolean datasourceInfo, boolean jdbcUrlInfo, boolean databaseFunctionsInfo,
+         boolean databaseSupportsInfo) {
+      (
+         (datasourceInfo? getDatabaseInfoDefinition().values() : [:]) +
+         (jdbcUrlInfo? getJDBCUrlInfoDefinition().values() : [:]) +
+         (databaseFunctionsInfo? getDatabaseFunctionsInfoDefinition().values() : [:]) +
+         (databaseSupportsInfo? getDatabaseSupportsInfoDefinition().values() : [:])
+         - [:]
+      ).collectEntries { [(it): []] }
    }
    
    @Override
    Map<String, Object> fetchInfoDatasourceMetadata(DatasourceDefinition datasource, boolean datasourceInfo,
          boolean jdbcUrlInfo, boolean databaseFunctionsInfo, boolean databaseSupportsInfo) {
          assert datasource instanceof DatabaseDatasource
-      def allMethods = 
-         (
-            (datasourceInfo? getDatabaseInfoDefinition().values() : [:]) +
-            (jdbcUrlInfo? getJDBCUrlInfoDefinition().values() : [:]) + 
-            (databaseFunctionsInfo? getDatabaseFunctionsInfoDefinition().values() : [:]) + 
-            (databaseSupportsInfo? getDatabaseSupportsInfoDefinition().values() : [:])
-            - [:]
-         ).collectEntries { [(it): []] }
+      def allMethods = getMethods(datasourceInfo, jdbcUrlInfo, databaseFunctionsInfo, databaseSupportsInfo)
       return fetchDatasourceMetadata((DatabaseDatasource)datasource, allMethods)
+   }
+   
+   @Override
+   public Map<String, Object> fetchInfoDatasourceMetadata(String driverClass, String jdbcUrl, String jdbcUsername,
+         String jdbcPassword, boolean datasourceInfo, boolean jdbcUrlInfo, boolean databaseFunctionsInfo,
+         boolean databaseSupportsInfo) throws SQLException {
+      def allMethods = getMethods(datasourceInfo, jdbcUrlInfo, databaseFunctionsInfo, databaseSupportsInfo)
+      return fetchDatasourceMetadata(driverClass, jdbcUrl, jdbcUsername, jdbcPassword, allMethods);
    }
    
    @Override
@@ -299,5 +327,5 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
       ]
       map
    }
-   
+
 }
