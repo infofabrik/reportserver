@@ -51,7 +51,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       INTERNAL_DB_ID, INTERNAL_DB_PATH, INTERNAL_DB_DATABASE_NAME, INTERNAL_DB_DATABASE_VERSION,
       INTERNAL_DB_DRIVER_NAME, INTERNAL_DB_DRIVER_VERSION, INTERNAL_DB_JDBC_MAJOR_VERSION,
       INTERNAL_DB_JDBC_MINOR_VERSION, INTERNAL_DB_JDBC_URL, INTERNAL_DB_USERNAME, INTERNAL_DB_JDBC_PROPERTIES,
-      SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS,
+      KNOWN_HOSTS_FILE, SUPPORTED_SSL_PROTOCOLS, DEFAULT_SSL_PROTOCOLS, ENABLED_SSL_PROTOCOLS,
       
       SFTP_SERVER_DISABLED, SFTP_SERVER_PORT, SFTP_SERVER_KEY
    }
@@ -305,6 +305,9 @@ public class GeneralInfoPanel extends DwContentPanel {
       });
       
       final Map<Type, SimpleImmutableEntry<String, Optional<Object>>> sslInfo = new LinkedHashMap<>();
+      sslInfo.put(Type.KNOWN_HOSTS_FILE,
+            new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.knownHostsFile(),
+                  Optional.of(generalInfoDto.getSslKnownHosts())));
       sslInfo.put(Type.SUPPORTED_SSL_PROTOCOLS,
             new SimpleImmutableEntry<String, Optional<Object>>(SystemConsoleMessages.INSTANCE.supportedSslProtocols(),
                   Optional.of(generalInfoDto.getSupportedSslProtocols().stream().collect(joining(", ")))));

@@ -130,5 +130,7 @@ public interface SystemConsoleMessages extends Messages {
    public String sftpPort();
    
    public String disabled();
+   
+   public String knownHostsFile();
 
 }
