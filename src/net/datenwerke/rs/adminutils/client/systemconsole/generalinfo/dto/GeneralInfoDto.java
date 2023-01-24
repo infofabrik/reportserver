@@ -66,6 +66,7 @@ public class GeneralInfoDto implements Serializable {
    private String internalDbUsername;
    private Map<String, String> internalDbJdbcProperties;
 
+   private String sslKnownHosts;
    private List<String> supportedSslProtocols;
    private List<String> defaultSslProtocols;
    private List<String> enabledSslProtocols;
@@ -365,6 +366,14 @@ public class GeneralInfoDto implements Serializable {
 
    public void setInternalDbUsername(String internalDbUsername) {
       this.internalDbUsername = internalDbUsername;
+   }
+   
+   public String getSslKnownHosts() {
+      return sslKnownHosts;
+   }
+
+   public void setSslKnownHosts(String sslKnownHosts) {
+      this.sslKnownHosts = sslKnownHosts;
    }
 
    public void setSupportedSslProtocols(List<String> supportedSslProtocols) {

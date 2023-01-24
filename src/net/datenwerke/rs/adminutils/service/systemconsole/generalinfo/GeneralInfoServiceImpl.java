@@ -51,6 +51,7 @@ import net.datenwerke.rs.adminutils.service.logs.LogFilesService;
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
+import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
@@ -75,6 +76,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<HistoryService> historyServiceProvider;
    private final Provider<ConfigDirService> configDirServiceProvider;
    private final Provider<LogFilesService> logFilesServiceProvider;
+   private final Provider<ConfigService> configServiceProvider;
    
    private final Provider<String> sftpKeyLocation;
    private final Provider<Integer> sftpPort;
@@ -94,6 +96,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<HistoryService> historyServiceProvider,
          Provider<ConfigDirService> configDirServiceProvider,
          Provider<LogFilesService> logFilesServiceProvider,
+         Provider<ConfigService> configServiceProvider,
          
          @Nullable @KeyLocation Provider<String> sftpKeyLocation,
          @SftpPort Provider<Integer> sftpPort, 
@@ -109,6 +112,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.historyServiceProvider = historyServiceProvider;
       this.configDirServiceProvider = configDirServiceProvider;
       this.logFilesServiceProvider = logFilesServiceProvider;
+      this.configServiceProvider = configServiceProvider;
       
       this.sftpKeyLocation = sftpKeyLocation;
       this.sftpPort = sftpPort;
@@ -196,7 +200,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setOsVersion(getOsVersion());
       info.setCatalinaHome(getCatalinaHome());
       info.setCatalinaBase(getCatalinaBase());
-      info.setLogFilesDirectory(getLogFilesDirectory());
+      info.setLogFilesDirectory(getLogFilesDirectory(true));
       info.setJvmUserTimezone(getJvmUserTimezone());
       info.setJvmUserCountry(getJvmUserCountry());
       info.setJvmUserLanguage(getJvmUserLanguage());
@@ -206,6 +210,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       info.setGroovyVersion(getGroovyVersion());
       info.setLocale(getLocale());
       info.setJvmLocale(getJvmLocale());
+      info.setSslKnownHosts(getKnownHostsFile(true));
       info.setSupportedSslProtocols(getSupportedSslProtocols());
       info.setDefaultSslProtocols(getDefaultSslProtocols());
       info.setEnabledSslProtocols(getEnabledSslProtocols());
@@ -216,7 +221,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       setInternalDb(info);
       setSftp(info);
       
-      info.setConfigDir(getConfigDirectory());
+      info.setConfigDir(getConfigDirectory(true));
       
       return info;
    }
@@ -231,7 +236,7 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       } else if (keylo.equals("$generated")) {
          info.setSftpKey("Generated");
       } else {
-         info.setSftpKey("File: " + getCheckedFilePath(Paths.get(keylo)));
+         info.setSftpKey("File: " + appendFileCheck(Paths.get(keylo)));
       }
    }
    
@@ -403,12 +408,16 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getConfigDirectory() {
+   public String getConfigDirectory(boolean appendFileCheck) {
       ConfigDirService configDirService = configDirServiceProvider.get();
       if (!configDirService.isEnabled())
          return "Not Configured";
       
-      return getCheckedFilePath(configDirService.getConfigDir().toPath());
+      Path configDir = configDirService.getConfigDir().toPath();
+      if (appendFileCheck)
+         return appendFileCheck(configDir);
+      
+      return configDir.toAbsolutePath().toString(); 
    }
    
    @Override
@@ -528,12 +537,15 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    }
 
    @Override
-   public String getLogFilesDirectory() {
+   public String getLogFilesDirectory(boolean appendFileCheck) {
       Path logDir = Paths.get(logFilesServiceProvider.get().getLogDirectory());
-      return getCheckedFilePath(logDir);
+      if (appendFileCheck)
+         return appendFileCheck(logDir);
+      
+      return logDir.toAbsolutePath().toString(); 
    }
    
-   private String getCheckedFilePath(Path path) {
+   private String appendFileCheck(Path path) {
       StringBuilder sb = new StringBuilder();
       sb.append(path.toAbsolutePath().toString());
       
@@ -541,6 +553,21 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          .append((Files.exists(path) && Files.isReadable(path))? "OK)" : "INACCESSIBLE)");
       
       return sb.toString();
+   }
+
+   @Override
+   public String getKnownHostsFile(boolean appendFileCheck) {
+      Path knownHostsFile = Paths.get(configServiceProvider.get().getConfigFailsafe("security/misc.cf")
+            .getString("knownHosts", getUserHome() + "/.ssh/known_hosts"));
+      if (appendFileCheck)
+         return appendFileCheck(knownHostsFile);
+
+      return knownHostsFile.toAbsolutePath().toString();
+   }
+
+   @Override
+   public String getUserHome() {
+      return readSystemProperty("user.home");
    }
 
 }

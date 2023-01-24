@@ -36,6 +36,10 @@ public interface GeneralInfoService {
    
    List<String> getEnabledSslProtocols();
    
+   String getKnownHostsFile(boolean appendFileCheck);
+   
+   String getUserHome();
+   
    List<String> getStaticPams();
 
    String getRsVersion();
@@ -50,7 +54,7 @@ public interface GeneralInfoService {
    
    Map<Memory, Object> getMemoryValues();
    
-   String getConfigDirectory();
+   String getConfigDirectory(boolean appendFileCheck);
    
    String getCatalinaHome();
    
@@ -66,6 +70,6 @@ public interface GeneralInfoService {
    
    String getJvmFileEncoding();
    
-   String getLogFilesDirectory();
+   String getLogFilesDirectory(boolean appendFileCheck);
    
 }

@@ -128,6 +128,8 @@ public class EnvCommand implements TerminalCommandHook {
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(150, 0));
 
+      table.addDataRow(new RSStringTableRow("known_hosts file",
+            generalInfo.getSslKnownHosts()));
       table.addDataRow(new RSStringTableRow("Supported SSL protocols",
             generalInfo.getSupportedSslProtocols().stream().collect(joining(", "))));
       table.addDataRow(new RSStringTableRow("Default SSL protocols",
