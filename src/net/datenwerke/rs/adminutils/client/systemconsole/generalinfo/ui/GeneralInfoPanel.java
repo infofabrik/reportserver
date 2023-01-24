@@ -297,7 +297,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       form.addField(Separator.class, new SFFCSpace());
       form.addField(Separator.class, new SFFCSpace());
       
-      form.addField(StaticLabel.class, "SSL", new SFFCStaticLabel() {
+      form.addField(StaticLabel.class, "SSL/SSH", new SFFCStaticLabel() {
          @Override
          public String getLabel() {
             return "";

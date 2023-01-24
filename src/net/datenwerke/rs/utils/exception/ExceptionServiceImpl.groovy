@@ -17,6 +17,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DAT
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_DATABASE_QUERY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_ID
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_NAME
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.KNOWN_HOSTS_FILE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_PATH
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DATASOURCE_TYPE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.DEFAULT_SSL_PROTOCOLS
@@ -358,7 +359,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.catalinaBase
             break
          case LOG_FILES_DIRECTORY:
-            propertyValues[property] = generalInfoService.logFilesDirectory
+            propertyValues[property] = generalInfoService.getLogFilesDirectory(true)
             break
          case REQUEST_URL:
             propertyValues[property] = generalInfoService.requestURL
@@ -379,7 +380,7 @@ public class ExceptionServiceImpl implements ExceptionService {
             propertyValues[property] = generalInfoService.protocol
             break
          case CONFIG_DIRECTORY:
-            propertyValues[property] = generalInfoService.configDirectory
+            propertyValues[property] = generalInfoService.getConfigDirectory(true)
             break
          case OS_VERSION:
             propertyValues[property] = generalInfoService.osVersion
@@ -404,6 +405,9 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case JVM_FILE_ENCODING:
             propertyValues[property] = generalInfoService.jvmFileEncoding
+            break
+         case KNOWN_HOSTS_FILE:
+            propertyValues[property] = generalInfoService.getKnownHostsFile(true)
             break
          case SUPPORTED_SSL_PROTOCOLS:
             propertyValues[property] = generalInfoService.supportedSslProtocols

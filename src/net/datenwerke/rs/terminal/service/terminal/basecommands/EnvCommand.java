@@ -90,7 +90,7 @@ public class EnvCommand implements TerminalCommandHook {
          result.addResultTable(getDbConfigAsTable(generalInfo));
          result.addResultTable(getInternalDbInformationAsTable(generalInfo));
          result.addResultTable(getSftpInformationAsTable(generalInfo));
-         result.addResultTable(getSslInformationAsTable(generalInfo));
+         result.addResultTable(getSecurityInformationAsTable(generalInfo));
       } catch (SQLException e) {
          throw new TerminalException(e);
       }
@@ -121,9 +121,9 @@ public class EnvCommand implements TerminalCommandHook {
       return table;
    }
    
-   private RSTableModel getSslInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {
+   private RSTableModel getSecurityInformationAsTable(GeneralInfoDto generalInfo) throws SQLException {
       RSTableModel table = new RSTableModel();
-      TableDefinition td = new TableDefinition(Arrays.asList("SSL", ""),
+      TableDefinition td = new TableDefinition(Arrays.asList("SSL/SSH", ""),
             Arrays.asList(String.class, String.class));
       table.setTableDefinition(td);
       td.setDisplaySizes(Arrays.asList(150, 0));
