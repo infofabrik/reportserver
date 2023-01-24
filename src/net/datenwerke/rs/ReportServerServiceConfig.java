@@ -369,7 +369,7 @@ public class ReportServerServiceConfig extends DwGwtFrameworkBase {
             } else {
                /* servlets that are only here in community */
                serve(BASE_URL + "crystalutils").with(CrystalUtilsRpcDummyServiceImpl.class); //$NON-NLS-1$
-               serve(BASE_URL + "memoryconsole").with(MemoryConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
+               serve(BASE_URL + "memoryconsole").with(MemoryConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$               
                serve(BASE_URL + "connectionpoolconsole").with(ConnectionPoolConsoleDummyRpcServiceImpl.class); //$NON-NLS-1$
             }
 

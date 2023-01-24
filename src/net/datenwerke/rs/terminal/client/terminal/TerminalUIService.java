@@ -13,4 +13,5 @@ public interface TerminalUIService {
    public void processExternalResult(CommandResultDto result);
 
    public void displayResult(CommandResultDto result);
+   
 }
