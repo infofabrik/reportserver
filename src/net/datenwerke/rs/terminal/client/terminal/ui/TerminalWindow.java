@@ -157,7 +157,9 @@ public class TerminalWindow extends DwWindow {
       setHeaderIcon(BaseIcon.TERMINAL);
       setCollapsible(true);
       setTitleCollapse(true);
-
+      setMaximizable(true);
+      setResizable(true);
+      
       addStyleName("rs-terminal-window");
 
       /* create panels */
@@ -607,4 +609,5 @@ public class TerminalWindow extends DwWindow {
       super.hide();
       terminalDao.closeSession();
    }
+   
 }
