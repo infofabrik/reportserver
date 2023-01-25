@@ -36,6 +36,7 @@ import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_COUNTRY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_LANGUAGE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_USER_TIMEZONE
+import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.JVM_SERVER_TIME
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOCALE
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.LOG_FILES_DIRECTORY
 import static net.datenwerke.rs.utils.exception.ExceptionService.LogProperty.MEMORY_FREE
@@ -405,6 +406,9 @@ public class ExceptionServiceImpl implements ExceptionService {
             break
          case JVM_FILE_ENCODING:
             propertyValues[property] = generalInfoService.jvmFileEncoding
+            break
+         case JVM_SERVER_TIME:
+            propertyValues[property] = generalInfoService.now
             break
          case KNOWN_HOSTS_FILE:
             propertyValues[property] = generalInfoService.getKnownHostsFile(true)
