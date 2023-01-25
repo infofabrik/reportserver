@@ -2,7 +2,10 @@ package net.datenwerke.rs.core.service.i18ntools;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.Locale;
 
 import com.google.inject.Inject;
 
@@ -18,7 +21,7 @@ public class FormatHelper {
    private String longDateTimePattern;
 
    private final I18nToolsService i18nToolsService;
-
+   
    @Inject
    public FormatHelper(I18nToolsService i18nToolsService) {
       this.i18nToolsService = i18nToolsService;
@@ -91,6 +94,11 @@ public class FormatHelper {
       }
    }
 
+   /**
+    * @deprecated use {{@link #formatLongDateTime(ZonedDateTime)}
+    * @param date format date
+    * @return the formatted date
+    */
    public String formatLongDateTime(Date date) {
       SimpleDateFormat format = null;
       if (null != longDateTimePattern) {
@@ -101,6 +109,22 @@ public class FormatHelper {
                LocalizationServiceImpl.getLocale());
          return df.format(date);
       }
+   }
+   
+   public String formatLongDateTime(ZonedDateTime dateTime) {
+      DateTimeFormatter format = null;
+      final Locale locale = LocalizationServiceImpl.getLocale();
+      if (null != longDateTimePattern) {
+         try {
+            format = DateTimeFormatter.ofPattern(longDateTimePattern).withLocale(locale);
+         } catch (IllegalArgumentException e) {
+            // if invalid format, use default
+            format = DateTimeFormatter.ISO_ZONED_DATE_TIME.withLocale(locale);
+         }
+      } else 
+         format = DateTimeFormatter.ISO_ZONED_DATE_TIME.withLocale(locale);
+      
+      return dateTime.format(format);
    }
 
 }

@@ -27,6 +27,7 @@ public class GeneralInfoDto implements Serializable {
    private String protocol;
    private String maxMemory;
    private String groovyVersion;
+   private String now;
    private String osVersion;
    private String userAgent;
 
@@ -182,6 +183,14 @@ public class GeneralInfoDto implements Serializable {
 
    public void setUserAgent(String userAgent) {
       this.userAgent = userAgent;
+   }
+   
+   public String getNow() {
+      return now;
+   }
+
+   public void setNow(String now) {
+      this.now = now;
    }
 
    public String getOsVersion() {

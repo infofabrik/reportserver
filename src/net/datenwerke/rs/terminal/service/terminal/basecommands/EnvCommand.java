@@ -74,6 +74,7 @@ public class EnvCommand implements TerminalCommandHook {
       table.addDataRow(new RSStringTableRow("JVM user country", generalInfo.getJvmUserCountry()));
       table.addDataRow(new RSStringTableRow("JVM user timezone", generalInfo.getJvmUserTimezone()));
       table.addDataRow(new RSStringTableRow("JVM file encoding", generalInfo.getJvmFileEncoding()));
+      table.addDataRow(new RSStringTableRow("JVM server time", generalInfo.getNow()));
       table.addDataRow(new RSStringTableRow("Operation system", generalInfo.getOsVersion()));
       table.addDataRow(new RSStringTableRow("User agent", generalInfo.getUserAgent()));
       table.addDataRow(new RSStringTableRow("Request URL", generalInfo.getRequestURL()));

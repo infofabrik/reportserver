@@ -72,4 +72,6 @@ public interface GeneralInfoService {
    
    String getLogFilesDirectory(boolean appendFileCheck);
    
+   String getNow();
+   
 }

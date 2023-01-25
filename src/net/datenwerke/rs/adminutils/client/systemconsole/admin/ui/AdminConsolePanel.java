@@ -55,7 +55,7 @@ public class AdminConsolePanel extends DwContentPanel {
    }
 
    private void initializeUI() {
-      setHeading(SystemConsoleMessages.INSTANCE.adminConsole());
+      setHeading(SystemConsoleMessages.INSTANCE.adminPanel());
       addStyleName("rs-adminconsole");
 
       wrapper = new VerticalLayoutContainer();
@@ -68,7 +68,7 @@ public class AdminConsolePanel extends DwContentPanel {
    protected void init() {
       wrapper.add(buttonsLayout);
       final SimpleForm form = SimpleForm.getNewInstance();
-      form.setHeading(SystemConsoleMessages.INSTANCE.adminConsole());
+      form.setHeading(SystemConsoleMessages.INSTANCE.adminPanel());
       wrapper.add(form, new VerticalLayoutData(1, -1, new Margins(50)));
       form.clearButtonBar();
       

@@ -23,7 +23,7 @@ public class AdminInfoSystemConsoleHooker implements SystemConsoleViewDomainHook
 
    @Override
    public String getNavigationText() {
-      return SystemConsoleMessages.INSTANCE.adminConsole();
+      return SystemConsoleMessages.INSTANCE.adminPanel();
    }
 
    @Override

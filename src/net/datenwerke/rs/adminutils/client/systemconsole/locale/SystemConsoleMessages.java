@@ -133,7 +133,7 @@ public interface SystemConsoleMessages extends Messages {
    
    public String knownHostsFile();
 
-   public String adminConsole();
+   public String adminPanel();
 
    public String openTerminal();
 
