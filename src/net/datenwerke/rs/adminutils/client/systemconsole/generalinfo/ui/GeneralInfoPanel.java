@@ -43,7 +43,7 @@ public class GeneralInfoPanel extends DwContentPanel {
       RS_VERSION, JAVA_VERSION, JAVA_HOME, JAVA_VM_ARGUMENTS, APPLICATION_SERVER, CATALINA_HOME, CATALINA_BASE, LOG_FILES_DIRECTORY,
       REQUEST_URL, REQUEST_SCHEME, REQUEST_SERVER_NAME, REQUEST_SERVER_PORT, REQUEST_CONTEXT_PATH, REQUEST_PROTOCOL,
       MAX_MEMORY, CONFIG_DIR, GROOVY_VERSION, LOCALE, JVM_LOCALE, JVM_USER_LANGUAGE, JVM_USER_COUNTRY,
-      JVM_USER_TIMEZONE, JVM_FILE_ENCODING, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
+      JVM_USER_TIMEZONE, JVM_FILE_ENCODING, JVM_SERVER_TIME, OS_SYSTEM, USER_AGENT, STATIC_PAMS, HIBERNATE_DIALECT,
       HIBERNATE_DB_DATABASE_NAME, HIBERNATE_DB_DATABASE_VERSION,
       HIBERNATE_DB_DRIVER_NAME, HIBERNATE_DB_DRIVER_VERSION, HIBERNATE_DB_JDBC_MAJOR_VERSION,
       HIBERNATE_DB_JDBC_MINOR_VERSION, HIBERNATE_DB_JDBC_URL, HIBERNATE_DB_JDBC_USERNAME,
@@ -139,6 +139,8 @@ public class GeneralInfoPanel extends DwContentPanel {
             SystemConsoleMessages.INSTANCE.jvmUserTimezone(), Optional.of(generalInfoDto.getJvmUserTimezone())));
       generalInfo.put(Type.JVM_FILE_ENCODING, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.jvmFileEncoding(), Optional.of(generalInfoDto.getJvmFileEncoding())));
+      generalInfo.put(Type.JVM_SERVER_TIME, new SimpleImmutableEntry<String, Optional<Object>>(
+            SystemConsoleMessages.INSTANCE.jvmServerTime(), Optional.of(generalInfoDto.getNow())));
       generalInfo.put(Type.OS_SYSTEM, new SimpleImmutableEntry<String, Optional<Object>>(
             SystemConsoleMessages.INSTANCE.operationSystemLabel(), Optional.of(generalInfoDto.getOsVersion())));
       generalInfo.put(Type.USER_AGENT, new SimpleImmutableEntry<String, Optional<Object>>(

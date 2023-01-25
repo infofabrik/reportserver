@@ -23,6 +23,7 @@ import java.nio.file.Paths;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
@@ -54,7 +55,6 @@ import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.configservice.service.configservice.ConfigDirService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
-import net.datenwerke.rs.core.service.i18ntools.FormatHelper;
 import net.datenwerke.rs.core.service.internaldb.TempTableService;
 import net.datenwerke.rs.license.service.LicenseService;
 import net.datenwerke.rs.remoteaccess.service.sftp.annotations.KeyLocation;
@@ -80,7 +80,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
    private final Provider<ConfigDirService> configDirServiceProvider;
    private final Provider<LogFilesService> logFilesServiceProvider;
    private final Provider<ConfigService> configServiceProvider;
-   private final Provider<FormatHelper> formatHelperProvider;
    
    private final Provider<String> sftpKeyLocation;
    private final Provider<Integer> sftpPort;
@@ -101,7 +100,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
          Provider<ConfigDirService> configDirServiceProvider,
          Provider<LogFilesService> logFilesServiceProvider,
          Provider<ConfigService> configServiceProvider,
-         Provider<FormatHelper> formatHelperProvider,
          
          @Nullable @KeyLocation Provider<String> sftpKeyLocation,
          @SftpPort Provider<Integer> sftpPort, 
@@ -118,7 +116,6 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
       this.configDirServiceProvider = configDirServiceProvider;
       this.logFilesServiceProvider = logFilesServiceProvider;
       this.configServiceProvider = configServiceProvider;
-      this.formatHelperProvider = formatHelperProvider;
       
       this.sftpKeyLocation = sftpKeyLocation;
       this.sftpPort = sftpPort;
@@ -579,8 +576,9 @@ public class GeneralInfoServiceImpl implements GeneralInfoService {
 
    @Override
    public String getNow() {
-      ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
-      return formatHelperProvider.get().formatLongDateTime(now);
+      final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+      final DateTimeFormatter format = DateTimeFormatter.ISO_ZONED_DATE_TIME
+            .withLocale(LocalizationServiceImpl.getLocale());
+      return now.format(format);
    }
-
 }

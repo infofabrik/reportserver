@@ -137,4 +137,6 @@ public interface SystemConsoleMessages extends Messages {
 
    public String openTerminal();
 
+   public String jvmServerTime();
+
 }
