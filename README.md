@@ -10,4 +10,8 @@ Documentation: https://reportserver.net/en/documentation
 
 Scripting samples: https://github.com/infofabrik/reportserver-samples
 
+Demo: https://reportserver.net/en/demo/
+
+Forum: https://forum.reportserver.net
+
 Bitnami Builds: https://bitnami.com/stack/reportserver
