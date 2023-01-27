@@ -101,4 +101,12 @@ public class TerminalUIServiceImpl implements TerminalUIService {
       window.show();
    }
 
+   @Override
+   public void displayTerminalMaximizedWindow() {
+       final TerminalWindow terminal = terminalWindowProvider.get(); 
+       terminal.show();
+       terminal.maximize();
+       terminal.getHeader().hide();
+   }
+
 }

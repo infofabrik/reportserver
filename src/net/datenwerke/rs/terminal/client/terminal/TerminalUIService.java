@@ -8,6 +8,8 @@ public interface TerminalUIService {
 
    void displayTerminalWindow();
 
+   void displayTerminalMaximizedWindow();
+
    boolean isInitialized();
 
    public void processExternalResult(CommandResultDto result);

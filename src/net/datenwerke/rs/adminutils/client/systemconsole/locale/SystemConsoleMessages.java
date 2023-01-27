@@ -136,7 +136,8 @@ public interface SystemConsoleMessages extends Messages {
    public String adminPanel();
 
    public String openTerminal();
-
+   
+   public String openTerminalInNewWindow();
+   
    public String jvmServerTime();
-
 }

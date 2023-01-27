@@ -5,6 +5,8 @@ import com.google.inject.Singleton;
 
 public class TerminalUIModule extends AbstractGinModule {
 
+   public static final String TERMINAL_ID = "terminal";
+   
    @Override
    protected void configure() {
       /* service */
