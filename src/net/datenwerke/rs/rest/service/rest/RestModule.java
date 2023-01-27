@@ -11,8 +11,6 @@ public class RestModule extends AbstractModule {
    @Override
    protected void configure() {
       
-      bind(RestUtilService.class).to(RestUtilServiceImpl.class);
-      
       RestAuthenticationCheckInterceptor restAuthenticationInterceptor = new RestAuthenticationCheckInterceptor();
       bindInterceptor(Matchers.any(), Matchers.annotatedWith(RestAuthentication.class), restAuthenticationInterceptor);
       bindInterceptor(Matchers.annotatedWith(RestAuthentication.class),
