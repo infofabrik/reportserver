@@ -17,6 +17,9 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -238,6 +241,46 @@ public class EnvironmentValidator extends HttpServlet {
       
       sb.append("Groovy Version: " + GroovySystem.getVersion()).append("\r\n");
       sb.append("JVM Locale: " + Locale.getDefault().toString() + "\r\n");
+      sb.append("JVM user language: " + readSystemProperty("user.language") + "\r\n");
+      sb.append("JVM user country: " + readSystemProperty("user.country") + "\r\n");
+      sb.append("JVM user timezone: " + ZoneId.systemDefault().toString() + "\r\n");
+      sb.append("JVM file encoding: " + readSystemProperty("file.encoding") + "\r\n");
+      
+      final ZonedDateTime now = ZonedDateTime.now(ZoneId.systemDefault());
+      final DateTimeFormatter format = DateTimeFormatter.ISO_ZONED_DATE_TIME.withLocale(Locale.getDefault());
+      sb.append("JVM server time: " + now.format(format) + "\r\n");
+      
+      sb.append("Operation system: " + getOsVersion() + "\r\n");
+      
+   }
+   
+   private static String readSystemProperty(String property) {
+      RuntimeMXBean runtimeMxBean = ManagementFactory.getRuntimeMXBean();
+      try {
+         return runtimeMxBean.getSystemProperties().get(property);
+      } catch (SecurityException e) {
+         logger.warn("Cannot read " + property, e);
+         return "Unknown (" + ExceptionUtils.getRootCauseMessage(e) + ")";
+      }
+   }
+   
+   private static String getOsVersion() {
+      try {
+         String osVersion = readSystemProperty("os.version");
+         String osArchitecture = readSystemProperty("os.arch");
+         final StringBuilder sb = new StringBuilder();
+         sb.append(readSystemProperty("os.name"));
+         if (null != osVersion) {
+            sb.append(" ").append(osVersion);
+         }
+         if (null != osArchitecture) {
+            sb.append(" (" + osArchitecture).append(")");
+         }
+         return sb.toString();
+      } catch (SecurityException e) {
+         logger.warn("Cannot read OS version", e);
+         return ExceptionUtils.getRootCauseMessage(e);
+      }
    }
 
    private static void writeVersionInfo(StringBuilder sb) {
