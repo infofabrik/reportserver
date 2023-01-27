@@ -60,6 +60,7 @@ import net.datenwerke.rs.search.client.search.dto.SearchResultEntryDto;
 import net.datenwerke.rs.search.client.search.dto.SearchResultListDto;
 import net.datenwerke.rs.search.client.search.dto.decorator.SearchFilterDtoDec;
 import net.datenwerke.rs.theme.client.icon.BaseIcon;
+import net.datenwerke.rs.tsreportarea.client.tsreportarea.dto.TsDiskReportReferenceDto;
 
 public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionRepositoryProviderHook {
 
@@ -220,7 +221,12 @@ public class ReportCatalogOnDemandRepositoryProvider implements ReportSelectionR
             SearchResultEntryDto selection = event.getSelectedItem();
             if (null != selection && null != selection.getResultObject()) {
                store.clear();
-               store.add((ReportDto) selection.getResultObject());
+               if (selection.getResultObject() instanceof ReportDto)
+                  store.add((ReportDto) selection.getResultObject());
+               else if (selection.getResultObject() instanceof TsDiskReportReferenceDto) 
+                  store.add(((TsDiskReportReferenceDto) selection.getResultObject()).getReport());
+               else
+                  throw new IllegalStateException("Cannot add report of type: " + selection.getResultObject());
                grid.getSelectionModel().select(0, false);
             }
          }

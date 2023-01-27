@@ -33,6 +33,7 @@ import net.datenwerke.rs.search.service.search.results.SearchResultEntry;
 import net.datenwerke.rs.search.service.search.results.SearchResultList;
 import net.datenwerke.rs.search.service.search.results.SearchResultTag;
 import net.datenwerke.rs.search.service.search.results.SearchResultTagType;
+import net.datenwerke.rs.tsreportarea.service.tsreportarea.entities.TsDiskReportReference;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.rs.utils.jpa.EntityUtils;
 import net.datenwerke.rs.utils.reflection.ReflectionService;
@@ -173,7 +174,10 @@ public class SearchServiceImpl implements SearchService {
          }
       }
 
-      final Set<SearchResultTag> tagSet = overallEntryList.stream().flatMap(e -> e.getTags().stream()).collect(toSet());
+      final Set<SearchResultTag> tagSet = overallEntryList
+            .stream()
+            .flatMap(e -> e.getTags().stream())
+            .collect(toSet());
 
       resultList.setTags(tagSet);
 
@@ -207,6 +211,12 @@ public class SearchServiceImpl implements SearchService {
 
                         if (tagsNext.getType() instanceof SearchResultTagType) {
                            Class<?> tagsBaseType = Class.forName(tagsNext.getValue());
+                           if (tagsBaseType == TsDiskReportReference.class
+                                 && nextEntry.getResultObject() instanceof TsDiskReportReference
+                                 && null != ((TsDiskReportReference)nextEntry.getResultObject()).getReport()) {
+                              tagsBaseType = ((TsDiskReportReference)nextEntry.getResultObject()).getReport().getClass();
+                           }
+                           
                            if (filterTagsNext.getType().getType().equals(SearchUiServiceImpl.TAG_EXACT_TYPE)) {
                               if (null != filterBaseType && filterBaseType.equals(tagsBaseType))
                                  passTest = true;
