@@ -13,12 +13,15 @@ import javax.inject.Provider;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameFolderConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
+import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkDispatchNotificationHook;
+import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFileDto;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.FileServerFolderDto;
@@ -26,9 +29,11 @@ import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServ
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.misc.DateUtils;
 import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.rs.utils.zip.ZipUtilsService.FileFilter;
+import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -38,17 +43,20 @@ public class DatasinkServiceImpl implements DatasinkService {
    private final DtoService dtoService;
    private final ZipUtilsService zipUtilsService;
    private final Provider<AuthenticatorService> authenticatorServiceProvider;
+   private final Provider<HookHandlerService> hookHandlerServiceProvider;
 
    @Inject
    public DatasinkServiceImpl(
          Provider<ConfigService> configServiceProvider, DtoService dtoService,
          ZipUtilsService zipUtilsService,
-         Provider<AuthenticatorService> authenticatorServiceProvider
+         Provider<AuthenticatorService> authenticatorServiceProvider,
+         Provider<HookHandlerService> hookHandlerServiceProvider
          ) {
       this.configServiceProvider = configServiceProvider;
       this.dtoService = dtoService;
       this.zipUtilsService = zipUtilsService;
       this.authenticatorServiceProvider = authenticatorServiceProvider;
+      this.hookHandlerServiceProvider = hookHandlerServiceProvider;
    }
 
    @Override
@@ -184,6 +192,75 @@ public class DatasinkServiceImpl implements DatasinkService {
          }
 
       });
+   }
+
+   @Override
+   public void exportIntoDatasink(final ReportExecuteJob rJob, final boolean compress, final DatasinkDefinition datasink,
+         final DatasinkConfiguration config) throws ActionExecutionException {
+      try {
+         if (compress) {
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = rJob.getExecutedReport().getReport();
+               String reportFileExtension = rJob.getExecutedReport().getFileExtension();
+               zipUtilsService.createZip(
+                     zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
+                     os);
+               final byte[] report = os.toByteArray();
+               exportIntoDatasink(report, rJob.getExecutor(), datasink, config);
+               
+               hookHandlerServiceProvider.get().getHookers(DatasinkDispatchNotificationHook.class)
+                     .forEach(hooker -> hooker.notifyOfScheduledReportDispatched(report, rJob, datasink, config));
+            }
+         } else {
+            exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), datasink, config);
+            
+            hookHandlerServiceProvider.get().getHookers(DatasinkDispatchNotificationHook.class).forEach(hooker -> hooker
+                  .notifyOfScheduledReportDispatched(rJob.getExecutedReport().getReport(), rJob, datasink, config));
+         }
+      } catch (Exception e) {
+         throw new ActionExecutionException("Report could not be sent to datasink: " + datasink.getClass().getSimpleName(), e);
+      }
+   }
+   
+   @Override
+   public void exportIntoDatasink(CompiledReport cReport, String name, boolean compress, DatasinkDefinition datasink,
+         DatasinkConfiguration config) throws DatasinkExportException {
+      try {
+         if (compress) {
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+               Object reportObj = cReport.getReport();
+               zipUtilsService.createZip(zipUtilsService.cleanFilename(name + "." + cReport.getFileExtension()),
+                     reportObj, os);
+               final byte[] report = os.toByteArray();
+               exportIntoDatasink(report, datasink, config);
+               hookHandlerServiceProvider.get().getHookers(DatasinkDispatchNotificationHook.class)
+                     .forEach(hooker -> hooker.notifyOfCompiledReportDispatched(report, datasink, config));
+            }
+         } else {
+            exportIntoDatasink(cReport.getReport(), datasink, config);
+            hookHandlerServiceProvider.get().getHookers(DatasinkDispatchNotificationHook.class)
+                  .forEach(hooker -> hooker.notifyOfCompiledReportDispatched(cReport.getReport(), datasink, config));
+         }
+      } catch (Exception e) {
+         throw new DatasinkExportException(
+               "Report could not be sent to datasink: " + datasink.getClass().getSimpleName(), e);
+      }
+   }
+
+   @Override
+   public String getFilenameForDatasink(ReportExecuteJob rJob, boolean compress, String filename) {
+      if (compress)
+         return filename + ".zip";
+      else 
+         return filename + "." + rJob.getExecutedReport().getFileExtension();
+   }
+
+   @Override
+   public String getFilenameForDatasink(String name, CompiledReport cReport, boolean compress) {
+      if (compress) 
+         return name + ".zip";
+      else 
+         return name + "." + cReport.getFileExtension();
    }
 
 }

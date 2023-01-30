@@ -2,7 +2,6 @@ package net.datenwerke.rs.onedrive.server.onedrive;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +38,6 @@ import net.datenwerke.rs.onedrive.service.onedrive.OneDriveService;
 import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionService;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -60,7 +58,6 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
    private final OneDriveService oneDriveService;
    private final SecurityService securityService;
    private final ExceptionService exceptionServices;
-   private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
@@ -73,7 +70,6 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
          HookHandlerService hookHandlerService, 
          OneDriveService oneDriveService, 
          ExceptionService exceptionServices,
-         ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
 
@@ -85,14 +81,13 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       this.hookHandlerService = hookHandlerService;
       this.oneDriveService = oneDriveService;
       this.exceptionServices = exceptionServices;
-      this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
-         throws ServerCallFailedException {
+   public void exportReportIntoDatasink(final ReportDto reportDto, final String executorToken,
+         final DatasinkDefinitionDto datasinkDto, final String format, final List<ReportExecutionConfigDto> configs,
+         final String name, final String folder, final boolean compressed) throws ServerCallFailedException {
       if (!(datasinkDto instanceof OneDriveDatasinkDto))
          throw new IllegalArgumentException("Not a OneDrive datasink");
       final ReportExecutionConfig[] configArray = getConfigArray(executorToken, configs);
@@ -114,55 +109,24 @@ public class OneDriveRpcServiceImpl extends SecuredRemoteServiceServlet implemen
       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
 
-      CompiledReport cReport;
       try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
+         final CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+         datasinkServiceProvider.get().exportIntoDatasink(cReport, name, compressed, oneDriveDatasink,
+               new DatasinkFilenameFolderConfig() {
 
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     oneDriveDatasink,
-                     new DatasinkFilenameFolderConfig() {
+                  @Override
+                  public String getFilename() {
+                     return datasinkServiceProvider.get().getFilenameForDatasink(name, cReport, compressed);
+                  }
 
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
-
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
-                     });
-            }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
-                  oneDriveDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFilename() {
-                        return filename;
-                     }
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                  });
-         }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to OneDrive: " + e.getMessage(), e);
       }
-
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,

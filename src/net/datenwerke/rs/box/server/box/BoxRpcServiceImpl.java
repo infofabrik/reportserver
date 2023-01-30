@@ -2,7 +2,6 @@ package net.datenwerke.rs.box.server.box;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +38,6 @@ import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionService;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -60,7 +58,6 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
    private final BoxService boxService;
    private final SecurityService securityService;
    private final ExceptionService exceptionServices;
-   private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
@@ -73,7 +70,6 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
          HookHandlerService hookHandlerService, 
          BoxService boxService, 
          ExceptionService exceptionServices,
-         ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
 
@@ -85,14 +81,13 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       this.hookHandlerService = hookHandlerService;
       this.boxService = boxService;
       this.exceptionServices = exceptionServices;
-      this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
-         throws ServerCallFailedException {
+   public void exportReportIntoDatasink(final ReportDto reportDto, final String executorToken,
+         final DatasinkDefinitionDto datasinkDto, final String format, final List<ReportExecutionConfigDto> configs,
+         final String name, final String folder, final boolean compressed) throws ServerCallFailedException {
       if (!(datasinkDto instanceof BoxDatasinkDto))
          throw new IllegalArgumentException("Not a box datasink");
 
@@ -115,60 +110,33 @@ public class BoxRpcServiceImpl extends SecuredRemoteServiceServlet implements Bo
       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
 
-      CompiledReport cReport;
       try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
+         final CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+         datasinkServiceProvider.get().exportIntoDatasink(cReport, name, compressed, boxDatasink,
+               new DatasinkFilenameFolderConfig() {
 
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(),
-                     boxDatasink,
-                     new DatasinkFilenameFolderConfig() {
+                  @Override
+                  public String getFilename() {
+                     return datasinkServiceProvider.get().getFilenameForDatasink(name, cReport, compressed);
+                  }
 
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
-                     });
-            }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
-                  boxDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFolder() {
-                        return filename;
-                     }
-
-                     @Override
-                     public String getFilename() {
-                        return folder;
-                     }
-                  });
-         }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+               });
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Box: " + e.getMessage(), e);
       }
-
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,
          final List<ReportExecutionConfigDto> configs) throws ExpectedException {
       return Stream.concat(
-            configs.stream().map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
-            Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
+               configs
+               .stream()
+               .map(rethrowFunction(config -> (ReportExecutionConfig) dtoService.createPoso(config))),
+               Stream.of(new RECReportExecutorToken(executorToken))).toArray(ReportExecutionConfig[]::new);
    }
 
    @Override

@@ -12,6 +12,7 @@ import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.reportmanager.entities.reports.Report;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.tabledatasink.service.tabledatasink.definitions.TableDatasink;
@@ -66,12 +67,8 @@ public class ScheduleAsTableDatasinkFileAction extends AbstractAction {
    }
 
    private void sendViaTableDatasink(ReportExecuteJob rJob) throws ActionExecutionException {
-      try {
-         datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), tableDatasink,
-               null);
-      } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to table datasink", e);
-      }
+      datasinkService.exportIntoDatasink(rJob, false, tableDatasink, new DatasinkConfiguration() {
+      });
    }
 
    public Report getReport() {

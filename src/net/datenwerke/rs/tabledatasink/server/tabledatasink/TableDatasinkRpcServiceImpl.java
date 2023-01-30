@@ -12,6 +12,7 @@ import com.google.inject.Provider;
 
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
+import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasource;
 import net.datenwerke.rs.base.service.datasources.definitions.DatabaseDatasourceConfig;
 import net.datenwerke.rs.base.service.reportengines.table.entities.TableReport;
@@ -19,7 +20,9 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkDispatchNotificationHook;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.DatasourceContainer;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -49,6 +52,7 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    private final TableDatasinkService tableDatasinkService;
    private final SecurityService securityService;
    private final Provider<DatasinkService> datasinkServiceProvider;
+   private final Provider<HookHandlerService> hookHandlerServiceProvider;
 
    @Inject
    public TableDatasinkRpcServiceImpl(
@@ -57,7 +61,8 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          DtoService dtoService, 
          SecurityService securityService,
          TableDatasinkService tableDatasinkService,
-         Provider<DatasinkService> datasinkServiceProvider
+         Provider<DatasinkService> datasinkServiceProvider,
+         Provider<HookHandlerService> hookHandlerServiceProvider
          ) {
 
       this.reportService = reportService;
@@ -66,6 +71,7 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       this.securityService = securityService;
       this.tableDatasinkService = tableDatasinkService;
       this.datasinkServiceProvider = datasinkServiceProvider;
+      this.hookHandlerServiceProvider = hookHandlerServiceProvider;
    }
 
    @Override
@@ -113,8 +119,11 @@ public class TableDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
          throw new IllegalArgumentException("Only database datasources are currently supported");
       
       try {
-         datasinkServiceProvider.get().exportIntoDatasink(tableReport,
-               tableDatasink, (String)null);
+         datasinkServiceProvider.get().exportIntoDatasink(tableReport, tableDatasink, (String) null);
+         hookHandlerServiceProvider.get().getHookers(DatasinkDispatchNotificationHook.class).forEach(
+               hooker -> hooker.notifyOfCompiledReportDispatched(tableReport.getDatasourceContainer().getDatasource(),
+                     tableDatasink, new DatasinkConfiguration() {
+                     }));
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Table Datasink: " + e.getMessage(), e);
       }

@@ -26,6 +26,7 @@ import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkDispatchNotificationHook;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -122,13 +123,15 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
          String filename = name + "." + cReport.getFileExtension();
-         datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), printerDatasink,
-               new DatasinkFilenameConfig() {
-                  @Override
-                  public String getFilename() {
-                     return filename;
-                  }
-               });
+         final DatasinkConfiguration config = new DatasinkFilenameConfig() {
+            @Override
+            public String getFilename() {
+               return filename;
+            }
+         };
+         datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), printerDatasink, config);
+         hookHandlerService.getHookers(DatasinkDispatchNotificationHook.class).forEach(
+               hooker -> hooker.notifyOfCompiledReportDispatched(cReport.getReport(), printerDatasink, config));
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send to Printer datasink: " + e.getMessage(), e);
       }

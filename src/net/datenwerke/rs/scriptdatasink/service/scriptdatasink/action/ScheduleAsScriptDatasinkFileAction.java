@@ -1,6 +1,5 @@
 package net.datenwerke.rs.scriptdatasink.service.scriptdatasink.action;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -22,7 +21,6 @@ import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJo
 import net.datenwerke.rs.scriptdatasink.service.scriptdatasink.definitions.ScriptDatasink;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -62,10 +60,6 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
       this.compressed = compressed;
    }
 
-   @Transient
-   @Inject
-   private ZipUtilsService zipUtilsService;
-
    @Override
    public void execute(AbstractJob job) throws ActionExecutionException {
       if (!(job instanceof ReportExecuteJob))
@@ -97,39 +91,14 @@ public class ScheduleAsScriptDatasinkFileAction extends AbstractAction {
 
    }
 
-   private void sendViaScriptDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
-      try {
-         if (compressed) {
-            String filenameScheduling = filename + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = rJob.getExecutedReport().getReport();
-               String reportFileExtension = rJob.getExecutedReport().getFileExtension();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
-                     os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
-                     scriptDatasink,
-                     new DatasinkFilenameConfig() {
-                        @Override
-                        public String getFilename() {
-                           return filenameScheduling;
-                        }
-                     });
-            }
-         } else {
-            String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  scriptDatasink,
-                  new DatasinkFilenameConfig() {
-                     @Override
-                     public String getFilename() {
-                        return filenameScheduling;
-                     }
-                  });
+   private void sendViaScriptDatasink(final ReportExecuteJob rJob, final String filename)
+         throws ActionExecutionException {
+      datasinkService.exportIntoDatasink(rJob, compressed, scriptDatasink, new DatasinkFilenameConfig() {
+         @Override
+         public String getFilename() {
+            return datasinkService.getFilenameForDatasink(rJob, compressed, filename);
          }
-      } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to script datasink", e);
-      }
+      });
    }
 
    public String getName() {

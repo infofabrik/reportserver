@@ -9,8 +9,11 @@ import net.datenwerke.rs.core.client.datasinkmanager.dto.DatasinkDefinitionDto;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.exceptions.DatasinkExportException;
+import net.datenwerke.rs.core.service.reportmanager.engine.CompiledReport;
 import net.datenwerke.rs.fileserver.client.fileserver.dto.AbstractFileServerNodeDto;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
+import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
+import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface DatasinkService {
@@ -71,6 +74,16 @@ public interface DatasinkService {
     */
    void exportIntoDatasink(Object report, User user, DatasinkDefinition datasink, DatasinkConfiguration config)
          throws DatasinkExportException;
+   
+   void exportIntoDatasink(ReportExecuteJob rJob, boolean compress, DatasinkDefinition datasink,
+         DatasinkConfiguration config) throws ActionExecutionException;
+   
+   String getFilenameForDatasink(ReportExecuteJob rJob, boolean compress, String filename);
+   
+   String getFilenameForDatasink(String name, CompiledReport cReport, boolean compress);
+   
+   void exportIntoDatasink(CompiledReport cReport, String name, boolean compress, DatasinkDefinition datasink,
+         DatasinkConfiguration config) throws DatasinkExportException;
 
    /**
     * Sends a data to the specified datasink, defined in a given

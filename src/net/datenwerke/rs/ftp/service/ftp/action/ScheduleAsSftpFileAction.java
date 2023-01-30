@@ -1,10 +1,7 @@
 package net.datenwerke.rs.ftp.service.ftp.action;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Collections;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,7 +21,6 @@ import net.datenwerke.rs.ftp.service.ftp.definitions.SftpDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -65,10 +61,6 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
       this.compressed = compressed;
    }
 
-   @Transient
-   @Inject
-   private ZipUtilsService zipUtilsService;
-
    @Override
    public void execute(AbstractJob job) throws ActionExecutionException {
       if (!(job instanceof ReportExecuteJob))
@@ -103,58 +95,20 @@ public class ScheduleAsSftpFileAction extends AbstractAction {
 
    }
 
-   private void sendViaSFTPDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
-      if (compressed) {
-         String filenameScheduling = filename += ".zip";
-         ByteArrayOutputStream os = new ByteArrayOutputStream();
-         Object reportObj = rJob.getExecutedReport().getReport();
-         String reportFileExtension = rJob.getExecutedReport().getFileExtension();
-         try {
-            zipUtilsService.createZip(Collections.singletonMap(
-                  rJob.getReport().getName().replace(":", "_").replace("/", "_").replace("\\", "_").replace(" ", "_")
-                        + "." + reportFileExtension,
-                  reportObj), os);
-         } catch (IOException e) {
-            throw new ActionExecutionException(e);
+   private void sendViaSFTPDatasink(final ReportExecuteJob rJob, final String filename)
+         throws ActionExecutionException {
+      datasinkService.exportIntoDatasink(rJob, compressed, sftpDatasink, new DatasinkFilenameFolderConfig() {
+
+         @Override
+         public String getFilename() {
+            return datasinkService.getFilenameForDatasink(rJob, compressed, filename);
          }
-         try {
-            datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), sftpDatasink,
-                  new DatasinkFilenameFolderConfig() {
 
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                     @Override
-                     public String getFilename() {
-                        return filenameScheduling;
-                     }
-                  });
-         } catch (Exception e) {
-            throw new ActionExecutionException("report could not be sent to SFTP", e);
+         @Override
+         public String getFolder() {
+            return folder;
          }
-      } else {
-         String filenameScheduling = filename += "." + rJob.getExecutedReport().getFileExtension();
-         try {
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), 
-                  rJob.getExecutor(), sftpDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                     @Override
-                     public String getFilename() {
-                        return filenameScheduling;
-                     }
-                  });
-         } catch (Exception e) {
-            throw new ActionExecutionException("report could not be sent to SFTP", e);
-         }
-      }
+      });
    }
 
    public String getName() {

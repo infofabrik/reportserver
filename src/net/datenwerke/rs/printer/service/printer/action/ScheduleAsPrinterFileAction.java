@@ -59,14 +59,9 @@ public class ScheduleAsPrinterFileAction extends AbstractAction {
          throw new ActionExecutionException("Printer datasink is empty");
    }
 
-   private void sendViaPrinterDatasink(ReportExecuteJob rJob) throws ActionExecutionException {
-      try {
-         datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(), printerDatasink,
-               new DatasinkConfiguration() {
-               });
-      } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to Printer datasink", e);
-      }
+   private void sendViaPrinterDatasink(final ReportExecuteJob rJob) throws ActionExecutionException {
+      datasinkService.exportIntoDatasink(rJob, false, printerDatasink, new DatasinkConfiguration() {
+      });
    }
 
    public Report getReport() {

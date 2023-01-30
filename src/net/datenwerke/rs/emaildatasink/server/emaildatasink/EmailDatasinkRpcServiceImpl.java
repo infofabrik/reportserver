@@ -112,9 +112,10 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String subject, String message,
-         boolean compressed, List<StrippedDownUser> recipients) throws ServerCallFailedException {
+   public void exportReportIntoDatasink(final ReportDto reportDto, final String executorToken,
+         final DatasinkDefinitionDto datasinkDto, final String format, final List<ReportExecutionConfigDto> configs,
+         final String name, final String subject, final String message, final boolean compressed,
+         final List<StrippedDownUser> recipients) throws ServerCallFailedException {
       if (!(datasinkDto instanceof EmailDatasinkDto))
          throw new IllegalArgumentException("Not an email datasink");
 
@@ -140,83 +141,39 @@ public class EmailDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet imp
       List<User> recipientUsers = recipients.stream().map(sUser -> (User) userManagerService.getNodeById(sUser.getId()))
             .filter(user -> null != user.getEmail() && !"".equals(user.getEmail())).collect(toList());
 
-      CompiledReport cReport;
       try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
+         final CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+         datasinkServiceProvider.get().exportIntoDatasink(cReport, name, compressed, emailDatasink,
+               new DatasinkEmailConfig() {
 
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(),
-                     emailDatasink,
-                     new DatasinkEmailConfig() {
-
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
-
-                        @Override
-                        public boolean isSendSyncEmail() {
-                           return true;
-                        }
-
-                        @Override
-                        public String getSubject() {
-                           return subject;
-                        }
-
-                        @Override
-                        public List<User> getRecipients() {
-                           return recipientUsers;
-                        }
-
-                        @Override
-                        public String getBody() {
-                           return message;
-                        }
-                     });
+            @Override
+            public String getFilename() {
+               return datasinkServiceProvider.get().getFilenameForDatasink(name, cReport, compressed);
             }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
-                  emailDatasink,
-                  new DatasinkEmailConfig() {
 
-                     @Override
-                     public String getFilename() {
-                        return filename;
-                     }
+            @Override
+            public boolean isSendSyncEmail() {
+               return true;
+            }
 
-                     @Override
-                     public boolean isSendSyncEmail() {
-                        return true;
-                     }
+            @Override
+            public String getSubject() {
+               return subject;
+            }
 
-                     @Override
-                     public String getSubject() {
-                        return subject;
-                     }
+            @Override
+            public List<User> getRecipients() {
+               return recipientUsers;
+            }
 
-                     @Override
-                     public List<User> getRecipients() {
-                        return recipientUsers;
-                     }
-
-                     @Override
-                     public String getBody() {
-                        return message;
-                     }
-                  });
-         }
+            @Override
+            public String getBody() {
+               return message;
+            }
+         });
       } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send report to email: " + e.getMessage(), e);
+         throw new ServerCallFailedException("Could not send to email datasink: " + e.getMessage(), e);
       }
-
    }
 
    private ReportExecutionConfig[] getConfigArray(final String executorToken,

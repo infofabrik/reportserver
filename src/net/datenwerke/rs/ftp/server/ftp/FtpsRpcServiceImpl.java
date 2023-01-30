@@ -2,7 +2,6 @@ package net.datenwerke.rs.ftp.server.ftp;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -39,7 +38,6 @@ import net.datenwerke.rs.ftp.service.ftp.FtpsService;
 import net.datenwerke.rs.ftp.service.ftp.definitions.FtpsDatasink;
 import net.datenwerke.rs.scheduleasfile.client.scheduleasfile.StorageType;
 import net.datenwerke.rs.utils.exception.ExceptionService;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.security.server.SecuredRemoteServiceServlet;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Execute;
@@ -61,7 +59,6 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
    private final FtpsService ftpsService;
    private final SecurityService securityService;
    private final ExceptionService exceptionServices;
-   private final ZipUtilsService zipUtilsService;
    private final Provider<DatasinkService> datasinkServiceProvider;
 
    @Inject
@@ -74,7 +71,6 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
          HookHandlerService hookHandlerService, 
          FtpsService ftpsService, 
          ExceptionService exceptionServices,
-         ZipUtilsService zipUtilsService, 
          Provider<DatasinkService> datasinkServiceProvider
          ) {
 
@@ -86,7 +82,6 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       this.hookHandlerService = hookHandlerService;
       this.ftpsService = ftpsService;
       this.exceptionServices = exceptionServices;
-      this.zipUtilsService = zipUtilsService;
       this.datasinkServiceProvider = datasinkServiceProvider;
    }
 
@@ -103,9 +98,9 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
    }
 
    @Override
-   public void exportReportIntoDatasink(ReportDto reportDto, String executorToken, DatasinkDefinitionDto datasinkDto,
-         String format, List<ReportExecutionConfigDto> configs, String name, String folder, boolean compressed)
-         throws ServerCallFailedException {
+   public void exportReportIntoDatasink(final ReportDto reportDto, final String executorToken,
+         final DatasinkDefinitionDto datasinkDto, final String format, final List<ReportExecutionConfigDto> configs,
+         final String name, final String folder, final boolean compressed) throws ServerCallFailedException {
       if (!(datasinkDto instanceof FtpsDatasinkDto))
          throw new IllegalArgumentException("Not a FTPS datasink");
 
@@ -128,53 +123,24 @@ public class FtpsRpcServiceImpl extends SecuredRemoteServiceServlet implements F
       hookHandlerService.getHookers(ReportExportViaSessionHook.class)
             .forEach(hooker -> hooker.adjustReport(toExecute, configArray));
 
-      CompiledReport cReport;
       try {
-         cReport = reportExecutorService.execute(toExecute, format, configArray);
+         final CompiledReport cReport = reportExecutorService.execute(toExecute, format, configArray);
+         datasinkServiceProvider.get().exportIntoDatasink(cReport, name, compressed, ftpsDatasink,
+               new DatasinkFilenameFolderConfig() {
 
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     ftpsDatasink, 
-                     new DatasinkFilenameFolderConfig() {
+                  @Override
+                  public String getFilename() {
+                     return datasinkServiceProvider.get().getFilenameForDatasink(name, cReport, compressed);
+                  }
 
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
-                     });
-            }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), 
-                  ftpsDatasink, 
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                     @Override
-                     public String getFilename() {
-                        return filename;
-                     }
-                  });
-         }
+                  @Override
+                  public String getFolder() {
+                     return folder;
+                  }
+               });
       } catch (Exception e) {
-         throw new ServerCallFailedException("Could not send report to FTPS server: " + e.getMessage(), e);
+         throw new ServerCallFailedException("Could not send to FTPS: " + e.getMessage(), e);
       }
-
    }
 
    @Override

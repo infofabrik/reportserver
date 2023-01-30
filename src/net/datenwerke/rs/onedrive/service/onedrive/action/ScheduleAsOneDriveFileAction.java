@@ -1,6 +1,5 @@
 package net.datenwerke.rs.onedrive.service.onedrive.action;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -22,7 +21,6 @@ import net.datenwerke.rs.onedrive.service.onedrive.definitions.OneDriveDatasink;
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -63,10 +61,6 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
       this.compressed = compressed;
    }
 
-   @Transient
-   @Inject
-   private ZipUtilsService zipUtilsService;
-
    @Override
    public void execute(AbstractJob job) throws ActionExecutionException {
       if (!(job instanceof ReportExecuteJob))
@@ -101,52 +95,19 @@ public class ScheduleAsOneDriveFileAction extends AbstractAction {
 
    }
 
-   private void sendViaOneDriveDatasink(ReportExecuteJob rJob, String filename) throws ActionExecutionException {
-      try {
-         if (compressed) {
-            String filenameScheduling = filename + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = rJob.getExecutedReport().getReport();
-               String reportFileExtension = rJob.getExecutedReport().getFileExtension();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
-                     os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(), oneDriveDatasink,
-                     new DatasinkFilenameFolderConfig() {
+   private void sendViaOneDriveDatasink(final ReportExecuteJob rJob, final String filename) throws ActionExecutionException {
+      datasinkService.exportIntoDatasink(rJob, compressed, oneDriveDatasink, new DatasinkFilenameFolderConfig() {
 
-                        @Override
-                        public String getFilename() {
-                           return filenameScheduling;
-                        }
-
-                        @Override
-                        public String getFolder() {
-                           return folder;
-                        }
-
-                     });
-            }
-         } else {
-            String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  oneDriveDatasink,
-                  new DatasinkFilenameFolderConfig() {
-
-                     @Override
-                     public String getFilename() {
-                        return filenameScheduling;
-                     }
-
-                     @Override
-                     public String getFolder() {
-                        return folder;
-                     }
-
-                  });
+         @Override
+         public String getFilename() {
+            return datasinkService.getFilenameForDatasink(rJob, compressed, filename);
          }
-      } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to OneDrive - SharePoint (O365)", e);
-      }
+
+         @Override
+         public String getFolder() {
+            return folder;
+         }
+      });
    }
 
    public String getName() {

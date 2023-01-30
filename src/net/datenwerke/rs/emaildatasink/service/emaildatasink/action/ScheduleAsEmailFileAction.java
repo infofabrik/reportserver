@@ -1,6 +1,5 @@
 package net.datenwerke.rs.emaildatasink.service.emaildatasink.action;
 
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
@@ -26,7 +25,6 @@ import net.datenwerke.rs.emaildatasink.service.emaildatasink.definitions.EmailDa
 import net.datenwerke.rs.scheduler.service.scheduler.jobs.report.ReportExecuteJob;
 import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.juel.SimpleJuel;
-import net.datenwerke.rs.utils.zip.ZipUtilsService;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractAction;
 import net.datenwerke.scheduler.service.scheduler.entities.AbstractJob;
 import net.datenwerke.scheduler.service.scheduler.exceptions.ActionExecutionException;
@@ -61,10 +59,6 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
    public void setCompressed(boolean compressed) {
       this.compressed = compressed;
    }
-
-   @Transient
-   @Inject
-   private ZipUtilsService zipUtilsService;
 
    @Transient
    private Report report;
@@ -114,82 +108,35 @@ public class ScheduleAsEmailFileAction extends AbstractAction {
 
    }
 
-   private void sendViaEmailDatasink(ReportExecuteJob rJob, SimpleJuel juel, String filename)
+   private void sendViaEmailDatasink(final ReportExecuteJob rJob, final SimpleJuel juel, final String filename)
          throws ActionExecutionException {
-      try {
-         if (compressed) {
-            String filenameScheduling = filename + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = rJob.getExecutedReport().getReport();
-               String reportFileExtension = rJob.getExecutedReport().getFileExtension();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(rJob.getReport().getName() + "." + reportFileExtension), reportObj,
-                     os);
-               datasinkService.exportIntoDatasink(os.toByteArray(), rJob.getExecutor(),
-                     emailDatasink,
-                     new DatasinkEmailConfig() {
+      datasinkService.exportIntoDatasink(rJob, compressed, emailDatasink, new DatasinkEmailConfig() {
 
-                        @Override
-                        public String getFilename() {
-                           return filenameScheduling;
-                        }
-
-                        @Override
-                        public boolean isSendSyncEmail() {
-                           return true;
-                        }
-
-                        @Override
-                        public String getSubject() {
-                           return juel.parse(subject);
-                        }
-
-                        @Override
-                        public List<User> getRecipients() {
-                           return rJob.getRecipients();
-                        }
-
-                        @Override
-                        public String getBody() {
-                           return juel.parse(message);
-                        }
-                     });
-            }
-         } else {
-            String filenameScheduling = filename + "." + rJob.getExecutedReport().getFileExtension();
-            datasinkService.exportIntoDatasink(rJob.getExecutedReport().getReport(), rJob.getExecutor(),
-                  emailDatasink,
-                  new DatasinkEmailConfig() {
-
-                     @Override
-                     public String getFilename() {
-                        return filenameScheduling;
-                     }
-
-                     @Override
-                     public boolean isSendSyncEmail() {
-                        return true;
-                     }
-
-                     @Override
-                     public String getSubject() {
-                        return juel.parse(subject);
-                     }
-
-                     @Override
-                     public List<User> getRecipients() {
-                        return rJob.getRecipients();
-                     }
-
-                     @Override
-                     public String getBody() {
-                        return juel.parse(message);
-                     }
-                  });
+         @Override
+         public String getFilename() {
+            return datasinkService.getFilenameForDatasink(rJob, compressed, filename);
          }
-      } catch (Exception e) {
-         throw new ActionExecutionException("report could not be sent to Email Datasink", e);
-      }
+
+         @Override
+         public boolean isSendSyncEmail() {
+            return true;
+         }
+
+         @Override
+         public String getSubject() {
+            return juel.parse(subject);
+         }
+
+         @Override
+         public List<User> getRecipients() {
+            return rJob.getRecipients();
+         }
+
+         @Override
+         public String getBody() {
+            return juel.parse(message);
+         }
+      });
    }
 
    public String getMessage() {
