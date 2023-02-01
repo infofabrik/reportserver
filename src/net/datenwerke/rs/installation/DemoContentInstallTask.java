@@ -28,8 +28,11 @@ public class DemoContentInstallTask implements DbInstallationTask {
    private Provider<ConfigDirService> configDirServiceProvider;
 
    @Inject
-   public DemoContentInstallTask(Provider<PackagedScriptHelper> packagedScriptHelper,
-         FileServerService fileServerService, Provider<ConfigDirService> configDirServiceProvider) {
+   public DemoContentInstallTask(
+         Provider<PackagedScriptHelper> packagedScriptHelper,
+         FileServerService fileServerService, 
+         Provider<ConfigDirService> configDirServiceProvider
+         ) {
       this.packagedScriptHelper = packagedScriptHelper;
       this.fileServerService = fileServerService;
       this.configDirServiceProvider = configDirServiceProvider;
@@ -73,9 +76,6 @@ public class DemoContentInstallTask implements DbInstallationTask {
                      }
                   }
                }
-
-            } catch (FileNotFoundException e) {
-               logger.warn("Failed to initialize using rsinit.properties", e);
             } catch (IOException e) {
                logger.warn("Failed to initialize using rsinit.properties", e);
             }

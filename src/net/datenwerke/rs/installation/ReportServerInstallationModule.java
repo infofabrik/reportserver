@@ -34,7 +34,7 @@ public class ReportServerInstallationModule extends AbstractReportServerModule {
          tasks.add(executePackagedScriptsTask.get());
       }
 
-      if ("true".equals(propertiesService.getString("rs.install.demodata", "false"))) {
+      if ("true".equals(propertiesService.getString("rs.install.demodata", "true"))) {
          tasks.add(demoDbInstallTask.get());
          tasks.add(demoContentInstallTask.get());
       }
