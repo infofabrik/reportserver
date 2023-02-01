@@ -16,6 +16,8 @@ import javax.persistence.Transient;
 
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.AdditionalField;
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
@@ -224,8 +226,11 @@ public class User extends AbstractUserManagerNode {
 
    @Override
    public String toString() {
-      String fn = getFirstname();
-      return new StringBuilder(null == fn ? "" : fn).append(" ").append(getLastname()).toString();
+      return MoreObjects.toStringHelper(getClass())
+            .add("ID", getId())
+            .add("First name", firstname)
+            .add("Last name", lastname)
+            .toString();
    }
 
    /**

@@ -82,14 +82,14 @@ public class SchedulerHelperServiceImpl implements SchedulerHelperService {
          if (!securityService.checkRights(newUser, SchedulingBasicSecurityTarget, SecurityServiceSecuree, Execute))
             throw new IllegalStateException("'$newUser' does not have 'SchedulingBasicSecurityTarget' permission: Execute")
          if (!securityService.checkRights(newUser, job.report, SecurityServiceSecuree, Execute))
-            throw new IllegalStateException("'$newUser' does not have 'Execute' permission on report: ${reportToString(job.report)}")
+            throw new IllegalStateException("'$newUser' does not have 'Execute' permission on report: '${job.report}'")
       }
       def recipients = userManagerServiceProvider.get().getUsers(job.recipientsIds)
       if (oldUser in recipients) {
          if(!newUser.email) 
             throw new IllegalStateException("'$newUser' email is empty")
          if(!securityService.checkRights(newUser, job.report, SecurityServiceSecuree, Read))
-            throw new IllegalStateException("'$newUser' does not have 'Read' permission on report: ${reportToString(job.report)}")
+            throw new IllegalStateException("'$newUser' does not have 'Read' permission on report: '${job.report}'")
       }
    }
    
@@ -100,15 +100,8 @@ public class SchedulerHelperServiceImpl implements SchedulerHelperService {
          if (!securityService.checkRights(newUser, SchedulingBasicSecurityTarget, SecurityServiceSecuree, Execute))
             throw new IllegalStateException("'$newUser' does not have 'SchedulingBasicSecurityTarget' permission: Execute")
          if (!securityService.checkRights(newUser, job.script, SecurityServiceSecuree, Execute))
-            throw new IllegalStateException("'$newUser' does not have 'Execute' permission on script: ${scriptToString(job.script)}")
+            throw new IllegalStateException("'$newUser' does not have 'Execute' permission on script: '${job.script}'")
       }
    }
    
-   private def reportToString(report) {
-      "ID=${report.id ?: report.oldTransientId}, name='${report.name}'"
-   }
-   
-   private def scriptToString(script) {
-      "ID=${script.id}, name='${script.name}'"
-   }
 }

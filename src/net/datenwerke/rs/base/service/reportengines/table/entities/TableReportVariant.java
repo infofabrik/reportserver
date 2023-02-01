@@ -110,4 +110,5 @@ public class TableReportVariant extends TableReport implements ReportVariant {
    public boolean hasChildren() {
       return false;
    }
+   
 }

@@ -93,5 +93,5 @@ public abstract class BaseJob extends AbstractJob {
       XMLDecoder dec = new XMLDecoder(IOUtils.toInputStream(data));
       return (B) dec.readObject();
    }
-
+   
 }

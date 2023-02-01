@@ -23,6 +23,7 @@ import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
@@ -201,5 +202,16 @@ public class ReportExecuteJob extends ReportServerJob {
          this.owners = new HashSet<>();
       this.owners.add(owner);
    }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+            .add("ID", getId())
+            .add("Name", getTitle())
+            .add("Report ID", getReportId())
+            .add("Execution status", getExecutionStatus())
+            .toString();
+   }
+
 
 }

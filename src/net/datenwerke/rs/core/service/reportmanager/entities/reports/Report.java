@@ -25,6 +25,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 import com.google.inject.Injector;
 import com.google.inject.Provider;
@@ -663,6 +664,16 @@ abstract public class Report extends AbstractReportManagerNode
 
    public void setTemporaryVariantType(Class<?> temporaryVariantType) {
       this.temporaryVariantType = temporaryVariantType;
+   }
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getIdOrOldTransient())
+             .add("Name", name)
+             .add("Key", key)
+             .add("Variant", this instanceof ReportVariant)
+             .toString();
    }
 
 }

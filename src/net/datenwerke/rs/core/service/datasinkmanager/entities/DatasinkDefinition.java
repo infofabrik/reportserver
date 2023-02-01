@@ -11,6 +11,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Injector;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
@@ -84,4 +85,11 @@ abstract public class DatasinkDefinition extends AbstractDatasinkManagerNode
       return false;
    }
 
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getIdOrOldTransient())
+             .add("Name", name)
+             .toString();
+   }
 }

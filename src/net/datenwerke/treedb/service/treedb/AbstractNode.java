@@ -33,6 +33,7 @@ import org.hibernate.Hibernate;
 import org.hibernate.envers.Audited;
 import org.hibernate.proxy.HibernateProxy;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 import com.google.inject.Provider;
 
@@ -670,5 +671,13 @@ public abstract class AbstractNode<N extends AbstractNode<N>> implements Seriali
          return false;
 
       return true;
+   }
+   
+   @Override
+   public String toString() {
+       return MoreObjects.toStringHelper(getClass())
+             .add("ID", getIdOrOldTransient())
+             .add("Name", getNodeName())
+             .toString();
    }
 }

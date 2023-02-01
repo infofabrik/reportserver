@@ -83,4 +83,5 @@ abstract public class DatasourceDefinition extends AbstractDatasourceManagerNode
    public boolean hasChildren() {
       return false;
    }
+   
 }
