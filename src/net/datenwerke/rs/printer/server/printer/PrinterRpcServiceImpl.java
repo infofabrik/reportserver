@@ -24,7 +24,6 @@ import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
-import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
 import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkDispatchNotificationHook;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
@@ -122,13 +121,7 @@ public class PrinterRpcServiceImpl extends SecuredRemoteServiceServlet implement
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
 
-         String filename = name + "." + cReport.getFileExtension();
-         final DatasinkConfiguration config = new DatasinkFilenameConfig() {
-            @Override
-            public String getFilename() {
-               return filename;
-            }
-         };
+         final DatasinkConfiguration config = new DatasinkConfiguration(){};
          datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), printerDatasink, config);
          hookHandlerService.getHookers(DatasinkDispatchNotificationHook.class).forEach(
                hooker -> hooker.notifyOfCompiledReportDispatched(cReport.getReport(), printerDatasink, config));

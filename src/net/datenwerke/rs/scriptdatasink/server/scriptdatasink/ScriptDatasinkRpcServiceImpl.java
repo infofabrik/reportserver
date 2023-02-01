@@ -2,7 +2,6 @@ package net.datenwerke.rs.scriptdatasink.server.scriptdatasink;
 
 import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowFunction;
 
-import java.io.ByteArrayOutputStream;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -24,8 +23,10 @@ import net.datenwerke.rs.core.client.reportexporter.dto.ReportExecutionConfigDto
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.ReportDto;
 import net.datenwerke.rs.core.server.reportexport.hooks.ReportExportViaSessionHook;
 import net.datenwerke.rs.core.service.datasinkmanager.DatasinkService;
+import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkConfiguration;
 import net.datenwerke.rs.core.service.datasinkmanager.configs.DatasinkFilenameConfig;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.DatasinkDefinition;
+import net.datenwerke.rs.core.service.datasinkmanager.hooks.DatasinkDispatchNotificationHook;
 import net.datenwerke.rs.core.service.reportmanager.ReportDtoService;
 import net.datenwerke.rs.core.service.reportmanager.ReportExecutorService;
 import net.datenwerke.rs.core.service.reportmanager.ReportService;
@@ -121,34 +122,17 @@ public class ScriptDatasinkRpcServiceImpl extends SecuredRemoteServiceServlet im
       CompiledReport cReport;
       try {
          cReport = reportExecutorService.execute(toExecute, format, configArray);
-
-         if (compressed) {
-            String filename = name + ".zip";
-            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-               Object reportObj = cReport.getReport();
-               zipUtilsService.createZip(
-                     zipUtilsService.cleanFilename(toExecute.getName() + "." + cReport.getFileExtension()), reportObj,
-                     os);
-               datasinkServiceProvider.get().exportIntoDatasink(os.toByteArray(), 
-                     scriptDatasink,
-                     new DatasinkFilenameConfig() {
-                        @Override
-                        public String getFilename() {
-                           return filename;
-                        }
-                     });
+         
+         final DatasinkConfiguration config = new DatasinkFilenameConfig() {
+            @Override
+            public String getFilename() {
+               return datasinkServiceProvider.get().getFilenameForDatasink(name, cReport, compressed);
             }
-         } else {
-            String filename = name + "." + cReport.getFileExtension();
-            datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(),
-                  scriptDatasink,
-                  new DatasinkFilenameConfig() {
-                     @Override
-                     public String getFilename() {
-                        return filename;
-                     }
-                  });
-         }
+         };
+         datasinkServiceProvider.get().exportIntoDatasink(cReport.getReport(), scriptDatasink, config);
+         hookHandlerService.getHookers(DatasinkDispatchNotificationHook.class).forEach(
+               hooker -> hooker.notifyOfCompiledReportDispatched(cReport.getReport(), scriptDatasink, config));
+         
       } catch (Exception e) {
          throw new ServerCallFailedException("Could not send report to script datasink: " + e.getMessage(), e);
       }
