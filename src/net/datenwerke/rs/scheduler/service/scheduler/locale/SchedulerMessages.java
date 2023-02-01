@@ -40,5 +40,11 @@ public interface SchedulerMessages extends Messages {
    String reportId();
 
    String lastexec();
+   
+   String commandScheduler_sub_replaceUser_description();
+   
+   String commandScheduler_sub_replaceUser_oldUser();
+   
+   String commandScheduler_sub_replaceUser_newUser();
 
 }

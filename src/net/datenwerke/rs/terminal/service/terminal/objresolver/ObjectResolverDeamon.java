@@ -7,6 +7,7 @@ import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethr
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 
 import org.hibernate.proxy.HibernateProxy;
 
@@ -62,7 +63,7 @@ public class ObjectResolverDeamon implements TerminalSessionDeamonHook {
       }
    }
    
-   private Collection<Object> doGetObjects(final String locationStr, final Class<? extends Securee> securee,
+   private List<Object> doGetObjects(final String locationStr, final Class<? extends Securee> securee,
          final Class<? extends Right>... rights) throws ObjectResolverException {
       return hookHandler.getHookers(ObjectResolverHook.class)
          .stream()
@@ -86,28 +87,26 @@ public class ObjectResolverDeamon implements TerminalSessionDeamonHook {
          .collect(toList());
    }
    
-   public Collection<Object> getObjects(final Collection<String> locationStrings, final Class<? extends Securee> securee,
+   public List<Object> getObjects(final Collection<String> locationStrings, final Class<? extends Securee> securee,
          final Class<? extends Right>... rights) throws ObjectResolverException {
-      Collection<Object> res = locationStrings
+      return locationStrings
             .stream()
             .map(rethrowFunction(locationStr -> doGetObjects(locationStr, securee, rights)))
             .flatMap(Collection::stream)
             .collect(toList());
-      
-      return res;
    }
 
-   public Collection<Object> getObjects(Collection<String> locationStrings, Class<? extends Right>... rights)
+   public List<Object> getObjects(Collection<String> locationStrings, Class<? extends Right>... rights)
          throws ObjectResolverException {
       return getObjects(locationStrings, SecurityServiceSecuree.class, rights);
    }
 
-   public Collection<Object> getObjects(String locationStr, Class<? extends Right>... rights)
+   public List<Object> getObjects(String locationStr, Class<? extends Right>... rights)
          throws ObjectResolverException {
       return getObjects(locationStr, SecurityServiceSecuree.class, rights);
    }
 
-   public Collection<Object> getObjects(String locationStr, Class<? extends Securee> securee,
+   public List<Object> getObjects(String locationStr, Class<? extends Securee> securee,
          Class<? extends Right>... rights) throws ObjectResolverException {
       return getObjects(Collections.singleton(locationStr), securee, rights);
    }

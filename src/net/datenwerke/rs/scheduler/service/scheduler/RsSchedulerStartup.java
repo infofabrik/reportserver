@@ -27,6 +27,7 @@ import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.Scheduler
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerListFireTimesSubCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerListSubCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerRemoveSubCommand;
+import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerReplaceUserSubCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.commands.SchedulerUnscheduleSubCommand;
 import net.datenwerke.rs.scheduler.service.scheduler.terminal.hooks.SchedulerSubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
@@ -55,6 +56,7 @@ public class RsSchedulerStartup {
          Provider<SchedulerRemoveSubCommand> removeSubCommand,
          Provider<SchedulerUnscheduleSubCommand> unscheduleSubCommand,
          Provider<SchedulerDaemonSubCommand> daemonSubCommand,
+         Provider<SchedulerReplaceUserSubCommand> replaceUserSubCommand,
 
          HandleReportRemoveEventHandler handleReportRemoveEventHandler,
          HandleReportForceRemoveEventHandler handleReportForceRemoveEventHandler,
@@ -82,6 +84,7 @@ public class RsSchedulerStartup {
       hookHandler.attachHooker(SchedulerSubCommandHook.class, removeSubCommand);
       hookHandler.attachHooker(SchedulerSubCommandHook.class, unscheduleSubCommand);
       hookHandler.attachHooker(SchedulerSubCommandHook.class, daemonSubCommand);
+      hookHandler.attachHooker(SchedulerSubCommandHook.class, replaceUserSubCommand);
 
       hookHandler.attachHooker(ContextHook.class, shutdownHooker);
 

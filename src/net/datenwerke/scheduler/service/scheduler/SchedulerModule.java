@@ -52,6 +52,7 @@ public class SchedulerModule extends AbstractModule {
 
       /* services */
       bind(SchedulerService.class).to(SchedulerServiceImpl.class).in(Singleton.class);
+      bind(SchedulerHelperService.class).to(SchedulerHelperServiceImpl.class);
 
       bind(SchedulerStartup.class).asEagerSingleton();
    }
