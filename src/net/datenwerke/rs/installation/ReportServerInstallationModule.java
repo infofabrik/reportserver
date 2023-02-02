@@ -34,6 +34,7 @@ public class ReportServerInstallationModule extends AbstractReportServerModule {
          tasks.add(executePackagedScriptsTask.get());
       }
 
+      /* this has to be true per default to install demo data automatically in the .exe installer */
       if ("true".equals(propertiesService.getString("rs.install.demodata", "true"))) {
          tasks.add(demoDbInstallTask.get());
          tasks.add(demoContentInstallTask.get());
