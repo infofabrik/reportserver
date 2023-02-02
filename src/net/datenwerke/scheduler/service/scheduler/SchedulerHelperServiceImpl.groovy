@@ -10,7 +10,6 @@ import net.datenwerke.rs.scripting.service.jobs.ScriptExecuteJob
 import net.datenwerke.security.service.security.SecurityService
 import net.datenwerke.security.service.security.SecurityServiceSecuree
 import net.datenwerke.security.service.security.rights.Execute
-import net.datenwerke.security.service.security.rights.Read
 import net.datenwerke.security.service.usermanager.UserManagerService
 import net.datenwerke.security.service.usermanager.entities.User
 
@@ -88,8 +87,6 @@ public class SchedulerHelperServiceImpl implements SchedulerHelperService {
       if (oldUser in recipients) {
          if(!newUser.email) 
             throw new IllegalStateException("'$newUser' email is empty")
-         if(!securityService.checkRights(newUser, job.report, SecurityServiceSecuree, Read))
-            throw new IllegalStateException("'$newUser' does not have 'Read' permission on report: '${job.report}'")
       }
    }
    
