@@ -33,7 +33,7 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.StringValidator;
 import net.datenwerke.gxtdto.client.dtomanager.DtoView;
 import net.datenwerke.rs.core.service.i18ntools.I18nToolsService;
 import net.datenwerke.rs.core.service.reportmanager.locale.ReportManagerMessages;
-import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
+import net.datenwerke.rs.utils.entitycloner.annotation.ClonePostProcessor;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 
@@ -41,7 +41,11 @@ import net.datenwerke.rs.utils.localization.LocalizationServiceImpl;
 @Table(name = "PARAMETER_DEFINITION")
 @Audited
 @Inheritance(strategy = InheritanceType.JOINED)
-@GenerateDto(dtoPackage = "net.datenwerke.rs.core.client.parameters.dto", abstractDto = true, createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.core.client.parameters.dto", 
+      abstractDto = true, 
+      createDecorator = true
+)
 abstract public class ParameterDefinition<I extends ParameterInstance> implements Serializable {
 
    /**
@@ -54,15 +58,17 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
          .getMessagesProvider(ReportManagerMessages.class);
 
    @Inject
-   protected static EntityClonerService entityCloner;
-
-   @Inject
    protected static I18nToolsService i18nTools;
 
    @ExposeToClient(view = DtoView.MINIMAL)
    private String name;
 
-   @ExposeToClient(view = DtoView.MINIMAL, validateDtoProperty = @PropertyValidator(string = @StringValidator(regex = "^[a-zA-Z0-9_\\-]*$")))
+   @ExposeToClient(
+         view = DtoView.MINIMAL, 
+         validateDtoProperty = @PropertyValidator(
+               string = @StringValidator(regex = "^[a-zA-Z0-9_\\-]*$")
+         )
+   )
    @Column(length = 128)
    private String key;
 
@@ -278,13 +284,6 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
       definition.setVersion(version);
    }
 
-   /**
-    * Removes references to other parameters, base report, or what have you.
-    */
-   public void cleanDuplicated() {
-      setDependsOn(new ArrayList<ParameterDefinition>());
-   }
-
    public void setDisplayInline(Boolean displayInline) {
       if (null == displayInline)
          displayInline = false;
@@ -313,5 +312,10 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
 
    public boolean isSeparator() {
       return false;
+   }
+   
+   @ClonePostProcessor
+   public void guideCloningProcess(Object report) {
+      setDependsOn(new ArrayList<ParameterDefinition>());
    }
 }
