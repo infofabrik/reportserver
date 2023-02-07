@@ -111,6 +111,8 @@ public interface TerminalService {
          Map<String, Object> map);
    
    RSTableModel convertSimpleMapToTableModel(Map<String, Object> map);
+   
+   RSTableModel convertSimpleListToTableModel(String headline, List<String> list);
 
    /**
     * Creates a {@link CommandResult} that contains a table created from the given

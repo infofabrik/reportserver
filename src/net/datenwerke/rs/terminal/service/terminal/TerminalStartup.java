@@ -8,6 +8,7 @@ import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
 import net.datenwerke.rs.configservice.service.configservice.hooks.ReloadConfigNotificationHook;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.AliasCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.CatCommand;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.CopyCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.DescCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.EchoCommand;
 import net.datenwerke.rs.terminal.service.terminal.basecommands.ElizaCommand;
@@ -43,6 +44,7 @@ public class TerminalStartup {
          final Provider<InfoCommand> infoCommandProvider,
          final Provider<InfoDatasourceSubcommand> infoDatasourceSubcommandProvider,
          final Provider<AliasCommand> aliasCommandProvider,
+         final Provider<CopyCommand> copyCommandProvider,
 
          final Provider<InBackgroundOperator> inBgOperator, 
          final Provider<PipeOperator> pipeOperator,
@@ -61,6 +63,7 @@ public class TerminalStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, ssltestCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, infoCommandProvider);
       hookHandler.attachHooker(InfoSubcommandHook.class, infoDatasourceSubcommandProvider);
+      hookHandler.attachHooker(TerminalCommandHook.class, copyCommandProvider);
       
       /* alias command */
       hookHandler.attachHooker(TerminalCommandHook.class, aliasCommandProvider.get(), HookHandlerService.PRIORITY_LOWER);

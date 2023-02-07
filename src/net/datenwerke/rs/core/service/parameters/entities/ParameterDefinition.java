@@ -24,6 +24,7 @@ import javax.persistence.Version;
 import org.hibernate.annotations.Type;
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
@@ -317,5 +318,18 @@ abstract public class ParameterDefinition<I extends ParameterInstance> implement
    @ClonePostProcessor
    public void guideCloningProcess(Object report) {
       setDependsOn(new ArrayList<ParameterDefinition>());
+   }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+            .add("ID", getIdOrOldTransient())
+            .add("Key", key)
+            .add("Name", name)
+            .toString();
+   }
+
+   private Object getIdOrOldTransient() {
+      return null != id ? id : oldTransientId;
    }
 }

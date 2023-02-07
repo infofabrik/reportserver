@@ -57,4 +57,14 @@ public interface TerminalMessages extends Messages {
    
    String commandInfoDatasource_datasource();
    
+   String commandCopydesc();
+   
+   String commandCopyParameterDefinitions_desc();
+   
+   String commandCopyParameterDefinitions_from();
+   
+   String commandCopyParameterDefinitions_to();
+   
+   String commandCopyParameterDefinitions_replaceExistingParameters();
+   
 }

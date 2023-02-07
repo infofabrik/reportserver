@@ -4,6 +4,13 @@ import net.datenwerke.security.service.usermanager.entities.User;
 
 public interface SchedulerHelperService {
 
-   public void replaceSchedulerUser(User oldUser, User newUser);
+   /**
+    * Replaces an old user with a new user in all owners, executors, scheduled-by
+    * and recipients of all active scheduler jobs.
+    * 
+    * @param oldUser the user to be replaced
+    * @param newUser the new user
+    */
+   void replaceSchedulerUser(User oldUser, User newUser);
 
 }

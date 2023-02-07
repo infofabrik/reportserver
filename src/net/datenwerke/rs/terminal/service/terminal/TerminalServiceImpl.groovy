@@ -127,7 +127,7 @@ public class TerminalServiceImpl implements TerminalService {
    @Override
    public <T> T getSingleObjectOfTypeByQuery(Class<T> type, String query, TerminalSession session,
          Class<? extends Right>... rights) throws ObjectResolverException {
-      Collection<Object> resolvedDatasource = session.objectResolver.getObjects(query, rights)
+      List<Object> resolvedDatasource = session.objectResolver.getObjects(query, rights)
       if (1 != resolvedDatasource.size())
          throw new IllegalArgumentException("Query must be resolved to exactly one object. Query: '$query'")
       Object asObject = resolvedDatasource.iterator().next()
@@ -201,8 +201,8 @@ public class TerminalServiceImpl implements TerminalService {
          List<Map<String, String>> mapList, List<String> firstKeys, Map<String, String> keyToText) {
       CommandResult result = new CommandResult()
       headlines.each { result.addResultLine it }
-      if (!mapList.size()) {
-         result.addResultLine(emptyTableMessage)
+      if (mapList.empty) {
+         result.addResultLine emptyTableMessage
          return result
       }
       
@@ -225,6 +225,17 @@ public class TerminalServiceImpl implements TerminalService {
       }
       
       return result
+   }
+
+   @Override
+   public RSTableModel convertSimpleListToTableModel(String headline, List<String> list) {
+      RSTableModel model = new RSTableModel()
+      TableDefinition tableDef = new TableDefinition([headline], [String])
+      model.tableDefinition = tableDef
+      
+      list.each { model.addDataRow(new RSStringTableRow(it instanceof List? join(it, true): it as String)) }
+         
+      return model
    }
 
 }
