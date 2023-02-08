@@ -62,13 +62,13 @@ class CopyTableHelper {
    def readMetadata(metaResultSet) {
       def counter = 0
       while (metaResultSet.next()) {
-         def columnName = metaResultSet.getString('COLUMN_NAME').toUpperCase()
+         def columnName = metaResultSet.getString('COLUMN_NAME').toUpperCase(Locale.ROOT)
          def idx = primaryKeys.findIndexOf{ f -> f == columnName }
          if (-1 != idx) {
             //primary key found
             primaryKeyIndexes << counter
          }
-         allColNames << columnName.toUpperCase()
+         allColNames << columnName.toUpperCase(Locale.ROOT)
          
          //col type
          def dataType = metaResultSet.getString('DATA_TYPE')
