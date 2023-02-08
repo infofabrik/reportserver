@@ -66,9 +66,7 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoListItem;
-import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
 import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardDtoPasteProcessor;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
@@ -173,18 +171,15 @@ public class ParameterView extends MainPanelView {
    }
 
    protected void initClipboard() {
-      clipboardService.registerCopyHandler(parameterGrid, new ClipboardCopyProcessor() {
-         @Override
-         public ClipboardItem getItem() {
-            List<ParameterDefinitionDto> list = parameterGrid.getSelectionModel().getSelectedItems();
-            if (null != list && list.size() > 1)
-               return new ClipboardDtoListItem(list, ParameterDefinitionDto.class);
+      clipboardService.registerCopyHandler(parameterGrid, () -> {
+         List<ParameterDefinitionDto> list = parameterGrid.getSelectionModel().getSelectedItems();
+         if (null != list && list.size() > 1)
+            return new ClipboardDtoListItem(list, ParameterDefinitionDto.class);
 
-            ParameterDefinitionDto def = parameterGrid.getSelectionModel().getSelectedItem();
-            if (null != def)
-               return new ClipboardDtoItem(def);
-            return null;
-         }
+         ParameterDefinitionDto def = parameterGrid.getSelectionModel().getSelectedItem();
+         if (null != def)
+            return new ClipboardDtoItem(def);
+         return null;
       });
 
       clipboardService.registerPasteHandler(parameterGrid,
@@ -227,13 +222,7 @@ public class ParameterView extends MainPanelView {
          if (!configurator.isAvailable())
             mi.disable();
 
-         mi.addSelectionHandler(new SelectionHandler<Item>() {
-
-            @Override
-            public void onSelection(SelectionEvent<Item> event) {
-               addParameter(configurator, getSelectedNode());
-            }
-         });
+         mi.addSelectionHandler(event -> addParameter(configurator, getSelectedNode()));
 
          /* add item to menu */
          switch (configurator.getType()) {
@@ -252,15 +241,11 @@ public class ParameterView extends MainPanelView {
 
       DwTextButton editParameter = new DwTextButton(BaseMessages.INSTANCE.edit(), BaseIcon.COG_EDIT);
       toolbar.add(editParameter);
-      editParameter.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            List<ParameterDefinitionDto> selectedItems = parameterGrid.getSelectionModel().getSelectedItems();
-            if (null != selectedItems && !selectedItems.isEmpty()) {
-               ParameterDefinitionDto pd = selectedItems.get(0);
-               displayEditParameter(pd);
-            }
+      editParameter.addSelectHandler(event -> {
+         List<ParameterDefinitionDto> selectedItems = parameterGrid.getSelectionModel().getSelectedItems();
+         if (null != selectedItems && !selectedItems.isEmpty()) {
+            ParameterDefinitionDto pd = selectedItems.get(0);
+            displayEditParameter(pd);
          }
       });
 
@@ -269,24 +254,12 @@ public class ParameterView extends MainPanelView {
       /* add update instances buttons */
       DwSplitButton updateInstaceButton = new DwSplitButton(ParametersMessages.INSTANCE.updateInstances());
       updateInstaceButton.setIcon(BaseIcon.WRENCH);
-      updateInstaceButton.addSelectHandler(new SelectHandler() {
-
-         @Override
-         public void onSelect(SelectEvent event) {
-            List<ParameterDefinitionDto> selectedItems = parameterGrid.getSelectionModel().getSelectedItems();
-            updateParameterInstances(selectedItems);
-         }
-      });
+      updateInstaceButton.addSelectHandler(event -> updateParameterInstances(parameterGrid.getSelectionModel().getSelectedItems()));
       toolbar.add(updateInstaceButton);
 
       MenuItem updateAllInstancesButton = new DwMenuItem(ParametersMessages.INSTANCE.updateAllInstances(),
             BaseIcon.WRENCH);
-      updateAllInstancesButton.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            updateParameterInstances(new ArrayList(parameterGrid.getStore().getAll()));
-         }
-      });
+      updateAllInstancesButton.addSelectionHandler(event -> updateParameterInstances(new ArrayList(parameterGrid.getStore().getAll())));
 
       Menu updateInsMenu = new DwMenu();
       updateInsMenu.add(updateAllInstancesButton);
@@ -297,30 +270,19 @@ public class ParameterView extends MainPanelView {
       /* add remove buttons */
       DwSplitButton removeButton = new DwSplitButton(BaseMessages.INSTANCE.remove());
       removeButton.setIcon(BaseIcon.DELETE);
-      removeButton.addSelectHandler(new SelectHandler() {
-         @Override
-         public void onSelect(SelectEvent event) {
-            prepareRemove();
-         }
-      });
+      removeButton.addSelectHandler(event -> prepareRemove());
       toolbar.add(removeButton);
 
       MenuItem removeAllButton = new DwMenuItem(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
-      removeAllButton.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.removeAll(),
-                  ParametersMessages.INSTANCE.reallyRemoveAllText());
-            cmb.addDialogHideHandler(new DialogHideHandler() {
-               @Override
-               public void onDialogHide(DialogHideEvent event) {
-                  if (event.getHideButton() == PredefinedButton.YES)
-                     removeParameters(new ArrayList(parameterGrid.getStore().getAll()));
-               }
-            });
+      removeAllButton.addSelectionHandler(selectionEvent -> {
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(BaseMessages.INSTANCE.removeAll(),
+               ParametersMessages.INSTANCE.reallyRemoveAllText());
+         cmb.addDialogHideHandler(dialogHideEvent -> {
+            if (dialogHideEvent.getHideButton() == PredefinedButton.YES)
+               removeParameters(new ArrayList(parameterGrid.getStore().getAll()));
+         });
 
-            cmb.show();
-         }
+         cmb.show();
       });
 
       Menu removeMenu = new DwMenu();

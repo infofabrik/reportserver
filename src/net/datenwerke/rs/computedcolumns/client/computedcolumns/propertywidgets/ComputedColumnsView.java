@@ -1,7 +1,8 @@
 package net.datenwerke.rs.computedcolumns.client.computedcolumns.propertywidgets;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -16,12 +17,8 @@ import com.sencha.gxt.core.client.Style.SelectionMode;
 import com.sencha.gxt.data.shared.ListStore;
 import com.sencha.gxt.data.shared.SortDir;
 import com.sencha.gxt.data.shared.Store.StoreSortInfo;
-import com.sencha.gxt.data.shared.event.StoreAddEvent;
-import com.sencha.gxt.data.shared.event.StoreAddEvent.StoreAddHandler;
 import com.sencha.gxt.data.shared.event.StoreClearEvent;
 import com.sencha.gxt.data.shared.event.StoreClearEvent.StoreClearHandler;
-import com.sencha.gxt.data.shared.event.StoreRemoveEvent;
-import com.sencha.gxt.data.shared.event.StoreRemoveEvent.StoreRemoveHandler;
 import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
@@ -59,7 +56,6 @@ import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoListItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
-import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardCopyProcessor;
 import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardDtoPasteProcessor;
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorPanel;
 import net.datenwerke.gxtdto.client.codemirror.CodeMirrorPanel.ToolBarEnhancer;
@@ -159,12 +155,7 @@ public class ComputedColumnsView extends ReportExecutorMainPanelView {
    }
 
    protected void initClipboard() {
-      clipboardService.registerCopyHandler(grid, new ClipboardCopyProcessor() {
-         @Override
-         public ClipboardItem getItem() {
-            return createClipboardItemFromSelected();
-         }
-      });
+      clipboardService.registerCopyHandler(grid, () -> createClipboardItemFromSelected());
 
       clipboardService.registerPasteHandler(grid, new ClipboardDtoPasteProcessor(ComputedColumnDto.class) {
          @Override
@@ -180,9 +171,11 @@ public class ComputedColumnsView extends ReportExecutorMainPanelView {
    }
 
    protected void handlePaste(ClipboardDtoListItem listItem) {
-      for (Dto col : listItem.getList())
-         if (col instanceof ComputedColumnDto)
-            importColumn((ComputedColumnDto) col);
+      listItem.getList()
+         .stream()
+         .filter(col -> col instanceof ComputedColumnDto)
+         .map(col -> (ComputedColumnDto) col)
+         .forEach(col -> importColumn(col));
    }
 
    protected void handlePaste(ClipboardDtoItem dtoItem) {
@@ -408,20 +401,14 @@ public class ComputedColumnsView extends ReportExecutorMainPanelView {
 
       MenuItem deleteAllColumnsItem = new DwMenuItem(BaseMessages.INSTANCE.removeAll(), BaseIcon.DELETE);
       deleteMenu.add(deleteAllColumnsItem);
-      deleteAllColumnsItem.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            ConfirmMessageBox cmb = new DwConfirmMessageBox(ComputedColumnsMessages.INSTANCE.removeAllConfirmHeading(),
-                  ComputedColumnsMessages.INSTANCE.removeAllConfirmText());
-            cmb.addDialogHideHandler(new DialogHideHandler() {
-               @Override
-               public void onDialogHide(DialogHideEvent event) {
-                  if (event.getHideButton() == PredefinedButton.YES)
-                     removeAll();
-               }
-            });
-            cmb.show();
-         }
+      deleteAllColumnsItem.addSelectionHandler(selectionEvent ->  {
+         ConfirmMessageBox cmb = new DwConfirmMessageBox(ComputedColumnsMessages.INSTANCE.removeAllConfirmHeading(),
+               ComputedColumnsMessages.INSTANCE.removeAllConfirmText());
+         cmb.addDialogHideHandler(dialogHideEvent -> {
+            if (dialogHideEvent.getHideButton() == PredefinedButton.YES)
+               removeAll();
+         });
+         cmb.show();
       });
 
       /* right */
@@ -442,77 +429,69 @@ public class ComputedColumnsView extends ReportExecutorMainPanelView {
       store.addSortInfo(new StoreSortInfo<ComputedColumnDto>(compColPa.name(), SortDir.ASC));
 
       /* add columns to store */
-      for (AdditionalColumnSpecDto column : report.getAdditionalColumns())
-         if (column instanceof ComputedColumnDto)
-            store.add((ComputedColumnDto) column);
+      report.getAdditionalColumns()
+         .stream()
+         .filter(column -> column instanceof ComputedColumnDto)
+         .map(column -> (ComputedColumnDto) column)
+         .forEach(store::add);
 
-      store.addStoreAddHandler(new StoreAddHandler<ComputedColumnDto>() {
-         @Override
-         public void onAdd(StoreAddEvent<ComputedColumnDto> event) {
-            List<AdditionalColumnSpecDto> cols = new ArrayList(report.getAdditionalColumns());
-            cols.addAll(event.getItems());
-            report.setAdditionalColumns(cols);
-         }
+      store.addStoreAddHandler(event -> {
+         List<AdditionalColumnSpecDto> cols = new ArrayList(report.getAdditionalColumns());
+         cols.addAll(event.getItems());
+         report.setAdditionalColumns(cols);
       });
 
       store.addStoreClearHandler(new StoreClearHandler<ComputedColumnDto>() {
          @Override
          public void onClear(StoreClearEvent<ComputedColumnDto> event) {
             /* new additional columns */
-            List<AdditionalColumnSpecDto> addColumns = new ArrayList(report.getAdditionalColumns());
-            Iterator<AdditionalColumnSpecDto> it = addColumns.iterator();
-            while (it.hasNext()) {
-               ColumnDto col = it.next();
-               if (col instanceof ComputedColumnDto)
-                  it.remove();
-            }
-            report.setAdditionalColumns(addColumns);
+            final List<AdditionalColumnSpecDto> additional = new ArrayList<>(report.getAdditionalColumns());
+            additional.removeAll(report.getAdditionalColumns()
+                  .stream()
+                  .filter(col -> col instanceof ComputedColumnDto)
+                  .collect(toList()));
+            report.setAdditionalColumns(additional);
 
             /* new columns */
-            List<ColumnDto> columns = new ArrayList<ColumnDto>(report.getColumns());
-            List<ColumnDto> toRemove = new ArrayList<ColumnDto>();
-            for (ColumnDto col : columns)
-               if (col instanceof ColumnReferenceDto
-                     && (((ColumnReferenceDto) col).getReference()) instanceof ComputedColumnDto)
-                  toRemove.add(col);
-
-            columns.removeAll(toRemove);
+            final List<ColumnDto> columns = new ArrayList<>(report.getColumns());
+            columns.removeAll(report.getColumns()
+                  .stream()
+                  .filter(col -> col instanceof ColumnReferenceDto)
+                  .map(col -> (ColumnReferenceDto) col)
+                  .filter(col -> col.getReference() instanceof ComputedColumnDto)
+                  .collect(toList()));
             report.setColumns(columns);
 
             report.fireObjectChangedEvent();
          }
       });
 
-      store.addStoreRemoveHandler(new StoreRemoveHandler<ComputedColumnDto>() {
+      store.addStoreRemoveHandler(event -> {
+         AdditionalColumnSpecDto toRemoveSpec = event.getItem();
+         if (null == toRemoveSpec)
+            return;
 
-         @Override
-         public void onRemove(StoreRemoveEvent<ComputedColumnDto> event) {
-            AdditionalColumnSpecDto toRemoveSpec = event.getItem();
-            if (null == toRemoveSpec)
-               return;
+         List<AdditionalColumnSpecDto> cols = report.getAdditionalColumns();
+         cols.remove(toRemoveSpec);
+         report.setAdditionalColumns(cols);
 
-            List<AdditionalColumnSpecDto> cols = report.getAdditionalColumns();
-            cols.remove(toRemoveSpec);
-            report.setAdditionalColumns(cols);
-
-            List<ColumnDto> columns = new ArrayList<ColumnDto>(report.getColumns());
-            List<ColumnDto> toRemove = new ArrayList<ColumnDto>();
-            for (ColumnDto col : columns)
-               if (col instanceof ColumnReferenceDto && toRemoveSpec.equals(((ColumnReferenceDto) col).getReference()))
-                  toRemove.add(col);
-
-            columns.removeAll(toRemove);
-            report.setColumns(columns);
-            report.fireObjectChangedEvent();
-         }
+         final List<ColumnDto> columns = new ArrayList<>(report.getColumns());
+         columns.removeAll(report.getColumns()
+               .stream()
+               .filter(col -> col instanceof ColumnReferenceDto)
+               .map(col -> (ColumnReferenceDto) col)
+               .filter(col -> col.getReference() instanceof ComputedColumnDto
+                     && toRemoveSpec.equals(col.getReference()))
+               .collect(toList()));
+         report.setColumns(columns);
+         report.fireObjectChangedEvent();
       });
    }
 
    protected void removeSelected() {
-      List<ComputedColumnDto> items = grid.getSelectionModel().getSelectedItems();
+      final List<ComputedColumnDto> items = grid.getSelectionModel().getSelectedItems();
       if (null != items)
-         for (ComputedColumnDto item : items)
-            store.remove(item);
+         items.forEach(store::remove);
    }
 
    protected void removeAll() {
