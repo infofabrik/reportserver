@@ -6,8 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-
+import com.google.inject.Inject;
 import com.google.inject.Provider;
 
 import net.datenwerke.rs.base.service.datasources.DatasourceHelperService;
@@ -18,24 +17,24 @@ import net.datenwerke.rs.base.service.reportengines.table.output.object.RSTableM
 import net.datenwerke.rs.base.service.reportengines.table.output.object.TableDefinition;
 import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.CopySubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.exceptions.TerminalException;
 import net.datenwerke.rs.terminal.service.terminal.helpers.AutocompleteHelper;
 import net.datenwerke.rs.terminal.service.terminal.helpers.CommandParser;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.CliHelpMessage;
 import net.datenwerke.rs.terminal.service.terminal.helpmessenger.annotations.NonOptArgument;
-import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.obj.CommandResult;
 import net.datenwerke.security.service.security.rights.Read;
 
-public class CopyTableContentsCommand implements TerminalCommandHook {
-
-   public static final String BASE_COMMAND = "copyTableContents";
-
+public class CopyTableContentsSubcommand implements CopySubCommandHook {
+   
+   public static final String BASE_COMMAND = "tableContents";
+   
    private final Provider<DatasourceHelperService> datasourceServiceProvider;
    private final Provider<TerminalService> terminalServiceProvider;
-
+   
    @Inject
-   public CopyTableContentsCommand(
+   public CopyTableContentsSubcommand(
          Provider<DatasourceHelperService> datasourceServiceProvider,
          Provider<TerminalService> terminalServiceProvider
          ) {
@@ -48,6 +47,11 @@ public class CopyTableContentsCommand implements TerminalCommandHook {
       return BASE_COMMAND.equals(parser.getBaseCommand());
    }
 
+   @Override
+   public String getBaseCommand() {
+      return BASE_COMMAND;
+   }
+   
    @CliHelpMessage(
          messageClass = DatasourcesMessages.class, 
          name = BASE_COMMAND, 
@@ -57,39 +61,39 @@ public class CopyTableContentsCommand implements TerminalCommandHook {
                      name = "sourceDatasource", 
                      description = "commandCopyTableContents_sourceDatasource", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "sourceTable", 
                      description = "commandCopyTableContents_sourceTable", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "destinationDatasource", 
                      description = "commandCopyTableContents_destinationDatasource", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "destinationTable", 
                      description = "commandCopyTableContents_destinationTable", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "primaryKeys", 
                      description = "commandCopyTableContents_primaryKeys", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "copyPrimaryKeys", 
                      description = "commandCopyTableContents_copyPrimaryKeys", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "batchSize", 
                      description = "commandCopyTableContents_batchSize", 
                      mandatory = false
-                     )
-               }
-         )
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<?> nonOptionArguments = parser.getNonOptionArguments();
@@ -130,7 +134,7 @@ public class CopyTableContentsCommand implements TerminalCommandHook {
          throw new TerminalException(e);
       }
    }
-
+   
    private CommandResult printResults(Map<String, Object> results) {
       CommandResult result = new CommandResult();
 
@@ -149,8 +153,5 @@ public class CopyTableContentsCommand implements TerminalCommandHook {
 
    @Override
    public void addAutoCompletEntries(AutocompleteHelper autocompleteHelper, TerminalSession session) {
-      autocompleteHelper.autocompleteBaseCommand(BASE_COMMAND);
    }
-   
-
 }

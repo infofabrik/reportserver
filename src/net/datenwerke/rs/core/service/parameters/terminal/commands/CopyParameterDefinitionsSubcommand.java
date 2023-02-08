@@ -1,4 +1,4 @@
-package net.datenwerke.rs.core.service.parameters.commands;
+package net.datenwerke.rs.core.service.parameters.terminal.commands;
 
 import static java.util.stream.Collectors.toList;
 

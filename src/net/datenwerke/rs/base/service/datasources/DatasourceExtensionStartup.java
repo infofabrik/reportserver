@@ -15,7 +15,7 @@ import net.datenwerke.rs.base.service.datasources.table.hookers.QueryCommentAdde
 import net.datenwerke.rs.base.service.datasources.table.impl.hooks.TableDbDatasourceOpenedHook;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsExistCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.ColumnsMetadataCommand;
-import net.datenwerke.rs.base.service.datasources.terminal.commands.CopyTableContentsCommand;
+import net.datenwerke.rs.base.service.datasources.terminal.commands.CopyTableContentsSubcommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.DatasourceMetadataCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.SqlTerminalCommand;
 import net.datenwerke.rs.base.service.datasources.terminal.commands.TableExistsCommand;
@@ -35,6 +35,7 @@ import net.datenwerke.rs.base.service.datasources.transformers.database.Database
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2JdbcDatasourceTransformer;
 import net.datenwerke.rs.base.service.datasources.transformers.database.Database2TableTransformer;
 import net.datenwerke.rs.core.service.datasourcemanager.hooks.DatasourceProviderHook;
+import net.datenwerke.rs.terminal.service.terminal.basecommands.CopySubCommandHook;
 import net.datenwerke.rs.terminal.service.terminal.hooks.TerminalCommandHook;
 import net.datenwerke.rs.utils.eventbus.EventBus;
 import net.datenwerke.security.service.eventlogger.jpa.MergeEntityEvent;
@@ -69,7 +70,7 @@ public class DatasourceExtensionStartup {
          Provider<MonetDbStatementCancler> monetDbCancler,
          
          Provider<SqlTerminalCommand> sqlCommand,
-         Provider<CopyTableContentsCommand> copyTableContentsCommandProvider,
+         Provider<CopyTableContentsSubcommand> copyTableContentsSubcommandProvider,
          Provider<TableExistsCommand> tableExistsCommandProvider,
          Provider<ColumnsExistCommand> columnsExistCommandProvider,
          Provider<ColumnsMetadataCommand> columnsMetadataCommandProvider,
@@ -102,7 +103,7 @@ public class DatasourceExtensionStartup {
       
       /* commands */
       hookHandler.attachHooker(TerminalCommandHook.class, sqlCommand);
-      hookHandler.attachHooker(TerminalCommandHook.class, copyTableContentsCommandProvider);
+      hookHandler.attachHooker(CopySubCommandHook.class, copyTableContentsSubcommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, tableExistsCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, columnsExistCommandProvider);
       hookHandler.attachHooker(TerminalCommandHook.class, columnsMetadataCommandProvider);
