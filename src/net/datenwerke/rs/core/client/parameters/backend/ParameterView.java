@@ -1,7 +1,10 @@
 package net.datenwerke.rs.core.client.parameters.backend;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -66,8 +69,10 @@ import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenu;
 import net.datenwerke.gxtdto.client.baseex.widget.menu.DwMenuItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardDtoListItem;
+import net.datenwerke.gxtdto.client.clipboard.ClipboardItem;
 import net.datenwerke.gxtdto.client.clipboard.ClipboardUiService;
 import net.datenwerke.gxtdto.client.clipboard.processor.ClipboardDtoPasteProcessor;
+import net.datenwerke.gxtdto.client.dtomanager.Dto;
 import net.datenwerke.gxtdto.client.dtomanager.callback.RsAsyncCallback;
 import net.datenwerke.gxtdto.client.forms.simpleform.SimpleForm;
 import net.datenwerke.gxtdto.client.forms.simpleform.providers.configs.SFFCBaseModel;
@@ -171,29 +176,31 @@ public class ParameterView extends MainPanelView {
    }
 
    protected void initClipboard() {
-      clipboardService.registerCopyHandler(parameterGrid, () -> {
-         List<ParameterDefinitionDto> list = parameterGrid.getSelectionModel().getSelectedItems();
-         if (null != list && list.size() > 1)
-            return new ClipboardDtoListItem(list, ParameterDefinitionDto.class);
-
-         ParameterDefinitionDto def = parameterGrid.getSelectionModel().getSelectedItem();
-         if (null != def)
-            return new ClipboardDtoItem(def);
-         return null;
-      });
+      clipboardService.registerCopyHandler(parameterGrid, () -> createClipboardItemFromSelected());
 
       clipboardService.registerPasteHandler(parameterGrid,
             new ClipboardDtoPasteProcessor(ParameterDefinitionDto.class) {
                @Override
                protected void doPaste(ClipboardDtoItem dtoItem) {
-                  duplicateParameter((ParameterDefinitionDto) dtoItem.getDto());
+                  handlePaste(dtoItem);
                }
 
                @Override
                protected void doPaste(ClipboardDtoListItem listItem) {
-                  duplicateParameters((List<ParameterDefinitionDto>) listItem.getList());
+                  handlePaste(listItem);
                }
             });
+   }
+   
+   protected ClipboardItem createClipboardItemFromSelected() {
+      List<ParameterDefinitionDto> list = parameterGrid.getSelectionModel().getSelectedItems();
+      if (null != list && list.size() > 1)
+         return new ClipboardDtoListItem(list, ParameterDefinitionDto.class);
+
+      ParameterDefinitionDto def = parameterGrid.getSelectionModel().getSelectedItem();
+      if (null != def)
+         return new ClipboardDtoItem(def, ParameterDefinitionDto.class, null);
+      return null;
    }
 
    protected ToolBar createToolbar() {
@@ -206,7 +213,7 @@ public class ParameterView extends MainPanelView {
       addParamBtn.setMenu(addParamMenu);
       toolbar.add(addParamBtn);
 
-      /* add separrator */
+      /* add separator */
       DwTextButton addSeparatorBtn = toolbarService.createSmallButtonLeft(ParametersMessages.INSTANCE.divider(),
             BaseIcon.FONT);
       Menu addSeparatorMenu = new DwMenu();
@@ -405,8 +412,7 @@ public class ParameterView extends MainPanelView {
 
       /* menu */
       Menu menu = new Menu();
-      grid.setContextMenu(menu);
-
+      
       MenuItem edit = new DwMenuItem(BaseMessages.INSTANCE.edit(), BaseIcon.COG_EDIT);
       edit.addSelectionHandler(new SelectionHandler<Item>() {
          @Override
@@ -428,6 +434,42 @@ public class ParameterView extends MainPanelView {
          }
       });
       menu.add(remove);
+      
+      menu.add(new SeparatorMenuItem());
+      final MenuItem copyItem = new DwMenuItem(BaseMessages.INSTANCE.copy());
+      copyItem.addSelectionHandler(event -> clipboardService.setClipboardItem(createClipboardItemFromSelected()));
+      menu.add(copyItem);
+      
+      final MenuItem pasteItem = new DwMenuItem(BaseMessages.INSTANCE.paste());
+      pasteItem.addSelectionHandler(event -> {
+         ClipboardItem clipboardItem = clipboardService.getClipboardItem();
+
+         if (null == clipboardItem || clipboardItem.getType() != ParameterDefinitionDto.class)
+            return;
+
+         if (clipboardItem instanceof ClipboardDtoListItem)
+            handlePaste((ClipboardDtoListItem) clipboardItem);
+         else if (clipboardItem instanceof ClipboardDtoItem)
+            handlePaste((ClipboardDtoItem) clipboardItem);
+      });
+      menu.add(pasteItem);
+      
+      grid.setContextMenu(menu);
+      
+      grid.addBeforeShowContextMenuHandler(event -> {
+         /* clipboard */
+         pasteItem.setEnabled(true);
+         ClipboardItem clipboardItem = clipboardService.getClipboardItem();
+         if (null != clipboardItem)
+         if (null == clipboardItem || clipboardItem.getType() != ParameterDefinitionDto.class)
+            pasteItem.setEnabled(false);
+
+         copyItem.setEnabled(true);
+         List<ParameterDefinitionDto> list = grid.getSelectionModel().getSelectedItems();
+         ParameterDefinitionDto selected = grid.getSelectionModel().getSelectedItem();
+         if ((null == list || list.isEmpty()) && null == selected)
+            copyItem.setEnabled(false);
+      });
 
       // edit //
       final GridEditing<ParameterDefinitionDto> editing = new GridInlineEditing<ParameterDefinitionDto>(grid);
@@ -658,16 +700,30 @@ public class ParameterView extends MainPanelView {
                }
             });
    }
-
-   protected void duplicateParameter(ParameterDefinitionDto param) {
-      List<ParameterDefinitionDto> list = new ArrayList<ParameterDefinitionDto>();
-      list.add(param);
-      duplicateParameters(list);
+   
+   protected void handlePaste(ClipboardDtoListItem listItem) {
+      pasteParameters(listItem.getList()
+         .stream()
+         .filter(col -> col instanceof ParameterDefinitionDto)
+         .map(col -> (ParameterDefinitionDto) col)
+         .collect(toList()));
+   }
+   
+   protected void handlePaste(ClipboardDtoItem dtoItem) {
+      Dto dto = dtoItem.getDto();
+      if (dto instanceof ParameterDefinitionDto) {
+         ParameterDefinitionDto parameter = (ParameterDefinitionDto) dto;
+         pasteParameters(Collections.singletonList(parameter));
+      }
    }
 
-   protected void duplicateParameters(List<ParameterDefinitionDto> params) {
+   protected void pasteParameters(final List<ParameterDefinitionDto> params) {
+      if (null == params)
+         return;
+      
       parameterDao.duplicateParameters(params, getSelectedNode(),
-            new NotamCallback<ReportDto>(ParametersMessages.INSTANCE.parameterDuplicated()) { // $NON-NLS-1$
+            new NotamCallback<ReportDto>(params.size() == 1 ? ParametersMessages.INSTANCE.parameterPasted()
+                  : ParametersMessages.INSTANCE.parametersPasted()) { // $NON-NLS-1$
                @Override
                public void doOnSuccess(ReportDto adjustedReport) {
                   updateStore(adjustedReport);

@@ -166,8 +166,7 @@ public class ParameterRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       Report report = parameterService.getReportWithParameter(parameters.iterator().next());
 
       /* remove parameter */
-      for (ParameterDefinition parameter : parameters)
-         parameterService.remove(parameter);
+      parameters.forEach(parameterService::remove);
 
       /* merge report */
       reportManager.merge(report);

@@ -26,6 +26,8 @@ public interface ParametersMessages extends Messages {
    String parameterProperties();
 
    String parameterAdded();
+   
+   String parameterPasted();
 
    String key();
 
@@ -53,7 +55,7 @@ public interface ParametersMessages extends Messages {
 
    String updateInstancesMsgTitle();
 
-   String parameterDuplicated();
+   String parametersPasted();
 
    String propertyDisplayInline();
 

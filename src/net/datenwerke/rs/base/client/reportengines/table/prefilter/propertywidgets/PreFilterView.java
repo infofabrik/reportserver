@@ -227,7 +227,7 @@ public class PreFilterView extends ReportExecutorMainPanelView {
    protected ClipboardItem createClipboardItemFromSelected() {
       Object item = treegrid.getSelectionModel().getSelectedItem();
       if (null != item)
-         return new ClipboardDtoItem((Dto) item, report.getParentNodeId());
+         return new ClipboardDtoItem((Dto) item, item.getClass(), report.getParentNodeId());
       return null;
    }
 

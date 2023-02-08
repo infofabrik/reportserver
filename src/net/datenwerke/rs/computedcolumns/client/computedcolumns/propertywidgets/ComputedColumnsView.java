@@ -9,8 +9,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.editor.client.Editor;
 import com.google.gwt.editor.client.EditorError;
-import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.logical.shared.SelectionHandler;
 import com.google.gwt.resources.client.ImageResource;
 import com.google.inject.Inject;
 import com.sencha.gxt.core.client.Style.SelectionMode;
@@ -23,8 +21,6 @@ import com.sencha.gxt.widget.core.client.Component;
 import com.sencha.gxt.widget.core.client.Dialog.PredefinedButton;
 import com.sencha.gxt.widget.core.client.box.ConfirmMessageBox;
 import com.sencha.gxt.widget.core.client.container.MarginData;
-import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent;
-import com.sencha.gxt.widget.core.client.event.BeforeShowContextMenuEvent.BeforeShowContextMenuHandler;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent;
 import com.sencha.gxt.widget.core.client.event.CellDoubleClickEvent.CellDoubleClickHandler;
 import com.sencha.gxt.widget.core.client.event.DialogHideEvent;
@@ -37,7 +33,6 @@ import com.sencha.gxt.widget.core.client.form.error.DefaultEditorError;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.menu.Item;
 import com.sencha.gxt.widget.core.client.menu.Menu;
 import com.sencha.gxt.widget.core.client.menu.MenuItem;
 import com.sencha.gxt.widget.core.client.toolbar.FillToolItem;
@@ -310,50 +305,37 @@ public class ComputedColumnsView extends ReportExecutorMainPanelView {
       Menu ctxMen = new DwMenu();
 
       final MenuItem copyItem = new DwMenuItem(BaseMessages.INSTANCE.copy());
-      copyItem.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            ClipboardItem clipboardItem = createClipboardItemFromSelected();
-            clipboardService.setClipboardItem(clipboardItem);
-         }
-      });
+      copyItem.addSelectionHandler(event -> clipboardService.setClipboardItem(createClipboardItemFromSelected()));
       ctxMen.add(copyItem);
 
       final MenuItem pasteItem = new DwMenuItem(BaseMessages.INSTANCE.paste());
-      pasteItem.addSelectionHandler(new SelectionHandler<Item>() {
-         @Override
-         public void onSelection(SelectionEvent<Item> event) {
-            ClipboardItem clipboardItem = clipboardService.getClipboardItem();
+      pasteItem.addSelectionHandler(event -> {
+         ClipboardItem clipboardItem = clipboardService.getClipboardItem();
 
-            if (null == clipboardItem || clipboardItem.getType() != ComputedColumnDto.class)
-               return;
+         if (null == clipboardItem || clipboardItem.getType() != ComputedColumnDto.class)
+            return;
 
-            if (clipboardItem instanceof ClipboardDtoListItem)
-               handlePaste((ClipboardDtoListItem) clipboardItem);
-            else if (clipboardItem instanceof ClipboardDtoItem)
-               handlePaste((ClipboardDtoItem) clipboardItem);
-         }
+         if (clipboardItem instanceof ClipboardDtoListItem)
+            handlePaste((ClipboardDtoListItem) clipboardItem);
+         else if (clipboardItem instanceof ClipboardDtoItem)
+            handlePaste((ClipboardDtoItem) clipboardItem);
       });
       ctxMen.add(pasteItem);
 
       grid.setContextMenu(ctxMen);
 
-      grid.addBeforeShowContextMenuHandler(new BeforeShowContextMenuHandler() {
-         @Override
-         public void onBeforeShowContextMenu(BeforeShowContextMenuEvent event) {
-            /* clipboard */
-            pasteItem.setEnabled(true);
-            ClipboardItem clipboardItem = clipboardService.getClipboardItem();
-            if (null == clipboardItem || clipboardItem.getType() != ComputedColumnDto.class)
-               pasteItem.setEnabled(false);
+      grid.addBeforeShowContextMenuHandler(event -> {
+         /* clipboard */
+         pasteItem.setEnabled(true);
+         ClipboardItem clipboardItem = clipboardService.getClipboardItem();
+         if (null == clipboardItem || clipboardItem.getType() != ComputedColumnDto.class)
+            pasteItem.setEnabled(false);
 
-            copyItem.setEnabled(true);
-            List<ComputedColumnDto> list = grid.getSelectionModel().getSelectedItems();
-            ColumnDto selected = grid.getSelectionModel().getSelectedItem();
-            if ((null == list || list.isEmpty()) && null == selected)
-               copyItem.setEnabled(false);
-
-         }
+         copyItem.setEnabled(true);
+         List<ComputedColumnDto> list = grid.getSelectionModel().getSelectedItems();
+         ColumnDto selected = grid.getSelectionModel().getSelectedItem();
+         if ((null == list || list.isEmpty()) && null == selected)
+            copyItem.setEnabled(false);
       });
 
    }

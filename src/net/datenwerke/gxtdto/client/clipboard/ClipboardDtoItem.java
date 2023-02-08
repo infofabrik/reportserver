@@ -25,10 +25,12 @@ public class ClipboardDtoItem extends ClipboardItem implements ClipboardItemDesc
       setType(dto.getClass());
       this.setDto(dto);
    }
-
-   public ClipboardDtoItem(Dto dto, Object addInfo) {
+   
+   public ClipboardDtoItem(Dto dto, Class<?> type, Object addInfo) {
       this(dto);
-      setAdditionalInfo(addInfo);
+      setType(type);
+      if (null != addInfo)
+         setAdditionalInfo(addInfo);
    }
 
    public Object getId() {
