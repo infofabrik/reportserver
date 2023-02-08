@@ -58,19 +58,19 @@ public class ColumnsMetadataCommand implements TerminalCommandHook {
                      name = "datasource", 
                      description = "commandColumnMetadata_datasource", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "table", 
                      description = "commandColumnMetadata_table", 
                      mandatory = true
-                     ),
+               ),
                @NonOptArgument(
                      name = "column", 
                      description = "commandColumnMetadata_columns", 
                      varArgs = true
-                     )
-               }
-         )
+               )
+         }
+   )
    @Override
    public CommandResult execute(CommandParser parser, TerminalSession session) throws TerminalException {
       List<String> nonOptionArguments = parser.getNonOptionArguments();

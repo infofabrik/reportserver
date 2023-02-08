@@ -65,7 +65,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
             def sourceSql = new Sql(sourceConn)
             def destinationSql = new Sql(destinationConn)
 
-            def metaResultSet = sourceConn.metaData.getColumns(null, null, sourceTable, null)
+            def metaResultSet = sourceConn.metaData.getColumns(sourceConn.catalog, null, sourceTable, null)
             copyTableHelper.readMetadata metaResultSet
             def insertStmt = copyTableHelper.prepareInsertStmt metaResultSet
 
@@ -91,7 +91,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
          def sql = new Sql(conn)
 
-         def metaResultSet = conn.metaData.getColumns(null, null, table, null)
+         def metaResultSet = conn.metaData.getColumns(conn.catalog, null, table, null)
          metaResultSet.next()
       }
    }
@@ -107,7 +107,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
          def sql = new Sql(conn)
 
          def allColumns = []
-         def metaResultSet = conn.metaData.getColumns(null, null, table, null)
+         def metaResultSet = conn.metaData.getColumns(conn.catalog, null, table, null)
          while (metaResultSet.next())
             allColumns << metaResultSet.getString('COLUMN_NAME').toUpperCase(Locale.ROOT)
             
@@ -134,7 +134,7 @@ class DatasourceHelperServiceImpl implements DatasourceHelperService {
 
          def sql = new Sql(conn)
 
-         def metaResultSet = conn.metaData.getColumns(null, null, table, null)
+         def metaResultSet = conn.metaData.getColumns(conn.catalog, null, table, null)
          def returnTypes = databaseMetaDataGetColumnsReturnTypes()
          Closure metaFetcher = { colDefinition, col -> 
             switch(returnTypes[col]) {
