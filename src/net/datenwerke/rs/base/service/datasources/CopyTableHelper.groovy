@@ -26,7 +26,7 @@ class CopyTableHelper {
       insertStmt = """\
                INSERT INTO $destinationTable ( ${insertingColNames.join(',')} ) 
                values ( ${('?'*insertingColNames.size() as List).join(',')} )
-         """ as String
+         """.stripIndent() as String
          
       insertStmt
    }
@@ -90,7 +90,7 @@ class CopyTableHelper {
    }
    
    def prepareSelectStmt() {
-      selectStmt = "SELECT " + allColNames.join(',') + " FROM " + sourceTable
+      selectStmt = "SELECT ${allColNames.join(',')} FROM $sourceTable" as String
       selectStmt
    }   
 }
