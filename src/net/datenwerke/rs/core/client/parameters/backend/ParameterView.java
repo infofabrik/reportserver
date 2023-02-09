@@ -437,10 +437,12 @@ public class ParameterView extends MainPanelView {
       
       menu.add(new SeparatorMenuItem());
       final MenuItem copyItem = new DwMenuItem(BaseMessages.INSTANCE.copy());
+      copyItem.setIcon(BaseIcon.COPY.toImageResource());
       copyItem.addSelectionHandler(event -> clipboardService.setClipboardItem(createClipboardItemFromSelected()));
       menu.add(copyItem);
       
       final MenuItem pasteItem = new DwMenuItem(BaseMessages.INSTANCE.paste());
+      pasteItem.setIcon(BaseIcon.PASTE.toImageResource());
       pasteItem.addSelectionHandler(event -> {
          ClipboardItem clipboardItem = clipboardService.getClipboardItem();
 
