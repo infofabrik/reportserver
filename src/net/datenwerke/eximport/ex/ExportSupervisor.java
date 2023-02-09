@@ -1,5 +1,7 @@
 package net.datenwerke.eximport.ex;
 
+import static net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil.rethrowConsumer;
+
 import java.lang.reflect.Field;
 import java.util.Collection;
 import java.util.HashMap;
@@ -64,8 +66,7 @@ public class ExportSupervisor {
       /* create base element and a base for each exporter */
       xsw.writeStartElement(ExImportHelperService.DOCUMENT_DATA_ELEMENT);
 
-      for (Exporter exporter : exporters)
-         exporter.export(this);
+      exporters.forEach(rethrowConsumer(exporter -> exporter.export(this)));
 
       /* close base element */
       xsw.writeEndElement();

@@ -142,13 +142,15 @@ public class ExportServiceImpl implements ExportService {
    }
 
    private List<Exporter> getExporters() {
-      return hookHandler.getHookers(ExporterProviderHook.class).stream().map(ExporterProviderHook::getObject)
+      return hookHandler.getHookers(ExporterProviderHook.class)
+            .stream()
+            .map(ExporterProviderHook::getObject)
             .collect(toList());
    }
 
    @Override
    public Collection<String> getExporterIds(Collection<Class<?>> exporterTypes) {
-      List<String> ids = new ArrayList<String>();
+      List<String> ids = new ArrayList<>();
 
       for (Class<?> type : exporterTypes) {
          for (Exporter exporter : getExporters()) {
@@ -169,7 +171,10 @@ public class ExportServiceImpl implements ExportService {
     */
    @Override
    public Exporter getExporterFor(final Class<?> exporterType) {
-      return getExporters().stream().filter(exporter -> exporterType.equals(exporter.getClass())).findAny()
+      return getExporters()
+            .stream()
+            .filter(exporter -> exporterType.equals(exporter.getClass()))
+            .findAny()
             .orElse(null);
    }
 
@@ -180,7 +185,11 @@ public class ExportServiceImpl implements ExportService {
     */
    @Override
    public Exporter getExporterFor(final Object object) {
-      return getExporters().stream().filter(exporter -> exporter.consumes(object)).findAny().orElse(null);
+      return getExporters()
+            .stream()
+            .filter(exporter -> exporter.consumes(object))
+            .findAny()
+            .orElse(null);
    }
 
 }

@@ -18,12 +18,14 @@ import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceM
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.HttpDatasourceManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
+import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.HttpReportManagerImportConfigurationHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ParameterInstanceExporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerImporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ExportAllReportsHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ImportAllReportsHooker;
+import net.datenwerke.rs.base.ext.service.reportmanager.hookers.ReportExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.hooks.ReportModSubCommandHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands.ListPropertyCommand;
 import net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands.RemovePropertyCommand;
@@ -75,7 +77,9 @@ public class RsBaseExtStartup {
 
          Provider<ReportModCommand> reportModCommand, Provider<SetUuidCommand> setUUIDCommand,
          Provider<SetPropertyCommand> setPropertyCommand, Provider<RemovePropertyCommand> removePropertyCommand,
-         Provider<ListPropertyCommand> listPropertyCommand
+         Provider<ListPropertyCommand> listPropertyCommand,
+         
+         Provider<ReportExportConfigHooker> reportExportConfigHooker
 
    ) {
 
@@ -116,5 +120,7 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ReportModSubCommandHook.class, setPropertyCommand);
       hookHandler.attachHooker(ReportModSubCommandHook.class, removePropertyCommand);
       hookHandler.attachHooker(ReportModSubCommandHook.class, listPropertyCommand);
+      
+      hookHandler.attachHooker(ExportConfigHook.class, reportExportConfigHooker);
    }
 }

@@ -1,4 +1,4 @@
-package net.datenwerke.rs.rest.resources;
+package net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.rest.resources;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -10,6 +10,7 @@ import javax.ws.rs.core.Response;
 
 import net.datenwerke.rs.adminutils.service.systemconsole.generalinfo.GeneralInfoService;
 import net.datenwerke.rs.adminutils.service.systemconsole.genrights.SystemConsoleSecurityTarget;
+import net.datenwerke.rs.rest.resources.RsRestResource;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthentication;
 import net.datenwerke.security.service.security.SecurityService;
 import net.datenwerke.security.service.security.rights.Read;
