@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.ext.service.rest.resources;
 
+import java.util.Optional;
+
 import javax.inject.Inject;
 import javax.inject.Provider;
 import javax.ws.rs.GET;
@@ -12,6 +14,8 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.datenwerke.eximport.ExportService;
 import net.datenwerke.eximport.ex.ExportConfig;
@@ -29,7 +33,6 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
-import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -37,6 +40,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 @Path("/node-exporter")
 @RestAuthentication
 public class NodeExporterResource extends RsRestResource {
+   
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
 
    private final Provider<SecurityService> securityServiceProvider;
    private final Provider<HookHandlerService> hookHandlerServiceProvider;
@@ -81,7 +86,7 @@ public class NodeExporterResource extends RsRestResource {
          if (!securityServiceProvider.get().checkRights(node, Read.class))
             return Response.status(Status.UNAUTHORIZED).build();
          
-         final ExportConfig exportConfig = hookHandlerServiceProvider.get().getHookers(ExportConfigHook.class)
+         final Optional<ExportConfig> exportConfig = hookHandlerServiceProvider.get().getHookers(ExportConfigHook.class)
             .stream()
             .filter(hooker -> hooker.consumes(node))
             .map(hooker -> { 
@@ -98,10 +103,13 @@ public class NodeExporterResource extends RsRestResource {
                }
                return hooker.configure(node, exportOptions);
             })
-            .findAny()
-            .orElseThrow(() -> new IllegalStateException("No ExportConfigHook hooker configured"));
-         
-         final String exportXML = exportServiceProvider.get().export(exportConfig);
+            .findAny();
+
+         if (!exportConfig.isPresent()) {
+            logger.error("no exporter found");
+            return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+         }
+         final String exportXML = exportServiceProvider.get().export(exportConfig.get());
          final ExportedNodeDto exportDto = new ExportedNodeDto();
          final GeneralInfoService generalInfoService = generalInfoServiceProvider.get();
          exportDto.setExportTimeStamp(generalInfoService.getNow());
@@ -113,8 +121,8 @@ public class NodeExporterResource extends RsRestResource {
          
          return Response.ok().entity(exportDto).build();
       } catch (Exception e) {
-         //TODO: nicht immer exception werfen, sondern Response.Status(), etc
-         throw new RuntimeException(ExceptionUtils.getRootCauseMessage(e), e);
+         logger.error(ExceptionUtils.getRootCauseMessage(e), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
       }
    }
    
