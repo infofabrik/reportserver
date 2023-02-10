@@ -7,6 +7,7 @@ import net.datenwerke.eximport.hooks.ExporterProviderHook;
 import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
@@ -18,6 +19,7 @@ import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 import net.datenwerke.usermanager.ext.service.eximport.UserManagerImporter;
 import net.datenwerke.usermanager.ext.service.eximport.hooker.ExportAllUsersHooker;
 import net.datenwerke.usermanager.ext.service.eximport.hooker.ImportAllUsersHooker;
+import net.datenwerke.usermanager.ext.service.eximport.hooker.UserExportConfigHooker;
 import net.datenwerke.usermanager.ext.service.history.UserManagerHistoryUrlBuilderHooker;
 import net.datenwerke.usermanager.ext.service.hookers.UpdateUserLocalHooker;
 import net.datenwerke.usermanager.ext.service.hooks.UserModSubCommandHook;
@@ -30,18 +32,26 @@ import net.datenwerke.usermanager.ext.service.terminal.commands.UserModCommand;
 public class UserManagerExtStartup {
 
    @Inject
-   public UserManagerExtStartup(HookHandlerService hookHandler, Provider<UserManagerExporter> exporterProvider,
+   public UserManagerExtStartup(
+         HookHandlerService hookHandler, 
+         Provider<UserManagerExporter> exporterProvider,
          Provider<UserManagerImporter> importerProvider,
          Provider<HttpUserManagerImportConfigurationHooker> httpImportConfigHookerProvider,
-         Provider<ExportAllUsersHooker> exportAllUsers, Provider<ImportAllUsersHooker> importAllUsers,
+         Provider<ExportAllUsersHooker> exportAllUsers, 
+         Provider<ImportAllUsersHooker> importAllUsers,
 
          Provider<UpdateUserLocalHooker> updateUserLocaleHooker,
 
          Provider<UserManagerHistoryUrlBuilderHooker> userManagerUrlBuilder,
 
          Provider<UserModCommand> userModCommandProvider,
-         Provider<SetUserPropertySubCommand> setUserPropertyCommandProvider, Provider<GroupModCommand> groupModProvider,
-         Provider<AddMembersSubCommand> addMembersToGroupProvider, Provider<IdCommand> idCommandProvider) {
+         Provider<SetUserPropertySubCommand> setUserPropertyCommandProvider, 
+         Provider<GroupModCommand> groupModProvider,
+         Provider<AddMembersSubCommand> addMembersToGroupProvider, 
+         Provider<IdCommand> idCommandProvider,
+         
+         Provider<UserExportConfigHooker> userExportConfigHooker
+         ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
       hookHandler.attachHooker(ImporterProviderHook.class, new ImporterProviderHook(importerProvider));
@@ -58,5 +68,7 @@ public class UserManagerExtStartup {
       hookHandler.attachHooker(TerminalCommandHook.class, idCommandProvider);
 
       hookHandler.attachHooker(HistoryUrlBuilderHook.class, userManagerUrlBuilder);
+      
+      hookHandler.attachHooker(ExportConfigHook.class, userExportConfigHooker);
    }
 }

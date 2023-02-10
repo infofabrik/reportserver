@@ -16,7 +16,7 @@ import net.datenwerke.security.service.security.annotation.RightsVerification;
 import net.datenwerke.security.service.security.annotation.SecurityChecked;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
-import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperServiceImpl;
+import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 import net.datenwerke.usermanager.ext.client.eximport.ex.rpc.UserManagerExportRpcService;
 
 /**
@@ -35,11 +35,14 @@ public class UserManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
    private final DtoService dtoService;
    private final Provider<HttpExportService> httpExportServiceProvider;
 
-   private TreeNodeExportHelperServiceImpl exportHelper;
+   private TreeNodeExportHelperService exportHelper;
 
    @Inject
-   public UserManagerExportRpcServiceImpl(DtoService dtoService, Provider<HttpExportService> httpExportServiceProvider,
-         TreeNodeExportHelperServiceImpl exportHelper) {
+   public UserManagerExportRpcServiceImpl(
+         DtoService dtoService, 
+         Provider<HttpExportService> httpExportServiceProvider,
+         TreeNodeExportHelperService exportHelper
+         ) {
 
       /* store objects */
       this.dtoService = dtoService;

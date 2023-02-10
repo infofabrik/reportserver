@@ -224,4 +224,10 @@ public class SecurityAllowEverythingService implements SecurityService {
 
    }
 
+   @Override
+   public boolean checkRights(Object target, Class<? extends Right>... rights) {
+      // TODO Auto-generated method stub
+      return false;
+   }
+
 }

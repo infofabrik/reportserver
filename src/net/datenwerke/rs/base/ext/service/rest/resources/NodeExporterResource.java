@@ -9,6 +9,7 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
 import org.apache.commons.lang3.exception.ExceptionUtils;
 
@@ -28,6 +29,7 @@ import net.datenwerke.rs.terminal.service.terminal.TerminalService;
 import net.datenwerke.rs.terminal.service.terminal.TerminalSession;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
 import net.datenwerke.security.service.security.SecurityService;
+import net.datenwerke.security.service.security.SecurityServiceSecuree;
 import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
@@ -67,16 +69,17 @@ public class NodeExporterResource extends RsRestResource {
    @Path("/{path:.+}")
    @Produces(MediaType.APPLICATION_JSON)
    public Response getExportedNode(@PathParam("path") String path, @MatrixParam("includeVariants") final boolean includeVariants) {
-      securityServiceProvider.get().assertRights(ExportSecurityTarget.class, Execute.class);
+      if (!securityServiceProvider.get().checkRights(ExportSecurityTarget.class, Execute.class)) 
+         return Response.status(Status.UNAUTHORIZED).build();
       
       if (null == path) 
-         throw new IllegalArgumentException("path cannot be null");
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
       try {
          final AbstractNode node = terminalServiceProvider.get().getSingleObjectOfTypeByQuery(AbstractNode.class, path,
                terminalSessionProvider.get(), Read.class);
-         System.out.println("Node found: " + node);
-         System.out.println("Exporting " + path);
-         System.out.println("Include variants: " + includeVariants);
+         
+         if (!securityServiceProvider.get().checkRights(node, Read.class))
+            return Response.status(Status.UNAUTHORIZED).build();
          
          final ExportConfig exportConfig = hookHandlerServiceProvider.get().getHookers(ExportConfigHook.class)
             .stream()
@@ -94,7 +97,7 @@ public class NodeExporterResource extends RsRestResource {
                   exportOptions = new ExportOptions() {};
                }
                return hooker.configure(node, exportOptions);
-               })
+            })
             .findAny()
             .orElseThrow(() -> new IllegalStateException("No ExportConfigHook hooker configured"));
          

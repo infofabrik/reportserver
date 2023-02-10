@@ -85,6 +85,8 @@ public interface SecurityService {
     * @return true if the tests passed; false otherwise
     */
    boolean checkRights(SecurityTarget target, Class<? extends Right>... rights);
+   
+   boolean checkRights(Object target, Class<? extends Right>... rights);
 
    /**
     * Tests whether the target has the specified rights.

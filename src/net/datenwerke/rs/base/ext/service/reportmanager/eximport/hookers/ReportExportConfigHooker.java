@@ -1,4 +1,4 @@
-package net.datenwerke.rs.base.ext.service.reportmanager.hookers;
+package net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers;
 
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.rs.base.ext.service.ExportOptions;
@@ -13,15 +13,15 @@ public class ReportExportConfigHooker implements ExportConfigHook {
 
    @Override
    public ExportConfig configure(AbstractNode node, ExportOptions options) {
-      /* export report */
-      ExportConfig exportConfig = new ExportConfig();
-      exportConfig.setName("Report-Export");
-      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
-      
       if (!(options instanceof ReportExportOptions))
          throw new IllegalArgumentException("options not of type ReportExportOptions");
       if (!(node instanceof AbstractReportManagerNode))
          throw new IllegalArgumentException("node not an AbstractReportManagerNode");
+      
+      /* export report */
+      ExportConfig exportConfig = new ExportConfig();
+      exportConfig.setName("Report-Export");
+      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
       
       ReportExportOptions reportExportOptions = (ReportExportOptions) options;
       addChildren(exportConfig, (AbstractReportManagerNode)node, reportExportOptions.includeVariants());

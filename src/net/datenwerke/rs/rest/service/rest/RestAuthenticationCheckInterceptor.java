@@ -9,16 +9,22 @@ import javax.ws.rs.core.Response.Status;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.apache.commons.lang3.exception.ExceptionUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.inject.Inject;
 
 import net.datenwerke.rs.core.server.reportexport.helper.ApiKeyHelper;
 import net.datenwerke.rs.rest.service.rest.annotations.RestAuthenticationBypass;
 import net.datenwerke.security.service.authenticator.AuthenticatorService;
+import net.datenwerke.security.service.security.exceptions.ViolatedSecurityException;
 import net.datenwerke.security.service.usermanager.entities.User;
 
 public class RestAuthenticationCheckInterceptor implements MethodInterceptor {
 
+   private final Logger logger = LoggerFactory.getLogger(getClass().getName());
+   
    @Inject
    private Provider<AuthenticatorService> authenticatorServiceProvider;
    
@@ -27,7 +33,6 @@ public class RestAuthenticationCheckInterceptor implements MethodInterceptor {
    
    public Object invoke(MethodInvocation invocation) throws Throwable {
       try {
-         
          if (invocation.getMethod().isAnnotationPresent(RestAuthenticationBypass.class))
             return invocation.proceed();
          
@@ -50,9 +55,16 @@ public class RestAuthenticationCheckInterceptor implements MethodInterceptor {
             return Response.status(Status.UNAUTHORIZED).build();
          }
          
-      } catch (Exception e) {
-         e.printStackTrace();
+      } catch (ViolatedSecurityException e) {
+         logger.error(ExceptionUtils.getRootCauseMessage(e), e);
          return Response.status(Status.UNAUTHORIZED).build();
+      } catch (Exception e) {
+         if (ExceptionUtils.getRootCause(e) instanceof ViolatedSecurityException) {
+            logger.error(ExceptionUtils.getRootCauseMessage(e), e);
+            return Response.status(Status.UNAUTHORIZED).build();
+         }
+         logger.error(ExceptionUtils.getRootCauseMessage(e), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
       }
    }
    

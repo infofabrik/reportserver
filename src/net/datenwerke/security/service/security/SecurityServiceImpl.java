@@ -217,7 +217,7 @@ public class SecurityServiceImpl implements SecurityService {
       if (!checkRights((SecurityTarget) target, rights))
          throw new ViolatedSecurityException(target, rights);
    }
-
+   
    @Override
    public void assertActions(Object target, Class<? extends SecurityAction>... actions) {
       if (target instanceof Class<?>) {
@@ -244,6 +244,21 @@ public class SecurityServiceImpl implements SecurityService {
    @Override
    public boolean checkRights(SecurityTarget target, Class<? extends Right>... rights) {
       return checkRights(target, SecurityServiceSecuree.class, rights);
+   }
+   
+   @Override
+   public boolean checkRights(Object target, Class<? extends Right>... rights) {
+      if (target instanceof Class<?>) {
+         /* get targetEntity */
+         target = loadGenericTarget((Class<?>) target);
+      }
+
+      assertUserLoggedIn();
+
+      if (!(target instanceof SecurityTarget))
+         return false;
+
+      return checkRights((SecurityTarget)target, rights);
    }
 
    @Override

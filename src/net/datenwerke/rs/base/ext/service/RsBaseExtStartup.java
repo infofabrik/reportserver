@@ -25,7 +25,7 @@ import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerEx
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerImporter;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ExportAllReportsHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ImportAllReportsHooker;
-import net.datenwerke.rs.base.ext.service.reportmanager.hookers.ReportExportConfigHooker;
+import net.datenwerke.rs.base.ext.service.reportmanager.eximport.hookers.ReportExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.reportmanager.hooks.ReportModSubCommandHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands.ListPropertyCommand;
 import net.datenwerke.rs.base.ext.service.reportmanager.terminal.commands.RemovePropertyCommand;
