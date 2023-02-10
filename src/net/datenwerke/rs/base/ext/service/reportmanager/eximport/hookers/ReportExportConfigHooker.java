@@ -4,6 +4,7 @@ import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.rs.base.ext.service.ExportOptions;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.base.ext.service.reportmanager.ReportExportOptions;
+import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
 import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
@@ -20,7 +21,7 @@ public class ReportExportConfigHooker implements ExportConfigHook {
       
       /* export report */
       ExportConfig exportConfig = new ExportConfig();
-      exportConfig.setName("Report-Export");
+      exportConfig.setName(ReportManagerExporter.EXPORTER_NAME);
       exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
       
       ReportExportOptions reportExportOptions = (ReportExportOptions) options;

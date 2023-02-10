@@ -8,6 +8,7 @@ import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
+import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 
 public class UserExportConfigHooker implements ExportConfigHook {
 
@@ -25,7 +26,7 @@ public class UserExportConfigHooker implements ExportConfigHook {
       if (!(node instanceof AbstractUserManagerNode))
          throw new IllegalArgumentException("node not an AbstractUserManagerNode");
       
-      return exportHelper.createExportConfig(node, true, "User-Export");
+      return exportHelper.createExportConfig(node, true, UserManagerExporter.EXPORTER_NAME);
    }
 
    @Override

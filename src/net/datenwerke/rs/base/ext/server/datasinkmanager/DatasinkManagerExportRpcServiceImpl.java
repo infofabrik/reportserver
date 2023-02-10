@@ -9,6 +9,7 @@ import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.datasinkmanager.eximport.ex.rpc.DatasinkManagerExportRpcService;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter;
 import net.datenwerke.rs.core.client.datasinkmanager.dto.AbstractDatasinkManagerNodeDto;
 import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.rs.eximport.service.eximport.ex.http.HttpExportService;
@@ -51,7 +52,7 @@ public class DatasinkManagerExportRpcServiceImpl extends SecuredRemoteServiceSer
    public void quickExport(AbstractDatasinkManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDatasinkManagerNode node = (AbstractDatasinkManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, "Datasink-Export");
+      String exportXML = exportHelper.export(node, true, DatasinkManagerExporter.EXPORTER_NAME);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

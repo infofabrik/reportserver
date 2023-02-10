@@ -9,6 +9,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class DatasinkManagerExporter extends TreeNodeExporter {
 
    private static final String EXPORTER_ID = "DatasinkManagerExporter";
+   
+   public static final String EXPORTER_NAME = "Datasink-Export";
 
    @Override
    public String getExporterId() {

@@ -9,6 +9,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class ReportManagerExporter extends TreeNodeExporter {
 
    public static final String EXPORTER_ID = "ReportManagerExporter";
+   
+   public static final String EXPORTER_NAME = "Report-Export";
 
    @Override
    public String getExporterId() {

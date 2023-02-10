@@ -8,6 +8,7 @@ import com.google.inject.persist.Transactional;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.datasourcemanager.eximport.ex.rpc.DatasourceManagerExportRpcService;
+import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
 import net.datenwerke.rs.core.client.datasourcemanager.dto.AbstractDatasourceManagerNodeDto;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.rs.eximport.service.eximport.ex.http.HttpExportService;
@@ -53,7 +54,7 @@ public class DatasourceManagerExportRpcServiceImpl extends SecuredRemoteServiceS
    public void quickExport(AbstractDatasourceManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDatasourceManagerNode node = (AbstractDatasourceManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, "Datasource-Export");
+      String exportXML = exportHelper.export(node, true, DatasourceManagerExporter.EXPORTER_NAME);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

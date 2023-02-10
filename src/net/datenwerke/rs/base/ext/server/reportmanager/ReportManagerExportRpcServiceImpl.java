@@ -10,6 +10,7 @@ import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.reportmanager.eximport.ex.rpc.ReportManagerExportRpcService;
+import net.datenwerke.rs.base.ext.service.reportmanager.eximport.ReportManagerExporter;
 import net.datenwerke.rs.core.client.reportmanager.dto.reports.AbstractReportManagerNodeDto;
 import net.datenwerke.rs.core.service.reportmanager.entities.AbstractReportManagerNode;
 import net.datenwerke.rs.core.service.reportmanager.interfaces.ReportVariant;
@@ -50,8 +51,16 @@ public class ReportManagerExportRpcServiceImpl extends SecuredRemoteServiceServl
    }
 
    @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @SecurityChecked(
+         genericTargetVerification = {
+               @GenericTargetVerification(
+                     target = ExportSecurityTarget.class, 
+                     verify = @RightsVerification(
+                           rights = Execute.class
+                     )
+               ) 
+         }
+   )
    @Transactional(rollbackOn = { Exception.class })
    public void quickExport(AbstractReportManagerNodeDto nodeDto, boolean includeVariants)
          throws ServerCallFailedException {
@@ -59,7 +68,7 @@ public class ReportManagerExportRpcServiceImpl extends SecuredRemoteServiceServl
 
       /* export report */
       ExportConfig exportConfig = new ExportConfig();
-      exportConfig.setName("Report-Export");
+      exportConfig.setName(ReportManagerExporter.EXPORTER_NAME);
       exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
 
       addChildren(exportConfig, node, includeVariants);

@@ -12,6 +12,7 @@ import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.HttpDashboar
 import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter;
 import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerImporter;
 import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.HttpDatasinkManagerImportConfigurationHooker;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.DatasinkExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.ExportAllDatasinksHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerImporter;
@@ -85,7 +86,8 @@ public class RsBaseExtStartup {
          Provider<ListPropertyCommand> listPropertyCommand,
          
          Provider<ReportExportConfigHooker> reportExportConfigHooker,
-         Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker
+         Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker,
+         Provider<DatasinkExportConfigHooker> datasinkExportConfigHooker
 
    ) {
 
@@ -129,5 +131,6 @@ public class RsBaseExtStartup {
       
       hookHandler.attachHooker(ExportConfigHook.class, reportExportConfigHooker);
       hookHandler.attachHooker(ExportConfigHook.class, datasourceExportConfigHooker);
+      hookHandler.attachHooker(ExportConfigHook.class, datasinkExportConfigHooker);
    }
 }

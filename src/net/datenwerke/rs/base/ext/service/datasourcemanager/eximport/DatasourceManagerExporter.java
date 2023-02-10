@@ -9,6 +9,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class DatasourceManagerExporter extends TreeNodeExporter {
 
    private static final String EXPORTER_ID = "DatasourceManagerExporter";
+   
+   public static final String EXPORTER_NAME = "Datasource-Export";
 
    @Override
    public String getExporterId() {

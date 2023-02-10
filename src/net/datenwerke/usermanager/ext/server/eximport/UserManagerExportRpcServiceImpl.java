@@ -18,6 +18,7 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.usermanager.entities.AbstractUserManagerNode;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 import net.datenwerke.usermanager.ext.client.eximport.ex.rpc.UserManagerExportRpcService;
+import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 
 /**
  * 
@@ -51,13 +52,21 @@ public class UserManagerExportRpcServiceImpl extends SecuredRemoteServiceServlet
    }
 
    @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @SecurityChecked(
+         genericTargetVerification = {
+               @GenericTargetVerification(
+                     target = ExportSecurityTarget.class, 
+                     verify = @RightsVerification(
+                           rights = Execute.class
+                     )
+               ) 
+         }
+   )
    @Transactional(rollbackOn = { Exception.class })
    public void quickExport(AbstractUserManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractUserManagerNode node = (AbstractUserManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, "User-Export");
+      String exportXML = exportHelper.export(node, true, UserManagerExporter.EXPORTER_NAME);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }

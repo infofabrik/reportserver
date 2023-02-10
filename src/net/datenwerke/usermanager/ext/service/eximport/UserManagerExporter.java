@@ -12,6 +12,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class UserManagerExporter extends TreeNodeExporter {
 
    private static final String EXPORTER_ID = "UserManagerExporter";
+   
+   public static final String EXPORTER_NAME = "User-Export";
 
    @Override
    public String getExporterId() {

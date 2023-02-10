@@ -1,21 +1,21 @@
-package net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers;
+package net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers;
 
 import javax.inject.Inject;
 
 import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.rs.base.ext.service.ExportOptions;
-import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
+import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.DatasinkManagerExporter;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
-import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
+import net.datenwerke.rs.core.service.datasinkmanager.entities.AbstractDatasinkManagerNode;
 import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 import net.datenwerke.treedb.service.treedb.AbstractNode;
 
-public class DatasourceExportConfigHooker implements ExportConfigHook {
+public class DatasinkExportConfigHooker implements ExportConfigHook {
 
    private final TreeNodeExportHelperService exportHelper; 
    
    @Inject
-   public DatasourceExportConfigHooker(
+   public DatasinkExportConfigHooker(
          TreeNodeExportHelperService exportHelper
          ) {
       this.exportHelper = exportHelper;
@@ -23,15 +23,15 @@ public class DatasourceExportConfigHooker implements ExportConfigHook {
    
    @Override
    public ExportConfig configure(AbstractNode node, ExportOptions options) {
-      if (!(node instanceof AbstractDatasourceManagerNode))
-         throw new IllegalArgumentException("node not an AbstractDatasourceManagerNode");
+      if (!(node instanceof AbstractDatasinkManagerNode))
+         throw new IllegalArgumentException("node not an AbstractDatasinkManagerNode");
       
-      return exportHelper.createExportConfig(node, true, DatasourceManagerExporter.EXPORTER_NAME);
+      return exportHelper.createExportConfig(node, true, DatasinkManagerExporter.EXPORTER_NAME);
    }
 
    @Override
    public boolean consumes(AbstractNode node) {
-      return node instanceof AbstractDatasourceManagerNode;
+      return node instanceof AbstractDatasinkManagerNode;
    }
 
 }
