@@ -12,7 +12,7 @@ import net.datenwerke.usermanager.ext.service.eximport.UserManagerExporter;
 
 public class UserExportConfigHooker implements ExportConfigHook {
 
-   private final TreeNodeExportHelperService exportHelper; 
+   private final TreeNodeExportHelperService exportHelper;
    
    @Inject
    public UserExportConfigHooker(

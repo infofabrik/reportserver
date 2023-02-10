@@ -13,6 +13,7 @@ import net.datenwerke.eximport.hooks.ImporterProviderHook;
 import net.datenwerke.gf.service.history.hooks.HistoryUrlBuilderHook;
 import net.datenwerke.gf.service.upload.hooks.FileUploadHandlerHook;
 import net.datenwerke.hookhandler.shared.hookhandler.HookHandlerService;
+import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ExportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.hooks.ImportAllHook;
 import net.datenwerke.rs.eximport.service.eximport.im.http.hooks.HttpImportConfigurationProviderHook;
@@ -22,6 +23,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerExport
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerImporter;
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.HttpFileServerImportConfigurationHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.ExportAllFilesHooker;
+import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.FileServerExportConfigHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.eximport.hookers.ImportAllFilesHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerFileUploadHooker;
 import net.datenwerke.rs.fileserver.service.fileserver.hookers.FileServerHistoryUrlBuilderHooker;
@@ -77,7 +79,9 @@ public class FileServerStartup {
          Provider<WriteIntoFileOperator> writeIntoFileOperator, 
          RsfsUrlStreamHandler rsfsUrlStreamHandler,
 
-         CatCommandHandlerHooker catCommandHooker
+         CatCommandHandlerHooker catCommandHooker,
+         
+         Provider<FileServerExportConfigHooker> fileServerExportConfigHooker
          ) {
 
       hookHandler.attachHooker(ExporterProviderHook.class, new ExporterProviderHook(exporterProvider));
@@ -106,6 +110,8 @@ public class FileServerStartup {
       hookHandler.attachHooker(CatCommandHandlerHook.class, catCommandHooker);
 
       hookHandler.attachHooker(FileUploadHandlerHook.class, fileServerFileUploader);
+      
+      hookHandler.attachHooker(ExportConfigHook.class, fileServerExportConfigHooker);
 
       registerSecurityTargets(securityService);
 

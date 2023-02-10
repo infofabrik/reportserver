@@ -13,7 +13,6 @@ import com.google.inject.name.Named;
 import com.google.inject.persist.Transactional;
 
 import net.datenwerke.eximport.ExportService;
-import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.gf.client.upload.dto.FileToUpload;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
@@ -30,6 +29,7 @@ import net.datenwerke.rs.fileserver.service.fileserver.FileServerService;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.AbstractFileServerNode;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFile;
 import net.datenwerke.rs.fileserver.service.fileserver.entities.FileServerFolder;
+import net.datenwerke.rs.fileserver.service.fileserver.eximport.FileServerExporter;
 import net.datenwerke.rs.fileserver.service.fileserver.terminal.commands.unzip.BasepathZipExtractConfigFactory;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
 import net.datenwerke.rs.utils.misc.MimeUtils;
@@ -45,7 +45,7 @@ import net.datenwerke.security.service.security.rights.Execute;
 import net.datenwerke.security.service.security.rights.Read;
 import net.datenwerke.security.service.security.rights.Write;
 import net.datenwerke.security.service.treedb.actions.InsertAction;
-import net.datenwerke.treedb.ext.service.eximport.TreeNodeExportItemConfig;
+import net.datenwerke.treedb.ext.service.eximport.helper.TreeNodeExportHelperService;
 
 /**
  * 
@@ -66,12 +66,21 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
    private final MimeUtils mimeUtils;
    private final BasepathZipExtractConfigFactory extractConfigFactory;
    private final Provider<ZipUtilsService> zipUtilsServiceProvider;
+   private final Provider<TreeNodeExportHelperService> exportHelper;
 
    @Inject
-   public FileServerRpcServiceImpl(DtoService dtoService, FileServerService fileService,
-         SecurityService securityService, EntityClonerService entityClonerService, ExportService exportService,
-         Provider<HttpExportService> httpExportServiceProvider, MimeUtils mimeUtils,
-         BasepathZipExtractConfigFactory extractConfigFactory, Provider<ZipUtilsService> zipUtilsServiceProvider) {
+   public FileServerRpcServiceImpl(
+         DtoService dtoService, 
+         FileServerService fileService,
+         SecurityService securityService, 
+         EntityClonerService entityClonerService, 
+         ExportService exportService,
+         Provider<HttpExportService> httpExportServiceProvider, 
+         MimeUtils mimeUtils,
+         BasepathZipExtractConfigFactory extractConfigFactory, 
+         Provider<ZipUtilsService> zipUtilsServiceProvider,
+         Provider<TreeNodeExportHelperService> exportHelper
+         ) {
 
       super(fileService, dtoService, securityService, entityClonerService);
 
@@ -82,6 +91,7 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       this.mimeUtils = mimeUtils;
       this.extractConfigFactory = extractConfigFactory;
       this.zipUtilsServiceProvider = zipUtilsServiceProvider;
+      this.exportHelper = exportHelper;
    }
 
    @SecurityChecked(argumentVerification = {
@@ -118,23 +128,12 @@ public class FileServerRpcServiceImpl extends TreeDBManagerTreeHandler<AbstractF
       AbstractFileServerNode node = (AbstractFileServerNode) dtoService.loadPoso(nodeDto);
 
       /* export report */
-      ExportConfig exportConfig = new ExportConfig();
-      exportConfig.setName("FileServer-Export");
-      exportConfig.addItemConfig(new TreeNodeExportItemConfig(node));
-
-      addChildren(exportConfig, node);
-
-      String exportXML = exportService.exportIndent(exportConfig);
+      String exportXML = exportHelper.get().export(node, true, FileServerExporter.EXPORTER_NAME);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
    }
-
-   private void addChildren(ExportConfig exportConfig, AbstractFileServerNode report) {
-      for (AbstractFileServerNode childNode : report.getChildren()) {
-         exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-         addChildren(exportConfig, childNode);
-      }
-   }
+   
+   
 
    @Override
    public String loadResult() throws ServerCallFailedException {

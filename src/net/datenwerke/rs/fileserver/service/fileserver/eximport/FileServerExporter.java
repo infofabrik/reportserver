@@ -9,6 +9,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class FileServerExporter extends TreeNodeExporter {
 
    public static final String EXPORTER_ID = "FileServerExporter";
+   
+   public static final String EXPORTER_NAME = "FileServer-Export";
 
    @Override
    public String getExporterId() {
