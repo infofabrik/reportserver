@@ -16,6 +16,7 @@ import net.datenwerke.rs.base.ext.service.datasinkmanager.eximport.hookers.Expor
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerExporter;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.DatasourceManagerImporter;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.HttpDatasourceManagerImportConfigurationHooker;
+import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.DatasourceExportConfigHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ExportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.datasourcemanager.eximport.hookers.ImportAllDatasourcesHooker;
 import net.datenwerke.rs.base.ext.service.hooks.ExportConfigHook;
@@ -54,7 +55,8 @@ public class RsBaseExtStartup {
          Provider<DatasourceManagerImporter> datasourceImporterProvider,
          Provider<HttpDatasourceManagerImportConfigurationHooker> datasourceHttpImportConfigHookerProvider,
 
-         Provider<ReportManagerExporter> exporterProvider, Provider<ReportManagerImporter> importerProvider,
+         Provider<ReportManagerExporter> exporterProvider, 
+         Provider<ReportManagerImporter> importerProvider,
          Provider<HttpReportManagerImportConfigurationHooker> httpImportConfigHookerProvider,
          Provider<ParameterInstanceExporter> parameterInstanceExporter,
 
@@ -70,16 +72,20 @@ public class RsBaseExtStartup {
 
          Provider<ExportAllDatasinksHooker> exportAllDatasinks,
 
-         Provider<ExportAllReportsHooker> exportAllReports, Provider<ImportAllReportsHooker> importAllReports,
+         Provider<ExportAllReportsHooker> exportAllReports, 
+         Provider<ImportAllReportsHooker> importAllReports,
 
          Provider<ExportAllGenericRightsHooker> exportAllGenericRights,
          Provider<ImportAllGenericRightsHooker> importAllGenericRights,
 
-         Provider<ReportModCommand> reportModCommand, Provider<SetUuidCommand> setUUIDCommand,
-         Provider<SetPropertyCommand> setPropertyCommand, Provider<RemovePropertyCommand> removePropertyCommand,
+         Provider<ReportModCommand> reportModCommand, 
+         Provider<SetUuidCommand> setUUIDCommand,
+         Provider<SetPropertyCommand> setPropertyCommand, 
+         Provider<RemovePropertyCommand> removePropertyCommand,
          Provider<ListPropertyCommand> listPropertyCommand,
          
-         Provider<ReportExportConfigHooker> reportExportConfigHooker
+         Provider<ReportExportConfigHooker> reportExportConfigHooker,
+         Provider<DatasourceExportConfigHooker> datasourceExportConfigHooker
 
    ) {
 
@@ -122,5 +128,6 @@ public class RsBaseExtStartup {
       hookHandler.attachHooker(ReportModSubCommandHook.class, listPropertyCommand);
       
       hookHandler.attachHooker(ExportConfigHook.class, reportExportConfigHooker);
+      hookHandler.attachHooker(ExportConfigHook.class, datasourceExportConfigHooker);
    }
 }
