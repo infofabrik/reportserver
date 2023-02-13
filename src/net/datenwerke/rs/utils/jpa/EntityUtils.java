@@ -1,15 +1,16 @@
 package net.datenwerke.rs.utils.jpa;
 
+import static java.util.stream.Collectors.toList;
 import static java.util.stream.Collectors.toSet;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -17,7 +18,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Id;
 import javax.persistence.Transient;
-import javax.persistence.metamodel.EntityType;
 import javax.persistence.metamodel.Metamodel;
 
 import org.hibernate.Hibernate;
@@ -228,15 +228,11 @@ public class EntityUtils {
    }
 
    public List<Class<?>> getAllEntityClasses() {
-      Metamodel metaModel = getMetaModel();
-      Set<EntityType<?>> entities = metaModel.getEntities();
-      List<Class<?>> classes = new ArrayList<Class<?>>();
-      for (EntityType<?> et : entities) {
-         Class<?> javaType = et.getJavaType();
-         if (null != javaType)
-            classes.add(javaType);
-      }
-      return classes;
+      return getMetaModel().getEntities()
+         .stream()
+         .filter(entity -> Objects.nonNull(entity.getJavaType()))
+         .map(entity -> entity.getJavaType())
+         .collect(toList());
    }
 
    public Object deepDetach(Object object) throws IllegalArgumentException, IllegalAccessException {
