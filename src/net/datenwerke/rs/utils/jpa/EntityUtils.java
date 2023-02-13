@@ -1,5 +1,7 @@
 package net.datenwerke.rs.utils.jpa;
 
+import static java.util.stream.Collectors.toSet;
+
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -167,12 +169,12 @@ public class EntityUtils {
       return false;
    }
 
-   public Class<?> getEntityBySimpleName(String name) {
-      for (Class c : getAllEntityClasses())
-         if (c.getSimpleName().equals(name))
-            return c;
-
-      return null;
+   public Class<?> getEntityBySimpleName(final String name) {
+      return getAllEntityClasses()
+         .stream()
+         .filter(c -> c.getSimpleName().equals(name))
+         .findAny()
+         .orElse(null);
    }
 
    public Metamodel getMetaModel() {
@@ -194,26 +196,18 @@ public class EntityUtils {
       return fields;
    }
 
-   public Set<Field> getEnclosedOrSimpleFields(Class<?> clazz) {
-      Set<Field> fields = new HashSet<Field>();
-
-      for (Field field : getPersistantFields(clazz)) {
-         if ((isEntity(field) || isEntityCollection(field)) && !isEnclosed(field))
-            continue;
-         fields.add(field);
-      }
-
-      return fields;
+   public Set<Field> getEnclosedOrSimpleFields(final Class<?> clazz) {
+      return getPersistantFields(clazz)
+         .stream()
+         .filter(field -> (!isEntity(field) && !isEntityCollection(field)) || isEnclosed(field))
+         .collect(toSet());
    }
 
-   public Set<Field> getEnclosedFields(Class<?> clazz) {
-      Set<Field> fields = new HashSet<Field>();
-
-      for (Field field : getPersistantFields(clazz))
-         if (isEnclosed(field))
-            fields.add(field);
-
-      return fields;
+   public Set<Field> getEnclosedFields(final Class<?> clazz) {
+      return getPersistantFields(clazz)
+         .stream()
+         .filter(this::isEnclosed)
+         .collect(toSet());
    }
 
    public boolean isEnclosed(Field field) {
@@ -226,15 +220,11 @@ public class EntityUtils {
       return a;
    }
 
-   public Collection<Class<?>> getAllEntityClasses(Class<?> clazz) {
-      Set<Class<?>> entities = new HashSet<Class<?>>();
-
-      for (Class<?> entity : getAllEntityClasses()) {
-         if (clazz.isAssignableFrom(entity))
-            entities.add(entity);
-      }
-
-      return entities;
+   public Collection<Class<?>> getAllEntityClasses(final Class<?> clazz) {
+      return getAllEntityClasses()
+         .stream()
+         .filter(entity -> clazz.isAssignableFrom(entity))
+         .collect(toSet());
    }
 
    public List<Class<?>> getAllEntityClasses() {
