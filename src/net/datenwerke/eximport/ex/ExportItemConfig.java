@@ -2,6 +2,7 @@ package net.datenwerke.eximport.ex;
 
 import org.hibernate.proxy.HibernateProxy;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 import net.datenwerke.eximport.ExImportIdService;
@@ -60,4 +61,11 @@ public abstract class ExportItemConfig<I> {
       return getId().equals(((ExportItemConfig<?>) obj).getId());
    }
 
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+         .add("id", id)
+         .add("item", item)
+         .toString();
+   }
 }

@@ -25,6 +25,7 @@ import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
@@ -374,7 +375,10 @@ public class Column implements Serializable {
 
    @Override
    public String toString() {
-      return name;
+      return MoreObjects.toStringHelper(getClass())
+            .add("id", id)
+            .add("name", name)
+            .toString();
    }
 
    public void setSemanticType(String semanticType) {

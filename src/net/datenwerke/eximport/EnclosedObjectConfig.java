@@ -1,5 +1,6 @@
 package net.datenwerke.eximport;
 
+import com.google.common.base.MoreObjects;
 import com.google.inject.Inject;
 
 final public class EnclosedObjectConfig {
@@ -50,6 +51,14 @@ final public class EnclosedObjectConfig {
          return super.equals(obj);
 
       return getId().equals(((EnclosedObjectConfig) obj).getId());
+   }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+         .add("id", id)
+         .add("enclosed", enclosed)
+         .toString();
    }
 
 }
