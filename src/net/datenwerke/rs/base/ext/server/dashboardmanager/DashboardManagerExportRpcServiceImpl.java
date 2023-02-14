@@ -9,6 +9,7 @@ import net.datenwerke.eximport.ex.ExportConfig;
 import net.datenwerke.gxtdto.client.servercommunication.exceptions.ServerCallFailedException;
 import net.datenwerke.gxtdto.server.dtomanager.DtoService;
 import net.datenwerke.rs.base.ext.client.dashboardmanager.eximport.ex.rpc.DashboardManagerExportRpcService;
+import net.datenwerke.rs.base.ext.service.dashboardmanager.eximport.DashboardManagerExporter;
 import net.datenwerke.rs.core.service.datasourcemanager.entities.AbstractDatasourceManagerNode;
 import net.datenwerke.rs.dashboard.client.dashboard.dto.AbstractDashboardManagerNodeDto;
 import net.datenwerke.rs.dashboard.service.dashboard.entities.AbstractDashboardManagerNode;
@@ -40,8 +41,11 @@ public class DashboardManagerExportRpcServiceImpl extends SecuredRemoteServiceSe
    private final TreeNodeExportHelperServiceImpl exportHelper;
 
    @Inject
-   public DashboardManagerExportRpcServiceImpl(DtoService dtoService,
-         Provider<HttpExportService> httpExportServiceProvider, TreeNodeExportHelperServiceImpl exportHelper) {
+   public DashboardManagerExportRpcServiceImpl(
+         DtoService dtoService,
+         Provider<HttpExportService> httpExportServiceProvider, 
+         TreeNodeExportHelperServiceImpl exportHelper
+         ) {
 
       /* store objects */
       this.dtoService = dtoService;
@@ -50,22 +54,23 @@ public class DashboardManagerExportRpcServiceImpl extends SecuredRemoteServiceSe
    }
 
    @Override
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = ExportSecurityTarget.class, verify = @RightsVerification(rights = Execute.class)) })
+   @SecurityChecked(
+         genericTargetVerification = {
+               @GenericTargetVerification(
+                     target = ExportSecurityTarget.class, 
+                     verify = @RightsVerification(
+                           rights = Execute.class
+                     )
+               ) 
+         }
+   )
    @Transactional(rollbackOn = { Exception.class })
    public void quickExport(AbstractDashboardManagerNodeDto nodeDto) throws ServerCallFailedException {
       AbstractDashboardManagerNode node = (AbstractDashboardManagerNode) dtoService.loadPoso(nodeDto);
 
-      String exportXML = exportHelper.export(node, true, "Dashboard-Export");
+      String exportXML = exportHelper.export(node, true, DashboardManagerExporter.EXPORTER_NAME);
 
       httpExportServiceProvider.get().storeExport(exportXML, node.getName());
-   }
-
-   private void addChildren(ExportConfig exportConfig, AbstractDatasourceManagerNode report) {
-      for (AbstractDatasourceManagerNode childNode : report.getChildren()) {
-         exportConfig.addItemConfig(new TreeNodeExportItemConfig(childNode));
-         addChildren(exportConfig, childNode);
-      }
    }
 
    @Override

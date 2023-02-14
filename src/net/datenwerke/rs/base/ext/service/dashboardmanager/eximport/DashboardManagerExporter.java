@@ -10,6 +10,8 @@ import net.datenwerke.treedb.service.treedb.AbstractNode;
 public class DashboardManagerExporter extends TreeNodeExporter {
 
    private static final String EXPORTER_ID = "DashboardManagerExporter";
+   
+   public static final String EXPORTER_NAME = "Dashboard-Export";
 
    @Override
    public String getExporterId() {
