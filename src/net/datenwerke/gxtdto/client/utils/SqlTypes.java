@@ -413,6 +413,7 @@ public class SqlTypes {
       switch (type) {
       case BIGINT:
       case INTEGER:
+      case SMALLINT:
       case TINYINT:
          return true;
       }
