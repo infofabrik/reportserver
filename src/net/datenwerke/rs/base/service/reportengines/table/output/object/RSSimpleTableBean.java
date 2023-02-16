@@ -51,6 +51,15 @@ public class RSSimpleTableBean extends CompiledTableReport implements CompiledRe
 
       list.add(attribute);
    }
+   
+   private Class<?> mapTypeClass(Class<?> clazz) {
+      if (Clob.class.equals(clazz))
+         return String.class;
+      if (Short.class.equals(clazz) || Byte.class.equals(clazz))
+         return Integer.class;
+      
+      return clazz;
+   }
 
    public void setDefinition(TableDefinition td, TableReport report) {
       this.attributes = new ArrayList<String>();
@@ -62,8 +71,7 @@ public class RSSimpleTableBean extends CompiledTableReport implements CompiledRe
          if (!attributes.contains(colName)) {
             attributes.add(colName);
 
-            props.add(new DynaProperty(colName,
-                  Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
+            props.add(new DynaProperty(colName, mapTypeClass(td.getColumnTypes().get(i))));
             addToIdxToAttributeMap(i, colName);
          } else
             throw new ReportExecutorRuntimeException(
@@ -75,8 +83,7 @@ public class RSSimpleTableBean extends CompiledTableReport implements CompiledRe
       for (String colName : td.getOriginalColumnNames()) {
          if (!attributes.contains(colName)) {
             attributes.add(colName);
-            props.add(new DynaProperty(colName,
-                  Clob.class.equals(td.getColumnTypes().get(i)) ? String.class : td.getColumnTypes().get(i)));
+            props.add(new DynaProperty(colName, mapTypeClass(td.getColumnTypes().get(i))));
             addToIdxToAttributeMap(i, colName);
          }
          i++;
