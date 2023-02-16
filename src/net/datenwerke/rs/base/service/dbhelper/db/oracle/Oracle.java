@@ -1,11 +1,13 @@
 package net.datenwerke.rs.base.service.dbhelper.db.oracle;
 
+import static java.util.stream.Collectors.toList;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 
 import com.google.inject.Inject;
 
@@ -19,6 +21,7 @@ import net.datenwerke.rs.base.service.dbhelper.querybuilder.ColumnNamingService;
 import net.datenwerke.rs.base.service.dbhelper.querybuilder.QueryBuilder;
 import net.datenwerke.rs.base.service.reportengines.table.entities.Column;
 import net.datenwerke.rs.configservice.service.configservice.ConfigService;
+import net.datenwerke.rs.utils.exception.shared.LambdaExceptionUtil;
 import net.datenwerke.rs.utils.oracle.StupidOracleService;
 import oracle.xdb.XMLType;
 
@@ -67,36 +70,27 @@ public class Oracle extends DatabaseHelper {
    @Override
    public ResultSetObjectHandler createResultSetHandler(final ResultSet resultSet, final Connection con)
          throws SQLException {
-      ResultSetMetaData md = resultSet.getMetaData();
-      int cnt = md.getColumnCount();
-      final List<Integer> dateIndices = new ArrayList<Integer>();
-      for (int i = 1; i <= cnt; i++)
-         if (SqlTypes.isDateLikeType(md.getColumnType(i)))
-            dateIndices.add(i);
-
+      final ResultSetMetaData md = resultSet.getMetaData();
+      final int cnt = md.getColumnCount();
+      final List<Integer> dateIndices = IntStream
+            .range(1, cnt)
+            .filter(LambdaExceptionUtil.rethrowIntPredicate( i -> SqlTypes.isDateLikeType(md.getColumnType(i)) ))
+            .boxed()
+            .collect(toList());
+      
       if (dateIndices.isEmpty())
-         return new ResultSetObjectHandler() {
+         return pos -> getOracleObject(resultSet, pos);
 
-            @Override
-            public Object getObject(int pos) throws SQLException {
-               return getOracleObject(resultSet, pos);
-            }
-         };
+      return pos -> {
+         if (dateIndices.contains(pos)) {
+            Object obj = resultSet.getObject(pos);
 
-      return new ResultSetObjectHandler() {
-
-         @Override
-         public Object getObject(int pos) throws SQLException {
-            if (dateIndices.contains(pos)) {
-               Object obj = resultSet.getObject(pos);
-
-               if (sos.isOracleTimestamp(obj)) {
-                  return sos.getTimeStampFromOracleTimestamp(obj, con);
-               } else if (sos.isOracleDatum(obj))
-                  return sos.getDateFromOracleDatum(obj);
-            }
-            return getOracleObject(resultSet, pos);
+            if (sos.isOracleTimestamp(obj)) {
+               return sos.getTimeStampFromOracleTimestamp(obj, con);
+            } else if (sos.isOracleDatum(obj))
+               return sos.getDateFromOracleDatum(obj);
          }
+         return getOracleObject(resultSet, pos);
       };
    }
 

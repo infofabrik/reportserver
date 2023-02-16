@@ -4,6 +4,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.function.IntConsumer;
+import java.util.function.IntPredicate;
+import java.util.function.IntUnaryOperator;
 import java.util.function.Predicate;
 import java.util.function.Supplier;
 
@@ -19,6 +21,11 @@ public final class LambdaExceptionUtil {
    public interface IntConsumer_WithExceptions<E extends Exception> {
       void accept(Integer i) throws E;
    }
+   
+   @FunctionalInterface
+   public interface IntUnaryOperator_WithExceptions<E extends Exception> {
+      int applyAsInt(Integer i) throws E;
+   }
 
    @FunctionalInterface
    public interface BiConsumer_WithExceptions<T, U, E extends Exception> {
@@ -33,6 +40,11 @@ public final class LambdaExceptionUtil {
    @FunctionalInterface
    public interface Predicate_WithExceptions<T, E extends Exception> {
       boolean test(T t) throws E;
+   }
+   
+   @FunctionalInterface
+   public interface IntPredicate_WithExceptions<E extends Exception> {
+      boolean test(Integer i) throws E;
    }
 
    @FunctionalInterface
@@ -105,6 +117,29 @@ public final class LambdaExceptionUtil {
          } catch (Exception exception) {
             throwAsUnchecked(exception);
             return false;
+         }
+      };
+   }
+   
+   public static <T, E extends Exception> IntPredicate rethrowIntPredicate(IntPredicate_WithExceptions<E> predicate)
+         throws E {
+      return i -> {
+         try {
+            return predicate.test(i);
+         } catch (Exception exception) {
+            throwAsUnchecked(exception);
+            return false;
+         }
+      };
+   }
+   
+   public static <E extends Exception> IntUnaryOperator rethrowIntUnaryOperator(IntUnaryOperator_WithExceptions<E> consumer) throws E {
+      return i -> {
+         try {
+            return consumer.applyAsInt(i);
+         } catch (Exception exception) {
+            throwAsUnchecked(exception);
+            return -1;
          }
       };
    }

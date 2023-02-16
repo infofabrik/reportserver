@@ -36,19 +36,15 @@ public class PostgreSQL extends DatabaseHelper {
    @Override
    public ResultSetObjectHandler createResultSetHandler(final ResultSet resultSet, final Connection con)
          throws SQLException {
-      return new ResultSetObjectHandler() {
-
-         @Override
-         public Object getObject(int pos) throws SQLException {
-            Object o = resultSet.getObject(pos);
-            // we just display the xml text
-            if (o instanceof PgSQLXML) {
-               PgSQLXML xml = (PgSQLXML) o;
-               String xmlString = xml.getString();
-               return xmlString;
-            }
-            return o;
+      return pos -> {
+         Object o = resultSet.getObject(pos);
+         // we just display the xml text
+         if (o instanceof PgSQLXML) {
+            PgSQLXML xml = (PgSQLXML) o;
+            String xmlString = xml.getString();
+            return xmlString;
          }
+         return o;
       };
    }
 }
