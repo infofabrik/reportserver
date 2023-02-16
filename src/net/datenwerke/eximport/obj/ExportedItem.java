@@ -62,11 +62,12 @@ public class ExportedItem implements ImportableElement {
       return ids;
    }
 
-   public ItemProperty getPropertyByName(String name) {
-      for (ItemProperty property : properties)
-         if (name.equals(property.getName()))
-            return property;
-      return null;
+   public ItemProperty getPropertyByName(final String name) {
+      return properties
+         .stream()
+         .filter(property -> name.equals(property.getName()))
+         .findAny()
+         .orElse(null);
    }
 
    public Element getElement() {

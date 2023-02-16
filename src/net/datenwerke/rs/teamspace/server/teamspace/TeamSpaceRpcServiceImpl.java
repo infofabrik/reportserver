@@ -1,5 +1,7 @@
 package net.datenwerke.rs.teamspace.server.teamspace;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
@@ -277,17 +279,24 @@ public class TeamSpaceRpcServiceImpl extends SecuredRemoteServiceServlet impleme
       return (TeamSpaceDto) dtoService.createDto(teamSpace);
    }
 
-   @SecurityChecked(genericTargetVerification = {
-         @GenericTargetVerification(target = TeamSpaceSecurityTarget.class, verify = @RightsVerification(rights = TeamSpaceAdministrator.class)) })
+   @SecurityChecked(
+         genericTargetVerification = {
+               @GenericTargetVerification(
+                     target = TeamSpaceSecurityTarget.class, 
+                     verify = @RightsVerification(
+                           rights = TeamSpaceAdministrator.class
+                     )
+               ) 
+         }
+   )
    @Override
    @Transactional(rollbackOn = { Exception.class })
    public ListLoadResult<TeamSpaceDto> loadAllTeamSpaces() throws ServerCallFailedException {
-      Collection<TeamSpace> spaces = teamSpaceService.getAllTeamSpaces();
-
-      List<TeamSpaceDto> dtos = new ArrayList<TeamSpaceDto>();
-      for (TeamSpace ts : spaces)
-         dtos.add((TeamSpaceDto) dtoService.createDto(ts));
-
+      final List<TeamSpaceDto> dtos = teamSpaceService.getAllTeamSpaces()
+            .stream()
+            .map(dtoService::createDto)
+            .map(teamspace -> (TeamSpaceDto) teamspace)
+            .collect(toList());
       return new ListLoadResultBean<TeamSpaceDto>(dtos);
    }
 

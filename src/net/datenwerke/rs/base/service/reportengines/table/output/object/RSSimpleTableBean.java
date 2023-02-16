@@ -108,9 +108,8 @@ public class RSSimpleTableBean extends CompiledTableReport implements CompiledRe
       return null;
    }
 
-   public void addField(Object value) {
-      for (String attrib : idxToAttributeMap.get(fieldIndex))
-         row.set(attrib, value);
+   public void addField(final Object value) {
+      idxToAttributeMap.get(fieldIndex).forEach(attr -> row.set(attr, value));
 
       fieldIndex++;
    }
