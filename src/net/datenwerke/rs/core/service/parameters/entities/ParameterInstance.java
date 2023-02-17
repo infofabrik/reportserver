@@ -28,7 +28,6 @@ import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterSet;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValue;
 import net.datenwerke.rs.core.service.reportmanager.parameters.ParameterValueImpl;
 import net.datenwerke.rs.utils.entitycloner.EntityClonerService;
-import net.datenwerke.rs.utils.entitycloner.annotation.EnclosedEntity;
 import net.datenwerke.rs.utils.entitycloner.annotation.TransientID;
 import net.datenwerke.security.service.usermanager.entities.User;
 
@@ -51,7 +50,6 @@ public abstract class ParameterInstance<D extends ParameterDefinition> implement
    @Inject
    protected static EntityClonerService entityCloner;
 
-   @EnclosedEntity
    @ExposeToClient(view = DtoView.MINIMAL)
    @ManyToOne
    private ParameterDefinition definition;
