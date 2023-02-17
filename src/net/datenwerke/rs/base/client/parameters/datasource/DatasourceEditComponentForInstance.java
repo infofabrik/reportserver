@@ -1,5 +1,7 @@
 package net.datenwerke.rs.base.client.parameters.datasource;
 
+import static java.util.stream.Collectors.toList;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -44,8 +46,6 @@ import com.sencha.gxt.widget.core.client.grid.CheckBoxSelectionModel;
 import com.sencha.gxt.widget.core.client.grid.ColumnConfig;
 import com.sencha.gxt.widget.core.client.grid.ColumnModel;
 import com.sencha.gxt.widget.core.client.grid.Grid;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent;
-import com.sencha.gxt.widget.core.client.selection.SelectionChangedEvent.SelectionChangedHandler;
 
 import net.datenwerke.gf.client.uiutils.info.FieldErrorHandler;
 import net.datenwerke.gf.client.uiutils.info.FieldInfoHandler;
@@ -168,7 +168,7 @@ public class DatasourceEditComponentForInstance {
       ColumnConfig<DatasourceParameterDataDto, String> column = new ColumnConfig<DatasourceParameterDataDto, String>(
             DatasourceParameterDataDtoPA.INSTANCE.key(), 200, "");
 
-      List<ColumnConfig<DatasourceParameterDataDto, ?>> columns = new ArrayList<ColumnConfig<DatasourceParameterDataDto, ?>>();
+      List<ColumnConfig<DatasourceParameterDataDto, ?>> columns = new ArrayList<>();
       columns.add(selection.getColumn());
       columns.add(column);
 
@@ -179,24 +179,21 @@ public class DatasourceEditComponentForInstance {
       grid.getView().setForceFit(true);
       grid.getView().setAutoExpandColumn(column);
 
-      selection.addSelectionChangedHandler(new SelectionChangedHandler<DatasourceParameterDataDto>() {
-         @Override
-         public void onSelectionChanged(SelectionChangedEvent<DatasourceParameterDataDto> event) {
-            List<DatasourceParameterDataDto> selectedItems = selection.getSelectedItems();
-            if (ModeDto.Single.equals(definition.getMode())) {
-               if (null != selectedItems && selectedItems.size() > 0)
-                  instance.setSingleValue(DatasourceParameterDataDtoDec.cloneDataObject(selectedItems.get(0)));
-               else
-                  instance.setSingleValue(null);
-            } else {
-               ArrayList<DatasourceParameterDataDto> multiValue = new ArrayList<DatasourceParameterDataDto>();
-               for (DatasourceParameterDataDto dataObject : selectedItems)
-                  multiValue.add(DatasourceParameterDataDtoDec.cloneDataObject(dataObject));
-               instance.setMultiValue(multiValue);
-            }
-
-            validateParameter(definition, instance);
+      selection.addSelectionChangedHandler(event -> {
+         final List<DatasourceParameterDataDto> selectedItems = selection.getSelectedItems();
+         if (ModeDto.Single.equals(definition.getMode())) {
+            if (null != selectedItems && selectedItems.size() > 0)
+               instance.setSingleValue(DatasourceParameterDataDtoDec.cloneDataObject(selectedItems.get(0)));
+            else
+               instance.setSingleValue(null);
+         } else {
+            instance.setMultiValue(selectedItems
+               .stream()
+               .map(DatasourceParameterDataDtoDec::cloneDataObject)
+               .collect(toList()));
          }
+
+         validateParameter(definition, instance);
       });
 
       /* selection type */
@@ -213,9 +210,9 @@ public class DatasourceEditComponentForInstance {
          grid.disable();
 
       /* set initial selection after grid was rendered */
-      Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-         @Override
-         public void execute() {
+      Scheduler.get().scheduleDeferred(() -> {
+         /* schedule again as grid is not yet ready */
+         Scheduler.get().scheduleDeferred(() -> {
             if (instance.isStillDefault()) {
                setDefaultValueSelectionModel(selection, instance, definition);
             } else {
@@ -225,16 +222,12 @@ public class DatasourceEditComponentForInstance {
                   selection.setSelection(instance.getMultiValue());
                }
             }
-         }
+         });
       });
 
       editComponent = grid;
-      return new ParameterFieldWrapperForFrontend(definition, instance, grid, labelWidth, new DefaultValueSetter() {
-         @Override
-         public void setDefaultValue() {
-            setDefaultValueSelectionModel(selection, instance, definition);
-         }
-      });
+      return new ParameterFieldWrapperForFrontend(definition, instance, grid, labelWidth,
+            () -> setDefaultValueSelectionModel(selection, instance, definition));
    }
 
    private void setDefaultValueSelectionModel(CheckBoxSelectionModel<DatasourceParameterDataDto> selection,
@@ -243,6 +236,7 @@ public class DatasourceEditComponentForInstance {
       if (ModeDto.Single.equals(definition.getMode())) {
          selection.setSelection(Collections.singletonList(definition.getSingleDefaultValueSimpleData()));
       } else {
+         GWT.log("Setting default selection");
          selection.setSelection(definition.getMultiDefaultValueSimpleData());
       }
 
