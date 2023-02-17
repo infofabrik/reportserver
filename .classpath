@@ -198,11 +198,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-core-2.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-events-2.8.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/fop-util-2.8.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.4.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.4.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.4.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.4.2.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.4.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-apis-8.3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-core-8.3.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribejava-java8-8.3.3.jar"/>
@@ -237,5 +232,10 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.3.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queryparser-9.5.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.5.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
