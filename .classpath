@@ -216,7 +216,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-5.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-ooxml-lite-5.2.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/poi-scratchpad-5.2.3.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.1.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.40.0.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xercesImpl-2.12.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/xmlbeans-5.1.1.jar"/>
@@ -237,5 +236,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.9.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.3.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
