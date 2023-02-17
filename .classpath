@@ -171,10 +171,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-transcoder-1.16.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-util-1.16.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/batik-xml-1.16.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.14.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.14.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.14.Final.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.14.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jakarta.activation-1.2.2.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/javacup-10k.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/mondrian-9.4.0.0-281.jar"/>
@@ -237,5 +233,9 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-sandbox-9.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/commons-fileupload-1.5.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/sqlite-jdbc-3.40.1.0.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-c3p0-5.6.15.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-core-5.6.15.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
