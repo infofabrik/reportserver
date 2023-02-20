@@ -343,20 +343,20 @@ public class ReportExecutorRpcServiceImpl extends SecuredRemoteServiceServlet im
       return variantDto;
    }
 
-   private ReportDto loadFullDtoForExecution(Report realReport) {
+   private ReportDto loadFullDtoForExecution(final Report realReport) {
 
       /* load metadata */
-      for (AdjustReportForExecutionHook adjuster : hookHandler.getHookers(AdjustReportForExecutionHook.class))
-         adjuster.adjust(realReport);
+      hookHandler.getHookers(AdjustReportForExecutionHook.class)
+         .forEach(adjuster -> adjuster.adjust(realReport));
 
-      ReportDto tmpReport = (ReportDto) dtoService.createDto(realReport);
+      final ReportDto tmpReport = (ReportDto) dtoService.createDto(realReport);
 
       /* if report is a variant we need the full base report as well */
       if (realReport instanceof ReportVariant)
          ((ReportVariantDto) tmpReport).setBaseReport((ReportDto) dtoService.createDto(realReport.getParent()));
 
-      for (AdjustReportForExecutionHook adjuster : hookHandler.getHookers(AdjustReportForExecutionHook.class))
-         adjuster.adjust(tmpReport);
+      hookHandler.getHookers(AdjustReportForExecutionHook.class)
+         .forEach(adjuster -> adjuster.adjust(tmpReport));
 
       return tmpReport;
    }

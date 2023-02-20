@@ -9,6 +9,8 @@ import javax.persistence.Version;
 
 import org.hibernate.envers.Audited;
 
+import com.google.common.base.MoreObjects;
+
 import net.datenwerke.dtoservices.dtogenerator.annotations.ExposeToClient;
 import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 
@@ -19,7 +21,11 @@ import net.datenwerke.dtoservices.dtogenerator.annotations.GenerateDto;
 @Entity
 @Table(name = "DATASOURCE_PARAMETER_DATA")
 @Audited
-@GenerateDto(dtoPackage = "net.datenwerke.rs.base.client.parameters.datasource.dto", proxyableDto = false, createDecorator = true)
+@GenerateDto(
+      dtoPackage = "net.datenwerke.rs.base.client.parameters.datasource.dto", 
+      proxyableDto = false, 
+      createDecorator = true
+)
 public class DatasourceParameterData {
 
    @ExposeToClient
@@ -99,6 +105,15 @@ public class DatasourceParameterData {
          return false;
       }
       return true;
+   }
+   
+   @Override
+   public String toString() {
+      return MoreObjects.toStringHelper(getClass())
+            .add("id", id)
+            .add("key", key)
+            .add("value", value)
+            .toString();
    }
 
 }
