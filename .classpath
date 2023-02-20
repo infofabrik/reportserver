@@ -224,7 +224,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-sql-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-templates-4.0.9.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/groovy-xml-4.0.9.jar"/>
-	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.3.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-analysis-common-9.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-core-9.5.0.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/lucene-queries-9.5.0.jar"/>
@@ -237,5 +236,6 @@
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-entitymanager-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/hibernate-envers-5.6.15.Final.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/jcifs-2.1.33.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/postgresql-42.5.4.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
